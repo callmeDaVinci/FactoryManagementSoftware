@@ -54,7 +54,7 @@
             // 
             this.lblItemCode.AutoSize = true;
             this.lblItemCode.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemCode.Location = new System.Drawing.Point(61, 51);
+            this.lblItemCode.Location = new System.Drawing.Point(68, 50);
             this.lblItemCode.Name = "lblItemCode";
             this.lblItemCode.Size = new System.Drawing.Size(136, 32);
             this.lblItemCode.TabIndex = 0;
@@ -63,7 +63,7 @@
             // txtItemCode
             // 
             this.txtItemCode.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtItemCode.Location = new System.Drawing.Point(203, 51);
+            this.txtItemCode.Location = new System.Drawing.Point(210, 50);
             this.txtItemCode.Name = "txtItemCode";
             this.txtItemCode.Size = new System.Drawing.Size(367, 38);
             this.txtItemCode.TabIndex = 1;
@@ -73,7 +73,7 @@
             // 
             this.lblItemName.AutoSize = true;
             this.lblItemName.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemName.Location = new System.Drawing.Point(53, 118);
+            this.lblItemName.Location = new System.Drawing.Point(60, 150);
             this.lblItemName.Name = "lblItemName";
             this.lblItemName.Size = new System.Drawing.Size(144, 32);
             this.lblItemName.TabIndex = 2;
@@ -82,7 +82,7 @@
             // txtItemName
             // 
             this.txtItemName.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtItemName.Location = new System.Drawing.Point(203, 118);
+            this.txtItemName.Location = new System.Drawing.Point(210, 150);
             this.txtItemName.Name = "txtItemName";
             this.txtItemName.Size = new System.Drawing.Size(367, 38);
             this.txtItemName.TabIndex = 3;
@@ -91,7 +91,7 @@
             // btnDelete
             // 
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelete.Location = new System.Drawing.Point(86, 584);
+            this.btnDelete.Location = new System.Drawing.Point(90, 586);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(111, 48);
@@ -103,7 +103,7 @@
             // btnInsert
             // 
             this.btnInsert.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnInsert.Location = new System.Drawing.Point(326, 584);
+            this.btnInsert.Location = new System.Drawing.Point(320, 586);
             this.btnInsert.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnInsert.Name = "btnInsert";
             this.btnInsert.Size = new System.Drawing.Size(111, 48);
@@ -115,7 +115,7 @@
             // btnReset
             // 
             this.btnReset.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReset.Location = new System.Drawing.Point(459, 584);
+            this.btnReset.Location = new System.Drawing.Point(466, 586);
             this.btnReset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(111, 48);
@@ -134,7 +134,7 @@
             this.dgvcItemName,
             this.dgvcQty,
             this.dgvcOrd});
-            this.dgvItem.Location = new System.Drawing.Point(644, 118);
+            this.dgvItem.Location = new System.Drawing.Point(645, 120);
             this.dgvItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dgvItem.Name = "dgvItem";
             this.dgvItem.ReadOnly = true;
@@ -147,9 +147,9 @@
             // txtItemSearch
             // 
             this.txtItemSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtItemSearch.Location = new System.Drawing.Point(730, 51);
+            this.txtItemSearch.Location = new System.Drawing.Point(730, 50);
             this.txtItemSearch.Name = "txtItemSearch";
-            this.txtItemSearch.Size = new System.Drawing.Size(549, 38);
+            this.txtItemSearch.Size = new System.Drawing.Size(787, 38);
             this.txtItemSearch.TabIndex = 9;
             this.txtItemSearch.TextChanged += new System.EventHandler(this.txtItemSearch_TextChanged);
             // 
@@ -157,7 +157,7 @@
             // 
             this.lblSearch.AutoSize = true;
             this.lblSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSearch.Location = new System.Drawing.Point(638, 51);
+            this.lblSearch.Location = new System.Drawing.Point(638, 50);
             this.lblSearch.Name = "lblSearch";
             this.lblSearch.Size = new System.Drawing.Size(86, 32);
             this.lblSearch.TabIndex = 8;
@@ -205,7 +205,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1582, 803);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(1582, 703);
             this.Controls.Add(this.txtItemSearch);
             this.Controls.Add(this.lblSearch);
             this.Controls.Add(this.dgvItem);

@@ -47,8 +47,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\facBLL.cs" />
     <Compile Include="BLL\itemBLL.cs" />
+    <Compile Include="DAL\facDAL.cs" />
     <Compile Include="DAL\itemDAL.cs" />
+    <Compile Include="UI\frmFac.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmFac.Designer.cs">
+      <DependentUpon>frmFac.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmItem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,6 +71,9 @@
     <Compile Include="UI\MainDashboard.Designer.cs">
       <DependentUpon>MainDashboard.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\frmFac.resx">
+      <DependentUpon>frmFac.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItem.resx">
       <DependentUpon>frmItem.cs</DependentUpon>
     </EmbeddedResource>

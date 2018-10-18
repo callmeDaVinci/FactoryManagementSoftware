@@ -13,6 +13,7 @@ namespace FactoryManagementSoftware.UI
     public partial class MainDashboard : Form
     {
         static public bool itemFormOpen = false;
+        static public bool facFormOpen = false;
 
         public MainDashboard()
         {
@@ -29,6 +30,19 @@ namespace FactoryManagementSoftware.UI
                 //item.WindowState = FormWindowState.Maximized;
                 item.Show();
                 itemFormOpen = true;
+            }
+        }
+
+        private void customerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!facFormOpen)
+            {
+                frmFac item = new frmFac();
+                item.MdiParent = this;
+                item.StartPosition = FormStartPosition.CenterScreen;
+                //item.WindowState = FormWindowState.Maximized;
+                item.Show();
+                facFormOpen = true;
             }
         }
     }
