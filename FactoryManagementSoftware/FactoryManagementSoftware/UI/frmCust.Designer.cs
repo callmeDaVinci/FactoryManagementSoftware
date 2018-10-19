@@ -1,4 +1,4 @@
-﻿namespace CusttoryManagementSoftware.UI
+﻿namespace FactoryManagementSoftware.UI
 {
     partial class frmCust
     {

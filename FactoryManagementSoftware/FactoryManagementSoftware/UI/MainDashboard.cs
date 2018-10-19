@@ -1,5 +1,4 @@
-﻿using CusttoryManagementSoftware.UI;
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
@@ -9,6 +8,7 @@ namespace FactoryManagementSoftware.UI
         static public bool itemFormOpen = false;
         static public bool facFormOpen = false;
         static public bool custFormOpen = false;
+        static public bool inOutFormOpen = false;
 
         public MainDashboard()
         {
@@ -52,6 +52,19 @@ namespace FactoryManagementSoftware.UI
                 //item.WindowState = FormWindowState.Maximized;
                 item.Show();
                 custFormOpen = true;
+            }
+        }
+
+        private void inOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!inOutFormOpen)
+            {
+                frmInOut inOut = new frmInOut();
+                inOut.MdiParent = this;
+                inOut.StartPosition = FormStartPosition.CenterScreen;
+                //item.WindowState = FormWindowState.Maximized;
+                inOut.Show();
+                inOutFormOpen = true; 
             }
         }
     }

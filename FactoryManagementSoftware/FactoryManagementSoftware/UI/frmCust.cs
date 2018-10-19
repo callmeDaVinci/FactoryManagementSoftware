@@ -1,11 +1,10 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
-using FactoryManagementSoftware.UI;
 using System;
 using System.Data;
 using System.Windows.Forms;
 
-namespace CusttoryManagementSoftware.UI
+namespace FactoryManagementSoftware.UI
 {
     public partial class frmCust : Form
     {
