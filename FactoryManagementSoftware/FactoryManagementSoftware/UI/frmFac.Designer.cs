@@ -155,6 +155,7 @@
             // 
             // txtFacID
             // 
+            this.txtFacID.Enabled = false;
             this.txtFacID.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtFacID.Location = new System.Drawing.Point(210, 50);
             this.txtFacID.Name = "txtFacID";

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CusttoryManagementSoftware.UI;
+using System;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
@@ -14,6 +8,7 @@ namespace FactoryManagementSoftware.UI
     {
         static public bool itemFormOpen = false;
         static public bool facFormOpen = false;
+        static public bool custFormOpen = false;
 
         public MainDashboard()
         {
@@ -33,16 +28,30 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void customerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void facToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!facFormOpen)
             {
-                frmFac item = new frmFac();
+                frmFac fac = new frmFac();
+                fac.MdiParent = this;
+                fac.StartPosition = FormStartPosition.CenterScreen;
+                //item.WindowState = FormWindowState.Maximized;
+                fac.Show();
+
+                facFormOpen = true;
+            }
+        }
+
+        private void custToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!custFormOpen)
+            {
+                frmCust item = new frmCust();
                 item.MdiParent = this;
                 item.StartPosition = FormStartPosition.CenterScreen;
                 //item.WindowState = FormWindowState.Maximized;
                 item.Show();
-                facFormOpen = true;
+                custFormOpen = true;
             }
         }
     }

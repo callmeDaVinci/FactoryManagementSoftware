@@ -1,65 +1,66 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.UI;
 using System;
 using System.Data;
 using System.Windows.Forms;
 
-namespace FactoryManagementSoftware.UI
+namespace CusttoryManagementSoftware.UI
 {
-    public partial class frmFac : Form
+    public partial class frmCust : Form
     {
-        public frmFac()
+        public frmCust()
         {
             InitializeComponent();
         }
 
-        facBLL uFac = new facBLL();
-        facDAL dalFac = new facDAL();
+        custBLL uCust = new custBLL();
+        custDAL dalCust = new custDAL();
 
         #region Load or Reset Form
 
-        private void frmFac_FormClosed(object sender, FormClosedEventArgs e)
+        private void frmCust_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MainDashboard.facFormOpen = false;
+            MainDashboard.custFormOpen = false;
         }
 
-        private void frmFac_Load(object sender, EventArgs e)
+        private void frmCust_Load(object sender, EventArgs e)
         {
             resetForm();
         }
 
         private void loadData()
         {
-            DataTable dt = dalFac.Select();
-            dgvFac.Rows.Clear();
+            DataTable dt = dalCust.Select();
+            dgvCust.Rows.Clear();
             foreach (DataRow item in dt.Rows)
             {
-                int n = dgvFac.Rows.Add();
-                dgvFac.Rows[n].Cells["dgvcFacID"].Value = item["fac_id"].ToString();
-                dgvFac.Rows[n].Cells["dgvcFacName"].Value = item["fac_name"].ToString();
+                int n = dgvCust.Rows.Add();
+                dgvCust.Rows[n].Cells["dgvcCustID"].Value = item["cust_id"].ToString();
+                dgvCust.Rows[n].Cells["dgvcCustName"].Value = item["cust_name"].ToString();
             }
         }
 
         private void resetForm()
         {
-            txtFacID.Clear();
-            txtFacName.Clear();
+            txtCustID.Clear();
+            txtCustName.Clear();
             btnInsert.Text = "ADD";
             btnDelete.Hide();
             loadData();
-            this.ActiveControl = txtFacName;
+            this.ActiveControl = txtCustName;
         }
 
         #endregion
 
         #region Data Grid View
 
-        private void dgvFac_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void dgvCust_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             //get the index of particular row
             int rowIndex = e.RowIndex;
-            txtFacID.Text = dgvFac.Rows[rowIndex].Cells["dgvcFacID"].Value.ToString();
-            txtFacName.Text = dgvFac.Rows[rowIndex].Cells["dgvcFacName"].Value.ToString();
+            txtCustID.Text = dgvCust.Rows[rowIndex].Cells["dgvcCustID"].Value.ToString();
+            txtCustName.Text = dgvCust.Rows[rowIndex].Cells["dgvcCustName"].Value.ToString();
 
             btnInsert.Text = "UPDATE";
             btnDelete.Show();
@@ -73,11 +74,11 @@ namespace FactoryManagementSoftware.UI
         private bool Validation()
         {
             bool result = false;
-            if (string.IsNullOrEmpty(txtFacName.Text))
+            if (string.IsNullOrEmpty(txtCustName.Text))
             {
 
-                errorProvider2.SetError(txtFacName, "Factory name Required");
-            }        
+                errorProvider2.SetError(txtCustName, "Customer name Required");
+            }
             else
             {
                 result = true;
@@ -87,24 +88,24 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private bool IfFacExists(String facID)
+        private bool IfCustExists(String custID)
         {
-            if(string.IsNullOrEmpty(txtFacID.Text))
+            if (string.IsNullOrEmpty(txtCustID.Text))
             {
                 return false;
             }
             else
             {
-                DataTable dt = dalFac.idSearch(facID);
+                DataTable dt = dalCust.idSearch(custID);
                 if (dt.Rows.Count > 0)
                     return true;
                 else
                     return false;
             }
-            
+
         }
 
-        private void txtFacName_TextChanged(object sender, EventArgs e)
+        private void txtCustName_TextChanged(object sender, EventArgs e)
         {
             errorProvider2.Clear();
         }
@@ -121,51 +122,51 @@ namespace FactoryManagementSoftware.UI
                 DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    if (IfFacExists(txtFacID.Text))
+                    if (IfCustExists(txtCustID.Text))
                     {
 
                         //Update data
-                        uFac.fac_id = Convert.ToInt32(txtFacID.Text);
-                        uFac.fac_name = txtFacName.Text;
-                        uFac.fac_updtd_date = DateTime.Now;
-                        uFac.fac_updtd_by = 0;
+                        uCust.cust_id = Convert.ToInt32(txtCustID.Text);
+                        uCust.cust_name = txtCustName.Text;
+                        uCust.cust_updtd_date = DateTime.Now;
+                        uCust.cust_updtd_by = 0;
 
                         //Updating data into database
-                        bool success = dalFac.Update(uFac);
+                        bool success = dalCust.Update(uCust);
 
                         //if data is updated successfully then the value = true else false
                         if (success == true)
                         {
                             //data updated successfully
-                            MessageBox.Show("Factory successfully updated ");
+                            MessageBox.Show("Customer successfully updated ");
                             resetForm();
                         }
                         else
                         {
                             //failed to update user
-                            MessageBox.Show("Failed to updated factory");
+                            MessageBox.Show("Failed to updated customer");
                         }
                     }
                     else
                     {
                         //Add data
-                        uFac.fac_name = txtFacName.Text;
-                        uFac.fac_added_date = DateTime.Now;
-                        uFac.fac_added_by = 1;
+                        uCust.cust_name = txtCustName.Text;
+                        uCust.cust_added_date = DateTime.Now;
+                        uCust.cust_added_by = 1;
 
                         //Inserting Data into Database
-                        bool success = dalFac.Insert(uFac);
+                        bool success = dalCust.Insert(uCust);
                         //If the data is successfully inserted then the value of success will be true else false
                         if (success == true)
                         {
                             //Data Successfully Inserted
-                            MessageBox.Show("Factory successfully created");
+                            MessageBox.Show("Customer successfully created");
                             resetForm();
                         }
                         else
                         {
                             //Failed to insert data
-                            MessageBox.Show("Failed to add new factory");
+                            MessageBox.Show("Failed to add new customer");
                         }
                     }
                 }
@@ -177,20 +178,20 @@ namespace FactoryManagementSoftware.UI
             DialogResult dialogResult = MessageBox.Show("Are you sure want to delete?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Yes)
             {
-                uFac.fac_id = Convert.ToInt32(txtFacID.Text);
+                uCust.cust_id = Convert.ToInt32(txtCustID.Text);
 
-                bool success = dalFac.Delete(uFac);
+                bool success = dalCust.Delete(uCust);
 
                 if (success == true)
                 {
                     //item deleted successfully
-                    MessageBox.Show("Factory deleted successfully");
+                    MessageBox.Show("Customer deleted successfully");
                     resetForm();
                 }
                 else
                 {
                     //Failed to delete item
-                    MessageBox.Show("Failed to delete factory");
+                    MessageBox.Show("Failed to delete customer");
                 }
             }
         }
@@ -205,23 +206,23 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void txtFacSearch_TextChanged(object sender, EventArgs e)
+        private void txtCustSearch_TextChanged(object sender, EventArgs e)
         {
             //get keyword from text box
-            string keywords = txtFacSearch.Text;
+            string keywords = txtCustSearch.Text;
 
             //check if the keywords has value or not
             if (keywords != null)
             {
                 //show user based on keywords
-                DataTable dt = dalFac.Search(keywords);
+                DataTable dt = dalCust.Search(keywords);
                 //dgvItem.DataSource = dt;
-                dgvFac.Rows.Clear();
-                foreach (DataRow fac in dt.Rows)
+                dgvCust.Rows.Clear();
+                foreach (DataRow cust in dt.Rows)
                 {
-                    int n = dgvFac.Rows.Add();
-                    dgvFac.Rows[n].Cells["dgvcFacID"].Value = fac["fac_id"].ToString();
-                    dgvFac.Rows[n].Cells["dgvcFacName"].Value = fac["fac_name"].ToString();
+                    int n = dgvCust.Rows.Add();
+                    dgvCust.Rows[n].Cells["dgvcCustID"].Value = cust["cust_id"].ToString();
+                    dgvCust.Rows[n].Cells["dgvcCustName"].Value = cust["cust_name"].ToString();
                 }
 
             }

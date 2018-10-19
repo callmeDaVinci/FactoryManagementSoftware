@@ -33,8 +33,8 @@
             this.adminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.itemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.customerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.factoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.facToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.custToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,6 +44,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.itemJoinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -68,8 +69,9 @@
             this.adminToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.userToolStripMenuItem,
             this.itemToolStripMenuItem,
-            this.customerToolStripMenuItem,
-            this.factoryToolStripMenuItem,
+            this.itemJoinToolStripMenuItem,
+            this.facToolStripMenuItem,
+            this.custToolStripMenuItem,
             this.historyToolStripMenuItem});
             this.adminToolStripMenuItem.Name = "adminToolStripMenuItem";
             this.adminToolStripMenuItem.Size = new System.Drawing.Size(65, 24);
@@ -88,18 +90,19 @@
             this.itemToolStripMenuItem.Text = "Item";
             this.itemToolStripMenuItem.Click += new System.EventHandler(this.itemToolStripMenuItem_Click);
             // 
-            // customerToolStripMenuItem
+            // facToolStripMenuItem
             // 
-            this.customerToolStripMenuItem.Name = "customerToolStripMenuItem";
-            this.customerToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.customerToolStripMenuItem.Text = "Factory";
-            this.customerToolStripMenuItem.Click += new System.EventHandler(this.customerToolStripMenuItem_Click);
+            this.facToolStripMenuItem.Name = "facToolStripMenuItem";
+            this.facToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.facToolStripMenuItem.Text = "Factory";
+            this.facToolStripMenuItem.Click += new System.EventHandler(this.facToolStripMenuItem_Click);
             // 
-            // factoryToolStripMenuItem
+            // custToolStripMenuItem
             // 
-            this.factoryToolStripMenuItem.Name = "factoryToolStripMenuItem";
-            this.factoryToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.factoryToolStripMenuItem.Text = "Customer";
+            this.custToolStripMenuItem.Name = "custToolStripMenuItem";
+            this.custToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.custToolStripMenuItem.Text = "Customer";
+            this.custToolStripMenuItem.Click += new System.EventHandler(this.custToolStripMenuItem_Click);
             // 
             // historyToolStripMenuItem
             // 
@@ -158,6 +161,12 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
             // 
+            // itemJoinToolStripMenuItem
+            // 
+            this.itemJoinToolStripMenuItem.Name = "itemJoinToolStripMenuItem";
+            this.itemJoinToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.itemJoinToolStripMenuItem.Text = "Item Join";
+            // 
             // MainDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -190,14 +199,15 @@
         private System.Windows.Forms.ToolStripMenuItem adminToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem userToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem itemToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem customerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem factoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem facToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem custToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem historyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stockToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inOutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem orderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forecastToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem itemJoinToolStripMenuItem;
     }
 }
 
