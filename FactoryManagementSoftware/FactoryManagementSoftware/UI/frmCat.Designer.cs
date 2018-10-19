@@ -195,6 +195,7 @@
             this.txtTrfCatSearch.Name = "txtTrfCatSearch";
             this.txtTrfCatSearch.Size = new System.Drawing.Size(448, 38);
             this.txtTrfCatSearch.TabIndex = 39;
+            this.txtTrfCatSearch.TextChanged += new System.EventHandler(this.txtTrfCatSearch_TextChanged);
             // 
             // label1
             // 
@@ -249,6 +250,7 @@
             this.btnTrfCatReset.TabIndex = 36;
             this.btnTrfCatReset.Text = "RESET";
             this.btnTrfCatReset.UseVisualStyleBackColor = true;
+            this.btnTrfCatReset.Click += new System.EventHandler(this.btnTrfCatReset_Click);
             // 
             // btnTrfCatInsert
             // 
@@ -260,6 +262,7 @@
             this.btnTrfCatInsert.TabIndex = 35;
             this.btnTrfCatInsert.Text = "ADD";
             this.btnTrfCatInsert.UseVisualStyleBackColor = true;
+            this.btnTrfCatInsert.Click += new System.EventHandler(this.btnTrfCatInsert_Click);
             // 
             // btnTrfCatDelete
             // 
@@ -271,6 +274,7 @@
             this.btnTrfCatDelete.TabIndex = 34;
             this.btnTrfCatDelete.Text = "DELETE";
             this.btnTrfCatDelete.UseVisualStyleBackColor = true;
+            this.btnTrfCatDelete.Click += new System.EventHandler(this.btnTrfCatDelete_Click);
             // 
             // txtTrfCat
             // 

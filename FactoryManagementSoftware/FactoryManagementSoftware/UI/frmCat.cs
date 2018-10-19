@@ -108,9 +108,6 @@ namespace FactoryManagementSoftware.UI
             
         }
 
-
-
-
         #endregion
 
         #region Data Grid View
@@ -167,7 +164,7 @@ namespace FactoryManagementSoftware.UI
 
                 case "Transfer":
 
-                    if (string.IsNullOrEmpty(txtTrfCatID.Text))
+                    if (string.IsNullOrEmpty(txtTrfCat.Text))
                     {
 
                         errorProvider2.SetError(txtTrfCat, "Category name Required");
@@ -250,6 +247,7 @@ namespace FactoryManagementSoftware.UI
 
         #region Function: Insert/Delete/Reset/Search
 
+        //item category site
         private void btnItemCatInsert_Click(object sender, EventArgs e)
         {
 
@@ -355,6 +353,122 @@ namespace FactoryManagementSoftware.UI
                     int n = dgvItemCat.Rows.Add();
                     dgvItemCat.Rows[n].Cells["item_cat_id"].Value = fac["item_cat_id"].ToString();
                     dgvItemCat.Rows[n].Cells["item_cat_name"].Value = fac["item_cat_name"].ToString();
+                }
+
+            }
+            else
+            {
+                //show all item from the database
+                loadData();
+            }
+        }
+
+        //transfer category site
+        private void btnTrfCatInsert_Click(object sender, EventArgs e)
+        {
+
+            if (Validation("Transfer"))
+            {
+                DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    if (IfExists("Transfer"))
+                    {
+
+                        //Update data
+                        utrfCat.trf_cat_id = Convert.ToInt32(txtTrfCatID.Text);
+                        utrfCat.trf_cat_name = txtTrfCat.Text;
+
+                        //Updating data into database
+                        bool success = daltrfCat.Update(utrfCat);
+
+                        //if data is updated successfully then the value = true else false
+                        if (success == true)
+                        {
+                            //data updated successfully
+                            MessageBox.Show("Transfer category successfully updated ");
+                            resetForm("Transfer");
+                        }
+                        else
+                        {
+                            //failed to update user
+                            MessageBox.Show("Failed to updated transfer category");
+                        }
+                    }
+                    else
+                    {
+                        //Add data
+                        utrfCat.trf_cat_name = txtTrfCat.Text;
+
+                        //Inserting Data into Database
+                        bool success = daltrfCat.Insert(utrfCat);
+                        //If the data is successfully inserted then the value of success will be true else false
+                        if (success == true)
+                        {
+                            //Data Successfully Inserted
+                            MessageBox.Show("Transfer category successfully created");
+                            resetForm("Transfer");
+                        }
+                        else
+                        {
+                            //Failed to insert data
+                            MessageBox.Show("Failed to add new transfer category");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void btnTrfCatDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure want to delete?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+            {
+                utrfCat.trf_cat_id = Convert.ToInt32(txtTrfCatID.Text);
+
+                bool success = daltrfCat.Delete(utrfCat);
+
+                if (success == true)
+                {
+                    //item deleted successfully
+                    MessageBox.Show("Transfer category deleted successfully");
+                    resetForm("Transfer");
+                }
+                else
+                {
+                    //Failed to delete item
+                    MessageBox.Show("Failed to delete transfer category");
+                }
+            }
+        }
+
+        private void btnTrfCatReset_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure want to reset?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                resetForm("Transfer");
+            }
+        }
+
+        private void txtTrfCatSearch_TextChanged(object sender, EventArgs e)
+        {
+            //get keyword from text box
+            string keywords = txtTrfCatSearch.Text;
+
+            //check if the keywords has value or not
+            if (keywords != null)
+            {
+                //show user based on keywords
+                DataTable dt = daltrfCat.Search(keywords);
+                //dgvItem.DataSource = dt;
+                dgvTrfCat.Rows.Clear();
+                foreach (DataRow fac in dt.Rows)
+                {
+                    int n = dgvTrfCat.Rows.Add();
+                    dgvTrfCat.Rows[n].Cells["trf_cat_id"].Value = fac["trf_cat_id"].ToString();
+                    dgvTrfCat.Rows[n].Cells["trf_cat_name"].Value = fac["trf_cat_name"].ToString();
                 }
 
             }
