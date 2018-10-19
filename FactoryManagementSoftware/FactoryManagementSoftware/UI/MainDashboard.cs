@@ -9,6 +9,7 @@ namespace FactoryManagementSoftware.UI
         static public bool facFormOpen = false;
         static public bool custFormOpen = false;
         static public bool inOutFormOpen = false;
+        static public bool catFormOpen = false;
 
         public MainDashboard()
         {
@@ -65,6 +66,18 @@ namespace FactoryManagementSoftware.UI
                 //item.WindowState = FormWindowState.Maximized;
                 inOut.Show();
                 inOutFormOpen = true; 
+            }
+        }
+
+        private void categoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!catFormOpen)
+            {
+                frmCat cat = new frmCat();
+                cat.MdiParent = this;
+                cat.StartPosition = FormStartPosition.CenterScreen;
+                cat.Show();
+                catFormOpen = true;
             }
         }
     }

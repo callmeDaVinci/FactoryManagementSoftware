@@ -33,11 +33,11 @@ namespace FactoryManagementSoftware
         private void loadData()
         {
             DataTable dt = dalItem.Select();
-            //dgvItem.DataSource = dt;
             dgvItem.Rows.Clear();
             foreach (DataRow item in dt.Rows)
             {
                 int n = dgvItem.Rows.Add();
+                dgvItem.Rows[n].Cells["Category"].Value = item["item_cat"].ToString();
                 dgvItem.Rows[n].Cells["dgvcItemCode"].Value = item["item_code"].ToString();
                 dgvItem.Rows[n].Cells["dgvcItemName"].Value = item["item_name"].ToString();
                 dgvItem.Rows[n].Cells["dgvcQty"].Value = item["item_qty"].ToString();
@@ -50,6 +50,7 @@ namespace FactoryManagementSoftware
             txtItemCode.ReadOnly = false;
             txtItemCode.Clear();
             txtItemName.Clear();
+            cmbItemCategory.SelectedIndex = -1;
             txtItemCode.Focus();
             btnInsert.Text = "ADD";
             btnDelete.Hide();

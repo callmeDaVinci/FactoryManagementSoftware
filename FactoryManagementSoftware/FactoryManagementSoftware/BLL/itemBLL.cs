@@ -10,6 +10,7 @@ namespace FactoryManagementSoftware.BLL
     {
         public string item_code { get; set; }
         public string item_name { get; set; }
+        public string item_cat { get; set; }
         public int item_qty { get; set; }
         public int item_ord { get; set; }
         public DateTime item_added_date { get; set; }

@@ -41,10 +41,13 @@
             this.lblSearch = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcItemCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcOrd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cmbItemCategory = new System.Windows.Forms.ComboBox();
+            this.lblItemCategory = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
@@ -92,7 +95,7 @@
             // 
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.Location = new System.Drawing.Point(90, 586);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(111, 48);
             this.btnDelete.TabIndex = 4;
@@ -104,7 +107,7 @@
             // 
             this.btnInsert.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnInsert.Location = new System.Drawing.Point(320, 586);
-            this.btnInsert.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnInsert.Margin = new System.Windows.Forms.Padding(2);
             this.btnInsert.Name = "btnInsert";
             this.btnInsert.Size = new System.Drawing.Size(111, 48);
             this.btnInsert.TabIndex = 5;
@@ -116,7 +119,7 @@
             // 
             this.btnReset.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReset.Location = new System.Drawing.Point(466, 586);
-            this.btnReset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnReset.Margin = new System.Windows.Forms.Padding(2);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(111, 48);
             this.btnReset.TabIndex = 6;
@@ -130,12 +133,13 @@
             this.dgvItem.AllowUserToDeleteRows = false;
             this.dgvItem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItem.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Category,
             this.dgvcItemCode,
             this.dgvcItemName,
             this.dgvcQty,
             this.dgvcOrd});
             this.dgvItem.Location = new System.Drawing.Point(645, 120);
-            this.dgvItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvItem.Margin = new System.Windows.Forms.Padding(2);
             this.dgvItem.Name = "dgvItem";
             this.dgvItem.ReadOnly = true;
             this.dgvItem.RowTemplate.Height = 24;
@@ -171,6 +175,14 @@
             // 
             this.errorProvider2.ContainerControl = this;
             // 
+            // Category
+            // 
+            this.Category.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.Category.HeaderText = "Category";
+            this.Category.Name = "Category";
+            this.Category.ReadOnly = true;
+            this.Category.Width = 108;
+            // 
             // dgvcItemCode
             // 
             this.dgvcItemCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -201,12 +213,34 @@
             this.dgvcOrd.ReadOnly = true;
             this.dgvcOrd.Width = 83;
             // 
+            // cmbItemCategory
+            // 
+            this.cmbItemCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbItemCategory.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbItemCategory.FormattingEnabled = true;
+            this.cmbItemCategory.Location = new System.Drawing.Point(210, 250);
+            this.cmbItemCategory.Name = "cmbItemCategory";
+            this.cmbItemCategory.Size = new System.Drawing.Size(367, 39);
+            this.cmbItemCategory.TabIndex = 10;
+            // 
+            // lblItemCategory
+            // 
+            this.lblItemCategory.AutoSize = true;
+            this.lblItemCategory.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblItemCategory.Location = new System.Drawing.Point(83, 250);
+            this.lblItemCategory.Name = "lblItemCategory";
+            this.lblItemCategory.Size = new System.Drawing.Size(121, 32);
+            this.lblItemCategory.TabIndex = 11;
+            this.lblItemCategory.Text = "*Category";
+            // 
             // frmItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1582, 703);
+            this.Controls.Add(this.lblItemCategory);
+            this.Controls.Add(this.cmbItemCategory);
             this.Controls.Add(this.txtItemSearch);
             this.Controls.Add(this.lblSearch);
             this.Controls.Add(this.dgvItem);
@@ -246,10 +280,13 @@
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ErrorProvider errorProvider2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Category;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcItemCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcItemName;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcOrd;
+        private System.Windows.Forms.Label lblItemCategory;
+        private System.Windows.Forms.ComboBox cmbItemCategory;
     }
 }
 
