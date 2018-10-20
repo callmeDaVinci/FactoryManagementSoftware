@@ -67,7 +67,12 @@ namespace FactoryManagementSoftware.UI
                 int n = dgvTrf.Rows.Add();
                 dgvTrf.Rows[n].Cells["trf_hist_id"].Value = item["trf_hist_id"].ToString();
                 dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = item["trf_hist_added_date"].ToString();
-                dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = item["trf_hist_trf_date"].ToString();
+
+                //dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = item["trf_hist_trf_date"].ToString();
+
+                dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(item["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
+               
+
                 dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = item["trf_hist_item_code"].ToString();
                 dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = item["trf_hist_item_name"].ToString();
                 dgvTrf.Rows[n].Cells["trf_hist_from"].Value = item["trf_hist_from"].ToString();
@@ -76,11 +81,7 @@ namespace FactoryManagementSoftware.UI
                 dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = item["trf_hist_unit"].ToString();
                 dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = item["trf_hist_added_by"].ToString();
 
-
             }
-
-
-
         }
 
         private void resetForm()
@@ -390,6 +391,16 @@ namespace FactoryManagementSoftware.UI
             errorProvider1.Clear();
         }
 
+        private void cmbTrfItemCode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            errorProvider3.Clear();
+        }
+
+        private void cmbTrfQtyUnit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            errorProvider4.Clear();
+        }
+
         #endregion
 
         #region Function: Insert/Reset
@@ -410,7 +421,7 @@ namespace FactoryManagementSoftware.UI
                     utrfHist.trf_hist_to = cmbTrfTo.Text;
                     utrfHist.trf_hist_qty = Convert.ToSingle(txtTrfQty.Text);
                     utrfHist.trf_hist_unit = cmbTrfQtyUnit.Text;
-                    utrfHist.trf_hist_trf_date = dtpTrfDate.Value;
+                    utrfHist.trf_hist_trf_date = dtpTrfDate.Value.Date;
                     utrfHist.trf_hist_note = txtTrfNote.Text;
                     utrfHist.trf_hist_added_date = DateTime.Now;
                     utrfHist.trf_hist_added_by = 0;
@@ -446,14 +457,6 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        private void cmbTrfItemCode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            errorProvider3.Clear();
-        }
-
-        private void cmbTrfQtyUnit_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            errorProvider4.Clear();
-        }
+        
     }
 }
