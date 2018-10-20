@@ -10,5 +10,7 @@ namespace FactoryManagementSoftware.BLL
     {
         public int trf_cat_id { get; set; }
         public string trf_cat_name { get; set; }
+
+
     }
 }

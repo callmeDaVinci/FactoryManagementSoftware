@@ -28,17 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dgvTrf = new System.Windows.Forms.DataGridView();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Added_Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Trf_Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.From = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.To = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TrfQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Added_By = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnTransfer = new System.Windows.Forms.Button();
             this.lblInOutItemName = new System.Windows.Forms.Label();
             this.lblInOutTransferDate = new System.Windows.Forms.Label();
@@ -61,20 +52,39 @@
             this.Factory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.QTY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvItem = new System.Windows.Forms.DataGridView();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.lblSearch = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cmbTrfItemCat = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.item_cat = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_ord = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txtItemSearch = new System.Windows.Forms.TextBox();
+            this.lblSearch = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmbTrfItemCat = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProvider4 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.button1 = new System.Windows.Forms.Button();
+            this.trf_hist_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trf_hist_added_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trf_hist_trf_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trf_hist_item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trf_hist_item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trf_hist_from = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trf_hist_to = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trf_hist_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trf_hist_unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trf_hist_added_by = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTrf)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFactoryStock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider4)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvTrf
@@ -83,16 +93,16 @@
             this.dgvTrf.AllowUserToDeleteRows = false;
             this.dgvTrf.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTrf.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ID,
-            this.Added_Date,
-            this.Trf_Date,
-            this.ItemCode,
-            this.ItemName,
-            this.From,
-            this.To,
-            this.TrfQty,
-            this.Unit,
-            this.Added_By});
+            this.trf_hist_id,
+            this.trf_hist_added_date,
+            this.trf_hist_trf_date,
+            this.trf_hist_item_code,
+            this.trf_hist_item_name,
+            this.trf_hist_from,
+            this.trf_hist_to,
+            this.trf_hist_qty,
+            this.trf_hist_unit,
+            this.trf_hist_added_by});
             this.dgvTrf.Location = new System.Drawing.Point(631, 406);
             this.dgvTrf.Margin = new System.Windows.Forms.Padding(2);
             this.dgvTrf.Name = "dgvTrf";
@@ -101,84 +111,6 @@
             this.dgvTrf.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTrf.Size = new System.Drawing.Size(916, 237);
             this.dgvTrf.TabIndex = 37;
-            // 
-            // ID
-            // 
-            this.ID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            this.ID.Width = 56;
-            // 
-            // Added_Date
-            // 
-            this.Added_Date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.Added_Date.HeaderText = "Added_Date";
-            this.Added_Date.Name = "Added_Date";
-            this.Added_Date.ReadOnly = true;
-            this.Added_Date.Width = 132;
-            // 
-            // Trf_Date
-            // 
-            this.Trf_Date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.Trf_Date.HeaderText = "Trf_Date";
-            this.Trf_Date.Name = "Trf_Date";
-            this.Trf_Date.ReadOnly = true;
-            this.Trf_Date.Width = 101;
-            // 
-            // ItemCode
-            // 
-            this.ItemCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ItemCode.HeaderText = "Item Code";
-            this.ItemCode.Name = "ItemCode";
-            this.ItemCode.ReadOnly = true;
-            // 
-            // ItemName
-            // 
-            this.ItemName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ItemName.HeaderText = "Item Name";
-            this.ItemName.Name = "ItemName";
-            this.ItemName.ReadOnly = true;
-            // 
-            // From
-            // 
-            this.From.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.From.HeaderText = "From";
-            this.From.Name = "From";
-            this.From.ReadOnly = true;
-            this.From.Width = 78;
-            // 
-            // To
-            // 
-            this.To.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.To.HeaderText = "To";
-            this.To.Name = "To";
-            this.To.ReadOnly = true;
-            this.To.Width = 56;
-            // 
-            // TrfQty
-            // 
-            this.TrfQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.TrfQty.HeaderText = "Qty";
-            this.TrfQty.Name = "TrfQty";
-            this.TrfQty.ReadOnly = true;
-            this.TrfQty.Width = 66;
-            // 
-            // Unit
-            // 
-            this.Unit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.Unit.HeaderText = "Unit";
-            this.Unit.Name = "Unit";
-            this.Unit.ReadOnly = true;
-            this.Unit.Width = 71;
-            // 
-            // Added_By
-            // 
-            this.Added_By.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.Added_By.HeaderText = "By";
-            this.Added_By.Name = "Added_By";
-            this.Added_By.ReadOnly = true;
-            this.Added_By.Width = 57;
             // 
             // btnTransfer
             // 
@@ -190,6 +122,7 @@
             this.btnTransfer.TabIndex = 36;
             this.btnTransfer.Text = "TRANSFER";
             this.btnTransfer.UseVisualStyleBackColor = true;
+            this.btnTransfer.Click += new System.EventHandler(this.btnTransfer_Click);
             // 
             // lblInOutItemName
             // 
@@ -242,6 +175,7 @@
             this.cmbTrfItemCode.Name = "cmbTrfItemCode";
             this.cmbTrfItemCode.Size = new System.Drawing.Size(367, 39);
             this.cmbTrfItemCode.TabIndex = 43;
+            this.cmbTrfItemCode.SelectedIndexChanged += new System.EventHandler(this.cmbTrfItemCode_SelectedIndexChanged);
             // 
             // lblInOutItemCode
             // 
@@ -262,6 +196,7 @@
             this.cmbTrfFromCategory.Name = "cmbTrfFromCategory";
             this.cmbTrfFromCategory.Size = new System.Drawing.Size(168, 39);
             this.cmbTrfFromCategory.TabIndex = 45;
+            this.cmbTrfFromCategory.SelectedIndexChanged += new System.EventHandler(this.cmbTrfFromCategory_SelectedIndexChanged);
             // 
             // lblInOutFrom
             // 
@@ -302,6 +237,7 @@
             this.cmbTrfToCategory.Name = "cmbTrfToCategory";
             this.cmbTrfToCategory.Size = new System.Drawing.Size(168, 39);
             this.cmbTrfToCategory.TabIndex = 48;
+            this.cmbTrfToCategory.SelectedIndexChanged += new System.EventHandler(this.cmbTrfToCategory_SelectedIndexChanged);
             // 
             // lblInOutTo
             // 
@@ -328,6 +264,7 @@
             this.cmbTrfQtyUnit.Name = "cmbTrfQtyUnit";
             this.cmbTrfQtyUnit.Size = new System.Drawing.Size(168, 39);
             this.cmbTrfQtyUnit.TabIndex = 52;
+            this.cmbTrfQtyUnit.SelectedIndexChanged += new System.EventHandler(this.cmbTrfQtyUnit_SelectedIndexChanged);
             // 
             // lblInOutQuantity
             // 
@@ -346,6 +283,7 @@
             this.txtTrfQty.Name = "txtTrfQty";
             this.txtTrfQty.Size = new System.Drawing.Size(168, 38);
             this.txtTrfQty.TabIndex = 53;
+            this.txtTrfQty.TextChanged += new System.EventHandler(this.txtTrfQty_TextChanged);
             // 
             // txtTrfNote
             // 
@@ -419,13 +357,52 @@
             this.dgvItem.TabIndex = 58;
             this.dgvItem.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvItem_CellMouseDoubleClick);
             // 
-            // textBox1
+            // item_cat
             // 
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(725, 62);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(508, 38);
-            this.textBox1.TabIndex = 60;
+            this.item_cat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_cat.HeaderText = "Category";
+            this.item_cat.Name = "item_cat";
+            this.item_cat.ReadOnly = true;
+            this.item_cat.Width = 108;
+            // 
+            // item_code
+            // 
+            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_code.HeaderText = "Code";
+            this.item_code.Name = "item_code";
+            this.item_code.ReadOnly = true;
+            // 
+            // item_name
+            // 
+            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_name.HeaderText = "Name";
+            this.item_name.Name = "item_name";
+            this.item_name.ReadOnly = true;
+            // 
+            // item_qty
+            // 
+            this.item_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_qty.HeaderText = "Qty";
+            this.item_qty.Name = "item_qty";
+            this.item_qty.ReadOnly = true;
+            this.item_qty.Width = 66;
+            // 
+            // item_ord
+            // 
+            this.item_ord.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_ord.HeaderText = "Order";
+            this.item_ord.Name = "item_ord";
+            this.item_ord.ReadOnly = true;
+            this.item_ord.Width = 83;
+            // 
+            // txtItemSearch
+            // 
+            this.txtItemSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtItemSearch.Location = new System.Drawing.Point(725, 62);
+            this.txtItemSearch.Name = "txtItemSearch";
+            this.txtItemSearch.Size = new System.Drawing.Size(508, 38);
+            this.txtItemSearch.TabIndex = 60;
+            this.txtItemSearch.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // lblSearch
             // 
@@ -476,58 +453,127 @@
             this.label4.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(74, 116);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(111, 32);
+            this.label4.Size = new System.Drawing.Size(121, 32);
             this.label4.TabIndex = 63;
-            this.label4.Text = "Category";
+            this.label4.Text = "*Category";
             // 
-            // item_cat
+            // errorProvider1
             // 
-            this.item_cat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_cat.HeaderText = "Category";
-            this.item_cat.Name = "item_cat";
-            this.item_cat.ReadOnly = true;
-            this.item_cat.Width = 108;
+            this.errorProvider1.ContainerControl = this;
             // 
-            // item_code
+            // errorProvider2
             // 
-            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_code.HeaderText = "Code";
-            this.item_code.Name = "item_code";
-            this.item_code.ReadOnly = true;
+            this.errorProvider2.ContainerControl = this;
             // 
-            // item_name
+            // errorProvider3
             // 
-            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_name.HeaderText = "Name";
-            this.item_name.Name = "item_name";
-            this.item_name.ReadOnly = true;
+            this.errorProvider3.ContainerControl = this;
             // 
-            // item_qty
+            // errorProvider4
             // 
-            this.item_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_qty.HeaderText = "Qty";
-            this.item_qty.Name = "item_qty";
-            this.item_qty.ReadOnly = true;
-            this.item_qty.Width = 66;
+            this.errorProvider4.ContainerControl = this;
             // 
-            // item_ord
+            // button1
             // 
-            this.item_ord.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_ord.HeaderText = "Order";
-            this.item_ord.Name = "item_ord";
-            this.item_ord.ReadOnly = true;
-            this.item_ord.Width = 83;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(191, 648);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(168, 48);
+            this.button1.TabIndex = 65;
+            this.button1.Text = "RESET";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // trf_hist_id
+            // 
+            this.trf_hist_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.trf_hist_id.HeaderText = "ID";
+            this.trf_hist_id.Name = "trf_hist_id";
+            this.trf_hist_id.ReadOnly = true;
+            this.trf_hist_id.Width = 56;
+            // 
+            // trf_hist_added_date
+            // 
+            this.trf_hist_added_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.trf_hist_added_date.HeaderText = "Added_Date";
+            this.trf_hist_added_date.Name = "trf_hist_added_date";
+            this.trf_hist_added_date.ReadOnly = true;
+            this.trf_hist_added_date.Width = 132;
+            // 
+            // trf_hist_trf_date
+            // 
+            this.trf_hist_trf_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.trf_hist_trf_date.HeaderText = "Trf_Date";
+            this.trf_hist_trf_date.Name = "trf_hist_trf_date";
+            this.trf_hist_trf_date.ReadOnly = true;
+            this.trf_hist_trf_date.Width = 101;
+            // 
+            // trf_hist_item_code
+            // 
+            this.trf_hist_item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.trf_hist_item_code.HeaderText = "Item Code";
+            this.trf_hist_item_code.Name = "trf_hist_item_code";
+            this.trf_hist_item_code.ReadOnly = true;
+            // 
+            // trf_hist_item_name
+            // 
+            this.trf_hist_item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.trf_hist_item_name.HeaderText = "Item Name";
+            this.trf_hist_item_name.Name = "trf_hist_item_name";
+            this.trf_hist_item_name.ReadOnly = true;
+            // 
+            // trf_hist_from
+            // 
+            this.trf_hist_from.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.trf_hist_from.HeaderText = "From";
+            this.trf_hist_from.Name = "trf_hist_from";
+            this.trf_hist_from.ReadOnly = true;
+            this.trf_hist_from.Width = 78;
+            // 
+            // trf_hist_to
+            // 
+            this.trf_hist_to.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.trf_hist_to.HeaderText = "To";
+            this.trf_hist_to.Name = "trf_hist_to";
+            this.trf_hist_to.ReadOnly = true;
+            this.trf_hist_to.Width = 56;
+            // 
+            // trf_hist_qty
+            // 
+            this.trf_hist_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.trf_hist_qty.HeaderText = "Qty";
+            this.trf_hist_qty.Name = "trf_hist_qty";
+            this.trf_hist_qty.ReadOnly = true;
+            this.trf_hist_qty.Width = 66;
+            // 
+            // trf_hist_unit
+            // 
+            this.trf_hist_unit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.trf_hist_unit.HeaderText = "Unit";
+            this.trf_hist_unit.Name = "trf_hist_unit";
+            this.trf_hist_unit.ReadOnly = true;
+            this.trf_hist_unit.Width = 71;
+            // 
+            // trf_hist_added_by
+            // 
+            this.trf_hist_added_by.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.trf_hist_added_by.HeaderText = "By";
+            this.trf_hist_added_by.Name = "trf_hist_added_by";
+            this.trf_hist_added_by.ReadOnly = true;
+            this.trf_hist_added_by.Width = 57;
             // 
             // frmInOut
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1582, 753);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.cmbTrfItemCat);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtItemSearch);
             this.Controls.Add(this.lblSearch);
             this.Controls.Add(this.dgvItem);
             this.Controls.Add(this.dgvFactoryStock);
@@ -559,6 +605,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvTrf)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFactoryStock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -586,22 +636,12 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dgvFactoryStock;
         private System.Windows.Forms.DataGridView dgvItem;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtItemSearch;
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Factory;
         private System.Windows.Forms.DataGridViewTextBoxColumn QTY;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Added_Date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Trf_Date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ItemCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ItemName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn From;
-        private System.Windows.Forms.DataGridViewTextBoxColumn To;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TrfQty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Unit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Added_By;
         private System.Windows.Forms.ComboBox cmbTrfItemCat;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_cat;
@@ -609,5 +649,20 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn item_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_qty;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_ord;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.ErrorProvider errorProvider2;
+        private System.Windows.Forms.ErrorProvider errorProvider3;
+        private System.Windows.Forms.ErrorProvider errorProvider4;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_added_date;
+        private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_trf_date;
+        private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_item_code;
+        private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_item_name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_from;
+        private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_to;
+        private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_qty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_unit;
+        private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_added_by;
     }
 }
