@@ -13,6 +13,8 @@ namespace FactoryManagementSoftware
         itemBLL uItem = new itemBLL();
         itemDAL dalItem = new itemDAL();
 
+        itemCatDAL dALItemCat = new itemCatDAL();
+
         #region Load or Reset Form
 
         public frmItem()
@@ -55,6 +57,19 @@ namespace FactoryManagementSoftware
             btnInsert.Text = "ADD";
             btnDelete.Hide();
             loadData();
+
+            //select item data from database
+            DataTable dtItemCat = dALItemCat.Select();
+            //remove repeating name in item_name
+            DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
+            //sort the data according item_name
+            distinctTable.DefaultView.Sort = "item_cat_name ASC";
+            //DataView dv = new DataView(distinctTable);
+            //dv.RowFilter = "item_name <> 'PP'";
+            //set combobox datasource from table
+            cmbItemCategory.DataSource = distinctTable;
+            //show item_name data from table only
+            cmbItemCategory.DisplayMember = "item_cat_name";
         }
 
         #endregion
@@ -66,6 +81,7 @@ namespace FactoryManagementSoftware
             int rowIndex = e.RowIndex;
             txtItemCode.Text = dgvItem.Rows[rowIndex].Cells["dgvcItemCode"].Value.ToString();
             txtItemName.Text = dgvItem.Rows[rowIndex].Cells["dgvcItemName"].Value.ToString();
+            cmbItemCategory.Text = dgvItem.Rows[rowIndex].Cells["Category"].Value.ToString();
 
             btnInsert.Text = "UPDATE";
             btnDelete.Show();
@@ -138,6 +154,7 @@ namespace FactoryManagementSoftware
                         //Update data
                         uItem.item_code = txtItemCode.Text;
                         uItem.item_name = txtItemName.Text;
+                        uItem.item_cat = cmbItemCategory.Text;
                         uItem.item_updtd_date = DateTime.Now;
                         uItem.item_updtd_by = 0;
 
@@ -148,7 +165,7 @@ namespace FactoryManagementSoftware
                         if (success == true)
                         {
                             //data updated successfully
-                            MessageBox.Show("item successfully updated ");
+                            MessageBox.Show("Item successfully updated ");
                             resetForm();
                         }
                         else
@@ -162,6 +179,7 @@ namespace FactoryManagementSoftware
                         //Add data
                         uItem.item_code = txtItemCode.Text;
                         uItem.item_name = txtItemName.Text;
+                        uItem.item_cat = cmbItemCategory.Text;
                         uItem.item_added_date = DateTime.Now;
                         uItem.item_added_by = -1;
 
@@ -232,6 +250,7 @@ namespace FactoryManagementSoftware
                 foreach (DataRow item in dt.Rows)
                 {
                     int n = dgvItem.Rows.Add();
+                    dgvItem.Rows[n].Cells["Category"].Value = item["item_cat"].ToString();
                     dgvItem.Rows[n].Cells["dgvcItemCode"].Value = item["item_code"].ToString();
                     dgvItem.Rows[n].Cells["dgvcItemName"].Value = item["item_name"].ToString();
                     dgvItem.Rows[n].Cells["dgvcQty"].Value = item["item_qty"].ToString();
