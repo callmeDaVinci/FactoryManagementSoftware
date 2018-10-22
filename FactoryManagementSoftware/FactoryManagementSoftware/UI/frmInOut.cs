@@ -109,6 +109,30 @@ namespace FactoryManagementSoftware.UI
             dgvFactoryStock.ClearSelection();
         }
 
+        private void refreshData(string itemCode)
+        {
+            loadData();
+            loadStockData(itemCode);
+            calTotalStock(itemCode);
+            txtTrfQty.Clear();
+
+            String searchValue = cmbTrfItemCode.Text;
+
+            if(!string.IsNullOrEmpty(searchValue))
+            {
+                dgvItem.ClearSelection();
+                foreach (DataGridViewRow row in dgvItem.Rows)
+                {
+                    if (row.Cells["item_code"].Value.ToString().Equals(searchValue))
+                    {
+                        row.Selected = true;
+                        break;
+                    }
+                }
+            }
+     
+        }
+
         private void resetForm()
         {
             loadData();
@@ -151,7 +175,6 @@ namespace FactoryManagementSoftware.UI
 
             txtTrfQty.Clear();
             txtTrfNote.Clear();
-
             dgvFactoryStock.Rows.Clear();
             dgvTotal.Rows.Clear();
 
@@ -415,9 +438,41 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private bool IfExists(string itemCode, string factoryID)
+        private float getQty(string itemCode, string factoryName)
         {
-            DataTable dt = dalStock.Search(itemCode, factoryID);
+            float qty = 0;
+            if(IfExists(itemCode, factoryName))
+            {
+                DataTable dt = dalStock.Search(itemCode, getFactoryID(factoryName));
+
+                qty = Convert.ToSingle(dt.Rows[0]["stock_qty"].ToString());
+                //MessageBox.Show("get qty= "+qty);
+            }
+            else
+            {
+                qty = 0;
+            }
+
+            return qty;
+        }
+
+        private string getFactoryID(string factoryName)
+        {
+            string factoryID = "";
+
+            DataTable dtFac = dalFac.nameSearch(factoryName);
+
+            foreach (DataRow fac in dtFac.Rows)
+            {
+                factoryID = fac["fac_id"].ToString();
+            }
+            return factoryID;
+        }
+
+        private bool IfExists(string itemCode, string factoryName)
+        {
+
+            DataTable dt = dalStock.Search(itemCode, getFactoryID(factoryName));
 
             if (dt.Rows.Count > 0)
                 return true;
@@ -442,6 +497,20 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
+        private void dataTransfer()
+        {
+            utrfHist.trf_hist_item_code = cmbTrfItemCode.Text;
+            utrfHist.trf_hist_item_name = cmbTrfItemName.Text;
+            utrfHist.trf_hist_from = cmbTrfFrom.Text;
+            utrfHist.trf_hist_to = cmbTrfTo.Text;
+            utrfHist.trf_hist_qty = Convert.ToSingle(txtTrfQty.Text);
+            utrfHist.trf_hist_unit = cmbTrfQtyUnit.Text;
+            utrfHist.trf_hist_trf_date = dtpTrfDate.Value.Date;
+            utrfHist.trf_hist_note = txtTrfNote.Text;
+            utrfHist.trf_hist_added_date = DateTime.Now;
+            utrfHist.trf_hist_added_by = 0;
+        }
+
         #region Function: Insert/Reset
 
         private void btnTransfer_Click(object sender, EventArgs e)
@@ -453,51 +522,24 @@ namespace FactoryManagementSoftware.UI
                 if (dialogResult == DialogResult.Yes)
                 {
 
-                    //Add data
-                    utrfHist.trf_hist_item_code = cmbTrfItemCode.Text;
-                    utrfHist.trf_hist_item_name = cmbTrfItemName.Text;
-                    utrfHist.trf_hist_from = cmbTrfFrom.Text;
-                    utrfHist.trf_hist_to = cmbTrfTo.Text;
-                    utrfHist.trf_hist_qty = Convert.ToSingle(txtTrfQty.Text);
-                    utrfHist.trf_hist_unit = cmbTrfQtyUnit.Text;
-                    utrfHist.trf_hist_trf_date = dtpTrfDate.Value.Date;
-                    utrfHist.trf_hist_note = txtTrfNote.Text;
-                    utrfHist.trf_hist_added_date = DateTime.Now;
-                    utrfHist.trf_hist_added_by = 0;
-
-                    string factoryID = "";
+                    dataTransfer();
 
                     //Inserting Data into Database
                     bool success = daltrfHist.Insert(utrfHist);
-                        //If the data is successfully inserted then the value of success will be true else false
-                        if (success == true)
-                        {
-                            //Data Successfully Inserted
-                            MessageBox.Show("Transfer record successfully created");
+                    //If the data is successfully inserted then the value of success will be true else false
+                    if (success == true)
+                    {
+                        //Data Successfully Inserted
+                        //MessageBox.Show("Transfer record successfully created");
 
-                        DataTable dt = dalFac.nameSearch(cmbTrfFrom.Text);
+                        stockInandOut();
                         
-                        foreach (DataRow fac in dt.Rows)
-                        {
-                            factoryID = fac["fac_id"].ToString();
-                        }
-
-                        if (IfExists(cmbTrfItemCode.Text, factoryID))
-                        {
-                            MessageBox.Show(cmbTrfItemCode.Text + " " + cmbTrfFrom.Text +" data exists");
-                        }
-                        else
-                        {
-                            MessageBox.Show("data not exist");
-                        }
-                            stockInandOut();
-                            resetForm();
-                        }
-                        else
-                        {
-                            //Failed to insert data
-                            MessageBox.Show("Failed to add new transfer record");
-                        }
+                    }
+                    else
+                    {
+                        //Failed to insert data
+                        MessageBox.Show("Failed to add new transfer record");
+                    }
                     
                 }
             }
@@ -519,16 +561,129 @@ namespace FactoryManagementSoftware.UI
 
         private void stockInandOut()
         {
+            //Stock In
             if (cmbTrfFromCategory.Text == "Factory")
             {
-                MessageBox.Show("Stock Out from Factory");
+                if (IfExists(cmbTrfItemCode.Text, cmbTrfFrom.Text))
+                {
+                    //MessageBox.Show(cmbTrfItemCode.Text + " " + cmbTrfFrom.Text + " data exists");
+                    //Update data
+                    uStock.stock_item_code = cmbTrfItemCode.Text;
+                    uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfFrom.Text));
+                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfFrom.Text) - Convert.ToSingle(txtTrfQty.Text);
+                    uStock.stock_updtd_date = DateTime.Now;
+                    uStock.stock_updtd_by = 0;
 
+                    //MessageBox.Show("After calculate qty: " + uStock.stock_qty);
+
+                    //Updating data into database
+                    bool success = dalStock.Update(uStock);
+
+                    //if data is updated successfully then the value = true else false
+                    if (success == true)
+                    {
+                        //data updated successfully
+                        //MessageBox.Show("Stock successfully updated ");
+                    }
+                    else
+                    {
+                        //failed to update user
+                        MessageBox.Show("Failed to updated stock");
+                    }
+
+                }
+
+                else
+                {
+                    //MessageBox.Show("data not exist");
+                //Add data
+                    uStock.stock_item_code = cmbTrfItemCode.Text;
+                    uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfFrom.Text));
+                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfFrom.Text) - Convert.ToSingle(txtTrfQty.Text);
+                    uStock.stock_updtd_date = DateTime.Now;
+                    uStock.stock_updtd_by = 0;
+
+                    //Inserting Data into Database
+                    bool success = dalStock.Insert(uStock);
+                    //If the data is successfully inserted then the value of success will be true else false
+                    if (success == true)
+                    {
+                        //Data Successfully Inserted
+                        //MessageBox.Show("Stock successfully created");
+                    }
+                    else
+                    {
+                        //Failed to insert data
+                        MessageBox.Show("Failed to add new stock");
+                    }
+                } 
             }
 
+            //Stock Out
             if (cmbTrfToCategory.Text == "Factory")
             {
-                MessageBox.Show("Stock In to Factory");
+                if (IfExists(cmbTrfItemCode.Text, cmbTrfTo.Text))
+                {
+                    //MessageBox.Show(cmbTrfItemCode.Text + " " + cmbTrfTo.Text + " data exists");
+                    //Update data
+                    uStock.stock_item_code = cmbTrfItemCode.Text;
+                    uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfTo.Text));
+                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfTo.Text) + Convert.ToSingle(txtTrfQty.Text);
+                    uStock.stock_updtd_date = DateTime.Now;
+                    uStock.stock_updtd_by = 0;
+
+                    //MessageBox.Show("After calculate qty: " + uStock.stock_qty);
+
+                    //Updating data into database
+                    bool success = dalStock.Update(uStock);
+
+                    //if data is updated successfully then the value = true else false
+                    if (success == true)
+                    {
+                        //data updated successfully
+                        //MessageBox.Show("Stock successfully updated ");
+                    }
+                    else
+                    {
+                        //failed to update user
+                        MessageBox.Show("Failed to updated stock");
+                    }
+
+                }
+
+                else
+                {
+                    //MessageBox.Show("data not exist");
+                    //Add data
+
+                    uStock.stock_item_code = cmbTrfItemCode.Text;
+                    uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfTo.Text));
+                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfTo.Text) + Convert.ToSingle(txtTrfQty.Text);
+                    uStock.stock_updtd_date = DateTime.Now;
+                    uStock.stock_updtd_by = 0;
+
+                    //Inserting Data into Database
+                    bool success = dalStock.Insert(uStock);
+                    //If the data is successfully inserted then the value of success will be true else false
+                    if (success == true)
+                    {
+                        //Data Successfully Inserted
+                        //MessageBox.Show("Stock successfully created");
+   
+                    }
+                    else
+                    {
+                        //Failed to insert data
+                        MessageBox.Show("Failed to add new stock");
+                    }
+                }
             }
+
+            if(!string.IsNullOrEmpty(cmbTrfItemCode.Text))
+            {
+                refreshData(cmbTrfItemCode.Text);
+            }
+
         }
 
         private void calTotalStock(string itemCode)
@@ -546,10 +701,30 @@ namespace FactoryManagementSoftware.UI
             dgvTotal.Rows.Add();
             dgvTotal.Rows[0].Cells["Total"].Value = totalStock.ToString();
             dgvTotal.ClearSelection();
-            //MessageBox.Show("Total Stock = " + totalStock);
+
+            //Update data
+            uItem.item_code = cmbTrfItemCode.Text;
+            uItem.item_name = cmbTrfItemName.Text;
+            uItem.item_qty = totalStock;
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = 0;
+
+            //Updating data into database
+            bool success = dalItem.qtyUpdate(uItem);
+
+            //if data is updated successfully then the value = true else false
+            if (success == true)
+            {
+                //data updated successfully
+                //MessageBox.Show("Item successfully updateddfsfsd ");
+               
+            }
+            else
+            {
+                //failed to update user
+                MessageBox.Show("Failed to updated item");
+            }
         }
-
-
 
         #endregion
 

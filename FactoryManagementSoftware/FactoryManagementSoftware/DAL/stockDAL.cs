@@ -21,7 +21,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT tbl_item.item_code, tbl_item.item_name, tbl_fac.fac_name, tbl_stock.stock_qty FROM((tbl_stock INNER JOIN tbl_item ON tbl_item.item_code = " + itemCode + " AND  tbl_item.item_code = tbl_stock.stock_item_code ) INNER JOIN tbl_fac ON tbl_stock.stock_fac_id = tbl_fac.fac_id)";
+                String sql = "SELECT tbl_fac.fac_name, tbl_stock.stock_qty FROM((tbl_stock INNER JOIN tbl_item ON tbl_item.item_code = " + itemCode + " AND  tbl_item.item_code = tbl_stock.stock_item_code ) INNER JOIN tbl_fac ON tbl_stock.stock_fac_id = tbl_fac.fac_id)";
 
 
                 //for executing command
@@ -49,23 +49,22 @@ namespace FactoryManagementSoftware.DAL
         }
         #endregion
 
-        
-
-
         #region Insert Data in Database
-        public bool Insert(facBLL u)
+        public bool Insert( stockBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             try
             {
-                String sql = "INSERT INTO tbl_fac (fac_name, fac_added_date, fac_added_by) VALUES (@fac_name, @fac_added_date, @fac_added_by)";
+                String sql = "INSERT INTO tbl_stock (stock_item_code, stock_fac_id, stock_qty, stock_updtd_date, stock_updtd_by) VALUES (@stock_item_code, @stock_fac_id, @stock_qty, @stock_updtd_date, @stock_updtd_by)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@fac_name", u.fac_name);
-                cmd.Parameters.AddWithValue("@fac_added_date", u.fac_added_date);
-                cmd.Parameters.AddWithValue("@fac_added_by", u.fac_added_by);
+                cmd.Parameters.AddWithValue("@stock_item_code", u.stock_item_code);
+                cmd.Parameters.AddWithValue("@stock_fac_id", u.stock_fac_id);
+                cmd.Parameters.AddWithValue("@stock_qty", u.stock_qty);
+                cmd.Parameters.AddWithValue("@stock_updtd_date", u.stock_updtd_date);
+                cmd.Parameters.AddWithValue("@stock_updtd_by", u.stock_updtd_by);
 
                 conn.Open();
 
@@ -97,61 +96,21 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Update data in Database
-        public bool Update(facBLL u)
+        public bool Update(stockBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             try
             {
-                String sql = "UPDATE tbl_fac SET fac_name=@fac_name, fac_updtd_date=@fac_updtd_date, fac_updtd_by=@fac_updtd_by WHERE fac_id=@fac_id";
+                String sql = "UPDATE tbl_stock SET stock_qty=@stock_qty,stock_updtd_date=@stock_updtd_date, stock_updtd_by=@stock_updtd_by WHERE stock_item_code=@stock_item_code AND stock_fac_id=@stock_fac_id";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@fac_id", u.fac_id);
-                cmd.Parameters.AddWithValue("@fac_name", u.fac_name);
-                cmd.Parameters.AddWithValue("@fac_updtd_date", u.fac_updtd_date);
-                cmd.Parameters.AddWithValue("@fac_updtd_by", u.fac_updtd_by);
-
-                conn.Open();
-
-                int rows = cmd.ExecuteNonQuery();
-
-                //if the query is executed successfully then the rows' value = 0
-                if (rows > 0)
-                {
-                    //query successful
-                    isSuccess = true;
-                }
-                else
-                {
-                    //Query falled
-                    isSuccess = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                conn.Close();
-            }
-            return isSuccess;
-        }
-        #endregion
-
-        #region Delete data from Database
-        public bool Delete(facBLL u)
-        {
-            bool isSuccess = false;
-            SqlConnection conn = new SqlConnection(myconnstrng);
-
-            try
-            {
-                String sql = "DELETE FROM tbl_fac WHERE fac_id=@fac_id";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
-                cmd.Parameters.AddWithValue("@fac_id", u.fac_id);
+                cmd.Parameters.AddWithValue("@stock_item_code", u.stock_item_code);
+                cmd.Parameters.AddWithValue("@stock_fac_id", u.stock_fac_id);
+                cmd.Parameters.AddWithValue("@stock_qty", u.stock_qty);
+                cmd.Parameters.AddWithValue("@stock_updtd_date", u.stock_updtd_date);
+                cmd.Parameters.AddWithValue("@stock_updtd_by", u.stock_updtd_by);
 
                 conn.Open();
 
@@ -216,8 +175,6 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
-
-     
         #endregion
 
         

@@ -46,6 +46,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
         #endregion
+
         #region Insert Data in Database
         public bool Insert(itemBLL u)
         {
@@ -91,6 +92,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
         #endregion
+
         #region Update data in Database
         public bool Update(itemBLL u)
         {
@@ -134,7 +136,50 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+
+        public bool qtyUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "UPDATE tbl_item SET item_qty=@item_qty, item_updtd_date=@item_updtd_date, item_updtd_by=@item_updtd_by WHERE item_code=@item_code";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_qty", u.item_qty);
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         #endregion
+
         #region Delete data from Database
         public bool Delete(itemBLL u)
         {
@@ -175,6 +220,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
         #endregion
+
         #region Search User on Database usingKeywords
 
         public DataTable Search(string keywords)
