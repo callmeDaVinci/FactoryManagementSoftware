@@ -51,12 +51,14 @@
     <Compile Include="BLL\facBLL.cs" />
     <Compile Include="BLL\itemBLL.cs" />
     <Compile Include="BLL\itemCatBLL.cs" />
+    <Compile Include="BLL\stockBLL.cs" />
     <Compile Include="BLL\trfCatBLL.cs" />
     <Compile Include="BLL\trfHistBLL.cs" />
     <Compile Include="DAL\custDAL.cs" />
     <Compile Include="DAL\facDAL.cs" />
     <Compile Include="DAL\itemCatDAL.cs" />
     <Compile Include="DAL\itemDAL.cs" />
+    <Compile Include="DAL\stockDAL.cs" />
     <Compile Include="DAL\trfCatDAL.cs" />
     <Compile Include="DAL\trfHistDAL.cs" />
     <Compile Include="UI\frmCat.cs">

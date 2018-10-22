@@ -7,11 +7,13 @@ using System.Windows.Forms;
 namespace FactoryManagementSoftware.UI
 {
     public partial class frmInOut : Form
-    {
+    { 
         public frmInOut()
         {
             InitializeComponent();
         }
+
+        #region create class object (database)
 
         custBLL uCust = new custBLL();
         custDAL dalCust = new custDAL();
@@ -31,6 +33,10 @@ namespace FactoryManagementSoftware.UI
         trfHistBLL utrfHist = new trfHistBLL();
         trfHistDAL daltrfHist = new trfHistDAL();
 
+        stockBLL uStock = new stockBLL();
+        stockDAL dalStock = new stockDAL();
+
+        #endregion
 
         #region Load or Reset Form
 
@@ -71,7 +77,7 @@ namespace FactoryManagementSoftware.UI
                 //dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = item["trf_hist_trf_date"].ToString();
 
                 dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(item["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
-               
+
 
                 dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = item["trf_hist_item_code"].ToString();
                 dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = item["trf_hist_item_name"].ToString();
@@ -82,6 +88,25 @@ namespace FactoryManagementSoftware.UI
                 dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = item["trf_hist_added_by"].ToString();
 
             }
+
+
+           
+            //dgvFactoryStock.DataSource = dtStock;
+        }
+
+        private void loadStockData(string itemCode)
+        {
+            DataTable dtStock = dalStock.Select(itemCode);
+
+            dgvFactoryStock.Rows.Clear();
+            foreach (DataRow stock in dtStock.Rows)
+            {
+                int n = dgvFactoryStock.Rows.Add();
+                dgvFactoryStock.Rows[n].Cells["fac_name"].Value = stock["fac_name"].ToString();
+                dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = stock["stock_qty"].ToString();
+
+            }
+            dgvFactoryStock.ClearSelection();
         }
 
         private void resetForm()
@@ -122,13 +147,16 @@ namespace FactoryManagementSoftware.UI
             //show item_name data from table only
             cmbTrfToCategory.DisplayMember = "trf_cat_name";
 
+            cmbTrfQtyUnit.SelectedIndex = -1;
+
             txtTrfQty.Clear();
             txtTrfNote.Clear();
 
+            dgvFactoryStock.Rows.Clear();
+            dgvTotal.Rows.Clear();
+
 
         }
-
-
 
         #endregion
 
@@ -140,9 +168,10 @@ namespace FactoryManagementSoftware.UI
             cmbTrfItemCat.Text = dgvItem.Rows[rowIndex].Cells["item_cat"].Value.ToString();
             cmbTrfItemName.Text = dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
             cmbTrfItemCode.Text = dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
+
+            loadStockData(cmbTrfItemCode.Text);
+            calTotalStock(cmbTrfItemCode.Text);
         }
-
-
 
         #endregion
 
@@ -386,6 +415,16 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private bool IfExists(string itemCode, string factoryID)
+        {
+            DataTable dt = dalStock.Search(itemCode, factoryID);
+
+            if (dt.Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
         private void txtTrfQty_TextChanged(object sender, EventArgs e)
         {
             errorProvider1.Clear();
@@ -426,6 +465,8 @@ namespace FactoryManagementSoftware.UI
                     utrfHist.trf_hist_added_date = DateTime.Now;
                     utrfHist.trf_hist_added_by = 0;
 
+                    string factoryID = "";
+
                     //Inserting Data into Database
                     bool success = daltrfHist.Insert(utrfHist);
                         //If the data is successfully inserted then the value of success will be true else false
@@ -433,6 +474,23 @@ namespace FactoryManagementSoftware.UI
                         {
                             //Data Successfully Inserted
                             MessageBox.Show("Transfer record successfully created");
+
+                        DataTable dt = dalFac.nameSearch(cmbTrfFrom.Text);
+                        
+                        foreach (DataRow fac in dt.Rows)
+                        {
+                            factoryID = fac["fac_id"].ToString();
+                        }
+
+                        if (IfExists(cmbTrfItemCode.Text, factoryID))
+                        {
+                            MessageBox.Show(cmbTrfItemCode.Text + " " + cmbTrfFrom.Text +" data exists");
+                        }
+                        else
+                        {
+                            MessageBox.Show("data not exist");
+                        }
+                            stockInandOut();
                             resetForm();
                         }
                         else
@@ -457,6 +515,50 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        
+        #region Calculate Stock  
+
+        private void stockInandOut()
+        {
+            if (cmbTrfFromCategory.Text == "Factory")
+            {
+                MessageBox.Show("Stock Out from Factory");
+
+            }
+
+            if (cmbTrfToCategory.Text == "Factory")
+            {
+                MessageBox.Show("Stock In to Factory");
+            }
+        }
+
+        private void calTotalStock(string itemCode)
+        {
+            float totalStock = 0;
+
+            DataTable dtStock = dalStock.Select(itemCode);
+
+            foreach (DataRow stock in dtStock.Rows)
+            {
+                totalStock += Convert.ToSingle(stock["stock_qty"].ToString());
+            }
+
+            dgvTotal.Rows.Clear();
+            dgvTotal.Rows.Add();
+            dgvTotal.Rows[0].Cells["Total"].Value = totalStock.ToString();
+            dgvTotal.ClearSelection();
+            //MessageBox.Show("Total Stock = " + totalStock);
+        }
+
+
+
+        #endregion
+
+        private void txtTrfQty_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

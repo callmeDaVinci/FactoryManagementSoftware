@@ -7,12 +7,12 @@ using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.DAL
 {
-    class facDAL
+    class stockDAL
     {
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
         #region Select Data from Database
-        public DataTable Select()
+        public DataTable Select(string itemCode)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -21,7 +21,9 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_fac";
+                String sql = "SELECT tbl_item.item_code, tbl_item.item_name, tbl_fac.fac_name, tbl_stock.stock_qty FROM((tbl_stock INNER JOIN tbl_item ON tbl_item.item_code = " + itemCode + " AND  tbl_item.item_code = tbl_stock.stock_item_code ) INNER JOIN tbl_fac ON tbl_stock.stock_fac_id = tbl_fac.fac_id)";
+
+
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database
@@ -46,6 +48,9 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
         #endregion
+
+        
+
 
         #region Insert Data in Database
         public bool Insert(facBLL u)
@@ -176,8 +181,8 @@ namespace FactoryManagementSoftware.DAL
         }
         #endregion
 
-        #region Search User on Database usingKeywords
-        public DataTable Search(string keywords)
+        #region Search stock record
+        public DataTable Search(string itemCode, string factoryID)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -186,7 +191,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_fac WHERE fac_id LIKE '%" + keywords + "%'OR fac_name LIKE '%" + keywords + "%'";
+                String sql = "SELECT * FROM tbl_stock WHERE stock_item_code LIKE '%" + itemCode + "%' AND stock_fac_id LIKE '%" + factoryID + "%'";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -212,75 +217,9 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable idSearch(string keywords)
-        {
-            //static methodd to connect database
-            SqlConnection conn = new SqlConnection(myconnstrng);
-            //to hold the data from database
-            DataTable dt = new DataTable();
-            try
-            {
-                //sql query to get data from database
-                String sql = "SELECT * FROM tbl_fac WHERE fac_id LIKE '%" + keywords + "%'";
-
-                //for executing command
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                //getting data from database
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                //database connection open
-                conn.Open();
-                //fill data in our database
-                adapter.Fill(dt);
-
-
-            }
-            catch (Exception ex)
-            {
-                //throw message if any error occurs
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                //closing connection
-                conn.Close();
-            }
-            return dt;
-        }
-
-        public DataTable nameSearch(string keywords)
-        {
-            //static methodd to connect database
-            SqlConnection conn = new SqlConnection(myconnstrng);
-            //to hold the data from database
-            DataTable dt = new DataTable();
-            try
-            {
-                //sql query to get data from database
-                String sql = "SELECT * FROM tbl_fac WHERE fac_name LIKE '%" + keywords + "%'";
-
-                //for executing command
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                //getting data from database
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                //database connection open
-                conn.Open();
-                //fill data in our database
-                adapter.Fill(dt);
-
-
-            }
-            catch (Exception ex)
-            {
-                //throw message if any error occurs
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                //closing connection
-                conn.Close();
-            }
-            return dt;
-        }
+     
         #endregion
+
+        
     }
 }
