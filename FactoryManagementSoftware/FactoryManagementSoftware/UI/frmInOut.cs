@@ -12,7 +12,7 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
         }
-
+         
         #region create class object (database)
 
         custBLL uCust = new custBLL();
@@ -50,49 +50,6 @@ namespace FactoryManagementSoftware.UI
             resetForm();
         }
 
-        private void loadData()
-        {
-            DataTable dtItem = dalItem.Select();
-            dgvItem.Rows.Clear();
-            foreach (DataRow item in dtItem.Rows)
-            {
-                int n = dgvItem.Rows.Add();
-                dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
-                dgvItem.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
-                dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
-                dgvItem.Rows[n].Cells["item_qty"].Value = item["item_qty"].ToString();
-                dgvItem.Rows[n].Cells["item_ord"].Value = item["item_ord"].ToString();
-            }
-
-            //show user based on keywords
-            DataTable dt2 = daltrfHist.Select();
-            //dgvItem.DataSource = dt;
-            dgvTrf.Rows.Clear();
-            foreach (DataRow item in dt2.Rows)
-            {
-                int n = dgvTrf.Rows.Add();
-                dgvTrf.Rows[n].Cells["trf_hist_id"].Value = item["trf_hist_id"].ToString();
-                dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = item["trf_hist_added_date"].ToString();
-
-
-                dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(item["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
-
-
-                dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = item["trf_hist_item_code"].ToString();
-                dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = item["trf_hist_item_name"].ToString();
-                dgvTrf.Rows[n].Cells["trf_hist_from"].Value = item["trf_hist_from"].ToString();
-                dgvTrf.Rows[n].Cells["trf_hist_to"].Value = item["trf_hist_to"].ToString();
-                dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = item["trf_hist_qty"].ToString();
-                dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = item["trf_hist_unit"].ToString();
-                dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = item["trf_hist_added_by"].ToString();
-
-            }
-
-
-           
-            //dgvFactoryStock.DataSource = dtStock;
-        }
-
         private void loadStockList(string itemCode)
         {
             DataTable dt = dalStock.Select(itemCode);
@@ -108,89 +65,13 @@ namespace FactoryManagementSoftware.UI
             dgvFactoryStock.ClearSelection();
         }
 
-        private void refreshList(string itemCode)
-        {
-            //refresh all list
-            loadStockList(itemCode);
-            calTotalStock(itemCode);
-            loadItemList();
-            loadTransferList();
-            txtTrfQty.Clear();
-            
-            //Hightlight selected item code in item list
-            String searchValue = cmbTrfItemCode.Text;
-
-            if(!string.IsNullOrEmpty(searchValue))
-            {
-                dgvItem.ClearSelection();
-                foreach (DataGridViewRow row in dgvItem.Rows)
-                {
-                    if (row.Cells["item_code"].Value.ToString().Equals(searchValue))
-                    {
-                        row.Selected = true;
-                        break;
-                    }
-                }
-            }
-     
-        }
-
-        private void resetForm()
-        {
-            loadItemList();
-            loadTransferList();
-
-            //select item data from item category database
-            DataTable dtItemCat = dalItemCat.Select();
-            //remove repeating name in item_name
-            DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
-            //sort the data according item_name
-            distinctTable.DefaultView.Sort = "item_cat_name ASC";
-            //set combobox datasource from table
-            cmbTrfItemCat.DataSource = distinctTable;
-            //show item_name data from table only
-            cmbTrfItemCat.DisplayMember = "item_cat_name";
-
-            //select item data from item database
-            DataTable dtTrfCatFrm = daltrfCat.Select();
-            //remove repeating name in item_name
-            DataTable distinctTable3 = dtTrfCatFrm.DefaultView.ToTable(true, "trf_cat_name");
-            //sort the data according item_name
-            distinctTable3.DefaultView.Sort = "trf_cat_name ASC";
-            //set combobox datasource from table
-            cmbTrfFromCategory.DataSource = distinctTable3;
-            //show item_name data from table only
-            cmbTrfFromCategory.DisplayMember = "trf_cat_name";
-
-
-            //select item data from item database
-            DataTable dtTrfCatTo = daltrfCat.Select();
-            //remove repeating name in item_name
-            DataTable distinctTable4 = dtTrfCatTo.DefaultView.ToTable(true, "trf_cat_name");
-            //sort the data according item_name
-            distinctTable4.DefaultView.Sort = "trf_cat_name ASC";
-            //set combobox datasource from table
-            cmbTrfToCategory.DataSource = distinctTable4;
-            //show item_name data from table only
-            cmbTrfToCategory.DisplayMember = "trf_cat_name";
-
-            cmbTrfQtyUnit.SelectedIndex = -1;
-
-            txtTrfQty.Clear();
-            txtTrfNote.Clear();
-            dgvFactoryStock.Rows.Clear();
-            dgvTotal.Rows.Clear();
-
-
-        }
-
         private void loadItemList()
         {
             //get keyword from text box
             string keywords = txtItemSearch.Text;
 
             //check if the keywords has value or not
-            if (keywords != null)
+            if (!string.IsNullOrEmpty(keywords))
             {
                 //show item based on keywords
                 DataTable dt = dalItem.Search(keywords);
@@ -278,13 +159,92 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            
+
         }
 
+        private void refreshList(string itemCode)
+        {
+
+            if(!string.IsNullOrEmpty(itemCode))
+            {
+                loadStockList(itemCode);
+                calTotalStock(itemCode);
+            }
+            
+            loadItemList();
+            loadTransferList();
+            txtTrfQty.Clear();
+            
+            //Hightlight selected item code in item list
+            String searchValue = cmbTrfItemCode.Text;
+
+            if(!string.IsNullOrEmpty(searchValue))
+            {
+                dgvItem.ClearSelection();
+                foreach (DataGridViewRow row in dgvItem.Rows)
+                {
+                    if (row.Cells["item_code"].Value.ToString().Equals(searchValue))
+                    {
+                        row.Selected = true;
+                        break;
+                    }
+                }
+            }
+     
+        }
+
+        private void resetForm()
+        {
+            loadItemList();
+            loadTransferList();
+
+            //select item category list from item category database
+            DataTable dtItemCat = dalItemCat.Select();
+            //remove repeating name in item_cat_name
+            DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
+            //sort the data according item_cat_name
+            distinctTable.DefaultView.Sort = "item_cat_name ASC";
+            //set combobox datasource from table
+            cmbTrfItemCat.DataSource = distinctTable;
+            //show item_cat_name data from table only
+            cmbTrfItemCat.DisplayMember = "item_cat_name";
+
+            //select category list from category database
+            DataTable dtTrfCatFrm = daltrfCat.Select();
+            //remove repeating name in trf_cat_name
+            DataTable distinctTable3 = dtTrfCatFrm.DefaultView.ToTable(true, "trf_cat_name");
+            //sort the data according trf_cat_name
+            distinctTable3.DefaultView.Sort = "trf_cat_name ASC";
+            //set combobox datasource from table
+            cmbTrfFromCategory.DataSource = distinctTable3;
+            //show trf_cat_name data from table only
+            cmbTrfFromCategory.DisplayMember = "trf_cat_name";
+
+
+            //select category list  from category database
+            DataTable dtTrfCatTo = daltrfCat.Select();
+            //remove repeating name in trf_cat_name
+            DataTable distinctTable4 = dtTrfCatTo.DefaultView.ToTable(true, "trf_cat_name");
+            //sort the data according trf_cat_name
+            distinctTable4.DefaultView.Sort = "trf_cat_name ASC";
+            //set combobox datasource from table
+            cmbTrfToCategory.DataSource = distinctTable4;
+            //show trf_cat_name data from table only
+            cmbTrfToCategory.DisplayMember = "trf_cat_name";
+
+            //set unit combo box empty
+            cmbTrfQtyUnit.SelectedIndex = -1;
+
+            //clear input and list
+            txtTrfQty.Clear();
+            txtTrfNote.Clear();
+            dgvFactoryStock.Rows.Clear();
+            dgvTotal.Rows.Clear();
+        }
 
         #endregion
 
-        #region Data Grid View
+        #region item list double click
 
         private void dgvItem_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -301,6 +261,7 @@ namespace FactoryManagementSoftware.UI
 
         #region text/index/slection Change
 
+        //refresh list when selected item code change
         private void cmbTrfItemCode_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
@@ -314,6 +275,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        //refresh list and item code source from combo box when selected item name change
         private void cmbTrfItemName_SelectedIndexChanged(object sender, EventArgs e)
         {
             errorProvider2.Clear();
@@ -321,22 +283,20 @@ namespace FactoryManagementSoftware.UI
             string keywords = cmbTrfItemName.Text;
 
             //check if the keywords has value or not
-            if (keywords != null)
-            {
-                
-                //show user based on keywords
+            if (!string.IsNullOrEmpty(keywords))
+            {          
+                //show item code at itemcode combobox based on keywords
                 DataTable dt = dalItem.Search(keywords);
                 cmbTrfItemCode.DataSource = dt;
                 cmbTrfItemCode.DisplayMember = "item_code";
                 cmbTrfItemCode.ValueMember = "item_code";
-                
-
             }
             else
             {
                 cmbTrfItemCode.DataSource = null;
             }
 
+            // if selected item code change, then refresh list, else clear stock list
             if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
             {
                 refreshList(cmbTrfItemCode.Text);
@@ -347,15 +307,16 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        //refresh list, item name and item code source from combo box when selected item name change
         private void cmbTrfItemCat_SelectedIndexChanged(object sender, EventArgs e)
         {
             //get keyword from text box
             string keywords = cmbTrfItemCat.Text;
 
             //check if the keywords has value or not
-            if (keywords != null)
+            if (!string.IsNullOrEmpty(keywords))
             {
-                //show user based on keywords
+                //show item based on keywords
                 DataTable dt = dalItem.catSearch(keywords);
                 //remove repeating name in item_name
                 DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
@@ -368,9 +329,7 @@ namespace FactoryManagementSoftware.UI
                 if(string.IsNullOrEmpty(cmbTrfItemName.Text))
                 {
                     cmbTrfItemCode.DataSource = null;
-                   // MessageBox.Show("No Item Found under this Category");
                 }
-
             }
             else
             {
@@ -475,7 +434,6 @@ namespace FactoryManagementSoftware.UI
         }
 
         #endregion
-
        
         #region data validation
 

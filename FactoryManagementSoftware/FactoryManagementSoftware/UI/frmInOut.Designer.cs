@@ -109,14 +109,14 @@
             this.trf_hist_qty,
             this.trf_hist_unit,
             this.trf_hist_added_by});
-            this.dgvTrf.Location = new System.Drawing.Point(631, 459);
+            this.dgvTrf.Location = new System.Drawing.Point(603, 459);
             this.dgvTrf.Margin = new System.Windows.Forms.Padding(2);
             this.dgvTrf.Name = "dgvTrf";
             this.dgvTrf.ReadOnly = true;
             this.dgvTrf.RowHeadersVisible = false;
             this.dgvTrf.RowTemplate.Height = 24;
             this.dgvTrf.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTrf.Size = new System.Drawing.Size(916, 237);
+            this.dgvTrf.Size = new System.Drawing.Size(944, 237);
             this.dgvTrf.TabIndex = 37;
             // 
             // trf_hist_id
@@ -401,14 +401,14 @@
             this.dgvFactoryStock.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.fac_name,
             this.stock_qty});
-            this.dgvFactoryStock.Location = new System.Drawing.Point(631, 105);
+            this.dgvFactoryStock.Location = new System.Drawing.Point(603, 105);
             this.dgvFactoryStock.Margin = new System.Windows.Forms.Padding(2);
             this.dgvFactoryStock.Name = "dgvFactoryStock";
             this.dgvFactoryStock.ReadOnly = true;
             this.dgvFactoryStock.RowHeadersVisible = false;
             this.dgvFactoryStock.RowTemplate.Height = 24;
             this.dgvFactoryStock.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvFactoryStock.Size = new System.Drawing.Size(289, 240);
+            this.dgvFactoryStock.Size = new System.Drawing.Size(317, 240);
             this.dgvFactoryStock.TabIndex = 56;
             // 
             // fac_name
@@ -510,7 +510,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label2.Location = new System.Drawing.Point(625, 59);
+            this.label2.Location = new System.Drawing.Point(597, 65);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(220, 32);
             this.label2.TabIndex = 61;
@@ -587,7 +587,7 @@
             this.dgvTotal.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Total});
             this.dgvTotal.EnableHeadersVisualStyles = false;
-            this.dgvTotal.Location = new System.Drawing.Point(631, 349);
+            this.dgvTotal.Location = new System.Drawing.Point(603, 349);
             this.dgvTotal.Margin = new System.Windows.Forms.Padding(2);
             this.dgvTotal.MultiSelect = false;
             this.dgvTotal.Name = "dgvTotal";
@@ -595,7 +595,7 @@
             this.dgvTotal.RowHeadersVisible = false;
             this.dgvTotal.RowTemplate.Height = 24;
             this.dgvTotal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTotal.Size = new System.Drawing.Size(289, 69);
+            this.dgvTotal.Size = new System.Drawing.Size(317, 69);
             this.dgvTotal.TabIndex = 66;
             // 
             // Total
