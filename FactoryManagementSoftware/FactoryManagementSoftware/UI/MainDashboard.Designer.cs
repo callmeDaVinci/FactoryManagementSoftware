@@ -36,6 +36,7 @@
             this.itemJoinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.facToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.custToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.categoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +46,6 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.categoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -112,6 +112,13 @@
             this.custToolStripMenuItem.Text = "Customer";
             this.custToolStripMenuItem.Click += new System.EventHandler(this.custToolStripMenuItem_Click);
             // 
+            // categoryToolStripMenuItem
+            // 
+            this.categoryToolStripMenuItem.Name = "categoryToolStripMenuItem";
+            this.categoryToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.categoryToolStripMenuItem.Text = "Category";
+            this.categoryToolStripMenuItem.Click += new System.EventHandler(this.categoryToolStripMenuItem_Click);
+            // 
             // historyToolStripMenuItem
             // 
             this.historyToolStripMenuItem.Name = "historyToolStripMenuItem";
@@ -130,15 +137,16 @@
             // inOutToolStripMenuItem
             // 
             this.inOutToolStripMenuItem.Name = "inOutToolStripMenuItem";
-            this.inOutToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
+            this.inOutToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.inOutToolStripMenuItem.Text = "In / Out";
             this.inOutToolStripMenuItem.Click += new System.EventHandler(this.inOutToolStripMenuItem_Click);
             // 
             // orderToolStripMenuItem
             // 
             this.orderToolStripMenuItem.Name = "orderToolStripMenuItem";
-            this.orderToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
+            this.orderToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.orderToolStripMenuItem.Text = "Order";
+            this.orderToolStripMenuItem.Click += new System.EventHandler(this.orderToolStripMenuItem_Click);
             // 
             // forecastToolStripMenuItem
             // 
@@ -169,13 +177,6 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
-            // 
-            // categoryToolStripMenuItem
-            // 
-            this.categoryToolStripMenuItem.Name = "categoryToolStripMenuItem";
-            this.categoryToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.categoryToolStripMenuItem.Text = "Category";
-            this.categoryToolStripMenuItem.Click += new System.EventHandler(this.categoryToolStripMenuItem_Click);
             // 
             // MainDashboard
             // 

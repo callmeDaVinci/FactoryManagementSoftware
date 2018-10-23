@@ -37,15 +37,15 @@
             this.btnInsert = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
             this.dgvItem = new System.Windows.Forms.DataGridView();
-            this.txtItemSearch = new System.Windows.Forms.TextBox();
-            this.lblSearch = new System.Windows.Forms.Label();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcItemCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvcOrd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txtItemSearch = new System.Windows.Forms.TextBox();
+            this.lblSearch = new System.Windows.Forms.Label();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.cmbItemCategory = new System.Windows.Forms.ComboBox();
             this.lblItemCategory = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).BeginInit();
@@ -148,33 +148,6 @@
             this.dgvItem.TabIndex = 7;
             this.dgvItem.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvItem_CellMouseDoubleClick);
             // 
-            // txtItemSearch
-            // 
-            this.txtItemSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtItemSearch.Location = new System.Drawing.Point(730, 50);
-            this.txtItemSearch.Name = "txtItemSearch";
-            this.txtItemSearch.Size = new System.Drawing.Size(787, 38);
-            this.txtItemSearch.TabIndex = 9;
-            this.txtItemSearch.TextChanged += new System.EventHandler(this.txtItemSearch_TextChanged);
-            // 
-            // lblSearch
-            // 
-            this.lblSearch.AutoSize = true;
-            this.lblSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSearch.Location = new System.Drawing.Point(638, 50);
-            this.lblSearch.Name = "lblSearch";
-            this.lblSearch.Size = new System.Drawing.Size(86, 32);
-            this.lblSearch.TabIndex = 8;
-            this.lblSearch.Text = "Search";
-            // 
-            // errorProvider1
-            // 
-            this.errorProvider1.ContainerControl = this;
-            // 
-            // errorProvider2
-            // 
-            this.errorProvider2.ContainerControl = this;
-            // 
             // Category
             // 
             this.Category.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -213,6 +186,33 @@
             this.dgvcOrd.ReadOnly = true;
             this.dgvcOrd.Width = 83;
             // 
+            // txtItemSearch
+            // 
+            this.txtItemSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtItemSearch.Location = new System.Drawing.Point(730, 50);
+            this.txtItemSearch.Name = "txtItemSearch";
+            this.txtItemSearch.Size = new System.Drawing.Size(787, 38);
+            this.txtItemSearch.TabIndex = 9;
+            this.txtItemSearch.TextChanged += new System.EventHandler(this.txtItemSearch_TextChanged);
+            // 
+            // lblSearch
+            // 
+            this.lblSearch.AutoSize = true;
+            this.lblSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSearch.Location = new System.Drawing.Point(638, 50);
+            this.lblSearch.Name = "lblSearch";
+            this.lblSearch.Size = new System.Drawing.Size(86, 32);
+            this.lblSearch.TabIndex = 8;
+            this.lblSearch.Text = "Search";
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // errorProvider2
+            // 
+            this.errorProvider2.ContainerControl = this;
+            // 
             // cmbItemCategory
             // 
             this.cmbItemCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -238,6 +238,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1582, 703);
             this.Controls.Add(this.lblItemCategory);
             this.Controls.Add(this.cmbItemCategory);
