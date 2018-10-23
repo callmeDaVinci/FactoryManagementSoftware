@@ -74,7 +74,6 @@ namespace FactoryManagementSoftware.UI
                 dgvTrf.Rows[n].Cells["trf_hist_id"].Value = item["trf_hist_id"].ToString();
                 dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = item["trf_hist_added_date"].ToString();
 
-                //dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = item["trf_hist_trf_date"].ToString();
 
                 dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(item["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
 
@@ -94,12 +93,12 @@ namespace FactoryManagementSoftware.UI
             //dgvFactoryStock.DataSource = dtStock;
         }
 
-        private void loadStockData(string itemCode)
+        private void loadStockList(string itemCode)
         {
-            DataTable dtStock = dalStock.Select(itemCode);
+            DataTable dt = dalStock.Select(itemCode);
 
             dgvFactoryStock.Rows.Clear();
-            foreach (DataRow stock in dtStock.Rows)
+            foreach (DataRow stock in dt.Rows)
             {
                 int n = dgvFactoryStock.Rows.Add();
                 dgvFactoryStock.Rows[n].Cells["fac_name"].Value = stock["fac_name"].ToString();
@@ -109,13 +108,16 @@ namespace FactoryManagementSoftware.UI
             dgvFactoryStock.ClearSelection();
         }
 
-        private void refreshData(string itemCode)
+        private void refreshList(string itemCode)
         {
-            loadData();
-            loadStockData(itemCode);
+            //refresh all list
+            loadStockList(itemCode);
             calTotalStock(itemCode);
+            loadItemList();
+            loadTransferList();
             txtTrfQty.Clear();
-
+            
+            //Hightlight selected item code in item list
             String searchValue = cmbTrfItemCode.Text;
 
             if(!string.IsNullOrEmpty(searchValue))
@@ -135,7 +137,8 @@ namespace FactoryManagementSoftware.UI
 
         private void resetForm()
         {
-            loadData();
+            loadItemList();
+            loadTransferList();
 
             //select item data from item category database
             DataTable dtItemCat = dalItemCat.Select();
@@ -181,6 +184,104 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private void loadItemList()
+        {
+            //get keyword from text box
+            string keywords = txtItemSearch.Text;
+
+            //check if the keywords has value or not
+            if (keywords != null)
+            {
+                //show item based on keywords
+                DataTable dt = dalItem.Search(keywords);
+
+                dgvItem.Rows.Clear();
+                foreach (DataRow item in dt.Rows)
+                {
+                    int n = dgvItem.Rows.Add();
+                    dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
+                    dgvItem.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
+                    dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
+                    dgvItem.Rows[n].Cells["item_qty"].Value = item["item_qty"].ToString();
+                    dgvItem.Rows[n].Cells["item_ord"].Value = item["item_ord"].ToString();
+                }
+
+            }
+            else
+            {
+                //show all item from the database
+                DataTable dtItem = dalItem.Select();
+                dgvItem.Rows.Clear();
+                foreach (DataRow item in dtItem.Rows)
+                {
+                    int n = dgvItem.Rows.Add();
+                    dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
+                    dgvItem.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
+                    dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
+                    dgvItem.Rows[n].Cells["item_qty"].Value = item["item_qty"].ToString();
+                    dgvItem.Rows[n].Cells["item_ord"].Value = item["item_ord"].ToString();
+                }
+            }
+        }
+
+        private void loadTransferList()
+        {
+            DataTable dt;
+            //get keyword from text box
+            string keywords = txtItemSearch.Text;
+
+            //check if the keywords has value or not
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                //show tranfer records based on keywords
+                dt = daltrfHist.Search(keywords);
+                dt.DefaultView.Sort = "trf_hist_added_date DESC";
+                DataTable sortedDt = dt.DefaultView.ToTable();
+                //dgvItem.DataSource = dt;
+                dgvTrf.Rows.Clear();
+                foreach (DataRow trf in sortedDt.Rows)
+                {
+                    int n = dgvTrf.Rows.Add();
+                    dgvTrf.Rows[n].Cells["trf_hist_id"].Value = trf["trf_hist_id"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = trf["trf_hist_added_date"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(trf["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
+                    dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = trf["trf_hist_item_code"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["trf_hist_item_name"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = trf["trf_hist_qty"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = trf["trf_hist_added_by"].ToString();
+                }
+
+            }
+            else
+            {
+                //show all transfer records from the database
+                dt = daltrfHist.Select();
+                dt.DefaultView.Sort = "trf_hist_added_date DESC";
+                DataTable sortedDt = dt.DefaultView.ToTable();
+                dgvTrf.Rows.Clear();
+                foreach (DataRow trf in sortedDt.Rows)
+                {
+                    int n = dgvTrf.Rows.Add();
+                    dgvTrf.Rows[n].Cells["trf_hist_id"].Value = trf["trf_hist_id"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = trf["trf_hist_added_date"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(trf["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
+                    dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = trf["trf_hist_item_code"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["trf_hist_item_name"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = trf["trf_hist_qty"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = trf["trf_hist_added_by"].ToString();
+                }
+            }
+
+            
+        }
+
+
         #endregion
 
         #region Data Grid View
@@ -192,13 +293,26 @@ namespace FactoryManagementSoftware.UI
             cmbTrfItemName.Text = dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
             cmbTrfItemCode.Text = dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
 
-            loadStockData(cmbTrfItemCode.Text);
+            loadStockList(cmbTrfItemCode.Text);
             calTotalStock(cmbTrfItemCode.Text);
         }
 
         #endregion
 
-        #region Combobox Datasource Change
+        #region text/index/slection Change
+
+        private void cmbTrfItemCode_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
+            {
+                refreshList(cmbTrfItemCode.Text);
+            }
+            else
+            {
+                dgvFactoryStock.Rows.Clear();
+            }
+
+        }
 
         private void cmbTrfItemName_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -225,7 +339,7 @@ namespace FactoryManagementSoftware.UI
 
             if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
             {
-                refreshData(cmbTrfItemCode.Text);
+                refreshList(cmbTrfItemCode.Text);
             }
             else
             {
@@ -356,60 +470,22 @@ namespace FactoryManagementSoftware.UI
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            //get keyword from text box
-            string keywords = txtItemSearch.Text;
-
-            //check if the keywords has value or not
-            if (keywords != null)
-            {
-                //show user based on keywords
-                DataTable dt = dalItem.Search(keywords);
-                //dgvItem.DataSource = dt;
-                dgvItem.Rows.Clear();
-                foreach (DataRow item in dt.Rows)
-                {
-                    int n = dgvItem.Rows.Add();
-                    dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
-                    dgvItem.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
-                    dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
-                    dgvItem.Rows[n].Cells["item_qty"].Value = item["item_qty"].ToString();
-                    dgvItem.Rows[n].Cells["item_ord"].Value = item["item_ord"].ToString();
-                }
-
-                //show user based on keywords
-                DataTable dt2 = daltrfHist.Search(keywords);
-                //dgvItem.DataSource = dt;
-                dgvTrf.Rows.Clear();
-                foreach (DataRow item in dt2.Rows)
-                {
-                    int n = dgvTrf.Rows.Add();
-                    dgvTrf.Rows[n].Cells["trf_hist_id"].Value = item["trf_hist_id"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = item["trf_hist_added_date"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = item["trf_hist_trf_date"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = item["trf_hist_item_code"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = item["trf_hist_item_name"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_from"].Value = item["trf_hist_from"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_to"].Value = item["trf_hist_to"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = item["trf_hist_qty"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = item["trf_hist_unit"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = item["trf_hist_added_by"].ToString();
-
-
-                }
-
-            }
-            else
-            {
-                //show all item from the database
-                loadData();
-            }
-
-
+            loadItemList();
+            loadTransferList();
         }
 
         #endregion
 
+       
         #region data validation
+
+        private void txtTrfQty_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
 
         private bool Validation()
         {
@@ -508,32 +584,46 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        private void dataTransfer()
-        {
-            utrfHist.trf_hist_item_code = cmbTrfItemCode.Text;
-            utrfHist.trf_hist_item_name = cmbTrfItemName.Text;
-            utrfHist.trf_hist_from = cmbTrfFrom.Text;
-            utrfHist.trf_hist_to = cmbTrfTo.Text;
-            utrfHist.trf_hist_qty = Convert.ToSingle(txtTrfQty.Text);
-            utrfHist.trf_hist_unit = cmbTrfQtyUnit.Text;
-            utrfHist.trf_hist_trf_date = dtpTrfDate.Value.Date;
-            utrfHist.trf_hist_note = txtTrfNote.Text;
-            utrfHist.trf_hist_added_date = DateTime.Now;
-            utrfHist.trf_hist_added_by = 0;
-        }
-
         #region Function: Insert/Reset
 
         private void btnTransfer_Click(object sender, EventArgs e)
         {
+            string locationFrom = "";
+            string locationTo = "";
 
             if (Validation())
             {
                 DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
+                    if(!string.IsNullOrEmpty(cmbTrfFrom.Text))
+                    {
+                        locationFrom = cmbTrfFrom.Text;
+                    }
+                    else
+                    {
+                        locationFrom = cmbTrfFromCategory.Text;
+                    }
 
-                    dataTransfer();
+                    if (!string.IsNullOrEmpty(cmbTrfTo.Text))
+                    {
+                        locationTo = cmbTrfTo.Text;
+                    }
+                    else
+                    {
+                        locationTo = cmbTrfToCategory.Text;
+                    }
+
+                    utrfHist.trf_hist_item_code = cmbTrfItemCode.Text;
+                    utrfHist.trf_hist_item_name = cmbTrfItemName.Text;
+                    utrfHist.trf_hist_from = locationFrom;
+                    utrfHist.trf_hist_to = locationTo;
+                    utrfHist.trf_hist_qty = Convert.ToSingle(txtTrfQty.Text);
+                    utrfHist.trf_hist_unit = cmbTrfQtyUnit.Text;
+                    utrfHist.trf_hist_trf_date = dtpTrfDate.Value.Date;
+                    utrfHist.trf_hist_note = txtTrfNote.Text;
+                    utrfHist.trf_hist_added_date = DateTime.Now;
+                    utrfHist.trf_hist_added_by = 0;
 
                     //Inserting Data into Database
                     bool success = daltrfHist.Insert(utrfHist);
@@ -692,8 +782,9 @@ namespace FactoryManagementSoftware.UI
 
             if(!string.IsNullOrEmpty(cmbTrfItemCode.Text))
             {
-                refreshData(cmbTrfItemCode.Text);
+                refreshList(cmbTrfItemCode.Text);
             }
+            
 
         }
 
@@ -739,30 +830,9 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        private void txtTrfQty_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
-            {
-                e.Handled = true;
-            }
-        }
+        
 
-        private void cmbTrfItemCode_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-             if(!string.IsNullOrEmpty(cmbTrfItemCode.Text))
-           {
-               refreshData(cmbTrfItemCode.Text);
-           }
-             else
-            {
-                dgvFactoryStock.Rows.Clear();
-            }
-           
-        }
+        
 
-        private void cmbTrfItemCode_TextChanged(object sender, EventArgs e)
-        {
-           
-        }
     }
 }
