@@ -222,6 +222,15 @@ namespace FactoryManagementSoftware.UI
             {
                 cmbTrfItemCode.DataSource = null;
             }
+
+            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
+            {
+                refreshData(cmbTrfItemCode.Text);
+            }
+            else
+            {
+                dgvFactoryStock.Rows.Clear();
+            }
         }
 
         private void cmbTrfItemCat_SelectedIndexChanged(object sender, EventArgs e)
@@ -488,6 +497,8 @@ namespace FactoryManagementSoftware.UI
         private void cmbTrfItemCode_SelectedIndexChanged(object sender, EventArgs e)
         {
             errorProvider3.Clear();
+          
+            
         }
 
         private void cmbTrfQtyUnit_SelectedIndexChanged(object sender, EventArgs e)
@@ -734,6 +745,24 @@ namespace FactoryManagementSoftware.UI
             {
                 e.Handled = true;
             }
+        }
+
+        private void cmbTrfItemCode_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+             if(!string.IsNullOrEmpty(cmbTrfItemCode.Text))
+           {
+               refreshData(cmbTrfItemCode.Text);
+           }
+             else
+            {
+                dgvFactoryStock.Rows.Clear();
+            }
+           
+        }
+
+        private void cmbTrfItemCode_TextChanged(object sender, EventArgs e)
+        {
+           
         }
     }
 }
