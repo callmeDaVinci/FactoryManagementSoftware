@@ -21,7 +21,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_ord";
+                String sql = "SELECT * FROM tbl_ord INNER JOIN tbl_item ON tbl_ord.ord_item_code = tbl_item.item_code";
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database
