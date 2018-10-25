@@ -149,7 +149,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_ord INNER JOIN tbl_item ON tbl_item.item_name = " + keyword + " AND  tbl_item.item_code = tbl_ord.ord_item_code ";
+                String sql = "SELECT * FROM tbl_ord INNER JOIN tbl_item ON tbl_item.item_name LIKE '%" + keyword + "%' AND  tbl_item.item_code = tbl_ord.ord_item_code ";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);

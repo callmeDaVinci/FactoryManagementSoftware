@@ -9,13 +9,14 @@ namespace FactoryManagementSoftware.UI
     public partial class frmOrder : Form
     {
         private string presentValue = "";
-        private int selectedOrderID;
+        private int selectedOrderID = -1;
 
         public frmOrder()
         {
             InitializeComponent();
         }
 
+        #region create class object (database)
         ordBLL uOrd = new ordBLL();
         ordDAL dalOrd = new ordDAL();
 
@@ -24,6 +25,8 @@ namespace FactoryManagementSoftware.UI
 
         itemCatBLL uItemCat = new itemCatBLL();
         itemCatDAL dalItemCat = new itemCatDAL();
+
+        #endregion
 
         #region Load or Reset Form
 
@@ -48,9 +51,6 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow ord in sortedDt.Rows)
             {
                 int n = dgvOrd.Rows.Add();
-
-
-
                 dgvOrd.Rows[n].Cells["ord_id"].Value = ord["ord_id"].ToString();
                 dgvOrd.Rows[n].Cells["ord_item_code"].Value = ord["ord_item_code"].ToString();
                 dgvOrd.Rows[n].Cells["item_name"].Value = ord["item_name"].ToString();
@@ -60,13 +60,6 @@ namespace FactoryManagementSoftware.UI
                 dgvOrd.Rows[n].Cells["ord_added_date"].Value = ord["ord_added_date"].ToString();
                 dgvOrd.Rows[n].Cells["ord_added_by"].Value = ord["ord_added_by"].ToString();
                 dgvOrd.Rows[n].Cells["ord_status"].Value = ord["ord_status"].ToString();
-
-                //((DataGridViewComboBoxColumn)dgvOrd.Columns["ord_status"]).DataSource = getOrderStatusTable();
-                //((DataGridViewComboBoxColumn)dgvOrd.Columns["ord_status"]).DisplayMember = "Status";
-
-
-
-
             }
         }
 
@@ -75,6 +68,8 @@ namespace FactoryManagementSoftware.UI
             loadOrderRecord();
             
                 dgvOrd.ClearSelection();
+            if (selectedOrderID != -1)
+            {
                 foreach (DataGridViewRow row in dgvOrd.Rows)
                 {
                     if (Convert.ToInt32(row.Cells["ord_id"].Value.ToString()).Equals(orderID))
@@ -82,7 +77,8 @@ namespace FactoryManagementSoftware.UI
                         row.Selected = true;
                         break;
                     }
-                }
+                } 
+            }
             
         }
 
@@ -101,6 +97,8 @@ namespace FactoryManagementSoftware.UI
 
             loadOrderRecord();
             txtQty.Clear();
+            cmbQtyUnit.SelectedIndex = -1;
+            cmbItemCat.SelectedIndex = -1;
         }
 
         private DataTable getOrderStatusTable()
@@ -246,6 +244,8 @@ namespace FactoryManagementSoftware.UI
         }
         #endregion
 
+        #region data Insert/Update/Search
+
         private void btnOrder_Click(object sender, EventArgs e)
         { 
             if (Validation())
@@ -353,5 +353,44 @@ namespace FactoryManagementSoftware.UI
 
             }
         }
+
+        private void txtOrdSearch_TextChanged(object sender, EventArgs e)
+        {
+            string keywords = txtOrdSearch.Text;
+
+            //check if the keywords has value or not
+            if (keywords != null)
+            {
+                DataTable dt = dalOrd.Search(keywords);
+                dt.DefaultView.Sort = "ord_added_date DESC";
+                DataTable sortedDt = dt.DefaultView.ToTable();
+                dgvOrd.Rows.Clear();
+                ((DataGridViewComboBoxColumn)dgvOrd.Columns["ord_status"]).ReadOnly = false;
+
+                foreach (DataRow ord in sortedDt.Rows)
+                {
+                    int n = dgvOrd.Rows.Add();
+                    dgvOrd.Rows[n].Cells["ord_id"].Value = ord["ord_id"].ToString();
+                    dgvOrd.Rows[n].Cells["ord_item_code"].Value = ord["ord_item_code"].ToString();
+                    dgvOrd.Rows[n].Cells["item_name"].Value = ord["item_name"].ToString();
+                    dgvOrd.Rows[n].Cells["ord_qty"].Value = ord["ord_qty"].ToString();
+                    dgvOrd.Rows[n].Cells["ord_unit"].Value = ord["ord_unit"].ToString();
+                    dgvOrd.Rows[n].Cells["ord_forecast_date"].Value = Convert.ToDateTime(ord["ord_forecast_date"]).ToString("dd/MM/yyyy"); ;
+                    dgvOrd.Rows[n].Cells["ord_added_date"].Value = ord["ord_added_date"].ToString();
+                    dgvOrd.Rows[n].Cells["ord_added_by"].Value = ord["ord_added_by"].ToString();
+                    dgvOrd.Rows[n].Cells["ord_status"].Value = ord["ord_status"].ToString();
+                }
+
+            }
+            else
+            {
+                //show all item from the database
+                loadOrderRecord();
+            }
+        }
+
+        #endregion
+
+
     }
 }

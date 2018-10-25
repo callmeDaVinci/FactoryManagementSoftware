@@ -86,16 +86,17 @@
             this.txtOrdSearch.Name = "txtOrdSearch";
             this.txtOrdSearch.Size = new System.Drawing.Size(327, 38);
             this.txtOrdSearch.TabIndex = 21;
+            this.txtOrdSearch.TextChanged += new System.EventHandler(this.txtOrdSearch_TextChanged);
             // 
             // lblSearch
             // 
             this.lblSearch.AutoSize = true;
             this.lblSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSearch.Location = new System.Drawing.Point(1130, 63);
+            this.lblSearch.Location = new System.Drawing.Point(971, 61);
             this.lblSearch.Name = "lblSearch";
-            this.lblSearch.Size = new System.Drawing.Size(86, 32);
+            this.lblSearch.Size = new System.Drawing.Size(245, 32);
             this.lblSearch.TabIndex = 20;
-            this.lblSearch.Text = "Search";
+            this.lblSearch.Text = "Search by Item Name";
             // 
             // dgvOrd
             // 
