@@ -8,6 +8,9 @@ namespace FactoryManagementSoftware.UI
 {
     public partial class frmOrder : Form
     {
+        private string presentValue = "";
+        private int selectedOrderID;
+
         public frmOrder()
         {
             InitializeComponent();
@@ -37,9 +40,12 @@ namespace FactoryManagementSoftware.UI
         private void loadOrderRecord()
         {
             DataTable dt = dalOrd.Select();
+            dt.DefaultView.Sort = "ord_added_date DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
             dgvOrd.Rows.Clear();
             ((DataGridViewComboBoxColumn)dgvOrd.Columns["ord_status"]).ReadOnly = false;
-            foreach (DataRow ord in dt.Rows)
+
+            foreach (DataRow ord in sortedDt.Rows)
             {
                 int n = dgvOrd.Rows.Add();
 
@@ -64,6 +70,22 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void refreshOrderRecord(int orderID)
+        {
+            loadOrderRecord();
+            
+                dgvOrd.ClearSelection();
+                foreach (DataGridViewRow row in dgvOrd.Rows)
+                {
+                    if (Convert.ToInt32(row.Cells["ord_id"].Value.ToString()).Equals(orderID))
+                    {
+                        row.Selected = true;
+                        break;
+                    }
+                }
+            
+        }
+
         private void resetForm()
         {
             //select item category list from item category database
@@ -78,6 +100,7 @@ namespace FactoryManagementSoftware.UI
             cmbItemCat.DisplayMember = "item_cat_name";
 
             loadOrderRecord();
+            txtQty.Clear();
         }
 
         private DataTable getOrderStatusTable()
@@ -216,14 +239,119 @@ namespace FactoryManagementSoftware.UI
             uOrd.ord_qty = Convert.ToInt32(txtQty.Text);
             uOrd.ord_forecast_date = dtpForecastDate.Value.Date;
             uOrd.ord_note = txtNote.Text;
+            uOrd.ord_unit = cmbQtyUnit.Text;
+            uOrd.ord_status = "Requesting";
             uOrd.ord_added_date = DateTime.Now;
             uOrd.ord_added_by = 0;
         }
         #endregion
 
         private void btnOrder_Click(object sender, EventArgs e)
+        { 
+            if (Validation())
+            {
+                DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                {
+
+                    getDataFromUser();
+
+                    //Inserting Data into Database
+                    bool success = dalOrd.Insert(uOrd);
+                    //If the data is successfully inserted then the value of success will be true else false
+                    if (success == true)
+                    {
+                        //Data Successfully Inserted
+                        //MessageBox.Show("Transfer record successfully created");
+
+                        //stockInandOut();
+                        resetForm();
+
+                    }
+                    else
+                    {
+                        //Failed to insert data
+                        MessageBox.Show("Failed to add new order record");
+                    }
+
+                }
+            }
+        }
+
+        private void dgvOrd_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            Validation();
+            ComboBox combobox = e.Control as ComboBox;
+
+            if(combobox != null)
+            {
+                combobox.SelectedIndexChanged -= new EventHandler(SelectedIndexChanged);
+               
+                combobox.SelectedIndexChanged += new EventHandler(SelectedIndexChanged);
+
+                e.CellStyle.BackColor = this.dgvOrd.DefaultCellStyle.BackColor;
+            }
+        }
+
+        private void SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox combo = sender as ComboBox;
+            string selectedItem = combo.SelectedItem.ToString();
+            if (!presentValue.Equals(selectedItem))
+            {
+
+                //MessageBox.Show("select changed: "+selectedItem + " ID:" +selectedOrderID);
+                DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    //Update data
+                    uOrd.ord_id = selectedOrderID;
+                    uOrd.ord_status = selectedItem;
+
+
+                    //Updating data into database
+                    bool success = dalOrd.Update(uOrd);
+
+                    //if data is updated successfully then the value = true else false
+                    if (success == true)
+                    {
+                        //data updated successfully
+                        // MessageBox.Show("Order successfully updated ");
+                        refreshOrderRecord(selectedOrderID);
+                    }
+                    else
+                    {
+                        //failed to update user
+                        MessageBox.Show("Failed to updated order record");
+                    }
+                }
+                    
+
+            }
+            
+
+
+        }
+
+        //activate combobox on first click
+        private void dgvOrd_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            
+            bool validClick = (e.RowIndex != -1 && e.ColumnIndex != -1); //Make sure the clicked row/column is valid.
+            var datagridview = sender as DataGridView;
+
+            // Check to make sure the cell clicked is the cell containing the combobox 
+            if (datagridview.Columns[e.ColumnIndex] is DataGridViewComboBoxColumn && validClick)
+            {
+                int rowIndex = e.RowIndex;
+                presentValue = dgvOrd.Rows[rowIndex].Cells["ord_status"].Value.ToString();
+                selectedOrderID = Convert.ToInt32(dgvOrd.Rows[rowIndex].Cells["ord_id"].Value.ToString());
+                
+                datagridview.BeginEdit(true);
+                ((ComboBox)datagridview.EditingControl).DroppedDown = true;
+               
+                //MessageBox.Show(presentValue);
+
+            }
         }
     }
 }

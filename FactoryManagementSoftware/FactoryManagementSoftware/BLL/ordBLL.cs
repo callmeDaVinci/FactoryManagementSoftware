@@ -11,6 +11,7 @@ namespace FactoryManagementSoftware.BLL
         public int ord_id { get; set; }
         public string ord_item_code { get; set; }
         public float ord_qty { get; set; }
+        public string ord_unit { get; set; }
         public string ord_status { get; set; }
         public DateTime ord_forecast_date { get; set; }
         public DateTime ord_added_date { get; set; }

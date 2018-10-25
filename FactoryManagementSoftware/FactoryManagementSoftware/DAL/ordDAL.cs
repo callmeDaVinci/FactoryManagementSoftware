@@ -55,11 +55,12 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_ord (ord_item_code, ord_qty, ord_status, ord_forecast_date, ord_added_date, ord_added_by, ord_note) VALUES ( @ord_item_code, @ord_qty, @ord_status, @ord_forecast_date, @ord_added_date, @ord_added_by, @ord_note)";
+                String sql = "INSERT INTO tbl_ord (ord_item_code, ord_qty, ord_unit, ord_status, ord_forecast_date, ord_added_date, ord_added_by, ord_note) VALUES ( @ord_item_code, @ord_qty, @ord_unit, @ord_status, @ord_forecast_date, @ord_added_date, @ord_added_by, @ord_note)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@ord_item_code", u.ord_item_code);
                 cmd.Parameters.AddWithValue("@ord_qty", u.ord_qty);
+                cmd.Parameters.AddWithValue("@ord_unit", u.ord_unit);
                 cmd.Parameters.AddWithValue("@ord_status", u.ord_status);
                 cmd.Parameters.AddWithValue("@ord_forecast_date", u.ord_forecast_date);
                 cmd.Parameters.AddWithValue("@ord_added_date", u.ord_added_date);
@@ -94,7 +95,50 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
         #endregion
-      
+
+        #region Update data in Database
+        public bool Update(ordBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "UPDATE tbl_ord SET ord_status=@ord_status WHERE ord_id=@ord_id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@ord_id", u.ord_id);
+                cmd.Parameters.AddWithValue("@ord_status", u.ord_status);
+          
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+        #endregion
+
         #region Search item category on Database usingKeywords
         public DataTable Search(string keyword)
         {
