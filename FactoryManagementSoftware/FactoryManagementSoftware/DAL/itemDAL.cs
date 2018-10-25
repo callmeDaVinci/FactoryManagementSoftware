@@ -178,6 +178,48 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+
+        public bool ordUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "UPDATE tbl_item SET item_ord=@item_ord, item_updtd_date=@item_updtd_date, item_updtd_by=@item_updtd_by WHERE item_code=@item_code";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_ord", u.item_ord);
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         #endregion
 
         #region Delete data from Database
@@ -303,6 +345,41 @@ namespace FactoryManagementSoftware.DAL
             {
                 //sql query to get data from database
                 String sql = "SELECT * FROM tbl_item WHERE item_name LIKE '%" + keywords + "%'";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable codeSearch(string keywords)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_item WHERE item_code LIKE '%" + keywords + "%'";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);

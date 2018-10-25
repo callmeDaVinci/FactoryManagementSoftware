@@ -243,7 +243,7 @@ namespace FactoryManagementSoftware.UI
         }
 
         #endregion
-
+                
         #region item list double click
 
         private void dgvItem_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)

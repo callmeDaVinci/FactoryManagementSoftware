@@ -10,6 +10,8 @@ namespace FactoryManagementSoftware.UI
     {
         private string presentValue = "";
         private int selectedOrderID = -1;
+        private string selectedOrderQty = "";
+        private string selectedItemCode = "";
 
         public frmOrder()
         {
@@ -296,40 +298,67 @@ namespace FactoryManagementSoftware.UI
         {
             ComboBox combo = sender as ComboBox;
             string selectedItem = combo.SelectedItem.ToString();
-            if (!presentValue.Equals(selectedItem))
+            if (!presentValue.Equals(selectedItem))//if selected text change(before!=after)
             {
-
                 //MessageBox.Show("select changed: "+selectedItem + " ID:" +selectedOrderID);
                 DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    //Update data
-                    uOrd.ord_id = selectedOrderID;
-                    uOrd.ord_status = selectedItem;
-
-
-                    //Updating data into database
-                    bool success = dalOrd.Update(uOrd);
-
-                    //if data is updated successfully then the value = true else false
-                    if (success == true)
+                    if(selectedItem.Equals("Received")) 
                     {
-                        //data updated successfully
-                        // MessageBox.Show("Order successfully updated ");
-                        refreshOrderRecord(selectedOrderID);
+                        frmReceiveConfirm frm = new frmReceiveConfirm();
+                        frm.StartPosition = FormStartPosition.CenterScreen;
+                        frm.ShowDialog();
                     }
                     else
                     {
-                        //failed to update user
-                        MessageBox.Show("Failed to updated order record");
-                    }
+                        //Update data
+                        uOrd.ord_id = selectedOrderID;
+                        uOrd.ord_status = selectedItem; 
+
+                        //Updating data into database
+                        bool success = dalOrd.Update(uOrd);
+
+                        //if data is updated successfully then the value = true else false
+                        if (success == true)
+                        {
+                            //data updated successfully
+                            // MessageBox.Show("Order successfully updated ");
+                            switch (selectedItem)
+                            {
+                                case "Cancelled":
+                                    MessageBox.Show("cancel order");
+                                    if (presentValue.Equals("Approved"))
+                                    {
+                                        orderCancel(selectedItemCode, selectedOrderQty);
+                                    }
+                                    break;
+                                   
+
+                                case "Approved":
+                                    orderAdd(selectedItemCode, selectedOrderQty);
+                                    break;
+
+                                case "Requesting":
+                                    if (presentValue.Equals("Approved"))
+                                    {
+                                        orderCancel(selectedItemCode, selectedOrderQty);
+                                    }
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                            refreshOrderRecord(selectedOrderID);
+                        }
+                        else
+                        {
+                            //failed to update user
+                            MessageBox.Show("Failed to updated order record");
+                        }
+                    }  
                 }
-                    
-
-            }
-            
-
-
+             }
         }
 
         //activate combobox on first click
@@ -345,7 +374,9 @@ namespace FactoryManagementSoftware.UI
                 int rowIndex = e.RowIndex;
                 presentValue = dgvOrd.Rows[rowIndex].Cells["ord_status"].Value.ToString();
                 selectedOrderID = Convert.ToInt32(dgvOrd.Rows[rowIndex].Cells["ord_id"].Value.ToString());
-                
+                selectedItemCode = dgvOrd.Rows[rowIndex].Cells["ord_item_code"].Value.ToString();
+                selectedOrderQty = dgvOrd.Rows[rowIndex].Cells["ord_qty"].Value.ToString();
+
                 datagridview.BeginEdit(true);
                 ((ComboBox)datagridview.EditingControl).DroppedDown = true;
                
@@ -391,6 +422,70 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
+        private void orderAdd(string itemCode, string ordQty)
+        {
 
+            float number = Convert.ToSingle(ordQty);
+            uItem.item_code = itemCode;
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = 0;
+            uItem.item_ord = getOrderQty(itemCode) + number;
+
+            //Updating data into database
+            bool success = dalItem.ordUpdate(uItem);
+
+            //if data is updated successfully then the value = true else false
+            if (success == true)
+            {
+                //data updated successfully
+                //MessageBox.Show("Item successfully updated ");
+                //resetForm();
+            }
+            else
+            {
+                //failed to update user
+                MessageBox.Show("Failed to updated item");
+            }
+
+        }
+
+        private void orderCancel(string itemCode, string ordQty)
+        {
+
+            float number = Convert.ToSingle(ordQty);
+            uItem.item_code = itemCode;
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = 0;
+            uItem.item_ord = getOrderQty(itemCode) - number;
+
+            //Updating data into database
+            bool success = dalItem.ordUpdate(uItem);
+
+            //if data is updated successfully then the value = true else false
+            if (success == true)
+            {
+                //data updated successfully
+                //MessageBox.Show("Item successfully updated ");
+                //resetForm();
+            }
+            else
+            {
+                //failed to update user
+                MessageBox.Show("Failed to updated item");
+            }
+
+        }
+
+        private float getOrderQty(string itemCode)
+        {
+            float orderQty = 0;
+            DataTable dt = dalItem.codeSearch(itemCode);
+
+            orderQty = Convert.ToSingle(dt.Rows[0]["item_ord"].ToString());
+            //MessageBox.Show("get qty= "+qty);
+        
+
+            return orderQty;
+        }
     }
 }
