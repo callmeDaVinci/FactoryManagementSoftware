@@ -496,5 +496,30 @@ namespace FactoryManagementSoftware.DAL
 
         }
 
+        public bool updateTotalStock(string itemCode)
+        {
+            float totalStock = 0;
+            stockDAL dalStock = new stockDAL();
+            itemBLL uItem = new itemBLL();
+
+            DataTable dtStock = dalStock.Select(itemCode);
+
+            foreach (DataRow stock in dtStock.Rows)
+            {
+                totalStock += Convert.ToSingle(stock["stock_qty"].ToString());
+            }
+
+                //Update data
+                uItem.item_code = itemCode;
+                uItem.item_qty = totalStock;
+                uItem.item_updtd_date = DateTime.Now;
+                uItem.item_updtd_by = 0;
+
+            //Updating data into database
+            bool success = qtyUpdate(uItem);
+
+            return success;
+        }
+
     }
 }

@@ -6,9 +6,9 @@ using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmReceiveConfirm : Form
+    public partial class frmReceiveCancel : Form
     {
-        public frmReceiveConfirm()
+        public frmReceiveCancel()
         {
             InitializeComponent();
         }
@@ -24,25 +24,13 @@ namespace FactoryManagementSoftware.UI
 
         facDAL dalFac = new facDAL();
 
-        private void frmReceiveConfirm_Load(object sender, EventArgs e)
+        private void frmReceiveCancel_Load(object sender, EventArgs e)
         {
-            
-            //select category list from category database
-            DataTable dtTrfCatFrm = daltrfCat.Select();
-            //remove repeating name in trf_cat_name
-            DataTable distinctTable3 = dtTrfCatFrm.DefaultView.ToTable(true, "trf_cat_name");
-            //sort the data according trf_cat_name
-            distinctTable3.DefaultView.Sort = "trf_cat_name ASC";
-            //set combobox datasource from table
-            cmbFrom.DataSource = distinctTable3;
-            //show trf_cat_name data from table only
-            cmbFrom.DisplayMember = "trf_cat_name";
-
             DataTable dt = dalFac.Select();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "fac_name");
             distinctTable.DefaultView.Sort = "fac_name ASC";
-            cmbTo.DataSource = distinctTable;
-            cmbTo.DisplayMember = "fac_name";
+            cmbFrom.DataSource = distinctTable;
+            cmbFrom.DisplayMember = "fac_name";
 
             txtQty.Text = stockInQty;
         }
@@ -94,40 +82,41 @@ namespace FactoryManagementSoftware.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
+
             uStock.stock_item_code = itemCode;
-            uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTo.Text));
-            uStock.stock_qty = getQty(itemCode, cmbTo.Text) + Convert.ToSingle(stockInQty);
+            uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbFrom.Text));
+            uStock.stock_qty = getQty(itemCode, cmbFrom.Text) - Convert.ToSingle(stockInQty);
             uStock.stock_updtd_date = DateTime.Now;
             uStock.stock_updtd_by = 0;
 
-            if (IfExists(itemCode, cmbTo.Text))
+            if (IfExists(itemCode, cmbFrom.Text))
             {
                 bool success = dalStock.Update(uStock);
-           
-                if(!success)
+
+                if (!success)
                 {
                     MessageBox.Show("Failed to updated stock");
                 }
                 else
                 {
-                    frmOrder.receivedStockIn = true;
+                    frmOrder.receivedStockOut = true;
                 }
-
+                
             }
             else
             {
                 bool success = dalStock.Insert(uStock);
-                if(!success)
+                if (!success)
                 {
                     MessageBox.Show("Failed to add new stock");
                 }
                 else
                 {
-                    frmOrder.receivedStockIn = true;
+                    frmOrder.receivedStockOut = true;
                 }
             }
 
             this.Close();
         }
-    }  
+    }
 }

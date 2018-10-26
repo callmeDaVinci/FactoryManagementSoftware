@@ -162,7 +162,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void refreshList(string itemCode)
+        public void refreshList(string itemCode)
         {
 
             if(!string.IsNullOrEmpty(itemCode))
@@ -253,8 +253,7 @@ namespace FactoryManagementSoftware.UI
             cmbTrfItemName.Text = dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
             cmbTrfItemCode.Text = dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
 
-            loadStockList(cmbTrfItemCode.Text);
-            calTotalStock(cmbTrfItemCode.Text);
+            refreshList(cmbTrfItemCode.Text);
         }
 
         #endregion
@@ -620,7 +619,7 @@ namespace FactoryManagementSoftware.UI
 
         private void stockInandOut()
         {
-            //Stock In
+            //Stock Out
             if (cmbTrfFromCategory.Text == "Factory")
             {
                 if (IfExists(cmbTrfItemCode.Text, cmbTrfFrom.Text))
@@ -678,7 +677,7 @@ namespace FactoryManagementSoftware.UI
                 } 
             }
 
-            //Stock Out
+            //Stock In
             if (cmbTrfToCategory.Text == "Factory")
             {
                 if (IfExists(cmbTrfItemCode.Text, cmbTrfTo.Text))
