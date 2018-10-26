@@ -407,5 +407,94 @@ namespace FactoryManagementSoftware.DAL
 
         #endregion
 
+        public float getOrderQty(string itemCode)
+        {
+            float orderQty = 0;
+            DataTable dt = codeSearch(itemCode);
+
+            orderQty = Convert.ToSingle(dt.Rows[0]["item_ord"].ToString());
+            //MessageBox.Show("get qty= "+qty);
+
+
+            return orderQty;
+        }
+
+        public bool orderAdd(string itemCode, string ordQty)
+        {
+            itemBLL uItem = new itemBLL();
+
+            float number = Convert.ToSingle(ordQty);
+            uItem.item_code = itemCode;
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = 0;
+            uItem.item_ord = getOrderQty(itemCode) + number;
+
+            //Updating data into database
+            bool success = ordUpdate(uItem);
+
+            return success;
+
+        }
+
+        public bool orderSubtract(string itemCode, string ordQty)
+        {
+            itemBLL uItem = new itemBLL();
+            float number = Convert.ToSingle(ordQty);
+            uItem.item_code = itemCode;
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = 0;
+            uItem.item_ord = getOrderQty(itemCode) - number;
+
+            //Updating data into database
+            bool success = ordUpdate(uItem);
+
+            return success;
+
+        }
+
+        public float getStockQty(string itemCode)
+        {
+            float stockQty = 0;
+            DataTable dt = codeSearch(itemCode);
+
+            stockQty = Convert.ToSingle(dt.Rows[0]["item_qty"].ToString());
+            //MessageBox.Show("get qty= "+qty);
+
+
+            return stockQty;
+        }
+
+        public bool stockAdd(string itemCode, string stockQty)
+        {
+            itemBLL uItem = new itemBLL();
+
+            float number = Convert.ToSingle(stockQty);
+            uItem.item_code = itemCode;
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = 0;
+            uItem.item_qty = getStockQty(itemCode) + number;
+
+            //Updating data into database
+            bool success = qtyUpdate(uItem);
+
+            return success;
+        }
+
+        public bool stockSubtract(string itemCode, string stockQty)
+        {
+            itemBLL uItem = new itemBLL();
+            float number = Convert.ToSingle(stockQty);
+            uItem.item_code = itemCode;
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = 0;
+            uItem.item_qty = getStockQty(itemCode) - number;
+
+            //Updating data into database
+            bool success = qtyUpdate(uItem);
+
+            return success;
+
+        }
+
     }
 }

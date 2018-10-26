@@ -90,6 +90,7 @@ namespace FactoryManagementSoftware.UI
                 frmOrder ord = new frmOrder();
                 ord.MdiParent = this;
                 ord.StartPosition = FormStartPosition.CenterScreen;
+               // ord.WindowState = FormWindowState.Maximized;
                 ord.Show();
                 ordFormOpen = true;
             }

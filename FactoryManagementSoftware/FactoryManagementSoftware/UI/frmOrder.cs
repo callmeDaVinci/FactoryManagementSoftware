@@ -56,6 +56,7 @@ namespace FactoryManagementSoftware.UI
                 dgvOrd.Rows[n].Cells["ord_id"].Value = ord["ord_id"].ToString();
                 dgvOrd.Rows[n].Cells["ord_item_code"].Value = ord["ord_item_code"].ToString();
                 dgvOrd.Rows[n].Cells["item_name"].Value = ord["item_name"].ToString();
+                dgvOrd.Rows[n].Cells["item_ord"].Value = ord["item_ord"].ToString();
                 dgvOrd.Rows[n].Cells["ord_qty"].Value = ord["ord_qty"].ToString();
                 dgvOrd.Rows[n].Cells["ord_unit"].Value = ord["ord_unit"].ToString();
                 dgvOrd.Rows[n].Cells["ord_forecast_date"].Value = Convert.ToDateTime(ord["ord_forecast_date"]).ToString("dd/MM/yyyy"); ;
@@ -295,7 +296,7 @@ namespace FactoryManagementSoftware.UI
         }
 
         private void SelectedIndexChanged(object sender, EventArgs e)
-        {
+        {   
             ComboBox combo = sender as ComboBox;
             string selectedItem = combo.SelectedItem.ToString();
             if (!presentValue.Equals(selectedItem))//if selected text change(before!=after)
@@ -304,45 +305,77 @@ namespace FactoryManagementSoftware.UI
                 DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    if(selectedItem.Equals("Received")) 
+                    uOrd.ord_id = selectedOrderID;
+                    uOrd.ord_status = selectedItem;
+
+                    if (selectedItem.Equals("Received")) 
                     {
                         frmReceiveConfirm frm = new frmReceiveConfirm();
                         frm.StartPosition = FormStartPosition.CenterScreen;
-                        frm.ShowDialog();
+                        
+
+                        if (presentValue.Equals("Requesting") || presentValue.Equals("Cancelled"))
+                        {
+                            MessageBox.Show("This order not approve yet!");
+                            refreshOrderRecord(selectedOrderID);
+                        }
+                        else if (presentValue.Equals("Approved"))
+                        {
+                            frm.ShowDialog();//stock in
+                            //if confirm stock in
+                            //orderSubtract(selectedItemCode, selectedOrderQty);
+                            //refreshOrderRecord(selectedOrderID);
+                        }
+
                     }
                     else
-                    {
-                        //Update data
-                        uOrd.ord_id = selectedOrderID;
-                        uOrd.ord_status = selectedItem; 
+                    {                     
+                        bool success = dalOrd.Update(uOrd); //Updating data into database
 
-                        //Updating data into database
-                        bool success = dalOrd.Update(uOrd);
-
-                        //if data is updated successfully then the value = true else false
                         if (success == true)
                         {
-                            //data updated successfully
-                            // MessageBox.Show("Order successfully updated ");
                             switch (selectedItem)
                             {
                                 case "Cancelled":
-                                    MessageBox.Show("cancel order");
                                     if (presentValue.Equals("Approved"))
                                     {
-                                        orderCancel(selectedItemCode, selectedOrderQty);
+                                        orderSubtract(selectedItemCode, selectedOrderQty);
+                                        refreshOrderRecord(selectedOrderID);
+                                    }
+                                    else if(presentValue.Equals("Received"))
+                                    {
+                                        //dialog stock out
                                     }
                                     break;
-                                   
 
                                 case "Approved":
-                                    orderAdd(selectedItemCode, selectedOrderQty);
+                                    if (presentValue.Equals("Requesting"))
+                                    {
+                                        orderAdd(selectedItemCode, selectedOrderQty);
+                                        refreshOrderRecord(selectedOrderID);
+                                    }
+                                    else if (presentValue.Equals("Cancelled"))
+                                    {
+                                        orderAdd(selectedItemCode, selectedOrderQty);
+                                        refreshOrderRecord(selectedOrderID);
+                                    }
+                                    else if (presentValue.Equals("Received"))
+                                    {
+                                        orderAdd(selectedItemCode, selectedOrderQty);
+                                        refreshOrderRecord(selectedOrderID);
+                                        //dialog stock out
+                                    }
                                     break;
 
                                 case "Requesting":
                                     if (presentValue.Equals("Approved"))
                                     {
-                                        orderCancel(selectedItemCode, selectedOrderQty);
+                                        orderSubtract(selectedItemCode, selectedOrderQty);
+                                        refreshOrderRecord(selectedOrderID);
+                                    }
+                                    else if (presentValue.Equals("Received"))
+                                    {
+                                        //dialog stock out
                                     }
                                     break;
 
@@ -404,6 +437,7 @@ namespace FactoryManagementSoftware.UI
                     dgvOrd.Rows[n].Cells["ord_id"].Value = ord["ord_id"].ToString();
                     dgvOrd.Rows[n].Cells["ord_item_code"].Value = ord["ord_item_code"].ToString();
                     dgvOrd.Rows[n].Cells["item_name"].Value = ord["item_name"].ToString();
+                    dgvOrd.Rows[n].Cells["item_ord"].Value = ord["item_ord"].ToString();
                     dgvOrd.Rows[n].Cells["ord_qty"].Value = ord["ord_qty"].ToString();
                     dgvOrd.Rows[n].Cells["ord_unit"].Value = ord["ord_unit"].ToString();
                     dgvOrd.Rows[n].Cells["ord_forecast_date"].Value = Convert.ToDateTime(ord["ord_forecast_date"]).ToString("dd/MM/yyyy"); ;
@@ -420,72 +454,48 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        #endregion
-
         private void orderAdd(string itemCode, string ordQty)
         {
+            bool success = dalItem.orderAdd(itemCode, ordQty);//Updating data into database
 
-            float number = Convert.ToSingle(ordQty);
-            uItem.item_code = itemCode;
-            uItem.item_updtd_date = DateTime.Now;
-            uItem.item_updtd_by = 0;
-            uItem.item_ord = getOrderQty(itemCode) + number;
-
-            //Updating data into database
-            bool success = dalItem.ordUpdate(uItem);
-
-            //if data is updated successfully then the value = true else false
-            if (success == true)
+            if (!success)
             {
-                //data updated successfully
-                //MessageBox.Show("Item successfully updated ");
-                //resetForm();
+                MessageBox.Show("Failed to updated item");//failed to update user
             }
-            else
-            {
-                //failed to update user
-                MessageBox.Show("Failed to updated item");
-            }
-
         }
 
-        private void orderCancel(string itemCode, string ordQty)
+        private void orderSubtract(string itemCode, string ordQty)
         {
+            bool success = dalItem.orderSubtract(itemCode, ordQty); //Updating data into database
 
-            float number = Convert.ToSingle(ordQty);
-            uItem.item_code = itemCode;
-            uItem.item_updtd_date = DateTime.Now;
-            uItem.item_updtd_by = 0;
-            uItem.item_ord = getOrderQty(itemCode) - number;
-
-            //Updating data into database
-            bool success = dalItem.ordUpdate(uItem);
-
-            //if data is updated successfully then the value = true else false
-            if (success == true)
+            if (!success)
             {
-                //data updated successfully
-                //MessageBox.Show("Item successfully updated ");
-                //resetForm();
+                MessageBox.Show("Failed to updated item");//failed to update user
             }
-            else
-            {
-                //failed to update user
-                MessageBox.Show("Failed to updated item");
-            }
-
         }
 
-        private float getOrderQty(string itemCode)
+        private void stockAdd(string itemCode, string stockQty)
         {
-            float orderQty = 0;
-            DataTable dt = dalItem.codeSearch(itemCode);
+            bool success = dalItem.stockAdd(itemCode, stockQty);//Updating data into database
 
-            orderQty = Convert.ToSingle(dt.Rows[0]["item_ord"].ToString());
-            //MessageBox.Show("get qty= "+qty);
-        
-
-            return orderQty;
+            if (!success)
+            {
+                MessageBox.Show("Failed to add item stock qty");//failed to update user
+            }
         }
+
+        private void stockSubtract(string itemCode, string stockQty)
+        {
+            bool success = dalItem.stockSubtract(itemCode, stockQty); //Updating data into database
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to subtract item stock qty ");//failed to update user
+            }
+        }
+
+        #endregion
+
+
     }
 }
