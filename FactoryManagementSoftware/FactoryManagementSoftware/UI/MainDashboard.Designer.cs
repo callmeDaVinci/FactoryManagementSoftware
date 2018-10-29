@@ -44,11 +44,12 @@
             this.inOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.forecastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataInputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.dataInputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forecastReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -175,8 +176,17 @@
             this.forecastToolStripMenuItem.Size = new System.Drawing.Size(76, 24);
             this.forecastToolStripMenuItem.Text = "Forecast";
             // 
+            // dataInputToolStripMenuItem
+            // 
+            this.dataInputToolStripMenuItem.Name = "dataInputToolStripMenuItem";
+            this.dataInputToolStripMenuItem.Size = new System.Drawing.Size(154, 26);
+            this.dataInputToolStripMenuItem.Text = "Data Input";
+            this.dataInputToolStripMenuItem.Click += new System.EventHandler(this.dataInputToolStripMenuItem_Click);
+            // 
             // reportToolStripMenuItem
             // 
+            this.reportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.forecastReportToolStripMenuItem});
             this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
             this.reportToolStripMenuItem.Size = new System.Drawing.Size(66, 24);
             this.reportToolStripMenuItem.Text = "Report";
@@ -199,12 +209,12 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
             // 
-            // dataInputToolStripMenuItem
+            // forecastReportToolStripMenuItem
             // 
-            this.dataInputToolStripMenuItem.Name = "dataInputToolStripMenuItem";
-            this.dataInputToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.dataInputToolStripMenuItem.Text = "Data Input";
-            this.dataInputToolStripMenuItem.Click += new System.EventHandler(this.dataInputToolStripMenuItem_Click);
+            this.forecastReportToolStripMenuItem.Name = "forecastReportToolStripMenuItem";
+            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.forecastReportToolStripMenuItem.Text = "Forecast Report";
+            this.forecastReportToolStripMenuItem.Click += new System.EventHandler(this.forecastReportToolStripMenuItem_Click);
             // 
             // MainDashboard
             // 
@@ -251,6 +261,7 @@
         private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem itemCustToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dataInputToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem forecastReportToolStripMenuItem;
     }
 }
 
