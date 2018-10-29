@@ -8,17 +8,19 @@ namespace FactoryManagementSoftware.UI
 {
     public partial class frmOrder : Form
     {
+        public frmOrder()
+        {
+            InitializeComponent();
+        }
+
+        #region variable declare
         private string presentValue = "";
         private int selectedOrderID = -1;
         static public string selectedOrderQty = "";
         static public string selectedItemCode = "";
         static public bool receivedStockIn = false;
         static public bool receivedStockOut = false;
-
-        public frmOrder()
-        {
-            InitializeComponent();
-        }
+        #endregion
 
         #region create class object (database)
         ordBLL uOrd = new ordBLL();
@@ -58,7 +60,7 @@ namespace FactoryManagementSoftware.UI
                 dgvOrd.Rows[n].Cells["ord_id"].Value = ord["ord_id"].ToString();
                 dgvOrd.Rows[n].Cells["ord_item_code"].Value = ord["ord_item_code"].ToString();
                 dgvOrd.Rows[n].Cells["item_name"].Value = ord["item_name"].ToString();
-                dgvOrd.Rows[n].Cells["item_ord"].Value = ord["item_ord"].ToString();
+                dgvOrd.Rows[n].Cells["item_ord"].Value = ord["item_ord"].ToString();    
                 dgvOrd.Rows[n].Cells["ord_qty"].Value = ord["ord_qty"].ToString();
                 dgvOrd.Rows[n].Cells["ord_unit"].Value = ord["ord_unit"].ToString();
                 dgvOrd.Rows[n].Cells["ord_forecast_date"].Value = Convert.ToDateTime(ord["ord_forecast_date"]).ToString("dd/MM/yyyy"); ;
@@ -325,6 +327,7 @@ namespace FactoryManagementSoftware.UI
 
             
         }
+
         private void SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox combo = sender as ComboBox;
@@ -432,109 +435,107 @@ namespace FactoryManagementSoftware.UI
             }
 
         }
-    
 
-    //activate combobox on first click
-    private void dgvOrd_CellEnter(object sender, DataGridViewCellEventArgs e)
-    {
-
-        bool validClick = (e.RowIndex != -1 && e.ColumnIndex != -1); //Make sure the clicked row/column is valid.
-        var datagridview = sender as DataGridView;
-
-        // Check to make sure the cell clicked is the cell containing the combobox 
-        if (datagridview.Columns[e.ColumnIndex] is DataGridViewComboBoxColumn && validClick)
+        private void dgvOrd_CellEnter(object sender, DataGridViewCellEventArgs e)//activate combobox on first click
         {
-            int rowIndex = e.RowIndex;
-            presentValue = dgvOrd.Rows[rowIndex].Cells["ord_status"].Value.ToString();
-            selectedOrderID = Convert.ToInt32(dgvOrd.Rows[rowIndex].Cells["ord_id"].Value.ToString());
-            selectedItemCode = dgvOrd.Rows[rowIndex].Cells["ord_item_code"].Value.ToString();
-            selectedOrderQty = dgvOrd.Rows[rowIndex].Cells["ord_qty"].Value.ToString();
 
-            datagridview.BeginEdit(true);
-            ((ComboBox)datagridview.EditingControl).DroppedDown = true;
+            bool validClick = (e.RowIndex != -1 && e.ColumnIndex != -1); //Make sure the clicked row/column is valid.
+            var datagridview = sender as DataGridView;
 
-            //MessageBox.Show(presentValue);
-
-        }
-    }
-
-    private void txtOrdSearch_TextChanged(object sender, EventArgs e)
-    {
-        string keywords = txtOrdSearch.Text;
-
-        //check if the keywords has value or not
-        if (keywords != null)
-        {
-            DataTable dt = dalOrd.Search(keywords);
-            dt.DefaultView.Sort = "ord_added_date DESC";
-            DataTable sortedDt = dt.DefaultView.ToTable();
-            dgvOrd.Rows.Clear();
-            ((DataGridViewComboBoxColumn)dgvOrd.Columns["ord_status"]).ReadOnly = false;
-
-            foreach (DataRow ord in sortedDt.Rows)
+            // Check to make sure the cell clicked is the cell containing the combobox 
+            if (datagridview.Columns[e.ColumnIndex] is DataGridViewComboBoxColumn && validClick)
             {
-                int n = dgvOrd.Rows.Add();
-                dgvOrd.Rows[n].Cells["ord_id"].Value = ord["ord_id"].ToString();
-                dgvOrd.Rows[n].Cells["ord_item_code"].Value = ord["ord_item_code"].ToString();
-                dgvOrd.Rows[n].Cells["item_name"].Value = ord["item_name"].ToString();
-                dgvOrd.Rows[n].Cells["item_ord"].Value = ord["item_ord"].ToString();
-                dgvOrd.Rows[n].Cells["ord_qty"].Value = ord["ord_qty"].ToString();
-                dgvOrd.Rows[n].Cells["ord_unit"].Value = ord["ord_unit"].ToString();
-                dgvOrd.Rows[n].Cells["ord_forecast_date"].Value = Convert.ToDateTime(ord["ord_forecast_date"]).ToString("dd/MM/yyyy"); ;
-                dgvOrd.Rows[n].Cells["ord_added_date"].Value = ord["ord_added_date"].ToString();
-                dgvOrd.Rows[n].Cells["ord_added_by"].Value = ord["ord_added_by"].ToString();
-                dgvOrd.Rows[n].Cells["ord_status"].Value = ord["ord_status"].ToString();
+                int rowIndex = e.RowIndex;
+                presentValue = dgvOrd.Rows[rowIndex].Cells["ord_status"].Value.ToString();
+                selectedOrderID = Convert.ToInt32(dgvOrd.Rows[rowIndex].Cells["ord_id"].Value.ToString());
+                selectedItemCode = dgvOrd.Rows[rowIndex].Cells["ord_item_code"].Value.ToString();
+                selectedOrderQty = dgvOrd.Rows[rowIndex].Cells["ord_qty"].Value.ToString();
+
+                datagridview.BeginEdit(true);
+                ((ComboBox)datagridview.EditingControl).DroppedDown = true;
+
+                //MessageBox.Show(presentValue);
+
             }
-
         }
-        else
+
+        private void txtOrdSearch_TextChanged(object sender, EventArgs e)
         {
-            //show all item from the database
-            loadOrderRecord();
+            string keywords = txtOrdSearch.Text;
+
+            //check if the keywords has value or not
+            if (keywords != null)
+            {
+                DataTable dt = dalOrd.Search(keywords);
+                dt.DefaultView.Sort = "ord_added_date DESC";
+                DataTable sortedDt = dt.DefaultView.ToTable();
+                dgvOrd.Rows.Clear();
+                ((DataGridViewComboBoxColumn)dgvOrd.Columns["ord_status"]).ReadOnly = false;
+
+                foreach (DataRow ord in sortedDt.Rows)
+                {
+                    int n = dgvOrd.Rows.Add();
+                    dgvOrd.Rows[n].Cells["ord_id"].Value = ord["ord_id"].ToString();
+                    dgvOrd.Rows[n].Cells["ord_item_code"].Value = ord["ord_item_code"].ToString();
+                    dgvOrd.Rows[n].Cells["item_name"].Value = ord["item_name"].ToString();
+                    dgvOrd.Rows[n].Cells["item_ord"].Value = ord["item_ord"].ToString();
+                    dgvOrd.Rows[n].Cells["ord_qty"].Value = ord["ord_qty"].ToString();
+                    dgvOrd.Rows[n].Cells["ord_unit"].Value = ord["ord_unit"].ToString();
+                    dgvOrd.Rows[n].Cells["ord_forecast_date"].Value = Convert.ToDateTime(ord["ord_forecast_date"]).ToString("dd/MM/yyyy"); ;
+                    dgvOrd.Rows[n].Cells["ord_added_date"].Value = ord["ord_added_date"].ToString();
+                    dgvOrd.Rows[n].Cells["ord_added_by"].Value = ord["ord_added_by"].ToString();
+                    dgvOrd.Rows[n].Cells["ord_status"].Value = ord["ord_status"].ToString();
+                }
+
+            }
+            else
+            {
+                //show all item from the database
+                loadOrderRecord();
+            }
         }
-    }
 
-    private void orderAdd(string itemCode, string ordQty)
-    {
-        bool success = dalItem.orderAdd(itemCode, ordQty);//Updating data into database
-
-        if (!success)
+        private void orderAdd(string itemCode, string ordQty)
         {
-            MessageBox.Show("Failed to updated item");//failed to update user
+            bool success = dalItem.orderAdd(itemCode, ordQty);//Updating data into database
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to updated item");//failed to update user
+            }
         }
-    }
 
-    private void orderSubtract(string itemCode, string ordQty)
-    {
-        bool success = dalItem.orderSubtract(itemCode, ordQty); //Updating data into database
-
-        if (!success)
+        private void orderSubtract(string itemCode, string ordQty)
         {
-            MessageBox.Show("Failed to updated item");//failed to update user
+            bool success = dalItem.orderSubtract(itemCode, ordQty); //Updating data into database
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to updated item");//failed to update user
+            }
         }
-    }
 
-    private void stockAdd(string itemCode, string stockQty)
-    {
-        bool success = dalItem.stockAdd(itemCode, stockQty);//Updating data into database
-
-        if (!success)
+        private void stockAdd(string itemCode, string stockQty)
         {
-            MessageBox.Show("Failed to add item stock qty");//failed to update user
+            bool success = dalItem.stockAdd(itemCode, stockQty);//Updating data into database
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to add item stock qty");//failed to update user
+            }
         }
-    }
 
-    private void stockSubtract(string itemCode, string stockQty)
-    {
-        bool success = dalItem.stockSubtract(itemCode, stockQty); //Updating data into database
-
-        if (!success)
+        private void stockSubtract(string itemCode, string stockQty)
         {
-            MessageBox.Show("Failed to subtract item stock qty ");//failed to update user
-        }
-    }
+            bool success = dalItem.stockSubtract(itemCode, stockQty); //Updating data into database
 
-    #endregion
+            if (!success)
+            {
+                MessageBox.Show("Failed to subtract item stock qty ");//failed to update user
+            }
+        }
+
+        #endregion
 
 
     }

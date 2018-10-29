@@ -786,6 +786,5 @@ namespace FactoryManagementSoftware.UI
         }
 
         #endregion
-
     }
 }

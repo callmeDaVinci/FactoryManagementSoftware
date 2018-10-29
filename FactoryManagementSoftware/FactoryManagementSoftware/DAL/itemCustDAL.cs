@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.DAL
 {
-    class custDAL
+    class itemCustDAL
     {
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
@@ -21,7 +21,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_cust";
+                String sql = "SELECT tbl_cust.cust_name, tbl_item.item_code, tbl_item.item_name, tbl_item_cust.item_cust_added_date, tbl_item_cust.item_cust_added_by FROM ((tbl_item_cust INNER JOIN tbl_item ON tbl_item_cust.item_code = tbl_item.item_code)INNER JOIN tbl_cust ON tbl_item_cust.cust_id = tbl_cust.cust_id)";
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database
@@ -30,8 +30,6 @@ namespace FactoryManagementSoftware.DAL
                 conn.Open();
                 //fill data in our database
                 adapter.Fill(dt);
-
-
             }
             catch (Exception ex)
             {
@@ -48,64 +46,20 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Insert Data in Database
-        public bool Insert(custBLL u)
+        public bool Insert(itemCustBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             try
             {
-                String sql = "INSERT INTO tbl_cust (cust_name, cust_added_date, cust_added_by) VALUES (@cust_name, @cust_added_date, @cust_added_by)";
+                String sql = "INSERT INTO tbl_item_cust (item_code, cust_id, item_cust_added_date, item_cust_added_by) VALUES (@item_code, @cust_id, @item_cust_added_date, @item_cust_added_by)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@cust_name", u.cust_name);
-                cmd.Parameters.AddWithValue("@cust_added_date", u.cust_added_date);
-                cmd.Parameters.AddWithValue("@cust_added_by", u.cust_added_by);
-
-                conn.Open();
-
-                int rows = cmd.ExecuteNonQuery();
-
-                //if the query is executed successfully then the rows' value = 0
-                if (rows > 0)
-                {
-                    //query successful
-                    isSuccess = true;
-                }
-                else
-                {
-                    //Query falled
-                    isSuccess = false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                conn.Close();
-            }
-            return isSuccess;
-        }
-        #endregion
-
-        #region Update data in Database
-        public bool Update(custBLL u)
-        {
-            bool isSuccess = false;
-            SqlConnection conn = new SqlConnection(myconnstrng);
-
-            try
-            {
-                String sql = "UPDATE tbl_cust SET cust_name=@cust_name, cust_updtd_date=@cust_updtd_date, cust_updtd_by=@cust_updtd_by WHERE cust_id=@cust_id";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
                 cmd.Parameters.AddWithValue("@cust_id", u.cust_id);
-                cmd.Parameters.AddWithValue("@cust_name", u.cust_name);
-                cmd.Parameters.AddWithValue("@cust_updtd_date", u.cust_updtd_date);
-                cmd.Parameters.AddWithValue("@cust_updtd_by", u.cust_updtd_by);
+                cmd.Parameters.AddWithValue("@item_cust_added_date", u.item_cust_added_date);
+                cmd.Parameters.AddWithValue("@item_cust_added_by", u.item_cust_added_by);
 
                 conn.Open();
 
@@ -122,6 +76,7 @@ namespace FactoryManagementSoftware.DAL
                     //Query falled
                     isSuccess = false;
                 }
+
             }
             catch (Exception ex)
             {
@@ -136,17 +91,18 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Delete data from Database
-        public bool Delete(custBLL u)
+        public bool Delete(itemCustBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             try
             {
-                String sql = "DELETE FROM tbl_cust WHERE cust_id=@cust_id";
+                String sql = "DELETE FROM tbl_item_cust WHERE cust_id=@cust_id AND item_code=@item_code";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@cust_id", u.cust_id);
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
 
                 conn.Open();
 
@@ -176,8 +132,9 @@ namespace FactoryManagementSoftware.DAL
         }
         #endregion
 
-        #region Search customer on Database usingKeywords
-        public DataTable Search(string keywords)
+        #region Search by customer on Database usingKeywords
+
+        public DataTable custSearch(string keywords)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -186,7 +143,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_cust WHERE cust_id LIKE '%" + keywords + "%'OR cust_name LIKE '%" + keywords + "%'";
+                String sql = "SELECT * FROM ((tbl_item_cust INNER JOIN tbl_cust ON tbl_cust.cust_name LIKE '%" + keywords + "%'AND tbl_item_cust.cust_id = tbl_cust.cust_id) INNER JOIN tbl_item ON tbl_item_cust.item_code = tbl_item.item_code)";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -196,8 +153,6 @@ namespace FactoryManagementSoftware.DAL
                 conn.Open();
                 //fill data in our database
                 adapter.Fill(dt);
-
-
             }
             catch (Exception ex)
             {
@@ -212,16 +167,18 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable nameSearch(string keywords)
+        public DataTable existsSearch(string itemCode, string custID)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
             //to hold the data from database
             DataTable dt = new DataTable();
+
+           
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_cust WHERE cust_name LIKE '%" + keywords + "%'";
+                String sql = "SELECT * FROM tbl_item_cust WHERE item_code LIKE '%" + itemCode + "%' AND cust_id LIKE '%" + custID + "%'";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -231,8 +188,6 @@ namespace FactoryManagementSoftware.DAL
                 conn.Open();
                 //fill data in our database
                 adapter.Fill(dt);
-
-
             }
             catch (Exception ex)
             {
@@ -247,7 +202,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable idSearch(string keywords)
+        public DataTable itemSearch(string keywords)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -256,7 +211,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_cust WHERE cust_id LIKE '%" + keywords + "%'";
+                String sql = "SELECT * FROM ((tbl_item_cust INNER JOIN tbl_item ON tbl_item.item_name LIKE '%" + keywords + "%'AND tbl_item_cust.item_code = tbl_item.item_code) INNER JOIN tbl_cust ON tbl_item_cust.cust_id = tbl_cust.cust_id)";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -266,8 +221,6 @@ namespace FactoryManagementSoftware.DAL
                 conn.Open();
                 //fill data in our database
                 adapter.Fill(dt);
-
-
             }
             catch (Exception ex)
             {
@@ -281,6 +234,40 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
+        public DataTable itemCodeSearch(string keywords)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM ((tbl_item_cust INNER JOIN tbl_item ON tbl_item.item_code LIKE '%" + keywords + "%'AND tbl_item_cust.item_code = tbl_item.item_code) INNER JOIN tbl_cust ON tbl_item_cust.cust_id = tbl_cust.cust_id)";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         #endregion
     }
 }
