@@ -13,6 +13,7 @@ namespace FactoryManagementSoftware.UI
         static public bool ordFormOpen = false;
         static public bool dataFormOpen = false;
         static public bool itemCustFormOpen = false;
+        static public bool forecastInputFormOpen = false;
 
         public MainDashboard()
         {
@@ -118,6 +119,18 @@ namespace FactoryManagementSoftware.UI
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.Show();
                 itemCustFormOpen = true;
+            }
+        }
+
+        private void dataInputToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!forecastInputFormOpen)
+            {
+                frmForecast frm = new frmForecast();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.Show();
+                forecastInputFormOpen = true;
             }
         }
     }

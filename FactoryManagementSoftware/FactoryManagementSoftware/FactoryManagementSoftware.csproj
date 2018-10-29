@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="BLL\custBLL.cs" />
     <Compile Include="BLL\facBLL.cs" />
+    <Compile Include="BLL\forecastBLL.cs" />
     <Compile Include="BLL\itemBLL.cs" />
     <Compile Include="BLL\itemCatBLL.cs" />
     <Compile Include="BLL\itemCustBLL.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="DAL\custDAL.cs" />
     <Compile Include="DAL\dataDAL.cs" />
     <Compile Include="DAL\facDAL.cs" />
+    <Compile Include="DAL\forecastDAL.cs" />
     <Compile Include="DAL\itemCatDAL.cs" />
     <Compile Include="DAL\itemCustDAL.cs" />
     <Compile Include="DAL\itemDAL.cs" />
@@ -89,6 +91,12 @@
     </Compile>
     <Compile Include="UI\frmFac.Designer.cs">
       <DependentUpon>frmFac.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmForecast.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmForecast.Designer.cs">
+      <DependentUpon>frmForecast.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmInOut.cs">
       <SubType>Form</SubType>
@@ -145,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmFac.resx">
       <DependentUpon>frmFac.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmForecast.resx">
+      <DependentUpon>frmForecast.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmInOut.resx">
       <DependentUpon>frmInOut.cs</DependentUpon>

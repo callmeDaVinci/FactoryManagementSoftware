@@ -202,6 +202,41 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable nameSearch(string itemName, string custName)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM ((tbl_item_cust INNER JOIN tbl_item ON tbl_item.item_name LIKE '%" + itemName + "%' AND tbl_item.item_code = tbl_item_cust.item_code) INNER JOIN tbl_cust ON tbl_cust.cust_name LIKE '%" + custName + "%' AND tbl_cust.cust_id = tbl_item_cust.cust_id)";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable itemSearch(string keywords)
         {
             //static methodd to connect database
