@@ -41,12 +41,12 @@
             this.item_batch = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.stock_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.forecast_one = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.outStock = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.oSant = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.shotOne = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.forecast_two = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.shotTwo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.forecast_three = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).BeginInit();
             this.SuspendLayout();
@@ -69,12 +69,12 @@
             this.item_batch,
             this.stock_qty,
             this.forecast_one,
-            this.Column2,
-            this.Column3,
-            this.Column4,
+            this.outStock,
+            this.oSant,
+            this.shotOne,
             this.Column5,
             this.forecast_two,
-            this.Column6,
+            this.shotTwo,
             this.forecast_three});
             this.dgvForecastReport.Location = new System.Drawing.Point(23, 130);
             this.dgvForecastReport.Name = "dgvForecastReport";
@@ -170,23 +170,23 @@
             this.forecast_one.Name = "forecast_one";
             this.forecast_one.ReadOnly = true;
             // 
-            // Column2
+            // outStock
             // 
-            this.Column2.HeaderText = "Out";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
+            this.outStock.HeaderText = "Out";
+            this.outStock.Name = "outStock";
+            this.outStock.ReadOnly = true;
             // 
-            // Column3
+            // oSant
             // 
-            this.Column3.HeaderText = "O/sant";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
+            this.oSant.HeaderText = "O/sant";
+            this.oSant.Name = "oSant";
+            this.oSant.ReadOnly = true;
             // 
-            // Column4
+            // shotOne
             // 
-            this.Column4.HeaderText = "SHOT 1";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
+            this.shotOne.HeaderText = "SHOT 1";
+            this.shotOne.Name = "shotOne";
+            this.shotOne.ReadOnly = true;
             // 
             // Column5
             // 
@@ -200,11 +200,11 @@
             this.forecast_two.Name = "forecast_two";
             this.forecast_two.ReadOnly = true;
             // 
-            // Column6
+            // shotTwo
             // 
-            this.Column6.HeaderText = "SHOT 2";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
+            this.shotTwo.HeaderText = "SHOT 2";
+            this.shotTwo.Name = "shotTwo";
+            this.shotTwo.ReadOnly = true;
             // 
             // forecast_three
             // 
@@ -248,12 +248,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn item_batch;
         private System.Windows.Forms.DataGridViewTextBoxColumn stock_qty;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_one;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn outStock;
+        private System.Windows.Forms.DataGridViewTextBoxColumn oSant;
+        private System.Windows.Forms.DataGridViewTextBoxColumn shotOne;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_two;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn shotTwo;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_three;
     }
 }

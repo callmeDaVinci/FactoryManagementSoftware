@@ -292,6 +292,7 @@ namespace FactoryManagementSoftware.UI
             uForecast.forecast_two = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_two"].Value.ToString());
             uForecast.forecast_three = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_three"].Value.ToString());
             uForecast.forecast_updtd_date = Convert.ToDateTime(dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value);
+            uForecast.forecast_current_month = cmbForecast1.Text;
             uForecast.forecast_updtd_by = 1;
 
             if (IfExists(uForecast.item_code, cmbCust.Text))

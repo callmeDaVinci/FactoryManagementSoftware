@@ -13,6 +13,7 @@ namespace FactoryManagementSoftware.BLL
         public float forecast_one { get; set; }
         public float forecast_two { get; set; }
         public float forecast_three { get; set; }
+        public string forecast_current_month { get; set; }
         public DateTime forecast_updtd_date { get; set; }
         public int forecast_updtd_by { get; set; }
     }

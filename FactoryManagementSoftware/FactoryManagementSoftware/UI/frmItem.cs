@@ -38,10 +38,16 @@ namespace FactoryManagementSoftware
             dgvItem.Rows.Clear();
             foreach (DataRow item in dt.Rows)
             {
+                float f = 0;
                 int n = dgvItem.Rows.Add();
+                if(!string.IsNullOrEmpty(item["item_weight"].ToString()))
+                {
+                    f = Convert.ToSingle(item["item_weight"]);
+                }
+                
                 dgvItem.Rows[n].Cells["Category"].Value = item["item_cat"].ToString();
                 dgvItem.Rows[n].Cells["item_color"].Value = item["item_color"].ToString();
-                dgvItem.Rows[n].Cells["item_weight"].Value = item["item_weight"].ToString();
+                dgvItem.Rows[n].Cells["item_weight"].Value = f.ToString("0.00");
                 dgvItem.Rows[n].Cells["dgvcItemCode"].Value = item["item_code"].ToString();
                 dgvItem.Rows[n].Cells["dgvcItemName"].Value = item["item_name"].ToString();
                 dgvItem.Rows[n].Cells["dgvcQty"].Value = item["item_qty"].ToString();
@@ -54,7 +60,9 @@ namespace FactoryManagementSoftware
             txtItemCode.ReadOnly = false;
             txtItemCode.Clear();
             txtItemName.Clear();
-            cmbItemCategory.SelectedIndex = -1;
+            txtColor.Clear();
+            txtWeight.Clear();
+            
             txtItemCode.Focus();
             btnInsert.Text = "ADD";
             btnDelete.Hide();
@@ -72,6 +80,8 @@ namespace FactoryManagementSoftware
             cmbItemCategory.DataSource = distinctTable;
             //show item_name data from table only
             cmbItemCategory.DisplayMember = "item_cat_name";
+
+            cmbItemCategory.SelectedIndex = -1;
         }
 
         #endregion
@@ -84,7 +94,8 @@ namespace FactoryManagementSoftware
             txtItemCode.Text = dgvItem.Rows[rowIndex].Cells["dgvcItemCode"].Value.ToString();
             txtItemName.Text = dgvItem.Rows[rowIndex].Cells["dgvcItemName"].Value.ToString();
             txtColor.Text = dgvItem.Rows[rowIndex].Cells["item_color"].Value.ToString();
-            txtWeight.Text = dgvItem.Rows[rowIndex].Cells["item_weight"].Value.ToString();
+            txtWeight.Text = Convert.ToSingle(dgvItem.Rows[rowIndex].Cells["item_weight"].Value).ToString("0.00");
+            
             cmbItemCategory.Text = dgvItem.Rows[rowIndex].Cells["Category"].Value.ToString();
 
             btnInsert.Text = "UPDATE";
@@ -266,13 +277,18 @@ namespace FactoryManagementSoftware
                 dgvItem.Rows.Clear();
                 foreach (DataRow item in dt.Rows)
                 {
+                    float f = 0;
                     int n = dgvItem.Rows.Add();
-           
+                    if (!string.IsNullOrEmpty(item["item_weight"].ToString()))
+                    {
+                        f = Convert.ToSingle(item["item_weight"]);
+                    }
+
                     dgvItem.Rows[n].Cells["Category"].Value = item["item_cat"].ToString();
                     dgvItem.Rows[n].Cells["dgvcItemCode"].Value = item["item_code"].ToString();
                     dgvItem.Rows[n].Cells["dgvcItemName"].Value = item["item_name"].ToString();
                     dgvItem.Rows[n].Cells["item_color"].Value = item["item_color"].ToString();
-                    dgvItem.Rows[n].Cells["item_weight"].Value = item["item_weight"].ToString();
+                    dgvItem.Rows[n].Cells["item_weight"].Value =f.ToString("0.00");
                     dgvItem.Rows[n].Cells["dgvcQty"].Value = item["item_qty"].ToString();
                     dgvItem.Rows[n].Cells["dgvcOrd"].Value = item["item_ord"].ToString();
                 }

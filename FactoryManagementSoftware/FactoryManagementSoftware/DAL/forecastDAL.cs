@@ -19,7 +19,7 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_forecast (cust_id, item_code, forecast_one, forecast_two, forecast_three, forecast_updtd_date, forecast_updtd_by) VALUES (@cust_id, @item_code, @forecast_one, @forecast_two, @forecast_three, @forecast_updtd_date, @forecast_updtd_by)";
+                String sql = "INSERT INTO tbl_forecast (cust_id, item_code, forecast_one, forecast_two, forecast_three, ,forecast_current_month, forecast_updtd_date, forecast_updtd_by) VALUES (@cust_id, @item_code, @forecast_one, @forecast_two, @forecast_three, @forecast_current_month, @forecast_updtd_date, @forecast_updtd_by)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@cust_id", u.cust_id);
@@ -27,6 +27,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@forecast_one", u.forecast_one);
                 cmd.Parameters.AddWithValue("@forecast_two", u.forecast_two);
                 cmd.Parameters.AddWithValue("@forecast_three", u.forecast_three);
+                cmd.Parameters.AddWithValue("@forecast_current_month", u.forecast_current_month);
                 cmd.Parameters.AddWithValue("@forecast_updtd_date", u.forecast_updtd_date);
                 cmd.Parameters.AddWithValue("@forecast_updtd_by", u.forecast_updtd_by);
 
@@ -67,7 +68,7 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "UPDATE tbl_forecast SET forecast_one=@forecast_one, forecast_two=@forecast_two, forecast_three=@forecast_three, forecast_updtd_date=@forecast_updtd_date, forecast_updtd_by=@forecast_updtd_by WHERE cust_id=@cust_id AND item_code=@item_code";
+                String sql = "UPDATE tbl_forecast SET forecast_one=@forecast_one, forecast_two=@forecast_two, forecast_three=@forecast_three, forecast_current_month=@forecast_current_month, forecast_updtd_date=@forecast_updtd_date, forecast_updtd_by=@forecast_updtd_by WHERE cust_id=@cust_id AND item_code=@item_code";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@cust_id", u.cust_id);
@@ -75,6 +76,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@forecast_one", u.forecast_one);
                 cmd.Parameters.AddWithValue("@forecast_two", u.forecast_two);
                 cmd.Parameters.AddWithValue("@forecast_three", u.forecast_three);
+                cmd.Parameters.AddWithValue("@forecast_current_month", u.forecast_current_month);
                 cmd.Parameters.AddWithValue("@forecast_updtd_date", u.forecast_updtd_date);
                 cmd.Parameters.AddWithValue("@forecast_updtd_by", u.forecast_updtd_by);
                 conn.Open();
