@@ -146,7 +146,7 @@
             // 
             // item_weight
             // 
-            this.item_weight.HeaderText = "Weight";
+            this.item_weight.HeaderText = "Weight(g)";
             this.item_weight.Name = "item_weight";
             this.item_weight.ReadOnly = true;
             // 

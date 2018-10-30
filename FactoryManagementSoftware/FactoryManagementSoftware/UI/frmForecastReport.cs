@@ -93,6 +93,8 @@ namespace FactoryManagementSoftware.UI
                     int n = dgvForecastReport.Rows.Add();
                     dgvForecastReport.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
                     dgvForecastReport.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
+                    dgvForecastReport.Rows[n].Cells["item_color"].Value = item["item_color"].ToString();
+                    dgvForecastReport.Rows[n].Cells["item_weight"].Value = item["item_weight"].ToString();
 
                     DataTable dt2 = dalForecast.existsSearch(item["item_code"].ToString(), getCustID(keywords));
 

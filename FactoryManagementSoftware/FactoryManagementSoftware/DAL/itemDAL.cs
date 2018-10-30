@@ -55,12 +55,14 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_item (item_code, item_name, item_cat, item_added_date, item_added_by) VALUES (@item_code, @item_name, @item_cat, @item_added_date, @item_added_by)";
+                String sql = "INSERT INTO tbl_item (item_code, item_name, item_cat, item_color, item_weight, item_added_date, item_added_by) VALUES (@item_code, @item_name, @item_cat, @item_color, @item_weight, @item_added_date, @item_added_by)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@item_code", u.item_code);
                 cmd.Parameters.AddWithValue("@item_name", u.item_name);
                 cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
+                cmd.Parameters.AddWithValue("@item_color", u.item_color);
+                cmd.Parameters.AddWithValue("@item_weight", u.item_weight);
                 cmd.Parameters.AddWithValue("@item_added_date", u.item_added_date);
                 cmd.Parameters.AddWithValue("@item_added_by", u.item_added_by);
 
@@ -101,12 +103,14 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "UPDATE tbl_item SET item_name=@item_name, item_cat=@item_cat, item_updtd_date=@item_updtd_date, item_updtd_by=@item_updtd_by WHERE item_code=@item_code";
+                String sql = "UPDATE tbl_item SET item_name=@item_name, item_cat=@item_cat, item_color=@item_color, item_weight=@item_weight, item_updtd_date=@item_updtd_date, item_updtd_by=@item_updtd_by WHERE item_code=@item_code";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@item_code", u.item_code);
                 cmd.Parameters.AddWithValue("@item_name", u.item_name);
                 cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
+                cmd.Parameters.AddWithValue("@item_color", u.item_color);
+                cmd.Parameters.AddWithValue("@item_weight", u.item_weight);
                 cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
                 cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
                 
