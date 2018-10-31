@@ -164,8 +164,8 @@ namespace FactoryManagementSoftware.UI
 
         public void refreshList(string itemCode)
         {
-
-            if(!string.IsNullOrEmpty(itemCode))
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            if (!string.IsNullOrEmpty(itemCode))
             {
                 loadStockList(itemCode);
                 calTotalStock(itemCode);
@@ -190,11 +190,13 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
             }
-     
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void resetForm()
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
             loadItemList();
             loadTransferList();
 
@@ -240,6 +242,8 @@ namespace FactoryManagementSoftware.UI
             txtTrfNote.Clear();
             dgvFactoryStock.Rows.Clear();
             dgvTotal.Rows.Clear();
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         #endregion
@@ -428,8 +432,12 @@ namespace FactoryManagementSoftware.UI
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
             loadItemList();
             loadTransferList();
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         #endregion

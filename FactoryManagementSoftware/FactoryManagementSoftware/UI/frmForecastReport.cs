@@ -287,13 +287,20 @@ namespace FactoryManagementSoftware.UI
             {
                 dgvForecastReport.DataSource = null;
             }
+
+
         }
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
             string custName = cmbCust.Text;
             int custID = Convert.ToInt32(getCustID(custName));
+
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            btnCheck.Enabled = false;
             loadForecastList();
+            Cursor = Cursors.Arrow; // change cursor to normal type
+            btnCheck.Enabled = true;
         }
     }
 }
