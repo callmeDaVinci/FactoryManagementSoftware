@@ -3,6 +3,7 @@ using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.UI;
 using System;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware
@@ -34,13 +35,25 @@ namespace FactoryManagementSoftware
 
         private void loadData()
         {
+            bool rowColorChange = true;
             DataTable dt = dalItem.Select();
             dgvItem.Rows.Clear();
             foreach (DataRow item in dt.Rows)
             {
                 float f = 0;
                 int n = dgvItem.Rows.Add();
-                if(!string.IsNullOrEmpty(item["item_weight"].ToString()))
+                if (rowColorChange)
+                {
+                    dgvItem.Rows[n].DefaultCellStyle.BackColor = Control.DefaultBackColor;
+                    rowColorChange = false;
+                }
+                else
+                {
+                    dgvItem.Rows[n].DefaultCellStyle.BackColor = Color.White;
+                    rowColorChange = true;
+                }
+
+                if (!string.IsNullOrEmpty(item["item_weight"].ToString()))
                 {
                     f = Convert.ToSingle(item["item_weight"]);
                 }
@@ -77,11 +90,11 @@ namespace FactoryManagementSoftware
             //DataView dv = new DataView(distinctTable);
             //dv.RowFilter = "item_name <> 'PP'";
             //set combobox datasource from table
-            cmbItemCategory.DataSource = distinctTable;
+            cmbMaterialType.DataSource = distinctTable;
             //show item_name data from table only
-            cmbItemCategory.DisplayMember = "item_cat_name";
+            cmbMaterialType.DisplayMember = "item_cat_name";
 
-            cmbItemCategory.SelectedIndex = -1;
+            cmbMaterialType.SelectedIndex = -1;
         }
 
         #endregion
@@ -96,7 +109,7 @@ namespace FactoryManagementSoftware
             txtColor.Text = dgvItem.Rows[rowIndex].Cells["item_color"].Value.ToString();
             txtWeight.Text = Convert.ToSingle(dgvItem.Rows[rowIndex].Cells["item_weight"].Value).ToString("0.00");
             
-            cmbItemCategory.Text = dgvItem.Rows[rowIndex].Cells["Category"].Value.ToString();
+            cmbMaterialType.Text = dgvItem.Rows[rowIndex].Cells["Category"].Value.ToString();
 
             btnInsert.Text = "UPDATE";
             btnDelete.Show();
@@ -176,7 +189,7 @@ namespace FactoryManagementSoftware
                         //Update data
                         uItem.item_code = txtItemCode.Text;
                         uItem.item_name = txtItemName.Text;
-                        uItem.item_cat = cmbItemCategory.Text;
+                        uItem.item_cat = cmbMaterialType.Text;
                         uItem.item_color = txtColor.Text;
                         uItem.item_weight = Convert.ToSingle(txtWeight.Text);
                         uItem.item_updtd_date = DateTime.Now;
@@ -205,9 +218,16 @@ namespace FactoryManagementSoftware
 
                         uItem.item_code = txtItemCode.Text;
                         uItem.item_name = txtItemName.Text;
-                        uItem.item_cat = cmbItemCategory.Text;
+                        uItem.item_cat = cmbMaterialType.Text;
                         uItem.item_color = txtColor.Text;
-                        uItem.item_weight = Convert.ToSingle(txtWeight.Text);
+                        if(!string.IsNullOrEmpty(txtWeight.Text))
+                        {
+                            uItem.item_weight = Convert.ToSingle(txtWeight.Text);
+                        }
+                        else
+                        {
+                            uItem.item_weight = 0;
+                        }
                         uItem.item_added_date = DateTime.Now;
                         uItem.item_added_by = -1;
 

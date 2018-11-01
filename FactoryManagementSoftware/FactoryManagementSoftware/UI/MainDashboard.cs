@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
@@ -28,9 +29,16 @@ namespace FactoryManagementSoftware.UI
                 frmItem item = new frmItem();
                 item.MdiParent = this;
                 item.StartPosition = FormStartPosition.CenterScreen;
-                //item.WindowState = FormWindowState.Maximized;
+                item.WindowState = FormWindowState.Maximized;
                 item.Show();
                 itemFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmItem>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmItem>().First().BringToFront();
+                }
             }
         }
 
@@ -41,10 +49,17 @@ namespace FactoryManagementSoftware.UI
                 frmFac fac = new frmFac();
                 fac.MdiParent = this;
                 fac.StartPosition = FormStartPosition.CenterScreen;
-                //item.WindowState = FormWindowState.Maximized;
+                fac.WindowState = FormWindowState.Maximized;
                 fac.Show();
 
                 facFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmFac>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmFac>().First().BringToFront();
+                }
             }
         }
 
@@ -55,9 +70,16 @@ namespace FactoryManagementSoftware.UI
                 frmCust item = new frmCust();
                 item.MdiParent = this;
                 item.StartPosition = FormStartPosition.CenterScreen;
-                //item.WindowState = FormWindowState.Maximized;
+                item.WindowState = FormWindowState.Maximized;
                 item.Show();
                 custFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmCust>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmCust>().First().BringToFront();
+                }
             }
         }
 
@@ -68,9 +90,16 @@ namespace FactoryManagementSoftware.UI
                 frmInOut inOut = new frmInOut();
                 inOut.MdiParent = this;
                 inOut.StartPosition = FormStartPosition.CenterScreen;
-                //item.WindowState = FormWindowState.Maximized;
+                inOut.WindowState = FormWindowState.Maximized;
                 inOut.Show();
                 inOutFormOpen = true; 
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmInOut>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmInOut>().First().BringToFront();
+                }
             }
         }
 
@@ -81,8 +110,16 @@ namespace FactoryManagementSoftware.UI
                 frmCat cat = new frmCat();
                 cat.MdiParent = this;
                 cat.StartPosition = FormStartPosition.CenterScreen;
+                cat.WindowState = FormWindowState.Maximized;
                 cat.Show();
                 catFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmCat>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmCat>().First().BringToFront();
+                }
             }
         }
 
@@ -93,9 +130,16 @@ namespace FactoryManagementSoftware.UI
                 frmOrder ord = new frmOrder();
                 ord.MdiParent = this;
                 ord.StartPosition = FormStartPosition.CenterScreen;
-               // ord.WindowState = FormWindowState.Maximized;
+                ord.WindowState = FormWindowState.Maximized;
                 ord.Show();
                 ordFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmOrder>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmOrder>().First().BringToFront();
+                }
             }
         }
 
@@ -106,8 +150,16 @@ namespace FactoryManagementSoftware.UI
                 frmData data = new frmData();
                 data.MdiParent = this;
                 data.StartPosition = FormStartPosition.CenterScreen;
+                data.WindowState = FormWindowState.Maximized;
                 data.Show();
                 dataFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmData>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmData>().First().BringToFront();
+                }
             }
         }
 
@@ -118,8 +170,16 @@ namespace FactoryManagementSoftware.UI
                 frmItemCust frm = new frmItemCust();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
                 frm.Show();
                 itemCustFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmItemCust>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmItemCust>().First().BringToFront();
+                }
             }
         }
 
@@ -130,8 +190,16 @@ namespace FactoryManagementSoftware.UI
                 frmForecast frm = new frmForecast();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
                 frm.Show();
                 forecastInputFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmForecast>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmForecast>().First().BringToFront();
+                }
             }
         }
 
@@ -142,9 +210,18 @@ namespace FactoryManagementSoftware.UI
                 frmForecastReport frm = new frmForecastReport();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
                 frm.Show();
                 forecastReportInputFormOpen = true;
             }
+            else
+            {
+                if (Application.OpenForms.OfType<frmForecastReport>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmForecastReport>().First().BringToFront();
+                }
+            }
+
         }
     }
 }

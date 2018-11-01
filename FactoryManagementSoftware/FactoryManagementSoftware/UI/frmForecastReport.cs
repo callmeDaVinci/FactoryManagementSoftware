@@ -2,6 +2,7 @@
 using FactoryManagementSoftware.DAL;
 using System;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
@@ -198,21 +199,45 @@ namespace FactoryManagementSoftware.UI
             return custID;
         }
 
-        private void loadForecastList()
+        private void UIDesign()
         {
-            //get keyword from text box
-            string keywords = cmbCust.Text;
+            dgvForecastReport.Columns["mc_ton"].HeaderCell.Style.BackColor = Color.DeepSkyBlue;
+            dgvForecastReport.Columns["item_weight"].HeaderCell.Style.BackColor = Color.LightYellow;
+            dgvForecastReport.Columns["forecast_one"].HeaderCell.Style.BackColor = Color.LightYellow;
+            dgvForecastReport.Columns["outStock"].HeaderCell.Style.BackColor = Color.LightYellow;
+            dgvForecastReport.Columns["oSant"].HeaderCell.Style.BackColor = Color.LightYellow;
 
-            //check if the keywords has value or not
-            if (!string.IsNullOrEmpty(keywords))
+            dgvForecastReport.Columns["shotOne"].HeaderCell.Style.BackColor = Color.LightYellow;
+            dgvForecastReport.Columns["shotOne"].HeaderCell.Style.ForeColor = Color.Red;
+
+            dgvForecastReport.Columns["forecast_two"].HeaderCell.Style.BackColor = Color.LightCyan;
+            dgvForecastReport.Columns["shotTwo"].HeaderCell.Style.BackColor = Color.LightCyan;
+            dgvForecastReport.Columns["shotTwo"].HeaderCell.Style.ForeColor = Color.Red;
+
+            dgvForecastReport.Columns["forecast_Three"].HeaderCell.Style.BackColor = Color.PeachPuff;
+            dgvForecastReport.Columns["dateRequired"].HeaderCell.Style.ForeColor = Color.Red;
+
+            dgvForecastReport.Columns["shotTwo"].HeaderCell.Style.ForeColor = Color.Red;
+
+            dgvForecastReport.Columns["stock_qty"].HeaderCell.Style.BackColor = Color.Pink;
+            dgvForecastReport.Columns["stock_qty"].HeaderCell.Style.ForeColor = Color.Blue;
+        }
+
+        private void searchForecastList()
+        {
+            string keywords = cmbCust.Text;
+            string itemName = txtSearch.Text;
+            if (!string.IsNullOrEmpty(keywords) && !string.IsNullOrEmpty(itemName))
             {
-                DataTable dt = dalItemCust.custSearch(keywords);
+                DataTable dt = dalItemCust.forecastSearch(keywords,itemName);
                 float outStock = 0;
                 float forecastOne = 0;
                 float forecastTwo = 0;
                 dgvForecastReport.Rows.Clear();
+                UIDesign();
                 foreach (DataRow item in dt.Rows)
                 {
+
                     float f = 0;
                     if (!string.IsNullOrEmpty(item["item_weight"].ToString()))
                     {
@@ -220,6 +245,7 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     int n = dgvForecastReport.Rows.Add();
+
                     dgvForecastReport.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
                     dgvForecastReport.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
                     dgvForecastReport.Rows[n].Cells["item_color"].Value = item["item_color"].ToString();
@@ -230,7 +256,116 @@ namespace FactoryManagementSoftware.UI
                     forecastTwo = 0;
                     if (dt2.Rows.Count > 0)
                     {
-                       
+                        foreach (DataRow forecast in dt2.Rows)
+                        {
+                            forecastOne = Convert.ToSingle(forecast["forecast_one"]);
+                            forecastTwo = Convert.ToSingle(forecast["forecast_two"]);
+                            string month = forecast["forecast_current_month"].ToString();
+                            dgvForecastReport.Columns["forecast_one"].HeaderText = "F/cast " + getShortMonth(month, 1);
+                            dgvForecastReport.Columns["forecast_two"].HeaderText = "F/cast " + getShortMonth(month, 2);
+                            dgvForecastReport.Columns["forecast_three"].HeaderText = "F/cast " + getShortMonth(month, 3);
+                            dgvForecastReport.Columns["shotOne"].HeaderText = "SHOT FOR " + getShortMonth(month, 1);
+                            dgvForecastReport.Columns["shotTwo"].HeaderText = "SHOT FOR " + getShortMonth(month, 2);
+                            dgvForecastReport.Rows[n].Cells["forecast_one"].Value = forecastOne.ToString();
+                            dgvForecastReport.Rows[n].Cells["forecast_two"].Value = forecastTwo.ToString();
+                            dgvForecastReport.Rows[n].Cells["forecast_three"].Value = forecast["forecast_three"].ToString();
+
+                            DataTable dt3 = daltrfHist.outSearch(cmbCust.Text, getMonthValue(month), item["item_code"].ToString());
+                            outStock = 0;
+                            if (dt3.Rows.Count > 0)
+                            {
+                                foreach (DataRow outRecord in dt3.Rows)
+                                {
+                                    outStock += Convert.ToSingle(outRecord["trf_hist_qty"]);
+                                }
+                            }
+                            dgvForecastReport.Rows[n].Cells["outStock"].Value = outStock.ToString();
+                        }
+                    }
+                    else
+                    {
+                        dgvForecastReport.Rows[n].Cells["forecast_one"].Value = 0;
+                        dgvForecastReport.Rows[n].Cells["forecast_two"].Value = 0;
+                        dgvForecastReport.Rows[n].Cells["forecast_three"].Value = 0;
+                    }
+                    float readyStock = Convert.ToSingle(dalItem.getStockQty(item["item_code"].ToString()));
+                    dgvForecastReport.Rows[n].Cells["stock_qty"].Value = readyStock.ToString();
+                    float oSant = forecastOne - outStock;
+                    dgvForecastReport.Rows[n].Cells["oSant"].Value = oSant.ToString();
+
+                    float shotOne = 0;
+                    if (oSant > 0)
+                    {
+                        shotOne = readyStock - oSant;
+                    }
+                    else
+                    {
+                        shotOne = readyStock;
+                    }
+                    dgvForecastReport.Rows[n].Cells["shotOne"].Value = shotOne.ToString();
+
+                    float shotTwo = 0;
+                    shotTwo = shotOne - forecastTwo;
+                    dgvForecastReport.Rows[n].Cells["shotTwo"].Value = shotTwo.ToString();
+                }
+            }
+            else
+            {
+                dgvForecastReport.DataSource = null;
+            }
+        }
+
+        private void loadForecastList()
+        {
+            //get keyword from text box
+            string keywords = cmbCust.Text;
+            //bool rowColorChange = true;
+            //check if the keywords has value or not
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                
+                DataTable dt = dalItemCust.custSearch(keywords);
+                float outStock = 0;
+                float forecastOne = 0;
+                float forecastTwo = 0;
+                dgvForecastReport.Rows.Clear();
+
+                UIDesign();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    
+                    float f = 0;
+                    if (!string.IsNullOrEmpty(item["item_weight"].ToString()))
+                    {
+                        f = Convert.ToSingle(item["item_weight"]);
+                    }
+
+                    int n = dgvForecastReport.Rows.Add();
+
+                    //if (rowColorChange)
+                    //{
+                    //    dgvForecastReport.Rows[n].DefaultCellStyle.BackColor = Control.DefaultBackColor;
+                    //    rowColorChange = false;
+                    //}
+                    //else
+                    //{
+                    //    dgvForecastReport.Rows[n].DefaultCellStyle.BackColor = Color.White;
+                    //    rowColorChange = true;
+                    //}
+
+                    dgvForecastReport.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
+                    dgvForecastReport.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
+                    dgvForecastReport.Rows[n].Cells["item_color"].Value = item["item_color"].ToString();
+                    dgvForecastReport.Rows[n].Cells["item_weight"].Value = f.ToString("0.00");
+
+                    DataTable dt2 = dalForecast.existsSearch(item["item_code"].ToString(), getCustID(keywords));
+                    forecastOne = 0;
+                    forecastTwo = 0;
+                    if (dt2.Rows.Count > 0)
+                    {
+
+                        
                         foreach (DataRow forecast in dt2.Rows)
                         {
                             forecastOne = Convert.ToSingle(forecast["forecast_one"]);
@@ -239,6 +374,8 @@ namespace FactoryManagementSoftware.UI
                             dgvForecastReport.Columns["forecast_one"].HeaderText = "F/cast "+getShortMonth(month,1);
                             dgvForecastReport.Columns["forecast_two"].HeaderText = "F/cast " + getShortMonth(month, 2);
                             dgvForecastReport.Columns["forecast_three"].HeaderText = "F/cast " + getShortMonth(month, 3);
+                            dgvForecastReport.Columns["shotOne"].HeaderText = "SHOT FOR " + getShortMonth(month, 1);
+                            dgvForecastReport.Columns["shotTwo"].HeaderText = "SHOT FOR " + getShortMonth(month, 2);
                             dgvForecastReport.Rows[n].Cells["forecast_one"].Value = forecastOne.ToString();
                             dgvForecastReport.Rows[n].Cells["forecast_two"].Value = forecastTwo.ToString();
                             dgvForecastReport.Rows[n].Cells["forecast_three"].Value = forecast["forecast_three"].ToString();
@@ -301,6 +438,18 @@ namespace FactoryManagementSoftware.UI
             loadForecastList();
             Cursor = Cursors.Arrow; // change cursor to normal type
             btnCheck.Enabled = true;
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty(txtSearch.Text))
+            {
+                searchForecastList();
+            }
+            else
+            {
+                loadForecastList();
+            }
         }
     }
 }

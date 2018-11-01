@@ -48,12 +48,16 @@
             this.lblSearch = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.cmbItemCategory = new System.Windows.Forms.ComboBox();
+            this.cmbMaterialType = new System.Windows.Forms.ComboBox();
             this.lblItemCategory = new System.Windows.Forms.Label();
             this.txtColor = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtWeight = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmbMasterBatch = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
@@ -63,7 +67,7 @@
             // 
             this.lblItemCode.AutoSize = true;
             this.lblItemCode.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemCode.Location = new System.Drawing.Point(22, 31);
+            this.lblItemCode.Location = new System.Drawing.Point(288, 29);
             this.lblItemCode.Name = "lblItemCode";
             this.lblItemCode.Size = new System.Drawing.Size(110, 28);
             this.lblItemCode.TabIndex = 0;
@@ -72,7 +76,7 @@
             // txtItemCode
             // 
             this.txtItemCode.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtItemCode.Location = new System.Drawing.Point(27, 62);
+            this.txtItemCode.Location = new System.Drawing.Point(293, 60);
             this.txtItemCode.Name = "txtItemCode";
             this.txtItemCode.Size = new System.Drawing.Size(221, 34);
             this.txtItemCode.TabIndex = 1;
@@ -82,7 +86,7 @@
             // 
             this.lblItemName.AutoSize = true;
             this.lblItemName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemName.Location = new System.Drawing.Point(263, 31);
+            this.lblItemName.Location = new System.Drawing.Point(288, 103);
             this.lblItemName.Name = "lblItemName";
             this.lblItemName.Size = new System.Drawing.Size(116, 28);
             this.lblItemName.TabIndex = 2;
@@ -91,7 +95,7 @@
             // txtItemName
             // 
             this.txtItemName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtItemName.Location = new System.Drawing.Point(268, 62);
+            this.txtItemName.Location = new System.Drawing.Point(293, 134);
             this.txtItemName.Name = "txtItemName";
             this.txtItemName.Size = new System.Drawing.Size(221, 34);
             this.txtItemName.TabIndex = 3;
@@ -99,11 +103,12 @@
             // 
             // btnDelete
             // 
+            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelete.Location = new System.Drawing.Point(1235, 55);
+            this.btnDelete.Location = new System.Drawing.Point(1209, 55);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(84, 48);
+            this.btnDelete.Size = new System.Drawing.Size(100, 50);
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "DELETE";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -111,11 +116,12 @@
             // 
             // btnInsert
             // 
+            this.btnInsert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnInsert.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnInsert.Location = new System.Drawing.Point(1338, 55);
+            this.btnInsert.Location = new System.Drawing.Point(1339, 55);
             this.btnInsert.Margin = new System.Windows.Forms.Padding(2);
             this.btnInsert.Name = "btnInsert";
-            this.btnInsert.Size = new System.Drawing.Size(112, 48);
+            this.btnInsert.Size = new System.Drawing.Size(100, 50);
             this.btnInsert.TabIndex = 5;
             this.btnInsert.Text = "ADD";
             this.btnInsert.UseVisualStyleBackColor = true;
@@ -123,11 +129,12 @@
             // 
             // btnReset
             // 
+            this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnReset.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReset.Location = new System.Drawing.Point(1465, 55);
             this.btnReset.Margin = new System.Windows.Forms.Padding(2);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(84, 48);
+            this.btnReset.Size = new System.Drawing.Size(100, 50);
             this.btnReset.TabIndex = 6;
             this.btnReset.Text = "RESET";
             this.btnReset.UseVisualStyleBackColor = true;
@@ -149,13 +156,13 @@
             this.item_weight,
             this.dgvcQty,
             this.dgvcOrd});
-            this.dgvItem.Location = new System.Drawing.Point(27, 215);
+            this.dgvItem.Location = new System.Drawing.Point(27, 289);
             this.dgvItem.Margin = new System.Windows.Forms.Padding(2);
             this.dgvItem.Name = "dgvItem";
             this.dgvItem.ReadOnly = true;
             this.dgvItem.RowTemplate.Height = 24;
             this.dgvItem.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvItem.Size = new System.Drawing.Size(1522, 477);
+            this.dgvItem.Size = new System.Drawing.Size(1522, 403);
             this.dgvItem.TabIndex = 7;
             this.dgvItem.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvItem_CellMouseDoubleClick);
             // 
@@ -215,18 +222,20 @@
             // 
             // txtItemSearch
             // 
+            this.txtItemSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtItemSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtItemSearch.Location = new System.Drawing.Point(122, 176);
+            this.txtItemSearch.Location = new System.Drawing.Point(1186, 250);
             this.txtItemSearch.Name = "txtItemSearch";
-            this.txtItemSearch.Size = new System.Drawing.Size(275, 34);
+            this.txtItemSearch.Size = new System.Drawing.Size(363, 34);
             this.txtItemSearch.TabIndex = 9;
             this.txtItemSearch.TextChanged += new System.EventHandler(this.txtItemSearch_TextChanged);
             // 
             // lblSearch
             // 
+            this.lblSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSearch.AutoSize = true;
             this.lblSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSearch.Location = new System.Drawing.Point(30, 176);
+            this.lblSearch.Location = new System.Drawing.Point(1110, 250);
             this.lblSearch.Name = "lblSearch";
             this.lblSearch.Size = new System.Drawing.Size(70, 28);
             this.lblSearch.TabIndex = 8;
@@ -240,30 +249,30 @@
             // 
             this.errorProvider2.ContainerControl = this;
             // 
-            // cmbItemCategory
+            // cmbMaterialType
             // 
-            this.cmbItemCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbItemCategory.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbItemCategory.FormattingEnabled = true;
-            this.cmbItemCategory.Location = new System.Drawing.Point(510, 62);
-            this.cmbItemCategory.Name = "cmbItemCategory";
-            this.cmbItemCategory.Size = new System.Drawing.Size(221, 36);
-            this.cmbItemCategory.TabIndex = 10;
+            this.cmbMaterialType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbMaterialType.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbMaterialType.FormattingEnabled = true;
+            this.cmbMaterialType.Location = new System.Drawing.Point(555, 58);
+            this.cmbMaterialType.Name = "cmbMaterialType";
+            this.cmbMaterialType.Size = new System.Drawing.Size(221, 36);
+            this.cmbMaterialType.TabIndex = 10;
             // 
             // lblItemCategory
             // 
             this.lblItemCategory.AutoSize = true;
             this.lblItemCategory.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemCategory.Location = new System.Drawing.Point(505, 31);
+            this.lblItemCategory.Location = new System.Drawing.Point(550, 27);
             this.lblItemCategory.Name = "lblItemCategory";
-            this.lblItemCategory.Size = new System.Drawing.Size(100, 28);
+            this.lblItemCategory.Size = new System.Drawing.Size(130, 28);
             this.lblItemCategory.TabIndex = 11;
-            this.lblItemCategory.Text = "*Category";
+            this.lblItemCategory.Text = "Material Type";
             // 
             // txtColor
             // 
             this.txtColor.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtColor.Location = new System.Drawing.Point(750, 62);
+            this.txtColor.Location = new System.Drawing.Point(819, 60);
             this.txtColor.Name = "txtColor";
             this.txtColor.Size = new System.Drawing.Size(221, 34);
             this.txtColor.TabIndex = 13;
@@ -272,7 +281,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(745, 31);
+            this.label1.Location = new System.Drawing.Point(814, 29);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 28);
             this.label1.TabIndex = 12;
@@ -281,7 +290,7 @@
             // txtWeight
             // 
             this.txtWeight.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtWeight.Location = new System.Drawing.Point(987, 62);
+            this.txtWeight.Location = new System.Drawing.Point(819, 136);
             this.txtWeight.Name = "txtWeight";
             this.txtWeight.Size = new System.Drawing.Size(221, 34);
             this.txtWeight.TabIndex = 15;
@@ -290,11 +299,51 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(982, 31);
+            this.label2.Location = new System.Drawing.Point(814, 105);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(75, 28);
             this.label2.TabIndex = 14;
             this.label2.Text = "Weight";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(550, 103);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(125, 28);
+            this.label3.TabIndex = 17;
+            this.label3.Text = "Master Batch";
+            // 
+            // cmbMasterBatch
+            // 
+            this.cmbMasterBatch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbMasterBatch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbMasterBatch.FormattingEnabled = true;
+            this.cmbMasterBatch.Location = new System.Drawing.Point(555, 134);
+            this.cmbMasterBatch.Name = "cmbMasterBatch";
+            this.cmbMasterBatch.Size = new System.Drawing.Size(221, 36);
+            this.cmbMasterBatch.TabIndex = 16;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(31, 29);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(100, 28);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "*Category";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(36, 60);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(221, 36);
+            this.comboBox2.TabIndex = 18;
             // 
             // frmItem
             // 
@@ -303,12 +352,16 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1582, 703);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.cmbMasterBatch);
             this.Controls.Add(this.txtWeight);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtColor);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblItemCategory);
-            this.Controls.Add(this.cmbItemCategory);
+            this.Controls.Add(this.cmbMaterialType);
             this.Controls.Add(this.txtItemSearch);
             this.Controls.Add(this.lblSearch);
             this.Controls.Add(this.dgvItem);
@@ -349,7 +402,7 @@
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.Label lblItemCategory;
-        private System.Windows.Forms.ComboBox cmbItemCategory;
+        private System.Windows.Forms.ComboBox cmbMaterialType;
         private System.Windows.Forms.DataGridViewTextBoxColumn Category;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcItemCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcItemName;
@@ -361,6 +414,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtColor;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cmbMasterBatch;
     }
 }
 

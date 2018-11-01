@@ -19,7 +19,7 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_forecast (cust_id, item_code, forecast_one, forecast_two, forecast_three, ,forecast_current_month, forecast_updtd_date, forecast_updtd_by) VALUES (@cust_id, @item_code, @forecast_one, @forecast_two, @forecast_three, @forecast_current_month, @forecast_updtd_date, @forecast_updtd_by)";
+                String sql = "INSERT INTO tbl_forecast (cust_id, item_code, forecast_one, forecast_two, forecast_three, forecast_current_month, forecast_updtd_date, forecast_updtd_by) VALUES (@cust_id, @item_code, @forecast_one, @forecast_two, @forecast_three, @forecast_current_month, @forecast_updtd_date, @forecast_updtd_by)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@cust_id", u.cust_id);
