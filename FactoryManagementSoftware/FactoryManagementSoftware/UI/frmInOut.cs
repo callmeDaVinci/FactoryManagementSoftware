@@ -59,7 +59,7 @@ namespace FactoryManagementSoftware.UI
             {
                 int n = dgvFactoryStock.Rows.Add();
                 dgvFactoryStock.Rows[n].Cells["fac_name"].Value = stock["fac_name"].ToString();
-                dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = stock["stock_qty"].ToString();
+                dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = Convert.ToSingle(stock["stock_qty"]).ToString("0.00");
 
             }
             dgvFactoryStock.ClearSelection();
@@ -83,7 +83,7 @@ namespace FactoryManagementSoftware.UI
                     dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
                     dgvItem.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
                     dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
-                    dgvItem.Rows[n].Cells["item_qty"].Value = item["item_qty"].ToString();
+                    dgvItem.Rows[n].Cells["item_qty"].Value = Convert.ToSingle(item["item_qty"]).ToString("0.00");
                     dgvItem.Rows[n].Cells["item_ord"].Value = item["item_ord"].ToString();
                 }
 
@@ -130,7 +130,7 @@ namespace FactoryManagementSoftware.UI
                     dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["trf_hist_item_name"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = trf["trf_hist_qty"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00");
                     dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = trf["trf_hist_added_by"].ToString();
                 }
@@ -153,7 +153,7 @@ namespace FactoryManagementSoftware.UI
                     dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["trf_hist_item_name"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = trf["trf_hist_qty"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00");
                     dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = trf["trf_hist_added_by"].ToString();
                 }
@@ -246,6 +246,46 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
+        private void unitDataSource()
+        {
+            string itemCat = cmbTrfItemCat.Text;
+            DataTable dt = new DataTable();
+            dt.Columns.Add("item_unit");
+
+            if (itemCat.Equals("RAW Material") || itemCat.Equals("Master Batch") || itemCat.Equals("Pigment"))
+            {
+                dt.Clear();
+                dt.Rows.Add("kg");
+                dt.Rows.Add("g");
+                
+            }
+            else if(itemCat.Equals("Part") || itemCat.Equals("Carton"))
+            {
+                dt.Clear();
+                dt.Rows.Add("set");
+                dt.Rows.Add("piece");
+                cmbTrfQtyUnit.DataSource = dt;
+            }
+            else if(!string.IsNullOrEmpty(itemCat))
+            {
+                dt.Clear();
+                dt.Rows.Add("set");
+                dt.Rows.Add("piece");
+                dt.Rows.Add("kg");
+                dt.Rows.Add("g");
+                
+            }
+            else
+            {
+                dt = null;
+            }
+
+            cmbTrfQtyUnit.DataSource = dt;
+            cmbTrfQtyUnit.DisplayMember = "item_unit";
+            cmbTrfQtyUnit.SelectedIndex = -1;
+
+        }
+
         #endregion
                 
         #region item list double click
@@ -328,6 +368,8 @@ namespace FactoryManagementSoftware.UI
                 cmbTrfItemName.DataSource = distinctTable;
                 cmbTrfItemName.DisplayMember = "item_name";
                 cmbTrfItemName.ValueMember = "item_name";
+
+                unitDataSource();
 
                 if(string.IsNullOrEmpty(cmbTrfItemName.Text))
                 {
@@ -547,6 +589,31 @@ namespace FactoryManagementSoftware.UI
             errorProvider4.Clear();
         }
 
+        private float checkQty(string keyword)
+        {
+            float qty = Convert.ToSingle(keyword);
+            string unit = cmbTrfQtyUnit.Text;
+
+            if(unit.Equals("g"))
+            {
+                qty = qty / 1000;
+            }
+            else if (string.IsNullOrEmpty(unit))
+            {
+                qty = 0;
+            }
+            return qty;
+        }
+
+        private string checkUnit(string keyword)
+        {
+            string unit = keyword;
+            if (unit.Equals("g"))
+            {
+                unit = "kg";
+            }
+            return unit;
+        }
         #endregion
 
         #region Function: Insert/Reset
@@ -583,8 +650,8 @@ namespace FactoryManagementSoftware.UI
                     utrfHist.trf_hist_item_name = cmbTrfItemName.Text;
                     utrfHist.trf_hist_from = locationFrom;
                     utrfHist.trf_hist_to = locationTo;
-                    utrfHist.trf_hist_qty = Convert.ToSingle(txtTrfQty.Text);
-                    utrfHist.trf_hist_unit = cmbTrfQtyUnit.Text;
+                    utrfHist.trf_hist_qty = checkQty(txtTrfQty.Text);
+                    utrfHist.trf_hist_unit = checkUnit(cmbTrfQtyUnit.Text);
                     utrfHist.trf_hist_trf_date = dtpTrfDate.Value.Date;
                     utrfHist.trf_hist_note = txtTrfNote.Text;
                     utrfHist.trf_hist_added_date = DateTime.Now;
@@ -597,9 +664,10 @@ namespace FactoryManagementSoftware.UI
                     {
                         //Data Successfully Inserted
                         //MessageBox.Show("Transfer record successfully created");
-
-                        stockInandOut();
                         
+                        stockInandOut();
+                        cmbTrfQtyUnit.SelectedIndex = -1;
+
                     }
                     else
                     {
@@ -636,7 +704,7 @@ namespace FactoryManagementSoftware.UI
                     //Update data
                     uStock.stock_item_code = cmbTrfItemCode.Text;
                     uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfFrom.Text));
-                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfFrom.Text) - Convert.ToSingle(txtTrfQty.Text);
+                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfFrom.Text) - checkQty(txtTrfQty.Text);
                     uStock.stock_updtd_date = DateTime.Now;
                     uStock.stock_updtd_by = 0;
 
@@ -650,6 +718,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         //data updated successfully
                         //MessageBox.Show("Stock successfully updated ");
+                        cmbTrfQtyUnit.SelectedIndex = -1;
                     }
                     else
                     {
@@ -665,7 +734,7 @@ namespace FactoryManagementSoftware.UI
                 //Add data
                     uStock.stock_item_code = cmbTrfItemCode.Text;
                     uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfFrom.Text));
-                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfFrom.Text) - Convert.ToSingle(txtTrfQty.Text);
+                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfFrom.Text) - checkQty(txtTrfQty.Text);
                     uStock.stock_updtd_date = DateTime.Now;
                     uStock.stock_updtd_by = 0;
 
@@ -676,6 +745,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         //Data Successfully Inserted
                         //MessageBox.Show("Stock successfully created");
+                        cmbTrfQtyUnit.SelectedIndex = -1;
                     }
                     else
                     {
@@ -694,7 +764,7 @@ namespace FactoryManagementSoftware.UI
                     //Update data
                     uStock.stock_item_code = cmbTrfItemCode.Text;
                     uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfTo.Text));
-                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfTo.Text) + Convert.ToSingle(txtTrfQty.Text);
+                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfTo.Text) + checkQty(txtTrfQty.Text);
                     uStock.stock_updtd_date = DateTime.Now;
                     uStock.stock_updtd_by = 0;
 
@@ -724,7 +794,7 @@ namespace FactoryManagementSoftware.UI
 
                     uStock.stock_item_code = cmbTrfItemCode.Text;
                     uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfTo.Text));
-                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfTo.Text) + Convert.ToSingle(txtTrfQty.Text);
+                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfTo.Text) + checkQty(txtTrfQty.Text);
                     uStock.stock_updtd_date = DateTime.Now;
                     uStock.stock_updtd_by = 0;
 
@@ -766,7 +836,7 @@ namespace FactoryManagementSoftware.UI
 
             dgvTotal.Rows.Clear();
             dgvTotal.Rows.Add();
-            dgvTotal.Rows[0].Cells["Total"].Value = totalStock.ToString();
+            dgvTotal.Rows[0].Cells["Total"].Value = totalStock.ToString("0.00");
             dgvTotal.ClearSelection();
 
             //Update data

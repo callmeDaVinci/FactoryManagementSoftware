@@ -12,6 +12,7 @@ namespace FactoryManagementSoftware.DAL
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
         #region Select Data from Database
+
         public DataTable Select()
         {
             //static methodd to connect database
@@ -45,6 +46,33 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
+        public DataTable catSelect(string category)
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            DataTable dt = new DataTable();
+            try
+            {
+                String sql = "SELECT * FROM tbl_item WHERE item_cat = @category";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@category", category);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return dt;
+        }
+
         #endregion
 
         #region Insert Data in Database
@@ -55,14 +83,15 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_item (item_code, item_name, item_cat, item_color, item_weight, item_added_date, item_added_by) VALUES (@item_code, @item_name, @item_cat, @item_color, @item_weight, @item_added_date, @item_added_by)";
+                String sql = "INSERT INTO tbl_item (item_code, item_name, item_cat, item_color, item_part_weight, item_runner_weight, item_added_date, item_added_by) VALUES (@item_code, @item_name, @item_cat, @item_color, @item_part_weight, @item_runner_weight, @item_added_date, @item_added_by)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@item_code", u.item_code);
                 cmd.Parameters.AddWithValue("@item_name", u.item_name);
                 cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
                 cmd.Parameters.AddWithValue("@item_color", u.item_color);
-                cmd.Parameters.AddWithValue("@item_weight", u.item_weight);
+                cmd.Parameters.AddWithValue("@item_part_weight", u.item_part_weight);
+                cmd.Parameters.AddWithValue("@item_runner_weight", u.item_runner_weight);
                 cmd.Parameters.AddWithValue("@item_added_date", u.item_added_date);
                 cmd.Parameters.AddWithValue("@item_added_by", u.item_added_by);
 
@@ -103,14 +132,15 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "UPDATE tbl_item SET item_name=@item_name, item_cat=@item_cat, item_color=@item_color, item_weight=@item_weight, item_updtd_date=@item_updtd_date, item_updtd_by=@item_updtd_by WHERE item_code=@item_code";
+                String sql = "UPDATE tbl_item SET item_name=@item_name, item_cat=@item_cat, item_color=@item_color, item_part_weight=@item_part_weight, item_runner_weight=@item_runner_weight, item_updtd_date=@item_updtd_date, item_updtd_by=@item_updtd_by WHERE item_code=@item_code";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@item_code", u.item_code);
                 cmd.Parameters.AddWithValue("@item_name", u.item_name);
                 cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
                 cmd.Parameters.AddWithValue("@item_color", u.item_color);
-                cmd.Parameters.AddWithValue("@item_weight", u.item_weight);
+                cmd.Parameters.AddWithValue("@item_part_weight", u.item_part_weight);
+                cmd.Parameters.AddWithValue("@item_runner_weight", u.item_runner_weight);
                 cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
                 cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
                 

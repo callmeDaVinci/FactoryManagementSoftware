@@ -46,16 +46,18 @@
             this.forecastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataInputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forecastReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.forecastReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
             // 
+            this.menuStrip.BackColor = System.Drawing.Color.White;
+            this.menuStrip.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.adminToolStripMenuItem,
@@ -191,6 +193,13 @@
             this.reportToolStripMenuItem.Size = new System.Drawing.Size(66, 24);
             this.reportToolStripMenuItem.Text = "Report";
             // 
+            // forecastReportToolStripMenuItem
+            // 
+            this.forecastReportToolStripMenuItem.Name = "forecastReportToolStripMenuItem";
+            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
+            this.forecastReportToolStripMenuItem.Text = "Forecast Report";
+            this.forecastReportToolStripMenuItem.Click += new System.EventHandler(this.forecastReportToolStripMenuItem_Click);
+            // 
             // statusStrip
             // 
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -208,13 +217,6 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
-            // 
-            // forecastReportToolStripMenuItem
-            // 
-            this.forecastReportToolStripMenuItem.Name = "forecastReportToolStripMenuItem";
-            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.forecastReportToolStripMenuItem.Text = "Forecast Report";
-            this.forecastReportToolStripMenuItem.Click += new System.EventHandler(this.forecastReportToolStripMenuItem_Click);
             // 
             // MainDashboard
             // 

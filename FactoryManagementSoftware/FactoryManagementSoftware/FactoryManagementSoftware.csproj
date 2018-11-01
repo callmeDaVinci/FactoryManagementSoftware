@@ -124,6 +124,12 @@
     <Compile Include="UI\frmItemCust.Designer.cs">
       <DependentUpon>frmItemCust.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmItemEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmItemEdit.Designer.cs">
+      <DependentUpon>frmItemEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmOrder.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,6 +189,9 @@
     </Compile>
     <EmbeddedResource Include="UI\frmItemCust.resx">
       <DependentUpon>frmItemCust.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmItemEdit.resx">
+      <DependentUpon>frmItemEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrder.resx">
       <DependentUpon>frmOrder.cs</DependentUpon>
