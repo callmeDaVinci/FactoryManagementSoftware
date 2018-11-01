@@ -39,7 +39,9 @@ namespace FactoryManagementSoftware
         private void frmItem_Load(object sender, EventArgs e)
         {
             loadItemCategoryData();
-            resetForm();   
+            resetForm();
+
+          
         }
 
         private void loadData()
@@ -127,22 +129,6 @@ namespace FactoryManagementSoftware
             currentItemRunnerWeight = null;
 
             loadData();
-        }
-
-        #endregion
-
-        #region Data Grid View
-        private void dgvItem_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            //get the index of particular row
-            int rowIndex = e.RowIndex;
-
-            currentItemCat = dgvItem.Rows[rowIndex].Cells["Category"].Value.ToString();
-            currentItemCode = dgvItem.Rows[rowIndex].Cells["dgvcItemCode"].Value.ToString();
-            currentItemName = dgvItem.Rows[rowIndex].Cells["dgvcItemName"].Value.ToString();
-            currentItemColor = dgvItem.Rows[rowIndex].Cells["item_color"].Value.ToString();
-            currentItemPartWeight = Convert.ToSingle(dgvItem.Rows[rowIndex].Cells["item_part_weight"].Value).ToString("0.00");
-            currentItemRunnerWeight = Convert.ToSingle(dgvItem.Rows[rowIndex].Cells["item_runner_weight"].Value).ToString("0.00");
         }
 
         #endregion
@@ -268,6 +254,27 @@ namespace FactoryManagementSoftware
 
 
         #endregion
+
+        private void dgvItem_Sorted(object sender, EventArgs e)
+        {         
+            bool rowColorChange = true;
+            foreach (DataGridViewRow row in dgvItem.Rows)
+            {
+                int n = row.Index;
+                if (rowColorChange)
+                {
+                    dgvItem.Rows[n].DefaultCellStyle.BackColor = Control.DefaultBackColor;
+                    rowColorChange = false;
+                }
+                else
+                {
+                    dgvItem.Rows[n].DefaultCellStyle.BackColor = Color.White;
+                    rowColorChange = true;
+                }
+            }
+            dgvItem.ClearSelection();
+
+        }
     }
 
 }
