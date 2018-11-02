@@ -202,7 +202,8 @@ namespace FactoryManagementSoftware.UI
         private void UIDesign()
         {
             dgvForecastReport.Columns["mc_ton"].HeaderCell.Style.BackColor = Color.DeepSkyBlue;
-            dgvForecastReport.Columns["item_weight"].HeaderCell.Style.BackColor = Color.LightYellow;
+            dgvForecastReport.Columns["item_part_weight"].HeaderCell.Style.BackColor = Color.LightYellow;
+            dgvForecastReport.Columns["item_runner_weight"].HeaderCell.Style.BackColor = Color.LightYellow;
             dgvForecastReport.Columns["forecast_one"].HeaderCell.Style.BackColor = Color.LightYellow;
             dgvForecastReport.Columns["outStock"].HeaderCell.Style.BackColor = Color.LightYellow;
             dgvForecastReport.Columns["oSant"].HeaderCell.Style.BackColor = Color.LightYellow;
@@ -335,10 +336,15 @@ namespace FactoryManagementSoftware.UI
                 foreach (DataRow item in dt.Rows)
                 {
                     
-                    float f = 0;
-                    if (!string.IsNullOrEmpty(item["item_weight"].ToString()))
+                    float partf = 0;
+                    float runnerf = 0;
+                    if (!string.IsNullOrEmpty(item["item_part_weight"].ToString()))
                     {
-                        f = Convert.ToSingle(item["item_weight"]);
+                        partf = Convert.ToSingle(item["item_part_weight"]);
+                    }
+                    if (!string.IsNullOrEmpty(item["item_runner_weight"].ToString()))
+                    {
+                        runnerf = Convert.ToSingle(item["item_runner_weight"]);
                     }
 
                     int n = dgvForecastReport.Rows.Add();
@@ -357,7 +363,8 @@ namespace FactoryManagementSoftware.UI
                     dgvForecastReport.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
                     dgvForecastReport.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
                     dgvForecastReport.Rows[n].Cells["item_color"].Value = item["item_color"].ToString();
-                    dgvForecastReport.Rows[n].Cells["item_weight"].Value = f.ToString("0.00");
+                    dgvForecastReport.Rows[n].Cells["item_part_weight"].Value = partf.ToString("0.00");
+                    dgvForecastReport.Rows[n].Cells["item_runner_weight"].Value = runnerf.ToString("0.00");
 
                     DataTable dt2 = dalForecast.existsSearch(item["item_code"].ToString(), getCustID(keywords));
                     forecastOne = 0;

@@ -50,6 +50,8 @@
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.txtMcTon = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -157,6 +159,7 @@
             this.cmbCat.Name = "cmbCat";
             this.cmbCat.Size = new System.Drawing.Size(366, 36);
             this.cmbCat.TabIndex = 27;
+            this.cmbCat.SelectedIndexChanged += new System.EventHandler(this.cmbCat_SelectedIndexChanged);
             // 
             // btnSave
             // 
@@ -181,6 +184,7 @@
             this.txtItemName.Name = "txtItemName";
             this.txtItemName.Size = new System.Drawing.Size(366, 34);
             this.txtItemName.TabIndex = 23;
+            this.txtItemName.TextChanged += new System.EventHandler(this.txtItemName_TextChanged);
             // 
             // lblItemName
             // 
@@ -200,6 +204,7 @@
             this.txtItemCode.Name = "txtItemCode";
             this.txtItemCode.Size = new System.Drawing.Size(366, 34);
             this.txtItemCode.TabIndex = 21;
+            this.txtItemCode.TextChanged += new System.EventHandler(this.txtItemCode_TextChanged);
             // 
             // lblItemCode
             // 
@@ -244,6 +249,7 @@
             this.button1.TabIndex = 39;
             this.button1.Text = "Cancel";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // errorProvider1
             // 
@@ -257,12 +263,34 @@
             // 
             this.errorProvider3.ContainerControl = this;
             // 
+            // txtMcTon
+            // 
+            this.txtMcTon.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMcTon.Location = new System.Drawing.Point(448, 390);
+            this.txtMcTon.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtMcTon.Name = "txtMcTon";
+            this.txtMcTon.Size = new System.Drawing.Size(366, 34);
+            this.txtMcTon.TabIndex = 41;
+            this.txtMcTon.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMcTon_KeyPress);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(444, 366);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(75, 23);
+            this.label6.TabIndex = 40;
+            this.label6.Text = "MC TON";
+            // 
             // frmItemEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(855, 624);
+            this.Controls.Add(this.txtMcTon);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtRunnerWeight);
             this.Controls.Add(this.label5);
@@ -322,5 +350,7 @@
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.ErrorProvider errorProvider3;
+        private System.Windows.Forms.TextBox txtMcTon;
+        private System.Windows.Forms.Label label6;
     }
 }

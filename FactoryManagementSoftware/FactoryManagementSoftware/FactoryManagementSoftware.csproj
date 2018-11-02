@@ -53,6 +53,7 @@
     <Compile Include="BLL\itemBLL.cs" />
     <Compile Include="BLL\itemCatBLL.cs" />
     <Compile Include="BLL\itemCustBLL.cs" />
+    <Compile Include="BLL\joinBLL.cs" />
     <Compile Include="BLL\ordBLL.cs" />
     <Compile Include="BLL\stockBLL.cs" />
     <Compile Include="BLL\trfCatBLL.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="DAL\itemCatDAL.cs" />
     <Compile Include="DAL\itemCustDAL.cs" />
     <Compile Include="DAL\itemDAL.cs" />
+    <Compile Include="DAL\joinDAL.cs" />
     <Compile Include="DAL\ordDAL.cs" />
     <Compile Include="DAL\stockDAL.cs" />
     <Compile Include="DAL\trfCatDAL.cs" />
@@ -130,6 +132,18 @@
     <Compile Include="UI\frmItemEdit.Designer.cs">
       <DependentUpon>frmItemEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmJoin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmJoin.Designer.cs">
+      <DependentUpon>frmJoin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmJoinEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmJoinEdit.Designer.cs">
+      <DependentUpon>frmJoinEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmOrder.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,6 +206,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItemEdit.resx">
       <DependentUpon>frmItemEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmJoin.resx">
+      <DependentUpon>frmJoin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmJoinEdit.resx">
+      <DependentUpon>frmJoinEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrder.resx">
       <DependentUpon>frmOrder.cs</DependentUpon>

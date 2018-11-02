@@ -30,14 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.dgvItem = new System.Windows.Forms.DataGridView();
-            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvcItemCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvcItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_color = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_part_weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_runner_weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvcQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvcOrd = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtItemSearch = new System.Windows.Forms.TextBox();
             this.lblSearch = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
@@ -47,6 +39,17 @@
             this.btnUpdate = new System.Windows.Forms.Button();
             this.cmbCat = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_material = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvcItemCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvcItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_color = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_mc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_part_weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_runner_weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_mb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvcQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvcOrd = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
@@ -65,11 +68,14 @@
             this.dgvItem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItem.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Category,
+            this.item_material,
             this.dgvcItemCode,
             this.dgvcItemName,
             this.item_color,
+            this.item_mc,
             this.item_part_weight,
             this.item_runner_weight,
+            this.item_mb,
             this.dgvcQty,
             this.dgvcOrd});
             this.dgvItem.Location = new System.Drawing.Point(27, 109);
@@ -83,68 +89,6 @@
             this.dgvItem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItem_CellClick);
             this.dgvItem.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItem_CellContentClick);
             this.dgvItem.Sorted += new System.EventHandler(this.dgvItem_Sorted);
-            // 
-            // Category
-            // 
-            this.Category.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.Category.HeaderText = "Category";
-            this.Category.Name = "Category";
-            this.Category.ReadOnly = true;
-            this.Category.Width = 108;
-            // 
-            // dgvcItemCode
-            // 
-            this.dgvcItemCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvcItemCode.HeaderText = "Code";
-            this.dgvcItemCode.Name = "dgvcItemCode";
-            this.dgvcItemCode.ReadOnly = true;
-            // 
-            // dgvcItemName
-            // 
-            this.dgvcItemName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvcItemName.HeaderText = "Name";
-            this.dgvcItemName.Name = "dgvcItemName";
-            this.dgvcItemName.ReadOnly = true;
-            // 
-            // item_color
-            // 
-            this.item_color.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_color.HeaderText = "Color";
-            this.item_color.Name = "item_color";
-            this.item_color.ReadOnly = true;
-            this.item_color.Width = 80;
-            // 
-            // item_part_weight
-            // 
-            this.item_part_weight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_part_weight.HeaderText = "Part Weight";
-            this.item_part_weight.Name = "item_part_weight";
-            this.item_part_weight.ReadOnly = true;
-            this.item_part_weight.Width = 128;
-            // 
-            // item_runner_weight
-            // 
-            this.item_runner_weight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_runner_weight.HeaderText = "Runner Weight";
-            this.item_runner_weight.Name = "item_runner_weight";
-            this.item_runner_weight.ReadOnly = true;
-            this.item_runner_weight.Width = 153;
-            // 
-            // dgvcQty
-            // 
-            this.dgvcQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.dgvcQty.HeaderText = "Quantity";
-            this.dgvcQty.Name = "dgvcQty";
-            this.dgvcQty.ReadOnly = true;
-            this.dgvcQty.Width = 105;
-            // 
-            // dgvcOrd
-            // 
-            this.dgvcOrd.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.dgvcOrd.HeaderText = "Order";
-            this.dgvcOrd.Name = "dgvcOrd";
-            this.dgvcOrd.ReadOnly = true;
-            this.dgvcOrd.Width = 83;
             // 
             // txtItemSearch
             // 
@@ -241,6 +185,92 @@
             this.label1.TabIndex = 29;
             this.label1.Text = "Category";
             // 
+            // Category
+            // 
+            this.Category.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.Category.HeaderText = "Category";
+            this.Category.Name = "Category";
+            this.Category.ReadOnly = true;
+            this.Category.Width = 108;
+            // 
+            // item_material
+            // 
+            this.item_material.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_material.HeaderText = "Material Type";
+            this.item_material.Name = "item_material";
+            this.item_material.ReadOnly = true;
+            this.item_material.Width = 141;
+            // 
+            // dgvcItemCode
+            // 
+            this.dgvcItemCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvcItemCode.HeaderText = "Code";
+            this.dgvcItemCode.Name = "dgvcItemCode";
+            this.dgvcItemCode.ReadOnly = true;
+            // 
+            // dgvcItemName
+            // 
+            this.dgvcItemName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgvcItemName.HeaderText = "Name";
+            this.dgvcItemName.Name = "dgvcItemName";
+            this.dgvcItemName.ReadOnly = true;
+            // 
+            // item_color
+            // 
+            this.item_color.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_color.HeaderText = "Color";
+            this.item_color.Name = "item_color";
+            this.item_color.ReadOnly = true;
+            this.item_color.Width = 80;
+            // 
+            // item_mc
+            // 
+            this.item_mc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_mc.HeaderText = "MC TON";
+            this.item_mc.Name = "item_mc";
+            this.item_mc.ReadOnly = true;
+            this.item_mc.Width = 104;
+            // 
+            // item_part_weight
+            // 
+            this.item_part_weight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_part_weight.HeaderText = "Part Weight";
+            this.item_part_weight.Name = "item_part_weight";
+            this.item_part_weight.ReadOnly = true;
+            this.item_part_weight.Width = 128;
+            // 
+            // item_runner_weight
+            // 
+            this.item_runner_weight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_runner_weight.HeaderText = "Runner Weight";
+            this.item_runner_weight.Name = "item_runner_weight";
+            this.item_runner_weight.ReadOnly = true;
+            this.item_runner_weight.Width = 153;
+            // 
+            // item_mb
+            // 
+            this.item_mb.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_mb.HeaderText = "M Batch Code";
+            this.item_mb.Name = "item_mb";
+            this.item_mb.ReadOnly = true;
+            this.item_mb.Width = 147;
+            // 
+            // dgvcQty
+            // 
+            this.dgvcQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.dgvcQty.HeaderText = "Quantity";
+            this.dgvcQty.Name = "dgvcQty";
+            this.dgvcQty.ReadOnly = true;
+            this.dgvcQty.Width = 105;
+            // 
+            // dgvcOrd
+            // 
+            this.dgvcOrd.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.dgvcOrd.HeaderText = "Order";
+            this.dgvcOrd.Name = "dgvcOrd";
+            this.dgvcOrd.ReadOnly = true;
+            this.dgvcOrd.Width = 83;
+            // 
             // frmItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -283,11 +313,14 @@
         private System.Windows.Forms.ComboBox cmbCat;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Category;
+        private System.Windows.Forms.DataGridViewTextBoxColumn item_material;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcItemCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcItemName;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_color;
+        private System.Windows.Forms.DataGridViewTextBoxColumn item_mc;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_part_weight;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_runner_weight;
+        private System.Windows.Forms.DataGridViewTextBoxColumn item_mb;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvcOrd;
     }

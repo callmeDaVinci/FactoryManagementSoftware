@@ -243,6 +243,7 @@ namespace FactoryManagementSoftware.UI
             dgvFactoryStock.Rows.Clear();
             dgvTotal.Rows.Clear();
 
+            dgvItem.ClearSelection();
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
@@ -292,12 +293,17 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItem_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
+           
             int rowIndex = e.RowIndex;
-            cmbTrfItemCat.Text = dgvItem.Rows[rowIndex].Cells["item_cat"].Value.ToString();
-            cmbTrfItemName.Text = dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
-            cmbTrfItemCode.Text = dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
+            if(rowIndex != -1)
+            {
+                cmbTrfItemCat.Text = dgvItem.Rows[rowIndex].Cells["item_cat"].Value.ToString();
+                cmbTrfItemName.Text = dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
+                cmbTrfItemCode.Text = dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
 
-            refreshList(cmbTrfItemCode.Text);
+                refreshList(cmbTrfItemCode.Text);
+            }
+           
         }
 
         #endregion
@@ -864,5 +870,18 @@ namespace FactoryManagementSoftware.UI
         }
 
         #endregion
+
+        private void dgvItem_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            if (rowIndex != -1)
+            {
+                cmbTrfItemCat.Text = dgvItem.Rows[rowIndex].Cells["item_cat"].Value.ToString();
+                cmbTrfItemName.Text = dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
+                cmbTrfItemCode.Text = dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
+
+                refreshList(cmbTrfItemCode.Text);
+            }
+        }
     }
 }

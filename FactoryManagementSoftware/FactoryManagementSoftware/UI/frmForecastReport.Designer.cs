@@ -39,16 +39,20 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvForecastReport = new System.Windows.Forms.DataGridView();
             this.btnCheck = new System.Windows.Forms.Button();
             this.cmbCust = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_color = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mc_ton = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_part_weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_runner_weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_batch = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.stock_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.forecast_one = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -59,8 +63,6 @@
             this.forecast_two = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.shotTwo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.forecast_three = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.txtSearch = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,7 +88,8 @@
             this.item_name,
             this.item_color,
             this.mc_ton,
-            this.item_weight,
+            this.item_part_weight,
+            this.item_runner_weight,
             this.item_batch,
             this.stock_qty,
             this.forecast_one,
@@ -133,6 +136,25 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "Customer";
             // 
+            // txtSearch
+            // 
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.Location = new System.Drawing.Point(1237, 72);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(320, 30);
+            this.txtSearch.TabIndex = 13;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(1079, 72);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(152, 23);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Item Name Search";
+            // 
             // Column1
             // 
             this.Column1.HeaderText = "Material Type";
@@ -168,13 +190,21 @@
             this.mc_ton.Name = "mc_ton";
             this.mc_ton.ReadOnly = true;
             // 
-            // item_weight
+            // item_part_weight
             // 
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightYellow;
-            this.item_weight.DefaultCellStyle = dataGridViewCellStyle3;
-            this.item_weight.HeaderText = "Weight(g)";
-            this.item_weight.Name = "item_weight";
-            this.item_weight.ReadOnly = true;
+            this.item_part_weight.DefaultCellStyle = dataGridViewCellStyle3;
+            this.item_part_weight.HeaderText = "Part Weight(g)";
+            this.item_part_weight.Name = "item_part_weight";
+            this.item_part_weight.ReadOnly = true;
+            // 
+            // item_runner_weight
+            // 
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightYellow;
+            this.item_runner_weight.DefaultCellStyle = dataGridViewCellStyle4;
+            this.item_runner_weight.HeaderText = "Runner Weight(g)";
+            this.item_runner_weight.Name = "item_runner_weight";
+            this.item_runner_weight.ReadOnly = true;
             // 
             // item_batch
             // 
@@ -185,10 +215,10 @@
             // stock_qty
             // 
             this.stock_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Pink;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stock_qty.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Pink;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stock_qty.DefaultCellStyle = dataGridViewCellStyle5;
             this.stock_qty.HeaderText = "Ready Stock";
             this.stock_qty.Name = "stock_qty";
             this.stock_qty.ReadOnly = true;
@@ -196,27 +226,27 @@
             // 
             // forecast_one
             // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.LightYellow;
-            this.forecast_one.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightYellow;
+            this.forecast_one.DefaultCellStyle = dataGridViewCellStyle6;
             this.forecast_one.HeaderText = "F/cast 1";
             this.forecast_one.Name = "forecast_one";
             this.forecast_one.ReadOnly = true;
             // 
             // outStock
             // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightYellow;
-            this.outStock.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.LightYellow;
+            this.outStock.DefaultCellStyle = dataGridViewCellStyle7;
             this.outStock.HeaderText = "Out";
             this.outStock.Name = "outStock";
             this.outStock.ReadOnly = true;
             // 
             // oSant
             // 
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.LightYellow;
-            this.oSant.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.LightYellow;
+            this.oSant.DefaultCellStyle = dataGridViewCellStyle8;
             this.oSant.HeaderText = "O/sant";
             this.oSant.Name = "oSant";
             this.oSant.ReadOnly = true;
@@ -224,9 +254,9 @@
             // shotOne
             // 
             this.shotOne.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.LightYellow;
-            this.shotOne.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.LightYellow;
+            this.shotOne.DefaultCellStyle = dataGridViewCellStyle9;
             this.shotOne.HeaderText = "SHOT 1";
             this.shotOne.Name = "shotOne";
             this.shotOne.ReadOnly = true;
@@ -240,9 +270,9 @@
             // 
             // forecast_two
             // 
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.LightCyan;
-            this.forecast_two.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.LightCyan;
+            this.forecast_two.DefaultCellStyle = dataGridViewCellStyle10;
             this.forecast_two.HeaderText = "F/cast 2";
             this.forecast_two.Name = "forecast_two";
             this.forecast_two.ReadOnly = true;
@@ -250,9 +280,9 @@
             // shotTwo
             // 
             this.shotTwo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.LightCyan;
-            this.shotTwo.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.LightCyan;
+            this.shotTwo.DefaultCellStyle = dataGridViewCellStyle11;
             this.shotTwo.HeaderText = "SHOT 2";
             this.shotTwo.Name = "shotTwo";
             this.shotTwo.ReadOnly = true;
@@ -260,31 +290,12 @@
             // 
             // forecast_three
             // 
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.PeachPuff;
-            this.forecast_three.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.PeachPuff;
+            this.forecast_three.DefaultCellStyle = dataGridViewCellStyle12;
             this.forecast_three.HeaderText = "F/cast 3";
             this.forecast_three.Name = "forecast_three";
             this.forecast_three.ReadOnly = true;
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.Location = new System.Drawing.Point(1237, 72);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(320, 30);
-            this.txtSearch.TabIndex = 13;
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1079, 72);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(152, 23);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "Item Name Search";
             // 
             // frmForecastReport
             // 
@@ -315,12 +326,15 @@
         private System.Windows.Forms.Button btnCheck;
         private System.Windows.Forms.ComboBox cmbCust;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_color;
         private System.Windows.Forms.DataGridViewTextBoxColumn mc_ton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn item_weight;
+        private System.Windows.Forms.DataGridViewTextBoxColumn item_part_weight;
+        private System.Windows.Forms.DataGridViewTextBoxColumn item_runner_weight;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_batch;
         private System.Windows.Forms.DataGridViewTextBoxColumn stock_qty;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_one;
@@ -331,7 +345,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_two;
         private System.Windows.Forms.DataGridViewTextBoxColumn shotTwo;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_three;
-        private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.Label label2;
     }
 }

@@ -83,13 +83,16 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_item (item_code, item_name, item_cat, item_color, item_part_weight, item_runner_weight, item_added_date, item_added_by) VALUES (@item_code, @item_name, @item_cat, @item_color, @item_part_weight, @item_runner_weight, @item_added_date, @item_added_by)";
+                String sql = "INSERT INTO tbl_item (item_code, item_name, item_cat, item_color, item_material, item_mb, item_mc, item_part_weight, item_runner_weight, item_added_date, item_added_by) VALUES (@item_code, @item_name, @item_cat, @item_color, @item_material, @item_mb, @item_mc, @item_part_weight, @item_runner_weight, @item_added_date, @item_added_by)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@item_code", u.item_code);
                 cmd.Parameters.AddWithValue("@item_name", u.item_name);
                 cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
                 cmd.Parameters.AddWithValue("@item_color", u.item_color);
+                cmd.Parameters.AddWithValue("@item_material", u.item_material);
+                cmd.Parameters.AddWithValue("@item_mb", u.item_mb);
+                cmd.Parameters.AddWithValue("@item_mc", u.item_mc);
                 cmd.Parameters.AddWithValue("@item_part_weight", u.item_part_weight);
                 cmd.Parameters.AddWithValue("@item_runner_weight", u.item_runner_weight);
                 cmd.Parameters.AddWithValue("@item_added_date", u.item_added_date);
@@ -132,13 +135,16 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "UPDATE tbl_item SET item_name=@item_name, item_cat=@item_cat, item_color=@item_color, item_part_weight=@item_part_weight, item_runner_weight=@item_runner_weight, item_updtd_date=@item_updtd_date, item_updtd_by=@item_updtd_by WHERE item_code=@item_code";
+                String sql = "UPDATE tbl_item SET item_name=@item_name, item_cat=@item_cat, item_color=@item_color, item_material=@item_material, item_mb=@item_mb, item_mc=@item_mc, item_part_weight=@item_part_weight, item_runner_weight=@item_runner_weight, item_updtd_date=@item_updtd_date, item_updtd_by=@item_updtd_by WHERE item_code=@item_code";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@item_code", u.item_code);
                 cmd.Parameters.AddWithValue("@item_name", u.item_name);
                 cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
                 cmd.Parameters.AddWithValue("@item_color", u.item_color);
+                cmd.Parameters.AddWithValue("@item_material", u.item_material);
+                cmd.Parameters.AddWithValue("@item_mb", u.item_mb);
+                cmd.Parameters.AddWithValue("@item_mc", u.item_mc);
                 cmd.Parameters.AddWithValue("@item_part_weight", u.item_part_weight);
                 cmd.Parameters.AddWithValue("@item_runner_weight", u.item_runner_weight);
                 cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
@@ -317,6 +323,36 @@ namespace FactoryManagementSoftware.DAL
                 //database connection open
                 conn.Open();
                 //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable catItemSearch(string keywords, string category)
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_item WHERE (item_code LIKE '%" + keywords + "%'OR item_name LIKE '%" + keywords + "%') AND item_cat = @category";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@category", category);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
                 adapter.Fill(dt);
 
 

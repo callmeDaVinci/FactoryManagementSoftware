@@ -16,6 +16,7 @@ namespace FactoryManagementSoftware.UI
         static public bool itemCustFormOpen = false;
         static public bool forecastInputFormOpen = false;
         static public bool forecastReportInputFormOpen = false;
+        static public bool joinFormOpen = false;
 
         public MainDashboard()
         {
@@ -222,6 +223,26 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+        }
+
+        private void itemJoinToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!joinFormOpen)
+            {
+                frmJoin frm = new frmJoin();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                joinFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmJoin>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmJoin>().First().BringToFront();
+                }
+            }
         }
     }
 }

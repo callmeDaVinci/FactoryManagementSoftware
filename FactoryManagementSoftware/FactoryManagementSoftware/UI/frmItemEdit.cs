@@ -18,28 +18,55 @@ namespace FactoryManagementSoftware.UI
 
         itemCatDAL dALItemCat = new itemCatDAL();
 
-        private void frmItemEdit_Load(object sender, EventArgs e)
+        private void loadItemCategoryData()
         {
-            //select item data from database
             DataTable dtItemCat = dALItemCat.Select();
-            //remove repeating name in item_name
             DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
-            //sort the data according item_name
             distinctTable.DefaultView.Sort = "item_cat_name ASC";
-            //DataView dv = new DataView(distinctTable);
-            //dv.RowFilter = "item_name <> 'PP'";
-            //set combobox datasource from table
             cmbCat.DataSource = distinctTable;
-            //show item_name data from table only
             cmbCat.DisplayMember = "item_cat_name";
             cmbCat.SelectedIndex = -1;
+        }
 
-            cmbCat.Text = frmItem.currentItemCat;
-            txtItemCode.Text = frmItem.currentItemCode;
-            txtItemName.Text = frmItem.currentItemName;
-            txtColor.Text = frmItem.currentItemColor;
-            txtPartWeight.Text = frmItem.currentItemPartWeight;
-            txtRunnerWeight.Text = frmItem.currentItemRunnerWeight;
+        private void loadMaterialTypeData()
+        {
+            DataTable dtItemCat = dalItem.catSearch("RAW Material");
+            DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_code");
+            distinctTable.DefaultView.Sort = "item_code ASC";
+            cmbMaterialType.DataSource = distinctTable;
+            cmbMaterialType.DisplayMember = "item_code";
+            cmbMaterialType.SelectedIndex = -1;
+        }
+
+        private void loadMasterBatchData()
+        {
+            DataTable dtItemCat = dalItem.catSearch("Master Batch");
+            DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_code");
+            distinctTable.DefaultView.Sort = "item_code ASC";
+            cmbMasterBatch.DataSource = distinctTable;
+            cmbMasterBatch.DisplayMember = "item_code";
+            cmbMasterBatch.SelectedIndex = -1;
+        }
+
+        private void getData()
+        {
+            if(!string.IsNullOrEmpty(frmItem.currentItemCat))
+            {
+                cmbCat.Text = frmItem.currentItemCat;
+                txtItemCode.Text = frmItem.currentItemCode;
+                txtItemName.Text = frmItem.currentItemName;
+                txtColor.Text = frmItem.currentItemColor;
+                txtPartWeight.Text = frmItem.currentItemPartWeight;
+                txtRunnerWeight.Text = frmItem.currentItemRunnerWeight;
+            }
+        }
+
+        private void frmItemEdit_Load(object sender, EventArgs e)
+        {
+            loadItemCategoryData();
+            loadMaterialTypeData();
+            loadMasterBatchData();
+            getData();
         }
 
         private bool Validation()
@@ -64,7 +91,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             bool result = false;
-            if (!string.IsNullOrEmpty(txtItemCode.Text) && !string.IsNullOrEmpty(txtItemName.Text))
+            if (!string.IsNullOrEmpty(txtItemCode.Text) && !string.IsNullOrEmpty(txtItemName.Text) && !string.IsNullOrEmpty(cmbCat.Text))
             {
                 result = true;
             }
@@ -98,7 +125,18 @@ namespace FactoryManagementSoftware.UI
                         uItem.item_name = txtItemName.Text;
                         uItem.item_cat = cmbCat.Text;
                         uItem.item_color = txtColor.Text;
-                        if(!string.IsNullOrEmpty(txtPartWeight.Text))
+                        uItem.item_material = cmbMaterialType.Text;
+                        uItem.item_mb = cmbMasterBatch.Text;
+                        if(!string.IsNullOrEmpty(txtMcTon.Text))
+                        {
+                            uItem.item_mc = Convert.ToInt32(txtMcTon.Text);
+                        }
+                        else
+                        {
+                            uItem.item_mc = 0;
+                        }
+                        
+                        if (!string.IsNullOrEmpty(txtPartWeight.Text))
                         {
                             uItem.item_part_weight = Convert.ToSingle(txtPartWeight.Text);
                         }
@@ -145,6 +183,16 @@ namespace FactoryManagementSoftware.UI
                         uItem.item_name = txtItemName.Text;
                         uItem.item_cat = cmbCat.Text;
                         uItem.item_color = txtColor.Text;
+                        uItem.item_material = cmbMaterialType.Text;
+                        uItem.item_mb = cmbMasterBatch.Text;
+                        if (!string.IsNullOrEmpty(txtMcTon.Text))
+                        {
+                            uItem.item_mc = Convert.ToInt32(txtMcTon.Text);
+                        }
+                        else
+                        {
+                            uItem.item_mc = 0;
+                        }
                         if (!string.IsNullOrEmpty(txtPartWeight.Text))
                         {
                             uItem.item_part_weight = Convert.ToSingle(txtPartWeight.Text);
@@ -178,13 +226,11 @@ namespace FactoryManagementSoftware.UI
                         else
                         {
                             //Failed to insert data
-                            MessageBox.Show("Failed to add new item");
+                            MessageBox.Show("Failed to add new item"); 
                         }
                     }
                 }
-            }
-
-            
+            }    
         }
 
         private void txtPartWeight_KeyPress(object sender, KeyPressEventArgs e)
@@ -196,6 +242,43 @@ namespace FactoryManagementSoftware.UI
         }
 
         private void txtRunnerWeight_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void cmbCat_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(cmbCat.Text))
+            {
+                errorProvider3.Clear();
+            }
+        }
+
+        private void txtItemCode_TextChanged(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty(txtItemCode.Text))
+            {
+                errorProvider1.Clear();
+            }
+        }
+
+        private void txtItemName_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtItemName.Text))
+            {
+                errorProvider2.Clear();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void txtMcTon_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
             {

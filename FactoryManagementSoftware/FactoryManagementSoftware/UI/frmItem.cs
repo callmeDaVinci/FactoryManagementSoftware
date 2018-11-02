@@ -40,8 +40,6 @@ namespace FactoryManagementSoftware
         {
             loadItemCategoryData();
             resetForm();
-
-          
         }
 
         private void loadData()
@@ -94,6 +92,9 @@ namespace FactoryManagementSoftware
                     dgvItem.Rows[n].Cells["item_runner_weight"].Value = runnerf.ToString("0.00");
                     dgvItem.Rows[n].Cells["dgvcItemCode"].Value = item["item_code"].ToString();
                     dgvItem.Rows[n].Cells["dgvcItemName"].Value = item["item_name"].ToString();
+                    dgvItem.Rows[n].Cells["item_material"].Value = item["item_material"].ToString();
+                    dgvItem.Rows[n].Cells["item_mb"].Value = item["item_mb"].ToString();
+                    dgvItem.Rows[n].Cells["item_mc"].Value = item["item_mc"].ToString();
                     dgvItem.Rows[n].Cells["dgvcQty"].Value = item["item_qty"].ToString();
                     dgvItem.Rows[n].Cells["dgvcOrd"].Value = item["item_ord"].ToString();
                 }
@@ -211,30 +212,47 @@ namespace FactoryManagementSoftware
 
         private void txtItemSearch_TextChanged(object sender, EventArgs e)
         {
-            //get keyword from text box
+            DataTable dt;
             string keywords = txtItemSearch.Text;
+            string category = cmbCat.Text;
+            
 
-            //check if the keywords has value or not
-            if (keywords != null)
+           
+            if (keywords != null && category != null)
             {
-                //show user based on keywords
-                DataTable dt = dalItem.Search(keywords);
-                //dgvItem.DataSource = dt;
+                if (cmbCat.Text.Equals("ALL"))
+                {
+                    dt = dalItem.Search(keywords);
+                }
+                else
+                {
+                    dt = dalItem.catItemSearch(keywords, category);
+                }
+
                 dgvItem.Rows.Clear();
                 foreach (DataRow item in dt.Rows)
                 {
-                    float f = 0;
+                    float partf = 0;
+                    float runnerf = 0;
                     int n = dgvItem.Rows.Add();
-                    if (!string.IsNullOrEmpty(item["item_weight"].ToString()))
+                    if (!string.IsNullOrEmpty(item["item_part_weight"].ToString()))
                     {
-                        f = Convert.ToSingle(item["item_weight"]);
+                        partf = Convert.ToSingle(item["item_part_weight"]);
+                    }
+                    if (!string.IsNullOrEmpty(item["item_runner_weight"].ToString()))
+                    {
+                        partf = Convert.ToSingle(item["item_runner_weight"]);
                     }
 
                     dgvItem.Rows[n].Cells["Category"].Value = item["item_cat"].ToString();
                     dgvItem.Rows[n].Cells["dgvcItemCode"].Value = item["item_code"].ToString();
                     dgvItem.Rows[n].Cells["dgvcItemName"].Value = item["item_name"].ToString();
                     dgvItem.Rows[n].Cells["item_color"].Value = item["item_color"].ToString();
-                    dgvItem.Rows[n].Cells["item_weight"].Value =f.ToString("0.00");
+                    dgvItem.Rows[n].Cells["item_material"].Value = item["item_material"].ToString();
+                    dgvItem.Rows[n].Cells["item_mb"].Value = item["item_mb"].ToString();
+                    dgvItem.Rows[n].Cells["item_mc"].Value = item["item_mc"].ToString();
+                    dgvItem.Rows[n].Cells["item_part_weight"].Value =partf.ToString("0.00");
+                    dgvItem.Rows[n].Cells["item_runner_weight"].Value = runnerf.ToString("0.00");
                     dgvItem.Rows[n].Cells["dgvcQty"].Value = item["item_qty"].ToString();
                     dgvItem.Rows[n].Cells["dgvcOrd"].Value = item["item_ord"].ToString();
                 }
@@ -245,6 +263,23 @@ namespace FactoryManagementSoftware
                 //show all item from the database
                 loadData();
             }
+
+            bool rowColorChange = true;
+            foreach (DataGridViewRow row in dgvItem.Rows)
+            {
+                int n = row.Index;
+                if (rowColorChange)
+                {
+                    dgvItem.Rows[n].DefaultCellStyle.BackColor = Control.DefaultBackColor;
+                    rowColorChange = false;
+                }
+                else
+                {
+                    dgvItem.Rows[n].DefaultCellStyle.BackColor = Color.White;
+                    rowColorChange = true;
+                }
+            }
+            dgvItem.ClearSelection();
         }
 
         private void cmbCat_SelectedIndexChanged(object sender, EventArgs e)
