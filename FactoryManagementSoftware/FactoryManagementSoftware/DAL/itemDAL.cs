@@ -11,6 +11,8 @@ namespace FactoryManagementSoftware.DAL
     {
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
+        materialDAL dalMaterial = new materialDAL();
+
         #region Select Data from Database
 
         public DataTable Select()
@@ -90,8 +92,28 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_name", u.item_name);
                 cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
                 cmd.Parameters.AddWithValue("@item_color", u.item_color);
-                cmd.Parameters.AddWithValue("@item_material", u.item_material);
-                cmd.Parameters.AddWithValue("@item_mb", u.item_mb);
+
+                if(string.IsNullOrEmpty(u.item_material))
+                {
+                    cmd.Parameters.AddWithValue("@item_material", DBNull.Value);
+                   
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@item_material", u.item_material);
+                }
+
+                if (string.IsNullOrEmpty(u.item_mb))
+                {
+                    cmd.Parameters.AddWithValue("@item_mb", DBNull.Value);
+                  
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@item_mb", u.item_mb);
+                }
+
+               
                 cmd.Parameters.AddWithValue("@item_mc", u.item_mc);
                 cmd.Parameters.AddWithValue("@item_part_weight", u.item_part_weight);
                 cmd.Parameters.AddWithValue("@item_runner_weight", u.item_runner_weight);
@@ -142,8 +164,25 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_name", u.item_name);
                 cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
                 cmd.Parameters.AddWithValue("@item_color", u.item_color);
-                cmd.Parameters.AddWithValue("@item_material", u.item_material);
-                cmd.Parameters.AddWithValue("@item_mb", u.item_mb);
+                if (string.IsNullOrEmpty(u.item_material))
+                {
+                    cmd.Parameters.AddWithValue("@item_material", DBNull.Value);
+                    
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@item_material", u.item_material);
+                }
+
+                if (string.IsNullOrEmpty(u.item_mb))
+                {
+                    cmd.Parameters.AddWithValue("@item_mb", DBNull.Value);
+                   
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@item_mb", u.item_mb);
+                }
                 cmd.Parameters.AddWithValue("@item_mc", u.item_mc);
                 cmd.Parameters.AddWithValue("@item_part_weight", u.item_part_weight);
                 cmd.Parameters.AddWithValue("@item_runner_weight", u.item_runner_weight);
@@ -370,6 +409,66 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable itemMaterialSearch(string material)
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_item INNER JOIN tbl_material ON tbl_item.item_material=@material";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@material", material);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable itemMBSearch(string mb)
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_item INNER JOIN tbl_material ON tbl_item.item_mb=@mb";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@mb", mb);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable catSearch(string keywords)
         {
             //static methodd to connect database
@@ -476,6 +575,26 @@ namespace FactoryManagementSoftware.DAL
         }
 
         #endregion
+
+        public string getMaterialName(string materialCode)
+        {
+            string materialName="";
+            DataTable dt = dalMaterial.codeSearch(materialCode);
+
+            materialName = dt.Rows[0]["material_name"].ToString();
+
+            return materialName;
+        }
+
+        public string getMBName(string mbCode)
+        {
+            string mbName = "";
+            DataTable dt = dalMaterial.codeSearch(mbCode);
+
+            mbName = dt.Rows[0]["material_name"].ToString();
+
+            return mbName;
+        }
 
         public float getOrderQty(string itemCode)
         {

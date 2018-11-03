@@ -54,6 +54,7 @@
     <Compile Include="BLL\itemCatBLL.cs" />
     <Compile Include="BLL\itemCustBLL.cs" />
     <Compile Include="BLL\joinBLL.cs" />
+    <Compile Include="BLL\materialBLL.cs" />
     <Compile Include="BLL\ordBLL.cs" />
     <Compile Include="BLL\stockBLL.cs" />
     <Compile Include="BLL\trfCatBLL.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="DAL\itemCustDAL.cs" />
     <Compile Include="DAL\itemDAL.cs" />
     <Compile Include="DAL\joinDAL.cs" />
+    <Compile Include="DAL\materialDAL.cs" />
     <Compile Include="DAL\ordDAL.cs" />
     <Compile Include="DAL\stockDAL.cs" />
     <Compile Include="DAL\trfCatDAL.cs" />

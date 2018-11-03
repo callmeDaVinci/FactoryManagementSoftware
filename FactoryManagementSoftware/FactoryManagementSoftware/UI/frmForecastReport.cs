@@ -79,6 +79,7 @@ namespace FactoryManagementSoftware.UI
         private void frmForecastReport_Load(object sender, EventArgs e)
         {
             loadCustomerList();
+            UIDesign();
         }
         
         private int getMonthValue(string keyword)
@@ -326,6 +327,11 @@ namespace FactoryManagementSoftware.UI
             {
                 
                 DataTable dt = dalItemCust.custSearch(keywords);
+
+                if(dt.Rows.Count <= 0)
+                {
+                    MessageBox.Show("no data under this record.");
+                }
                 float outStock = 0;
                 float forecastOne = 0;
                 float forecastTwo = 0;

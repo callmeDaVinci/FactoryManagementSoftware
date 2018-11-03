@@ -63,6 +63,10 @@ namespace FactoryManagementSoftware.UI
             if (!string.IsNullOrEmpty(keywords))
             {
                 DataTable dt = dalItemCust.custSearch(keywords);
+                if(dt.Rows.Count <= 0)
+                {
+                    MessageBox.Show("no data under this record.");
+                }
 
                 dgvForecast.Rows.Clear();
                 foreach (DataRow item in dt.Rows)
