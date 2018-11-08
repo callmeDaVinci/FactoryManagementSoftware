@@ -42,10 +42,10 @@ namespace FactoryManagementSoftware.UI
                     rowColorChange = true;
                 }
 
-                dgvJoin.Rows[n].Cells["join_parent_code"].Value = item["join_parent_code"].ToString();
-                dgvJoin.Rows[n].Cells["join_parent_name"].Value = item["join_parent_name"].ToString();
-                dgvJoin.Rows[n].Cells["join_child_code"].Value = item["join_child_code"].ToString();
-                dgvJoin.Rows[n].Cells["join_child_name"].Value = item["join_child_name"].ToString();
+                dgvJoin.Rows[n].Cells["join_parent_code"].Value = item["parent_code"].ToString();
+                dgvJoin.Rows[n].Cells["join_parent_name"].Value = item["parent_name"].ToString();
+                dgvJoin.Rows[n].Cells["join_child_code"].Value = item["child_code"].ToString();
+                dgvJoin.Rows[n].Cells["join_child_name"].Value = item["child_name"].ToString();
                 dgvJoin.Rows[n].Cells["join_qty"].Value = item["join_qty"].ToString();
 
 

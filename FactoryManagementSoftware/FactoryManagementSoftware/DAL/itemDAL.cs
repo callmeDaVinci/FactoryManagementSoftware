@@ -581,7 +581,11 @@ namespace FactoryManagementSoftware.DAL
             string materialName="";
             DataTable dt = dalMaterial.codeSearch(materialCode);
 
-            materialName = dt.Rows[0]["material_name"].ToString();
+            if(dt.Rows.Count > 0)
+            {
+                materialName = dt.Rows[0]["material_name"].ToString();
+            }
+            
 
             return materialName;
         }
@@ -591,7 +595,11 @@ namespace FactoryManagementSoftware.DAL
             string mbName = "";
             DataTable dt = dalMaterial.codeSearch(mbCode);
 
-            mbName = dt.Rows[0]["material_name"].ToString();
+            if (dt.Rows.Count > 0)
+            {
+                mbName = dt.Rows[0]["material_name"].ToString();
+            }
+            
 
             return mbName;
         }

@@ -233,9 +233,9 @@ namespace FactoryManagementSoftware.UI
                     else
                     {
                         uJoin.join_parent_code = cmbParentCode.Text;
-                        uJoin.join_parent_name = cmbParentName.Text;
+                     
                         uJoin.join_child_code = cmbChildCode.Text;
-                        uJoin.join_child_name = cmbChildName.Text;
+                      
                         uJoin.join_added_date = DateTime.Now;
                         uJoin.join_added_by = -1;
 

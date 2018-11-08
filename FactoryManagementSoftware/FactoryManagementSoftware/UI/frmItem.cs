@@ -18,6 +18,9 @@ namespace FactoryManagementSoftware
 
         itemCatDAL dALItemCat = new itemCatDAL();
 
+        joinDAL dalJoin = new joinDAL();
+        joinBLL uJoin = new joinBLL();
+
         private bool formLoaded = false;
         private int currentRowIndex;
         static public string currentItemCode;
@@ -187,6 +190,9 @@ namespace FactoryManagementSoftware
                     {
                         //item deleted successfully
                         MessageBox.Show("Item deleted successfully");
+                        uJoin.join_parent_code = uItem.item_code;
+                        uJoin.join_child_code = uItem.item_code;
+                        dalJoin.itemDelete(uJoin);
                         resetForm();
                     }
                     else
@@ -327,14 +333,9 @@ namespace FactoryManagementSoftware
             if (formLoaded)
             {
                 loadData();
-            }
-           
+            }          
         }
-
-
         #endregion
-
-  
 
         private void listPaint()
         {

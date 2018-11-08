@@ -22,9 +22,9 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_join";
+                String sql = "SELECT tbl_join.join_parent_code as parent_code, tbl_item.item_name as parent_name ,tbl_join.join_child_code as child_code ,a.item_name as child_name ,join_qty FROM tbl_join JOIN tbl_item ON tbl_join.join_parent_code = tbl_item.item_code JOIN tbl_item a ON tbl_join.join_child_code = a.item_code";
                 //for executing command
-                SqlCommand cmd = new SqlCommand(sql, conn);
+               SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
@@ -54,13 +54,11 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_join (join_parent_code, join_parent_name, join_child_code, join_child_name, join_qty, join_added_date, join_added_by) VALUES ( @join_parent_code, @join_parent_name, @join_child_code, @join_child_name, @join_qty, @join_added_date, @join_added_by)";
+                String sql = "INSERT INTO tbl_join (join_parent_code, join_child_code, join_qty, join_added_date, join_added_by) VALUES ( @join_parent_code, @join_child_code,  @join_qty, @join_added_date, @join_added_by)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@join_parent_code", u.join_parent_code);
-                cmd.Parameters.AddWithValue("@join_parent_name", u.join_parent_name);
                 cmd.Parameters.AddWithValue("@join_child_code", u.join_child_code);
-                cmd.Parameters.AddWithValue("@join_child_name", u.join_child_name);
                 cmd.Parameters.AddWithValue("@join_qty", u.join_qty);
                 cmd.Parameters.AddWithValue("@join_added_date", u.join_added_date);
                 cmd.Parameters.AddWithValue("@join_added_by", u.join_added_by);
@@ -103,6 +101,46 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 String sql = "DELETE FROM tbl_join WHERE join_parent_code=@join_parent_code AND join_child_code=@join_child_code";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@join_parent_code", u.join_parent_code);
+                cmd.Parameters.AddWithValue("@join_child_code", u.join_child_code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool itemDelete(joinBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "DELETE FROM tbl_join WHERE join_parent_code=@join_parent_code OR join_child_code=@join_child_code";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@join_parent_code", u.join_parent_code);
