@@ -74,30 +74,11 @@ namespace FactoryManagementSoftware.UI
                     int n = dgvForecast.Rows.Add();
                     dgvForecast.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
                     dgvForecast.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
-
-                    DataTable dt2 = dalForecast.existsSearch(item["item_code"].ToString(), getCustID(keywords));
-
-                    if (dt2.Rows.Count > 0)
-                    {
-                        foreach (DataRow forecast in dt2.Rows)
-                        {
-                            dgvForecast.Rows[n].Cells["forecast_one"].Value = forecast["forecast_one"].ToString();
-                            dgvForecast.Rows[n].Cells["forecast_two"].Value = forecast["forecast_two"].ToString();
-                            dgvForecast.Rows[n].Cells["forecast_three"].Value = forecast["forecast_three"].ToString();
-                            dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = forecast["forecast_updtd_date"].ToString();
-                            dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = forecast["forecast_updtd_by"].ToString();
-                        }
-                    }
-                    else
-                    {
-                        dgvForecast.Rows[n].Cells["forecast_one"].Value = 0;
-                        dgvForecast.Rows[n].Cells["forecast_two"].Value = 0;
-                        dgvForecast.Rows[n].Cells["forecast_three"].Value = 0;
-                        dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = "null";
-                        dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = "null";
-                    }
-
-
+                    dgvForecast.Rows[n].Cells["forecast_one"].Value = item["forecast_one"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_two"].Value = item["forecast_two"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_three"].Value = item["forecast_three"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = item["forecast_updated_date"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = item["forecast_updated_by"].ToString();
                 }
             }
             else
@@ -169,7 +150,8 @@ namespace FactoryManagementSoftware.UI
 
         private bool IfExists(string itemCode, string custName)
         {
-            DataTable dt = dalForecast.existsSearch(itemCode, getCustID(custName));
+          
+            DataTable dt = dalItemCust.existsSearch(itemCode, getCustID(custName));
 
             if (dt.Rows.Count > 0)
                 return true;
@@ -289,19 +271,19 @@ namespace FactoryManagementSoftware.UI
             dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value = DateTime.Now;
             dgvForecast.Rows[rowIndex].Cells["forecast_updtd_by"].Value = 1;
 
-            uForecast.item_code = dgvForecast.Rows[rowIndex].Cells["item_code"].Value.ToString();
-            uForecast.cust_id = Convert.ToInt32(getCustID(cmbCust.Text));
+            uItemCust.item_code = dgvForecast.Rows[rowIndex].Cells["item_code"].Value.ToString();
+            uItemCust.cust_id = Convert.ToInt32(getCustID(cmbCust.Text));
 
-            uForecast.forecast_one = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_one"].Value.ToString());
-            uForecast.forecast_two = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_two"].Value.ToString());
-            uForecast.forecast_three = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_three"].Value.ToString());
-            uForecast.forecast_updtd_date = Convert.ToDateTime(dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value);
-            uForecast.forecast_current_month = cmbForecast1.Text;
-            uForecast.forecast_updtd_by = 1;
+            uItemCust.forecast_one = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_one"].Value.ToString());
+            uItemCust.forecast_two = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_two"].Value.ToString());
+            uItemCust.forecast_three = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_three"].Value.ToString());
+            uItemCust.forecast_updated_date = Convert.ToDateTime(dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value);
+            uItemCust.forecast_current_month = cmbForecast1.Text;
+            uItemCust.forecast_updated_by = 1;
 
-            if (IfExists(uForecast.item_code, cmbCust.Text))
+            if (IfExists(uItemCust.item_code, cmbCust.Text))
             {
-                bool success = dalForecast.Update(uForecast);
+                bool success = dalItemCust.Update(uItemCust);
 
                 if (!success)
                 {

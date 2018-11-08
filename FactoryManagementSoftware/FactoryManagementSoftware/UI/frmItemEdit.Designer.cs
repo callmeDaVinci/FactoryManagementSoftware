@@ -338,7 +338,6 @@
         private System.Windows.Forms.TextBox txtColor;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblItemCategory;
-        private System.Windows.Forms.ComboBox cmbCat;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.TextBox txtItemName;
         private System.Windows.Forms.Label lblItemName;
@@ -352,5 +351,6 @@
         private System.Windows.Forms.ErrorProvider errorProvider3;
         private System.Windows.Forms.TextBox txtMcTon;
         private System.Windows.Forms.Label label6;
+        public System.Windows.Forms.ComboBox cmbCat;
     }
 }

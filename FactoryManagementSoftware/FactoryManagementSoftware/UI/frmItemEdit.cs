@@ -68,6 +68,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
+                cmbCat.Text = frmItem.currentItemCat;
                 txtItemCode.Enabled = true;
             }
         }

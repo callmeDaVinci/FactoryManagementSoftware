@@ -38,17 +38,17 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.dgvItemCust = new System.Windows.Forms.DataGridView();
+            this.cust_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_cust_added_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_cust_added_by = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cmbSearch = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.cust_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_cust_added_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_cust_added_by = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItemCust)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
@@ -139,6 +139,7 @@
             this.dgvItemCust.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvItemCust.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
             this.dgvItemCust.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItemCust.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.cust_name,
@@ -154,6 +155,40 @@
             this.dgvItemCust.Size = new System.Drawing.Size(1072, 576);
             this.dgvItemCust.TabIndex = 8;
             this.dgvItemCust.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvItemCust_CellMouseDoubleClick);
+            // 
+            // cust_name
+            // 
+            this.cust_name.HeaderText = "Customer";
+            this.cust_name.Name = "cust_name";
+            this.cust_name.ReadOnly = true;
+            // 
+            // item_code
+            // 
+            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_code.HeaderText = "Item Code";
+            this.item_code.Name = "item_code";
+            this.item_code.ReadOnly = true;
+            // 
+            // item_name
+            // 
+            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_name.HeaderText = "Item Name";
+            this.item_name.Name = "item_name";
+            this.item_name.ReadOnly = true;
+            // 
+            // item_cust_added_date
+            // 
+            this.item_cust_added_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_cust_added_date.HeaderText = "Added Date";
+            this.item_cust_added_date.Name = "item_cust_added_date";
+            this.item_cust_added_date.ReadOnly = true;
+            this.item_cust_added_date.Width = 130;
+            // 
+            // item_cust_added_by
+            // 
+            this.item_cust_added_by.HeaderText = "By";
+            this.item_cust_added_by.Name = "item_cust_added_by";
+            this.item_cust_added_by.ReadOnly = true;
             // 
             // cmbSearch
             // 
@@ -196,40 +231,6 @@
             // errorProvider3
             // 
             this.errorProvider3.ContainerControl = this;
-            // 
-            // cust_name
-            // 
-            this.cust_name.HeaderText = "Customer";
-            this.cust_name.Name = "cust_name";
-            this.cust_name.ReadOnly = true;
-            // 
-            // item_code
-            // 
-            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_code.HeaderText = "Item Code";
-            this.item_code.Name = "item_code";
-            this.item_code.ReadOnly = true;
-            // 
-            // item_name
-            // 
-            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_name.HeaderText = "Item Name";
-            this.item_name.Name = "item_name";
-            this.item_name.ReadOnly = true;
-            // 
-            // item_cust_added_date
-            // 
-            this.item_cust_added_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_cust_added_date.HeaderText = "Added Date";
-            this.item_cust_added_date.Name = "item_cust_added_date";
-            this.item_cust_added_date.ReadOnly = true;
-            this.item_cust_added_date.Width = 130;
-            // 
-            // item_cust_added_by
-            // 
-            this.item_cust_added_by.HeaderText = "By";
-            this.item_cust_added_by.Name = "item_cust_added_by";
-            this.item_cust_added_by.ReadOnly = true;
             // 
             // frmItemCust
             // 

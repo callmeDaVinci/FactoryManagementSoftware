@@ -15,6 +15,7 @@ namespace FactoryManagementSoftware
         itemDAL dalItem = new itemDAL();
 
         materialDAL dalMaterial = new materialDAL();
+        materialBLL uMaterial = new materialBLL();
 
         itemCatDAL dALItemCat = new itemCatDAL();
 
@@ -168,6 +169,7 @@ namespace FactoryManagementSoftware
         private void button1_Click(object sender, EventArgs e)
         {
             frmItemEdit frm = new frmItemEdit();
+            currentItemCat = cmbCat.Text;
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//Item Edit
 
@@ -182,23 +184,45 @@ namespace FactoryManagementSoftware
                 DialogResult dialogResult = MessageBox.Show("Are you sure want to delete?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    uItem.item_code = dgvItem.Rows[currentRowIndex].Cells["dgvcItemCode"].Value.ToString(); ;
-
-                    bool success = dalItem.Delete(uItem);
-
-                    if (success == true)
+                    if(cmbCat.Text.Equals("Part"))
                     {
-                        //item deleted successfully
-                        MessageBox.Show("Item deleted successfully");
-                        uJoin.join_parent_code = uItem.item_code;
-                        uJoin.join_child_code = uItem.item_code;
-                        dalJoin.itemDelete(uJoin);
-                        resetForm();
+                        uItem.item_code = dgvItem.Rows[currentRowIndex].Cells["dgvcItemCode"].Value.ToString(); ;
+
+                        bool success = dalItem.Delete(uItem);
+
+                        if (success == true)
+                        {
+                            //item deleted successfully
+                            MessageBox.Show("Item deleted successfully");
+                            uJoin.join_parent_code = uItem.item_code;
+                            uJoin.join_child_code = uItem.item_code;
+                            dalJoin.itemDelete(uJoin);
+                            resetForm();
+                        }
+                        else
+                        {
+                            //Failed to delete item
+                            MessageBox.Show("Failed to delete item");
+                        }
                     }
+
                     else
                     {
-                        //Failed to delete item
-                        MessageBox.Show("Failed to delete item");
+                        uMaterial.material_code = dgvItem.Rows[currentRowIndex].Cells["dgvcItemCode"].Value.ToString(); ;
+
+                        bool success = dalMaterial.Delete(uMaterial);
+
+                        if (success == true)
+                        {
+                            //item deleted successfully
+                            MessageBox.Show("Material deleted successfully");
+                            resetForm();
+                        }
+                        else
+                        {
+                            //Failed to delete item
+                            MessageBox.Show("Failed to delete material");
+                        }
                     }
                 }
             }

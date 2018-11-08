@@ -548,10 +548,11 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_item WHERE item_code LIKE '%" + keywords + "%'";
+                String sql = "SELECT * FROM tbl_item WHERE item_code=@item_code";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@item_code", keywords);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
