@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.IO;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -681,8 +682,8 @@ namespace FactoryManagementSoftware.UI
                             //}
 
                             int n = dgvForecastReport.Rows.Add();
-                            dgvForecastReport.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle {ForeColor = Color.Blue, Font = new Font(dgvForecastReport.Font, FontStyle.Underline | FontStyle.Bold) };
-                            dgvForecastReport.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgvForecastReport.Font, FontStyle.Underline | FontStyle.Bold) };
+                            dgvForecastReport.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle {ForeColor = Color.Blue, Font = new System.Drawing.Font(dgvForecastReport.Font, FontStyle.Underline | FontStyle.Bold) };
+                            dgvForecastReport.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgvForecastReport.Font, FontStyle.Underline | FontStyle.Bold) };
                             dgvForecastReport.Rows[n].Cells["item_code"].Value = itemCode;
                             dgvForecastReport.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
                             dgvForecastReport.Rows[n].Cells["item_color"].Value = item["item_color"].ToString();
@@ -699,9 +700,9 @@ namespace FactoryManagementSoftware.UI
                             dgvForecastReport.Columns["forecast_three"].HeaderText = "F/cast " + getShortMonth(month, 3);
                             dgvForecastReport.Columns["shotOne"].HeaderText = "SHOT FOR " + getShortMonth(month, 1);
                             dgvForecastReport.Columns["shotTwo"].HeaderText = "SHOT FOR " + getShortMonth(month, 2);
-                            dgvForecastReport.Rows[n].Cells["forecast_one"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgvForecastReport.Font, FontStyle.Bold) };
-                            dgvForecastReport.Rows[n].Cells["forecast_two"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgvForecastReport.Font, FontStyle.Bold) };
-                            dgvForecastReport.Rows[n].Cells["forecast_three"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgvForecastReport.Font, FontStyle.Bold) };
+                            dgvForecastReport.Rows[n].Cells["forecast_one"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgvForecastReport.Font, FontStyle.Bold) };
+                            dgvForecastReport.Rows[n].Cells["forecast_two"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgvForecastReport.Font, FontStyle.Bold) };
+                            dgvForecastReport.Rows[n].Cells["forecast_three"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgvForecastReport.Font, FontStyle.Bold) };
 
                             dgvForecastReport.Rows[n].Cells["forecast_one"].Value = forecastOne.ToString();
                             dgvForecastReport.Rows[n].Cells["forecast_two"].Value = forecastTwo.ToString();
@@ -804,8 +805,9 @@ namespace FactoryManagementSoftware.UI
             pdftable.DefaultCell.BorderWidth = 1;
 
             iTextSharp.text.Font text = new iTextSharp.text.Font(bf, 10,iTextSharp.text.Font.NORMAL);
+
             //Add header
-            foreach(DataGridViewColumn column in dgw.Columns)
+            foreach (DataGridViewColumn column in dgw.Columns)
             {
                 PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText, text));
                 cell.BackgroundColor = new iTextSharp.text.BaseColor(240,240,240);
@@ -817,13 +819,51 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataGridViewCell cell in row.Cells)
                 {
+                    PdfPCell cellSet = null;
+                    string cellValue = "";
 
+                    if(cell.Value != null)
+                    {
+                        cellValue = cell.Value.ToString();
+                        
+                    }
+
+                    cellSet = new PdfPCell(new Phrase(cellValue));
+
+                    if(cell.Style.BackColor.Name.ToString().Equals("0"))
+                    {
+                        cellSet.BackgroundColor = new BaseColor(Color.White);
+                    }
+                    else
+                    {
+                        cellSet.BackgroundColor = new BaseColor(cell.Style.BackColor);
+
+                    }
+                    
+
+                    pdftable.AddCell(cellSet);
+                }
+            }
+
+            var savefiledialog = new SaveFileDialog();
+            savefiledialog.FileName = filename;
+            savefiledialog.DefaultExt = ".pdf";
+            if(savefiledialog.ShowDialog() == DialogResult.OK)
+            {
+                using (FileStream stream = new FileStream(savefiledialog.FileName, FileMode.Create))
+                {
+                    Document pdfdoc = new Document(PageSize.A4.Rotate(), 10f, 10f, 10f, 10f);
+                    PdfWriter.GetInstance(pdfdoc, stream);
+                    pdfdoc.Open();
+                    pdfdoc.Add(pdftable);
+                    pdfdoc.Close();
+                    stream.Close();
                 }
             }
         }
         private void button1_Click(object sender, EventArgs e)
         {
-
+            exportgridtopdf(dgvForecastReport, "forecast");
         }
     }
 }
