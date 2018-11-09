@@ -36,6 +36,9 @@ namespace FactoryManagementSoftware.UI
         stockBLL uStock = new stockBLL();
         stockDAL dalStock = new stockDAL();
 
+        joinBLL uJoin = new joinBLL();
+        joinDAL dalJoin = new joinDAL();
+
         #endregion
 
         #region Load or Reset Form
@@ -433,6 +436,7 @@ namespace FactoryManagementSoftware.UI
                     break;
 
                 default:
+                    cmbTrfFrom.DataSource = null;
                     break;
             }
         }
@@ -586,6 +590,10 @@ namespace FactoryManagementSoftware.UI
         private void cmbTrfItemCode_SelectedIndexChanged(object sender, EventArgs e)
         {
             errorProvider3.Clear();
+            if(ifGotChild())
+            {
+                cmbTrfQtyUnit.Text = "set";
+            }
           
             
         }
@@ -597,7 +605,17 @@ namespace FactoryManagementSoftware.UI
 
         private float checkQty(string keyword)
         {
-            float qty = Convert.ToSingle(keyword);
+            float qty = 0;
+
+            if(string.IsNullOrEmpty(keyword))
+            {
+                qty = 0;
+            }
+            else
+            {
+               qty = Convert.ToSingle(keyword);
+            }
+            
             string unit = cmbTrfQtyUnit.Text;
 
             if(unit.Equals("g"))
@@ -608,6 +626,7 @@ namespace FactoryManagementSoftware.UI
             {
                 qty = 0;
             }
+
             return qty;
         }
 
@@ -619,6 +638,108 @@ namespace FactoryManagementSoftware.UI
                 unit = "kg";
             }
             return unit;
+        }
+
+        private bool ifGotChild()
+        {
+            bool result = false;
+            DataTable dtJoin = dalJoin.parentCheck(cmbTrfItemCode.Text);
+            if (dtJoin.Rows.Count > 0)
+            {
+                result = true;
+            }
+                return result;
+        }
+
+        private void checkChild(string itemCode,string qtyOut)
+        {
+            string factory = cmbTrfTo.Text;
+            string childItemCode = "";
+            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+            if (dtJoin.Rows.Count > 0 && cmbTrfToCategory.Text == "Factory" && cmbTrfFromCategory.Text == "Assembly")
+            {
+                foreach (DataRow Join in dtJoin.Rows)
+                {
+                    childItemCode = Join["join_child_code"].ToString();
+                    uStock.stock_item_code = childItemCode;
+                    uStock.stock_fac_id = Convert.ToInt32(getFactoryID(factory));
+                    uStock.stock_qty = getQty(childItemCode, factory) - Convert.ToSingle(qtyOut);
+                    uStock.stock_updtd_date = DateTime.Now;
+                    uStock.stock_updtd_by = 0;
+                    
+                    //Stock Out
+                    if (IfExists(childItemCode,factory))
+                    {
+                        bool success = dalStock.Update(uStock);
+       
+                        if (success)
+                        {                              
+                            float totalStock = 0;
+                            totalStock = dalItem.getStockQty(childItemCode) - Convert.ToSingle(qtyOut);
+                            //Update data
+                            uItem.item_code = childItemCode;
+                            uItem.item_qty = totalStock;
+                            uItem.item_updtd_date = DateTime.Now;
+                            uItem.item_updtd_by = 0;
+                            cmbTrfQtyUnit.SelectedIndex = -1;
+
+                            //Updating data into database
+                            bool success2 = dalItem.qtyUpdate(uItem);
+
+                            //if data is updated successfully then the value = true else false
+                            if (!success2)
+                            {
+                                MessageBox.Show("Failed to updated child item stock qty");
+                            }
+                                                            
+                        }
+                        else
+                        {
+                            //failed to update user
+                            MessageBox.Show("Failed to updated stock");
+                        }
+                    }
+                    else
+                    {      
+                        //Inserting Data into Database
+                        bool success = dalStock.Insert(uStock);
+                        //If the data is successfully inserted then the value of success will be true else false
+                        if (success == true)
+                        {
+                            //Data Successfully Inserted
+                            //MessageBox.Show("Stock successfully created");
+                            cmbTrfQtyUnit.SelectedIndex = -1;
+                            float totalStock = 0;
+                            totalStock = dalItem.getStockQty(childItemCode) - Convert.ToSingle(qtyOut);
+                            //Update data
+                            uItem.item_code = childItemCode;
+                            uItem.item_qty = totalStock;
+                            uItem.item_updtd_date = DateTime.Now;
+                            uItem.item_updtd_by = 0;
+
+                            //Updating data into database
+                            bool success2 = dalItem.qtyUpdate(uItem);
+
+                            //if data is updated successfully then the value = true else false
+                            if (!success2)
+                            {
+                                MessageBox.Show("Failed to updated child item stock qty");
+                            }
+                        }
+                        else
+                        {
+                            //Failed to insert data
+                            MessageBox.Show("Failed to add new stock");
+                        }
+                    }
+                  
+                }
+                
+            }
+            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
+            {
+                refreshList(cmbTrfItemCode.Text);
+            }
         }
         #endregion
 
@@ -674,6 +795,12 @@ namespace FactoryManagementSoftware.UI
                         stockInandOut();
                         cmbTrfQtyUnit.SelectedIndex = -1;
 
+                        if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
+                        {
+                            refreshList(cmbTrfItemCode.Text);
+                        }
+
+
                     }
                     else
                     {
@@ -725,6 +852,7 @@ namespace FactoryManagementSoftware.UI
                         //data updated successfully
                         //MessageBox.Show("Stock successfully updated ");
                         cmbTrfQtyUnit.SelectedIndex = -1;
+                       
                     }
                     else
                     {
@@ -766,11 +894,12 @@ namespace FactoryManagementSoftware.UI
             {
                 if (IfExists(cmbTrfItemCode.Text, cmbTrfTo.Text))
                 {
+                    string qtyOut = txtTrfQty.Text;
                     //MessageBox.Show(cmbTrfItemCode.Text + " " + cmbTrfTo.Text + " data exists");
                     //Update data
                     uStock.stock_item_code = cmbTrfItemCode.Text;
                     uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfTo.Text));
-                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfTo.Text) + checkQty(txtTrfQty.Text);
+                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfTo.Text) + checkQty(qtyOut);
                     uStock.stock_updtd_date = DateTime.Now;
                     uStock.stock_updtd_by = 0;
 
@@ -784,6 +913,12 @@ namespace FactoryManagementSoftware.UI
                     {
                         //data updated successfully
                         //MessageBox.Show("Stock successfully updated ");
+                        checkChild(cmbTrfItemCode.Text, qtyOut);
+                        if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
+                        {
+                            refreshList(cmbTrfItemCode.Text);
+                        }
+                        
                     }
                     else
                     {
@@ -811,7 +946,13 @@ namespace FactoryManagementSoftware.UI
                     {
                         //Data Successfully Inserted
                         //MessageBox.Show("Stock successfully created");
-   
+                        checkChild(cmbTrfItemCode.Text, txtTrfQty.Text);
+                        if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
+                        {
+                            refreshList(cmbTrfItemCode.Text);
+                        }
+                        
+
                     }
                     else
                     {
@@ -821,10 +962,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            if(!string.IsNullOrEmpty(cmbTrfItemCode.Text))
-            {
-                refreshList(cmbTrfItemCode.Text);
-            }
+            
             
 
         }
