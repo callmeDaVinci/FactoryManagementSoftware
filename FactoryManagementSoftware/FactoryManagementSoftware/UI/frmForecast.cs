@@ -104,30 +104,13 @@ namespace FactoryManagementSoftware.UI
                     dgvForecast.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
                     dgvForecast.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
 
-                    DataTable dt2 = dalForecast.nameSearch(keywords, cmbCust.Text);
-
-                    if (dt2.Rows.Count > 0)
-                    {
-                        foreach (DataRow forecast in dt2.Rows)
-                        {
-                            dgvForecast.Rows[n].Cells["forecast_one"].Value = forecast["forecast_one"].ToString();
-                            dgvForecast.Rows[n].Cells["forecast_two"].Value = forecast["forecast_two"].ToString();
-                            dgvForecast.Rows[n].Cells["forecast_three"].Value = forecast["forecast_three"].ToString();
-                            dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = forecast["forecast_updtd_date"].ToString();
-                            dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = forecast["forecast_updtd_by"].ToString();
-                        }
-                    }
-                    else
-                    {
-                        dgvForecast.Rows[n].Cells["forecast_one"].Value = 0;
-                        dgvForecast.Rows[n].Cells["forecast_two"].Value = 0;
-                        dgvForecast.Rows[n].Cells["forecast_three"].Value = 0;
-                        dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = "null";
-                        dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = "null";
-                    }
-
-
-                }
+                    dgvForecast.Rows[n].Cells["forecast_one"].Value = item["forecast_one"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_two"].Value = item["forecast_two"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_three"].Value = item["forecast_three"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = item["forecast_updated_date"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = item["forecast_updated_by"].ToString();
+                       
+                }              
             }
             else
             {
@@ -292,7 +275,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {             
-                bool success = dalForecast.Insert(uForecast);
+                bool success = dalItemCust.Insert(uItemCust);
                 //If the data is successfully inserted then the value of success will be true else false
                 if (!success)
                 {

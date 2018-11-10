@@ -53,11 +53,15 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_item_cust (item_code, cust_id, item_cust_added_date, item_cust_added_by) VALUES (@item_code, @cust_id, @item_cust_added_date, @item_cust_added_by)";
+                String sql = "INSERT INTO tbl_item_cust (item_code, cust_id, forecast_one, forecast_two, forecast_three, forecast_current_month, item_cust_added_date, item_cust_added_by) VALUES (@item_code, @cust_id, @forecast_one, @forecast_two, @forecast_three, @forecast_current_month, @item_cust_added_date, @item_cust_added_by)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@item_code", u.item_code);
                 cmd.Parameters.AddWithValue("@cust_id", u.cust_id);
+                cmd.Parameters.AddWithValue("@forecast_one", u.forecast_one);
+                cmd.Parameters.AddWithValue("@forecast_two", u.forecast_two);
+                cmd.Parameters.AddWithValue("@forecast_three", u.forecast_three);
+                cmd.Parameters.AddWithValue("@forecast_current_month", u.forecast_current_month);
                 cmd.Parameters.AddWithValue("@item_cust_added_date", u.item_cust_added_date);
                 cmd.Parameters.AddWithValue("@item_cust_added_by", u.item_cust_added_by);
 

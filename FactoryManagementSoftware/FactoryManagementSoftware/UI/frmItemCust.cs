@@ -204,6 +204,11 @@ namespace FactoryManagementSoftware.UI
                         uItemCust.item_code = cmbItemCode.Text;
                         uItemCust.item_cust_added_date = DateTime.Now;
                         uItemCust.item_cust_added_by = 0;
+                        uItemCust.forecast_one = 0;
+                        uItemCust.forecast_two = 0;
+                        uItemCust.forecast_three = 0;
+                        uItemCust.forecast_current_month = DateTime.Now.ToString("MMMM"); 
+               
 
                         bool success = dalItemCust.Insert(uItemCust);
                        
