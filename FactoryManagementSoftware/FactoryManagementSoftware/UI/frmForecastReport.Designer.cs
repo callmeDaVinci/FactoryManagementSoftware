@@ -28,24 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvForecastReport = new System.Windows.Forms.DataGridView();
             this.btnCheck = new System.Windows.Forms.Button();
             this.cmbCust = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.cmbSort = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmbOrder = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cmbType = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.item_material = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -63,7 +70,6 @@
             this.forecast_two = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.shotTwo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.forecast_three = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,14 +82,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvForecastReport.BackgroundColor = System.Drawing.Color.White;
             this.dgvForecastReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvForecastReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvForecastReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecastReport.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.item_material,
@@ -114,7 +120,7 @@
             // 
             // btnCheck
             // 
-            this.btnCheck.Location = new System.Drawing.Point(329, 72);
+            this.btnCheck.Location = new System.Drawing.Point(879, 73);
             this.btnCheck.Name = "btnCheck";
             this.btnCheck.Size = new System.Drawing.Size(118, 32);
             this.btnCheck.TabIndex = 12;
@@ -159,11 +165,93 @@
             this.label2.TabIndex = 14;
             this.label2.Text = "Item Name Search";
             // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(1439, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(118, 32);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "PDF";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // cmbSort
+            // 
+            this.cmbSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSort.FormattingEnabled = true;
+            this.cmbSort.Items.AddRange(new object[] {
+            "Default",
+            "Ready Stock",
+            "Forecast One",
+            "Forecast Two",
+            "Forecast Three",
+            "Shot One",
+            "Shot Two"});
+            this.cmbSort.Location = new System.Drawing.Point(502, 74);
+            this.cmbSort.Name = "cmbSort";
+            this.cmbSort.Size = new System.Drawing.Size(159, 31);
+            this.cmbSort.TabIndex = 17;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(498, 48);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 23);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "Sort";
+            // 
+            // cmbOrder
+            // 
+            this.cmbOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbOrder.FormattingEnabled = true;
+            this.cmbOrder.Items.AddRange(new object[] {
+            "Ascending",
+            "Descending"});
+            this.cmbOrder.Location = new System.Drawing.Point(683, 74);
+            this.cmbOrder.Name = "cmbOrder";
+            this.cmbOrder.Size = new System.Drawing.Size(159, 31);
+            this.cmbOrder.TabIndex = 19;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(679, 48);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(54, 23);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "Order";
+            // 
+            // cmbType
+            // 
+            this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbType.FormattingEnabled = true;
+            this.cmbType.Items.AddRange(new object[] {
+            "All",
+            "Non-Assembly",
+            "Assembly"});
+            this.cmbType.Location = new System.Drawing.Point(320, 74);
+            this.cmbType.Name = "cmbType";
+            this.cmbType.Size = new System.Drawing.Size(159, 31);
+            this.cmbType.TabIndex = 21;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(316, 48);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(45, 23);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "Type";
+            // 
             // item_material
             // 
+            this.item_material.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.item_material.HeaderText = "Material Type";
             this.item_material.Name = "item_material";
             this.item_material.ReadOnly = true;
+            this.item_material.Width = 141;
             // 
             // item_code
             // 
@@ -171,7 +259,7 @@
             this.item_code.HeaderText = "Part Number";
             this.item_code.Name = "item_code";
             this.item_code.ReadOnly = true;
-            this.item_code.Width = 126;
+            this.item_code.Width = 137;
             // 
             // item_name
             // 
@@ -188,69 +276,72 @@
             // 
             // mc_ton
             // 
-            dataGridViewCellStyle14.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.mc_ton.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.mc_ton.DefaultCellStyle = dataGridViewCellStyle2;
             this.mc_ton.HeaderText = "MC TON";
             this.mc_ton.Name = "mc_ton";
             this.mc_ton.ReadOnly = true;
+            this.mc_ton.Width = 5;
             // 
             // item_part_weight
             // 
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.LightYellow;
-            this.item_part_weight.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightYellow;
+            this.item_part_weight.DefaultCellStyle = dataGridViewCellStyle3;
             this.item_part_weight.HeaderText = "Part Weight(g)";
             this.item_part_weight.Name = "item_part_weight";
             this.item_part_weight.ReadOnly = true;
             // 
             // item_runner_weight
             // 
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.LightYellow;
-            this.item_runner_weight.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightYellow;
+            this.item_runner_weight.DefaultCellStyle = dataGridViewCellStyle4;
             this.item_runner_weight.HeaderText = "Runner Weight(g)";
             this.item_runner_weight.Name = "item_runner_weight";
             this.item_runner_weight.ReadOnly = true;
             // 
             // item_batch
             // 
+            this.item_batch.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.item_batch.HeaderText = "M Batch Code";
             this.item_batch.Name = "item_batch";
             this.item_batch.ReadOnly = true;
+            this.item_batch.Width = 135;
             // 
             // stock_qty
             // 
-            this.stock_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.Pink;
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stock_qty.DefaultCellStyle = dataGridViewCellStyle17;
+            this.stock_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Pink;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stock_qty.DefaultCellStyle = dataGridViewCellStyle5;
             this.stock_qty.HeaderText = "Ready Stock";
             this.stock_qty.Name = "stock_qty";
             this.stock_qty.ReadOnly = true;
-            this.stock_qty.Width = 119;
+            this.stock_qty.Width = 5;
             // 
             // forecast_one
             // 
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle18.BackColor = System.Drawing.Color.LightYellow;
-            this.forecast_one.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightYellow;
+            this.forecast_one.DefaultCellStyle = dataGridViewCellStyle6;
             this.forecast_one.HeaderText = "F/cast 1";
             this.forecast_one.Name = "forecast_one";
             this.forecast_one.ReadOnly = true;
             // 
             // outStock
             // 
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle19.BackColor = System.Drawing.Color.LightYellow;
-            this.outStock.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.LightYellow;
+            this.outStock.DefaultCellStyle = dataGridViewCellStyle7;
             this.outStock.HeaderText = "Out";
             this.outStock.Name = "outStock";
             this.outStock.ReadOnly = true;
             // 
             // oSant
             // 
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle20.BackColor = System.Drawing.Color.LightYellow;
-            this.oSant.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.LightYellow;
+            this.oSant.DefaultCellStyle = dataGridViewCellStyle8;
             this.oSant.HeaderText = "O/sant";
             this.oSant.Name = "oSant";
             this.oSant.ReadOnly = true;
@@ -258,9 +349,9 @@
             // shotOne
             // 
             this.shotOne.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle21.BackColor = System.Drawing.Color.LightYellow;
-            this.shotOne.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.LightYellow;
+            this.shotOne.DefaultCellStyle = dataGridViewCellStyle9;
             this.shotOne.HeaderText = "SHOT 1";
             this.shotOne.Name = "shotOne";
             this.shotOne.ReadOnly = true;
@@ -274,9 +365,9 @@
             // 
             // forecast_two
             // 
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle22.BackColor = System.Drawing.Color.LightCyan;
-            this.forecast_two.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.LightCyan;
+            this.forecast_two.DefaultCellStyle = dataGridViewCellStyle10;
             this.forecast_two.HeaderText = "F/cast 2";
             this.forecast_two.Name = "forecast_two";
             this.forecast_two.ReadOnly = true;
@@ -284,9 +375,9 @@
             // shotTwo
             // 
             this.shotTwo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle23.BackColor = System.Drawing.Color.LightCyan;
-            this.shotTwo.DefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.LightCyan;
+            this.shotTwo.DefaultCellStyle = dataGridViewCellStyle11;
             this.shotTwo.HeaderText = "SHOT 2";
             this.shotTwo.Name = "shotTwo";
             this.shotTwo.ReadOnly = true;
@@ -294,22 +385,12 @@
             // 
             // forecast_three
             // 
-            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle24.BackColor = System.Drawing.Color.PeachPuff;
-            this.forecast_three.DefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.PeachPuff;
+            this.forecast_three.DefaultCellStyle = dataGridViewCellStyle12;
             this.forecast_three.HeaderText = "F/cast 3";
             this.forecast_three.Name = "forecast_three";
             this.forecast_three.ReadOnly = true;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(474, 71);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(118, 32);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "PDF";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // frmForecastReport
             // 
@@ -317,6 +398,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 703);
+            this.Controls.Add(this.cmbType);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.cmbOrder);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.cmbSort);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtSearch);
@@ -344,6 +431,13 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox cmbSort;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cmbOrder;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cmbType;
+        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_material;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_name;
@@ -361,6 +455,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_two;
         private System.Windows.Forms.DataGridViewTextBoxColumn shotTwo;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_three;
-        private System.Windows.Forms.Button button1;
     }
 }

@@ -11,6 +11,115 @@ namespace FactoryManagementSoftware.DAL
     {
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
+        #region Select Data from Database
+        public DataTable Select(string sort, string order)
+        {
+            string orderSQL = "ASC";
+            string sortSQL = "";
+
+            if (order.Equals("Descending"))
+            {
+                orderSQL = "DESC";
+            }
+
+            switch (sort)
+            {
+                case "Ready Stock":
+                    sortSQL = "tbl_forecast.forecast_ready_stock";
+                    break;
+
+                case "Forecast One":
+                    sortSQL = "tbl_forecast.forecast_one";
+                    break;
+
+                case "Forecast Two":
+                    sortSQL = "tbl_forecast.forecast_two";
+                    break;
+
+                case "Forecast Three":
+                    sortSQL = "tbl_forecast.forecast_three";
+                    break;
+
+                case "Shot One":
+                    sortSQL = "tbl_forecast.forecast_shot_one";
+                    break;
+
+                case "Shot Two":
+                    sortSQL = "tbl_forecast.forecast_shot_two";
+                    break;
+
+                default:
+                    break;
+                    
+            }
+               
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            
+            if(string.IsNullOrEmpty(sortSQL))
+            {
+                try
+                {
+                    //sql query to get data from database
+                    String sql = "SELECT * FROM tbl_forecast INNER JOIN tbl_item ON tbl_forecast.item_code = tbl_item.item_code";
+                    //for executing command
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    //getting data from database
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    //database connection open
+                    conn.Open();
+                    //fill data in our database
+                    adapter.Fill(dt);
+
+
+                }
+                catch (Exception ex)
+                {
+                    //throw message if any error occurs
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    //closing connection
+                    conn.Close();
+                }
+            }
+
+            else
+            {
+                try
+                {
+                    //sql query to get data from database
+                    String sql = "SELECT * FROM tbl_forecast INNER JOIN tbl_item ON tbl_forecast.item_code = tbl_item.item_code ORDER BY "+sortSQL+" "+orderSQL;
+                    //for executing command
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    //getting data from database
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    //database connection open
+                    conn.Open();
+                    //fill data in our database
+                    adapter.Fill(dt);
+
+
+                }
+                catch (Exception ex)
+                {
+                    //throw message if any error occurs
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    //closing connection
+                    conn.Close();
+                }
+            }
+
+            return dt;
+        }
+        #endregion
+
         #region Insert Data in Database
         public bool Insert(forecastBLL u)
         {
