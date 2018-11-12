@@ -244,5 +244,10 @@ namespace FactoryManagementSoftware.UI
                 }
             }
         }
+
+        private void MainDashboard_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

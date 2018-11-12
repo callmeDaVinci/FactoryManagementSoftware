@@ -17,7 +17,7 @@ namespace FactoryManagementSoftware
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainDashboard());
+            Application.Run(new frmLogIn());
 
         }
     }
