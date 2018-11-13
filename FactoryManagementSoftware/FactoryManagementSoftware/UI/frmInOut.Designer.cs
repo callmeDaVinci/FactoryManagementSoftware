@@ -613,6 +613,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 753);
             this.Controls.Add(this.dgvTotal);
             this.Controls.Add(this.button1);

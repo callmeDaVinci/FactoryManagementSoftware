@@ -216,7 +216,7 @@ namespace FactoryManagementSoftware.DAL
 
         #region Search
 
-        public DataTable existsSearch(string itemCode, string custID)
+        public DataTable Search(string keywords)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -227,7 +227,95 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_forecast WHERE item_code LIKE '%" + itemCode + "%' AND cust_id LIKE '%" + custID + "%'";
+                String sql = "SELECT * FROM tbl_forecast INNER JOIN tbl_item ON tbl_forecast.item_code = tbl_item.item_code AND (tbl_item.item_code LIKE '%" + keywords + "%' OR tbl_item.item_name LIKE '%" + keywords + "%')";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable testSearch(string keywords)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT 
+	                                tbl_forecast.forecast_no,
+	                                tbl_forecast.item_code,
+	                                tbl_forecast.forecast_ready_stock,
+	                                tbl_forecast.forecast_current_month,
+	                                tbl_forecast.forecast_one,
+	                                tbl_forecast.forecast_two,
+	                                tbl_forecast.forecast_three,
+	                                tbl_forecast.forecast_out_stock,
+	                                tbl_forecast.forecast_osant,
+	                                tbl_forecast.forecast_shot_one,
+	                                tbl_forecast.forecast_shot_two,
+	                                tbl_item.item_name,
+	                                tbl_item.item_material,
+	                                tbl_item.item_mb,
+	                                tbl_item.item_mc,
+	                                tbl_item.item_color,
+	                                tbl_item.item_part_weight,
+	                                tbl_item.item_runner_weight,
+	                                tbl_join.join_child_code
+                                INTO
+	                                #temp
+                                FROM 
+	                                tbl_forecast 
+	                                LEFT JOIN tbl_join 
+	                                ON tbl_forecast.item_code = tbl_join.join_parent_code
+	                                INNER JOIN tbl_item ON tbl_forecast.item_code = tbl_item.item_code ;
+                                SELECT 
+	                                #temp.forecast_no,
+	                                #temp.item_code,
+	                                #temp.forecast_ready_stock,
+	                                #temp.forecast_current_month,
+	                                #temp.forecast_one,
+	                                #temp.forecast_two,
+	                                #temp.forecast_three,
+	                                #temp.forecast_out_stock,
+	                                #temp.forecast_osant,
+	                                #temp.forecast_shot_one,
+	                                #temp.forecast_shot_two,
+	                                #temp.item_name,
+	                                #temp.item_material,
+	                                #temp.item_mb,
+	                                #temp.item_mc,
+	                                #temp.item_color,
+	                                #temp.item_part_weight,
+	                                #temp.item_runner_weight,
+	                                #temp.join_child_code,
+	                                tbl_item.item_name as child_name
+                                FROM 
+	                                #temp 
+	                                LEFT JOIN tbl_item
+	                                ON #temp.join_child_code = tbl_item.item_code
+                                WHERE #temp.item_name LIKE '%" + keywords + "%' OR tbl_item.item_name LIKE '%" + keywords + "%' " +
+                                "DROP TABLE #temp";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -256,6 +344,48 @@ namespace FactoryManagementSoftware.DAL
         #region Sort
 
         #endregion
+
+        //        USE[Factory]
+        //GO
+
+
+        //SELECT
+        //    tbl_forecast.item_code as item_code,
+        //    tbl_item.item_code as item_itemcode,
+        //    tbl_item.item_name,
+        //    tbl_join.join_parent_code,
+        //    tbl_join.join_child_code
+        //FROM
+
+        //    tbl_forecast
+        //    LEFT JOIN tbl_join ON tbl_forecast.item_code = tbl_join.join_parent_code
+
+        //    INNER JOIN tbl_item ON tbl_forecast.item_code = tbl_item.item_code
+
+        //WHERE
+        //    tbl_item.item_name LIKE '%sl%'
+        //UNION
+
+        //SELECT
+
+        //    tbl_forecast.item_code as item_code,
+        //    tbl_item.item_code,
+        //    tbl_item.item_name,
+        //    tbl_join.join_parent_code,
+        //    tbl_join.join_child_code
+        //FROM
+
+        //    tbl_join
+        //    INNER JOIN tbl_item ON tbl_join.join_child_code = tbl_item.item_code
+
+        //    INNER JOIN tbl_forecast ON tbl_join.join_parent_code = tbl_forecast.item_code
+
+        //WHERE
+        //    tbl_item.item_name LIKE '%sl%'
+        //GO
+
+
+
 
     }
 }

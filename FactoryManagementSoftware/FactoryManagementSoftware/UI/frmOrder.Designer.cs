@@ -32,6 +32,17 @@
             this.txtOrdSearch = new System.Windows.Forms.TextBox();
             this.lblSearch = new System.Windows.Forms.Label();
             this.dgvOrd = new System.Windows.Forms.DataGridView();
+            this.ord_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ord_added_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ord_forecast_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ord_item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_ord = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ord_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ord_unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ord_added_by = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ord_note = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ord_status = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.cmbItemCat = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cmbItemCode = new System.Windows.Forms.ComboBox();
@@ -59,17 +70,6 @@
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider4 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.ord_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ord_added_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ord_forecast_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ord_item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_ord = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ord_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ord_unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ord_added_by = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ord_note = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ord_status = new System.Windows.Forms.DataGridViewComboBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrderAlert)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
@@ -130,6 +130,88 @@
             this.dgvOrd.TabIndex = 19;
             this.dgvOrd.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrd_CellEnter);
             this.dgvOrd.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvOrd_EditingControlShowing);
+            // 
+            // ord_id
+            // 
+            this.ord_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            this.ord_id.HeaderText = "Order ID";
+            this.ord_id.Name = "ord_id";
+            this.ord_id.Width = 5;
+            // 
+            // ord_added_date
+            // 
+            this.ord_added_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.ord_added_date.HeaderText = "Added Date";
+            this.ord_added_date.Name = "ord_added_date";
+            this.ord_added_date.Width = 130;
+            // 
+            // ord_forecast_date
+            // 
+            this.ord_forecast_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.ord_forecast_date.HeaderText = "Forecast Date";
+            this.ord_forecast_date.Name = "ord_forecast_date";
+            this.ord_forecast_date.Width = 143;
+            // 
+            // ord_item_code
+            // 
+            this.ord_item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ord_item_code.HeaderText = "Item Code";
+            this.ord_item_code.Name = "ord_item_code";
+            // 
+            // item_name
+            // 
+            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_name.HeaderText = "Item Name";
+            this.item_name.Name = "item_name";
+            // 
+            // item_ord
+            // 
+            this.item_ord.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_ord.HeaderText = "Ordered";
+            this.item_ord.Name = "item_ord";
+            this.item_ord.Width = 102;
+            // 
+            // ord_qty
+            // 
+            this.ord_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.ord_qty.HeaderText = "Qty";
+            this.ord_qty.Name = "ord_qty";
+            this.ord_qty.Width = 66;
+            // 
+            // ord_unit
+            // 
+            this.ord_unit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.ord_unit.HeaderText = "Unit";
+            this.ord_unit.Name = "ord_unit";
+            this.ord_unit.Width = 71;
+            // 
+            // ord_added_by
+            // 
+            this.ord_added_by.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.ord_added_by.HeaderText = "By";
+            this.ord_added_by.Name = "ord_added_by";
+            this.ord_added_by.Width = 57;
+            // 
+            // ord_note
+            // 
+            this.ord_note.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.ord_note.HeaderText = "Note";
+            this.ord_note.Name = "ord_note";
+            this.ord_note.Width = 77;
+            // 
+            // ord_status
+            // 
+            this.ord_status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.ord_status.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            this.ord_status.HeaderText = "ord_status";
+            this.ord_status.Items.AddRange(new object[] {
+            "Requesting",
+            "Cancelled",
+            "Approved",
+            "Received"});
+            this.ord_status.MaxDropDownItems = 4;
+            this.ord_status.Name = "ord_status";
+            this.ord_status.Width = 94;
             // 
             // cmbItemCat
             // 
@@ -388,92 +470,11 @@
             // 
             this.errorProvider4.ContainerControl = this;
             // 
-            // ord_id
-            // 
-            this.ord_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            this.ord_id.HeaderText = "Order ID";
-            this.ord_id.Name = "ord_id";
-            this.ord_id.Width = 5;
-            // 
-            // ord_added_date
-            // 
-            this.ord_added_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ord_added_date.HeaderText = "Added Date";
-            this.ord_added_date.Name = "ord_added_date";
-            this.ord_added_date.Width = 119;
-            // 
-            // ord_forecast_date
-            // 
-            this.ord_forecast_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ord_forecast_date.HeaderText = "Forecast Date";
-            this.ord_forecast_date.Name = "ord_forecast_date";
-            this.ord_forecast_date.Width = 131;
-            // 
-            // ord_item_code
-            // 
-            this.ord_item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ord_item_code.HeaderText = "Item Code";
-            this.ord_item_code.Name = "ord_item_code";
-            // 
-            // item_name
-            // 
-            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_name.HeaderText = "Item Name";
-            this.item_name.Name = "item_name";
-            // 
-            // item_ord
-            // 
-            this.item_ord.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_ord.HeaderText = "Ordered";
-            this.item_ord.Name = "item_ord";
-            this.item_ord.Width = 102;
-            // 
-            // ord_qty
-            // 
-            this.ord_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ord_qty.HeaderText = "Qty";
-            this.ord_qty.Name = "ord_qty";
-            this.ord_qty.Width = 66;
-            // 
-            // ord_unit
-            // 
-            this.ord_unit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ord_unit.HeaderText = "Unit";
-            this.ord_unit.Name = "ord_unit";
-            this.ord_unit.Width = 71;
-            // 
-            // ord_added_by
-            // 
-            this.ord_added_by.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ord_added_by.HeaderText = "By";
-            this.ord_added_by.Name = "ord_added_by";
-            this.ord_added_by.Width = 57;
-            // 
-            // ord_note
-            // 
-            this.ord_note.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ord_note.HeaderText = "Note";
-            this.ord_note.Name = "ord_note";
-            this.ord_note.Width = 77;
-            // 
-            // ord_status
-            // 
-            this.ord_status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ord_status.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
-            this.ord_status.HeaderText = "ord_status";
-            this.ord_status.Items.AddRange(new object[] {
-            "Requesting",
-            "Cancelled",
-            "Approved",
-            "Received"});
-            this.ord_status.MaxDropDownItems = 4;
-            this.ord_status.Name = "ord_status";
-            this.ord_status.Width = 94;
-            // 
             // frmOrder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 703);
             this.Controls.Add(this.dgvOrderAlert);
             this.Controls.Add(this.btnReset);
