@@ -117,6 +117,12 @@
     <Compile Include="UI\frmInOut.Designer.cs">
       <DependentUpon>frmInOut.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmInOutEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmInOutEdit.Designer.cs">
+      <DependentUpon>frmInOutEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmItem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,6 +205,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmInOut.resx">
       <DependentUpon>frmInOut.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmInOutEdit.resx">
+      <DependentUpon>frmInOutEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItem.resx">
       <DependentUpon>frmItem.cs</DependentUpon>

@@ -428,7 +428,6 @@ namespace FactoryManagementSoftware
 
         private void dgvItem_Sorted(object sender, EventArgs e)
         {
-            
             listPaint();
         }
     }

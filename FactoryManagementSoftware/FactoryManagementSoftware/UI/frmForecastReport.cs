@@ -1041,7 +1041,24 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbSort_SelectedIndexChanged(object sender, EventArgs e)
         {
-            cmbOrder.SelectedIndex = 0;
+
+            if(string.IsNullOrEmpty(cmbSort.Text))
+            {
+                cmbOrder.DataSource = null;
+            }
+            else
+            {
+                string asc = "Ascending";
+                string desc = "Descending";
+                DataTable dt = new DataTable();
+                dt.Columns.Add("order");
+                dt.Rows.Add(asc);
+                dt.Rows.Add(desc);
+                cmbOrder.DataSource = dt;
+                cmbOrder.DisplayMember = "order";
+                //cmbOrder.SelectedIndex = 0;
+            }
+            
         }
 
         private void cmbCust_SelectedIndexChanged(object sender, EventArgs e)
