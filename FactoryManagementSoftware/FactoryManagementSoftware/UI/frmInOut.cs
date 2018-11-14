@@ -33,8 +33,8 @@ namespace FactoryManagementSoftware.UI
         trfHistBLL utrfHist = new trfHistBLL();
         trfHistDAL daltrfHist = new trfHistDAL();
 
-        stockBLL uStock = new stockBLL();
-        stockDAL dalStock = new stockDAL();
+        facStockBLL uStock = new facStockBLL();
+        facStockDAL dalStock = new facStockDAL();
 
         joinBLL uJoin = new joinBLL();
         joinDAL dalJoin = new joinDAL();
@@ -53,7 +53,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmInOut_Load(object sender, EventArgs e)
         {
-            resetForm();
+            resetForm(); 
         }
 
         private void loadStockList(string itemCode)
@@ -72,6 +72,23 @@ namespace FactoryManagementSoftware.UI
         }
 
         private void loadItemList()
+        {
+            //show all item from the database
+            DataTable dtItem = dalItem.Select();
+            dgvItem.Rows.Clear();
+            foreach (DataRow item in dtItem.Rows)
+            {
+                int n = dgvItem.Rows.Add();
+                dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
+                dgvItem.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
+                dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
+                dgvItem.Rows[n].Cells["item_qty"].Value = Convert.ToSingle(item["item_qty"]).ToString("0.00");
+                dgvItem.Rows[n].Cells["item_ord"].Value = item["item_ord"].ToString();
+            }
+            
+        }
+
+        private void itemSearch()
         {
             //get keyword from text box
             string keywords = txtItemSearch.Text;
@@ -96,18 +113,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                //show all item from the database
-                DataTable dtItem = dalItem.Select();
-                dgvItem.Rows.Clear();
-                foreach (DataRow item in dtItem.Rows)
-                {
-                    int n = dgvItem.Rows.Add();
-                    dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
-                    dgvItem.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
-                    dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
-                    dgvItem.Rows[n].Cells["item_qty"].Value = item["item_qty"].ToString();
-                    dgvItem.Rows[n].Cells["item_ord"].Value = item["item_ord"].ToString();
-                }
+                loadItemList();
             }
         }
 

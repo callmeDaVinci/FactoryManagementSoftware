@@ -104,6 +104,7 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+
         private void categoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!catFormOpen)
@@ -126,22 +127,7 @@ namespace FactoryManagementSoftware.UI
 
         private void orderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!ordFormOpen)
-            {
-                frmOrder ord = new frmOrder();
-                ord.MdiParent = this;
-                ord.StartPosition = FormStartPosition.CenterScreen;
-                ord.WindowState = FormWindowState.Maximized;
-                ord.Show();
-                ordFormOpen = true;
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmOrder>().Count() == 1)
-                {
-                    Application.OpenForms.OfType<frmOrder>().First().BringToFront();
-                }
-            }
+           
         }
 
         private void dataToolStripMenuItem_Click(object sender, EventArgs e)
@@ -248,6 +234,46 @@ namespace FactoryManagementSoftware.UI
         private void MainDashboard_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void orderToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (!ordFormOpen)
+            {
+                frmOrder ord = new frmOrder();
+                ord.MdiParent = this;
+                ord.StartPosition = FormStartPosition.CenterScreen;
+                ord.WindowState = FormWindowState.Maximized;
+                ord.Show();
+                ordFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmOrder>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmOrder>().First().BringToFront();
+                }
+            }
+        }
+
+        private void stockToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!inOutFormOpen)
+            {
+                frmInOut inOut = new frmInOut();
+                inOut.MdiParent = this;
+                inOut.StartPosition = FormStartPosition.CenterScreen;
+                inOut.WindowState = FormWindowState.Maximized;
+                inOut.Show();
+                inOutFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmInOut>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmInOut>().First().BringToFront();
+                }
+            }
         }
     }
 }

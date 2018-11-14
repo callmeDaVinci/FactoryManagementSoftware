@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FactoryManagementSoftware.BLL
 {
-    class stockBLL
+    class facStockBLL
     {
         public string stock_item_code { get; set; }
         public int stock_fac_id { get; set; }

@@ -144,26 +144,17 @@ namespace FactoryManagementSoftware.UI
             {
                 uItem.item_mc = Convert.ToInt32(txtMcTon.Text);
             }
-            else
-            {
-                uItem.item_mc = 0;
-            }
+ 
             if (!string.IsNullOrEmpty(txtPartWeight.Text))
             {
                 uItem.item_part_weight = Convert.ToSingle(txtPartWeight.Text);
             }
-            else
-            {
-                uItem.item_part_weight = 0;
-            }
+
             if (!string.IsNullOrEmpty(txtRunnerWeight.Text))
             {
                 uItem.item_runner_weight = Convert.ToSingle(txtRunnerWeight.Text);
             }
-            else
-            {
-                uItem.item_runner_weight = 0;
-            }
+  
             uItem.item_updtd_date = DateTime.Now;
             uItem.item_updtd_by = 0;
             //Updating data into database
@@ -174,7 +165,6 @@ namespace FactoryManagementSoftware.UI
                 //data updated successfully
                 MessageBox.Show("Item successfully updated ");
                 this.Close();
-
             }
             else
             {
@@ -197,26 +187,15 @@ namespace FactoryManagementSoftware.UI
             {
                 uItem.item_mc = Convert.ToInt32(txtMcTon.Text);
             }
-            else
-            {
-                uItem.item_mc = 0;
-            }
+         
             if (!string.IsNullOrEmpty(txtPartWeight.Text))
             {
                 uItem.item_part_weight = Convert.ToSingle(txtPartWeight.Text);
-            }
-            else
-            {
-                uItem.item_part_weight = 0;
             }
 
             if (!string.IsNullOrEmpty(txtRunnerWeight.Text))
             {
                 uItem.item_runner_weight = Convert.ToSingle(txtRunnerWeight.Text);
-            }
-            else
-            {
-                uItem.item_runner_weight = 0;
             }
 
             uItem.item_added_date = DateTime.Now;
@@ -250,6 +229,7 @@ namespace FactoryManagementSoftware.UI
             {
                 //data updated successfully
                 MessageBox.Show("Material successfully updated ");
+                updateItem();
                 this.Close();
             }
             else
@@ -271,11 +251,13 @@ namespace FactoryManagementSoftware.UI
             {
                 //Data Successfully Inserted
                 MessageBox.Show("Material successfully created");
+                insertItem();
                 this.Close();
             }
             else
             {
                 //Failed to insert data
+                dalMaterial.Delete(uMaterial);
                 MessageBox.Show("Failed to add new material");
             }
         }

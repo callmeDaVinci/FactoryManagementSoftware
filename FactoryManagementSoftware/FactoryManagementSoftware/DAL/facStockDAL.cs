@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.DAL
 {
-    class stockDAL
+    class facStockDAL
     {
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
@@ -56,7 +56,7 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Insert Data in Database
-        public bool Insert( stockBLL u)
+        public bool Insert( facStockBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -102,7 +102,7 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Update data in Database
-        public bool Update(stockBLL u)
+        public bool Update(facStockBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);

@@ -33,8 +33,8 @@ namespace FactoryManagementSoftware.UI
         trfHistBLL utrfHist = new trfHistBLL();
         trfHistDAL daltrfHist = new trfHistDAL();
 
-        stockBLL uStock = new stockBLL();
-        stockDAL dalStock = new stockDAL();
+        facStockBLL uStock = new facStockBLL();
+        facStockDAL dalStock = new facStockDAL();
 
         itemCustBLL uItemCust = new itemCustBLL();
         itemCustDAL dalItemCust = new itemCustDAL();

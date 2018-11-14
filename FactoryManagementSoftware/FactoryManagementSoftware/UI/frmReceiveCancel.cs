@@ -19,8 +19,8 @@ namespace FactoryManagementSoftware.UI
         trfCatBLL utrfCat = new trfCatBLL();
         trfCatDAL daltrfCat = new trfCatDAL();
 
-        stockBLL uStock = new stockBLL();
-        stockDAL dalStock = new stockDAL();
+        facStockBLL uStock = new facStockBLL();
+        facStockDAL dalStock = new facStockDAL();
 
         facDAL dalFac = new facDAL();
 

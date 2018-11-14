@@ -55,7 +55,7 @@ namespace FactoryManagementSoftware
 
         private void loadItemData()
         {  
-            DataTable dt = dalItem.Select();
+            DataTable dt = dalItem.catSearch(cmbCat.Text);
             dgvItem.Rows.Clear();
             
                 foreach (DataRow item in dt.Rows)
@@ -94,6 +94,18 @@ namespace FactoryManagementSoftware
             }        
         }
 
+        private bool IfProductsExists(String productCode)
+        {
+            DataTable dt;
+           
+                dt = dalItem.codeSearch(productCode);
+
+            if (dt.Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
         private void loadMaterialData()
         {
             string category = cmbCat.Text;
@@ -106,6 +118,24 @@ namespace FactoryManagementSoftware
                 dgvItem.Rows[n].Cells["Category"].Value = item["material_cat"].ToString();
                 dgvItem.Rows[n].Cells["dgvcItemCode"].Value = item["material_code"].ToString();
                 dgvItem.Rows[n].Cells["dgvcItemName"].Value = item["material_name"].ToString();
+
+                uItem.item_code = item["material_code"].ToString();
+                uItem.item_name = item["material_name"].ToString();
+                uItem.item_cat = item["material_cat"].ToString();
+
+                uItem.item_color = "";
+                uItem.item_material = "";
+                uItem.item_mb = "";
+
+                uItem.item_added_date = DateTime.Now;
+                uItem.item_added_by = -1;
+
+                if(!IfProductsExists(uItem.item_code))
+                {
+                    dalItem.Insert(uItem);
+                   
+                }
+                
             }
             listPaint();
          
@@ -118,17 +148,18 @@ namespace FactoryManagementSoftware
 
         private void loadData()
         {
-            if (!string.IsNullOrEmpty(cmbCat.Text))
-            {
-                if (cmbCat.Text.Equals("Part"))
-                {
-                    loadItemData();
-                }
-                else
-                {
-                    loadMaterialData();
-                }
-            }
+            loadItemData();
+            //if (!string.IsNullOrEmpty(cmbCat.Text))
+            //{
+            //    if (cmbCat.Text.Equals("Part"))
+            //    {
+                    
+            //    }
+            //    else
+            //    {
+            //        loadMaterialData();
+            //    }
+            //}
         }
 
         private void loadItemCategoryData()
@@ -166,7 +197,7 @@ namespace FactoryManagementSoftware
             currentRowIndex = e.RowIndex;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnAdd_Click(object sender, EventArgs e)
         {
             frmItemEdit frm = new frmItemEdit();
             currentItemCat = cmbCat.Text;
@@ -176,7 +207,7 @@ namespace FactoryManagementSoftware
             resetForm();
         }
 
-        private void btnDelete2_Click(object sender, EventArgs e)
+        private void btnDelete_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             if (dgvItem.SelectedRows.Count > 0)
@@ -186,7 +217,7 @@ namespace FactoryManagementSoftware
                 {
                     if(cmbCat.Text.Equals("Part"))
                     {
-                        uItem.item_code = dgvItem.Rows[currentRowIndex].Cells["dgvcItemCode"].Value.ToString(); ;
+                        uItem.item_code = dgvItem.Rows[currentRowIndex].Cells["dgvcItemCode"].Value.ToString(); 
 
                         bool success = dalItem.Delete(uItem);
 
@@ -212,10 +243,24 @@ namespace FactoryManagementSoftware
 
                         bool success = dalMaterial.Delete(uMaterial);
 
-                        if (success == true)
+                        if (success)
                         {
                             //item deleted successfully
                             MessageBox.Show("Material deleted successfully");
+                            uItem.item_code = dgvItem.Rows[currentRowIndex].Cells["dgvcItemCode"].Value.ToString();
+
+                            bool success2 = dalItem.Delete(uItem);
+
+                            if (success2 == true)
+                            {
+                                //item deleted successfully
+                                MessageBox.Show("Item deleted successfully");
+                            }
+                            else
+                            {
+                                //Failed to delete item
+                                MessageBox.Show("Failed to delete item");
+                            }
                             resetForm();
                         }
                         else

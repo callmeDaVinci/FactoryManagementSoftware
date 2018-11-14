@@ -697,7 +697,7 @@ namespace FactoryManagementSoftware.DAL
         public bool updateTotalStock(string itemCode)
         {
             float totalStock = 0;
-            stockDAL dalStock = new stockDAL();
+            facStockDAL dalStock = new facStockDAL();
             itemBLL uItem = new itemBLL();
 
             DataTable dtStock = dalStock.Select(itemCode);

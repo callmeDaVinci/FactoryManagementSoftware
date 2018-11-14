@@ -13,12 +13,12 @@ namespace FactoryManagementSoftware.BLL
         public string item_cat { get; set; }
         public float item_qty { get; set; }
         public float item_ord { get; set; }
-        public string item_material { get; set; }
-        public string item_mb { get; set; }
-        public int item_mc { get; set; }
-        public string item_color { get; set; }
-        public float item_part_weight { get; set; }
-        public float item_runner_weight { get; set; }
+        public string item_material { get; set; } = null;
+        public string item_mb { get; set; } = null;
+        public int item_mc { get; set; } = 0;
+        public string item_color { get; set; } = null;
+        public float item_part_weight { get; set; } = 0;
+        public float item_runner_weight { get; set; } = 0;
         public DateTime item_added_date { get; set; }
         public int item_added_by { get; set; }
         public DateTime item_updtd_date { get; set; }

@@ -41,8 +41,6 @@
             this.historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.inOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.orderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.forecastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataInputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,6 +48,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.orderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -62,6 +61,7 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.adminToolStripMenuItem,
             this.stockToolStripMenuItem,
+            this.orderToolStripMenuItem1,
             this.forecastToolStripMenuItem,
             this.reportToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
@@ -150,26 +150,10 @@
             // 
             // stockToolStripMenuItem
             // 
-            this.stockToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.inOutToolStripMenuItem,
-            this.orderToolStripMenuItem});
             this.stockToolStripMenuItem.Name = "stockToolStripMenuItem";
             this.stockToolStripMenuItem.Size = new System.Drawing.Size(62, 27);
             this.stockToolStripMenuItem.Text = "Stock";
-            // 
-            // inOutToolStripMenuItem
-            // 
-            this.inOutToolStripMenuItem.Name = "inOutToolStripMenuItem";
-            this.inOutToolStripMenuItem.Size = new System.Drawing.Size(147, 28);
-            this.inOutToolStripMenuItem.Text = "In / Out";
-            this.inOutToolStripMenuItem.Click += new System.EventHandler(this.inOutToolStripMenuItem_Click);
-            // 
-            // orderToolStripMenuItem
-            // 
-            this.orderToolStripMenuItem.Name = "orderToolStripMenuItem";
-            this.orderToolStripMenuItem.Size = new System.Drawing.Size(147, 28);
-            this.orderToolStripMenuItem.Text = "Order";
-            this.orderToolStripMenuItem.Click += new System.EventHandler(this.orderToolStripMenuItem_Click);
+            this.stockToolStripMenuItem.Click += new System.EventHandler(this.stockToolStripMenuItem_Click);
             // 
             // forecastToolStripMenuItem
             // 
@@ -219,6 +203,13 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
             // 
+            // orderToolStripMenuItem1
+            // 
+            this.orderToolStripMenuItem1.Name = "orderToolStripMenuItem1";
+            this.orderToolStripMenuItem1.Size = new System.Drawing.Size(66, 27);
+            this.orderToolStripMenuItem1.Text = "Order";
+            this.orderToolStripMenuItem1.Click += new System.EventHandler(this.orderToolStripMenuItem1_Click);
+            // 
             // MainDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -256,8 +247,6 @@
         private System.Windows.Forms.ToolStripMenuItem custToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem historyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stockToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem inOutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem orderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forecastToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem itemJoinToolStripMenuItem;
@@ -266,6 +255,7 @@
         private System.Windows.Forms.ToolStripMenuItem itemCustToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dataInputToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forecastReportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem orderToolStripMenuItem1;
     }
 }
 
