@@ -11,6 +11,8 @@ namespace FactoryManagementSoftware.DAL
     {
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
+        facStockBLL uStock = new facStockBLL();
+
         #region Select Data from Database
         public DataTable Select(string itemCode)
         {
@@ -183,6 +185,104 @@ namespace FactoryManagementSoftware.DAL
         }
         #endregion
 
-        
+        private bool IfExists(string itemCode, string facID)
+        {
+            DataTable dt = Search(itemCode, facID);
+
+            if (dt.Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
+        private float getQty(string itemCode, string facID)
+        {
+            float qty = 0;
+            if (IfExists(itemCode, facID))
+            {
+                DataTable dt = Search(itemCode, facID);
+
+                qty = Convert.ToSingle(dt.Rows[0]["stock_qty"].ToString());
+            }
+            else
+            {
+                qty = 0;
+            }
+
+            return qty;
+        }
+
+        public bool facStockIn(string facID, string itemCode, float qty)
+        {
+            bool result = true;
+            uStock.stock_item_code = itemCode;
+            uStock.stock_fac_id = Convert.ToInt32(facID);
+            uStock.stock_qty = getQty(itemCode, facID) + qty;
+            uStock.stock_updtd_date = DateTime.Now;
+            uStock.stock_updtd_by = 0;
+
+            if (IfExists(itemCode, facID))
+            {
+                //Updating data into database
+                bool success = Update(uStock);
+
+                if(!success)
+                {
+                    //failed to update user
+                    result = false;
+                    MessageBox.Show("Failed to updated stock");
+                }
+            }
+            else
+            {
+                //Inserting Data into Database
+                bool success = Insert(uStock);
+                //If the data is successfully inserted then the value of success will be true else false
+                if (!success)
+                {
+                    //Failed to insert data
+                    result = false;
+                    MessageBox.Show("Failed to add new stock");
+                }
+            }
+            return result;
+        }
+
+        public bool facStockOut(string facID, string itemCode, float qty)
+        {
+            bool result = true;
+            uStock.stock_item_code = itemCode;
+            uStock.stock_fac_id = Convert.ToInt32(facID);
+            uStock.stock_qty = getQty(itemCode, facID) - qty;
+            uStock.stock_updtd_date = DateTime.Now;
+            uStock.stock_updtd_by = 0;
+
+            if (IfExists(itemCode, facID))
+            {
+                //Updating data into database
+                bool success = Update(uStock);
+
+                if (!success)
+                {
+                    //failed to update user
+                    result = false;
+                    MessageBox.Show("Failed to updated stock");
+                }
+            }
+            else
+            {
+                //Inserting Data into Database
+                bool success = Insert(uStock);
+                //If the data is successfully inserted then the value of success will be true else false
+                if (!success)
+                {
+                    //Failed to insert data
+                    result = false;
+                    MessageBox.Show("Failed to add new stock");
+                }
+            }
+
+            return result;
+        }
     }
 }

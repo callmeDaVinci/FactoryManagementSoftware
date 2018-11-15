@@ -86,7 +86,7 @@ namespace FactoryManagementSoftware
                     dgvItem.Rows[n].Cells["dgvcQty"].Value = item["item_qty"].ToString();
                     dgvItem.Rows[n].Cells["dgvcOrd"].Value = item["item_ord"].ToString();
                 }
-                listPaint();
+                listPaint(dgvItem);
           
             if(dt.Rows.Count <= 0 && formLoaded)
             {
@@ -137,7 +137,7 @@ namespace FactoryManagementSoftware
                 }
                 
             }
-            listPaint();
+            listPaint(dgvItem);
          
             if (dt.Rows.Count <= 0 && formLoaded)
             {
@@ -406,29 +406,29 @@ namespace FactoryManagementSoftware
         }
         #endregion
 
-        private void listPaint()
+        private void listPaint(DataGridView dgv)
         {
             bool rowColorChange = true;
-            foreach (DataGridViewRow row in dgvItem.Rows)
+            foreach (DataGridViewRow row in dgv.Rows)
             {
                 int n = row.Index;
                 if (rowColorChange)
                 {
-                    dgvItem.Rows[n].DefaultCellStyle.BackColor = Control.DefaultBackColor;
+                    dgv.Rows[n].DefaultCellStyle.BackColor = SystemColors.Control;
                     rowColorChange = false;
                 }
                 else
                 {
-                    dgvItem.Rows[n].DefaultCellStyle.BackColor = Color.White;
+                    dgv.Rows[n].DefaultCellStyle.BackColor = Color.White;
                     rowColorChange = true;
                 }
             }
-            dgvItem.ClearSelection();
+            dgv.ClearSelection();
         }
 
         private void dgvItem_Sorted(object sender, EventArgs e)
         {
-            listPaint();
+            listPaint(dgvItem);
         }
     }
 

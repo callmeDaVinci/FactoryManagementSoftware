@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -274,6 +275,11 @@ namespace FactoryManagementSoftware.UI
                     Application.OpenForms.OfType<frmInOut>().First().BringToFront();
                 }
             }
+        }
+
+        private void MainDashboard_Load(object sender, EventArgs e)
+        {
+          
         }
     }
 }

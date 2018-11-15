@@ -41,6 +41,7 @@
             this.historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.orderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.forecastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataInputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,7 +49,6 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.orderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -83,9 +83,11 @@
             this.categoryToolStripMenuItem,
             this.historyToolStripMenuItem,
             this.dataToolStripMenuItem});
+            this.adminToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.adminToolStripMenuItem.Name = "adminToolStripMenuItem";
             this.adminToolStripMenuItem.Size = new System.Drawing.Size(72, 27);
             this.adminToolStripMenuItem.Text = "Admin";
+            this.adminToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // userToolStripMenuItem
             // 
@@ -150,18 +152,31 @@
             // 
             // stockToolStripMenuItem
             // 
+            this.stockToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.stockToolStripMenuItem.Name = "stockToolStripMenuItem";
             this.stockToolStripMenuItem.Size = new System.Drawing.Size(62, 27);
             this.stockToolStripMenuItem.Text = "Stock";
+            this.stockToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.stockToolStripMenuItem.Click += new System.EventHandler(this.stockToolStripMenuItem_Click);
+            // 
+            // orderToolStripMenuItem1
+            // 
+            this.orderToolStripMenuItem1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.orderToolStripMenuItem1.Name = "orderToolStripMenuItem1";
+            this.orderToolStripMenuItem1.Size = new System.Drawing.Size(66, 27);
+            this.orderToolStripMenuItem1.Text = "Order";
+            this.orderToolStripMenuItem1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.orderToolStripMenuItem1.Click += new System.EventHandler(this.orderToolStripMenuItem1_Click);
             // 
             // forecastToolStripMenuItem
             // 
             this.forecastToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dataInputToolStripMenuItem});
+            this.forecastToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.forecastToolStripMenuItem.Name = "forecastToolStripMenuItem";
             this.forecastToolStripMenuItem.Size = new System.Drawing.Size(85, 27);
             this.forecastToolStripMenuItem.Text = "Forecast";
+            this.forecastToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // dataInputToolStripMenuItem
             // 
@@ -174,9 +189,11 @@
             // 
             this.reportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.forecastReportToolStripMenuItem});
+            this.reportToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
             this.reportToolStripMenuItem.Size = new System.Drawing.Size(73, 27);
             this.reportToolStripMenuItem.Text = "Report";
+            this.reportToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // forecastReportToolStripMenuItem
             // 
@@ -203,17 +220,11 @@
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
             // 
-            // orderToolStripMenuItem1
-            // 
-            this.orderToolStripMenuItem1.Name = "orderToolStripMenuItem1";
-            this.orderToolStripMenuItem1.Size = new System.Drawing.Size(66, 27);
-            this.orderToolStripMenuItem1.Text = "Order";
-            this.orderToolStripMenuItem1.Click += new System.EventHandler(this.orderToolStripMenuItem1_Click);
-            // 
             // MainDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1320, 698);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
@@ -222,9 +233,10 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainDashboard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MainDashboard";
+            this.Text = "Dashboard";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainDashboard_FormClosed);
+            this.Load += new System.EventHandler(this.MainDashboard_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);

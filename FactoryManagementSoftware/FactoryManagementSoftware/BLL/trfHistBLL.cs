@@ -19,6 +19,7 @@ namespace FactoryManagementSoftware.BLL
         public string trf_hist_note { get; set; }
         public DateTime trf_hist_added_date { get; set; }
         public int trf_hist_added_by { get; set; }
+        public string trf_result { get; set; }
 
     }
 }

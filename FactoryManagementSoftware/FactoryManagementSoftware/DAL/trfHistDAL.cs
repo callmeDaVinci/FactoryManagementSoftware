@@ -55,7 +55,7 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_trf_hist (trf_hist_item_code, trf_hist_item_name, trf_hist_from, trf_hist_to, trf_hist_qty, trf_hist_unit, trf_hist_trf_date, trf_hist_note, trf_hist_added_date, trf_hist_added_by) VALUES (@trf_hist_item_code, @trf_hist_item_name, @trf_hist_from, @trf_hist_to, @trf_hist_qty, @trf_hist_unit, @trf_hist_trf_date, @trf_hist_note, @trf_hist_added_date, @trf_hist_added_by)";
+                String sql = "INSERT INTO tbl_trf_hist (trf_hist_item_code, trf_hist_item_name, trf_hist_from, trf_hist_to, trf_hist_qty, trf_hist_unit, trf_hist_trf_date, trf_hist_note, trf_hist_added_date, trf_hist_added_by, trf_result) VALUES (@trf_hist_item_code, @trf_hist_item_name, @trf_hist_from, @trf_hist_to, @trf_hist_qty, @trf_hist_unit, @trf_hist_trf_date, @trf_hist_note, @trf_hist_added_date, @trf_hist_added_by, @trf_result)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@trf_hist_item_code", u.trf_hist_item_code);
@@ -68,6 +68,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@trf_hist_note", u.trf_hist_note);
                 cmd.Parameters.AddWithValue("@trf_hist_added_date", u.trf_hist_added_date);
                 cmd.Parameters.AddWithValue("@trf_hist_added_by", u.trf_hist_added_by);
+                cmd.Parameters.AddWithValue("@trf_result", u.trf_result);
 
                 conn.Open();
 
