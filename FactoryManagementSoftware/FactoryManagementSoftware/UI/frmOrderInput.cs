@@ -13,13 +13,12 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
         }
 
+        static public bool orderSuccess = false;
+
         #region create class object (database)
 
-        custBLL uCust = new custBLL();
-        custDAL dalCust = new custDAL();
-
-        facBLL uFac = new facBLL();
-        facDAL dalFac = new facDAL();
+        ordBLL uOrd = new ordBLL();
+        ordDAL dalOrd = new ordDAL();
 
         itemBLL uItem = new itemBLL();
         itemDAL dalItem = new itemDAL();
@@ -27,23 +26,6 @@ namespace FactoryManagementSoftware.UI
         itemCatBLL uItemCat = new itemCatBLL();
         itemCatDAL dalItemCat = new itemCatDAL();
 
-        trfCatBLL utrfCat = new trfCatBLL();
-        trfCatDAL daltrfCat = new trfCatDAL();
-
-        trfHistBLL utrfHist = new trfHistBLL();
-        trfHistDAL daltrfHist = new trfHistDAL();
-
-        facStockBLL uStock = new facStockBLL();
-        facStockDAL dalStock = new facStockDAL();
-
-        joinBLL uJoin = new joinBLL();
-        joinDAL dalJoin = new joinDAL();
-
-        materialBLL uMaterial = new materialBLL();
-        materialDAL dalMaterial = new materialDAL();
-
-        childTrfHistBLL uChildTrfHist = new childTrfHistBLL();
-        childTrfHistDAL dalChildTrfHist = new childTrfHistDAL();
 
 
         #endregion
@@ -184,6 +166,26 @@ namespace FactoryManagementSoftware.UI
             return result;
         }
 
+        private void getDataFromUser()
+        {
+            uOrd.ord_item_code = cmbItemCode.Text;
+            uOrd.ord_qty = Convert.ToInt32(txtQty.Text);
+            uOrd.ord_forecast_date = dtpForecastDate.Value.Date;
+            uOrd.ord_note = txtNote.Text;
+            uOrd.ord_unit = cmbQtyUnit.Text;
+            uOrd.ord_status = "Requesting";
+            uOrd.ord_added_date = DateTime.Now;
+            uOrd.ord_added_by = 0;
+        }
+
+        private void txtQty_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
+
         #endregion
 
         private void frmOrderInput_Load(object sender, EventArgs e)
@@ -235,7 +237,30 @@ namespace FactoryManagementSoftware.UI
 
         private void btnOrder_Click(object sender, EventArgs e)
         {
-            Validation();
+            if (Validation())
+            {
+                DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                {
+
+                    getDataFromUser();
+
+                    //Inserting Data into Database
+                    bool success = dalOrd.Insert(uOrd);
+                    if(!success)
+                    {
+                        //Failed to insert data
+                        MessageBox.Show("Failed to add new order record");
+                    }
+                    else
+                    {
+                        MessageBox.Show("New order is requesting...");
+                        orderSuccess = true;
+                        this.Close();
+                    }
+
+                }
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

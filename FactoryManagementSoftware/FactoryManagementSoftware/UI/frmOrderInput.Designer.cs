@@ -94,6 +94,7 @@
             this.txtQty.Size = new System.Drawing.Size(366, 34);
             this.txtQty.TabIndex = 91;
             this.txtQty.TextChanged += new System.EventHandler(this.txtQty_TextChanged);
+            this.txtQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtQty_KeyPress);
             // 
             // cmbQtyUnit
             // 
