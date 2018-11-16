@@ -78,12 +78,17 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void resetForm()
+        private void resetSaveData()
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             itemCat = "";
             itemName = "";
             itemCode = "";
+        }
+
+        private void resetForm()
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            resetSaveData();
             loadItemCategoryData();
             loadItemList();
             loadTransferList();
@@ -98,6 +103,7 @@ namespace FactoryManagementSoftware.UI
         private void listPaint(DataGridView dgv)
         {
             bool rowColorChange = true;
+
             foreach (DataGridViewRow row in dgv.Rows)
             {
                 int n = row.Index;
@@ -111,6 +117,67 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[n].DefaultCellStyle.BackColor = Color.White;
                     rowColorChange = true;
                 }
+
+                string itemCode = "";
+                if (dgv == dgvItem)
+                {
+                    itemCode = dgv.Rows[n].Cells["item_code"].Value.ToString();
+                    float qty = 0;
+
+                    if (dgv.Rows[n].Cells["item_qty"] != null)
+                    {
+                        float.TryParse(dgv.Rows[n].Cells["item_qty"].Value.ToString(), out (qty));
+                    }
+                    if (ifGotChild(itemCode))
+                    {
+                        dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                    }
+                    if(qty < 0)
+                    {
+                        dgv.Rows[n].Cells["item_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
+                    }
+                }
+                else if (dgv == dgvTrf)
+                {
+                    itemCode = dgv.Rows[n].Cells["trf_hist_item_code"].Value.ToString();
+                    if (ifGotChild(itemCode))
+                    {
+                        dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                    }
+                }
+                else if (dgv == dgvFactoryStock)
+                {
+                    float qty = 0;
+   
+                    if (dgv.Rows[n].Cells["stock_qty"].Value.ToString() != null)
+                    {
+                        float.TryParse(dgv.Rows[n].Cells["stock_qty"].Value.ToString(),out(qty));
+                    }
+
+                    if (qty < 0)
+                    {
+                        dgv.Rows[n].Cells["stock_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
+                    }
+                }
+                else if(dgv == dgvTotal)
+                {
+                    float qty = 0;
+
+                    if (dgv.Rows[n].Cells["Total"] != null)
+                    {
+                        float.TryParse(dgv.Rows[n].Cells["Total"].Value.ToString(), out (qty));
+                    }
+                   
+
+                    if (qty < 0)
+                    {
+                        dgv.Rows[n].Cells["Total"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
+                    }
+                }
+
+
             }
             dgv.ClearSelection();
         }
@@ -200,7 +267,6 @@ namespace FactoryManagementSoftware.UI
             {
                 //show all item from the database
                 dtItem = dalItem.Select();
-              
             }
             else
             {
@@ -287,37 +353,19 @@ namespace FactoryManagementSoftware.UI
             //check if the keywords has value or not
             if (!string.IsNullOrEmpty(itemCode))
             {
-
                 dt = daltrfHist.codeSearch(itemCode);
-
-                dt.DefaultView.Sort = "trf_hist_added_date DESC";
-
-                DataTable sortedDt = dt.DefaultView.ToTable();
-
-                dgvTrf.Rows.Clear();
-                foreach (DataRow trf in sortedDt.Rows)
-                {
-                    int n = dgvTrf.Rows.Add();
-                    dgvTrf.Rows[n].Cells["trf_hist_id"].Value = trf["trf_hist_id"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = trf["trf_hist_added_date"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(trf["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
-                    dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = trf["trf_hist_item_code"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["trf_hist_item_name"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00");
-                    dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = trf["trf_hist_added_by"].ToString();
-                }
-
             }
             else
             {
                 //show all transfer records from the database
                 dt = daltrfHist.Select();
+            }
+
+            dgvTrf.Rows.Clear();
+            if (dt.Rows.Count > 0)
+            {
                 dt.DefaultView.Sort = "trf_hist_added_date DESC";
                 DataTable sortedDt = dt.DefaultView.ToTable();
-                dgvTrf.Rows.Clear();
                 foreach (DataRow trf in sortedDt.Rows)
                 {
                     int n = dgvTrf.Rows.Add();
@@ -325,16 +373,17 @@ namespace FactoryManagementSoftware.UI
                     dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = trf["trf_hist_added_date"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(trf["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
                     dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = trf["trf_hist_item_code"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["trf_hist_item_name"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["item_name"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00");
                     dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = trf["trf_hist_added_by"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_note"].Value = trf["trf_hist_note"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_result"].Value = trf["trf_result"].ToString();
                 }
+                listPaint(dgvTrf);
             }
-            listPaint(dgvTrf);
-
         }
 
         private void loadTransferList()
@@ -359,35 +408,27 @@ namespace FactoryManagementSoftware.UI
                 {
                     dt = daltrfHist.nameSearch(keywords);
                 }
-
-                dt.DefaultView.Sort = "trf_hist_added_date DESC";
-                
-                DataTable sortedDt = dt.DefaultView.ToTable();
-
-                dgvTrf.Rows.Clear();
-                foreach (DataRow trf in sortedDt.Rows)
-                {
-                    int n = dgvTrf.Rows.Add();
-                    dgvTrf.Rows[n].Cells["trf_hist_id"].Value = trf["trf_hist_id"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = trf["trf_hist_added_date"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(trf["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
-                    dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = trf["trf_hist_item_code"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["trf_hist_item_name"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00");
-                    dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = trf["trf_hist_added_by"].ToString();
-                }
-
             }
             else
             {
-                //show all transfer records from the database
-                dt = daltrfHist.Select();
+                if (string.IsNullOrEmpty(cmbSearchCat.Text) || cmbSearchCat.Text.Equals("All"))
+                {
+                    //show all item from the database
+                    dt = daltrfHist.Select();
+
+                }
+                else
+                {
+                    dt = daltrfHist.catSearch(cmbSearchCat.Text);
+                }   
+            }
+
+            dgvTrf.Rows.Clear();
+            if (dt.Rows.Count > 0)
+            {
                 dt.DefaultView.Sort = "trf_hist_added_date DESC";
                 DataTable sortedDt = dt.DefaultView.ToTable();
-                dgvTrf.Rows.Clear();
+
                 foreach (DataRow trf in sortedDt.Rows)
                 {
                     int n = dgvTrf.Rows.Add();
@@ -395,16 +436,17 @@ namespace FactoryManagementSoftware.UI
                     dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = trf["trf_hist_added_date"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(trf["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
                     dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = trf["trf_hist_item_code"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["trf_hist_item_name"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["item_name"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00");
                     dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = trf["trf_hist_added_by"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_note"].Value = trf["trf_hist_note"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_result"].Value = trf["trf_result"].ToString();
                 }
+                listPaint(dgvTrf);
             }
-            listPaint(dgvTrf);
-
         } 
 
         private void unitDataSource()
@@ -503,6 +545,18 @@ namespace FactoryManagementSoftware.UI
             return unit;
         }
 
+        private bool ifGotChild(string itemCode)
+        {
+            bool result = false;
+            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+            if (dtJoin.Rows.Count > 0)
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
         #endregion
 
         #region text/index changed
@@ -510,6 +564,10 @@ namespace FactoryManagementSoftware.UI
         private void cmbSearchCat_SelectedIndexChanged(object sender, EventArgs e)
         {
             loadItemList();
+            loadTransferList();
+            resetSaveData();
+            dgvFactoryStock.Rows.Clear();
+            dgvTotal.Rows.Clear();
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
@@ -540,6 +598,8 @@ namespace FactoryManagementSoftware.UI
                 if (itemCat == null || itemName == null || itemCode == null)
                 {
                     MessageBox.Show("empty value after selected");
+                    dgvFactoryStock.DataSource = null;
+                    dgvTotal.DataSource = null;
                 }
                 else
                 {
@@ -547,6 +607,12 @@ namespace FactoryManagementSoftware.UI
                     calTotalStock(itemCode);
                     loadTransferList(itemCode);
                 }
+            }
+            else
+            {
+                resetSaveData();
+                dgvFactoryStock.DataSource = null;
+                dgvTotal.DataSource = null;
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
@@ -558,25 +624,68 @@ namespace FactoryManagementSoftware.UI
 
         private void transfer_Click(object sender, EventArgs e)
         {
-            dgvItem.ClearSelection();
             frmInOutEdit frm = new frmInOutEdit();
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//Item Edit
-        }
 
-        #endregion
+            if(frmInOutEdit.updateSuccess)
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                txtSearch.Text = itemCode; // update date list
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+        }
 
         private void frmInOut_MouseClick(object sender, MouseEventArgs e)
         {
-
+            dgvItem.ClearSelection();
+            loadTransferList();
+            resetSaveData();
         }
 
-        private void frmInOut_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void btnReset_Click(object sender, EventArgs e)
         {
             if (change)
             {
                 resetForm();
             }
+        }
+
+
+        #endregion
+
+        private void dgvTrf_SelectionChanged(object sender, EventArgs e)
+        {
+            //Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            //int rowIndex = dgvItem.CurrentCell.RowIndex;
+            //if (rowIndex >= 0)
+            //{
+            //    itemCat = dgvItem.Rows[rowIndex].Cells["item_cat"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_cat"].Value.ToString();
+            //    itemName = dgvItem.Rows[rowIndex].Cells["item_name"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
+            //    itemCode = dgvItem.Rows[rowIndex].Cells["item_code"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
+
+            //    if (itemCat == null || itemName == null || itemCode == null)
+            //    {
+            //        MessageBox.Show("empty value after selected");
+            //        dgvFactoryStock.DataSource = null;
+            //        dgvTotal.DataSource = null;
+            //    }
+            //    else
+            //    {
+            //        loadStockList(itemCode);
+            //        calTotalStock(itemCode);
+            //        loadTransferList(itemCode);
+            //    }
+            //}
+            //else
+            //{
+            //    resetSaveData();
+            //    dgvFactoryStock.DataSource = null;
+            //    dgvTotal.DataSource = null;
+            //}
+
+            //Cursor = Cursors.Arrow; // change cursor to normal type
         }
     }
 }

@@ -12,6 +12,7 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
         }
+        static public bool updateSuccess = false;
 
         #region create class object (database)
 
@@ -41,6 +42,9 @@ namespace FactoryManagementSoftware.UI
 
         materialBLL uMaterial = new materialBLL();
         materialDAL dalMaterial = new materialDAL();
+
+        childTrfHistBLL uChildTrfHist = new childTrfHistBLL();
+        childTrfHistDAL dalChildTrfHist = new childTrfHistDAL();
 
 
         #endregion
@@ -184,22 +188,22 @@ namespace FactoryManagementSoftware.UI
 
         #region data proccessing
 
-        private float getQty(string itemCode, string factoryName)
-        {
-            float qty = 0;
-            if (IfExists(itemCode, factoryName))
-            {
-                DataTable dt = dalStock.Search(itemCode, getFactoryID(factoryName));
+        //private float getQty(string itemCode, string factoryName)
+        //{
+        //    float qty = 0;
+        //    if (IfExists(itemCode, factoryName))
+        //    {
+        //        DataTable dt = dalStock.Search(itemCode, getFactoryID(factoryName));
 
-                qty = Convert.ToSingle(dt.Rows[0]["stock_qty"].ToString());
-            }
-            else
-            {
-                qty = 0;
-            }
+        //        qty = Convert.ToSingle(dt.Rows[0]["stock_qty"].ToString());
+        //    }
+        //    else
+        //    {
+        //        qty = 0;
+        //    }
 
-            return qty;
-        }
+        //    return qty;
+        //}
 
         #endregion
 
@@ -211,7 +215,7 @@ namespace FactoryManagementSoftware.UI
 
             loadItemCategoryData();
 
-            if(frmInOut.itemCode != null)
+            if(!string.IsNullOrEmpty(frmInOut.itemCode))
             {
                 cmbTrfItemCat.Text = frmInOut.itemCat;
                 cmbTrfItemName.Text = frmInOut.itemName;
@@ -364,17 +368,14 @@ namespace FactoryManagementSoftware.UI
             //TO-DO
         }
 
-        private void transferRecord(string stockResult)
+        private int transferRecord(string stockResult)
         {
-            string locationFrom = "";
-            string locationTo = "";
+            
+            string locationFrom = string.IsNullOrEmpty(cmbTrfFrom.Text) ? cmbTrfFromCategory.Text: cmbTrfFrom.Text;
 
-            locationFrom = cmbTrfFrom.Text == null? cmbTrfFromCategory.Text: cmbTrfFrom.Text;
-
-            locationTo = cmbTrfTo.Text == null ? cmbTrfToCategory.Text : cmbTrfTo.Text;
+            string locationTo = string.IsNullOrEmpty(cmbTrfTo.Text) ? cmbTrfToCategory.Text : cmbTrfTo.Text;
 
             utrfHist.trf_hist_item_code = cmbTrfItemCode.Text;
-            utrfHist.trf_hist_item_name = cmbTrfItemName.Text;
             utrfHist.trf_hist_from = locationFrom;
             utrfHist.trf_hist_to = locationTo;
             utrfHist.trf_hist_qty = checkQty(Convert.ToSingle(txtTrfQty.Text));
@@ -391,7 +392,33 @@ namespace FactoryManagementSoftware.UI
             {
                 //Failed to insert data
                 MessageBox.Show("Failed to add new transfer record");
-            }  
+            }
+            return daltrfHist.getIndexNo(utrfHist);
+        }
+
+        private void childTransferRecord(string stockResult, int indexNo, string itemCode)
+        {
+
+            string locationFrom = string.IsNullOrEmpty(cmbTrfFrom.Text)? cmbTrfFromCategory.Text : cmbTrfFrom.Text;
+
+            string locationTo = string.IsNullOrEmpty(cmbTrfTo.Text) ? cmbTrfToCategory.Text : cmbTrfTo.Text;
+
+            uChildTrfHist.child_trf_hist_code = itemCode;
+            uChildTrfHist.child_trf_hist_from = locationTo;
+            uChildTrfHist.child_trf_hist_to = locationFrom;
+            uChildTrfHist.child_trf_hist_qty = checkQty(Convert.ToSingle(txtTrfQty.Text));
+            uChildTrfHist.child_trf_hist_unit = "piece";
+            
+            uChildTrfHist.child_trf_hist_result = stockResult;
+            uChildTrfHist.child_trf_hist_id = indexNo;
+
+            //Inserting Data into Database
+            bool success = dalChildTrfHist.Insert(uChildTrfHist);
+            if (!success)
+            {
+                //Failed to insert data
+                MessageBox.Show("Failed to add new child transfer record");
+            }
         }
 
         private bool stockIn(string factoryName, string itemCode, float qty)
@@ -420,15 +447,32 @@ namespace FactoryManagementSoftware.UI
             return successFacStockOut && successStockSubtract;
         }
 
-        private bool childStockOut(string factoryName, string parentItemCode, float qty)
+        private bool childStockOut(string factoryName, string parentItemCode, float qty, int indexNo)
         {
             bool success = true;
-            ////TO-DO
+            string stockResult = "Passed";
+  
+            string childItemCode;
+            DataTable dtJoin = dalJoin.parentCheck(parentItemCode);
+            if (dtJoin.Rows.Count > 0)
+            {
+                foreach (DataRow Join in dtJoin.Rows)
+                {
+                    childItemCode = Join["join_child_code"].ToString();
+                    DataTable dtItem = dalItem.codeSearch(childItemCode);
 
-            ////LOOP
-            //string childItemCode2 = parentItemCode;//get child itemcode from parent
-            //stockOut(factoryName, childItemCode, qty);
-            ////LOOP
+                    if (dtItem.Rows.Count > 0)
+                    {
+                        if(!stockOut(factoryName, childItemCode, qty))
+                        {
+                            stockResult = "Falied";
+                            success = false;
+                        }
+                        childTransferRecord(stockResult, indexNo, childItemCode);
+                    }
+                }
+            }
+
             return success;
         }
 
@@ -492,11 +536,20 @@ namespace FactoryManagementSoftware.UI
                 }
                 else if(fromCat.Equals("Assembly") && toCat.Equals("Factory"))
                 {
-                    if (!(stockIn(to, itemCode, qty) && childStockOut(to, itemCode, qty)))
+
+                    if (ifGotChild())
                     {
+                        if (!stockIn(to, itemCode, qty))
+                        {
+                            result = "Failed";
+                        }
+                        childStockOut(to, itemCode, qty, transferRecord(result)); 
+                    }
+                    else
+                    {
+                        MessageBox.Show("This item not a assembly part");
                         result = "Failed";
                     }
-                    transferRecord(result);
                 }
                 else if(toCat.Equals("Factory"))
                 {
@@ -517,37 +570,54 @@ namespace FactoryManagementSoftware.UI
             {
                 if (fromCat.Equals("Supplier") && toCat.Equals("Factory"))
                 {
-                    //Supplier Record
-                    supplierRecord(from,to, itemCode, qty);
-                    //Factory stock in (material) to
-                    stockIn(to, itemCode, qty);
+                    if (stockIn(to, itemCode, qty))
+                    {
+                        supplierRecord(from, to, itemCode, qty);
+                    }
+                    else
+                    {
+                        result = "Failed";
+                    }
+                    transferRecord(result);
                 }
                 else if (fromCat.Equals("Factory"))
                 {
                     if (toCat.Equals("Factory"))
                     {
-                        //factory stock out (material) from
-                        stockOut(from, itemCode, qty);
-                        //factory stock in (material) to
-                        stockIn(to, itemCode, qty);
+                        if (!(stockIn(to, itemCode, qty) && stockOut(from, itemCode, qty)))
+                        {
+                            result = "Failed";
+                        }
+                        transferRecord(result);
                     }
                     else if (toCat.Equals("Production"))
                     {
-                        //material used record update (daily delivery record)
-                        materialUsedRecord(from, itemCode, qty);
-                        //factory stock out (material)
-                        stockOut(from, itemCode, qty);
+                        if (stockOut(from, itemCode, qty))
+                        {
+                            materialUsedRecord(from, itemCode, qty);
+                        }
+                        else
+                        {
+                            result = "Failed";
+                        }
+                        transferRecord(result);
                     }
                     else
                     {
-                        //factory stock out (material) from
-                        stockOut(from, itemCode, qty);
+                        if (!stockOut(from, itemCode, qty))
+                        {
+                            result = "Failed";
+                        }
+                        transferRecord(result);
                     }
                 }
                 else if (toCat.Equals("Factory"))
                 {
-                    //factory stock in (material) to
-                    stockIn(to, itemCode, qty);
+                    if (!stockIn(to, itemCode, qty))
+                    {
+                        result = "Failed";
+                    }
+                    transferRecord(result);
                 }
                 else
                 {
@@ -557,7 +627,13 @@ namespace FactoryManagementSoftware.UI
 
             if(result.Equals("Passed"))
             {
+                updateSuccess = true;
+                frmInOut.itemCode = cmbTrfItemCode.Text;
                 this.Close();
+            }
+            else
+            {
+                updateSuccess = false;
             }
         }
 

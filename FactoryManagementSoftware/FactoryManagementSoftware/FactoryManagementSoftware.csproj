@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\childTrfHistBLL.cs" />
     <Compile Include="BLL\custBLL.cs" />
     <Compile Include="BLL\facBLL.cs" />
     <Compile Include="BLL\forecastBLL.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="BLL\facStockBLL.cs" />
     <Compile Include="BLL\trfCatBLL.cs" />
     <Compile Include="BLL\trfHistBLL.cs" />
+    <Compile Include="DAL\childTrfHistDAL.cs" />
     <Compile Include="DAL\custDAL.cs" />
     <Compile Include="DAL\dataDAL.cs" />
     <Compile Include="DAL\facDAL.cs" />
