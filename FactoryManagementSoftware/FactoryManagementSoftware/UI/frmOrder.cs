@@ -255,34 +255,38 @@ namespace FactoryManagementSoftware.UI
 
         private void btnOrder_Click(object sender, EventArgs e)
         {
-            if (Validation())
-            {
-                DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (dialogResult == DialogResult.Yes)
-                {
+            frmOrderInput frm = new frmOrderInput();
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//Item Edit
 
-                    getDataFromUser();
+            //if (Validation())
+            //{
+            //    DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            //    if (dialogResult == DialogResult.Yes)
+            //    {
 
-                    //Inserting Data into Database
-                    bool success = dalOrd.Insert(uOrd);
-                    //If the data is successfully inserted then the value of success will be true else false
-                    if (success == true)
-                    {
-                        //Data Successfully Inserted
-                        //MessageBox.Show("Transfer record successfully created");
+            //        getDataFromUser();
 
-                        //stockInandOut();
-                        resetForm();
+            //        //Inserting Data into Database
+            //        bool success = dalOrd.Insert(uOrd);
+            //        //If the data is successfully inserted then the value of success will be true else false
+            //        if (success == true)
+            //        {
+            //            //Data Successfully Inserted
+            //            //MessageBox.Show("Transfer record successfully created");
 
-                    }
-                    else
-                    {
-                        //Failed to insert data
-                        MessageBox.Show("Failed to add new order record");
-                    }
+            //            //stockInandOut();
+            //            resetForm();
 
-                }
-            }
+            //        }
+            //        else
+            //        {
+            //            //Failed to insert data
+            //            MessageBox.Show("Failed to add new order record");
+            //        }
+
+            //    }
+            //}
         }
 
         private void dgvOrd_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)

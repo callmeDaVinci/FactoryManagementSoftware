@@ -14,11 +14,17 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
         }
 
+        #region variable declare
+
         static public string itemCat;
         static public string itemCode;
         static public string itemName;
+        static public string facName;
+        static public int indexNo = -1;
 
         private bool change = false;
+
+        #endregion
 
         #region create class object (database)
 
@@ -48,6 +54,8 @@ namespace FactoryManagementSoftware.UI
 
         materialBLL uMaterial = new materialBLL();
         materialDAL dalMaterial = new materialDAL();
+
+        childTrfHistDAL dalChildTrf = new childTrfHistDAL();
 
 
         #endregion
@@ -559,7 +567,7 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        #region text/index changed
+        #region text/index changed or click
 
         private void cmbSearchCat_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -618,6 +626,66 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
+        private void dgvTrf_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            //MessageBox.Show("double click");
+            int rowIndex = dgvTrf.CurrentCell.RowIndex;
+            if (rowIndex >= 0)
+            {
+                if (dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value != null)
+                {
+                    int.TryParse(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString(), out (indexNo));
+                }
+
+
+                if (indexNo != -1)
+                {
+                    DataTable dt = dalChildTrf.indexSearch(indexNo);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        frmChildStockOutRecord frm = new frmChildStockOutRecord();
+                        frm.StartPosition = FormStartPosition.CenterScreen;
+                        frm.ShowDialog();//Item Edit
+                    }
+
+                }
+            }
+            else
+            {
+                indexNo = -1;
+            }
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void dgvFactoryStock_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            //MessageBox.Show("double click");
+            int rowIndex = dgvFactoryStock.CurrentCell.RowIndex;
+            if (rowIndex >= 0)
+            {
+                facName = dgvFactoryStock.Rows[rowIndex].Cells["fac_name"].Value.ToString();
+
+                if (!string.IsNullOrEmpty(facName) || facName != "null")
+                {
+                    DataTable dt = daltrfHist.facSearch(itemCode, facName);
+                    if (dt.Rows.Count > 0)
+                    {
+                        frmFactoryTrfRecord frm = new frmFactoryTrfRecord();
+                        frm.StartPosition = FormStartPosition.CenterScreen;
+                        frm.ShowDialog();//Item Edit
+                    }
+                }
+            }
+            else
+            {
+                indexNo = -1;
+            }
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
         #endregion
 
         #region Function:Transfer/Reset
@@ -651,46 +719,9 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-
         #endregion
-
-        private void dgvTrf_SelectionChanged(object sender, EventArgs e)
-        {
-            //Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
-            //int rowIndex = dgvItem.CurrentCell.RowIndex;
-            //if (rowIndex >= 0)
-            //{
-            //    itemCat = dgvItem.Rows[rowIndex].Cells["item_cat"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_cat"].Value.ToString();
-            //    itemName = dgvItem.Rows[rowIndex].Cells["item_name"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
-            //    itemCode = dgvItem.Rows[rowIndex].Cells["item_code"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
-
-            //    if (itemCat == null || itemName == null || itemCode == null)
-            //    {
-            //        MessageBox.Show("empty value after selected");
-            //        dgvFactoryStock.DataSource = null;
-            //        dgvTotal.DataSource = null;
-            //    }
-            //    else
-            //    {
-            //        loadStockList(itemCode);
-            //        calTotalStock(itemCode);
-            //        loadTransferList(itemCode);
-            //    }
-            //}
-            //else
-            //{
-            //    resetSaveData();
-            //    dgvFactoryStock.DataSource = null;
-            //    dgvTotal.DataSource = null;
-            //}
-
-            //Cursor = Cursors.Arrow; // change cursor to normal type
-        }
     }
 }
-
-
 
 //      
 

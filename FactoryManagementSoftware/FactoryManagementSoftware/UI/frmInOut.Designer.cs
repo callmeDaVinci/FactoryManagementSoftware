@@ -92,6 +92,7 @@
             // 
             this.dgvTrf.AllowUserToAddRows = false;
             this.dgvTrf.AllowUserToDeleteRows = false;
+            this.dgvTrf.AllowUserToResizeRows = false;
             this.dgvTrf.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -121,12 +122,13 @@
             this.dgvTrf.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTrf.Size = new System.Drawing.Size(1511, 334);
             this.dgvTrf.TabIndex = 37;
-            this.dgvTrf.SelectionChanged += new System.EventHandler(this.dgvTrf_SelectionChanged);
+            this.dgvTrf.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTrf_CellDoubleClick);
             // 
             // dgvFactoryStock
             // 
             this.dgvFactoryStock.AllowUserToAddRows = false;
             this.dgvFactoryStock.AllowUserToDeleteRows = false;
+            this.dgvFactoryStock.AllowUserToResizeRows = false;
             this.dgvFactoryStock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvFactoryStock.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -152,6 +154,7 @@
             this.dgvFactoryStock.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvFactoryStock.Size = new System.Drawing.Size(317, 237);
             this.dgvFactoryStock.TabIndex = 56;
+            this.dgvFactoryStock.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFactoryStock_CellDoubleClick);
             // 
             // fac_name
             // 
@@ -303,6 +306,7 @@
             // 
             this.dgvTotal.AllowUserToAddRows = false;
             this.dgvTotal.AllowUserToDeleteRows = false;
+            this.dgvTotal.AllowUserToResizeRows = false;
             dataGridViewCellStyle38.SelectionBackColor = System.Drawing.Color.White;
             dataGridViewCellStyle38.SelectionForeColor = System.Drawing.Color.Black;
             this.dgvTotal.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle38;
@@ -489,6 +493,7 @@
             // trf_hist_qty
             // 
             this.trf_hist_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             dataGridViewCellStyle28.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(20)))), ((int)(((byte)(31)))));
             this.trf_hist_qty.DefaultCellStyle = dataGridViewCellStyle28;
             this.trf_hist_qty.HeaderText = "Qty";
@@ -554,6 +559,7 @@
             this.Controls.Add(this.dgvTrf);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmInOut";
             this.Text = "Stock";

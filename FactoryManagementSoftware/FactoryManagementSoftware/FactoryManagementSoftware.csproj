@@ -83,6 +83,12 @@
     <Compile Include="UI\frmCat.Designer.cs">
       <DependentUpon>frmCat.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmChildStockOutRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmChildStockOutRecord.Designer.cs">
+      <DependentUpon>frmChildStockOutRecord.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmCust.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +106,12 @@
     </Compile>
     <Compile Include="UI\frmFac.Designer.cs">
       <DependentUpon>frmFac.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmFactoryTrfRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmFactoryTrfRecord.Designer.cs">
+      <DependentUpon>frmFactoryTrfRecord.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmForecast.cs">
       <SubType>Form</SubType>
@@ -169,6 +181,12 @@
     <Compile Include="UI\frmOrder.Designer.cs">
       <DependentUpon>frmOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmOrderInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmOrderInput.Designer.cs">
+      <DependentUpon>frmOrderInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmReceiveCancel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -190,6 +208,9 @@
     <EmbeddedResource Include="UI\frmCat.resx">
       <DependentUpon>frmCat.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmChildStockOutRecord.resx">
+      <DependentUpon>frmChildStockOutRecord.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmCust.resx">
       <DependentUpon>frmCust.cs</DependentUpon>
     </EmbeddedResource>
@@ -198,6 +219,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmFac.resx">
       <DependentUpon>frmFac.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmFactoryTrfRecord.resx">
+      <DependentUpon>frmFactoryTrfRecord.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmForecast.resx">
       <DependentUpon>frmForecast.cs</DependentUpon>
@@ -240,6 +264,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrder.resx">
       <DependentUpon>frmOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmOrderInput.resx">
+      <DependentUpon>frmOrderInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmReceiveCancel.resx">
       <DependentUpon>frmReceiveCancel.cs</DependentUpon>

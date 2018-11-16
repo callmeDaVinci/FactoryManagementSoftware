@@ -276,10 +276,5 @@ namespace FactoryManagementSoftware.UI
                 }
             }
         }
-
-        private void MainDashboard_Load(object sender, EventArgs e)
-        {
-          
-        }
     }
 }

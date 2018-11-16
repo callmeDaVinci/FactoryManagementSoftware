@@ -399,12 +399,28 @@ namespace FactoryManagementSoftware
 
         private void cmbCat_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
             if (formLoaded)
             {
                 loadData();
-            }          
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
         #endregion
+
+        private bool ifGotChild(string itemCode)
+        {
+            bool result = false;
+            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+            if (dtJoin.Rows.Count > 0)
+            {
+                result = true;
+            }
+
+            return result;
+        }
 
         private void listPaint(DataGridView dgv)
         {
@@ -422,7 +438,31 @@ namespace FactoryManagementSoftware
                     dgv.Rows[n].DefaultCellStyle.BackColor = Color.White;
                     rowColorChange = true;
                 }
+
+                string itemCode = "";
+                if (dgv == dgvItem)
+                {
+                    itemCode = dgv.Rows[n].Cells["dgvcItemCode"].Value.ToString();
+                    float qty = 0;
+
+                    if (dgv.Rows[n].Cells["dgvcQty"] != null)
+                    {
+                        float.TryParse(dgv.Rows[n].Cells["dgvcQty"].Value.ToString(), out (qty));
+                    }
+
+                    if (ifGotChild(itemCode))
+                    {
+                        dgv.Rows[n].Cells["dgvcItemCode"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[n].Cells["dgvcItemName"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                    }
+                    if (qty < 0)
+                    {
+                        dgv.Rows[n].Cells["dgvcQty"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
+                    }
+                }
             }
+
+
             dgv.ClearSelection();
         }
 

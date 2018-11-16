@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.dgvFactoryStock = new System.Windows.Forms.DataGridView();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.dgvData = new System.Windows.Forms.DataGridView();
             this.child_trf_hist_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.child_trf_hist_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -38,14 +39,14 @@
             this.child_trf_hist_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.child_trf_hist_unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.child_trf_hist_result = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvFactoryStock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
             this.SuspendLayout();
             // 
-            // dgvFactoryStock
+            // dgvData
             // 
-            this.dgvFactoryStock.AllowUserToAddRows = false;
-            this.dgvFactoryStock.AllowUserToDeleteRows = false;
-            this.dgvFactoryStock.BackgroundColor = System.Drawing.Color.White;
+            this.dgvData.AllowUserToAddRows = false;
+            this.dgvData.AllowUserToDeleteRows = false;
+            this.dgvData.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -53,9 +54,9 @@
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvFactoryStock.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvFactoryStock.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvFactoryStock.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.child_trf_hist_id,
             this.child_trf_hist_code,
             this.item_name,
@@ -64,18 +65,18 @@
             this.child_trf_hist_qty,
             this.child_trf_hist_unit,
             this.child_trf_hist_result});
-            this.dgvFactoryStock.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvFactoryStock.EnableHeadersVisualStyles = false;
-            this.dgvFactoryStock.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvFactoryStock.Location = new System.Drawing.Point(0, 0);
-            this.dgvFactoryStock.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvFactoryStock.Name = "dgvFactoryStock";
-            this.dgvFactoryStock.ReadOnly = true;
-            this.dgvFactoryStock.RowHeadersVisible = false;
-            this.dgvFactoryStock.RowTemplate.Height = 40;
-            this.dgvFactoryStock.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvFactoryStock.Size = new System.Drawing.Size(579, 396);
-            this.dgvFactoryStock.TabIndex = 57;
+            this.dgvData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvData.EnableHeadersVisualStyles = false;
+            this.dgvData.GridColor = System.Drawing.SystemColors.Control;
+            this.dgvData.Location = new System.Drawing.Point(0, 0);
+            this.dgvData.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvData.Name = "dgvData";
+            this.dgvData.ReadOnly = true;
+            this.dgvData.RowHeadersVisible = false;
+            this.dgvData.RowTemplate.Height = 40;
+            this.dgvData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvData.Size = new System.Drawing.Size(898, 401);
+            this.dgvData.TabIndex = 57;
             // 
             // child_trf_hist_id
             // 
@@ -95,11 +96,10 @@
             // 
             // item_name
             // 
-            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.item_name.HeaderText = "Name";
             this.item_name.Name = "item_name";
             this.item_name.ReadOnly = true;
-            this.item_name.Width = 85;
             // 
             // child_trf_hist_from
             // 
@@ -120,6 +120,8 @@
             // child_trf_hist_qty
             // 
             this.child_trf_hist_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.child_trf_hist_qty.DefaultCellStyle = dataGridViewCellStyle2;
             this.child_trf_hist_qty.HeaderText = "Qty";
             this.child_trf_hist_qty.Name = "child_trf_hist_qty";
             this.child_trf_hist_qty.ReadOnly = true;
@@ -146,20 +148,21 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(579, 396);
-            this.Controls.Add(this.dgvFactoryStock);
+            this.ClientSize = new System.Drawing.Size(898, 401);
+            this.Controls.Add(this.dgvData);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmChildStockOutRecord";
             this.Text = "frmChildStockOutRecord";
-            ((System.ComponentModel.ISupportInitialize)(this.dgvFactoryStock)).EndInit();
+            this.Load += new System.EventHandler(this.frmChildStockOutRecord_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvData)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dgvFactoryStock;
+        private System.Windows.Forms.DataGridView dgvData;
         private System.Windows.Forms.DataGridViewTextBoxColumn child_trf_hist_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn child_trf_hist_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_name;
