@@ -15,12 +15,16 @@ namespace FactoryManagementSoftware.UI
 
         private string stockInQty = frmOrder.selectedOrderQty;
         private string itemCode = frmOrder.selectedItemCode;
+        private string unit = frmOrder.selectedUnit;
 
         trfCatBLL utrfCat = new trfCatBLL();
         trfCatDAL daltrfCat = new trfCatDAL();
 
         facStockBLL uStock = new facStockBLL();
         facStockDAL dalStock = new facStockDAL();
+
+        trfHistBLL utrfHist = new trfHistBLL();
+        trfHistDAL daltrfHist = new trfHistDAL();
 
         facDAL dalFac = new facDAL();
 
@@ -92,11 +96,40 @@ namespace FactoryManagementSoftware.UI
             return qty;
         }
 
+        private int transferRecord(string stockResult)
+        {
+
+            string locationFrom = cmbFrom.Text;
+
+            string locationTo = cmbTo.Text;
+
+            utrfHist.trf_hist_item_code = itemCode;
+            utrfHist.trf_hist_from = locationFrom;
+            utrfHist.trf_hist_to = locationTo;
+            utrfHist.trf_hist_qty = Convert.ToSingle(stockInQty);
+            utrfHist.trf_hist_unit = unit;
+            utrfHist.trf_hist_trf_date = DateTime.Now;
+            utrfHist.trf_hist_note = "Order: Received";
+            utrfHist.trf_hist_added_date = DateTime.Now;
+            utrfHist.trf_hist_added_by = 0;
+            utrfHist.trf_result = stockResult;
+
+            //Inserting Data into Database
+            bool success = daltrfHist.Insert(utrfHist);
+            if (!success)
+            {
+                //Failed to insert data
+                MessageBox.Show("Failed to add new transfer record");
+            }
+            return daltrfHist.getIndexNo(utrfHist);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             uStock.stock_item_code = itemCode;
             uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTo.Text));
             uStock.stock_qty = getQty(itemCode, cmbTo.Text) + Convert.ToSingle(stockInQty);
+            uStock.stock_unit = unit;
             uStock.stock_updtd_date = DateTime.Now;
             uStock.stock_updtd_by = 0;
 
@@ -111,6 +144,8 @@ namespace FactoryManagementSoftware.UI
                 else
                 {
                     frmOrder.receivedStockIn = true;
+                    frmOrder.receivedLocation = cmbTo.Text;
+                    transferRecord("Passed");
                 }
 
             }
@@ -124,6 +159,7 @@ namespace FactoryManagementSoftware.UI
                 else
                 {
                     frmOrder.receivedStockIn = true;
+                    transferRecord("Passed");
                 }
             }
 

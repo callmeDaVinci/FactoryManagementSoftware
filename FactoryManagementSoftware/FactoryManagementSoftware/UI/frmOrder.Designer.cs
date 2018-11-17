@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvOrd = new System.Windows.Forms.DataGridView();
             this.dgvOrderAlert = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,6 +47,7 @@
             this.btnOrder = new System.Windows.Forms.Button();
             this.txtOrdSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.ord_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ord_added_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ord_forecast_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,10 +56,10 @@
             this.item_ord = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ord_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ord_unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.to = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ord_added_by = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ord_note = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ord_status = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrderAlert)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
@@ -87,6 +88,7 @@
             this.item_ord,
             this.ord_qty,
             this.ord_unit,
+            this.to,
             this.ord_added_by,
             this.ord_note,
             this.ord_status});
@@ -113,6 +115,8 @@
             this.dgvOrderAlert.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvOrderAlert.BackgroundColor = System.Drawing.Color.White;
+            this.dgvOrderAlert.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvOrderAlert.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvOrderAlert.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
@@ -122,12 +126,14 @@
             this.dataGridViewTextBoxColumn5,
             this.dataGridViewTextBoxColumn6,
             this.dataGridViewComboBoxColumn1});
+            this.dgvOrderAlert.GridColor = System.Drawing.SystemColors.Control;
             this.dgvOrderAlert.Location = new System.Drawing.Point(28, 517);
             this.dgvOrderAlert.Margin = new System.Windows.Forms.Padding(2);
             this.dgvOrderAlert.Name = "dgvOrderAlert";
             this.dgvOrderAlert.ReadOnly = true;
             this.dgvOrderAlert.RowHeadersVisible = false;
-            this.dgvOrderAlert.RowTemplate.Height = 24;
+            this.dgvOrderAlert.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgvOrderAlert.RowTemplate.Height = 40;
             this.dgvOrderAlert.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvOrderAlert.Size = new System.Drawing.Size(1519, 162);
             this.dgvOrderAlert.TabIndex = 80;
@@ -254,6 +260,16 @@
             this.label1.TabIndex = 83;
             this.label1.Text = "SEARCH";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(24, 492);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(56, 23);
+            this.label2.TabIndex = 85;
+            this.label2.Text = "ALERT";
+            // 
             // ord_id
             // 
             this.ord_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -308,6 +324,13 @@
             this.ord_unit.Name = "ord_unit";
             this.ord_unit.Width = 71;
             // 
+            // to
+            // 
+            this.to.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.to.HeaderText = "To";
+            this.to.Name = "to";
+            this.to.Width = 56;
+            // 
             // ord_added_by
             // 
             this.ord_added_by.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -325,8 +348,9 @@
             // ord_status
             // 
             this.ord_status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ord_status.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ord_status.DefaultCellStyle = dataGridViewCellStyle1;
             this.ord_status.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
             this.ord_status.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ord_status.HeaderText = "Status";
@@ -338,16 +362,6 @@
             this.ord_status.MaxDropDownItems = 4;
             this.ord_status.Name = "ord_status";
             this.ord_status.Width = 62;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(24, 492);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 23);
-            this.label2.TabIndex = 85;
-            this.label2.Text = "ALERT";
             // 
             // frmOrder
             // 
@@ -398,6 +412,7 @@
         private System.Windows.Forms.Button btnOrder;
         private System.Windows.Forms.TextBox txtOrdSearch;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_added_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_forecast_date;
@@ -406,9 +421,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn item_ord;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_qty;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_unit;
+        private System.Windows.Forms.DataGridViewTextBoxColumn to;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_added_by;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_note;
         private System.Windows.Forms.DataGridViewComboBoxColumn ord_status;
-        private System.Windows.Forms.Label label2;
     }
 }

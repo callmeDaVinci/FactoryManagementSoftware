@@ -65,12 +65,13 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_stock (stock_item_code, stock_fac_id, stock_qty, stock_updtd_date, stock_updtd_by) VALUES (@stock_item_code, @stock_fac_id, @stock_qty, @stock_updtd_date, @stock_updtd_by)";
+                String sql = "INSERT INTO tbl_stock (stock_item_code, stock_fac_id, stock_qty, stock_unit, stock_updtd_date, stock_updtd_by) VALUES (@stock_item_code, @stock_fac_id, @stock_qty, @stock_unit, @stock_updtd_date, @stock_updtd_by)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@stock_item_code", u.stock_item_code);
                 cmd.Parameters.AddWithValue("@stock_fac_id", u.stock_fac_id);
                 cmd.Parameters.AddWithValue("@stock_qty", u.stock_qty);
+                cmd.Parameters.AddWithValue("@stock_unit", u.stock_unit);
                 cmd.Parameters.AddWithValue("@stock_updtd_date", u.stock_updtd_date);
                 cmd.Parameters.AddWithValue("@stock_updtd_by", u.stock_updtd_by);
 
@@ -111,12 +112,13 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "UPDATE tbl_stock SET stock_qty=@stock_qty,stock_updtd_date=@stock_updtd_date, stock_updtd_by=@stock_updtd_by WHERE stock_item_code=@stock_item_code AND stock_fac_id=@stock_fac_id";
+                String sql = "UPDATE tbl_stock SET stock_qty=@stock_qty, stock_unit=@stock_unit, stock_updtd_date=@stock_updtd_date, stock_updtd_by=@stock_updtd_by WHERE stock_item_code=@stock_item_code AND stock_fac_id=@stock_fac_id";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@stock_item_code", u.stock_item_code);
                 cmd.Parameters.AddWithValue("@stock_fac_id", u.stock_fac_id);
                 cmd.Parameters.AddWithValue("@stock_qty", u.stock_qty);
+                cmd.Parameters.AddWithValue("@stock_unit", u.stock_unit);
                 cmd.Parameters.AddWithValue("@stock_updtd_date", u.stock_updtd_date);
                 cmd.Parameters.AddWithValue("@stock_updtd_by", u.stock_updtd_by);
 
@@ -212,12 +214,13 @@ namespace FactoryManagementSoftware.DAL
             return qty;
         }
 
-        public bool facStockIn(string facID, string itemCode, float qty)
+        public bool facStockIn(string facID, string itemCode, float qty, string unit)
         {
             bool result = true;
             uStock.stock_item_code = itemCode;
             uStock.stock_fac_id = Convert.ToInt32(facID);
             uStock.stock_qty = getQty(itemCode, facID) + qty;
+            uStock.stock_unit = unit;
             uStock.stock_updtd_date = DateTime.Now;
             uStock.stock_updtd_by = 0;
 
@@ -248,12 +251,13 @@ namespace FactoryManagementSoftware.DAL
             return result;
         }
 
-        public bool facStockOut(string facID, string itemCode, float qty)
+        public bool facStockOut(string facID, string itemCode, float qty,string unit)
         {
             bool result = true;
             uStock.stock_item_code = itemCode;
             uStock.stock_fac_id = Convert.ToInt32(facID);
             uStock.stock_qty = getQty(itemCode, facID) - qty;
+            uStock.stock_unit = unit;
             uStock.stock_updtd_date = DateTime.Now;
             uStock.stock_updtd_by = 0;
 

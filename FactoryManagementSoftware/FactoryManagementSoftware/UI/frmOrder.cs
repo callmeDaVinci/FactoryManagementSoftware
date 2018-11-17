@@ -19,6 +19,9 @@ namespace FactoryManagementSoftware.UI
         private int selectedOrderID = -1;
         static public string selectedOrderQty = "";
         static public string selectedItemCode = "";
+        static public string selectedUnit = "";
+        static public string selectedTo = "";
+        static public string receivedLocation;
         static public bool receivedStockIn = false;
         static public bool receivedStockOut = false;
         #endregion
@@ -64,6 +67,7 @@ namespace FactoryManagementSoftware.UI
                 dgvOrd.Rows[n].Cells["item_ord"].Value = ord["item_ord"].ToString();    
                 dgvOrd.Rows[n].Cells["ord_qty"].Value = ord["ord_qty"].ToString();
                 dgvOrd.Rows[n].Cells["ord_unit"].Value = ord["ord_unit"].ToString();
+                dgvOrd.Rows[n].Cells["to"].Value = ord["ord_to"].ToString();
                 dgvOrd.Rows[n].Cells["ord_forecast_date"].Value = Convert.ToDateTime(ord["ord_forecast_date"]).ToString("dd/MM/yyyy"); ;
                 dgvOrd.Rows[n].Cells["ord_added_date"].Value = ord["ord_added_date"].ToString();
                 dgvOrd.Rows[n].Cells["ord_added_by"].Value = ord["ord_added_by"].ToString();
@@ -97,6 +101,32 @@ namespace FactoryManagementSoftware.UI
             txtOrdSearch.Clear();
         }
 
+        private void comboBoxPaint(DataGridView dgv, int rowIndex)
+        {
+            string value = dgv.Rows[rowIndex].Cells["ord_status"].Value.ToString();
+            Color backColor = this.dgvOrd.DefaultCellStyle.BackColor;
+
+            if (value.Equals("Requesting"))
+            {
+                backColor = Color.FromArgb(210, 163, 30);
+            }
+            else if (value.Equals("Cancelled"))
+            {
+                backColor = Color.FromArgb(244, 67, 54);
+            }
+            else if (value.Equals("Approved"))
+            {
+                backColor = Color.FromArgb(104, 125, 222);
+            }
+            else if (value.Equals("Received"))
+            {
+                backColor = Color.FromArgb(104, 189, 101);
+            }
+
+            dgv.Rows[rowIndex].Cells["ord_status"].Style = new DataGridViewCellStyle { ForeColor = SystemColors.Control,BackColor = backColor };
+
+        }
+
         private void listPaint(DataGridView dgv)
         {
             bool rowColorChange = true;
@@ -113,7 +143,12 @@ namespace FactoryManagementSoftware.UI
                 {
                     dgv.Rows[n].DefaultCellStyle.BackColor = Color.White;
                     rowColorChange = true;
-                } 
+                }
+                if(dgv == dgvOrd)
+                {
+                    comboBoxPaint(dgv, n);
+                }
+                
             }
             dgv.ClearSelection();
         }
@@ -155,7 +190,8 @@ namespace FactoryManagementSoftware.UI
 
                 combobox.SelectedIndexChanged += new EventHandler(SelectedIndexChanged);
 
-                e.CellStyle.BackColor = this.dgvOrd.DefaultCellStyle.BackColor;
+                 e.CellStyle.BackColor = this.dgvOrd.DefaultCellStyle.BackColor;
+                e.CellStyle.ForeColor = Color.Black;
             }
         }
 
@@ -219,6 +255,7 @@ namespace FactoryManagementSoftware.UI
                             }
                             else
                             {
+                                uOrd.ord_to = receivedLocation;
                                 dalOrd.Update(uOrd);
                                 orderSubtract(selectedItemCode, selectedOrderQty);
                             }
@@ -310,7 +347,10 @@ namespace FactoryManagementSoftware.UI
                 selectedOrderID = Convert.ToInt32(dgvOrd.Rows[rowIndex].Cells["ord_id"].Value.ToString());
                 selectedItemCode = dgvOrd.Rows[rowIndex].Cells["ord_item_code"].Value.ToString();
                 selectedOrderQty = dgvOrd.Rows[rowIndex].Cells["ord_qty"].Value.ToString();
+                selectedUnit = dgvOrd.Rows[rowIndex].Cells["ord_unit"].Value.ToString();
 
+                selectedTo = dgvOrd.Rows[rowIndex].Cells["to"].Value == null? "": dgvOrd.Rows[rowIndex].Cells["to"].Value.ToString();
+                receivedLocation = selectedTo;
                 datagridview.BeginEdit(true);
                 ((ComboBox)datagridview.EditingControl).DroppedDown = true;
 
@@ -396,7 +436,6 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-
         #endregion
 
         private void btnReset_Click(object sender, EventArgs e)
@@ -408,5 +447,7 @@ namespace FactoryManagementSoftware.UI
         {
             dgvOrd.ClearSelection();
         }
+
+       
     }
 }

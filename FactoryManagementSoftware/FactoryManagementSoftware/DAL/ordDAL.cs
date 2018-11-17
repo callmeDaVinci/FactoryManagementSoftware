@@ -104,12 +104,13 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "UPDATE tbl_ord SET ord_status=@ord_status WHERE ord_id=@ord_id";
+                String sql = "UPDATE tbl_ord SET ord_status=@ord_status , ord_to=@ord_to WHERE ord_id=@ord_id";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@ord_id", u.ord_id);
                 cmd.Parameters.AddWithValue("@ord_status", u.ord_status);
-          
+                cmd.Parameters.AddWithValue("@ord_to", u.ord_to);
+
 
                 conn.Open();
 

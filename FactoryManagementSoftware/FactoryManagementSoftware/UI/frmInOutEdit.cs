@@ -427,7 +427,7 @@ namespace FactoryManagementSoftware.UI
             bool successStockAdd;
             qty = checkQty(qty);
 
-            successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty);
+            successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty, cmbTrfQtyUnit.Text);
 
             successStockAdd = dalItem.stockAdd(itemCode, qty.ToString());
 
@@ -440,7 +440,7 @@ namespace FactoryManagementSoftware.UI
             bool successStockSubtract;
             qty = checkQty(qty);
 
-            successFacStockOut = dalStock.facStockOut(getFactoryID(factoryName), itemCode, qty);
+            successFacStockOut = dalStock.facStockOut(getFactoryID(factoryName), itemCode, qty, cmbTrfQtyUnit.Text);
 
             successStockSubtract = dalItem.stockSubtract(itemCode, qty.ToString());
 
