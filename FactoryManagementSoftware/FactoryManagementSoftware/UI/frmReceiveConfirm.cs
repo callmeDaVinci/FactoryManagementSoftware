@@ -42,11 +42,13 @@ namespace FactoryManagementSoftware.UI
             //show trf_cat_name data from table only
             cmbFrom.DisplayMember = "trf_cat_name";
 
+            cmbFrom.Text = "Supplier";
+
             DataTable dt = dalFac.Select();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "fac_name");
-            distinctTable.DefaultView.Sort = "fac_name ASC";
             cmbTo.DataSource = distinctTable;
             cmbTo.DisplayMember = "fac_name";
+
 
             txtQty.Text = stockInQty;
         }

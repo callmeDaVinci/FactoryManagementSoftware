@@ -328,24 +328,7 @@ namespace FactoryManagementSoftware.UI
                 if (row.Cells["item_name"].Value == null)
                 {
                     row.Height = 3;
-                    row.Cells["item_material"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["item_code"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["item_name"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["item_color"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["item_batch"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["dateRequired"].Style.BackColor = Color.FromName(colorName);
-
-                    row.Cells["mc_ton"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["item_part_weight"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["item_runner_weight"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["forecast_one"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["outStock"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["oSant"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["shotOne"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["forecast_two"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["shotTwo"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["forecast_Three"].Style.BackColor = Color.FromName(colorName);
-                    row.Cells["stock_qty"].Style.BackColor = Color.FromName(colorName);
+                    row.DefaultCellStyle.BackColor = Color.FromName(colorName);
                 }
             }
         }

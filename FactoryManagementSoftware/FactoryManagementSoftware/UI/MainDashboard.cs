@@ -18,6 +18,7 @@ namespace FactoryManagementSoftware.UI
         static public bool forecastInputFormOpen = false;
         static public bool forecastReportInputFormOpen = false;
         static public bool joinFormOpen = false;
+        static public bool MaterialUsedReportFormOpen = false;
 
         public MainDashboard()
         {
@@ -273,6 +274,26 @@ namespace FactoryManagementSoftware.UI
                 if (Application.OpenForms.OfType<frmInOut>().Count() == 1)
                 {
                     Application.OpenForms.OfType<frmInOut>().First().BringToFront();
+                }
+            }
+        }
+
+        private void materialUsedReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!MaterialUsedReportFormOpen)
+            {
+                frmMaterialUsedReport frm = new frmMaterialUsedReport();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                MaterialUsedReportFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmMaterialUsedReport>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmMaterialUsedReport>().First().BringToFront();
                 }
             }
         }

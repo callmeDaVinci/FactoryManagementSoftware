@@ -49,6 +49,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.materialUsedReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -189,7 +190,8 @@
             // reportToolStripMenuItem
             // 
             this.reportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.forecastReportToolStripMenuItem});
+            this.forecastReportToolStripMenuItem,
+            this.materialUsedReportToolStripMenuItem});
             this.reportToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
             this.reportToolStripMenuItem.Size = new System.Drawing.Size(73, 27);
@@ -199,7 +201,7 @@
             // forecastReportToolStripMenuItem
             // 
             this.forecastReportToolStripMenuItem.Name = "forecastReportToolStripMenuItem";
-            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(205, 28);
+            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(247, 28);
             this.forecastReportToolStripMenuItem.Text = "Forecast Report";
             this.forecastReportToolStripMenuItem.Click += new System.EventHandler(this.forecastReportToolStripMenuItem_Click);
             // 
@@ -220,6 +222,13 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
+            // 
+            // materialUsedReportToolStripMenuItem
+            // 
+            this.materialUsedReportToolStripMenuItem.Name = "materialUsedReportToolStripMenuItem";
+            this.materialUsedReportToolStripMenuItem.Size = new System.Drawing.Size(247, 28);
+            this.materialUsedReportToolStripMenuItem.Text = "Material Used Report";
+            this.materialUsedReportToolStripMenuItem.Click += new System.EventHandler(this.materialUsedReportToolStripMenuItem_Click);
             // 
             // MainDashboard
             // 
@@ -269,6 +278,7 @@
         private System.Windows.Forms.ToolStripMenuItem dataInputToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forecastReportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem orderToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem materialUsedReportToolStripMenuItem;
     }
 }
 

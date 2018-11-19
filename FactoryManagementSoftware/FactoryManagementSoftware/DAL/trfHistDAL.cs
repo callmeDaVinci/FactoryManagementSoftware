@@ -244,6 +244,47 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable rangeSearch(string customer, string start, string end, string itemCode)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_trf_hist WHERE trf_hist_trf_date BETWEEN @start AND @end AND trf_hist_item_code=@itemCode AND trf_hist_to=@customer";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+               
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@itemCode", itemCode);
+                cmd.Parameters.AddWithValue("@customer", customer);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable facSearch(string itemCode, string facName)
         {
             //static methodd to connect database

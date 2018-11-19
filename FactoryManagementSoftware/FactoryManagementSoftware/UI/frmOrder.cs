@@ -108,19 +108,23 @@ namespace FactoryManagementSoftware.UI
 
             if (value.Equals("Requesting"))
             {
-                backColor = Color.FromArgb(210, 163, 30);
+                //backColor = Color.FromArgb(210, 163, 30);
+                backColor = Color.FromArgb(251, 188, 5);
             }
             else if (value.Equals("Cancelled"))
             {
-                backColor = Color.FromArgb(244, 67, 54);
+                //backColor = Color.FromArgb(244, 67, 54);
+                backColor = Color.FromArgb(234, 67, 53);
             }
             else if (value.Equals("Approved"))
             {
-                backColor = Color.FromArgb(104, 125, 222);
+                //backColor = Color.FromArgb(104, 125, 222);
+                backColor = Color.FromArgb(66, 133, 244);
             }
             else if (value.Equals("Received"))
             {
-                backColor = Color.FromArgb(104, 189, 101);
+                //backColor = Color.FromArgb(104, 189, 101);
+                backColor = Color.FromArgb(52, 168, 83)         ;
             }
 
             dgv.Rows[rowIndex].Cells["ord_status"].Style = new DataGridViewCellStyle { ForeColor = SystemColors.Control,BackColor = backColor };
@@ -217,11 +221,7 @@ namespace FactoryManagementSoftware.UI
                     dalOrd.Update(uOrd);
                 }
                 receivedStockOut = false;
-            }
-
-                
-
-            
+            } 
         }
 
         private void SelectedIndexChanged(object sender, EventArgs e)
@@ -269,7 +269,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    DialogResult dialogResult = MessageBox.Show("Are you sure want to check the order status?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult dialogResult = MessageBox.Show("Are you sure want to change the order status?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (dialogResult == DialogResult.Yes)
                     {
                         switch (selectedItem)
@@ -285,6 +285,11 @@ namespace FactoryManagementSoftware.UI
                                 {
                                     //dialog stock out
                                     cancelReceive(selectedItem);
+                                }
+                                else if(presentValue.Equals("Requesting"))
+                                {
+                                    dalOrd.Update(uOrd);
+                                    refreshOrderRecord(selectedOrderID);
                                 }
                                 break;
 
@@ -320,6 +325,11 @@ namespace FactoryManagementSoftware.UI
                                 else if (presentValue.Equals("Received"))
                                 {
                                     cancelReceive(selectedItem);
+                                }
+                                else if (presentValue.Equals("Cancelled"))
+                                {
+                                    dalOrd.Update(uOrd);
+                                    refreshOrderRecord(selectedOrderID);
                                 }
                                 break;
 

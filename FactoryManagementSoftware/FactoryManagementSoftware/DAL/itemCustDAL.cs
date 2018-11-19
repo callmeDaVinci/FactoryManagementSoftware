@@ -193,7 +193,13 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM ((tbl_item_cust INNER JOIN tbl_cust ON tbl_cust.cust_name=@keywords AND tbl_item_cust.cust_id = tbl_cust.cust_id) INNER JOIN tbl_item ON tbl_item_cust.item_code = tbl_item.item_code )";
+                String sql = @"SELECT * FROM 
+                                ((tbl_item_cust 
+                                INNER JOIN tbl_cust 
+                                ON tbl_cust.cust_name=@keywords 
+                                AND tbl_item_cust.cust_id = tbl_cust.cust_id) 
+                                INNER JOIN tbl_item 
+                                ON tbl_item_cust.item_code = tbl_item.item_code )";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);

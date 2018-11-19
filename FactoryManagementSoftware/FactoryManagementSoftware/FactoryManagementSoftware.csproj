@@ -59,6 +59,7 @@
     <Compile Include="BLL\itemCustBLL.cs" />
     <Compile Include="BLL\joinBLL.cs" />
     <Compile Include="BLL\materialBLL.cs" />
+    <Compile Include="BLL\materialUsedBLL.cs" />
     <Compile Include="BLL\ordBLL.cs" />
     <Compile Include="BLL\facStockBLL.cs" />
     <Compile Include="BLL\trfCatBLL.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="DAL\itemDAL.cs" />
     <Compile Include="DAL\joinDAL.cs" />
     <Compile Include="DAL\materialDAL.cs" />
+    <Compile Include="DAL\materialUsedDAL.cs" />
     <Compile Include="DAL\ordDAL.cs" />
     <Compile Include="DAL\facStockDAL.cs" />
     <Compile Include="DAL\trfCatDAL.cs" />
@@ -175,6 +177,12 @@
     <Compile Include="UI\frmLogIn.Designer.cs">
       <DependentUpon>frmLogIn.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmMaterialUsedReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMaterialUsedReport.Designer.cs">
+      <DependentUpon>frmMaterialUsedReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmOrder.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -261,6 +269,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmLogIn.resx">
       <DependentUpon>frmLogIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmMaterialUsedReport.resx">
+      <DependentUpon>frmMaterialUsedReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrder.resx">
       <DependentUpon>frmOrder.cs</DependentUpon>
