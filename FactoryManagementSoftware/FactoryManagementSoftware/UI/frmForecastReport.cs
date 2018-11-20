@@ -1004,6 +1004,11 @@ namespace FactoryManagementSoftware.UI
             emptyRowBackColorToBlack();
             btnCheck.Enabled = true;
 
+            foreach (DataGridViewColumn dgvc in dgvForecastReport.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+
             Cursor = Cursors.Arrow; // change cursor to normal type
 
         }
@@ -1050,5 +1055,10 @@ namespace FactoryManagementSoftware.UI
         }
 
         #endregion
+
+        private void frmForecastReport_Click(object sender, EventArgs e)
+        {
+            dgvForecastReport.ClearSelection();
+        }
     }
 }

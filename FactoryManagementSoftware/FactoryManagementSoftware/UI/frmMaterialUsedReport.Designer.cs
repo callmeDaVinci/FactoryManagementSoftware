@@ -40,11 +40,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.dgvMaterialUsedRecord = new System.Windows.Forms.DataGridView();
-            this.dtpStart = new System.Windows.Forms.DateTimePicker();
-            this.cmbCust = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.dtpEnd = new System.Windows.Forms.DateTimePicker();
-            this.label3 = new System.Windows.Forms.Label();
             this.no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_material = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,6 +51,11 @@
             this.wastage_allowed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.material_used_include_wastage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.total_material_used = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dtpStart = new System.Windows.Forms.DateTimePicker();
+            this.cmbCust = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.dtpEnd = new System.Windows.Forms.DateTimePicker();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaterialUsedRecord)).BeginInit();
             this.SuspendLayout();
             // 
@@ -126,56 +126,6 @@
             this.dgvMaterialUsedRecord.Size = new System.Drawing.Size(1511, 706);
             this.dgvMaterialUsedRecord.TabIndex = 74;
             // 
-            // dtpStart
-            // 
-            this.dtpStart.CustomFormat = "dd-MM-yyyy";
-            this.dtpStart.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpStart.Location = new System.Drawing.Point(31, 58);
-            this.dtpStart.Name = "dtpStart";
-            this.dtpStart.Size = new System.Drawing.Size(162, 38);
-            this.dtpStart.TabIndex = 83;
-            // 
-            // cmbCust
-            // 
-            this.cmbCust.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCust.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbCust.FormattingEnabled = true;
-            this.cmbCust.Location = new System.Drawing.Point(418, 57);
-            this.cmbCust.Name = "cmbCust";
-            this.cmbCust.Size = new System.Drawing.Size(325, 39);
-            this.cmbCust.TabIndex = 85;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(414, 31);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(97, 23);
-            this.label2.TabIndex = 84;
-            this.label2.Text = "CUSTOMER";
-            // 
-            // dtpEnd
-            // 
-            this.dtpEnd.CustomFormat = "dd-MM-yyyy";
-            this.dtpEnd.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpEnd.Location = new System.Drawing.Point(223, 58);
-            this.dtpEnd.Name = "dtpEnd";
-            this.dtpEnd.Size = new System.Drawing.Size(162, 38);
-            this.dtpEnd.TabIndex = 87;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(219, 31);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 23);
-            this.label3.TabIndex = 86;
-            this.label3.Text = "END";
-            // 
             // no
             // 
             this.no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -190,7 +140,7 @@
             this.item_material.HeaderText = "Material Type";
             this.item_material.Name = "item_material";
             this.item_material.ReadOnly = true;
-            this.item_material.Width = 141;
+            this.item_material.Width = 129;
             // 
             // item_name
             // 
@@ -288,6 +238,57 @@
             this.total_material_used.ReadOnly = true;
             this.total_material_used.Width = 150;
             // 
+            // dtpStart
+            // 
+            this.dtpStart.CustomFormat = "dd-MM-yyyy";
+            this.dtpStart.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpStart.Location = new System.Drawing.Point(31, 58);
+            this.dtpStart.Name = "dtpStart";
+            this.dtpStart.Size = new System.Drawing.Size(162, 38);
+            this.dtpStart.TabIndex = 83;
+            // 
+            // cmbCust
+            // 
+            this.cmbCust.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCust.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbCust.FormattingEnabled = true;
+            this.cmbCust.Location = new System.Drawing.Point(418, 57);
+            this.cmbCust.Name = "cmbCust";
+            this.cmbCust.Size = new System.Drawing.Size(325, 39);
+            this.cmbCust.TabIndex = 85;
+            this.cmbCust.SelectedIndexChanged += new System.EventHandler(this.cmbCust_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(414, 31);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(97, 23);
+            this.label2.TabIndex = 84;
+            this.label2.Text = "CUSTOMER";
+            // 
+            // dtpEnd
+            // 
+            this.dtpEnd.CustomFormat = "dd-MM-yyyy";
+            this.dtpEnd.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpEnd.Location = new System.Drawing.Point(223, 58);
+            this.dtpEnd.Name = "dtpEnd";
+            this.dtpEnd.Size = new System.Drawing.Size(162, 38);
+            this.dtpEnd.TabIndex = 87;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(219, 31);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(44, 23);
+            this.label3.TabIndex = 86;
+            this.label3.Text = "END";
+            // 
             // frmMaterialUsedReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -308,6 +309,7 @@
             this.Text = "Material Used Report";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMaterialUsedReport_FormClosed);
             this.Load += new System.EventHandler(this.frmMaterialUsedReport_Load);
+            this.Click += new System.EventHandler(this.frmMaterialUsedReport_Click);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaterialUsedRecord)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

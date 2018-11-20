@@ -2,6 +2,7 @@
 using FactoryManagementSoftware.DAL;
 using System;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
@@ -44,6 +45,27 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
+        private void listPaint(DataGridView dgv)
+        {
+            bool rowColorChange = true;
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                int n = row.Index;
+                if (rowColorChange)
+                {
+                    dgv.Rows[n].DefaultCellStyle.BackColor = SystemColors.Control;
+                    rowColorChange = false;
+                }
+                else
+                {
+                    dgv.Rows[n].DefaultCellStyle.BackColor = Color.White;
+                    rowColorChange = true;
+                }
+            }
+            dgv.ClearSelection();
+        }
+
         private void loadCustomerList()
         {
             DataTable dt = dalCust.Select();
@@ -85,6 +107,7 @@ namespace FactoryManagementSoftware.UI
             {
                 dgvForecast.DataSource = null;
             }
+            listPaint(dgvForecast);
         }
 
         private void searchForecastList()

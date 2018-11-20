@@ -207,6 +207,18 @@
     <Compile Include="UI\frmReceiveConfirm.Designer.cs">
       <DependentUpon>frmReceiveConfirm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmStockReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmStockReport.Designer.cs">
+      <DependentUpon>frmStockReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmStockReportFactoryQty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmStockReportFactoryQty.Designer.cs">
+      <DependentUpon>frmStockReportFactoryQty.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MainDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -284,6 +296,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmReceiveConfirm.resx">
       <DependentUpon>frmReceiveConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmStockReport.resx">
+      <DependentUpon>frmStockReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmStockReportFactoryQty.resx">
+      <DependentUpon>frmStockReportFactoryQty.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainDashboard.resx">
       <DependentUpon>MainDashboard.cs</DependentUpon>

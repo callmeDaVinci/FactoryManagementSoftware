@@ -10,7 +10,8 @@ namespace FactoryManagementSoftware
 {
     public partial class frmItem : Form
     {
-        
+        #region create class object (database)
+
         itemBLL uItem = new itemBLL();
         itemDAL dalItem = new itemDAL();
 
@@ -22,6 +23,10 @@ namespace FactoryManagementSoftware
         joinDAL dalJoin = new joinDAL();
         joinBLL uJoin = new joinBLL();
 
+        #endregion
+
+        #region variable declare
+
         private bool formLoaded = false;
         private int currentRowIndex;
         static public string currentItemCode;
@@ -32,6 +37,8 @@ namespace FactoryManagementSoftware
         static public string currentItemRunnerWeight;
         static public string currentMaterial;
         static public string currentMB;
+
+        #endregion
 
         #region Load or Reset Form
 
@@ -48,8 +55,7 @@ namespace FactoryManagementSoftware
         private void frmItem_Load(object sender, EventArgs e)
         {
             loadItemCategoryData();
-            resetForm();
-            cmbCat.SelectedIndex = -1;
+            resetForm();     
             formLoaded = true;
         }
 
@@ -106,62 +112,6 @@ namespace FactoryManagementSoftware
                 return false;
         }
 
-        private void loadMaterialData()
-        {
-            string category = cmbCat.Text;
-            DataTable dt = dalMaterial.catSearch(category);
-
-            dgvItem.Rows.Clear();
-            foreach (DataRow item in dt.Rows)
-            {
-                int n = dgvItem.Rows.Add();
-                dgvItem.Rows[n].Cells["Category"].Value = item["material_cat"].ToString();
-                dgvItem.Rows[n].Cells["dgvcItemCode"].Value = item["material_code"].ToString();
-                dgvItem.Rows[n].Cells["dgvcItemName"].Value = item["material_name"].ToString();
-
-                uItem.item_code = item["material_code"].ToString();
-                uItem.item_name = item["material_name"].ToString();
-                uItem.item_cat = item["material_cat"].ToString();
-
-                uItem.item_color = "";
-                uItem.item_material = "";
-                uItem.item_mb = "";
-
-                uItem.item_added_date = DateTime.Now;
-                uItem.item_added_by = -1;
-
-                if(!IfProductsExists(uItem.item_code))
-                {
-                    dalItem.Insert(uItem);
-                   
-                }
-                
-            }
-            listPaint(dgvItem);
-         
-            if (dt.Rows.Count <= 0 && formLoaded)
-            {
-                MessageBox.Show("no data under this record");
-            }
-            
-        }
-
-        private void loadData()
-        {
-            loadItemData();
-            //if (!string.IsNullOrEmpty(cmbCat.Text))
-            //{
-            //    if (cmbCat.Text.Equals("Part"))
-            //    {
-                    
-            //    }
-            //    else
-            //    {
-            //        loadMaterialData();
-            //    }
-            //}
-        }
-
         private void loadItemCategoryData()
         {
             DataTable dtItemCat = dALItemCat.Select();
@@ -171,7 +121,7 @@ namespace FactoryManagementSoftware
             distinctTable.DefaultView.Sort = "item_cat_name ASC";    
             cmbCat.DataSource = distinctTable;
             cmbCat.DisplayMember = "item_cat_name";
-
+            cmbCat.SelectedIndex = -1;
         }
 
         private void resetForm()
@@ -185,7 +135,7 @@ namespace FactoryManagementSoftware
             currentItemRunnerWeight = null;
             currentMaterial = null;
             currentMB = null;
-            loadData();
+            loadItemData();
         }
 
         #endregion
@@ -376,7 +326,7 @@ namespace FactoryManagementSoftware
             else
             {
                 //show all item from the database
-                loadData();
+                loadItemData();
             }
 
             bool rowColorChange = true;
@@ -403,7 +353,7 @@ namespace FactoryManagementSoftware
             
             if (formLoaded)
             {
-                loadData();
+                loadItemData();
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
