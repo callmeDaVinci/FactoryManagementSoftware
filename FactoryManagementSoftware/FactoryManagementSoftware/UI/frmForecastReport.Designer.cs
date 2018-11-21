@@ -41,18 +41,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvForecastReport = new System.Windows.Forms.DataGridView();
-            this.btnCheck = new System.Windows.Forms.Button();
-            this.cmbCust = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtSearch = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.cmbSort = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cmbOrder = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cmbType = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.item_material = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -70,6 +58,18 @@
             this.forecast_two = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.shotTwo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.forecast_three = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnCheck = new System.Windows.Forms.Button();
+            this.cmbCust = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.cmbSort = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmbOrder = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cmbType = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -113,136 +113,11 @@
             this.dgvForecastReport.Location = new System.Drawing.Point(23, 130);
             this.dgvForecastReport.Name = "dgvForecastReport";
             this.dgvForecastReport.ReadOnly = true;
+            this.dgvForecastReport.RowHeadersVisible = false;
             this.dgvForecastReport.RowTemplate.Height = 24;
             this.dgvForecastReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvForecastReport.Size = new System.Drawing.Size(1534, 546);
             this.dgvForecastReport.TabIndex = 0;
-            // 
-            // btnCheck
-            // 
-            this.btnCheck.Location = new System.Drawing.Point(879, 73);
-            this.btnCheck.Name = "btnCheck";
-            this.btnCheck.Size = new System.Drawing.Size(118, 32);
-            this.btnCheck.TabIndex = 12;
-            this.btnCheck.Text = "Check";
-            this.btnCheck.UseVisualStyleBackColor = true;
-            this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
-            // 
-            // cmbCust
-            // 
-            this.cmbCust.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCust.FormattingEnabled = true;
-            this.cmbCust.Location = new System.Drawing.Point(23, 73);
-            this.cmbCust.Name = "cmbCust";
-            this.cmbCust.Size = new System.Drawing.Size(281, 31);
-            this.cmbCust.TabIndex = 11;
-            this.cmbCust.SelectedIndexChanged += new System.EventHandler(this.cmbCust_SelectedIndexChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 47);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 23);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Customer";
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.Location = new System.Drawing.Point(1237, 72);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(320, 30);
-            this.txtSearch.TabIndex = 13;
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1233, 47);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(152, 23);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "Item Name Search";
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(1439, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(118, 32);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "PDF";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // cmbSort
-            // 
-            this.cmbSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSort.FormattingEnabled = true;
-            this.cmbSort.Items.AddRange(new object[] {
-            "Default",
-            "Ready Stock",
-            "Forecast One",
-            "Forecast Two",
-            "Forecast Three",
-            "Shot One",
-            "Shot Two"});
-            this.cmbSort.Location = new System.Drawing.Point(502, 74);
-            this.cmbSort.Name = "cmbSort";
-            this.cmbSort.Size = new System.Drawing.Size(159, 31);
-            this.cmbSort.TabIndex = 17;
-            this.cmbSort.SelectedIndexChanged += new System.EventHandler(this.cmbSort_SelectedIndexChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(498, 48);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 23);
-            this.label3.TabIndex = 16;
-            this.label3.Text = "Sort";
-            // 
-            // cmbOrder
-            // 
-            this.cmbOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbOrder.FormattingEnabled = true;
-            this.cmbOrder.Location = new System.Drawing.Point(683, 74);
-            this.cmbOrder.Name = "cmbOrder";
-            this.cmbOrder.Size = new System.Drawing.Size(159, 31);
-            this.cmbOrder.TabIndex = 19;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(679, 48);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(54, 23);
-            this.label4.TabIndex = 18;
-            this.label4.Text = "Order";
-            // 
-            // cmbType
-            // 
-            this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbType.FormattingEnabled = true;
-            this.cmbType.Items.AddRange(new object[] {
-            "All",
-            "Non-Assembly",
-            "Assembly"});
-            this.cmbType.Location = new System.Drawing.Point(320, 74);
-            this.cmbType.Name = "cmbType";
-            this.cmbType.Size = new System.Drawing.Size(159, 31);
-            this.cmbType.TabIndex = 21;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(316, 48);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(45, 23);
-            this.label5.TabIndex = 20;
-            this.label5.Text = "Type";
             // 
             // item_material
             // 
@@ -250,7 +125,7 @@
             this.item_material.HeaderText = "Material Type";
             this.item_material.Name = "item_material";
             this.item_material.ReadOnly = true;
-            this.item_material.Width = 141;
+            this.item_material.Width = 129;
             // 
             // item_code
             // 
@@ -258,7 +133,7 @@
             this.item_code.HeaderText = "Part Number";
             this.item_code.Name = "item_code";
             this.item_code.ReadOnly = true;
-            this.item_code.Width = 137;
+            this.item_code.Width = 126;
             // 
             // item_name
             // 
@@ -391,6 +266,132 @@
             this.forecast_three.HeaderText = "F/cast 3";
             this.forecast_three.Name = "forecast_three";
             this.forecast_three.ReadOnly = true;
+            // 
+            // btnCheck
+            // 
+            this.btnCheck.Location = new System.Drawing.Point(879, 73);
+            this.btnCheck.Name = "btnCheck";
+            this.btnCheck.Size = new System.Drawing.Size(118, 32);
+            this.btnCheck.TabIndex = 12;
+            this.btnCheck.Text = "Check";
+            this.btnCheck.UseVisualStyleBackColor = true;
+            this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
+            // 
+            // cmbCust
+            // 
+            this.cmbCust.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCust.FormattingEnabled = true;
+            this.cmbCust.Location = new System.Drawing.Point(23, 73);
+            this.cmbCust.Name = "cmbCust";
+            this.cmbCust.Size = new System.Drawing.Size(281, 31);
+            this.cmbCust.TabIndex = 11;
+            this.cmbCust.SelectedIndexChanged += new System.EventHandler(this.cmbCust_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(19, 47);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(84, 23);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Customer";
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.Location = new System.Drawing.Point(1237, 72);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(320, 30);
+            this.txtSearch.TabIndex = 13;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(1233, 47);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(152, 23);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Item Name Search";
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(1439, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(118, 32);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "EXCEL";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnExportToExcel_Click);
+            // 
+            // cmbSort
+            // 
+            this.cmbSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSort.FormattingEnabled = true;
+            this.cmbSort.Items.AddRange(new object[] {
+            "Default",
+            "Ready Stock",
+            "Forecast One",
+            "Forecast Two",
+            "Forecast Three",
+            "Shot One",
+            "Shot Two"});
+            this.cmbSort.Location = new System.Drawing.Point(502, 74);
+            this.cmbSort.Name = "cmbSort";
+            this.cmbSort.Size = new System.Drawing.Size(159, 31);
+            this.cmbSort.TabIndex = 17;
+            this.cmbSort.SelectedIndexChanged += new System.EventHandler(this.cmbSort_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(498, 48);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 23);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "Sort";
+            // 
+            // cmbOrder
+            // 
+            this.cmbOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbOrder.FormattingEnabled = true;
+            this.cmbOrder.Location = new System.Drawing.Point(683, 74);
+            this.cmbOrder.Name = "cmbOrder";
+            this.cmbOrder.Size = new System.Drawing.Size(159, 31);
+            this.cmbOrder.TabIndex = 19;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(679, 48);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(54, 23);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "Order";
+            // 
+            // cmbType
+            // 
+            this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbType.FormattingEnabled = true;
+            this.cmbType.Items.AddRange(new object[] {
+            "All",
+            "Non-Assembly",
+            "Assembly"});
+            this.cmbType.Location = new System.Drawing.Point(320, 74);
+            this.cmbType.Name = "cmbType";
+            this.cmbType.Size = new System.Drawing.Size(159, 31);
+            this.cmbType.TabIndex = 21;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(316, 48);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(45, 23);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "Type";
             // 
             // frmForecastReport
             // 

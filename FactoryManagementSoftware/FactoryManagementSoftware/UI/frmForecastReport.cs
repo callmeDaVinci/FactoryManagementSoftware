@@ -7,6 +7,12 @@ using System.Windows.Forms;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
+using Excel = Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Interop.Excel;
+using DataTable = System.Data.DataTable;
+using System.Text;
+using Utilities = FactoryManagementSoftware.DAL.Utilities;
+using System.Runtime.InteropServices;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -1060,5 +1066,222 @@ namespace FactoryManagementSoftware.UI
         {
             dgvForecastReport.ClearSelection();
         }
+
+
+        private void btnExportToExcel_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Excel Documents (*.xls)|*.xls";
+            sfd.FileName = "Test.xls";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                // Copy DataGridView results to clipboard
+                copyAlltoClipboard();
+
+                object misValue = System.Reflection.Missing.Value;
+                Excel.Application xlexcel = new Excel.Application();
+
+                xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
+                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+                Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+                // Format column D as text before pasting results, this was required for my data
+
+
+                // Paste clipboard results to worksheet range
+                Range CR = (Range)xlWorkSheet.Cells[1, 1];
+                CR.Select();
+                xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+
+                Range rng = xlWorkSheet.get_Range("A:Q").Cells; ;
+                rng.EntireColumn.AutoFit();
+
+                for (int i = 0; i <= dgvForecastReport.RowCount - 2; i++)
+                {
+                    for (int j = 0; j <= dgvForecastReport.ColumnCount -1; j++)
+                    {
+                        Range range = (Range)xlWorkSheet.Cells[i+2, j+1];
+                        
+                        if(i == 0)
+                        {
+                            Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                            header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
+
+                            header = (Range)xlWorkSheet.Cells[1, 9];
+                            header.Font.Color = Color.Blue;
+
+                            header = (Range)xlWorkSheet.Cells[1, 13];
+                            header.Font.Color = Color.Red;
+
+                            header = (Range)xlWorkSheet.Cells[1, 14];
+                            header.Font.Color = Color.Red;
+
+                            header = (Range)xlWorkSheet.Cells[1, 16];
+                            header.Font.Color = Color.Red;
+                        }
+
+                        if (dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor == SystemColors.Window)
+                        {
+                            range.Interior.Color = ColorTranslator.ToOle(Color.White);
+                            if (i == 0)
+                            {
+                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                                header.Interior.Color = ColorTranslator.ToOle(Color.White);
+                            }
+                        }
+                        else if (dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor == Color.Black)
+                        {
+                            range.Rows.RowHeight = 3;
+                            range.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
+                            if (i == 0)
+                            {
+                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                                header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
+                            }
+                        }
+                        else
+                        {
+                            range.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
+                           
+                            if (i == 0)
+                            {
+                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                                header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
+                            }
+                        }
+                        range.Font.Color = dgvForecastReport.Rows[i].Cells[j].Style.ForeColor;
+                        if(dgvForecastReport.Rows[i].Cells[j].Style.ForeColor == Color.Blue)
+                        {
+                            Range header = (Range)xlWorkSheet.Cells[i + 2, 2];
+                            header.Font.Underline = true;
+
+                            header = (Range)xlWorkSheet.Cells[i + 2, 3];
+                            header.Font.Underline = true;
+                        }
+
+                    }
+                }
+
+
+                // Save the excel file under the captured location from the SaveFileDialog
+                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                xlexcel.DisplayAlerts = true;
+                xlWorkBook.Close(true, misValue, misValue);
+                xlexcel.Quit();
+
+                releaseObject(xlWorkSheet);
+                releaseObject(xlWorkBook);
+                releaseObject(xlexcel);
+
+                // Clear Clipboard and DataGridView selection
+                Clipboard.Clear();
+                dgvForecastReport.ClearSelection();
+
+                // Open the newly saved excel file
+                if (File.Exists(sfd.FileName))
+                    System.Diagnostics.Process.Start(sfd.FileName);
+            }
+        }
+
+        private void copyAlltoClipboard()
+        {
+            dgvForecastReport.SelectAll();
+            DataObject dataObj = dgvForecastReport.GetClipboardContent();
+            if (dataObj != null)
+                Clipboard.SetDataObject(dataObj);
+        }
+
+        private void releaseObject(object obj)
+        {
+            try
+            {
+                Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                MessageBox.Show("Exception Occurred while releasing object " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
+
+
+        public static void CopyHtmlToClipBoard(string html)
+        {
+            Encoding enc = Encoding.UTF8;
+
+            string begin = "Version:0.9\r\nStartHTML:{0:000000}\r\nEndHTML:{1:000000}"
+              + "\r\nStartFragment:{2:000000}\r\nEndFragment:{3:000000}\r\n";
+
+            string html_begin = "<html>\r\n<head>\r\n"
+              + "<meta http-equiv=\"Content-Type\""
+              + " content=\"text/html; charset=" + enc.WebName + "\">\r\n"
+              + "<title>HTML clipboard</title>\r\n</head>\r\n<body>\r\n"
+              + "<!--StartFragment-->";
+
+            string html_end = "<!--EndFragment-->\r\n</body>\r\n</html>\r\n";
+
+            string begin_sample = String.Format(begin, 0, 0, 0, 0);
+
+            int count_begin = enc.GetByteCount(begin_sample);
+            int count_html_begin = enc.GetByteCount(html_begin);
+            int count_html = enc.GetByteCount(html);
+            int count_html_end = enc.GetByteCount(html_end);
+
+            string html_total = String.Format(
+              begin
+              , count_begin
+              , count_begin + count_html_begin + count_html + count_html_end
+              , count_begin + count_html_begin
+              , count_begin + count_html_begin + count_html
+              ) + html_begin + html + html_end;
+
+            DataObject obj = new DataObject();
+            obj.SetData(DataFormats.Html, new MemoryStream(
+              enc.GetBytes(html_total)));
+
+            Clipboard.SetDataObject(obj, true);
+        }
+
+
+        //private void copyAlltoClipboard()
+        //{
+
+        //    var DataGridView1Counts = dgvForecastReport.Rows.Count;
+
+
+        //    StringBuilder html = new StringBuilder();
+        //    html.Append("<table>");
+
+        //    if (DataGridView1Counts > 0)
+        //    {
+        //        //sets headers
+        //        html.Append("<tr>");
+        //        html.Append("<th> Name1 </th>");
+        //        html.Append("<th> Name2 </th>");
+        //        html.Append("<th> Name3 </th>");
+        //        html.Append("<th> Name4 </th>");
+        //        html.Append("<th> Name5 </th>");
+
+        //        foreach (DataGridViewRow row in dgvForecastReport.Rows)
+        //        {
+        //            html.Append("<tr>");
+        //            foreach (DataGridViewCell cell in row.Cells)
+        //            {
+        //                var cellcolor = cell.Style.BackColor;
+        //                var incellcolor = Color.Red;
+        //                //MessageBox.Show(cellcolor.ToString() + incellcolor.ToString());
+        //                html.AppendFormat("<td bgcolor = " + incellcolor.Name + ">{0}</td>", cell.Value);
+        //            }
+        //            html.Append("</tr>");
+        //        }
+        //    }
+        //    html.Append("</table>");
+        //    CopyHtmlToClipBoard(html.ToString());
+        //}
     }
 }
