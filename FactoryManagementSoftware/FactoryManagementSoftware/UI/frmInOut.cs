@@ -127,6 +127,21 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        public void refreshDataList(string itemCode)
+        {         
+            foreach (DataGridViewRow row in dgvItem.Rows)
+            {
+                int n = row.Index;
+
+                if (itemCode == dgvItem.Rows[n].Cells["item_code"].Value.ToString())
+                {
+                    dgvItem.Rows[n].Cells["item_qty"].Value = dalItem.getStockQty(itemCode).ToString("0.00");
+                    dgvItem.Rows[n].Cells["item_ord"].Value = dalItem.getOrderQty(itemCode);
+                }
+
+            }
+        }
+
         private void resetForm()
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -178,6 +193,10 @@ namespace FactoryManagementSoftware.UI
                     if (qty < 0)
                     {
                         dgv.Rows[n].Cells["item_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
+                    }
+                    else
+                    {
+                        dgv.Rows[n].Cells["item_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
                     }
                 }
                 else if (dgv == dgvTrf)
@@ -794,6 +813,7 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("Please go to the ORDER PAGE to change the record");
             }
             refreshDataList();
+            listPaint(dgvItem);
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
@@ -909,7 +929,7 @@ namespace FactoryManagementSoftware.UI
                     result = stockIn(locationFrom, itemCode, qty, unit);
                 }
             }
-            else if (ifFactory(locationTo))
+            else if (ifFactory(locationTo) && !locationFrom.Equals("Assembly"))
             {
                 result = stockOut(locationFrom, itemCode, qty, unit);
             }
@@ -980,6 +1000,7 @@ namespace FactoryManagementSoftware.UI
                             success = false;
                         }
                         deleteChildTransferRecord(indexNo, childItemCode);
+                        refreshDataList(childItemCode);
                     }
                 }
             }
@@ -1007,6 +1028,7 @@ namespace FactoryManagementSoftware.UI
                             success = false;
                         }
                         childTransferRecord(factoryName, indexNo, childItemCode, qty);
+                        refreshDataList(childItemCode);
                     }
                 }
             }
