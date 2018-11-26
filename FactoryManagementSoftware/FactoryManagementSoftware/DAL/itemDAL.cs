@@ -647,8 +647,12 @@ namespace FactoryManagementSoftware.DAL
             float orderQty = 0;
             DataTable dt = codeSearch(itemCode);
 
-            orderQty = Convert.ToSingle(dt.Rows[0]["item_ord"].ToString());
-            //MessageBox.Show("get qty= "+qty);
+            if(dt.Rows.Count > 0)
+            {
+                orderQty = Convert.ToSingle(dt.Rows[0]["item_ord"].ToString());
+                //MessageBox.Show("get qty= "+qty);
+            }
+
 
 
             return orderQty;
@@ -692,7 +696,11 @@ namespace FactoryManagementSoftware.DAL
             float stockQty = 0;
             DataTable dt = codeSearch(itemCode);
 
-            stockQty = Convert.ToSingle(dt.Rows[0]["item_qty"].ToString());
+            if(dt.Rows.Count > 0)
+            {
+                stockQty = Convert.ToSingle(dt.Rows[0]["item_qty"].ToString());
+            }
+            
             //MessageBox.Show("get qty= "+qty);
 
 
@@ -756,6 +764,7 @@ namespace FactoryManagementSoftware.DAL
             return success;
         }
 
+      
       
     }
 }

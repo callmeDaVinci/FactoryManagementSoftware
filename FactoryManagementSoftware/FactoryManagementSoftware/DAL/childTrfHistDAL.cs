@@ -97,6 +97,48 @@ namespace FactoryManagementSoftware.DAL
         }
         #endregion
 
+        #region Delete data from Database
+        public bool Delete(childTrfHistBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "DELETE FROM tbl_child_trf_hist WHERE child_trf_hist_id=@child_trf_hist_id AND child_trf_hist_code=@child_trf_hist_code";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@child_trf_hist_id", u.child_trf_hist_id);
+                cmd.Parameters.AddWithValue("@child_trf_hist_code", u.child_trf_hist_code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+        #endregion
+
         #region Search User on Database usingKeywords
 
         public DataTable indexSearch(int indexNo)

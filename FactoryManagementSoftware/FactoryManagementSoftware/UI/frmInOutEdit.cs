@@ -215,11 +215,11 @@ namespace FactoryManagementSoftware.UI
 
             loadItemCategoryData();
 
-            if(!string.IsNullOrEmpty(frmInOut.itemCode))
+            if(!string.IsNullOrEmpty(frmInOut.editingItemCode))
             {
-                cmbTrfItemCat.Text = frmInOut.itemCat;
-                cmbTrfItemName.Text = frmInOut.itemName;
-                cmbTrfItemCode.Text = frmInOut.itemCode;
+                cmbTrfItemCat.Text = frmInOut.editingItemCat;
+                cmbTrfItemName.Text = frmInOut.editingItemName;
+                cmbTrfItemCode.Text = frmInOut.editingItemCode;
             }
             else
             {
@@ -385,6 +385,7 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_hist_added_date = DateTime.Now;
             utrfHist.trf_hist_added_by = 0;
             utrfHist.trf_result = stockResult;
+            utrfHist.trf_hist_from_order = 0;
 
             //Inserting Data into Database
             bool success = daltrfHist.Insert(utrfHist);
@@ -628,7 +629,7 @@ namespace FactoryManagementSoftware.UI
             if(result.Equals("Passed"))
             {
                 updateSuccess = true;
-                frmInOut.itemCode = cmbTrfItemCode.Text;
+                frmInOut.editingItemCode = cmbTrfItemCode.Text;
                 this.Close();
             }
             else

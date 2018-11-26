@@ -18,7 +18,7 @@ namespace FactoryManagementSoftware.UI
         
         private void frmChildStockOutRecord_Load(object sender, EventArgs e)
         {
-            int index = frmInOut.indexNo;
+            int index = frmInOut.editingIndexNo;
             loadData(index);
         }
 

@@ -49,9 +49,8 @@ namespace FactoryManagementSoftware.UI
             Tomato
         }
 
-        private int colorOrder = 0;
         private string colorName = "Black";
-        private int redAlertLevel = 0;
+
 
         #endregion
 
@@ -499,7 +498,7 @@ namespace FactoryManagementSoftware.UI
         {
             if(cmbCust.Text.Equals("All"))
             {
-
+            
             }
             else
             {

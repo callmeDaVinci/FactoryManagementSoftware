@@ -59,6 +59,7 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_hist_added_date = DateTime.Now;
             utrfHist.trf_hist_added_by = 0;
             utrfHist.trf_result = stockResult;
+            utrfHist.trf_hist_from_order = 1;
 
             //Inserting Data into Database
             bool success = daltrfHist.Insert(utrfHist);

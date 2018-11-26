@@ -48,6 +48,7 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Insert Data in Database
+
         public bool Insert(trfHistBLL u)
         {
             bool isSuccess = false;
@@ -55,7 +56,7 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_trf_hist (trf_hist_item_code, trf_hist_from, trf_hist_to, trf_hist_qty, trf_hist_unit, trf_hist_trf_date, trf_hist_note, trf_hist_added_date, trf_hist_added_by, trf_result) VALUES (@trf_hist_item_code,  @trf_hist_from, @trf_hist_to, @trf_hist_qty, @trf_hist_unit, @trf_hist_trf_date, @trf_hist_note, @trf_hist_added_date, @trf_hist_added_by, @trf_result)";
+                String sql = "INSERT INTO tbl_trf_hist (trf_hist_item_code, trf_hist_from, trf_hist_to, trf_hist_qty, trf_hist_unit, trf_hist_trf_date, trf_hist_note, trf_hist_added_date, trf_hist_added_by, trf_result, trf_hist_from_order) VALUES (@trf_hist_item_code,  @trf_hist_from, @trf_hist_to, @trf_hist_qty, @trf_hist_unit, @trf_hist_trf_date, @trf_hist_note, @trf_hist_added_date, @trf_hist_added_by, @trf_result, @trf_hist_from_order)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@trf_hist_item_code", u.trf_hist_item_code);
@@ -68,6 +69,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@trf_hist_added_date", u.trf_hist_added_date);
                 cmd.Parameters.AddWithValue("@trf_hist_added_by", u.trf_hist_added_by);
                 cmd.Parameters.AddWithValue("@trf_result", u.trf_result);
+                cmd.Parameters.AddWithValue("@trf_hist_from_order", u.trf_hist_from_order);
 
                 conn.Open();
 
@@ -96,8 +98,55 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+
         #endregion
-        
+
+        #region Update data in Database
+
+        public bool Update(trfHistBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "UPDATE tbl_trf_hist SET trf_result=@trf_result, trf_hist_updated_date=@trf_hist_updated_date, trf_hist_updated_by=@trf_hist_updated_by WHERE trf_hist_id=@trf_hist_id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@trf_hist_id", u.trf_hist_id);
+                cmd.Parameters.AddWithValue("@trf_result", u.trf_result);
+                cmd.Parameters.AddWithValue("@trf_hist_updated_date", u.trf_hist_updated_date);
+                cmd.Parameters.AddWithValue("@trf_hist_updated_by", u.trf_hist_updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        #endregion
+
         #region Search User on Database usingKeywords
 
         public DataTable Search(string keywords)
@@ -412,6 +461,68 @@ namespace FactoryManagementSoftware.DAL
         }
 
         #endregion
+
+        public bool ifFromOrder(int indexNo)
+        {
+            bool result = false;
+
+            int fromOrder = -1;
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_trf_hist WHERE trf_hist_id = @trf_hist_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@trf_hist_id", indexNo);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow i in dt.Rows)
+                {
+                    if(i["trf_hist_from_order"] is DBNull)
+                    {
+                        fromOrder = 0;
+                    }
+                    else
+                    {
+                        fromOrder = Convert.ToInt32(i["trf_hist_from_order"]);
+                    }
+                    
+                }
+            }
+
+            if(fromOrder > 0)
+            {
+                result = true;
+            }
+
+            return result;
+        }
 
         public int getIndexNo(trfHistBLL u)
         {

@@ -16,11 +16,11 @@ namespace FactoryManagementSoftware.UI
 
         #region variable declare
 
-        static public string itemCat;
-        static public string itemCode;
-        static public string itemName;
-        static public string facName;
-        static public int indexNo = -1;
+        static public string editingItemCat;
+        static public string editingItemCode;
+        static public string editingItemName;
+        static public string editingFacName;
+        static public int editingIndexNo = -1;
 
         private bool change = false;
 
@@ -56,7 +56,7 @@ namespace FactoryManagementSoftware.UI
         materialDAL dalMaterial = new materialDAL();
 
         childTrfHistDAL dalChildTrf = new childTrfHistDAL();
-
+        childTrfHistBLL uChildTrfHist = new childTrfHistBLL();
 
         #endregion
 
@@ -88,9 +88,43 @@ namespace FactoryManagementSoftware.UI
 
         private void resetSaveData()
         {
-            itemCat = "";
-            itemName = "";
-            itemCode = "";
+            editingItemCat = "";
+            editingItemName = "";
+            editingItemCode = "";
+        }
+
+        public void refreshDataList()
+        {
+            if (dgvItem.SelectedRows.Count > 0)
+            {
+                int rowindex = dgvItem.CurrentCell.RowIndex;
+                int columnindex = dgvItem.CurrentCell.ColumnIndex;
+                string itemCode = dgvItem.Rows[rowindex].Cells["item_code"].Value.ToString();
+                dgvItem.Rows[rowindex].Cells["item_qty"].Value = dalItem.getStockQty(itemCode).ToString("0.00");
+                dgvItem.Rows[rowindex].Cells["item_ord"].Value = dalItem.getOrderQty(itemCode);
+                loadStockList(itemCode);
+                calTotalStock(itemCode);
+            }
+            else
+            {
+                foreach (DataGridViewRow row in dgvItem.Rows)
+                {
+                    int n = row.Index;
+
+                    if (editingItemCode == dgvItem.Rows[n].Cells["item_code"].Value.ToString())
+                    {
+                        dgvItem.Rows[n].Cells["item_qty"].Value = dalItem.getStockQty(editingItemCode).ToString("0.00");
+                        dgvItem.Rows[n].Cells["item_ord"].Value = dalItem.getOrderQty(editingItemCode);
+
+                    }
+
+                }
+                dgvFactoryStock.Rows.Clear();
+                dgvTotal.Rows.Clear();
+                resetSaveData();
+            }
+
+
         }
 
         private void resetForm()
@@ -110,22 +144,22 @@ namespace FactoryManagementSoftware.UI
 
         private void listPaint(DataGridView dgv)
         {
-            bool rowColorChange = true;
+            //bool rowColorChange = true;
+            dgv.BorderStyle = BorderStyle.None;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            //dgv.DefaultCellStyle.SelectionBackColor = Color.DarkTurquoise;
+            //dgv.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
+            dgv.BackgroundColor = Color.White;
+
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20,25,72);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
 
             foreach (DataGridViewRow row in dgv.Rows)
             {
-                int n = row.Index;
-                if (rowColorChange)
-                {
-                    dgv.Rows[n].DefaultCellStyle.BackColor = SystemColors.Control;
-                    rowColorChange = false;
-                }
-                else
-                {
-                    dgv.Rows[n].DefaultCellStyle.BackColor = Color.White;
-                    rowColorChange = true;
-                }
-
+                int n = row.Index;                
                 string itemCode = "";
                 if (dgv == dgvItem)
                 {
@@ -138,10 +172,10 @@ namespace FactoryManagementSoftware.UI
                     }
                     if (ifGotChild(itemCode))
                     {
-                        dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
-                        dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
-                    if(qty < 0)
+                    if (qty < 0)
                     {
                         dgv.Rows[n].Cells["item_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
                     }
@@ -158,10 +192,10 @@ namespace FactoryManagementSoftware.UI
                 else if (dgv == dgvFactoryStock)
                 {
                     float qty = 0;
-   
+
                     if (dgv.Rows[n].Cells["stock_qty"].Value.ToString() != null)
                     {
-                        float.TryParse(dgv.Rows[n].Cells["stock_qty"].Value.ToString(),out(qty));
+                        float.TryParse(dgv.Rows[n].Cells["stock_qty"].Value.ToString(), out (qty));
                     }
 
                     if (qty < 0)
@@ -169,7 +203,7 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells["stock_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
                     }
                 }
-                else if(dgv == dgvTotal)
+                else if (dgv == dgvTotal)
                 {
                     float qty = 0;
 
@@ -177,7 +211,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         float.TryParse(dgv.Rows[n].Cells["Total"].Value.ToString(), out (qty));
                     }
-                   
+
 
                     if (qty < 0)
                     {
@@ -242,28 +276,7 @@ namespace FactoryManagementSoftware.UI
             dgvTotal.Rows[0].Cells["Total"].Value = totalStock.ToString("0.00");
             dgvTotal.ClearSelection();
 
-            ////Update data
-            //uItem.item_code = cmbTrfItemCode.Text;
-            //uItem.item_name = cmbTrfItemName.Text;
-            //uItem.item_qty = totalStock;
-            //uItem.item_updtd_date = DateTime.Now;
-            //uItem.item_updtd_by = 0;
-
-            ////Updating data into database
-            //bool success = dalItem.qtyUpdate(uItem);
-
-            ////if data is updated successfully then the value = true else false
-            //if (success == true)
-            //{
-            //    //data updated successfully
-            //    //MessageBox.Show("Item successfully updateddfsfsd ");
-
-            //}
-            //else
-            //{
-            //    //failed to update user
-            //    MessageBox.Show("Failed to updated item");
-            //}
+        
         }
 
         private void loadItemList()
@@ -457,46 +470,6 @@ namespace FactoryManagementSoftware.UI
             }
         } 
 
-        private void unitDataSource()
-        {
-            //string itemCat = cmbTrfItemCat.Text;
-            //DataTable dt = new DataTable();
-            //dt.Columns.Add("item_unit");
-
-            //if (itemCat.Equals("RAW Material") || itemCat.Equals("Master Batch") || itemCat.Equals("Pigment"))
-            //{
-            //    dt.Clear();
-            //    dt.Rows.Add("kg");
-            //    dt.Rows.Add("g");
-                
-            //}
-            //else if(itemCat.Equals("Part") || itemCat.Equals("Carton"))
-            //{
-            //    dt.Clear();
-            //    dt.Rows.Add("set");
-            //    dt.Rows.Add("piece");
-            //    cmbTrfQtyUnit.DataSource = dt;
-            //}
-            //else if(!string.IsNullOrEmpty(itemCat))
-            //{
-            //    dt.Clear();
-            //    dt.Rows.Add("set");
-            //    dt.Rows.Add("piece");
-            //    dt.Rows.Add("kg");
-            //    dt.Rows.Add("g");
-                
-            //}
-            //else
-            //{
-            //    dt = null;
-            //}
-
-            //cmbTrfQtyUnit.DataSource = dt;
-            //cmbTrfQtyUnit.DisplayMember = "item_unit";
-            //cmbTrfQtyUnit.SelectedIndex = -1;
-
-        }
-
         #endregion
 
         #region get data/validation
@@ -530,6 +503,20 @@ namespace FactoryManagementSoftware.UI
                 factoryID = fac["fac_id"].ToString();
             }
             return factoryID;
+        }
+
+        private bool ifFactory(string factoryName)
+        {
+            bool result = false;
+
+            DataTable dtFac = dalFac.nameSearch(factoryName);
+
+            if(dtFac.Rows.Count > 0)
+            {
+                result = true;
+            }
+
+            return result;
         }
 
         private bool IfExists(string itemCode, string factoryName)
@@ -599,11 +586,11 @@ namespace FactoryManagementSoftware.UI
             int rowIndex = dgvItem.CurrentCell.RowIndex;
             if (rowIndex >= 0)
             {
-                itemCat = dgvItem.Rows[rowIndex].Cells["item_cat"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_cat"].Value.ToString();
-                itemName = dgvItem.Rows[rowIndex].Cells["item_name"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
-                itemCode = dgvItem.Rows[rowIndex].Cells["item_code"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
+                editingItemCat = dgvItem.Rows[rowIndex].Cells["item_cat"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_cat"].Value.ToString();
+                editingItemName = dgvItem.Rows[rowIndex].Cells["item_name"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
+                editingItemCode = dgvItem.Rows[rowIndex].Cells["item_code"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
 
-                if (itemCat == null || itemName == null || itemCode == null)
+                if (editingItemCat == null || editingItemName == null || editingItemCode == null)
                 {
                     MessageBox.Show("empty value after selected");
                     dgvFactoryStock.DataSource = null;
@@ -611,9 +598,12 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    loadStockList(itemCode);
-                    calTotalStock(itemCode);
-                    loadTransferList(itemCode);
+                    dgvItem.Rows[rowIndex].Cells["item_qty"].Value = dalItem.getStockQty(editingItemCode).ToString("0.00");
+                    dgvItem.Rows[rowIndex].Cells["item_ord"].Value = dalItem.getOrderQty(editingItemCode);
+
+                    loadStockList(editingItemCode);
+                    calTotalStock(editingItemCode);
+                    loadTransferList(editingItemCode);
                 }
             }
             else
@@ -635,13 +625,13 @@ namespace FactoryManagementSoftware.UI
             {
                 if (dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value != null)
                 {
-                    int.TryParse(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString(), out (indexNo));
+                    int.TryParse(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString(), out (editingIndexNo));
                 }
 
 
-                if (indexNo != -1)
+                if (editingIndexNo != -1)
                 {
-                    DataTable dt = dalChildTrf.indexSearch(indexNo);
+                    DataTable dt = dalChildTrf.indexSearch(editingIndexNo);
 
                     if (dt.Rows.Count > 0)
                     {
@@ -654,7 +644,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                indexNo = -1;
+                editingIndexNo = -1;
             }
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
@@ -666,11 +656,11 @@ namespace FactoryManagementSoftware.UI
             int rowIndex = dgvFactoryStock.CurrentCell.RowIndex;
             if (rowIndex >= 0)
             {
-                facName = dgvFactoryStock.Rows[rowIndex].Cells["fac_name"].Value.ToString();
+                editingFacName = dgvFactoryStock.Rows[rowIndex].Cells["fac_name"].Value.ToString();
 
-                if (!string.IsNullOrEmpty(facName) || facName != "null")
+                if (!string.IsNullOrEmpty(editingFacName) || editingFacName != "null")
                 {
-                    DataTable dt = daltrfHist.facSearch(itemCode, facName);
+                    DataTable dt = daltrfHist.facSearch(editingItemCode, editingFacName);
                     if (dt.Rows.Count > 0)
                     {
                         frmFactoryTrfRecord frm = new frmFactoryTrfRecord();
@@ -681,10 +671,12 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                indexNo = -1;
+                editingIndexNo = -1;
             }
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
+
+        
 
         #endregion
 
@@ -692,991 +684,335 @@ namespace FactoryManagementSoftware.UI
 
         private void transfer_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             frmInOutEdit frm = new frmInOutEdit();
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//Item Edit
 
             if(frmInOutEdit.updateSuccess)
             {
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                txtSearch.Text = itemCode; // update date list
-                Cursor = Cursors.Arrow; // change cursor to normal type
+                //txtSearch.Text = editingItemCode; // update date list      
             }
+
+            refreshDataList();
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void frmInOut_MouseClick(object sender, MouseEventArgs e)
         {
             dgvItem.ClearSelection();
             loadTransferList();
+            refreshDataList();
             resetSaveData();
+            txtSearch.Clear();
         }
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            if (change)
-            {
+            
                 resetForm();
-            }
+       
         }
 
         #endregion
+
+        private void dgvTrf_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
+            //handle the row selection on right click
+            if (e.Button == MouseButtons.Right)
+            {
+          ContextMenuStrip my_menu = new ContextMenuStrip();
+
+                try
+                {
+                    dgvTrf.CurrentCell = dgvTrf.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    // Can leave these here - doesn't hurt
+                    dgvTrf.Rows[e.RowIndex].Selected = true;
+                    dgvTrf.Focus();
+                    int rowIndex = dgvTrf.CurrentCell.RowIndex;
+
+
+                    string result = dgvTrf.Rows[rowIndex].Cells["trf_result"].Value.ToString();
+                    if (result.Equals("Passed"))
+                    {
+                        my_menu.Items.Add("Undo").Name = "Undo";
+                    }
+                    else if (result.Equals("Undo"))
+                    {
+                        my_menu.Items.Add("Redo").Name = "Redo";
+                    }
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
+
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+           
+        private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            //MessageBox.Show(e.ClickedItem.Name.ToString());
+            int rowIndex = dgvTrf.CurrentCell.RowIndex;
+            bool fromOrder = daltrfHist.ifFromOrder(Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString()));
+
+            if (dgvItem.SelectedRows.Count <= 0)
+            {
+                editingItemCode = dgvTrf.Rows[rowIndex].Cells["trf_hist_item_code"].Value.ToString();
+            }
+                
+            if (!fromOrder)
+            {
+                if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Undo"))
+                {
+                    //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+                    if (!undo(rowIndex))
+                    {
+                        MessageBox.Show("Failed to undo");
+                    }
+                }
+                else if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Redo"))
+                {
+                    //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+                    if (!redo(rowIndex))
+                    {
+                        MessageBox.Show("Failed to redo");
+                    }
+                } 
+            }
+            else
+            {
+                MessageBox.Show("Please go to the ORDER PAGE to change the record");
+            }
+            refreshDataList();
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private bool stockIn(string factoryName, string itemCode, float qty, string unit)
+        {
+            bool successFacStockIn;
+            bool successStockAdd;
+
+            successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty, unit);
+
+            successStockAdd = dalItem.stockAdd(itemCode, qty.ToString());
+
+            return successFacStockIn && successStockAdd;
+        }
+
+        private bool stockOut(string factoryName, string itemCode, float qty, string unit)
+        {
+            bool successFacStockOut = false;
+            bool successStockSubtract = false;
+
+            successFacStockOut = dalStock.facStockOut(getFactoryID(factoryName), itemCode, qty, unit);
+
+            successStockSubtract = dalItem.stockSubtract(itemCode, qty.ToString());
+
+            return successFacStockOut && successStockSubtract;
+        }
+
+        private void changeTransferRecord(string stockResult, int rowIndex, int id)
+        {
+            utrfHist.trf_hist_updated_date = DateTime.Now;
+            utrfHist.trf_hist_updated_by = 0;
+            utrfHist.trf_hist_id = id;
+            utrfHist.trf_result = stockResult;
+
+            //Inserting Data into Database
+            bool success = daltrfHist.Update(utrfHist);
+            if (!success)
+            {
+                //Failed to insert data
+                MessageBox.Show("Failed to change transfer record");
+            }
+            else
+            {
+                dgvTrf.Rows[rowIndex].Cells["trf_result"].Value = stockResult;
+            } 
+        }
+
+        private bool undo(int rowIndex)
+        {
+            bool result = false;
+
+            int id = Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+
+            string itemCode = dgvTrf.Rows[rowIndex].Cells["trf_hist_item_code"].Value.ToString();
+
+            string locationFrom = dgvTrf.Rows[rowIndex].Cells["trf_hist_from"].Value.ToString();
+
+            string locationTo = dgvTrf.Rows[rowIndex].Cells["trf_hist_to"].Value.ToString();
+
+            string unit = dgvTrf.Rows[rowIndex].Cells["trf_hist_unit"].Value.ToString();
+
+            float qty = Convert.ToSingle(dgvTrf.Rows[rowIndex].Cells["trf_hist_qty"].Value.ToString());
+
+            if (ifFactory(locationFrom))
+            {
+                result = stockIn(locationFrom, itemCode, qty, unit);
+
+                if (ifFactory(locationTo))
+                {
+                    result = stockOut(locationFrom, itemCode, qty, unit);
+                }
+            }
+            else if (ifFactory(locationTo) && !locationFrom.Equals("Assembly"))
+            {
+                result = stockOut(locationFrom, itemCode, qty, unit);
+            }
+            else if (locationFrom.Equals("Assembly"))
+            {
+                result = stockOut(locationTo, itemCode, qty ,unit);
+                result = childStockIn(locationTo, itemCode, qty, id, unit);
+            }
+
+            if(result)
+            {
+                changeTransferRecord("Undo", rowIndex, id);
+            }
+
+            return result;
+        }
+
+        private bool redo(int rowIndex)
+        {
+            bool result = false;
+
+            int id = Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+
+            string itemCode = dgvTrf.Rows[rowIndex].Cells["trf_hist_item_code"].Value.ToString();
+
+            string locationFrom = dgvTrf.Rows[rowIndex].Cells["trf_hist_from"].Value.ToString();
+
+            string locationTo = dgvTrf.Rows[rowIndex].Cells["trf_hist_to"].Value.ToString();
+
+            string unit = dgvTrf.Rows[rowIndex].Cells["trf_hist_unit"].Value.ToString();
+
+            float qty = Convert.ToSingle(dgvTrf.Rows[rowIndex].Cells["trf_hist_qty"].Value.ToString());
+
+            if (ifFactory(locationFrom))
+            {
+                result = stockOut(locationFrom, itemCode, qty, unit);
+
+                if (ifFactory(locationTo))
+                {
+                    result = stockIn(locationFrom, itemCode, qty, unit);
+                }
+            }
+            else if (ifFactory(locationTo))
+            {
+                result = stockOut(locationFrom, itemCode, qty, unit);
+            }
+            else if (locationFrom.Equals("Assembly"))
+            {
+                result = stockIn(locationTo, itemCode, qty, unit);
+                result = childStockOut(locationTo, itemCode, qty, id, unit);
+            }
+
+            if (result)
+            {
+                changeTransferRecord("Passed", rowIndex, id);
+            }
+
+            return result;
+        }
+
+        private void deleteChildTransferRecord(int indexNo, string itemCode)
+        {
+            uChildTrfHist.child_trf_hist_code = itemCode;
+            uChildTrfHist.child_trf_hist_id = indexNo;
+
+            //Inserting Data into Database
+            bool success = dalChildTrf.Delete(uChildTrfHist);
+            if (!success)
+            {
+                //Failed to insert data
+                MessageBox.Show("Failed to delete child transfer record");
+            }
+        }
+
+        private void childTransferRecord(string factoryName, int indexNo, string itemCode, float qty)
+        {
+            uChildTrfHist.child_trf_hist_code = itemCode;
+            uChildTrfHist.child_trf_hist_from = factoryName;
+            uChildTrfHist.child_trf_hist_to = "Assembly";
+            uChildTrfHist.child_trf_hist_qty = qty;
+            uChildTrfHist.child_trf_hist_unit = "piece";
+            uChildTrfHist.child_trf_hist_result = "Passed";
+            uChildTrfHist.child_trf_hist_id = indexNo;
+
+            //Inserting Data into Database
+            bool success = dalChildTrf.Insert(uChildTrfHist);
+            if (!success)
+            {
+                //Failed to insert data
+                MessageBox.Show("Failed to add new child transfer record");
+            }
+        }
+
+        private bool childStockIn(string factoryName, string parentItemCode, float qty, int indexNo, string unit)
+        {
+            bool success = true;
+
+            string childItemCode;
+            DataTable dtJoin = dalJoin.parentCheck(parentItemCode);
+            if (dtJoin.Rows.Count > 0)
+            {
+                foreach (DataRow Join in dtJoin.Rows)
+                {
+                    childItemCode = Join["join_child_code"].ToString();
+                    DataTable dtItem = dalItem.codeSearch(childItemCode);
+
+                    if (dtItem.Rows.Count > 0)
+                    {
+                        if (!stockIn(factoryName, childItemCode, qty, unit))
+                        {
+                            success = false;
+                        }
+                        deleteChildTransferRecord(indexNo, childItemCode);
+                    }
+                }
+            }
+
+            return success;
+        }
+
+        private bool childStockOut(string factoryName, string parentItemCode, float qty, int indexNo, string unit)
+        {
+            bool success = true;
+
+            string childItemCode;
+            DataTable dtJoin = dalJoin.parentCheck(parentItemCode);
+            if (dtJoin.Rows.Count > 0)
+            {
+                foreach (DataRow Join in dtJoin.Rows)
+                {
+                    childItemCode = Join["join_child_code"].ToString();
+                    DataTable dtItem = dalItem.codeSearch(childItemCode);
+
+                    if (dtItem.Rows.Count > 0)
+                    {
+                        if (!stockOut(factoryName, childItemCode, qty, unit))
+                        {
+                            success = false;
+                        }
+                        childTransferRecord(factoryName, indexNo, childItemCode, qty);
+                    }
+                }
+            }
+
+            return success;
+        }
     }
 }
-
-//      
-
-//        private void loadItemList()
-//        {
-//            //get keyword from text box
-//            string keywords = txtItemSearch.Text;
-
-//            //check if the keywords has value or not
-//            if (!string.IsNullOrEmpty(keywords))
-//            {
-//                //show item based on keywords
-//                DataTable dt = dalItem.Search(keywords);
-
-//                dgvItem.Rows.Clear();
-//                foreach (DataRow item in dt.Rows)
-//                {
-//                    int n = dgvItem.Rows.Add();
-//                    dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
-//                    dgvItem.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
-//                    dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
-//                    dgvItem.Rows[n].Cells["item_qty"].Value = Convert.ToSingle(item["item_qty"]).ToString("0.00");
-//                    dgvItem.Rows[n].Cells["item_ord"].Value = item["item_ord"].ToString();
-//                }
-
-//            }
-//            else
-//            {
-//                //show all item from the database
-//                DataTable dtItem = dalItem.Select();
-//                dgvItem.Rows.Clear();
-//                foreach (DataRow item in dtItem.Rows)
-//                {
-//                    int n = dgvItem.Rows.Add();
-//                    dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
-//                    dgvItem.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
-//                    dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
-//                    dgvItem.Rows[n].Cells["item_qty"].Value = item["item_qty"].ToString();
-//                    dgvItem.Rows[n].Cells["item_ord"].Value = item["item_ord"].ToString();
-//                }
-//            }
-//        }
-
-//        private void loadTransferList()
-//        {
-//            DataTable dt;
-//            //get keyword from text box
-//            string keywords = txtItemSearch.Text;
-
-//            //check if the keywords has value or not
-//            if (!string.IsNullOrEmpty(keywords))
-//            {
-//                //show tranfer records based on keywords
-//                dt = daltrfHist.Search(keywords);
-//                dt.DefaultView.Sort = "trf_hist_added_date DESC";
-//                DataTable sortedDt = dt.DefaultView.ToTable();
-//                //dgvItem.DataSource = dt;
-//                dgvTrf.Rows.Clear();
-//                foreach (DataRow trf in sortedDt.Rows)
-//                {
-//                    int n = dgvTrf.Rows.Add();
-//                    dgvTrf.Rows[n].Cells["trf_hist_id"].Value = trf["trf_hist_id"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = trf["trf_hist_added_date"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(trf["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
-//                    dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = trf["trf_hist_item_code"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["trf_hist_item_name"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00");
-//                    dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = trf["trf_hist_added_by"].ToString();
-//                }
-
-//            }
-//            else
-//            {
-//                //show all transfer records from the database
-//                dt = daltrfHist.Select();
-//                dt.DefaultView.Sort = "trf_hist_added_date DESC";
-//                DataTable sortedDt = dt.DefaultView.ToTable();
-//                dgvTrf.Rows.Clear();
-//                foreach (DataRow trf in sortedDt.Rows)
-//                {
-//                    int n = dgvTrf.Rows.Add();
-//                    dgvTrf.Rows[n].Cells["trf_hist_id"].Value = trf["trf_hist_id"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = trf["trf_hist_added_date"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(trf["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
-//                    dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = trf["trf_hist_item_code"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["trf_hist_item_name"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00");
-//                    dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
-//                    dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = trf["trf_hist_added_by"].ToString();
-//                }
-//            }
-
-
-//        }
-
-//        public void refreshList(string itemCode)
-//        {
-//            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-//            if (!string.IsNullOrEmpty(itemCode))
-//            {
-//                loadStockList(itemCode);
-//                calTotalStock(itemCode);
-//            }
-
-//            loadItemList();
-//            loadTransferList();
-//            txtTrfQty.Clear();
-
-//            //Hightlight selected item code in item list
-//            String searchValue = cmbTrfItemCode.Text;
-
-//            if (!string.IsNullOrEmpty(searchValue))
-//            {
-//                dgvItem.ClearSelection();
-//                foreach (DataGridViewRow row in dgvItem.Rows)
-//                {
-//                    if (row.Cells["item_code"].Value.ToString().Equals(searchValue))
-//                    {
-//                        row.Selected = true;
-//                        break;
-//                    }
-//                }
-//            }
-//            Cursor = Cursors.Arrow; // change cursor to normal type
-//        }
-
-//        private void resetForm()
-//        {
-//            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
-//            loadItemList();
-//            loadTransferList();
-
-//            //select item category list from item category database
-//            DataTable dtItemCat = dalItemCat.Select();
-//            //remove repeating name in item_cat_name
-//            DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
-//            //sort the data according item_cat_name
-//            distinctTable.DefaultView.Sort = "item_cat_name ASC";
-//            //set combobox datasource from table
-//            cmbTrfItemCat.DataSource = distinctTable;
-//            //show item_cat_name data from table only
-//            cmbTrfItemCat.DisplayMember = "item_cat_name";
-
-//            //select category list from category database
-//            DataTable dtTrfCatFrm = daltrfCat.Select();
-//            //remove repeating name in trf_cat_name
-//            DataTable distinctTable3 = dtTrfCatFrm.DefaultView.ToTable(true, "trf_cat_name");
-//            //sort the data according trf_cat_name
-//            distinctTable3.DefaultView.Sort = "trf_cat_name ASC";
-//            //set combobox datasource from table
-//            cmbTrfFromCategory.DataSource = distinctTable3;
-//            //show trf_cat_name data from table only
-//            cmbTrfFromCategory.DisplayMember = "trf_cat_name";
-
-
-//            //select category list  from category database
-//            DataTable dtTrfCatTo = daltrfCat.Select();
-//            //remove repeating name in trf_cat_name
-//            DataTable distinctTable4 = dtTrfCatTo.DefaultView.ToTable(true, "trf_cat_name");
-//            //sort the data according trf_cat_name
-//            distinctTable4.DefaultView.Sort = "trf_cat_name ASC";
-//            //set combobox datasource from table
-//            cmbTrfToCategory.DataSource = distinctTable4;
-//            //show trf_cat_name data from table only
-//            cmbTrfToCategory.DisplayMember = "trf_cat_name";
-
-//            //set unit combo box empty
-//            cmbTrfQtyUnit.SelectedIndex = -1;
-
-//            //clear input and list
-//            txtTrfQty.Clear();
-//            txtTrfNote.Clear();
-//            dgvFactoryStock.Rows.Clear();
-//            dgvTotal.Rows.Clear();
-
-//            dgvItem.ClearSelection();
-//            Cursor = Cursors.Arrow; // change cursor to normal type
-//        }
-
-//        private void unitDataSource()
-//        {
-//            string itemCat = cmbTrfItemCat.Text;
-//            DataTable dt = new DataTable();
-//            dt.Columns.Add("item_unit");
-
-//            if (itemCat.Equals("RAW Material") || itemCat.Equals("Master Batch") || itemCat.Equals("Pigment"))
-//            {
-//                dt.Clear();
-//                dt.Rows.Add("kg");
-//                dt.Rows.Add("g");
-
-//            }
-//            else if (itemCat.Equals("Part") || itemCat.Equals("Carton"))
-//            {
-//                dt.Clear();
-//                dt.Rows.Add("set");
-//                dt.Rows.Add("piece");
-//                cmbTrfQtyUnit.DataSource = dt;
-//            }
-//            else if (!string.IsNullOrEmpty(itemCat))
-//            {
-//                dt.Clear();
-//                dt.Rows.Add("set");
-//                dt.Rows.Add("piece");
-//                dt.Rows.Add("kg");
-//                dt.Rows.Add("g");
-
-//            }
-//            else
-//            {
-//                dt = null;
-//            }
-
-//            cmbTrfQtyUnit.DataSource = dt;
-//            cmbTrfQtyUnit.DisplayMember = "item_unit";
-//            cmbTrfQtyUnit.SelectedIndex = -1;
-
-//        }
-
-//        #endregion
-
-//        #region item list double click
-
-//        private void dgvItem_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-//        {
-
-//            int rowIndex = e.RowIndex;
-//            if (rowIndex != -1)
-//            {
-//                cmbTrfItemCat.Text = dgvItem.Rows[rowIndex].Cells["item_cat"].Value.ToString();
-//                cmbTrfItemName.Text = dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
-//                cmbTrfItemCode.Text = dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
-
-//                refreshList(cmbTrfItemCode.Text);
-//            }
-
-//        }
-
-//        #endregion
-
-//        #region text/index/slection Change
-
-//        //refresh list when selected item code change
-//        private void cmbTrfItemCode_SelectionChangeCommitted(object sender, EventArgs e)
-//        {
-//            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
-//            {
-//                refreshList(cmbTrfItemCode.Text);
-//            }
-//            else
-//            {
-//                dgvFactoryStock.Rows.Clear();
-//            }
-
-//        }
-
-//        //refresh list and item code source from combo box when selected item name change
-//        private void cmbTrfItemName_SelectedIndexChanged(object sender, EventArgs e)
-//        {
-//            errorProvider2.Clear();
-//            //get keyword from text box
-//            string keywords = cmbTrfItemName.Text;
-
-//            //check if the keywords has value or not
-//            if (!string.IsNullOrEmpty(keywords))
-//            {
-//                //show item code at itemcode combobox based on keywords
-//                DataTable dt = dalItem.Search(keywords);
-//                cmbTrfItemCode.DataSource = dt;
-//                cmbTrfItemCode.DisplayMember = "item_code";
-//                cmbTrfItemCode.ValueMember = "item_code";
-//            }
-//            else
-//            {
-//                cmbTrfItemCode.DataSource = null;
-//            }
-
-//            // if selected item code change, then refresh list, else clear stock list
-//            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
-//            {
-//                refreshList(cmbTrfItemCode.Text);
-//            }
-//            else
-//            {
-//                dgvFactoryStock.Rows.Clear();
-//            }
-//        }
-
-//        //refresh list, item name and item code source from combo box when selected item name change
-//        private void cmbTrfItemCat_SelectedIndexChanged(object sender, EventArgs e)
-//        {
-//            //get keyword from text box
-//            string keywords = cmbTrfItemCat.Text;
-
-//            //check if the keywords has value or not
-//            if (!string.IsNullOrEmpty(keywords))
-//            {
-//                //show item based on keywords
-//                DataTable dt = dalItem.catSearch(keywords);
-//                //remove repeating name in item_name
-//                DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
-//                //sort the data according item_name
-//                distinctTable.DefaultView.Sort = "item_name ASC";
-//                cmbTrfItemName.DataSource = distinctTable;
-//                cmbTrfItemName.DisplayMember = "item_name";
-//                cmbTrfItemName.ValueMember = "item_name";
-
-//                unitDataSource();
-
-//                if (string.IsNullOrEmpty(cmbTrfItemName.Text))
-//                {
-//                    cmbTrfItemCode.DataSource = null;
-//                }
-//            }
-//            else
-//            {
-//                cmbTrfItemName.DataSource = null;
-//            }
-//        }
-
-//        private void cmbTrfItemName_TextChanged(object sender, EventArgs e)
-//        {
-//            if (string.IsNullOrEmpty(cmbTrfItemName.Text))
-//            {
-//                cmbTrfItemCode.DataSource = null;
-//            }
-//        }
-
-//        private void cmbTrfFromCategory_SelectedIndexChanged(object sender, EventArgs e)
-//        {
-//            switch (cmbTrfFromCategory.Text)
-//            {
-//                case "Factory":
-
-//                    DataTable dt = dalFac.Select();
-//                    DataTable distinctTable = dt.DefaultView.ToTable(true, "fac_name");
-//                    distinctTable.DefaultView.Sort = "fac_name ASC";
-//                    cmbTrfFrom.DataSource = distinctTable;
-//                    cmbTrfFrom.DisplayMember = "fac_name";
-
-//                    break;
-
-//                case "Customer":
-
-//                    DataTable dt2 = dalCust.Select();
-//                    DataTable distinctTable2 = dt2.DefaultView.ToTable(true, "cust_name");
-//                    distinctTable2.DefaultView.Sort = "cust_name ASC";
-//                    cmbTrfFrom.DataSource = distinctTable2;
-//                    cmbTrfFrom.DisplayMember = "cust_name";
-
-//                    break;
-
-//                case "Supplier":
-
-//                    cmbTrfFrom.DataSource = null;
-
-//                    break;
-
-//                case "Other":
-
-//                    cmbTrfFrom.DataSource = null;
-
-//                    break;
-
-//                default:
-//                    cmbTrfFrom.DataSource = null;
-//                    break;
-//            }
-//        }
-
-//        private void cmbTrfToCategory_SelectedIndexChanged(object sender, EventArgs e)
-//        {
-//            switch (cmbTrfToCategory.Text)
-//            {
-//                case "Factory":
-
-//                    DataTable dt = dalFac.Select();
-//                    DataTable distinctTable = dt.DefaultView.ToTable(true, "fac_name");
-//                    distinctTable.DefaultView.Sort = "fac_name ASC";
-//                    cmbTrfTo.DataSource = distinctTable;
-//                    cmbTrfTo.DisplayMember = "fac_name";
-
-//                    break;
-
-//                case "Customer":
-
-//                    DataTable dt2 = dalCust.Select();
-//                    DataTable distinctTable2 = dt2.DefaultView.ToTable(true, "cust_name");
-//                    distinctTable2.DefaultView.Sort = "cust_name ASC";
-//                    cmbTrfTo.DataSource = distinctTable2;
-//                    cmbTrfTo.DisplayMember = "cust_name";
-
-//                    break;
-
-//                case "Supplier":
-
-//                    cmbTrfTo.DataSource = null;
-
-//                    break;
-
-//                case "Other":
-
-//                    cmbTrfTo.DataSource = null;
-
-//                    break;
-
-//                default:
-//                    break;
-//            }
-//        }
-
-//        private void textBox1_TextChanged(object sender, EventArgs e)
-//        {
-//            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
-//            loadItemList();
-//            loadTransferList();
-
-//            Cursor = Cursors.Arrow; // change cursor to normal type
-//        }
-
-//        #endregion
-
-//        #region data validation
-
-//        private void txtTrfQty_KeyPress(object sender, KeyPressEventArgs e)
-//        {
-//            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
-//            {
-//                e.Handled = true;
-//            }
-//        }
-
-//        private bool Validation()
-//        {
-//            bool result = true;
-//            if (string.IsNullOrEmpty(txtTrfQty.Text))
-//            {
-
-//                errorProvider1.SetError(txtTrfQty, "Transfer quantity required");
-//                result = false;
-//            }
-
-//            if (string.IsNullOrEmpty(cmbTrfItemName.Text))
-//            {
-
-//                errorProvider2.SetError(cmbTrfItemName, "Transfer item name required");
-//                result = false;
-//            }
-
-//            if (string.IsNullOrEmpty(cmbTrfItemCode.Text))
-//            {
-
-//                errorProvider3.SetError(cmbTrfItemCode, "Transfer item code required");
-//                result = false;
-//            }
-
-//            if (string.IsNullOrEmpty(cmbTrfQtyUnit.Text))
-//            {
-
-//                errorProvider4.SetError(cmbTrfQtyUnit, "Quantity unit required");
-//                result = false;
-//            }
-
-
-//            return result;
-
-//        }
-
-//        private float getQty(string itemCode, string factoryName)
-//        {
-//            float qty = 0;
-//            if (IfExists(itemCode, factoryName))
-//            {
-//                DataTable dt = dalStock.Search(itemCode, getFactoryID(factoryName));
-
-//                qty = Convert.ToSingle(dt.Rows[0]["stock_qty"].ToString());
-//            }
-//            else
-//            {
-//                qty = 0;
-//            }
-
-//            return qty;
-//        }
-
-//        private string getFactoryID(string factoryName)
-//        {
-//            string factoryID = "";
-
-//            DataTable dtFac = dalFac.nameSearch(factoryName);
-
-//            foreach (DataRow fac in dtFac.Rows)
-//            {
-//                factoryID = fac["fac_id"].ToString();
-//            }
-//            return factoryID;
-//        }
-
-//        private bool IfExists(string itemCode, string factoryName)
-//        {
-
-//            DataTable dt = dalStock.Search(itemCode, getFactoryID(factoryName));
-
-//            if (dt.Rows.Count > 0)
-//                return true;
-//            else
-//                return false;
-//        }
-
-//        private void txtTrfQty_TextChanged(object sender, EventArgs e)
-//        {
-//            errorProvider1.Clear();
-//        }
-
-//        private void cmbTrfItemCode_SelectedIndexChanged(object sender, EventArgs e)
-//        {
-//            errorProvider3.Clear();
-//            if (ifGotChild())
-//            {
-//                cmbTrfQtyUnit.Text = "set";
-//            }
-
-
-//        }
-
-//        private void cmbTrfQtyUnit_SelectedIndexChanged(object sender, EventArgs e)
-//        {
-//            errorProvider4.Clear();
-//        }
-
-//        private float checkQty(string keyword)
-//        {
-//            float qty = 0;
-
-//            if (string.IsNullOrEmpty(keyword))
-//            {
-//                qty = 0;
-//            }
-//            else
-//            {
-//                qty = Convert.ToSingle(keyword);
-//            }
-
-//            string unit = cmbTrfQtyUnit.Text;
-
-//            if (unit.Equals("g"))
-//            {
-//                qty = qty / 1000;
-//            }
-//            else if (string.IsNullOrEmpty(unit))
-//            {
-//                qty = 0;
-//            }
-
-//            return qty;
-//        }
-
-//        private string checkUnit(string keyword)
-//        {
-//            string unit = keyword;
-//            if (unit.Equals("g"))
-//            {
-//                unit = "kg";
-//            }
-//            return unit;
-//        }
-
-//        private bool ifGotChild()
-//        {
-//            bool result = false;
-//            DataTable dtJoin = dalJoin.parentCheck(cmbTrfItemCode.Text);
-//            if (dtJoin.Rows.Count > 0)
-//            {
-//                result = true;
-//            }
-//            return result;
-//        }
-
-//        private void checkChild(string itemCode, string qtyOut)
-//        {
-//            string factory = cmbTrfTo.Text;
-//            string childItemCode = "";
-//            DataTable dtJoin = dalJoin.parentCheck(itemCode);
-//            if (dtJoin.Rows.Count > 0 && cmbTrfToCategory.Text == "Factory" && cmbTrfFromCategory.Text == "Assembly")
-//            {
-//                foreach (DataRow Join in dtJoin.Rows)
-//                {
-//                    childItemCode = Join["join_child_code"].ToString();
-//                    uStock.stock_item_code = childItemCode;
-//                    uStock.stock_fac_id = Convert.ToInt32(getFactoryID(factory));
-//                    uStock.stock_qty = getQty(childItemCode, factory) - Convert.ToSingle(qtyOut);
-//                    uStock.stock_updtd_date = DateTime.Now;
-//                    uStock.stock_updtd_by = 0;
-
-//                    //Stock Out
-//                    if (IfExists(childItemCode, factory))
-//                    {
-//                        bool success = dalStock.Update(uStock);
-
-//                        if (success)
-//                        {
-//                            float totalStock = 0;
-//                            totalStock = dalItem.getStockQty(childItemCode) - Convert.ToSingle(qtyOut);
-//                            //Update data
-//                            uItem.item_code = childItemCode;
-//                            uItem.item_qty = totalStock;
-//                            uItem.item_updtd_date = DateTime.Now;
-//                            uItem.item_updtd_by = 0;
-//                            cmbTrfQtyUnit.SelectedIndex = -1;
-
-//                            //Updating data into database
-//                            bool success2 = dalItem.qtyUpdate(uItem);
-
-//                            //if data is updated successfully then the value = true else false
-//                            if (!success2)
-//                            {
-//                                MessageBox.Show("Failed to updated child item stock qty");
-//                            }
-
-//                        }
-//                        else
-//                        {
-//                            //failed to update user
-//                            MessageBox.Show("Failed to updated stock");
-//                        }
-//                    }
-//                    else
-//                    {
-//                        //Inserting Data into Database
-//                        bool success = dalStock.Insert(uStock);
-//                        //If the data is successfully inserted then the value of success will be true else false
-//                        if (success == true)
-//                        {
-//                            //Data Successfully Inserted
-//                            //MessageBox.Show("Stock successfully created");
-//                            cmbTrfQtyUnit.SelectedIndex = -1;
-//                            float totalStock = 0;
-//                            totalStock = dalItem.getStockQty(childItemCode) - Convert.ToSingle(qtyOut);
-//                            //Update data
-//                            uItem.item_code = childItemCode;
-//                            uItem.item_qty = totalStock;
-//                            uItem.item_updtd_date = DateTime.Now;
-//                            uItem.item_updtd_by = 0;
-
-//                            //Updating data into database
-//                            bool success2 = dalItem.qtyUpdate(uItem);
-
-//                            //if data is updated successfully then the value = true else false
-//                            if (!success2)
-//                            {
-//                                MessageBox.Show("Failed to updated child item stock qty");
-//                            }
-//                        }
-//                        else
-//                        {
-//                            //Failed to insert data
-//                            MessageBox.Show("Failed to add new stock");
-//                        }
-//                    }
-
-//                }
-
-//            }
-//            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
-//            {
-//                refreshList(cmbTrfItemCode.Text);
-//            }
-//        }
-//        #endregion
-
-//        #region Function: Insert/Reset
-
-//        private void btnTransfer_Click(object sender, EventArgs e)
-//        {
-//            string locationFrom = "";
-//            string locationTo = "";
-
-//            if (Validation())
-//            {
-//                DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-//                if (dialogResult == DialogResult.Yes)
-//                {
-//                    if (!string.IsNullOrEmpty(cmbTrfFrom.Text))
-//                    {
-//                        locationFrom = cmbTrfFrom.Text;
-//                    }
-//                    else
-//                    {
-//                        locationFrom = cmbTrfFromCategory.Text;
-//                    }
-
-//                    if (!string.IsNullOrEmpty(cmbTrfTo.Text))
-//                    {
-//                        locationTo = cmbTrfTo.Text;
-//                    }
-//                    else
-//                    {
-//                        locationTo = cmbTrfToCategory.Text;
-//                    }
-
-//                    utrfHist.trf_hist_item_code = cmbTrfItemCode.Text;
-//                    utrfHist.trf_hist_item_name = cmbTrfItemName.Text;
-//                    utrfHist.trf_hist_from = locationFrom;
-//                    utrfHist.trf_hist_to = locationTo;
-//                    utrfHist.trf_hist_qty = checkQty(txtTrfQty.Text);
-//                    utrfHist.trf_hist_unit = checkUnit(cmbTrfQtyUnit.Text);
-//                    utrfHist.trf_hist_trf_date = dtpTrfDate.Value.Date;
-//                    utrfHist.trf_hist_note = txtTrfNote.Text;
-//                    utrfHist.trf_hist_added_date = DateTime.Now;
-//                    utrfHist.trf_hist_added_by = 0;
-
-//                    //Inserting Data into Database
-//                    bool success = daltrfHist.Insert(utrfHist);
-//                    //If the data is successfully inserted then the value of success will be true else false
-//                    if (success == true)
-//                    {
-//                        //Data Successfully Inserted
-//                        //MessageBox.Show("Transfer record successfully created");
-
-//                        stockInandOut();
-//                        cmbTrfQtyUnit.SelectedIndex = -1;
-
-//                        if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
-//                        {
-//                            refreshList(cmbTrfItemCode.Text);
-//                        }
-
-
-//                    }
-//                    else
-//                    {
-//                        //Failed to insert data
-//                        MessageBox.Show("Failed to add new transfer record");
-//                    }
-
-//                }
-//            }
-//        }
-
-//        private void btnReset_Click(object sender, EventArgs e)
-//        {
-//            DialogResult dialogResult = MessageBox.Show("Are you sure want to reset?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-//            if (dialogResult == DialogResult.Yes)
-//            {
-//                resetForm();
-//            }
-//        }
-
-//        #endregion
-
-//        #region Calculate Stock  
-
-//        private void stockInandOut()
-//        {
-//            //Stock Out
-//            if (cmbTrfFromCategory.Text == "Factory")
-//            {
-//                if (IfExists(cmbTrfItemCode.Text, cmbTrfFrom.Text))
-//                {
-//                    //MessageBox.Show(cmbTrfItemCode.Text + " " + cmbTrfFrom.Text + " data exists");
-//                    //Update data
-//                    uStock.stock_item_code = cmbTrfItemCode.Text;
-//                    uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfFrom.Text));
-//                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfFrom.Text) - checkQty(txtTrfQty.Text);
-//                    uStock.stock_updtd_date = DateTime.Now;
-//                    uStock.stock_updtd_by = 0;
-
-//                    //MessageBox.Show("After calculate qty: " + uStock.stock_qty);
-
-//                    //Updating data into database
-//                    bool success = dalStock.Update(uStock);
-
-//                    //if data is updated successfully then the value = true else false
-//                    if (success == true)
-//                    {
-//                        //data updated successfully
-//                        //MessageBox.Show("Stock successfully updated ");
-//                        cmbTrfQtyUnit.SelectedIndex = -1;
-
-//                    }
-//                    else
-//                    {
-//                        //failed to update user
-//                        MessageBox.Show("Failed to updated stock");
-//                    }
-
-//                }
-
-//                else
-//                {
-//                    //MessageBox.Show("data not exist");
-//                    //Add data
-//                    uStock.stock_item_code = cmbTrfItemCode.Text;
-//                    uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfFrom.Text));
-//                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfFrom.Text) - checkQty(txtTrfQty.Text);
-//                    uStock.stock_updtd_date = DateTime.Now;
-//                    uStock.stock_updtd_by = 0;
-
-//                    //Inserting Data into Database
-//                    bool success = dalStock.Insert(uStock);
-//                    //If the data is successfully inserted then the value of success will be true else false
-//                    if (success == true)
-//                    {
-//                        //Data Successfully Inserted
-//                        //MessageBox.Show("Stock successfully created");
-//                        cmbTrfQtyUnit.SelectedIndex = -1;
-//                    }
-//                    else
-//                    {
-//                        //Failed to insert data
-//                        MessageBox.Show("Failed to add new stock");
-//                    }
-//                }
-//            }
-
-//            //Stock In
-//            if (cmbTrfToCategory.Text == "Factory")
-//            {
-//                if (IfExists(cmbTrfItemCode.Text, cmbTrfTo.Text))
-//                {
-//                    string qtyOut = txtTrfQty.Text;
-//                    //MessageBox.Show(cmbTrfItemCode.Text + " " + cmbTrfTo.Text + " data exists");
-//                    //Update data
-//                    uStock.stock_item_code = cmbTrfItemCode.Text;
-//                    uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfTo.Text));
-//                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfTo.Text) + checkQty(qtyOut);
-//                    uStock.stock_updtd_date = DateTime.Now;
-//                    uStock.stock_updtd_by = 0;
-
-//                    //MessageBox.Show("After calculate qty: " + uStock.stock_qty);
-
-//                    //Updating data into database
-//                    bool success = dalStock.Update(uStock);
-
-//                    //if data is updated successfully then the value = true else false
-//                    if (success == true)
-//                    {
-//                        //data updated successfully
-//                        //MessageBox.Show("Stock successfully updated ");
-//                        checkChild(cmbTrfItemCode.Text, qtyOut);
-//                        if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
-//                        {
-//                            refreshList(cmbTrfItemCode.Text);
-//                        }
-
-//                    }
-//                    else
-//                    {
-//                        //failed to update user
-//                        MessageBox.Show("Failed to updated stock");
-//                    }
-
-//                }
-
-//                else
-//                {
-//                    //MessageBox.Show("data not exist");
-//                    //Add data
-
-//                    uStock.stock_item_code = cmbTrfItemCode.Text;
-//                    uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTrfTo.Text));
-//                    uStock.stock_qty = getQty(cmbTrfItemCode.Text, cmbTrfTo.Text) + checkQty(txtTrfQty.Text);
-//                    uStock.stock_updtd_date = DateTime.Now;
-//                    uStock.stock_updtd_by = 0;
-
-//                    //Inserting Data into Database
-//                    bool success = dalStock.Insert(uStock);
-//                    //If the data is successfully inserted then the value of success will be true else false
-//                    if (success == true)
-//                    {
-//                        //Data Successfully Inserted
-//                        //MessageBox.Show("Stock successfully created");
-//                        checkChild(cmbTrfItemCode.Text, txtTrfQty.Text);
-//                        if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
-//                        {
-//                            refreshList(cmbTrfItemCode.Text);
-//                        }
-
-
-//                    }
-//                    else
-//                    {
-//                        //Failed to insert data
-//                        MessageBox.Show("Failed to add new stock");
-//                    }
-//                }
-//            }
-
-
-
-
-//        }
-
-//        private void calTotalStock(string itemCode)
-//        {
-//            float totalStock = 0;
-
-//            DataTable dtStock = dalStock.Select(itemCode);
-
-//            foreach (DataRow stock in dtStock.Rows)
-//            {
-//                totalStock += Convert.ToSingle(stock["stock_qty"].ToString());
-//            }
-
-//            dgvTotal.Rows.Clear();
-//            dgvTotal.Rows.Add();
-//            dgvTotal.Rows[0].Cells["Total"].Value = totalStock.ToString("0.00");
-//            dgvTotal.ClearSelection();
-
-//            //Update data
-//            uItem.item_code = cmbTrfItemCode.Text;
-//            uItem.item_name = cmbTrfItemName.Text;
-//            uItem.item_qty = totalStock;
-//            uItem.item_updtd_date = DateTime.Now;
-//            uItem.item_updtd_by = 0;
-
-//            //Updating data into database
-//            bool success = dalItem.qtyUpdate(uItem);
-
-//            //if data is updated successfully then the value = true else false
-//            if (success == true)
-//            {
-//                //data updated successfully
-//                //MessageBox.Show("Item successfully updateddfsfsd ");
-
-//            }
-//            else
-//            {
-//                //failed to update user
-//                MessageBox.Show("Failed to updated item");
-//            }
-//        }
-
-//        #endregion
-
-//        private void dgvItem_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-//        {
-//            int rowIndex = e.RowIndex;
-//            if (rowIndex != -1)
-//            {
-//                cmbTrfItemCat.Text = dgvItem.Rows[rowIndex].Cells["item_cat"].Value.ToString();
-//                cmbTrfItemName.Text = dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
-//                cmbTrfItemCode.Text = dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
-
-//                refreshList(cmbTrfItemCode.Text);
-//            }
-//        }
-//    }
-//} //code backup
 

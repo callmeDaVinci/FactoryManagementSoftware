@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -92,6 +95,87 @@ namespace FactoryManagementSoftware.UI
                 button1_Click(sender, e);
             }
         }
+
+        private void frmLogIn_Load(object sender, EventArgs e)
+        {
+            //checking whether database exist or not
+            if (!CheckDatabaseExist())
+            {
+                
+                MessageBox.Show("Database not exist");
+                //GenerateDatabase();
+            }
+        }
+
+        private bool CheckDatabaseExist()
+        {
+            bool result;
+            string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+            //Sql connection for user defined database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                conn.Open();
+                result = true;             
+            }
+            catch
+            {
+                result = false;
+            }
+
+            conn.Close();
+            return result;
+        }
+
+        private void GenerateDatabase()
+        {
+            List<string> cmds = new List<string>();
+            if (File.Exists(Application.StartupPath + "\\script.sql"))
+            {
+                TextReader tr = new StreamReader(Application.StartupPath + "\\script.sql");
+                string line = "";
+                string cmd = "";
+                while((line = tr.ReadLine()) != null)
+                {
+                    if(line.Trim().ToUpper() == "GO")
+                    {
+                        cmds.Add(cmd);
+                        cmd = "";
+                    }
+                    else
+                    {
+                        cmd += line + "\r\n";
+                    }
+                }
+
+                if(cmd.Length > 0)
+                {
+                    cmds.Add(cmd);
+                    cmd = "";
+                }
+
+                tr.Close();
+            }
+
+            if(cmds.Count > 0)
+            {
+                SqlCommand command = new SqlCommand();
+
+                command.Connection = new SqlConnection(@"Data Source=
+           .\SQLEXPRESS;Initial Catalog=Factory;Integrated Security=True");
+
+                command.CommandType = System.Data.CommandType.Text;
+                command.Connection.Open();
+                
+                for(int i = 0; i < cmds.Count; i++)
+                {
+                    command.CommandText = cmds[i];
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
     }
     
 }
