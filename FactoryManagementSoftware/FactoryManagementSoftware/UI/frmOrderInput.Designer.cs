@@ -210,7 +210,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(135, 23);
             this.label1.TabIndex = 80;
-            this.label1.Text = "FORECAST DATE";
+            this.label1.Text = "DATE REQUIRED";
             // 
             // label5
             // 

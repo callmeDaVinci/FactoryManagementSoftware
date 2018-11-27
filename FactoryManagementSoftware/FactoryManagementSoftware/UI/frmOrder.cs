@@ -64,7 +64,7 @@ namespace FactoryManagementSoftware.UI
                 dgvOrd.Rows[n].Cells["ord_id"].Value = ord["ord_id"].ToString();
                 dgvOrd.Rows[n].Cells["ord_item_code"].Value = ord["ord_item_code"].ToString();
                 dgvOrd.Rows[n].Cells["item_name"].Value = ord["item_name"].ToString();
-                dgvOrd.Rows[n].Cells["item_ord"].Value = ord["item_ord"].ToString();    
+                //dgvOrd.Rows[n].Cells["item_ord"].Value = ord["item_ord"].ToString();    
                 dgvOrd.Rows[n].Cells["ord_qty"].Value = ord["ord_qty"].ToString();
                 dgvOrd.Rows[n].Cells["ord_unit"].Value = ord["ord_unit"].ToString();
                 dgvOrd.Rows[n].Cells["to"].Value = ord["ord_to"].ToString();
@@ -426,28 +426,6 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void stockAdd(string itemCode, string stockQty)
-        {
-            bool success = dalItem.stockAdd(itemCode, stockQty);//Updating data into database
-
-            if (!success)
-            {
-                MessageBox.Show("Failed to add item stock qty");//failed to update user
-            }
-        }
-
-        private void stockSubtract(string itemCode, string stockQty)
-        {
-            bool success = dalItem.stockSubtract(itemCode, stockQty); //Updating data into database
-
-            if (!success)
-            {
-                MessageBox.Show("Failed to subtract item stock qty ");//failed to update user
-            }
-        }
-
-        #endregion
-
         private void btnReset_Click(object sender, EventArgs e)
         {
             resetForm();
@@ -458,6 +436,6 @@ namespace FactoryManagementSoftware.UI
             dgvOrd.ClearSelection();
         }
 
-       
+        #endregion
     }
 }

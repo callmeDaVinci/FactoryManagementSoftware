@@ -22,38 +22,22 @@ namespace FactoryManagementSoftware.UI
         static public string editingFacName;
         static public int editingIndexNo = -1;
 
-        private bool change = false;
-
         #endregion
 
         #region create class object (database)
 
-        custBLL uCust = new custBLL();
-        custDAL dalCust = new custDAL();
-
-        facBLL uFac = new facBLL();
         facDAL dalFac = new facDAL();
 
-        itemBLL uItem = new itemBLL();
         itemDAL dalItem = new itemDAL();
 
-        itemCatBLL uItemCat = new itemCatBLL();
         itemCatDAL dalItemCat = new itemCatDAL();
-
-        trfCatBLL utrfCat = new trfCatBLL();
-        trfCatDAL daltrfCat = new trfCatDAL();
 
         trfHistBLL utrfHist = new trfHistBLL();
         trfHistDAL daltrfHist = new trfHistDAL();
 
-        facStockBLL uStock = new facStockBLL();
         facStockDAL dalStock = new facStockDAL();
-
-        joinBLL uJoin = new joinBLL();
+        
         joinDAL dalJoin = new joinDAL();
-
-        materialBLL uMaterial = new materialBLL();
-        materialDAL dalMaterial = new materialDAL();
 
         childTrfHistDAL dalChildTrf = new childTrfHistDAL();
         childTrfHistBLL uChildTrfHist = new childTrfHistBLL();
@@ -74,7 +58,6 @@ namespace FactoryManagementSoftware.UI
 
         private void loadItemCategoryData()
         {
-            change = true;
             DataTable dtItemCat = dalItemCat.Select();
 
             DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
@@ -83,7 +66,6 @@ namespace FactoryManagementSoftware.UI
             cmbSearchCat.DataSource = distinctTable;
             cmbSearchCat.DisplayMember = "item_cat_name";
             cmbSearchCat.SelectedIndex = 0;
-
         }
 
         private void resetSaveData()
@@ -93,9 +75,9 @@ namespace FactoryManagementSoftware.UI
             editingItemCode = "";
         }
 
-        public void refreshDataList()
+        private void refreshDataList()//refresh/update stock qty and order qty
         {
-            if (dgvItem.SelectedRows.Count > 0)
+            if (dgvItem.SelectedRows.Count > 0)//if item data selected,direct update item stock qty and order qty
             {
                 int rowindex = dgvItem.CurrentCell.RowIndex;
                 int columnindex = dgvItem.CurrentCell.ColumnIndex;
@@ -105,7 +87,7 @@ namespace FactoryManagementSoftware.UI
                 loadStockList(itemCode);
                 calTotalStock(itemCode);
             }
-            else
+            else//if item data not selected, then search in item datagridview and update stock qty and order qty
             {
                 foreach (DataGridViewRow row in dgvItem.Rows)
                 {
@@ -115,19 +97,16 @@ namespace FactoryManagementSoftware.UI
                     {
                         dgvItem.Rows[n].Cells["item_qty"].Value = dalItem.getStockQty(editingItemCode).ToString("0.00");
                         dgvItem.Rows[n].Cells["item_ord"].Value = dalItem.getOrderQty(editingItemCode);
-
                     }
-
                 }
+                //clear factory and total list since no item data is selected
                 dgvFactoryStock.Rows.Clear();
                 dgvTotal.Rows.Clear();
                 resetSaveData();
             }
-
-
         }
 
-        public void refreshDataList(string itemCode)
+        private void refreshDataList(string itemCode)
         {         
             foreach (DataGridViewRow row in dgvItem.Rows)
             {
@@ -153,7 +132,6 @@ namespace FactoryManagementSoftware.UI
             dgvFactoryStock.Rows.Clear();
             dgvTotal.Rows.Clear();
             
-            change = false;
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
@@ -243,6 +221,91 @@ namespace FactoryManagementSoftware.UI
             dgv.ClearSelection();
         }
 
+        private void listPaintAndKeepSelected(DataGridView dgv)
+        {
+            //bool rowColorChange = true;
+            dgv.BorderStyle = BorderStyle.None;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            //dgv.DefaultCellStyle.SelectionBackColor = Color.DarkTurquoise;
+            //dgv.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
+            dgv.BackgroundColor = Color.White;
+
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                int n = row.Index;
+                string itemCode = "";
+                if (dgv == dgvItem)
+                {
+                    itemCode = dgv.Rows[n].Cells["item_code"].Value.ToString();
+                    float qty = 0;
+
+                    if (dgv.Rows[n].Cells["item_qty"] != null)
+                    {
+                        float.TryParse(dgv.Rows[n].Cells["item_qty"].Value.ToString(), out (qty));
+                    }
+                    if (ifGotChild(itemCode))
+                    {
+                        dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                    }
+                    if (qty < 0)
+                    {
+                        dgv.Rows[n].Cells["item_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
+                    }
+                    else
+                    {
+                        dgv.Rows[n].Cells["item_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
+                    }
+                }
+                else if (dgv == dgvTrf)
+                {
+                    itemCode = dgv.Rows[n].Cells["trf_hist_item_code"].Value.ToString();
+                    if (ifGotChild(itemCode))
+                    {
+                        dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                    }
+                }
+                else if (dgv == dgvFactoryStock)
+                {
+                    float qty = 0;
+
+                    if (dgv.Rows[n].Cells["stock_qty"].Value.ToString() != null)
+                    {
+                        float.TryParse(dgv.Rows[n].Cells["stock_qty"].Value.ToString(), out (qty));
+                    }
+
+                    if (qty < 0)
+                    {
+                        dgv.Rows[n].Cells["stock_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
+                    }
+                }
+                else if (dgv == dgvTotal)
+                {
+                    float qty = 0;
+
+                    if (dgv.Rows[n].Cells["Total"] != null)
+                    {
+                        float.TryParse(dgv.Rows[n].Cells["Total"].Value.ToString(), out (qty));
+                    }
+
+
+                    if (qty < 0)
+                    {
+                        dgv.Rows[n].Cells["Total"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
+                    }
+                }
+
+
+            }
+        }
+
         private void loadStockList(string itemCode)
         {
             DataTable dt = dalStock.Select(itemCode);
@@ -300,7 +363,6 @@ namespace FactoryManagementSoftware.UI
 
         private void loadItemList()
         {
-            change = true;
             DataTable dtItem;
 
             if(string.IsNullOrEmpty(cmbSearchCat.Text) || cmbSearchCat.Text.Equals("All"))
@@ -339,22 +401,22 @@ namespace FactoryManagementSoftware.UI
             {
                 if(string.IsNullOrEmpty(cmbSearchBy.Text))
                 {
-                    dt = dalItem.Search(keywords);
+                    dt = dalItem.Search(keywords);//search item code and item name
                 }
                 else if(cmbSearchBy.Text.Equals("Item Code"))
                 {
-                    dt = dalItem.itemCodeSearch(keywords);
+                    dt = dalItem.itemCodeSearch(keywords);//search item code only
                 }
                 else
                 {
-                    dt = dalItem.nameSearch(keywords);
+                    dt = dalItem.nameSearch(keywords);//search item name only
                 }
                 
 
                 dgvItem.Rows.Clear();
                 foreach (DataRow item in dt.Rows)
                 {
-                    if(item["item_cat"].ToString().Equals(cmbSearchCat.Text))
+                    if(item["item_cat"].ToString().Equals(cmbSearchCat.Text))//show data under choosen category
                     {
                         int n = dgvItem.Rows.Add();
                         dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
@@ -363,7 +425,7 @@ namespace FactoryManagementSoftware.UI
                         dgvItem.Rows[n].Cells["item_qty"].Value = Convert.ToSingle(item["item_qty"]).ToString("0.00");
                         dgvItem.Rows[n].Cells["item_ord"].Value = item["item_ord"].ToString();
                     }
-                    else if(cmbSearchCat.Text.Equals("All") || string.IsNullOrEmpty(cmbSearchCat.Text))
+                    else if(cmbSearchCat.Text.Equals("All") || string.IsNullOrEmpty(cmbSearchCat.Text))//show all data
                     {
                         int n = dgvItem.Rows.Add();
                         dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
@@ -371,20 +433,15 @@ namespace FactoryManagementSoftware.UI
                         dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
                         dgvItem.Rows[n].Cells["item_qty"].Value = Convert.ToSingle(item["item_qty"]).ToString("0.00");
                         dgvItem.Rows[n].Cells["item_ord"].Value = item["item_ord"].ToString();
-                    }
-                    
+                    }                 
                 }
-
             }
             else
             {
-                loadItemList();
+                loadItemList();//if keyword = null
             }
-
             listPaint(dgvItem);
         }
-
-        //load or search transfer data
 
         private void loadTransferList(string itemCode)
         {
@@ -422,13 +479,17 @@ namespace FactoryManagementSoftware.UI
                     dgvTrf.Rows[n].Cells["trf_hist_note"].Value = trf["trf_hist_note"].ToString();
                     dgvTrf.Rows[n].Cells["trf_result"].Value = trf["trf_result"].ToString();
                 }
-                listPaint(dgvTrf);
             }
+            else
+            {
+                int n = dgvTrf.Rows.Add();
+                dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = "NO TRANSFER RECORD UNDER THIS DATA";
+            }
+            listPaint(dgvTrf);
         }
 
         private void loadTransferList()
-        {
-            change = true;
+        {         
             DataTable dt;
             //get keyword from text box
             string keywords = txtSearch.Text;
@@ -699,8 +760,9 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        #region Function:Transfer/Reset
+        #region Function
 
+        //transfer stock
         private void transfer_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -714,9 +776,11 @@ namespace FactoryManagementSoftware.UI
             }
 
             refreshDataList();
+            listPaintAndKeepSelected(dgvItem);
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
-
+        
+        //unselect data when click on empty space
         private void frmInOut_MouseClick(object sender, MouseEventArgs e)
         {
             dgvItem.ClearSelection();
@@ -726,6 +790,7 @@ namespace FactoryManagementSoftware.UI
             txtSearch.Clear();
         }
 
+        //reset
         private void btnReset_Click(object sender, EventArgs e)
         {
             
@@ -733,16 +798,15 @@ namespace FactoryManagementSoftware.UI
        
         }
 
-        #endregion
-
+        //show undo or redo menustrip
         private void dgvTrf_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            
+
             //handle the row selection on right click
             if (e.Button == MouseButtons.Right)
             {
-          ContextMenuStrip my_menu = new ContextMenuStrip();
+                ContextMenuStrip my_menu = new ContextMenuStrip();
 
                 try
                 {
@@ -776,7 +840,8 @@ namespace FactoryManagementSoftware.UI
 
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
-           
+
+        //undo/redo function
         private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -788,7 +853,7 @@ namespace FactoryManagementSoftware.UI
             {
                 editingItemCode = dgvTrf.Rows[rowIndex].Cells["trf_hist_item_code"].Value.ToString();
             }
-                
+
             if (!fromOrder)
             {
                 if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Undo"))
@@ -806,15 +871,105 @@ namespace FactoryManagementSoftware.UI
                     {
                         MessageBox.Show("Failed to redo");
                     }
-                } 
+                }
             }
             else
             {
                 MessageBox.Show("Please go to the ORDER PAGE to change the record");
             }
             refreshDataList();
-            listPaint(dgvItem);
+            listPaintAndKeepSelected(dgvItem);
             Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        #endregion
+
+        #region data processing
+
+        private bool undo(int rowIndex)
+        {
+            bool result = false;
+
+            int id = Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+
+            string itemCode = dgvTrf.Rows[rowIndex].Cells["trf_hist_item_code"].Value.ToString();
+
+            string locationFrom = dgvTrf.Rows[rowIndex].Cells["trf_hist_from"].Value.ToString();
+
+            string locationTo = dgvTrf.Rows[rowIndex].Cells["trf_hist_to"].Value.ToString();
+
+            string unit = dgvTrf.Rows[rowIndex].Cells["trf_hist_unit"].Value.ToString();
+
+            float qty = Convert.ToSingle(dgvTrf.Rows[rowIndex].Cells["trf_hist_qty"].Value.ToString());
+
+            if (ifFactory(locationFrom))
+            {
+                result = stockIn(locationFrom, itemCode, qty, unit);
+
+                if (ifFactory(locationTo))
+                {
+                    result = stockOut(locationFrom, itemCode, qty, unit);
+                }
+            }
+            else if (ifFactory(locationTo) && !locationFrom.Equals("Assembly"))
+            {
+                result = stockOut(locationTo, itemCode, qty, unit);
+            }
+            else if (locationFrom.Equals("Assembly") && ifFactory(locationTo))
+            {
+                result = stockOut(locationTo, itemCode, qty, unit);
+                result = childStockIn(locationTo, itemCode, qty, id, unit);
+            }
+
+            if (result)
+            {
+                changeTransferRecord("Undo", rowIndex, id);
+            }
+
+            return result;
+        }
+
+        private bool redo(int rowIndex)
+        {
+            bool result = false;
+
+            int id = Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+
+            string itemCode = dgvTrf.Rows[rowIndex].Cells["trf_hist_item_code"].Value.ToString();
+
+            string locationFrom = dgvTrf.Rows[rowIndex].Cells["trf_hist_from"].Value.ToString();
+
+            string locationTo = dgvTrf.Rows[rowIndex].Cells["trf_hist_to"].Value.ToString();
+
+            string unit = dgvTrf.Rows[rowIndex].Cells["trf_hist_unit"].Value.ToString();
+
+            float qty = Convert.ToSingle(dgvTrf.Rows[rowIndex].Cells["trf_hist_qty"].Value.ToString());
+
+            if (ifFactory(locationFrom))
+            {
+                result = stockOut(locationFrom, itemCode, qty, unit);
+
+                if (ifFactory(locationTo))
+                {
+                    result = stockIn(locationTo, itemCode, qty, unit);
+                }
+            }
+            else if (ifFactory(locationTo) && !locationFrom.Equals("Assembly"))
+            {
+                result = stockIn(locationTo, itemCode, qty, unit);
+            }
+            else if (locationFrom.Equals("Assembly") && ifFactory(locationTo))
+            {
+                result = stockIn(locationTo, itemCode, qty, unit);
+                result = childStockOut(locationTo, itemCode, qty, id, unit);
+            }
+
+            if (result)
+            {
+                changeTransferRecord("Passed", rowIndex, id);
+            }
+
+            return result;
         }
 
         private bool stockIn(string factoryName, string itemCode, float qty, string unit)
@@ -859,93 +1014,7 @@ namespace FactoryManagementSoftware.UI
             {
                 dgvTrf.Rows[rowIndex].Cells["trf_result"].Value = stockResult;
             } 
-        }
-
-        private bool undo(int rowIndex)
-        {
-            bool result = false;
-
-            int id = Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
-
-            string itemCode = dgvTrf.Rows[rowIndex].Cells["trf_hist_item_code"].Value.ToString();
-
-            string locationFrom = dgvTrf.Rows[rowIndex].Cells["trf_hist_from"].Value.ToString();
-
-            string locationTo = dgvTrf.Rows[rowIndex].Cells["trf_hist_to"].Value.ToString();
-
-            string unit = dgvTrf.Rows[rowIndex].Cells["trf_hist_unit"].Value.ToString();
-
-            float qty = Convert.ToSingle(dgvTrf.Rows[rowIndex].Cells["trf_hist_qty"].Value.ToString());
-
-            if (ifFactory(locationFrom))
-            {
-                result = stockIn(locationFrom, itemCode, qty, unit);
-
-                if (ifFactory(locationTo))
-                {
-                    result = stockOut(locationFrom, itemCode, qty, unit);
-                }
-            }
-            else if (ifFactory(locationTo) && !locationFrom.Equals("Assembly"))
-            {
-                result = stockOut(locationFrom, itemCode, qty, unit);
-            }
-            else if (locationFrom.Equals("Assembly"))
-            {
-                result = stockOut(locationTo, itemCode, qty ,unit);
-                result = childStockIn(locationTo, itemCode, qty, id, unit);
-            }
-
-            if(result)
-            {
-                changeTransferRecord("Undo", rowIndex, id);
-            }
-
-            return result;
-        }
-
-        private bool redo(int rowIndex)
-        {
-            bool result = false;
-
-            int id = Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
-
-            string itemCode = dgvTrf.Rows[rowIndex].Cells["trf_hist_item_code"].Value.ToString();
-
-            string locationFrom = dgvTrf.Rows[rowIndex].Cells["trf_hist_from"].Value.ToString();
-
-            string locationTo = dgvTrf.Rows[rowIndex].Cells["trf_hist_to"].Value.ToString();
-
-            string unit = dgvTrf.Rows[rowIndex].Cells["trf_hist_unit"].Value.ToString();
-
-            float qty = Convert.ToSingle(dgvTrf.Rows[rowIndex].Cells["trf_hist_qty"].Value.ToString());
-
-            if (ifFactory(locationFrom))
-            {
-                result = stockOut(locationFrom, itemCode, qty, unit);
-
-                if (ifFactory(locationTo))
-                {
-                    result = stockIn(locationFrom, itemCode, qty, unit);
-                }
-            }
-            else if (ifFactory(locationTo) && !locationFrom.Equals("Assembly"))
-            {
-                result = stockOut(locationFrom, itemCode, qty, unit);
-            }
-            else if (locationFrom.Equals("Assembly"))
-            {
-                result = stockIn(locationTo, itemCode, qty, unit);
-                result = childStockOut(locationTo, itemCode, qty, id, unit);
-            }
-
-            if (result)
-            {
-                changeTransferRecord("Passed", rowIndex, id);
-            }
-
-            return result;
-        }
+        }  
 
         private void deleteChildTransferRecord(int indexNo, string itemCode)
         {
@@ -1035,6 +1104,8 @@ namespace FactoryManagementSoftware.UI
 
             return success;
         }
+
+        #endregion
     }
 }
 

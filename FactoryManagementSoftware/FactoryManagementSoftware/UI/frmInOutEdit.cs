@@ -176,11 +176,16 @@ namespace FactoryManagementSoftware.UI
         private bool ifGotChild()
         {
             bool result = false;
-            DataTable dtJoin = dalJoin.parentCheck(cmbTrfItemCode.Text);
-            if (dtJoin.Rows.Count > 0)
+
+            if(!string.IsNullOrEmpty(cmbTrfItemCode.Text))
             {
-                result = true;
+                DataTable dtJoin = dalJoin.parentCheck(cmbTrfItemCode.Text);
+                if (dtJoin.Rows.Count > 0)
+                {
+                    result = true;
+                }
             }
+            
             return result;
         }
 
@@ -225,8 +230,6 @@ namespace FactoryManagementSoftware.UI
             {
                 cmbTrfItemCat.SelectedIndex = -1;
             }
-
-
 
             loadLocationCategoryData();
 
@@ -686,6 +689,10 @@ namespace FactoryManagementSoftware.UI
             if (ifGotChild())
             {
                 cmbTrfQtyUnit.Text = "set";
+            }
+            else
+            {
+                cmbTrfQtyUnit.Text = "piece";
             }
         }
 
