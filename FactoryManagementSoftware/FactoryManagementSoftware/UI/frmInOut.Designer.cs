@@ -274,6 +274,7 @@
             this.dgvFactoryStock.Size = new System.Drawing.Size(317, 237);
             this.dgvFactoryStock.TabIndex = 56;
             this.dgvFactoryStock.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFactoryStock_CellDoubleClick);
+            this.dgvFactoryStock.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvFactoryStock_MouseClick);
             // 
             // fac_name
             // 
@@ -329,6 +330,7 @@
             this.dgvItem.TabIndex = 58;
             this.dgvItem.SelectionChanged += new System.EventHandler(this.dgvItem_SelectionChanged);
             this.dgvItem.Sorted += new System.EventHandler(this.dgvItem_Sorted);
+            this.dgvItem.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvItem_MouseClick);
             // 
             // item_cat
             // 

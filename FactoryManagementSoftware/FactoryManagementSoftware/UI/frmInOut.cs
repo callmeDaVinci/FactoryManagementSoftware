@@ -756,8 +756,6 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
-        
-
         #endregion
 
         #region Function
@@ -1106,6 +1104,36 @@ namespace FactoryManagementSoftware.UI
         }
 
         #endregion
+
+        private void dgvItem_MouseClick(object sender, MouseEventArgs e)
+        {
+            var ht = dgvItem.HitTest(e.X, e.Y);
+
+            if (ht.Type == DataGridViewHitTestType.None)
+            {
+                //clicked on grey area
+                dgvItem.ClearSelection();
+                loadTransferList();
+                refreshDataList();
+                resetSaveData();
+                txtSearch.Clear();
+            }
+        }
+
+        private void dgvFactoryStock_MouseClick(object sender, MouseEventArgs e)
+        {
+            var ht = dgvFactoryStock.HitTest(e.X, e.Y);
+
+            if (ht.Type == DataGridViewHitTestType.None)
+            {
+                //clicked on grey area
+                dgvItem.ClearSelection();
+                loadTransferList();
+                refreshDataList();
+                resetSaveData();
+                txtSearch.Clear();
+            }
+        }
     }
 }
 

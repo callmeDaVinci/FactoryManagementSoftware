@@ -170,7 +170,7 @@ namespace FactoryManagementSoftware.UI
         {
             uOrd.ord_item_code = cmbItemCode.Text;
             uOrd.ord_qty = Convert.ToInt32(txtQty.Text);
-            uOrd.ord_forecast_date = dtpForecastDate.Value.Date;
+            uOrd.ord_required_date = dtpForecastDate.Value.Date;
             uOrd.ord_note = txtNote.Text;
             uOrd.ord_unit = cmbQtyUnit.Text;
             uOrd.ord_status = "Requesting";

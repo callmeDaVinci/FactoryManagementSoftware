@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvOrd = new System.Windows.Forms.DataGridView();
             this.dgvOrderAlert = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,24 +44,24 @@
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider4 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.btnReset = new System.Windows.Forms.Button();
             this.btnOrder = new System.Windows.Forms.Button();
             this.txtOrdSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.cmbSearchBy = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cmbSearchCat = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.ord_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ord_added_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ord_forecast_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ord_required_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ord_item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ord_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_ord = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.received = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ord_pending = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ord_received = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ord_unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.to = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ord_added_by = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ord_note = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ord_status = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.ord_status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrderAlert)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
@@ -75,24 +76,27 @@
             this.dgvOrd.AllowUserToDeleteRows = false;
             this.dgvOrd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvOrd.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvOrd.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dgvOrd.BackgroundColor = System.Drawing.Color.White;
             this.dgvOrd.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvOrd.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvOrd.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvOrd.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvOrd.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ord_id,
             this.ord_added_date,
-            this.ord_forecast_date,
+            this.ord_required_date,
             this.ord_item_code,
             this.item_name,
             this.ord_qty,
-            this.item_ord,
-            this.received,
+            this.ord_pending,
+            this.ord_received,
             this.ord_unit,
-            this.to,
-            this.ord_added_by,
-            this.ord_note,
             this.ord_status});
             this.dgvOrd.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.dgvOrd.GridColor = System.Drawing.SystemColors.Control;
@@ -100,15 +104,18 @@
             this.dgvOrd.Margin = new System.Windows.Forms.Padding(2);
             this.dgvOrd.MultiSelect = false;
             this.dgvOrd.Name = "dgvOrd";
+            this.dgvOrd.ReadOnly = true;
             this.dgvOrd.RowHeadersVisible = false;
-            this.dgvOrd.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvOrd.RowTemplate.Height = 40;
-            this.dgvOrd.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvOrd.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvOrd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvOrd.Size = new System.Drawing.Size(1519, 361);
             this.dgvOrd.TabIndex = 19;
+            this.dgvOrd.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrd_CellDoubleClick);
             this.dgvOrd.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrd_CellEnter);
+            this.dgvOrd.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvOrd_CellMouseDown);
             this.dgvOrd.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvOrd_EditingControlShowing);
+            this.dgvOrd.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvOrd_MouseClick);
             // 
             // dgvOrderAlert
             // 
@@ -210,22 +217,6 @@
             // 
             this.errorProvider4.ContainerControl = this;
             // 
-            // btnReset
-            // 
-            this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReset.BackColor = System.Drawing.Color.Transparent;
-            this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReset.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
-            this.btnReset.Location = new System.Drawing.Point(1427, 41);
-            this.btnReset.Margin = new System.Windows.Forms.Padding(2);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(120, 50);
-            this.btnReset.TabIndex = 82;
-            this.btnReset.Text = "RESET";
-            this.btnReset.UseVisualStyleBackColor = false;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
-            // 
             // btnOrder
             // 
             this.btnOrder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -233,12 +224,12 @@
             this.btnOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOrder.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOrder.ForeColor = System.Drawing.Color.White;
-            this.btnOrder.Location = new System.Drawing.Point(1283, 41);
+            this.btnOrder.Location = new System.Drawing.Point(1385, 41);
             this.btnOrder.Margin = new System.Windows.Forms.Padding(2);
             this.btnOrder.Name = "btnOrder";
-            this.btnOrder.Size = new System.Drawing.Size(122, 52);
+            this.btnOrder.Size = new System.Drawing.Size(162, 52);
             this.btnOrder.TabIndex = 81;
-            this.btnOrder.Text = "ORDER";
+            this.btnOrder.Text = "NEW ORDER";
             this.btnOrder.UseVisualStyleBackColor = false;
             this.btnOrder.Click += new System.EventHandler(this.btnOrder_Click);
             // 
@@ -246,9 +237,9 @@
             // 
             this.txtOrdSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOrdSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(20)))), ((int)(((byte)(31)))));
-            this.txtOrdSearch.Location = new System.Drawing.Point(28, 55);
+            this.txtOrdSearch.Location = new System.Drawing.Point(724, 56);
             this.txtOrdSearch.Name = "txtOrdSearch";
-            this.txtOrdSearch.Size = new System.Drawing.Size(300, 38);
+            this.txtOrdSearch.Size = new System.Drawing.Size(370, 38);
             this.txtOrdSearch.TabIndex = 84;
             this.txtOrdSearch.TextChanged += new System.EventHandler(this.txtOrdSearch_TextChanged);
             // 
@@ -256,7 +247,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(24, 29);
+            this.label1.Location = new System.Drawing.Point(720, 30);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 23);
             this.label1.TabIndex = 83;
@@ -272,11 +263,55 @@
             this.label2.TabIndex = 85;
             this.label2.Text = "ALERT";
             // 
+            // cmbSearchBy
+            // 
+            this.cmbSearchBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSearchBy.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbSearchBy.FormattingEnabled = true;
+            this.cmbSearchBy.Items.AddRange(new object[] {
+            "Item Code",
+            "Item Name"});
+            this.cmbSearchBy.Location = new System.Drawing.Point(374, 55);
+            this.cmbSearchBy.Name = "cmbSearchBy";
+            this.cmbSearchBy.Size = new System.Drawing.Size(325, 39);
+            this.cmbSearchBy.TabIndex = 89;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(370, 29);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(28, 23);
+            this.label4.TabIndex = 88;
+            this.label4.Text = "BY";
+            // 
+            // cmbSearchCat
+            // 
+            this.cmbSearchCat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSearchCat.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbSearchCat.FormattingEnabled = true;
+            this.cmbSearchCat.Location = new System.Drawing.Point(28, 55);
+            this.cmbSearchCat.Name = "cmbSearchCat";
+            this.cmbSearchCat.Size = new System.Drawing.Size(325, 39);
+            this.cmbSearchCat.TabIndex = 87;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(24, 29);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(93, 23);
+            this.label3.TabIndex = 86;
+            this.label3.Text = "CATEGORY";
+            // 
             // ord_id
             // 
             this.ord_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.ord_id.HeaderText = "ID";
             this.ord_id.Name = "ord_id";
+            this.ord_id.ReadOnly = true;
             this.ord_id.Width = 56;
             // 
             // ord_added_date
@@ -284,92 +319,74 @@
             this.ord_added_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.ord_added_date.HeaderText = "Added Date";
             this.ord_added_date.Name = "ord_added_date";
+            this.ord_added_date.ReadOnly = true;
             this.ord_added_date.Width = 130;
             // 
-            // ord_forecast_date
+            // ord_required_date
             // 
-            this.ord_forecast_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ord_forecast_date.HeaderText = "Date Required";
-            this.ord_forecast_date.Name = "ord_forecast_date";
-            this.ord_forecast_date.Width = 148;
+            this.ord_required_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.ord_required_date.HeaderText = "Date Required";
+            this.ord_required_date.Name = "ord_required_date";
+            this.ord_required_date.ReadOnly = true;
+            this.ord_required_date.Width = 148;
             // 
             // ord_item_code
             // 
             this.ord_item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ord_item_code.HeaderText = "Code";
             this.ord_item_code.Name = "ord_item_code";
+            this.ord_item_code.ReadOnly = true;
             // 
             // item_name
             // 
             this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.item_name.HeaderText = "Name";
             this.item_name.Name = "item_name";
+            this.item_name.ReadOnly = true;
             // 
             // ord_qty
             // 
-            this.ord_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.ord_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.ord_qty.HeaderText = "Order Qty";
             this.ord_qty.Name = "ord_qty";
+            this.ord_qty.ReadOnly = true;
             this.ord_qty.Width = 115;
             // 
-            // item_ord
+            // ord_pending
             // 
-            this.item_ord.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_ord.HeaderText = "Pending";
-            this.item_ord.Name = "item_ord";
-            this.item_ord.Width = 101;
+            this.ord_pending.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.ord_pending.HeaderText = "Pending";
+            this.ord_pending.Name = "ord_pending";
+            this.ord_pending.ReadOnly = true;
+            this.ord_pending.Width = 101;
             // 
-            // received
+            // ord_received
             // 
-            this.received.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.received.HeaderText = "Received";
-            this.received.Name = "received";
-            this.received.Width = 106;
+            this.ord_received.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.ord_received.HeaderText = "Received";
+            this.ord_received.Name = "ord_received";
+            this.ord_received.ReadOnly = true;
+            this.ord_received.Width = 106;
             // 
             // ord_unit
             // 
             this.ord_unit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.ord_unit.HeaderText = "Unit";
             this.ord_unit.Name = "ord_unit";
+            this.ord_unit.ReadOnly = true;
             this.ord_unit.Width = 71;
-            // 
-            // to
-            // 
-            this.to.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.to.HeaderText = "To";
-            this.to.Name = "to";
-            this.to.Width = 56;
-            // 
-            // ord_added_by
-            // 
-            this.ord_added_by.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ord_added_by.HeaderText = "By";
-            this.ord_added_by.Name = "ord_added_by";
-            this.ord_added_by.Width = 57;
-            // 
-            // ord_note
-            // 
-            this.ord_note.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ord_note.HeaderText = "Note";
-            this.ord_note.Name = "ord_note";
-            this.ord_note.Width = 77;
             // 
             // ord_status
             // 
             this.ord_status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ord_status.DefaultCellStyle = dataGridViewCellStyle1;
-            this.ord_status.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
-            this.ord_status.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ord_status.DefaultCellStyle = dataGridViewCellStyle2;
             this.ord_status.HeaderText = "Status";
-            this.ord_status.Items.AddRange(new object[] {
-            "Requesting",
-            "Cancelled",
-            "Approved",
-            "Received"});
-            this.ord_status.MaxDropDownItems = 4;
             this.ord_status.Name = "ord_status";
+            this.ord_status.ReadOnly = true;
+            this.ord_status.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ord_status.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.ord_status.Width = 62;
             // 
             // frmOrder
@@ -378,10 +395,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 703);
+            this.Controls.Add(this.cmbSearchBy);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.cmbSearchCat);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtOrdSearch);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.btnOrder);
             this.Controls.Add(this.dgvOrderAlert);
             this.Controls.Add(this.dgvOrd);
@@ -417,23 +437,23 @@
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.ErrorProvider errorProvider3;
         private System.Windows.Forms.ErrorProvider errorProvider4;
-        private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Button btnOrder;
         private System.Windows.Forms.TextBox txtOrdSearch;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox cmbSearchBy;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cmbSearchCat;
+        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_added_date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ord_forecast_date;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ord_required_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_item_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_qty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn item_ord;
-        private System.Windows.Forms.DataGridViewTextBoxColumn received;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ord_pending;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ord_received;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_unit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn to;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ord_added_by;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ord_note;
-        private System.Windows.Forms.DataGridViewComboBoxColumn ord_status;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ord_status;
     }
 }

@@ -55,14 +55,14 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_ord (ord_item_code, ord_qty, ord_unit, ord_status, ord_forecast_date, ord_added_date, ord_added_by, ord_note) VALUES ( @ord_item_code, @ord_qty, @ord_unit, @ord_status, @ord_forecast_date, @ord_added_date, @ord_added_by, @ord_note)";
+                String sql = "INSERT INTO tbl_ord (ord_item_code, ord_qty, ord_unit, ord_status, ord_required_date, ord_added_date, ord_added_by, ord_note) VALUES ( @ord_item_code, @ord_qty, @ord_unit, @ord_status, @ord_required_date, @ord_added_date, @ord_added_by, @ord_note)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@ord_item_code", u.ord_item_code);
                 cmd.Parameters.AddWithValue("@ord_qty", u.ord_qty);
                 cmd.Parameters.AddWithValue("@ord_unit", u.ord_unit);
                 cmd.Parameters.AddWithValue("@ord_status", u.ord_status);
-                cmd.Parameters.AddWithValue("@ord_forecast_date", u.ord_forecast_date);
+                cmd.Parameters.AddWithValue("@ord_required_date", u.ord_required_date);
                 cmd.Parameters.AddWithValue("@ord_added_date", u.ord_added_date);
                 cmd.Parameters.AddWithValue("@ord_added_by", u.ord_added_by);
                 cmd.Parameters.AddWithValue("@ord_note", u.ord_note);
@@ -97,6 +97,7 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Update data in Database
+
         public bool Update(ordBLL u)
         {
             bool isSuccess = false;
@@ -104,12 +105,20 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "UPDATE tbl_ord SET ord_status=@ord_status , ord_to=@ord_to WHERE ord_id=@ord_id";
+                String sql = @"UPDATE tbl_ord SET 
+                                ord_required_date=@ord_required_date,
+                                ord_qty=@ord_qty,
+                                ord_pending=@ord_pending,
+                                ord_received=@ord_received
+                                WHERE ord_id=@ord_id";
+
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@ord_id", u.ord_id);
-                cmd.Parameters.AddWithValue("@ord_status", u.ord_status);
-                cmd.Parameters.AddWithValue("@ord_to", u.ord_to);
+                cmd.Parameters.AddWithValue("@ord_required_date", u.ord_required_date);
+                cmd.Parameters.AddWithValue("@ord_qty", u.ord_qty);
+                cmd.Parameters.AddWithValue("@ord_pending", u.ord_pending);
+                cmd.Parameters.AddWithValue("@ord_received", u.ord_received);
 
 
                 conn.Open();
@@ -138,6 +147,50 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+
+        public bool statusUpdate(ordBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_ord SET
+                                ord_status=@ord_status
+                                WHERE ord_id=@ord_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@ord_id", u.ord_id);
+                cmd.Parameters.AddWithValue("@ord_status", u.ord_status);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         #endregion
 
         #region Search item category on Database usingKeywords

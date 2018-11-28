@@ -13,6 +13,41 @@ namespace FactoryManagementSoftware.DAL
 
         #region Select Data from Database
 
+        public DataTable Select()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_order_action";
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable Select(int orderID)
         {
             //static methodd to connect database
@@ -22,7 +57,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_ord_action WHERE ord_id = @orderID";
+                String sql = "SELECT * FROM tbl_order_action WHERE ord_id = @orderID";
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -61,13 +96,14 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_ord_action (ord_id, added_date, added_by, action) VALUES (@ord_id, @added_date, @added_by, @action)";
+                String sql = "INSERT INTO tbl_order_action (ord_id, added_date, added_by, action,note) VALUES (@ord_id, @added_date, @added_by, @action, @note)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@ord_id", u.ord_id);
                 cmd.Parameters.AddWithValue("@added_date", u.added_date);
                 cmd.Parameters.AddWithValue("@added_by", u.added_by);
                 cmd.Parameters.AddWithValue("@action", u.action);
+                cmd.Parameters.AddWithValue("@note", u.note);
 
                 conn.Open();
 

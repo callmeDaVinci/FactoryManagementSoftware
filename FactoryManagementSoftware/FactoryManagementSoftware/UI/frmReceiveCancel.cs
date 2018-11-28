@@ -13,10 +13,27 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
         }
 
-        private string stockInQty = frmOrder.selectedOrderQty;
-        private string itemCode = frmOrder.selectedItemCode;
-        private string unit = frmOrder.selectedUnit;
-        private string from = frmOrder.receivedLocation;
+        private int orderID;
+        private string stockInQty;
+        private string itemCode;
+        private string itemName;
+        private string Unit;
+
+        public frmReceiveCancel(int id, string itemcode, string itemname, string qty, string unit)
+        {
+            InitializeComponent();
+            orderID = id;
+            itemCode = itemcode;
+            itemName = itemname;
+            stockInQty = qty;
+            Unit = unit;
+
+            txtItemCode.Text = itemcode;
+            txtItemName.Text = itemname;
+            txtQty.Text = qty;
+        }
+
+        #region class object
 
         trfCatBLL utrfCat = new trfCatBLL();
         trfCatDAL daltrfCat = new trfCatDAL();
@@ -24,10 +41,15 @@ namespace FactoryManagementSoftware.UI
         facStockBLL uStock = new facStockBLL();
         facStockDAL dalStock = new facStockDAL();
 
+        orderActionBLL uOrderAction = new orderActionBLL();
+        orderActionDAL dalOrderAction = new orderActionDAL();
+
         trfHistBLL utrfHist = new trfHistBLL();
         trfHistDAL daltrfHist = new trfHistDAL();
 
         facDAL dalFac = new facDAL();
+
+        #endregion
 
         private void frmReceiveCancel_Load(object sender, EventArgs e)
         {
@@ -36,31 +58,38 @@ namespace FactoryManagementSoftware.UI
             distinctTable.DefaultView.Sort = "fac_name ASC";
             cmbFrom.DataSource = distinctTable;
             cmbFrom.DisplayMember = "fac_name";
-
             txtQty.Text = stockInQty;
-           
-            cmbFrom.Text = from;
+        }
+
+        private void addOrderAction(int id, string action)
+        {
+            uOrderAction.ord_id = id;
+            uOrderAction.added_date = DateTime.Now;
+            uOrderAction.added_by = 0;
+            uOrderAction.action = action;
+            uOrderAction.note = "";
+
+            if (!dalOrderAction.Insert(uOrderAction))
+            {
+                MessageBox.Show("Failed to add new action");
+            }
         }
 
         private int transferRecord(string stockResult)
         {
-
             string locationFrom = cmbFrom.Text;
-
             string locationTo = "Other";
-
             utrfHist.trf_hist_item_code = itemCode;
             utrfHist.trf_hist_from = locationFrom;
             utrfHist.trf_hist_to = locationTo;
             utrfHist.trf_hist_qty = Convert.ToSingle(txtQty.Text);
-            utrfHist.trf_hist_unit = unit;
+            utrfHist.trf_hist_unit = Unit;
             utrfHist.trf_hist_trf_date = DateTime.Now;
             utrfHist.trf_hist_note = "Order: Cancel Received";
             utrfHist.trf_hist_added_date = DateTime.Now;
             utrfHist.trf_hist_added_by = 0;
             utrfHist.trf_result = stockResult;
             utrfHist.trf_hist_from_order = 1;
-
             //Inserting Data into Database
             bool success = daltrfHist.Insert(utrfHist);
             if (!success)
@@ -122,7 +151,7 @@ namespace FactoryManagementSoftware.UI
             uStock.stock_item_code = itemCode;
             uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbFrom.Text));
             uStock.stock_qty = getQty(itemCode, cmbFrom.Text) - Convert.ToSingle(stockInQty);
-            uStock.stock_unit = unit;
+            uStock.stock_unit = Unit;
             uStock.stock_updtd_date = DateTime.Now;
             uStock.stock_updtd_by = 0;
 
@@ -137,6 +166,8 @@ namespace FactoryManagementSoftware.UI
                 else
                 {
                     frmOrder.receivedStockOut = true;
+                    string action = "Stock out "+stockInQty+"from "+cmbFrom.Text;
+                    addOrderAction(orderID,action);
                     transferRecord("Passed");
                 }
                 
@@ -151,11 +182,14 @@ namespace FactoryManagementSoftware.UI
                 else
                 {
                     frmOrder.receivedStockOut = true;
+                    string action = "Stock out " + stockInQty + " from " + cmbFrom.Text;
+                    addOrderAction(orderID, action);
                     transferRecord("Passed");
                 }
             }
 
             this.Close();
         }
+  
     }
 }

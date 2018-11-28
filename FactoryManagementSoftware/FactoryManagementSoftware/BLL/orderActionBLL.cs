@@ -8,9 +8,10 @@ namespace FactoryManagementSoftware.BLL
 {
     class orderActionBLL
     {
-        public int ord_id { get; set; }
-        public string action { get; set; }
+        public int ord_id { get; set; }      
         public DateTime added_date { get; set; }
         public int added_by { get; set; }
+        public string action { get; set; }
+        public string note { get; set; }
     }
 }
