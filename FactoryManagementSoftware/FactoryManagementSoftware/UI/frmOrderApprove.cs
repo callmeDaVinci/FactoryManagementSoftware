@@ -83,6 +83,7 @@ namespace FactoryManagementSoftware.UI
             if(dalOrder.Update(uOrder))
             {
                 frmOrder.orderApproved = true;
+                frmOrder.finalOrderNumber = txtQty.Text;
                 checkOrderChange();
                 this.Close();
 

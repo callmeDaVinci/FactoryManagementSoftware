@@ -8,14 +8,26 @@ namespace FactoryManagementSoftware.UI
 {
     public partial class frmReceiveConfirm : Form
     {
-        public frmReceiveConfirm()
+        private string Unit;
+        private int orderID;
+        private float maxReceiveQty;
+        private string orderQty;
+        private string receivedQty;
+
+        public frmReceiveConfirm(int id, string code,string name, float qty,float received, string unit)
         {
             InitializeComponent();
+            txtItemCode.Text = code;
+            txtItemName.Text = name;
+            orderQty = qty.ToString();
+            receivedQty = received.ToString();
+            maxReceiveQty = qty - received;
+            txtQty.Text = maxReceiveQty.ToString();
+            Unit = unit;
+            orderID = id;
         }
-
-        private string stockInQty = frmOrder.selectedOrderQty;
-        private string itemCode = frmOrder.selectedItemCode;
-        private string unit = frmOrder.selectedUnit;
+        
+        #region class object declare
 
         trfCatBLL utrfCat = new trfCatBLL();
         trfCatDAL daltrfCat = new trfCatDAL();
@@ -26,11 +38,59 @@ namespace FactoryManagementSoftware.UI
         trfHistBLL utrfHist = new trfHistBLL();
         trfHistDAL daltrfHist = new trfHistDAL();
 
+        ordBLL uOrd = new ordBLL();
+        ordDAL dalOrd = new ordDAL();
+
+        orderActionBLL uOrderAction = new orderActionBLL();
+        orderActionDAL dalOrderAction = new orderActionDAL();
+
+        itemDAL dalItem = new itemDAL();
+
         facDAL dalFac = new facDAL();
 
-        private void frmReceiveConfirm_Load(object sender, EventArgs e)
+        #endregion 
+
+        private bool validation()
         {
-            
+            bool result = true;
+            float receivedNumber = Convert.ToSingle(txtQty.Text);
+
+            if (string.IsNullOrEmpty(txtQty.Text))
+            {
+                result = false;
+                errorProvider1.SetError(txtQty, "Receive qty Required");
+            }
+
+            if (receivedNumber > maxReceiveQty)
+            {
+                result = false;
+                errorProvider1.SetError(txtQty, "Wrong receive qty."+"\nOrdered Qty: "+orderQty+"\nReceived Qty: "+receivedQty);
+            }
+
+            if (string.IsNullOrEmpty(txtLotNO.Text))
+            {
+                result = false;
+                errorProvider2.SetError(txtLotNO, "Lot No Required");
+            }
+
+            return result;
+        }
+
+        private bool ifFullyReceived()
+        {
+            bool result = false;
+            float receivedNumber = Convert.ToSingle(txtQty.Text);
+
+            if(receivedNumber == maxReceiveQty)
+            {
+                result = true;             
+            }
+
+            return result;
+        }
+
+        private void frmReceiveConfirm_Load(object sender, EventArgs e)
+        { 
             //select category list from category database
             DataTable dtTrfCatFrm = daltrfCat.Select();
             //remove repeating name in trf_cat_name
@@ -48,12 +108,9 @@ namespace FactoryManagementSoftware.UI
             DataTable distinctTable = dt.DefaultView.ToTable(true, "fac_name");
             cmbTo.DataSource = distinctTable;
             cmbTo.DisplayMember = "fac_name";
-
-
-            txtQty.Text = stockInQty;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)//close form
         {
             this.Close();
         }
@@ -105,11 +162,11 @@ namespace FactoryManagementSoftware.UI
 
             string locationTo = cmbTo.Text;
 
-            utrfHist.trf_hist_item_code = itemCode;
+            utrfHist.trf_hist_item_code = txtItemCode.Text;
             utrfHist.trf_hist_from = locationFrom;
             utrfHist.trf_hist_to = locationTo;
-            utrfHist.trf_hist_qty = Convert.ToSingle(stockInQty);
-            utrfHist.trf_hist_unit = unit;
+            utrfHist.trf_hist_qty = Convert.ToSingle(txtQty.Text);
+            utrfHist.trf_hist_unit = Unit;
             utrfHist.trf_hist_trf_date = DateTime.Now;
             utrfHist.trf_hist_note = "Order: Received";
             utrfHist.trf_hist_added_date = DateTime.Now;
@@ -127,46 +184,136 @@ namespace FactoryManagementSoftware.UI
             return daltrfHist.getIndexNo(utrfHist);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void addOrderAction(int id, string action, bool fullyReceived)
         {
-            uStock.stock_item_code = itemCode;
+            uOrderAction.ord_id = id;
+            uOrderAction.added_date = DateTime.Now;
+            uOrderAction.added_by = 0;
+            uOrderAction.action = action;
+
+            if(fullyReceived)
+            {
+                uOrderAction.note = "";
+            }
+            else
+            {
+                uOrderAction.note = "LOT NO: " + txtLotNO.Text;
+            }
+            
+
+            if (!dalOrderAction.Insert(uOrderAction))
+            {
+                MessageBox.Show("Failed to add new action");
+            }
+        }
+
+        private void orderRecordUpdate()
+        {
+            float orderedqty = Convert.ToSingle(orderQty);
+            float oldreceivedNumber = Convert.ToSingle(receivedQty);
+            float receivedNumber = Convert.ToSingle(txtQty.Text) + oldreceivedNumber;
+            float pending = orderedqty - receivedNumber;
+
+            uOrd.ord_pending = pending;
+            uOrd.ord_received = receivedNumber;
+            uOrd.ord_id = orderID;
+
+            if(!dalOrd.receivedUpdate(uOrd))
+            {
+                MessageBox.Show("Failed to update order record.");
+            }
+
+        }
+
+        private void stockTransfer()
+        {
+            uStock.stock_item_code = txtItemCode.Text;
             uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTo.Text));
-            uStock.stock_qty = getQty(itemCode, cmbTo.Text) + Convert.ToSingle(stockInQty);
-            uStock.stock_unit = unit;
+            uStock.stock_qty = getQty(txtItemCode.Text, cmbTo.Text) + Convert.ToSingle(txtQty.Text);
+            uStock.stock_unit = Unit;
             uStock.stock_updtd_date = DateTime.Now;
             uStock.stock_updtd_by = 0;
 
-            if (IfExists(itemCode, cmbTo.Text))
+            if (IfExists(txtItemCode.Text, cmbTo.Text))
             {
                 bool success = dalStock.Update(uStock);
-           
-                if(!success)
+
+                if (!success)
                 {
                     MessageBox.Show("Failed to updated stock");
                 }
                 else
                 {
-                    frmOrder.receivedStockIn = true;
-                    frmOrder.receivedLocation = cmbTo.Text;
+                    string action = "Stock In " + txtQty.Text + " To " + cmbTo.Text;
+                    addOrderAction(orderID, action,false);
+
+                    if (ifFullyReceived())
+                    {
+                        frmOrder.receivedStockIn = true;
+                        action = "Order Fully Received";
+                        addOrderAction(orderID, action,true);
+                    }
+
+                    frmOrder.receivedNumber = txtQty.Text;
+                    
+                    orderRecordUpdate();
+                    
                     transferRecord("Passed");
                 }
-
             }
             else
             {
                 bool success = dalStock.Insert(uStock);
-                if(!success)
+                if (!success)
                 {
                     MessageBox.Show("Failed to add new stock");
                 }
                 else
                 {
-                    frmOrder.receivedStockIn = true;
+                    string action = "Stock In " + txtQty.Text + " To " + cmbTo.Text;
+                    addOrderAction(orderID, action, false);
+                    if (ifFullyReceived())
+                    {
+                        frmOrder.receivedStockIn = true;
+                        action = "Order Fully Received";
+                        addOrderAction(orderID, action,true);
+                    }
+
+                    frmOrder.receivedNumber = txtQty.Text;
+                    
+                    orderRecordUpdate();
+                    
                     transferRecord("Passed");
                 }
             }
 
-            this.Close();
+            if (!dalItem.updateTotalStock(txtItemCode.Text))
+            {
+                MessageBox.Show("Failed to update total stock");
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
+            if (validation())
+            {
+                stockTransfer();
+                this.Close();
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void txtQty_TextChanged(object sender, EventArgs e)
+        {
+            errorProvider1.Clear();
+        }
+
+        private void txtLotNO_TextChanged(object sender, EventArgs e)
+        {
+            errorProvider2.Clear();
         }
     }  
 }

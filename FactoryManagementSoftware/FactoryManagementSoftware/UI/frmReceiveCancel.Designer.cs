@@ -161,7 +161,10 @@
             this.Controls.Add(this.cmbFrom);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmReceiveCancel";
             this.Text = "Cancel Receive";
             this.Load += new System.EventHandler(this.frmReceiveCancel_Load);

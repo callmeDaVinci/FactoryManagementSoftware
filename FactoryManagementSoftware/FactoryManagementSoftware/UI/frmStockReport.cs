@@ -130,8 +130,9 @@ namespace FactoryManagementSoftware.UI
                 dgvStockReport.Rows[n].Cells["Category"].Value = item["item_cat"].ToString();
                 dgvStockReport.Rows[n].Cells["dgvcItemCode"].Value = item["item_code"].ToString();
                 dgvStockReport.Rows[n].Cells["dgvcItemName"].Value = item["item_name"].ToString();
-                dgvStockReport.Rows[n].Cells["dgvcQty"].Value = item["item_qty"].ToString();
-                dgvStockReport.Rows[n].Cells["dgvcOrd"].Value = item["item_ord"].ToString();
+                dgvStockReport.Rows[n].Cells["dgvcQty"].Value = Convert.ToSingle(item["item_qty"].ToString()).ToString("0.00"); 
+                dgvStockReport.Rows[n].Cells["dgvcOrd"].Value = Convert.ToSingle(item["item_ord"].ToString());
+                
             }
             listPaint(dgvStockReport);
 
@@ -177,6 +178,17 @@ namespace FactoryManagementSoftware.UI
         private void frmStockReport_Click(object sender, EventArgs e)
         {
             dgvStockReport.ClearSelection();
+        }
+
+        private void dgvStockReport_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            if (e.Column.Index == 4 || e.Column.Index == 3)
+            {
+                e.SortResult = float.Parse(e.CellValue1.ToString()).CompareTo(float.Parse(e.CellValue2.ToString()));
+                e.Handled = true;//pass by the default sorting
+            }
+
+            listPaint(dgvStockReport);
         }
     }
 }

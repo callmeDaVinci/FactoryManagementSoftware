@@ -329,6 +329,7 @@
             this.dgvItem.Size = new System.Drawing.Size(1169, 342);
             this.dgvItem.TabIndex = 58;
             this.dgvItem.SelectionChanged += new System.EventHandler(this.dgvItem_SelectionChanged);
+            this.dgvItem.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgvItem_SortCompare);
             this.dgvItem.Sorted += new System.EventHandler(this.dgvItem_Sorted);
             this.dgvItem.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvItem_MouseClick);
             // 

@@ -383,7 +383,7 @@ namespace FactoryManagementSoftware.UI
                 dgvItem.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
                 dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
                 dgvItem.Rows[n].Cells["item_qty"].Value = Convert.ToSingle(item["item_qty"]).ToString("0.00");
-                dgvItem.Rows[n].Cells["item_ord"].Value = item["item_ord"].ToString();
+                dgvItem.Rows[n].Cells["item_ord"].Value = Convert.ToSingle(item["item_ord"]);
             }
 
             listPaint(dgvItem);
@@ -1132,6 +1132,15 @@ namespace FactoryManagementSoftware.UI
                 refreshDataList();
                 resetSaveData();
                 txtSearch.Clear();
+            }
+        }
+
+        private void dgvItem_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            if (e.Column.Index == 4 || e.Column.Index == 3)
+            {
+                e.SortResult = float.Parse(e.CellValue1.ToString()).CompareTo(float.Parse(e.CellValue2.ToString()));
+                e.Handled = true;//pass by the default sorting
             }
         }
     }

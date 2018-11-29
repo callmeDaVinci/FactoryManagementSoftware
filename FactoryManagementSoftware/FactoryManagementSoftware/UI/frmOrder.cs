@@ -17,11 +17,13 @@ namespace FactoryManagementSoftware.UI
         #region variable declare
         private string presentValue = "";
         private int selectedOrderID = -1;
-        static public string selectedOrderQty = "";
-        static public string selectedItemCode = "";
-        static public string selectedUnit = "";
-        static public string selectedTo = "";
-        static public string receivedLocation;
+        //static public string selectedOrderQty = "";
+        //static public string selectedItemCode = "";
+        //static public string selectedUnit = "";
+        //static public string selectedTo = "";
+        //static public string receivedLocation;
+        static public string finalOrderNumber;
+        static public string receivedNumber;
         static public bool receivedStockIn = false;
         static public bool receivedStockOut = false;
         static public bool orderApproved = false;
@@ -52,6 +54,7 @@ namespace FactoryManagementSoftware.UI
         private void frmOrder_Load(object sender, EventArgs e)
         {
             resetForm();
+            cmbStatusSearch.SelectedIndex = 0;
         }
 
         private void resetForm()
@@ -168,6 +171,27 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
+        private void createOrderAction()
+        {
+            //get the last record from tbl_ord
+            DataTable lastRecord = dalOrd.lastRecordSelect();
+
+            foreach (DataRow ord in lastRecord.Rows)
+            {
+                uOrderAction.ord_id = Convert.ToInt32(ord["ord_id"]);
+                uOrderAction.added_date = Convert.ToDateTime(ord["ord_added_date"]);
+                uOrderAction.added_by = Convert.ToInt32(ord["ord_added_by"]); ;
+                uOrderAction.action = "Order Request";
+                uOrderAction.note = "";
+
+                if (!dalOrderAction.Insert(uOrderAction))
+                {
+                    MessageBox.Show("Failed to add new action");
+                }
+            }
+
+        }
+
         #region data Insert/Update/Search
 
         private void btnOrder_Click(object sender, EventArgs e)
@@ -179,144 +203,145 @@ namespace FactoryManagementSoftware.UI
             if(frmOrderInput.orderSuccess)
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                createOrderAction();
                 resetForm();
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }   
         }
 
-        private void dgvOrd_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        {
-            ComboBox combobox = e.Control as ComboBox;
+        //private void dgvOrd_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        //{
+        //    ComboBox combobox = e.Control as ComboBox;
 
-            if (combobox != null)
-            {
-                combobox.SelectedIndexChanged -= new EventHandler(SelectedIndexChanged);
+        //    if (combobox != null)
+        //    {
+        //        combobox.SelectedIndexChanged -= new EventHandler(SelectedIndexChanged);
 
-                combobox.SelectedIndexChanged += new EventHandler(SelectedIndexChanged);
+        //        combobox.SelectedIndexChanged += new EventHandler(SelectedIndexChanged);
 
-                e.CellStyle.BackColor = this.dgvOrd.DefaultCellStyle.BackColor;
-                e.CellStyle.ForeColor = Color.Black;
-            }
-        }
+        //        e.CellStyle.BackColor = this.dgvOrd.DefaultCellStyle.BackColor;
+        //        e.CellStyle.ForeColor = Color.Black;
+        //    }
+        //}
 
-        private void SelectedIndexChanged(object sender, EventArgs e)
-        {
-            bool orderStatusUpdate = false;
-            ComboBox combo = sender as ComboBox;
-            string selectedItem = combo.SelectedItem.ToString();
+        //private void SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    bool orderStatusUpdate = false;
+        //    ComboBox combo = sender as ComboBox;
+        //    string selectedItem = combo.SelectedItem.ToString();
 
-            if (!presentValue.Equals(selectedItem))//if selected text change(before!=after)
-            {
+        //    if (!presentValue.Equals(selectedItem))//if selected text change(before!=after)
+        //    {
 
-                uOrd.ord_id = selectedOrderID;
-                uOrd.ord_status = selectedItem;
+        //        uOrd.ord_id = selectedOrderID;
+        //        uOrd.ord_status = selectedItem;
 
-                if (selectedItem.Equals("Received"))
-                {
-                    frmReceiveConfirm frm = new frmReceiveConfirm();
-                    frm.StartPosition = FormStartPosition.CenterScreen;
+        //        if (selectedItem.Equals("Received"))
+        //        {
+        //            frmReceiveConfirm frm = new frmReceiveConfirm();
+        //            frm.StartPosition = FormStartPosition.CenterScreen;
 
-                    if (presentValue.Equals("Requesting") || presentValue.Equals("Cancelled"))
-                    {
-                        MessageBox.Show("This order not approve yet!");                     
-                    }
-                    else if (presentValue.Equals("Pending"))
-                    {
-                        frm.ShowDialog();//stock in
+        //            if (presentValue.Equals("Requesting") || presentValue.Equals("Cancelled"))
+        //            {
+        //                MessageBox.Show("This order not approve yet!");                     
+        //            }
+        //            else if (presentValue.Equals("Pending"))
+        //            {
+        //                frm.ShowDialog();//stock in
 
-                        if(receivedStockIn)
-                        {
-                            if(!dalItem.updateTotalStock(selectedItemCode))
-                            {
-                                MessageBox.Show("Failed to update total stock");
-                            }
-                            else
-                            {
-                                orderStatusUpdate = true;
-                                orderSubtract(selectedItemCode, selectedOrderQty);
-                            }
-                            receivedStockIn = false;
-                        }               
-                    }
-                }
-                else
-                {
-                    DialogResult dialogResult = MessageBox.Show("Are you sure want to change the order status?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        switch (selectedItem)
-                        {
-                            case "Cancelled":
-                                if (presentValue.Equals("Pending"))
-                                {
-                                    orderSubtract(selectedItemCode, selectedOrderQty);
-                                    //dalOrd.Update(uOrd);
-                                    orderStatusUpdate = true;
-                                }
-                                else if (presentValue.Equals("Received"))
-                                {
-                                    //dialog stock out
-                                    cancelReceive(selectedItem);
-                                }
-                                else if(presentValue.Equals("Requesting"))
-                                {
-                                    //dalOrd.Update(uOrd);
-                                    orderStatusUpdate = true;
-                                }
-                                break;
+        //                if(receivedStockIn)
+        //                {
+        //                    if(!dalItem.updateTotalStock(selectedItemCode))
+        //                    {
+        //                        MessageBox.Show("Failed to update total stock");
+        //                    }
+        //                    else
+        //                    {
+        //                        orderStatusUpdate = true;
+        //                        orderSubtract(selectedItemCode, selectedOrderQty);
+        //                    }
+        //                    receivedStockIn = false;
+        //                }               
+        //            }
+        //        }
+        //        else
+        //        {
+        //            DialogResult dialogResult = MessageBox.Show("Are you sure want to change the order status?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        //            if (dialogResult == DialogResult.Yes)
+        //            {
+        //                switch (selectedItem)
+        //                {
+        //                    case "Cancelled":
+        //                        if (presentValue.Equals("Pending"))
+        //                        {
+        //                            orderSubtract(selectedItemCode, selectedOrderQty);
+        //                            //dalOrd.Update(uOrd);
+        //                            orderStatusUpdate = true;
+        //                        }
+        //                        else if (presentValue.Equals("Received"))
+        //                        {
+        //                            //dialog stock out
+        //                            cancelReceive(selectedItem);
+        //                        }
+        //                        else if(presentValue.Equals("Requesting"))
+        //                        {
+        //                            //dalOrd.Update(uOrd);
+        //                            orderStatusUpdate = true;
+        //                        }
+        //                        break;
 
-                            case "Pending":
-                                if (presentValue.Equals("Requesting"))
-                                {
-                                    orderAdd(selectedItemCode, selectedOrderQty);
-                                    //dalOrd.Update(uOrd);
-                                    orderStatusUpdate = true;
-                                }
-                                else if (presentValue.Equals("Cancelled"))
-                                {
-                                    orderAdd(selectedItemCode, selectedOrderQty);
-                                    //dalOrd.Update(uOrd);
-                                    orderStatusUpdate = true;
-                                }
-                                else if (presentValue.Equals("Received"))
-                                {
-                                    cancelReceive(selectedItem);
-                                }
-                                break;
+        //                    case "Pending":
+        //                        if (presentValue.Equals("Requesting"))
+        //                        {
+        //                            orderAdd(selectedItemCode, selectedOrderQty);
+        //                            //dalOrd.Update(uOrd);
+        //                            orderStatusUpdate = true;
+        //                        }
+        //                        else if (presentValue.Equals("Cancelled"))
+        //                        {
+        //                            orderAdd(selectedItemCode, selectedOrderQty);
+        //                            //dalOrd.Update(uOrd);
+        //                            orderStatusUpdate = true;
+        //                        }
+        //                        else if (presentValue.Equals("Received"))
+        //                        {
+        //                            cancelReceive(selectedItem);
+        //                        }
+        //                        break;
 
-                            case "Requesting":
-                                if (presentValue.Equals("Pending"))
-                                {
-                                    orderSubtract(selectedItemCode, selectedOrderQty);
-                                    //dalOrd.Update(uOrd);
-                                    orderStatusUpdate = true;
-                                }
-                                else if (presentValue.Equals("Received"))
-                                {
-                                    cancelReceive(selectedItem);
-                                }
-                                else if (presentValue.Equals("Cancelled"))
-                                {
-                                    //dalOrd.Update(uOrd);
-                                    orderStatusUpdate = true;
-                                }
-                                break;
+        //                    case "Requesting":
+        //                        if (presentValue.Equals("Pending"))
+        //                        {
+        //                            orderSubtract(selectedItemCode, selectedOrderQty);
+        //                            //dalOrd.Update(uOrd);
+        //                            orderStatusUpdate = true;
+        //                        }
+        //                        else if (presentValue.Equals("Received"))
+        //                        {
+        //                            cancelReceive(selectedItem);
+        //                        }
+        //                        else if (presentValue.Equals("Cancelled"))
+        //                        {
+        //                            //dalOrd.Update(uOrd);
+        //                            orderStatusUpdate = true;
+        //                        }
+        //                        break;
 
-                            default:
-                                break;
-                        }
+        //                    default:
+        //                        break;
+        //                }
                         
-                    }
-                }
+        //            }
+        //        }
 
-                if(orderStatusUpdate)
-                {
-                    dalOrd.statusUpdate(uOrd);
-                    orderStatusUpdate = false;
-                }
-                refreshOrderRecord(selectedOrderID);
-            }
-        }
+        //        if(orderStatusUpdate)
+        //        {
+        //            dalOrd.statusUpdate(uOrd);
+        //            orderStatusUpdate = false;
+        //        }
+        //        refreshOrderRecord(selectedOrderID);
+        //    }
+        //}
 
         private void dgvOrd_CellEnter(object sender, DataGridViewCellEventArgs e)//activate combobox on first click
         {
@@ -330,9 +355,9 @@ namespace FactoryManagementSoftware.UI
                 int rowIndex = e.RowIndex;
                 presentValue = dgvOrd.Rows[rowIndex].Cells["ord_status"].Value.ToString();
                 selectedOrderID = Convert.ToInt32(dgvOrd.Rows[rowIndex].Cells["ord_id"].Value.ToString());
-                selectedItemCode = dgvOrd.Rows[rowIndex].Cells["ord_item_code"].Value.ToString();
-                selectedOrderQty = dgvOrd.Rows[rowIndex].Cells["ord_qty"].Value.ToString();
-                selectedUnit = dgvOrd.Rows[rowIndex].Cells["ord_unit"].Value.ToString();
+                //selectedItemCode = dgvOrd.Rows[rowIndex].Cells["ord_item_code"].Value.ToString();
+                //selectedOrderQty = dgvOrd.Rows[rowIndex].Cells["ord_qty"].Value.ToString();
+                //selectedUnit = dgvOrd.Rows[rowIndex].Cells["ord_unit"].Value.ToString();
 
                 datagridview.BeginEdit(true);
                 ((ComboBox)datagridview.EditingControl).DroppedDown = true;
@@ -342,41 +367,48 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void orderSearch()
+        {
+            string keywords = txtOrdSearch.Text;
+
+            //check if the keywords has value or not
+            if (keywords != null)
+            {
+                string statusSearch = cmbStatusSearch.Text;
+                DataTable dt = dalOrd.Search(keywords);
+                dt.DefaultView.Sort = "ord_added_date DESC";
+                DataTable sortedDt = dt.DefaultView.ToTable();
+                dgvOrd.Rows.Clear();
+
+                foreach (DataRow ord in sortedDt.Rows)
+                {
+                    if (statusSearch.Equals("ALL") || ord["ord_status"].ToString().Equals(statusSearch))
+                    {
+                        int n = dgvOrd.Rows.Add();
+                        dgvOrd.Rows[n].Cells["ord_id"].Value = ord["ord_id"].ToString();
+                        dgvOrd.Rows[n].Cells["ord_added_date"].Value = ord["ord_added_date"].ToString();
+                        dgvOrd.Rows[n].Cells["ord_required_date"].Value = Convert.ToDateTime(ord["ord_required_date"]).ToString("dd/MM/yyyy"); ;
+                        dgvOrd.Rows[n].Cells["ord_item_code"].Value = ord["ord_item_code"].ToString();
+                        dgvOrd.Rows[n].Cells["item_name"].Value = ord["item_name"].ToString();
+                        dgvOrd.Rows[n].Cells["ord_qty"].Value = ord["ord_qty"].ToString();
+                        dgvOrd.Rows[n].Cells["ord_pending"].Value = ord["ord_pending"].ToString();
+                        dgvOrd.Rows[n].Cells["ord_received"].Value = ord["ord_received"].ToString();
+                        dgvOrd.Rows[n].Cells["ord_unit"].Value = ord["ord_unit"].ToString();
+                        dgvOrd.Rows[n].Cells["ord_status"].Value = ord["ord_status"].ToString();
+                    }
+                }
+            }
+            else
+            {
+                //show all item from the database
+                loadOrderRecord();
+            }
+            listPaint(dgvOrd);
+        }
+
         private void txtOrdSearch_TextChanged(object sender, EventArgs e)
         {
-            //string keywords = txtOrdSearch.Text;
-
-            ////check if the keywords has value or not
-            //if (keywords != null)
-            //{
-            //    DataTable dt = dalOrd.Search(keywords);
-            //    dt.DefaultView.Sort = "ord_added_date DESC";
-            //    DataTable sortedDt = dt.DefaultView.ToTable();
-            //    dgvOrd.Rows.Clear();
-            //    ((DataGridViewComboBoxColumn)dgvOrd.Columns["ord_status"]).ReadOnly = false;
-
-            //    foreach (DataRow ord in sortedDt.Rows)
-            //    {
-            //        int n = dgvOrd.Rows.Add();
-            //        dgvOrd.Rows[n].Cells["ord_id"].Value = ord["ord_id"].ToString();
-            //        dgvOrd.Rows[n].Cells["ord_item_code"].Value = ord["ord_item_code"].ToString();
-            //        dgvOrd.Rows[n].Cells["item_name"].Value = ord["item_name"].ToString();
-            //        dgvOrd.Rows[n].Cells["item_ord"].Value = ord["item_ord"].ToString();
-            //        dgvOrd.Rows[n].Cells["ord_qty"].Value = ord["ord_qty"].ToString();
-            //        dgvOrd.Rows[n].Cells["ord_unit"].Value = ord["ord_unit"].ToString();
-            //        dgvOrd.Rows[n].Cells["ord_forecast_date"].Value = Convert.ToDateTime(ord["ord_forecast_date"]).ToString("dd/MM/yyyy"); ;
-            //        dgvOrd.Rows[n].Cells["ord_added_date"].Value = ord["ord_added_date"].ToString();
-            //        dgvOrd.Rows[n].Cells["ord_added_by"].Value = ord["ord_added_by"].ToString();
-            //        dgvOrd.Rows[n].Cells["ord_status"].Value = ord["ord_status"].ToString();
-            //    }
-
-            //}
-            //else
-            //{
-            //    //show all item from the database
-            //    loadOrderRecord();
-            //}
-            //listPaint(dgvOrd);
+            orderSearch();
         }
 
         private void cancelReceive(string selectedItem)
@@ -432,6 +464,8 @@ namespace FactoryManagementSoftware.UI
             uOrd.ord_id = orderID;
             uOrd.ord_status = "REQUESTING";
             dalOrd.statusUpdate(uOrd);
+            string action = "Order Request";
+            addOrderAction(action, orderID);
             refreshOrderRecord(selectedOrderID);
         }
 
@@ -453,7 +487,7 @@ namespace FactoryManagementSoftware.UI
                 uOrd.ord_status = "PENDING";
                 dalOrd.statusUpdate(uOrd);
 
-                orderAdd(itemCode, qty);
+                orderAdd(itemCode, finalOrderNumber);
                 refreshOrderRecord(selectedOrderID);
             }
            
@@ -461,6 +495,9 @@ namespace FactoryManagementSoftware.UI
 
         private void orderCancel(int rowIndex, int orderID, string presentStatus)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+           
+
             bool receivedClear = true;
             DialogResult dialogResult = MessageBox.Show("Are you sure want to cancel this order?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Yes)
@@ -471,6 +508,7 @@ namespace FactoryManagementSoftware.UI
                 string qty = dgvOrd.Rows[rowIndex].Cells["ord_qty"].Value.ToString();
                 string unit = dgvOrd.Rows[rowIndex].Cells["ord_unit"].Value.ToString();
                 float received = Convert.ToSingle(dgvOrd.Rows[rowIndex].Cells["ord_received"].Value);
+                string pending = dgvOrd.Rows[rowIndex].Cells["ord_pending"].Value.ToString();
 
                 if (received > 0)
                 {
@@ -510,7 +548,11 @@ namespace FactoryManagementSoftware.UI
 
                     if (dalOrd.Update(uOrd))
                     {
-                        orderSubtract(itemCode, qty);
+                        if(!presentStatus.Equals("REQUESTING"))
+                        {
+                            orderSubtract(itemCode, pending);
+                        }
+                        
                         string action = "Order Cancel";
                         addOrderAction(action, orderID);
                         uOrd.ord_id = orderID;
@@ -521,14 +563,37 @@ namespace FactoryManagementSoftware.UI
                 }
                 
             }
-                
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
-        private void orderReceive(int orderID, string presentStatus)
+        private void orderReceive(int rowIndex, int orderID, string presentStatus)
         {
-            uOrd.ord_id = orderID;
-            uOrd.ord_status = "RECEIVED";
-            dalOrd.statusUpdate(uOrd);
+            string itemCode = dgvOrd.Rows[rowIndex].Cells["ord_item_code"].Value.ToString();
+            string itemName = dgvOrd.Rows[rowIndex].Cells["item_name"].Value.ToString();
+            string requiredDate = dgvOrd.Rows[rowIndex].Cells["ord_required_date"].Value.ToString();
+            string qty = dgvOrd.Rows[rowIndex].Cells["ord_qty"].Value.ToString();
+            string received = dgvOrd.Rows[rowIndex].Cells["ord_received"].Value.ToString();
+            string unit = dgvOrd.Rows[rowIndex].Cells["ord_unit"].Value.ToString();
+
+            frmReceiveConfirm frm = new frmReceiveConfirm(orderID,itemCode,itemName,Convert.ToSingle(qty),Convert.ToSingle(received), unit);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//stock in
+
+            if (receivedStockIn)
+            {
+                uOrd.ord_id = orderID;
+                uOrd.ord_status = "RECEIVED";
+                dalOrd.statusUpdate(uOrd);
+                receivedStockIn = false;
+            }
+
+            if(!string.IsNullOrEmpty(receivedNumber))
+            {
+                orderSubtract(itemCode, receivedNumber);
+            }
+
+           
             refreshOrderRecord(selectedOrderID);
         }
 
@@ -575,7 +640,7 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
-
+                    contextMenuStrip1 = my_menu;
                     my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
 
                 }
@@ -590,12 +655,15 @@ namespace FactoryManagementSoftware.UI
 
         private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
             DataGridView dgv = dgvOrd;
             string itemClicked = e.ClickedItem.Name.ToString();
             int rowIndex = dgv.CurrentCell.RowIndex;
             int orderID = Convert.ToInt32(dgv.Rows[rowIndex].Cells["ord_id"].Value);
             string presentStatus = dgv.Rows[rowIndex].Cells["ord_status"].Value.ToString();
-            
+
+            contextMenuStrip1.Hide();
             if(itemClicked.Equals("Request"))
             {
                 orderRequest(orderID, presentStatus);
@@ -610,8 +678,10 @@ namespace FactoryManagementSoftware.UI
             }
             else if (itemClicked.Equals("Receive"))
             {
-                orderReceive(orderID, presentStatus);
+                orderReceive(rowIndex, orderID, presentStatus);
             }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
 
         }
 
@@ -656,5 +726,10 @@ namespace FactoryManagementSoftware.UI
         }
 
         #endregion
+
+        private void cmbStatusSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            orderSearch();
+        }
     }
 }
