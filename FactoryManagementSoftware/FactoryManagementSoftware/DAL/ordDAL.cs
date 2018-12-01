@@ -10,6 +10,7 @@ namespace FactoryManagementSoftware.DAL
     class ordDAL
     {
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+    
 
         #region Select Data from Database
         public DataTable Select()
@@ -24,6 +25,42 @@ namespace FactoryManagementSoftware.DAL
                 String sql = "SELECT * FROM tbl_ord INNER JOIN tbl_item ON tbl_ord.ord_item_code = tbl_item.item_code";
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable Select(int orderID)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_ord INNER JOIN tbl_item ON tbl_ord.ord_item_code = tbl_item.item_code WHERE ord_id=@ord_id";
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@ord_id", orderID);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
@@ -138,19 +175,25 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 String sql = @"UPDATE tbl_ord SET 
+                                ord_item_code=@ord_item_code,
                                 ord_required_date=@ord_required_date,
                                 ord_qty=@ord_qty,
                                 ord_pending=@ord_pending,
-                                ord_received=@ord_received
+                                ord_received=@ord_received,
+                                ord_updated_date=@ord_updated_date,
+                                ord_updated_by=@ord_updated_by
                                 WHERE ord_id=@ord_id";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@ord_id", u.ord_id);
+                cmd.Parameters.AddWithValue("@ord_item_code", u.ord_item_code);
                 cmd.Parameters.AddWithValue("@ord_required_date", u.ord_required_date);
                 cmd.Parameters.AddWithValue("@ord_qty", u.ord_qty);
                 cmd.Parameters.AddWithValue("@ord_pending", u.ord_pending);
                 cmd.Parameters.AddWithValue("@ord_received", u.ord_received);
+                cmd.Parameters.AddWithValue("@ord_updated_date", u.ord_updated_date);
+                cmd.Parameters.AddWithValue("@ord_updated_by", u.ord_updated_by);
 
 
                 conn.Open();
@@ -343,6 +386,8 @@ namespace FactoryManagementSoftware.DAL
         }
         #endregion
 
-       
+
+     
+
     }
 }

@@ -64,7 +64,13 @@ namespace FactoryManagementSoftware.UI
             if (receivedNumber > maxReceiveQty)
             {
                 result = false;
-                errorProvider1.SetError(txtQty, "Wrong receive qty."+"\nOrdered Qty: "+orderQty+"\nReceived Qty: "+receivedQty);
+                errorProvider1.SetError(txtQty, "Wrong receive qty."+"\nOrdered Qty: "+orderQty+"\nReceived Qty: "+receivedQty+"\nReceive qty cannot higher than "+maxReceiveQty);
+            }
+
+            if (receivedNumber <= 0)
+            {
+                result = false;
+                errorProvider1.SetError(txtQty, "Receive qty cannot below the 1");
             }
 
             if (string.IsNullOrEmpty(txtLotNO.Text))
@@ -199,12 +205,7 @@ namespace FactoryManagementSoftware.UI
             {
                 uOrderAction.note = "LOT NO: " + txtLotNO.Text;
             }
-            
 
-            if (!dalOrderAction.Insert(uOrderAction))
-            {
-                MessageBox.Show("Failed to add new action");
-            }
         }
 
         private void orderRecordUpdate()

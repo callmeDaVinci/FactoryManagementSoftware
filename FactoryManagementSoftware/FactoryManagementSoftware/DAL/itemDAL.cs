@@ -670,9 +670,8 @@ namespace FactoryManagementSoftware.DAL
 
             //Updating data into database
             bool success = ordUpdate(uItem);
-
+     
             return success;
-
         }
 
         public bool orderSubtract(string itemCode, string ordQty)

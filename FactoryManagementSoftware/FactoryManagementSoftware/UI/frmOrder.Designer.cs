@@ -111,7 +111,6 @@
             this.dgvOrd.Size = new System.Drawing.Size(1519, 361);
             this.dgvOrd.TabIndex = 19;
             this.dgvOrd.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrd_CellDoubleClick);
-            this.dgvOrd.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrd_CellEnter);
             this.dgvOrd.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvOrd_CellMouseDown);
             this.dgvOrd.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvOrd_MouseClick);
             // 
@@ -156,26 +155,26 @@
             // ord_qty
             // 
             this.ord_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.ord_qty.HeaderText = "Order Qty";
+            this.ord_qty.HeaderText = "Lot Order";
             this.ord_qty.Name = "ord_qty";
             this.ord_qty.ReadOnly = true;
-            this.ord_qty.Width = 115;
+            this.ord_qty.Width = 112;
             // 
             // ord_pending
             // 
             this.ord_pending.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ord_pending.HeaderText = "Pending";
+            this.ord_pending.HeaderText = "Lot Pending";
             this.ord_pending.Name = "ord_pending";
             this.ord_pending.ReadOnly = true;
-            this.ord_pending.Width = 101;
+            this.ord_pending.Width = 130;
             // 
             // ord_received
             // 
             this.ord_received.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.ord_received.HeaderText = "Received";
+            this.ord_received.HeaderText = "Lot Received";
             this.ord_received.Name = "ord_received";
             this.ord_received.ReadOnly = true;
-            this.ord_received.Width = 106;
+            this.ord_received.Width = 135;
             // 
             // ord_unit
             // 
@@ -429,6 +428,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbStatusSearch;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_added_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_required_date;
@@ -439,6 +439,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_received;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_unit;
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_status;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }

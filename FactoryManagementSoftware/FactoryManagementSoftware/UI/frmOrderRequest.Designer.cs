@@ -1,6 +1,6 @@
 ﻿namespace FactoryManagementSoftware.UI
 {
-    partial class frmOrderInput
+    partial class frmOrderRequest
     {
         /// <summary>
         /// Required designer variable.
@@ -39,7 +39,7 @@
             this.cmbItemCode = new System.Windows.Forms.ComboBox();
             this.lblInOutItemCode = new System.Windows.Forms.Label();
             this.cmbItemName = new System.Windows.Forms.ComboBox();
-            this.dtpForecastDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpRequiredDate = new System.Windows.Forms.DateTimePicker();
             this.lblInOutItemName = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -57,6 +57,8 @@
             this.errorProvider4 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider5 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider6 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.txtOrderID = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -129,7 +131,7 @@
             this.cmbItemCat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbItemCat.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbItemCat.FormattingEnabled = true;
-            this.cmbItemCat.Location = new System.Drawing.Point(34, 40);
+            this.cmbItemCat.Location = new System.Drawing.Point(443, 43);
             this.cmbItemCat.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbItemCat.Name = "cmbItemCat";
             this.cmbItemCat.Size = new System.Drawing.Size(366, 36);
@@ -140,7 +142,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(30, 14);
+            this.label4.Location = new System.Drawing.Point(439, 17);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(93, 23);
             this.label4.TabIndex = 86;
@@ -180,17 +182,17 @@
             this.cmbItemName.TabIndex = 83;
             this.cmbItemName.SelectedIndexChanged += new System.EventHandler(this.cmbItemName_SelectedIndexChanged);
             // 
-            // dtpForecastDate
+            // dtpRequiredDate
             // 
-            this.dtpForecastDate.CustomFormat = "dd/MM/yyyy";
-            this.dtpForecastDate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtpForecastDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpForecastDate.Location = new System.Drawing.Point(34, 310);
-            this.dtpForecastDate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.dtpForecastDate.Name = "dtpForecastDate";
-            this.dtpForecastDate.Size = new System.Drawing.Size(366, 34);
-            this.dtpForecastDate.TabIndex = 82;
-            this.dtpForecastDate.ValueChanged += new System.EventHandler(this.dtpForecastDate_ValueChanged);
+            this.dtpRequiredDate.CustomFormat = "dd/MM/yyyy";
+            this.dtpRequiredDate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpRequiredDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpRequiredDate.Location = new System.Drawing.Point(34, 310);
+            this.dtpRequiredDate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dtpRequiredDate.Name = "dtpRequiredDate";
+            this.dtpRequiredDate.Size = new System.Drawing.Size(366, 34);
+            this.dtpRequiredDate.TabIndex = 82;
+            this.dtpRequiredDate.ValueChanged += new System.EventHandler(this.dtpForecastDate_ValueChanged);
             // 
             // lblInOutItemName
             // 
@@ -217,7 +219,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.Red;
-            this.label5.Location = new System.Drawing.Point(129, 14);
+            this.label5.Location = new System.Drawing.Point(538, 17);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(18, 20);
             this.label5.TabIndex = 95;
@@ -342,12 +344,35 @@
             // 
             this.errorProvider6.ContainerControl = this;
             // 
-            // frmOrderInput
+            // txtOrderID
+            // 
+            this.txtOrderID.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOrderID.Location = new System.Drawing.Point(34, 43);
+            this.txtOrderID.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtOrderID.Name = "txtOrderID";
+            this.txtOrderID.ReadOnly = true;
+            this.txtOrderID.Size = new System.Drawing.Size(366, 34);
+            this.txtOrderID.TabIndex = 105;
+            this.txtOrderID.Text = "-1";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(30, 14);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(86, 23);
+            this.label11.TabIndex = 104;
+            this.label11.Text = "ORDER ID";
+            // 
+            // frmOrderRequest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(855, 676);
+            this.Controls.Add(this.txtOrderID);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.btnOrder);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.label9);
@@ -367,7 +392,7 @@
             this.Controls.Add(this.cmbItemCode);
             this.Controls.Add(this.lblInOutItemCode);
             this.Controls.Add(this.cmbItemName);
-            this.Controls.Add(this.dtpForecastDate);
+            this.Controls.Add(this.dtpRequiredDate);
             this.Controls.Add(this.lblInOutItemName);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -375,9 +400,8 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmOrderInput";
-            this.Text = "frmOrderInput";
-            this.Load += new System.EventHandler(this.frmOrderInput_Load);
+            this.Name = "frmOrderRequest";
+            this.Text = "Order Request";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).EndInit();
@@ -400,7 +424,7 @@
         private System.Windows.Forms.ComboBox cmbItemCode;
         private System.Windows.Forms.Label lblInOutItemCode;
         private System.Windows.Forms.ComboBox cmbItemName;
-        private System.Windows.Forms.DateTimePicker dtpForecastDate;
+        private System.Windows.Forms.DateTimePicker dtpRequiredDate;
         private System.Windows.Forms.Label lblInOutItemName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label5;
@@ -418,5 +442,7 @@
         private System.Windows.Forms.ErrorProvider errorProvider4;
         private System.Windows.Forms.ErrorProvider errorProvider5;
         private System.Windows.Forms.ErrorProvider errorProvider6;
+        private System.Windows.Forms.TextBox txtOrderID;
+        private System.Windows.Forms.Label label11;
     }
 }

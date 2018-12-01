@@ -27,10 +27,14 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow action in sortedDt.Rows)
             {
                 int n = dgvAction.Rows.Add();
+                dgvAction.Rows[n].Cells["order_action_id"].Value = action["order_action_id"].ToString();
                 dgvAction.Rows[n].Cells["order_id"].Value = action["ord_id"].ToString();
-                dgvAction.Rows[n].Cells["date"].Value = action["added_date"].ToString();
-                dgvAction.Rows[n].Cells["by"].Value = action["added_by"].ToString();
+                dgvAction.Rows[n].Cells["added_date"].Value = action["added_date"].ToString();
+                dgvAction.Rows[n].Cells["added_by"].Value = action["added_by"].ToString();
                 dgvAction.Rows[n].Cells["action"].Value = action["action"].ToString();
+                dgvAction.Rows[n].Cells["action_detail"].Value = action["action_detail"].ToString();
+                dgvAction.Rows[n].Cells["action_from"].Value = action["action_from"].ToString();
+                dgvAction.Rows[n].Cells["action_to"].Value = action["action_to"].ToString();
                 dgvAction.Rows[n].Cells["note"].Value = action["note"].ToString();
             }
             listPaint(dgvAction);

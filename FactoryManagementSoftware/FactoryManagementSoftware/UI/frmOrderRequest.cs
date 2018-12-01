@@ -6,11 +6,57 @@ using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmOrderInput : Form
+    public partial class frmOrderRequest : Form
     {
-        public frmOrderInput()
+        private string initialCat = "";
+        private string initialItemCode = "";
+        private string initialItemName = "";
+        private string initialQty= "";
+        private string initialUnit = "";
+        private string initialDate = "";
+
+        public frmOrderRequest()
         {
             InitializeComponent();
+
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            loadItemCategoryData();
+            cmbItemCat.SelectedIndex = -1;
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        public frmOrderRequest(string orderID, string category, string itemCode, string itemName, string qty, string unit, string requiredDate)
+        {
+            InitializeComponent();
+
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            loadItemCategoryData();
+
+            initialCat = category;
+            initialItemCode = itemCode;
+            initialItemName = itemName;
+            initialQty = qty;
+            initialUnit = unit;
+            initialDate = requiredDate;
+
+            //cmbItemCat.Text = "RAW Material";
+            //cmbItemName.Text = "ABS-700-314";
+            //cmbItemCode.Text = "ABS-700-314";
+            //txtQty.Text = "100";
+            //cmbQtyUnit.Text = "kg";
+
+            txtOrderID.Text = orderID;
+            cmbItemCat.Text = initialCat;
+            cmbItemName.Text = initialItemName;
+            cmbItemCode.Text = initialItemCode;
+            txtQty.Text = initialQty;
+            cmbQtyUnit.Text = initialUnit;
+            dtpRequiredDate.Text = initialDate;
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         static public bool orderSuccess = false;
@@ -25,6 +71,8 @@ namespace FactoryManagementSoftware.UI
 
         itemCatBLL uItemCat = new itemCatBLL();
         itemCatDAL dalItemCat = new itemCatDAL();
+
+        orderActionDAL dalOrderAction = new orderActionDAL();
 
 
 
@@ -157,10 +205,10 @@ namespace FactoryManagementSoftware.UI
                 errorProvider5.SetError(cmbQtyUnit, "Item order unit Required");
             }
 
-            if (string.IsNullOrEmpty(dtpForecastDate.Text))
+            if (string.IsNullOrEmpty(dtpRequiredDate.Text))
             {
                 result = false;
-                errorProvider6.SetError(dtpForecastDate, "Item forecast date Required");
+                errorProvider6.SetError(dtpRequiredDate, "Item forecast date Required");
             }
 
             return result;
@@ -168,15 +216,30 @@ namespace FactoryManagementSoftware.UI
 
         private void getDataFromUser()
         {
+            int id = Convert.ToInt32(txtOrderID.Text);
+
+            if(id == -1)//create new order record
+            {
+                uOrd.ord_added_date = DateTime.Now;
+                uOrd.ord_added_by = 0;
+            }
+            else//update order record
+            {  
+                uOrd.ord_id = id;
+                uOrd.ord_updated_date = DateTime.Now;
+                uOrd.ord_updated_by = 0;
+            }
+
             uOrd.ord_item_code = cmbItemCode.Text;
             uOrd.ord_qty = Convert.ToInt32(txtQty.Text);
-          
-            uOrd.ord_required_date = dtpForecastDate.Value.Date;
+            uOrd.ord_pending = 0;
+            uOrd.ord_received = 0;
+
+            uOrd.ord_required_date = dtpRequiredDate.Value.Date;
             uOrd.ord_note = txtNote.Text;
             uOrd.ord_unit = cmbQtyUnit.Text;
             uOrd.ord_status = "REQUESTING";
-            uOrd.ord_added_date = DateTime.Now;
-            uOrd.ord_added_by = 0;
+            
         }
 
         private void txtQty_KeyPress(object sender, KeyPressEventArgs e)
@@ -189,16 +252,7 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        private void frmOrderInput_Load(object sender, EventArgs e)
-        {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
-            loadItemCategoryData();
-
-            cmbItemCat.SelectedIndex = -1;
-
-            Cursor = Cursors.Arrow; // change cursor to normal type
-        }
+        #region selected index/text changed
 
         private void cmbItemCat_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -233,11 +287,14 @@ namespace FactoryManagementSoftware.UI
             errorProvider6.Clear();
         }
 
+        #endregion
 
         #region function: order/cancel
 
         private void btnOrder_Click(object sender, EventArgs e)
         {
+            int id = Convert.ToInt32(txtOrderID.Text);
+            bool success;
             if (Validation())
             {
                 DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -246,8 +303,15 @@ namespace FactoryManagementSoftware.UI
 
                     getDataFromUser();
 
-                    //Inserting Data into Database
-                    bool success = dalOrd.Insert(uOrd);
+                    if(id == -1)
+                    {
+                        success = dalOrd.Insert(uOrd);
+                    }
+                    else
+                    {
+                        success = dalOrd.Update(uOrd);
+                    }
+                    
                     if(!success)
                     {
                         //Failed to insert data
@@ -255,11 +319,18 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        MessageBox.Show("New order is requesting...");
                         orderSuccess = true;
-                        this.Close();
+                        if (dalOrderAction.orderRequest(id, txtNote.Text))
+                        {
+                            MessageBox.Show("New order is requesting..."); 
+                            this.Close();
+                        }
+                        else
+                        {
+                            //delete last add order record?
+                        }
+                        
                     }
-
                 }
             }
         }
