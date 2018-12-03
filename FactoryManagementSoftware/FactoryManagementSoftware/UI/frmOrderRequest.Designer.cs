@@ -59,6 +59,7 @@
             this.errorProvider6 = new System.Windows.Forms.ErrorProvider(this.components);
             this.txtOrderID = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -365,12 +366,23 @@
             this.label11.TabIndex = 104;
             this.label11.Text = "ORDER ID";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(122, 14);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(100, 19);
+            this.label10.TabIndex = 106;
+            this.label10.Text = "(-1: new order)";
+            // 
             // frmOrderRequest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(855, 676);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.txtOrderID);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.btnOrder);
@@ -444,5 +456,6 @@
         private System.Windows.Forms.ErrorProvider errorProvider6;
         private System.Windows.Forms.TextBox txtOrderID;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
     }
 }

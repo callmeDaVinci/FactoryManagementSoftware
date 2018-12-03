@@ -13,6 +13,7 @@ namespace FactoryManagementSoftware.UI
         private float maxReceiveQty;
         private string orderQty;
         private string receivedQty;
+        private bool edit = false;
 
         public frmReceiveConfirm(int id, string code,string name, float qty,float received, string unit)
         {
@@ -26,7 +27,21 @@ namespace FactoryManagementSoftware.UI
             Unit = unit;
             orderID = id;
         }
-        
+
+        //public frmReceiveConfirm(int id, string code, string name, float qty, float received, string unit, bool edit)
+        //{
+        //    InitializeComponent();
+        //    txtItemCode.Text = code;
+        //    txtItemName.Text = name;
+        //    orderQty = qty.ToString();
+        //    receivedQty = received.ToString();
+        //    maxReceiveQty = qty - received;
+        //    txtQty.Text = maxReceiveQty.ToString();
+        //    Unit = unit;
+        //    orderID = id;
+        //    edit = true;
+        //}
+
         #region class object declare
 
         trfCatBLL utrfCat = new trfCatBLL();
@@ -48,7 +63,34 @@ namespace FactoryManagementSoftware.UI
 
         facDAL dalFac = new facDAL();
 
-        #endregion 
+        #endregion
+
+        #region load
+
+        private void frmReceiveConfirm_Load(object sender, EventArgs e)
+        {
+            //select category list from category database
+            DataTable dtTrfCatFrm = daltrfCat.Select();
+            //remove repeating name in trf_cat_name
+            DataTable distinctTable3 = dtTrfCatFrm.DefaultView.ToTable(true, "trf_cat_name");
+            //sort the data according trf_cat_name
+            distinctTable3.DefaultView.Sort = "trf_cat_name ASC";
+            //set combobox datasource from table
+            cmbFrom.DataSource = distinctTable3;
+            //show trf_cat_name data from table only
+            cmbFrom.DisplayMember = "trf_cat_name";
+
+            cmbFrom.Text = "Supplier";
+
+            DataTable dt = dalFac.Select();
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "fac_name");
+            cmbTo.DataSource = distinctTable;
+            cmbTo.DisplayMember = "fac_name";
+        }
+        
+        #endregion
+
+        #region validation
 
         private bool validation()
         {
@@ -64,7 +106,7 @@ namespace FactoryManagementSoftware.UI
             if (receivedNumber > maxReceiveQty)
             {
                 result = false;
-                errorProvider1.SetError(txtQty, "Wrong receive qty."+"\nOrdered Qty: "+orderQty+"\nReceived Qty: "+receivedQty+"\nReceive qty cannot higher than "+maxReceiveQty);
+                errorProvider1.SetError(txtQty, "Wrong receive qty." + "\nOrdered Qty: " + orderQty + "\nReceived Qty: " + receivedQty + "\nReceive qty cannot higher than " + maxReceiveQty);
             }
 
             if (receivedNumber <= 0)
@@ -87,38 +129,12 @@ namespace FactoryManagementSoftware.UI
             bool result = false;
             float receivedNumber = Convert.ToSingle(txtQty.Text);
 
-            if(receivedNumber == maxReceiveQty)
+            if (receivedNumber == maxReceiveQty)
             {
-                result = true;             
+                result = true;
             }
 
             return result;
-        }
-
-        private void frmReceiveConfirm_Load(object sender, EventArgs e)
-        { 
-            //select category list from category database
-            DataTable dtTrfCatFrm = daltrfCat.Select();
-            //remove repeating name in trf_cat_name
-            DataTable distinctTable3 = dtTrfCatFrm.DefaultView.ToTable(true, "trf_cat_name");
-            //sort the data according trf_cat_name
-            distinctTable3.DefaultView.Sort = "trf_cat_name ASC";
-            //set combobox datasource from table
-            cmbFrom.DataSource = distinctTable3;
-            //show trf_cat_name data from table only
-            cmbFrom.DisplayMember = "trf_cat_name";
-
-            cmbFrom.Text = "Supplier";
-
-            DataTable dt = dalFac.Select();
-            DataTable distinctTable = dt.DefaultView.ToTable(true, "fac_name");
-            cmbTo.DataSource = distinctTable;
-            cmbTo.DisplayMember = "fac_name";
-        }
-
-        private void button2_Click(object sender, EventArgs e)//close form
-        {
-            this.Close();
         }
 
         private string getFactoryID(string factoryName)
@@ -161,6 +177,10 @@ namespace FactoryManagementSoftware.UI
             return qty;
         }
 
+        #endregion
+
+        #region database proccessing
+
         private int transferRecord(string stockResult)
         {
 
@@ -190,24 +210,6 @@ namespace FactoryManagementSoftware.UI
             return daltrfHist.getIndexNo(utrfHist);
         }
 
-        private void addOrderAction(int id, string action, bool fullyReceived)
-        {
-            uOrderAction.ord_id = id;
-            uOrderAction.added_date = DateTime.Now;
-            uOrderAction.added_by = 0;
-            uOrderAction.action = action;
-
-            if(fullyReceived)
-            {
-                uOrderAction.note = "";
-            }
-            else
-            {
-                uOrderAction.note = "LOT NO: " + txtLotNO.Text;
-            }
-
-        }
-
         private void orderRecordUpdate()
         {
             float orderedqty = Convert.ToSingle(orderQty);
@@ -219,7 +221,7 @@ namespace FactoryManagementSoftware.UI
             uOrd.ord_received = receivedNumber;
             uOrd.ord_id = orderID;
 
-            if(!dalOrd.receivedUpdate(uOrd))
+            if (!dalOrd.receivedUpdate(uOrd))
             {
                 MessageBox.Show("Failed to update order record.");
             }
@@ -228,6 +230,7 @@ namespace FactoryManagementSoftware.UI
 
         private void stockTransfer()
         {
+            bool success = false;
             uStock.stock_item_code = txtItemCode.Text;
             uStock.stock_fac_id = Convert.ToInt32(getFactoryID(cmbTo.Text));
             uStock.stock_qty = getQty(txtItemCode.Text, cmbTo.Text) + Convert.ToSingle(txtQty.Text);
@@ -237,55 +240,32 @@ namespace FactoryManagementSoftware.UI
 
             if (IfExists(txtItemCode.Text, cmbTo.Text))
             {
-                bool success = dalStock.Update(uStock);
+                success = dalStock.Update(uStock);
 
-                if (!success)
-                {
-                    MessageBox.Show("Failed to updated stock");
-                }
-                else
-                {
-                    string action = "Stock In " + txtQty.Text + " To " + cmbTo.Text;
-                    addOrderAction(orderID, action,false);
-
-                    if (ifFullyReceived())
-                    {
-                        frmOrder.receivedStockIn = true;
-                        action = "Order Fully Received";
-                        addOrderAction(orderID, action,true);
-                    }
-
-                    frmOrder.receivedNumber = txtQty.Text;
-                    
-                    orderRecordUpdate();
-                    
-                    transferRecord("Passed");
-                }
+               
             }
             else
             {
-                bool success = dalStock.Insert(uStock);
-                if (!success)
-                {
-                    MessageBox.Show("Failed to add new stock");
-                }
-                else
-                {
-                    string action = "Stock In " + txtQty.Text + " To " + cmbTo.Text;
-                    addOrderAction(orderID, action, false);
-                    if (ifFullyReceived())
-                    {
-                        frmOrder.receivedStockIn = true;
-                        action = "Order Fully Received";
-                        addOrderAction(orderID, action,true);
-                    }
+                success = dalStock.Insert(uStock);
 
-                    frmOrder.receivedNumber = txtQty.Text;
-                    
-                    orderRecordUpdate();
-                    
-                    transferRecord("Passed");
+            }
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to transfer stock");
+            }
+            else
+            {
+
+                if (ifFullyReceived())
+                {
+                    frmOrder.receivedStockIn = true;
                 }
+                frmOrder.receivedNumber = txtQty.Text;
+
+                orderRecordUpdate();
+                dalOrderAction.orderReceive(orderID, txtQty.Text, cmbFrom.Text, cmbTo.Text, txtLotNO.Text);
+                transferRecord("Passed");
             }
 
             if (!dalItem.updateTotalStock(txtItemCode.Text))
@@ -294,7 +274,30 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        #endregion
+
+        #region text changed
+
+        private void txtQty_TextChanged(object sender, EventArgs e)
+        {
+            errorProvider1.Clear();
+        }
+
+        private void txtLotNO_TextChanged(object sender, EventArgs e)
+        {
+            errorProvider2.Clear();
+        }
+
+        #endregion
+
+        #region function: order/cancel
+
+        private void cancel_Click(object sender, EventArgs e)//close form
+        {
+            this.Close();
+        }
+
+        private void stockIn_Clock(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             
@@ -307,14 +310,8 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
-        private void txtQty_TextChanged(object sender, EventArgs e)
-        {
-            errorProvider1.Clear();
-        }
+        #endregion
 
-        private void txtLotNO_TextChanged(object sender, EventArgs e)
-        {
-            errorProvider2.Clear();
-        }
-    }  
+       
+    }
 }

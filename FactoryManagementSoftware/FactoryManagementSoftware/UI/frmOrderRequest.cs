@@ -14,6 +14,7 @@ namespace FactoryManagementSoftware.UI
         private string initialQty= "";
         private string initialUnit = "";
         private string initialDate = "";
+        private bool edit = false;
 
         public frmOrderRequest()
         {
@@ -41,12 +42,7 @@ namespace FactoryManagementSoftware.UI
             initialQty = qty;
             initialUnit = unit;
             initialDate = requiredDate;
-
-            //cmbItemCat.Text = "RAW Material";
-            //cmbItemName.Text = "ABS-700-314";
-            //cmbItemCode.Text = "ABS-700-314";
-            //txtQty.Text = "100";
-            //cmbQtyUnit.Text = "kg";
+            edit = true;
 
             txtOrderID.Text = orderID;
             cmbItemCat.Text = initialCat;
@@ -239,7 +235,6 @@ namespace FactoryManagementSoftware.UI
             uOrd.ord_note = txtNote.Text;
             uOrd.ord_unit = cmbQtyUnit.Text;
             uOrd.ord_status = "REQUESTING";
-            
         }
 
         private void txtQty_KeyPress(object sender, KeyPressEventArgs e)
@@ -291,8 +286,43 @@ namespace FactoryManagementSoftware.UI
 
         #region function: order/cancel
 
+        private void checkEdit(int id)
+        {
+            if(initialCat != cmbItemCat.Text)
+            {
+                dalOrderAction.orderEdit(id, -1, "Category", initialCat, cmbItemCat.Text, txtNote.Text);
+            }
+
+            if (initialItemCode != cmbItemCode.Text)
+            {
+                dalOrderAction.orderEdit(id, -1, "Item Code", initialItemCode, cmbItemCode.Text, txtNote.Text);
+            }
+
+            if (initialItemName != cmbItemName.Text)
+            {
+                dalOrderAction.orderEdit(id, -1, "Item Name", initialItemName, cmbItemName.Text, txtNote.Text);
+            }
+
+            if (initialQty != txtQty.Text)
+            {
+                dalOrderAction.orderEdit(id, -1, "Qty", initialQty, txtQty.Text, txtNote.Text);
+            }
+
+            if (initialUnit != cmbQtyUnit.Text)
+            {
+                dalOrderAction.orderEdit(id, -1, "Unit", initialUnit, cmbQtyUnit.Text, txtNote.Text);
+            }
+
+            if (initialDate != dtpRequiredDate.Text)
+            {
+                dalOrderAction.orderEdit(id, -1, "Required Date", initialDate, dtpRequiredDate.Text, txtNote.Text);
+            }
+        }
+
         private void btnOrder_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
             int id = Convert.ToInt32(txtOrderID.Text);
             bool success;
             if (Validation())
@@ -320,6 +350,12 @@ namespace FactoryManagementSoftware.UI
                     else
                     {
                         orderSuccess = true;
+
+                        if(edit)
+                        {
+                            checkEdit(id);
+                        }
+                        
                         if (dalOrderAction.orderRequest(id, txtNote.Text))
                         {
                             MessageBox.Show("New order is requesting..."); 
@@ -333,6 +369,8 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
             }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

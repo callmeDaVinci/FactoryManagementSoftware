@@ -33,43 +33,24 @@ namespace FactoryManagementSoftware.UI
         orderActionBLL uOrderAction = new orderActionBLL();
         orderActionDAL dalOrderAction = new orderActionDAL();
 
-        private void checkOrderChange()
+        private void checkEdit(int id)
         {
-            string action = "";
-            if(!date.Equals(dtpDateRequired.Text))
+            if (!date.Equals(dtpDateRequired.Text))
             {
-                action = "Date Required: " + date + " ---> " + dtpDateRequired.Text;
-                addOrderAction(action);
+                dalOrderAction.orderEdit(id, -1, "Required Date", date, dtpDateRequired.Text, txtNote.Text);
             }
-
+          
             if (!orderQty.Equals(txtQty.Text))
             {
-                action = "Order Qty: " + orderQty + " ---> " + txtQty.Text;
-                addOrderAction(action);
+                dalOrderAction.orderEdit(id, -1, "Qty", orderQty, txtQty.Text, txtNote.Text);
             }
 
             if (!orderUnit.Equals(cmbQtyUnit.Text))
             {
-                action = "Order Unit: " + orderUnit + " ---> " + cmbQtyUnit.Text;
-                addOrderAction(action);
+                dalOrderAction.orderEdit(id, -1, "Unit", orderUnit, cmbQtyUnit.Text, txtNote.Text);
             }
 
-            action = "Order Approved";
-            addOrderAction(action);
-        }
-
-        private void addOrderAction(string action)
-        {
-            uOrderAction.ord_id = Convert.ToInt32(txtOrderID.Text);
-            uOrderAction.added_date = DateTime.Now;
-            uOrderAction.added_by = 0;
-            uOrderAction.action = action;
-            uOrderAction.note = "";
-
-            if(!dalOrderAction.Insert(uOrderAction))
-            {
-                MessageBox.Show("Failed to add new action");
-            }
+            dalOrderAction.orderApprove(id, txtNote.Text);
         }
 
         private void orderAppoveUpdate()
@@ -79,12 +60,16 @@ namespace FactoryManagementSoftware.UI
             uOrder.ord_qty = Convert.ToSingle(txtQty.Text);
             uOrder.ord_pending = uOrder.ord_qty;
             uOrder.ord_received = 0;
+            uOrder.ord_item_code = txtItemCode.Text;
+            uOrder.ord_status = "PENDING";
+            uOrder.ord_updated_date = DateTime.Now;
+            uOrder.ord_updated_by = 0;
 
             if(dalOrder.Update(uOrder))
             {
                 frmOrder.orderApproved = true;
                 frmOrder.finalOrderNumber = txtQty.Text;
-                checkOrderChange();
+                checkEdit(uOrder.ord_id);
                 this.Close();
 
             }

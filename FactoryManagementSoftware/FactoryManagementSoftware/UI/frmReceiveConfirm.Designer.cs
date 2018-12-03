@@ -118,7 +118,7 @@
             this.btnApprove.TabIndex = 126;
             this.btnApprove.Text = "STOCK IN";
             this.btnApprove.UseVisualStyleBackColor = false;
-            this.btnApprove.Click += new System.EventHandler(this.button1_Click);
+            this.btnApprove.Click += new System.EventHandler(this.stockIn_Clock);
             // 
             // btnCancel
             // 
@@ -134,7 +134,7 @@
             this.btnCancel.TabIndex = 125;
             this.btnCancel.Text = "CANCEL";
             this.btnCancel.UseVisualStyleBackColor = false;
-            this.btnCancel.Click += new System.EventHandler(this.button2_Click);
+            this.btnCancel.Click += new System.EventHandler(this.cancel_Click);
             // 
             // txtLotNO
             // 

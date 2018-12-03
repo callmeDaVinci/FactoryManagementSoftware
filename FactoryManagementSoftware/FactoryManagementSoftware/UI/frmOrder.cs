@@ -20,7 +20,7 @@ namespace FactoryManagementSoftware.UI
         static public string finalOrderNumber;
         static public string receivedNumber;
         static public bool receivedStockIn = false;
-        static public bool receivedStockOut = false;
+        static public bool receivedReturn = false;
         static public bool orderApproved = false;
 
         #endregion
@@ -136,7 +136,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (value.Equals("RECEIVED"))
             {
-                foreColor = Color.FromArgb(52, 168, 83)         ;
+                foreColor = Color.FromArgb(52, 168, 83);
             }
 
             //dgv.Rows[rowIndex].Cells["ord_status"].Style = new DataGridViewCellStyle { ForeColor = SystemColors.Control,BackColor = foreColor };
@@ -269,7 +269,7 @@ namespace FactoryManagementSoftware.UI
                     itemName = ord["item_name"].ToString();
                     qty = ord["ord_qty"].ToString();
                     unit = ord["ord_unit"].ToString();
-                    date = ord["ord_required_date"].ToString();
+                    date = Convert.ToDateTime(ord["ord_required_date"]).ToString("dd/MM/yyyy");
                 }
             }
             
@@ -306,10 +306,6 @@ namespace FactoryManagementSoftware.UI
 
             if(orderApproved)//if order approved from approve form, then change order status from requesting to pending
             {
-                uOrd.ord_id = orderID;
-                uOrd.ord_status = "PENDING";
-                dalOrd.statusUpdate(uOrd);
-
                 dalItem.orderAdd(itemCode, finalOrderNumber);//add order qty to item
                 refreshOrderRecord(selectedOrderID);
                 orderApproved = false;
@@ -373,7 +369,7 @@ namespace FactoryManagementSoftware.UI
                         frm.StartPosition = FormStartPosition.CenterScreen;
                         frm.ShowDialog();//return item from stock
 
-                        if (receivedStockOut)
+                        if (receivedReturn)
                         {
                             if (!dalItem.updateTotalStock(itemCode))
                             {
@@ -384,7 +380,7 @@ namespace FactoryManagementSoftware.UI
                                 receivedClear = true;
                             }
 
-                            receivedStockOut = false;
+                            receivedReturn = false;
                         }
                     }
                 }
@@ -401,19 +397,16 @@ namespace FactoryManagementSoftware.UI
                     uOrd.ord_item_code = itemCode;
                     uOrd.ord_note = "";
                     uOrd.ord_unit = unit;
+                    uOrd.ord_status = "CANCELLED";
 
                     if (dalOrd.Update(uOrd))
                     {
                         if (!presentStatus.Equals("REQUESTING"))
                         {
-                            dalItem.orderSubtract(itemCode, pending); //Updating data into database
+                            dalItem.orderSubtract(itemCode, pending); //subtract order qty
                         }
 
                         dalOrderAction.orderCancel(orderID, "");
-
-                        uOrd.ord_id = orderID;
-                        uOrd.ord_status = "CANCELLED";
-                        dalOrd.statusUpdate(uOrd);
                     }
                     refreshOrderRecord(selectedOrderID);
                 }
@@ -493,7 +486,6 @@ namespace FactoryManagementSoftware.UI
             if(itemClicked.Equals("Request"))
             {
                 orderRequest(orderID);
-                //from order request form
             }
             else if (itemClicked.Equals("Approve"))
             {
@@ -525,7 +517,7 @@ namespace FactoryManagementSoftware.UI
                 DataTable dt = dalOrderAction.Select(orderID);
                 if (dt.Rows.Count > 0)
                 {
-                    frmOrderActionHistory frm = new frmOrderActionHistory(dt);
+                    frmOrderActionHistory frm = new frmOrderActionHistory(orderID);
                     frm.StartPosition = FormStartPosition.CenterScreen;
                     frm.ShowDialog();//Item Edit
                 }
@@ -533,6 +525,12 @@ namespace FactoryManagementSoftware.UI
                 {
                     MessageBox.Show("No action record under this order yet.");
                 }
+            }
+
+            if (receivedReturn)//if order approved from approve form, then change order status from requesting to pending
+            {
+                refreshOrderRecord(selectedOrderID);
+                receivedReturn = false;
             }
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
@@ -562,7 +560,6 @@ namespace FactoryManagementSoftware.UI
         }
 
         #endregion
-
 
     }
 }

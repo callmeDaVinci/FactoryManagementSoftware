@@ -764,6 +764,5 @@ namespace FactoryManagementSoftware.DAL
         }
 
       
-      
     }
 }

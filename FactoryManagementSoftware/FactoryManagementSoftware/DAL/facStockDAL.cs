@@ -12,6 +12,7 @@ namespace FactoryManagementSoftware.DAL
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
         facStockBLL uStock = new facStockBLL();
+        itemDAL dalItem = new itemDAL();
 
         #region Select Data from Database
         public DataTable Select(string itemCode)
@@ -84,6 +85,7 @@ namespace FactoryManagementSoftware.DAL
                 {
                     //query successful
                     isSuccess = true;
+                    dalItem.updateTotalStock(u.stock_item_code);
                 }
                 else
                 {
@@ -131,6 +133,8 @@ namespace FactoryManagementSoftware.DAL
                 {
                     //query successful
                     isSuccess = true;
+                    dalItem.updateTotalStock(u.stock_item_code);
+
                 }
                 else
                 {

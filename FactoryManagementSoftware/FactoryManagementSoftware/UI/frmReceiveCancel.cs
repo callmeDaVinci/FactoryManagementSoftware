@@ -100,11 +100,6 @@ namespace FactoryManagementSoftware.UI
             return daltrfHist.getIndexNo(utrfHist);
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private string getFactoryID(string factoryName)
         {
             string factoryID = "";
@@ -165,7 +160,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    frmOrder.receivedStockOut = true;
+                    frmOrder.receivedReturn = true;
                     string action = "Stock out "+stockInQty+"from "+cmbFrom.Text;
                     addOrderAction(orderID,action);
                     transferRecord("Passed");
@@ -181,7 +176,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    frmOrder.receivedStockOut = true;
+                    frmOrder.receivedReturn = true;
                     string action = "Stock out " + stockInQty + " from " + cmbFrom.Text;
                     addOrderAction(orderID, action);
                     transferRecord("Passed");
@@ -190,6 +185,11 @@ namespace FactoryManagementSoftware.UI
 
             this.Close();
         }
-  
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
     }
 }

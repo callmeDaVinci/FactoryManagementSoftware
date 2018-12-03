@@ -177,6 +177,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"UPDATE tbl_ord SET 
                                 ord_item_code=@ord_item_code,
                                 ord_required_date=@ord_required_date,
+                                ord_status=@ord_status,
                                 ord_qty=@ord_qty,
                                 ord_pending=@ord_pending,
                                 ord_received=@ord_received,
@@ -188,6 +189,7 @@ namespace FactoryManagementSoftware.DAL
 
                 cmd.Parameters.AddWithValue("@ord_id", u.ord_id);
                 cmd.Parameters.AddWithValue("@ord_item_code", u.ord_item_code);
+                cmd.Parameters.AddWithValue("@ord_status", u.ord_status);
                 cmd.Parameters.AddWithValue("@ord_required_date", u.ord_required_date);
                 cmd.Parameters.AddWithValue("@ord_qty", u.ord_qty);
                 cmd.Parameters.AddWithValue("@ord_pending", u.ord_pending);

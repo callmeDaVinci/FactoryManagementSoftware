@@ -86,7 +86,44 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
-        
+
+        public DataTable SelectByActionID(int actionID)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_order_action WHERE order_action_id = @order_action_id";
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@order_action_id", actionID);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         #endregion
 
         #region Insert Data in Database
@@ -198,9 +235,22 @@ namespace FactoryManagementSoftware.DAL
         }
 
         //order approve
-        public bool orderAprove(int orderID, string note)
+        public bool orderApprove(int orderID, string note)
         {
             bool success = false;
+
+             if(orderID > 0)
+            {
+                //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
+                setActionData(orderID, "APPROVE", "", "", "", note, true);
+            }
+
+            success = Insert(uOrderAction);
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to make order request action");
+            }
 
             return success;
         }
@@ -210,6 +260,19 @@ namespace FactoryManagementSoftware.DAL
         {
             bool success = false;
 
+            if (orderID > 0)
+            {
+                //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
+                setActionData(orderID, "RECEIVE", content, from, to, note, true);
+            }
+
+            success = Insert(uOrderAction);
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to make order request action");
+            }
+
             return success;
         }
 
@@ -218,6 +281,27 @@ namespace FactoryManagementSoftware.DAL
         {
             bool success = false;
 
+            if(orderID > 0)
+            {
+                //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
+                setActionData(orderID, "EDIT", content, from, to, "", true);
+            }
+
+            if(actionID == -1)
+            {
+                success = Insert(uOrderAction);
+            }
+            else
+            {
+                //get data by action id
+                success = true;
+            }
+            
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to make order request action");
+            }
             return success;
         }
 
@@ -225,6 +309,19 @@ namespace FactoryManagementSoftware.DAL
         public bool orderClose(int orderID, string content, string note)
         {
             bool success = false;
+
+            if (orderID > 0)
+            {
+                //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
+                setActionData(orderID, "CLOSED", "", "", "", note, true);
+            }
+
+            success = Insert(uOrderAction);
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to make order request action");
+            }
 
             return success;
         }
@@ -235,7 +332,7 @@ namespace FactoryManagementSoftware.DAL
             bool success = false;
           
             //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
-            setActionData(orderID, "CANCEL", "", "", "", note, true);
+            setActionData(orderID, "CANCEL", "", "", "", note, false);
   
             success = Insert(uOrderAction);
 
@@ -243,6 +340,11 @@ namespace FactoryManagementSoftware.DAL
             {
                 MessageBox.Show("Failed to add order cancel action");
             }
+            else
+            {
+                deactivatePreviousAction(orderID);
+            }
+
             return success;
         }
 
@@ -252,6 +354,68 @@ namespace FactoryManagementSoftware.DAL
             bool success = false;
 
             return success;
+        }
+
+        public void deactivate(int actionID)
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE [dbo].[tbl_order_action]
+                                SET [active] = 0
+                                WHERE order_action_id = @actionID";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@actionID", actionID);
+                
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+        
+        private void deactivatePreviousAction(int orderID)
+        {
+            int actionID;
+
+            DataTable dt = Select(orderID);
+            
+            if(dt.Rows.Count > 0)
+            {
+                foreach (DataRow action in dt.Rows)
+                {
+                    actionID = Convert.ToInt32(action["order_action_id"]);
+                    deactivate(actionID);                   
+                }
+            }
+        }
+
+        public bool checkIfActive(int actionID)
+        {
+            bool result = false;
+
+            DataTable dt = SelectByActionID(actionID);
+
+            if(dt.Rows.Count > 0)
+            {
+                foreach (DataRow action in dt.Rows)
+                {
+                    result = Convert.ToBoolean(action["active"]);
+                }
+            }
+
+            return result;
         }
 
         #endregion
