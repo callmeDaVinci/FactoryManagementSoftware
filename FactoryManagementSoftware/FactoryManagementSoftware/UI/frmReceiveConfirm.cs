@@ -13,13 +13,15 @@ namespace FactoryManagementSoftware.UI
         private float maxReceiveQty;
         private string orderQty;
         private string receivedQty;
-        private bool edit = false;
+        private float returnQty;
+        private bool actionEdit = false;
 
         public frmReceiveConfirm(int id, string code,string name, float qty,float received, string unit)
         {
             InitializeComponent();
             txtItemCode.Text = code;
             txtItemName.Text = name;
+            txtUnit.Text = unit;
             orderQty = qty.ToString();
             receivedQty = received.ToString();
             maxReceiveQty = qty - received;
@@ -28,19 +30,21 @@ namespace FactoryManagementSoftware.UI
             orderID = id;
         }
 
-        //public frmReceiveConfirm(int id, string code, string name, float qty, float received, string unit, bool edit)
-        //{
-        //    InitializeComponent();
-        //    txtItemCode.Text = code;
-        //    txtItemName.Text = name;
-        //    orderQty = qty.ToString();
-        //    receivedQty = received.ToString();
-        //    maxReceiveQty = qty - received;
-        //    txtQty.Text = maxReceiveQty.ToString();
-        //    Unit = unit;
-        //    orderID = id;
-        //    edit = true;
-        //}
+        public frmReceiveConfirm(int id, string code, string name, float orderedqty, float returnqty, float received, string unit)
+        {
+            InitializeComponent();
+            txtItemCode.Text = code;
+            txtItemName.Text = name;
+            txtUnit.Text = unit;
+            returnQty = returnqty;
+            orderQty = orderedqty.ToString();
+            receivedQty = received.ToString();
+            maxReceiveQty = orderedqty - received + returnqty;
+            txtQty.Text = returnQty.ToString();
+            Unit = unit;
+            orderID = id;
+            actionEdit = true;
+        }
 
         #region class object declare
 
@@ -105,8 +109,17 @@ namespace FactoryManagementSoftware.UI
 
             if (receivedNumber > maxReceiveQty)
             {
+                float actualReceivedQty = 0;
                 result = false;
-                errorProvider1.SetError(txtQty, "Wrong receive qty." + "\nOrdered Qty: " + orderQty + "\nReceived Qty: " + receivedQty + "\nReceive qty cannot higher than " + maxReceiveQty);
+                if(actionEdit)
+                {
+                    actualReceivedQty = Convert.ToSingle(receivedQty) - returnQty;
+                }
+                else
+                {
+                    actualReceivedQty = Convert.ToSingle(receivedQty);
+                }
+                errorProvider1.SetError(txtQty, "Wrong receive qty." + "\nOrdered Qty: " + orderQty + "\nReceived Qty: " + actualReceivedQty + "\nReceive qty cannot higher than " + maxReceiveQty);
             }
 
             if (receivedNumber <= 0)
@@ -241,13 +254,10 @@ namespace FactoryManagementSoftware.UI
             if (IfExists(txtItemCode.Text, cmbTo.Text))
             {
                 success = dalStock.Update(uStock);
-
-               
             }
             else
             {
                 success = dalStock.Insert(uStock);
-
             }
 
             if (!success)
@@ -256,10 +266,18 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-
+                dalItem.orderSubtract(txtItemCode.Text, txtQty.Text);
+                if (actionEdit)
+                {
+                    
+                    actionEdit = false;
+                    frmOrderActionHistory.editSuccess = true;
+                }
                 if (ifFullyReceived())
                 {
-                    frmOrder.receivedStockIn = true;
+                    uOrd.ord_id = orderID;
+                    uOrd.ord_status = "RECEIVED";
+                    dalOrd.statusUpdate(uOrd);
                 }
                 frmOrder.receivedNumber = txtQty.Text;
 
@@ -273,7 +291,6 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("Failed to update total stock");
             }
         }
-
         #endregion
 
         #region text changed

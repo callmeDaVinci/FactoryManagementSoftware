@@ -16,6 +16,7 @@ namespace FactoryManagementSoftware.UI
             dgvAction.ClearSelection();
         }
 
+        static public bool editSuccess = false;
         #region class object
 
         trfCatBLL utrfCat = new trfCatBLL();
@@ -240,7 +241,7 @@ namespace FactoryManagementSoftware.UI
 
             if (itemClicked.Equals("Edit"))
             {
-                actionEdit(actionID);
+                actionEdit(actionID, orderID);
             }
             else if (itemClicked.Equals("Undo"))
             {
@@ -271,12 +272,56 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void actionEdit(int actionID)
+        private void actionEdit(int actionID, int orderID)
         {
+            string to = "";
+            string itemCode = "";
+            string itemName = "";
+            string unit = "";
+            float returnQty = 0;
+            float orderQty = 0;
+            float receivedQty = 0;
+            //string trfDate = "";
+
+            DataTable dt = dalOrderAction.SelectByActionID(actionID);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow action in dt.Rows)
+                {
+                    to = action["action_to"].ToString();
+
+                    if (float.TryParse(action["action_detail"].ToString(), out returnQty))
+                    {
+                        returnQty = Convert.ToSingle(action["action_detail"]);
+                    }
+                    //trfDate = Convert.ToDateTime(action["action_detail"])
+                }
+            }
+
+            DataTable dtOrder = dalOrder.Select(orderID);
+
+            if (dtOrder.Rows.Count > 0)
+            {
+                foreach (DataRow order in dtOrder.Rows)
+                {
+                    itemCode = order["ord_item_code"].ToString();
+                    itemName = order["item_name"].ToString();
+                    unit = order["ord_unit"].ToString();
+                    orderQty = Convert.ToSingle(order["ord_qty"]);
+                    receivedQty = Convert.ToSingle(order["ord_received"]);
+                }
+            }
             //call receive form
-            //if confirm edit then stock out old record, deactivate
-            //then stock in according new record/add new record
-            //reload list
+            frmReceiveConfirm frm = new frmReceiveConfirm(orderID, itemCode, itemName, orderQty, returnQty, receivedQty, unit);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//stock in
+
+            if(editSuccess)
+            {
+                editSuccess = false;
+                actionUndo(actionID, orderID);
+            }
         }
 
         private void actionUndo(int actionID, int orderID)

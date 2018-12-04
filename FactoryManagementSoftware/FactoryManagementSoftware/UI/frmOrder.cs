@@ -19,7 +19,7 @@ namespace FactoryManagementSoftware.UI
         private int selectedOrderID = -1;
         static public string finalOrderNumber;
         static public string receivedNumber;
-        static public bool receivedStockIn = false;
+        //static public bool receivedStockIn = false;
         static public bool receivedReturn = false;
         static public bool orderApproved = false;
 
@@ -186,6 +186,8 @@ namespace FactoryManagementSoftware.UI
 
         private void btnOrder_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
             frmOrderRequest frm = new frmOrderRequest();
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//create new order
@@ -196,7 +198,8 @@ namespace FactoryManagementSoftware.UI
                 resetForm();
                 frmOrderRequest.orderSuccess = false;
                 Cursor = Cursors.Arrow; // change cursor to normal type
-            }   
+            }
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void txtOrdSearch_TextChanged(object sender, EventArgs e)
@@ -326,19 +329,6 @@ namespace FactoryManagementSoftware.UI
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//stock in
 
-            if (receivedStockIn)//if order qty fully received
-            {
-                uOrd.ord_id = orderID;
-                uOrd.ord_status = "RECEIVED";
-                dalOrd.statusUpdate(uOrd);
-                receivedStockIn = false;
-            }
-
-            if(!string.IsNullOrEmpty(receivedNumber))
-            {
-                dalItem.orderSubtract(itemCode, receivedNumber); //Updating data into database
-            }
-
             refreshOrderRecord(selectedOrderID);
         }
 
@@ -346,7 +336,6 @@ namespace FactoryManagementSoftware.UI
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-            bool receivedClear = true;//received qty = 0
             DialogResult dialogResult = MessageBox.Show("Are you sure want to cancel this order?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Yes)
             {
@@ -360,32 +349,18 @@ namespace FactoryManagementSoftware.UI
 
                 if (received > 0)//if have received record under this order ,then need to return this item from stock before cancel this order
                 {
-                    receivedClear = false;
-                    dialogResult = MessageBox.Show(@"There is a received record under this order. please return this item from stock before canceling this order.", "Message", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    dialogResult = MessageBox.Show(@"There is an existing received record under this order. Please undo this record before canceling.", "Message", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
                     if (dialogResult == DialogResult.OK)
                     {
-                        frmReceiveCancel frm = new frmReceiveCancel(orderID, itemCode, itemName, received.ToString(), unit);
+                        frmOrderActionHistory frm = new frmOrderActionHistory(orderID);
                         frm.StartPosition = FormStartPosition.CenterScreen;
                         frm.ShowDialog();//return item from stock
 
-                        if (receivedReturn)
-                        {
-                            if (!dalItem.updateTotalStock(itemCode))
-                            {
-                                MessageBox.Show("Failed to update total stock");
-                            }
-                            else
-                            {
-                                receivedClear = true;
-                            }
-
-                            receivedReturn = false;
-                        }
+       
                     }
                 }
-
-                if (receivedClear)
+                else
                 {
                     uOrd.ord_id = orderID;
                     uOrd.ord_required_date = Convert.ToDateTime(requiredDate);
@@ -408,10 +383,10 @@ namespace FactoryManagementSoftware.UI
 
                         dalOrderAction.orderCancel(orderID, "");
                     }
-                    refreshOrderRecord(selectedOrderID);
+                    
                 }
             }
-
+            refreshOrderRecord(selectedOrderID);
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 

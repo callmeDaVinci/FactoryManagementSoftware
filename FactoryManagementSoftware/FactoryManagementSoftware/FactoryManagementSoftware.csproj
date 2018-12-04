@@ -245,11 +245,11 @@
     <Compile Include="UI\frmOrderRequest.Designer.cs">
       <DependentUpon>frmOrderRequest.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmReceiveCancel.cs">
+    <Compile Include="UI\frmOrderCancel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmReceiveCancel.Designer.cs">
-      <DependentUpon>frmReceiveCancel.cs</DependentUpon>
+    <Compile Include="UI\frmOrderCancel.Designer.cs">
+      <DependentUpon>frmOrderCancel.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmReceiveConfirm.cs">
       <SubType>Form</SubType>
@@ -350,8 +350,8 @@
     <EmbeddedResource Include="UI\frmOrderRequest.resx">
       <DependentUpon>frmOrderRequest.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmReceiveCancel.resx">
-      <DependentUpon>frmReceiveCancel.cs</DependentUpon>
+    <EmbeddedResource Include="UI\frmOrderCancel.resx">
+      <DependentUpon>frmOrderCancel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmReceiveConfirm.resx">
       <DependentUpon>frmReceiveConfirm.cs</DependentUpon>

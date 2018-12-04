@@ -46,6 +46,8 @@
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.label7 = new System.Windows.Forms.Label();
+            this.txtUnit = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.SuspendLayout();
@@ -100,7 +102,7 @@
             this.txtQty.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtQty.Location = new System.Drawing.Point(36, 350);
             this.txtQty.Name = "txtQty";
-            this.txtQty.Size = new System.Drawing.Size(380, 34);
+            this.txtQty.Size = new System.Drawing.Size(183, 34);
             this.txtQty.TabIndex = 5;
             this.txtQty.TextChanged += new System.EventHandler(this.txtQty_TextChanged);
             // 
@@ -208,12 +210,32 @@
             this.label7.TabIndex = 133;
             this.label7.Text = "Input \"NULL\" if don\'t have LOT NO";
             // 
+            // txtUnit
+            // 
+            this.txtUnit.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUnit.Location = new System.Drawing.Point(238, 350);
+            this.txtUnit.Name = "txtUnit";
+            this.txtUnit.ReadOnly = true;
+            this.txtUnit.Size = new System.Drawing.Size(178, 34);
+            this.txtUnit.TabIndex = 134;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(234, 324);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(49, 23);
+            this.label8.TabIndex = 135;
+            this.label8.Text = "UNIT";
+            // 
             // frmReceiveConfirm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(452, 625);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.txtUnit);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtItemCode);
             this.Controls.Add(this.label5);
@@ -263,5 +285,7 @@
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtUnit;
     }
 }

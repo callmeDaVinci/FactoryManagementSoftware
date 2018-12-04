@@ -6,9 +6,9 @@ using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmReceiveCancel : Form
+    public partial class frmOrderCancel : Form
     {
-        public frmReceiveCancel()
+        public frmOrderCancel()
         {
             InitializeComponent();
         }
@@ -19,7 +19,7 @@ namespace FactoryManagementSoftware.UI
         private string itemName;
         private string Unit;
 
-        public frmReceiveCancel(int id, string itemcode, string itemname, string qty, string unit)
+        public frmOrderCancel(int id, string itemcode, string itemname, string qty, string unit)
         {
             InitializeComponent();
             orderID = id;
