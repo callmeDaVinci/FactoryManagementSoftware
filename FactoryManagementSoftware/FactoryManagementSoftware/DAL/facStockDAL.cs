@@ -252,6 +252,7 @@ namespace FactoryManagementSoftware.DAL
                     MessageBox.Show("Failed to add new stock");
                 }
             }
+            dalItem.updateTotalStock(itemCode);
             return result;
         }
 
@@ -290,6 +291,7 @@ namespace FactoryManagementSoftware.DAL
                 }
             }
 
+            dalItem.updateTotalStock(itemCode);
             return result;
         }
     }

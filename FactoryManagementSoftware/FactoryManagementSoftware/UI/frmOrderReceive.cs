@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmReceiveConfirm : Form
+    public partial class frmOrderReceive : Form
     {
         private string Unit;
         private int orderID;
@@ -16,7 +16,7 @@ namespace FactoryManagementSoftware.UI
         private float returnQty;
         private bool actionEdit = false;
 
-        public frmReceiveConfirm(int id, string code,string name, float qty,float received, string unit)
+        public frmOrderReceive(int id, string code,string name, float qty,float received, string unit)
         {
             InitializeComponent();
             txtItemCode.Text = code;
@@ -30,7 +30,7 @@ namespace FactoryManagementSoftware.UI
             orderID = id;
         }
 
-        public frmReceiveConfirm(int id, string code, string name, float orderedqty, float returnqty, float received, string unit)
+        public frmOrderReceive(int id, string code, string name, float orderedqty, float returnqty, float received, string unit)
         {
             InitializeComponent();
             txtItemCode.Text = code;
@@ -206,7 +206,7 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_hist_to = locationTo;
             utrfHist.trf_hist_qty = Convert.ToSingle(txtQty.Text);
             utrfHist.trf_hist_unit = Unit;
-            utrfHist.trf_hist_trf_date = DateTime.Now;
+            utrfHist.trf_hist_trf_date = Convert.ToDateTime(dtpTrfDate.Text);
             utrfHist.trf_hist_note = "Order: Received";
             utrfHist.trf_hist_added_date = DateTime.Now;
             utrfHist.trf_hist_added_by = 0;

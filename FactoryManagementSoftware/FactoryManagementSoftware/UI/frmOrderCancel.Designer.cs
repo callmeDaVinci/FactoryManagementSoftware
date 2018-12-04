@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtQty = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.cmbFrom = new System.Windows.Forms.ComboBox();
@@ -195,8 +195,8 @@
             // 
             // order_action_id
             // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.order_action_id.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.order_action_id.DefaultCellStyle = dataGridViewCellStyle1;
             this.order_action_id.HeaderText = "Action ID";
             this.order_action_id.Name = "order_action_id";
             this.order_action_id.ReadOnly = true;
@@ -204,8 +204,8 @@
             // order_id
             // 
             this.order_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.order_id.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.order_id.DefaultCellStyle = dataGridViewCellStyle2;
             this.order_id.HeaderText = "Order ID";
             this.order_id.Name = "order_id";
             this.order_id.ReadOnly = true;
@@ -222,8 +222,8 @@
             // added_by
             // 
             this.added_by.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.added_by.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.added_by.DefaultCellStyle = dataGridViewCellStyle3;
             this.added_by.HeaderText = "By";
             this.added_by.Name = "added_by";
             this.added_by.ReadOnly = true;
@@ -262,8 +262,8 @@
             // note
             // 
             this.note.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.note.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.note.DefaultCellStyle = dataGridViewCellStyle4;
             this.note.HeaderText = "Note";
             this.note.Name = "note";
             this.note.ReadOnly = true;
@@ -333,7 +333,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmOrderCancel";
-            this.Text = "Cancel Receive";
+            this.Text = "Order Cancel";
             this.Load += new System.EventHandler(this.frmReceiveCancel_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAction)).EndInit();
             this.ResumeLayout(false);

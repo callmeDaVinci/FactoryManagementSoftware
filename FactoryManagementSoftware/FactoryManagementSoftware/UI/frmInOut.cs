@@ -977,9 +977,9 @@ namespace FactoryManagementSoftware.UI
 
             successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty, unit);
 
-            successStockAdd = dalItem.stockAdd(itemCode, qty.ToString());
+            //successStockAdd = dalItem.stockAdd(itemCode, qty.ToString());
 
-            return successFacStockIn && successStockAdd;
+            return successFacStockIn;
         }
 
         private bool stockOut(string factoryName, string itemCode, float qty, string unit)
@@ -989,9 +989,9 @@ namespace FactoryManagementSoftware.UI
 
             successFacStockOut = dalStock.facStockOut(getFactoryID(factoryName), itemCode, qty, unit);
 
-            successStockSubtract = dalItem.stockSubtract(itemCode, qty.ToString());
+            //successStockSubtract = dalItem.stockSubtract(itemCode, qty.ToString());
 
-            return successFacStockOut && successStockSubtract;
+            return successFacStockOut;
         }
 
         private void changeTransferRecord(string stockResult, int rowIndex, int id)

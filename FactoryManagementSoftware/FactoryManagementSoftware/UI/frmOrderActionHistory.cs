@@ -313,7 +313,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
             //call receive form
-            frmReceiveConfirm frm = new frmReceiveConfirm(orderID, itemCode, itemName, orderQty, returnQty, receivedQty, unit);
+            frmOrderReceive frm = new frmOrderReceive(orderID, itemCode, itemName, orderQty, returnQty, receivedQty, unit);
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//stock in
 

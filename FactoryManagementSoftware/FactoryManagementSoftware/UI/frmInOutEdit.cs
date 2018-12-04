@@ -433,9 +433,9 @@ namespace FactoryManagementSoftware.UI
 
             successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty, cmbTrfQtyUnit.Text);
 
-            successStockAdd = dalItem.stockAdd(itemCode, qty.ToString());
+            //successStockAdd = dalItem.stockAdd(itemCode, qty.ToString());
 
-            return successFacStockIn && successStockAdd;
+            return successFacStockIn ;
         }
 
         private bool stockOut(string factoryName, string itemCode, float qty)
@@ -446,9 +446,9 @@ namespace FactoryManagementSoftware.UI
 
             successFacStockOut = dalStock.facStockOut(getFactoryID(factoryName), itemCode, qty, cmbTrfQtyUnit.Text);
 
-            successStockSubtract = dalItem.stockSubtract(itemCode, qty.ToString());
+            //successStockSubtract = dalItem.stockSubtract(itemCode, qty.ToString());
 
-            return successFacStockOut && successStockSubtract;
+            return successFacStockOut ;
         }
 
         private bool childStockOut(string factoryName, string parentItemCode, float qty, int indexNo)

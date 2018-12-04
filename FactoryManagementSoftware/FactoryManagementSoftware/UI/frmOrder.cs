@@ -325,7 +325,7 @@ namespace FactoryManagementSoftware.UI
             string received = dgvOrd.Rows[rowIndex].Cells["ord_received"].Value.ToString();
             string unit = dgvOrd.Rows[rowIndex].Cells["ord_unit"].Value.ToString();
 
-            frmReceiveConfirm frm = new frmReceiveConfirm(orderID,itemCode,itemName,Convert.ToSingle(qty),Convert.ToSingle(received), unit);
+            frmOrderReceive frm = new frmOrderReceive(orderID,itemCode,itemName,Convert.ToSingle(qty),Convert.ToSingle(received), unit);
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//stock in
 

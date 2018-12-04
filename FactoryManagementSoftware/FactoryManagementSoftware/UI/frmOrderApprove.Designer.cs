@@ -261,7 +261,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmOrderApprove";
-            this.Text = "frmOrderApprove";
+            this.Text = "Order Approve";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
