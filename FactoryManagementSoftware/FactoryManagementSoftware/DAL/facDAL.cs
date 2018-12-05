@@ -221,10 +221,11 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_fac WHERE fac_id LIKE '%" + keywords + "%'";
+                String sql = "SELECT * FROM tbl_fac WHERE fac_id = @fac_id";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@fac_id", keywords);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
@@ -256,10 +257,11 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_fac WHERE fac_name LIKE '%" + keywords + "%'";
+                String sql = "SELECT * FROM tbl_fac WHERE fac_name = @fac_name";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@fac_name", keywords);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open

@@ -96,7 +96,7 @@ namespace FactoryManagementSoftware.UI
         forecastBLL uForecast = new forecastBLL();
         forecastDAL dalForecast = new forecastDAL();
 
-        #endregion
+        #endregion  
 
         #region Form Load/Close
 
@@ -488,34 +488,60 @@ namespace FactoryManagementSoftware.UI
 
         #region Forecast Data Processing
 
+        private void refreshData()
+        {
+            bool result = dalForecast.Delete();//database forecast table reset
+
+            if (!result)
+            {
+                MessageBox.Show("Failed to reset forecast data");
+            }
+            else
+            {
+                colorOrder = 0;
+                insertForecastData();
+
+                string sort = cmbSort.Text;
+                string order = cmbOrder.Text;
+                int type = 0;
+
+                if (cmbType.SelectedIndex > 0)
+                {
+                    type = cmbType.SelectedIndex;
+                }
+
+                DataTable dt = dalForecast.Select(sort, order);
+                loadForecastList(dt, type);
+            }
+        }
+
         private void insertForecastData()
         {
             string custName = cmbCust.Text;
 
             if (!string.IsNullOrEmpty(custName))
             {
-                DataTable dt = dalItemCust.custSearch(custName);
+                DataTable dt = dalItemCust.custSearch(custName);//load customer's item list
 
-                if (dt.Rows.Count <= 0)
+                if (dt.Rows.Count < 1)
                 {
                     MessageBox.Show("no data under this record.");
                 }
                 else
                 {
-                    float outStock = 0;
-                    float forecastOne = 0;
-                    float forecastTwo = 0;
-                    float forecastThree = 0;
-                    float readyStock = 0;
-                    float outSant = 0;
-                    float shotOne = 0;
-                    float shotTwo = 0;
+                    float outStock = 0;//item stock out qty(in current month)
+                    float forecastOne = 0;//current month forecast number
+                    float forecastTwo = 0;//next month forecast number
+                    float forecastThree = 0;//next next month forecast number
+                    float readyStock = 0;//item ready stock
+                    float outSant = 0;//forecast - outStock
+                    float shotOne = 0;//still left how many item after current month
+                    float shotTwo = 0;//still left how many item after next month
                     string itemCode = "";
                     string month = "";
-                    // string forecastNO = "";
                     int forecastIndex = 1;
 
-                    foreach (DataRow item in dt.Rows)
+                    foreach (DataRow item in dt.Rows)//go into customer's item list
                     {
                         itemCode = item["item_code"].ToString();
                         forecastOne = Convert.ToSingle(item["forecast_one"]);
@@ -523,15 +549,16 @@ namespace FactoryManagementSoftware.UI
                         forecastThree = Convert.ToSingle(item["forecast_three"]);
                         month = item["forecast_current_month"].ToString();
 
-                        DataTable dt3 = daltrfHist.outSearch(cmbCust.Text, getMonthValue(month), itemCode);
+                        DataTable dt3 = daltrfHist.outSearch(cmbCust.Text, getMonthValue(month), itemCode);//load item out to customer record in current month
 
                         outStock = 0;
 
                         if (dt3.Rows.Count > 0)
                         {
-
                             foreach (DataRow outRecord in dt3.Rows)
                             {
+                                //To-Do: need to check if from factory
+
                                 outStock += Convert.ToSingle(outRecord["trf_hist_qty"]);
                             }
                         }
@@ -583,34 +610,7 @@ namespace FactoryManagementSoftware.UI
                 dgvForecastReport.DataSource = null;
             }
             dgvForecastReport.ClearSelection();
-        }
-
-        private void refreshData()
-        {
-            bool result = dalForecast.Delete();//database forecast table reset
-
-            if (!result)
-            {
-                MessageBox.Show("Failed to reset forecast data");
-            }
-            else
-            {
-                colorOrder = 0;
-                insertForecastData();
-
-                string sort = cmbSort.Text;
-                string order = cmbOrder.Text;
-                int type = 0;
-
-                if (cmbType.SelectedIndex > 0)
-                {
-                    type = cmbType.SelectedIndex;
-                }
-
-                DataTable dt = dalForecast.Select(sort, order);
-                loadForecastList(dt, type);
-            }
-        }
+        }//generate forecast data 
 
         private bool ifRepeat(string itemCode, int n, string fcast1, string fcast2, string fcast3, string outStock, float shot1, float shot2)
         {

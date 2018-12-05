@@ -67,7 +67,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmStockReportFactoryQty_Load(object sender, EventArgs e)
         {
-            loadStockList(frmStockReport.itemCode);
+           // loadStockList(frmStockReport.itemCode);
         }
     }
 }

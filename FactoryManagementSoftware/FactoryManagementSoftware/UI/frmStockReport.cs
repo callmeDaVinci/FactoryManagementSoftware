@@ -10,185 +10,173 @@ namespace FactoryManagementSoftware.UI
 {
     public partial class frmStockReport : Form
     {
+        private string categoryColumnName = "item_cat";
+        private string codeColumnName = "item_code";
+        private string nameColumnName = "item_name";
+        private string factoryColumnName = "";
+        private string totakStockColumnName = "item_qty";
+        private string unitColumnName = "stock_unit";
+
+        facDAL dalFac = new facDAL();
+        facStockDAL dalStock = new facStockDAL();
+        itemDAL dalItem = new itemDAL();
+
         public frmStockReport()
         {
             InitializeComponent();
+            createDatagridview();
         }
 
-        itemBLL uItem = new itemBLL();
-        itemDAL dalItem = new itemDAL();
-
-        materialDAL dalMaterial = new materialDAL();
-        materialBLL uMaterial = new materialBLL();
-
-        itemCatDAL dALItemCat = new itemCatDAL();
-
-        joinDAL dalJoin = new joinDAL();
-        joinBLL uJoin = new joinBLL();
-
-        static public string itemCode;
-        private bool formLoaded = false;
-
-        private void loadItemCategoryData()
+        private void datagridviewUI(DataGridView dgv)
         {
-            DataTable dtItemCat = dALItemCat.Select();
-
-            DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
-            distinctTable.Rows.Add("All");
-            distinctTable.DefaultView.Sort = "item_cat_name ASC";
-            cmbCat.DataSource = distinctTable;
-            cmbCat.DisplayMember = "item_cat_name";
-
-            cmbCat.SelectedIndex = -1;
+            dgv.Columns[categoryColumnName].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[codeColumnName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[nameColumnName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[totakStockColumnName].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[unitColumnName].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
         }
 
-        private void frmStockReport_Load(object sender, EventArgs e)
+        private void createDatagridview()
         {
-            loadItemCategoryData();
-            formLoaded = true;
-        }
+            //add category column
+            AddColumns("Category", categoryColumnName);
+           
+            //add code column
+            AddColumns("Code", codeColumnName);
+           
+            //add name column
+            AddColumns("Name", nameColumnName);
+            
+            //add factory columns
+            DataTable dt = dalFac.Select();
 
-        private void frmStockReport_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            MainDashboard.stockReportFormOpen = false;
-        }
-
-        private bool ifGotChild(string itemCode)
-        {
-            bool result = false;
-            DataTable dtJoin = dalJoin.parentCheck(itemCode);
-            if (dtJoin.Rows.Count > 0)
+            if (dt.Rows.Count > 0)
             {
-                result = true;
+                foreach (DataRow stock in dt.Rows)
+                {
+                    factoryColumnName = stock["fac_name"].ToString();
+                    AddColumns(factoryColumnName, factoryColumnName);
+                    dgvStockReport.Columns[factoryColumnName].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                }
             }
 
-            return result;
+            //add total qty column
+            AddColumns("Total Stock", totakStockColumnName);
+
+            //add total unit column
+            AddColumns("Unit", unitColumnName);
+
+            datagridviewUI(dgvStockReport);
+            insertDataToDatagridview();
+            listPaint(dgvStockReport);
+        }
+
+        private void AddColumns(string headText, string name)
+        {
+            var col = new DataGridViewTextBoxColumn();
+
+            col.HeaderText = headText;
+            col.Name = name;
+
+            dgvStockReport.Columns.Add(col);
+        }
+
+        private string getFactoryName(string facID)
+        {
+            string factoryName = "";
+
+            DataTable dtFac = dalFac.idSearch(facID);
+
+            foreach (DataRow fac in dtFac.Rows)
+            {
+                factoryName = fac["fac_name"].ToString();
+            }
+            return factoryName;
+        }
+
+        private void loadStockList(string itemCode,int n)
+        {
+            DataTable dt = dalStock.Select(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow stock in dt.Rows)
+                {
+                    string factoryName = stock["fac_name"].ToString();
+                    string qty = stock["stock_qty"].ToString();
+                    dgvStockReport.Rows[n].Cells[factoryName].Value = qty;
+                    dgvStockReport.Rows[n].Cells[unitColumnName].Value = stock["stock_unit"].ToString();
+                }
+            }
         }
 
         private void listPaint(DataGridView dgv)
         {
-            bool rowColorChange = true;
-            foreach (DataGridViewRow row in dgv.Rows)
-            {
-                int n = row.Index;
-                if (rowColorChange)
-                {
-                    dgv.Rows[n].DefaultCellStyle.BackColor = SystemColors.Control;
-                    rowColorChange = false;
-                }
-                else
-                {
-                    dgv.Rows[n].DefaultCellStyle.BackColor = Color.White;
-                    rowColorChange = true;
-                }
+            dgv.BorderStyle = BorderStyle.None;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.BackgroundColor = Color.White;
 
-                string itemCode = "";
-                if (dgv == dgvStockReport)
-                {
-                    itemCode = dgv.Rows[n].Cells["dgvcItemCode"].Value.ToString();
-                    float qty = 0;
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
 
-                    if (dgv.Rows[n].Cells["dgvcQty"] != null)
-                    {
-                        float.TryParse(dgv.Rows[n].Cells["dgvcQty"].Value.ToString(), out (qty));
-                    }
+            //dgv.RowTemplate.Height = 40;
 
-                    if (ifGotChild(itemCode))
-                    {
-                        dgv.Rows[n].Cells["dgvcItemCode"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
-                        dgv.Rows[n].Cells["dgvcItemName"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
-                    }
-                    if (qty < 0)
-                    {
-                        dgv.Rows[n].Cells["dgvcQty"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
-                    }
-                }
-            }
-
-
+           
             dgv.ClearSelection();
         }
 
-        private void loadItemData()
+        private void insertDataToDatagridview()
         {
-            DataTable dt;
-            if(cmbCat.Text.Equals("All"))
-            {
-                dt = dalItem.Select();
-            }
-            else
-            {
-                dt = dalItem.catSearch(cmbCat.Text);
-            }
-            
-            dgvStockReport.Rows.Clear();
+            DataTable dtItem;
 
-            foreach (DataRow item in dt.Rows)
+            //if (string.IsNullOrEmpty(cmbSearchCat.Text) || cmbSearchCat.Text.Equals("All"))
+            //{
+            //    //show all item from the database
+            //    dtItem = dalItem.Select();
+            //}
+            //else
+            //{
+            //    dtItem = dalItem.catSearch(cmbSearchCat.Text);
+            //}
+
+            dtItem = dalItem.Select();
+            dgvStockReport.Rows.Clear();
+            foreach (DataRow item in dtItem.Rows)
             {
                 int n = dgvStockReport.Rows.Add();
+                dgvStockReport.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
+                dgvStockReport.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
+                dgvStockReport.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
+                dgvStockReport.Rows[n].Cells["item_qty"].Value = Convert.ToSingle(item["item_qty"]).ToString("0.00");
 
-                dgvStockReport.Rows[n].Cells["Category"].Value = item["item_cat"].ToString();
-                dgvStockReport.Rows[n].Cells["dgvcItemCode"].Value = item["item_code"].ToString();
-                dgvStockReport.Rows[n].Cells["dgvcItemName"].Value = item["item_name"].ToString();
-                dgvStockReport.Rows[n].Cells["dgvcQty"].Value = Convert.ToSingle(item["item_qty"].ToString()).ToString("0.00"); 
-                dgvStockReport.Rows[n].Cells["dgvcOrd"].Value = Convert.ToSingle(item["item_ord"].ToString());
-                
-            }
-            listPaint(dgvStockReport);
-
-            if (dt.Rows.Count <= 0 && formLoaded)
-            {
-                MessageBox.Show("no data under this record");
+                loadStockList(item["item_code"].ToString(), n);
+              
             }
         }
 
-        private void cmbCat_SelectedIndexChanged(object sender, EventArgs e)
+        private void dgvStockReport_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            string factoryName = "";
 
-            if (formLoaded)
+            DataTable dt = dalFac.Select();
+
+            if (dt.Rows.Count > 0)
             {
-                loadItemData();
-            }
-
-            Cursor = Cursors.Arrow; // change cursor to normal type
-        }
-
-        private void dgvStockReport_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            //MessageBox.Show("double click");
-            int rowIndex = dgvStockReport.CurrentCell.RowIndex;
-
-            if (rowIndex >= 0)
-            {
-                itemCode = dgvStockReport.Rows[rowIndex].Cells["dgvcItemCode"].Value.ToString();
-               
-                if (!string.IsNullOrEmpty(itemCode) || itemCode != "null")
+                foreach (DataRow stock in dt.Rows)
                 {
-                    frmStockReportFactoryQty frm = new frmStockReportFactoryQty();
-                    frm.StartPosition = FormStartPosition.CenterScreen;
-                    frm.ShowDialog();//Item Edit 
+                    factoryName = stock["fac_name"].ToString();
+                    e.Row.Cells[factoryName].Value = "0";
                 }
             }
-      
-            Cursor = Cursors.Arrow; // change cursor to normal type
+            
         }
 
-        private void frmStockReport_Click(object sender, EventArgs e)
+        private void frmStockReport_Load(object sender, EventArgs e)
         {
             dgvStockReport.ClearSelection();
-        }
-
-        private void dgvStockReport_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
-        {
-            if (e.Column.Index == 4 || e.Column.Index == 3)
-            {
-                e.SortResult = float.Parse(e.CellValue1.ToString()).CompareTo(float.Parse(e.CellValue2.ToString()));
-                e.Handled = true;//pass by the default sorting
-            }
-
-            listPaint(dgvStockReport);
         }
     }
 }

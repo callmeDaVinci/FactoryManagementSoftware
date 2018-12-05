@@ -28,22 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbCat = new System.Windows.Forms.ComboBox();
             this.txtItemSearch = new System.Windows.Forms.TextBox();
             this.lblSearch = new System.Windows.Forms.Label();
             this.dgvStockReport = new System.Windows.Forms.DataGridView();
-            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvcItemCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvcItemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvcQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvcOrd = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,7 +58,6 @@
             this.cmbCat.Name = "cmbCat";
             this.cmbCat.Size = new System.Drawing.Size(363, 36);
             this.cmbCat.TabIndex = 33;
-            this.cmbCat.SelectedIndexChanged += new System.EventHandler(this.cmbCat_SelectedIndexChanged);
             // 
             // txtItemSearch
             // 
@@ -98,21 +87,15 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvStockReport.BackgroundColor = System.Drawing.Color.White;
             this.dgvStockReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvStockReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvStockReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvStockReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvStockReport.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Category,
-            this.dgvcItemCode,
-            this.dgvcItemName,
-            this.dgvcQty,
-            this.dgvcOrd});
             this.dgvStockReport.GridColor = System.Drawing.SystemColors.Control;
             this.dgvStockReport.Location = new System.Drawing.Point(27, 109);
             this.dgvStockReport.Margin = new System.Windows.Forms.Padding(2);
@@ -123,58 +106,9 @@
             this.dgvStockReport.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvStockReport.RowTemplate.Height = 40;
             this.dgvStockReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvStockReport.Size = new System.Drawing.Size(1522, 583);
+            this.dgvStockReport.Size = new System.Drawing.Size(1522, 720);
             this.dgvStockReport.TabIndex = 30;
-            this.dgvStockReport.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockReport_CellDoubleClick);
-            this.dgvStockReport.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgvStockReport_SortCompare);
-            // 
-            // Category
-            // 
-            this.Category.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
-            this.Category.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Category.HeaderText = "Category";
-            this.Category.Name = "Category";
-            this.Category.ReadOnly = true;
-            this.Category.Width = 108;
-            // 
-            // dgvcItemCode
-            // 
-            this.dgvcItemCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
-            this.dgvcItemCode.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvcItemCode.HeaderText = "Code";
-            this.dgvcItemCode.Name = "dgvcItemCode";
-            this.dgvcItemCode.ReadOnly = true;
-            // 
-            // dgvcItemName
-            // 
-            this.dgvcItemName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
-            this.dgvcItemName.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvcItemName.HeaderText = "Name";
-            this.dgvcItemName.Name = "dgvcItemName";
-            this.dgvcItemName.ReadOnly = true;
-            // 
-            // dgvcQty
-            // 
-            this.dgvcQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
-            this.dgvcQty.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvcQty.HeaderText = "Quantity";
-            this.dgvcQty.Name = "dgvcQty";
-            this.dgvcQty.ReadOnly = true;
-            this.dgvcQty.Width = 105;
-            // 
-            // dgvcOrd
-            // 
-            this.dgvcOrd.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
-            this.dgvcOrd.DefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvcOrd.HeaderText = "Order";
-            this.dgvcOrd.Name = "dgvcOrd";
-            this.dgvcOrd.ReadOnly = true;
-            this.dgvcOrd.Width = 83;
+            this.dgvStockReport.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvStockReport_DefaultValuesNeeded);
             // 
             // frmStockReport
             // 
@@ -191,9 +125,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmStockReport";
             this.Text = "Stock Report";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmStockReport_FormClosed);
             this.Load += new System.EventHandler(this.frmStockReport_Load);
-            this.Click += new System.EventHandler(this.frmStockReport_Click);
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockReport)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -207,10 +139,5 @@
         private System.Windows.Forms.TextBox txtItemSearch;
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.DataGridView dgvStockReport;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Category;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvcItemCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvcItemName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvcQty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvcOrd;
     }
 }
