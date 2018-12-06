@@ -10,8 +10,6 @@ using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Excel;
 using DataTable = System.Data.DataTable;
-using System.Text;
-using Utilities = FactoryManagementSoftware.DAL.Utilities;
 using System.Runtime.InteropServices;
 
 namespace FactoryManagementSoftware.UI
@@ -23,7 +21,9 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
         }
 
-        #region Valiable Declare
+        #region Variable Declare
+
+       
 
         enum Month
         {
@@ -57,6 +57,9 @@ namespace FactoryManagementSoftware.UI
             SteelBlue,
             Tomato
         }
+
+        private int indexNo = 1;
+        private int alphbet = 65;
 
         private int colorOrder = 0;
         private string colorName = "Black";
@@ -683,7 +686,7 @@ namespace FactoryManagementSoftware.UI
             return result;
         }
 
-        private void checkChild(string itemCode, string month, string forecastOne, string forecastTwo, string forecastThree, float shotOne, float shotTwo, float outStock)
+        private void checkChild(string itemCode, string month, string forecastOne, string forecastTwo, string forecastThree, float shotOne, float shotTwo, float outStock,int no)
         {
             string parentItemCode = itemCode;
             DataTable dtJoin = dalJoin.parentCheck(itemCode);
@@ -721,6 +724,7 @@ namespace FactoryManagementSoftware.UI
                                 dgvForecastReport.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgvForecastReport.Font, FontStyle.Underline | FontStyle.Bold) };
                                 dgvForecastReport.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgvForecastReport.Font, FontStyle.Underline | FontStyle.Bold) };
                             }
+                            dgvForecastReport.Rows[n].Cells["index"].Value = no.ToString()+"("+(char)alphbet+")";
                             dgvForecastReport.Rows[n].Cells["item_code"].Value = itemCode;
                             dgvForecastReport.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
                             dgvForecastReport.Rows[n].Cells["item_material"].Value = item["item_material"].ToString();
@@ -779,7 +783,7 @@ namespace FactoryManagementSoftware.UI
 
                                 dgvForecastReport.Rows[n].Cells["shotTwo"].Value = childShotTwo.ToString();
                             }
-
+                            alphbet++;
                         }
                     }
                 }
@@ -801,6 +805,7 @@ namespace FactoryManagementSoftware.UI
                 UIDesign();
 
                 //load single data
+                indexNo = 1;
                 foreach (DataRow item in dt.Rows)
                 {
                     string itemCode = item["item_code"].ToString();
@@ -809,6 +814,8 @@ namespace FactoryManagementSoftware.UI
                     {
                         int n = dgvForecastReport.Rows.Add();
 
+                        dgvForecastReport.Rows[n].Cells["index"].Value = indexNo.ToString();
+                        indexNo++;
                         dgvForecastReport.Rows[n].Cells["item_code"].Value = itemCode;
                         dgvForecastReport.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
                         dgvForecastReport.Rows[n].Cells["item_color"].Value = item["item_color"].ToString();
@@ -859,6 +866,7 @@ namespace FactoryManagementSoftware.UI
                         dgvForecastReport.Rows[n].Cells["shotOne"].Value = shotOne.ToString();
                         dgvForecastReport.Rows[n].Cells["shotTwo"].Value = shotTwo.ToString();
                     }
+                    
                 }
 
                 if (type != 1)
@@ -867,7 +875,7 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 //load parent and child data
-
+                indexNo = 1;
                 foreach (DataRow item in dt.Rows)
                 {
                     string itemCode = item["item_code"].ToString();
@@ -883,6 +891,9 @@ namespace FactoryManagementSoftware.UI
                         string forecastThree = item["forecast_three"].ToString();
                         string month = item["forecast_current_month"].ToString();
                         string outStock = item["forecast_out_stock"].ToString();
+
+                        dgvForecastReport.Rows[n].Cells["index"].Value = indexNo.ToString();
+                        dgvForecastReport.Rows[n].Cells["index"].Style = new DataGridViewCellStyle { ForeColor = Color.Black, Font = new System.Drawing.Font(dgvForecastReport.Font, FontStyle.Bold) };
 
                         dgvForecastReport.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgvForecastReport.Font, FontStyle.Underline | FontStyle.Bold) };
                         dgvForecastReport.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgvForecastReport.Font, FontStyle.Underline | FontStyle.Bold) };
@@ -931,10 +942,12 @@ namespace FactoryManagementSoftware.UI
 
                         dgvForecastReport.Rows[n].Cells["shotOne"].Value = item["forecast_shot_one"].ToString();
                         dgvForecastReport.Rows[n].Cells["shotTwo"].Value = item["forecast_shot_two"].ToString();
-                        checkChild(itemCode, month, forecastOne, forecastTwo, forecastThree, shotOne, shotTwo, Convert.ToSingle(outStock));
-
+                        checkChild(itemCode, month, forecastOne, forecastTwo, forecastThree, shotOne, shotTwo, Convert.ToSingle(outStock),indexNo);
+                        indexNo++;
                         n = dgvForecastReport.Rows.Add();
                     }
+                   
+                    alphbet = 65;
                 }
             }
 
@@ -1068,11 +1081,20 @@ namespace FactoryManagementSoftware.UI
 
         #region export to excel
 
+        private string setFileName()
+        {
+            string fileName = "Test.xls";
+
+            DateTime currentDate = DateTime.Now.Date;
+            fileName = "ForecastReport(" + cmbCust.Text + ")_" + currentDate.ToString("ddMMyyyy") + ".xls";
+            return fileName;
+        }
+
         private void btnExportToExcel_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Excel Documents (*.xls)|*.xls";
-            sfd.FileName = "Test.xls";
+            sfd.FileName = setFileName();
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 // Copy DataGridView results to clipboard
@@ -1085,7 +1107,37 @@ namespace FactoryManagementSoftware.UI
                 Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
                 Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
-                // Format column D as text before pasting results, this was required for my data
+                string centerHeader = xlWorkSheet.PageSetup.CenterHeader;
+                //"Arial Unicode MS" is font name, "18" is font size
+                centerHeader = "&\"Calibri,Bold\"&20 (" + cmbCust.Text + ") READY STOCK VERSUS FORECAST";
+
+                string LeftHeader = xlWorkSheet.PageSetup.CenterHeader;
+                //"Arial Unicode MS" is font name, "18" is font size
+                LeftHeader = "&\"Calibri,Bold\"&20 "+ DateTime.Now.Date.ToString("dd/MM/yyyy");
+
+                string RightHeader = xlWorkSheet.PageSetup.CenterHeader;
+                //"Arial Unicode MS" is font name, "18" is font size
+                RightHeader = "&\"Calibri,Bold\"&20 PG -&P";
+
+                xlWorkSheet.PageSetup.LeftHeader = LeftHeader;
+                xlWorkSheet.PageSetup.CenterHeader = centerHeader;
+                xlWorkSheet.PageSetup.RightHeader = RightHeader;
+                xlWorkSheet.PageSetup.CenterFooter = "footer here hahahahahaha";
+                
+                xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
+                xlWorkSheet.PageSetup.Zoom = false;
+                
+                xlWorkSheet.PageSetup.LeftMargin = 1;
+                xlWorkSheet.PageSetup.RightMargin = 1;
+                xlWorkSheet.PageSetup.FitToPagesWide = 1;
+                xlWorkSheet.PageSetup.FitToPagesTall = false;
+                xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+                //xlWorkSheet.PageSetup.TopMargin = 1.6;
+
+
+                
+
 
 
                 // Paste clipboard results to worksheet range
@@ -1093,8 +1145,35 @@ namespace FactoryManagementSoftware.UI
                 CR.Select();
                 xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
 
-                Range rng = xlWorkSheet.get_Range("A:Q").Cells; ;
+                Range rng = xlWorkSheet.get_Range("A:R").Cells;
+                rng.VerticalAlignment = XlHAlign.xlHAlignCenter;
+                rng.RowHeight = 16;
                 rng.EntireColumn.AutoFit();
+
+                Range tRange = xlWorkSheet.UsedRange;
+                tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                tRange.Borders.Weight = XlBorderWeight.xlThin;
+                tRange.Columns[18].ColumnWidth = 20;
+
+                //top row 
+                Range topRow = xlWorkSheet.get_Range("a1:r1").Cells;
+                topRow.RowHeight = 25;
+                
+                
+
+                topRow.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                topRow.VerticalAlignment = XlHAlign.xlHAlignCenter;
+                topRow.BorderAround2(Type.Missing,XlBorderWeight.xlThick, XlColorIndex.xlColorIndexAutomatic, Type.Missing);
+
+                //first column: index 
+                Range indexCol = xlWorkSheet.Columns[1];
+                indexCol.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                indexCol.VerticalAlignment = XlHAlign.xlHAlignCenter;
+
+
+
+
+
 
                 for (int i = 0; i <= dgvForecastReport.RowCount - 2; i++)
                 {
@@ -1107,17 +1186,16 @@ namespace FactoryManagementSoftware.UI
                             Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
                             header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
 
-                            header = (Range)xlWorkSheet.Cells[1, 9];
+                            header = (Range)xlWorkSheet.Cells[1, 10];
                             header.Font.Color = Color.Blue;
-
-                            header = (Range)xlWorkSheet.Cells[1, 13];
-                            header.Font.Color = Color.Red;
 
                             header = (Range)xlWorkSheet.Cells[1, 14];
                             header.Font.Color = Color.Red;
 
                             header = (Range)xlWorkSheet.Cells[1, 16];
                             header.Font.Color = Color.Red;
+
+                           
                         }
 
                         if (dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor == SystemColors.Window)

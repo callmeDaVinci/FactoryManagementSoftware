@@ -4,6 +4,11 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.IO;
+using Excel = Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Interop.Excel;
+using DataTable = System.Data.DataTable;
+using System.Runtime.InteropServices;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -16,41 +21,7 @@ namespace FactoryManagementSoftware.UI
 
         #region Valiable Declare
 
-        enum Month
-        {
-            January = 1,
-            Feburary,
-            March,
-            Apirl,
-            May,
-            June,
-            July,
-            August,
-            September,
-            October,
-            November,
-            December
-        }
-
-        enum color
-        {
-            Gold = 0,
-            LightGreen,
-            DeepSkyBlue,
-            Lavender,
-            LightBlue,
-            LightCyan,
-            LightPink,
-            Orange,
-            Pink,
-            RoyalBlue,
-            Silver,
-            SteelBlue,
-            Tomato
-        }
-
         private string colorName = "Black";
-
 
         #endregion
 
@@ -270,7 +241,17 @@ namespace FactoryManagementSoftware.UI
 
         private void listPaint(DataGridView dgv)
         {
-            bool rowColorChange = true;
+            dgv.BorderStyle = BorderStyle.None;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.BackgroundColor = Color.White;
+
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+
+            //bool rowColorChange = true;
 
             foreach (DataGridViewRow row in dgv.Rows)
             {
@@ -281,19 +262,6 @@ namespace FactoryManagementSoftware.UI
                     row.DefaultCellStyle.BackColor = Color.FromName(colorName);
 
                 }
-                else if (rowColorChange)
-                {
-                    dgv.Rows[n].DefaultCellStyle.BackColor = SystemColors.Control;
-                    rowColorChange = false;
-                }
-                else
-                {
-                    dgv.Rows[n].DefaultCellStyle.BackColor = Color.White;
-                    rowColorChange = true;
-                }
-
-
-
             }
 
             foreach (DataGridViewColumn dgvc in dgv.Columns)
@@ -318,121 +286,6 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region Data Checking/Get Data
-
-        private int getMonthValue(string keyword)
-        {
-
-            int month = 0;
-            if (string.IsNullOrEmpty(keyword))
-            {
-                month = Convert.ToInt32(DateTime.Now.Month.ToString());
-            }
-            else
-            {
-                month = (int)(Month)Enum.Parse(typeof(Month), keyword);
-            }
-
-
-            return month;
-        }
-
-        private int getNextMonth(string keyword)
-        {
-
-            int month = getMonthValue(keyword);
-            int nextMonth = 0;
-
-            if (month == 12)
-            {
-                nextMonth = 1;
-            }
-            else
-            {
-                nextMonth = month + 1;
-            }
-            return nextMonth;
-        }
-
-        private int getNextNextMonth(string keyword)
-        {
-
-            int nextMonth = getNextMonth(keyword);
-            int nextNextMonth = 0;
-
-            if (nextMonth == 12)
-            {
-                nextNextMonth = 1;
-            }
-            else
-            {
-                nextNextMonth = nextMonth + 1;
-            }
-            return nextNextMonth;
-        }
-
-        private string getShortMonth(string month, int forecast)
-        {
-            string shortMonth = "";
-            int monthValue = 0;
-            switch (forecast)
-            {
-                case 1:
-                    monthValue = getMonthValue(month);
-                    break;
-                case 2:
-                    monthValue = getNextMonth(month);
-                    break;
-                case 3:
-                    monthValue = getNextNextMonth(month);
-                    break;
-                default:
-                    monthValue = 0;
-                    break;
-            }
-
-            switch (monthValue)
-            {
-                case 1:
-                    shortMonth = "Jan";
-                    break;
-                case 2:
-                    shortMonth = "Feb";
-                    break;
-                case 3:
-                    shortMonth = "Mar";
-                    break;
-                case 4:
-                    shortMonth = "Apr";
-                    break;
-                case 5:
-                    shortMonth = "May";
-                    break;
-                case 6:
-                    shortMonth = "Jun";
-                    break;
-                case 7:
-                    shortMonth = "Jul";
-                    break;
-                case 8:
-                    shortMonth = "Aug";
-                    break;
-                case 9:
-                    shortMonth = "Sep";
-                    break;
-                case 10:
-                    shortMonth = "Oct";
-                    break;
-                case 11:
-                    shortMonth = "Nov";
-                    break;
-                case 12:
-                    shortMonth = "Dec";
-                    break;
-            }
-
-
-            return shortMonth;
-        }
 
         private string getCustID(string custName)
         {
@@ -505,5 +358,158 @@ namespace FactoryManagementSoftware.UI
 
             }
         }
+
+        #region export to excel
+
+        //private string getNextFileName(string fileName)
+        //{
+        //    string extension = Path.GetExtension(fileName);
+
+        //    int i = 0;
+        //    while (File.Exists(fileName))
+        //    {
+        //        if (i == 0)
+        //            fileName = fileName.Replace(extension, "(" + ++i + ")" + extension);
+        //        else
+        //            fileName = fileName.Replace("(" + i + ")" + extension, "(" + ++i + ")" + extension);
+        //    }
+
+        //    return fileName;
+        //}
+
+        private string setFileName()
+        {
+            string fileName = "Test.xls";
+            DateTime currentDate = DateTime.Now.Date;
+            fileName = "MaterialUsedReport(" + cmbCust.Text + ":"+dtpStart.Text+">"+dtpEnd.Text+")_" + currentDate.ToString("ddMMyyyy") + ".xls";
+            return fileName;
+        }
+
+        private void btnExportToExcel_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Excel Documents (*.xls)|*.xls";
+            sfd.FileName = setFileName();
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                // Copy DataGridView results to clipboard
+                copyAlltoClipboard();
+
+                object misValue = System.Reflection.Missing.Value;
+                Excel.Application xlexcel = new Excel.Application();
+
+                xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
+                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+                Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+                // Paste clipboard results to worksheet range
+                Range CR = (Range)xlWorkSheet.Cells[1, 1];
+                CR.Select();
+                xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+
+                Range rng = xlWorkSheet.get_Range("A:Q").Cells; ;
+                rng.EntireColumn.AutoFit();
+
+                for (int i = 0; i <= dgvMaterialUsedRecord.RowCount - 2; i++)
+                {
+                    for (int j = 0; j <= dgvMaterialUsedRecord.ColumnCount - 1; j++)
+                    {
+                        Range range = (Range)xlWorkSheet.Cells[i + 2, j + 1];
+
+                        if (i == 0)
+                        {
+                            Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                            header.Interior.Color = ColorTranslator.ToOle(dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor);
+                        }
+
+                        if (dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor == SystemColors.Window)
+                        {
+                            range.Interior.Color = ColorTranslator.ToOle(Color.White);
+                            if (i == 0)
+                            {
+                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                                header.Interior.Color = ColorTranslator.ToOle(Color.White);
+                            }
+                        }
+                        else if (dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor == Color.Black)
+                        {
+                            range.Rows.RowHeight = 3;
+                            range.Interior.Color = ColorTranslator.ToOle(dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor);
+                            if (i == 0)
+                            {
+                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                                header.Interior.Color = ColorTranslator.ToOle(dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor);
+                            }
+                        }
+                        else
+                        {
+                            range.Interior.Color = ColorTranslator.ToOle(dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor);
+
+                            if (i == 0)
+                            {
+                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                                header.Interior.Color = ColorTranslator.ToOle(dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor);
+                            }
+                        }
+                        range.Font.Color = dgvMaterialUsedRecord.Rows[i].Cells[j].Style.ForeColor;
+                        if (dgvMaterialUsedRecord.Rows[i].Cells[j].Style.ForeColor == Color.Blue)
+                        {
+                            Range header = (Range)xlWorkSheet.Cells[i + 2, 2];
+                            header.Font.Underline = true;
+
+                            header = (Range)xlWorkSheet.Cells[i + 2, 3];
+                            header.Font.Underline = true;
+                        }
+
+                    }
+                }
+
+
+                // Save the excel file under the captured location from the SaveFileDialog
+                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                xlexcel.DisplayAlerts = true;
+                xlWorkBook.Close(true, misValue, misValue);
+                xlexcel.Quit();
+
+                releaseObject(xlWorkSheet);
+                releaseObject(xlWorkBook);
+                releaseObject(xlexcel);
+
+                // Clear Clipboard and DataGridView selection
+                Clipboard.Clear();
+                dgvMaterialUsedRecord.ClearSelection();
+
+                // Open the newly saved excel file
+                if (File.Exists(sfd.FileName))
+                    System.Diagnostics.Process.Start(sfd.FileName);
+            }
+        }
+
+        private void copyAlltoClipboard()
+        {
+            dgvMaterialUsedRecord.SelectAll();
+            DataObject dataObj = dgvMaterialUsedRecord.GetClipboardContent();
+            if (dataObj != null)
+                Clipboard.SetDataObject(dataObj);
+        }
+
+        private void releaseObject(object obj)
+        {
+            try
+            {
+                Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                MessageBox.Show("Exception Occurred while releasing object " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
+        #endregion
     }
 }

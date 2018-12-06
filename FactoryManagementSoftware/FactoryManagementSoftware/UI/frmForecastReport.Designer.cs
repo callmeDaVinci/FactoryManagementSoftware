@@ -40,7 +40,21 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvForecastReport = new System.Windows.Forms.DataGridView();
+            this.btnCheck = new System.Windows.Forms.Button();
+            this.cmbCust = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.cmbSort = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmbOrder = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cmbType = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.index = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_material = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -54,22 +68,10 @@
             this.outStock = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.oSant = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.shotOne = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dateRequired = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.forecast_two = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.shotTwo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.forecast_three = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnCheck = new System.Windows.Forms.Button();
-            this.cmbCust = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtSearch = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.cmbSort = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cmbOrder = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cmbType = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.dateRequired = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,6 +94,7 @@
             this.dgvForecastReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecastReport.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.index,
             this.item_material,
             this.item_code,
             this.item_name,
@@ -105,10 +108,10 @@
             this.outStock,
             this.oSant,
             this.shotOne,
-            this.dateRequired,
             this.forecast_two,
             this.shotTwo,
-            this.forecast_three});
+            this.forecast_three,
+            this.dateRequired});
             this.dgvForecastReport.EnableHeadersVisualStyles = false;
             this.dgvForecastReport.Location = new System.Drawing.Point(23, 130);
             this.dgvForecastReport.Name = "dgvForecastReport";
@@ -118,154 +121,6 @@
             this.dgvForecastReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvForecastReport.Size = new System.Drawing.Size(1534, 546);
             this.dgvForecastReport.TabIndex = 0;
-            // 
-            // item_material
-            // 
-            this.item_material.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_material.HeaderText = "Material Type";
-            this.item_material.Name = "item_material";
-            this.item_material.ReadOnly = true;
-            this.item_material.Width = 129;
-            // 
-            // item_code
-            // 
-            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_code.HeaderText = "Part Number";
-            this.item_code.Name = "item_code";
-            this.item_code.ReadOnly = true;
-            this.item_code.Width = 126;
-            // 
-            // item_name
-            // 
-            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_name.HeaderText = "Part Name";
-            this.item_name.Name = "item_name";
-            this.item_name.ReadOnly = true;
-            // 
-            // item_color
-            // 
-            this.item_color.HeaderText = "Color";
-            this.item_color.Name = "item_color";
-            this.item_color.ReadOnly = true;
-            // 
-            // mc_ton
-            // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.mc_ton.DefaultCellStyle = dataGridViewCellStyle2;
-            this.mc_ton.HeaderText = "MC TON";
-            this.mc_ton.Name = "mc_ton";
-            this.mc_ton.ReadOnly = true;
-            this.mc_ton.Width = 5;
-            // 
-            // item_part_weight
-            // 
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightYellow;
-            this.item_part_weight.DefaultCellStyle = dataGridViewCellStyle3;
-            this.item_part_weight.HeaderText = "Part Weight(g)";
-            this.item_part_weight.Name = "item_part_weight";
-            this.item_part_weight.ReadOnly = true;
-            // 
-            // item_runner_weight
-            // 
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightYellow;
-            this.item_runner_weight.DefaultCellStyle = dataGridViewCellStyle4;
-            this.item_runner_weight.HeaderText = "Runner Weight(g)";
-            this.item_runner_weight.Name = "item_runner_weight";
-            this.item_runner_weight.ReadOnly = true;
-            // 
-            // item_batch
-            // 
-            this.item_batch.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_batch.HeaderText = "M Batch Code";
-            this.item_batch.Name = "item_batch";
-            this.item_batch.ReadOnly = true;
-            this.item_batch.Width = 135;
-            // 
-            // stock_qty
-            // 
-            this.stock_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Pink;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stock_qty.DefaultCellStyle = dataGridViewCellStyle5;
-            this.stock_qty.HeaderText = "Ready Stock";
-            this.stock_qty.MinimumWidth = 70;
-            this.stock_qty.Name = "stock_qty";
-            this.stock_qty.ReadOnly = true;
-            this.stock_qty.Width = 70;
-            // 
-            // forecast_one
-            // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightYellow;
-            this.forecast_one.DefaultCellStyle = dataGridViewCellStyle6;
-            this.forecast_one.HeaderText = "F/cast 1";
-            this.forecast_one.Name = "forecast_one";
-            this.forecast_one.ReadOnly = true;
-            // 
-            // outStock
-            // 
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.LightYellow;
-            this.outStock.DefaultCellStyle = dataGridViewCellStyle7;
-            this.outStock.HeaderText = "Out";
-            this.outStock.Name = "outStock";
-            this.outStock.ReadOnly = true;
-            // 
-            // oSant
-            // 
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.LightYellow;
-            this.oSant.DefaultCellStyle = dataGridViewCellStyle8;
-            this.oSant.HeaderText = "O/sant";
-            this.oSant.Name = "oSant";
-            this.oSant.ReadOnly = true;
-            // 
-            // shotOne
-            // 
-            this.shotOne.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.LightYellow;
-            this.shotOne.DefaultCellStyle = dataGridViewCellStyle9;
-            this.shotOne.HeaderText = "SHOT 1";
-            this.shotOne.Name = "shotOne";
-            this.shotOne.ReadOnly = true;
-            this.shotOne.Width = 88;
-            // 
-            // dateRequired
-            // 
-            this.dateRequired.HeaderText = "Date Required";
-            this.dateRequired.Name = "dateRequired";
-            this.dateRequired.ReadOnly = true;
-            // 
-            // forecast_two
-            // 
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.LightCyan;
-            this.forecast_two.DefaultCellStyle = dataGridViewCellStyle10;
-            this.forecast_two.HeaderText = "F/cast 2";
-            this.forecast_two.Name = "forecast_two";
-            this.forecast_two.ReadOnly = true;
-            // 
-            // shotTwo
-            // 
-            this.shotTwo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.LightCyan;
-            this.shotTwo.DefaultCellStyle = dataGridViewCellStyle11;
-            this.shotTwo.HeaderText = "SHOT 2";
-            this.shotTwo.Name = "shotTwo";
-            this.shotTwo.ReadOnly = true;
-            this.shotTwo.Width = 88;
-            // 
-            // forecast_three
-            // 
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.PeachPuff;
-            this.forecast_three.DefaultCellStyle = dataGridViewCellStyle12;
-            this.forecast_three.HeaderText = "F/cast 3";
-            this.forecast_three.Name = "forecast_three";
-            this.forecast_three.ReadOnly = true;
             // 
             // btnCheck
             // 
@@ -393,6 +248,165 @@
             this.label5.TabIndex = 20;
             this.label5.Text = "Type";
             // 
+            // index
+            // 
+            this.index.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.index.DefaultCellStyle = dataGridViewCellStyle2;
+            this.index.HeaderText = "No";
+            this.index.Name = "index";
+            this.index.ReadOnly = true;
+            this.index.Width = 62;
+            // 
+            // item_material
+            // 
+            this.item_material.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_material.HeaderText = "Material Type";
+            this.item_material.Name = "item_material";
+            this.item_material.ReadOnly = true;
+            this.item_material.Width = 141;
+            // 
+            // item_code
+            // 
+            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_code.HeaderText = "Part Number";
+            this.item_code.Name = "item_code";
+            this.item_code.ReadOnly = true;
+            this.item_code.Width = 137;
+            // 
+            // item_name
+            // 
+            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_name.HeaderText = "Part Name";
+            this.item_name.Name = "item_name";
+            this.item_name.ReadOnly = true;
+            // 
+            // item_color
+            // 
+            this.item_color.HeaderText = "Color";
+            this.item_color.Name = "item_color";
+            this.item_color.ReadOnly = true;
+            // 
+            // mc_ton
+            // 
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.mc_ton.DefaultCellStyle = dataGridViewCellStyle3;
+            this.mc_ton.HeaderText = "MC TON";
+            this.mc_ton.Name = "mc_ton";
+            this.mc_ton.ReadOnly = true;
+            this.mc_ton.Width = 5;
+            // 
+            // item_part_weight
+            // 
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightYellow;
+            this.item_part_weight.DefaultCellStyle = dataGridViewCellStyle4;
+            this.item_part_weight.HeaderText = "Part Weight(g)";
+            this.item_part_weight.Name = "item_part_weight";
+            this.item_part_weight.ReadOnly = true;
+            // 
+            // item_runner_weight
+            // 
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.LightYellow;
+            this.item_runner_weight.DefaultCellStyle = dataGridViewCellStyle5;
+            this.item_runner_weight.HeaderText = "Runner Weight(g)";
+            this.item_runner_weight.Name = "item_runner_weight";
+            this.item_runner_weight.ReadOnly = true;
+            // 
+            // item_batch
+            // 
+            this.item_batch.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.item_batch.HeaderText = "M Batch Code";
+            this.item_batch.Name = "item_batch";
+            this.item_batch.ReadOnly = true;
+            this.item_batch.Width = 135;
+            // 
+            // stock_qty
+            // 
+            this.stock_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.Pink;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stock_qty.DefaultCellStyle = dataGridViewCellStyle6;
+            this.stock_qty.HeaderText = "Ready Stock";
+            this.stock_qty.MinimumWidth = 70;
+            this.stock_qty.Name = "stock_qty";
+            this.stock_qty.ReadOnly = true;
+            this.stock_qty.Width = 70;
+            // 
+            // forecast_one
+            // 
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.LightYellow;
+            this.forecast_one.DefaultCellStyle = dataGridViewCellStyle7;
+            this.forecast_one.HeaderText = "F/cast 1";
+            this.forecast_one.Name = "forecast_one";
+            this.forecast_one.ReadOnly = true;
+            // 
+            // outStock
+            // 
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.LightYellow;
+            this.outStock.DefaultCellStyle = dataGridViewCellStyle8;
+            this.outStock.HeaderText = "Out";
+            this.outStock.Name = "outStock";
+            this.outStock.ReadOnly = true;
+            // 
+            // oSant
+            // 
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.LightYellow;
+            this.oSant.DefaultCellStyle = dataGridViewCellStyle9;
+            this.oSant.HeaderText = "O/sant";
+            this.oSant.Name = "oSant";
+            this.oSant.ReadOnly = true;
+            // 
+            // shotOne
+            // 
+            this.shotOne.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.LightYellow;
+            this.shotOne.DefaultCellStyle = dataGridViewCellStyle10;
+            this.shotOne.HeaderText = "SHOT 1";
+            this.shotOne.Name = "shotOne";
+            this.shotOne.ReadOnly = true;
+            this.shotOne.Width = 88;
+            // 
+            // forecast_two
+            // 
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.LightCyan;
+            this.forecast_two.DefaultCellStyle = dataGridViewCellStyle11;
+            this.forecast_two.HeaderText = "F/cast 2";
+            this.forecast_two.Name = "forecast_two";
+            this.forecast_two.ReadOnly = true;
+            // 
+            // shotTwo
+            // 
+            this.shotTwo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.LightCyan;
+            this.shotTwo.DefaultCellStyle = dataGridViewCellStyle12;
+            this.shotTwo.HeaderText = "SHOT 2";
+            this.shotTwo.Name = "shotTwo";
+            this.shotTwo.ReadOnly = true;
+            this.shotTwo.Width = 88;
+            // 
+            // forecast_three
+            // 
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.PeachPuff;
+            this.forecast_three.DefaultCellStyle = dataGridViewCellStyle13;
+            this.forecast_three.HeaderText = "F/cast 3";
+            this.forecast_three.Name = "forecast_three";
+            this.forecast_three.ReadOnly = true;
+            // 
+            // dateRequired
+            // 
+            this.dateRequired.HeaderText = "Note";
+            this.dateRequired.MinimumWidth = 100;
+            this.dateRequired.Name = "dateRequired";
+            this.dateRequired.ReadOnly = true;
+            // 
             // frmForecastReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -440,6 +454,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cmbType;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn index;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_material;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_name;
@@ -453,9 +468,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn outStock;
         private System.Windows.Forms.DataGridViewTextBoxColumn oSant;
         private System.Windows.Forms.DataGridViewTextBoxColumn shotOne;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dateRequired;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_two;
         private System.Windows.Forms.DataGridViewTextBoxColumn shotTwo;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_three;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dateRequired;
     }
 }

@@ -34,6 +34,7 @@
             this.txtItemSearch = new System.Windows.Forms.TextBox();
             this.lblSearch = new System.Windows.Forms.Label();
             this.dgvStockReport = new System.Windows.Forms.DataGridView();
+            this.btnExportToExcel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -58,6 +59,7 @@
             this.cmbCat.Name = "cmbCat";
             this.cmbCat.Size = new System.Drawing.Size(363, 36);
             this.cmbCat.TabIndex = 33;
+            this.cmbCat.SelectedIndexChanged += new System.EventHandler(this.cmbCat_SelectedIndexChanged);
             // 
             // txtItemSearch
             // 
@@ -66,6 +68,7 @@
             this.txtItemSearch.Name = "txtItemSearch";
             this.txtItemSearch.Size = new System.Drawing.Size(363, 34);
             this.txtItemSearch.TabIndex = 32;
+            this.txtItemSearch.TextChanged += new System.EventHandler(this.txtItemSearch_TextChanged);
             // 
             // lblSearch
             // 
@@ -110,12 +113,29 @@
             this.dgvStockReport.TabIndex = 30;
             this.dgvStockReport.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvStockReport_DefaultValuesNeeded);
             // 
+            // btnExportToExcel
+            // 
+            this.btnExportToExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExportToExcel.BackColor = System.Drawing.Color.Transparent;
+            this.btnExportToExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportToExcel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExportToExcel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btnExportToExcel.Location = new System.Drawing.Point(1429, 44);
+            this.btnExportToExcel.Margin = new System.Windows.Forms.Padding(2);
+            this.btnExportToExcel.Name = "btnExportToExcel";
+            this.btnExportToExcel.Size = new System.Drawing.Size(120, 50);
+            this.btnExportToExcel.TabIndex = 74;
+            this.btnExportToExcel.Text = "EXCEL";
+            this.btnExportToExcel.UseVisualStyleBackColor = false;
+            this.btnExportToExcel.Click += new System.EventHandler(this.btnExcel_Click);
+            // 
             // frmStockReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.btnExportToExcel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmbCat);
             this.Controls.Add(this.txtItemSearch);
@@ -125,7 +145,9 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmStockReport";
             this.Text = "Stock Report";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmStockReport_FormClosed);
             this.Load += new System.EventHandler(this.frmStockReport_Load);
+            this.Click += new System.EventHandler(this.frmStockReport_Click);
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockReport)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -139,5 +161,6 @@
         private System.Windows.Forms.TextBox txtItemSearch;
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.DataGridView dgvStockReport;
+        private System.Windows.Forms.Button btnExportToExcel;
     }
 }

@@ -56,6 +56,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnExportToExcel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaterialUsedRecord)).BeginInit();
             this.SuspendLayout();
             // 
@@ -117,7 +118,6 @@
             this.dgvMaterialUsedRecord.GridColor = System.Drawing.SystemColors.Control;
             this.dgvMaterialUsedRecord.Location = new System.Drawing.Point(31, 125);
             this.dgvMaterialUsedRecord.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvMaterialUsedRecord.MultiSelect = false;
             this.dgvMaterialUsedRecord.Name = "dgvMaterialUsedRecord";
             this.dgvMaterialUsedRecord.ReadOnly = true;
             this.dgvMaterialUsedRecord.RowHeadersVisible = false;
@@ -289,12 +289,29 @@
             this.label3.TabIndex = 86;
             this.label3.Text = "END";
             // 
+            // btnExportToExcel
+            // 
+            this.btnExportToExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExportToExcel.BackColor = System.Drawing.Color.Transparent;
+            this.btnExportToExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportToExcel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExportToExcel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btnExportToExcel.Location = new System.Drawing.Point(1422, 45);
+            this.btnExportToExcel.Margin = new System.Windows.Forms.Padding(2);
+            this.btnExportToExcel.Name = "btnExportToExcel";
+            this.btnExportToExcel.Size = new System.Drawing.Size(120, 50);
+            this.btnExportToExcel.TabIndex = 88;
+            this.btnExportToExcel.Text = "EXCEL";
+            this.btnExportToExcel.UseVisualStyleBackColor = false;
+            this.btnExportToExcel.Click += new System.EventHandler(this.btnExportToExcel_Click);
+            // 
             // frmMaterialUsedReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.btnExportToExcel);
             this.Controls.Add(this.dtpEnd);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cmbCust);
@@ -336,5 +353,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn wastage_allowed;
         private System.Windows.Forms.DataGridViewTextBoxColumn material_used_include_wastage;
         private System.Windows.Forms.DataGridViewTextBoxColumn total_material_used;
+        private System.Windows.Forms.Button btnExportToExcel;
     }
 }
