@@ -3,6 +3,7 @@ using FactoryManagementSoftware.DAL;
 using System;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
@@ -338,6 +339,26 @@ namespace FactoryManagementSoftware.UI
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             searchForecastList();
+        }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+            if (!MainDashboard.forecastReportInputFormOpen)
+            {
+                frmForecastReport frm = new frmForecastReport();
+                frm.MdiParent = this.ParentForm;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                MainDashboard.forecastReportInputFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmForecastReport>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmForecastReport>().First().BringToFront();
+                }
+            }
         }
     }
 }

@@ -9,6 +9,8 @@ namespace FactoryManagementSoftware.UI
 {
     public partial class frmOrderActionHistory : Form
     {
+        userDAL dalUser = new userDAL();
+
         public frmOrderActionHistory(int orderID)
         {
             InitializeComponent();
@@ -187,7 +189,7 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
             //handle the row selection on right click
-            if (e.Button == MouseButtons.Right && e.RowIndex > -1)
+            if (e.Button == MouseButtons.Right && e.RowIndex > -1 && dalUser.getPermissionLevel(MainDashboard.USER_ID) >= MainDashboard.ACTION_LVL_TWO)
             {
                 ContextMenuStrip my_menu = new ContextMenuStrip();
                 dgvAction.CurrentCell = dgvAction.Rows[e.RowIndex].Cells[e.ColumnIndex];

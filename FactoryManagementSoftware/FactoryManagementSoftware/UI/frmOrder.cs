@@ -9,9 +9,21 @@ namespace FactoryManagementSoftware.UI
 {
     public partial class frmOrder : Form
     {
+        userDAL dalUser = new userDAL();
+        private int userPermission = -1;
         public frmOrder()
         {
             InitializeComponent();
+            userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+
+            if (userPermission >= MainDashboard.ACTION_LVL_TWO)
+            {
+                btnOrder.Show();
+            }
+            else
+            {
+                btnOrder.Hide();
+            }
         }
 
         #region variable declare
@@ -19,7 +31,7 @@ namespace FactoryManagementSoftware.UI
         private int selectedOrderID = -1;
         static public string finalOrderNumber;
         static public string receivedNumber;
-        //static public bool receivedStockIn = false;
+      
         static public bool receivedReturn = false;
         static public bool orderApproved = false;
 
@@ -124,7 +136,8 @@ namespace FactoryManagementSoftware.UI
 
             if (value.Equals("REQUESTING"))
             {
-                foreColor = Color.FromArgb(251, 188, 5);
+                foreColor = Color.FromArgb(244, 170, 66);
+                //foreColor = Color.FromArgb(251, 188, 5);
             }
             else if (value.Equals("CANCELLED"))
             {
@@ -154,6 +167,14 @@ namespace FactoryManagementSoftware.UI
             dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+
+            dgv.Columns["ord_qty"].DefaultCellStyle.BackColor = Color.FromArgb(232, 244, 66);
+            dgv.Columns["ord_pending"].DefaultCellStyle.BackColor = Color.FromArgb(66, 191, 244);
+            dgv.Columns["ord_received"].DefaultCellStyle.BackColor = Color.FromArgb(66, 244, 161);
+
+            dgv.Columns["ord_qty"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns["ord_pending"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns["ord_received"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
             //dgv.RowTemplate.Height = 40;
 
@@ -295,23 +316,30 @@ namespace FactoryManagementSoftware.UI
 
         private void orderAprove(int rowIndex, int orderID)
         {
-            //get data from datagridview
-            string itemCode = dgvOrd.Rows[rowIndex].Cells["ord_item_code"].Value.ToString();
-            string itemName = dgvOrd.Rows[rowIndex].Cells["item_name"].Value.ToString();
-            string requiredDate = dgvOrd.Rows[rowIndex].Cells["ord_required_date"].Value.ToString();
-            string qty = dgvOrd.Rows[rowIndex].Cells["ord_qty"].Value.ToString();
-            string unit = dgvOrd.Rows[rowIndex].Cells["ord_unit"].Value.ToString();
-
-            //approve form
-            frmOrderApprove frm = new frmOrderApprove(orderID.ToString(), requiredDate, itemName, itemCode, qty, unit);
-            frm.StartPosition = FormStartPosition.CenterScreen;
-            frm.ShowDialog();
-
-            if(orderApproved)//if order approved from approve form, then change order status from requesting to pending
+            if (userPermission >= MainDashboard.ACTION_LVL_THREE)
             {
-                dalItem.orderAdd(itemCode, finalOrderNumber);//add order qty to item
-                refreshOrderRecord(selectedOrderID);
-                orderApproved = false;
+                //get data from datagridview
+                string itemCode = dgvOrd.Rows[rowIndex].Cells["ord_item_code"].Value.ToString();
+                string itemName = dgvOrd.Rows[rowIndex].Cells["item_name"].Value.ToString();
+                string requiredDate = dgvOrd.Rows[rowIndex].Cells["ord_required_date"].Value.ToString();
+                string qty = dgvOrd.Rows[rowIndex].Cells["ord_qty"].Value.ToString();
+                string unit = dgvOrd.Rows[rowIndex].Cells["ord_unit"].Value.ToString();
+
+                //approve form
+                frmOrderApprove frm = new frmOrderApprove(orderID.ToString(), requiredDate, itemName, itemCode, qty, unit);
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.ShowDialog();
+
+                if (orderApproved)//if order approved from approve form, then change order status from requesting to pending
+                {
+                    dalItem.orderAdd(itemCode, finalOrderNumber);//add order qty to item
+                    refreshOrderRecord(selectedOrderID);
+                    orderApproved = false;
+                } 
+            }
+            else
+            {
+                MessageBox.Show("Action denied. Please admin for this action.");
             }
         }
 
@@ -400,7 +428,7 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
             //handle the row selection on right click
-            if (e.Button == MouseButtons.Right && e.RowIndex > -1)
+            if (e.Button == MouseButtons.Right && e.RowIndex > -1 && userPermission >= MainDashboard.ACTION_LVL_TWO)
             {
                 ContextMenuStrip my_menu = new ContextMenuStrip();
                 dgvOrd.CurrentCell = dgvOrd.Rows[e.RowIndex].Cells[e.ColumnIndex];
@@ -534,7 +562,28 @@ namespace FactoryManagementSoftware.UI
             loadOrderRecord();
         }
 
+        //sort data according number
+        private void dgvOrd_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            //if (e.Column.Index == 5 || e.Column.Index == 6 || e.Column.Index == 7)
+            //{
+            //    e.SortResult = float.Parse(e.CellValue1.ToString()).CompareTo(float.Parse(e.CellValue2.ToString()));
+            //    e.Handled = true;//pass by the default sorting
+            //}
+            object tempObject1 = e.CellValue1;
+            object tempObject2 = e.CellValue2;
+            if (!(tempObject1 is null) && !(tempObject2 is null))
+            {
+                if (float.TryParse(tempObject1.ToString(), out float tmp) && float.TryParse(tempObject2.ToString(), out tmp))
+                {
+                    e.SortResult = float.Parse(tempObject1.ToString()).CompareTo(float.Parse(tempObject2.ToString()));
+                    e.Handled = true;//pass by the default sorting
+                }
+            }
+        }
+
         #endregion
+
 
     }
 }

@@ -3,15 +3,28 @@ using FactoryManagementSoftware.DAL;
 using System;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
 {
     public partial class frmInOut : Form
-    { 
+    {
+        private int userPermission = -1;
         public frmInOut()
         {
             InitializeComponent();
+
+            userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+
+            if(userPermission >= MainDashboard.ACTION_LVL_TWO)
+            {
+                btnTransfer.Show();
+            }
+            else
+            {
+                btnTransfer.Hide();
+            }
         }
 
         #region variable declare
@@ -39,6 +52,8 @@ namespace FactoryManagementSoftware.UI
         
         joinDAL dalJoin = new joinDAL();
 
+        userDAL dalUser = new userDAL();
+
         childTrfHistDAL dalChildTrf = new childTrfHistDAL();
         childTrfHistBLL uChildTrfHist = new childTrfHistBLL();
 
@@ -54,6 +69,7 @@ namespace FactoryManagementSoftware.UI
         private void frmInOut_Load(object sender, EventArgs e)
         {
             resetForm();
+           
         }
 
         private void loadItemCategoryData()
@@ -756,6 +772,50 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
+        private void dgvItem_MouseClick(object sender, MouseEventArgs e)
+        {
+            var ht = dgvItem.HitTest(e.X, e.Y);
+
+            if (ht.Type == DataGridViewHitTestType.None)
+            {
+                //clicked on grey area
+                dgvItem.ClearSelection();
+                loadTransferList();
+                refreshDataList();
+                resetSaveData();
+                txtSearch.Clear();
+            }
+        }
+
+        private void dgvFactoryStock_MouseClick(object sender, MouseEventArgs e)
+        {
+            var ht = dgvFactoryStock.HitTest(e.X, e.Y);
+
+            if (ht.Type == DataGridViewHitTestType.None)
+            {
+                //clicked on grey area
+                dgvItem.ClearSelection();
+                loadTransferList();
+                refreshDataList();
+                resetSaveData();
+                txtSearch.Clear();
+            }
+        }
+
+        private void dgvItem_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            object tempObject1 = e.CellValue1;
+            object tempObject2 = e.CellValue2;
+            if (!(tempObject1 is null) && !(tempObject2 is null))
+            {
+                if (float.TryParse(tempObject1.ToString(), out float tmp) && float.TryParse(tempObject2.ToString(), out tmp))
+                {
+                    e.SortResult = float.Parse(tempObject1.ToString()).CompareTo(float.Parse(tempObject2.ToString()));
+                    e.Handled = true;//pass by the default sorting
+                }
+            }
+        }
+
         #endregion
 
         #region Function
@@ -789,11 +849,24 @@ namespace FactoryManagementSoftware.UI
         }
 
         //reset
-        private void btnReset_Click(object sender, EventArgs e)
+        private void btnReport_Click(object sender, EventArgs e)
         {
-            
-                resetForm();
-       
+            if (!MainDashboard.stockReportFormOpen)
+            {
+                frmStockReport frm = new frmStockReport();
+                frm.MdiParent = this.ParentForm;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                MainDashboard.stockReportFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmStockReport>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmStockReport>().First().BringToFront();
+                }
+            }
         }
 
         //show undo or redo menustrip
@@ -802,7 +875,7 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
             //handle the row selection on right click
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right && userPermission >= MainDashboard.ACTION_LVL_TWO)
             {
                 ContextMenuStrip my_menu = new ContextMenuStrip();
 
@@ -973,11 +1046,8 @@ namespace FactoryManagementSoftware.UI
         private bool stockIn(string factoryName, string itemCode, float qty, string unit)
         {
             bool successFacStockIn;
-            bool successStockAdd;
 
             successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty, unit);
-
-            //successStockAdd = dalItem.stockAdd(itemCode, qty.ToString());
 
             return successFacStockIn;
         }
@@ -1103,46 +1173,8 @@ namespace FactoryManagementSoftware.UI
             return success;
         }
 
+
         #endregion
-
-        private void dgvItem_MouseClick(object sender, MouseEventArgs e)
-        {
-            var ht = dgvItem.HitTest(e.X, e.Y);
-
-            if (ht.Type == DataGridViewHitTestType.None)
-            {
-                //clicked on grey area
-                dgvItem.ClearSelection();
-                loadTransferList();
-                refreshDataList();
-                resetSaveData();
-                txtSearch.Clear();
-            }
-        }
-
-        private void dgvFactoryStock_MouseClick(object sender, MouseEventArgs e)
-        {
-            var ht = dgvFactoryStock.HitTest(e.X, e.Y);
-
-            if (ht.Type == DataGridViewHitTestType.None)
-            {
-                //clicked on grey area
-                dgvItem.ClearSelection();
-                loadTransferList();
-                refreshDataList();
-                resetSaveData();
-                txtSearch.Clear();
-            }
-        }
-
-        private void dgvItem_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
-        {
-            if (e.Column.Index == 4 || e.Column.Index == 3)
-            {
-                e.SortResult = float.Parse(e.CellValue1.ToString()).CompareTo(float.Parse(e.CellValue2.ToString()));
-                e.Handled = true;//pass by the default sorting
-            }
-        }
     }
 }
 

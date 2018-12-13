@@ -41,14 +41,14 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvTrf = new System.Windows.Forms.DataGridView();
             this.trf_hist_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trf_hist_added_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -66,24 +66,24 @@
             this.fac_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.stock_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvItem = new System.Windows.Forms.DataGridView();
+            this.item_cat = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_ord = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.lblSearch = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dgvTotal = new System.Windows.Forms.DataGridView();
             this.Total = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnTransfer = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbSearchCat = new System.Windows.Forms.ComboBox();
             this.cmbSearchBy = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.btnReset = new System.Windows.Forms.Button();
+            this.btnReport = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.item_cat = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_ord = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTrf)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFactoryStock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).BeginInit();
@@ -333,6 +333,54 @@
             this.dgvItem.Sorted += new System.EventHandler(this.dgvItem_Sorted);
             this.dgvItem.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvItem_MouseClick);
             // 
+            // item_cat
+            // 
+            this.item_cat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.Black;
+            this.item_cat.DefaultCellStyle = dataGridViewCellStyle14;
+            this.item_cat.HeaderText = "Category";
+            this.item_cat.Name = "item_cat";
+            this.item_cat.ReadOnly = true;
+            // 
+            // item_code
+            // 
+            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle15.BackColor = System.Drawing.Color.White;
+            this.item_code.DefaultCellStyle = dataGridViewCellStyle15;
+            this.item_code.HeaderText = "Code";
+            this.item_code.Name = "item_code";
+            this.item_code.ReadOnly = true;
+            // 
+            // item_name
+            // 
+            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle16.BackColor = System.Drawing.Color.White;
+            this.item_name.DefaultCellStyle = dataGridViewCellStyle16;
+            this.item_name.HeaderText = "Name";
+            this.item_name.Name = "item_name";
+            this.item_name.ReadOnly = true;
+            // 
+            // item_ord
+            // 
+            this.item_ord.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle17.BackColor = System.Drawing.Color.White;
+            this.item_ord.DefaultCellStyle = dataGridViewCellStyle17;
+            this.item_ord.HeaderText = "Order Pending";
+            this.item_ord.Name = "item_ord";
+            this.item_ord.ReadOnly = true;
+            this.item_ord.Width = 150;
+            // 
+            // item_qty
+            // 
+            this.item_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle18.BackColor = System.Drawing.Color.White;
+            this.item_qty.DefaultCellStyle = dataGridViewCellStyle18;
+            this.item_qty.HeaderText = "Qty";
+            this.item_qty.Name = "item_qty";
+            this.item_qty.ReadOnly = true;
+            this.item_qty.Width = 66;
+            // 
             // txtSearch
             // 
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -421,21 +469,21 @@
             this.Total.Name = "Total";
             this.Total.ReadOnly = true;
             // 
-            // button2
+            // btnTransfer
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(1283, 41);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(122, 52);
-            this.button2.TabIndex = 67;
-            this.button2.Text = "TRANSFER";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.transfer_Click);
+            this.btnTransfer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTransfer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnTransfer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTransfer.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTransfer.ForeColor = System.Drawing.Color.White;
+            this.btnTransfer.Location = new System.Drawing.Point(1283, 41);
+            this.btnTransfer.Margin = new System.Windows.Forms.Padding(2);
+            this.btnTransfer.Name = "btnTransfer";
+            this.btnTransfer.Size = new System.Drawing.Size(122, 52);
+            this.btnTransfer.TabIndex = 67;
+            this.btnTransfer.Text = "TRANSFER";
+            this.btnTransfer.UseVisualStyleBackColor = false;
+            this.btnTransfer.Click += new System.EventHandler(this.transfer_Click);
             // 
             // label1
             // 
@@ -481,21 +529,21 @@
             this.label4.TabIndex = 71;
             this.label4.Text = "BY";
             // 
-            // btnReset
+            // btnReport
             // 
-            this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReset.BackColor = System.Drawing.Color.Transparent;
-            this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReset.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
-            this.btnReset.Location = new System.Drawing.Point(1427, 41);
-            this.btnReset.Margin = new System.Windows.Forms.Padding(2);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(120, 50);
-            this.btnReset.TabIndex = 73;
-            this.btnReset.Text = "REFRESH";
-            this.btnReset.UseVisualStyleBackColor = false;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            this.btnReport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReport.BackColor = System.Drawing.Color.Transparent;
+            this.btnReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReport.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
+            this.btnReport.Location = new System.Drawing.Point(1427, 41);
+            this.btnReport.Margin = new System.Windows.Forms.Padding(2);
+            this.btnReport.Name = "btnReport";
+            this.btnReport.Size = new System.Drawing.Size(120, 50);
+            this.btnReport.TabIndex = 73;
+            this.btnReport.Text = "REPORT";
+            this.btnReport.UseVisualStyleBackColor = false;
+            this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
             // 
             // label5
             // 
@@ -508,54 +556,6 @@
             this.label5.TabIndex = 74;
             this.label5.Text = "ITEM INFORMATION";
             // 
-            // item_cat
-            // 
-            this.item_cat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle14.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.Black;
-            this.item_cat.DefaultCellStyle = dataGridViewCellStyle14;
-            this.item_cat.HeaderText = "Category";
-            this.item_cat.Name = "item_cat";
-            this.item_cat.ReadOnly = true;
-            // 
-            // item_code
-            // 
-            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.White;
-            this.item_code.DefaultCellStyle = dataGridViewCellStyle15;
-            this.item_code.HeaderText = "Code";
-            this.item_code.Name = "item_code";
-            this.item_code.ReadOnly = true;
-            // 
-            // item_name
-            // 
-            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.White;
-            this.item_name.DefaultCellStyle = dataGridViewCellStyle16;
-            this.item_name.HeaderText = "Name";
-            this.item_name.Name = "item_name";
-            this.item_name.ReadOnly = true;
-            // 
-            // item_ord
-            // 
-            this.item_ord.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.White;
-            this.item_ord.DefaultCellStyle = dataGridViewCellStyle17;
-            this.item_ord.HeaderText = "Order Pending";
-            this.item_ord.Name = "item_ord";
-            this.item_ord.ReadOnly = true;
-            this.item_ord.Width = 150;
-            // 
-            // item_qty
-            // 
-            this.item_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle18.BackColor = System.Drawing.Color.White;
-            this.item_qty.DefaultCellStyle = dataGridViewCellStyle18;
-            this.item_qty.HeaderText = "Qty";
-            this.item_qty.Name = "item_qty";
-            this.item_qty.ReadOnly = true;
-            this.item_qty.Width = 66;
-            // 
             // frmInOut
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -563,12 +563,12 @@
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(1582, 853);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.btnReset);
+            this.Controls.Add(this.btnReport);
             this.Controls.Add(this.cmbSearchBy);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cmbSearchCat);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnTransfer);
             this.Controls.Add(this.dgvTotal);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -607,12 +607,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn stock_qty;
         private System.Windows.Forms.DataGridView dgvTotal;
         private System.Windows.Forms.DataGridViewTextBoxColumn Total;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnTransfer;
         private System.Windows.Forms.ComboBox cmbSearchBy;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cmbSearchCat;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Button btnReport;
         private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_added_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn trf_hist_trf_date;

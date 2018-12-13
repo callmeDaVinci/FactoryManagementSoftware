@@ -1,5 +1,5 @@
-﻿using System;
-using System.Drawing;
+﻿using FactoryManagementSoftware.DAL;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -20,10 +20,38 @@ namespace FactoryManagementSoftware.UI
         static public bool joinFormOpen = false;
         static public bool MaterialUsedReportFormOpen = false;
         static public bool stockReportFormOpen = false;
+        static public bool userFormOpen = false;
+        static public int USER_ID = -1;
 
-        public MainDashboard()
+        static public readonly int ACTION_LVL_ONE = 1;
+        static public readonly int ACTION_LVL_TWO = 2;
+        static public readonly int ACTION_LVL_THREE = 3;
+        static public readonly int ACTION_LVL_FOUR = 4;
+        static public readonly int ACTION_LVL_FIVE = 5;
+
+        userDAL dalUser = new userDAL();
+
+        public MainDashboard(int userID)
         {
             InitializeComponent();
+            USER_ID = userID;
+
+            int userPermission = dalUser.getPermissionLevel(USER_ID);
+
+            if(userPermission >= ACTION_LVL_FOUR)
+            {
+                adminToolStripMenuItem.Visible = true;
+            }
+            else if(userPermission >= ACTION_LVL_TWO)
+            {
+                forecastToolStripMenuItem.Visible = true;
+                adminToolStripMenuItem.Visible = false;
+            }
+            else
+            {
+                forecastToolStripMenuItem.Visible = false;
+                adminToolStripMenuItem.Visible = false;
+            }
         }
 
         private void itemToolStripMenuItem_Click(object sender, EventArgs e)
@@ -106,7 +134,6 @@ namespace FactoryManagementSoftware.UI
                 }
             }
         }
-
 
         private void categoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -315,6 +342,51 @@ namespace FactoryManagementSoftware.UI
                 if (Application.OpenForms.OfType<frmStockReport>().Count() == 1)
                 {
                     Application.OpenForms.OfType<frmStockReport>().First().BringToFront();
+                }
+            }
+        }
+
+        private void forecastToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!forecastInputFormOpen)
+            {
+                frmForecast frm = new frmForecast();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                forecastInputFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmForecast>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmForecast>().First().BringToFront();
+                }
+            }
+        }
+
+        private void MainDashboard_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void userToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!userFormOpen)
+            {
+                frmUser frm = new frmUser();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                userFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmUser>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmUser>().First().BringToFront();
                 }
             }
         }

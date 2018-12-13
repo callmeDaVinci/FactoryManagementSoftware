@@ -290,7 +290,7 @@ namespace FactoryManagementSoftware.UI
             dgvForecastReport.Columns["shotTwo"].HeaderCell.Style.ForeColor = Color.Red;
 
             dgvForecastReport.Columns["forecast_Three"].HeaderCell.Style.BackColor = Color.PeachPuff;
-            dgvForecastReport.Columns["dateRequired"].HeaderCell.Style.ForeColor = Color.Red;
+          
 
             dgvForecastReport.Columns["shotTwo"].HeaderCell.Style.ForeColor = Color.Red;
 
@@ -821,8 +821,8 @@ namespace FactoryManagementSoftware.UI
                         dgvForecastReport.Rows[n].Cells["item_color"].Value = item["item_color"].ToString();
                         dgvForecastReport.Rows[n].Cells["item_material"].Value = item["item_material"].ToString();
                         dgvForecastReport.Rows[n].Cells["item_batch"].Value = item["item_mb"].ToString();
-                        dgvForecastReport.Rows[n].Cells["item_part_weight"].Value = item["item_part_weight"].ToString();
-                        dgvForecastReport.Rows[n].Cells["item_runner_weight"].Value = item["item_runner_weight"].ToString();
+                        dgvForecastReport.Rows[n].Cells["item_part_weight"].Value = Convert.ToSingle(item["item_part_weight"]).ToString("0.00");
+                        dgvForecastReport.Rows[n].Cells["item_runner_weight"].Value = Convert.ToSingle(item["item_runner_weight"]).ToString("0.00"); 
 
                         string month = item["forecast_current_month"].ToString();
 
@@ -1128,8 +1128,8 @@ namespace FactoryManagementSoftware.UI
                 xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
                 xlWorkSheet.PageSetup.Zoom = false;
                 
-                xlWorkSheet.PageSetup.LeftMargin = 1;
-                xlWorkSheet.PageSetup.RightMargin = 1;
+                xlWorkSheet.PageSetup.LeftMargin = 0.8;
+                xlWorkSheet.PageSetup.RightMargin = 0.8;
                 xlWorkSheet.PageSetup.FitToPagesWide = 1;
                 xlWorkSheet.PageSetup.FitToPagesTall = false;
                 xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
@@ -1145,7 +1145,7 @@ namespace FactoryManagementSoftware.UI
                 CR.Select();
                 xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
 
-                Range rng = xlWorkSheet.get_Range("A:R").Cells;
+                Range rng = xlWorkSheet.get_Range("A:Q").Cells;
                 rng.VerticalAlignment = XlHAlign.xlHAlignCenter;
                 rng.RowHeight = 16;
                 rng.EntireColumn.AutoFit();
@@ -1153,10 +1153,9 @@ namespace FactoryManagementSoftware.UI
                 Range tRange = xlWorkSheet.UsedRange;
                 tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                 tRange.Borders.Weight = XlBorderWeight.xlThin;
-                tRange.Columns[18].ColumnWidth = 20;
 
                 //top row 
-                Range topRow = xlWorkSheet.get_Range("a1:r1").Cells;
+                Range topRow = xlWorkSheet.get_Range("a1:q1").Cells;
                 topRow.RowHeight = 25;
                 
                 

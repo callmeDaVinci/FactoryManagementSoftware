@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using FactoryManagementSoftware.DAL;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -19,6 +14,8 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
         }
+
+        userDAL dalUser = new userDAL();
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -47,14 +44,15 @@ namespace FactoryManagementSoftware.UI
         {
             string username = textBox1.Text;
             string password = textBox2.Text;
-
+            
             if (validation())
             {
-                if (username.Equals("junong") && password.Equals("123456"))
+                int userID = dalUser.userLogin(username, password);
+                if (userID != -1)
                 {
-                    MainDashboard frm = new MainDashboard();
+                    MainDashboard frm = new MainDashboard(userID);
                     frm.Show();
-                    this.Hide();
+                    Hide();
                 }
                 else
                 {

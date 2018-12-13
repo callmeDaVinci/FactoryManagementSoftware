@@ -71,7 +71,6 @@
             this.forecast_two = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.shotTwo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.forecast_three = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dateRequired = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -110,8 +109,7 @@
             this.shotOne,
             this.forecast_two,
             this.shotTwo,
-            this.forecast_three,
-            this.dateRequired});
+            this.forecast_three});
             this.dgvForecastReport.EnableHeadersVisualStyles = false;
             this.dgvForecastReport.Location = new System.Drawing.Point(23, 130);
             this.dgvForecastReport.Name = "dgvForecastReport";
@@ -400,13 +398,6 @@
             this.forecast_three.Name = "forecast_three";
             this.forecast_three.ReadOnly = true;
             // 
-            // dateRequired
-            // 
-            this.dateRequired.HeaderText = "Note";
-            this.dateRequired.MinimumWidth = 100;
-            this.dateRequired.Name = "dateRequired";
-            this.dateRequired.ReadOnly = true;
-            // 
             // frmForecastReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -471,6 +462,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_two;
         private System.Windows.Forms.DataGridViewTextBoxColumn shotTwo;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_three;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dateRequired;
     }
 }
