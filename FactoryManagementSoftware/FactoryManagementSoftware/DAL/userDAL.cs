@@ -52,6 +52,163 @@ namespace FactoryManagementSoftware.DAL
 
         #endregion
 
+        #region insert
+
+        public bool insert(userBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_user 
+                            (" + Username + ","
+                            + Password + ","
+                            + Permission + ","
+                            + AddedDate + ","
+                            + AddedBy + ") VALUES " +
+                            "(@user_name," +
+                            "@user_password," +
+                            "@user_permissions," +
+                            "@added_date," +
+                            "@added_by)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@user_name", u.user_name);
+                cmd.Parameters.AddWithValue("@user_password", u.user_password);
+                cmd.Parameters.AddWithValue("@user_permissions", u.user_permissions);
+                cmd.Parameters.AddWithValue("@added_date", u.added_date);
+                cmd.Parameters.AddWithValue("@added_by", u.added_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        #endregion
+
+        #region update
+
+        public bool update(userBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_user SET "
+                            + Username + "=@user_name,"
+                            + Password + "=@user_password,"
+                            + Permission + "=@user_permissions,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE user_id=@user_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@user_id", u.user_id);
+                cmd.Parameters.AddWithValue("@user_name", u.user_name);
+                cmd.Parameters.AddWithValue("@user_password", u.user_password);
+                cmd.Parameters.AddWithValue("@user_permissions", u.user_permissions);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        #endregion
+
+        #region delete
+
+        public bool Delete(userBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "DELETE FROM tbl_user WHERE user_id=@user_id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@user_id", u.user_id);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        #endregion
+
         #region Search Data from Database
 
         public DataTable userSearch(string username, string password)
@@ -109,11 +266,35 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable userNameSearch(string username)
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
 
+            DataTable dt = new DataTable();
+            try
+            {
+                String sql = "SELECT * FROM tbl_user WHERE user_name = @username";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@username", username);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return dt;
+        }
 
         #endregion
 
-        //login
         public int userLogin(string username, string password)
         {
             DataTable dt = userSearch(username, password);
@@ -130,8 +311,7 @@ namespace FactoryManagementSoftware.DAL
             }
             return -1;
         }
-        //signup
-        //get username
+
         public string getUsername(int id)
         {
             DataTable dt = userIDSearch(id);
@@ -143,6 +323,23 @@ namespace FactoryManagementSoftware.DAL
                     if (Convert.ToInt32(user[UserID]) == id)
                     {
                         return user[Username].ToString();
+                    }
+                }
+            }
+            return null;
+        }
+
+        public string getPassword(int id)
+        {
+            DataTable dt = userIDSearch(id);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow user in dt.Rows)
+                {
+                    if (Convert.ToInt32(user[UserID]) == id)
+                    {
+                        return user[Password].ToString();
                     }
                 }
             }
@@ -165,7 +362,7 @@ namespace FactoryManagementSoftware.DAL
             }
             return -1;
         }
-        //permission check
+
 
     }
 }

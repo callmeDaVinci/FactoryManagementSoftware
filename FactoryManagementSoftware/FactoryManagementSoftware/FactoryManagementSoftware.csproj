@@ -83,6 +83,7 @@
     <Compile Include="BLL\custBLL.cs" />
     <Compile Include="BLL\facBLL.cs" />
     <Compile Include="BLL\forecastBLL.cs" />
+    <Compile Include="BLL\historyBLL.cs" />
     <Compile Include="BLL\itemBLL.cs" />
     <Compile Include="BLL\itemCatBLL.cs" />
     <Compile Include="BLL\itemCustBLL.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="DAL\dataDAL.cs" />
     <Compile Include="DAL\facDAL.cs" />
     <Compile Include="DAL\forecastDAL.cs" />
+    <Compile Include="DAL\historyDAL.cs" />
     <Compile Include="DAL\itemCatDAL.cs" />
     <Compile Include="DAL\itemCustDAL.cs" />
     <Compile Include="DAL\itemDAL.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="DAL\trfHistDAL.cs" />
     <Compile Include="DAL\userDAL.cs" />
     <Compile Include="DAL\Utilities.cs" />
+    <Compile Include="Module\Text.cs" />
     <Compile Include="Module\Tool.cs" />
     <Compile Include="UI\frmCat.cs">
       <SubType>Form</SubType>
@@ -161,6 +164,12 @@
     </Compile>
     <Compile Include="UI\frmForecastReport.Designer.cs">
       <DependentUpon>frmForecastReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmHistory.Designer.cs">
+      <DependentUpon>frmHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmInOut.cs">
       <SubType>Form</SubType>
@@ -278,6 +287,18 @@
     <Compile Include="UI\frmUser.Designer.cs">
       <DependentUpon>frmUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmUserActionHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmUserActionHistory.Designer.cs">
+      <DependentUpon>frmUserActionHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmUserEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmUserEdit.Designer.cs">
+      <DependentUpon>frmUserEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MainDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -307,6 +328,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmForecastReport.resx">
       <DependentUpon>frmForecastReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmHistory.resx">
+      <DependentUpon>frmHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmInOut.resx">
       <DependentUpon>frmInOut.cs</DependentUpon>
@@ -374,6 +398,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmUser.resx">
       <DependentUpon>frmUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmUserActionHistory.resx">
+      <DependentUpon>frmUserActionHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmUserEdit.resx">
+      <DependentUpon>frmUserEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainDashboard.resx">
       <DependentUpon>MainDashboard.cs</DependentUpon>

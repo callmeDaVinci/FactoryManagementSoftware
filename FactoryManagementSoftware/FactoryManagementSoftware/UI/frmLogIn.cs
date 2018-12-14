@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Windows.Forms;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -16,6 +17,9 @@ namespace FactoryManagementSoftware.UI
         }
 
         userDAL dalUser = new userDAL();
+
+        Text text = new Text();
+        Tool tool = new Tool(); 
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -50,9 +54,20 @@ namespace FactoryManagementSoftware.UI
                 int userID = dalUser.userLogin(username, password);
                 if (userID != -1)
                 {
-                    MainDashboard frm = new MainDashboard(userID);
-                    frm.Show();
-                    Hide();
+                    int userPermission = dalUser.getPermissionLevel(userID);
+
+                    if (userPermission < MainDashboard.ACTION_LVL_ONE)
+                    {   
+                        MessageBox.Show("Access denied. Contact your administrator.");
+                        tool.historyRecord(text.LogIn, text.Failed, DateTime.Now, userID);
+                    }   
+                    else
+                    {
+                        tool.historyRecord(text.LogIn, text.Success, DateTime.Now, userID);
+                        MainDashboard frm = new MainDashboard(userID);
+                        frm.Show();
+                        Hide();
+                    }  
                 }
                 else
                 {

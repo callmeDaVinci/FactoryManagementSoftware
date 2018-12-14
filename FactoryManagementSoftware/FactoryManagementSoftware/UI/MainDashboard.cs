@@ -1,4 +1,5 @@
 ﻿using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -21,6 +22,7 @@ namespace FactoryManagementSoftware.UI
         static public bool MaterialUsedReportFormOpen = false;
         static public bool stockReportFormOpen = false;
         static public bool userFormOpen = false;
+        static public bool historyFormOpen = false;
         static public int USER_ID = -1;
 
         static public readonly int ACTION_LVL_ONE = 1;
@@ -30,6 +32,8 @@ namespace FactoryManagementSoftware.UI
         static public readonly int ACTION_LVL_FIVE = 5;
 
         userDAL dalUser = new userDAL();
+        Text text = new Text();
+        Tool tool = new Tool();
 
         public MainDashboard(int userID)
         {
@@ -263,6 +267,7 @@ namespace FactoryManagementSoftware.UI
 
         private void MainDashboard_FormClosed(object sender, FormClosedEventArgs e)
         {
+            tool.historyRecord(text.LogOut, text.Success, DateTime.Now, USER_ID);
             Application.Exit();
         }
 
@@ -387,6 +392,26 @@ namespace FactoryManagementSoftware.UI
                 if (Application.OpenForms.OfType<frmUser>().Count() == 1)
                 {
                     Application.OpenForms.OfType<frmUser>().First().BringToFront();
+                }
+            }
+        }
+
+        private void historyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!historyFormOpen)
+            {
+                frmHistory frm = new frmHistory();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                historyFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmHistory>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmHistory>().First().BringToFront();
                 }
             }
         }

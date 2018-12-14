@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using FactoryManagementSoftware.BLL;
+using FactoryManagementSoftware.DAL;
 
 namespace FactoryManagementSoftware.Module
 {
@@ -52,6 +50,8 @@ namespace FactoryManagementSoftware.Module
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
         }
 
+       
+
         #endregion
 
         #region Convert variable
@@ -71,5 +71,24 @@ namespace FactoryManagementSoftware.Module
         }
 
         #endregion
+
+        public void historyRecord(string action, string detail, DateTime date, int by)
+        {
+            //save history
+            historyDAL dalHistory = new historyDAL();
+            historyBLL uHistory = new historyBLL();
+
+            uHistory.history_date = date;
+            uHistory.history_by = by;
+            uHistory.history_action = action;
+            uHistory.history_detail = detail;
+
+            bool result = dalHistory.insert(uHistory);
+
+            if(!result)
+            {
+                MessageBox.Show("Failed to add new history");
+            }
+        }
     }
 }
