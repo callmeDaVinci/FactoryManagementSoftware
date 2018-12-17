@@ -53,7 +53,7 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_hist_trf_date = DateTime.Now;
             utrfHist.trf_hist_note = "Order: Received Undo";
             utrfHist.trf_hist_added_date = DateTime.Now;
-            utrfHist.trf_hist_added_by = 0;
+            utrfHist.trf_hist_added_by = MainDashboard.USER_ID;
             utrfHist.trf_result = stockResult;
             utrfHist.trf_hist_from_order = 1;
             //Inserting Data into Database
@@ -116,12 +116,12 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow action in sortedDt.Rows)
             {
                 int n = dgvAction.Rows.Add();
-                if(!Convert.ToBoolean(action["active"]))
+                if (!Convert.ToBoolean(action["active"]))
                 {
                     dgvAction.Rows[n].DefaultCellStyle.ForeColor = Color.Red;
                     dgvAction.Rows[n].DefaultCellStyle.Font = new Font(this.Font, FontStyle.Strikeout);
                 }
-                else if(action["action"].ToString().Equals("RECEIVE"))
+                else if (action["action"].ToString().Equals("RECEIVE"))
                 {
                     dgvAction.Rows[n].DefaultCellStyle.ForeColor = Color.FromArgb(52, 168, 83);
                 }
@@ -135,6 +135,15 @@ namespace FactoryManagementSoftware.UI
                 dgvAction.Rows[n].Cells["action_from"].Value = action["action_from"].ToString();
                 dgvAction.Rows[n].Cells["action_to"].Value = action["action_to"].ToString();
                 dgvAction.Rows[n].Cells["note"].Value = action["note"].ToString();
+
+                if (Convert.ToInt32(action["added_by"]) <= 0)
+                {
+                    dgvAction.Rows[n].Cells["added_by"].Value = "ADMIN";
+                }
+                else
+                {
+                    dgvAction.Rows[n].Cells["added_by"].Value = dalUser.getUsername(Convert.ToInt32(action["added_by"]));
+                }
             }
             listPaint(dgvAction);
         }

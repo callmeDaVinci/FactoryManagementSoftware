@@ -38,6 +38,12 @@ namespace FactoryManagementSoftware.UI
                 dgvData.Rows[n].Cells["child_trf_hist_qty"].Value = item["child_trf_hist_qty"].ToString();
                 dgvData.Rows[n].Cells["child_trf_hist_unit"].Value = item["child_trf_hist_unit"].ToString();
                 dgvData.Rows[n].Cells["child_trf_hist_result"].Value = item["child_trf_hist_result"].ToString();
+
+                if (item["child_trf_hist_result"].ToString().Equals("Undo"))
+                {
+                    dgvData.Rows[n].DefaultCellStyle.ForeColor = Color.Red;
+                    dgvData.Rows[n].DefaultCellStyle.Font = new Font(this.Font, FontStyle.Strikeout);
+                }
             }
             listPaint(dgvData);
         }

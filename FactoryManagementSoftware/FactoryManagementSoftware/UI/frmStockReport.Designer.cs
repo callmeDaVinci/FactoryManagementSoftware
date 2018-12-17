@@ -29,52 +29,54 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cmbCat = new System.Windows.Forms.ComboBox();
-            this.txtItemSearch = new System.Windows.Forms.TextBox();
+            this.TYPE = new System.Windows.Forms.Label();
+            this.cmbType = new System.Windows.Forms.ComboBox();
+            this.txtSearch = new System.Windows.Forms.TextBox();
             this.lblSearch = new System.Windows.Forms.Label();
             this.dgvStockReport = new System.Windows.Forms.DataGridView();
             this.btnExportToExcel = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cmbSubType = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockReport)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // TYPE
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(23, 31);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(93, 23);
-            this.label1.TabIndex = 34;
-            this.label1.Text = "CATEGORY";
+            this.TYPE.AutoSize = true;
+            this.TYPE.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TYPE.Location = new System.Drawing.Point(23, 31);
+            this.TYPE.Name = "TYPE";
+            this.TYPE.Size = new System.Drawing.Size(47, 23);
+            this.TYPE.TabIndex = 34;
+            this.TYPE.Text = "TYPE";
             // 
-            // cmbCat
+            // cmbType
             // 
-            this.cmbCat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCat.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbCat.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.cmbCat.FormattingEnabled = true;
-            this.cmbCat.Location = new System.Drawing.Point(27, 58);
-            this.cmbCat.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmbCat.Name = "cmbCat";
-            this.cmbCat.Size = new System.Drawing.Size(363, 36);
-            this.cmbCat.TabIndex = 33;
-            this.cmbCat.SelectedIndexChanged += new System.EventHandler(this.cmbCat_SelectedIndexChanged);
+            this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbType.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbType.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.cmbType.FormattingEnabled = true;
+            this.cmbType.Location = new System.Drawing.Point(27, 58);
+            this.cmbType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmbType.Name = "cmbType";
+            this.cmbType.Size = new System.Drawing.Size(188, 36);
+            this.cmbType.TabIndex = 33;
+            this.cmbType.SelectedIndexChanged += new System.EventHandler(this.cmbType_SelectedIndexChanged);
             // 
-            // txtItemSearch
+            // txtSearch
             // 
-            this.txtItemSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtItemSearch.Location = new System.Drawing.Point(408, 58);
-            this.txtItemSearch.Name = "txtItemSearch";
-            this.txtItemSearch.Size = new System.Drawing.Size(363, 34);
-            this.txtItemSearch.TabIndex = 32;
-            this.txtItemSearch.TextChanged += new System.EventHandler(this.txtItemSearch_TextChanged);
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.Location = new System.Drawing.Point(451, 60);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(612, 34);
+            this.txtSearch.TabIndex = 32;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtItemSearch_TextChanged);
             // 
             // lblSearch
             // 
             this.lblSearch.AutoSize = true;
             this.lblSearch.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSearch.Location = new System.Drawing.Point(404, 31);
+            this.lblSearch.Location = new System.Drawing.Point(447, 33);
             this.lblSearch.Name = "lblSearch";
             this.lblSearch.Size = new System.Drawing.Size(72, 23);
             this.lblSearch.TabIndex = 31;
@@ -130,16 +132,41 @@
             this.btnExportToExcel.UseVisualStyleBackColor = false;
             this.btnExportToExcel.Click += new System.EventHandler(this.btnExcel_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(233, 31);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(83, 23);
+            this.label2.TabIndex = 76;
+            this.label2.Text = "SUB TYPE";
+            // 
+            // cmbSubType
+            // 
+            this.cmbSubType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSubType.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbSubType.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.cmbSubType.FormattingEnabled = true;
+            this.cmbSubType.Location = new System.Drawing.Point(237, 58);
+            this.cmbSubType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmbSubType.Name = "cmbSubType";
+            this.cmbSubType.Size = new System.Drawing.Size(188, 36);
+            this.cmbSubType.TabIndex = 75;
+            this.cmbSubType.SelectedIndexChanged += new System.EventHandler(this.cmbSubType_SelectedIndexChanged);
+            // 
             // frmStockReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.cmbSubType);
             this.Controls.Add(this.btnExportToExcel);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cmbCat);
-            this.Controls.Add(this.txtItemSearch);
+            this.Controls.Add(this.TYPE);
+            this.Controls.Add(this.cmbType);
+            this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.lblSearch);
             this.Controls.Add(this.dgvStockReport);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -157,11 +184,13 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        public System.Windows.Forms.ComboBox cmbCat;
-        private System.Windows.Forms.TextBox txtItemSearch;
+        private System.Windows.Forms.Label TYPE;
+        public System.Windows.Forms.ComboBox cmbType;
+        private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.DataGridView dgvStockReport;
         private System.Windows.Forms.Button btnExportToExcel;
+        private System.Windows.Forms.Label label2;
+        public System.Windows.Forms.ComboBox cmbSubType;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
 using System;
 using System.Data;
 using System.Drawing;
@@ -99,19 +100,10 @@ namespace FactoryManagementSoftware.UI
         forecastBLL uForecast = new forecastBLL();
         forecastDAL dalForecast = new forecastDAL();
 
+        Tool tool = new Tool();
         #endregion  
 
         #region Form Load/Close
-
-        private void loadCustomerList()
-        {
-            DataTable dt = dalCust.Select();
-            DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
-            distinctTable.DefaultView.Sort = "cust_name ASC";
-            cmbCust.DataSource = distinctTable;
-            cmbCust.DisplayMember = "cust_name";
-            cmbCust.SelectedIndex = -1;
-        }
 
         private void frmForecastReport_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -120,7 +112,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmForecastReport_Load(object sender, EventArgs e)
         {
-            loadCustomerList();
+            tool.loadCustomerToComboBox(cmbCust);
             UIDesign();
         }
 
@@ -514,7 +506,7 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 DataTable dt = dalForecast.Select(sort, order);
-                loadForecastList(dt, type);
+                loadForecastList(dt, type); 
             }
         }
 
@@ -527,7 +519,7 @@ namespace FactoryManagementSoftware.UI
                 DataTable dt = dalItemCust.custSearch(custName);//load customer's item list
 
                 if (dt.Rows.Count < 1)
-                {
+                {   
                     MessageBox.Show("no data under this record.");
                 }
                 else

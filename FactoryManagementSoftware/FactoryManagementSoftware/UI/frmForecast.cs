@@ -44,6 +44,8 @@ namespace FactoryManagementSoftware.UI
         forecastBLL uForecast = new forecastBLL();
         forecastDAL dalForecast = new forecastDAL();
 
+        userDAL dalUser = new userDAL();
+
         #endregion
 
         private void listPaint(DataGridView dgv)
@@ -101,7 +103,23 @@ namespace FactoryManagementSoftware.UI
                     dgvForecast.Rows[n].Cells["forecast_two"].Value = item["forecast_two"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_three"].Value = item["forecast_three"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = item["forecast_updated_date"].ToString();
-                    dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = item["forecast_updated_by"].ToString();
+
+
+                    if (int.TryParse(item["forecast_updated_by"].ToString(), out int test))
+                    {
+                        if (Convert.ToInt32(item["forecast_updated_by"]) <= 0)
+                        {
+                            dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = "ADMIN";
+                        }
+                        else
+                        {
+                            dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = dalUser.getUsername(Convert.ToInt32(item["forecast_updated_by"]));
+                        } 
+                    }
+
+                    string currentMonth = item["forecast_current_month"]?.ToString();
+
+                    resetCurrentMonth(item["item_code"].ToString(),n,currentMonth);
                 }
             }
             else
@@ -132,8 +150,15 @@ namespace FactoryManagementSoftware.UI
                     dgvForecast.Rows[n].Cells["forecast_two"].Value = item["forecast_two"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_three"].Value = item["forecast_three"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = item["forecast_updated_date"].ToString();
-                    dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = item["forecast_updated_by"].ToString();
-                       
+
+                    if(Convert.ToInt32(item["forecast_updated_by"]) <= 0)
+                    {
+                        dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = "ADMIN";
+                    }
+                    else
+                    {
+                        dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = dalUser.getUsername(Convert.ToInt32(item["forecast_updated_by"]));
+                    }     
                 }              
             }
             else
@@ -276,7 +301,7 @@ namespace FactoryManagementSoftware.UI
 
             int rowIndex = e.RowIndex;
             dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value = DateTime.Now;
-            dgvForecast.Rows[rowIndex].Cells["forecast_updtd_by"].Value = 1;
+            dgvForecast.Rows[rowIndex].Cells["forecast_updtd_by"].Value = dalUser.getUsername(MainDashboard.USER_ID);
 
             uItemCust.item_code = dgvForecast.Rows[rowIndex].Cells["item_code"].Value.ToString();
             uItemCust.cust_id = Convert.ToInt32(getCustID(cmbCust.Text));
@@ -286,7 +311,7 @@ namespace FactoryManagementSoftware.UI
             uItemCust.forecast_three = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_three"].Value.ToString());
             uItemCust.forecast_updated_date = Convert.ToDateTime(dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value);
             uItemCust.forecast_current_month = cmbForecast1.Text;
-            uItemCust.forecast_updated_by = 1;
+            uItemCust.forecast_updated_by = MainDashboard.USER_ID;
 
             if (IfExists(uItemCust.item_code, cmbCust.Text))
             {
@@ -307,6 +332,25 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+        }
+
+        private void resetCurrentMonth(string itemCode, int rowIndex, string currentMonth)
+        {         
+            uItemCust.item_code = itemCode;
+            uItemCust.cust_id = Convert.ToInt32(getCustID(cmbCust.Text));
+
+            if (!currentMonth.Equals(cmbForecast1.Text))
+            {
+                uItemCust.forecast_updated_date = DateTime.Now;
+                uItemCust.forecast_current_month = cmbForecast1.Text;
+                uItemCust.forecast_updated_by = MainDashboard.USER_ID;
+                bool success = dalItemCust.monthUpdate(uItemCust);
+
+                if (!success)
+                {
+                    MessageBox.Show("Failed to updated forecast");
+                }
+            } 
         }
 
         private void Column1_KeyPress(object sender, KeyPressEventArgs e)

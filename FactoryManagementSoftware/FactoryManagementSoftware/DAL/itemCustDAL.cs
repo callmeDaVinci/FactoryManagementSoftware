@@ -140,6 +140,49 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool monthUpdate(itemCustBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "UPDATE tbl_item_cust SET forecast_current_month=@forecast_current_month, forecast_updated_date=@forecast_updated_date, forecast_updated_by=@forecast_updated_by WHERE item_code=@item_code AND cust_id = @cust_id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@forecast_current_month", u.forecast_current_month);
+                cmd.Parameters.AddWithValue("@forecast_updated_date", u.forecast_updated_date);
+                cmd.Parameters.AddWithValue("@forecast_updated_by", u.forecast_updated_by);
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@cust_id", u.cust_id);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         #region Delete data from Database
         public bool Delete(itemCustBLL u)
         {

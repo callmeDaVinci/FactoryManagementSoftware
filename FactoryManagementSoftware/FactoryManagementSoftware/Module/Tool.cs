@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using FactoryManagementSoftware.BLL;
@@ -8,6 +9,9 @@ namespace FactoryManagementSoftware.Module
 {
     class Tool
     {
+
+        custDAL dalCust = new custDAL();
+
         #region UI design
 
         //without min width
@@ -50,8 +54,6 @@ namespace FactoryManagementSoftware.Module
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
         }
 
-       
-
         #endregion
 
         #region Convert variable
@@ -72,6 +74,8 @@ namespace FactoryManagementSoftware.Module
 
         #endregion
 
+        #region History Record
+
         public void historyRecord(string action, string detail, DateTime date, int by)
         {
             //save history
@@ -90,5 +94,22 @@ namespace FactoryManagementSoftware.Module
                 MessageBox.Show("Failed to add new history");
             }
         }
+
+        #endregion
+
+        #region Load Data
+
+        public void loadCustomerToComboBox(ComboBox cmb)
+        {
+            DataTable dt = dalCust.Select();
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
+            distinctTable.DefaultView.Sort = "cust_name ASC";
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "cust_name";
+            cmb.SelectedIndex = -1;
+        }
+
+        #endregion
+
     }
 }

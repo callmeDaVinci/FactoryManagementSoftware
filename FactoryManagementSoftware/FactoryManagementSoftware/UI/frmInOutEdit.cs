@@ -46,6 +46,7 @@ namespace FactoryManagementSoftware.UI
         childTrfHistBLL uChildTrfHist = new childTrfHistBLL();
         childTrfHistDAL dalChildTrfHist = new childTrfHistDAL();
 
+        userDAL dalUser = new userDAL();
 
         #endregion
 
@@ -386,7 +387,7 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_hist_trf_date = dtpTrfDate.Value.Date;
             utrfHist.trf_hist_note = txtTrfNote.Text;
             utrfHist.trf_hist_added_date = DateTime.Now;
-            utrfHist.trf_hist_added_by = 0;
+            utrfHist.trf_hist_added_by = MainDashboard.USER_ID;
             utrfHist.trf_result = stockResult;
             utrfHist.trf_hist_from_order = 0;
 

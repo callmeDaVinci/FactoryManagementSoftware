@@ -102,6 +102,7 @@ namespace FactoryManagementSoftware.UI
                 dgvItem.Rows[rowindex].Cells["item_ord"].Value = dalItem.getOrderQty(itemCode);
                 loadStockList(itemCode);
                 calTotalStock(itemCode);
+                loadTransferList(itemCode);
             }
             else//if item data not selected, then search in item datagridview and update stock qty and order qty
             {
@@ -116,10 +117,12 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
                 //clear factory and total list since no item data is selected
+                loadTransferList();
                 dgvFactoryStock.Rows.Clear();
                 dgvTotal.Rows.Clear();
                 resetSaveData();
             }
+            
         }
 
         private void refreshDataList(string itemCode)
@@ -135,6 +138,7 @@ namespace FactoryManagementSoftware.UI
                 }
 
             }
+            loadTransferList();
         }
 
         private void resetForm()
@@ -200,6 +204,17 @@ namespace FactoryManagementSoftware.UI
                     {
                         dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
                         dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                    }
+
+
+                    if (dgv.Rows[n].Cells["trf_result"].Value != null)
+                    {
+                        if(dgv.Rows[n].Cells["trf_result"].Value.ToString().Equals("Undo"))
+                        {
+                            dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Red;
+                            dgv.Rows[n].DefaultCellStyle.Font = new Font(this.Font, FontStyle.Strikeout);
+                        }
+                        
                     }
                 }
                 else if (dgv == dgvFactoryStock)
@@ -491,9 +506,19 @@ namespace FactoryManagementSoftware.UI
                     dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00");
                     dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = trf["trf_hist_added_by"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_note"].Value = trf["trf_hist_note"].ToString();
                     dgvTrf.Rows[n].Cells["trf_result"].Value = trf["trf_result"].ToString();
+
+                   
+
+                    if (Convert.ToInt32(trf["trf_hist_added_by"]) <= 0)
+                    {
+                        dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = "ADMIN";
+                    }
+                    else
+                    {
+                        dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = dalUser.getUsername(Convert.ToInt32(trf["trf_hist_added_by"]));
+                    }
                 }
             }
             else
@@ -557,10 +582,19 @@ namespace FactoryManagementSoftware.UI
                     dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
                     dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00");
-                    dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
-                    dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = trf["trf_hist_added_by"].ToString();
+                    dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();                   
                     dgvTrf.Rows[n].Cells["trf_hist_note"].Value = trf["trf_hist_note"].ToString();
                     dgvTrf.Rows[n].Cells["trf_result"].Value = trf["trf_result"].ToString();
+
+                    if(Convert.ToInt32(trf["trf_hist_added_by"]) <= 0)
+                    {
+                        dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = "ADMIN";
+                    }
+                    else
+                    {
+                        dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = dalUser.getUsername(Convert.ToInt32(trf["trf_hist_added_by"]));
+                    }
+                    
                 }
                 listPaint(dgvTrf);
             }
@@ -722,9 +756,7 @@ namespace FactoryManagementSoftware.UI
                 if (dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value != null)
                 {
                     int.TryParse(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString(), out (editingIndexNo));
-                }
-
-
+                } 
                 if (editingIndexNo != -1)
                 {
                     DataTable dt = dalChildTrf.indexSearch(editingIndexNo);
@@ -1067,7 +1099,7 @@ namespace FactoryManagementSoftware.UI
         private void changeTransferRecord(string stockResult, int rowIndex, int id)
         {
             utrfHist.trf_hist_updated_date = DateTime.Now;
-            utrfHist.trf_hist_updated_by = 0;
+            utrfHist.trf_hist_updated_by = MainDashboard.USER_ID;
             utrfHist.trf_hist_id = id;
             utrfHist.trf_result = stockResult;
 

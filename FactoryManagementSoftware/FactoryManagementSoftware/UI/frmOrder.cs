@@ -253,7 +253,7 @@ namespace FactoryManagementSoftware.UI
             {
                 uOrderAction.ord_id = orderID;
                 uOrderAction.added_date = DateTime.Now;
-                uOrderAction.added_by = 0;
+                uOrderAction.added_by = MainDashboard.USER_ID;
                 uOrderAction.action = action;
                 uOrderAction.note = "";
 

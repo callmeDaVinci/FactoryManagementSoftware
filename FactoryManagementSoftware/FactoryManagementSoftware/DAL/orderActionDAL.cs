@@ -1,4 +1,5 @@
 ﻿using FactoryManagementSoftware.BLL;
+using FactoryManagementSoftware.UI;
 using System;
 using System.Configuration;
 using System.Data;
@@ -9,6 +10,7 @@ namespace FactoryManagementSoftware.DAL
 {
     class orderActionDAL
     {
+        
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
         ordDAL dalOrd = new ordDAL();
         orderActionBLL uOrderAction = new orderActionBLL();
@@ -187,7 +189,7 @@ namespace FactoryManagementSoftware.DAL
         {
             uOrderAction.ord_id = orderID;
             uOrderAction.added_date = DateTime.Now;
-            uOrderAction.added_by = 0;
+            uOrderAction.added_by = MainDashboard.USER_ID;
             uOrderAction.action = action;
             uOrderAction.action_detail = content;
             uOrderAction.action_from = from;

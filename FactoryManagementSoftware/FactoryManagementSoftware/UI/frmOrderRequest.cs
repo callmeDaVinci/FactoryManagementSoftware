@@ -217,13 +217,13 @@ namespace FactoryManagementSoftware.UI
             if(id == -1)//create new order record
             {
                 uOrd.ord_added_date = DateTime.Now;
-                uOrd.ord_added_by = 0;
+                uOrd.ord_added_by = MainDashboard.USER_ID;
             }
             else//update order record
             {  
                 uOrd.ord_id = id;
                 uOrd.ord_updated_date = DateTime.Now;
-                uOrd.ord_updated_by = 0;
+                uOrd.ord_updated_by = MainDashboard.USER_ID;
             }
 
             uOrd.ord_item_code = cmbItemCode.Text;

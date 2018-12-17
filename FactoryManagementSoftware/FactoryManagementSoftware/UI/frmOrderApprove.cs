@@ -27,6 +27,8 @@ namespace FactoryManagementSoftware.UI
             cmbQtyUnit.Text = unit;
         }
 
+        userDAL dalUser = new userDAL();
+
         ordBLL uOrder = new ordBLL();
         ordDAL dalOrder = new ordDAL();
 
@@ -63,7 +65,7 @@ namespace FactoryManagementSoftware.UI
             uOrder.ord_item_code = txtItemCode.Text;
             uOrder.ord_status = "PENDING";
             uOrder.ord_updated_date = DateTime.Now;
-            uOrder.ord_updated_by = 0;
+            uOrder.ord_updated_by = MainDashboard.USER_ID;
 
             if(dalOrder.Update(uOrder))
             {

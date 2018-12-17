@@ -209,7 +209,7 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_hist_trf_date = Convert.ToDateTime(dtpTrfDate.Text);
             utrfHist.trf_hist_note = "Order: Received";
             utrfHist.trf_hist_added_date = DateTime.Now;
-            utrfHist.trf_hist_added_by = 0;
+            utrfHist.trf_hist_added_by = MainDashboard.USER_ID;
             utrfHist.trf_result = stockResult;
             utrfHist.trf_hist_from_order = 1;
 
@@ -249,7 +249,7 @@ namespace FactoryManagementSoftware.UI
             uStock.stock_qty = getQty(txtItemCode.Text, cmbTo.Text) + Convert.ToSingle(txtQty.Text);
             uStock.stock_unit = Unit;
             uStock.stock_updtd_date = DateTime.Now;
-            uStock.stock_updtd_by = 0;
+            uStock.stock_updtd_by = MainDashboard.USER_ID;
 
             if (IfExists(txtItemCode.Text, cmbTo.Text))
             {
