@@ -1128,10 +1128,6 @@ namespace FactoryManagementSoftware.UI
                 //xlWorkSheet.PageSetup.TopMargin = 1.6;
 
 
-                
-
-
-
                 // Paste clipboard results to worksheet range
                 Range CR = (Range)xlWorkSheet.Cells[1, 1];
                 CR.Select();
