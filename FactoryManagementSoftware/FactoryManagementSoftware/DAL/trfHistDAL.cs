@@ -9,6 +9,29 @@ namespace FactoryManagementSoftware.DAL
 {
     class trfHistDAL
     {
+
+        #region data string name getter
+        public string TrfID { get; } = "trf_hist_id";
+        public string TrfItemCat { get; } = "item_cat";
+        public string TrfItemName { get; } = "item_name";
+        public string TrfItemCode { get; } = "trf_hist_item_code";
+
+        public string TrfFrom { get; } = "trf_hist_from";
+        public string TrfTo { get; } = "trf_hist_to";
+        public string TrfQty { get; } = "trf_hist_qty";
+        public string TrfUnit { get; } = "trf_hist_unit";
+        public string TrfDate { get; } = "trf_hist_trf_date";
+        public string TrfNote { get; } = "trf_hist_note";
+
+        public string TrfAddedDate { get; } = "trf_hist_added_date";
+        public string TrfAddedBy { get; } = "trf_hist_added_by";
+        public string TrfResult { get; } = "trf_result";
+        public string TrfUpdatedDate { get; } = "trf_hist_updated_date";
+        public string TrfUpdatedBy { get; } = "trf_hist_updated_by";
+        public string TrfFromOrder { get; } = "trf_hist_from_order";
+
+        #endregion
+
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
         #region Select Data from Database
@@ -293,7 +316,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable rangeSearch(string customer, string start, string end, string itemCode)
+        public DataTable rangeItemToCustomerSearch(string customer, string start, string end, string itemCode)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -334,7 +357,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable rangeMaterialSearch(string start, string end)
+        public DataTable rangeMaterialToProductionSearch(string start, string end)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -358,6 +381,8 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
                 cmd.Parameters.AddWithValue("@cat", cat);
                 cmd.Parameters.AddWithValue("@to", to);
 
@@ -382,6 +407,239 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
             return dt;
+        }
+
+        public DataTable rangePartTrfSearch(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            string cat = "Part";
+            String sql = null;
+            try
+            {
+                //sql query to get data from database
+                sql = @"SELECT * FROM tbl_trf_hist 
+                            INNER JOIN tbl_item 
+                            ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                            WHERE 
+                            trf_hist_trf_date 
+                            BETWEEN @start AND @end 
+                            AND tbl_item.item_cat = @cat";
+          
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@cat", cat);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+            dt.DefaultView.Sort = "trf_hist_added_date DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
+        }
+
+        public DataTable rangePartTrfSearch(string start, string end, int custID)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            String sql = null;
+            try
+            {
+                //sql query to get data from database
+                sql = @"SELECT * FROM tbl_trf_hist 
+                            INNER JOIN tbl_item_cust 
+                            ON tbl_trf_hist.trf_hist_item_code = tbl_item_cust.item_code 
+                            INNER JOIN tbl_item 
+                            ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                            WHERE 
+                            trf_hist_trf_date 
+                            BETWEEN @start AND @end 
+                            AND tbl_item_cust.cust_id = @custID";
+
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@custID", custID);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+            dt.DefaultView.Sort = "trf_hist_added_date DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
+        }
+
+        public DataTable rangeMaterialTrfSearch(string start, string end, string material)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            string cat = "Part";
+            String sql = null;
+            try
+            {
+                if(material.Equals("All"))
+                {
+                    //sql query to get data from database
+                    sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE 
+                                trf_hist_trf_date 
+                                BETWEEN @start AND @end 
+                                AND tbl_item.item_cat != @cat";
+                }
+                else
+                {
+                    //sql query to get data from database
+                    sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE 
+                                trf_hist_trf_date 
+                                BETWEEN @start AND @end 
+                                AND tbl_item.item_cat = @material";
+                }
+               
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@material", material);
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@cat", cat);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+            dt.DefaultView.Sort = "trf_hist_added_date DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
+        }
+
+        public DataTable rangeTrfSearch(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            String sql = null;
+            try
+            {
+                
+                    //sql query to get data from database
+                    sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE 
+                                trf_hist_trf_date 
+                                BETWEEN @start AND @end";
+                
+
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+   
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+            dt.DefaultView.Sort = "trf_hist_added_date DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
         }
 
         public DataTable facSearch(string itemCode, string facName)

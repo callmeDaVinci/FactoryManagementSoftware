@@ -23,6 +23,7 @@ namespace FactoryManagementSoftware.UI
         static public bool stockReportFormOpen = false;
         static public bool userFormOpen = false;
         static public bool historyFormOpen = false;
+        static public bool InOutReportFormOpen = false;
         static public int USER_ID = -1;
 
         static public readonly int ACTION_LVL_ONE = 1;
@@ -412,6 +413,26 @@ namespace FactoryManagementSoftware.UI
                 if (Application.OpenForms.OfType<frmHistory>().Count() == 1)
                 {
                     Application.OpenForms.OfType<frmHistory>().First().BringToFront();
+                }
+            }
+        }
+
+        private void deliveryReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!InOutReportFormOpen)
+            {
+                frmInOutReport frm = new frmInOutReport();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                InOutReportFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmInOutReport>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmInOutReport>().First().BringToFront();
                 }
             }
         }

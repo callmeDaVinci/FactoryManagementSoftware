@@ -90,7 +90,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         itemCode = item["item_code"].ToString();
 
-                        DataTable dt3 = daltrfHist.rangeSearch(cmbCust.Text, start, end, itemCode);
+                        DataTable dt3 = daltrfHist.rangeItemToCustomerSearch(cmbCust.Text, start, end, itemCode);
 
                         outStock = 0;
 
@@ -99,8 +99,11 @@ namespace FactoryManagementSoftware.UI
 
                             foreach (DataRow outRecord in dt3.Rows)
                             {
-                                outStock += Convert.ToInt32(outRecord["trf_hist_qty"]);
-
+                                if (outRecord["trf_result"].ToString().Equals("Passed"))
+                                {
+                                    //outStock += Convert.ToSingle(outRecord["trf_hist_qty"]);
+                                    outStock += Convert.ToInt32(outRecord["trf_hist_qty"]);
+                                }
                             }
                         }
 
@@ -299,6 +302,7 @@ namespace FactoryManagementSoftware.UI
             }
             return custID;
         }
+       
 
         private bool ifGotChild(string itemCode)
         {
@@ -324,7 +328,7 @@ namespace FactoryManagementSoftware.UI
 
             if (!result)
             {
-                MessageBox.Show("Failed to reset forecast data");
+                MessageBox.Show("Failed to reset material used data");
             }
             else
             {

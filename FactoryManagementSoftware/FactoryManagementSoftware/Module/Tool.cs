@@ -11,6 +11,8 @@ namespace FactoryManagementSoftware.Module
     {
 
         custDAL dalCust = new custDAL();
+        itemCatDAL dalItemCat = new itemCatDAL();
+        itemDAL dalItem = new itemDAL();
 
         #region UI design
 
@@ -54,6 +56,21 @@ namespace FactoryManagementSoftware.Module
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
         }
 
+        public void listPaintGreyHeader(DataGridView dgv)
+        {
+            dgv.BorderStyle = BorderStyle.None;
+            dgv.BackgroundColor = Color.White;
+            dgv.GridColor = Color.LightGray;
+
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(237, 237, 237);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+
+            dgv.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            dgv.ClearSelection();
+        }
         #endregion
 
         #region Convert variable
@@ -99,6 +116,49 @@ namespace FactoryManagementSoftware.Module
 
         #region Load Data
 
+        public void loadItemCategoryDataToComboBox(ComboBox cmb)
+        {
+            DataTable dtItemCat = dalItemCat.Select();
+            DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
+            distinctTable.DefaultView.Sort = "item_cat_name ASC";
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "item_cat_name";
+        }
+
+        public void loadItemNameDataToComboBox(ComboBox cmb, string keywords)
+        {
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                DataTable dt = dalItem.catSearch(keywords);
+                DataTable dtItemName = dt.DefaultView.ToTable(true, "item_name");
+
+                dtItemName.DefaultView.Sort = "item_name ASC";
+                cmb.DataSource = dtItemName;
+                cmb.DisplayMember = "item_name";
+            }
+            else
+            {
+                cmb.DataSource = null;
+            }
+        }
+
+        public void loadItemCodeDataToComboBox(ComboBox cmb, string keywords)
+        {
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                DataTable dt = dalItem.nameSearch(keywords);
+                DataTable dtItemCode = dt.DefaultView.ToTable(true, "item_code");
+
+                dtItemCode.DefaultView.Sort = "item_code ASC";
+                cmb.DataSource = dtItemCode;
+                cmb.DisplayMember = "item_code";
+            }
+            else
+            {
+                cmb.DataSource = null;
+            }
+        }
+
         public void loadCustomerToComboBox(ComboBox cmb)
         {
             DataTable dt = dalCust.Select();
@@ -107,6 +167,60 @@ namespace FactoryManagementSoftware.Module
             cmb.DataSource = distinctTable;
             cmb.DisplayMember = "cust_name";
             cmb.SelectedIndex = -1;
+        }
+
+        public void loadCustomerAndAllToComboBox(ComboBox cmb)
+        {
+            DataTable dt = dalCust.Select();
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
+            distinctTable.Rows.Add("All");
+            distinctTable.DefaultView.Sort = "cust_name ASC";
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "cust_name";
+            cmb.SelectedIndex = 0;
+        }
+
+        public void loadMaterialAndAllToComboBox(ComboBox cmb)
+        {
+            DataTable dtItemCat = dalItemCat.Select();
+
+            DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
+            distinctTable.Rows.Add("All");
+            distinctTable.DefaultView.Sort = "item_cat_name ASC";
+            for (int i = distinctTable.Rows.Count - 1; i >= 0; i--)
+            {
+                DataRow dr = distinctTable.Rows[i];
+                if (dr["item_cat_name"].ToString() == "Part")
+                {
+                    distinctTable.Rows.Remove(dr);
+                }
+            }
+            distinctTable.AcceptChanges();
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "item_cat_name";
+            cmb.SelectedIndex = 0;
+        }
+
+        public int getCustID(string custName)
+        {
+            string custID = "";
+
+            DataTable dtCust = dalCust.nameSearch(custName);
+
+            foreach (DataRow Cust in dtCust.Rows)
+            {
+                custID = Cust["cust_id"].ToString();
+            }
+            
+            if(!string.IsNullOrEmpty(custID))
+            {
+                return Convert.ToInt32(custID);
+            }
+            else
+            {
+                return -1;
+            }
+            
         }
 
         #endregion

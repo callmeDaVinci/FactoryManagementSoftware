@@ -554,7 +554,11 @@ namespace FactoryManagementSoftware.UI
                             {
                                 //To-Do: need to check if from factory
 
-                                outStock += Convert.ToSingle(outRecord["trf_hist_qty"]);
+                                if(outRecord["trf_result"].ToString().Equals("Passed")) 
+                                {
+                                    outStock += Convert.ToSingle(outRecord["trf_hist_qty"]);
+                                }
+                                
                             }
                         }
 

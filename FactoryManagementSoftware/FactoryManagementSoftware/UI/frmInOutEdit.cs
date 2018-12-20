@@ -442,10 +442,9 @@ namespace FactoryManagementSoftware.UI
         private bool stockOut(string factoryName, string itemCode, float qty)
         {
             bool successFacStockOut;
-            bool successStockSubtract;
             qty = checkQty(qty);
 
-            successFacStockOut = dalStock.facStockOut(getFactoryID(factoryName), itemCode, qty, cmbTrfQtyUnit.Text);
+            successFacStockOut = dalStock.facStockOut(getFactoryID(factoryName), itemCode, qty, "piece");
 
             //successStockSubtract = dalItem.stockSubtract(itemCode, qty.ToString());
 

@@ -94,6 +94,7 @@ namespace FactoryManagementSoftware.DAL
         }
         #endregion
 
+        #region Update
         public bool Update(itemCustBLL u)
         {
             bool isSuccess = false;
@@ -182,6 +183,7 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+        #endregion
 
         #region Delete data from Database
         public bool Delete(itemCustBLL u)
@@ -438,10 +440,54 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-
-
         #endregion
+        public bool ifItemUnderThisCustomer(string itemCode, string custName)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
 
-       
+
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM ((tbl_item_cust INNER JOIN tbl_item ON tbl_item.item_code=@itemCode AND tbl_item.item_code = tbl_item_cust.item_code) INNER JOIN tbl_cust ON tbl_cust.cust_name=@custName AND tbl_cust.cust_id = tbl_item_cust.cust_id)";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@itemCode", itemCode);
+                cmd.Parameters.AddWithValue("@custName", custName);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+            if(dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
     }
 }
