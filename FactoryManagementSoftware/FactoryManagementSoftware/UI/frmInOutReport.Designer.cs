@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnExcel = new System.Windows.Forms.Button();
             this.lblSubType = new System.Windows.Forms.Label();
             this.cmbSubType = new System.Windows.Forms.ComboBox();
@@ -62,6 +62,7 @@
             this.btnExcel.TabIndex = 84;
             this.btnExcel.Text = "EXCEL";
             this.btnExcel.UseVisualStyleBackColor = false;
+            this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
             // 
             // lblSubType
             // 
@@ -119,14 +120,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvInOutReport.BackgroundColor = System.Drawing.Color.White;
             this.dgvInOutReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvInOutReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvInOutReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvInOutReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvInOutReport.GridColor = System.Drawing.SystemColors.Control;
             this.dgvInOutReport.Location = new System.Drawing.Point(32, 196);
@@ -282,6 +283,7 @@
             this.Name = "frmInOutReport";
             this.Text = "frmInOutReport";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmInOutReport_FormClosed);
+            this.Click += new System.EventHandler(this.frmInOutReport_Click);
             ((System.ComponentModel.ISupportInitialize)(this.dgvInOutReport)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -1,21 +1,19 @@
-﻿using FactoryManagementSoftware.BLL;
-using FactoryManagementSoftware.DAL;
+﻿using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.Module;
+using Microsoft.Office.Interop.Excel;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using DataTable = System.Data.DataTable;
 
 namespace FactoryManagementSoftware.UI
 {
     public partial class frmInOutReport : Form
     {
-
         #region Variable
 
         readonly string codeColumnName = "item_code";
@@ -34,13 +32,13 @@ namespace FactoryManagementSoftware.UI
         readonly string lblItemName = "NAME";
         readonly string lblItemCode = "CODE";
 
-        readonly string cmbItemTypeDay = "Day";
-        readonly string cmbItemTypeMonth = "Month";
-        readonly string cmbItemTypeYear = "Year";
+        readonly string cmbItemTypeDay = "Daily";
+        readonly string cmbItemTypeMonth = "Monthly";
+        readonly string cmbItemTypeYear = "Yearly";
 
-        readonly string cmbItemSubTypeInOut = "In/Out";
-        readonly string cmbItemSubTypeIn = "In Only";
-        readonly string cmbItemSubTypeOut = "Out Only";
+        readonly string cmbItemSubTypeInOut = "In_Out";
+        readonly string cmbItemSubTypeIn = "InOnly";
+        readonly string cmbItemSubTypeOut = "OutOnly";
 
         readonly string lblDateStart = "START";
         readonly string lblDateEnd = "END";
@@ -156,7 +154,7 @@ namespace FactoryManagementSoftware.UI
             tool.listPaintGreyHeader(dgv);
         }
 
-        private void createByItemDatagridview(DataGridView dgv)
+        private void createByItemInOutDatagridview(DataGridView dgv)
         {
             dgv.Columns.Clear();
            
@@ -176,10 +174,46 @@ namespace FactoryManagementSoftware.UI
             tool.listPaintGreyHeader(dgv);
         }
 
+        private void createByItemInDatagridview(DataGridView dgv)
+        {
+            dgv.Columns.Clear();
+
+            tool.AddTextBoxColumns(dgv, "CODE", codeColumnName, Fill);
+
+            //add code column
+            tool.AddTextBoxColumns(dgv, "NAME", nameColumnName, Fill);
+
+            //add total qty column
+            tool.AddTextBoxColumns(dgv, dateColumnName, dateColumnName, DisplayedCells);
+
+            tool.AddTextBoxColumns(dgv, inQtyColumnName, inQtyColumnName, DisplayedCells);
+
+            dgv.Columns[inQtyColumnName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            tool.listPaintGreyHeader(dgv);
+        }
+
+        private void createByItemOutDatagridview(DataGridView dgv)
+        {
+            dgv.Columns.Clear();
+
+            tool.AddTextBoxColumns(dgv, "CODE", codeColumnName, Fill);
+
+            //add code column
+            tool.AddTextBoxColumns(dgv, "NAME", nameColumnName, Fill);
+
+            //add total qty column
+            tool.AddTextBoxColumns(dgv, dateColumnName, dateColumnName, DisplayedCells);
+
+            tool.AddTextBoxColumns(dgv, outQtyColumnName, outQtyColumnName, DisplayedCells);
+
+            dgv.Columns[outQtyColumnName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            tool.listPaintGreyHeader(dgv);
+        }
         #endregion
 
         #region Load Data
 
+        #region ComboBox Resource
         private void addDataSourceTocmbBy()
         {
             cmbBy.Items.Clear();
@@ -214,6 +248,281 @@ namespace FactoryManagementSoftware.UI
 
             cmbSubType.Items.Clear();
         }
+        #endregion
+
+        //type: 2.in/out, 1.in, 0.out
+        private void DailyInOutCalculate(DataTable dt, DataGridView dgv,int type)
+        {
+            float inQty = 0;
+            float outQty = 0;
+            string currentDate = null;
+            
+            int rowCount = dt.Rows.Count;
+            int foreachCount = 0;
+            if (rowCount > 0)
+            {
+                dgv.Rows.Clear();
+                foreach (DataRow item in dt.Rows)
+                {
+                    foreachCount++;
+                    if (item[dalTrfHist.TrfResult].ToString().Equals("Passed"))
+                    {
+                        string trfFrom = item[dalTrfHist.TrfFrom].ToString();
+                        string trfTo = item[dalTrfHist.TrfTo].ToString();
+                        string trfDate = item[dalTrfHist.TrfDate].ToString();
+
+                        if (currentDate == null)//first in data
+                        {
+                            currentDate = trfDate;
+                        }
+
+                        if (currentDate == trfDate && !string.IsNullOrEmpty(trfDate))//compare with last data record date
+                        {
+                            //from non-factory to factory: IN
+                            if (tool.getFactoryID(trfFrom) == -1 && tool.getFactoryID(trfTo) != -1 && type != 0)
+                            {
+                                inQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                            }
+
+                            //from factory to non-factory: OUT
+                            else if (tool.getFactoryID(trfFrom) != -1 && tool.getFactoryID(trfTo) == -1 && type != 1)
+                            {
+                                outQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                            }
+
+                        }
+                        else
+                        {
+                            //print data
+                            if(inQty != 0 || outQty != 0)
+                            {
+                                int n = dgv.Rows.Add();
+                                insertByItemDataToDGV(dgvInOutReport, n, currentDate, inQty, outQty, type);
+                                inQty = 0;
+                                outQty = 0;
+                            }
+                            currentDate = trfDate;
+
+                            if (tool.getFactoryID(trfFrom) == -1 && tool.getFactoryID(trfTo) != -1)
+                            {
+                                inQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                            }
+
+                            //from factory to non-factory: OUT
+                            else if (tool.getFactoryID(trfFrom) != -1 && tool.getFactoryID(trfTo) == -1)
+                            {
+                                outQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                            }
+                        }
+
+                        if(foreachCount == dt.Rows.Count)
+                        {
+                            if (inQty != 0 || outQty != 0)
+                            {
+                                int n = dgv.Rows.Add();
+                                insertByItemDataToDGV(dgvInOutReport, n, currentDate, inQty, outQty, type);
+                                inQty = 0;
+                                outQty = 0;
+                            }
+                        }
+                        
+                    }
+                }
+            }
+            else
+            {
+                int n = dgv.Rows.Add();
+                dgv.Rows[n].Cells[nameColumnName].Value = "No data exist";
+            }
+        }
+
+        //type: 2.in/out, 1.in, 0.out
+        private void MonthlyInOutCalculate(DataTable dt, DataGridView dgv, int type)
+        {
+            float inQty = 0;
+            float outQty = 0;
+            string currentDate = null;
+            string currentMonth = null;
+            string currentYear = null;
+
+            int rowCount = dt.Rows.Count;
+            int foreachCount = 0;
+            if (rowCount > 0)
+            {
+                dgv.Rows.Clear();
+                foreach (DataRow item in dt.Rows)
+                {
+                    foreachCount++;
+                    if (item[dalTrfHist.TrfResult].ToString().Equals("Passed"))
+                    {
+                        string trfFrom = item[dalTrfHist.TrfFrom].ToString();
+                        string trfTo = item[dalTrfHist.TrfTo].ToString();
+                        string trfDate = item[dalTrfHist.TrfDate].ToString();
+                        string trfMonth = Convert.ToDateTime(trfDate).Month.ToString();
+                        string trfYear = Convert.ToDateTime(trfDate).Year.ToString();
+
+                        if (currentDate == null)//first in data
+                        {
+                            currentDate = trfDate;
+                            currentMonth = trfMonth;
+                            currentYear = trfYear;
+                        }
+
+                        if (currentMonth == trfMonth && currentYear == trfYear && !string.IsNullOrEmpty(trfDate))//compare with last data record date
+                        {
+                            //from non-factory to factory: IN
+                            if (tool.getFactoryID(trfFrom) == -1 && tool.getFactoryID(trfTo) != -1 && type != 0)
+                            {
+                                inQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                            }
+
+                            //from factory to non-factory: OUT
+                            else if (tool.getFactoryID(trfFrom) != -1 && tool.getFactoryID(trfTo) == -1 && type != 1)
+                            {
+                                outQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                            }
+
+                        }
+                        else
+                        {
+                            //print data
+                            if (inQty != 0 || outQty != 0)
+                            {
+                                int n = dgv.Rows.Add();
+                                string date = Convert.ToDateTime(currentDate).ToString("MMMM") + Convert.ToDateTime(currentDate).ToString("yyyy");
+                                insertByItemDataToDGV(dgvInOutReport, n, date, inQty, outQty, type);
+                                inQty = 0;
+                                outQty = 0;
+                            }
+                            currentDate = trfDate;
+                            currentMonth = trfMonth;
+                            currentYear = trfYear;
+
+                            if (tool.getFactoryID(trfFrom) == -1 && tool.getFactoryID(trfTo) != -1)
+                            {
+                                inQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                            }
+
+                            //from factory to non-factory: OUT
+                            else if (tool.getFactoryID(trfFrom) != -1 && tool.getFactoryID(trfTo) == -1)
+                            {
+                                outQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                            }
+                        }
+
+                        if (foreachCount == dt.Rows.Count)
+                        {
+                            if (inQty != 0 || outQty != 0)
+                            {
+                                int n = dgv.Rows.Add();
+                                string date = Convert.ToDateTime(currentDate).ToString("MMMM") + Convert.ToDateTime(currentDate).ToString("yyyy");
+                                insertByItemDataToDGV(dgvInOutReport, n, date, inQty, outQty, type);
+                                inQty = 0;
+                                outQty = 0;
+                            }
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                int n = dgv.Rows.Add();
+                dgv.Rows[n].Cells[nameColumnName].Value = "No data exist";
+            }
+        }
+
+        //type: 2.in/out, 1.in, 0.out
+        private void YearlyInOutCalculate(DataTable dt, DataGridView dgv, int type)
+        {
+            float inQty = 0;
+            float outQty = 0;
+            string currentDate = null;
+            string currentYear = null;
+
+            int rowCount = dt.Rows.Count;
+            int foreachCount = 0;
+            if (rowCount > 0)
+            {
+                dgv.Rows.Clear();
+                foreach (DataRow item in dt.Rows)
+                {
+                    foreachCount++;
+                    if (item[dalTrfHist.TrfResult].ToString().Equals("Passed"))
+                    {
+                        string trfFrom = item[dalTrfHist.TrfFrom].ToString();
+                        string trfTo = item[dalTrfHist.TrfTo].ToString();
+                        string trfDate = item[dalTrfHist.TrfDate].ToString();
+                        string trfYear = Convert.ToDateTime(trfDate).Year.ToString();
+
+                        if (currentDate == null)//first in data
+                        {
+                            currentDate = trfDate;
+                            currentYear = trfYear;
+                        }
+
+                        if (currentYear == trfYear && !string.IsNullOrEmpty(trfDate))//compare with last data record date
+                        {
+                            //from non-factory to factory: IN
+                            if (tool.getFactoryID(trfFrom) == -1 && tool.getFactoryID(trfTo) != -1 && type != 0)
+                            {
+                                inQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                            }
+
+                            //from factory to non-factory: OUT
+                            else if (tool.getFactoryID(trfFrom) != -1 && tool.getFactoryID(trfTo) == -1 && type != 1)
+                            {
+                                outQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                            }
+
+                        }
+                        else
+                        {
+                            //print data
+                            if (inQty != 0 || outQty != 0)
+                            {
+                                int n = dgv.Rows.Add();
+                                string date = Convert.ToDateTime(currentDate).ToString("yyyy");
+                                insertByItemDataToDGV(dgvInOutReport, n, date, inQty, outQty, type);
+                                inQty = 0;
+                                outQty = 0;
+                            }
+                            currentDate = trfDate;
+                            currentYear = trfYear;
+
+                            if (tool.getFactoryID(trfFrom) == -1 && tool.getFactoryID(trfTo) != -1)
+                            {
+                                inQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                            }
+
+                            //from factory to non-factory: OUT
+                            else if (tool.getFactoryID(trfFrom) != -1 && tool.getFactoryID(trfTo) == -1)
+                            {
+                                outQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                            }
+                        }
+
+                        if (foreachCount == dt.Rows.Count)
+                        {
+                            if (inQty != 0 || outQty != 0)
+                            {
+                                int n = dgv.Rows.Add();
+                                string date = Convert.ToDateTime(currentDate).ToString("yyyy");
+                                insertByItemDataToDGV(dgvInOutReport, n, date, inQty, outQty, type);
+                                inQty = 0;
+                                outQty = 0;
+                            }
+                        }
+
+                    }
+                }
+            }
+            else
+            {
+                int n = dgv.Rows.Add();
+                dgv.Rows[n].Cells[nameColumnName].Value = "No data exist";
+            }
+        }
 
         private void loadTrfHistData(DataGridView dgv)
         {
@@ -230,28 +539,97 @@ namespace FactoryManagementSoftware.UI
                 //if all: show all trf hist during selected period
                 dt = dalTrfHist.rangeTrfSearch(start, end);
             }
-            else if(Type.Equals(CMBPartHeader))
+            else if (Type.Equals(CMBPartHeader))
             {
                 //if part: check sub type: all/customer
                 //if all: show all part trf hist during selected period
-                if(subType.Equals(CMBAllHeader))
+                if (subType.Equals(CMBAllHeader))
                 {
                     dt = dalTrfHist.rangePartTrfSearch(start, end);
                 }
-                else if(!string.IsNullOrEmpty(subType))
+                else if (!string.IsNullOrEmpty(subType))
                 {
                     //if customer: show selected customer's part only
                     dt = dalTrfHist.rangePartTrfSearch(start, end, tool.getCustID(subType));
                 }
             }
-            else if(Type.Equals(CMBMaterialHeader))
+            else if (Type.Equals(CMBMaterialHeader))
             {
                 //show material transfer history during selected period
                 dt = dalTrfHist.rangeMaterialTrfSearch(start, end, subType);
             }
 
-            if(dt != null)
-            insertByDateDataToDGV(dgv, dt);
+            if (dt != null)
+                insertByDateDataToDGV(dgv, dt);
+        }
+
+        private void loadItemTrfHistData(DataGridView dgv)
+        {
+            DataTable dt = null;
+            string itemCode = cmbCode.Text;
+            string Type = cmbType.Text;
+            string subType = cmbSubType.Text;
+            int typeNO = 2;
+            dt = dalTrfHist.codeSearch(itemCode);
+
+            //check sub type and create datagridview
+            if(subType.Equals(cmbItemSubTypeIn))
+            {
+                typeNO = 1;
+                createByItemInDatagridview(dgv);
+            }
+            else if(subType.Equals(cmbItemSubTypeOut))
+            {
+                typeNO = 0;
+                createByItemOutDatagridview(dgv);
+            }
+            else
+            {
+                createByItemInOutDatagridview(dgv);
+            }
+
+            if (Type.Equals(cmbItemTypeDay))
+            {
+                //calculate daily data
+                DailyInOutCalculate(dt,dgv,typeNO);
+            }
+            else if(Type.Equals(cmbItemTypeMonth))
+            {
+                //calculate monthly data
+                MonthlyInOutCalculate(dt, dgv, typeNO);
+            }
+            else if(Type.Equals(cmbItemTypeYear))
+            {
+                //calculate yearly data
+                YearlyInOutCalculate(dt, dgv, typeNO);
+            }
+        }
+
+        private void insertByItemDataToDGV(DataGridView dgv, int n, string Date, float inQty, float outQty, int type)
+        {
+            dgv.Rows[n].Cells[codeColumnName].Value = cmbCode.Text;
+            dgv.Rows[n].Cells[nameColumnName].Value = cmbName.Text;
+
+            if(cmbType.Text.Equals(cmbItemTypeDay))
+            {
+                dgv.Rows[n].Cells[dateColumnName].Value = Convert.ToDateTime(Date).ToString("dd/MM/yyyy");
+            }
+            else
+            {
+                dgv.Rows[n].Cells[dateColumnName].Value = Date;
+            }
+            
+            
+            if(type != 0)
+            {
+                dgv.Rows[n].Cells[inQtyColumnName].Value = inQty.ToString();
+            }
+
+            if (type != 1)
+            {
+                dgv.Rows[n].Cells[outQtyColumnName].Value = outQty.ToString();
+            }
+      
         }
 
         private void insertByDateDataToDGV(DataGridView dgv, DataTable dt)
@@ -284,9 +662,18 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[dalTrfHist.TrfUnit].Value = item[dalTrfHist.TrfUnit].ToString();
                         dgv.Rows[n].Cells[dalTrfHist.TrfNote].Value = item[dalTrfHist.TrfNote].ToString();
                         dgv.Rows[n].Cells[dalTrfHist.TrfAddedDate].Value = item[dalTrfHist.TrfAddedDate].ToString();
-                        dgv.Rows[n].Cells[dalTrfHist.TrfAddedBy].Value = item[dalTrfHist.TrfAddedBy].ToString();
                         dgv.Rows[n].Cells[dalTrfHist.TrfUpdatedDate].Value = item[dalTrfHist.TrfUpdatedDate].ToString();
-                        dgv.Rows[n].Cells[dalTrfHist.TrfUpdatedBy].Value = item[dalTrfHist.TrfUpdatedBy].ToString();
+
+
+                        if (int.TryParse(item[dalTrfHist.TrfAddedBy].ToString(), out int i))
+                        {
+                            dgv.Rows[n].Cells[dalTrfHist.TrfAddedBy].Value = dalUser.getUsername(Convert.ToInt32(item[dalTrfHist.TrfAddedBy]));
+                        }
+                        
+                        if(int.TryParse(item[dalTrfHist.TrfUpdatedBy].ToString(), out int j))
+                        {
+                            dgv.Rows[n].Cells[dalTrfHist.TrfUpdatedBy].Value = dalUser.getUsername(Convert.ToInt32(item[dalTrfHist.TrfUpdatedBy]));
+                        }
                     } 
                 }
             }
@@ -304,7 +691,7 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        #region Text/Index Changed
+        #region Text/Index Changed, Click
 
         private void cmbBy_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -315,8 +702,7 @@ namespace FactoryManagementSoftware.UI
                 showItemInput();
                 tool.loadItemCategoryDataToComboBox(cmbCat);
                 addDataSourceToItemType();
-                cmbCat.SelectedIndex = -1;
-                //createByItemDatagridview();
+                cmbCat.SelectedIndex = -1;  
             }
             else if(cmbBy.Text.Equals(cmbByDate))
             {
@@ -326,7 +712,6 @@ namespace FactoryManagementSoftware.UI
                 showDateInput();
                 addDataSourceToDateType();
                 loadTrfHistData(dgvInOutReport);
-                //createByDateDatagridview();
             }
             else
             {
@@ -348,7 +733,10 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbCode_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (cmbBy.Text.Equals(cmbByItem) && cmbCode.SelectedIndex != -1 && cmbType.SelectedIndex != -1 && cmbSubType.SelectedIndex != -1)
+            {
+                loadItemTrfHistData(dgvInOutReport);
+            }
         }
 
         private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
@@ -369,10 +757,12 @@ namespace FactoryManagementSoftware.UI
                 }
                 loadTrfHistData(dgvInOutReport);
             }
+
+            else if (cmbBy.Text.Equals(cmbByItem) && cmbCode.SelectedIndex != -1 && cmbType.SelectedIndex != -1 && cmbSubType.SelectedIndex != -1)
+            {
+                loadItemTrfHistData(dgvInOutReport);
+            }
         }
-
-
-        #endregion
 
         private void dtpStart_ValueChanged(object sender, EventArgs e)
         {
@@ -386,7 +776,154 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbSubType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            loadTrfHistData(dgvInOutReport);
+            if (cmbBy.Text.Equals(cmbByItem) && cmbCode.SelectedIndex != -1 && cmbType.SelectedIndex != -1 && cmbSubType.SelectedIndex != -1)
+            {
+                loadItemTrfHistData(dgvInOutReport);
+            }
         }
+
+        private void frmInOutReport_Click(object sender, EventArgs e)
+        {
+            dgvInOutReport.ClearSelection();
+        }
+
+        #endregion
+
+        #region export to excel
+
+        private string setFileName()
+        {
+            string fileName = "Test.xls";
+
+            DateTime currentDate = DateTime.Now;
+            if (cmbBy.Text.Equals(cmbByItem))
+            {
+                fileName = "TransferReport(" + cmbName.Text +"_"+cmbType.Text+"_"+cmbSubType.Text+ ")_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
+            }
+            else if (cmbBy.Text.Equals(cmbByDate))
+            {
+                fileName = "TransferReport(From:" + dtpStart.Text + "To: "+dtpEnd.Text+"_"+cmbType.Text+"_"+cmbSubType.Text+")_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
+            }
+            
+            return fileName;
+        }
+
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Excel Documents (*.xls)|*.xls";
+            sfd.FileName = setFileName();
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                // Copy DataGridView results to clipboard
+                copyAlltoClipboard();
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                object misValue = System.Reflection.Missing.Value;
+                Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
+                xlexcel.PrintCommunication = false;
+                xlexcel.ScreenUpdating = false;
+                xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
+                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+
+                xlexcel.Calculation = XlCalculation.xlCalculationManual;
+                Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+                xlWorkSheet.Name = cmbSubType.Text;
+
+                #region Save data to Sheet
+
+                if (cmbBy.Text.Equals(cmbByItem))
+                {
+                    xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbName.Text + "_" + cmbType.Text + "_" + cmbSubType.Text + ") TRANSFER LIST";
+                }
+                else if (cmbBy.Text.Equals(cmbByDate))
+                {
+                    xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (From:" + dtpStart.Text + "To: " + dtpEnd.Text + "_" + cmbType.Text + "_" + cmbSubType.Text + ") TRANSFER LIST";
+                }
+
+                //Header and Footer setup
+                xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
+                xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
+                xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+
+                //Page setup
+                xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
+                xlWorkSheet.PageSetup.Zoom = false;
+                xlWorkSheet.PageSetup.CenterHorizontally = true;
+                xlWorkSheet.PageSetup.LeftMargin = 1;
+                xlWorkSheet.PageSetup.RightMargin = 1;
+                xlWorkSheet.PageSetup.FitToPagesWide = 1;
+                xlWorkSheet.PageSetup.FitToPagesTall = false;
+                xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+
+                xlexcel.PrintCommunication = true;
+                xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+                // Paste clipboard results to worksheet range
+                xlWorkSheet.Select();
+                Range CR = (Range)xlWorkSheet.Cells[1, 1];
+                CR.Select();
+                xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+
+                //content edit
+                Range tRange = xlWorkSheet.UsedRange;
+                tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                tRange.Borders.Weight = XlBorderWeight.xlThin;
+                tRange.Font.Size = 11;
+                tRange.EntireColumn.AutoFit();
+                tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
+
+                #endregion
+
+                //Save the excel file under the captured location from the SaveFileDialog
+                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
+                    misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                xlexcel.DisplayAlerts = true;
+
+                xlWorkBook.Close(true, misValue, misValue);
+                xlexcel.Quit();
+
+                releaseObject(xlWorkSheet);
+                releaseObject(xlWorkBook);
+                releaseObject(xlexcel);
+
+                // Clear Clipboard and DataGridView selection
+                Clipboard.Clear();
+                dgvInOutReport.ClearSelection();
+
+                // Open the newly saved excel file
+                if (File.Exists(sfd.FileName))
+                    System.Diagnostics.Process.Start(sfd.FileName);
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void copyAlltoClipboard()
+        {
+            dgvInOutReport.SelectAll();
+            DataObject dataObj = dgvInOutReport.GetClipboardContent();
+            if (dataObj != null)
+                Clipboard.SetDataObject(dataObj);
+        }
+
+        private void releaseObject(object obj)
+        {
+            try
+            {
+                Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                MessageBox.Show("Exception Occurred while releasing object " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
+        #endregion
     }
 }

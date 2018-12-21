@@ -11,6 +11,7 @@ namespace FactoryManagementSoftware.Module
     {
 
         custDAL dalCust = new custDAL();
+        facDAL dalFac = new facDAL();
         itemCatDAL dalItemCat = new itemCatDAL();
         itemDAL dalItem = new itemDAL();
 
@@ -221,6 +222,26 @@ namespace FactoryManagementSoftware.Module
                 return -1;
             }
             
+        }
+
+        public int getFactoryID(string factoryName)
+        {
+            string factoryID = "";
+
+            DataTable dtFac = dalFac.nameSearch(factoryName);
+
+            if(dtFac.Rows.Count > 0)
+            {
+                foreach (DataRow fac in dtFac.Rows)
+                {
+                    factoryID = fac["fac_id"].ToString();
+                }
+                return Convert.ToInt32(factoryID);
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         #endregion

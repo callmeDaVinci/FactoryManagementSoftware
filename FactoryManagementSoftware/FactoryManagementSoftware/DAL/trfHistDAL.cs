@@ -251,7 +251,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_trf_hist INNER JOIN tbl_item ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code WHERE tbl_item.item_code LIKE '%" + keywords + "%'";
+                String sql = "SELECT * FROM tbl_trf_hist INNER JOIN tbl_item ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code WHERE tbl_item.item_code LIKE '%" + keywords + "%' ORDER BY tbl_trf_hist.trf_hist_trf_date DESC";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -482,7 +482,8 @@ namespace FactoryManagementSoftware.DAL
                             WHERE 
                             trf_hist_trf_date 
                             BETWEEN @start AND @end 
-                            AND tbl_item_cust.cust_id = @custID";
+                            AND tbl_item_cust.cust_id = @custID 
+                            ORDER BY ";
 
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -512,7 +513,7 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
 
-            dt.DefaultView.Sort = "trf_hist_added_date DESC";
+            dt.DefaultView.Sort = "trf_hist_trf_date DESC";
             DataTable sortedDt = dt.DefaultView.ToTable();
 
             return sortedDt;
