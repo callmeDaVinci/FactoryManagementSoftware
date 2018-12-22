@@ -250,6 +250,7 @@ namespace FactoryManagementSoftware.UI
         }
         #endregion
 
+        #region Load Result
         //type: 2.in/out, 1.in, 0.out
         private void DailyInOutCalculate(DataTable dt, DataGridView dgv,int type)
         {
@@ -688,6 +689,8 @@ namespace FactoryManagementSoftware.UI
         {
             MainDashboard.InOutReportFormOpen = false;
         }
+
+        #endregion
 
         #endregion
 

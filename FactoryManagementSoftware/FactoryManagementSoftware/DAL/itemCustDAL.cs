@@ -21,7 +21,17 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT tbl_cust.cust_name, tbl_item.item_code, tbl_item.item_name, tbl_item_cust.item_cust_added_date, tbl_item_cust.item_cust_added_by FROM ((tbl_item_cust INNER JOIN tbl_item ON tbl_item_cust.item_code = tbl_item.item_code)INNER JOIN tbl_cust ON tbl_item_cust.cust_id = tbl_cust.cust_id)";
+                String sql = @"SELECT tbl_cust.cust_name, 
+                            tbl_item.item_code, 
+                            tbl_item.item_name, 
+                            tbl_item_cust.item_cust_added_date, 
+                            tbl_item_cust.item_cust_added_by 
+                            FROM ((tbl_item_cust 
+                            INNER JOIN tbl_item 
+                            ON tbl_item_cust.item_code = tbl_item.item_code)
+                            INNER JOIN tbl_cust 
+                            ON tbl_item_cust.cust_id = tbl_cust.cust_id)";
+
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database

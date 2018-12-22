@@ -14,6 +14,7 @@ namespace FactoryManagementSoftware.Module
         facDAL dalFac = new facDAL();
         itemCatDAL dalItemCat = new itemCatDAL();
         itemDAL dalItem = new itemDAL();
+        joinDAL dalJoin = new joinDAL();
 
         #region UI design
 
@@ -246,5 +247,20 @@ namespace FactoryManagementSoftware.Module
 
         #endregion
 
+        #region Validation
+
+        public bool ifGotChild(string itemCode)
+        {
+            bool result = false;
+            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+            if (dtJoin.Rows.Count > 0)
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
+        #endregion
     }
 }

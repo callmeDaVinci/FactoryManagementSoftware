@@ -1,14 +1,14 @@
-﻿using FactoryManagementSoftware.BLL;
-using FactoryManagementSoftware.DAL;
+﻿using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.BLL;
+using FactoryManagementSoftware.Module;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Data;
 using System.Drawing;
-using System.Windows.Forms;
 using System.IO;
-using Excel = Microsoft.Office.Interop.Excel;
-using Microsoft.Office.Interop.Excel;
-using DataTable = System.Data.DataTable;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using DataTable = System.Data.DataTable;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -17,11 +17,19 @@ namespace FactoryManagementSoftware.UI
         public frmMaterialUsedReport()
         {
             InitializeComponent();
+            tool.loadCustomerAndAllToComboBox(cmbCust);
+            addDataToTypeCMB();
         }
 
         #region Valiable Declare
 
-        private string colorName = "Black";
+        readonly string headerMatUsed = "material_used";
+        readonly string headerMatUsedAndWastage = "material_used_include_wastage";
+        readonly string headerTotalMatUsed = "total_material_used";
+
+        readonly string cmbTypeActual = "Actual Used";
+        readonly string cmbTypeNextMonth = "Next Month Forecast";
+        readonly string cmbTypeNextNextMonth = "Next Next Month Forecast";
 
         #endregion
 
@@ -60,9 +68,277 @@ namespace FactoryManagementSoftware.UI
         materialUsedBLL uMatUsed = new materialUsedBLL();
         materialUsedDAL dalMatUsed = new materialUsedDAL();
 
+        userDAL dalUser = new userDAL();
+
+        Tool tool = new Tool();
         #endregion
 
         #region load/close data
+
+        private void addDataToTypeCMB()
+        {
+            cmbType.Items.Clear();
+            cmbType.Items.Add(cmbTypeActual);
+            cmbType.Items.Add(cmbTypeNextMonth);
+            cmbType.Items.Add(cmbTypeNextNextMonth);
+            cmbType.SelectedIndex = 0;
+        }
+
+        private void insertAllItemForecastData()
+        {
+            string forecast = "forecast_two";
+            if (cmbType.Text.Equals(cmbTypeNextNextMonth))
+            {
+                forecast = "forecast_three";
+            }
+            if (!string.IsNullOrEmpty(cmbCust.Text))
+            {
+                DataTable dt = dalItemCust.Select();
+
+                if (dt.Rows.Count <= 0)
+                {
+                    MessageBox.Show("no data under this record.");
+                }
+                else
+                {
+                    int Forecast2 = 0;
+                    string itemCode;
+
+                    // string forecastNO = "";
+                    int forecastIndex = 1;
+
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        itemCode = item["item_code"].ToString();
+
+                        DataTable dt3 = dalItemCust.itemCodeSearch(itemCode);
+
+                        Forecast2 = 0;
+
+                        if (dt3.Rows.Count > 0)
+                        {
+
+                            foreach (DataRow outRecord in dt3.Rows)
+                            {
+                                Forecast2 += Convert.ToInt32(outRecord[forecast]);
+                            }
+                        }
+
+                        if (tool.ifGotChild(itemCode))
+                        {
+                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            foreach (DataRow Join in dtJoin.Rows)
+                            {
+                                uMatUsed.no = forecastIndex;
+                                uMatUsed.item_code = Join["join_child_code"].ToString();
+                                uMatUsed.quantity_order = Forecast2;
+
+                                bool result = dalMatUsed.Insert(uMatUsed);
+                                if (!result)
+                                {
+                                    MessageBox.Show("failed to insert material used data");
+                                    return;
+                                }
+                                else
+                                {
+                                    forecastIndex++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            uMatUsed.no = forecastIndex;
+                            uMatUsed.item_code = itemCode;
+                            uMatUsed.quantity_order = Forecast2;
+
+                            bool result = dalMatUsed.Insert(uMatUsed);
+                            if (!result)
+                            {
+                                MessageBox.Show("failed to insert material used data");
+                                return;
+                            }
+                            else
+                            {
+                                forecastIndex++;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void insertItemForecastData()
+        {
+            string forecast = "forecast_two";
+            if (cmbType.Text.Equals(cmbTypeNextNextMonth))
+            {
+                forecast = "forecast_three";
+            }
+
+            string custName = cmbCust.Text;
+
+            if (!string.IsNullOrEmpty(custName))
+            {
+                DataTable dt = dalItemCust.custSearch(custName);
+
+                if (dt.Rows.Count <= 0)
+                {
+                    MessageBox.Show("no data under this record.");
+                }
+                else
+                {
+                    int Forecast2 = 0;
+                    string itemCode;
+
+                    // string forecastNO = "";
+                    int forecastIndex = 1;
+
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        itemCode = item["item_code"].ToString();
+
+                        DataTable dt3 = dalItemCust.itemCodeSearch(itemCode);
+
+                        Forecast2 = 0;
+
+                        if (dt3.Rows.Count > 0)
+                        {
+
+                            foreach (DataRow outRecord in dt3.Rows)
+                            {
+                                Forecast2 += Convert.ToInt32(outRecord[forecast]);
+                            }
+                        }
+
+                        if (tool.ifGotChild(itemCode))
+                        {
+                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            foreach (DataRow Join in dtJoin.Rows)
+                            {
+                                uMatUsed.no = forecastIndex;
+                                uMatUsed.item_code = Join["join_child_code"].ToString();
+                                uMatUsed.quantity_order = Forecast2;
+
+                                bool result = dalMatUsed.Insert(uMatUsed);
+                                if (!result)
+                                {
+                                    MessageBox.Show("failed to insert material used data");
+                                    return;
+                                }
+                                else
+                                {
+                                    forecastIndex++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            uMatUsed.no = forecastIndex;
+                            uMatUsed.item_code = itemCode;
+                            uMatUsed.quantity_order = Forecast2;
+
+                            bool result = dalMatUsed.Insert(uMatUsed);
+                            if (!result)
+                            {
+                                MessageBox.Show("failed to insert material used data");
+                                return;
+                            }
+                            else
+                            {
+                                forecastIndex++;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void insertAllItemQuantityOrderData()
+        {
+            if (!string.IsNullOrEmpty(cmbCust.Text))
+            {
+                DataTable dt = dalItemCust.Select();
+
+                if (dt.Rows.Count <= 0)
+                {
+                    MessageBox.Show("no data under this record.");
+                }
+                else
+                {
+                    int outStock = 0;
+                    string itemCode;
+                    string start = dtpStart.Value.ToString("yyyy/MM/dd");
+                    string end = dtpEnd.Value.ToString("yyyy/MM/dd");
+
+                    // string forecastNO = "";
+                    int forecastIndex = 1;
+
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        itemCode = item["item_code"].ToString();
+
+                        DataTable dt3 = daltrfHist.rangeItemToAllCustomerSearch(start, end, itemCode);
+
+                        outStock = 0;
+
+                        if (dt3.Rows.Count > 0)
+                        {
+
+                            foreach (DataRow outRecord in dt3.Rows)
+                            {
+                                if (outRecord["trf_result"].ToString().Equals("Passed"))
+                                {
+                                    //outStock += Convert.ToSingle(outRecord["trf_hist_qty"]);
+                                    outStock += Convert.ToInt32(outRecord["trf_hist_qty"]);
+                                }
+                            }
+                        }
+
+                        if (tool.ifGotChild(itemCode))
+                        {
+                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            foreach (DataRow Join in dtJoin.Rows)
+                            {
+                                uMatUsed.no = forecastIndex;
+                                uMatUsed.item_code = Join["join_child_code"].ToString();
+                                uMatUsed.quantity_order = outStock;
+
+                                bool result = dalMatUsed.Insert(uMatUsed);
+                                if (!result)
+                                {
+                                    MessageBox.Show("failed to insert material used data");
+                                    return;
+                                }
+                                else
+                                {
+                                    forecastIndex++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            uMatUsed.no = forecastIndex;
+                            uMatUsed.item_code = itemCode;
+                            uMatUsed.quantity_order = outStock;
+
+                            bool result = dalMatUsed.Insert(uMatUsed);
+                            if (!result)
+                            {
+                                MessageBox.Show("failed to insert material used data");
+                                return;
+                            }
+                            else
+                            {
+                                forecastIndex++;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
 
         private void insertItemQuantityOrderData()
         {
@@ -107,7 +383,7 @@ namespace FactoryManagementSoftware.UI
                             }
                         }
 
-                        if (ifGotChild(itemCode))
+                        if (tool.ifGotChild(itemCode))
                         {
                             DataTable dtJoin = dalJoin.parentCheck(itemCode);
                             foreach (DataRow Join in dtJoin.Rows)
@@ -153,7 +429,6 @@ namespace FactoryManagementSoftware.UI
 
         private void loadMaterialUsedList()
         {
-            insertItemQuantityOrderData();
             int index = 1;
             string materialType = null;
             int OrderQty;
@@ -168,7 +443,7 @@ namespace FactoryManagementSoftware.UI
             dt = dt.DefaultView.ToTable();
 
             dgvMaterialUsedRecord.Rows.Clear();
-
+            dgvMaterialUsedRecord.Refresh();
             foreach (DataRow item in dt.Rows)
             {
                 int n = dgvMaterialUsedRecord.Rows.Add();
@@ -196,8 +471,8 @@ namespace FactoryManagementSoftware.UI
                 else
                 {
                     //first data
-                    dgvMaterialUsedRecord.Rows[n - 1].Cells["total_material_used"].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
-                    dgvMaterialUsedRecord.Rows[n - 1].Cells["total_material_used"].Value = totalMaterialUsed;
+                    dgvMaterialUsedRecord.Rows[n - 1].Cells[headerTotalMatUsed].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
+                    dgvMaterialUsedRecord.Rows[n - 1].Cells[headerTotalMatUsed].Value = totalMaterialUsed;
 
                     materialType = item["item_material"].ToString();
                     totalMaterialUsed = materialUsed + wastageUsed;
@@ -208,27 +483,27 @@ namespace FactoryManagementSoftware.UI
                 {
                     // this is the last item
                     totalMaterialUsed = materialUsed + wastageUsed;
-                    dgvMaterialUsedRecord.Rows[n].Cells["total_material_used"].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
-                    dgvMaterialUsedRecord.Rows[n].Cells["total_material_used"].Value = totalMaterialUsed;
+                    dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
+                    dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Value = totalMaterialUsed;
                 }
 
                 dgvMaterialUsedRecord.Rows[n].Cells["no"].Value = index;
-                dgvMaterialUsedRecord.Rows[n].Cells["item_material"].Value = item["item_material"].ToString();
-                dgvMaterialUsedRecord.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
-                dgvMaterialUsedRecord.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
-                dgvMaterialUsedRecord.Rows[n].Cells["item_color"].Value = item["item_color"].ToString();
-                dgvMaterialUsedRecord.Rows[n].Cells["item_ord"].Value = item["quantity_order"].ToString();
-                dgvMaterialUsedRecord.Rows[n].Cells["item_part_weight"].Value = itemWeight;
-                dgvMaterialUsedRecord.Rows[n].Cells["wastage_allowed"].Value = item["item_wastage_allowed"].ToString();
-                dgvMaterialUsedRecord.Rows[n].Cells["material_used"].Value = materialUsed;
-                dgvMaterialUsedRecord.Rows[n].Cells["material_used_include_wastage"].Value = materialUsed + wastageUsed;
-
-
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemMaterial].Value = item[dalItem.ItemMaterial].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemName].Value = item[dalItem.ItemName].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemCode].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemColor].Value = item[dalItem.ItemCode].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemOrd].Value = item["quantity_order"].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemProPWPcs].Value = itemWeight;
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemWastage].Value = item[dalItem.ItemWastage].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[headerMatUsed].Value = materialUsed;
+                dgvMaterialUsedRecord.Rows[n].Cells[headerMatUsedAndWastage].Value = materialUsed + wastageUsed;
                 index++;
 
             }
 
-            listPaint(dgvMaterialUsedRecord);
+            //listPaint(dgvMaterialUsedRecord);
+            //tool.listPaint(dgvMaterialUsedRecord);
+            tool.listPaintGreyHeader(dgvMaterialUsedRecord);
 
         }
 
@@ -239,40 +514,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmMaterialUsedReport_Load(object sender, EventArgs e)
         {
-            loadCustomerList();
-        }
-
-        private void listPaint(DataGridView dgv)
-        {
-            dgv.BorderStyle = BorderStyle.None;
-            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
-            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgv.BackgroundColor = Color.White;
-
-            dgv.EnableHeadersVisualStyles = false;
-            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
-            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-
-            //bool rowColorChange = true;
-
-            foreach (DataGridViewRow row in dgv.Rows)
-            {
-                int n = row.Index;
-                if (row.Cells["item_name"].Value == null)
-                {
-                    row.Height = 3;
-                    row.DefaultCellStyle.BackColor = Color.FromName(colorName);
-
-                }
-            }
-
-            foreach (DataGridViewColumn dgvc in dgv.Columns)
-            {
-                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
-
-            dgv.ClearSelection();
+            //loadCustomerList();
         }
 
         private void loadCustomerList()
@@ -284,36 +526,6 @@ namespace FactoryManagementSoftware.UI
             cmbCust.DataSource = distinctTable;
             cmbCust.DisplayMember = "cust_name";
             cmbCust.SelectedIndex = -1;
-        }
-
-        #endregion
-
-        #region Data Checking/Get Data
-
-        private string getCustID(string custName)
-        {
-            string custID = "";
-
-            DataTable dtCust = dalCust.nameSearch(custName);
-
-            foreach (DataRow Cust in dtCust.Rows)
-            {
-                custID = Cust["cust_id"].ToString();
-            }
-            return custID;
-        }
-       
-
-        private bool ifGotChild(string itemCode)
-        {
-            bool result = false;
-            DataTable dtJoin = dalJoin.parentCheck(itemCode);
-            if (dtJoin.Rows.Count > 0)
-            {
-                result = true;
-            }
-
-            return result;
         }
 
         #endregion
@@ -332,8 +544,31 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                loadMaterialUsedList();
-                
+                if(cmbCust.Text.Equals("All"))
+                {
+                    if(cmbType.Text.Equals(cmbTypeActual))
+                    {
+                        insertAllItemQuantityOrderData();
+                    }
+                    else
+                    {
+                        insertAllItemForecastData();
+                    }
+                    
+                }
+                else
+                {
+                    if (cmbType.Text.Equals(cmbTypeActual))
+                    {
+                        insertItemQuantityOrderData();
+                    }
+                    else
+                    {
+                        insertItemForecastData();
+                    }
+                    
+                }
+                loadMaterialUsedList();             
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
@@ -353,14 +588,7 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbCust_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cmbCust.Text.Equals("All"))
-            {
-            
-            }
-            else
-            {
-
-            }
+            dgvMaterialUsedRecord.Rows.Clear();
         }
 
         #region export to excel
@@ -384,8 +612,8 @@ namespace FactoryManagementSoftware.UI
         private string setFileName()
         {
             string fileName = "Test.xls";
-            DateTime currentDate = DateTime.Now.Date;
-            fileName = "MaterialUsedReport(" + cmbCust.Text + ":"+dtpStart.Text+">"+dtpEnd.Text+")_" + currentDate.ToString("ddMMyyyy") + ".xls";
+            DateTime currentDate = DateTime.Now;
+            fileName = "MaterialUsedReport(" + cmbCust.Text + "_"+dtpStart.Text+"-"+dtpEnd.Text+")_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
             return fileName;
         }
 
@@ -394,84 +622,65 @@ namespace FactoryManagementSoftware.UI
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Excel Documents (*.xls)|*.xls";
             sfd.FileName = setFileName();
+
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 // Copy DataGridView results to clipboard
                 copyAlltoClipboard();
-
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 object misValue = System.Reflection.Missing.Value;
-                Excel.Application xlexcel = new Excel.Application();
-
+                Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
+                xlexcel.PrintCommunication = false;
+                xlexcel.ScreenUpdating = false;
                 xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
                 Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
-                Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
+                xlexcel.Calculation = XlCalculation.xlCalculationManual;
+                Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+                xlWorkSheet.Name = cmbCust.Text;
+
+                #region Save data to Sheet
+
+                //Header and Footer setup
+                xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + dtpStart.Text + ">" + dtpEnd.Text; 
+                xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") MATERIAL USED REPORT";
+                xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
+                xlWorkSheet.PageSetup.CenterFooter = DateTime.Now.Date.ToString("dd/MM/yyyy")+" Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+
+                //Page setup
+                xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
+                xlWorkSheet.PageSetup.Zoom = false;
+                xlWorkSheet.PageSetup.CenterHorizontally = true;
+                xlWorkSheet.PageSetup.LeftMargin = 1;
+                xlWorkSheet.PageSetup.RightMargin = 1;
+                xlWorkSheet.PageSetup.FitToPagesWide = 1;
+                xlWorkSheet.PageSetup.FitToPagesTall = false;
+                xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+
+                xlexcel.PrintCommunication = true;
+                xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
                 // Paste clipboard results to worksheet range
+                xlWorkSheet.Select();
                 Range CR = (Range)xlWorkSheet.Cells[1, 1];
                 CR.Select();
                 xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
 
-                Range rng = xlWorkSheet.get_Range("A:Q").Cells; ;
-                rng.EntireColumn.AutoFit();
+                //content edit
+                Range tRange = xlWorkSheet.UsedRange;
+                tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                tRange.Borders.Weight = XlBorderWeight.xlThin;
+                tRange.Font.Size = 11;
+                tRange.EntireColumn.AutoFit();
+                tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
 
-                for (int i = 0; i <= dgvMaterialUsedRecord.RowCount - 2; i++)
-                {
-                    for (int j = 0; j <= dgvMaterialUsedRecord.ColumnCount - 1; j++)
-                    {
-                        Range range = (Range)xlWorkSheet.Cells[i + 2, j + 1];
+                #endregion
 
-                        if (i == 0)
-                        {
-                            Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
-                            header.Interior.Color = ColorTranslator.ToOle(dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor);
-                        }
-
-                        if (dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor == SystemColors.Window)
-                        {
-                            range.Interior.Color = ColorTranslator.ToOle(Color.White);
-                            if (i == 0)
-                            {
-                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
-                                header.Interior.Color = ColorTranslator.ToOle(Color.White);
-                            }
-                        }
-                        else if (dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor == Color.Black)
-                        {
-                            range.Rows.RowHeight = 3;
-                            range.Interior.Color = ColorTranslator.ToOle(dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor);
-                            if (i == 0)
-                            {
-                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
-                                header.Interior.Color = ColorTranslator.ToOle(dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor);
-                            }
-                        }
-                        else
-                        {
-                            range.Interior.Color = ColorTranslator.ToOle(dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor);
-
-                            if (i == 0)
-                            {
-                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
-                                header.Interior.Color = ColorTranslator.ToOle(dgvMaterialUsedRecord.Rows[i].Cells[j].InheritedStyle.BackColor);
-                            }
-                        }
-                        range.Font.Color = dgvMaterialUsedRecord.Rows[i].Cells[j].Style.ForeColor;
-                        if (dgvMaterialUsedRecord.Rows[i].Cells[j].Style.ForeColor == Color.Blue)
-                        {
-                            Range header = (Range)xlWorkSheet.Cells[i + 2, 2];
-                            header.Font.Underline = true;
-
-                            header = (Range)xlWorkSheet.Cells[i + 2, 3];
-                            header.Font.Underline = true;
-                        }
-
-                    }
-                }
-
-
-                // Save the excel file under the captured location from the SaveFileDialog
-                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                //Save the excel file under the captured location from the SaveFileDialog
+                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
+                    misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
                 xlexcel.DisplayAlerts = true;
+
                 xlWorkBook.Close(true, misValue, misValue);
                 xlexcel.Quit();
 
@@ -487,6 +696,8 @@ namespace FactoryManagementSoftware.UI
                 if (File.Exists(sfd.FileName))
                     System.Diagnostics.Process.Start(sfd.FileName);
             }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void copyAlltoClipboard()
@@ -515,5 +726,10 @@ namespace FactoryManagementSoftware.UI
             }
         }
         #endregion
+
+        private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            dgvMaterialUsedRecord.Rows.Clear();
+        }
     }
 }
