@@ -362,6 +362,50 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable rangeItemToAllCustomerSearchByMonth(string month, string year, string itemCode)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                            INNER JOIN tbl_cust
+                            ON tbl_trf_hist.trf_hist_to=tbl_cust.cust_name
+                            WHERE MONTH(tbl_trf_hist.trf_hist_trf_date) = @month AND YEAR(tbl_trf_hist.trf_hist_trf_date) = @year
+                            AND tbl_trf_hist.trf_hist_item_code=@itemCode";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@month", month);
+                cmd.Parameters.AddWithValue("@year", year);
+                cmd.Parameters.AddWithValue("@itemCode", itemCode);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable rangeItemToCustomerSearch(string customer, string start, string end, string itemCode)
         {
             //static methodd to connect database

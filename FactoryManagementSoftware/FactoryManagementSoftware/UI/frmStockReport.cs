@@ -82,6 +82,8 @@ namespace FactoryManagementSoftware.UI
         private void createDatagridview()
         {
             DataGridView dgv = dgvStockReport;
+
+            dgv.Columns.Clear();
             //add category column
             tool.AddTextBoxColumns(dgv, IndexColumnName, IndexColumnName, DisplayedCells);
 

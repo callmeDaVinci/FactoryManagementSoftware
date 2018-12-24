@@ -4,13 +4,14 @@ using System;
 using System.Data;
 using System.Windows.Forms;
 using System.Drawing;
+using FactoryManagementSoftware.Module;
+using System.Globalization;
 
 namespace FactoryManagementSoftware.UI
 {
     public partial class frmOrder : Form
     {
-        userDAL dalUser = new userDAL();
-        private int userPermission = -1;
+        
         public frmOrder()
         {
             InitializeComponent();
@@ -24,25 +25,45 @@ namespace FactoryManagementSoftware.UI
             {
                 btnOrder.Hide();
             }
+
+            loadOrderAlertData();
         }
+
 
         #region variable declare
 
         private int selectedOrderID = -1;
         static public string finalOrderNumber;
         static public string receivedNumber;
-      
+
         static public bool receivedReturn = false;
         static public bool orderApproved = false;
 
+        private int userPermission = -1;
+
+        readonly string headerIndex = "NO";
+        readonly string headerCode = "CODE";
+        readonly string headerName = "NAME";
+        readonly string headerReadyStock = "READY STOCK";
+        readonly string headerBalanceOne = "FORECAST 1 BALANCE";
+        readonly string headerBalanceTwo = "FORECAST 2 BALANCE";
+        readonly string headerBalanceThree = "FORECAST 3 BALANCE";
+
+        DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
+        DataGridViewAutoSizeColumnMode DisplayedCells = DataGridViewAutoSizeColumnMode.DisplayedCells;
         #endregion
 
         #region create class object (database)
-        ordBLL uOrd = new ordBLL();
-        ordDAL dalOrd = new ordDAL();
+        custBLL uCust = new custBLL();
+        custDAL dalCust = new custDAL();
 
         orderActionBLL uOrderAction = new orderActionBLL();
         orderActionDAL dalOrderAction = new orderActionDAL();
+        ordBLL uOrd = new ordBLL();
+        ordDAL dalOrd = new ordDAL();
+
+        facBLL uFac = new facBLL();
+        facDAL dalFac = new facDAL();
 
         itemBLL uItem = new itemBLL();
         itemDAL dalItem = new itemDAL();
@@ -50,9 +71,118 @@ namespace FactoryManagementSoftware.UI
         itemCatBLL uItemCat = new itemCatBLL();
         itemCatDAL dalItemCat = new itemCatDAL();
 
+        trfCatBLL utrfCat = new trfCatBLL();
+        trfCatDAL daltrfCat = new trfCatDAL();
+
+        trfHistBLL utrfHist = new trfHistBLL();
+        trfHistDAL daltrfHist = new trfHistDAL();
+
+        facStockBLL uStock = new facStockBLL();
+        facStockDAL dalStock = new facStockDAL();
+
+        itemCustBLL uItemCust = new itemCustBLL();
+        itemCustDAL dalItemCust = new itemCustDAL();
+
+        joinBLL uJoin = new joinBLL();
+        joinDAL dalJoin = new joinDAL();
+
+        forecastBLL uForecast = new forecastBLL();
+        forecastDAL dalForecast = new forecastDAL();
+
+        materialUsedBLL uMatUsed = new materialUsedBLL();
+        materialUsedDAL dalMatUsed = new materialUsedDAL();
+
+        userDAL dalUser = new userDAL();
+
+        Tool tool = new Tool();
+
+        #endregion
+
+        #region UI setting
+
+        private void createOrderAlertDatagridview()
+        {
+            DataGridView dgv = dgvOrderAlert;
+            dgv.Columns.Clear();
+
+            tool.AddTextBoxColumns(dgv, headerIndex, headerIndex, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, headerCode, dalItem.ItemCode, Fill);
+            tool.AddTextBoxColumns(dgv, headerName, dalItem.ItemName, Fill);
+            tool.AddTextBoxColumns(dgv, headerReadyStock, dalItem.ItemQty, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, headerBalanceOne, headerBalanceOne, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, headerBalanceTwo, headerBalanceTwo, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, headerBalanceThree, headerBalanceThree, DisplayedCells);
+
+            dgv.Columns[dalItem.ItemQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns[headerBalanceOne].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns[headerBalanceTwo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns[headerBalanceThree].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+        }
+
         #endregion
 
         #region Load or Reset Form
+
+        private DataTable AddDuplicates(DataTable dt)
+        {
+
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = dt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (i == 0)
+                    {
+                        break;
+                    }
+                    for (int j = i - 1; j >= 0; j--)
+                    {
+                        if (dt.Rows[i]["item_code"].ToString() == dt.Rows[j]["item_code"].ToString())
+                        {
+                            float readyStock = dalItem.getStockQty(dt.Rows[i]["item_code"].ToString());
+
+                            float jQty = Convert.ToSingle(dt.Rows[j]["quantity_order"].ToString());
+                            float iQty = Convert.ToSingle(dt.Rows[i]["quantity_order"].ToString());
+
+                            float stillOne = readyStock - jQty;
+                            float stllTwo = readyStock - iQty;
+
+                            float actualBalance = readyStock - stillOne - stllTwo;
+                            dt.Rows[j]["quantity_order"] = actualBalance.ToString();
+                            dt.Rows[i].Delete();
+                            break;
+                        }
+                    }
+                }
+                dt.AcceptChanges();
+
+            }
+            return dt;
+        }
+
+        private DataTable RemoveDuplicates(DataTable dt)
+        {
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = dt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (i == 0)
+                    {
+                        break;
+                    }
+                    for (int j = i - 1; j >= 0; j--)
+                    {
+                        if (dt.Rows[i]["item_code"].ToString() == dt.Rows[j]["item_code"].ToString())
+                        {
+                            dt.Rows[i].Delete();
+                            break;
+                        }
+                    }
+                }
+                dt.AcceptChanges();
+
+            }
+            return dt;
+        }
 
         private void frmOrder_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -199,6 +329,280 @@ namespace FactoryManagementSoftware.UI
             dt.Rows.Add("Approved");
             dt.Rows.Add("Received");
             return dt;
+        }
+
+        private void insertOrderAlertData()
+        {
+            string forecastOne = "forecast_one";
+            string forecastTwo = "forecast_two";
+            string forecastThree = "forecast_three";
+
+            DataTable dt = dalItemCust.Select();
+
+            dt = RemoveDuplicates(dt);
+            if (dt.Rows.Count <= 0)
+            {
+                MessageBox.Show("no data under this record.");
+            }
+            else
+            {
+                int ForecastOneQty = 0;
+                int ForecastTwoQty = 0;
+                int ForecastThreeQty = 0;
+                int outStock = 0;
+                int readyStock = 0;
+                int stillNeed = 0;
+                string itemCode;
+                string currentMonth;
+
+                // string forecastNO = "";
+                int forecastIndex = 1;
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    readyStock = 0;
+                    outStock = 0;
+                    stillNeed = 0;
+                    ForecastOneQty = 0;
+                    ForecastTwoQty = 0;
+                    ForecastThreeQty = 0;
+
+                    itemCode = item["item_code"].ToString();
+                    currentMonth = item["forecast_current_month"].ToString();
+                    currentMonth = DateTime.ParseExact(currentMonth, "MMMM", CultureInfo.CurrentCulture).Month.ToString();
+                    string year = DateTime.Now.Year.ToString();
+
+                    //MessageBox.Show(currentMonth+year);
+                    readyStock = Convert.ToInt32(dalItem.getStockQty(itemCode));
+
+                    DataTable dt3 = daltrfHist.rangeItemToAllCustomerSearchByMonth(currentMonth, year, itemCode);
+
+
+
+                    if (dt3.Rows.Count > 0)
+                    {
+
+                        foreach (DataRow outRecord in dt3.Rows)
+                        {
+                            if (outRecord["trf_result"].ToString().Equals("Passed"))
+                            {
+                                outStock += Convert.ToInt32(outRecord["trf_hist_qty"]);
+                            }
+                        }
+                    }
+
+                    DataTable dt4 = dalItemCust.itemCodeSearch(itemCode);
+
+                    if (dt4.Rows.Count > 0)
+                    {
+
+                        foreach (DataRow outRecord in dt4.Rows)
+                        {
+                            ForecastOneQty += Convert.ToInt32(outRecord[forecastOne]);
+                            ForecastTwoQty += Convert.ToInt32(outRecord[forecastTwo]);
+                            ForecastThreeQty += Convert.ToInt32(outRecord[forecastThree]);
+                        }
+                    }
+
+                    stillNeed = readyStock - ForecastOneQty + outStock;
+                    if (tool.ifGotChild(itemCode))
+                    {
+                        DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                        foreach (DataRow Join in dtJoin.Rows)
+                        {
+                            uMatUsed.no = forecastIndex;
+                            uMatUsed.item_code = Join["join_child_code"].ToString();
+
+
+
+                            if (stillNeed < 0)
+                            {
+                                stillNeed *= -1;
+                            }
+
+                            uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(uMatUsed.item_code)) - stillNeed;
+                            uMatUsed.quantity_order_two = uMatUsed.quantity_order - ForecastTwoQty;
+                            uMatUsed.quantity_order_three = uMatUsed.quantity_order_two - ForecastThreeQty;
+
+                            bool result = dalMatUsed.Insert(uMatUsed);
+                            if (!result)
+                            {
+                                MessageBox.Show("failed to insert material used data");
+                                return;
+                            }
+                            else
+                            {
+                                forecastIndex++;
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        uMatUsed.no = forecastIndex;
+                        uMatUsed.item_code = itemCode;
+                        uMatUsed.quantity_order = stillNeed;
+
+                        bool result = dalMatUsed.Insert(uMatUsed);
+                        if (!result)
+                        {
+                            MessageBox.Show("failed to insert material used data");
+                            return;
+                        }
+                        else
+                        {
+                            forecastIndex++;
+                        }
+                    }
+                }
+            }
+            
+        }
+
+        private void loadOrderAlertData()
+        {
+            
+            createOrderAlertDatagridview();
+            insertOrderAlertData();
+
+            int n = 0;
+            int index = 1;
+            string materialType = null;
+            int OrderQty;
+            float totalMaterialUsed = 0;
+            float materialUsed = 0;
+            float wastageUsed = 0;
+            float wastagePercetage = 0;
+            float itemWeight;
+            float readyStock = 0;
+            float balanceOne = 0;
+            float balanceTwo = 0;
+            float balanceThree = 0;
+
+            DataTable dt = dalMatUsed.Select();
+            dt = AddDuplicates(dt);
+            dt.DefaultView.Sort = "item_material ASC";
+            dt = dt.DefaultView.ToTable();
+
+            dgvOrderAlert.Rows.Clear();
+            dgvOrderAlert.Refresh();
+            foreach (DataRow item in dt.Rows)
+            {
+                itemWeight = Convert.ToSingle(item["item_part_weight"].ToString());
+                OrderQty = Convert.ToInt32(item["quantity_order"].ToString());
+                wastagePercetage = Convert.ToSingle(item["item_wastage_allowed"].ToString());
+                balanceTwo = Convert.ToSingle(item["quantity_order_two"].ToString());
+                balanceThree = Convert.ToSingle(item["quantity_order_three"].ToString());
+
+                if (OrderQty < 0)
+                {
+                    materialUsed = OrderQty * itemWeight / 1000;
+                    wastageUsed = materialUsed * wastagePercetage;
+
+                    if (string.IsNullOrEmpty(materialType))
+                    {
+                        materialType = item["item_material"].ToString();
+                        totalMaterialUsed = materialUsed + wastageUsed;
+                        readyStock = dalItem.getStockQty(materialType); 
+                        n = dgvOrderAlert.Rows.Add();
+                        dgvOrderAlert.Rows[n].Cells[headerIndex].Value = index;
+                        dgvOrderAlert.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemMaterial].ToString();
+                        dgvOrderAlert.Rows[n].Cells[dalItem.ItemQty].Value = readyStock;
+
+                        index++;
+                    }
+                    else if (materialType == item["item_material"].ToString())
+                    {
+                        //same data
+                        totalMaterialUsed += materialUsed + wastageUsed;
+                    }
+                    else
+                    {
+                        //first data
+
+
+                        if (totalMaterialUsed < 0)
+                        {
+                            balanceOne = readyStock + totalMaterialUsed;
+                        }
+                        else
+                        {
+                            balanceOne = readyStock;
+                        }
+
+                        if (balanceOne < 0)
+                        {
+                            dgvOrderAlert.Rows[n].Cells[headerBalanceOne].Style.ForeColor = Color.Red;
+                        }
+
+                        if ((balanceOne - balanceTwo) < 0)
+                        {
+                            dgvOrderAlert.Rows[n].Cells[headerBalanceTwo].Style.ForeColor = Color.Red;
+                        }
+
+                        if ((balanceOne - balanceTwo - balanceThree) < 0)
+                        {
+                            dgvOrderAlert.Rows[n].Cells[headerBalanceThree].Style.ForeColor = Color.Red;
+                        }
+
+                        dgvOrderAlert.Rows[n].Cells[headerBalanceOne].Value = balanceOne;
+                        dgvOrderAlert.Rows[n].Cells[headerBalanceTwo].Value = balanceOne - balanceTwo;
+                        dgvOrderAlert.Rows[n].Cells[headerBalanceThree].Value = balanceOne - balanceTwo - balanceThree;
+
+                        materialType = item["item_material"].ToString();
+                        totalMaterialUsed = materialUsed + wastageUsed;
+                        readyStock = dalItem.getStockQty(materialType);
+
+                        n = dgvOrderAlert.Rows.Add();
+                        dgvOrderAlert.Rows[n].Cells[headerIndex].Value = index;
+                        dgvOrderAlert.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemMaterial].ToString();
+                        dgvOrderAlert.Rows[n].Cells[dalItem.ItemQty].Value = dalItem.getStockQty(materialType);
+                        index++;
+
+                    }
+                }
+                else
+                {
+                    materialUsed = 0;
+                    wastageUsed = 0;
+
+                }
+            }
+
+            // this is the last item
+            totalMaterialUsed += materialUsed + wastageUsed;
+
+            if (totalMaterialUsed < 0)
+            {
+                balanceOne = readyStock + totalMaterialUsed;
+            }
+            else
+            {
+                balanceOne = readyStock;
+            }
+
+            if (balanceOne < 0)
+            {
+                dgvOrderAlert.Rows[n].Cells[headerBalanceOne].Style.ForeColor = Color.Red;
+            }
+
+            if ((balanceOne - balanceTwo) < 0)
+            {
+                dgvOrderAlert.Rows[n].Cells[headerBalanceTwo].Style.ForeColor = Color.Red;
+            }
+
+            if ((balanceOne - balanceTwo - balanceThree) < 0)
+            {
+                dgvOrderAlert.Rows[n].Cells[headerBalanceThree].Style.ForeColor = Color.Red;
+            }
+
+            dgvOrderAlert.Rows[n].Cells[headerBalanceOne].Value = balanceOne;
+            dgvOrderAlert.Rows[n].Cells[headerBalanceTwo].Value = balanceOne - balanceTwo;
+            dgvOrderAlert.Rows[n].Cells[headerBalanceThree].Value = balanceOne - balanceTwo - balanceThree;
+
+            tool.listPaintGreyHeader(dgvOrderAlert);
+            dgvOrderAlert.ClearSelection();
         }
 
         #endregion
@@ -554,6 +958,7 @@ namespace FactoryManagementSoftware.UI
         private void frmOrder_Click(object sender, EventArgs e)
         {
             dgvOrd.ClearSelection();
+            dgvOrderAlert.ClearSelection();
         }
 
         //input text search

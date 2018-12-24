@@ -24,6 +24,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"SELECT tbl_cust.cust_name, 
                             tbl_item.item_code, 
                             tbl_item.item_name, 
+                            tbl_item_cust.forecast_current_month,
                             tbl_item_cust.item_cust_added_date, 
                             tbl_item_cust.item_cust_added_by 
                             FROM ((tbl_item_cust 
