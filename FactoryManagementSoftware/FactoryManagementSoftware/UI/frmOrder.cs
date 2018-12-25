@@ -26,7 +26,17 @@ namespace FactoryManagementSoftware.UI
                 btnOrder.Hide();
             }
 
-            loadOrderAlertData();
+            bool result = dalMatUsed.Delete();
+
+            if (!result)
+            {
+                MessageBox.Show("Failed to reset material used data");
+            }
+            else
+            {
+                loadOrderAlertData();
+            }
+                
         }
 
 
@@ -352,10 +362,11 @@ namespace FactoryManagementSoftware.UI
                 int outStock = 0;
                 int readyStock = 0;
                 int stillNeed = 0;
+                int stillNeedTwo = 0;
+                int stillNeedThree = 0;
                 string itemCode;
                 string currentMonth;
 
-                // string forecastNO = "";
                 int forecastIndex = 1;
 
                 foreach (DataRow item in dt.Rows)
@@ -363,6 +374,8 @@ namespace FactoryManagementSoftware.UI
                     readyStock = 0;
                     outStock = 0;
                     stillNeed = 0;
+                    stillNeedTwo = 0;
+                    stillNeedThree = 0;
                     ForecastOneQty = 0;
                     ForecastTwoQty = 0;
                     ForecastThreeQty = 0;
@@ -372,12 +385,9 @@ namespace FactoryManagementSoftware.UI
                     currentMonth = DateTime.ParseExact(currentMonth, "MMMM", CultureInfo.CurrentCulture).Month.ToString();
                     string year = DateTime.Now.Year.ToString();
 
-                    //MessageBox.Show(currentMonth+year);
                     readyStock = Convert.ToInt32(dalItem.getStockQty(itemCode));
 
                     DataTable dt3 = daltrfHist.rangeItemToAllCustomerSearchByMonth(currentMonth, year, itemCode);
-
-
 
                     if (dt3.Rows.Count > 0)
                     {
@@ -405,6 +415,9 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     stillNeed = readyStock - ForecastOneQty + outStock;
+                    stillNeedTwo = stillNeed - ForecastTwoQty;
+                    stillNeedThree = stillNeedTwo - ForecastThreeQty;
+
                     if (tool.ifGotChild(itemCode))
                     {
                         DataTable dtJoin = dalJoin.parentCheck(itemCode);
@@ -413,16 +426,24 @@ namespace FactoryManagementSoftware.UI
                             uMatUsed.no = forecastIndex;
                             uMatUsed.item_code = Join["join_child_code"].ToString();
 
-
-
                             if (stillNeed < 0)
                             {
                                 stillNeed *= -1;
                             }
 
+                            if (stillNeedTwo < 0)
+                            {
+                                stillNeedTwo *= -1;
+                            }
+
+                            if (stillNeedThree < 0)
+                            {
+                                stillNeedThree *= -1;
+                            }
+
                             uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(uMatUsed.item_code)) - stillNeed;
-                            uMatUsed.quantity_order_two = uMatUsed.quantity_order - ForecastTwoQty;
-                            uMatUsed.quantity_order_three = uMatUsed.quantity_order_two - ForecastThreeQty;
+                            uMatUsed.quantity_order_two = uMatUsed.quantity_order - stillNeedTwo;
+                            uMatUsed.quantity_order_three = uMatUsed.quantity_order_two - stillNeedThree;
 
                             bool result = dalMatUsed.Insert(uMatUsed);
                             if (!result)
@@ -443,6 +464,8 @@ namespace FactoryManagementSoftware.UI
                         uMatUsed.no = forecastIndex;
                         uMatUsed.item_code = itemCode;
                         uMatUsed.quantity_order = stillNeed;
+                        uMatUsed.quantity_order_two = stillNeedTwo;
+                        uMatUsed.quantity_order_three = stillNeedThree;
 
                         bool result = dalMatUsed.Insert(uMatUsed);
                         if (!result)
@@ -469,12 +492,26 @@ namespace FactoryManagementSoftware.UI
             int n = 0;
             int index = 1;
             string materialType = null;
-            int OrderQty;
-            float totalMaterialUsed = 0;
-            float materialUsed = 0;
-            float wastageUsed = 0;
             float wastagePercetage = 0;
             float itemWeight;
+
+            int OrderQty = 0;
+            int OrderQtyTwo = 0;
+            int OrderQtyThree = 0;
+
+            float totalMaterialUsed = 0;
+            float totalMaterialUsedTwo = 0;
+            float totalMaterialUsedThree = 0;
+
+            float materialUsed = 0;
+            float materialUsedTwo = 0;
+            float materialUsedThree = 0;
+
+            float wastageUsed = 0;
+            float wastageUsedTwo = 0;
+            float wastageUsedThree = 0;
+
+           
             float readyStock = 0;
             float balanceOne = 0;
             float balanceTwo = 0;
@@ -490,21 +527,33 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow item in dt.Rows)
             {
                 itemWeight = Convert.ToSingle(item["item_part_weight"].ToString());
-                OrderQty = Convert.ToInt32(item["quantity_order"].ToString());
                 wastagePercetage = Convert.ToSingle(item["item_wastage_allowed"].ToString());
-                balanceTwo = Convert.ToSingle(item["quantity_order_two"].ToString());
-                balanceThree = Convert.ToSingle(item["quantity_order_three"].ToString());
+
+                OrderQty = Convert.ToInt32(item["quantity_order"].ToString());
+                OrderQtyTwo = Convert.ToInt32(item["quantity_order_two"].ToString());
+                OrderQtyThree = Convert.ToInt32(item["quantity_order_three"].ToString());
 
                 if (OrderQty < 0)
                 {
                     materialUsed = OrderQty * itemWeight / 1000;
                     wastageUsed = materialUsed * wastagePercetage;
 
+                    materialUsedTwo = OrderQtyTwo * itemWeight / 1000;
+                    wastageUsedTwo = materialUsedTwo * wastagePercetage;
+
+                    materialUsedThree = OrderQtyThree * itemWeight / 1000;
+                    wastageUsedThree = materialUsedThree * wastagePercetage;
+
                     if (string.IsNullOrEmpty(materialType))
                     {
                         materialType = item["item_material"].ToString();
+
                         totalMaterialUsed = materialUsed + wastageUsed;
+                        totalMaterialUsedTwo = materialUsedTwo + wastageUsedTwo;
+                        totalMaterialUsedThree = materialUsedThree + wastageUsedThree;
+
                         readyStock = dalItem.getStockQty(materialType); 
+
                         n = dgvOrderAlert.Rows.Add();
                         dgvOrderAlert.Rows[n].Cells[headerIndex].Value = index;
                         dgvOrderAlert.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemMaterial].ToString();
@@ -516,6 +565,8 @@ namespace FactoryManagementSoftware.UI
                     {
                         //same data
                         totalMaterialUsed += materialUsed + wastageUsed;
+                        totalMaterialUsedTwo += materialUsedTwo + wastageUsedTwo;
+                        totalMaterialUsedThree += materialUsedThree + wastageUsedThree;
                     }
                     else
                     {
@@ -531,27 +582,49 @@ namespace FactoryManagementSoftware.UI
                             balanceOne = readyStock;
                         }
 
+                        if (totalMaterialUsedTwo < 0)
+                        {
+                            balanceTwo = balanceOne + totalMaterialUsedTwo;
+                        }
+                        else
+                        {
+                            balanceTwo = balanceOne;
+                        }
+
+                        if (totalMaterialUsedThree < 0)
+                        {
+                            balanceThree = balanceTwo + totalMaterialUsedThree;
+                        }
+                        else
+                        {
+                            balanceThree = balanceTwo;
+                        }
+
                         if (balanceOne < 0)
                         {
                             dgvOrderAlert.Rows[n].Cells[headerBalanceOne].Style.ForeColor = Color.Red;
                         }
 
-                        if ((balanceOne - balanceTwo) < 0)
+                        if (balanceTwo < 0)
                         {
                             dgvOrderAlert.Rows[n].Cells[headerBalanceTwo].Style.ForeColor = Color.Red;
                         }
 
-                        if ((balanceOne - balanceTwo - balanceThree) < 0)
+                        if (balanceThree < 0)
                         {
                             dgvOrderAlert.Rows[n].Cells[headerBalanceThree].Style.ForeColor = Color.Red;
                         }
 
                         dgvOrderAlert.Rows[n].Cells[headerBalanceOne].Value = balanceOne;
-                        dgvOrderAlert.Rows[n].Cells[headerBalanceTwo].Value = balanceOne - balanceTwo;
-                        dgvOrderAlert.Rows[n].Cells[headerBalanceThree].Value = balanceOne - balanceTwo - balanceThree;
+                        dgvOrderAlert.Rows[n].Cells[headerBalanceTwo].Value = balanceTwo;
+                        dgvOrderAlert.Rows[n].Cells[headerBalanceThree].Value = balanceThree;
 
                         materialType = item["item_material"].ToString();
+
                         totalMaterialUsed = materialUsed + wastageUsed;
+                        totalMaterialUsedTwo = materialUsedTwo + wastageUsedTwo;
+                        totalMaterialUsedThree = materialUsedThree + wastageUsedThree;
+
                         readyStock = dalItem.getStockQty(materialType);
 
                         n = dgvOrderAlert.Rows.Add();
@@ -565,13 +638,20 @@ namespace FactoryManagementSoftware.UI
                 else
                 {
                     materialUsed = 0;
+                    materialUsedTwo = 0;
+                    materialUsedThree = 0;
+
                     wastageUsed = 0;
+                    wastageUsedTwo = 0;
+                    wastageUsedThree = 0;
 
                 }
             }
 
             // this is the last item
             totalMaterialUsed += materialUsed + wastageUsed;
+            totalMaterialUsedTwo += materialUsedTwo + wastageUsedTwo;
+            totalMaterialUsedThree += materialUsedThree + wastageUsedThree;
 
             if (totalMaterialUsed < 0)
             {
@@ -582,24 +662,42 @@ namespace FactoryManagementSoftware.UI
                 balanceOne = readyStock;
             }
 
+            if (totalMaterialUsedTwo < 0)
+            {
+                balanceTwo = balanceOne + totalMaterialUsedTwo;
+            }
+            else
+            {
+                balanceTwo = balanceOne;
+            }
+
+            if (totalMaterialUsedThree < 0)
+            {
+                balanceThree = balanceTwo + totalMaterialUsedThree;
+            }
+            else
+            {
+                balanceThree = balanceTwo;
+            }
+
             if (balanceOne < 0)
             {
                 dgvOrderAlert.Rows[n].Cells[headerBalanceOne].Style.ForeColor = Color.Red;
             }
 
-            if ((balanceOne - balanceTwo) < 0)
+            if (balanceTwo < 0)
             {
                 dgvOrderAlert.Rows[n].Cells[headerBalanceTwo].Style.ForeColor = Color.Red;
             }
 
-            if ((balanceOne - balanceTwo - balanceThree) < 0)
+            if (balanceThree < 0)
             {
                 dgvOrderAlert.Rows[n].Cells[headerBalanceThree].Style.ForeColor = Color.Red;
             }
 
             dgvOrderAlert.Rows[n].Cells[headerBalanceOne].Value = balanceOne;
-            dgvOrderAlert.Rows[n].Cells[headerBalanceTwo].Value = balanceOne - balanceTwo;
-            dgvOrderAlert.Rows[n].Cells[headerBalanceThree].Value = balanceOne - balanceTwo - balanceThree;
+            dgvOrderAlert.Rows[n].Cells[headerBalanceTwo].Value = balanceTwo;
+            dgvOrderAlert.Rows[n].Cells[headerBalanceThree].Value = balanceThree;
 
             tool.listPaintGreyHeader(dgvOrderAlert);
             dgvOrderAlert.ClearSelection();
