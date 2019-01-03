@@ -124,7 +124,7 @@ namespace FactoryManagementSoftware.DAL
             SqlConnection conn = new SqlConnection(myconnstrng);
             string month = u.pmma_date.Month.ToString();
             string year = u.pmma_date.Year.ToString();
-            MessageBox.Show(month+year);
+            
             try
             {
                 String sql = @"UPDATE tbl_pmma SET "

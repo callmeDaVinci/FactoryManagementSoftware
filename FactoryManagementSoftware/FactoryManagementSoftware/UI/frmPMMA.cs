@@ -226,7 +226,7 @@ namespace FactoryManagementSoftware.UI
             dt.DefaultView.Sort = "item_material ASC";
             dt = dt.DefaultView.ToTable();
 
-            float openningStock = 0, balStock = 0;
+            float openningStock = 0;
             string itemCode, month, year;
 
             month = Convert.ToDateTime(dtpDate.Text).Month.ToString();
@@ -235,23 +235,23 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow item in dt.Rows)
             {
                 openningStock = 0;
-                balStock = 0;
                 itemCode = item["item_material"].ToString();
 
                 DataTable searchdt = dalPMMA.Search(itemCode, month, year);
 
                 if(searchdt.Rows.Count > 0)
                 {
-                    //get last month bal
-                    openningStock = getLastMonthBal(itemCode, month, year);
-                    //foreach (DataRow pmma in searchdt.Rows)
-                    //{
-                    //    if(float.TryParse(pmma[dalPMMA.OpenStock].ToString(), out float i))
-                    //    {
-                    //        openningStock += Convert.ToSingle(pmma[dalPMMA.OpenStock]);
-                    //    }
 
-                    //}
+                    foreach (DataRow pmma in searchdt.Rows)
+                    {
+                        //get last month bal
+                        openningStock = getLastMonthBal(itemCode, month, year);
+                        //if (float.TryParse(pmma[dalPMMA.OpenStock].ToString(), out float i))
+                        //{
+                        //    openningStock += Convert.ToSingle(pmma[dalPMMA.OpenStock]);
+                        //}
+
+                    }
                 }
                 
                 else
@@ -284,12 +284,12 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[n].Cells[IndexColumnName].Value = index;
             dgv.Rows[n].Cells[dalItem.ItemCode].Value = itemCode;
             dgv.Rows[n].Cells[dalItem.ItemName].Value = dalItem.getMaterialName(itemCode);
-            dgv.Rows[n].Cells[dalPMMA.OpenStock].Value = openningStock;
+            dgv.Rows[n].Cells[dalPMMA.OpenStock].Value = openningStock.ToString("0.000");
 
-            dgv.Rows[n].Cells[IndexInName].Value = inQty;
-            dgv.Rows[n].Cells[IndexOutName].Value = outQty;
+            dgv.Rows[n].Cells[IndexInName].Value = inQty.ToString("0.000");
+            dgv.Rows[n].Cells[IndexOutName].Value = outQty.ToString("0.000");
 
-            dgv.Rows[n].Cells[IndexBalName].Value = bal;
+            dgv.Rows[n].Cells[IndexBalName].Value = bal.ToString("0.000");
 
             if (outQty == 0)
             {
@@ -298,7 +298,7 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Rows[n].Cells[IndexPercentageName].Value = percentage;
             dgv.Rows[n].Cells[IndexWastageName].Value = wastage;
-            dgv.Rows[n].Cells[dalPMMA.BalStock].Value = bal - wastage;
+            dgv.Rows[n].Cells[dalPMMA.BalStock].Value = (bal - wastage).ToString("0.000");
 
 
             //update balance stock to table pmma
@@ -535,7 +535,7 @@ namespace FactoryManagementSoftware.UI
             uPMMA.pmma_item_code = itemCode;
             uPMMA.pmma_date = date;
             uPMMA.pmma_openning_stock = openingStock;
-            uPMMA.pmma_bal_stock = balStock;
+            uPMMA.pmma_bal_stock =  balStock;
             uPMMA.pmma_updated_date = DateTime.Now;
             uPMMA.pmma_updated_by = MainDashboard.USER_ID;
 
@@ -611,7 +611,7 @@ namespace FactoryManagementSoftware.UI
 
         private void Column1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&  e.KeyChar != '.')
             {
                 e.Handled = true;
             }
@@ -621,7 +621,7 @@ namespace FactoryManagementSoftware.UI
         {
             e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
 
-            if (dgvPMMA.CurrentCell.ColumnIndex == 3 || dgvPMMA.CurrentCell.ColumnIndex == 4) //Desired Column
+            if (dgvPMMA.CurrentCell.ColumnIndex == dgvPMMA.Columns[IndexPercentageName].Index ) //Desired Column
             {
                 TextBox tb = e.Control as TextBox;
                 if (tb != null) 
@@ -635,26 +635,36 @@ namespace FactoryManagementSoftware.UI
         {
             var datagridview = sender as DataGridView;
             DataGridView dgv = dgvPMMA;
-
             DateTime currentDate = DateTime.Now;
 
             int rowIndex = e.RowIndex;
 
+            float openningStock = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.OpenStock].Value.ToString());
+            float inQty = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexInName].Value.ToString());
+            float outQty = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexOutName].Value.ToString());
+            float bal = openningStock + inQty - outQty;
+            float percentage = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexPercentageName].Value.ToString());
+            float wastage = outQty * percentage;
+
+            dgv.Rows[rowIndex].Cells[IndexBalName].Value = bal.ToString("0.000");
+            dgv.Rows[rowIndex].Cells[IndexWastageName].Value = wastage.ToString("0.000");
+            dgv.Rows[rowIndex].Cells[dalPMMA.BalStock].Value = (bal - wastage).ToString("0.000");
+
             uPMMA.pmma_item_code = dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
             uPMMA.pmma_date = Convert.ToDateTime(dtpDate.Text);
-            uPMMA.pmma_openning_stock = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.OpenStock].Value.ToString());
-            uPMMA.pmma_bal_stock = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.OpenStock].Value.ToString());
+            uPMMA.pmma_openning_stock = openningStock;
+            uPMMA.pmma_bal_stock = bal - wastage;
             uPMMA.pmma_updated_date = DateTime.Now;
             uPMMA.pmma_updated_by = MainDashboard.USER_ID;
 
-           
+
             bool success = dalPMMA.update(uPMMA);
 
             if (!success)
             {
                 MessageBox.Show("Failed to updated item pmma qty");
             }
-           
+
         }
 
         #endregion
