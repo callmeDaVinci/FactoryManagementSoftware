@@ -140,7 +140,6 @@
             this.cmbCust.Name = "cmbCust";
             this.cmbCust.Size = new System.Drawing.Size(281, 39);
             this.cmbCust.TabIndex = 2;
-            this.cmbCust.SelectedIndexChanged += new System.EventHandler(this.cmbCust_SelectedIndexChanged);
             // 
             // cmbForecast1
             // 

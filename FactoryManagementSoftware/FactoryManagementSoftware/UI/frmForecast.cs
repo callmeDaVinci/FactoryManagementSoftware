@@ -1,5 +1,6 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
 using System;
 using System.Data;
 using System.Drawing;
@@ -46,38 +47,11 @@ namespace FactoryManagementSoftware.UI
 
         userDAL dalUser = new userDAL();
 
+        Tool tool = new Tool();
+
         #endregion
 
-        private void listPaint(DataGridView dgv)
-        {
-            bool rowColorChange = true;
-
-            foreach (DataGridViewRow row in dgv.Rows)
-            {
-                int n = row.Index;
-                if (rowColorChange)
-                {
-                    dgv.Rows[n].DefaultCellStyle.BackColor = SystemColors.Control;
-                    rowColorChange = false;
-                }
-                else
-                {
-                    dgv.Rows[n].DefaultCellStyle.BackColor = Color.White;
-                    rowColorChange = true;
-                }
-            }
-            dgv.ClearSelection();
-        }
-
-        private void loadCustomerList()
-        {
-            DataTable dt = dalCust.Select();
-            DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
-            distinctTable.DefaultView.Sort = "cust_name ASC";
-            cmbCust.DataSource = distinctTable;
-            cmbCust.DisplayMember = "cust_name";
-            cmbCust.SelectedIndex = -1;
-        }
+        #region load/search 
 
         private void loadForecastList()
         {
@@ -104,7 +78,6 @@ namespace FactoryManagementSoftware.UI
                     dgvForecast.Rows[n].Cells["forecast_three"].Value = item["forecast_three"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = item["forecast_updated_date"].ToString();
 
-
                     if (int.TryParse(item["forecast_updated_by"].ToString(), out int test))
                     {
                         if (Convert.ToInt32(item["forecast_updated_by"]) <= 0)
@@ -126,7 +99,7 @@ namespace FactoryManagementSoftware.UI
             {
                 dgvForecast.DataSource = null;
             }
-            listPaint(dgvForecast);
+            tool.listPaintGreyHeader(dgvForecast);
         }
 
         private void searchForecastList()
@@ -167,34 +140,25 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private string getCustID(string custName)
-        {
-            string custID = "";
-
-            DataTable dtCust = dalCust.nameSearch(custName);
-
-            foreach (DataRow Cust in dtCust.Rows)
-            {
-                custID = Cust["cust_id"].ToString();
-            }
-            return custID;
-        }
-
-        private bool IfExists(string itemCode, string custName)
-        {
-          
-            DataTable dt = dalItemCust.existsSearch(itemCode, getCustID(custName));
-
-            if (dt.Rows.Count > 0)
-                return true;
-            else
-                return false;
-        }
-
         private void frmForecast_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainDashboard.forecastInputFormOpen = false;
         }
+
+        private void frmForecast_Load(object sender, EventArgs e)
+        {
+            tool.loadCustomerToComboBox(cmbCust);
+            cmbCust.SelectedIndex = -1;
+
+            var currentMonth = Convert.ToInt32(DateTime.Now.Month.ToString("00"));
+
+
+            cmbForecast1.SelectedIndex = currentMonth - 1;
+        }
+
+        #endregion
+
+        #region selected index/text changed
 
         private void cmbForecast1_SelectedIndexChanged(object sender, EventArgs e)
         {  
@@ -279,21 +243,13 @@ namespace FactoryManagementSoftware.UI
             cmbForecast1.SelectedIndex = index1;
         }
 
-        private void frmForecast_Load(object sender, EventArgs e)
+        private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            loadCustomerList();
-            cmbCust.SelectedIndex = -1;
-
-            var currentMonth = Convert.ToInt32(DateTime.Now.Month.ToString("00"));
-
-
-            cmbForecast1.SelectedIndex = currentMonth - 1;
+            searchForecastList();
         }
 
-        private void cmbCust_SelectedIndexChanged(object sender, EventArgs e)
-        {
-           
-        }
+        #endregion 
+
 
         private void dgvForecast_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
@@ -304,7 +260,7 @@ namespace FactoryManagementSoftware.UI
             dgvForecast.Rows[rowIndex].Cells["forecast_updtd_by"].Value = dalUser.getUsername(MainDashboard.USER_ID);
 
             uItemCust.item_code = dgvForecast.Rows[rowIndex].Cells["item_code"].Value.ToString();
-            uItemCust.cust_id = Convert.ToInt32(getCustID(cmbCust.Text));
+            uItemCust.cust_id = tool.getCustID(cmbCust.Text);
 
             uItemCust.forecast_one = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_one"].Value.ToString());
             uItemCust.forecast_two = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_two"].Value.ToString());
@@ -313,7 +269,7 @@ namespace FactoryManagementSoftware.UI
             uItemCust.forecast_current_month = cmbForecast1.Text;
             uItemCust.forecast_updated_by = MainDashboard.USER_ID;
 
-            if (IfExists(uItemCust.item_code, cmbCust.Text))
+            if (tool.IfExists(uItemCust.item_code, cmbCust.Text))
             {
                 bool success = dalItemCust.Update(uItemCust);
 
@@ -331,13 +287,12 @@ namespace FactoryManagementSoftware.UI
                     MessageBox.Show("Failed to add new forecast");
                 }
             }
-
         }
 
         private void resetCurrentMonth(string itemCode, int rowIndex, string currentMonth)
         {         
             uItemCust.item_code = itemCode;
-            uItemCust.cust_id = Convert.ToInt32(getCustID(cmbCust.Text));
+            uItemCust.cust_id = tool.getCustID(cmbCust.Text);
 
             if (!currentMonth.Equals(cmbForecast1.Text))
             {
@@ -375,14 +330,11 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        #region button
+
         private void btnCheck_Click(object sender, EventArgs e)
         {
             loadForecastList();
-        }
-
-        private void txtSearch_TextChanged(object sender, EventArgs e)
-        {
-            searchForecastList();
         }
 
         private void btnReport_Click(object sender, EventArgs e)
@@ -404,5 +356,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
         }
+
+        #endregion
     }
 }

@@ -29,11 +29,17 @@ namespace FactoryManagementSoftware.BLL
         public int item_capacity { get; set; } = 0;
         public int item_pro_cooling { get; set; } = 0;
         public float item_wastage_allowed { get; set; } = 0;
-        public float item_qty { get; set; }
+        
         public float item_ord { get; set; }
         public DateTime item_added_date { get; set; }
         public int item_added_by { get; set; }
         public DateTime item_updtd_date { get; set; }
         public int item_updtd_by { get; set; }
+
+        public DateTime item_current_month { get; set; }
+        public float item_last_qty { get; set; }
+        public float item_qty { get; set; }
+        public float item_last_pmma_qty { get; set; }
+        public float item_pmma_qty { get; set; }
     }
 }

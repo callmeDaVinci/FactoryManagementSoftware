@@ -526,6 +526,14 @@ namespace FactoryManagementSoftware.UI
             dgvOrderAlert.Refresh();
             foreach (DataRow item in dt.Rows)
             {
+                materialUsed = 0;
+                materialUsedTwo = 0;
+                materialUsedThree = 0;
+
+                wastageUsed = 0;
+                wastageUsedTwo = 0;
+                wastageUsedThree = 0;
+
                 itemWeight = Convert.ToSingle(item["item_part_weight"].ToString());
                 wastagePercetage = Convert.ToSingle(item["item_wastage_allowed"].ToString());
 
@@ -533,16 +541,26 @@ namespace FactoryManagementSoftware.UI
                 OrderQtyTwo = Convert.ToInt32(item["quantity_order_two"].ToString());
                 OrderQtyThree = Convert.ToInt32(item["quantity_order_three"].ToString());
 
-                if (OrderQty < 0)
+                if (OrderQty < 0 || OrderQtyTwo < 0 || OrderQtyThree < 0)
                 {
-                    materialUsed = OrderQty * itemWeight / 1000;
-                    wastageUsed = materialUsed * wastagePercetage;
+                    if(OrderQty < 0)
+                    {
+                        materialUsed = OrderQty * itemWeight / 1000;
+                        wastageUsed = materialUsed * wastagePercetage;
+                    }
 
-                    materialUsedTwo = OrderQtyTwo * itemWeight / 1000;
-                    wastageUsedTwo = materialUsedTwo * wastagePercetage;
+                    if (OrderQtyTwo < 0)
+                    {
+                        materialUsedTwo = OrderQtyTwo * itemWeight / 1000;
+                        wastageUsedTwo = materialUsedTwo * wastagePercetage;
+                    }
 
-                    materialUsedThree = OrderQtyThree * itemWeight / 1000;
-                    wastageUsedThree = materialUsedThree * wastagePercetage;
+                    if (OrderQtyThree < 0)
+                    {
+                        materialUsedThree = OrderQtyThree * itemWeight / 1000;
+                        wastageUsedThree = materialUsedThree * wastagePercetage;
+                    }
+                    
 
                     if (string.IsNullOrEmpty(materialType))
                     {
@@ -561,7 +579,7 @@ namespace FactoryManagementSoftware.UI
 
                         index++;
                     }
-                    else if (materialType == item["item_material"].ToString())
+                    else if (materialType.Equals(item["item_material"].ToString()))
                     {
                         //same data
                         totalMaterialUsed += materialUsed + wastageUsed;

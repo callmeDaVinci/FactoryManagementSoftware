@@ -94,6 +94,7 @@
     <Compile Include="BLL\ordBLL.cs" />
     <Compile Include="BLL\facStockBLL.cs" />
     <Compile Include="BLL\orderActionBLL.cs" />
+    <Compile Include="BLL\pmmaBLL.cs" />
     <Compile Include="BLL\trfCatBLL.cs" />
     <Compile Include="BLL\trfHistBLL.cs" />
     <Compile Include="BLL\userBLL.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="DAL\ordDAL.cs" />
     <Compile Include="DAL\facStockDAL.cs" />
     <Compile Include="DAL\orderActionDAL.cs" />
+    <Compile Include="DAL\pmmaDAL.cs" />
     <Compile Include="DAL\trfCatDAL.cs" />
     <Compile Include="DAL\trfHistDAL.cs" />
     <Compile Include="DAL\userDAL.cs" />
@@ -276,6 +278,12 @@
     <Compile Include="UI\frmOrderReceive.Designer.cs">
       <DependentUpon>frmOrderReceive.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmPMMA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmPMMA.Designer.cs">
+      <DependentUpon>frmPMMA.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmStockReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -399,6 +407,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderReceive.resx">
       <DependentUpon>frmOrderReceive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmPMMA.resx">
+      <DependentUpon>frmPMMA.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockReport.resx">
       <DependentUpon>frmStockReport.cs</DependentUpon>

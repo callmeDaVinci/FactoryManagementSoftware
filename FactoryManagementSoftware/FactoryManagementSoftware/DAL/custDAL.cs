@@ -247,7 +247,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable idSearch(string keywords)
+        public DataTable idSearch(string custID)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -256,10 +256,12 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_cust WHERE cust_id LIKE '%" + keywords + "%'";
+                String sql = "SELECT * FROM tbl_cust WHERE cust_id=@custID";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@custID", custID);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open

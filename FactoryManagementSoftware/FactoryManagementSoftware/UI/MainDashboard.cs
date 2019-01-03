@@ -24,6 +24,7 @@ namespace FactoryManagementSoftware.UI
         static public bool userFormOpen = false;
         static public bool historyFormOpen = false;
         static public bool InOutReportFormOpen = false;
+        static public bool PMMAFormOpen = false;
         static public int USER_ID = -1;
 
         static public readonly int ACTION_LVL_ONE = 1;
@@ -433,6 +434,26 @@ namespace FactoryManagementSoftware.UI
                 if (Application.OpenForms.OfType<frmInOutReport>().Count() == 1)
                 {
                     Application.OpenForms.OfType<frmInOutReport>().First().BringToFront();
+                }
+            }
+        }
+
+        private void pMMAToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!PMMAFormOpen)
+            {
+                frmPMMA frm = new frmPMMA();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                PMMAFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmPMMA>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmPMMA>().First().BringToFront();
                 }
             }
         }

@@ -38,7 +38,7 @@ namespace FactoryManagementSoftware.DAL
         public string ItemProCooling { get; } = "item_pro_cooling";
 
         public string ItemCat { get; } = "item_cat";
-        public string ItemQty { get; } = "item_qty";
+        
         public string ItemOrd { get; } = "item_ord";
         public string ItemAddDate { get; } = "item_added_date";
         public string ItemAddBy { get; } = "item_added_by";
@@ -46,6 +46,12 @@ namespace FactoryManagementSoftware.DAL
         public string ItemUpdateBy { get; } = "item_updtd_by";
 
         public string ItemWastage { get; } = "item_wastage_allowed";
+
+        public string ItemCurrentMonth { get; } = "item_current_month";
+        public string ItemLastQty { get; } = "item_last_qty";
+        public string ItemQty { get; } = "item_qty";
+        public string ItemLastPMMAQty { get; } = "item_last_pmma_qty";
+        public string ItemPMMAQty { get; } = "item_pmma_qty";
 
         #endregion
 
@@ -625,6 +631,105 @@ namespace FactoryManagementSoftware.DAL
             return success;
         }
 
+        public bool BackupQty(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemCurrentMonth + "=@item_current_month,"
+                            + ItemLastQty + "=@item_last_qty,"
+                            + ItemLastPMMAQty + "=@item_last_pmma_qty" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_current_month", u.item_current_month);
+                cmd.Parameters.AddWithValue("@item_last_qty", u.item_last_qty);
+                cmd.Parameters.AddWithValue("@item_last_pmma_qty", u.item_last_pmma_qty);
+               
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool UpdatePMMAQty(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemCurrentMonth + "=@item_current_month,"
+                            + ItemLastPMMAQty + "=@item_last_pmma_qty,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by,"
+                            + ItemPMMAQty + "=@item_pmma_qty" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_current_month", u.item_current_month);
+                cmd.Parameters.AddWithValue("@item_last_pmma_qty", u.item_last_pmma_qty);
+                cmd.Parameters.AddWithValue("@item_pmma_qty", u.item_pmma_qty);
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         #endregion
 
         #region Delete data from Database
@@ -965,6 +1070,18 @@ namespace FactoryManagementSoftware.DAL
             return mbName;
         }
 
+        public string getMaterialType(string itemCode)
+        {
+            string materialType = "";
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                materialType = dt.Rows[0][ItemMaterial].ToString();
+            }
+            return materialType;
+        }
+
         public float getOrderQty(string itemCode)
         {
             float orderQty = 0;
@@ -997,7 +1114,76 @@ namespace FactoryManagementSoftware.DAL
             return stockQty;
         }
 
-        #endregion
+        public float getPMMAQty(string itemCode)
+        {
+            float PMMAQty = 0;
+            DataTable dt = codeSearch(itemCode);
 
+            if (dt.Rows.Count > 0)
+            {
+                if (float.TryParse(dt.Rows[0][ItemPMMAQty].ToString(), out float i))
+                {
+                    PMMAQty += Convert.ToSingle(dt.Rows[0][ItemPMMAQty].ToString());
+                }
+                
+            }
+
+            //MessageBox.Show("get qty= "+qty);
+
+
+            return PMMAQty;
+        }
+
+        public float getLastPMMAQty(string itemCode)
+        {
+            float LastPMMAQty = 0;
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                if (float.TryParse(dt.Rows[0][ItemLastPMMAQty].ToString(), out float i))
+                {
+                    LastPMMAQty += Convert.ToSingle(dt.Rows[0][ItemLastPMMAQty].ToString());
+                }
+            }
+
+            //MessageBox.Show("get qty= "+qty);
+
+
+            return LastPMMAQty;
+        }
+
+        public DateTime getUpdatedDate(string itemCode)
+        {
+            DateTime date = new DateTime();
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                date = Convert.ToDateTime(dt.Rows[0][ItemUpdateDate].ToString());
+               
+            }
+
+            //MessageBox.Show("get qty= "+qty);
+
+
+            return date;
+        }
+
+        public int getUpdatedBy(string itemCode)
+        {
+            int userID = -1;
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                if(int.TryParse(dt.Rows[0][ItemUpdateBy].ToString(), out int i))
+                {
+                    userID = Convert.ToInt32(dt.Rows[0][ItemUpdateBy].ToString());
+                }
+            }
+            return userID;
+        }
+        #endregion
     }
 }

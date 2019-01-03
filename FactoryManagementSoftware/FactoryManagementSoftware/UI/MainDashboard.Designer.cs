@@ -44,13 +44,14 @@
             this.orderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.forecastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.forecastReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deliveryReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deliveryReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forecastReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.materialUsedReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.pMMAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -65,6 +66,7 @@
             this.stockToolStripMenuItem,
             this.orderToolStripMenuItem1,
             this.forecastToolStripMenuItem,
+            this.pMMAToolStripMenuItem,
             this.reportToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
@@ -195,12 +197,12 @@
             this.reportToolStripMenuItem.Text = "Report";
             this.reportToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // forecastReportToolStripMenuItem
+            // stockReportToolStripMenuItem
             // 
-            this.forecastReportToolStripMenuItem.Name = "forecastReportToolStripMenuItem";
-            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(247, 28);
-            this.forecastReportToolStripMenuItem.Text = "Forecast Report";
-            this.forecastReportToolStripMenuItem.Click += new System.EventHandler(this.forecastReportToolStripMenuItem_Click);
+            this.stockReportToolStripMenuItem.Name = "stockReportToolStripMenuItem";
+            this.stockReportToolStripMenuItem.Size = new System.Drawing.Size(247, 28);
+            this.stockReportToolStripMenuItem.Text = "Stock Report";
+            this.stockReportToolStripMenuItem.Click += new System.EventHandler(this.stockReportToolStripMenuItem_Click);
             // 
             // deliveryReportToolStripMenuItem
             // 
@@ -209,12 +211,12 @@
             this.deliveryReportToolStripMenuItem.Text = "In Out Report";
             this.deliveryReportToolStripMenuItem.Click += new System.EventHandler(this.deliveryReportToolStripMenuItem_Click);
             // 
-            // stockReportToolStripMenuItem
+            // forecastReportToolStripMenuItem
             // 
-            this.stockReportToolStripMenuItem.Name = "stockReportToolStripMenuItem";
-            this.stockReportToolStripMenuItem.Size = new System.Drawing.Size(247, 28);
-            this.stockReportToolStripMenuItem.Text = "Stock Report";
-            this.stockReportToolStripMenuItem.Click += new System.EventHandler(this.stockReportToolStripMenuItem_Click);
+            this.forecastReportToolStripMenuItem.Name = "forecastReportToolStripMenuItem";
+            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(247, 28);
+            this.forecastReportToolStripMenuItem.Text = "Forecast Report";
+            this.forecastReportToolStripMenuItem.Click += new System.EventHandler(this.forecastReportToolStripMenuItem_Click);
             // 
             // materialUsedReportToolStripMenuItem
             // 
@@ -240,6 +242,13 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(49, 20);
             this.toolStripStatusLabel.Text = "Status";
+            // 
+            // pMMAToolStripMenuItem
+            // 
+            this.pMMAToolStripMenuItem.Name = "pMMAToolStripMenuItem";
+            this.pMMAToolStripMenuItem.Size = new System.Drawing.Size(73, 27);
+            this.pMMAToolStripMenuItem.Text = "PMMA";
+            this.pMMAToolStripMenuItem.Click += new System.EventHandler(this.pMMAToolStripMenuItem_Click);
             // 
             // MainDashboard
             // 
@@ -292,6 +301,7 @@
         private System.Windows.Forms.ToolStripMenuItem materialUsedReportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deliveryReportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stockReportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pMMAToolStripMenuItem;
     }
 }
 

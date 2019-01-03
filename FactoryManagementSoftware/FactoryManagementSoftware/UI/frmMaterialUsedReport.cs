@@ -233,6 +233,7 @@ namespace FactoryManagementSoftware.UI
 
         private void insertItemForecastData()
         {
+            int ForecastQty = 0;
             string forecast = "forecast_two";
             if (cmbType.Text.Equals(cmbTypeNextNextMonth))
             {
@@ -251,28 +252,13 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    int Forecast2 = 0;
                     string itemCode;
-
-                    // string forecastNO = "";
                     int forecastIndex = 1;
-
+                   
                     foreach (DataRow item in dt.Rows)
                     {
                         itemCode = item["item_code"].ToString();
-
-                        DataTable dt3 = dalItemCust.itemCodeSearch(itemCode);
-
-                        Forecast2 = 0;
-
-                        if (dt3.Rows.Count > 0)
-                        {
-
-                            foreach (DataRow outRecord in dt3.Rows)
-                            {
-                                Forecast2 += Convert.ToInt32(outRecord[forecast]);
-                            }
-                        }
+                        ForecastQty = Convert.ToInt32(item[forecast]);
 
                         if (tool.ifGotChild(itemCode))
                         {
@@ -281,7 +267,7 @@ namespace FactoryManagementSoftware.UI
                             {
                                 uMatUsed.no = forecastIndex;
                                 uMatUsed.item_code = Join["join_child_code"].ToString();
-                                uMatUsed.quantity_order = Forecast2;
+                                uMatUsed.quantity_order = ForecastQty;
 
                                 bool result = dalMatUsed.Insert(uMatUsed);
                                 if (!result)
@@ -299,10 +285,10 @@ namespace FactoryManagementSoftware.UI
                         {
                             uMatUsed.no = forecastIndex;
                             uMatUsed.item_code = itemCode;
-                            uMatUsed.quantity_order = Forecast2;
+                            uMatUsed.quantity_order = ForecastQty;
 
                             bool result = dalMatUsed.Insert(uMatUsed);
-                            if (!result)
+                            if (!result) 
                             {
                                 MessageBox.Show("failed to insert material used data");
                                 return;
@@ -320,7 +306,7 @@ namespace FactoryManagementSoftware.UI
 
         private void insertAllItemQuantityOrderData()
         {
-            if (!string.IsNullOrEmpty(cmbCust.Text))
+            if (!string.IsNullOrEmpty(cmbCust.Text))    
             {
                 DataTable dt = dalItemCust.Select();
 
@@ -334,7 +320,7 @@ namespace FactoryManagementSoftware.UI
                     string itemCode;
                     string start = dtpStart.Value.ToString("yyyy/MM/dd");
                     string end = dtpEnd.Value.ToString("yyyy/MM/dd");
-
+                
                     // string forecastNO = "";
                     int forecastIndex = 1;
 
@@ -439,7 +425,6 @@ namespace FactoryManagementSoftware.UI
                             {
                                 if (outRecord["trf_result"].ToString().Equals("Passed"))
                                 {
-                                    //outStock += Convert.ToSingle(outRecord["trf_hist_qty"]);
                                     outStock += Convert.ToInt32(outRecord["trf_hist_qty"]);
                                 }
                             }
@@ -519,7 +504,6 @@ namespace FactoryManagementSoftware.UI
 
                 wastageUsed = materialUsed * wastagePercetage;
 
-
                 if (string.IsNullOrEmpty(materialType))
                 {
                     materialType = item["item_material"].ToString();
@@ -564,11 +548,7 @@ namespace FactoryManagementSoftware.UI
                 dgvMaterialUsedRecord.Rows[n].Cells[headerMatUsedAndWastage].Value = materialUsed + wastageUsed;
                 index++;
             }
-
-            //listPaint(dgvMaterialUsedRecord);
-            //tool.listPaint(dgvMaterialUsedRecord);
             tool.listPaintGreyHeader(dgvMaterialUsedRecord);
-
         }
 
         private void frmMaterialUsedReport_FormClosed(object sender, FormClosedEventArgs e)
@@ -599,7 +579,7 @@ namespace FactoryManagementSoftware.UI
         private void button2_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-          
+
             bool result = dalMatUsed.Delete();
 
             if (!result)

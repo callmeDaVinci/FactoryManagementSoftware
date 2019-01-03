@@ -15,6 +15,7 @@ namespace FactoryManagementSoftware.Module
         itemCatDAL dalItemCat = new itemCatDAL();
         itemDAL dalItem = new itemDAL();
         joinDAL dalJoin = new joinDAL();
+        itemCustDAL dalItemCust = new itemCustDAL();
 
         #region UI design
 
@@ -56,6 +57,8 @@ namespace FactoryManagementSoftware.Module
             dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+
+            dgv.ClearSelection();
         }
 
         public void listPaintGreyHeader(DataGridView dgv)
@@ -225,6 +228,20 @@ namespace FactoryManagementSoftware.Module
             
         }
 
+        public string getCustName(int custID)
+        {
+            string custName = "";
+
+            DataTable dtCust = dalCust.idSearch(custID.ToString());
+
+            foreach (DataRow Cust in dtCust.Rows)
+            {
+                custName = Cust["cust_name"].ToString();
+            }
+
+            return custName;
+        }
+
         public int getFactoryID(string factoryName)
         {
             string factoryID = "";
@@ -245,6 +262,31 @@ namespace FactoryManagementSoftware.Module
             }
         }
 
+        public DataTable RemoveDuplicates(DataTable dt, string columnName)
+        {
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = dt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (i == 0)
+                    {
+                        break;
+                    }
+                    for (int j = i - 1; j >= 0; j--)
+                    {
+                        if (dt.Rows[i][columnName].ToString() == dt.Rows[j][columnName].ToString())
+                        {
+                            dt.Rows[i].Delete();
+                            break;
+                        }
+                    }
+                }
+                dt.AcceptChanges();
+
+            }
+            return dt;
+        }
+
         #endregion
 
         #region Validation
@@ -259,6 +301,16 @@ namespace FactoryManagementSoftware.Module
             }
 
             return result;
+        }
+
+        public bool IfExists(string itemCode, string custName)
+        {
+            DataTable dt = dalItemCust.existsSearch(itemCode, getCustID(custName).ToString());
+
+            if (dt.Rows.Count > 0)
+                return true;
+            else
+                return false;
         }
 
         #endregion
