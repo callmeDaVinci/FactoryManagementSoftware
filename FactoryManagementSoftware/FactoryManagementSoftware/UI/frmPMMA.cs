@@ -6,6 +6,9 @@ using System.Windows.Forms;
 using DataTable = System.Data.DataTable;
 using System;
 using System.Drawing;
+using Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
+using System.IO;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -18,24 +21,6 @@ namespace FactoryManagementSoftware.UI
             dataSourceSetup();
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
-
-        #region Variable
-
-        readonly string cmbTypeActual = "Actual";
-        readonly string cmbTypeForecast = "Forecast";
-        readonly string IndexColumnName = "NO";
-        readonly string IndexInName = "IN";
-        readonly string IndexOutName = "OUT";
-        readonly string IndexPercentageName = "%";
-        readonly string IndexWastageName = "WASTAGE";
-        readonly string IndexBalName = "BAL STOCK";
-       // readonly string IndexBalWithWastageName = "BAL STOCK With Wastage";
-        private int index = 0;
-
-        DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
-        DataGridViewAutoSizeColumnMode DisplayedCells = DataGridViewAutoSizeColumnMode.DisplayedCells;
-
-        #endregion
 
         #region Class Object
         facDAL dalFac = new facDAL();
@@ -56,6 +41,23 @@ namespace FactoryManagementSoftware.UI
         materialUsedDAL dalMatUsed = new materialUsedDAL();
 
         Tool tool = new Tool();
+        #endregion
+
+        #region Variable
+        readonly string cmbTypeActual = "Actual";
+        readonly string cmbTypeForecast = "Forecast";
+        readonly string IndexColumnName = "NO";
+        readonly string IndexInName = "IN";
+        readonly string IndexOutName = "OUT";
+        readonly string IndexPercentageName = "%";
+        readonly string IndexWastageName = "WASTAGE";
+        readonly string IndexBalName = "BAL STOCK";
+        // readonly string IndexBalWithWastageName = "BAL STOCK With Wastage";
+        private int index = 0;
+
+        DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
+        DataGridViewAutoSizeColumnMode DisplayedCells = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
         #endregion
 
         #region UI setting
@@ -173,45 +175,61 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
+        private string getCurrentForecastMonth()
+        {
+            string month = "";
+            string custName = tool.getCustName(1);
+
+            DataTable dt = dalItemCust.custSearch(custName);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    month = item["forecast_current_month"].ToString();
+                }
+            }
+            return month;
+        }
+
         private DataTable insertItemMaterialData()
         {
-            string custName = "PMMA";
+            string custName = tool.getCustName(1);
             DataTable dtMat = new DataTable();
 
             dtMat.Columns.Add(dalItem.ItemMaterial);
-            if (!string.IsNullOrEmpty(custName))
+            
+            DataTable dt = dalItemCust.custSearch(custName);
+
+            if (dt.Rows.Count <= 0)
             {
-                DataTable dt = dalItemCust.custSearch(custName);
+                MessageBox.Show("no data under this record.");
+            }
+            else
+            {
+                string itemCode;
+                string itemMat;
 
-                if (dt.Rows.Count <= 0)
+                foreach (DataRow item in dt.Rows)
                 {
-                    MessageBox.Show("no data under this record.");
-                }
-                else
-                {
-                    string itemCode;
-                    string itemMat;
+                    itemCode = item["item_code"].ToString();
+                    itemMat = item[dalItem.ItemMaterial].ToString();
 
-                    foreach (DataRow item in dt.Rows)
+                    if (tool.ifGotChild(itemCode))
                     {
-                        itemCode = item["item_code"].ToString();
-                        itemMat = item[dalItem.ItemMaterial].ToString();
-
-                        if (tool.ifGotChild(itemCode))
+                        DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                        foreach (DataRow Join in dtJoin.Rows)
                         {
-                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
-                            foreach (DataRow Join in dtJoin.Rows)
-                            {
-                                dtMat.Rows.Add(dalItem.getMaterialType(Join["join_child_code"].ToString()));
-                            }
+                            dtMat.Rows.Add(dalItem.getMaterialType(Join["join_child_code"].ToString()));
                         }
-                        else
-                        {
-                            dtMat.Rows.Add(itemMat);
-                        }
+                    }
+                    else
+                    {
+                        dtMat.Rows.Add(itemMat);
                     }
                 }
             }
+            
             return dtMat;
         }
 
@@ -227,6 +245,7 @@ namespace FactoryManagementSoftware.UI
             dt = dt.DefaultView.ToTable();
 
             float openningStock = 0;
+            float percentage = 0;
             string itemCode, month, year;
 
             month = Convert.ToDateTime(dtpDate.Text).Month.ToString();
@@ -239,35 +258,34 @@ namespace FactoryManagementSoftware.UI
 
                 DataTable searchdt = dalPMMA.Search(itemCode, month, year);
 
-                if(searchdt.Rows.Count > 0)
-                {
+                //get last month bal
+                openningStock = getLastMonthBal(itemCode, month, year);
+                percentage = getLastMonthPercentage(itemCode, month, year);
 
+                if (openningStock == -1)
+                {
+                    openningStock = 0;
                     foreach (DataRow pmma in searchdt.Rows)
                     {
-                        //get last month bal
-                        openningStock = getLastMonthBal(itemCode, month, year);
-                        //if (float.TryParse(pmma[dalPMMA.OpenStock].ToString(), out float i))
-                        //{
-                        //    openningStock += Convert.ToSingle(pmma[dalPMMA.OpenStock]);
-                        //}
-
+                        if (float.TryParse(pmma[dalPMMA.OpenStock].ToString(), out float i))
+                        {
+                            openningStock += Convert.ToSingle(pmma[dalPMMA.OpenStock]);
+                        }
                     }
                 }
-                
-                else
-                {
-                    //get last month bal
-                    openningStock = getLastMonthBal(itemCode,month,year);
 
+                if (searchdt.Rows.Count <= 0)
+                {
                     //insert new data to table pmma
                     insertDataToPMMA(itemCode, Convert.ToDateTime(dtpDate.Text), openningStock);
                 }
-                loadDataToDGV(itemCode, openningStock, index, month, year);
+                
+                loadDataToDGV(itemCode, openningStock, percentage, index, month, year);
                 index++;
             }
         }
 
-        private void loadDataToDGV(string itemCode, float openningStock, int index, string month, string year)
+        private void loadDataToDGV(string itemCode, float openningStock, float percentage, int index, string month, string year)
         {
             DataGridView dgv = dgvPMMA;
             int n = dgv.Rows.Add();
@@ -275,20 +293,15 @@ namespace FactoryManagementSoftware.UI
             float inQty = calculateInRecord(itemCode, month, year);
             float outQty = calculateOutRecord(itemCode, month, year);
             float bal = openningStock + inQty - outQty;
-            float percentage = 0.05f;
-            
-
-            
+                  
             float wastage = outQty * percentage;
 
             dgv.Rows[n].Cells[IndexColumnName].Value = index;
             dgv.Rows[n].Cells[dalItem.ItemCode].Value = itemCode;
             dgv.Rows[n].Cells[dalItem.ItemName].Value = dalItem.getMaterialName(itemCode);
             dgv.Rows[n].Cells[dalPMMA.OpenStock].Value = openningStock.ToString("0.000");
-
             dgv.Rows[n].Cells[IndexInName].Value = inQty.ToString("0.000");
             dgv.Rows[n].Cells[IndexOutName].Value = outQty.ToString("0.000");
-
             dgv.Rows[n].Cells[IndexBalName].Value = bal.ToString("0.000");
 
             if (outQty == 0)
@@ -300,9 +313,8 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[n].Cells[IndexWastageName].Value = wastage;
             dgv.Rows[n].Cells[dalPMMA.BalStock].Value = (bal - wastage).ToString("0.000");
 
-
             //update balance stock to table pmma
-            updateDataToPMMA( itemCode, Convert.ToDateTime(dtpDate.Text), openningStock, bal - wastage);
+            updateDataToPMMA( itemCode, Convert.ToDateTime(dtpDate.Text), openningStock,percentage, bal - wastage);
         }
 
         private float calculateInRecord(string itemCode, string month, string year)
@@ -339,7 +351,16 @@ namespace FactoryManagementSoftware.UI
         private float calculateOutRecord(string itemCode, string month, string year)
         {
             bool result = dalMatUsed.Delete();
-            insertItemQuantityOrderData(month, year);
+
+            if(cmbType.Text.Equals(cmbTypeForecast))
+            {
+                insertItemForecastData(checkIfForecastExist());
+            }
+            else
+            {
+                insertItemQuantityOrderData(month, year);
+            }
+            
             int index = 1;
             string materialType = null;
             int OrderQty;
@@ -401,6 +422,84 @@ namespace FactoryManagementSoftware.UI
             return totalMaterialUsed;
         }
 
+        private void insertItemForecastData(int type)
+        {
+            int ForecastQty = 0;
+            string forecast = "forecast_one";
+
+            if (type == 2)
+            {
+                forecast = "forecast_two";
+            }
+            else if(type == 3)
+            {
+                forecast = "forecast_three";
+            }
+
+            string custName = tool.getCustName(1);
+
+            if (!string.IsNullOrEmpty(custName))
+            {
+                DataTable dt = dalItemCust.custSearch(custName);
+
+                if (dt.Rows.Count <= 0)
+                {
+                    MessageBox.Show("no data under this record.");
+                }
+                else
+                {
+                    string itemCode;
+                    int forecastIndex = 1;
+
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        itemCode = item["item_code"].ToString();
+                        ForecastQty = Convert.ToInt32(item[forecast]);
+
+                        if (tool.ifGotChild(itemCode))
+                        {
+                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            foreach (DataRow Join in dtJoin.Rows)
+                            {
+                                uMatUsed.no = forecastIndex;
+                                uMatUsed.item_code = Join["join_child_code"].ToString();
+                                uMatUsed.quantity_order = ForecastQty;
+
+                                bool result = dalMatUsed.Insert(uMatUsed);
+                                if (!result)
+                                {
+                                    MessageBox.Show("failed to insert material used data");
+                                    return;
+                                }
+                                else
+                                {
+                                    forecastIndex++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            uMatUsed.no = forecastIndex;
+                            uMatUsed.item_code = itemCode;
+                            uMatUsed.quantity_order = ForecastQty;
+
+                            bool result = dalMatUsed.Insert(uMatUsed);
+                            if (!result)
+                            {
+                                MessageBox.Show("failed to insert material used data");
+                                return;
+                            }
+                            else
+                            {
+                                forecastIndex++;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
         private void insertItemQuantityOrderData(string month, string year)
         {
             string custName = tool.getCustName(1);
@@ -417,7 +516,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     int outStock = 0;
                     string itemCode;
-
+                                 
                     int forecastIndex = 1;
 
                     foreach (DataRow item in dt.Rows)
@@ -510,8 +609,42 @@ namespace FactoryManagementSoftware.UI
                     
                 }
             }
+            else
+            {
+                lastMonthBal = -1;
+            }
 
             return lastMonthBal;
+        }
+
+        private float getLastMonthPercentage(string itemCode, string month, string year)
+        {
+            float lastMonthPercentage = 0.5f;
+            if (month.Equals("1"))
+            {
+                month = "12";
+                year = (Convert.ToInt32(year) - 1).ToString();
+            }
+            else
+            {
+                month = (Convert.ToInt32(month) - 1).ToString();
+            }
+
+            DataTable dt = dalPMMA.Search(itemCode, month, year);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow pmma in dt.Rows)
+                {
+                    if (float.TryParse(pmma[dalPMMA.BalStock].ToString(), out float i))
+                    {
+                        lastMonthPercentage = Convert.ToSingle(pmma[dalPMMA.Percentage]);
+                    }
+
+                }
+            }
+
+            return lastMonthPercentage;
         }
 
         private void insertDataToPMMA(string itemCode,DateTime date, float openingStock)
@@ -530,11 +663,12 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void updateDataToPMMA(string itemCode, DateTime date, float openingStock, float balStock)
+        private void updateDataToPMMA(string itemCode, DateTime date, float openingStock, float percentage, float balStock)
         {
             uPMMA.pmma_item_code = itemCode;
             uPMMA.pmma_date = date;
             uPMMA.pmma_openning_stock = openingStock;
+            uPMMA.pmma_percentage = percentage;
             uPMMA.pmma_bal_stock =  balStock;
             uPMMA.pmma_updated_date = DateTime.Now;
             uPMMA.pmma_updated_by = MainDashboard.USER_ID;
@@ -623,7 +757,7 @@ namespace FactoryManagementSoftware.UI
 
             if (dgvPMMA.CurrentCell.ColumnIndex == dgvPMMA.Columns[IndexPercentageName].Index ) //Desired Column
             {
-                TextBox tb = e.Control as TextBox;
+                System.Windows.Forms.TextBox tb = e.Control as System.Windows.Forms.TextBox;
                 if (tb != null) 
                 {
                     tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
@@ -653,6 +787,7 @@ namespace FactoryManagementSoftware.UI
             uPMMA.pmma_item_code = dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
             uPMMA.pmma_date = Convert.ToDateTime(dtpDate.Text);
             uPMMA.pmma_openning_stock = openningStock;
+            uPMMA.pmma_percentage = percentage;
             uPMMA.pmma_bal_stock = bal - wastage;
             uPMMA.pmma_updated_date = DateTime.Now;
             uPMMA.pmma_updated_by = MainDashboard.USER_ID;
@@ -671,32 +806,217 @@ namespace FactoryManagementSoftware.UI
 
         private void btnTransfer_Click(object sender, EventArgs e)
         {
-            //string month, year;
-
-            //month = Convert.ToDateTime(dtpDate.Text).Month.ToString();
-            //year = Convert.ToDateTime(dtpDate.Text).Year.ToString();
-            //MessageBox.Show(month+year);
-            //uPMMA.pmma_item_code = "ABS-700-314";
-            //uPMMA.pmma_date = Convert.ToDateTime(dtpDate.Text);
-            //uPMMA.pmma_openning_stock = 1000;
-            //uPMMA.pmma_added_date = DateTime.Now;
-            //uPMMA.pmma_added_by = MainDashboard.USER_ID;
-
-            //dalPMMA.insert(uPMMA);
-
-            //if (month.Equals("1"))
-            //{
-            //    month = "12";
-            //    year = (Convert.ToInt32(year) - 1).ToString();
-            //}
-            //else
-            //{
-            //    month = (Convert.ToInt32(month) - 1).ToString();
-            //}
-
-            //MessageBox.Show(month + year);
-            getMonthlyStockData();
+            string outType = cmbType.Text;
+            if (outType.Equals(cmbTypeActual))
+            {
+                getMonthlyStockData();
+            }
+            else if (outType.Equals(cmbTypeForecast))
+            {
+                if (checkIfForecastExist() != -1)
+                {
+                    getMonthlyStockData();
+                }
+                else
+                {
+                    MessageBox.Show("Forecast data for this month not exist.");
+                }
+            }  
         }
+
+        private int getNextMonth(int currentMonth)
+        {
+            int nextMonth = 0;
+            if (currentMonth == 12)
+            {
+                nextMonth = 1;
+            }
+            else
+            {
+                nextMonth = currentMonth + 1;
+            }
+            return nextMonth;
+        }
+
+        private int checkIfForecastExist()
+        {
+            bool forecastExist = false;
+            int forecastType = -1;
+          
+            int forecastCurrentMonth = DateTime.Parse("1." + getCurrentForecastMonth() + " 2008").Month;
+            int selectedMonth = Convert.ToDateTime(dtpDate.Text).Month;
+            int selectedYear = Convert.ToDateTime(dtpDate.Text).Year;
+
+            int forecastNextMonth = getNextMonth(forecastCurrentMonth);
+            int forecastNextNextMonth = getNextMonth(forecastNextMonth);
+
+            int currentMonth = DateTime.Now.Month;
+            int currentYear = DateTime.Now.Year;
+
+            if (selectedMonth == forecastCurrentMonth || selectedMonth == forecastNextMonth || selectedMonth == forecastNextNextMonth)
+            {
+                //current year + 1
+                if (selectedMonth >= 1 && selectedMonth <= 3 && currentMonth <= 12 && currentMonth >= 10)
+                {
+                    if ((currentYear + 1) == selectedYear)
+                    {
+                        forecastExist = true;
+                    }
+
+                }
+                //current year - 1
+                else if (selectedMonth >= 10 && selectedMonth <= 12 && currentMonth >= 1 && currentMonth <= 2)
+                {
+                    if ((currentYear - 1) == selectedYear)
+                    {
+                        forecastExist = true;
+                    }
+                }
+                else if ((currentYear) == selectedYear)
+                {
+                    forecastExist = true;
+                }
+            }
+
+            if(forecastExist)
+            {
+                if (selectedMonth == forecastCurrentMonth)
+                {
+                    forecastType = 1;
+                }
+                else if (selectedMonth == forecastNextMonth)
+                {
+                    forecastType = 2;
+                }
+                else if (selectedMonth == forecastNextNextMonth)
+                {
+                    forecastType = 3;
+                }
+            }
+
+            return forecastType;
+        }
+
+        #region export to excel
+
+        private string setFileName()
+        {
+            string fileName = "Test.xls";
+            DateTime currentDate = DateTime.Now;
+            fileName = "EndMonthStockReport(" + tool.getCustName(1) + "_" + dtpDate.Text +")_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
+            return fileName;
+        }
+
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Excel Documents (*.xls)|*.xls";
+            sfd.FileName = setFileName();
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                // Copy DataGridView results to clipboard
+                copyAlltoClipboard();
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                object misValue = System.Reflection.Missing.Value;
+                Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
+                xlexcel.PrintCommunication = false;
+                xlexcel.ScreenUpdating = false;
+                xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
+                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+
+                xlexcel.Calculation = XlCalculation.xlCalculationManual;
+                Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+                xlWorkSheet.Name = tool.getCustName(1);
+
+                #region Save data to Sheet
+                xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + tool.getCustName(1) + ") END MONTH STOCK REPORT("+dtpDate.Text+")";
+                
+
+                //Header and Footer setup
+                xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
+                xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
+                xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+
+                //Page setup
+                xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
+                xlWorkSheet.PageSetup.Zoom = false;
+                xlWorkSheet.PageSetup.CenterHorizontally = true;
+                xlWorkSheet.PageSetup.LeftMargin = 1;
+                xlWorkSheet.PageSetup.RightMargin = 1;
+                xlWorkSheet.PageSetup.FitToPagesWide = 1;
+                xlWorkSheet.PageSetup.FitToPagesTall = false;
+                xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+
+                xlexcel.PrintCommunication = true;
+                xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+                // Paste clipboard results to worksheet range
+                xlWorkSheet.Select();
+                Range CR = (Range)xlWorkSheet.Cells[1, 1];
+                CR.Select();
+                xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+
+                //content edit
+                Range tRange = xlWorkSheet.UsedRange;
+                tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                tRange.Borders.Weight = XlBorderWeight.xlThin;
+                tRange.Font.Size = 11;
+                tRange.EntireColumn.AutoFit();
+                tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
+
+                #endregion
+
+                //Save the excel file under the captured location from the SaveFileDialog
+                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
+                    misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                xlexcel.DisplayAlerts = true;
+
+                xlWorkBook.Close(true, misValue, misValue);
+                xlexcel.Quit();
+
+                releaseObject(xlWorkSheet);
+                releaseObject(xlWorkBook);
+                releaseObject(xlexcel);
+
+                // Clear Clipboard and DataGridView selection
+                Clipboard.Clear();
+                dgvPMMA.ClearSelection();
+
+                // Open the newly saved excel file
+                if (File.Exists(sfd.FileName))
+                    System.Diagnostics.Process.Start(sfd.FileName);
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void copyAlltoClipboard()
+        {
+            dgvPMMA.SelectAll();
+            DataObject dataObj = dgvPMMA.GetClipboardContent();
+            if (dataObj != null)
+                Clipboard.SetDataObject(dataObj);
+        }
+
+        private void releaseObject(object obj)
+        {
+            try
+            {
+                Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                MessageBox.Show("Exception Occurred while releasing object " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
+        #endregion
     }
 
 

@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.dgvMaterialUsedRecord = new System.Windows.Forms.DataGridView();
@@ -57,6 +57,7 @@
             this.btnExportToExcel = new System.Windows.Forms.Button();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.lblMonth = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaterialUsedRecord)).BeginInit();
             this.SuspendLayout();
             // 
@@ -94,14 +95,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvMaterialUsedRecord.BackgroundColor = System.Drawing.Color.White;
             this.dgvMaterialUsedRecord.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMaterialUsedRecord.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMaterialUsedRecord.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvMaterialUsedRecord.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMaterialUsedRecord.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.no,
@@ -116,14 +117,14 @@
             this.material_used_include_wastage,
             this.total_material_used});
             this.dgvMaterialUsedRecord.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvMaterialUsedRecord.Location = new System.Drawing.Point(31, 125);
+            this.dgvMaterialUsedRecord.Location = new System.Drawing.Point(31, 180);
             this.dgvMaterialUsedRecord.Margin = new System.Windows.Forms.Padding(2);
             this.dgvMaterialUsedRecord.Name = "dgvMaterialUsedRecord";
             this.dgvMaterialUsedRecord.ReadOnly = true;
             this.dgvMaterialUsedRecord.RowHeadersVisible = false;
             this.dgvMaterialUsedRecord.RowTemplate.Height = 40;
             this.dgvMaterialUsedRecord.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMaterialUsedRecord.Size = new System.Drawing.Size(1511, 706);
+            this.dgvMaterialUsedRecord.Size = new System.Drawing.Size(1511, 651);
             this.dgvMaterialUsedRecord.TabIndex = 74;
             // 
             // no
@@ -168,8 +169,8 @@
             // item_ord
             // 
             this.item_ord.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.item_ord.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.item_ord.DefaultCellStyle = dataGridViewCellStyle2;
             this.item_ord.HeaderText = "Quantity Order";
             this.item_ord.MinimumWidth = 100;
             this.item_ord.Name = "item_ord";
@@ -178,8 +179,8 @@
             // item_part_weight
             // 
             this.item_part_weight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.item_part_weight.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.item_part_weight.DefaultCellStyle = dataGridViewCellStyle3;
             this.item_part_weight.HeaderText = "Item Weight (Grams)";
             this.item_part_weight.MinimumWidth = 140;
             this.item_part_weight.Name = "item_part_weight";
@@ -189,8 +190,8 @@
             // material_used
             // 
             this.material_used.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.material_used.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.material_used.DefaultCellStyle = dataGridViewCellStyle4;
             this.material_used.HeaderText = "Material Used (Kg)";
             this.material_used.MinimumWidth = 100;
             this.material_used.Name = "material_used";
@@ -199,8 +200,8 @@
             // item_wastage_allowed
             // 
             this.item_wastage_allowed.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.item_wastage_allowed.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.item_wastage_allowed.DefaultCellStyle = dataGridViewCellStyle5;
             this.item_wastage_allowed.HeaderText = "Wastage Allowed (%)";
             this.item_wastage_allowed.MinimumWidth = 130;
             this.item_wastage_allowed.Name = "item_wastage_allowed";
@@ -210,10 +211,10 @@
             // material_used_include_wastage
             // 
             this.material_used_include_wastage.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle20.Format = "N3";
-            dataGridViewCellStyle20.NullValue = null;
-            this.material_used_include_wastage.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.Format = "N3";
+            dataGridViewCellStyle6.NullValue = null;
+            this.material_used_include_wastage.DefaultCellStyle = dataGridViewCellStyle6;
             this.material_used_include_wastage.HeaderText = "Material Used (Wastage Included)";
             this.material_used_include_wastage.MinimumWidth = 200;
             this.material_used_include_wastage.Name = "material_used_include_wastage";
@@ -223,10 +224,10 @@
             // total_material_used
             // 
             this.total_material_used.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle21.Format = "N3";
-            dataGridViewCellStyle21.NullValue = null;
-            this.total_material_used.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.Format = "N3";
+            dataGridViewCellStyle7.NullValue = null;
+            this.total_material_used.DefaultCellStyle = dataGridViewCellStyle7;
             this.total_material_used.HeaderText = "TotalMaterial Used (Kg)";
             this.total_material_used.MinimumWidth = 150;
             this.total_material_used.Name = "total_material_used";
@@ -321,12 +322,23 @@
             this.label4.TabIndex = 89;
             this.label4.Text = "TYPE";
             // 
+            // lblMonth
+            // 
+            this.lblMonth.AutoSize = true;
+            this.lblMonth.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMonth.Location = new System.Drawing.Point(27, 155);
+            this.lblMonth.Name = "lblMonth";
+            this.lblMonth.Size = new System.Drawing.Size(56, 23);
+            this.lblMonth.TabIndex = 91;
+            this.lblMonth.Text = "START";
+            // 
             // frmMaterialUsedReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.lblMonth);
             this.Controls.Add(this.cmbType);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnExportToExcel);
@@ -374,5 +386,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn total_material_used;
         private System.Windows.Forms.ComboBox cmbType;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblMonth;
     }
 }

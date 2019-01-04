@@ -16,6 +16,7 @@ namespace FactoryManagementSoftware.DAL
         public string itemCode { get; } = "pmma_item_code";
         public string OpenStock { get; } = "pmma_openning_stock";
         public string BalStock { get; } = "pmma_bal_stock";
+        public string Percentage { get; } = "pmma_percentage";
         public string Date { get; } = "pmma_date";
 
         public string AddedDate { get; } = "pmma_added_date";
@@ -130,6 +131,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"UPDATE tbl_pmma SET "
                             + OpenStock + "=@pmma_openning_stock,"
                              + BalStock + "=@pmma_bal_stock,"
+                              + Percentage + "=@pmma_percentage,"
                             + UpdatedDate + "=@pmma_updated_by,"
                             + UpdatedBy + "=@pmma_updated_by" +
                             " WHERE pmma_item_code=@pmma_item_code " +
@@ -140,6 +142,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@pmma_item_code", u.pmma_item_code);
                 cmd.Parameters.AddWithValue("@pmma_openning_stock", u.pmma_openning_stock);
                 cmd.Parameters.AddWithValue("@pmma_bal_stock", u.pmma_bal_stock);
+                cmd.Parameters.AddWithValue("@pmma_percentage", u.pmma_percentage);
                 cmd.Parameters.AddWithValue("@month", month);
                 cmd.Parameters.AddWithValue("@year", year);
                 cmd.Parameters.AddWithValue("@pmma_updated_date", u.pmma_updated_date);
