@@ -24,6 +24,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"SELECT tbl_cust.cust_name, 
                             tbl_item.item_code, 
                             tbl_item.item_name, 
+                            tbl_item.item_material,
                             tbl_item_cust.forecast_current_month,
                             tbl_item_cust.item_cust_added_date, 
                             tbl_item_cust.item_cust_added_by 
@@ -449,6 +450,48 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
             return dt;
+        }
+
+        public bool checkIfExistinItemCustTable(string keywords)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_item_cust WHERE item_code = @keywords";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@keywords", keywords);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+            if(dt.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         #endregion

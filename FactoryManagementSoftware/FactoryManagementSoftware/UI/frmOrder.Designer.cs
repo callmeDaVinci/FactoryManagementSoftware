@@ -213,6 +213,7 @@
             this.dgvOrderAlert.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvOrderAlert.Size = new System.Drawing.Size(1519, 162);
             this.dgvOrderAlert.TabIndex = 80;
+            this.dgvOrderAlert.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrderAlert_CellDoubleClick);
             // 
             // errorProvider1
             // 

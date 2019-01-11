@@ -29,6 +29,7 @@ namespace FactoryManagementSoftware.UI
         readonly string headerTotalMatUsed = "total_material_used";
 
         readonly string cmbTypeActual = "Actual Used";
+        readonly string cmbTypeCurrentMonth = "Current Month Forecast";
         readonly string cmbTypeNextMonth = "Next Month Forecast";
         readonly string cmbTypeNextNextMonth = "Next Next Month Forecast";
 
@@ -141,6 +142,7 @@ namespace FactoryManagementSoftware.UI
         {
             cmbType.Items.Clear();
             cmbType.Items.Add(cmbTypeActual);
+            cmbType.Items.Add(cmbTypeCurrentMonth);
             cmbType.Items.Add(cmbTypeNextMonth);
             cmbType.Items.Add(cmbTypeNextNextMonth);
             cmbType.SelectedIndex = 0;
@@ -148,8 +150,12 @@ namespace FactoryManagementSoftware.UI
 
         private void insertAllItemForecastData()
         {
-            string forecast = "forecast_two";
-            if (cmbType.Text.Equals(cmbTypeNextNextMonth))
+            string forecast = "forecast_one";
+            if (cmbType.Text.Equals(cmbTypeNextMonth))
+            {
+                forecast = "forecast_two";
+            }
+            else if (cmbType.Text.Equals(cmbTypeNextNextMonth))
             {
                 forecast = "forecast_three";
             }
@@ -234,8 +240,12 @@ namespace FactoryManagementSoftware.UI
         private void insertItemForecastData()
         {
             int ForecastQty = 0;
-            string forecast = "forecast_two";
-            if (cmbType.Text.Equals(cmbTypeNextNextMonth))
+            string forecast = "forecast_one";
+            if (cmbType.Text.Equals(cmbTypeNextMonth))
+            {
+                forecast = "forecast_two";
+            }
+            else if (cmbType.Text.Equals(cmbTypeNextNextMonth))
             {
                 forecast = "forecast_three";
             }
@@ -540,7 +550,7 @@ namespace FactoryManagementSoftware.UI
                 dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemMaterial].Value = item[dalItem.ItemMaterial].ToString();
                 dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemName].Value = item[dalItem.ItemName].ToString();
                 dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemCode].ToString();
-                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemColor].Value = item[dalItem.ItemCode].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemColor].Value = item[dalItem.ItemColor].ToString();
                 dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemOrd].Value = item["quantity_order"].ToString();
                 dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemProPWPcs].Value = itemWeight;
                 dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemWastage].Value = item[dalItem.ItemWastage].ToString();
@@ -794,7 +804,7 @@ namespace FactoryManagementSoftware.UI
 
             int forecastCurrentMonth = DateTime.Parse("1." + getCurrentForecastMonth() + " 2008").Month;
 
-            if (cmbType.Text.Equals(cmbTypeActual))
+            if (cmbType.Text.Equals(cmbTypeActual) || cmbType.Text.Equals(cmbTypeCurrentMonth))
             {
                 lblMonth.Text = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonth).ToUpper().ToString() + " MATERIAL USED REPORT";
             }

@@ -50,6 +50,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.dtpTrfDate = new System.Windows.Forms.DateTimePicker();
             this.label9 = new System.Windows.Forms.Label();
+            this.cmbSubFrom = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.SuspendLayout();
@@ -68,9 +69,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(32, 322);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(31, 23);
+            this.label2.Size = new System.Drawing.Size(105, 23);
             this.label2.TabIndex = 1;
-            this.label2.Text = "TO";
+            this.label2.Text = "TO FACTORY";
             // 
             // cmbFrom
             // 
@@ -79,8 +80,9 @@
             this.cmbFrom.FormattingEnabled = true;
             this.cmbFrom.Location = new System.Drawing.Point(36, 268);
             this.cmbFrom.Name = "cmbFrom";
-            this.cmbFrom.Size = new System.Drawing.Size(380, 36);
+            this.cmbFrom.Size = new System.Drawing.Size(183, 36);
             this.cmbFrom.TabIndex = 2;
+            this.cmbFrom.SelectedIndexChanged += new System.EventHandler(this.cmbFrom_SelectedIndexChanged);
             // 
             // cmbTo
             // 
@@ -249,12 +251,23 @@
             this.label9.TabIndex = 137;
             this.label9.Text = "TRANSFER DATE";
             // 
+            // cmbSubFrom
+            // 
+            this.cmbSubFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSubFrom.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbSubFrom.FormattingEnabled = true;
+            this.cmbSubFrom.Location = new System.Drawing.Point(233, 268);
+            this.cmbSubFrom.Name = "cmbSubFrom";
+            this.cmbSubFrom.Size = new System.Drawing.Size(183, 36);
+            this.cmbSubFrom.TabIndex = 138;
+            // 
             // frmOrderReceive
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(452, 670);
+            this.Controls.Add(this.cmbSubFrom);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.dtpTrfDate);
             this.Controls.Add(this.label8);
@@ -312,5 +325,6 @@
         private System.Windows.Forms.TextBox txtUnit;
         private System.Windows.Forms.DateTimePicker dtpTrfDate;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox cmbSubFrom;
     }
 }

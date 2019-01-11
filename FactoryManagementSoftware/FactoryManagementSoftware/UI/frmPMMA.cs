@@ -51,7 +51,11 @@ namespace FactoryManagementSoftware.UI
         readonly string IndexOutName = "OUT";
         readonly string IndexPercentageName = "%";
         readonly string IndexWastageName = "WASTAGE";
+        readonly string IndexAdjustName = "ADJUST";
+        readonly string IndexNoteName = "NOTE";
         readonly string IndexBalName = "BAL STOCK";
+        private bool firstForecastChecked = false;
+        private bool secondForecastChecked = false;
         // readonly string IndexBalWithWastageName = "BAL STOCK With Wastage";
         private int index = 0;
 
@@ -78,6 +82,8 @@ namespace FactoryManagementSoftware.UI
             tool.AddTextBoxColumns(dgv, IndexBalName, IndexBalName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, IndexPercentageName, IndexPercentageName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, IndexWastageName, IndexWastageName, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, IndexAdjustName, dalPMMA.Adjust, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, IndexNoteName, dalPMMA.Note, DisplayedCells);
             tool.AddTextBoxColumns(dgv, IndexBalName, dalPMMA.BalStock, DisplayedCells);
 
 
@@ -87,6 +93,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[IndexBalName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[IndexPercentageName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[IndexWastageName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns[dalPMMA.Adjust].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[dalPMMA.BalStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
             if (dalUser.getPermissionLevel(MainDashboard.USER_ID) >= 3)
@@ -102,6 +109,8 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[IndexBalName].ReadOnly = true;
                 dgv.Columns[IndexPercentageName].ReadOnly = false;
                 dgv.Columns[IndexWastageName].ReadOnly = true;
+                dgv.Columns[dalPMMA.Adjust].ReadOnly = false;
+                dgv.Columns[dalPMMA.Note].ReadOnly = false;
                 dgv.Columns[dalPMMA.BalStock].ReadOnly = true;
             }
             else
@@ -117,6 +126,8 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[IndexBalName].ReadOnly = true;
                 dgv.Columns[IndexPercentageName].ReadOnly = true;
                 dgv.Columns[IndexWastageName].ReadOnly = true;
+                dgv.Columns[dalPMMA.Adjust].ReadOnly = true;
+                dgv.Columns[dalPMMA.Note].ReadOnly = true;
                 dgv.Columns[dalPMMA.BalStock].ReadOnly = true;
             }
         }
@@ -246,7 +257,8 @@ namespace FactoryManagementSoftware.UI
 
             float openningStock = 0;
             float percentage = 0;
-            string itemCode, month, year;
+            float adjust = 0;
+            string itemCode, month, year,note="";
 
             month = Convert.ToDateTime(dtpDate.Text).Month.ToString();
             year = Convert.ToDateTime(dtpDate.Text).Year.ToString();
@@ -254,38 +266,53 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow item in dt.Rows)
             {
                 openningStock = 0;
+                percentage = 0;
+                adjust = 0;
+                note = "";
                 itemCode = item["item_material"].ToString();
 
                 DataTable searchdt = dalPMMA.Search(itemCode, month, year);
 
                 //get last month bal
                 openningStock = getLastMonthBal(itemCode, month, year);
-                percentage = getLastMonthPercentage(itemCode, month, year);
-
-                if (openningStock == -1)
+                
+                foreach (DataRow pmma in searchdt.Rows)
                 {
-                    openningStock = 0;
-                    foreach (DataRow pmma in searchdt.Rows)
+
+                    if (openningStock == -1)
                     {
+                        openningStock = 0;
                         if (float.TryParse(pmma[dalPMMA.OpenStock].ToString(), out float i))
                         {
                             openningStock += Convert.ToSingle(pmma[dalPMMA.OpenStock]);
                         }
                     }
+
+                    if (float.TryParse(pmma[dalPMMA.Percentage].ToString(), out float j))
+                    {
+                        percentage += Convert.ToSingle(pmma[dalPMMA.Percentage]);
+                    }
+
+                if (float.TryParse(pmma[dalPMMA.Adjust].ToString(), out float k))
+                    {
+                            adjust += Convert.ToSingle(pmma[dalPMMA.Adjust]);
+                    }
+                    note = pmma[dalPMMA.Note].ToString();
                 }
 
                 if (searchdt.Rows.Count <= 0)
                 {
                     //insert new data to table pmma
+                    percentage = getLastMonthPercentage(itemCode, month, year);
                     insertDataToPMMA(itemCode, Convert.ToDateTime(dtpDate.Text), openningStock);
                 }
                 
-                loadDataToDGV(itemCode, openningStock, percentage, index, month, year);
+                loadDataToDGV(itemCode, openningStock, percentage, index, month, year,adjust,note);
                 index++;
             }
         }
 
-        private void loadDataToDGV(string itemCode, float openningStock, float percentage, int index, string month, string year)
+        private void loadDataToDGV(string itemCode, float openningStock, float percentage, int index, string month, string year, float adjust, string note)
         {
             DataGridView dgv = dgvPMMA;
             int n = dgv.Rows.Add();
@@ -299,10 +326,12 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[n].Cells[IndexColumnName].Value = index;
             dgv.Rows[n].Cells[dalItem.ItemCode].Value = itemCode;
             dgv.Rows[n].Cells[dalItem.ItemName].Value = dalItem.getMaterialName(itemCode);
-            dgv.Rows[n].Cells[dalPMMA.OpenStock].Value = openningStock.ToString("0.000");
-            dgv.Rows[n].Cells[IndexInName].Value = inQty.ToString("0.000");
-            dgv.Rows[n].Cells[IndexOutName].Value = outQty.ToString("0.000");
-            dgv.Rows[n].Cells[IndexBalName].Value = bal.ToString("0.000");
+            dgv.Rows[n].Cells[dalPMMA.OpenStock].Value = openningStock.ToString("0.00");
+            dgv.Rows[n].Cells[IndexInName].Value = inQty.ToString("0.00");
+            dgv.Rows[n].Cells[IndexOutName].Value = outQty.ToString("0.00");
+            dgv.Rows[n].Cells[dalPMMA.Adjust].Value = adjust.ToString("0.00");
+            dgv.Rows[n].Cells[dalPMMA.Note].Value = note;
+            dgv.Rows[n].Cells[IndexBalName].Value = (bal+adjust).ToString("0.00");
 
             if (outQty == 0)
             {
@@ -310,11 +339,11 @@ namespace FactoryManagementSoftware.UI
             }
 
             dgv.Rows[n].Cells[IndexPercentageName].Value = percentage;
-            dgv.Rows[n].Cells[IndexWastageName].Value = wastage;
-            dgv.Rows[n].Cells[dalPMMA.BalStock].Value = (bal - wastage).ToString("0.000");
+            dgv.Rows[n].Cells[IndexWastageName].Value = wastage.ToString("0.00");
+            dgv.Rows[n].Cells[dalPMMA.BalStock].Value = (bal - wastage + adjust).ToString("0.00");
 
             //update balance stock to table pmma
-            updateDataToPMMA( itemCode, Convert.ToDateTime(dtpDate.Text), openningStock,percentage, bal - wastage);
+            updateDataToPMMA( itemCode, Convert.ToDateTime(dtpDate.Text), openningStock,percentage, bal - wastage, adjust, note);
         }
 
         private float calculateInRecord(string itemCode, string month, string year)
@@ -332,15 +361,27 @@ namespace FactoryManagementSoftware.UI
                         string trfTo = item[dalTrfHist.TrfTo].ToString();
 
                         //from non-factory to factory: IN
-                        if (tool.getFactoryID(trfFrom) == -1 && tool.getFactoryID(trfTo) != -1)
+                        //if (tool.getFactoryID(trfFrom) == -1 && tool.getFactoryID(trfTo) != -1)
+                        //{
+                        //    if (float.TryParse(item[dalTrfHist.TrfQty].ToString(), out float i))
+                        //    {
+                        //        inQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
+                        //    }
+
+                        //}
+
+                        //from PMMA to factory: IN
+                        if (tool.getCustName(1) == trfFrom && tool.getFactoryID(trfTo) != -1)
                         {
                             if (float.TryParse(item[dalTrfHist.TrfQty].ToString(), out float i))
                             {
                                 inQty += Convert.ToSingle(item[dalTrfHist.TrfQty]);
                             }
-                            
-                        } 
+
+                        }
                         
+
+
                     }
                 }
             }
@@ -430,8 +471,9 @@ namespace FactoryManagementSoftware.UI
             if (type == 2)
             {
                 forecast = "forecast_two";
+
             }
-            else if(type == 3)
+            else if (type == 3)
             {
                 forecast = "forecast_three";
             }
@@ -652,6 +694,8 @@ namespace FactoryManagementSoftware.UI
             uPMMA.pmma_item_code = itemCode;
             uPMMA.pmma_date = date;
             uPMMA.pmma_openning_stock = openingStock;
+            uPMMA.pmma_adjust = 0;
+            uPMMA.pmma_note = "";
             uPMMA.pmma_added_date = DateTime.Now;
             uPMMA.pmma_added_by = MainDashboard.USER_ID;
 
@@ -663,12 +707,14 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void updateDataToPMMA(string itemCode, DateTime date, float openingStock, float percentage, float balStock)
+        private void updateDataToPMMA(string itemCode, DateTime date, float openingStock, float percentage, float balStock, float adjust, string note)
         {
             uPMMA.pmma_item_code = itemCode;
             uPMMA.pmma_date = date;
             uPMMA.pmma_openning_stock = openingStock;
             uPMMA.pmma_percentage = percentage;
+            uPMMA.pmma_adjust = adjust;
+            uPMMA.pmma_note = note;
             uPMMA.pmma_bal_stock =  balStock;
             uPMMA.pmma_updated_date = DateTime.Now;
             uPMMA.pmma_updated_by = MainDashboard.USER_ID;
@@ -779,16 +825,22 @@ namespace FactoryManagementSoftware.UI
             float bal = openningStock + inQty - outQty;
             float percentage = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexPercentageName].Value.ToString());
             float wastage = outQty * percentage;
+            float adjust = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value.ToString());
 
-            dgv.Rows[rowIndex].Cells[IndexBalName].Value = bal.ToString("0.000");
-            dgv.Rows[rowIndex].Cells[IndexWastageName].Value = wastage.ToString("0.000");
-            dgv.Rows[rowIndex].Cells[dalPMMA.BalStock].Value = (bal - wastage).ToString("0.000");
+            string note = dgv.Rows[rowIndex].Cells[dalPMMA.Note].Value.ToString();
+
+            dgv.Rows[rowIndex].Cells[IndexBalName].Value = bal.ToString("0.00");
+            dgv.Rows[rowIndex].Cells[IndexWastageName].Value = wastage.ToString("0.00");
+            dgv.Rows[rowIndex].Cells[dalPMMA.BalStock].Value = (bal - wastage + adjust).ToString("0.00");
+
 
             uPMMA.pmma_item_code = dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
             uPMMA.pmma_date = Convert.ToDateTime(dtpDate.Text);
             uPMMA.pmma_openning_stock = openningStock;
             uPMMA.pmma_percentage = percentage;
-            uPMMA.pmma_bal_stock = bal - wastage;
+            uPMMA.pmma_adjust = adjust;
+            uPMMA.pmma_note = note;
+            uPMMA.pmma_bal_stock = bal - wastage + adjust;
             uPMMA.pmma_updated_date = DateTime.Now;
             uPMMA.pmma_updated_by = MainDashboard.USER_ID;
 
@@ -813,9 +865,36 @@ namespace FactoryManagementSoftware.UI
             }
             else if (outType.Equals(cmbTypeForecast))
             {
-                if (checkIfForecastExist() != -1)
+                int n = checkIfForecastExist();
+
+                if(n == 1)
                 {
                     getMonthlyStockData();
+                    firstForecastChecked = true;
+                }
+                else if(n == 2)
+                {
+                    if(firstForecastChecked)
+                    {
+                        getMonthlyStockData();
+                        secondForecastChecked = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please check the data of the forecast 1 month before checking the data of the forecast 2 month.");
+                    }
+                }
+                else if (n == 3)
+                {
+                    if (secondForecastChecked)
+                    {
+                        getMonthlyStockData();
+                        secondForecastChecked = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please check the data of the forecast 2 month before checking the data of the forecast 3 month.");
+                    }
                 }
                 else
                 {
@@ -895,6 +974,42 @@ namespace FactoryManagementSoftware.UI
             }
 
             return forecastType;
+        }
+
+        private bool checkIfActualExist()
+        {
+            bool actualExist = false;
+
+            int CurrentMonth = DateTime.Now.Month;
+            int CurrentYear = DateTime.Now.Year;
+            int selectedMonth = Convert.ToDateTime(dtpDate.Text).Month;
+            int selectedYear = Convert.ToDateTime(dtpDate.Text).Year;
+
+            if(selectedYear > CurrentYear)
+            {
+                actualExist = false;
+            }
+            else if(selectedYear == CurrentYear)
+            {
+                if(CurrentMonth == 12)
+                {
+                    actualExist = true;
+                }
+                else if(selectedMonth > CurrentMonth)
+                {
+                    actualExist = false;
+                }
+                else
+                {
+                    actualExist = true;
+                }
+            }
+            else
+            {
+                actualExist = true;
+            }
+            
+            return actualExist;
         }
 
         #region export to excel
@@ -1017,6 +1132,30 @@ namespace FactoryManagementSoftware.UI
             }
         }
         #endregion
+
+        private void dtpDate_ValueChanged(object sender, EventArgs e)
+        {
+            dgvPMMA.Rows.Clear();
+
+            if(checkIfActualExist())
+            {
+                cmbType.Items.Clear();
+                cmbType.Items.Add(cmbTypeActual);
+                cmbType.Items.Add(cmbTypeForecast);
+                cmbType.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbType.Items.Clear();
+                cmbType.Items.Add(cmbTypeForecast);
+                cmbType.SelectedIndex = 0;
+            }
+        }
+
+        private void cmbType_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            dgvPMMA.Rows.Clear();
+        }
     }
 
 

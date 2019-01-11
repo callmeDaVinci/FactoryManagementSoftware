@@ -692,8 +692,8 @@ namespace FactoryManagementSoftware.UI
                 {
                     float partf = 0;
                     float runnerf = 0;
-                    float childShotOne = shotOne;
-                    float childShotTwo = shotTwo;
+                    float childShotOne = 0;
+                    float childShotTwo = 0;
                     int n = dgvForecastReport.Rows.Add();
 
                     dgvForecastReport.Rows[n].Cells["item_code"].Value = Join["join_child_code"].ToString();
@@ -742,38 +742,54 @@ namespace FactoryManagementSoftware.UI
 
                                 float readyStock = Convert.ToSingle(dalItem.getStockQty(itemCode));
                                 dgvForecastReport.Rows[n].Cells["stock_qty"].Style.Font = new System.Drawing.Font(dgvForecastReport.Font, FontStyle.Regular);
-
                                 dgvForecastReport.Rows[n].Cells["stock_qty"].Value = readyStock.ToString();
 
                                 float oSant = Convert.ToSingle(forecastOne) - outStock;
                                 dgvForecastReport.Rows[n].Cells["oSant"].Value = oSant.ToString();
 
-
-                                if (childShotOne >= 0)
+                                if (shotOne >= 0)
                                 {
                                     childShotOne = readyStock;
-                                    dgvForecastReport.Rows[n].Cells["shotOne"].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = dgvForecastReport.Rows[n].Cells["shotOne"].Style.BackColor };
+                                }
+                                else
+                                {
+                                    childShotOne = readyStock + shotOne;
+                                }
+
+                                if(childShotOne < 0)
+                                {
+                                    dgvForecastReport.Rows[n].Cells["shotOne"].Style = new DataGridViewCellStyle { ForeColor = Color.Red, BackColor = dgvForecastReport.Rows[n].Cells["shotOne"].Style.BackColor };
 
                                 }
                                 else
                                 {
-                                    childShotOne += readyStock;
-                                    dgvForecastReport.Rows[n].Cells["shotOne"].Style = new DataGridViewCellStyle { ForeColor = Color.Red, BackColor = dgvForecastReport.Rows[n].Cells["shotOne"].Style.BackColor };
+                                    dgvForecastReport.Rows[n].Cells["shotOne"].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = dgvForecastReport.Rows[n].Cells["shotOne"].Style.BackColor };
 
                                 }
 
                                 dgvForecastReport.Rows[n].Cells["shotOne"].Value = childShotOne.ToString();
 
-                                if (childShotTwo >= 0)
+                                if (shotTwo >= 0)
                                 {
                                     childShotTwo = childShotOne;
-                                    dgvForecastReport.Rows[n].Cells["shotTwo"].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = dgvForecastReport.Rows[n].Cells["shotTwo"].Style.BackColor };
+                                }
+                                else if(shotOne > 0)
+                                {
+                                    childShotTwo = childShotOne + shotTwo;
+                                }
+                                else
+                                {
+                                    childShotTwo = childShotOne - Convert.ToSingle(forecastTwo);
+                                }
+
+                                if (childShotTwo < 0)
+                                {
+                                    dgvForecastReport.Rows[n].Cells["shotTwo"].Style = new DataGridViewCellStyle { ForeColor = Color.Red, BackColor = dgvForecastReport.Rows[n].Cells["shotTwo"].Style.BackColor };
 
                                 }
                                 else
                                 {
-                                    childShotTwo += childShotOne;
-                                    dgvForecastReport.Rows[n].Cells["shotTwo"].Style = new DataGridViewCellStyle { ForeColor = Color.Red, BackColor = dgvForecastReport.Rows[n].Cells["shotTwo"].Style.BackColor };
+                                    dgvForecastReport.Rows[n].Cells["shotTwo"].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = dgvForecastReport.Rows[n].Cells["shotTwo"].Style.BackColor };
 
                                 }
 

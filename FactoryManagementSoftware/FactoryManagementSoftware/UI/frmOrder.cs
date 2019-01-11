@@ -115,13 +115,21 @@ namespace FactoryManagementSoftware.UI
             DataGridView dgv = dgvOrderAlert;
             dgv.Columns.Clear();
 
+            int forecastCurrentMonth = DateTime.Parse("1." + getCurrentForecastMonth() + " 2008").Month;
+            int forecastNextMonth = getNextMonth(forecastCurrentMonth);
+            int forecastNextNextMonth = getNextMonth(forecastNextMonth);
+
+            string balanceOneName = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonth).ToUpper().ToString() + " BAL";
+            string balanceTwoName = new DateTimeFormatInfo().GetMonthName(forecastNextMonth).ToUpper().ToString() + " BAL";
+            string balanceThreeName = new DateTimeFormatInfo().GetMonthName(forecastNextNextMonth).ToUpper().ToString() + " BAL";
+           
             tool.AddTextBoxColumns(dgv, headerIndex, headerIndex, DisplayedCells);
             tool.AddTextBoxColumns(dgv, headerCode, dalItem.ItemCode, Fill);
             tool.AddTextBoxColumns(dgv, headerName, dalItem.ItemName, Fill);
             tool.AddTextBoxColumns(dgv, headerReadyStock, dalItem.ItemQty, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, headerBalanceOne, headerBalanceOne, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, headerBalanceTwo, headerBalanceTwo, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, headerBalanceThree, headerBalanceThree, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, balanceOneName, headerBalanceOne, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, balanceTwoName, headerBalanceTwo, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, balanceThreeName, headerBalanceThree, DisplayedCells);
 
             dgv.Columns[dalItem.ItemQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[headerBalanceOne].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -575,6 +583,8 @@ namespace FactoryManagementSoftware.UI
                         n = dgvOrderAlert.Rows.Add();
                         dgvOrderAlert.Rows[n].Cells[headerIndex].Value = index;
                         dgvOrderAlert.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemMaterial].ToString();
+                        dgvOrderAlert.Rows[n].Cells[dalItem.ItemName].Value = dalItem.getMaterialName(item[dalItem.ItemMaterial].ToString());
+    
                         dgvOrderAlert.Rows[n].Cells[dalItem.ItemQty].Value = readyStock;
 
                         index++;
@@ -648,6 +658,7 @@ namespace FactoryManagementSoftware.UI
                         n = dgvOrderAlert.Rows.Add();
                         dgvOrderAlert.Rows[n].Cells[headerIndex].Value = index;
                         dgvOrderAlert.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemMaterial].ToString();
+                        dgvOrderAlert.Rows[n].Cells[dalItem.ItemName].Value = dalItem.getMaterialName(item[dalItem.ItemMaterial].ToString());
                         dgvOrderAlert.Rows[n].Cells[dalItem.ItemQty].Value = dalItem.getStockQty(materialType);
                         index++;
 
@@ -1105,6 +1116,48 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
+        private string getCurrentForecastMonth()
+        {
+            string month = "";
+            string custName = tool.getCustName(1);
 
+            DataTable dt = dalItemCust.custSearch(custName);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    month = item["forecast_current_month"].ToString();
+                }
+            }
+            return month;
+        }
+
+        private int getNextMonth(int currentMonth)
+        {
+            int nextMonth = 0;
+            if (currentMonth == 12)
+            {
+                nextMonth = 1;
+            }
+            else
+            {
+                nextMonth = currentMonth + 1;
+            }
+            return nextMonth;
+        }
+
+        private void dgvOrderAlert_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            if (rowIndex >= 0)
+            {
+                string itemCode = dgvOrderAlert.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
+                frmOrderAlertDetail frm = new frmOrderAlertDetail(itemCode);
+
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.Show();
+            }
+        }
     }
 }

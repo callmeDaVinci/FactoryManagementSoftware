@@ -13,6 +13,8 @@ namespace FactoryManagementSoftware.BLL
         public float pmma_openning_stock { get; set; }
         public float pmma_bal_stock { get; set; }
         public float pmma_percentage { get; set; }
+        public float pmma_adjust { get; set; } = 0;
+        public string pmma_note { get; set; } = "";
         public DateTime pmma_added_date { get; set; }
         public int pmma_added_by { get; set; }
         public DateTime pmma_updated_date { get; set; }

@@ -254,6 +254,12 @@
     <Compile Include="UI\frmOrderActionHistory.Designer.cs">
       <DependentUpon>frmOrderActionHistory.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmOrderAlertDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmOrderAlertDetail.Designer.cs">
+      <DependentUpon>frmOrderAlertDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmOrderApprove.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -395,6 +401,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderActionHistory.resx">
       <DependentUpon>frmOrderActionHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmOrderAlertDetail.resx">
+      <DependentUpon>frmOrderAlertDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderApprove.resx">
       <DependentUpon>frmOrderApprove.cs</DependentUpon>

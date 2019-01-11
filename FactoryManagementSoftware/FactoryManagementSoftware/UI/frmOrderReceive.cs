@@ -15,6 +15,7 @@ namespace FactoryManagementSoftware.UI
         private string receivedQty;
         private float returnQty;
         private bool actionEdit = false;
+        custDAL dalCust = new custDAL();
 
         public frmOrderReceive(int id, string code,string name, float qty,float received, string unit)
         {
@@ -131,7 +132,7 @@ namespace FactoryManagementSoftware.UI
             if (string.IsNullOrEmpty(txtLotNO.Text))
             {
                 result = false;
-                errorProvider2.SetError(txtLotNO, "Lot No Required");
+                errorProvider2.SetError(txtLotNO, "Lot Number Required");
             }
 
             return result;
@@ -196,8 +197,16 @@ namespace FactoryManagementSoftware.UI
 
         private int transferRecord(string stockResult)
         {
+            string locationFrom;
 
-            string locationFrom = cmbFrom.Text;
+            if (string.IsNullOrEmpty(cmbSubFrom.Text))
+            {
+                locationFrom = cmbFrom.Text;
+            }
+            else
+            {
+                locationFrom = cmbSubFrom.Text;
+            }
 
             string locationTo = cmbTo.Text;
 
@@ -282,7 +291,19 @@ namespace FactoryManagementSoftware.UI
                 frmOrder.receivedNumber = txtQty.Text;
 
                 orderRecordUpdate();
-                dalOrderAction.orderReceive(orderID, txtQty.Text, cmbFrom.Text, cmbTo.Text, txtLotNO.Text);
+
+                string from;
+
+                if(string.IsNullOrEmpty(cmbSubFrom.Text))
+                {
+                    from = cmbFrom.Text;
+                }
+                else
+                {
+                    from = cmbSubFrom.Text;
+                }
+
+                dalOrderAction.orderReceive(orderID, txtQty.Text, from, cmbTo.Text, txtLotNO.Text);
                 transferRecord("Passed");
             }
 
@@ -327,8 +348,31 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
+
         #endregion
 
-       
+        private void loadLocationData(DataTable dt, ComboBox cmb, string columnName)
+        {
+            DataTable lacationTable = dt.DefaultView.ToTable(true, columnName);
+
+            //lacationTable.DefaultView.Sort = columnName+" ASC";
+            cmb.DataSource = lacationTable;
+            cmb.DisplayMember = columnName;
+        }
+
+        private void cmbFrom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //errorProvider4.Clear();
+            if (cmbFrom.Text.Equals("Customer"))
+            {
+                DataTable dt = dalCust.Select();
+                loadLocationData(dt, cmbSubFrom, "cust_name");
+
+            }
+            else
+            {
+                cmbSubFrom.DataSource = null;
+            }
+        }
     }
 }
