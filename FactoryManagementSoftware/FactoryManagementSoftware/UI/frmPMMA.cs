@@ -825,9 +825,20 @@ namespace FactoryManagementSoftware.UI
             float bal = openningStock + inQty - outQty;
             float percentage = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexPercentageName].Value.ToString());
             float wastage = outQty * percentage;
-            float adjust = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value.ToString());
 
-            string note = dgv.Rows[rowIndex].Cells[dalPMMA.Note].Value.ToString();
+            float adjust = 0;
+
+            if(dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value != null)
+            {
+                adjust = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value.ToString());
+            }
+
+            string note = "";
+            if(dgv.Rows[rowIndex].Cells[dalPMMA.Note].Value != null)
+            {
+                note = dgv.Rows[rowIndex].Cells[dalPMMA.Note].Value.ToString();
+            }
+           
 
             dgv.Rows[rowIndex].Cells[IndexBalName].Value = bal.ToString("0.00");
             dgv.Rows[rowIndex].Cells[IndexWastageName].Value = wastage.ToString("0.00");
@@ -862,6 +873,8 @@ namespace FactoryManagementSoftware.UI
             if (outType.Equals(cmbTypeActual))
             {
                 getMonthlyStockData();
+                firstForecastChecked = false;
+                secondForecastChecked = false;
             }
             else if (outType.Equals(cmbTypeForecast))
             {
@@ -900,7 +913,74 @@ namespace FactoryManagementSoftware.UI
                 {
                     MessageBox.Show("Forecast data for this month not exist.");
                 }
-            }  
+            }
+
+            foreach (DataGridViewRow row in dgvPMMA.Rows)
+            {
+
+                float openningStock = 0;
+
+                if (row.Cells[dalPMMA.OpenStock].Value != null)
+                {
+                    openningStock = Convert.ToSingle(row.Cells[dalPMMA.OpenStock].Value.ToString());
+                }
+
+                float inQty = 0;
+                float outQty = 0;
+
+                if (row.Cells[IndexInName].Value != null)
+                {
+                    inQty = Convert.ToSingle(row.Cells[IndexInName].Value.ToString());
+                }
+
+                if (row.Cells[IndexOutName].Value != null)
+                {
+                    outQty = Convert.ToSingle(row.Cells[IndexOutName].Value.ToString());
+                }
+
+                float bal = openningStock + inQty - outQty;
+
+                float percentage = 0;
+                float adjust = 0;
+
+                if (row.Cells[IndexPercentageName].Value  != null)
+                {
+                    percentage = Convert.ToSingle(row.Cells[IndexPercentageName].Value.ToString());
+                }
+
+                float wastage = outQty * percentage;
+                
+                if (row.Cells[dalPMMA.Adjust].Value != null)
+                {
+                    adjust = Convert.ToSingle(row.Cells[dalPMMA.Adjust].Value.ToString());
+                }
+
+                string note = "";
+                if (row.Cells[dalPMMA.Note].Value != null)
+                {
+                    note = row.Cells[dalPMMA.Note].Value.ToString();
+                }
+
+                uPMMA.pmma_item_code = row.Cells[dalItem.ItemCode].Value.ToString();
+                uPMMA.pmma_date = Convert.ToDateTime(dtpDate.Text);
+                uPMMA.pmma_openning_stock = openningStock;
+                uPMMA.pmma_percentage = percentage;
+                uPMMA.pmma_adjust = adjust;
+                uPMMA.pmma_note = note;
+                uPMMA.pmma_bal_stock = bal - wastage + adjust;
+                uPMMA.pmma_updated_date = DateTime.Now;
+                uPMMA.pmma_updated_by = MainDashboard.USER_ID;
+
+
+                bool success = dalPMMA.update(uPMMA);
+
+                if (!success)
+                {
+                    MessageBox.Show("Failed to updated item pmma qty");
+                }
+            }
+
+            
         }
 
         private int getNextMonth(int currentMonth)

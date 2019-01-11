@@ -22,6 +22,7 @@ namespace FactoryManagementSoftware.UI
         Tool tool = new Tool();
         itemCustDAL dalItemCust = new itemCustDAL();
         joinDAL dalJoin = new joinDAL();
+        trfHistDAL dalTrfHist = new trfHistDAL();
 
         readonly string indexItemCode = "Code";
         readonly string indexitemName = "Name";
@@ -45,7 +46,6 @@ namespace FactoryManagementSoftware.UI
         public frmOrderAlertDetail(string itemCode)
         {
             MaterialCode = itemCode;
-            MessageBox.Show(MaterialCode);
             InitializeComponent();
             addDataToForecastCMB();
             createDGV();
@@ -226,7 +226,25 @@ namespace FactoryManagementSoftware.UI
                     Forecast2Num = 0;
                     Forecast3Num = 0;
 
-                    DataTable dt3 = dalItemCust.itemCodeSearch(itemCode);   
+                    string currentMonth = DateTime.ParseExact(item["forecast_current_month"].ToString(), "MMMM", CultureInfo.CurrentCulture).Month.ToString();
+                    string year = DateTime.Now.Year.ToString();
+                    float outStock = 0;
+
+
+                    DataTable dt2 = dalTrfHist.rangeItemToAllCustomerSearchByMonth(currentMonth, year, itemCode);
+
+                    if (dt2.Rows.Count > 0)
+                    {
+                        foreach (DataRow outRecord in dt2.Rows)
+                        {
+                            if (outRecord["trf_result"].ToString().Equals("Passed"))
+                            {
+                                outStock += Convert.ToSingle(outRecord["trf_hist_qty"]);
+                            }
+                        }
+                    }
+
+                    DataTable dt3 = dalItemCust.itemCodeSearch(itemCode);
                     if (dt3.Rows.Count > 0)
                     {
                         foreach (DataRow outRecord in dt3.Rows)
@@ -238,27 +256,18 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     //calculate still need how many qty
-                    Forecast1Num = readyStock - Forecast1Num;
-                    Forecast2Num = Forecast1Num - Forecast2Num;
-                    Forecast3Num = Forecast2Num - Forecast3Num;
 
-                    //save to database
-                    uMatUsed.no = forecastIndex;
-                    uMatUsed.item_code = itemCode;
-                    uMatUsed.quantity_order = Convert.ToInt32(Forecast1Num);
-                    uMatUsed.quantity_order_two = Convert.ToInt32(Forecast2Num);
-                    uMatUsed.quantity_order_three = Convert.ToInt32(Forecast3Num);
-
-                    bool result = dalMatUsed.Insert(uMatUsed);
-                    if (!result)
+                    if (outStock >= Forecast1Num)
                     {
-                        MessageBox.Show("failed to insert material used data");
-                        return;
+                        Forecast1Num = readyStock;
                     }
                     else
                     {
-                        forecastIndex++;
+                        Forecast1Num = readyStock - Forecast1Num + outStock;
                     }
+
+                    Forecast2Num = Forecast1Num - Forecast2Num;
+                    Forecast3Num = Forecast2Num - Forecast3Num;
 
                     if (tool.ifGotChild(itemCode))
                     {
@@ -281,6 +290,26 @@ namespace FactoryManagementSoftware.UI
                             {
                                 forecastIndex++;
                             }
+                        }
+                    }
+                    else
+                    {
+                        //save to database
+                        uMatUsed.no = forecastIndex;
+                        uMatUsed.item_code = itemCode;
+                        uMatUsed.quantity_order = Convert.ToInt32(Forecast1Num);
+                        uMatUsed.quantity_order_two = Convert.ToInt32(Forecast2Num);
+                        uMatUsed.quantity_order_three = Convert.ToInt32(Forecast3Num);
+
+                        bool result = dalMatUsed.Insert(uMatUsed);
+                        if (!result)
+                        {
+                            MessageBox.Show("failed to insert material used data");
+                            return;
+                        }
+                        else
+                        {
+                            forecastIndex++;
                         }
                     }
                 }
@@ -508,7 +537,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            if(n > 0)
+            if(n >= 0)
             {
                 dgvMaterialUsedForecast.Rows[n].Cells[indexTotalMaterialUsed].Style.Font = new System.Drawing.Font(dgvMaterialUsedForecast.Font, FontStyle.Bold);
                 dgvMaterialUsedForecast.Rows[n].Cells[indexTotalMaterialUsed].Value = totalMaterialUsed.ToString("0.00");

@@ -313,6 +313,19 @@ namespace FactoryManagementSoftware.Module
                 return false;
         }
 
+        public float stillNeedCheck(float n)
+        {
+            if (n >= 0)
+            {
+                n = 0;
+            }
+            else
+            {
+                n *= -1;
+            }
+            return n;
+        }
+
         #endregion
     }
 }
