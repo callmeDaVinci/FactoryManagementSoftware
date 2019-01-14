@@ -13,5 +13,7 @@ namespace FactoryManagementSoftware.BLL
         public int quantity_order { get; set; }
         public int quantity_order_two { get; set; }
         public int quantity_order_three { get; set; }
+        public float item_out { get; set; }
+        public float item_ready_stock { get; set; }
     }
 }

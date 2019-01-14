@@ -26,6 +26,9 @@ namespace FactoryManagementSoftware.DAL
                             tbl_item.item_name, 
                             tbl_item.item_material,
                             tbl_item_cust.forecast_current_month,
+                            tbl_item_cust.forecast_one,
+                            tbl_item_cust.forecast_two,
+                            tbl_item_cust.forecast_three,
                             tbl_item_cust.item_cust_added_date, 
                             tbl_item_cust.item_cust_added_by 
                             FROM ((tbl_item_cust 

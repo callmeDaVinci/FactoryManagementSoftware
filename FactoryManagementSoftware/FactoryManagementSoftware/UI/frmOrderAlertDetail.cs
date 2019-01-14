@@ -29,6 +29,7 @@ namespace FactoryManagementSoftware.UI
         readonly string indexReadyStock = "Ready Stock";
         readonly string indexForecast = "Forecast";
         readonly string indexStillNeed = "Still Need";
+        readonly string indexOut = "Out";
         readonly string indexWeight = "Item Weight (Grams)";
         readonly string indexMaterialUsed = "Material Used (Kg)";
         readonly string indexWastageAllow = "Wastage Allowed (%)";
@@ -63,6 +64,7 @@ namespace FactoryManagementSoftware.UI
             tool.AddTextBoxColumns(dgv, indexitemName, indexitemName, Fill);
             tool.AddTextBoxColumns(dgv, indexReadyStock, indexReadyStock, DisplayedCells);
             tool.AddTextBoxColumns(dgv, indexForecast, indexForecast, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, indexOut, indexOut, DisplayedCells);
             tool.AddTextBoxColumns(dgv, indexStillNeed, indexStillNeed, DisplayedCells);
             tool.AddTextBoxColumns(dgv, indexWeight, indexWeight, DisplayedCells);
             tool.AddTextBoxColumns(dgv, indexMaterialUsed, indexMaterialUsed, DisplayedCellsExceptHeader);
@@ -72,6 +74,7 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[indexReadyStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[indexForecast].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns[indexOut].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[indexStillNeed].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[indexWeight].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[indexMaterialUsed].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -150,6 +153,30 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
+        private DataTable removeDuplicates(DataTable dt)
+        {
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = dt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (i == 0)
+                    {
+                        break;
+                    }
+                    for (int j = i - 1; j >= 0; j--)
+                    {
+                        if (dt.Rows[i]["item_code"].ToString() == dt.Rows[j]["item_code"].ToString())
+                        {
+                            dt.Rows[i].Delete();
+                            break;
+                        }
+                    }
+                }
+                dt.AcceptChanges();
+            }
+            return dt;
+        }
+
         private string getCurrentForecastMonth()
         {
             string month = "";
@@ -208,13 +235,14 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = dalItemCust.Select();//load all customer's item list
 
+            dt = removeDuplicates(dt);
             if (dt.Rows.Count <= 0)
             {
                 MessageBox.Show("no data under this record.");
             }
             else
             {
-                float Forecast1Num, Forecast2Num, Forecast3Num, readyStock;
+                float Bal1Forecast, Bal2Forecast, Bal3Forecast, readyStock;
                 string itemCode;
                 int forecastIndex = 1;
 
@@ -222,9 +250,9 @@ namespace FactoryManagementSoftware.UI
                 {
                     itemCode = item["item_code"].ToString();
                     readyStock = dalItem.getStockQty(itemCode);
-                    Forecast1Num = 0;
-                    Forecast2Num = 0;
-                    Forecast3Num = 0;
+                    Bal1Forecast = 0;
+                    Bal2Forecast = 0;
+                    Bal3Forecast = 0;
 
                     string currentMonth = DateTime.ParseExact(item["forecast_current_month"].ToString(), "MMMM", CultureInfo.CurrentCulture).Month.ToString();
                     string year = DateTime.Now.Year.ToString();
@@ -249,36 +277,36 @@ namespace FactoryManagementSoftware.UI
                     {
                         foreach (DataRow outRecord in dt3.Rows)
                         {
-                            Forecast1Num += Convert.ToInt32(outRecord["forecast_one"]);
-                            Forecast2Num += Convert.ToInt32(outRecord["forecast_two"]);
-                            Forecast3Num += Convert.ToInt32(outRecord["forecast_three"]);
+                            Bal1Forecast += Convert.ToInt32(outRecord["forecast_one"]);
+                            Bal2Forecast += Convert.ToInt32(outRecord["forecast_two"]);
+                            Bal3Forecast += Convert.ToInt32(outRecord["forecast_three"]);
                         }
                     }
-
-                    //calculate still need how many qty
-
-                    if (outStock >= Forecast1Num)
-                    {
-                        Forecast1Num = readyStock;
-                    }
-                    else
-                    {
-                        Forecast1Num = readyStock - Forecast1Num + outStock;
-                    }
-
-                    Forecast2Num = Forecast1Num - Forecast2Num;
-                    Forecast3Num = Forecast2Num - Forecast3Num;
-
                     if (tool.ifGotChild(itemCode))
                     {
+                        //calculate still need how many qty
+
+                        if (outStock >= Bal1Forecast)
+                        {
+                            Bal1Forecast = readyStock;
+                        }
+                        else
+                        {
+                            Bal1Forecast = readyStock - Bal1Forecast + outStock;
+                        }
+
+                        Bal2Forecast = Bal1Forecast - Bal2Forecast;
+                        Bal3Forecast = Bal2Forecast - Bal3Forecast;
+
                         DataTable dtJoin = dalJoin.parentCheck(itemCode);//get children list
                         foreach (DataRow Join in dtJoin.Rows)
                         {
                             uMatUsed.no = forecastIndex;
                             uMatUsed.item_code = Join["join_child_code"].ToString();
-                            uMatUsed.quantity_order = Convert.ToInt32(Forecast1Num);
-                            uMatUsed.quantity_order_two = Convert.ToInt32(Forecast2Num);
-                            uMatUsed.quantity_order_three = Convert.ToInt32(Forecast3Num);
+                            uMatUsed.quantity_order = Convert.ToInt32(Bal1Forecast);
+                            uMatUsed.quantity_order_two = Convert.ToInt32(Bal2Forecast);
+                            uMatUsed.quantity_order_three = Convert.ToInt32(Bal3Forecast);
+                            uMatUsed.item_out = outStock;
 
                             bool resultChild = dalMatUsed.Insert(uMatUsed);
                             if (!resultChild)
@@ -297,9 +325,10 @@ namespace FactoryManagementSoftware.UI
                         //save to database
                         uMatUsed.no = forecastIndex;
                         uMatUsed.item_code = itemCode;
-                        uMatUsed.quantity_order = Convert.ToInt32(Forecast1Num);
-                        uMatUsed.quantity_order_two = Convert.ToInt32(Forecast2Num);
-                        uMatUsed.quantity_order_three = Convert.ToInt32(Forecast3Num);
+                        uMatUsed.quantity_order = Convert.ToInt32(Bal1Forecast);
+                        uMatUsed.quantity_order_two = Convert.ToInt32(Bal2Forecast);
+                        uMatUsed.quantity_order_three = Convert.ToInt32(Bal3Forecast);
+                        uMatUsed.item_out = outStock;
 
                         bool result = dalMatUsed.Insert(uMatUsed);
                         if (!result)
@@ -326,25 +355,25 @@ namespace FactoryManagementSoftware.UI
             float wastagePercetage = 0;
             float itemWeight;
             float readyStock = 0;
-            float stillNeed = 0;
-            float forecast = 0;
+            float stillNeed1, stillNeed2, stillNeed3;
+            float shot2, shot3;
+            float forecast1, forecast2, forecast3;
             float childForecast1, childForecast2, childForecast3;
             float childShot1, childShot2, childShot3;
+            float outStock = 0;
+            float readyStockShow = 0, forecastShow = 0, stillNeedShow = 0;
             int n = -1;
             int type = 1;
 
-            string forecastName = "quantity_order";
             if(cmbForecast.Text.Equals(forecastNextMonth))
             {
                 type = 2;
-                forecastName = "quantity_order_two";
             }
             else if (cmbForecast.Text.Equals(forecastNextNextMonth))
             {
                 type = 3;
-                forecastName = "quantity_order_three";
             }
-
+       
             DataTable dt = dalMatUsed.Select();
             dt = AddDuplicates(dt);
             dt = removeNonSelectedMaterial(dt);
@@ -353,8 +382,12 @@ namespace FactoryManagementSoftware.UI
         
             foreach (DataRow item in dt.Rows)
             {
+                string itemCode = item["item_code"].ToString();
                 materialType = item["item_material"].ToString();
-                stillNeed = Convert.ToSingle(item[forecastName].ToString());
+                forecast1 = Convert.ToSingle(item["quantity_order"].ToString());
+                forecast2 = Convert.ToSingle(item["quantity_order_two"].ToString());
+                forecast3 = Convert.ToSingle(item["quantity_order_three"].ToString());
+                outStock = Convert.ToSingle(item["item_out"].ToString());
 
                 if (string.IsNullOrEmpty(materialType))//parent part
                 {
@@ -407,29 +440,47 @@ namespace FactoryManagementSoftware.UI
 
                     if (dalItemCust.checkIfExistinItemCustTable(item[dalItem.ItemCode].ToString()))//non child part
                     {
+
+                        if(outStock >= forecast1)
+                        {
+                            stillNeed1 = 0;
+                            shot2 = readyStock;
+                        }
+                        else
+                        {
+                            stillNeed1 = readyStock - forecast1 + outStock;
+                            shot2 = stillNeed1;
+                        }
+
+                        stillNeed2 = shot2 - forecast2;
+                        shot3 = stillNeed2;
+                        stillNeed3 = shot3 - forecast3;
+
+                        stillNeed1 = tool.stillNeedCheck(stillNeed1);
+                        stillNeed2 = tool.stillNeedCheck(stillNeed2);
+                        stillNeed3 = tool.stillNeedCheck(stillNeed3);
+
                         if (type == 1)
                         {
-                            forecast = readyStock - stillNeed;
+                            readyStockShow = readyStock;
+                            forecastShow = forecast1;
+                            stillNeedShow = stillNeed1;
                         }
                         else if (type == 2)
                         {
-                            forecast = Convert.ToSingle(item["quantity_order"].ToString()) - stillNeed;
-                            readyStock = Convert.ToSingle(item["quantity_order"].ToString());
+                            readyStockShow = shot2;
+                            forecastShow = forecast2;
+                            stillNeedShow = stillNeed2;
+                            outStock = 0;
                         }
                         else
                         {
-                            forecast = Convert.ToSingle(item["quantity_order_two"].ToString()) - stillNeed;
-                            readyStock = Convert.ToSingle(item["quantity_order_two"].ToString());
+                            readyStockShow = shot3;
+                            forecastShow = forecast3;
+                            stillNeedShow = stillNeed3;
+                            outStock = 0;
                         }
 
-                        if (stillNeed > 0)
-                        {
-                            stillNeed = 0;
-                        }
-                        else
-                        {
-                            stillNeed *= -1;
-                        }
                     }
                     else//child part
                     {
@@ -441,11 +492,8 @@ namespace FactoryManagementSoftware.UI
                         {
                             childForecast1 = Convert.ToSingle(item["quantity_order"].ToString());
                         }
-                        if(childForecast1 < 0)
-                        {
-                            childForecast1 *= -1;
-                        }
 
+                        childForecast1 = Math.Abs(childForecast1);
                         childShot1 = readyStock - childForecast1;
 
                         if (Convert.ToSingle(item["quantity_order_two"].ToString()) >= 0)
@@ -463,12 +511,9 @@ namespace FactoryManagementSoftware.UI
                                 childForecast2 = Convert.ToSingle(item["quantity_order_two"].ToString());
                             }
                         }
-                        if (childForecast2 < 0)
-                        {
-                            childForecast2 *= -1;
-                        }
+
+                        childForecast2 = Math.Abs(childForecast2);
                         childShot2 = childShot1 - childForecast2;
-                        //childShot2 = readyStock - childForecast2;
 
                         if (Convert.ToSingle(item["quantity_order_three"].ToString()) >= 0)
                         {
@@ -485,50 +530,44 @@ namespace FactoryManagementSoftware.UI
                                 childForecast3 = Convert.ToSingle(item["quantity_order_three"].ToString());
                             }
                         }
-                        if (childForecast3 < 0)
-                        {
-                            childForecast3 *= -1;
-                        }
+
+                        childForecast3 = Math.Abs(childForecast3);
                         childShot3 = childShot2 - childForecast3;
-                        //childShot3 = readyStock - childForecast3;
 
                         if (type == 1)
                         {
-                            forecast = childForecast1;
-                            stillNeed = childShot1;
+                            forecastShow = childForecast1;
+                            stillNeedShow = childShot1;
+                            readyStockShow = readyStock;
                         }
                         else if(type == 2)
                         {
-                            readyStock = childShot1;
-                            forecast = childForecast2;
-                            stillNeed = childShot2;
+                            readyStockShow = childShot1;
+                            forecastShow = childForecast2;
+                            stillNeedShow = childShot2;
+                            outStock = 0;
                         }
                         else
                         {
-                            readyStock = childShot2;
-                            forecast = childForecast3;
-                            stillNeed = childShot3;
+                            readyStockShow = childShot2;
+                            forecastShow = childForecast3;
+                            stillNeedShow = childShot3;
+                            outStock = 0;
                         }
-
-                        if (stillNeed >= 0)
-                        {
-                            stillNeed = 0;
-                        }
-                        else
-                        {
-                            stillNeed *= -1;
-                        }
+                        stillNeedShow = tool.stillNeedCheck(stillNeedShow);
                     }
-                    
-                    materialUsed = stillNeed * itemWeight / 1000;
+
+                    //stillNeedShow -= outStock;
+                    materialUsed = stillNeedShow * itemWeight / 1000;
                     wastageUsed = materialUsed * wastagePercetage;
                     totalMaterialUsed += materialUsed + wastageUsed;
 
                     dgvMaterialUsedForecast.Rows[n].Cells[indexitemName].Value = item[dalItem.ItemName].ToString();
                     dgvMaterialUsedForecast.Rows[n].Cells[indexItemCode].Value = item[dalItem.ItemCode].ToString();
-                    dgvMaterialUsedForecast.Rows[n].Cells[indexReadyStock].Value = readyStock;
-                    dgvMaterialUsedForecast.Rows[n].Cells[indexForecast].Value = forecast;
-                    dgvMaterialUsedForecast.Rows[n].Cells[indexStillNeed].Value = stillNeed;
+                    dgvMaterialUsedForecast.Rows[n].Cells[indexReadyStock].Value = readyStockShow;
+                    dgvMaterialUsedForecast.Rows[n].Cells[indexForecast].Value = forecastShow;
+                    dgvMaterialUsedForecast.Rows[n].Cells[indexOut].Value = outStock;
+                    dgvMaterialUsedForecast.Rows[n].Cells[indexStillNeed].Value = stillNeedShow;
                     dgvMaterialUsedForecast.Rows[n].Cells[indexWeight].Value = itemWeight;
                     dgvMaterialUsedForecast.Rows[n].Cells[indexWastageAllow].Value = item[dalItem.ItemWastage].ToString();
                     dgvMaterialUsedForecast.Rows[n].Cells[indexMaterialUsed].Value = (materialUsed).ToString("0.00");

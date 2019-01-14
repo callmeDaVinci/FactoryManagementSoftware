@@ -59,7 +59,7 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_material_used (no, item_code, quantity_order, quantity_order_two, quantity_order_three) VALUES (@no, @item_code, @quantity_order, @quantity_order_two, @quantity_order_three)";
+                String sql = "INSERT INTO tbl_material_used (no, item_code, quantity_order, quantity_order_two, quantity_order_three, item_out) VALUES (@no, @item_code, @quantity_order, @quantity_order_two, @quantity_order_three, @item_out)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@no", u.no);
@@ -67,6 +67,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@quantity_order", u.quantity_order);
                 cmd.Parameters.AddWithValue("@quantity_order_two", u.quantity_order_two);
                 cmd.Parameters.AddWithValue("@quantity_order_three", u.quantity_order_three);
+                cmd.Parameters.AddWithValue("@item_out", u.item_out);
 
                 conn.Open();
 
