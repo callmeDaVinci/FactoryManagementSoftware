@@ -30,36 +30,12 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.cmbSearchCat = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.btnTransfer = new System.Windows.Forms.Button();
-            this.txtSearch = new System.Windows.Forms.TextBox();
-            this.lblSearch = new System.Windows.Forms.Label();
             this.dgvUser = new System.Windows.Forms.DataGridView();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUser)).BeginInit();
             this.SuspendLayout();
-            // 
-            // cmbSearchCat
-            // 
-            this.cmbSearchCat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSearchCat.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbSearchCat.FormattingEnabled = true;
-            this.cmbSearchCat.Location = new System.Drawing.Point(39, 72);
-            this.cmbSearchCat.Name = "cmbSearchCat";
-            this.cmbSearchCat.Size = new System.Drawing.Size(325, 39);
-            this.cmbSearchCat.TabIndex = 76;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(35, 46);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(93, 23);
-            this.label1.TabIndex = 75;
-            this.label1.Text = "CATEGORY";
             // 
             // btnTransfer
             // 
@@ -76,27 +52,6 @@
             this.btnTransfer.Text = "NEW USER";
             this.btnTransfer.UseVisualStyleBackColor = false;
             this.btnTransfer.Click += new System.EventHandler(this.btnNewUser_Click);
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(20)))), ((int)(((byte)(31)))));
-            this.txtSearch.Location = new System.Drawing.Point(393, 73);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(324, 38);
-            this.txtSearch.TabIndex = 73;
-            // 
-            // lblSearch
-            // 
-            this.lblSearch.AutoSize = true;
-            this.lblSearch.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSearch.Location = new System.Drawing.Point(389, 47);
-            this.lblSearch.Name = "lblSearch";
-            this.lblSearch.Size = new System.Drawing.Size(72, 23);
-            this.lblSearch.TabIndex = 72;
-            this.lblSearch.Text = "SEARCH";
             // 
             // dgvUser
             // 
@@ -171,11 +126,7 @@
             this.ClientSize = new System.Drawing.Size(1582, 853);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnEdit);
-            this.Controls.Add(this.cmbSearchCat);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnTransfer);
-            this.Controls.Add(this.txtSearch);
-            this.Controls.Add(this.lblSearch);
             this.Controls.Add(this.dgvUser);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -185,17 +136,11 @@
             this.Click += new System.EventHandler(this.frmUser_Click);
             ((System.ComponentModel.ISupportInitialize)(this.dgvUser)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ComboBox cmbSearchCat;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnTransfer;
-        private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.DataGridView dgvUser;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnDelete;

@@ -73,6 +73,7 @@ namespace FactoryManagementSoftware.UI
         userDAL dalUser = new userDAL();
 
         Tool tool = new Tool();
+        Text text = new Text();
         #endregion
 
         #region load/close data
@@ -644,9 +645,42 @@ namespace FactoryManagementSoftware.UI
 
         private string setFileName()
         {
+            int forecastCurrentMonth = DateTime.Parse("1." + getCurrentForecastMonth() + " 2008").Month;
             string fileName = "Test.xls";
+            string title = "";
+            string date = dtpStart.Text + " - " + dtpEnd.Text;
             DateTime currentDate = DateTime.Now;
-            fileName = "MaterialUsedReport(" + cmbCust.Text + "_"+dtpStart.Text+"-"+dtpEnd.Text+")_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
+            if (cmbType.Text.Equals(cmbTypeActual))
+            {
+                date = dtpStart.Text + " - " + dtpEnd.Text;
+                title = "ActualMaterialUsedReport";
+            }
+            else if (cmbType.Text.Equals(cmbTypeCurrentMonth))
+            {
+                date = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonth).ToUpper().ToString();
+                title = "ForecastMaterialUsedReport";
+            }
+            else if (cmbType.Text.Equals(cmbTypeNextMonth))
+            {
+                int forecastNextMonth = getNextMonth(forecastCurrentMonth);
+                date = new DateTimeFormatInfo().GetMonthName(forecastNextMonth).ToUpper().ToString();
+                title = "ForecastMaterialUsedReport";
+
+            }
+            else if (cmbType.Text.Equals(cmbTypeNextNextMonth))
+            {
+                int forecastNextMonth = getNextMonth(forecastCurrentMonth);
+                int forecastNextNextMonth = getNextMonth(forecastNextMonth);
+                date = new DateTimeFormatInfo().GetMonthName(forecastNextNextMonth).ToUpper().ToString();
+                title = "ForecastMaterialUsedReport";
+            }
+            else
+            {
+                title = "MaterialUsedReport";
+            }
+            
+
+            fileName = title+"(" + cmbCust.Text + "_"+ date + ")_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
             return fileName;
         }
 
@@ -658,6 +692,8 @@ namespace FactoryManagementSoftware.UI
 
             if (sfd.ShowDialog() == DialogResult.OK)
             {
+                tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+
                 // Copy DataGridView results to clipboard
                 copyAlltoClipboard();
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -804,25 +840,42 @@ namespace FactoryManagementSoftware.UI
 
             int forecastCurrentMonth = DateTime.Parse("1." + getCurrentForecastMonth() + " 2008").Month;
 
-            if (cmbType.Text.Equals(cmbTypeActual) || cmbType.Text.Equals(cmbTypeCurrentMonth))
+            if (cmbType.Text.Equals(cmbTypeActual))
             {
-                lblMonth.Text = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonth).ToUpper().ToString() + " MATERIAL USED REPORT";
-            }
-            else if(cmbType.Text.Equals(cmbTypeNextMonth))
-            {
-                int forecastNextMonth = getNextMonth(forecastCurrentMonth);
-                lblMonth.Text = new DateTimeFormatInfo().GetMonthName(forecastNextMonth).ToUpper().ToString() + " FORECAST MATERIAL USED REPORT";
-            }
-            else if(cmbType.Text.Equals(cmbTypeNextNextMonth))
-            {
-                int forecastNextMonth = getNextMonth(forecastCurrentMonth);
-                int forecastNextNextMonth = getNextMonth(forecastNextMonth);
-                lblMonth.Text = new DateTimeFormatInfo().GetMonthName(forecastNextNextMonth).ToUpper().ToString() + " FORECAST MATERIAL USED REPORT";
+                lblMonth.Text = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonth).ToUpper().ToString() + " ACTUAL MATERIAL USED REPORT";
+                dtpStart.Show();
+                dtpEnd.Show();
+                label1.Show();
+                label3.Show();
             }
             else
             {
-                lblMonth.Text = "MATERIAL USED REPORT";
+                dtpStart.Hide();
+                dtpEnd.Hide();
+                label1.Hide();
+                label3.Hide();
+
+                if (cmbType.Text.Equals(cmbTypeCurrentMonth))
+                {
+                    lblMonth.Text = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonth).ToUpper().ToString() + " MATERIAL USED REPORT";
+                }
+                else if (cmbType.Text.Equals(cmbTypeNextMonth))
+                {
+                    int forecastNextMonth = getNextMonth(forecastCurrentMonth);
+                    lblMonth.Text = new DateTimeFormatInfo().GetMonthName(forecastNextMonth).ToUpper().ToString() + " FORECAST MATERIAL USED REPORT";
+                }
+                else if (cmbType.Text.Equals(cmbTypeNextNextMonth))
+                {
+                    int forecastNextMonth = getNextMonth(forecastCurrentMonth);
+                    int forecastNextNextMonth = getNextMonth(forecastNextMonth);
+                    lblMonth.Text = new DateTimeFormatInfo().GetMonthName(forecastNextNextMonth).ToUpper().ToString() + " FORECAST MATERIAL USED REPORT";
+                }
+                else
+                {
+                    lblMonth.Text = "MATERIAL USED REPORT";
+                }
             }
+            
         }
 
         #endregion

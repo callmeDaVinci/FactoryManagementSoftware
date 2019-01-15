@@ -1,5 +1,6 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.UI;
+using FactoryManagementSoftware.Module;
 using System;
 using System.Configuration;
 using System.Data;
@@ -14,6 +15,8 @@ namespace FactoryManagementSoftware.DAL
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
         ordDAL dalOrd = new ordDAL();
         orderActionBLL uOrderAction = new orderActionBLL();
+        Tool tool = new Tool();
+        Text text = new Text();
 
         #region Select Data from Database
 
@@ -202,6 +205,10 @@ namespace FactoryManagementSoftware.DAL
         public bool orderRequest(int orderID, string note)
         {
             bool success = false;
+            float orderQty = 0;
+            string unit = "";
+            string itemCode = "";
+            string date = "";
 
             if (orderID < 0)//create a new action record after new order has created
             {
@@ -219,11 +226,15 @@ namespace FactoryManagementSoftware.DAL
                     uOrderAction.action_to = "";
                     uOrderAction.note = ord["ord_note"].ToString();
                     uOrderAction.active = true;
+
+                    orderQty = Convert.ToSingle(ord["ord_qty"]);
+                    unit = ord["ord_unit"].ToString();
+                    itemCode = ord["ord_item_code"].ToString();
+                    date = ord["ord_required_date"].ToString();
                 }
             }
             else//action record exist,add another action
             {
-                //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
                 setActionData(orderID, "REQUEST", "", "", "", note, true);
             }
 
@@ -231,7 +242,13 @@ namespace FactoryManagementSoftware.DAL
 
             if (!success)
             {
-                MessageBox.Show("Failed to make order request action");
+                MessageBox.Show("Failed to make order request action(orderActionDAL)");
+                tool.historyRecord(text.System, "Failed to make order request action", DateTime.Now, MainDashboard.USER_ID);
+                
+            }
+            else
+            {
+                tool.historyRecord(text.OrderRequest, text.getOrderStatusChangeString(uOrderAction.ord_id), DateTime.Now, MainDashboard.USER_ID);
             }
             return success;
         }
@@ -245,13 +262,18 @@ namespace FactoryManagementSoftware.DAL
             {
                 //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
                 setActionData(orderID, "APPROVE", "", "", "", note, true);
+                success = Insert(uOrderAction);
             }
-
-            success = Insert(uOrderAction);
 
             if (!success)
             {
-                MessageBox.Show("Failed to make order request action");
+                MessageBox.Show("Failed to make order approve action.");
+                tool.historyRecord(text.System, "Failed to make order approve action(orderActionDAL)", DateTime.Now, MainDashboard.USER_ID);
+
+            }
+            else
+            {
+                tool.historyRecord(text.OrderApprove, text.getOrderStatusChangeString(orderID), DateTime.Now, MainDashboard.USER_ID);
             }
 
             return success;
@@ -266,13 +288,18 @@ namespace FactoryManagementSoftware.DAL
             {
                 //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
                 setActionData(orderID, "RECEIVE", content, from, to, note, true);
+                success = Insert(uOrderAction);
             }
-
-            success = Insert(uOrderAction);
 
             if (!success)
             {
-                MessageBox.Show("Failed to make order request action");
+                MessageBox.Show("Failed to make order receive action");
+                tool.historyRecord(text.System, "Failed to make order receive action(orderActionDAL)", DateTime.Now, MainDashboard.USER_ID);
+
+            }
+            else
+            {
+                tool.historyRecord(text.OrderReceive, text.getOrderStatusChangeString(orderID), DateTime.Now, MainDashboard.USER_ID);
             }
 
             return success;
@@ -302,7 +329,13 @@ namespace FactoryManagementSoftware.DAL
 
             if (!success)
             {
-                MessageBox.Show("Failed to make order request action");
+                MessageBox.Show("Failed to make order edit action");
+                tool.historyRecord(text.System, "Failed to make order edit action(orderActionDAL)", DateTime.Now, MainDashboard.USER_ID);
+
+            }
+            else
+            {
+                tool.historyRecord(text.OrderActionEdit, text.getOrderStatusChangeString(orderID), DateTime.Now, MainDashboard.USER_ID);
             }
             return success;
         }
@@ -316,13 +349,18 @@ namespace FactoryManagementSoftware.DAL
             {
                 //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
                 setActionData(orderID, "CLOSED", "", "", "", note, true);
+                success = Insert(uOrderAction);
             }
-
-            success = Insert(uOrderAction);
 
             if (!success)
             {
-                MessageBox.Show("Failed to make order request action");
+                MessageBox.Show("Failed to make order close action");
+                tool.historyRecord(text.System, "Failed to make order close action(orderActionDAL)", DateTime.Now, MainDashboard.USER_ID);
+
+            }
+            else
+            {
+                tool.historyRecord(text.OrderClose, text.getOrderStatusChangeString(orderID), DateTime.Now, MainDashboard.USER_ID);
             }
 
             return success;
@@ -341,19 +379,15 @@ namespace FactoryManagementSoftware.DAL
             if (!success)
             {
                 MessageBox.Show("Failed to add order cancel action");
+                tool.historyRecord(text.System, "Failed to make order cancel action(orderActionDAL)", DateTime.Now, MainDashboard.USER_ID);
+
             }
             else
             {
                 deactivatePreviousAction(orderID);
+                tool.historyRecord(text.OrderCancel, text.getOrderStatusChangeString(orderID), DateTime.Now, MainDashboard.USER_ID);
+
             }
-
-            return success;
-        }
-
-        //return item before canceling the order when already received 
-        public bool orderReturn(int orderID, string content, string from, string to, string note)
-        {
-            bool success = false;
 
             return success;
         }

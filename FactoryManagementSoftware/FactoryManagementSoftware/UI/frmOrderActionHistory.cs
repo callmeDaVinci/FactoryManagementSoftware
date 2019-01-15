@@ -306,7 +306,6 @@ namespace FactoryManagementSoftware.UI
                     {
                         returnQty = Convert.ToSingle(action["action_detail"]);
                     }
-                    //trfDate = Convert.ToDateTime(action["action_detail"])
                 }
             }
 

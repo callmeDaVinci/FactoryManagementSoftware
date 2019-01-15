@@ -39,7 +39,7 @@ namespace FactoryManagementSoftware.UI
             tool.AddTextBoxColumns(dgv, "ID", dalHistory.HistoryID, DisplayedCells);
             tool.AddTextBoxColumns(dgv, "Date", dalHistory.HistoryDate, DisplayedCells);
             tool.AddTextBoxColumns(dgv, "User", dalHistory.HistoryBy, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, "Action", dalHistory.HistoryAction, Fill);
+            tool.AddTextBoxColumns(dgv, "Action", dalHistory.HistoryAction, DisplayedCells);
             tool.AddTextBoxColumns(dgv, "Detail", dalHistory.HistoryDetail, Fill);
         }
 
@@ -67,6 +67,13 @@ namespace FactoryManagementSoftware.UI
 
         private void frmHistory_Load(object sender, EventArgs e)
         {
+            dgvHistory.ClearSelection();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            DataTable dt = dalHistory.Select();
+            LoadHistoryList(dt);
             dgvHistory.ClearSelection();
         }
     }

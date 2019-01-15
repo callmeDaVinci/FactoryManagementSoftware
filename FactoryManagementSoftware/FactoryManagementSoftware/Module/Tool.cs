@@ -108,7 +108,7 @@ namespace FactoryManagementSoftware.Module
             uHistory.history_by = by;
             uHistory.history_action = action;
             uHistory.history_detail = detail;
-
+                
             bool result = dalHistory.insert(uHistory);
 
             if(!result)
@@ -240,6 +240,20 @@ namespace FactoryManagementSoftware.Module
             }
 
             return custName;
+        }
+
+        public string getItemName(string itemCode)
+        {
+            string itemName = "";
+
+            DataTable dtItem = dalItem.codeSearch(itemCode);
+
+            foreach (DataRow item in dtItem.Rows)
+            {
+                itemName = item["item_name"].ToString();
+            }
+
+            return itemName;
         }
 
         public int getFactoryID(string factoryName)

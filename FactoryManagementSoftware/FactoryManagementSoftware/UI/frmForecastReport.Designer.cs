@@ -29,50 +29,119 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.dgvForecastReport = new System.Windows.Forms.DataGridView();
-            this.index = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_material = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_color = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.mc_ton = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_part_weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_runner_weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_batch = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.stock_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_one = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.outStock = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.oSant = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.shotOne = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_two = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.shotTwo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_three = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnCheck = new System.Windows.Forms.Button();
             this.cmbCust = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.cmbSort = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.cmbOrder = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.dgvForecastReport = new System.Windows.Forms.DataGridView();
+            this.btnCheck = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtAlertLevel = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).BeginInit();
             this.SuspendLayout();
+            // 
+            // cmbCust
+            // 
+            this.cmbCust.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCust.FormattingEnabled = true;
+            this.cmbCust.Location = new System.Drawing.Point(23, 70);
+            this.cmbCust.Name = "cmbCust";
+            this.cmbCust.Size = new System.Drawing.Size(204, 31);
+            this.cmbCust.TabIndex = 11;
+            this.cmbCust.SelectedIndexChanged += new System.EventHandler(this.cmbCust_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(19, 44);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(97, 23);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "CUSTOMER";
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.Location = new System.Drawing.Point(1237, 163);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(320, 30);
+            this.txtSearch.TabIndex = 13;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
+            // cmbSort
+            // 
+            this.cmbSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSort.FormattingEnabled = true;
+            this.cmbSort.Items.AddRange(new object[] {
+            "Default",
+            "Ready Stock",
+            "Forecast One",
+            "Forecast Two",
+            "Forecast Three",
+            "Shot One",
+            "Shot Two"});
+            this.cmbSort.Location = new System.Drawing.Point(417, 70);
+            this.cmbSort.Name = "cmbSort";
+            this.cmbSort.Size = new System.Drawing.Size(159, 31);
+            this.cmbSort.TabIndex = 17;
+            this.cmbSort.SelectedIndexChanged += new System.EventHandler(this.cmbSort_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(413, 44);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(50, 23);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "SORT";
+            // 
+            // cmbOrder
+            // 
+            this.cmbOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbOrder.FormattingEnabled = true;
+            this.cmbOrder.Location = new System.Drawing.Point(598, 70);
+            this.cmbOrder.Name = "cmbOrder";
+            this.cmbOrder.Size = new System.Drawing.Size(159, 31);
+            this.cmbOrder.TabIndex = 19;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(594, 44);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(64, 23);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "ORDER";
+            // 
+            // cmbType
+            // 
+            this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbType.FormattingEnabled = true;
+            this.cmbType.Items.AddRange(new object[] {
+            "All",
+            "Non-Assembly",
+            "Assembly"});
+            this.cmbType.Location = new System.Drawing.Point(241, 70);
+            this.cmbType.Name = "cmbType";
+            this.cmbType.Size = new System.Drawing.Size(159, 31);
+            this.cmbType.TabIndex = 21;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(237, 44);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(47, 23);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "TYPE";
             // 
             // dgvForecastReport
             // 
@@ -92,311 +161,86 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvForecastReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvForecastReport.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.index,
-            this.item_material,
-            this.item_code,
-            this.item_name,
-            this.item_color,
-            this.mc_ton,
-            this.item_part_weight,
-            this.item_runner_weight,
-            this.item_batch,
-            this.stock_qty,
-            this.forecast_one,
-            this.outStock,
-            this.oSant,
-            this.shotOne,
-            this.forecast_two,
-            this.shotTwo,
-            this.forecast_three});
             this.dgvForecastReport.EnableHeadersVisualStyles = false;
-            this.dgvForecastReport.Location = new System.Drawing.Point(23, 130);
+            this.dgvForecastReport.Location = new System.Drawing.Point(23, 199);
             this.dgvForecastReport.Name = "dgvForecastReport";
             this.dgvForecastReport.ReadOnly = true;
             this.dgvForecastReport.RowHeadersVisible = false;
             this.dgvForecastReport.RowTemplate.Height = 24;
             this.dgvForecastReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvForecastReport.Size = new System.Drawing.Size(1534, 546);
-            this.dgvForecastReport.TabIndex = 0;
-            // 
-            // index
-            // 
-            this.index.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.index.DefaultCellStyle = dataGridViewCellStyle2;
-            this.index.HeaderText = "No";
-            this.index.Name = "index";
-            this.index.ReadOnly = true;
-            this.index.Width = 62;
-            // 
-            // item_material
-            // 
-            this.item_material.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_material.HeaderText = "Material Type";
-            this.item_material.Name = "item_material";
-            this.item_material.ReadOnly = true;
-            this.item_material.Width = 129;
-            // 
-            // item_code
-            // 
-            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_code.HeaderText = "Part Number";
-            this.item_code.Name = "item_code";
-            this.item_code.ReadOnly = true;
-            this.item_code.Width = 126;
-            // 
-            // item_name
-            // 
-            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_name.HeaderText = "Part Name";
-            this.item_name.Name = "item_name";
-            this.item_name.ReadOnly = true;
-            // 
-            // item_color
-            // 
-            this.item_color.HeaderText = "Color";
-            this.item_color.Name = "item_color";
-            this.item_color.ReadOnly = true;
-            // 
-            // mc_ton
-            // 
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.mc_ton.DefaultCellStyle = dataGridViewCellStyle3;
-            this.mc_ton.HeaderText = "MC TON";
-            this.mc_ton.Name = "mc_ton";
-            this.mc_ton.ReadOnly = true;
-            this.mc_ton.Width = 5;
-            // 
-            // item_part_weight
-            // 
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightYellow;
-            this.item_part_weight.DefaultCellStyle = dataGridViewCellStyle4;
-            this.item_part_weight.HeaderText = "Part Weight(g)";
-            this.item_part_weight.Name = "item_part_weight";
-            this.item_part_weight.ReadOnly = true;
-            // 
-            // item_runner_weight
-            // 
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.LightYellow;
-            this.item_runner_weight.DefaultCellStyle = dataGridViewCellStyle5;
-            this.item_runner_weight.HeaderText = "Runner Weight(g)";
-            this.item_runner_weight.Name = "item_runner_weight";
-            this.item_runner_weight.ReadOnly = true;
-            // 
-            // item_batch
-            // 
-            this.item_batch.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.item_batch.HeaderText = "M Batch Code";
-            this.item_batch.Name = "item_batch";
-            this.item_batch.ReadOnly = true;
-            this.item_batch.Width = 135;
-            // 
-            // stock_qty
-            // 
-            this.stock_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.Pink;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stock_qty.DefaultCellStyle = dataGridViewCellStyle6;
-            this.stock_qty.HeaderText = "Ready Stock";
-            this.stock_qty.MinimumWidth = 70;
-            this.stock_qty.Name = "stock_qty";
-            this.stock_qty.ReadOnly = true;
-            this.stock_qty.Width = 70;
-            // 
-            // forecast_one
-            // 
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.LightYellow;
-            this.forecast_one.DefaultCellStyle = dataGridViewCellStyle7;
-            this.forecast_one.HeaderText = "F/cast 1";
-            this.forecast_one.Name = "forecast_one";
-            this.forecast_one.ReadOnly = true;
-            // 
-            // outStock
-            // 
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.LightYellow;
-            this.outStock.DefaultCellStyle = dataGridViewCellStyle8;
-            this.outStock.HeaderText = "Out";
-            this.outStock.Name = "outStock";
-            this.outStock.ReadOnly = true;
-            // 
-            // oSant
-            // 
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.LightYellow;
-            this.oSant.DefaultCellStyle = dataGridViewCellStyle9;
-            this.oSant.HeaderText = "O/sant";
-            this.oSant.Name = "oSant";
-            this.oSant.ReadOnly = true;
-            // 
-            // shotOne
-            // 
-            this.shotOne.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.LightYellow;
-            this.shotOne.DefaultCellStyle = dataGridViewCellStyle10;
-            this.shotOne.HeaderText = "SHOT 1";
-            this.shotOne.Name = "shotOne";
-            this.shotOne.ReadOnly = true;
-            this.shotOne.Width = 88;
-            // 
-            // forecast_two
-            // 
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.LightCyan;
-            this.forecast_two.DefaultCellStyle = dataGridViewCellStyle11;
-            this.forecast_two.HeaderText = "F/cast 2";
-            this.forecast_two.Name = "forecast_two";
-            this.forecast_two.ReadOnly = true;
-            // 
-            // shotTwo
-            // 
-            this.shotTwo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.LightCyan;
-            this.shotTwo.DefaultCellStyle = dataGridViewCellStyle12;
-            this.shotTwo.HeaderText = "SHOT 2";
-            this.shotTwo.Name = "shotTwo";
-            this.shotTwo.ReadOnly = true;
-            this.shotTwo.Width = 88;
-            // 
-            // forecast_three
-            // 
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.PeachPuff;
-            this.forecast_three.DefaultCellStyle = dataGridViewCellStyle13;
-            this.forecast_three.HeaderText = "F/cast 3";
-            this.forecast_three.Name = "forecast_three";
-            this.forecast_three.ReadOnly = true;
+            this.dgvForecastReport.Size = new System.Drawing.Size(1534, 497);
+            this.dgvForecastReport.TabIndex = 22;
+            this.dgvForecastReport.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvForecastReport_MouseClick);
             // 
             // btnCheck
             // 
-            this.btnCheck.Location = new System.Drawing.Point(879, 73);
+            this.btnCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCheck.ForeColor = System.Drawing.Color.White;
+            this.btnCheck.Location = new System.Drawing.Point(966, 41);
+            this.btnCheck.Margin = new System.Windows.Forms.Padding(2);
             this.btnCheck.Name = "btnCheck";
-            this.btnCheck.Size = new System.Drawing.Size(118, 32);
-            this.btnCheck.TabIndex = 12;
-            this.btnCheck.Text = "Check";
-            this.btnCheck.UseVisualStyleBackColor = true;
+            this.btnCheck.Size = new System.Drawing.Size(117, 59);
+            this.btnCheck.TabIndex = 100;
+            this.btnCheck.Text = "CHECK";
+            this.btnCheck.UseVisualStyleBackColor = false;
             this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
             // 
-            // cmbCust
+            // button1
             // 
-            this.cmbCust.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCust.FormattingEnabled = true;
-            this.cmbCust.Location = new System.Drawing.Point(23, 73);
-            this.cmbCust.Name = "cmbCust";
-            this.cmbCust.Size = new System.Drawing.Size(281, 31);
-            this.cmbCust.TabIndex = 11;
-            this.cmbCust.SelectedIndexChanged += new System.EventHandler(this.cmbCust_SelectedIndexChanged);
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(1440, 44);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(117, 64);
+            this.button1.TabIndex = 101;
+            this.button1.Text = "EXCEL";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.btnExportToExcel_Click);
             // 
-            // label1
+            // label6
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 47);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 23);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Customer";
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.Location = new System.Drawing.Point(1237, 72);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(320, 30);
-            this.txtSearch.TabIndex = 13;
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(19, 174);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(217, 19);
+            this.label6.TabIndex = 102;
+            this.label6.Text = "READY STOCK VERSUS FORECAST";
             // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1233, 47);
+            this.label2.Location = new System.Drawing.Point(1159, 166);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(152, 23);
+            this.label2.Size = new System.Drawing.Size(72, 23);
             this.label2.TabIndex = 14;
-            this.label2.Text = "Item Name Search";
+            this.label2.Text = "SEARCH";
             // 
-            // button1
+            // txtAlertLevel
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(1439, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(118, 32);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "EXCEL";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.btnExportToExcel_Click);
+            this.txtAlertLevel.Location = new System.Drawing.Point(778, 70);
+            this.txtAlertLevel.Name = "txtAlertLevel";
+            this.txtAlertLevel.Size = new System.Drawing.Size(161, 30);
+            this.txtAlertLevel.TabIndex = 103;
+            this.txtAlertLevel.Text = "0";
+            this.txtAlertLevel.TextChanged += new System.EventHandler(this.txtAlertLevel_TextChanged);
+            this.txtAlertLevel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAlertLevel_KeyPress);
             // 
-            // cmbSort
+            // label7
             // 
-            this.cmbSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSort.FormattingEnabled = true;
-            this.cmbSort.Items.AddRange(new object[] {
-            "Default",
-            "Ready Stock",
-            "Forecast One",
-            "Forecast Two",
-            "Forecast Three",
-            "Shot One",
-            "Shot Two"});
-            this.cmbSort.Location = new System.Drawing.Point(502, 74);
-            this.cmbSort.Name = "cmbSort";
-            this.cmbSort.Size = new System.Drawing.Size(159, 31);
-            this.cmbSort.TabIndex = 17;
-            this.cmbSort.SelectedIndexChanged += new System.EventHandler(this.cmbSort_SelectedIndexChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(498, 48);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 23);
-            this.label3.TabIndex = 16;
-            this.label3.Text = "Sort";
-            // 
-            // cmbOrder
-            // 
-            this.cmbOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbOrder.FormattingEnabled = true;
-            this.cmbOrder.Location = new System.Drawing.Point(683, 74);
-            this.cmbOrder.Name = "cmbOrder";
-            this.cmbOrder.Size = new System.Drawing.Size(159, 31);
-            this.cmbOrder.TabIndex = 19;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(679, 48);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(54, 23);
-            this.label4.TabIndex = 18;
-            this.label4.Text = "Order";
-            // 
-            // cmbType
-            // 
-            this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbType.FormattingEnabled = true;
-            this.cmbType.Items.AddRange(new object[] {
-            "All",
-            "Non-Assembly",
-            "Assembly"});
-            this.cmbType.Location = new System.Drawing.Point(320, 74);
-            this.cmbType.Name = "cmbType";
-            this.cmbType.Size = new System.Drawing.Size(159, 31);
-            this.cmbType.TabIndex = 21;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(316, 48);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(45, 23);
-            this.label5.TabIndex = 20;
-            this.label5.Text = "Type";
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(774, 44);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(106, 23);
+            this.label7.TabIndex = 104;
+            this.label7.Text = "ALERT LEVEL";
             // 
             // frmForecastReport
             // 
@@ -404,19 +248,22 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 703);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.txtAlertLevel);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnCheck);
+            this.Controls.Add(this.dgvForecastReport);
             this.Controls.Add(this.cmbType);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.cmbOrder);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cmbSort);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtSearch);
-            this.Controls.Add(this.btnCheck);
             this.Controls.Add(this.cmbCust);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.dgvForecastReport);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmForecastReport";
@@ -431,36 +278,21 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.DataGridView dgvForecastReport;
-        private System.Windows.Forms.Button btnCheck;
         private System.Windows.Forms.ComboBox cmbCust;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ComboBox cmbSort;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cmbOrder;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cmbType;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn index;
-        private System.Windows.Forms.DataGridViewTextBoxColumn item_material;
-        private System.Windows.Forms.DataGridViewTextBoxColumn item_code;
-        private System.Windows.Forms.DataGridViewTextBoxColumn item_name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn item_color;
-        private System.Windows.Forms.DataGridViewTextBoxColumn mc_ton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn item_part_weight;
-        private System.Windows.Forms.DataGridViewTextBoxColumn item_runner_weight;
-        private System.Windows.Forms.DataGridViewTextBoxColumn item_batch;
-        private System.Windows.Forms.DataGridViewTextBoxColumn stock_qty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn forecast_one;
-        private System.Windows.Forms.DataGridViewTextBoxColumn outStock;
-        private System.Windows.Forms.DataGridViewTextBoxColumn oSant;
-        private System.Windows.Forms.DataGridViewTextBoxColumn shotOne;
-        private System.Windows.Forms.DataGridViewTextBoxColumn forecast_two;
-        private System.Windows.Forms.DataGridViewTextBoxColumn shotTwo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn forecast_three;
+        private System.Windows.Forms.DataGridView dgvForecastReport;
+        private System.Windows.Forms.Button btnCheck;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtAlertLevel;
+        private System.Windows.Forms.Label label7;
     }
 }

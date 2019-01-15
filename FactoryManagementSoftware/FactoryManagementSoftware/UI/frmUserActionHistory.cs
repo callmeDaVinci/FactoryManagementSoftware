@@ -40,7 +40,7 @@ namespace FactoryManagementSoftware.UI
             tool.AddTextBoxColumns(dgv, "ID", dalHistory.HistoryID, DisplayedCells);
             tool.AddTextBoxColumns(dgv, "Date", dalHistory.HistoryDate, DisplayedCells);
             tool.AddTextBoxColumns(dgv, "User", dalHistory.HistoryBy, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, "Action", dalHistory.HistoryAction, Fill);
+            tool.AddTextBoxColumns(dgv, "Action", dalHistory.HistoryAction, DisplayedCells);
             tool.AddTextBoxColumns(dgv, "Detail", dalHistory.HistoryDetail, Fill);
         }
 

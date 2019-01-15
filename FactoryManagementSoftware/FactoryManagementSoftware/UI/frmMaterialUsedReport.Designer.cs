@@ -65,7 +65,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(27, 31);
+            this.label1.Location = new System.Drawing.Point(594, 31);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 23);
             this.label1.TabIndex = 78;
@@ -239,7 +239,7 @@
             this.dtpStart.CustomFormat = "dd-MM-yyyy";
             this.dtpStart.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpStart.Location = new System.Drawing.Point(31, 58);
+            this.dtpStart.Location = new System.Drawing.Point(598, 58);
             this.dtpStart.Name = "dtpStart";
             this.dtpStart.Size = new System.Drawing.Size(162, 38);
             this.dtpStart.TabIndex = 83;
@@ -249,7 +249,7 @@
             this.cmbCust.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCust.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbCust.FormattingEnabled = true;
-            this.cmbCust.Location = new System.Drawing.Point(418, 57);
+            this.cmbCust.Location = new System.Drawing.Point(31, 57);
             this.cmbCust.Name = "cmbCust";
             this.cmbCust.Size = new System.Drawing.Size(202, 39);
             this.cmbCust.TabIndex = 85;
@@ -259,7 +259,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(414, 31);
+            this.label2.Location = new System.Drawing.Point(27, 31);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(97, 23);
             this.label2.TabIndex = 84;
@@ -270,7 +270,7 @@
             this.dtpEnd.CustomFormat = "dd-MM-yyyy";
             this.dtpEnd.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpEnd.Location = new System.Drawing.Point(223, 58);
+            this.dtpEnd.Location = new System.Drawing.Point(790, 58);
             this.dtpEnd.Name = "dtpEnd";
             this.dtpEnd.Size = new System.Drawing.Size(162, 38);
             this.dtpEnd.TabIndex = 87;
@@ -279,7 +279,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(219, 31);
+            this.label3.Location = new System.Drawing.Point(786, 31);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 23);
             this.label3.TabIndex = 86;
@@ -306,7 +306,7 @@
             this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbType.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbType.FormattingEnabled = true;
-            this.cmbType.Location = new System.Drawing.Point(638, 56);
+            this.cmbType.Location = new System.Drawing.Point(251, 56);
             this.cmbType.Name = "cmbType";
             this.cmbType.Size = new System.Drawing.Size(325, 39);
             this.cmbType.TabIndex = 90;
@@ -316,7 +316,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(634, 30);
+            this.label4.Location = new System.Drawing.Point(247, 30);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 23);
             this.label4.TabIndex = 89;

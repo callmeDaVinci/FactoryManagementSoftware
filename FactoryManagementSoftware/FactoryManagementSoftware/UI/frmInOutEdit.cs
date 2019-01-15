@@ -1,5 +1,6 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -47,6 +48,8 @@ namespace FactoryManagementSoftware.UI
         childTrfHistDAL dalChildTrfHist = new childTrfHistDAL();
 
         userDAL dalUser = new userDAL();
+        Tool tool = new Tool();
+        Text text = new Text();
 
         #endregion
 
@@ -397,6 +400,12 @@ namespace FactoryManagementSoftware.UI
             {
                 //Failed to insert data
                 MessageBox.Show("Failed to add new transfer record");
+                tool.historyRecord(text.System, "Failed to add new transfer record (InOutEdit)", utrfHist.trf_hist_added_date, MainDashboard.USER_ID);
+            }
+            else
+            {
+                tool.historyRecord(text.Transfer, text.getTransferDetailString(daltrfHist.getIndexNo(utrfHist), utrfHist.trf_hist_qty, utrfHist.trf_hist_unit, utrfHist.trf_hist_item_code, locationFrom, locationTo), utrfHist.trf_hist_added_date, MainDashboard.USER_ID);
+
             }
             return daltrfHist.getIndexNo(utrfHist);
         }

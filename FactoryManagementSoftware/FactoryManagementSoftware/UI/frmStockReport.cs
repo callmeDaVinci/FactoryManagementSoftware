@@ -45,6 +45,7 @@ namespace FactoryManagementSoftware.UI
         CheckChildBLL uCheckChild = new CheckChildBLL();
         userDAL dalUser = new userDAL();
         Tool tool = new Tool();
+        Text text = new Text();
         #endregion
 
         #region UI setting
@@ -420,6 +421,8 @@ namespace FactoryManagementSoftware.UI
             
             if (sfd.ShowDialog() == DialogResult.OK)
             {
+                tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+
                 // Copy DataGridView results to clipboard
                 copyAlltoClipboard();
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -530,6 +533,8 @@ namespace FactoryManagementSoftware.UI
 
             if (sfd.ShowDialog() == DialogResult.OK)
             {
+                tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+
                 string path = Path.GetFullPath(sfd.FileName);
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 object misValue = System.Reflection.Missing.Value;

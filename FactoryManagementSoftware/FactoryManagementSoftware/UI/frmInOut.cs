@@ -1,5 +1,6 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
 using System;
 using System.Data;
 using System.Drawing;
@@ -11,6 +12,7 @@ namespace FactoryManagementSoftware.UI
     public partial class frmInOut : Form
     {
         private int userPermission = -1;
+
         public frmInOut()
         {
             InitializeComponent();
@@ -56,6 +58,9 @@ namespace FactoryManagementSoftware.UI
 
         childTrfHistDAL dalChildTrf = new childTrfHistDAL();
         childTrfHistBLL uChildTrfHist = new childTrfHistBLL();
+
+        Tool tool = new Tool();
+        Text text = new Text();
 
         #endregion
 
@@ -151,7 +156,6 @@ namespace FactoryManagementSoftware.UI
             txtSearch.Text = null;
             dgvFactoryStock.Rows.Clear();
             dgvTotal.Rows.Clear();
-            
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
@@ -161,8 +165,6 @@ namespace FactoryManagementSoftware.UI
             dgv.BorderStyle = BorderStyle.None;
             dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
             dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            //dgv.DefaultCellStyle.SelectionBackColor = Color.DarkTurquoise;
-            //dgv.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
             dgv.BackgroundColor = Color.White;
 
             dgv.EnableHeadersVisualStyles = false;
@@ -430,20 +432,7 @@ namespace FactoryManagementSoftware.UI
             //check if the keywords has value or not
             if (!string.IsNullOrEmpty(keywords))
             {
-                if(string.IsNullOrEmpty(cmbSearchBy.Text))
-                {
-                    dt = dalItem.Search(keywords);//search item code and item name
-                }
-                else if(cmbSearchBy.Text.Equals("Item Code"))
-                {
-                    dt = dalItem.itemCodeSearch(keywords);//search item code only
-                }
-                else
-                {
-                    dt = dalItem.nameSearch(keywords);//search item name only
-                }
-                
-
+                dt = dalItem.Search(keywords);//search item code and item name
                 dgvItem.Rows.Clear();
                 foreach (DataRow item in dt.Rows)
                 {
@@ -538,18 +527,7 @@ namespace FactoryManagementSoftware.UI
             //check if the keywords has value or not
             if (!string.IsNullOrEmpty(keywords))
             {
-                if (string.IsNullOrEmpty(cmbSearchBy.Text))
-                {
-                    dt = daltrfHist.Search(keywords);
-                }
-                else if (cmbSearchBy.Text.Equals("Item Code"))
-                {
-                    dt = daltrfHist.codeSearch(keywords);
-                }
-                else
-                {
-                    dt = daltrfHist.nameSearch(keywords);
-                }
+                dt = daltrfHist.Search(keywords);
             }
             else
             {
@@ -1011,7 +989,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (ifFactory(locationTo))
                 {
-                    result = stockOut(locationFrom, itemCode, qty, unit);
+                    result = stockOut(locationTo, itemCode, qty, unit);
                 }
             }
             else if (ifFactory(locationTo) && !locationFrom.Equals("Assembly"))
@@ -1027,6 +1005,7 @@ namespace FactoryManagementSoftware.UI
             if (result)
             {
                 changeTransferRecord("Undo", rowIndex, id);
+                tool.historyRecord(text.TransferUndo, text.getTransferDetailString(id, qty, unit, itemCode, locationFrom, locationTo), DateTime.Now, MainDashboard.USER_ID);
             }
 
             return result;
@@ -1070,6 +1049,7 @@ namespace FactoryManagementSoftware.UI
             if (result)
             {
                 changeTransferRecord("Passed", rowIndex, id);
+                tool.historyRecord(text.TransferRedo, text.getTransferDetailString(id, qty, unit, itemCode, locationFrom, locationTo), DateTime.Now, MainDashboard.USER_ID);
             }
 
             return result;
@@ -1087,11 +1067,8 @@ namespace FactoryManagementSoftware.UI
         private bool stockOut(string factoryName, string itemCode, float qty, string unit)
         {
             bool successFacStockOut = false;
-            bool successStockSubtract = false;
 
             successFacStockOut = dalStock.facStockOut(getFactoryID(factoryName), itemCode, qty, unit);
-
-            //successStockSubtract = dalItem.stockSubtract(itemCode, qty.ToString());
 
             return successFacStockOut;
         }
@@ -1109,6 +1086,7 @@ namespace FactoryManagementSoftware.UI
             {
                 //Failed to insert data
                 MessageBox.Show("Failed to change transfer record");
+                tool.historyRecord(text.System, "Failed to change transfer record", utrfHist.trf_hist_updated_date, MainDashboard.USER_ID);
             }
             else
             {

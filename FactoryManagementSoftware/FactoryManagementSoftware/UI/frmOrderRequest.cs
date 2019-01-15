@@ -1,5 +1,6 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -70,7 +71,8 @@ namespace FactoryManagementSoftware.UI
 
         orderActionDAL dalOrderAction = new orderActionDAL();
 
-
+        Tool tool = new Tool();
+        Text text = new Text();
 
         #endregion
 
@@ -346,6 +348,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         //Failed to insert data
                         MessageBox.Show("Failed to add new order record");
+                        tool.historyRecord(text.System, "Failed to add new order record(frmOrderRequest)", DateTime.Now, MainDashboard.USER_ID);
                     }
                     else
                     {

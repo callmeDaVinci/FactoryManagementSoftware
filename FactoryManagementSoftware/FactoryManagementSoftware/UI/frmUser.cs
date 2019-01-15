@@ -1,9 +1,7 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
-using FactoryManagementSoftware.UI;
 using System;
 using System.Data;
-using System.Drawing;
 using System.Windows.Forms;
 using FactoryManagementSoftware.Module;
 

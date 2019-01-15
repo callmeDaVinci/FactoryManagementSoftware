@@ -41,6 +41,7 @@ namespace FactoryManagementSoftware.UI
         materialUsedDAL dalMatUsed = new materialUsedDAL();
 
         Tool tool = new Tool();
+        Text text = new Text();
         #endregion
 
         #region Variable
@@ -1110,6 +1111,7 @@ namespace FactoryManagementSoftware.UI
 
             if (sfd.ShowDialog() == DialogResult.OK)
             {
+                tool.historyRecord(text.Excel,text.getExcelString(setFileName()),DateTime.Now,MainDashboard.USER_ID);
                 // Copy DataGridView results to clipboard
                 copyAlltoClipboard();
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type

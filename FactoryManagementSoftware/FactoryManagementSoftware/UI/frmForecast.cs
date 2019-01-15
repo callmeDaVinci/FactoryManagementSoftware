@@ -11,6 +11,10 @@ namespace FactoryManagementSoftware.UI
 {
     public partial class frmForecast : Form
     {
+        string oldMonth;
+        string oldForecast, newForecast;
+        string forecastNum;
+        bool loaded = false;
         public frmForecast()
         {
             InitializeComponent();
@@ -48,6 +52,7 @@ namespace FactoryManagementSoftware.UI
         userDAL dalUser = new userDAL();
 
         Tool tool = new Tool();
+        Text text = new Text();
 
         #endregion
 
@@ -154,6 +159,8 @@ namespace FactoryManagementSoftware.UI
 
 
             cmbForecast1.SelectedIndex = currentMonth - 1;
+            oldMonth = cmbForecast1.Text;
+            loaded = true;
         }
 
         #endregion
@@ -185,8 +192,13 @@ namespace FactoryManagementSoftware.UI
                 index3 = index2 + 1;
             }
             cmbForecast3.SelectedIndex = index3;
+            string newMonth = cmbForecast1.Text;
+            
 
+            if(loaded)
+            tool.historyRecord(text.ForecastEdit, text.getForecastMonthEditString(oldMonth, newMonth), DateTime.Now, MainDashboard.USER_ID);
 
+            oldMonth = newMonth;
         }
 
         private void cmbForecast2_SelectedIndexChanged(object sender, EventArgs e)
@@ -269,6 +281,19 @@ namespace FactoryManagementSoftware.UI
             uItemCust.forecast_current_month = cmbForecast1.Text;
             uItemCust.forecast_updated_by = MainDashboard.USER_ID;
 
+            if(Convert.ToInt32(forecastNum) == 1)
+            {
+                newForecast = uItemCust.forecast_one.ToString();
+            }
+            else if (Convert.ToInt32(forecastNum) == 2)
+            {
+                newForecast = uItemCust.forecast_two.ToString();
+            }
+            else
+            {
+                newForecast = uItemCust.forecast_three.ToString();
+            }
+             
             if (tool.IfExists(uItemCust.item_code, cmbCust.Text))
             {
                 bool success = dalItemCust.Update(uItemCust);
@@ -276,7 +301,12 @@ namespace FactoryManagementSoftware.UI
                 if (!success)
                 {
                     MessageBox.Show("Failed to updated forecast");
-                }     
+                    tool.historyRecord(text.System, "Failed to updated forecast(frmForecast)", DateTime.Now, MainDashboard.USER_ID);
+                }    
+                else
+                {
+                    tool.historyRecord(text.ForecastEdit,text.getForecastEditString(cmbCust.Text,forecastNum, uItemCust.item_code,oldForecast,newForecast),DateTime.Now,MainDashboard.USER_ID);
+                }
             }
             else
             {             
@@ -285,6 +315,8 @@ namespace FactoryManagementSoftware.UI
                 if (!success)
                 {
                     MessageBox.Show("Failed to add new forecast");
+                    tool.historyRecord(text.System, "Failed to add new forecast(frmForecast)", DateTime.Now, MainDashboard.USER_ID);
+
                 }
             }
         }
@@ -322,6 +354,9 @@ namespace FactoryManagementSoftware.UI
 
             if (dgvForecast.CurrentCell.ColumnIndex == 2 || dgvForecast.CurrentCell.ColumnIndex == 3 || dgvForecast.CurrentCell.ColumnIndex == 4) //Desired Column
             {
+                forecastNum = (dgvForecast.CurrentCell.ColumnIndex - 1).ToString();
+                oldForecast = dgvForecast.CurrentCell.Value.ToString();
+
                 TextBox tb = e.Control as TextBox;
                 if (tb != null)
                 {
