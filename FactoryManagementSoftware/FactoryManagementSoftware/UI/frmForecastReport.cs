@@ -23,6 +23,7 @@ namespace FactoryManagementSoftware.UI
         }
 
         #region Variable Declare
+
         enum Month
         {
             January = 1,
@@ -58,7 +59,7 @@ namespace FactoryManagementSoftware.UI
 
         private int indexNo = 1;
         private int alphbet = 65;
-
+        private bool gotData = false;
         private int colorOrder = 0;
         private string colorName = "Black";
         private int redAlertLevel = 0;
@@ -120,6 +121,8 @@ namespace FactoryManagementSoftware.UI
         forecastDAL dalForecast = new forecastDAL();
 
         trfHistDAL dalTrfHist = new trfHistDAL();
+
+        userDAL dalUser = new userDAL();
 
         Tool tool = new Tool();
         Text text = new Text();
@@ -736,14 +739,13 @@ namespace FactoryManagementSoftware.UI
         private void insertForecastData()
         {
             string custName = cmbCust.Text;
-
             if (!string.IsNullOrEmpty(custName))
             {
                 DataTable dt = dalItemCust.custSearch(custName);//load customer's item list
 
                 if (dt.Rows.Count < 1)
                 {   
-                    MessageBox.Show("no data under this record.");
+                    //MessageBox.Show("no data under this record.");
                 }
                 else
                 {
@@ -1055,12 +1057,13 @@ namespace FactoryManagementSoftware.UI
 
             if (dt.Rows.Count <= 0)
             {
-                MessageBox.Show("no data under this record.");
+                //MessageBox.Show("no data under this record.");
+                gotData = false;
             }
             else
             {
                 dgv.Rows.Clear();
-
+                gotData = true;
                 //load single data
                 indexNo = 1;
                 foreach (DataRow item in dt.Rows)
@@ -1296,22 +1299,17 @@ namespace FactoryManagementSoftware.UI
 
         #region Function: Check forecast data/Search
 
-        private void btnCheck_Click(object sender, EventArgs e)
+        private void showForecastData()
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
+            gotData = false;
             string custName = tool.getCustName(1);
             int type = 0;
             if (cmbCust.Text.Equals(custName))//PMMA
             {
-                createPMMADGV();
-                dgvForecastReport.Show();
                 type = 1;
             }
             else
             {
-                createDGV();
-                dgvForecastReport.Show();
                 type = 2;
             }
 
@@ -1320,6 +1318,18 @@ namespace FactoryManagementSoftware.UI
             refreshData(type);
             emptyRowBackColorToBlack(type);
             btnCheck.Enabled = true;
+
+            foreach (DataGridViewColumn dgvc in dgvForecastReport.Columns)
+            {
+                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+        }
+
+        private void btnCheck_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            showForecastData();
 
             foreach (DataGridViewColumn dgvc in dgvForecastReport.Columns)
             {
@@ -1450,6 +1460,17 @@ namespace FactoryManagementSoftware.UI
 
         private void btnExportToExcel_Click(object sender, EventArgs e)
         {
+            int type = 0;
+            string custName = tool.getCustName(1);
+            if (cmbCust.Text.Equals(custName))//PMMA
+            {
+                type = 0;
+            }
+            else
+            {
+                type = 2;
+            }
+
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Excel Documents (*.xls)|*.xls";
             sfd.FileName = setFileName();
@@ -1467,23 +1488,11 @@ namespace FactoryManagementSoftware.UI
                 Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
                 Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
-                string centerHeader = xlWorkSheet.PageSetup.CenterHeader;
-                //"Arial Unicode MS" is font name, "18" is font size
-                centerHeader = "&\"Calibri,Bold\"&20 (" + cmbCust.Text + ") READY STOCK VERSUS FORECAST";
+                xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
+                xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") READY STOCK VERSUS FORECAST";
+                xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
+                xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
 
-                string LeftHeader = xlWorkSheet.PageSetup.CenterHeader;
-                //"Arial Unicode MS" is font name, "18" is font size
-                LeftHeader = "&\"Calibri,Bold\"&20 "+ DateTime.Now.Date.ToString("dd/MM/yyyy");
-
-                string RightHeader = xlWorkSheet.PageSetup.CenterHeader;
-                //"Arial Unicode MS" is font name, "18" is font size
-                RightHeader = "&\"Calibri,Bold\"&20 PG -&P";
-
-                xlWorkSheet.PageSetup.LeftHeader = LeftHeader;
-                xlWorkSheet.PageSetup.CenterHeader = centerHeader;
-                xlWorkSheet.PageSetup.RightHeader = RightHeader;
-                xlWorkSheet.PageSetup.CenterFooter = "footer here hahahahahaha";
-                
                 xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
                 xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
                 xlWorkSheet.PageSetup.Zoom = false;
@@ -1501,7 +1510,16 @@ namespace FactoryManagementSoftware.UI
                 CR.Select();
                 xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
 
-                Range rng = xlWorkSheet.get_Range("A:Q").Cells;
+                Range rng;
+                if (type == 2)
+                {
+                    rng = xlWorkSheet.get_Range("A:O").Cells;
+                }
+                else
+                {
+                    rng = xlWorkSheet.get_Range("A:Q").Cells;
+                }
+
                 rng.VerticalAlignment = XlHAlign.xlHAlignCenter;
                 rng.RowHeight = 16;
                 rng.EntireColumn.AutoFit();
@@ -1511,11 +1529,17 @@ namespace FactoryManagementSoftware.UI
                 tRange.Borders.Weight = XlBorderWeight.xlThin;
 
                 //top row 
-                Range topRow = xlWorkSheet.get_Range("a1:q1").Cells;
+                Range topRow;
+                if (type == 2)
+                {
+                    topRow = xlWorkSheet.get_Range("a1:o1").Cells;
+                }
+                else
+                {
+                    topRow = xlWorkSheet.get_Range("a1:q1").Cells;
+                }
                 topRow.RowHeight = 25;
                 
-                
-
                 topRow.HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 topRow.VerticalAlignment = XlHAlign.xlHAlignCenter;
                 topRow.BorderAround2(Type.Missing,XlBorderWeight.xlThick, XlColorIndex.xlColorIndexAutomatic, Type.Missing);
@@ -1524,11 +1548,6 @@ namespace FactoryManagementSoftware.UI
                 Range indexCol = xlWorkSheet.Columns[1];
                 indexCol.HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 indexCol.VerticalAlignment = XlHAlign.xlHAlignCenter;
-
-
-
-
-
 
                 for (int i = 0; i <= dgvForecastReport.RowCount - 2; i++)
                 {
@@ -1594,7 +1613,6 @@ namespace FactoryManagementSoftware.UI
 
                     }
                 }
-
 
                 // Save the excel file under the captured location from the SaveFileDialog
                 xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
@@ -2991,5 +3009,233 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
+           
+        private void btnExportAllToExcel_Click(object sender, EventArgs e)
+        {
+
+            SaveFileDialog sfd = new SaveFileDialog();
+
+            sfd.Filter = "Excel Documents (*.xls)|*.xls";
+            sfd.FileName = "ForecastReport(ALL)_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+                string path = Path.GetFullPath(sfd.FileName);
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                object misValue = System.Reflection.Missing.Value;
+                Excel.Application xlexcel = new Excel.Application
+                {
+                    PrintCommunication = false,
+                    ScreenUpdating = false,
+                    DisplayAlerts = false // Without this you will get two confirm overwrite prompts
+                };
+                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+
+                //Save the excel file under the captured location from the SaveFileDialog
+                xlWorkBook.SaveAs(sfd.FileName,
+                    XlFileFormat.xlWorkbookNormal,
+                    misValue, misValue, misValue, misValue,
+                    XlSaveAsAccessMode.xlExclusive,
+                    misValue, misValue, misValue, misValue, misValue);
+
+                insertDataToSheet(path, sfd.FileName);
+                xlexcel.DisplayAlerts = true;
+                xlWorkBook.Close(true, misValue, misValue);
+                xlexcel.Quit();
+
+                releaseObject(xlWorkBook);
+                releaseObject(xlexcel);
+
+                // Clear Clipboard and DataGridView selection
+                Clipboard.Clear();
+                dgvForecastReport.ClearSelection();
+            }
+        }
+
+        private void insertDataToSheet(string path, string fileName)
+        {
+            string custName = tool.getCustName(1);
+            int type = 0;
+            if (cmbCust.Text.Equals(custName))//PMMA
+            {
+                type = 0;
+            }
+            else
+            {
+                type = 2;
+            }
+
+            Excel.Application excelApp = new Excel.Application
+            {
+                Visible = true
+            };
+
+            Workbook g_Workbook = excelApp.Workbooks.Open(
+               path,
+               Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+               Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+               Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+               Type.Missing, Type.Missing);
+
+            object misValue = System.Reflection.Missing.Value;
+
+            for (int i = 0; i <= cmbCust.Items.Count - 1; i++)
+            {
+                cmbCust.SelectedIndex = i;
+                showForecastData();
+               // MessageBox.Show(cmbCust.Text + " rowcount:" + dgvForecastReport.RowCount + " columncount:" + dgvForecastReport.ColumnCount);
+                if (gotData)//if datagridview have data
+                {
+                    Worksheet xlWorkSheet = null;
+
+                    int count = g_Workbook.Worksheets.Count;
+
+                    xlWorkSheet = g_Workbook.Worksheets.Add(Type.Missing,
+                            g_Workbook.Worksheets[count], Type.Missing, Type.Missing);
+
+                    xlWorkSheet.Name = cmbCust.Text;
+
+                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
+                    xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") READY STOCK VERSUS FORECAST";
+                    xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
+                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+
+                    xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                    xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
+                    xlWorkSheet.PageSetup.Zoom = false;
+
+                    xlWorkSheet.PageSetup.LeftMargin = 0.8;
+                    xlWorkSheet.PageSetup.RightMargin = 0.8;
+                    xlWorkSheet.PageSetup.FitToPagesWide = 1;
+                    xlWorkSheet.PageSetup.FitToPagesTall = false;
+                    xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+                    //xlWorkSheet.PageSetup.TopMargin = 1.6;
+
+
+                    // Paste clipboard results to worksheet range
+                    copyAlltoClipboard();
+                    xlWorkSheet.Select();
+                    Range CR = (Range)xlWorkSheet.Cells[1, 1];
+                    CR.Select();
+                    xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+
+                    Range rng;
+                    if (cmbCust.Text.Equals(custName))
+                    {
+                        rng = xlWorkSheet.get_Range("A:Q").Cells;
+                    }
+                    else
+                    {
+                        rng = xlWorkSheet.get_Range("A:O").Cells;
+                    }
+
+                   
+                    rng.VerticalAlignment = XlHAlign.xlHAlignCenter;
+                    rng.RowHeight = 16;
+                    rng.EntireColumn.AutoFit();
+
+                    Range tRange = xlWorkSheet.UsedRange;
+                    tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                    tRange.Borders.Weight = XlBorderWeight.xlThin;
+
+                    //top row 
+                    Range topRow;
+                    if (cmbCust.Text.Equals(custName))
+                    {
+                        topRow = xlWorkSheet.get_Range("a1:q1").Cells;
+                    }
+                    else
+                    {
+                        topRow = xlWorkSheet.get_Range("a1:o1").Cells;
+                    }
+                    topRow.RowHeight = 25;
+
+                    topRow.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                    topRow.VerticalAlignment = XlHAlign.xlHAlignCenter;
+                    topRow.BorderAround2(Type.Missing, XlBorderWeight.xlThick, XlColorIndex.xlColorIndexAutomatic, Type.Missing);
+
+                    //first column: index 
+                    Range indexCol = xlWorkSheet.Columns[1];
+                    indexCol.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                    indexCol.VerticalAlignment = XlHAlign.xlHAlignCenter;
+
+                    for (int a = 0; a <= dgvForecastReport.RowCount - 2; a++)
+                    {
+                        for (int j = 0; j <= dgvForecastReport.ColumnCount - 1; j++)
+                        {
+                            Range range = (Range)xlWorkSheet.Cells[a + 2, j + 1];
+
+                            if (a == 0)
+                            {
+                                Range header = (Range)xlWorkSheet.Cells[a + 1, j + 1];
+                                header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[a].Cells[j].InheritedStyle.BackColor);
+
+                                header = (Range)xlWorkSheet.Cells[1, 10];
+                                header.Font.Color = Color.Blue;
+
+                                header = (Range)xlWorkSheet.Cells[1, 14];
+                                header.Font.Color = Color.Red;
+
+                                header = (Range)xlWorkSheet.Cells[1, 16];
+                                header.Font.Color = Color.Red;
+
+
+                            }
+
+                            if (dgvForecastReport.Rows[a].Cells[j].InheritedStyle.BackColor == SystemColors.Window)
+                            {
+                                range.Interior.Color = ColorTranslator.ToOle(Color.White);
+                                if (a == 0)
+                                {
+                                    Range header = (Range)xlWorkSheet.Cells[a + 1, j + 1];
+                                    header.Interior.Color = ColorTranslator.ToOle(Color.White);
+                                }
+                            }
+                            else if (dgvForecastReport.Rows[a].Cells[j].InheritedStyle.BackColor == Color.Black)
+                            {
+                                range.Rows.RowHeight = 3;
+                                range.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[a].Cells[j].InheritedStyle.BackColor);
+                                if (a == 0)
+                                {
+                                    Range header = (Range)xlWorkSheet.Cells[a + 1, j + 1];
+                                    header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[a].Cells[j].InheritedStyle.BackColor);
+                                }
+                            }
+                            else
+                            {
+                                range.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[a].Cells[j].InheritedStyle.BackColor);
+
+                                if (a == 0)
+                                {
+                                    Range header = (Range)xlWorkSheet.Cells[a + 1, j + 1];
+                                    header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[a].Cells[j].InheritedStyle.BackColor);
+                                }
+                            }
+                            range.Font.Color = dgvForecastReport.Rows[a].Cells[j].Style.ForeColor;
+                            if (dgvForecastReport.Rows[a].Cells[j].Style.ForeColor == Color.Blue)
+                            {
+                                Range header = (Range)xlWorkSheet.Cells[a + 2, 2];
+                                header.Font.Underline = true;
+
+                                header = (Range)xlWorkSheet.Cells[a + 2, 3];
+                                header.Font.Underline = true;
+                            }
+
+                        }
+                    }
+
+                    releaseObject(xlWorkSheet);
+                    Clipboard.Clear();
+                    dgvForecastReport.ClearSelection();
+                }
+               
+            }
+            //g_Workbook.Worksheets.Item[1].Delete();
+            g_Workbook.Save();
+            releaseObject(g_Workbook);
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
     }
 }
+

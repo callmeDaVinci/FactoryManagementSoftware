@@ -63,6 +63,7 @@ namespace FactoryManagementSoftware.Module
         public string MaterialUsedReport { get; } = "MaterialUsedReport";
 
         public string Excel { get; } = "Excel";
+        public string PMMAEdit { get; } = "PMMA Edit";
         #endregion
 
         #region History Detail String
@@ -115,6 +116,13 @@ namespace FactoryManagementSoftware.Module
         public string getExcelString(string fileName)
         {
             string detail = fileName;
+
+            return detail;
+        }
+
+        public string getPMMAEditString(string itemCode, string date, string subject, string oldValue, string newValue)
+        {
+            string detail = "("+itemCode+"_"+date+") Change "+subject+" from "+oldValue+" to "+newValue;
 
             return detail;
         }

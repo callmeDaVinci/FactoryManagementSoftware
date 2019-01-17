@@ -45,6 +45,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtAlertLevel = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.btnExportAllToExcel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -194,7 +195,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(1440, 44);
+            this.button1.Location = new System.Drawing.Point(1344, 44);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(117, 64);
@@ -242,12 +243,29 @@
             this.label7.TabIndex = 104;
             this.label7.Text = "ALERT LEVEL";
             // 
+            // btnExportAllToExcel
+            // 
+            this.btnExportAllToExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExportAllToExcel.BackColor = System.Drawing.Color.Transparent;
+            this.btnExportAllToExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportAllToExcel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExportAllToExcel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btnExportAllToExcel.Location = new System.Drawing.Point(1465, 44);
+            this.btnExportAllToExcel.Margin = new System.Windows.Forms.Padding(2);
+            this.btnExportAllToExcel.Name = "btnExportAllToExcel";
+            this.btnExportAllToExcel.Size = new System.Drawing.Size(92, 64);
+            this.btnExportAllToExcel.TabIndex = 105;
+            this.btnExportAllToExcel.Text = "ALL";
+            this.btnExportAllToExcel.UseVisualStyleBackColor = false;
+            this.btnExportAllToExcel.Click += new System.EventHandler(this.btnExportAllToExcel_Click);
+            // 
             // frmForecastReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 703);
+            this.Controls.Add(this.btnExportAllToExcel);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtAlertLevel);
             this.Controls.Add(this.label6);
@@ -294,5 +312,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtAlertLevel;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnExportAllToExcel;
     }
 }

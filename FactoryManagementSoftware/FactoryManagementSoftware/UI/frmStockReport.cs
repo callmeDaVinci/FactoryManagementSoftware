@@ -27,6 +27,7 @@ namespace FactoryManagementSoftware.UI
         readonly string CMBMaterialHeader = "Materials";
         private int index = 0;
         private int alphbet = 65;
+        private string editedOldValue, editedNewValue, editedHeaderText;
 
 
         DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
@@ -215,7 +216,16 @@ namespace FactoryManagementSoftware.UI
                     string factoryName = stock["fac_name"].ToString();
                     string qty = Convert.ToSingle(stock["stock_qty"]).ToString("0.00");
                     dgvStockReport.Rows[n].Cells[factoryName].Value = qty;
-                    dgvStockReport.Rows[n].Cells[unitColumnName].Value = stock["stock_unit"].ToString();
+                    
+                    if(tool.ifGotChild(itemCode))
+                    {
+                        dgvStockReport.Rows[n].Cells[unitColumnName].Value = "set";
+                    }
+                    else
+                    {
+                        dgvStockReport.Rows[n].Cells[unitColumnName].Value = stock["stock_unit"].ToString();
+                    }
+                    
                 }
             }
         }
@@ -568,85 +578,96 @@ namespace FactoryManagementSoftware.UI
 
         private void insertDataToSheet(string path, string fileName)
         {
-            Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
-            excelApp.Visible = true;
-
-            Workbook g_Workbook = excelApp.Workbooks.Open(
-                path,
-                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                Type.Missing, Type.Missing);
-
-            bool gotData = false;
-            object misValue = System.Reflection.Missing.Value;
-
-            //load different data list to datagridview but changing the comboBox selected index
-            for (int i = 0; i <= cmbType.Items.Count - 1; i++)
+            try
             {
-                cmbType.SelectedIndex = i;
-                for (int j = 0; j <= cmbSubType.Items.Count - 1; j++)
+                Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application
                 {
-                    cmbSubType.SelectedIndex = j;
-                    if (cmbType.Text.Equals(CMBPartHeader))
+                    Visible = true
+                };
+
+                Workbook g_Workbook = excelApp.Workbooks.Open(
+                    path,
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                    Type.Missing, Type.Missing);
+
+                bool gotData = false;
+                object misValue = System.Reflection.Missing.Value;
+
+                //load different data list to datagridview but changing the comboBox selected index
+                for (int i = 0; i <= cmbType.Items.Count - 1; i++)
+                {
+                    cmbType.SelectedIndex = i;
+                    for (int j = 0; j <= cmbSubType.Items.Count - 1; j++)
                     {
-                        gotData = loadPartStockData();//if data != empty return true, else false
-                    }
-                    else if (cmbType.Text.Equals(CMBMaterialHeader))
-                    {
-                        gotData = loadMaterialStockData();//if data != empty return true, else false
-                    }
+                        cmbSubType.SelectedIndex = j;
+                        if (cmbType.Text.Equals(CMBPartHeader))
+                        {
+                            gotData = loadPartStockData();//if data != empty return true, else false
+                        }
+                        else if (cmbType.Text.Equals(CMBMaterialHeader))
+                        {
+                            gotData = loadMaterialStockData();//if data != empty return true, else false
+                        }
 
-                    if (gotData)//if datagridview have data
-                    {
-                        Worksheet addedSheet = null;
+                        if (gotData)//if datagridview have data
+                        {
+                            Worksheet addedSheet = null;
 
-                        int count = g_Workbook.Worksheets.Count;
+                            int count = g_Workbook.Worksheets.Count;
 
-                        addedSheet = g_Workbook.Worksheets.Add(Type.Missing,
-                                g_Workbook.Worksheets[count], Type.Missing, Type.Missing);
+                            addedSheet = g_Workbook.Worksheets.Add(Type.Missing,
+                                    g_Workbook.Worksheets[count], Type.Missing, Type.Missing);
 
-                        addedSheet.Name = cmbSubType.Text;
+                            addedSheet.Name = cmbSubType.Text;
 
-                        addedSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
-                        addedSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbSubType.Text + ") STOCK LIST";
-                        addedSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                        addedSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+                            addedSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
+                            addedSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbSubType.Text + ") STOCK LIST";
+                            addedSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
+                            addedSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
 
-                        //Page setup
-                        addedSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                        addedSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
-                        addedSheet.PageSetup.Zoom = false;
-                        addedSheet.PageSetup.CenterHorizontally = true;
-                        addedSheet.PageSetup.LeftMargin = 1;
-                        addedSheet.PageSetup.RightMargin = 1;
-                        addedSheet.PageSetup.FitToPagesWide = 1;
-                        addedSheet.PageSetup.FitToPagesTall = false;
-                        addedSheet.PageSetup.PrintTitleRows = "$1:$1";
+                            //Page setup
+                            addedSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                            addedSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
+                            addedSheet.PageSetup.Zoom = false;
+                            addedSheet.PageSetup.CenterHorizontally = true;
+                            addedSheet.PageSetup.LeftMargin = 1;
+                            addedSheet.PageSetup.RightMargin = 1;
+                            addedSheet.PageSetup.FitToPagesWide = 1;
+                            addedSheet.PageSetup.FitToPagesTall = false;
+                            addedSheet.PageSetup.PrintTitleRows = "$1:$1";
 
-                        copyAlltoClipboard();
-                        addedSheet.Select();
-                        Range CR = (Range)addedSheet.Cells[1, 1];
-                        CR.Select();
-                        addedSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+                            copyAlltoClipboard();
+                            addedSheet.Select();
+                            Range CR = (Range)addedSheet.Cells[1, 1];
+                            CR.Select();
+                            addedSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
 
-                        Range tRange = addedSheet.UsedRange;
-                        tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-                        tRange.Borders.Weight = XlBorderWeight.xlThin;
-                        tRange.Font.Size = 11;
-                        tRange.EntireColumn.AutoFit();
-                        tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);//change first row back color to light grey
+                            Range tRange = addedSheet.UsedRange;
+                            tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                            tRange.Borders.Weight = XlBorderWeight.xlThin;
+                            tRange.Font.Size = 11;
+                            tRange.EntireColumn.AutoFit();
+                            tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);//change first row back color to light grey
 
-                        releaseObject(addedSheet);
-                        Clipboard.Clear();
-                        dgvStockReport.ClearSelection();
+                            releaseObject(addedSheet);
+                            Clipboard.Clear();
+                            dgvStockReport.ClearSelection();
+                        }
                     }
                 }
-            }
 
-            g_Workbook.Worksheets.Item[1].Delete();
-            g_Workbook.Save();
-            releaseObject(g_Workbook);
+                g_Workbook.Worksheets.Item[1].Delete();
+                g_Workbook.Save();
+                releaseObject(g_Workbook);
+            }
+  
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                tool.historyRecord(text.System, e.Message, DateTime.Now, MainDashboard.USER_ID);
+            }
         }
 
         #endregion
@@ -875,6 +896,86 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private void Column1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void dgvStockReport_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
+            int columnIndex = dgvStockReport.CurrentCell.ColumnIndex;
+            string columnName = dgvStockReport.Columns[columnIndex].Name;
+            if (tool.getFactoryID(columnName) != -1) //Desired Column
+            {
+                System.Windows.Forms.TextBox tb = e.Control as System.Windows.Forms.TextBox;
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
+                }
+            }
+        }
+
+        private void dgvStockReport_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            //var datagridview = sender as DataGridView;
+            //DataGridView dgv = dgvStockReport;
+            //DateTime currentDate = DateTime.Now;
+
+            //int rowIndex = e.RowIndex;
+
+            //float openningStock = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.OpenStock].Value.ToString());
+            //float inQty = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexInName].Value.ToString());
+            //float outQty = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexOutName].Value.ToString());
+            //float bal = openningStock + inQty - outQty;
+            //float percentage = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexPercentageName].Value.ToString());
+            //float wastage = outQty * percentage;
+            //string itemCode = dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
+            //float adjust = 0;
+            //DateTime date = Convert.ToDateTime(dtpDate.Text).Date;
+            //if (dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value != null)
+            //{
+            //    adjust = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value.ToString());
+            //}
+
+            //string note = "";
+            //if (dgv.Rows[rowIndex].Cells[dalPMMA.Note].Value != null)
+            //{
+            //    note = dgv.Rows[rowIndex].Cells[dalPMMA.Note].Value.ToString();
+            //}
+
+
+            //dgv.Rows[rowIndex].Cells[IndexBalName].Value = bal.ToString("0.00");
+            //dgv.Rows[rowIndex].Cells[IndexWastageName].Value = wastage.ToString("0.00");
+            //dgv.Rows[rowIndex].Cells[dalPMMA.BalStock].Value = (bal - wastage + adjust).ToString("0.00");
+
+            //uPMMA.pmma_item_code = itemCode;
+            //uPMMA.pmma_date = date;
+            //uPMMA.pmma_openning_stock = openningStock;
+            //uPMMA.pmma_percentage = percentage;
+            //uPMMA.pmma_adjust = adjust;
+            //uPMMA.pmma_note = note;
+            //uPMMA.pmma_bal_stock = bal - wastage + adjust;
+            //uPMMA.pmma_updated_date = DateTime.Now;
+            //uPMMA.pmma_updated_by = MainDashboard.USER_ID;
+
+
+            //bool success = dalPMMA.update(uPMMA);
+
+            //if (!success)
+            //{
+            //    MessageBox.Show("Failed to updated PMMA item");
+            //    tool.historyRecord("StockReportEdit", "Failed to edit Stock Report(frmPMMA)", DateTime.Now, MainDashboard.USER_ID);
+            //}
+            //else
+            //{
+            //    tool.historyRecord("StockReportEdit", text.getPMMAEditString(itemCode, date.ToString("MMMMyy"), editedHeaderText, editedOldValue, editedNewValue), DateTime.Now, MainDashboard.USER_ID);
+            //}
+        }
+
         //copy data from datagridview to clipboard and paste to excel sheet
         private void saveDataToSheet(Workbook xlWorkBook, string filename)
         {
@@ -1068,5 +1169,19 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
+        private void dgvStockReport_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            var oldValue = dgvStockReport[e.ColumnIndex, e.RowIndex].Value;
+            var newValue = e.FormattedValue;
+            int columnIndex = dgvStockReport.CurrentCell.ColumnIndex;
+            string columnName = dgvStockReport.Columns[columnIndex].HeaderText;
+
+            if (!oldValue.ToString().Equals(newValue.ToString()))
+            {
+                editedOldValue = oldValue.ToString();
+                editedNewValue = newValue.ToString();
+                editedHeaderText = columnName;
+            }
+        }
     }
 }

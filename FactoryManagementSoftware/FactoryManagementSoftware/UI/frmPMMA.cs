@@ -55,6 +55,9 @@ namespace FactoryManagementSoftware.UI
         readonly string IndexAdjustName = "ADJUST";
         readonly string IndexNoteName = "NOTE";
         readonly string IndexBalName = "BAL STOCK";
+        private string editedOldValue;
+        private string editedNewValue;
+        private string editedHeaderText;
         private bool firstForecastChecked = false;
         private bool secondForecastChecked = false;
         // readonly string IndexBalWithWastageName = "BAL STOCK With Wastage";
@@ -104,8 +107,8 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[dalItem.ItemName].ReadOnly = true;
                 
                 dgv.Columns[dalPMMA.OpenStock].ReadOnly = false;
-                dgv.Columns[IndexInName].ReadOnly = false;
-                dgv.Columns[IndexOutName].ReadOnly = false;
+                dgv.Columns[IndexInName].ReadOnly = true;
+                dgv.Columns[IndexOutName].ReadOnly = true;
 
                 dgv.Columns[IndexBalName].ReadOnly = true;
                 dgv.Columns[IndexPercentageName].ReadOnly = false;
@@ -171,10 +174,6 @@ namespace FactoryManagementSoftware.UI
                             float jQty = Convert.ToSingle(dt.Rows[j]["quantity_order"].ToString());
                             float iQty = Convert.ToSingle(dt.Rows[i]["quantity_order"].ToString());
 
-                            //float stillOne = readyStock - jQty;
-                            //float stllTwo = readyStock - iQty;
-
-                            //float actualBalance = readyStock - stillOne - stllTwo;
                             dt.Rows[j]["quantity_order"] = (jQty + iQty).ToString();
                             dt.Rows[i].Delete();
                             break;
@@ -811,7 +810,23 @@ namespace FactoryManagementSoftware.UI
                 }
             }
         }
-        
+
+        private void dgvPMMA_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            var oldValue = dgvPMMA[e.ColumnIndex, e.RowIndex].Value;
+            var newValue = e.FormattedValue;
+            int columnIndex = dgvPMMA.CurrentCell.ColumnIndex;
+            string columnName = dgvPMMA.Columns[columnIndex].HeaderText;
+
+            if (!oldValue.ToString().Equals(newValue.ToString()))
+            {
+                editedOldValue = oldValue.ToString();
+                editedNewValue = newValue.ToString();
+                editedHeaderText = columnName;
+            }
+
+        }
+
         private void dgvPMMA_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             var datagridview = sender as DataGridView;
@@ -826,10 +841,10 @@ namespace FactoryManagementSoftware.UI
             float bal = openningStock + inQty - outQty;
             float percentage = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexPercentageName].Value.ToString());
             float wastage = outQty * percentage;
-
+            string itemCode = dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
             float adjust = 0;
-
-            if(dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value != null)
+            DateTime date = Convert.ToDateTime(dtpDate.Text).Date;
+            if (dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value != null)
             {
                 adjust = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value.ToString());
             }
@@ -846,8 +861,8 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[rowIndex].Cells[dalPMMA.BalStock].Value = (bal - wastage + adjust).ToString("0.00");
 
 
-            uPMMA.pmma_item_code = dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
-            uPMMA.pmma_date = Convert.ToDateTime(dtpDate.Text);
+            uPMMA.pmma_item_code = itemCode;
+            uPMMA.pmma_date = date;
             uPMMA.pmma_openning_stock = openningStock;
             uPMMA.pmma_percentage = percentage;
             uPMMA.pmma_adjust = adjust;
@@ -861,7 +876,12 @@ namespace FactoryManagementSoftware.UI
 
             if (!success)
             {
-                MessageBox.Show("Failed to updated item pmma qty");
+                MessageBox.Show("Failed to updated PMMA item");
+                tool.historyRecord(text.System, "Failed to updated PMMA item(frmPMMA)", DateTime.Now, MainDashboard.USER_ID);
+            }
+            else
+            {
+                tool.historyRecord(text.PMMAEdit,text.getPMMAEditString(itemCode, date.ToString("MMMMyy"),editedHeaderText,editedOldValue,editedNewValue),DateTime.Now,MainDashboard.USER_ID);
             }
 
         }
@@ -1238,6 +1258,8 @@ namespace FactoryManagementSoftware.UI
         {
             dgvPMMA.Rows.Clear();
         }
+
+      
     }
 
 

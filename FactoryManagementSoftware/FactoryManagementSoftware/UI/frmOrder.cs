@@ -25,19 +25,7 @@ namespace FactoryManagementSoftware.UI
             {
                 btnOrder.Hide();
             }
-
-            bool result = dalMatUsed.Delete();
-
-            if (!result)
-            {
-                MessageBox.Show("Failed to reset material used data");
-            }
-            else
-            {
-                loadOrderAlertData();
-                
-            }
-                
+            resetOrderAlert();
         }
 
 
@@ -106,7 +94,7 @@ namespace FactoryManagementSoftware.UI
         userDAL dalUser = new userDAL();
 
         Tool tool = new Tool();
-
+        Text text = new Text();
         #endregion
 
         #region UI setting
@@ -251,10 +239,26 @@ namespace FactoryManagementSoftware.UI
             dgvOrderAlert.ClearSelection();
         }
 
+        private void resetOrderAlert()
+        {
+            bool result = dalMatUsed.Delete();
+
+            if (!result)
+            {
+                MessageBox.Show("Failed to reset material used data");
+                tool.historyRecord(text.System, "Failed to reset material used data(frmOrder)", DateTime.Now, MainDashboard.USER_ID);
+            }
+            else
+            {
+                loadOrderAlertData();
+            }
+        }
+
         private void resetForm()
         {
             loadOrderRecord();
             txtOrdSearch.Clear();
+            resetOrderAlert();
         }
         
         private void loadOrderRecord()
@@ -300,9 +304,12 @@ namespace FactoryManagementSoftware.UI
 
         private void refreshOrderRecord(int orderID)
         {
+            resetOrderAlert();
+            dgvOrderAlert.ClearSelection();
+
             loadOrderRecord();
             dgvOrd.ClearSelection();
-            if (selectedOrderID != -1)
+            if (orderID != -1)
             {
                 foreach (DataGridViewRow row in dgvOrd.Rows)
                 {
@@ -392,7 +399,7 @@ namespace FactoryManagementSoftware.UI
             dalMatUsed.Delete();
 
             DataTable dt = dalItemCust.Select();//load all customer's item list
-
+            dt = RemoveDuplicates(dt);
             if (dt.Rows.Count <= 0)
             {
                 MessageBox.Show("no data under this record.");
@@ -442,7 +449,7 @@ namespace FactoryManagementSoftware.UI
 
                     //calculate still need how many qty
 
-                    if(outStock >= Forecast1Num)
+                    if (outStock >= Forecast1Num)
                     {
                         Forecast1Num = readyStock;
                     }
@@ -450,12 +457,24 @@ namespace FactoryManagementSoftware.UI
                     {
                         Forecast1Num = readyStock - Forecast1Num + outStock;
                     }
-                    
+
                     Forecast2Num = Forecast1Num - Forecast2Num;
                     Forecast3Num = Forecast2Num - Forecast3Num;
 
                     if (tool.ifGotChild(itemCode))
                     {
+                        //if (outStock >= Forecast1Num)
+                        //{
+                        //    Forecast1Num = readyStock;
+                        //}
+                        //else
+                        //{
+                        //    Forecast1Num = readyStock - Forecast1Num + outStock;
+                        //}
+
+                        //Forecast2Num = Forecast1Num - Forecast2Num;
+                        //Forecast3Num = Forecast2Num - Forecast3Num;
+
                         DataTable dtJoin = dalJoin.parentCheck(itemCode);//get children list
                         foreach (DataRow Join in dtJoin.Rows)
                         {
@@ -464,6 +483,7 @@ namespace FactoryManagementSoftware.UI
                             uMatUsed.quantity_order = Convert.ToInt32(Forecast1Num);
                             uMatUsed.quantity_order_two = Convert.ToInt32(Forecast2Num);
                             uMatUsed.quantity_order_three = Convert.ToInt32(Forecast3Num);
+                            uMatUsed.item_out = outStock;
 
                             bool resultChild = dalMatUsed.Insert(uMatUsed);
                             if (!resultChild)
@@ -485,6 +505,7 @@ namespace FactoryManagementSoftware.UI
                         uMatUsed.quantity_order = Convert.ToInt32(Forecast1Num);
                         uMatUsed.quantity_order_two = Convert.ToInt32(Forecast2Num);
                         uMatUsed.quantity_order_three = Convert.ToInt32(Forecast3Num);
+                        uMatUsed.item_out = outStock;
 
                         bool result = dalMatUsed.Insert(uMatUsed);
                         if (!result)
@@ -538,6 +559,8 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = dalMatUsed.Select();
             dt = AddDuplicates(dt);
+           
+            
             dt.DefaultView.Sort = "item_material ASC";
             dt = dt.DefaultView.ToTable();
 
@@ -733,6 +756,7 @@ namespace FactoryManagementSoftware.UI
                     if (!dalOrderAction.Insert(uOrderAction))
                     {
                         MessageBox.Show("Failed to create new action");
+                        tool.historyRecord(text.System, "Failed to create new action(frmOrder)", DateTime.Now, MainDashboard.USER_ID);
                     }
                 }
             }
@@ -747,6 +771,8 @@ namespace FactoryManagementSoftware.UI
                 if (!dalOrderAction.Insert(uOrderAction))
                 {
                     MessageBox.Show("Failed to add new action");
+                    tool.historyRecord(text.System, "Failed to add new action(frmOrder)", DateTime.Now, MainDashboard.USER_ID);
+
                 }
             }
         }
@@ -826,7 +852,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                MessageBox.Show("Action denied. Please admin for this action.");
+                MessageBox.Show("Action denied. Please contact admin for this action.");
+                tool.historyRecord(text.System, "Action denied. Please contact admin for this action.(frmOrder)", DateTime.Now, MainDashboard.USER_ID);
+
             }
         }
 
@@ -844,7 +872,8 @@ namespace FactoryManagementSoftware.UI
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//stock in
 
-            refreshOrderRecord(selectedOrderID);
+            refreshOrderRecord(orderID);
+
         }
 
         private void orderCancel(int rowIndex, int orderID, string presentStatus)
