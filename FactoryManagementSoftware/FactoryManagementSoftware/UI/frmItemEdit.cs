@@ -225,8 +225,17 @@ namespace FactoryManagementSoftware.UI
             u.item_pro_cooling = tool.Int_TryParse(txtProCooling.Text);
             u.item_wastage_allowed = tool.Float_TryParse(txtWastageAllowed.Text);
 
+            if (cbAssembly.Checked)
+            {
+                u.item_assembly = 1;
+            }
+            else
+            {
+                u.item_assembly = 0;
+            }
+
             u.item_updtd_date = DateTime.Now;
-            u.item_updtd_by = 0;
+            u.item_updtd_by = MainDashboard.USER_ID;
             //Updating data into database
             //bool success = dalItem.Update(u);
             bool success = dalItem.NewUpdate(u);
@@ -275,8 +284,17 @@ namespace FactoryManagementSoftware.UI
             u.item_pro_cooling = tool.Int_TryParse(txtProCooling.Text);
             u.item_wastage_allowed = tool.Float_TryParse(txtWastageAllowed.Text);
 
+            if(cbAssembly.Checked)
+            {
+                u.item_assembly = 1;
+            }
+            else
+            {
+                u.item_assembly = 0;
+            }
+
             u.item_added_date = DateTime.Now;
-            u.item_added_by = -1;
+            u.item_added_by = MainDashboard.USER_ID;
 
             //Inserting Data into Database
             bool success = dalItem.NewInsert(u);

@@ -27,7 +27,7 @@ namespace FactoryManagementSoftware.UI
         readonly string CMBMaterialHeader = "Materials";
         private int index = 0;
         private int alphbet = 65;
-        private string editedOldValue, editedNewValue, editedHeaderText;
+        private string editedOldValue, editedNewValue, editedFactory, editedItem, editedTotal, editedUnit;
 
 
         DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
@@ -114,6 +114,19 @@ namespace FactoryManagementSoftware.UI
 
             //add total unit column
             tool.AddTextBoxColumns(dgv, "UNIT", unitColumnName, DisplayedCells);
+
+            if(dalUser.getPermissionLevel(MainDashboard.USER_ID) < 5)
+            {
+                dgv.ReadOnly = true;
+            }
+            else
+            {
+                dgv.Columns[IndexColumnName].ReadOnly = true;
+                dgv.Columns[nameColumnName].ReadOnly = true;
+                dgv.Columns[codeColumnName].ReadOnly = true;
+                dgv.Columns[totakStockColumnName].ReadOnly = true;
+                dgv.Columns[unitColumnName].ReadOnly = true;
+            }
         }
 
         #endregion
@@ -674,228 +687,6 @@ namespace FactoryManagementSoftware.UI
 
         #region test
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Excel Documents (*.xls)|*.xls";
-            sfd.FileName = setFileName();
-
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                // Copy DataGridView results to clipboard
-                copyAlltoClipboard();
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                object misValue = System.Reflection.Missing.Value;
-                Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
-                xlexcel.PrintCommunication = false;
-                xlexcel.ScreenUpdating = false;
-                xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
-                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
-                xlexcel.Calculation = XlCalculation.xlCalculationManual;
-
-
-                Worksheet xlWorkSheet;
-                Worksheet xlWorkSheet2;
-
-                var xlSheets = xlWorkBook.Sheets as Sheets;
-                //var xlNewSheet = (Worksheet)xlSheets.Add(xlSheets[1], Type.Missing, Type.Missing, Type.Missing);
-                var xlNewSheet2 = (Worksheet)xlSheets.Add(xlSheets[1], Type.Missing, Type.Missing, Type.Missing);
-                //xlWorkSheet = xlNewSheet;
-                xlWorkSheet2 = xlNewSheet2;
-                xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                xlWorkSheet2 = (Worksheet)xlWorkBook.Worksheets.get_Item(2);
-                xlWorkSheet.Name = "first";
-                xlWorkSheet2.Name = "second";
-
-                #region Save data to Sheet1
-                //xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                string centerHeader = xlWorkSheet.PageSetup.CenterHeader;
-                //"Arial Unicode MS" is font name, "18" is font size
-                centerHeader = "&\"Calibri,Bold\"&16 (" + cmbSubType.Text + ") Stock List";
-                string LeftHeader = xlWorkSheet.PageSetup.CenterHeader;
-                //"Arial Unicode MS" is font name, "18" is font size
-                LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy");
-                string RightHeader = xlWorkSheet.PageSetup.CenterHeader;
-                //"Arial Unicode MS" is font name, "18" is font size
-                RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                xlWorkSheet.PageSetup.LeftHeader = LeftHeader;
-                xlWorkSheet.PageSetup.CenterHeader = centerHeader;
-                xlWorkSheet.PageSetup.RightHeader = RightHeader;
-                xlWorkSheet.PageSetup.CenterFooter = "footer here hahahahahaha";
-                xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
-                xlWorkSheet.PageSetup.Zoom = false;
-                xlWorkSheet.PageSetup.CenterHorizontally = true;
-                xlWorkSheet.PageSetup.LeftMargin = 1;
-                xlWorkSheet.PageSetup.RightMargin = 1;
-                xlWorkSheet.PageSetup.FitToPagesWide = 1;
-                xlWorkSheet.PageSetup.FitToPagesTall = false;
-                xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
-
-                // Paste clipboard results to worksheet range
-                xlWorkSheet.Select();
-                Range CR = (Range)xlWorkSheet.Cells[1, 1];
-                CR.Select();
-                xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
-
-                Range tRange = xlWorkSheet.UsedRange;
-                tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-                tRange.Borders.Weight = XlBorderWeight.xlThin;
-                tRange.Font.Size = 11;
-                tRange.EntireColumn.AutoFit();
-
-                ////first column: index 
-                //Range indexCol = xlWorkSheet.Columns[1];
-                //indexCol.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                //indexCol.VerticalAlignment = XlHAlign.xlHAlignCenter;
-                //xlWorkSheet.Cells[1, 1].EntireRow.Font.Bold = true;
-
-
-                Range dad = xlWorkSheet.UsedRange.Rows[1];
-                dad.Interior.Color = Color.FromArgb(237, 237, 237);
-                #endregion
-
-                copyAlltoClipboard();
-                //xlWorkSheet2 = (Worksheet)xlWorkBook.Worksheets.get_Item(2);
-                centerHeader = xlWorkSheet2.PageSetup.CenterHeader;
-                //"Arial Unicode MS" is font name, "18" is font size
-                centerHeader = "&\"Calibri,Bold\"&16 (" + cmbSubType.Text + ") Stock List";
-                LeftHeader = xlWorkSheet2.PageSetup.CenterHeader;
-                //"Arial Unicode MS" is font name, "18" is font size
-                LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy");
-                RightHeader = xlWorkSheet2.PageSetup.CenterHeader;
-                //"Arial Unicode MS" is font name, "18" is font size
-                RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                xlWorkSheet2.PageSetup.LeftHeader = LeftHeader;
-                xlWorkSheet2.PageSetup.CenterHeader = centerHeader;
-                xlWorkSheet2.PageSetup.RightHeader = RightHeader;
-                xlWorkSheet2.PageSetup.CenterFooter = "footer here hahahahahaha";
-                xlWorkSheet2.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                xlWorkSheet2.PageSetup.Orientation = XlPageOrientation.xlPortrait;
-                xlWorkSheet2.PageSetup.Zoom = false;
-                xlWorkSheet2.PageSetup.CenterHorizontally = true;
-                xlWorkSheet2.PageSetup.LeftMargin = 1;
-                xlWorkSheet2.PageSetup.RightMargin = 1;
-                xlWorkSheet2.PageSetup.FitToPagesWide = 1;
-                xlWorkSheet2.PageSetup.FitToPagesTall = false;
-                xlWorkSheet2.PageSetup.PrintTitleRows = "$1:$1";
-                // Paste clipboard results to worksheet range
-                xlWorkSheet2.Select();
-                CR = (Range)xlWorkSheet2.Cells[1, 1];
-                CR.Select();
-                xlWorkSheet2.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
-
-                tRange = xlWorkSheet2.UsedRange;
-                tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-                tRange.Borders.Weight = XlBorderWeight.xlThin;
-                tRange.Font.Size = 11;
-                tRange.EntireColumn.AutoFit();
-
-
-                dad = xlWorkSheet2.UsedRange.Rows[1];
-                dad.Interior.Color = Color.FromArgb(237, 237, 237);
-
-                //Save the excel file under the captured location from the SaveFileDialog
-                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlexcel.DisplayAlerts = true;
-
-                xlWorkBook.Close(true, misValue, misValue);
-                xlexcel.Quit();
-
-                releaseObject(xlWorkSheet);
-                releaseObject(xlWorkBook);
-                releaseObject(xlexcel);
-
-                // Clear Clipboard and DataGridView selection
-                Clipboard.Clear();
-                dgvStockReport.ClearSelection();
-
-                // Open the newly saved excel file
-                if (File.Exists(sfd.FileName))
-                    System.Diagnostics.Process.Start(sfd.FileName);
-            }
-
-            Cursor = Cursors.Arrow; // change cursor to normal type
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
-            excelApp.Visible = true;
-            Workbook g_Workbook = excelApp.Workbooks.Open(
-                @"D:\TestAddSheet.xlsx",
-                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                Type.Missing, Type.Missing);
-
-
-            bool gotData = false;
-            object misValue = System.Reflection.Missing.Value;
-
-            //load different data list to datagridview but changing the comboBox selected index
-            for (int i = 0; i <= cmbType.Items.Count - 1; i++)
-            {
-                cmbType.SelectedIndex = i;
-                for (int j = 0; j <= cmbSubType.Items.Count - 1; j++)
-                {
-                    cmbSubType.SelectedIndex = j;
-                    if (cmbType.Text.Equals(CMBPartHeader))
-                    {
-                        gotData = loadPartStockData();//if data != empty return true, else false
-                    }
-                    else if (cmbType.Text.Equals(CMBMaterialHeader))
-                    {
-                        gotData = loadMaterialStockData();//if data != empty return true, else false
-                    }
-
-                    if (gotData)//if datagridview have data
-                    {
-   
-
-                        int count = g_Workbook.Worksheets.Count;
-                        Worksheet addedSheet = g_Workbook.Worksheets.Add(Type.Missing,
-                                g_Workbook.Worksheets[count], Type.Missing, Type.Missing);
-                        addedSheet.Name = cmbSubType.Text;
-
-                        addedSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
-                        addedSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbSubType.Text + ") Stock List";
-                        addedSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                        addedSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
-
-                        //Page setup
-                        addedSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                        addedSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
-                        addedSheet.PageSetup.Zoom = false;
-                        addedSheet.PageSetup.CenterHorizontally = true;
-                        addedSheet.PageSetup.LeftMargin = 1;
-                        addedSheet.PageSetup.RightMargin = 1;
-                        addedSheet.PageSetup.FitToPagesWide = 1;
-                        addedSheet.PageSetup.FitToPagesTall = false;
-                        addedSheet.PageSetup.PrintTitleRows = "$1:$1";
-
-                        copyAlltoClipboard();
-                        addedSheet.Select();
-                        Range CR = (Range)addedSheet.Cells[1, 1];
-                        CR.Select();
-                        addedSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
-
-                        Range tRange = addedSheet.UsedRange;
-                        tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-                        tRange.Borders.Weight = XlBorderWeight.xlThin;
-                        tRange.Font.Size = 11;
-                        tRange.EntireColumn.AutoFit();
-                        tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);//change first row back color to light grey
-
-                        Clipboard.Clear();
-                        dgvStockReport.ClearSelection();
-                    }
-                }
-            }
-
-
-        }
-
         private void Column1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
@@ -976,212 +767,115 @@ namespace FactoryManagementSoftware.UI
             //}
         }
 
-        //copy data from datagridview to clipboard and paste to excel sheet
-        private void saveDataToSheet(Workbook xlWorkBook, string filename)
-        {
-            int sheetNo = 1;
-
-            bool gotData = false;
-            object misValue = System.Reflection.Missing.Value;
-
-            //load different data list to datagridview but changing the comboBox selected index
-            for (int i = 0; i <= cmbType.Items.Count - 1; i++)
-            {
-                cmbType.SelectedIndex = i;
-                for (int j = 0; j <= cmbSubType.Items.Count - 1; j++)
-                {
-                    cmbSubType.SelectedIndex = j;
-                    if (cmbType.Text.Equals(CMBPartHeader))
-                    {
-                        gotData = loadPartStockData();//if data != empty return true, else false
-                    }
-                    else if (cmbType.Text.Equals(CMBMaterialHeader))
-                    {
-                        gotData = loadMaterialStockData();//if data != empty return true, else false
-                    }
-
-                    if (gotData)//if datagridview have data
-                    {
-                        copyAlltoClipboard();//select all from datagridview and copy to clipboard
-
-                        //create new sheet
-                        //var xlSheets = xlWorkBook.Sheets as Sheets;
-                        //var xlNewSheet = (Worksheet)xlSheets.Add(xlSheets[sheetNo], Type.Missing, Type.Missing, Type.Missing);
-                        //xlWorkSheet = xlNewSheet;
-                        //Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(sheetNo);
-                        //xlWorkSheet.Name = cmbSubType.Text;
-
-
-                        int count = xlWorkBook.Worksheets.Count;
-                        Worksheet addedSheet = xlWorkBook.Worksheets.Add(Type.Missing,
-                                xlWorkBook.Worksheets[count], Type.Missing, Type.Missing);
-                        addedSheet.Name = cmbSubType.Text;
-
-                        addedSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
-                        addedSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbSubType.Text + ") Stock List";
-                        addedSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                        addedSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
-
-                        ////Header and Footer setup
-                        //xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
-                        //xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbSubType.Text + ") Stock List";
-                        //xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                        //xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
-
-                        //Page setup
-                        addedSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                        addedSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
-                        addedSheet.PageSetup.Zoom = false;
-                        addedSheet.PageSetup.CenterHorizontally = true;
-                        addedSheet.PageSetup.LeftMargin = 1;
-                        addedSheet.PageSetup.RightMargin = 1;
-                        addedSheet.PageSetup.FitToPagesWide = 1;
-                        addedSheet.PageSetup.FitToPagesTall = false;
-                        addedSheet.PageSetup.PrintTitleRows = "$1:$1";
-
-                        // Paste clipboard results to worksheet range
-                        addedSheet.Select();
-                        Range CR = (Range)addedSheet.Cells[1, 1];
-                        CR.Select();
-                        addedSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
-
-                        //content edit
-                        Range tRange = addedSheet.UsedRange;
-                        tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-                        tRange.Borders.Weight = XlBorderWeight.xlThin;
-                        tRange.Font.Size = 11;
-                        tRange.EntireColumn.AutoFit();
-                        tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);//change first row back color to light grey
-
-                        sheetNo++;
-
-                        xlWorkBook.SaveAs(filename, XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-
-                        // Clear Clipboard and DataGridView selection
-                        Clipboard.Clear();
-                        dgvStockReport.ClearSelection();
-                        releaseObject(addedSheet);
-                    }
-                }
-            }
-        }
-
-        //Worksheet xlWorkSheet;
-        //Worksheet xlWorkSheet2;
-
-        //var xlSheets = xlWorkBook.Sheets as Sheets;
-        ////var xlNewSheet = (Worksheet)xlSheets.Add(xlSheets[1], Type.Missing, Type.Missing, Type.Missing);
-        //var xlNewSheet2 = (Worksheet)xlSheets.Add(xlSheets[1], Type.Missing, Type.Missing, Type.Missing);
-        ////xlWorkSheet = xlNewSheet;
-        //xlWorkSheet2 = xlNewSheet2;
-        //xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-        //xlWorkSheet2 = (Worksheet)xlWorkBook.Worksheets.get_Item(2);
-        //xlWorkSheet.Name = "first";
-        //xlWorkSheet2.Name = "second";
-
-        //#region Save data to Sheet1
-        ////xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-        //string centerHeader = xlWorkSheet.PageSetup.CenterHeader;
-        ////"Arial Unicode MS" is font name, "18" is font size
-        //centerHeader = "&\"Calibri,Bold\"&16 (" + cmbSubType.Text + ") Stock List";
-        //string LeftHeader = xlWorkSheet.PageSetup.CenterHeader;
-        ////"Arial Unicode MS" is font name, "18" is font size
-        //LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy");
-        //string RightHeader = xlWorkSheet.PageSetup.CenterHeader;
-        ////"Arial Unicode MS" is font name, "18" is font size
-        //RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-        //xlWorkSheet.PageSetup.LeftHeader = LeftHeader;
-        //xlWorkSheet.PageSetup.CenterHeader = centerHeader;
-        //xlWorkSheet.PageSetup.RightHeader = RightHeader;
-        //xlWorkSheet.PageSetup.CenterFooter = "footer here hahahahahaha";
-        //xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-        //xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
-        //xlWorkSheet.PageSetup.Zoom = false;
-        //xlWorkSheet.PageSetup.CenterHorizontally = true;
-        //xlWorkSheet.PageSetup.LeftMargin = 1;
-        //xlWorkSheet.PageSetup.RightMargin = 1;
-        //xlWorkSheet.PageSetup.FitToPagesWide = 1;
-        //xlWorkSheet.PageSetup.FitToPagesTall = false;
-        //xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
-
-        //// Paste clipboard results to worksheet range
-        //xlWorkSheet.Select();
-        //Range CR = (Range)xlWorkSheet.Cells[1, 1];
-        //CR.Select();
-        //xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
-
-        //Range tRange = xlWorkSheet.UsedRange;
-        //tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-        //tRange.Borders.Weight = XlBorderWeight.xlThin;
-        //tRange.Font.Size = 11;
-        //tRange.EntireColumn.AutoFit();
-
-        //////first column: index 
-        ////Range indexCol = xlWorkSheet.Columns[1];
-        ////indexCol.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-        ////indexCol.VerticalAlignment = XlHAlign.xlHAlignCenter;
-        ////xlWorkSheet.Cells[1, 1].EntireRow.Font.Bold = true;
-
-
-        //Range dad = xlWorkSheet.UsedRange.Rows[1];
-        //dad.Interior.Color = Color.FromArgb(237, 237, 237);
-        //#endregion
-
-        //copyAlltoClipboard();
-        ////xlWorkSheet2 = (Worksheet)xlWorkBook.Worksheets.get_Item(2);
-        //centerHeader = xlWorkSheet2.PageSetup.CenterHeader;
-        ////"Arial Unicode MS" is font name, "18" is font size
-        //centerHeader = "&\"Calibri,Bold\"&16 (" + cmbSubType.Text + ") Stock List";
-        //LeftHeader = xlWorkSheet2.PageSetup.CenterHeader;
-        ////"Arial Unicode MS" is font name, "18" is font size
-        //LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy");
-        //RightHeader = xlWorkSheet2.PageSetup.CenterHeader;
-        ////"Arial Unicode MS" is font name, "18" is font size
-        //RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-        //xlWorkSheet2.PageSetup.LeftHeader = LeftHeader;
-        //xlWorkSheet2.PageSetup.CenterHeader = centerHeader;
-        //xlWorkSheet2.PageSetup.RightHeader = RightHeader;
-        //xlWorkSheet2.PageSetup.CenterFooter = "footer here hahahahahaha";
-        //xlWorkSheet2.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-        //xlWorkSheet2.PageSetup.Orientation = XlPageOrientation.xlPortrait;
-        //xlWorkSheet2.PageSetup.Zoom = false;
-        //xlWorkSheet2.PageSetup.CenterHorizontally = true;
-        //xlWorkSheet2.PageSetup.LeftMargin = 1;
-        //xlWorkSheet2.PageSetup.RightMargin = 1;
-        //xlWorkSheet2.PageSetup.FitToPagesWide = 1;
-        //xlWorkSheet2.PageSetup.FitToPagesTall = false;
-        //xlWorkSheet2.PageSetup.PrintTitleRows = "$1:$1";
-        //// Paste clipboard results to worksheet range
-        //xlWorkSheet2.Select();
-        //CR = (Range)xlWorkSheet2.Cells[1, 1];
-        //CR.Select();
-        //xlWorkSheet2.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
-
-        //tRange = xlWorkSheet2.UsedRange;
-        //tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-        //tRange.Borders.Weight = XlBorderWeight.xlThin;
-        //tRange.Font.Size = 11;
-        //tRange.EntireColumn.AutoFit();
-
-
-        //dad = xlWorkSheet2.UsedRange.Rows[1];
-        //dad.Interior.Color = Color.FromArgb(237, 237, 237);
-
-        #endregion
-
         private void dgvStockReport_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
+            var itemCode = dgvStockReport[codeColumnName, e.RowIndex].Value;
             var oldValue = dgvStockReport[e.ColumnIndex, e.RowIndex].Value;
             var newValue = e.FormattedValue;
-            int columnIndex = dgvStockReport.CurrentCell.ColumnIndex;
-            string columnName = dgvStockReport.Columns[columnIndex].HeaderText;
+            var total = dgvStockReport[totakStockColumnName, e.RowIndex].Value;
+            var unit = dgvStockReport[unitColumnName, e.RowIndex].Value;
+            string facName = dgvStockReport.Columns[e.ColumnIndex].HeaderText;
 
-            if (!oldValue.ToString().Equals(newValue.ToString()))
+            if(itemCode != null)
+            {
+                editedItem = itemCode.ToString();
+            }
+            else
+            {
+                editedItem = "";
+                MessageBox.Show("Item Error");
+                return;
+            }
+
+            if (total != null)
+            {
+                if(float.TryParse(dgvStockReport[totakStockColumnName, e.RowIndex].Value.ToString(), out float i))
+                {
+                    editedTotal = i.ToString();
+                }
+                else
+                {
+                    editedTotal = dalItem.getStockQty(editedItem).ToString();
+                }
+            }
+
+            if(oldValue == null)
+            {
+                oldValue = 0;
+            }
+
+            if (newValue == null)
+            {
+                oldValue = 0;
+            }
+
+            if(unit != null)
+            {
+                editedUnit = unit.ToString();
+            }
+            else
+            {
+                if(tool.ifGotChild(editedItem))
+                {
+                    editedUnit = "set";
+                }
+                else
+                {
+                    editedUnit = "";
+                }
+            }
+
+            if (!oldValue.ToString().Equals(newValue.ToString()) && !string.IsNullOrEmpty(newValue.ToString()))
             {
                 editedOldValue = oldValue.ToString();
                 editedNewValue = newValue.ToString();
-                editedHeaderText = columnName;
+                editedFactory = facName;
+
+                bool outSuccess = stockOut(facName, editedItem, Convert.ToSingle(oldValue.ToString()), editedUnit);
+                bool inSuccess = stockIn(facName, editedItem, Convert.ToSingle(newValue.ToString()), editedUnit);
+
+                if(outSuccess && inSuccess)
+                {
+                    float newTotal = Convert.ToSingle(editedTotal) - Convert.ToSingle(editedOldValue) + Convert.ToSingle(editedNewValue);
+                    dgvStockReport[totakStockColumnName, e.RowIndex].Value = newTotal;
+
+                    if(newTotal < 0)
+                    {
+                        dgvStockReport[totakStockColumnName, e.RowIndex].Style.ForeColor = Color.Red;
+                    }
+                    else
+                    {
+                        dgvStockReport[totakStockColumnName, e.RowIndex].Style.ForeColor = Color.Black;
+
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("stock change error");
+                }
+
             }
         }
+
+        private bool stockIn(string factoryName, string itemCode, float qty, string sub_unit)
+        {
+            bool successFacStockIn;
+
+            successFacStockIn = dalStock.facStockIn(tool.getFactoryID(factoryName).ToString(), itemCode, qty, sub_unit);
+
+            return successFacStockIn;
+        }
+
+        private bool stockOut(string factoryName, string itemCode, float qty, string sub_unit)
+        {
+            bool successFacStockOut;
+
+            successFacStockOut = dalStock.facStockOut(tool.getFactoryID(factoryName).ToString(), itemCode, qty, sub_unit);
+
+            return successFacStockOut;
+        }
+        #endregion
+
     }
 }

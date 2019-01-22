@@ -384,10 +384,11 @@ namespace FactoryManagementSoftware.UI
             tool.AddTextBoxColumns(dgv, MBColName, MBColName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, StockColName, StockColName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, EstimateColName, EstimateColName, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, Forecast1ColName, Forecast1ColName, DisplayedCells);
+            //tool.AddTextBoxColumns(dgv, Forecast1ColName, Forecast1ColName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, OutColName, OutColName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, OsantColName, OsantColName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, Shot1ColName, Shot1ColName, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, Shot2ColName, Shot2ColName, DisplayedCells);
 
             dgv.Columns[MCColName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[PartWeightColName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -395,10 +396,11 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[MBColName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[StockColName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[EstimateColName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[Forecast1ColName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            //dgv.Columns[Forecast1ColName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[OutColName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[OsantColName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[Shot1ColName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns[Shot2ColName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
             //UI setting
             dgv.Columns[MCColName].DefaultCellStyle.BackColor = Color.AliceBlue;
@@ -421,8 +423,8 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[EstimateColName].HeaderCell.Style.BackColor = Color.LightCyan;
             dgv.Columns[EstimateColName].DefaultCellStyle.BackColor = Color.LightCyan;
 
-            dgv.Columns[Forecast1ColName].HeaderCell.Style.BackColor = Color.LightYellow;
-            dgv.Columns[Forecast1ColName].DefaultCellStyle.BackColor = Color.LightYellow;
+            //dgv.Columns[Forecast1ColName].HeaderCell.Style.BackColor = Color.LightYellow;
+            //dgv.Columns[Forecast1ColName].DefaultCellStyle.BackColor = Color.LightYellow;
 
             dgv.Columns[OutColName].HeaderCell.Style.BackColor = Color.LightYellow;
             dgv.Columns[OutColName].DefaultCellStyle.BackColor = Color.LightYellow;
@@ -433,6 +435,10 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[Shot1ColName].HeaderCell.Style.BackColor = Color.LightYellow;
             dgv.Columns[Shot1ColName].DefaultCellStyle.BackColor = Color.LightYellow;
             dgv.Columns[Shot1ColName].HeaderCell.Style.ForeColor = Color.Red;
+
+            dgv.Columns[Shot2ColName].HeaderCell.Style.BackColor = Color.LightGreen;
+            dgv.Columns[Shot2ColName].DefaultCellStyle.BackColor = Color.LightGreen;
+            dgv.Columns[Shot2ColName].HeaderCell.Style.ForeColor = Color.Red;
         }
 
         private void UIDesign()
@@ -739,6 +745,16 @@ namespace FactoryManagementSoftware.UI
         private void insertForecastData()
         {
             string custName = cmbCust.Text;
+            int dgvType = -1;
+            if (custName.Equals(tool.getCustName(1)))//PMMA
+            {
+                dgvType = 1;
+            }
+            else
+            {
+                dgvType = 2;
+            }
+
             if (!string.IsNullOrEmpty(custName))
             {
                 DataTable dt = dalItemCust.custSearch(custName);//load customer's item list
@@ -764,8 +780,18 @@ namespace FactoryManagementSoftware.UI
                     foreach (DataRow item in dt.Rows)//go into customer's item list
                     {
                         itemCode = item["item_code"].ToString();
-                        forecastOne = Convert.ToSingle(item["forecast_one"]);
-                        forecastTwo = Convert.ToSingle(item["forecast_two"]);
+
+                        if(dgvType == 1)
+                        {
+                            forecastOne = Convert.ToSingle(item["forecast_one"]);
+                            forecastTwo = Convert.ToSingle(item["forecast_two"]);
+                        }
+                        else if(dgvType == 2)
+                        {
+                            forecastOne = get6MonthsMaxOut(itemCode, custName);
+                            forecastTwo = forecastOne;
+                        }
+                        
                         forecastThree = Convert.ToSingle(item["forecast_three"]);
                         month = item["forecast_current_month"].ToString();
 
@@ -848,11 +874,9 @@ namespace FactoryManagementSoftware.UI
                 }
                 if (row.Cells[CodeColName].Value.ToString().Equals(itemCode) && row.Index < n)
                 {
-                    float headFcast1 = Convert.ToSingle(row.Cells[Forecast1ColName].Value);
-                   
+                    float headFcast1 = 0;
                     float headOutStock = Convert.ToSingle(row.Cells[OutColName].Value);
                     float headShot1 = Convert.ToSingle(row.Cells[Shot1ColName].Value);
-                    
 
                     float childFcast1 = Convert.ToSingle(fcast1);
                     float childFcast2 = Convert.ToSingle(fcast2);
@@ -866,6 +890,7 @@ namespace FactoryManagementSoftware.UI
 
                     if(dgvType == 1)
                     {
+                        headFcast1 = Convert.ToSingle(row.Cells[Forecast1ColName].Value);
                         float headFcast2 = Convert.ToSingle(row.Cells[Forecast2ColName].Value);
                         float headFcast3 = Convert.ToSingle(row.Cells[Forecast3ColName].Value);
                         float headShot2 = Convert.ToSingle(row.Cells[Shot2ColName].Value);
@@ -879,6 +904,10 @@ namespace FactoryManagementSoftware.UI
                         row.Cells[Forecast2ColName].Value = headFcast2.ToString();
                         row.Cells[Forecast3ColName].Value = headFcast3.ToString();
                         row.Cells[Shot2ColName].Value = headShot2.ToString();
+                    }
+                    else
+                    {
+                        headFcast1 = Convert.ToSingle(row.Cells[EstimateColName].Value);
                     }
                    
                     headFcast1 += childFcast1;
@@ -958,7 +987,7 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[n].Cells[IndexColName].Value = no.ToString()+"("+(char)alphbet+")";
                             dgv.Rows[n].Cells[CodeColName].Value = itemCode;
                             dgv.Rows[n].Cells[NameColName].Value = item["item_name"].ToString();
-                            dgv.Rows[n].Cells[MatTypeColName].Value = item["item_material"].ToString();
+                            dgv.Rows[n].Cells[MatTypeColName].Value = dalItem.getMaterialName(item["item_material"].ToString());
                             dgv.Rows[n].Cells[MBColName].Value = item["item_mb"].ToString();
                             dgv.Rows[n].Cells[ColorColName].Value = item["item_color"].ToString();
                             dgv.Rows[n].Cells[PartWeightColName].Value = partf.ToString("0.00");
@@ -970,7 +999,7 @@ namespace FactoryManagementSoftware.UI
                             }
                             else
                             {
-                                dgv.Rows[n].Cells[Forecast1ColName].Value = forecastOne;
+                                
                                 dgv.Rows[n].Cells[OutColName].Value = outStock.ToString();
 
                                 float readyStock = Convert.ToSingle(dalItem.getStockQty(itemCode));
@@ -1002,36 +1031,37 @@ namespace FactoryManagementSoftware.UI
 
                                 dgv.Rows[n].Cells[Shot1ColName].Value = childShotOne.ToString();
 
+                                if (shotTwo >= 0)
+                                {
+                                    childShotTwo = childShotOne;
+                                }
+                                else if (shotOne > 0)
+                                {
+                                    childShotTwo = childShotOne + shotTwo;
+                                }
+                                else
+                                {
+                                    childShotTwo = childShotOne - Convert.ToSingle(forecastTwo);
+                                }
+
+                                if (childShotTwo < 0)
+                                {
+                                    dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red, BackColor = dgv.Rows[n].Cells[Shot2ColName].Style.BackColor };
+
+                                }
+                                else
+                                {
+                                    dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = dgv.Rows[n].Cells[Shot2ColName].Style.BackColor };
+
+                                }
+
+                                dgv.Rows[n].Cells[Shot2ColName].Value = childShotTwo.ToString();
+
                                 if (dgvType == 1)
                                 {
+                                    dgv.Rows[n].Cells[Forecast1ColName].Value = forecastOne;
                                     dgv.Rows[n].Cells[Forecast2ColName].Value = forecastTwo;
                                     dgv.Rows[n].Cells[Forecast3ColName].Value = forecastThree;
-
-                                    if (shotTwo >= 0)
-                                    {
-                                        childShotTwo = childShotOne;
-                                    }
-                                    else if (shotOne > 0)
-                                    {
-                                        childShotTwo = childShotOne + shotTwo;
-                                    }
-                                    else
-                                    {
-                                        childShotTwo = childShotOne - Convert.ToSingle(forecastTwo);
-                                    }
-
-                                    if (childShotTwo < 0)
-                                    {
-                                        dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red, BackColor = dgv.Rows[n].Cells[Shot2ColName].Style.BackColor };
-
-                                    }
-                                    else
-                                    {
-                                        dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = dgv.Rows[n].Cells[Shot2ColName].Style.BackColor };
-
-                                    }
-
-                                    dgv.Rows[n].Cells[Shot2ColName].Value = childShotTwo.ToString();
                                 }
                             }
                             alphbet++;
@@ -1073,30 +1103,30 @@ namespace FactoryManagementSoftware.UI
                     if (!ifGotChild(itemCode) && type != 2)
                     {
                         int n = dgv.Rows.Add();
-
                         dgv.Rows[n].Cells[IndexColName].Value = indexNo.ToString();
                         indexNo++;
                         dgv.Rows[n].Cells[CodeColName].Value = itemCode;
                         dgv.Rows[n].Cells[NameColName].Value = item["item_name"].ToString();
                         dgv.Rows[n].Cells[ColorColName].Value = item["item_color"].ToString();
-                        dgv.Rows[n].Cells[MatTypeColName].Value = item["item_material"].ToString();
+                        dgv.Rows[n].Cells[MatTypeColName].Value = dalItem.getMaterialName(item["item_material"].ToString());
                         dgv.Rows[n].Cells[MBColName].Value = item["item_mb"].ToString();
                         dgv.Rows[n].Cells[PartWeightColName].Value = Convert.ToSingle(item["item_part_weight"]).ToString("0.00");
                         dgv.Rows[n].Cells[RunnerWeightColName].Value = Convert.ToSingle(item["item_runner_weight"]).ToString("0.00"); 
 
                         string month = item["forecast_current_month"].ToString();
 
-                        dgv.Columns[Forecast1ColName].HeaderText = "F/cast " + getShortMonth(month, 1);
-                        dgv.Columns[Shot1ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 1);
-                        
-                        dgv.Rows[n].Cells[Forecast1ColName].Value = item["forecast_one"].ToString();
-                        
                         dgv.Rows[n].Cells[OutColName].Value = item["forecast_out_stock"].ToString();
                         dgv.Rows[n].Cells[StockColName].Value = item["forecast_ready_stock"].ToString();
                         dgv.Rows[n].Cells[OsantColName].Value = item["forecast_osant"].ToString();
 
                         float shotOne = Convert.ToSingle(item["forecast_shot_one"]);
+                        float shotTwo = Convert.ToSingle(item["forecast_shot_two"]);
+
                         dgv.Rows[n].Cells[Shot1ColName].Value = shotOne.ToString();
+                        dgv.Rows[n].Cells[Shot2ColName].Value = shotTwo.ToString();
+
+                        dgv.Columns[Shot1ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 1);
+                        dgv.Columns[Shot2ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 2);
 
                         if (shotOne < redAlertLevel)
                         {
@@ -1106,26 +1136,25 @@ namespace FactoryManagementSoftware.UI
                         {
                             dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
                         }
+                        
+                        if (shotTwo < redAlertLevel)
+                        {
+                            dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
+                        }
+                        else
+                        {
+                            dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
+                        }
 
                         if (dgvType == 1)
                         {
+                            dgv.Columns[Forecast1ColName].HeaderText = "F/cast " + getShortMonth(month, 1);
                             dgv.Columns[Forecast2ColName].HeaderText = "F/cast " + getShortMonth(month, 2);
-                            dgv.Columns[Shot2ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 2);
                             dgv.Columns[Forecast3ColName].HeaderText = "F/cast " + getShortMonth(month, 3);
+
+                            dgv.Rows[n].Cells[Forecast1ColName].Value = item["forecast_one"].ToString();
                             dgv.Rows[n].Cells[Forecast2ColName].Value = item["forecast_two"].ToString();
-                            dgv.Rows[n].Cells[Forecast3ColName].Value = item["forecast_three"].ToString();
-
-                            float shotTwo = Convert.ToSingle(item["forecast_shot_two"]);
-                            if (shotTwo < redAlertLevel)
-                            {
-                                dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
-                            }
-                            else
-                            {
-                                dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
-                            }
-
-                            dgv.Rows[n].Cells[Shot2ColName].Value = shotTwo.ToString();
+                            dgv.Rows[n].Cells[Forecast3ColName].Value = item["forecast_three"].ToString();  
                         } 
                         else
                         {
@@ -1159,10 +1188,25 @@ namespace FactoryManagementSoftware.UI
                         string outStock = item["forecast_out_stock"].ToString();
 
                         dgv.Rows[n].Cells[IndexColName].Value = indexNo.ToString();
+
+                        if(dalItem.checkIfAssembly(itemCode))//assembly part show blue color, else show green color
+                        {
+                            dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                            dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                        }
+                        else
+                        {
+                            dgv.Rows[n].Cells[MatTypeColName].Value = dalItem.getMaterialName(item["item_material"].ToString());
+                            dgv.Rows[n].Cells[MBColName].Value = item["item_mb"].ToString();
+                            dgv.Rows[n].Cells[PartWeightColName].Value = Convert.ToSingle(item["item_part_weight"]).ToString("0.00");
+                            dgv.Rows[n].Cells[RunnerWeightColName].Value = Convert.ToSingle(item["item_runner_weight"]).ToString("0.00");
+                            dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                            dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+
+                        }
+
                         dgv.Rows[n].Cells[IndexColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
 
-                        dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
-                        dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
                         dgv.Rows[n].Cells[CodeColName].Value = itemCode;
                         dgv.Rows[n].Cells[NameColName].Value = item["item_name"].ToString();
                         dgv.Rows[n].Cells[ColorColName].Value = item["item_color"].ToString();
@@ -1170,9 +1214,6 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[StockColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                         dgv.Rows[n].Cells[StockColName].Value = item["forecast_ready_stock"].ToString();
 
-                        dgv.Columns[Forecast1ColName].HeaderText = "F/cast " + getShortMonth(month, 1);
-                        dgv.Rows[n].Cells[Forecast1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
-                        dgv.Rows[n].Cells[Forecast1ColName].Value = forecastOne;
 
                         dgv.Rows[n].Cells[OutColName].Value = outStock;
                         dgv.Rows[n].Cells[OutColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
@@ -1193,27 +1234,33 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                         }
 
-                        if(dgvType == 1)
+                        dgv.Columns[Shot2ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 2);
+                        dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+
+                        if (shotTwo < 0)
                         {
+                            dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                        }
+                        else
+                        {
+                            dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                        }
+                        dgv.Rows[n].Cells[Shot2ColName].Value = item["forecast_shot_two"].ToString();
+
+
+                        if (dgvType == 1)
+                        {
+                            dgv.Columns[Forecast1ColName].HeaderText = "F/cast " + getShortMonth(month, 1);
                             dgv.Columns[Forecast2ColName].HeaderText = "F/cast " + getShortMonth(month, 2);
                             dgv.Columns[Forecast3ColName].HeaderText = "F/cast " + getShortMonth(month, 3);
-                            dgv.Columns[Shot2ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 2);
-                            dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
 
+                            dgv.Rows[n].Cells[Forecast1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                             dgv.Rows[n].Cells[Forecast2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                             dgv.Rows[n].Cells[Forecast3ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+
+                            dgv.Rows[n].Cells[Forecast1ColName].Value = forecastOne;
                             dgv.Rows[n].Cells[Forecast2ColName].Value = forecastTwo;
                             dgv.Rows[n].Cells[Forecast3ColName].Value = forecastThree;
-
-                            if (shotTwo < 0)
-                            {
-                                dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
-                            }
-                            else
-                            {
-                                dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
-                            }
-                            dgv.Rows[n].Cells[Shot2ColName].Value = item["forecast_shot_two"].ToString();
                         }
                         else
                         {
@@ -1513,7 +1560,7 @@ namespace FactoryManagementSoftware.UI
                 Range rng;
                 if (type == 2)
                 {
-                    rng = xlWorkSheet.get_Range("A:O").Cells;
+                    rng = xlWorkSheet.get_Range("A:P").Cells;
                 }
                 else
                 {
@@ -1532,7 +1579,7 @@ namespace FactoryManagementSoftware.UI
                 Range topRow;
                 if (type == 2)
                 {
-                    topRow = xlWorkSheet.get_Range("a1:o1").Cells;
+                    topRow = xlWorkSheet.get_Range("a1:p1").Cells;
                 }
                 else
                 {
@@ -3127,7 +3174,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        rng = xlWorkSheet.get_Range("A:O").Cells;
+                        rng = xlWorkSheet.get_Range("A:P").Cells;
                     }
 
                    
@@ -3147,7 +3194,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        topRow = xlWorkSheet.get_Range("a1:o1").Cells;
+                        topRow = xlWorkSheet.get_Range("a1:p1").Cells;
                     }
                     topRow.RowHeight = 25;
 

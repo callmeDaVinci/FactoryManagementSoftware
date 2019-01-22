@@ -491,7 +491,7 @@ namespace FactoryManagementSoftware.UI
             return daltrfHist.getIndexNo(utrfHist);
         }
 
-        private void childTransferRecord(string stockResult, int indexNo, string itemCode)
+        private void childTransferRecord(string stockResult, int indexNo, string itemCode,float qty)
         {
             string locationFrom = string.IsNullOrEmpty(from) ? fromCat : from;
             string locationTo = string.IsNullOrEmpty(to) ? toCat : to;
@@ -499,7 +499,7 @@ namespace FactoryManagementSoftware.UI
             uChildTrfHist.child_trf_hist_code = itemCode;
             uChildTrfHist.child_trf_hist_from = locationTo;
             uChildTrfHist.child_trf_hist_to = locationFrom;
-            uChildTrfHist.child_trf_hist_qty = checkQty(Convert.ToSingle(txtTrfQty.Text));
+            uChildTrfHist.child_trf_hist_qty = qty;
             uChildTrfHist.child_trf_hist_unit = "piece";
             
             uChildTrfHist.child_trf_hist_result = stockResult;
@@ -543,17 +543,18 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataRow Join in dtJoin.Rows)
                 {
+                    float childQty = qty;
                     childItemCode = Join["join_child_code"].ToString();
                     DataTable dtItem = dalItem.codeSearch(childItemCode);
-
+                    childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
                     if (dtItem.Rows.Count > 0)
                     {
-                        if(!stockOut(factoryName, childItemCode, qty,"piece"))
+                        if(!stockOut(factoryName, childItemCode, childQty, "piece"))
                         {
                             stockResult = "Falied";
                             success = false;
                         }
-                        childTransferRecord(stockResult, indexNo, childItemCode);
+                        childTransferRecord(stockResult, indexNo, childItemCode, childQty);
                     }
                 }
             }

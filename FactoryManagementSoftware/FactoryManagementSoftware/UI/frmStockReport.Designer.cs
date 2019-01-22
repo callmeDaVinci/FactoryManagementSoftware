@@ -85,12 +85,11 @@
             this.dgvStockReport.Location = new System.Drawing.Point(27, 109);
             this.dgvStockReport.Margin = new System.Windows.Forms.Padding(2);
             this.dgvStockReport.Name = "dgvStockReport";
-            this.dgvStockReport.ReadOnly = true;
             this.dgvStockReport.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvStockReport.RowHeadersVisible = false;
             this.dgvStockReport.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvStockReport.RowTemplate.Height = 40;
-            this.dgvStockReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvStockReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvStockReport.Size = new System.Drawing.Size(1522, 720);
             this.dgvStockReport.TabIndex = 30;
             this.dgvStockReport.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockReport_CellEndEdit);

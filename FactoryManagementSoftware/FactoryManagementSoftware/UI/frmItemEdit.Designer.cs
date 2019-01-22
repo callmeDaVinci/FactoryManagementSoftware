@@ -76,6 +76,7 @@
             this.txtProCooling = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtWastageAllowed = new System.Windows.Forms.TextBox();
+            this.cbAssembly = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -171,7 +172,7 @@
             this.cmbCat.Location = new System.Drawing.Point(37, 35);
             this.cmbCat.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbCat.Name = "cmbCat";
-            this.cmbCat.Size = new System.Drawing.Size(775, 36);
+            this.cmbCat.Size = new System.Drawing.Size(596, 36);
             this.cmbCat.TabIndex = 27;
             this.cmbCat.SelectedIndexChanged += new System.EventHandler(this.cmbCat_SelectedIndexChanged);
             // 
@@ -546,12 +547,24 @@
             this.txtWastageAllowed.TabIndex = 70;
             this.txtWastageAllowed.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox9_KeyPress);
             // 
+            // cbAssembly
+            // 
+            this.cbAssembly.AutoSize = true;
+            this.cbAssembly.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbAssembly.Location = new System.Drawing.Point(660, 35);
+            this.cbAssembly.Name = "cbAssembly";
+            this.cbAssembly.Size = new System.Drawing.Size(164, 27);
+            this.cbAssembly.TabIndex = 72;
+            this.cbAssembly.Text = "ASSEMBLY SET";
+            this.cbAssembly.UseVisualStyleBackColor = true;
+            // 
             // frmItemEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(861, 741);
+            this.Controls.Add(this.cbAssembly);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtWastageAllowed);
             this.Controls.Add(this.label5);
@@ -662,5 +675,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtWastageAllowed;
+        private System.Windows.Forms.CheckBox cbAssembly;
     }
 }

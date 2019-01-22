@@ -67,7 +67,6 @@ namespace FactoryManagementSoftware
             loadItemCategoryData();
             resetForm();     
             formLoaded = true;
-            AddPartListColumns(dgvItemList);
             dgvItemList.ClearSelection();
         }
 
@@ -106,8 +105,17 @@ namespace FactoryManagementSoftware
             currentItemRunnerWeight = null;
             currentMaterial = null;
             currentMB = null;
-            //loadItemData(dgvItemList);
-            LoadPartList(dgvItemList);
+
+            if (cmbCat.Text.Equals("Part"))
+            {
+                AddPartListColumns(dgvItemList);
+                LoadPartList(dgvItemList);
+            }
+            else
+            {
+                AddMaterialListColumns(dgvItemList);
+                LoadMaterialList(dgvItemList);
+            }
         }
 
         #endregion
@@ -343,8 +351,16 @@ namespace FactoryManagementSoftware
             
             if (formLoaded)
             {
-                //loadItemData();
-                LoadPartList(dgvItemList);
+                if(cmbCat.Text.Equals("Part"))
+                {
+                    AddPartListColumns(dgvItemList);
+                    LoadPartList(dgvItemList);
+                }
+                else
+                {
+                    AddMaterialListColumns(dgvItemList);
+                    LoadMaterialList(dgvItemList);
+                }
             }
             dgvItemList.ClearSelection();
             Cursor = Cursors.Arrow; // change cursor to normal type
@@ -432,12 +448,32 @@ namespace FactoryManagementSoftware
             }
         }
 
+        private void LoadMaterialList(DataGridView dgv)
+        {
+            DataTable dt = dalItem.catSearch(cmbCat.Text);
+            dgv.Rows.Clear();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                int n = dgv.Rows.Add();
+
+                dgv.Rows[n].Cells[dalItem.ItemName].Value = item[dalItem.ItemName].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemCode].ToString();
+            }
+            tool.listPaint(dgv);
+
+            if (dt.Rows.Count <= 0 && formLoaded)
+            {
+                MessageBox.Show("no data under this record");
+            }
+        }
+
         private void AddPartListColumns(DataGridView dgv)
         {
             dgv.Columns.Clear();
             tool.AddTextBoxColumns(dgv, "Material Type", dalItem.ItemMaterial, DisplayedCells);
             tool.AddTextBoxColumns(dgv, "Part Name", dalItem.ItemName, Fill);
-            tool.AddTextBoxColumns(dgv, "Part Number", dalItem.ItemCode, Fill);
+            tool.AddTextBoxColumns(dgv, "Part Code", dalItem.ItemCode, Fill);
             tool.AddTextBoxColumns(dgv, "Color", dalItem.ItemColor, DisplayedCellsExceptHeader,minWidth);
             tool.AddTextBoxColumns(dgv, "Mb Code", dalItem.ItemMBatch, DisplayedCells);
             tool.AddTextBoxColumns(dgv, "Quo Ton", dalItem.ItemQuoTon, DisplayedCellsExceptHeader, minWidth);
@@ -459,7 +495,8 @@ namespace FactoryManagementSoftware
         private void AddMaterialListColumns(DataGridView dgv)
         {
             dgv.Columns.Clear();
-           
+            tool.AddTextBoxColumns(dgv, "Material Name", dalItem.ItemName, Fill);
+            tool.AddTextBoxColumns(dgv, "Material Code", dalItem.ItemCode, Fill);
         }
 
         private void frmItem_Click(object sender, EventArgs e)

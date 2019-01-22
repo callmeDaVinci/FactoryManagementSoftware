@@ -53,6 +53,8 @@ namespace FactoryManagementSoftware.DAL
         public string ItemLastPMMAQty { get; } = "item_last_pmma_qty";
         public string ItemPMMAQty { get; } = "item_pmma_qty";
 
+        public string ItemAssemblyCheck { get; } = "item_assembly";
+
         #endregion
 
         #region variable/class object declare
@@ -227,7 +229,8 @@ namespace FactoryManagementSoftware.DAL
                             + ItemProCooling + ","
                             + ItemWastage + ","
                             + ItemAddDate + ","
-                            + ItemAddBy + ") VALUES " +
+                            + ItemAddBy + ","
+                            + ItemAssemblyCheck + ") VALUES " +
                             "(@item_cat," +
                             "@item_code," +
                             "@item_name," +
@@ -250,7 +253,8 @@ namespace FactoryManagementSoftware.DAL
                             "@item_pro_cooling," +
                             "@item_wastage_allowed," +
                             "@item_added_date," +
-                            "@item_added_by)";
+                            "@item_added_by," +
+                            "@item_assembly)";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -277,6 +281,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_wastage_allowed", u.item_wastage_allowed);
                 cmd.Parameters.AddWithValue("@item_added_date", u.item_added_date);
                 cmd.Parameters.AddWithValue("@item_added_by", u.item_added_by);
+                cmd.Parameters.AddWithValue("@item_assembly", u.item_assembly);
 
                 conn.Open();
 
@@ -404,7 +409,8 @@ namespace FactoryManagementSoftware.DAL
                             + ItemProCooling + "=@item_pro_cooling,"
                             + ItemWastage + "=@item_wastage_allowed,"
                             + ItemUpdateDate + "=@item_updtd_date,"
-                            + ItemUpdateBy + "=@item_updtd_by" +
+                            + ItemUpdateBy + "=@item_updtd_by,"
+                            + ItemAssemblyCheck + "=@item_assembly" +
                             " WHERE item_code=@item_code";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -431,6 +437,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_wastage_allowed", u.item_wastage_allowed);
                 cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
                 cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+                cmd.Parameters.AddWithValue("@item_assembly", u.item_assembly);
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();
@@ -1080,6 +1087,24 @@ namespace FactoryManagementSoftware.DAL
                 materialType = dt.Rows[0][ItemMaterial].ToString();
             }
             return materialType;
+        }
+
+        public bool checkIfAssembly(string itemCode)
+        {
+            bool result = false;
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                if(dt.Rows[0]["item_assembly"] != DBNull.Value)
+                {
+                    if(Convert.ToInt32(dt.Rows[0]["item_assembly"]) == 1)
+                    {
+                        result = true;
+                    }
+                }
+            }
+            return result;
         }
 
         public float getOrderQty(string itemCode)

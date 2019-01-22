@@ -1137,12 +1137,13 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataRow Join in dtJoin.Rows)
                 {
+                    float childQty = qty;
                     childItemCode = Join["join_child_code"].ToString();
                     DataTable dtItem = dalItem.codeSearch(childItemCode);
-
+                    childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
                     if (dtItem.Rows.Count > 0)
                     {
-                        if (!stockIn(factoryName, childItemCode, qty, unit))
+                        if (!stockIn(factoryName, childItemCode, childQty, unit))
                         {
                             success = false;
                         }
@@ -1165,16 +1166,18 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataRow Join in dtJoin.Rows)
                 {
+                    float childQty = qty;
                     childItemCode = Join["join_child_code"].ToString();
                     DataTable dtItem = dalItem.codeSearch(childItemCode);
+                    childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
 
                     if (dtItem.Rows.Count > 0)
                     {
-                        if (!stockOut(factoryName, childItemCode, qty, unit))
+                        if (!stockOut(factoryName, childItemCode, childQty, unit))
                         {
                             success = false;
                         }
-                        childTransferRecord(factoryName, indexNo, childItemCode, qty);
+                        childTransferRecord(factoryName, indexNo, childItemCode, childQty);
                         refreshDataList(childItemCode);
                     }
                 }
