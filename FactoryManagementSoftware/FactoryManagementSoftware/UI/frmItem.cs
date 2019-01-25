@@ -31,6 +31,10 @@ namespace FactoryManagementSoftware
         #region variable declare
 
         private bool formLoaded = false;
+        private bool join = false;
+        private string itemParentCode = "parentTest";
+        private string itemChildCode = "childTest";
+        private string parentCust = null;
         private int currentRowIndex;
         static public string currentItemCode;
         static public string currentItemName;
@@ -40,6 +44,9 @@ namespace FactoryManagementSoftware
         static public string currentItemRunnerWeight;
         static public string currentMaterial;
         static public string currentMB;
+
+       
+        readonly string indexColName = "No.";
 
         DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
         DataGridViewAutoSizeColumnMode DisplayedCells = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -68,6 +75,7 @@ namespace FactoryManagementSoftware
             resetForm();     
             formLoaded = true;
             dgvItemList.ClearSelection();
+            loadFastAddData();
         }
 
         private bool IfProductsExists(String productCode)
@@ -118,6 +126,12 @@ namespace FactoryManagementSoftware
             }
         }
 
+        private void loadFastAddData()
+        {
+            tool.loadRAWMaterialToComboBox(cmbMat);
+            tool.loadMasterBatchToComboBox(cmbMB);
+            tool.loadCustomerToComboBox(cmbCust);
+        }
         #endregion
 
         #region Function: Insert/Delete/Reset/Search
@@ -129,7 +143,7 @@ namespace FactoryManagementSoftware
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            frmItemEdit frm = new frmItemEdit();
+            frmItemEdit frm = new frmItemEdit(cmbCat.Text);
             currentItemCat = cmbCat.Text;
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//Item Edit
@@ -237,8 +251,8 @@ namespace FactoryManagementSoftware
 
                     uItem.item_name = item[dalItem.ItemName].ToString();
 
-                    uItem.item_material = dalItem.getMaterialName(item[dalItem.ItemMaterial].ToString());
-                    uItem.item_mb = dalItem.getMBName(item[dalItem.ItemMBatch].ToString());
+                    uItem.item_material = item[dalItem.ItemMaterial].ToString();
+                    uItem.item_mb = item[dalItem.ItemMBatch].ToString();
                     uItem.item_color = item[dalItem.ItemColor].ToString();
 
                     uItem.item_quo_ton = tool.Int_TryParse(item[dalItem.ItemQuoTon].ToString());
@@ -401,7 +415,11 @@ namespace FactoryManagementSoftware
 
         private void LoadPartList(DataGridView dgv)
         {
+            int index = 1;
             DataTable dt = dalItem.catSearch(cmbCat.Text);
+            dt.DefaultView.Sort = "item_name ASC";
+            dt = dt.DefaultView.ToTable();
+
             dgv.Rows.Clear();
 
             foreach (DataRow item in dt.Rows)
@@ -419,12 +437,12 @@ namespace FactoryManagementSoftware
                 {
                     runnerf = Convert.ToSingle(item[dalItem.ItemProRWPcs]);
                 }
-
-                dgv.Rows[n].Cells[dalItem.ItemMaterial].Value = dalItem.getMaterialName(item[dalItem.ItemMaterial].ToString());
+                dgv.Rows[n].Cells[indexColName].Value = index;
+                dgv.Rows[n].Cells[dalItem.ItemMaterial].Value = item[dalItem.ItemMaterial].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemName].Value = item[dalItem.ItemName].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemCode].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemColor].Value = item[dalItem.ItemColor].ToString();
-                dgv.Rows[n].Cells[dalItem.ItemMBatch].Value = dalItem.getMBName(item[dalItem.ItemMBatch].ToString());
+                dgv.Rows[n].Cells[dalItem.ItemMBatch].Value = item[dalItem.ItemMBatch].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemQuoTon].Value = item[dalItem.ItemQuoTon].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemBestTon].Value = item[dalItem.ItemBestTon].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemProTon].Value = item[dalItem.ItemProTon].ToString();
@@ -439,6 +457,7 @@ namespace FactoryManagementSoftware
                 dgv.Rows[n].Cells[dalItem.ItemProCooling].Value = item[dalItem.ItemProCooling].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemProPWPcs].Value = partf.ToString("0.00");
                 dgv.Rows[n].Cells[dalItem.ItemProRWPcs].Value = runnerf.ToString("0.00");
+                index++;
             }
             tool.listPaint(dgv);
 
@@ -451,14 +470,19 @@ namespace FactoryManagementSoftware
         private void LoadMaterialList(DataGridView dgv)
         {
             DataTable dt = dalItem.catSearch(cmbCat.Text);
+            dt.DefaultView.Sort = "item_name ASC";
+            dt = dt.DefaultView.ToTable();
             dgv.Rows.Clear();
 
+            int index = 1;
             foreach (DataRow item in dt.Rows)
             {
                 int n = dgv.Rows.Add();
 
+                dgv.Rows[n].Cells[indexColName].Value = index;
                 dgv.Rows[n].Cells[dalItem.ItemName].Value = item[dalItem.ItemName].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemCode].ToString();
+                index++;
             }
             tool.listPaint(dgv);
 
@@ -471,8 +495,9 @@ namespace FactoryManagementSoftware
         private void AddPartListColumns(DataGridView dgv)
         {
             dgv.Columns.Clear();
+            tool.AddTextBoxColumns(dgv, indexColName, indexColName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, "Material Type", dalItem.ItemMaterial, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, "Part Name", dalItem.ItemName, Fill);
+            tool.AddTextBoxColumns(dgv, "Part Name", dalItem.ItemName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, "Part Code", dalItem.ItemCode, Fill);
             tool.AddTextBoxColumns(dgv, "Color", dalItem.ItemColor, DisplayedCellsExceptHeader,minWidth);
             tool.AddTextBoxColumns(dgv, "Mb Code", dalItem.ItemMBatch, DisplayedCells);
@@ -495,6 +520,7 @@ namespace FactoryManagementSoftware
         private void AddMaterialListColumns(DataGridView dgv)
         {
             dgv.Columns.Clear();
+            tool.AddTextBoxColumns(dgv, indexColName, indexColName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, "Material Name", dalItem.ItemName, Fill);
             tool.AddTextBoxColumns(dgv, "Material Code", dalItem.ItemCode, Fill);
         }
@@ -507,6 +533,437 @@ namespace FactoryManagementSoftware
         private void dgvItemList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             btnUpdate_Click(sender, e);
+        }
+
+        private void updateItem()
+        {
+            //Update data
+            itemBLL u = new itemBLL();
+            u.item_cat = cmbCat.Text;
+
+            if (!join)
+            {
+                itemParentCode = txtItemCode.Text;
+                parentCust = cmbCust.Text;
+            }
+            else
+            {
+                itemChildCode = txtItemCode.Text;
+            }
+
+            u.item_code = txtItemCode.Text;
+            u.item_name = txtItemName.Text;
+
+            u.item_material = cmbMat.Text;
+            u.item_mb = cmbMB.Text;
+            u.item_color = txtColor.Text;
+
+            u.item_quo_ton = 0;
+            u.item_best_ton = 0;
+            u.item_pro_ton = 0;
+
+            u.item_quo_ct = 0;
+            u.item_pro_ct_from = 0;
+            u.item_pro_ct_to = 0;
+            u.item_capacity = tool.Int_TryParse(txtCapacity.Text);
+
+            u.item_quo_pw_pcs = tool.Float_TryParse(txtQuoPWpcs.Text);
+            u.item_quo_rw_pcs = tool.Float_TryParse(txtQuoRWpcs.Text);
+            u.item_pro_pw_pcs = tool.Float_TryParse(txtPWpcs.Text);
+            u.item_pro_rw_pcs = tool.Float_TryParse(txtRWpcs.Text);
+
+            u.item_pro_pw_shot = tool.Float_TryParse(txtPWshot.Text);
+            u.item_pro_rw_shot = tool.Float_TryParse(txtRWshot.Text);
+            u.item_pro_cooling = 0;
+            u.item_wastage_allowed = 0.05f;
+
+            if (cbAssembly.Checked)
+            {
+                u.item_assembly = 1;
+            }
+            else
+            {
+                u.item_assembly = 0;
+            }
+
+            u.item_updtd_date = DateTime.Now;
+            u.item_updtd_by = MainDashboard.USER_ID;
+            //Updating data into database
+            //bool success = dalItem.Update(u);
+            bool success = dalItem.NewUpdate(u);
+            //if data is updated successfully then the value = true else false
+            if (success == true)
+            {
+                //data updated successfully
+                MessageBox.Show("Item successfully updated ");
+                if (!join)
+                {
+                    pairCustomer();
+                }
+            }
+            else
+            {
+                //failed to update user
+                MessageBox.Show("Failed to updated item");
+            }
+        }
+
+        private void insertItem()
+        {
+            //Add data
+            itemBLL u = new itemBLL();
+            u.item_cat = cmbCat.Text;
+
+            if(!join)
+            {
+                itemParentCode = txtItemCode.Text;
+                parentCust = cmbCust.Text;
+            }
+            else
+            {
+                itemChildCode = txtItemCode.Text;
+            }
+            
+            u.item_code = txtItemCode.Text;
+            u.item_name = txtItemName.Text;
+
+            u.item_material = cmbMat.Text;
+            u.item_mb = cmbMB.Text;
+            u.item_color = txtColor.Text;
+
+            u.item_quo_ton = 0;
+            u.item_best_ton = 0;
+            u.item_pro_ton = 0;
+
+            u.item_quo_ct = 0;
+            u.item_pro_ct_from = 0;
+            u.item_pro_ct_to = 0;
+            u.item_capacity = tool.Int_TryParse(txtCapacity.Text);
+
+            u.item_quo_pw_pcs = tool.Float_TryParse(txtQuoPWpcs.Text); 
+            u.item_quo_rw_pcs = tool.Float_TryParse(txtQuoRWpcs.Text);
+            u.item_pro_pw_pcs = tool.Float_TryParse(txtPWpcs.Text);
+            u.item_pro_rw_pcs = tool.Float_TryParse(txtRWpcs.Text);
+
+            u.item_pro_pw_shot = tool.Float_TryParse(txtPWshot.Text);
+            u.item_pro_rw_shot = tool.Float_TryParse(txtRWshot.Text);
+            u.item_pro_cooling = 0;
+            u.item_wastage_allowed = 0.05f;
+
+            if (cbAssembly.Checked)
+            {
+                u.item_assembly = 1;
+            }
+            else
+            {
+                u.item_assembly = 0;
+            }
+
+            u.item_added_date = DateTime.Now;
+            u.item_added_by = MainDashboard.USER_ID;
+
+            //Inserting Data into Database
+            bool success = dalItem.NewInsert(u);
+            //If the data is successfully inserted then the value of success will be true else false
+            if (success)
+            {
+                //Data Successfully Inserted
+                //MessageBox.Show("Item successfully created");
+                if(!join)
+                {
+                    pairCustomer();
+                }
+            }
+            else
+            {
+                //Failed to insert data
+                MessageBox.Show("Failed to add new item");
+            }
+        }
+
+        private void updateMaterial()
+        {
+            //Update data
+            uMaterial.material_cat = cmbCat.Text;
+            uMaterial.material_code = txtItemCode.Text;
+            uMaterial.material_name = txtItemName.Text;
+
+            bool success = dalMaterial.Update(uMaterial);
+            if (success == true)
+            {
+                //data updated successfully
+                //MessageBox.Show("Material successfully updated ");
+                updateItem();
+            }
+            else
+            {
+                //failed to update user
+                MessageBox.Show("Failed to updated material");
+            }
+        }
+
+        private void insertMaterial()
+        {
+            //Add data
+            uMaterial.material_cat = cmbCat.Text;
+            uMaterial.material_code = txtItemCode.Text;
+            uMaterial.material_name = txtItemName.Text;
+            bool success = dalMaterial.Insert(uMaterial);
+            //If the data is successfully inserted then the value of success will be true else false
+            if (success == true)
+            {
+                //Data Successfully Inserted
+                //MessageBox.Show("Material successfully created");
+                insertItem();
+            }
+            else
+            {
+                //Failed to insert data
+                dalMaterial.Delete(uMaterial);
+                MessageBox.Show("Failed to add new material");
+            }
+        }
+
+        private void clearFastAddData()
+        {
+            txtItemCode.Clear();
+            txtItemName.Clear();
+            txtColor.Clear();
+            txtPWpcs.Clear();
+            txtRWpcs.Clear();
+            txtPWshot.Clear();
+            txtRWshot.Clear();
+            txtCapacity.Clear();
+        }
+
+        private bool IfExists(string itemCode, string custName)
+        {
+            itemCustDAL dalItemCust = new itemCustDAL();
+            DataTable dt = dalItemCust.existsSearch(itemCode, tool.getCustID(custName).ToString());
+
+            if (dt.Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
+        private void pairCustomer()
+        {
+            itemCustBLL uItemCust = new itemCustBLL();
+            itemCustDAL dalItemCust = new itemCustDAL();
+
+            string cust = cmbCust.Text;
+
+            if(cmbCat.Text.Equals("Part") && !string.IsNullOrEmpty(cust))
+            {
+                if (!IfExists(txtItemCode.Text, cmbCust.Text))
+                {
+                    uItemCust.cust_id = Convert.ToInt32(tool.getCustID(cmbCust.Text));
+                    uItemCust.item_code = txtItemCode.Text;
+                    uItemCust.item_cust_added_date = DateTime.Now;
+                    uItemCust.item_cust_added_by = MainDashboard.USER_ID;
+                    uItemCust.forecast_one = 0;
+                    uItemCust.forecast_two = 0;
+                    uItemCust.forecast_three = 0;
+                    uItemCust.forecast_current_month = DateTime.Now.ToString("MMMM");
+
+                    bool success = dalItemCust.Insert(uItemCust);
+
+                    if (!success)
+                    {
+                        //Failed to insert data
+                        MessageBox.Show("Failed to add new item_cust record");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Data already exist.");
+                }
+            }
+            
+        }
+
+        private void joinItem()
+        {
+            if (IfChildProductsExists(itemParentCode, txtItemCode.Text))
+            {
+                MessageBox.Show("record already exist");
+            }
+            else
+            {
+                uJoin.join_parent_code = itemParentCode;
+
+                uJoin.join_child_code = txtItemCode.Text;
+
+                uJoin.join_added_date = DateTime.Now;
+                uJoin.join_added_by = -1;
+
+                if (!string.IsNullOrEmpty(txtJoinQty.Text))
+                {
+                    uJoin.join_qty = Convert.ToInt32(txtJoinQty.Text);
+                }
+                else
+                {
+                    uJoin.join_qty = 1;
+                }
+
+                bool success = dalJoin.Insert(uJoin);
+                //If the data is successfully inserted then the value of success will be true else false
+                if (success == true)
+                {
+                    //Data Successfully Inserted
+                    MessageBox.Show("Join successfully created");
+                }
+                else
+                {
+                    //Failed to insert data
+                    MessageBox.Show("Failed to add new join");
+                }
+            }
+        }
+
+        private bool IfChildProductsExists(string parentCode, string childCode)
+        {
+            DataTable dt = dalJoin.existCheck(parentCode, childCode);
+
+            if (dt.Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
+        private void btnFastAdd_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            if (IfProductsExists(txtItemCode.Text))
+            {
+                if (cmbCat.Text.Equals("Part"))
+                {
+                    updateItem();
+                }
+                else
+                {
+                    updateMaterial();
+                }
+            }
+            else
+            {
+                if (cmbCat.Text.Equals("Part"))
+                {
+                    insertItem();
+                }
+                else
+                {
+                    insertMaterial();
+                }
+            }
+
+            if(join)
+            {
+                joinItem();
+            }
+
+            clearFastAddData();
+            resetForm();
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void txtPWpcs_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtRWpcs_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtPWshot_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtRWshot_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtCapacity_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void cbMB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbMB.Checked)
+            {
+                cbPigment.Checked = false;
+                tool.loadMasterBatchToComboBox(cmbMB);
+            }
+        }
+
+        private void cbPigment_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbPigment.Checked)
+            {
+                cbMB.Checked = false;
+                tool.loadPigmentToComboBox(cmbMB);
+            }
+        }
+
+        private void btnJoin_Click(object sender, EventArgs e)
+        {
+            if (cmbCat.Text.Equals("Part") || cmbCat.Text.Equals("Sub Material")) 
+            {
+                if (join)
+                {
+                    join = false;
+                    btnJoin.Text = "ADD JOIN";
+                    //lblParentCode.Hide();
+                    lblJoinQty.Hide();
+                    txtJoinQty.Hide();
+
+                    lblParentCode.Text = "(PARENT CODE: " + itemParentCode + " )" + join;
+                    lblParentCode.Show();
+                }
+                else
+                {
+                    if(string.IsNullOrEmpty(parentCust))
+                    {
+                        MessageBox.Show("Joining Item must pair with a customer. Please pair a customer for your previous added item("+itemParentCode+" "+tool.getItemName(itemParentCode) +").");
+                    }
+                    else
+                    {
+                        join = true;
+                        lblJoinQty.Show();
+                        txtJoinQty.Show();
+                        btnJoin.Text = "JOINING";
+                        lblParentCode.Text = "(PARENT CODE: " + itemParentCode + " )" + join;
+                        lblParentCode.Show();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Only part item or sub material can join together.");
+            }
+            
         }
     }
 

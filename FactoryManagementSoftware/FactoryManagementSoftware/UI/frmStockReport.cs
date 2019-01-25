@@ -177,6 +177,8 @@ namespace FactoryManagementSoftware.UI
             index = 1;
             DataTable dt;
             dt = dalItem.catSearch(cmbSubType.Text);
+            dt.DefaultView.Sort = "item_name ASC";
+            dt = dt.DefaultView.ToTable();
 
             dgvStockReport.Rows.Clear();
             dgvStockReport.Refresh();
@@ -277,6 +279,8 @@ namespace FactoryManagementSoftware.UI
             bool gotData = true;
             DataGridView dgv = dgvStockReport;
             DataTable dt = dalItemCust.custSearch(cmbSubType.Text);//load customer's item list
+            dt.DefaultView.Sort = "item_name ASC";
+            dt = dt.DefaultView.ToTable();
             dgv.Rows.Clear();
             dgv.Refresh();
             if (dt.Rows.Count <= 0)

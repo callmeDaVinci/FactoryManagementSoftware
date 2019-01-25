@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.label4 = new System.Windows.Forms.Label();
             this.cmbMaterialType = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.cmbMasterBatch = new System.Windows.Forms.ComboBox();
             this.txtProPWPcs = new System.Windows.Forms.TextBox();
             this.txtColor = new System.Windows.Forms.TextBox();
@@ -77,6 +76,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtWastageAllowed = new System.Windows.Forms.TextBox();
             this.cbAssembly = new System.Windows.Forms.CheckBox();
+            this.cbMB = new System.Windows.Forms.CheckBox();
+            this.cbPigment = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -102,16 +103,6 @@
             this.cmbMaterialType.Name = "cmbMaterialType";
             this.cmbMaterialType.Size = new System.Drawing.Size(238, 36);
             this.cmbMaterialType.TabIndex = 35;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(299, 172);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(105, 19);
-            this.label3.TabIndex = 34;
-            this.label3.Text = "MASTER BATCH";
             // 
             // cmbMasterBatch
             // 
@@ -401,6 +392,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.label13.Location = new System.Drawing.Point(627, 332);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(71, 19);
@@ -411,6 +403,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.Blue;
             this.label14.Location = new System.Drawing.Point(627, 412);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(179, 19);
@@ -421,6 +414,7 @@
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.Color.Blue;
             this.label15.Location = new System.Drawing.Point(427, 412);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(156, 19);
@@ -491,6 +485,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.Fuchsia;
             this.label6.Location = new System.Drawing.Point(227, 492);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(189, 19);
@@ -511,6 +506,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.ForeColor = System.Drawing.Color.Fuchsia;
             this.label18.Location = new System.Drawing.Point(33, 492);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(166, 19);
@@ -531,6 +527,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.label2.Location = new System.Drawing.Point(627, 492);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(137, 19);
@@ -558,12 +555,40 @@
             this.cbAssembly.Text = "ASSEMBLY SET";
             this.cbAssembly.UseVisualStyleBackColor = true;
             // 
+            // cbMB
+            // 
+            this.cbMB.AutoSize = true;
+            this.cbMB.Checked = true;
+            this.cbMB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbMB.Font = new System.Drawing.Font("Consolas", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbMB.Location = new System.Drawing.Point(303, 170);
+            this.cbMB.Name = "cbMB";
+            this.cbMB.Size = new System.Drawing.Size(126, 21);
+            this.cbMB.TabIndex = 73;
+            this.cbMB.Text = "MASTER BATCH";
+            this.cbMB.UseVisualStyleBackColor = true;
+            this.cbMB.CheckedChanged += new System.EventHandler(this.cbMB_CheckedChanged);
+            // 
+            // cbPigment
+            // 
+            this.cbPigment.AutoSize = true;
+            this.cbPigment.Font = new System.Drawing.Font("Consolas", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbPigment.Location = new System.Drawing.Point(455, 170);
+            this.cbPigment.Name = "cbPigment";
+            this.cbPigment.Size = new System.Drawing.Size(86, 21);
+            this.cbPigment.TabIndex = 74;
+            this.cbPigment.Text = "PIGMENT";
+            this.cbPigment.UseVisualStyleBackColor = true;
+            this.cbPigment.CheckedChanged += new System.EventHandler(this.cbPigment_CheckedChanged);
+            // 
             // frmItemEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(861, 741);
+            this.Controls.Add(this.cbPigment);
+            this.Controls.Add(this.cbMB);
             this.Controls.Add(this.cbAssembly);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtWastageAllowed);
@@ -597,7 +622,6 @@
             this.Controls.Add(this.txtProRWPcs);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cmbMaterialType);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.cmbMasterBatch);
             this.Controls.Add(this.txtProPWPcs);
             this.Controls.Add(this.txtColor);
@@ -630,7 +654,6 @@
 
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cmbMaterialType;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cmbMasterBatch;
         private System.Windows.Forms.TextBox txtProPWPcs;
         private System.Windows.Forms.TextBox txtColor;
@@ -676,5 +699,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtWastageAllowed;
         private System.Windows.Forms.CheckBox cbAssembly;
+        private System.Windows.Forms.CheckBox cbPigment;
+        private System.Windows.Forms.CheckBox cbMB;
     }
 }

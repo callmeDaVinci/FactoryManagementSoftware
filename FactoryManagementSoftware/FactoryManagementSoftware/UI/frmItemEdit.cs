@@ -16,7 +16,17 @@ namespace FactoryManagementSoftware.UI
             loadItemCategoryData();
             loadMaterialTypeData();
             loadMasterBatchData();
-            //getData();
+        }
+
+        public frmItemEdit(string itemCat)
+        {
+            InitializeComponent();
+
+            loadItemCategoryData();
+            loadMaterialTypeData();
+            loadMasterBatchData();
+
+            cmbCat.Text = itemCat;
         }
 
         public frmItemEdit(itemBLL u)
@@ -67,12 +77,7 @@ namespace FactoryManagementSoftware.UI
 
         private void loadMasterBatchData()
         {
-            DataTable dt = dalMaterial.catSearch("Master Batch");
-            DataTable distinctTable = dt.DefaultView.ToTable(true, "material_code");
-            distinctTable.DefaultView.Sort = "material_code ASC";
-            cmbMasterBatch.DataSource = distinctTable;
-            cmbMasterBatch.DisplayMember = "material_code";
-            cmbMasterBatch.SelectedIndex = -1;
+            tool.loadMasterBatchToComboBox(cmbMasterBatch);
         }
 
         #endregion
@@ -282,7 +287,22 @@ namespace FactoryManagementSoftware.UI
             u.item_pro_pw_shot = tool.Float_TryParse(txtProPWShot.Text);
             u.item_pro_rw_shot = tool.Float_TryParse(txtProRWShot.Text);
             u.item_pro_cooling = tool.Int_TryParse(txtProCooling.Text);
-            u.item_wastage_allowed = tool.Float_TryParse(txtWastageAllowed.Text);
+
+            if(float.TryParse(txtWastageAllowed.Text,out float i))
+            {
+                if(i <= 0)
+                {
+                    u.item_wastage_allowed = 0.05f;
+                }
+                else
+                {
+                    u.item_wastage_allowed = i;
+                }
+            }
+            else
+            {
+                u.item_wastage_allowed = 0.05f;
+            }
 
             if(cbAssembly.Checked)
             {
@@ -302,7 +322,7 @@ namespace FactoryManagementSoftware.UI
             if (success == true)
             {
                 //Data Successfully Inserted
-                MessageBox.Show("Item successfully created");
+                //MessageBox.Show("Item successfully created");
                 this.Close();
             }
             else
@@ -345,7 +365,7 @@ namespace FactoryManagementSoftware.UI
             if (success == true)
             {
                 //Data Successfully Inserted
-                MessageBox.Show("Material successfully created");
+                //MessageBox.Show("Material successfully created");
                 insertItem();
                 this.Close();
             }
@@ -597,6 +617,25 @@ namespace FactoryManagementSoftware.UI
                 txtProRWShot.Enabled = false;
                 txtProCooling.Enabled = false;
                 txtWastageAllowed.Enabled = false;
+            }
+        }
+
+        private void cbPigment_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbPigment.Checked)
+            {
+                cbMB.Checked = false;
+                tool.loadPigmentToComboBox(cmbMasterBatch);
+            }
+
+        }
+
+        private void cbMB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbMB.Checked)
+            {
+                cbPigment.Checked = false;
+                tool.loadMasterBatchToComboBox(cmbMasterBatch);
             }
         }
     }

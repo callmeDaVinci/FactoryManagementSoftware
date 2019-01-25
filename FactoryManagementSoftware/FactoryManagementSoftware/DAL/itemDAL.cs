@@ -1063,6 +1063,18 @@ namespace FactoryManagementSoftware.DAL
             return materialName;
         }
 
+        public string getCatName(string itemCode)
+        {
+            string catName = "";
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                catName = dt.Rows[0]["item_cat"].ToString();
+            }
+            return catName;
+        }
+
         public string getMBName(string mbCode)
         {
             string mbName = "";

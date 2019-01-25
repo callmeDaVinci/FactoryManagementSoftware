@@ -44,6 +44,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.btnCheck = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
+            this.NO = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.forecast_one = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -64,6 +65,7 @@
             this.dgvForecast.BackgroundColor = System.Drawing.Color.White;
             this.dgvForecast.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecast.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NO,
             this.item_code,
             this.item_name,
             this.forecast_one,
@@ -251,52 +253,63 @@
             this.btnReset.UseVisualStyleBackColor = false;
             this.btnReset.Click += new System.EventHandler(this.btnReport_Click);
             // 
+            // NO
+            // 
+            this.NO.HeaderText = "NO";
+            this.NO.Name = "NO";
+            // 
             // item_code
             // 
             this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_code.HeaderText = "Item Code";
+            this.item_code.HeaderText = "CODE";
             this.item_code.Name = "item_code";
             this.item_code.ReadOnly = true;
             // 
             // item_name
             // 
             this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_name.HeaderText = "Item Name";
+            this.item_name.HeaderText = "NAME";
             this.item_name.Name = "item_name";
             this.item_name.ReadOnly = true;
             // 
             // forecast_one
             // 
+            this.forecast_one.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.LightYellow;
             this.forecast_one.DefaultCellStyle = dataGridViewCellStyle1;
-            this.forecast_one.HeaderText = "Forecast 1";
+            this.forecast_one.HeaderText = "FORECAST 1";
             this.forecast_one.Name = "forecast_one";
+            this.forecast_one.Width = 133;
             // 
             // forecast_two
             // 
+            this.forecast_two.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.LightYellow;
             this.forecast_two.DefaultCellStyle = dataGridViewCellStyle2;
-            this.forecast_two.HeaderText = "Forecast 2";
+            this.forecast_two.HeaderText = "FORECAST 2";
             this.forecast_two.Name = "forecast_two";
+            this.forecast_two.Width = 133;
             // 
             // forecast_three
             // 
+            this.forecast_three.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.LightYellow;
             this.forecast_three.DefaultCellStyle = dataGridViewCellStyle3;
-            this.forecast_three.HeaderText = "Forecast 3";
+            this.forecast_three.HeaderText = "FORECAST 3";
             this.forecast_three.Name = "forecast_three";
+            this.forecast_three.Width = 133;
             // 
             // forecast_updtd_date
             // 
             this.forecast_updtd_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.forecast_updtd_date.HeaderText = "Updated Date";
+            this.forecast_updtd_date.HeaderText = "UPDATED DATE";
             this.forecast_updtd_date.Name = "forecast_updtd_date";
             this.forecast_updtd_date.ReadOnly = true;
-            this.forecast_updtd_date.Width = 134;
+            this.forecast_updtd_date.Width = 158;
             // 
             // forecast_updtd_by
             // 
-            this.forecast_updtd_by.HeaderText = "By";
+            this.forecast_updtd_by.HeaderText = "BY";
             this.forecast_updtd_by.Name = "forecast_updtd_by";
             this.forecast_updtd_by.ReadOnly = true;
             // 
@@ -346,6 +359,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnCheck;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NO;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_one;

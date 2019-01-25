@@ -16,6 +16,7 @@ namespace FactoryManagementSoftware.Module
         itemDAL dalItem = new itemDAL();
         joinDAL dalJoin = new joinDAL();
         itemCustDAL dalItemCust = new itemCustDAL();
+        materialDAL dalMaterial = new materialDAL();
 
         #region UI design
 
@@ -171,6 +172,40 @@ namespace FactoryManagementSoftware.Module
             distinctTable.DefaultView.Sort = "cust_name ASC";
             cmb.DataSource = distinctTable;
             cmb.DisplayMember = "cust_name";
+            cmb.SelectedIndex = -1;
+        }
+
+        public void loadRAWMaterialToComboBox(ComboBox cmb)
+        {
+            DataTable dt = dalMaterial.catSearch("RAW Material");
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "material_code");
+            distinctTable.DefaultView.Sort = "material_code ASC";
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "material_code";
+            cmb.SelectedIndex = -1;
+        }
+
+        public void loadMasterBatchToComboBox(ComboBox cmb)
+        {
+            DataTable dt = dalMaterial.catSearch("Master Batch");
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "material_code");
+            distinctTable.DefaultView.Sort = "material_code ASC";
+            distinctTable.Rows.Add("COMPOUND");
+            distinctTable.Rows.Add("NATURAL");
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "material_code";
+            cmb.SelectedIndex = -1;
+        }
+
+        public void loadPigmentToComboBox(ComboBox cmb)
+        {
+            DataTable dt = dalMaterial.catSearch("Pigment");
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "material_code");
+            distinctTable.DefaultView.Sort = "material_code ASC";
+            distinctTable.Rows.Add("COMPOUND");
+            distinctTable.Rows.Add("NATURAL");
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "material_code";
             cmb.SelectedIndex = -1;
         }
 

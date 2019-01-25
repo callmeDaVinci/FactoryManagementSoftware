@@ -62,12 +62,16 @@ namespace FactoryManagementSoftware.UI
         {
             //get keyword from text box
             string keywords = cmbCust.Text;
-
+            int index = 1;
             //check if the keywords has value or not
             if (!string.IsNullOrEmpty(keywords))
             {
                 DataTable dt = dalItemCust.custSearch(keywords);
-                if(dt.Rows.Count <= 0)
+
+                dt.DefaultView.Sort = "item_name ASC";
+                dt = dt.DefaultView.ToTable();
+
+                if (dt.Rows.Count <= 0)
                 {
                     MessageBox.Show("no data under this record.");
                 }
@@ -76,13 +80,14 @@ namespace FactoryManagementSoftware.UI
                 foreach (DataRow item in dt.Rows)
                 {
                     int n = dgvForecast.Rows.Add();
+                    dgvForecast.Rows[n].Cells["NO"].Value = index;
                     dgvForecast.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
                     dgvForecast.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_one"].Value = item["forecast_one"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_two"].Value = item["forecast_two"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_three"].Value = item["forecast_three"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = item["forecast_updated_date"].ToString();
-
+                    index++;
                     if (int.TryParse(item["forecast_updated_by"].ToString(), out int test))
                     {
                         if (Convert.ToInt32(item["forecast_updated_by"]) <= 0)

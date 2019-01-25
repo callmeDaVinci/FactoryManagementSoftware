@@ -70,8 +70,8 @@ namespace FactoryManagementSoftware.UI
         readonly string CodeColName = "PART CODE";
         readonly string ColorColName = "COLOR";
         readonly string MCColName = "MC";
-        readonly string PartWeightColName = "PART WEIGHT(g)";
-        readonly string RunnerWeightColName = "RUNNER WEIGHT(g)";
+        readonly string PartWeightColName = "PRO PW(g)";
+        readonly string RunnerWeightColName = "PRO RW(g)";
         readonly string MBColName = "MBatch CODE";
         readonly string StockColName = "READY STOCK";
         readonly string EstimateColName = "ESTIMATE";
@@ -970,101 +970,109 @@ namespace FactoryManagementSoftware.UI
                         {
                             itemCode = item["item_code"].ToString();
 
-                            if (!string.IsNullOrEmpty(item["item_part_weight"].ToString()))
+                            if(!dalItem.getCatName(itemCode).Equals("Sub Material"))
                             {
-                                partf = Convert.ToSingle(item["item_part_weight"]);
-                            }
-                            if (!string.IsNullOrEmpty(item["item_runner_weight"].ToString()))
-                            {
-                                runnerf = Convert.ToSingle(item["item_runner_weight"]);
-                            }
-
-                            if(ifGotChild(itemCode))
-                            {
-                                dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
-                                dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
-                            }
-                            dgv.Rows[n].Cells[IndexColName].Value = no.ToString()+"("+(char)alphbet+")";
-                            dgv.Rows[n].Cells[CodeColName].Value = itemCode;
-                            dgv.Rows[n].Cells[NameColName].Value = item["item_name"].ToString();
-                            dgv.Rows[n].Cells[MatTypeColName].Value = dalItem.getMaterialName(item["item_material"].ToString());
-                            dgv.Rows[n].Cells[MBColName].Value = item["item_mb"].ToString();
-                            dgv.Rows[n].Cells[ColorColName].Value = item["item_color"].ToString();
-                            dgv.Rows[n].Cells[PartWeightColName].Value = partf.ToString("0.00");
-                            dgv.Rows[n].Cells[RunnerWeightColName].Value = runnerf.ToString("0.00");
-
-                            if (ifRepeat(itemCode, n, forecastOne, forecastTwo, forecastThree, outStock.ToString(), shotOne, shotTwo, dgvType))
-                            {
-                                changeBackColor(null, n, false, dgvType);
-                            }
-                            else
-                            {
-                                
-                                dgv.Rows[n].Cells[OutColName].Value = outStock.ToString();
-
-                                float readyStock = Convert.ToSingle(dalItem.getStockQty(itemCode));
-                                dgv.Rows[n].Cells[StockColName].Style.Font = new System.Drawing.Font(dgv.Font, FontStyle.Regular);
-                                dgv.Rows[n].Cells[StockColName].Value = readyStock.ToString();
-
-                                float oSant = Convert.ToSingle(forecastOne) - outStock;
-                                dgv.Rows[n].Cells[OsantColName].Value = oSant.ToString();
-
-                                if (shotOne >= 0)
+                                //if(dalItem.getCatName(itemCode).Equals("Sub Material"))
+                                //{
+                                //    MessageBox.Show("Sub Material "+itemCode);
+                                //}
+                                if (!string.IsNullOrEmpty(item["item_part_weight"].ToString()))
                                 {
-                                    childShotOne = readyStock;
+                                    partf = Convert.ToSingle(item["item_part_weight"]);
+                                }
+                                if (!string.IsNullOrEmpty(item["item_runner_weight"].ToString()))
+                                {
+                                    runnerf = Convert.ToSingle(item["item_runner_weight"]);
+                                }
+
+                                if (ifGotChild(itemCode))
+                                {
+                                    dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                                    dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                                }
+                                dgv.Rows[n].Cells[IndexColName].Value = no.ToString() + "(" + (char)alphbet + ")";
+                                dgv.Rows[n].Cells[CodeColName].Value = itemCode;
+                                dgv.Rows[n].Cells[NameColName].Value = item["item_name"].ToString();
+                                dgv.Rows[n].Cells[MatTypeColName].Value = dalItem.getMaterialName(item["item_material"].ToString());
+                                dgv.Rows[n].Cells[MBColName].Value = item["item_mb"].ToString();
+                                dgv.Rows[n].Cells[ColorColName].Value = item["item_color"].ToString();
+                                dgv.Rows[n].Cells[PartWeightColName].Value = partf.ToString("0.00");
+                                dgv.Rows[n].Cells[RunnerWeightColName].Value = runnerf.ToString("0.00");
+
+                                if (ifRepeat(itemCode, n, forecastOne, forecastTwo, forecastThree, outStock.ToString(), shotOne, shotTwo, dgvType))
+                                {
+                                    changeBackColor(null, n, false, dgvType);
                                 }
                                 else
                                 {
-                                    childShotOne = readyStock + shotOne;
+
+                                    dgv.Rows[n].Cells[OutColName].Value = outStock.ToString();
+
+                                    float readyStock = Convert.ToSingle(dalItem.getStockQty(itemCode));
+                                    dgv.Rows[n].Cells[StockColName].Style.Font = new System.Drawing.Font(dgv.Font, FontStyle.Regular);
+                                    dgv.Rows[n].Cells[StockColName].Value = readyStock.ToString();
+
+                                    float oSant = Convert.ToSingle(forecastOne) - outStock;
+                                    dgv.Rows[n].Cells[OsantColName].Value = oSant.ToString();
+
+                                    if (shotOne >= 0)
+                                    {
+                                        childShotOne = readyStock;
+                                    }
+                                    else
+                                    {
+                                        childShotOne = readyStock + shotOne;
+                                    }
+
+                                    if (childShotOne < 0)
+                                    {
+                                        dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red, BackColor = dgv.Rows[n].Cells[Shot1ColName].Style.BackColor };
+
+                                    }
+                                    else
+                                    {
+                                        dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = dgv.Rows[n].Cells[Shot1ColName].Style.BackColor };
+
+                                    }
+
+                                    dgv.Rows[n].Cells[Shot1ColName].Value = childShotOne.ToString();
+
+                                    if (shotTwo >= 0)
+                                    {
+                                        childShotTwo = childShotOne;
+                                    }
+                                    else if (shotOne > 0)
+                                    {
+                                        childShotTwo = childShotOne + shotTwo;
+                                    }
+                                    else
+                                    {
+                                        childShotTwo = childShotOne - Convert.ToSingle(forecastTwo);
+                                    }
+
+                                    if (childShotTwo < 0)
+                                    {
+                                        dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red, BackColor = dgv.Rows[n].Cells[Shot2ColName].Style.BackColor };
+
+                                    }
+                                    else
+                                    {
+                                        dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = dgv.Rows[n].Cells[Shot2ColName].Style.BackColor };
+
+                                    }
+
+                                    dgv.Rows[n].Cells[Shot2ColName].Value = childShotTwo.ToString();
+
+                                    if (dgvType == 1)
+                                    {
+                                        dgv.Rows[n].Cells[Forecast1ColName].Value = forecastOne;
+                                        dgv.Rows[n].Cells[Forecast2ColName].Value = forecastTwo;
+                                        dgv.Rows[n].Cells[Forecast3ColName].Value = forecastThree;
+                                    }
                                 }
-
-                                if (childShotOne < 0)
-                                {
-                                    dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red, BackColor = dgv.Rows[n].Cells[Shot1ColName].Style.BackColor };
-
-                                }
-                                else
-                                {
-                                    dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = dgv.Rows[n].Cells[Shot1ColName].Style.BackColor };
-
-                                }
-
-                                dgv.Rows[n].Cells[Shot1ColName].Value = childShotOne.ToString();
-
-                                if (shotTwo >= 0)
-                                {
-                                    childShotTwo = childShotOne;
-                                }
-                                else if (shotOne > 0)
-                                {
-                                    childShotTwo = childShotOne + shotTwo;
-                                }
-                                else
-                                {
-                                    childShotTwo = childShotOne - Convert.ToSingle(forecastTwo);
-                                }
-
-                                if (childShotTwo < 0)
-                                {
-                                    dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red, BackColor = dgv.Rows[n].Cells[Shot2ColName].Style.BackColor };
-
-                                }
-                                else
-                                {
-                                    dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = dgv.Rows[n].Cells[Shot2ColName].Style.BackColor };
-
-                                }
-
-                                dgv.Rows[n].Cells[Shot2ColName].Value = childShotTwo.ToString();
-
-                                if (dgvType == 1)
-                                {
-                                    dgv.Rows[n].Cells[Forecast1ColName].Value = forecastOne;
-                                    dgv.Rows[n].Cells[Forecast2ColName].Value = forecastTwo;
-                                    dgv.Rows[n].Cells[Forecast3ColName].Value = forecastThree;
-                                }
+                                alphbet++;
                             }
-                            alphbet++;
+                            
                         }
                     }
                 }
