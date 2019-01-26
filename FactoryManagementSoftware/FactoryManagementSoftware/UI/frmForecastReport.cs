@@ -39,29 +39,38 @@ namespace FactoryManagementSoftware.UI
             November,
             December
         }
-
+        
         enum color
         {
             Gold = 0,
-            LightGreen,
-            DeepSkyBlue,
+            Aquamarine,
+            Bisque,
+            Chartreuse,
+            CornflowerBlue,
+            Yellow,
+            Cyan,
+            MediumTurquoise,
+            LightGray,
+            Magenta,
+            MediumAquamarine,
+            LightSalmon,
             Lavender,
-            LightBlue,
-            LightCyan,
-            LightPink,
+            MediumSpringGreen,
+            DeepSkyBlue,
             Orange,
-            Pink,
-            RoyalBlue,
-            Silver,
-            SteelBlue,
-            Tomato
+            Orchid,
+            Seashell,
+            SkyBlue,
+            Tan,
+            Thistle,
+            LightBlue
         }
 
         private int indexNo = 1;
         private int alphbet = 65;
         private bool gotData = false;
         private int colorOrder = 0;
-        private string colorName = "Black";
+        private string colorName = "Gold";
         private int redAlertLevel = 0;
 
         readonly string IndexColName = "NO";
@@ -539,7 +548,9 @@ namespace FactoryManagementSoftware.UI
                         row.Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = Color.FromName(colorName) };
                     }
 
-                    if(dgvType == 1)
+                  
+
+                    if (dgvType == 1)
                     {
                         row.Cells[Forecast2ColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
                         row.Cells[Forecast3ColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
@@ -558,6 +569,7 @@ namespace FactoryManagementSoftware.UI
                 else
                 {
                     colorName = test;
+                    //MessageBox.Show(row.Cells[Forecast1ColName].Style.BackColor.ToString());
                 }
             }
             else
@@ -577,20 +589,30 @@ namespace FactoryManagementSoftware.UI
                     dgvForecastReport.Rows[rowIndex].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = Color.FromName(colorName) };
                 }
 
-                if(dgvType == 1)
-                {
-                    dgvForecastReport.Rows[rowIndex].Cells[Forecast2ColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
-                    dgvForecastReport.Rows[rowIndex].Cells[Forecast3ColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
+                //if(dgvType == 1)
+                //{
+                //    dgvForecastReport.Rows[rowIndex].Cells[Forecast2ColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
+                //    dgvForecastReport.Rows[rowIndex].Cells[Forecast3ColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
 
-                    if (Convert.ToSingle(dgvForecastReport.Rows[rowIndex].Cells[Shot2ColName].Value) < 0)
-                    {
-                        dgvForecastReport.Rows[rowIndex].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red, BackColor = Color.FromName(colorName) };
-                    }
-                    else
-                    {
-                        dgvForecastReport.Rows[rowIndex].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = Color.FromName(colorName) };
-                    }
-                }
+                //    if (Convert.ToSingle(dgvForecastReport.Rows[rowIndex].Cells[Shot2ColName].Value) < 0)
+                //    {
+                //        dgvForecastReport.Rows[rowIndex].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red, BackColor = Color.FromName(colorName) };
+                //    }
+                //    else
+                //    {
+                //        dgvForecastReport.Rows[rowIndex].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = Color.FromName(colorName) };
+                //    }
+                //}
+
+                //if (colorOrder == 2)
+                //{
+                //    colorOrder = 0;
+                //}
+                //else
+                //{
+                //    colorOrder++;
+                //}
+                //colorName = ((color)colorOrder).ToString();
             }
         }
         #endregion
@@ -872,6 +894,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     row.Cells[CodeColName].Value = "";
                 }
+
                 if (row.Cells[CodeColName].Value.ToString().Equals(itemCode) && row.Index < n)
                 {
                     float headFcast1 = 0;
@@ -923,13 +946,13 @@ namespace FactoryManagementSoftware.UI
                     
                     row.Cells[OsantColName].Value = headOutSant.ToString();
 
-                    colorName = ((color)colorOrder).ToString();
-                    changeBackColor(row, 0, true, dgvType);
-                    result = true;
-                    if (result)
-                    {
+                    string checkColor = row.Cells[Forecast1ColName].Style.BackColor.ToKnownColor().ToString();
 
-                        if (colorOrder == 12)
+                    if(checkColor.Equals("0"))
+                    {
+                        colorName = ((color)colorOrder).ToString();
+
+                        if (colorOrder == 21)
                         {
                             colorOrder = 0;
                         }
@@ -937,11 +960,23 @@ namespace FactoryManagementSoftware.UI
                         {
                             colorOrder++;
                         }
-
-                        return true;
                     }
-                }
+                    else
+                    {
+                        colorName = row.Cells[Forecast1ColName].Style.BackColor.ToString();
+                    }
+
+                    changeBackColor(row, 0, true, dgvType);
+                    result = true;
+                   
+                    
+
+                    return true;
+                }               
             }
+
+           
+
             return result;
         }
 
@@ -958,9 +993,9 @@ namespace FactoryManagementSoftware.UI
                     float runnerf = 0;
                     float childShotOne = 0;
                     float childShotTwo = 0;
-                    int n = dgvForecastReport.Rows.Add();
+                    
 
-                    dgv.Rows[n].Cells[CodeColName].Value = Join["join_child_code"].ToString();
+                    
 
                     DataTable dtItem = dalItem.codeSearch(Join["join_child_code"].ToString());
 
@@ -970,12 +1005,15 @@ namespace FactoryManagementSoftware.UI
                         {
                             itemCode = item["item_code"].ToString();
 
-                            if(!dalItem.getCatName(itemCode).Equals("Sub Material"))
+                            if(true) //!dalItem.getCatName(itemCode).Equals("Sub Material")
                             {
+                                int n = dgvForecastReport.Rows.Add();
+                                dgv.Rows[n].Cells[CodeColName].Value = Join["join_child_code"].ToString();
                                 //if(dalItem.getCatName(itemCode).Equals("Sub Material"))
                                 //{
                                 //    MessageBox.Show("Sub Material "+itemCode);
                                 //}
+
                                 if (!string.IsNullOrEmpty(item["item_part_weight"].ToString()))
                                 {
                                     partf = Convert.ToSingle(item["item_part_weight"]);

@@ -729,11 +729,15 @@ namespace FactoryManagementSoftware
             txtItemCode.Clear();
             txtItemName.Clear();
             txtColor.Clear();
+            txtQuoPWpcs.Clear();
+            txtQuoRWpcs.Clear();
             txtPWpcs.Clear();
             txtRWpcs.Clear();
             txtPWshot.Clear();
             txtRWshot.Clear();
             txtCapacity.Clear();
+            cmbMat.SelectedIndex = -1;
+            cmbMB.SelectedIndex = -1;
         }
 
         private bool IfExists(string itemCode, string custName)

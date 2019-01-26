@@ -134,14 +134,18 @@ namespace FactoryManagementSoftware.UI
                     dgvForecast.Rows[n].Cells["forecast_three"].Value = item["forecast_three"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = item["forecast_updated_date"].ToString();
 
-                    if(Convert.ToInt32(item["forecast_updated_by"]) <= 0)
+                    if(item["forecast_updated_by"] != DBNull.Value)
                     {
-                        dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = "ADMIN";
+                        if (Convert.ToInt32(item["forecast_updated_by"]) <= 0)
+                        {
+                            dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = "ADMIN";
+                        }
+                        else
+                        {
+                            dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = dalUser.getUsername(Convert.ToInt32(item["forecast_updated_by"]));
+                        }
                     }
-                    else
-                    {
-                        dgvForecast.Rows[n].Cells["forecast_updtd_by"].Value = dalUser.getUsername(Convert.ToInt32(item["forecast_updated_by"]));
-                    }     
+                       
                 }              
             }
             else
