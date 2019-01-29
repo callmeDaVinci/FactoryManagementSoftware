@@ -145,6 +145,7 @@ namespace FactoryManagementSoftware.UI
             // Set the Format type and the CustomFormat string.
             dtpDate.Format = DateTimePickerFormat.Custom;
             dtpDate.CustomFormat = "MMMM yyyy";
+            
             dtpDate.ShowUpDown = true;// to prevent the calendar from being displayed
 
             //Out Type
@@ -231,7 +232,15 @@ namespace FactoryManagementSoftware.UI
                         DataTable dtJoin = dalJoin.parentCheck(itemCode);
                         foreach (DataRow Join in dtJoin.Rows)
                         {
-                            dtMat.Rows.Add(dalItem.getMaterialType(Join["join_child_code"].ToString()));
+                            if(dalItem.getCatName(Join["join_child_code"].ToString()).Equals("Part"))
+                            {
+                                itemMat = dalItem.getMaterialType(Join["join_child_code"].ToString());
+
+                                if(!string.IsNullOrEmpty(itemMat))
+                                {
+                                    dtMat.Rows.Add(itemMat);
+                                }
+                            }
                         }
                     }
                     else
@@ -890,6 +899,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnTransfer_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             string outType = cmbType.Text;
             if (outType.Equals(cmbTypeActual))
             {
@@ -936,6 +946,8 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+            
+            
             foreach (DataGridViewRow row in dgvPMMA.Rows)
             {
 
@@ -1001,7 +1013,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private int getNextMonth(int currentMonth)
@@ -1080,11 +1092,11 @@ namespace FactoryManagementSoftware.UI
         private bool checkIfActualExist()
         {
             bool actualExist = false;
-
+            DateTime selectedDate = Convert.ToDateTime(dtpDate.Text);
             int CurrentMonth = DateTime.Now.Month;
             int CurrentYear = DateTime.Now.Year;
-            int selectedMonth = Convert.ToDateTime(dtpDate.Text).Month;
-            int selectedYear = Convert.ToDateTime(dtpDate.Text).Year;
+            int selectedMonth = selectedDate.Month;
+            int selectedYear = selectedDate.Year;
 
             if(selectedYear > CurrentYear)
             {
@@ -1239,7 +1251,7 @@ namespace FactoryManagementSoftware.UI
         {
             dgvPMMA.Rows.Clear();
 
-            if(checkIfActualExist())
+            if(checkIfActualExist())//checkIfActualExist()
             {
                 cmbType.Items.Clear();
                 cmbType.Items.Add(cmbTypeActual);

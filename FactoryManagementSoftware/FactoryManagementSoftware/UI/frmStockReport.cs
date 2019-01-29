@@ -342,21 +342,25 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataRow Join in dtJoin.Rows)
                 {
-                    int n = dgv.Rows.Add();
-
-                    dgv.Rows[n].Cells["item_code"].Value = Join["join_child_code"].ToString();
-
-                    DataTable dtItem = dalItem.codeSearch(Join["join_child_code"].ToString());
-
-                    if (dtItem.Rows.Count > 0)
+                    if(dalItem.getCatName(Join["join_child_code"].ToString()).Equals("Part"))//dalItem.getCatName(Join["join_child_code"].ToString()).Equals("Part")
                     {
-                        foreach (DataRow item in dtItem.Rows)
+                        int n = dgv.Rows.Add();
+
+                        dgv.Rows[n].Cells["item_code"].Value = Join["join_child_code"].ToString();
+
+                        DataTable dtItem = dalItem.codeSearch(Join["join_child_code"].ToString());
+
+                        if (dtItem.Rows.Count > 0)
                         {
-                            string indexNo = no.ToString() + "(" + (char)alphbet + ")";
-                            dataInsertToStockDGV(dgvStockReport, item, n, indexNo);
+                            foreach (DataRow item in dtItem.Rows)
+                            {
+                                string indexNo = no.ToString() + "(" + (char)alphbet + ")";
+                                dataInsertToStockDGV(dgvStockReport, item, n, indexNo);
+                            }
+                            alphbet++;
                         }
-                        alphbet++;
                     }
+                    
                 }
             }
         }
@@ -467,9 +471,9 @@ namespace FactoryManagementSoftware.UI
                 #region Save data to Sheet
 
                 //Header and Footer setup
-                xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
-                xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbSubType.Text + ") Stock List";
-                xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
+                //xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy");
+                xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 " + DateTime.Now.Date.ToString("dd/MM/yyyy") + "                                        (" + cmbSubType.Text + ") STOCK LIST                                         PG -&P";
+                //xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
                 xlWorkSheet.PageSetup.CenterFooter = "Printed By "+dalUser.getUsername(MainDashboard.USER_ID);
 
                 //Page setup
@@ -787,7 +791,7 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 editedItem = "";
-                MessageBox.Show("Item Error");
+                //MessageBox.Show("Item Error");
                 return;
             }
 
@@ -811,6 +815,7 @@ namespace FactoryManagementSoftware.UI
             if (newValue == null)
             {
                 oldValue = 0;
+                newValue = 0;
             }
 
             if(unit != null)

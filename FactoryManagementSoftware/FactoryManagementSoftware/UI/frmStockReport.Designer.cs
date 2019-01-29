@@ -31,11 +31,11 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.TYPE = new System.Windows.Forms.Label();
             this.cmbType = new System.Windows.Forms.ComboBox();
-            this.dgvStockReport = new System.Windows.Forms.DataGridView();
             this.btnExportAllToExcel = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbSubType = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.dgvStockReport = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,42 +61,6 @@
             this.cmbType.Size = new System.Drawing.Size(188, 36);
             this.cmbType.TabIndex = 33;
             this.cmbType.SelectedIndexChanged += new System.EventHandler(this.cmbType_SelectedIndexChanged);
-            // 
-            // dgvStockReport
-            // 
-            this.dgvStockReport.AllowUserToAddRows = false;
-            this.dgvStockReport.AllowUserToDeleteRows = false;
-            this.dgvStockReport.AllowUserToResizeRows = false;
-            this.dgvStockReport.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvStockReport.BackgroundColor = System.Drawing.Color.White;
-            this.dgvStockReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvStockReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvStockReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvStockReport.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvStockReport.Location = new System.Drawing.Point(27, 109);
-            this.dgvStockReport.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvStockReport.Name = "dgvStockReport";
-            this.dgvStockReport.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.dgvStockReport.RowHeadersVisible = false;
-            this.dgvStockReport.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dgvStockReport.RowTemplate.Height = 40;
-            this.dgvStockReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvStockReport.Size = new System.Drawing.Size(1522, 720);
-            this.dgvStockReport.TabIndex = 30;
-            this.dgvStockReport.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockReport_CellEndEdit);
-            this.dgvStockReport.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvStockReport_CellValidating);
-            this.dgvStockReport.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvStockReport_DefaultValuesNeeded);
-            this.dgvStockReport.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvStockReport_EditingControlShowing);
-            this.dgvStockReport.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgvStockReport_SortCompare);
             // 
             // btnExportAllToExcel
             // 
@@ -133,7 +97,7 @@
             this.cmbSubType.Location = new System.Drawing.Point(237, 58);
             this.cmbSubType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbSubType.Name = "cmbSubType";
-            this.cmbSubType.Size = new System.Drawing.Size(188, 36);
+            this.cmbSubType.Size = new System.Drawing.Size(287, 36);
             this.cmbSubType.TabIndex = 75;
             this.cmbSubType.SelectedIndexChanged += new System.EventHandler(this.cmbSubType_SelectedIndexChanged);
             // 
@@ -153,19 +117,51 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btnExcel_Click);
             // 
+            // dgvStockReport
+            // 
+            this.dgvStockReport.AllowUserToAddRows = false;
+            this.dgvStockReport.AllowUserToDeleteRows = false;
+            this.dgvStockReport.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvStockReport.BackgroundColor = System.Drawing.Color.White;
+            this.dgvStockReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvStockReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvStockReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvStockReport.EnableHeadersVisualStyles = false;
+            this.dgvStockReport.Location = new System.Drawing.Point(27, 124);
+            this.dgvStockReport.Name = "dgvStockReport";
+            this.dgvStockReport.RowHeadersVisible = false;
+            this.dgvStockReport.RowTemplate.Height = 24;
+            this.dgvStockReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvStockReport.Size = new System.Drawing.Size(1522, 704);
+            this.dgvStockReport.TabIndex = 78;
+            this.dgvStockReport.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockReport_CellEndEdit);
+            this.dgvStockReport.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvStockReport_CellValidating);
+            this.dgvStockReport.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvStockReport_DefaultValuesNeeded);
+            this.dgvStockReport.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvStockReport_EditingControlShowing);
+            this.dgvStockReport.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgvStockReport_SortCompare);
+            // 
             // frmStockReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.dgvStockReport);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cmbSubType);
             this.Controls.Add(this.btnExportAllToExcel);
             this.Controls.Add(this.TYPE);
             this.Controls.Add(this.cmbType);
-            this.Controls.Add(this.dgvStockReport);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmStockReport";
@@ -183,10 +179,10 @@
 
         private System.Windows.Forms.Label TYPE;
         public System.Windows.Forms.ComboBox cmbType;
-        private System.Windows.Forms.DataGridView dgvStockReport;
         private System.Windows.Forms.Button btnExportAllToExcel;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.ComboBox cmbSubType;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DataGridView dgvStockReport;
     }
 }
