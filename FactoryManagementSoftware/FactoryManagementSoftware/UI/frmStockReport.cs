@@ -446,6 +446,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
+            dgvStockReport.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Excel Documents (*.xls)|*.xls";
             sfd.FileName = setFileName();
@@ -527,6 +528,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
+            dgvStockReport.SelectionMode = DataGridViewSelectionMode.CellSelect;
         }
 
         private void copyAlltoClipboard()

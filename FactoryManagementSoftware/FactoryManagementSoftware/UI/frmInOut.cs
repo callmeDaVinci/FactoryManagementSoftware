@@ -1188,6 +1188,21 @@ namespace FactoryManagementSoftware.UI
 
 
         #endregion
+
+        private void dgvTrf_MouseClick(object sender, MouseEventArgs e)
+        {
+            var ht = dgvTrf.HitTest(e.X, e.Y);
+
+            if (ht.Type == DataGridViewHitTestType.None)
+            {
+                //clicked on grey area
+                dgvItem.ClearSelection();
+                loadTransferList();
+                refreshDataList();
+                resetSaveData();
+                txtSearch.Clear();
+            }
+        }
     }
 }
 

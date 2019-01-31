@@ -463,38 +463,32 @@ namespace FactoryManagementSoftware.UI
 
                     if (tool.ifGotChild(itemCode))
                     {
-                        //if (outStock >= Forecast1Num)
-                        //{
-                        //    Forecast1Num = readyStock;
-                        //}
-                        //else
-                        //{
-                        //    Forecast1Num = readyStock - Forecast1Num + outStock;
-                        //}
-
-                        //Forecast2Num = Forecast1Num - Forecast2Num;
-                        //Forecast3Num = Forecast2Num - Forecast3Num;
-
                         DataTable dtJoin = dalJoin.parentCheck(itemCode);//get children list
                         foreach (DataRow Join in dtJoin.Rows)
                         {
-                            uMatUsed.no = forecastIndex;
-                            uMatUsed.item_code = Join["join_child_code"].ToString();
-                            uMatUsed.quantity_order = Convert.ToInt32(Forecast1Num);
-                            uMatUsed.quantity_order_two = Convert.ToInt32(Forecast2Num);
-                            uMatUsed.quantity_order_three = Convert.ToInt32(Forecast3Num);
-                            uMatUsed.item_out = outStock;
+                            if (dalItem.getCatName(Join["join_child_code"].ToString()).Equals("Part"))
+                            {
+                                if (!string.IsNullOrEmpty(dalItem.getMaterialType(Join["join_child_code"].ToString())))
+                                {
+                                    uMatUsed.no = forecastIndex;
+                                    uMatUsed.item_code = Join["join_child_code"].ToString();
+                                    uMatUsed.quantity_order = Convert.ToInt32(Forecast1Num);
+                                    uMatUsed.quantity_order_two = Convert.ToInt32(Forecast2Num);
+                                    uMatUsed.quantity_order_three = Convert.ToInt32(Forecast3Num);
+                                    uMatUsed.item_out = outStock;
 
-                            bool resultChild = dalMatUsed.Insert(uMatUsed);
-                            if (!resultChild)
-                            {
-                                MessageBox.Show("failed to insert child forecast data for order alert detail.");
-                                return;
-                            }
-                            else
-                            {
-                                forecastIndex++;
-                            }
+                                    bool resultChild = dalMatUsed.Insert(uMatUsed);
+                                    if (!resultChild)
+                                    {
+                                        MessageBox.Show("failed to insert child forecast data for order alert detail.");
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        forecastIndex++;
+                                    }
+                                }
+                            }   
                         }
                     }
                     else

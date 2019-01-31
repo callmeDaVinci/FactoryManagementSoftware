@@ -80,7 +80,7 @@ namespace FactoryManagementSoftware.UI
         private string unit = "!";
         private float qty = -1;
         private string note = "!";
-
+        private string failedNote = "!";
         private int index = 0;
         private int selectedRow = -1;
         private bool dgvEdit = false;
@@ -475,6 +475,11 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_result = stockResult;
             utrfHist.trf_hist_from_order = 0;
 
+            if(stockResult == "Failed")
+            {
+                utrfHist.trf_hist_note = failedNote;
+            }
+
             //Inserting Data into Database
             bool success = daltrfHist.Insert(utrfHist);
             if (!success)
@@ -513,7 +518,7 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("Failed to add new child transfer record");
             }
         }
-
+            
         private bool stockIn(string factoryName, string itemCode, float qty, string sub_unit)
         {
             bool successFacStockIn;
@@ -535,7 +540,6 @@ namespace FactoryManagementSoftware.UI
         private bool childStockOut(string factoryName, string parentItemCode, float qty, int indexNo)
         {
             bool success = true;
-            string stockResult = "Passed";
   
             string childItemCode;
             DataTable dtJoin = dalJoin.parentCheck(parentItemCode);
@@ -544,17 +548,27 @@ namespace FactoryManagementSoftware.UI
                 foreach (DataRow Join in dtJoin.Rows)
                 {
                     float childQty = qty;
+                    childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
                     childItemCode = Join["join_child_code"].ToString();
                     DataTable dtItem = dalItem.codeSearch(childItemCode);
                     childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
                     if (dtItem.Rows.Count > 0)
                     {
-                        if(!stockOut(factoryName, childItemCode, childQty, "piece"))
-                        {
-                            stockResult = "Falied";
-                            success = false;
-                        }
-                        childTransferRecord(stockResult, indexNo, childItemCode, childQty);
+                        DataGridView dgv = dgvTransfer;
+                        int n = dgv.Rows.Add();
+                        index++;
+                        dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                        dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
+                        dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
+                        dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
+                        dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString(); ;
+                        dgv.Rows[n].Cells[FromCatColumnName].Value = "Factory";
+                        dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
+                        dgv.Rows[n].Cells[ToCatColumnName].Value = "Assembly";
+                        dgv.Rows[n].Cells[ToColumnName].Value = "";
+                        dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
+                        dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
+                        dgv.Rows[n].Cells[NoteColumnName].Value = "Assembly Sub Part";
                     }
                 }
             }
@@ -562,9 +576,10 @@ namespace FactoryManagementSoftware.UI
             return success;
         }
     
-        private void transferAction()
+        private bool transferAction()
         {
             string result = "Passed";
+            bool success = true;
 
             //part in out
             if (category.Equals("Part"))
@@ -616,19 +631,22 @@ namespace FactoryManagementSoftware.UI
                 else if (fromCat.Equals("Assembly") && toCat.Equals("Factory"))
                 {
 
-                    if (ifGotChild())
+                    if (tool.ifGotChild(itemCode))
                     {
                         if (!stockIn(to, itemCode, qty, unit))
                         {
                             result = "Failed";
                         }
-                        childStockOut(to, itemCode, qty, transferRecord(result));
+                        //childStockOut(to, itemCode, qty, transferRecord(result));
                     }
                     else
                     {
                         MessageBox.Show("This item not a assembly part");
                         result = "Failed";
                     }
+
+                    failedNote = "not a assembly part";
+                    transferRecord(result);
                 }
                 else if (toCat.Equals("Factory"))
                 {
@@ -708,12 +726,14 @@ namespace FactoryManagementSoftware.UI
             {
                 updateSuccess = true;
                 frmInOut.editingItemCode = itemCode;
-                this.Close();
             }
             else
             {
                 updateSuccess = false;
+                success = false;
             }
+
+            return success;
         }
 
         #endregion
@@ -731,14 +751,18 @@ namespace FactoryManagementSoftware.UI
                 if (dialogResult == DialogResult.Yes)
                 {
                     //foreach row and make transfer action
-
                     foreach (DataGridViewRow c in dgvTransfer.Rows)
                     {
                         selectedRow = c.Index;
                         getData();
-                        transferAction();
-                    }
-                    
+                        
+                        if(!transferAction())
+                        {
+                            MessageBox.Show("Action Stop");
+                            Cursor = Cursors.Arrow; // change cursor to normal type 
+                            return;
+                        }
+                    } 
                 }
             }    
 
@@ -864,6 +888,19 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[n].Cells[UnitColumnName].Value = cmbTrfQtyUnit.Text;
             dgv.Rows[n].Cells[NoteColumnName].Value = txtTrfNote.Text;
 
+            if(ifGotChild())
+            {
+                string factoryName = "";
+                if(string.IsNullOrEmpty(cmbTrfTo.Text))
+                {
+                    factoryName = cmbTrfToCategory.Text;
+                }
+                else
+                {
+                    factoryName = cmbTrfTo.Text;
+                }
+                childStockOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text),-1);
+            }
             dgv.ClearSelection();
             dgv.Rows[n].Selected = true;
         }
@@ -912,28 +949,32 @@ namespace FactoryManagementSoftware.UI
 
             DateTime curDate;
 
-            if (DateTime.TryParse(dgv.Rows[selectedRow].Cells[DateColumnName].Value.ToString(), out curDate))
+            if(selectedRow >= 0)
             {
-                dtpTrfDate.Value = curDate;
+                if (DateTime.TryParse(dgv.Rows[selectedRow].Cells[DateColumnName].Value.ToString(), out curDate))
+                {
+                    dtpTrfDate.Value = curDate;
+                }
+
+                cmbTrfItemCat.Text = dgv.Rows[selectedRow].Cells[CatColumnName].Value.ToString();
+                cmbTrfItemName.Text = dgv.Rows[selectedRow].Cells[NameColumnName].Value.ToString();
+                cmbTrfItemCode.Text = dgv.Rows[selectedRow].Cells[CodeColumnName].Value.ToString();
+
+                cmbTrfFromCategory.Text = dgv.Rows[selectedRow].Cells[FromCatColumnName].Value.ToString();
+                cmbTrfFrom.Text = dgv.Rows[selectedRow].Cells[FromColumnName].Value.ToString();
+                cmbTrfToCategory.Text = dgv.Rows[selectedRow].Cells[ToCatColumnName].Value.ToString();
+                cmbTrfTo.Text = dgv.Rows[selectedRow].Cells[ToColumnName].Value.ToString();
+
+                txtTrfQty.Text = dgv.Rows[selectedRow].Cells[QtyColumnName].Value.ToString();
+                cmbTrfQtyUnit.Text = dgv.Rows[selectedRow].Cells[UnitColumnName].Value.ToString();
+                txtTrfNote.Text = dgv.Rows[selectedRow].Cells[NoteColumnName].Value.ToString();
             }
-
-            cmbTrfItemCat.Text = dgv.Rows[selectedRow].Cells[CatColumnName].Value.ToString();
-            cmbTrfItemName.Text = dgv.Rows[selectedRow].Cells[NameColumnName].Value.ToString();
-            cmbTrfItemCode.Text = dgv.Rows[selectedRow].Cells[CodeColumnName].Value.ToString();
-
-            cmbTrfFromCategory.Text = dgv.Rows[selectedRow].Cells[FromCatColumnName].Value.ToString();
-            cmbTrfFrom.Text = dgv.Rows[selectedRow].Cells[FromColumnName].Value.ToString();
-            cmbTrfToCategory.Text = dgv.Rows[selectedRow].Cells[ToCatColumnName].Value.ToString();
-            cmbTrfTo.Text = dgv.Rows[selectedRow].Cells[ToColumnName].Value.ToString();
-
-            txtTrfQty.Text = dgv.Rows[selectedRow].Cells[QtyColumnName].Value.ToString();
-            cmbTrfQtyUnit.Text = dgv.Rows[selectedRow].Cells[UnitColumnName].Value.ToString();
-            txtTrfNote.Text = dgv.Rows[selectedRow].Cells[NoteColumnName].Value.ToString();
+            
         }
 
         private void changeButton()
         {
-            if(dgvEdit)
+            if(dgvEdit && selectedRow >= 0)
             {
                 btnEdit.Text = "EDIT";
                 btnDelete.Show();
@@ -984,7 +1025,7 @@ namespace FactoryManagementSoftware.UI
             to = dgv.Rows[n].Cells[ToColumnName].Value.ToString();
             unit = dgv.Rows[n].Cells[UnitColumnName].Value.ToString();
             qty = Convert.ToSingle(dgv.Rows[n].Cells[QtyColumnName].Value);
-            note = dgv.Rows[n].Cells[ToColumnName].Value.ToString();
+            note = dgv.Rows[n].Cells[NoteColumnName].Value.ToString();
 
             qty = unitCheck(qty, unit);
             unit = checkUnit(unit);
