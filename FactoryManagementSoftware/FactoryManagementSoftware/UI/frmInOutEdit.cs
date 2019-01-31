@@ -569,6 +569,20 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
                         dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
                         dgv.Rows[n].Cells[NoteColumnName].Value = "Assembly Sub Part";
+
+                        facStockDAL dalFacStock = new facStockDAL();
+                        float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
+                        float transferQty = Convert.ToSingle(txtTrfQty.Text);
+
+                        if (facStock - transferQty < 0)
+                        {
+                            dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Red;
+                        }
+                        else
+                        {
+                            dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Black;
+                        }
+                        
                     }
                 }
             }
@@ -888,19 +902,40 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[n].Cells[UnitColumnName].Value = cmbTrfQtyUnit.Text;
             dgv.Rows[n].Cells[NoteColumnName].Value = txtTrfNote.Text;
 
-            if(ifGotChild())
+            if (cmbTrfFromCategory.Text.Equals("Factory"))
             {
-                string factoryName = "";
-                if(string.IsNullOrEmpty(cmbTrfTo.Text))
+                facStockDAL dalFacStock = new facStockDAL();
+                float facStock = dalFacStock.getQty(cmbTrfItemCode.Text, tool.getFactoryID(cmbTrfFrom.Text).ToString());
+                float transferQty = Convert.ToSingle(txtTrfQty.Text);
+
+                if(facStock - transferQty < 0)
                 {
-                    factoryName = cmbTrfToCategory.Text;
+                    dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Red;
                 }
-                else
-                {
-                    factoryName = cmbTrfTo.Text;
-                }
-                childStockOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text),-1);
             }
+            else
+            {
+                dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Black;
+            }
+
+            if (cmbTrfFromCategory.Text.Equals("Assembly") && cmbTrfToCategory.Text.Equals("Factory"))
+            {
+                if (tool.ifGotChild(cmbTrfItemCode.Text))
+                {
+                    
+                    string factoryName = "";
+                    if (string.IsNullOrEmpty(cmbTrfTo.Text))
+                    {
+                        factoryName = cmbTrfToCategory.Text;
+                    }
+                    else
+                    {
+                        factoryName = cmbTrfTo.Text;
+                    }
+                    childStockOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text), -1);
+                }
+            }
+           
             dgv.ClearSelection();
             dgv.Rows[n].Selected = true;
         }
@@ -1033,6 +1068,23 @@ namespace FactoryManagementSoftware.UI
             if (qty < 0)
             {
                 qty = 0;
+            }
+        }
+
+        private void frmInOutEdit_MouseClick(object sender, MouseEventArgs e)
+        {
+            dgvTransfer.ClearSelection();
+        }
+
+        private void dgvTransfer_MouseClick(object sender, MouseEventArgs e)
+        {
+            var ht = dgvTransfer.HitTest(e.X, e.Y);
+
+            if (ht.Type == DataGridViewHitTestType.None)
+            {
+                //clicked on grey area
+                dgvTransfer.ClearSelection();
+
             }
         }
     }

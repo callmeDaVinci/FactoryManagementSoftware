@@ -201,7 +201,7 @@ namespace FactoryManagementSoftware.DAL
                 return false;
         }
 
-        private float getQty(string itemCode, string facID)
+        public float getQty(string itemCode, string facID)
         {
             float qty = 0;
             if (IfExists(itemCode, facID))
