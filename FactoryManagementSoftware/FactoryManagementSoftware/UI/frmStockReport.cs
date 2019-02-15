@@ -378,20 +378,27 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
-            dgvStockReport.Rows.Clear();
-            dgvStockReport.Refresh();
-            if (cmbType.Text.Equals(CMBPartHeader))
+            try
             {
-                tool.loadCustomerToComboBox(cmbSubType);
-            }
-            else if(cmbType.Text.Equals(CMBMaterialHeader))
-            {
-                loadMaterialToComboBox(cmbSubType);
-            }
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-            Cursor = Cursors.Arrow; // change cursor to normal type
+                dgvStockReport.Rows.Clear();
+                dgvStockReport.Refresh();
+                if (cmbType.Text.Equals(CMBPartHeader))
+                {
+                    tool.loadCustomerToComboBox(cmbSubType);
+                }
+                else if (cmbType.Text.Equals(CMBMaterialHeader))
+                {
+                    loadMaterialToComboBox(cmbSubType);
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }         
         }
 
         private void txtItemSearch_TextChanged(object sender, EventArgs e)
@@ -417,18 +424,23 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbSubType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            if (cmbType.Text.Equals(CMBPartHeader))
+            try
             {
-                loadPartStockData();
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                if (cmbType.Text.Equals(CMBPartHeader))
+                {
+                    loadPartStockData();
+                }
+                else if (cmbType.Text.Equals(CMBMaterialHeader))
+                {
+                    loadMaterialStockData();
+                }
+                Cursor = Cursors.Arrow; // change cursor to normal type
             }
-            else if (cmbType.Text.Equals(CMBMaterialHeader))
+            catch (Exception ex)
             {
-                loadMaterialStockData();
-            }
-
-
-            Cursor = Cursors.Arrow; // change cursor to normal type
+                tool.saveToTextAndMessageToUser(ex);
+            }  
         }
 
         #endregion
@@ -446,89 +458,96 @@ namespace FactoryManagementSoftware.UI
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
-            dgvStockReport.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Excel Documents (*.xls)|*.xls";
-            sfd.FileName = setFileName();
-            
-            if (sfd.ShowDialog() == DialogResult.OK)
+            try
             {
-                tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+                dgvStockReport.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                sfd.FileName = setFileName();
 
-                // Copy DataGridView results to clipboard
-                copyAlltoClipboard();
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                object misValue = System.Reflection.Missing.Value;
-                Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
-                xlexcel.PrintCommunication = false;
-                xlexcel.ScreenUpdating = false;
-                xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
-                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
 
-                xlexcel.Calculation = XlCalculation.xlCalculationManual;
-                Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                xlWorkSheet.Name = cmbSubType.Text;
+                    // Copy DataGridView results to clipboard
+                    copyAlltoClipboard();
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    object misValue = System.Reflection.Missing.Value;
+                    Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
+                    xlexcel.PrintCommunication = false;
+                    xlexcel.ScreenUpdating = false;
+                    xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
+                    Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
 
-                #region Save data to Sheet
+                    xlexcel.Calculation = XlCalculation.xlCalculationManual;
+                    Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+                    xlWorkSheet.Name = cmbSubType.Text;
 
-                //Header and Footer setup
-                //xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy");
-                xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 " + DateTime.Now.Date.ToString("dd/MM/yyyy") + "                                        (" + cmbSubType.Text + ") STOCK LIST                                         PG -&P";
-                //xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                xlWorkSheet.PageSetup.CenterFooter = "Printed By "+dalUser.getUsername(MainDashboard.USER_ID);
+                    #region Save data to Sheet
 
-                //Page setup
-                xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
-                xlWorkSheet.PageSetup.Zoom = false;
-                xlWorkSheet.PageSetup.CenterHorizontally = true;
-                xlWorkSheet.PageSetup.LeftMargin = 1;
-                xlWorkSheet.PageSetup.RightMargin = 1;
-                xlWorkSheet.PageSetup.FitToPagesWide = 1;
-                xlWorkSheet.PageSetup.FitToPagesTall = false;
-                xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+                    //Header and Footer setup
+                    //xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy");
+                    xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 " + DateTime.Now.Date.ToString("dd/MM/yyyy") + "                                        (" + cmbSubType.Text + ") STOCK LIST                                         PG -&P";
+                    //xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
+                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
 
-                xlexcel.PrintCommunication = true;
-                xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
-                // Paste clipboard results to worksheet range
-                xlWorkSheet.Select();
-                Range CR = (Range)xlWorkSheet.Cells[1, 1];
-                CR.Select();
-                xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+                    //Page setup
+                    xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                    xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
+                    xlWorkSheet.PageSetup.Zoom = false;
+                    xlWorkSheet.PageSetup.CenterHorizontally = true;
+                    xlWorkSheet.PageSetup.LeftMargin = 1;
+                    xlWorkSheet.PageSetup.RightMargin = 1;
+                    xlWorkSheet.PageSetup.FitToPagesWide = 1;
+                    xlWorkSheet.PageSetup.FitToPagesTall = false;
+                    xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
 
-                //content edit
-                Range tRange = xlWorkSheet.UsedRange;
-                tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-                tRange.Borders.Weight = XlBorderWeight.xlThin;
-                tRange.Font.Size = 11;
-                tRange.EntireColumn.AutoFit();
-                tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
+                    xlexcel.PrintCommunication = true;
+                    xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+                    // Paste clipboard results to worksheet range
+                    xlWorkSheet.Select();
+                    Range CR = (Range)xlWorkSheet.Cells[1, 1];
+                    CR.Select();
+                    xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
 
-                #endregion
-                
-                //Save the excel file under the captured location from the SaveFileDialog
-                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal, 
-                    misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlexcel.DisplayAlerts = true;
+                    //content edit
+                    Range tRange = xlWorkSheet.UsedRange;
+                    tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                    tRange.Borders.Weight = XlBorderWeight.xlThin;
+                    tRange.Font.Size = 11;
+                    tRange.EntireColumn.AutoFit();
+                    tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
 
-                xlWorkBook.Close(true, misValue, misValue);
-                xlexcel.Quit();
+                    #endregion
 
-                releaseObject(xlWorkSheet);
-                releaseObject(xlWorkBook);
-                releaseObject(xlexcel);
+                    //Save the excel file under the captured location from the SaveFileDialog
+                    xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
+                        misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                    xlexcel.DisplayAlerts = true;
 
-                // Clear Clipboard and DataGridView selection
-                Clipboard.Clear();
-                dgvStockReport.ClearSelection();
+                    xlWorkBook.Close(true, misValue, misValue);
+                    xlexcel.Quit();
 
-                // Open the newly saved excel file
-                if (File.Exists(sfd.FileName))
-                    System.Diagnostics.Process.Start(sfd.FileName);
+                    releaseObject(xlWorkSheet);
+                    releaseObject(xlWorkBook);
+                    releaseObject(xlexcel);
+
+                    // Clear Clipboard and DataGridView selection
+                    Clipboard.Clear();
+                    dgvStockReport.ClearSelection();
+
+                    // Open the newly saved excel file
+                    if (File.Exists(sfd.FileName))
+                        System.Diagnostics.Process.Start(sfd.FileName);
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+                dgvStockReport.SelectionMode = DataGridViewSelectionMode.CellSelect;
             }
-
-            Cursor = Cursors.Arrow; // change cursor to normal type
-            dgvStockReport.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }  
         }
 
         private void copyAlltoClipboard()
@@ -559,44 +578,51 @@ namespace FactoryManagementSoftware.UI
 
         private void btnExportAllToExcel_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-    
-            sfd.Filter = "Excel Documents (*.xls)|*.xls";
-            sfd.FileName = "StockReport(ALL)_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
-
-            if (sfd.ShowDialog() == DialogResult.OK)
+            try
             {
-                tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+                SaveFileDialog sfd = new SaveFileDialog();
 
-                string path = Path.GetFullPath(sfd.FileName);
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                object misValue = System.Reflection.Missing.Value;
-                Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
-                xlexcel.PrintCommunication = false;
-                xlexcel.ScreenUpdating = false;
-                xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
-                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+                sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                sfd.FileName = "StockReport(ALL)_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
 
-                //Save the excel file under the captured location from the SaveFileDialog
-                xlWorkBook.SaveAs(sfd.FileName, 
-                    XlFileFormat.xlWorkbookNormal, 
-                    misValue, misValue, misValue, misValue, 
-                    XlSaveAsAccessMode.xlExclusive, 
-                    misValue, misValue, misValue, misValue, misValue);
-     
-                insertDataToSheet(path,sfd.FileName);
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
 
-                xlexcel.DisplayAlerts = true;
-                xlWorkBook.Close(true, misValue, misValue);
-                xlexcel.Quit();
+                    string path = Path.GetFullPath(sfd.FileName);
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    object misValue = System.Reflection.Missing.Value;
+                    Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
+                    xlexcel.PrintCommunication = false;
+                    xlexcel.ScreenUpdating = false;
+                    xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
+                    Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
 
-                releaseObject(xlWorkBook);
-                releaseObject(xlexcel);
+                    //Save the excel file under the captured location from the SaveFileDialog
+                    xlWorkBook.SaveAs(sfd.FileName,
+                        XlFileFormat.xlWorkbookNormal,
+                        misValue, misValue, misValue, misValue,
+                        XlSaveAsAccessMode.xlExclusive,
+                        misValue, misValue, misValue, misValue, misValue);
 
-                // Clear Clipboard and DataGridView selection
-                Clipboard.Clear();
-                dgvStockReport.ClearSelection();
+                    insertDataToSheet(path, sfd.FileName);
+
+                    xlexcel.DisplayAlerts = true;
+                    xlWorkBook.Close(true, misValue, misValue);
+                    xlexcel.Quit();
+
+                    releaseObject(xlWorkBook);
+                    releaseObject(xlexcel);
+
+                    // Clear Clipboard and DataGridView selection
+                    Clipboard.Clear();
+                    dgvStockReport.ClearSelection();
+                }
             }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }  
         }
 
         private void insertDataToSheet(string path, string fileName)

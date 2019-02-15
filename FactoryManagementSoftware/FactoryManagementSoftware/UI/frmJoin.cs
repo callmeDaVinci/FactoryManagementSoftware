@@ -1,6 +1,5 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
-using FactoryManagementSoftware.UI;
 using System;
 using System.Data;
 using System.Drawing;
@@ -17,7 +16,7 @@ namespace FactoryManagementSoftware.UI
 
         joinBLL uJoin = new joinBLL();
         joinDAL dalJoin = new joinDAL();
-
+        itemDAL dalItem = new itemDAL();
         private int currentRowIndex;
 
         private void loadData()
@@ -98,27 +97,31 @@ namespace FactoryManagementSoftware.UI
                 bool rowColorChange = true;
                 dgvJoin.Rows.Clear();
 
-                foreach (DataRow item in dt.Rows)
+                if(dt.Rows.Count > 0)
                 {
-                    int n = dgvJoin.Rows.Add();
-                    if (rowColorChange)
+                    foreach (DataRow item in dt.Rows)
                     {
-                        dgvJoin.Rows[n].DefaultCellStyle.BackColor = Control.DefaultBackColor;
-                        rowColorChange = false;
+                        int n = dgvJoin.Rows.Add();
+                        if (rowColorChange)
+                        {
+                            dgvJoin.Rows[n].DefaultCellStyle.BackColor = Control.DefaultBackColor;
+                            rowColorChange = false;
+                        }
+                        else
+                        {
+                            dgvJoin.Rows[n].DefaultCellStyle.BackColor = Color.White;
+                            rowColorChange = true;
+                        }
+                        
+                        dgvJoin.Rows[n].Cells["join_parent_code"].Value = item["join_parent_code"].ToString();
+                        dgvJoin.Rows[n].Cells["join_parent_name"].Value = dalItem.getItemName(item["join_parent_code"].ToString()); 
+                        dgvJoin.Rows[n].Cells["join_child_code"].Value = item["join_child_code"].ToString();
+                        dgvJoin.Rows[n].Cells["join_child_name"].Value = dalItem.getItemName(item["join_child_code"].ToString());
+                        dgvJoin.Rows[n].Cells["join_qty"].Value = item["join_qty"].ToString();
                     }
-                    else
-                    {
-                        dgvJoin.Rows[n].DefaultCellStyle.BackColor = Color.White;
-                        rowColorChange = true;
-                    }
-
-                    dgvJoin.Rows[n].Cells["join_parent_code"].Value = item["join_parent_code"].ToString();
-                    dgvJoin.Rows[n].Cells["join_parent_name"].Value = item["join_parent_name"].ToString();
-                    dgvJoin.Rows[n].Cells["join_child_code"].Value = item["join_child_code"].ToString();
-                    dgvJoin.Rows[n].Cells["join_child_name"].Value = item["join_child_name"].ToString();
-                    dgvJoin.Rows[n].Cells["join_qty"].Value = item["join_qty"].ToString();
+                    dgvJoin.ClearSelection();
                 }
-                dgvJoin.ClearSelection();
+                
             }
         }
 

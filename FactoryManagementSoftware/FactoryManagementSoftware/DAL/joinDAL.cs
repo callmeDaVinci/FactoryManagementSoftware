@@ -35,7 +35,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -82,7 +82,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -124,7 +124,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -164,7 +164,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -185,7 +185,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_join WHERE join_parent_name LIKE '%" + keywords + "%' OR join_parent_code LIKE '%" + keywords + "%' OR join_child_name LIKE '%" + keywords + "%' OR join_child_code LIKE '%" + keywords + "%'";
+                String sql = "SELECT * FROM tbl_join WHERE join_parent_code LIKE '%" + keywords + "%' OR join_child_code LIKE '%" + keywords + "%'";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -201,7 +201,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -237,7 +237,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -272,7 +272,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -309,7 +309,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -339,7 +339,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {

@@ -16,10 +16,16 @@ namespace FactoryManagementSoftware.UI
     {
         public frmPMMA()
         {
+           
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             InitializeComponent();
             dataSourceSetup();
             Cursor = Cursors.Arrow; // change cursor to normal type
+            //}
+            //catch (Exception ex)
+            //{
+            //    tool.saveToTextAndMessageToUser(ex);
+            //}
         }
 
         #region Class Object
@@ -143,9 +149,14 @@ namespace FactoryManagementSoftware.UI
         private void dataSourceSetup()
         {
             // Set the Format type and the CustomFormat string.
+            //DateTime date = DateTime.ParseExact(DateTime.Now.ToString("dd/MM/yyyy"), "dd/MM/yyyy", null);
+            //dtpDate.Value = date;
+            
             dtpDate.Format = DateTimePickerFormat.Custom;
             dtpDate.CustomFormat = "MMMM yyyy";
             
+            
+
             dtpDate.ShowUpDown = true;// to prevent the calendar from being displayed
 
             //Out Type
@@ -808,32 +819,46 @@ namespace FactoryManagementSoftware.UI
         
         private void dgvPMMA_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
-
-            if (dgvPMMA.CurrentCell.ColumnIndex == dgvPMMA.Columns[IndexPercentageName].Index ) //Desired Column
+            try
             {
-                System.Windows.Forms.TextBox tb = e.Control as System.Windows.Forms.TextBox;
-                if (tb != null) 
+                e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
+
+                if (dgvPMMA.CurrentCell.ColumnIndex == dgvPMMA.Columns[IndexPercentageName].Index) //Desired Column
                 {
-                    tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
+                    System.Windows.Forms.TextBox tb = e.Control as System.Windows.Forms.TextBox;
+                    if (tb != null)
+                    {
+                        tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            
         }
 
         private void dgvPMMA_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            var oldValue = dgvPMMA[e.ColumnIndex, e.RowIndex].Value;
-            var newValue = e.FormattedValue;
-            int columnIndex = dgvPMMA.CurrentCell.ColumnIndex;
-            string columnName = dgvPMMA.Columns[columnIndex].HeaderText;
-
-            if (!oldValue.ToString().Equals(newValue.ToString()))
+            try
             {
-                editedOldValue = oldValue.ToString();
-                editedNewValue = newValue.ToString();
-                editedHeaderText = columnName;
-            }
+                var oldValue = dgvPMMA[e.ColumnIndex, e.RowIndex].Value;
+                var newValue = e.FormattedValue;
+                int columnIndex = dgvPMMA.CurrentCell.ColumnIndex;
+                string columnName = dgvPMMA.Columns[columnIndex].HeaderText;
 
+                if (!oldValue.ToString().Equals(newValue.ToString()))
+                {
+                    editedOldValue = oldValue.ToString();
+                    editedNewValue = newValue.ToString();
+                    editedHeaderText = columnName;
+                }
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
 
         private void dgvPMMA_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -843,159 +868,36 @@ namespace FactoryManagementSoftware.UI
             DateTime currentDate = DateTime.Now;
 
             int rowIndex = e.RowIndex;
-
-            float openningStock = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.OpenStock].Value.ToString());
-            float inQty = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexInName].Value.ToString());
-            float outQty = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexOutName].Value.ToString());
-            float bal = openningStock + inQty - outQty;
-            float percentage = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexPercentageName].Value.ToString());
-            float wastage = outQty * percentage;
-            string itemCode = dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
-            float adjust = 0;
-            DateTime date = Convert.ToDateTime(dtpDate.Text).Date;
-            if (dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value != null)
+            try
             {
-                adjust = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value.ToString());
-            }
-
-            string note = "";
-            if(dgv.Rows[rowIndex].Cells[dalPMMA.Note].Value != null)
-            {
-                note = dgv.Rows[rowIndex].Cells[dalPMMA.Note].Value.ToString();
-            }
-           
-
-            dgv.Rows[rowIndex].Cells[IndexBalName].Value = bal.ToString("0.00");
-            dgv.Rows[rowIndex].Cells[IndexWastageName].Value = wastage.ToString("0.00");
-            dgv.Rows[rowIndex].Cells[dalPMMA.BalStock].Value = (bal - wastage + adjust).ToString("0.00");
-
-
-            uPMMA.pmma_item_code = itemCode;
-            uPMMA.pmma_date = date;
-            uPMMA.pmma_openning_stock = openningStock;
-            uPMMA.pmma_percentage = percentage;
-            uPMMA.pmma_adjust = adjust;
-            uPMMA.pmma_note = note;
-            uPMMA.pmma_bal_stock = bal - wastage + adjust;
-            uPMMA.pmma_updated_date = DateTime.Now;
-            uPMMA.pmma_updated_by = MainDashboard.USER_ID;
-
-
-            bool success = dalPMMA.update(uPMMA);
-
-            if (!success)
-            {
-                MessageBox.Show("Failed to updated PMMA item");
-                tool.historyRecord(text.System, "Failed to updated PMMA item(frmPMMA)", DateTime.Now, MainDashboard.USER_ID);
-            }
-            else
-            {
-                tool.historyRecord(text.PMMAEdit,text.getPMMAEditString(itemCode, date.ToString("MMMMyy"),editedHeaderText,editedOldValue,editedNewValue),DateTime.Now,MainDashboard.USER_ID);
-            }
-
-        }
-
-        #endregion
-
-        private void btnTransfer_Click(object sender, EventArgs e)
-        {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            string outType = cmbType.Text;
-            if (outType.Equals(cmbTypeActual))
-            {
-                getMonthlyStockData();
-                firstForecastChecked = false;
-                secondForecastChecked = false;
-            }
-            else if (outType.Equals(cmbTypeForecast))
-            {
-                int n = checkIfForecastExist();
-
-                if(n == 1)
-                {
-                    getMonthlyStockData();
-                    firstForecastChecked = true;
-                }
-                else if(n == 2)
-                {
-                    if(firstForecastChecked)
-                    {
-                        getMonthlyStockData();
-                        secondForecastChecked = true;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Please check the data of the forecast 1 month before checking the data of the forecast 2 month.");
-                    }
-                }
-                else if (n == 3)
-                {
-                    if (secondForecastChecked)
-                    {
-                        getMonthlyStockData();
-                        secondForecastChecked = true;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Please check the data of the forecast 2 month before checking the data of the forecast 3 month.");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Forecast data for this month not exist.");
-                }
-            }
-
-            
-            
-            foreach (DataGridViewRow row in dgvPMMA.Rows)
-            {
-
-                float openningStock = 0;
-
-                if (row.Cells[dalPMMA.OpenStock].Value != null)
-                {
-                    openningStock = Convert.ToSingle(row.Cells[dalPMMA.OpenStock].Value.ToString());
-                }
-
-                float inQty = 0;
-                float outQty = 0;
-
-                if (row.Cells[IndexInName].Value != null)
-                {
-                    inQty = Convert.ToSingle(row.Cells[IndexInName].Value.ToString());
-                }
-
-                if (row.Cells[IndexOutName].Value != null)
-                {
-                    outQty = Convert.ToSingle(row.Cells[IndexOutName].Value.ToString());
-                }
-
+                float openningStock = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.OpenStock].Value.ToString());
+                float inQty = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexInName].Value.ToString());
+                float outQty = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexOutName].Value.ToString());
                 float bal = openningStock + inQty - outQty;
-
-                float percentage = 0;
-                float adjust = 0;
-
-                if (row.Cells[IndexPercentageName].Value  != null)
-                {
-                    percentage = Convert.ToSingle(row.Cells[IndexPercentageName].Value.ToString());
-                }
-
+                float percentage = Convert.ToSingle(dgv.Rows[rowIndex].Cells[IndexPercentageName].Value.ToString());
                 float wastage = outQty * percentage;
-                
-                if (row.Cells[dalPMMA.Adjust].Value != null)
+                string itemCode = dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
+                float adjust = 0;
+                DateTime date = Convert.ToDateTime(dtpDate.Text).Date;
+                if (dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value != null)
                 {
-                    adjust = Convert.ToSingle(row.Cells[dalPMMA.Adjust].Value.ToString());
+                    adjust = Convert.ToSingle(dgv.Rows[rowIndex].Cells[dalPMMA.Adjust].Value.ToString());
                 }
 
                 string note = "";
-                if (row.Cells[dalPMMA.Note].Value != null)
+                if (dgv.Rows[rowIndex].Cells[dalPMMA.Note].Value != null)
                 {
-                    note = row.Cells[dalPMMA.Note].Value.ToString();
+                    note = dgv.Rows[rowIndex].Cells[dalPMMA.Note].Value.ToString();
                 }
 
-                uPMMA.pmma_item_code = row.Cells[dalItem.ItemCode].Value.ToString();
-                uPMMA.pmma_date = Convert.ToDateTime(dtpDate.Text);
+
+                dgv.Rows[rowIndex].Cells[IndexBalName].Value = bal.ToString("0.00");
+                dgv.Rows[rowIndex].Cells[IndexWastageName].Value = wastage.ToString("0.00");
+                dgv.Rows[rowIndex].Cells[dalPMMA.BalStock].Value = (bal - wastage + adjust).ToString("0.00");
+
+
+                uPMMA.pmma_item_code = itemCode;
+                uPMMA.pmma_date = date;
                 uPMMA.pmma_openning_stock = openningStock;
                 uPMMA.pmma_percentage = percentage;
                 uPMMA.pmma_adjust = adjust;
@@ -1009,11 +911,144 @@ namespace FactoryManagementSoftware.UI
 
                 if (!success)
                 {
-                    MessageBox.Show("Failed to updated item pmma qty");
+                    MessageBox.Show("Failed to updated PMMA item");
+                    tool.historyRecord(text.System, "Failed to updated PMMA item(frmPMMA)", DateTime.Now, MainDashboard.USER_ID);
                 }
-            }
+                else
+                {
+                    tool.historyRecord(text.PMMAEdit, text.getPMMAEditString(itemCode, date.ToString("MMMMyy"), editedHeaderText, editedOldValue, editedNewValue), DateTime.Now, MainDashboard.USER_ID);
+                }
 
-            Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
+        #endregion
+
+        private void btnTransfer_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                string outType = cmbType.Text;
+                if (outType.Equals(cmbTypeActual))
+                {
+                    getMonthlyStockData();
+                    firstForecastChecked = false;
+                    secondForecastChecked = false;
+                }
+                else if (outType.Equals(cmbTypeForecast))
+                {
+                    int n = checkIfForecastExist();
+
+                    if (n == 1)
+                    {
+                        getMonthlyStockData();
+                        firstForecastChecked = true;
+                    }
+                    else if (n == 2)
+                    {
+                        if (firstForecastChecked)
+                        {
+                            getMonthlyStockData();
+                            secondForecastChecked = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please check the data of the forecast 1 month before checking the data of the forecast 2 month.");
+                        }
+                    }
+                    else if (n == 3)
+                    {
+                        if (secondForecastChecked)
+                        {
+                            getMonthlyStockData();
+                            secondForecastChecked = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please check the data of the forecast 2 month before checking the data of the forecast 3 month.");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Forecast data for this month not exist.");
+                    }
+                }
+
+                foreach (DataGridViewRow row in dgvPMMA.Rows)
+                {
+
+                    float openningStock = 0;
+
+                    if (row.Cells[dalPMMA.OpenStock].Value != null)
+                    {
+                        openningStock = Convert.ToSingle(row.Cells[dalPMMA.OpenStock].Value.ToString());
+                    }
+
+                    float inQty = 0;
+                    float outQty = 0;
+
+                    if (row.Cells[IndexInName].Value != null)
+                    {
+                        inQty = Convert.ToSingle(row.Cells[IndexInName].Value.ToString());
+                    }
+
+                    if (row.Cells[IndexOutName].Value != null)
+                    {
+                        outQty = Convert.ToSingle(row.Cells[IndexOutName].Value.ToString());
+                    }
+
+                    float bal = openningStock + inQty - outQty;
+
+                    float percentage = 0;
+                    float adjust = 0;
+
+                    if (row.Cells[IndexPercentageName].Value != null)
+                    {
+                        percentage = Convert.ToSingle(row.Cells[IndexPercentageName].Value.ToString());
+                    }
+
+                    float wastage = outQty * percentage;
+
+                    if (row.Cells[dalPMMA.Adjust].Value != null)
+                    {
+                        adjust = Convert.ToSingle(row.Cells[dalPMMA.Adjust].Value.ToString());
+                    }
+
+                    string note = "";
+                    if (row.Cells[dalPMMA.Note].Value != null)
+                    {
+                        note = row.Cells[dalPMMA.Note].Value.ToString();
+                    }
+
+                    uPMMA.pmma_item_code = row.Cells[dalItem.ItemCode].Value.ToString();
+                    uPMMA.pmma_date = Convert.ToDateTime(dtpDate.Text);
+                    uPMMA.pmma_openning_stock = openningStock;
+                    uPMMA.pmma_percentage = percentage;
+                    uPMMA.pmma_adjust = adjust;
+                    uPMMA.pmma_note = note;
+                    uPMMA.pmma_bal_stock = bal - wastage + adjust;
+                    uPMMA.pmma_updated_date = DateTime.Now;
+                    uPMMA.pmma_updated_by = MainDashboard.USER_ID;
+
+                    bool success = dalPMMA.update(uPMMA);
+
+                    if (!success)
+                    {
+                        MessageBox.Show("Failed to updated item pmma qty");
+                    }
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type 
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
 
         private int getNextMonth(int currentMonth)
@@ -1093,6 +1128,8 @@ namespace FactoryManagementSoftware.UI
         {
             bool actualExist = false;
             DateTime selectedDate = Convert.ToDateTime(dtpDate.Text);
+            //DateTime selectedDate = Convert.ToDateTime(dtpDate.Text,System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
+
             int CurrentMonth = DateTime.Now.Month;
             int CurrentYear = DateTime.Now.Year;
             int selectedMonth = selectedDate.Month;
@@ -1137,87 +1174,94 @@ namespace FactoryManagementSoftware.UI
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Excel Documents (*.xls)|*.xls";
-            sfd.FileName = setFileName();
-
-            if (sfd.ShowDialog() == DialogResult.OK)
+            try
             {
-                tool.historyRecord(text.Excel,text.getExcelString(setFileName()),DateTime.Now,MainDashboard.USER_ID);
-                // Copy DataGridView results to clipboard
-                copyAlltoClipboard();
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                object misValue = System.Reflection.Missing.Value;
-                Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
-                xlexcel.PrintCommunication = false;
-                xlexcel.ScreenUpdating = false;
-                xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
-                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                sfd.FileName = setFileName();
 
-                xlexcel.Calculation = XlCalculation.xlCalculationManual;
-                Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                xlWorkSheet.Name = tool.getCustName(1);
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    tool.historyRecord(text.Excel, text.getExcelString(setFileName()), DateTime.Now, MainDashboard.USER_ID);
+                    // Copy DataGridView results to clipboard
+                    copyAlltoClipboard();
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    object misValue = System.Reflection.Missing.Value;
+                    Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
+                    xlexcel.PrintCommunication = false;
+                    xlexcel.ScreenUpdating = false;
+                    xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
+                    Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
 
-                #region Save data to Sheet
-                xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + tool.getCustName(1) + ") END MONTH STOCK REPORT("+dtpDate.Text+")";
-                
+                    xlexcel.Calculation = XlCalculation.xlCalculationManual;
+                    Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+                    xlWorkSheet.Name = tool.getCustName(1);
 
-                //Header and Footer setup
-                xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
-                xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+                    #region Save data to Sheet
+                    xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + tool.getCustName(1) + ") END MONTH STOCK REPORT(" + dtpDate.Text + ")";
 
-                //Page setup
-                xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
-                xlWorkSheet.PageSetup.Zoom = false;
-                xlWorkSheet.PageSetup.CenterHorizontally = true;
-                xlWorkSheet.PageSetup.LeftMargin = 1;
-                xlWorkSheet.PageSetup.RightMargin = 1;
-                xlWorkSheet.PageSetup.FitToPagesWide = 1;
-                xlWorkSheet.PageSetup.FitToPagesTall = false;
-                xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
 
-                xlexcel.PrintCommunication = true;
-                xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
-                // Paste clipboard results to worksheet range
-                xlWorkSheet.Select();
-                Range CR = (Range)xlWorkSheet.Cells[1, 1];
-                CR.Select();
-                xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+                    //Header and Footer setup
+                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
+                    xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
+                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
 
-                //content edit
-                Range tRange = xlWorkSheet.UsedRange;
-                tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-                tRange.Borders.Weight = XlBorderWeight.xlThin;
-                tRange.Font.Size = 11;
-                tRange.EntireColumn.AutoFit();
-                tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
+                    //Page setup
+                    xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                    xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
+                    xlWorkSheet.PageSetup.Zoom = false;
+                    xlWorkSheet.PageSetup.CenterHorizontally = true;
+                    xlWorkSheet.PageSetup.LeftMargin = 1;
+                    xlWorkSheet.PageSetup.RightMargin = 1;
+                    xlWorkSheet.PageSetup.FitToPagesWide = 1;
+                    xlWorkSheet.PageSetup.FitToPagesTall = false;
+                    xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
 
-                #endregion
+                    xlexcel.PrintCommunication = true;
+                    xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+                    // Paste clipboard results to worksheet range
+                    xlWorkSheet.Select();
+                    Range CR = (Range)xlWorkSheet.Cells[1, 1];
+                    CR.Select();
+                    xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
 
-                //Save the excel file under the captured location from the SaveFileDialog
-                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
-                    misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlexcel.DisplayAlerts = true;
+                    //content edit
+                    Range tRange = xlWorkSheet.UsedRange;
+                    tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                    tRange.Borders.Weight = XlBorderWeight.xlThin;
+                    tRange.Font.Size = 11;
+                    tRange.EntireColumn.AutoFit();
+                    tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
 
-                xlWorkBook.Close(true, misValue, misValue);
-                xlexcel.Quit();
+                    #endregion
 
-                releaseObject(xlWorkSheet);
-                releaseObject(xlWorkBook);
-                releaseObject(xlexcel);
+                    //Save the excel file under the captured location from the SaveFileDialog
+                    xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
+                        misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                    xlexcel.DisplayAlerts = true;
 
-                // Clear Clipboard and DataGridView selection
-                Clipboard.Clear();
-                dgvPMMA.ClearSelection();
+                    xlWorkBook.Close(true, misValue, misValue);
+                    xlexcel.Quit();
 
-                // Open the newly saved excel file
-                if (File.Exists(sfd.FileName))
-                    System.Diagnostics.Process.Start(sfd.FileName);
+                    releaseObject(xlWorkSheet);
+                    releaseObject(xlWorkBook);
+                    releaseObject(xlexcel);
+
+                    // Clear Clipboard and DataGridView selection
+                    Clipboard.Clear();
+                    dgvPMMA.ClearSelection();
+
+                    // Open the newly saved excel file
+                    if (File.Exists(sfd.FileName))
+                        System.Diagnostics.Process.Start(sfd.FileName);
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
             }
-
-            Cursor = Cursors.Arrow; // change cursor to normal type
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
 
         private void copyAlltoClipboard()

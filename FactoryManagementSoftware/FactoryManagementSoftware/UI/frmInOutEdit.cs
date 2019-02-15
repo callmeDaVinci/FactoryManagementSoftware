@@ -577,6 +577,7 @@ namespace FactoryManagementSoftware.UI
                         if (facStock - transferQty < 0)
                         {
                             dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Red;
+                            dgv.Rows[n].Cells[QtyColumnName].Value = facStock - transferQty;
                         }
                         else
                         {
@@ -756,36 +757,54 @@ namespace FactoryManagementSoftware.UI
 
         private void btnTransfer_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
-            if (Validation())
+            try
             {
-                DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message",
-                                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    //foreach row and make transfer action
-                    foreach (DataGridViewRow c in dgvTransfer.Rows)
-                    {
-                        selectedRow = c.Index;
-                        getData();
-                        
-                        if(!transferAction())
-                        {
-                            MessageBox.Show("Action Stop");
-                            Cursor = Cursors.Arrow; // change cursor to normal type 
-                            return;
-                        }
-                    } 
-                }
-            }    
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-            Cursor = Cursors.Arrow; // change cursor to normal type 
+                if (Validation())
+                {
+                    DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message",
+                                                                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        //foreach row and make transfer action
+                        foreach (DataGridViewRow c in dgvTransfer.Rows)
+                        {
+                            selectedRow = c.Index;
+                            getData();
+
+                            if (!transferAction())
+                            {
+                                MessageBox.Show("Action Stop");
+                                Cursor = Cursors.Arrow; // change cursor to normal type 
+                                return;
+                            }
+                            else
+                            {
+                                Close();
+                            }
+                        }
+                    }
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type 
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            } 
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            try
+            {
+                Close();
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
 
         #endregion
@@ -911,6 +930,7 @@ namespace FactoryManagementSoftware.UI
                 if(facStock - transferQty < 0)
                 {
                     dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Red;
+                    dgv.Rows[n].Cells[QtyColumnName].Value = facStock - transferQty;
                 }
             }
             else
@@ -966,16 +986,23 @@ namespace FactoryManagementSoftware.UI
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
-            if (Validation())
+            try
             {
-                addToDGV();
-                
-                dgvEdit = false;
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                if (Validation())
+                {
+                    addToDGV();
+
+                    dgvEdit = false;
+                }
+                changeButton();
+                Cursor = Cursors.Arrow; // change cursor to normal type 
             }
-            changeButton();
-            Cursor = Cursors.Arrow; // change cursor to normal type 
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
 
         private void loadFromDGV()
@@ -1023,20 +1050,34 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvTransfer_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            selectedRow = e.RowIndex;
-            //load from dgv
-            loadFromDGV();
-            dgvEdit = true;
-            changeButton();
+            try
+            {
+                selectedRow = e.RowIndex;
+                //load from dgv
+                loadFromDGV();
+                dgvEdit = true;
+                changeButton();
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            dgvTransfer.Rows.RemoveAt(selectedRow);
-            dgvEdit = false;
-            changeButton();
-            Cursor = Cursors.Arrow; // change cursor to normal type 
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                dgvTransfer.Rows.RemoveAt(selectedRow);
+                dgvEdit = false;
+                changeButton();
+                Cursor = Cursors.Arrow; // change cursor to normal type 
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
 
         private void getData()
@@ -1078,14 +1119,20 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvTransfer_MouseClick(object sender, MouseEventArgs e)
         {
-            var ht = dgvTransfer.HitTest(e.X, e.Y);
-
-            if (ht.Type == DataGridViewHitTestType.None)
+            try
             {
-                //clicked on grey area
-                dgvTransfer.ClearSelection();
+                var ht = dgvTransfer.HitTest(e.X, e.Y);
 
+                if (ht.Type == DataGridViewHitTestType.None)
+                {
+                    //clicked on grey area
+                    dgvTransfer.ClearSelection();
+                }
             }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }  
         }
     }
 }

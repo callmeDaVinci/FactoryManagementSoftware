@@ -177,96 +177,124 @@ namespace FactoryManagementSoftware.UI
         #region selected index/text changed
 
         private void cmbForecast1_SelectedIndexChanged(object sender, EventArgs e)
-        {  
-            var index1 = cmbForecast1.SelectedIndex;
-            var index2 = index1;
-            var index3 = index1;
-
-            if(index1 == 11)
+        {
+            try
             {
-                index2 = 0;
-            }
-            else
-            {
-                index2 = index1 + 1;
-            }
-            cmbForecast2.SelectedIndex = index2;
+                var index1 = cmbForecast1.SelectedIndex;
+                var index2 = index1;
+                var index3 = index1;
 
-            if (index2 == 11)
-            {
-                index3 = 0;
-            }
-            else
-            {
-                index3 = index2 + 1;
-            }
-            cmbForecast3.SelectedIndex = index3;
-            string newMonth = cmbForecast1.Text;
-            
+                if (index1 == 11)
+                {
+                    index2 = 0;
+                }
+                else
+                {
+                    index2 = index1 + 1;
+                }
+                cmbForecast2.SelectedIndex = index2;
 
-            if(loaded)
-            tool.historyRecord(text.ForecastEdit, text.getForecastMonthEditString(oldMonth, newMonth), DateTime.Now, MainDashboard.USER_ID);
+                if (index2 == 11)
+                {
+                    index3 = 0;
+                }
+                else
+                {
+                    index3 = index2 + 1;
+                }
+                cmbForecast3.SelectedIndex = index3;
+                string newMonth = cmbForecast1.Text;
 
-            oldMonth = newMonth;
+
+                if (loaded)
+                    tool.historyRecord(text.ForecastEdit, text.getForecastMonthEditString(oldMonth, newMonth), DateTime.Now, MainDashboard.USER_ID);
+
+                oldMonth = newMonth;
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }    
         }
 
         private void cmbForecast2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var index2 = cmbForecast2.SelectedIndex;
-            var index1 = index2;
-            var index3 = index2;
+            try
+            {
+                var index2 = cmbForecast2.SelectedIndex;
+                var index1 = index2;
+                var index3 = index2;
 
-            if (index2 == 0)
-            {
-                index1 = 11;
-            }
-            else
-            {
-                index1 = index2 - 1;
-            }
-            cmbForecast1.SelectedIndex = index1;
+                if (index2 == 0)
+                {
+                    index1 = 11;
+                }
+                else
+                {
+                    index1 = index2 - 1;
+                }
+                cmbForecast1.SelectedIndex = index1;
 
-            if (index2 == 11)
-            {
-                index3 = 0;
+                if (index2 == 11)
+                {
+                    index3 = 0;
+                }
+                else
+                {
+                    index3 = index2 + 1;
+                }
+                cmbForecast3.SelectedIndex = index3;
             }
-            else
+            catch (Exception ex)
             {
-                index3 = index2 + 1;
-            }
-            cmbForecast3.SelectedIndex = index3;
+                tool.saveToTextAndMessageToUser(ex);
+            }  
         }
 
         private void cmbForecast3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var index3 = cmbForecast3.SelectedIndex;
-            var index1 = index3;
-            var index2 = index3;
+            try
+            {
+                var index3 = cmbForecast3.SelectedIndex;
+                var index1 = index3;
+                var index2 = index3;
 
-            if (index3 == 0)
-            {
-                index2 = 11;
-            }
-            else
-            {
-                index2 = index3 - 1;
-            }
-            cmbForecast2.SelectedIndex = index2;
+                if (index3 == 0)
+                {
+                    index2 = 11;
+                }
+                else
+                {
+                    index2 = index3 - 1;
+                }
+                cmbForecast2.SelectedIndex = index2;
 
-            if (index2 == 0)
-            {
-                index1 = 11;
+                if (index2 == 0)
+                {
+                    index1 = 11;
+                }
+                else
+                {
+                    index1 = index2 - 1;
+                }
+                cmbForecast1.SelectedIndex = index1;
             }
-            else
+            catch (Exception ex)
             {
-                index1 = index2 - 1;
+                tool.saveToTextAndMessageToUser(ex);
             }
-            cmbForecast1.SelectedIndex = index1;
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            searchForecastList();
+            try
+            {
+                searchForecastList();
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
 
         #endregion 
@@ -274,59 +302,66 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvForecast_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            var datagridview = sender as DataGridView;
-
-            int rowIndex = e.RowIndex;
-            dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value = DateTime.Now;
-            dgvForecast.Rows[rowIndex].Cells["forecast_updtd_by"].Value = dalUser.getUsername(MainDashboard.USER_ID);
-
-            uItemCust.item_code = dgvForecast.Rows[rowIndex].Cells["item_code"].Value.ToString();
-            uItemCust.cust_id = tool.getCustID(cmbCust.Text);
-
-            uItemCust.forecast_one = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_one"].Value.ToString());
-            uItemCust.forecast_two = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_two"].Value.ToString());
-            uItemCust.forecast_three = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_three"].Value.ToString());
-            uItemCust.forecast_updated_date = Convert.ToDateTime(dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value);
-            uItemCust.forecast_current_month = cmbForecast1.Text;
-            uItemCust.forecast_updated_by = MainDashboard.USER_ID;
-
-            if(Convert.ToInt32(forecastNum) == 1)
+            try
             {
-                newForecast = uItemCust.forecast_one.ToString();
-            }
-            else if (Convert.ToInt32(forecastNum) == 2)
-            {
-                newForecast = uItemCust.forecast_two.ToString();
-            }
-            else
-            {
-                newForecast = uItemCust.forecast_three.ToString();
-            }
-             
-            if (tool.IfExists(uItemCust.item_code, cmbCust.Text))
-            {
-                bool success = dalItemCust.Update(uItemCust);
+                var datagridview = sender as DataGridView;
 
-                if (!success)
+                int rowIndex = e.RowIndex;
+                dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value = DateTime.Now;
+                dgvForecast.Rows[rowIndex].Cells["forecast_updtd_by"].Value = dalUser.getUsername(MainDashboard.USER_ID);
+
+                uItemCust.item_code = dgvForecast.Rows[rowIndex].Cells["item_code"].Value.ToString();
+                uItemCust.cust_id = tool.getCustID(cmbCust.Text);
+
+                uItemCust.forecast_one = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_one"].Value.ToString());
+                uItemCust.forecast_two = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_two"].Value.ToString());
+                uItemCust.forecast_three = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_three"].Value.ToString());
+                uItemCust.forecast_updated_date = Convert.ToDateTime(dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value);
+                uItemCust.forecast_current_month = cmbForecast1.Text;
+                uItemCust.forecast_updated_by = MainDashboard.USER_ID;
+
+                if (Convert.ToInt32(forecastNum) == 1)
                 {
-                    MessageBox.Show("Failed to updated forecast");
-                    tool.historyRecord(text.System, "Failed to updated forecast(frmForecast)", DateTime.Now, MainDashboard.USER_ID);
-                }    
+                    newForecast = uItemCust.forecast_one.ToString();
+                }
+                else if (Convert.ToInt32(forecastNum) == 2)
+                {
+                    newForecast = uItemCust.forecast_two.ToString();
+                }
                 else
                 {
-                    tool.historyRecord(text.ForecastEdit,text.getForecastEditString(cmbCust.Text,forecastNum, uItemCust.item_code,oldForecast,newForecast),DateTime.Now,MainDashboard.USER_ID);
+                    newForecast = uItemCust.forecast_three.ToString();
+                }
+
+                if (tool.IfExists(uItemCust.item_code, cmbCust.Text))
+                {
+                    bool success = dalItemCust.Update(uItemCust);
+
+                    if (!success)
+                    {
+                        MessageBox.Show("Failed to updated forecast");
+                        tool.historyRecord(text.System, "Failed to updated forecast(frmForecast)", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                    else
+                    {
+                        tool.historyRecord(text.ForecastEdit, text.getForecastEditString(cmbCust.Text, forecastNum, uItemCust.item_code, oldForecast, newForecast), DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+                else
+                {
+                    bool success = dalItemCust.Insert(uItemCust);
+                    //If the data is successfully inserted then the value of success will be true else false
+                    if (!success)
+                    {
+                        MessageBox.Show("Failed to add new forecast");
+                        tool.historyRecord(text.System, "Failed to add new forecast(frmForecast)", DateTime.Now, MainDashboard.USER_ID);
+
+                    }
                 }
             }
-            else
-            {             
-                bool success = dalItemCust.Insert(uItemCust);
-                //If the data is successfully inserted then the value of success will be true else false
-                if (!success)
-                {
-                    MessageBox.Show("Failed to add new forecast");
-                    tool.historyRecord(text.System, "Failed to add new forecast(frmForecast)", DateTime.Now, MainDashboard.USER_ID);
-
-                }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
             }
         }
 
@@ -359,26 +394,41 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvForecast_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
-
-            if (dgvForecast.CurrentCell.ColumnIndex == 2 || dgvForecast.CurrentCell.ColumnIndex == 3 || dgvForecast.CurrentCell.ColumnIndex == 4) //Desired Column
+            try
             {
-                forecastNum = (dgvForecast.CurrentCell.ColumnIndex - 1).ToString();
-                oldForecast = dgvForecast.CurrentCell.Value.ToString();
+                e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
 
-                TextBox tb = e.Control as TextBox;
-                if (tb != null)
+                if (dgvForecast.CurrentCell.ColumnIndex == 2 || dgvForecast.CurrentCell.ColumnIndex == 3 || dgvForecast.CurrentCell.ColumnIndex == 4) //Desired Column
                 {
-                    tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
+                    forecastNum = (dgvForecast.CurrentCell.ColumnIndex - 1).ToString();
+                    oldForecast = dgvForecast.CurrentCell.Value.ToString();
+
+                    TextBox tb = e.Control as TextBox;
+                    if (tb != null)
+                    {
+                        tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            
         }
 
         #region button
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            loadForecastList();
+            try
+            {
+                loadForecastList();
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
 
         private void btnReport_Click(object sender, EventArgs e)

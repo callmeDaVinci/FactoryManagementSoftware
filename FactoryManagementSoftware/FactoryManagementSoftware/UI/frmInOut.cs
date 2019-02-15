@@ -2,9 +2,12 @@
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using System;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
@@ -15,18 +18,25 @@ namespace FactoryManagementSoftware.UI
 
         public frmInOut()
         {
-            InitializeComponent();
-
-            userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
-
-            if(userPermission >= MainDashboard.ACTION_LVL_TWO)
+            try
             {
-                btnTransfer.Show();
+                InitializeComponent();
+
+                userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+
+                if (userPermission >= MainDashboard.ACTION_LVL_TWO)
+                {
+                    btnTransfer.Show();
+                }
+                else
+                {
+                    btnTransfer.Hide();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                btnTransfer.Hide();
-            }
+                tool.saveToTextAndMessageToUser(ex);
+            } 
         }
 
         #region variable declare
@@ -73,8 +83,14 @@ namespace FactoryManagementSoftware.UI
 
         private void frmInOut_Load(object sender, EventArgs e)
         {
-            resetForm();
-           
+            try
+            {
+                resetForm();
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }  
         }
 
         private void loadItemCategoryData()
@@ -148,15 +164,22 @@ namespace FactoryManagementSoftware.UI
 
         private void resetForm()
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            resetSaveData();
-            loadItemCategoryData();
-            loadItemList();
-            loadTransferList();
-            txtSearch.Text = null;
-            dgvFactoryStock.Rows.Clear();
-            dgvTotal.Rows.Clear();
-            Cursor = Cursors.Arrow; // change cursor to normal type
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                resetSaveData();
+                loadItemCategoryData();
+                loadItemList();
+                loadTransferList();
+                txtSearch.Text = null;
+                dgvFactoryStock.Rows.Clear();
+                dgvTotal.Rows.Clear();
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
 
         private void listPaint(DataGridView dgv)
@@ -833,70 +856,119 @@ namespace FactoryManagementSoftware.UI
         //transfer stock
         private void transfer_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            frmInOutEdit frm = new frmInOutEdit();
-            frm.StartPosition = FormStartPosition.CenterScreen;
-            frm.ShowDialog();//Item Edit
+            //try
+            //{//Directory.CreateDirectory(@"D:\StockAssistant\SystemError");
+            //    string date = DateTime.Now.Date.ToString("dd_MM_yyyy");
+            //    string filePath = @"D:\StockAssistant\Error\" + date + ".txt";
+            //    string ex = date;
+            //    //Exception ex = "testing";
 
-            if(frmInOutEdit.updateSuccess)
+            //    using (StreamWriter writer = new StreamWriter(filePath, true))
+            //    {
+            //        writer.WriteLine("-----------------------------------------------------------------------------");
+            //        writer.WriteLine("Date : " + DateTime.Now.ToString());
+            //        writer.WriteLine();
+
+            //        while (ex != null)
+            //        {
+            //            writer.WriteLine(ex.GetType().FullName);
+            //            writer.WriteLine("Message : " + ex);
+            //            writer.WriteLine("StackTrace : " + ex);
+            //            ex = null;
+            //        }
+            //    }
+            //}
+
+            //catch (Exception ex)
+            //{
+            //    tool.saveToText(ex);
+            //}
+
+            try
             {
-                //txtSearch.Text = editingItemCode; // update date list      
-            }
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                frmInOutEdit frm = new frmInOutEdit();
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.ShowDialog();//Item Edit
 
-            refreshDataList();
-            listPaintAndKeepSelected(dgvItem);
-            Cursor = Cursors.Arrow; // change cursor to normal type
+                if (frmInOutEdit.updateSuccess)
+                {
+                    //txtSearch.Text = editingItemCode; // update date list      
+                }
+
+                refreshDataList();
+                listPaintAndKeepSelected(dgvItem);
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+           
         }
         
         //unselect data when click on empty space
         private void frmInOut_MouseClick(object sender, MouseEventArgs e)
         {
-            dgvItem.ClearSelection();
-            loadTransferList();
-            refreshDataList();
-            resetSaveData();
-            txtSearch.Clear();
+            try
+            {
+                dgvItem.ClearSelection();
+                loadTransferList();
+                refreshDataList();
+                resetSaveData();
+                txtSearch.Clear();
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
 
         //reset
         private void btnReport_Click(object sender, EventArgs e)
         {
-            if (!MainDashboard.stockReportFormOpen)
+            try
             {
-                frmStockReport frm = new frmStockReport();
-                frm.MdiParent = this.ParentForm;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
-                frm.Show();
-                MainDashboard.stockReportFormOpen = true;
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmStockReport>().Count() == 1)
+                if (!MainDashboard.stockReportFormOpen)
                 {
-                    Application.OpenForms.OfType<frmStockReport>().First().BringToFront();
+                    frmStockReport frm = new frmStockReport();
+                    frm.MdiParent = this.ParentForm;
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Maximized;
+                    frm.Show();
+                    MainDashboard.stockReportFormOpen = true;
+                }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmStockReport>().Count() == 1)
+                    {
+                        Application.OpenForms.OfType<frmStockReport>().First().BringToFront();
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }  
         }
 
         //show undo or redo menustrip
         private void dgvTrf_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
-            //handle the row selection on right click
-            if (e.Button == MouseButtons.Right && userPermission >= MainDashboard.ACTION_LVL_TWO)
+            try
             {
-                ContextMenuStrip my_menu = new ContextMenuStrip();
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-                try
+                //handle the row selection on right click
+                if (e.Button == MouseButtons.Right && userPermission >= MainDashboard.ACTION_LVL_TWO)
                 {
+                    ContextMenuStrip my_menu = new ContextMenuStrip();
+
                     dgvTrf.CurrentCell = dgvTrf.Rows[e.RowIndex].Cells[e.ColumnIndex];
                     // Can leave these here - doesn't hurt
                     dgvTrf.Rows[e.RowIndex].Selected = true;
                     dgvTrf.Focus();
                     int rowIndex = dgvTrf.CurrentCell.RowIndex;
-
 
                     string result = dgvTrf.Rows[rowIndex].Cells["trf_result"].Value.ToString();
                     if (result.Equals("Passed"))
@@ -911,56 +983,84 @@ namespace FactoryManagementSoftware.UI
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
                     my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
-
                 }
-                catch (Exception)
-                {
 
-                }
+                Cursor = Cursors.Arrow; // change cursor to normal type
             }
-
-            Cursor = Cursors.Arrow; // change cursor to normal type
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            } 
         }
 
         //undo/redo function
         private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            //MessageBox.Show(e.ClickedItem.Name.ToString());
-            int rowIndex = dgvTrf.CurrentCell.RowIndex;
-            bool fromOrder = daltrfHist.ifFromOrder(Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString()));
-
-            if (dgvItem.SelectedRows.Count <= 0)
+            try
             {
-                editingItemCode = dgvTrf.Rows[rowIndex].Cells["trf_hist_item_code"].Value.ToString();
-            }
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                                             //MessageBox.Show(e.ClickedItem.Name.ToString());
+                int rowIndex = dgvTrf.CurrentCell.RowIndex;
+                bool fromOrder = daltrfHist.ifFromOrder(Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString()));
 
-            if (!fromOrder)
-            {
-                if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Undo"))
+                if (dgvItem.SelectedRows.Count <= 0)
                 {
-                    //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
-                    if (!undo(rowIndex))
+                    editingItemCode = dgvTrf.Rows[rowIndex].Cells["trf_hist_item_code"].Value.ToString();
+                }
+
+                if (!fromOrder)
+                {
+                    if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Undo"))
                     {
-                        MessageBox.Show("Failed to undo");
+                        //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+                        if (!undo(rowIndex))
+                        {
+                            MessageBox.Show("Failed to undo");
+                        }
+                    }
+                    else if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Redo"))
+                    {
+                        //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+                        if (!redo(rowIndex))
+                        {
+                            MessageBox.Show("Failed to redo");
+                        }
                     }
                 }
-                else if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Redo"))
+                else
                 {
-                    //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
-                    if (!redo(rowIndex))
-                    {
-                        MessageBox.Show("Failed to redo");
-                    }
+                    MessageBox.Show("Please go to the ORDER PAGE to change the record");
+                }
+                refreshDataList();
+                listPaintAndKeepSelected(dgvItem);
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            } 
+        }
+
+        private void dgvTrf_MouseClick(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var ht = dgvTrf.HitTest(e.X, e.Y);
+
+                if (ht.Type == DataGridViewHitTestType.None)
+                {
+                    //clicked on grey area
+                    dgvItem.ClearSelection();
+                    loadTransferList();
+                    refreshDataList();
+                    resetSaveData();
+                    txtSearch.Clear();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Please go to the ORDER PAGE to change the record");
+                tool.saveToTextAndMessageToUser(ex);
             }
-            refreshDataList();
-            listPaintAndKeepSelected(dgvItem);
-            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         #endregion
@@ -999,7 +1099,7 @@ namespace FactoryManagementSoftware.UI
             else if (locationFrom.Equals("Assembly") && ifFactory(locationTo))
             {
                 result = stockOut(locationTo, itemCode, qty, unit);
-                result = childStockIn(locationTo, itemCode, qty, id, unit);
+                //result = childStockIn(locationTo, itemCode, qty, id, unit);
             }
 
             if (result)
@@ -1043,7 +1143,7 @@ namespace FactoryManagementSoftware.UI
             else if (locationFrom.Equals("Assembly") && ifFactory(locationTo))
             {
                 result = stockIn(locationTo, itemCode, qty, unit);
-                result = childStockOut(locationTo, itemCode, qty, id, unit);
+                //result = childStockOut(locationTo, itemCode, qty, id, unit);
             }
 
             if (result)
@@ -1188,21 +1288,6 @@ namespace FactoryManagementSoftware.UI
 
 
         #endregion
-
-        private void dgvTrf_MouseClick(object sender, MouseEventArgs e)
-        {
-            var ht = dgvTrf.HitTest(e.X, e.Y);
-
-            if (ht.Type == DataGridViewHitTestType.None)
-            {
-                //clicked on grey area
-                dgvItem.ClearSelection();
-                loadTransferList();
-                refreshDataList();
-                resetSaveData();
-                txtSearch.Clear();
-            }
-        }
     }
 }
 

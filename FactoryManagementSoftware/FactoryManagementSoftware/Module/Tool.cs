@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
@@ -93,29 +94,6 @@ namespace FactoryManagementSoftware.Module
             float result;
             float.TryParse(value, out result);
             return result;
-        }
-
-        #endregion
-
-        #region History Record
-
-        public void historyRecord(string action, string detail, DateTime date, int by)
-        {
-            //save history
-            historyDAL dalHistory = new historyDAL();
-            historyBLL uHistory = new historyBLL();
-
-            uHistory.history_date = date;
-            uHistory.history_by = by;
-            uHistory.history_action = action;
-            uHistory.history_detail = detail;
-                
-            bool result = dalHistory.insert(uHistory);
-
-            if(!result)
-            {
-                MessageBox.Show("Failed to add new history");
-            }
         }
 
         #endregion
@@ -373,6 +351,101 @@ namespace FactoryManagementSoftware.Module
                 n *= -1;
             }
             return n;
+        }
+
+        #endregion
+
+        #region System
+
+        public void saveToText(Exception ex)
+        {
+            Directory.CreateDirectory(@"D:\StockAssistant\SystemError");
+            string today = DateTime.Now.Date.ToString("dd_MM_yyyy");
+            string filePath = @"D:\StockAssistant\SystemError\Error_" + today + ".txt";
+
+            using (StreamWriter writer = new StreamWriter(filePath, true))
+            {
+                writer.WriteLine("-----------------------------------------------------------------------------");
+                writer.WriteLine("Date : " + DateTime.Now.ToString());
+                writer.WriteLine();
+
+                while (ex != null)
+                {
+                    writer.WriteLine(ex.GetType().FullName);
+                    writer.WriteLine();
+                    writer.WriteLine("Message : " + ex.Message);
+                    writer.WriteLine();
+                    writer.WriteLine("StackTrace : ");
+                    writer.WriteLine(ex.StackTrace);
+
+                    ex = ex.InnerException;
+                }
+            }
+        }
+
+        public void saveToTextAndMessageToUser(Exception ex)
+        {
+            Directory.CreateDirectory(@"D:\StockAssistant\SystemError");
+            string today = DateTime.Now.Date.ToString("dd_MM_yyyy");
+            string filePath = @"D:\StockAssistant\SystemError\Error_" + today + ".txt";
+
+            using (StreamWriter writer = new StreamWriter(filePath, true))
+            {
+                writer.WriteLine("-----------------------------------------------------------------------------");
+                writer.WriteLine("Date : " + DateTime.Now.ToString());
+                writer.WriteLine();
+
+                while (ex != null)
+                {
+                    MessageBox.Show("An unexpected error has occurred. Please contact your system administrator.\n\n"+ex.Message, "System Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    writer.WriteLine(ex.GetType().FullName);
+                    writer.WriteLine();
+                    writer.WriteLine("Message : " + ex.Message);
+                    writer.WriteLine();
+                    writer.WriteLine("StackTrace : ");
+                    writer.WriteLine(ex.StackTrace);
+
+                    ex = ex.InnerException;
+                }
+            }
+        }
+
+        public void historyRecord(string action, string detail, DateTime date, int by)
+        {
+            //save history
+            historyDAL dalHistory = new historyDAL();
+            historyBLL uHistory = new historyBLL();
+
+            userDAL dalUser = new userDAL();
+            uHistory.history_date = date;
+            uHistory.history_by = by;
+            uHistory.history_action = action;
+            uHistory.history_detail = detail;
+
+            bool result = dalHistory.insert(uHistory);
+
+            if (!result)
+            {
+                MessageBox.Show("Failed to add new history");
+            }
+
+            Directory.CreateDirectory(@"D:\StockAssistant\SystemHistory");
+            string today = DateTime.Now.Date.ToString("dd_MM_yyyy");
+            string filePath = @"D:\StockAssistant\SystemHistory\History_" + today + ".txt";
+
+            using (StreamWriter writer = new StreamWriter(filePath, true))
+            {
+                writer.WriteLine("-----------------------------------------------------------------------------");
+                writer.WriteLine("Date : " + DateTime.Now.ToString());
+                writer.WriteLine();
+                writer.WriteLine("Action : "+action);
+                writer.WriteLine();
+                writer.WriteLine("Detail : " + detail);
+                writer.WriteLine();
+                writer.WriteLine("By : " + dalUser.getUsername(by));
+                writer.WriteLine();
+            }
         }
 
         #endregion

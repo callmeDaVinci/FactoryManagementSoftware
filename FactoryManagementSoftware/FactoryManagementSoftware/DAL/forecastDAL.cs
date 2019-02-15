@@ -78,7 +78,7 @@ namespace FactoryManagementSoftware.DAL
                 catch (Exception ex)
                 {
                     //throw message if any error occurs
-                    MessageBox.Show(ex.Message);
+                    Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
                 }
                 finally
                 {
@@ -92,9 +92,14 @@ namespace FactoryManagementSoftware.DAL
                 try
                 {
                     //sql query to get data from database
-                    String sql = "SELECT * FROM tbl_forecast INNER JOIN tbl_item ON tbl_forecast.item_code = tbl_item.item_code ORDER BY "+sortSQL+" "+orderSQL;
+                    String sql = "SELECT * FROM tbl_forecast INNER JOIN tbl_item ON tbl_forecast.item_code = tbl_item.item_code ORDER BY " + sortSQL + " " + orderSQL;
+
                     //for executing command
                     SqlCommand cmd = new SqlCommand(sql, conn);
+
+                    //cmd.Parameters.AddWithValue("@sortSQL", sortSQL);
+                    //cmd.Parameters.AddWithValue("@orderSQL", orderSQL);
+
                     //getting data from database
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     //database connection open
@@ -107,7 +112,7 @@ namespace FactoryManagementSoftware.DAL
                 catch (Exception ex)
                 {
                     //throw message if any error occurs
-                    MessageBox.Show(ex.Message);
+                    Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
                 }
                 finally
                 {
@@ -164,7 +169,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -204,7 +209,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -241,7 +246,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -329,7 +334,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {

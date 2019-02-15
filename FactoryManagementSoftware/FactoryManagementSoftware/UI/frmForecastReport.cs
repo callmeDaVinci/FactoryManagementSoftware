@@ -5,13 +5,12 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Excel;
 using DataTable = System.Data.DataTable;
 using System.Runtime.InteropServices;
+using System.ComponentModel;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -27,9 +26,9 @@ namespace FactoryManagementSoftware.UI
         enum Month
         {
             January = 1,
-            Feburary,
+            February,
             March,
-            Apirl,
+            April,
             May,
             June,
             July,
@@ -94,8 +93,28 @@ namespace FactoryManagementSoftware.UI
 
         DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
         DataGridViewAutoSizeColumnMode DisplayedCells = DataGridViewAutoSizeColumnMode.DisplayedCells;
-
+        
         #endregion
+
+        void StartWork()
+        {
+            // Start BackGround Worker Thread 
+            bgWorker.RunWorkerAsync();
+        }
+
+        void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+        {
+            //NOTE : DONT play with the UI thread here...
+            // Do Whatever work you are doing and for which you need to show    progress bar
+            //CopyLotsOfFiles() // This is the function which is being run in the background
+            e.Result = true;// Tell that you are done
+        }
+
+        void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            // Access Main UI Thread here
+            progressBar1.Value = e.ProgressPercentage;
+        }
 
         #region create class object (database)
 
@@ -681,6 +700,8 @@ namespace FactoryManagementSoftware.UI
 
                 string sort = cmbSort.Text;
                 string order = cmbOrder.Text;
+
+              
                 int type = 0;
 
                 if (cmbType.SelectedIndex > 0)
@@ -1059,8 +1080,7 @@ namespace FactoryManagementSoftware.UI
             
             DataGridView dgv = dgvForecastReport;
             DataTable dt = dataTable;
-            dt.DefaultView.Sort = "item_name ASC";
-            dt = dt.DefaultView.ToTable();
+            
 
             if (dt.Rows.Count <= 0)
             {
@@ -1069,6 +1089,12 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
+                if(cmbSort.SelectedIndex <= 0)
+                {
+                    dt.DefaultView.Sort = "item_name ASC";
+                    dt = dt.DefaultView.ToTable();
+                }
+
                 dgv.Rows.Clear();
                 gotData = true;
                 //load single data
@@ -1343,15 +1369,11 @@ namespace FactoryManagementSoftware.UI
             refreshData(type);
             emptyRowBackColorToBlack(type);
             btnCheck.Enabled = true;
-
-            foreach (DataGridViewColumn dgvc in dgvForecastReport.Columns)
-            {
-                dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
         }
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
+
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
             showForecastData();
@@ -1362,6 +1384,26 @@ namespace FactoryManagementSoftware.UI
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
+
+
+
+            //try
+            //{
+            //    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            //    showForecastData();
+
+            //    foreach (DataGridViewColumn dgvc in dgvForecastReport.Columns)
+            //    {
+            //        dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            //    }
+
+            //    Cursor = Cursors.Arrow; // change cursor to normal type
+            //}
+            //catch (Exception ex)
+            //{
+            //    tool.saveToTextAndMessageToUser(ex);
+            //}
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
@@ -1376,7 +1418,7 @@ namespace FactoryManagementSoftware.UI
         private void cmbSort_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            if(string.IsNullOrEmpty(cmbSort.Text))
+            if(string.IsNullOrEmpty(cmbSort.Text) || cmbSort.SelectedIndex <= 0)
             {
                 cmbOrder.DataSource = null;
             }
@@ -1387,7 +1429,8 @@ namespace FactoryManagementSoftware.UI
                 DataTable dt = new DataTable();
                 dt.Columns.Add("order");
                 dt.Rows.Add(asc);
-                dt.Rows.Add(desc);               cmbOrder.DataSource = dt;
+                dt.Rows.Add(desc);
+                cmbOrder.DataSource = dt;
                 cmbOrder.DisplayMember = "order";
                 //cmbOrder.SelectedIndex = 0;
             }
@@ -1467,221 +1510,249 @@ namespace FactoryManagementSoftware.UI
 
         private void btnExportToExcel_Click(object sender, EventArgs e)
         {
-            int type = 0;
-            string custName = tool.getCustName(1);
-            if (cmbCust.Text.Equals(custName))//PMMA
+            bgWorker.DoWork += BackgroundWorkerDoWork;
+            bgWorker.ProgressChanged += BackgroundWorkerProgressChanged;
+            try
             {
-                type = 0;
-            }
-            else
-            {
-                type = 2;
-            }
-
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Excel Documents (*.xls)|*.xls";
-            sfd.FileName = setFileName();
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
-
-                // Copy DataGridView results to clipboard
-                copyAlltoClipboard();
-
-                object misValue = System.Reflection.Missing.Value;
-                Excel.Application xlexcel = new Excel.Application();
-
-                xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
-                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
-                Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-                xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
-                xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") READY STOCK VERSUS FORECAST";
-                xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
-
-                xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
-                xlWorkSheet.PageSetup.Zoom = false;
-
-                xlWorkSheet.PageSetup.LeftMargin = 0.8;
-                xlWorkSheet.PageSetup.RightMargin = 0.8;
-                xlWorkSheet.PageSetup.FitToPagesWide = 1;
-                xlWorkSheet.PageSetup.FitToPagesTall = false;
-                xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
-                //xlWorkSheet.PageSetup.TopMargin = 1.6;
-
-
-                // Paste clipboard results to worksheet range
-                Range CR = (Range)xlWorkSheet.Cells[1, 1];
-                CR.Select();
-                xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
-
-                Range rng;
-                if (type == 2)
+                int type = 0;
+                string custName = tool.getCustName(1);
+                if (cmbCust.Text.Equals(custName))//PMMA
                 {
-                    rng = xlWorkSheet.get_Range("A:P").Cells;
+                    type = 0;
                 }
                 else
                 {
-                    rng = xlWorkSheet.get_Range("A:Q").Cells;
+                    type = 2;
                 }
 
-                rng.VerticalAlignment = XlHAlign.xlHAlignCenter;
-                rng.RowHeight = 16;
-                rng.EntireColumn.AutoFit();
-
-                Range tRange = xlWorkSheet.UsedRange;
-                tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-                tRange.Borders.Weight = XlBorderWeight.xlThin;
-
-                //top row 
-                Range topRow;
-                if (type == 2)
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                sfd.FileName = setFileName();
+                if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    topRow = xlWorkSheet.get_Range("a1:p1").Cells;
-                }
-                else
-                {
-                    topRow = xlWorkSheet.get_Range("a1:q1").Cells;
-                }
-                topRow.RowHeight = 25;
+                    progressBar1.Visible = true;
+                    bgWorker.ReportProgress(10);
+                    tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
 
-                topRow.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                topRow.VerticalAlignment = XlHAlign.xlHAlignCenter;
-                topRow.BorderAround2(Type.Missing, XlBorderWeight.xlThick, XlColorIndex.xlColorIndexAutomatic, Type.Missing);
+                    // Copy DataGridView results to clipboard
+                    copyAlltoClipboard();
 
-                //first column: index 
-                Range indexCol = xlWorkSheet.Columns[1];
-                indexCol.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                indexCol.VerticalAlignment = XlHAlign.xlHAlignCenter;
+                    object misValue = System.Reflection.Missing.Value;
+                    Excel.Application xlexcel = new Excel.Application();
 
-                for (int i = 0; i <= dgvForecastReport.RowCount - 2; i++)
-                {
-                    for (int j = 0; j <= dgvForecastReport.ColumnCount - 1; j++)
+                    xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
+                    Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+                    Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
+                    xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") READY STOCK VERSUS FORECAST";
+                    xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
+                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+
+                    xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                    xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
+                    xlWorkSheet.PageSetup.Zoom = false;
+
+                    xlWorkSheet.PageSetup.LeftMargin = 0.8;
+                    xlWorkSheet.PageSetup.RightMargin = 0.8;
+                    xlWorkSheet.PageSetup.FitToPagesWide = 1;
+                    xlWorkSheet.PageSetup.FitToPagesTall = false;
+                    xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+                    //xlWorkSheet.PageSetup.TopMargin = 1.6;
+
+
+                    // Paste clipboard results to worksheet range
+                    Range CR = (Range)xlWorkSheet.Cells[1, 1];
+                    CR.Select();
+                    xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+
+                    Range rng;
+                    if (type == 2)
                     {
-                        Range range = (Range)xlWorkSheet.Cells[i + 2, j + 1];
-
-                        if (i == 0)
-                        {
-                            Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
-                            header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
-
-                            header = (Range)xlWorkSheet.Cells[1, 10];
-                            header.Font.Color = Color.Blue;
-
-                            header = (Range)xlWorkSheet.Cells[1, 14];
-                            header.Font.Color = Color.Red;
-
-                            header = (Range)xlWorkSheet.Cells[1, 16];
-                            header.Font.Color = Color.Red;
-
-
-                        }
-
-                        if (dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor == SystemColors.Window)
-                        {
-                            range.Interior.Color = ColorTranslator.ToOle(Color.White);
-                            if (i == 0)
-                            {
-                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
-                                header.Interior.Color = ColorTranslator.ToOle(Color.White);
-                            }
-                        }
-                        else if (dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor == Color.Black)
-                        {
-                            range.Rows.RowHeight = 3;
-                            range.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
-                            if (i == 0)
-                            {
-                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
-                                header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
-                            }
-                        }
-                        else
-                        {
-                            range.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
-
-                            if (i == 0)
-                            {
-                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
-                                header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
-                            }
-                        }
-                        range.Font.Color = dgvForecastReport.Rows[i].Cells[j].Style.ForeColor;
-                        if (dgvForecastReport.Rows[i].Cells[j].Style.ForeColor == Color.Blue)
-                        {
-                            Range header = (Range)xlWorkSheet.Cells[i + 2, 2];
-                            header.Font.Underline = true;
-
-                            header = (Range)xlWorkSheet.Cells[i + 2, 3];
-                            header.Font.Underline = true;
-                        }
-
+                        rng = xlWorkSheet.get_Range("A:P").Cells;
                     }
+                    else
+                    {
+                        rng = xlWorkSheet.get_Range("A:Q").Cells;
+                    }
+
+                    rng.VerticalAlignment = XlHAlign.xlHAlignCenter;
+                    rng.RowHeight = 16;
+                    rng.EntireColumn.AutoFit();
+
+                    Range tRange = xlWorkSheet.UsedRange;
+                    tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                    tRange.Borders.Weight = XlBorderWeight.xlThin;
+
+                    //top row 
+                    Range topRow;
+                    if (type == 2)
+                    {
+                        topRow = xlWorkSheet.get_Range("a1:p1").Cells;
+                    }
+                    else
+                    {
+                        topRow = xlWorkSheet.get_Range("a1:q1").Cells;
+                    }
+                    topRow.RowHeight = 25;
+
+                    topRow.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                    topRow.VerticalAlignment = XlHAlign.xlHAlignCenter;
+                    topRow.BorderAround2(Type.Missing, XlBorderWeight.xlThick, XlColorIndex.xlColorIndexAutomatic, Type.Missing);
+
+                    //first column: index 
+                    Range indexCol = xlWorkSheet.Columns[1];
+                    indexCol.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                    indexCol.VerticalAlignment = XlHAlign.xlHAlignCenter;
+
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                    for (int i = 0; i <= dgvForecastReport.RowCount - 2; i++)
+                    {
+                        for (int j = 0; j <= dgvForecastReport.ColumnCount - 1; j++)
+                        {
+                            Range range = (Range)xlWorkSheet.Cells[i + 2, j + 1];
+
+                            if (i == 0)
+                            {
+                                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                                header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
+
+                                header = (Range)xlWorkSheet.Cells[1, 10];
+                                header.Font.Color = Color.Blue;
+
+                                header = (Range)xlWorkSheet.Cells[1, 14];
+                                header.Font.Color = Color.Red;
+
+                                header = (Range)xlWorkSheet.Cells[1, 16];
+                                header.Font.Color = Color.Red;
+
+
+                            }
+
+                            if (dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor == SystemColors.Window)
+                            {
+                                range.Interior.Color = ColorTranslator.ToOle(Color.White);
+                                if (i == 0)
+                                {
+                                    Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                                    header.Interior.Color = ColorTranslator.ToOle(Color.White);
+                                }
+                            }
+                            else if (dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor == Color.Black)
+                            {
+                                range.Rows.RowHeight = 3;
+                                range.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
+                                if (i == 0)
+                                {
+                                    Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                                    header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
+                                }
+                            }
+                            else
+                            {
+                                range.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
+
+                                if (i == 0)
+                                {
+                                    Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                                    header.Interior.Color = ColorTranslator.ToOle(dgvForecastReport.Rows[i].Cells[j].InheritedStyle.BackColor);
+                                }
+                            }
+                            range.Font.Color = dgvForecastReport.Rows[i].Cells[j].Style.ForeColor;
+                            if (dgvForecastReport.Rows[i].Cells[j].Style.ForeColor == Color.Blue)
+                            {
+                                Range header = (Range)xlWorkSheet.Cells[i + 2, 2];
+                                header.Font.Underline = true;
+
+                                header = (Range)xlWorkSheet.Cells[i + 2, 3];
+                                header.Font.Underline = true;
+                            }
+
+                        }
+
+                        Int32 percentage = ((i+1) * 100) / (dgvForecastReport.RowCount - 2);
+                        bgWorker.ReportProgress(percentage);
+                    }
+                    bgWorker.ReportProgress(100);
+                    System.Threading.Thread.Sleep(1000);
+                    // Save the excel file under the captured location from the SaveFileDialog
+                    xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                    xlexcel.DisplayAlerts = true;
+                    xlWorkBook.Close(true, misValue, misValue);
+                    xlexcel.Quit();
+
+                    releaseObject(xlWorkSheet);
+                    releaseObject(xlWorkBook);
+                    releaseObject(xlexcel);
+
+                    // Clear Clipboard and DataGridView selection
+                    Clipboard.Clear();
+                    dgvForecastReport.ClearSelection();
+
+                    // Open the newly saved excel file
+                    if (File.Exists(sfd.FileName))
+                        System.Diagnostics.Process.Start(sfd.FileName);
                 }
-
-                // Save the excel file under the captured location from the SaveFileDialog
-                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlexcel.DisplayAlerts = true;
-                xlWorkBook.Close(true, misValue, misValue);
-                xlexcel.Quit();
-
-                releaseObject(xlWorkSheet);
-                releaseObject(xlWorkBook);
-                releaseObject(xlexcel);
-
-                // Clear Clipboard and DataGridView selection
-                Clipboard.Clear();
-                dgvForecastReport.ClearSelection();
-
-                // Open the newly saved excel file
-                if (File.Exists(sfd.FileName))
-                    System.Diagnostics.Process.Start(sfd.FileName);
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                progressBar1.Visible = false;
+                Cursor = Cursors.Arrow; // change cursor to normal type
             }
         }
 
         private void btnExportAllToExcel_Click(object sender, EventArgs e)
         {
-
-            SaveFileDialog sfd = new SaveFileDialog();
-
-            sfd.Filter = "Excel Documents (*.xls)|*.xls";
-            sfd.FileName = "ForecastReport(ALL)_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
-
-            if (sfd.ShowDialog() == DialogResult.OK)
+            try
             {
-                tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
-                string path = Path.GetFullPath(sfd.FileName);
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                object misValue = System.Reflection.Missing.Value;
-                Excel.Application xlexcel = new Excel.Application
+                SaveFileDialog sfd = new SaveFileDialog();
+
+                sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                sfd.FileName = "ForecastReport(ALL)_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    PrintCommunication = false,
-                    ScreenUpdating = false,
-                    DisplayAlerts = false // Without this you will get two confirm overwrite prompts
-                };
-                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+                    tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+                    string path = Path.GetFullPath(sfd.FileName);
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    object misValue = System.Reflection.Missing.Value;
+                    Excel.Application xlexcel = new Excel.Application
+                    {
+                        PrintCommunication = false,
+                        ScreenUpdating = false,
+                        DisplayAlerts = false // Without this you will get two confirm overwrite prompts
+                    };
+                    Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
 
-                //Save the excel file under the captured location from the SaveFileDialog
-                xlWorkBook.SaveAs(sfd.FileName,
-                    XlFileFormat.xlWorkbookNormal,
-                    misValue, misValue, misValue, misValue,
-                    XlSaveAsAccessMode.xlExclusive,
-                    misValue, misValue, misValue, misValue, misValue);
+                    //Save the excel file under the captured location from the SaveFileDialog
+                    xlWorkBook.SaveAs(sfd.FileName,
+                        XlFileFormat.xlWorkbookNormal,
+                        misValue, misValue, misValue, misValue,
+                        XlSaveAsAccessMode.xlExclusive,
+                        misValue, misValue, misValue, misValue, misValue);
 
-                insertAllDataToSheet(path, sfd.FileName);
-                xlexcel.DisplayAlerts = true;
-                xlWorkBook.Close(true, misValue, misValue);
-                xlexcel.Quit();
+                    insertAllDataToSheet(path, sfd.FileName);
+                    xlexcel.DisplayAlerts = true;
+                    xlWorkBook.Close(true, misValue, misValue);
+                    xlexcel.Quit();
 
-                releaseObject(xlWorkBook);
-                releaseObject(xlexcel);
+                    releaseObject(xlWorkBook);
+                    releaseObject(xlexcel);
 
-                // Clear Clipboard and DataGridView selection
-                Clipboard.Clear();
-                dgvForecastReport.ClearSelection();
+                    // Clear Clipboard and DataGridView selection
+                    Clipboard.Clear();
+                    dgvForecastReport.ClearSelection();
+                }
             }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            } 
         }
 
         private void insertOneDataToSheet(string path, string fileName)
@@ -2508,25 +2579,32 @@ namespace FactoryManagementSoftware.UI
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
-            colorOrder = 0;
-            searchForecastList();
-
-            int dgvType = 0;
-            string custName = tool.getCustName(1);
-
-            if (cmbCust.Text.Equals(custName))//PMMA
+            try
             {
-                dgvType = 1;
-            }
-            else
-            {
-                dgvType = 2;
-            }
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-            emptyRowBackColorToBlack(dgvType);
-            Cursor = Cursors.Arrow; // change cursor to normal type
+                colorOrder = 0;
+                searchForecastList();
+
+                int dgvType = 0;
+                string custName = tool.getCustName(1);
+
+                if (cmbCust.Text.Equals(custName))//PMMA
+                {
+                    dgvType = 1;
+                }
+                else
+                {
+                    dgvType = 2;
+                }
+
+                emptyRowBackColorToBlack(dgvType);
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
     }
 }

@@ -47,16 +47,19 @@ namespace FactoryManagementSoftware.UI
             if(userPermission >= ACTION_LVL_FOUR)
             {
                 adminToolStripMenuItem.Visible = true;
+                orderToolStripMenuItem1.Visible = true;
             }
             else if(userPermission >= ACTION_LVL_TWO)
             {
                 forecastToolStripMenuItem.Visible = true;
                 adminToolStripMenuItem.Visible = false;
+                orderToolStripMenuItem1.Visible = false;
             }
             else
             {
                 forecastToolStripMenuItem.Visible = false;
                 adminToolStripMenuItem.Visible = false;
+                orderToolStripMenuItem1.Visible = false;
             }
         }
 

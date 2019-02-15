@@ -90,7 +90,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -117,7 +117,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -190,7 +190,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -302,7 +302,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -371,7 +371,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -456,7 +456,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -498,7 +498,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -540,7 +540,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -677,7 +677,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -729,7 +729,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -770,7 +770,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -807,7 +807,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -837,7 +837,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -867,7 +867,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -897,7 +897,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -933,7 +933,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -968,7 +968,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -1003,7 +1003,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -1039,7 +1039,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -1073,6 +1073,18 @@ namespace FactoryManagementSoftware.DAL
                 catName = dt.Rows[0]["item_cat"].ToString();
             }
             return catName;
+        }
+
+        public string getItemName(string itemCode)
+        {
+            string itemName = "";
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                itemName = dt.Rows[0]["item_name"].ToString();
+            }
+            return itemName;
         }
 
         public string getMBName(string mbCode)

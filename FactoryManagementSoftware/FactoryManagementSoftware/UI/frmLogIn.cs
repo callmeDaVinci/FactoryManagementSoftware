@@ -132,9 +132,10 @@ namespace FactoryManagementSoftware.UI
                 conn.Open();
                 result = true;             
             }
-            catch
+            catch (Exception ex)
             {
                 result = false;
+                tool.saveToText(ex);
             }
 
             conn.Close();

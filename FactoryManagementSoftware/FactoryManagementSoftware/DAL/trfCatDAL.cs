@@ -35,8 +35,8 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
             }
             finally
             {
@@ -78,7 +78,8 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
             }
             finally
             {
@@ -121,7 +122,8 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
             }
             finally
             {
@@ -161,7 +163,8 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
             }
             finally
             {
@@ -195,8 +198,8 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
             }
             finally
             {
@@ -230,8 +233,8 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                //throw message if any error occurs
-                MessageBox.Show(ex.Message);
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
             }
             finally
             {
