@@ -814,7 +814,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (cmbBy.Text.Equals(cmbByDate))
             {
-                fileName = "TransferReport(From:" + dtpStart.Text + "To: "+dtpEnd.Text+"_"+cmbType.Text+"_"+cmbSubType.Text+")_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
+                fileName = "TransferReport(From_" + dtpStart.Text + "_To_"+dtpEnd.Text+"_"+cmbType.Text+"_"+cmbSubType.Text+")_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
             }
             
             return fileName;

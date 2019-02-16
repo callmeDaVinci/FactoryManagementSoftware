@@ -133,13 +133,13 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvPMMA.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvPMMA.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPMMA.EnableHeadersVisualStyles = false;
             this.dgvPMMA.GridColor = System.Drawing.SystemColors.Control;
             this.dgvPMMA.Location = new System.Drawing.Point(32, 136);
             this.dgvPMMA.Margin = new System.Windows.Forms.Padding(2);
             this.dgvPMMA.Name = "dgvPMMA";
             this.dgvPMMA.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvPMMA.RowHeadersVisible = false;
-            this.dgvPMMA.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvPMMA.RowTemplate.Height = 40;
             this.dgvPMMA.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvPMMA.Size = new System.Drawing.Size(1511, 629);

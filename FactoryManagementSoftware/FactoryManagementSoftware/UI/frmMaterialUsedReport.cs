@@ -510,7 +510,7 @@ namespace FactoryManagementSoftware.UI
                 itemWeight = Convert.ToSingle(item["item_part_weight"].ToString());
                 OrderQty = Convert.ToInt32(item["quantity_order"].ToString());
                 wastagePercetage = Convert.ToSingle(item["item_wastage_allowed"].ToString());
-
+                //wastagePercetage = (float)(Math.Truncate((double)Convert.ToSingle(item["item_wastage_allowed"].ToString()) * 100.0) / 100.0);
                 materialUsed = OrderQty * itemWeight / 1000;
 
                 wastageUsed = materialUsed * wastagePercetage;
@@ -546,7 +546,7 @@ namespace FactoryManagementSoftware.UI
                     dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
                     dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Value = totalMaterialUsed;
                 }
-
+                
                 dgvMaterialUsedRecord.Rows[n].Cells["no"].Value = index;
                 dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemMaterial].Value = item[dalItem.ItemMaterial].ToString();
                 dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemName].Value = item[dalItem.ItemName].ToString();
@@ -554,7 +554,7 @@ namespace FactoryManagementSoftware.UI
                 dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemColor].Value = item[dalItem.ItemColor].ToString();
                 dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemOrd].Value = item["quantity_order"].ToString();
                 dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemProPWPcs].Value = itemWeight;
-                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemWastage].Value = item[dalItem.ItemWastage].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemWastage].Value = Convert.ToSingle(item[dalItem.ItemWastage]).ToString("0.00");
                 dgvMaterialUsedRecord.Rows[n].Cells[headerMatUsed].Value = materialUsed;
                 dgvMaterialUsedRecord.Rows[n].Cells[headerMatUsedAndWastage].Value = materialUsed + wastageUsed;
                 index++;

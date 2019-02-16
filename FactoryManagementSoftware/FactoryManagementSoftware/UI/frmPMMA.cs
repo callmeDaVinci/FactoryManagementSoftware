@@ -106,22 +106,22 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[dalPMMA.Adjust].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[dalPMMA.BalStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-            if (dalUser.getPermissionLevel(MainDashboard.USER_ID) >= 3)
+            if (dalUser.getPermissionLevel(MainDashboard.USER_ID) >= 2)
             {
                 dgv.Columns[IndexColumnName].ReadOnly = true;
                 dgv.Columns[dalItem.ItemCode].ReadOnly = true;
                 dgv.Columns[dalItem.ItemName].ReadOnly = true;
                 
-                dgv.Columns[dalPMMA.OpenStock].ReadOnly = false;
+                dgv.Columns[dalPMMA.OpenStock].ReadOnly = true;
                 dgv.Columns[IndexInName].ReadOnly = true;
                 dgv.Columns[IndexOutName].ReadOnly = true;
-
                 dgv.Columns[IndexBalName].ReadOnly = true;
-                dgv.Columns[IndexPercentageName].ReadOnly = false;
                 dgv.Columns[IndexWastageName].ReadOnly = true;
+                dgv.Columns[dalPMMA.BalStock].ReadOnly = true;
+
+                dgv.Columns[IndexPercentageName].ReadOnly = false;
                 dgv.Columns[dalPMMA.Adjust].ReadOnly = false;
                 dgv.Columns[dalPMMA.Note].ReadOnly = false;
-                dgv.Columns[dalPMMA.BalStock].ReadOnly = true;
             }
             else
             {
@@ -822,8 +822,8 @@ namespace FactoryManagementSoftware.UI
             try
             {
                 e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
-
-                if (dgvPMMA.CurrentCell.ColumnIndex == dgvPMMA.Columns[IndexPercentageName].Index) //Desired Column
+                
+                if (dgvPMMA.CurrentCell.ColumnIndex == dgvPMMA.Columns[IndexPercentageName].Index || dgvPMMA.CurrentCell.ColumnIndex == dgvPMMA.Columns[dalPMMA.Adjust].Index) //Desired Column
                 {
                     System.Windows.Forms.TextBox tb = e.Control as System.Windows.Forms.TextBox;
                     if (tb != null)
@@ -1176,6 +1176,7 @@ namespace FactoryManagementSoftware.UI
         {
             try
             {
+                dgvPMMA.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "Excel Documents (*.xls)|*.xls";
                 sfd.FileName = setFileName();
@@ -1257,6 +1258,7 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 Cursor = Cursors.Arrow; // change cursor to normal type
+                dgvPMMA.SelectionMode = DataGridViewSelectionMode.CellSelect;
             }
             catch (Exception ex)
             {

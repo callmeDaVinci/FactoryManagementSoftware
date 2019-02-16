@@ -359,6 +359,7 @@ namespace FactoryManagementSoftware.Module
 
         public void saveToText(Exception ex)
         {
+            
             Directory.CreateDirectory(@"D:\StockAssistant\SystemError");
             string today = DateTime.Now.Date.ToString("dd_MM_yyyy");
             string filePath = @"D:\StockAssistant\SystemError\Error_" + today + ".txt";
@@ -380,6 +381,20 @@ namespace FactoryManagementSoftware.Module
 
                     ex = ex.InnerException;
                 }
+            }
+
+            Directory.CreateDirectory(@"D:\StockAssistant\SystemHistory");
+            filePath = @"D:\StockAssistant\SystemHistory\History_" + today + ".txt";
+
+            using (StreamWriter writer = new StreamWriter(filePath, true))
+            {
+                writer.WriteLine("-----------------------------------------------------------------------------");
+                writer.WriteLine("Date : " + DateTime.Now.ToString());
+                writer.WriteLine();
+                writer.WriteLine("Action : SYSTEM ERROR");
+                writer.WriteLine();
+                writer.WriteLine("Detail : " + ex.Message);
+                writer.WriteLine();
             }
         }
 
@@ -409,6 +424,24 @@ namespace FactoryManagementSoftware.Module
                     ex = ex.InnerException;
                 }
             }
+
+            Directory.CreateDirectory(@"D:\StockAssistant\SystemHistory");
+            filePath = @"D:\StockAssistant\SystemHistory\History_" + today + ".txt";
+
+            if(ex != null)
+            {
+                using (StreamWriter writer = new StreamWriter(filePath, true))
+                {
+                    writer.WriteLine("-----------------------------------------------------------------------------");
+                    writer.WriteLine("Date : " + DateTime.Now.ToString());
+                    writer.WriteLine();
+                    writer.WriteLine("Action : SYSTEM ERROR");
+                    writer.WriteLine();
+                    writer.WriteLine("Detail : " + ex.Message);
+                    writer.WriteLine();
+                }
+            }
+           
         }
 
         public void historyRecord(string action, string detail, DateTime date, int by)

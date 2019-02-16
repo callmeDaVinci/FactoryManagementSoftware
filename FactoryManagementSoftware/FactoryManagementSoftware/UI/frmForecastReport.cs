@@ -520,7 +520,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 else if(row.Cells[MBColName].Value != null)
                 {
-                    row.Cells[Shot1ColName].Style.ForeColor = Color.Black;
+                    //row.Cells[Shot1ColName].Style.ForeColor = Color.Black;
                 }
 
                 if(dgvType == 1)
@@ -536,7 +536,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (row.Cells[MBColName].Value != null)
                     {
-                        row.Cells[Shot2ColName].Style.ForeColor = Color.Black;
+                        //row.Cells[Shot2ColName].Style.ForeColor = Color.Black;
                     }
                 }
 
@@ -1197,6 +1197,14 @@ namespace FactoryManagementSoftware.UI
                         {
                             dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
                             dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+
+                            dgv.Rows[n].Cells[StockColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            dgv.Rows[n].Cells[OutColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            dgv.Rows[n].Cells[OsantColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+
+
                         }
                         else
                         {
@@ -1206,6 +1214,11 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[n].Cells[RunnerWeightColName].Value = Convert.ToSingle(item["item_runner_weight"]).ToString("0.00");
                             dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
                             dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                            dgv.Rows[n].Cells[StockColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            dgv.Rows[n].Cells[OutColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            dgv.Rows[n].Cells[OsantColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
 
                         }
 
@@ -1215,17 +1228,13 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[NameColName].Value = item["item_name"].ToString();
                         dgv.Rows[n].Cells[ColorColName].Value = item["item_color"].ToString();
 
-                        dgv.Rows[n].Cells[StockColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                         dgv.Rows[n].Cells[StockColName].Value = item["forecast_ready_stock"].ToString();
 
 
                         dgv.Rows[n].Cells[OutColName].Value = outStock;
-                        dgv.Rows[n].Cells[OutColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
 
-                        dgv.Rows[n].Cells[OsantColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                         dgv.Rows[n].Cells[OsantColName].Value = item["forecast_osant"].ToString();
 
-                        dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                         dgv.Columns[Shot1ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 1);
                         dgv.Rows[n].Cells[Shot1ColName].Value = item["forecast_shot_one"].ToString();
 
@@ -1235,11 +1244,19 @@ namespace FactoryManagementSoftware.UI
                         }
                         else
                         {
-                            dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            if (dalItem.checkIfAssembly(itemCode))//assembly part show blue color, else show green color
+                            {
+                                dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+
+                            }
+                            else
+                            {
+                                dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+
+                            }
                         }
 
                         dgv.Columns[Shot2ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 2);
-                        dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
 
                         if (shotTwo < 0)
                         {
@@ -1247,7 +1264,16 @@ namespace FactoryManagementSoftware.UI
                         }
                         else
                         {
-                            dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            if (dalItem.checkIfAssembly(itemCode))//assembly part show blue color, else show green color
+                            {
+                                dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+
+                            }
+                            else
+                            {
+                                dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+
+                            }
                         }
                         dgv.Rows[n].Cells[Shot2ColName].Value = item["forecast_shot_two"].ToString();
 
@@ -1258,9 +1284,18 @@ namespace FactoryManagementSoftware.UI
                             dgv.Columns[Forecast2ColName].HeaderText = "F/cast " + getShortMonth(month, 2);
                             dgv.Columns[Forecast3ColName].HeaderText = "F/cast " + getShortMonth(month, 3);
 
-                            dgv.Rows[n].Cells[Forecast1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
-                            dgv.Rows[n].Cells[Forecast2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
-                            dgv.Rows[n].Cells[Forecast3ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            if (dalItem.checkIfAssembly(itemCode))
+                            {
+                                dgv.Rows[n].Cells[Forecast1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                                dgv.Rows[n].Cells[Forecast2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                                dgv.Rows[n].Cells[Forecast3ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            }
+                            else
+                            {
+                                dgv.Rows[n].Cells[Forecast1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                                dgv.Rows[n].Cells[Forecast2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                                dgv.Rows[n].Cells[Forecast3ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            }
 
                             dgv.Rows[n].Cells[Forecast1ColName].Value = forecastOne;
                             dgv.Rows[n].Cells[Forecast2ColName].Value = forecastTwo;
