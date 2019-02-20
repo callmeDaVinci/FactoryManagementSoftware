@@ -43,5 +43,6 @@ namespace FactoryManagementSoftware.BLL
         public float item_pmma_qty { get; set; }
 
         public int item_assembly { get; set; }
+        public int item_production { get; set; }
     }
 }

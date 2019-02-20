@@ -54,6 +54,7 @@ namespace FactoryManagementSoftware.DAL
         public string ItemPMMAQty { get; } = "item_pmma_qty";
 
         public string ItemAssemblyCheck { get; } = "item_assembly";
+        public string ItemProductionCheck { get; } = "item_production";
 
         #endregion
 
@@ -230,8 +231,9 @@ namespace FactoryManagementSoftware.DAL
                             + ItemWastage + ","
                             + ItemAddDate + ","
                             + ItemAddBy + ","
-                            + ItemAssemblyCheck + ") VALUES " +
-                            "(@item_cat," +
+                            + ItemAssemblyCheck + ","
+                            + ItemProductionCheck + ") VALUES" +
+                            "(@item_cat,"+
                             "@item_code," +
                             "@item_name," +
                             "@item_material," +
@@ -254,7 +256,8 @@ namespace FactoryManagementSoftware.DAL
                             "@item_wastage_allowed," +
                             "@item_added_date," +
                             "@item_added_by," +
-                            "@item_assembly)";
+                            "@item_assembly," +
+                            "@item_production)";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -282,6 +285,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_added_date", u.item_added_date);
                 cmd.Parameters.AddWithValue("@item_added_by", u.item_added_by);
                 cmd.Parameters.AddWithValue("@item_assembly", u.item_assembly);
+                cmd.Parameters.AddWithValue("@item_production", u.item_production);
 
                 conn.Open();
 
@@ -302,7 +306,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
             }
             finally
             {
@@ -410,7 +414,8 @@ namespace FactoryManagementSoftware.DAL
                             + ItemWastage + "=@item_wastage_allowed,"
                             + ItemUpdateDate + "=@item_updtd_date,"
                             + ItemUpdateBy + "=@item_updtd_by,"
-                            + ItemAssemblyCheck + "=@item_assembly" +
+                            + ItemAssemblyCheck + "=@item_assembly,"
+                            + ItemProductionCheck + "=@item_production" +
                             " WHERE item_code=@item_code";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -438,6 +443,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
                 cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
                 cmd.Parameters.AddWithValue("@item_assembly", u.item_assembly);
+                cmd.Parameters.AddWithValue("@item_production", u.item_production);
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();
@@ -1131,6 +1137,24 @@ namespace FactoryManagementSoftware.DAL
             return result;
         }
 
+        public bool checkIfProduction(string itemCode)
+        {
+            bool result = false;
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                if (dt.Rows[0]["item_production"] != DBNull.Value)
+                {
+                    if (Convert.ToInt32(dt.Rows[0]["item_production"]) == 1)
+                    {
+                        result = true;
+                    }
+                }
+            }
+            return result;
+        }
+
         public float getOrderQty(string itemCode)
         {
             float orderQty = 0;
@@ -1236,3 +1260,55 @@ namespace FactoryManagementSoftware.DAL
         #endregion
     }
 }
+
+//String sql = @"INSERT INTO tbl_item 
+//                            (" + ItemCat + ","
+//                           + ItemCode + ","
+//                           + ItemName + ","
+//                           + ItemMaterial + ","
+//                           + ItemMBatch + ","
+//                           + ItemColor + ","
+//                           + ItemQuoTon + ","
+//                           + ItemBestTon + ","
+//                           + ItemProTon + ","
+//                           + ItemQuoCT + ","
+//                           + ItemProCTFrom + ","
+//                           + ItemProCTTo + ","
+//                           + ItemCapacity + ","
+//                           + ItemQuoPWPcs + ","
+//                           + ItemQuoRWPcs + ","
+//                           + ItemProPWPcs + ","
+//                           + ItemProRWPcs + ","
+//                           + ItemProPWShot + ","
+//                           + ItemProRWShot + ","
+//                           + ItemProCooling + ","
+//                           + ItemWastage + ","
+//                           + ItemAddDate + ","
+//                           + ItemAddBy + ","
+//                           + ItemAssemblyCheck + ","
+//                           + ItemProductionCheck + ") VALUES " +
+//                           "(@item_cat," +
+//                           "@item_code," +
+//                           "@item_name," +
+//                           "@item_material," +
+//                           "@item_mb," +
+//                           "@item_color," +
+//                           "@item_quo_ton," +
+//                           "@item_best_ton," +
+//                           "@item_pro_ton," +
+//                           "@item_quo_ct," +
+//                           "@item_pro_ct_from," +
+//                           "@item_pro_ct_to," +
+//                           "@item_capacity," +
+//                           "@item_quo_pw_pcs," +
+//                           "@item_quo_rw_pcs," +
+//                           "@item_pro_pw_pcs," +
+//                           "@item_pro_rw_pcs," +
+//                           "@item_pro_pw_shot," +
+//                           "@item_pro_rw_shot," +
+//                           "@item_pro_cooling," +
+//                           "@item_wastage_allowed," +
+//                           "@item_added_date," +
+//                           "@item_added_by," +
+//                           "@item_assembly," +
+//                           "@item_production)";

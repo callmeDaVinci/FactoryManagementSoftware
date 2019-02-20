@@ -297,48 +297,23 @@ namespace FactoryManagementSoftware
            
             if (keywords != null && category != null)
             {
-                if (cmbCat.Text.Equals("ALL"))
+                if (formLoaded)
                 {
-                    dt = dalItem.Search(keywords);
-                }
-                else
-                {
-                    dt = dalItem.catItemSearch(keywords, category);
-                }
-
-                dgv.Rows.Clear();
-                foreach (DataRow item in dt.Rows)
-                {
-                    float partf = 0;
-                    float runnerf = 0;
-                    int n = dgv.Rows.Add();
-                    if (!string.IsNullOrEmpty(item["item_part_weight"].ToString()))
+                    if (cmbCat.Text.Equals("Part"))
                     {
-                        partf = Convert.ToSingle(item["item_part_weight"]);
+                        
+                        dt = dalItem.catItemSearch(keywords, category);
+
+                        LoadPartList(dgv, dt);
                     }
-                    if (!string.IsNullOrEmpty(item["item_runner_weight"].ToString()))
+                    else
                     {
-                        partf = Convert.ToSingle(item["item_runner_weight"]);
+                        dt = dalItem.catItemSearch(keywords, category);
+
+                        LoadMaterialList(dgv, dt);
                     }
-
-                    dgv.Rows[n].Cells["Category"].Value = item["item_cat"].ToString();
-                    dgv.Rows[n].Cells["dgvcItemCode"].Value = item["item_code"].ToString();
-                    dgv.Rows[n].Cells["dgvcItemName"].Value = item["item_name"].ToString();
-                    dgv.Rows[n].Cells["item_color"].Value = item["item_color"].ToString();
-                    dgv.Rows[n].Cells["item_material"].Value = item["item_material"].ToString();
-                    dgv.Rows[n].Cells["item_mb"].Value = item["item_mb"].ToString();
-                    dgv.Rows[n].Cells["item_mc"].Value = item["item_mc"].ToString();
-                    dgv.Rows[n].Cells["item_part_weight"].Value =partf.ToString("0.00");
-                    dgv.Rows[n].Cells["item_runner_weight"].Value = runnerf.ToString("0.00");
-                    dgv.Rows[n].Cells["dgvcQty"].Value = item["item_qty"].ToString();
-                    dgv.Rows[n].Cells["dgvcOrd"].Value = item["item_ord"].ToString();
                 }
-
-            }
-            else
-            {
-                //show all item from the database
-                //loadItemData(dgvItemList);
+                
             }
 
             bool rowColorChange = true;
@@ -467,6 +442,57 @@ namespace FactoryManagementSoftware
             }
         }
 
+        private void LoadPartList(DataGridView dgv, DataTable dt)
+        {
+            int index = 1;
+            dgv.Rows.Clear();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                float partf = 0;
+                float runnerf = 0;
+                int n = dgv.Rows.Add();
+
+                if (!string.IsNullOrEmpty(item[dalItem.ItemProPWPcs].ToString()))
+                {
+                    partf = Convert.ToSingle(item[dalItem.ItemProPWPcs]);
+                }
+
+                if (!string.IsNullOrEmpty(item[dalItem.ItemProRWPcs].ToString()))
+                {
+                    runnerf = Convert.ToSingle(item[dalItem.ItemProRWPcs]);
+                }
+                dgv.Rows[n].Cells[indexColName].Value = index;
+                dgv.Rows[n].Cells[dalItem.ItemMaterial].Value = item[dalItem.ItemMaterial].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemName].Value = item[dalItem.ItemName].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemCode].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemColor].Value = item[dalItem.ItemColor].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemMBatch].Value = item[dalItem.ItemMBatch].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemQuoTon].Value = item[dalItem.ItemQuoTon].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemBestTon].Value = item[dalItem.ItemBestTon].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemProTon].Value = item[dalItem.ItemProTon].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemQuoCT].Value = item[dalItem.ItemQuoCT].ToString();
+                dgv.Rows[n].Cells["ProCT"].Value = item[dalItem.ItemProCTFrom].ToString() + " - " + item[dalItem.ItemProCTTo].ToString();
+                dgv.Rows[n].Cells["ItemWeight(g)"].Value = (partf + runnerf).ToString();
+                dgv.Rows[n].Cells[dalItem.ItemQuoPWPcs].Value = item[dalItem.ItemQuoPWPcs].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemQuoRWPcs].Value = item[dalItem.ItemQuoRWPcs].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemProPWShot].Value = item[dalItem.ItemProPWShot].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemProRWShot].Value = item[dalItem.ItemProRWShot].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemCapacity].Value = item[dalItem.ItemCapacity].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemProCooling].Value = item[dalItem.ItemProCooling].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemProPWPcs].Value = partf.ToString("0.00");
+                dgv.Rows[n].Cells[dalItem.ItemProRWPcs].Value = runnerf.ToString("0.00");
+                index++;
+            }
+            tool.listPaint(dgv);
+
+            if (dt.Rows.Count <= 0 && formLoaded)
+            {
+                MessageBox.Show("no data under this record");
+            }
+        }
+
+
         private void LoadMaterialList(DataGridView dgv)
         {
             DataTable dt = dalItem.catSearch(cmbCat.Text);
@@ -475,6 +501,28 @@ namespace FactoryManagementSoftware
             dgv.Rows.Clear();
 
             int index = 1;
+            foreach (DataRow item in dt.Rows)
+            {
+                int n = dgv.Rows.Add();
+
+                dgv.Rows[n].Cells[indexColName].Value = index;
+                dgv.Rows[n].Cells[dalItem.ItemName].Value = item[dalItem.ItemName].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemCode].ToString();
+                index++;
+            }
+            tool.listPaint(dgv);
+
+            if (dt.Rows.Count <= 0 && formLoaded)
+            {
+                MessageBox.Show("no data under this record");
+            }
+        }
+
+        private void LoadMaterialList(DataGridView dgv, DataTable dt)
+        {
+            int index = 1;
+            dgv.Rows.Clear();
+
             foreach (DataRow item in dt.Rows)
             {
                 int n = dgv.Rows.Add();
@@ -586,6 +634,15 @@ namespace FactoryManagementSoftware
                 u.item_assembly = 0;
             }
 
+            if (cbProduction.Checked)
+            {
+                u.item_production = 1;
+            }
+            else
+            {
+                u.item_production = 0;
+            }
+
             u.item_updtd_date = DateTime.Now;
             u.item_updtd_by = MainDashboard.USER_ID;
             //Updating data into database
@@ -604,7 +661,7 @@ namespace FactoryManagementSoftware
             else
             {
                 //failed to update user
-                MessageBox.Show("Failed to updated item");
+                //MessageBox.Show("Failed to updated item");
             }
         }
 
@@ -657,6 +714,15 @@ namespace FactoryManagementSoftware
             else
             {
                 u.item_assembly = 0;
+            }
+
+            if (cbProduction.Checked)
+            {
+                u.item_production = 1;
+            }
+            else
+            {
+                u.item_production = 0;
             }
 
             u.item_added_date = DateTime.Now;

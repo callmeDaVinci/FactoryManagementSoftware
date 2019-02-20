@@ -358,6 +358,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[Shot1ColName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
             //UI setting
+
             dgv.Columns[MCColName].DefaultCellStyle.BackColor = Color.AliceBlue;
 
             dgv.Columns[MCColName].HeaderCell.Style.BackColor = Color.DeepSkyBlue;
@@ -930,8 +931,9 @@ namespace FactoryManagementSoftware.UI
             return result;
         }
 
-        private void checkChild(string itemCode, string month, string forecastOne, string forecastTwo, string forecastThree, float shotOne, float shotTwo, float outStock,int no, int dgvType)
+        private void checkChild(string itemCode, string month, string forecastOne, string forecastTwo, string forecastThree, float shotOne, float shotTwo, float outStock,string no, int dgvType)
         {
+            int alphbetTest = 65;
             string parentItemCode = itemCode;
             DataGridView dgv = dgvForecastReport;
             DataTable dtJoin = dalJoin.parentCheck(itemCode);
@@ -944,9 +946,6 @@ namespace FactoryManagementSoftware.UI
                     float childShotOne = 0;
                     float childShotTwo = 0;
                     
-
-                    
-
                     DataTable dtItem = dalItem.codeSearch(Join["join_child_code"].ToString());
 
                     if (dtItem.Rows.Count > 0)
@@ -973,12 +972,8 @@ namespace FactoryManagementSoftware.UI
                                     runnerf = Convert.ToSingle(item["item_runner_weight"]);
                                 }
 
-                                if (ifGotChild(itemCode))
-                                {
-                                    dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
-                                    dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
-                                }
-                                dgv.Rows[n].Cells[IndexColName].Value = no.ToString() + "(" + (char)alphbet + ")";
+                                
+                                dgv.Rows[n].Cells[IndexColName].Value = no + "(" + (char)alphbetTest + ")";
                                 dgv.Rows[n].Cells[CodeColName].Value = itemCode;
                                 dgv.Rows[n].Cells[NameColName].Value = item["item_name"].ToString();
                                 dgv.Rows[n].Cells[MatTypeColName].Value = dalItem.getMaterialName(item["item_material"].ToString());
@@ -986,6 +981,8 @@ namespace FactoryManagementSoftware.UI
                                 dgv.Rows[n].Cells[ColorColName].Value = item["item_color"].ToString();
                                 dgv.Rows[n].Cells[PartWeightColName].Value = partf.ToString("0.00");
                                 dgv.Rows[n].Cells[RunnerWeightColName].Value = runnerf.ToString("0.00");
+
+                               
 
                                 if (ifRepeat(itemCode, n, forecastOne, forecastTwo, forecastThree, outStock.ToString(), shotOne, shotTwo, dgvType))
                                 {
@@ -1058,11 +1055,22 @@ namespace FactoryManagementSoftware.UI
                                         dgv.Rows[n].Cells[Forecast3ColName].Value = forecastThree;
                                     }
                                 }
-                                alphbet++;
+
+                                if (ifGotChild(itemCode))
+                                {
+                                    dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                                    dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                                    checkChild(itemCode, month, forecastOne, forecastTwo, forecastThree, childShotOne, childShotTwo, Convert.ToSingle(outStock), no + "(" + (char)alphbetTest + ")", dgvType);
+                                }
+
+                                alphbetTest++;
                             }
                             
                         }
+                        
                     }
+
+                    
                 }
             }
         }
@@ -1306,7 +1314,7 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[n].Cells[EstimateColName].Value = get6MonthsMaxOut(itemCode,cmbCust.Text);
                         }
 
-                        checkChild(itemCode, month, forecastOne, forecastTwo, forecastThree, shotOne, shotTwo, Convert.ToSingle(outStock),indexNo, dgvType);
+                        checkChild(itemCode, month, forecastOne, forecastTwo, forecastThree, shotOne, shotTwo, Convert.ToSingle(outStock),indexNo.ToString(), dgvType);
                         indexNo++;
                         n = dgv.Rows.Add();
                     }

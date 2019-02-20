@@ -386,15 +386,18 @@ namespace FactoryManagementSoftware.Module
             Directory.CreateDirectory(@"D:\StockAssistant\SystemHistory");
             filePath = @"D:\StockAssistant\SystemHistory\History_" + today + ".txt";
 
-            using (StreamWriter writer = new StreamWriter(filePath, true))
+            if (ex != null)
             {
-                writer.WriteLine("-----------------------------------------------------------------------------");
-                writer.WriteLine("Date : " + DateTime.Now.ToString());
-                writer.WriteLine();
-                writer.WriteLine("Action : SYSTEM ERROR");
-                writer.WriteLine();
-                writer.WriteLine("Detail : " + ex.Message);
-                writer.WriteLine();
+                using (StreamWriter writer = new StreamWriter(filePath, true))
+                {
+                    writer.WriteLine("-----------------------------------------------------------------------------");
+                    writer.WriteLine("Date : " + DateTime.Now.ToString());
+                    writer.WriteLine();
+                    writer.WriteLine("Action : SYSTEM ERROR");
+                    writer.WriteLine();
+                    writer.WriteLine("Detail : " + ex.Message);
+                    writer.WriteLine();
+                }
             }
         }
 

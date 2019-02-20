@@ -335,6 +335,7 @@ namespace FactoryManagementSoftware.UI
 
         private void loadChildParStocktData(string itemCode, int no)
         {
+            float childIndex = no + 0.1f;
             DataGridView dgv = dgvStockReport;
             string parentItemCode = itemCode;
             DataTable dtJoin = dalJoin.parentCheck(itemCode);
@@ -354,10 +355,12 @@ namespace FactoryManagementSoftware.UI
                         {
                             foreach (DataRow item in dtItem.Rows)
                             {
-                                string indexNo = no.ToString() + "(" + (char)alphbet + ")";
+                                string indexNo = childIndex.ToString("0.0");
+                                //string indexNo = no.ToString() + "(" + (char)alphbet + ")";
                                 dataInsertToStockDGV(dgvStockReport, item, n, indexNo);
                             }
-                            alphbet++;
+                            //alphbet++;
+                            childIndex += 0.1f;
                         }
                     }
                     

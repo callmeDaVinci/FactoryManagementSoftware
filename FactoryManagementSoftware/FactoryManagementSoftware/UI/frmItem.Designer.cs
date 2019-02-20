@@ -73,6 +73,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtQuoPWpcs = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.cbProduction = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItemList)).BeginInit();
@@ -432,7 +433,7 @@
             this.cbAssembly.Checked = true;
             this.cbAssembly.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbAssembly.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbAssembly.Location = new System.Drawing.Point(1581, 234);
+            this.cbAssembly.Location = new System.Drawing.Point(1555, 131);
             this.cbAssembly.Name = "cbAssembly";
             this.cbAssembly.Size = new System.Drawing.Size(164, 27);
             this.cbAssembly.TabIndex = 73;
@@ -545,6 +546,17 @@
             this.label13.TabIndex = 81;
             this.label13.Text = "QuoPW(PCS)";
             // 
+            // cbProduction
+            // 
+            this.cbProduction.AutoSize = true;
+            this.cbProduction.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbProduction.Location = new System.Drawing.Point(1555, 163);
+            this.cbProduction.Name = "cbProduction";
+            this.cbProduction.Size = new System.Drawing.Size(197, 27);
+            this.cbProduction.TabIndex = 85;
+            this.cbProduction.Text = "PRODUCTION ITEM";
+            this.cbProduction.UseVisualStyleBackColor = true;
+            // 
             // frmItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -552,6 +564,7 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1761, 703);
+            this.Controls.Add(this.cbProduction);
             this.Controls.Add(this.txtQuoRWpcs);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtQuoPWpcs);
@@ -654,6 +667,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtQuoPWpcs;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.CheckBox cbProduction;
     }
 }
 
