@@ -559,11 +559,10 @@ namespace FactoryManagementSoftware.UI
                         }
                     }
                 }
-                else
+                else 
                 {
-                    successFacStockIn = false;
-                    MessageBox.Show("Assembly Part cannot be production.");
-                }
+                    successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty, sub_unit);
+                }            
             }
             else
             {
@@ -643,13 +642,13 @@ namespace FactoryManagementSoftware.UI
 
                         if (facStock - transferQty < 0)
                         {
-                            dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Red;
-                            dgv.Rows[n].Cells[QtyColumnName].Value = facStock - transferQty;
+                            dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                            dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL="+(facStock - transferQty);
                         }
-                        else
-                        {
-                            dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Black;
-                        }
+                        //else
+                        //{
+                        //    dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Black;
+                        //}
 
                     }
                 }
@@ -683,14 +682,14 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
                         dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
                         dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
-                        dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString(); ;
+                        dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
                         dgv.Rows[n].Cells[FromCatColumnName].Value = "Factory";
                         dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
                         dgv.Rows[n].Cells[ToCatColumnName].Value = "Assembly";
                         dgv.Rows[n].Cells[ToColumnName].Value = "";
                         dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
                         dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
-                        dgv.Rows[n].Cells[NoteColumnName].Value = "Assembly Sub Part";
+                        dgv.Rows[n].Cells[NoteColumnName].Value = "Assembly "+dalItem.getCatName(childItemCode);
 
                         facStockDAL dalFacStock = new facStockDAL();
                         float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
@@ -698,13 +697,13 @@ namespace FactoryManagementSoftware.UI
 
                         if (facStock - transferQty < 0)
                         {
-                            dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Red;
-                            dgv.Rows[n].Cells[QtyColumnName].Value = facStock - transferQty;
+                            dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                            dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
                         }
-                        else
-                        {
-                            dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Black;
-                        }
+                        //else
+                        //{
+                        //    dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Black;
+                        //}
                         
                     }
                 }
@@ -723,14 +722,37 @@ namespace FactoryManagementSoftware.UI
             {
                 if (fromCat.Equals("Production") && toCat.Equals("Factory"))
                 {
-                    //factory stock in (part)
-                    if (stockIn(to, itemCode, qty,unit))
+                    if(tool.ifGotChild(itemCode))
                     {
-                        productionRecord(from, to, itemCode, qty);
+                        if(dalItem.checkIfAssembly(itemCode))
+                        {
+                            MessageBox.Show("Assembly parts cannot be production.");
+                            result = "Failed";
+                        }
+                        else
+                        {
+                            //factory stock in (part)
+                            if (stockIn(to, itemCode, qty, unit))
+                            {
+                                productionRecord(from, to, itemCode, qty);
+                            }
+                            else
+                            {
+                                result = "Failed";
+                            }
+                        }
                     }
                     else
                     {
-                        result = "Failed";
+                        //factory stock in (part)
+                        if (stockIn(to, itemCode, qty, unit))
+                        {
+                            productionRecord(from, to, itemCode, qty);
+                        }
+                        else
+                        {
+                            result = "Failed";
+                        }
                     }
                     transferRecord(result);
                 }
@@ -1051,13 +1073,9 @@ namespace FactoryManagementSoftware.UI
 
                 if(facStock - transferQty < 0)
                 {
-                    dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Red;
-                    dgv.Rows[n].Cells[QtyColumnName].Value = facStock - transferQty;
+                    dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                    dgv.Rows[n].Cells[NoteColumnName].Value += " (AFTER BAL:"+(facStock - transferQty).ToString()+")";
                 }
-            }
-            else
-            {
-                dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Black;
             }
 
             if (cmbTrfFromCategory.Text.Equals("Assembly") && cmbTrfToCategory.Text.Equals("Factory"))
@@ -1080,7 +1098,7 @@ namespace FactoryManagementSoftware.UI
 
             if (cmbTrfFromCategory.Text.Equals("Production") && cmbTrfToCategory.Text.Equals("Factory"))
             {
-                if (tool.ifGotChild(cmbTrfItemCode.Text) && dalItem.checkIfProduction(cmbTrfItemCode.Text))
+                if (tool.ifGotChild(cmbTrfItemCode.Text) && (dalItem.checkIfProduction(cmbTrfItemCode.Text) || !dalItem.checkIfAssembly(cmbTrfItemCode.Text)))
                 {
 
                     string factoryName = "";

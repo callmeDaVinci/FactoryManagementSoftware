@@ -63,8 +63,6 @@ namespace FactoryManagementSoftware.UI
         private void listPaint(DataGridView dgv)
         {
             dgv.BorderStyle = BorderStyle.None;
-            //dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
-            //dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgv.BackgroundColor = Color.White;
             dgv.GridColor = Color.LightGray;
 
@@ -74,10 +72,6 @@ namespace FactoryManagementSoftware.UI
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
 
             dgv.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
-
-            //dgv.RowTemplate.Height = 40;
-
-
             dgv.ClearSelection();
         }
 
@@ -320,7 +314,7 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
                         dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
                         dataInsertToStockDGV(dgvStockReport, item, n, index.ToString());
-                        loadChildParStocktData(itemCode, index);
+                        loadChildParStocktData(itemCode, index.ToString());
                         index++;
                        
                     }
@@ -333,9 +327,11 @@ namespace FactoryManagementSoftware.UI
             return gotData;
         }
 
-        private void loadChildParStocktData(string itemCode, int no)
+        private void loadChildParStocktData(string itemCode, string no)
         {
-            float childIndex = no + 0.1f;
+            int index = 1;
+            string childIndex = no+"."+index.ToString();
+
             DataGridView dgv = dgvStockReport;
             string parentItemCode = itemCode;
             DataTable dtJoin = dalJoin.parentCheck(itemCode);
@@ -343,27 +339,34 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataRow Join in dtJoin.Rows)
                 {
-                    if(dalItem.getCatName(Join["join_child_code"].ToString()).Equals("Part"))//dalItem.getCatName(Join["join_child_code"].ToString()).Equals("Part")
+                    if(dalItem.getCatName(Join["join_child_code"].ToString()).Equals("Part"))
                     {
                         int n = dgv.Rows.Add();
 
                         dgv.Rows[n].Cells["item_code"].Value = Join["join_child_code"].ToString();
 
+                        if (ifGotChild(Join["join_child_code"].ToString()))
+                        {
+                            dgv.Rows[n].Cells[codeColumnName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                            dgv.Rows[n].Cells[nameColumnName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                            loadChildParStocktData(Join["join_child_code"].ToString(), childIndex);
+                        }
+
                         DataTable dtItem = dalItem.codeSearch(Join["join_child_code"].ToString());
+
+                        ifRepeat(Join["join_child_code"].ToString(), n);
 
                         if (dtItem.Rows.Count > 0)
                         {
                             foreach (DataRow item in dtItem.Rows)
                             {
-                                string indexNo = childIndex.ToString("0.0");
-                                //string indexNo = no.ToString() + "(" + (char)alphbet + ")";
-                                dataInsertToStockDGV(dgvStockReport, item, n, indexNo);
+                                dataInsertToStockDGV(dgvStockReport, item, n, childIndex);
                             }
                             //alphbet++;
-                            childIndex += 0.1f;
+                            index++;
+                            childIndex = no + "." + index.ToString();
                         }
                     }
-                    
                 }
             }
         }
@@ -917,5 +920,21 @@ namespace FactoryManagementSoftware.UI
         }
         #endregion
 
+        private void ifRepeat(string itemCode, int index)
+        {
+            DataGridView dgv = dgvStockReport;
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                if (row.Cells[codeColumnName].Value != null)
+                {
+                    if (row.Cells[codeColumnName].Value.ToString().Equals(itemCode) && row.Index < index)
+                    {
+                        dgv.Rows[index].DefaultCellStyle.BackColor = Color.Lavender;
+                        return;
+                    }
+                }
+            }
+        }
     }
 }

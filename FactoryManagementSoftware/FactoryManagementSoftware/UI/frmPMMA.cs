@@ -256,7 +256,10 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        dtMat.Rows.Add(itemMat);
+                        if (!string.IsNullOrEmpty(itemMat))
+                        {
+                            dtMat.Rows.Add(itemMat);
+                        }
                     }
                 }
             }

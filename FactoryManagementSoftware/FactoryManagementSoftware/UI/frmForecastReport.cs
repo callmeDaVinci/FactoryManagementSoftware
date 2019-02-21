@@ -926,8 +926,6 @@ namespace FactoryManagementSoftware.UI
                 }               
             }
 
-           
-
             return result;
         }
 
@@ -954,15 +952,11 @@ namespace FactoryManagementSoftware.UI
                         {
                             itemCode = item["item_code"].ToString();
 
-                            if(dalItem.getCatName(itemCode).Equals("Part")) //!dalItem.getCatName(itemCode).Equals("Sub Material")
+                            if(dalItem.getCatName(itemCode).Equals("Part"))
                             {
                                 int n = dgvForecastReport.Rows.Add();
                                 dgv.Rows[n].Cells[CodeColName].Value = Join["join_child_code"].ToString();
-                                //if(dalItem.getCatName(itemCode).Equals("Sub Material"))
-                                //{
-                                //    MessageBox.Show("Sub Material "+itemCode);
-                                //}
-
+                             
                                 if (!string.IsNullOrEmpty(item["item_part_weight"].ToString()))
                                 {
                                     partf = Convert.ToSingle(item["item_part_weight"]);
@@ -971,8 +965,7 @@ namespace FactoryManagementSoftware.UI
                                 {
                                     runnerf = Convert.ToSingle(item["item_runner_weight"]);
                                 }
-
-                                
+  
                                 dgv.Rows[n].Cells[IndexColName].Value = no + "(" + (char)alphbetTest + ")";
                                 dgv.Rows[n].Cells[CodeColName].Value = itemCode;
                                 dgv.Rows[n].Cells[NameColName].Value = item["item_name"].ToString();
@@ -981,8 +974,6 @@ namespace FactoryManagementSoftware.UI
                                 dgv.Rows[n].Cells[ColorColName].Value = item["item_color"].ToString();
                                 dgv.Rows[n].Cells[PartWeightColName].Value = partf.ToString("0.00");
                                 dgv.Rows[n].Cells[RunnerWeightColName].Value = runnerf.ToString("0.00");
-
-                               
 
                                 if (ifRepeat(itemCode, n, forecastOne, forecastTwo, forecastThree, outStock.ToString(), shotOne, shotTwo, dgvType))
                                 {
