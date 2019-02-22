@@ -267,6 +267,57 @@ namespace FactoryManagementSoftware.UI
             return dtMat;
         }
 
+        private DataTable RemoveNonZeroCost(DataTable dt)
+        {
+            materialDAL dalMat = new materialDAL();
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i <= dt.Rows.Count - 1; i++)
+                {
+                    if (!dalMat.checkIfZeroCost(dt.Rows[i]["item_material"].ToString()))
+                    {
+                        dt.Rows[i].Delete();
+                    }
+                }
+                dt.AcceptChanges();
+            }
+            return dt;
+        }
+
+        private DataTable RemoveSubMat(DataTable dt)
+        {
+            materialDAL dalMat = new materialDAL();
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i <= dt.Rows.Count - 1; i++)
+                {
+                    if (dt.Rows[i]["item_cat"].ToString().Equals("Sub Material"))
+                    {
+                        dt.Rows[i].Delete();
+                    }
+                }
+                dt.AcceptChanges();
+            }
+            return dt;
+        }
+
+        private DataTable RemoveEmpty(DataTable dt)
+        {
+            materialDAL dalMat = new materialDAL();
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i <= dt.Rows.Count - 1; i++)
+                {
+                    if (dt.Rows[i]["item_cat"].ToString().Equals("Part") && string.IsNullOrEmpty(dt.Rows[i]["item_material"].ToString()))
+                    {
+                        dt.Rows[i].Delete();
+                    }
+                }
+                dt.AcceptChanges();
+            }
+            return dt;
+        }
+
         private void getMonthlyStockData()
         {
             createColumnsForMonthlyReportDGV();
@@ -275,6 +326,8 @@ namespace FactoryManagementSoftware.UI
             int index = 1;
             DataTable dt = insertItemMaterialData();
             dt = tool.RemoveDuplicates(dt, "item_material");
+            dt = RemoveNonZeroCost(dt);
+
             dt.DefaultView.Sort = "item_material ASC";
             dt = dt.DefaultView.ToTable();
 

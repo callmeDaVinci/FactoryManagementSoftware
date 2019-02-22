@@ -55,12 +55,13 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_material (material_code, material_name, material_cat) VALUES (@material_code, @material_name, @material_cat)";
+                String sql = "INSERT INTO tbl_material (material_code, material_name, material_cat,material_zero_cost) VALUES (@material_code, @material_name, @material_cat,@material_zero_cost)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@material_code", u.material_code);
                 cmd.Parameters.AddWithValue("@material_name", u.material_name);
                 cmd.Parameters.AddWithValue("@material_cat", u.material_cat);
+                cmd.Parameters.AddWithValue("@material_zero_cost", u.material_zero_cost);
 
                 conn.Open();
 
@@ -99,12 +100,13 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "UPDATE tbl_material SET material_name=@material_name, material_cat=@material_cat WHERE material_code=@material_code";
+                String sql = "UPDATE tbl_material SET material_name=@material_name, material_cat=@material_cat, material_zero_cost=@material_zero_cost WHERE material_code=@material_code";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@material_code", u.material_code);
                 cmd.Parameters.AddWithValue("@material_name", u.material_name);
                 cmd.Parameters.AddWithValue("@material_cat", u.material_cat);
+                cmd.Parameters.AddWithValue("@material_zero_cost", u.material_zero_cost);
 
                 conn.Open();
 
@@ -283,6 +285,24 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
             return dt;
+        }
+
+        public bool checkIfZeroCost(string itemCode)
+        {
+            bool result = false;
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                if (dt.Rows[0]["material_zero_cost"] != DBNull.Value)
+                {
+                    if (Convert.ToInt32(dt.Rows[0]["material_zero_cost"]) == 1)
+                    {
+                        result = true;
+                    }
+                }
+            }
+            return result;
         }
         #endregion
     }

@@ -79,6 +79,7 @@
             this.cbMB = new System.Windows.Forms.CheckBox();
             this.cbPigment = new System.Windows.Forms.CheckBox();
             this.cbProduction = new System.Windows.Forms.CheckBox();
+            this.cbZeroCost = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -595,12 +596,25 @@
             this.cbProduction.Text = "PRODUCTION ITEM";
             this.cbProduction.UseVisualStyleBackColor = true;
             // 
+            // cbZeroCost
+            // 
+            this.cbZeroCost.AutoSize = true;
+            this.cbZeroCost.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbZeroCost.Location = new System.Drawing.Point(660, 93);
+            this.cbZeroCost.Name = "cbZeroCost";
+            this.cbZeroCost.Size = new System.Drawing.Size(131, 27);
+            this.cbZeroCost.TabIndex = 76;
+            this.cbZeroCost.Text = "ZERO COST";
+            this.cbZeroCost.UseVisualStyleBackColor = true;
+            this.cbZeroCost.Visible = false;
+            // 
             // frmItemEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(861, 741);
+            this.Controls.Add(this.cbZeroCost);
             this.Controls.Add(this.cbProduction);
             this.Controls.Add(this.cbPigment);
             this.Controls.Add(this.cbMB);
@@ -717,5 +731,6 @@
         private System.Windows.Forms.CheckBox cbPigment;
         private System.Windows.Forms.CheckBox cbMB;
         private System.Windows.Forms.CheckBox cbProduction;
+        private System.Windows.Forms.CheckBox cbZeroCost;
     }
 }

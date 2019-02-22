@@ -11,5 +11,6 @@ namespace FactoryManagementSoftware.BLL
         public string material_code { get; set; }
         public string material_name { get; set; }
         public string material_cat { get; set; }
+        public int material_zero_cost { get; set; }
     }
 }

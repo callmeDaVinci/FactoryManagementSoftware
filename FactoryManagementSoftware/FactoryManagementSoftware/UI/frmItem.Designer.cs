@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtItemSearch = new System.Windows.Forms.TextBox();
             this.lblSearch = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
@@ -74,6 +74,7 @@
             this.txtQuoPWpcs = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.cbProduction = new System.Windows.Forms.CheckBox();
+            this.cbZeroCost = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItemList)).BeginInit();
@@ -184,14 +185,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvItemList.BackgroundColor = System.Drawing.Color.White;
             this.dgvItemList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItemList.GridColor = System.Drawing.SystemColors.Control;
             this.dgvItemList.Location = new System.Drawing.Point(27, 313);
@@ -557,6 +558,18 @@
             this.cbProduction.Text = "PRODUCTION ITEM";
             this.cbProduction.UseVisualStyleBackColor = true;
             // 
+            // cbZeroCost
+            // 
+            this.cbZeroCost.AutoSize = true;
+            this.cbZeroCost.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbZeroCost.Location = new System.Drawing.Point(1597, 196);
+            this.cbZeroCost.Name = "cbZeroCost";
+            this.cbZeroCost.Size = new System.Drawing.Size(131, 27);
+            this.cbZeroCost.TabIndex = 86;
+            this.cbZeroCost.Text = "ZERO COST";
+            this.cbZeroCost.UseVisualStyleBackColor = true;
+            this.cbZeroCost.Visible = false;
+            // 
             // frmItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -564,6 +577,7 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1761, 703);
+            this.Controls.Add(this.cbZeroCost);
             this.Controls.Add(this.cbProduction);
             this.Controls.Add(this.txtQuoRWpcs);
             this.Controls.Add(this.label6);
@@ -668,6 +682,7 @@
         private System.Windows.Forms.TextBox txtQuoPWpcs;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.CheckBox cbProduction;
+        private System.Windows.Forms.CheckBox cbZeroCost;
     }
 }
 

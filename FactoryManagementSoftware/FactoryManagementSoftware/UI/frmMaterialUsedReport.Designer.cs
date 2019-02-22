@@ -58,6 +58,8 @@
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.lblMonth = new System.Windows.Forms.Label();
+            this.cbZeroCost = new System.Windows.Forms.CheckBox();
+            this.cbSubMat = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaterialUsedRecord)).BeginInit();
             this.SuspendLayout();
             // 
@@ -332,12 +334,41 @@
             this.lblMonth.TabIndex = 91;
             this.lblMonth.Text = "START";
             // 
+            // cbZeroCost
+            // 
+            this.cbZeroCost.AutoSize = true;
+            this.cbZeroCost.Checked = true;
+            this.cbZeroCost.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbZeroCost.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbZeroCost.Location = new System.Drawing.Point(177, 102);
+            this.cbZeroCost.Name = "cbZeroCost";
+            this.cbZeroCost.Size = new System.Drawing.Size(131, 27);
+            this.cbZeroCost.TabIndex = 92;
+            this.cbZeroCost.Text = "ZERO COST";
+            this.cbZeroCost.UseVisualStyleBackColor = true;
+            this.cbZeroCost.Visible = false;
+            // 
+            // cbSubMat
+            // 
+            this.cbSubMat.AutoSize = true;
+            this.cbSubMat.Checked = true;
+            this.cbSubMat.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSubMat.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSubMat.Location = new System.Drawing.Point(31, 102);
+            this.cbSubMat.Name = "cbSubMat";
+            this.cbSubMat.Size = new System.Drawing.Size(109, 27);
+            this.cbSubMat.TabIndex = 93;
+            this.cbSubMat.Text = "SUB MAT";
+            this.cbSubMat.UseVisualStyleBackColor = true;
+            // 
             // frmMaterialUsedReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.cbSubMat);
+            this.Controls.Add(this.cbZeroCost);
             this.Controls.Add(this.lblMonth);
             this.Controls.Add(this.cmbType);
             this.Controls.Add(this.label4);
@@ -387,5 +418,7 @@
         private System.Windows.Forms.ComboBox cmbType;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblMonth;
+        private System.Windows.Forms.CheckBox cbZeroCost;
+        private System.Windows.Forms.CheckBox cbSubMat;
     }
 }

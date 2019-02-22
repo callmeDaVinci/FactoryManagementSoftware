@@ -63,6 +63,8 @@ namespace FactoryManagementSoftware.UI
             cmbCat.DataSource = distinctTable;
             cmbCat.DisplayMember = "item_cat_name";
             cmbCat.SelectedIndex = -1;
+
+            cbZeroCost.Visible = false;
         }
 
         private void loadMaterialTypeData()
@@ -358,6 +360,15 @@ namespace FactoryManagementSoftware.UI
             uMaterial.material_code = txtItemCode.Text;
             uMaterial.material_name = txtItemName.Text;
 
+            if (cbZeroCost.Checked)
+            {
+                uMaterial.material_zero_cost = 1;
+            }
+            else
+            {
+                uMaterial.material_zero_cost = 0;
+            }
+
             bool success = dalMaterial.Update(uMaterial);
             if (success == true)
             {
@@ -379,6 +390,16 @@ namespace FactoryManagementSoftware.UI
             uMaterial.material_cat = cmbCat.Text;
             uMaterial.material_code = txtItemCode.Text;
             uMaterial.material_name = txtItemName.Text;
+
+            if (cbZeroCost.Checked)
+            {
+                uMaterial.material_zero_cost = 1;
+            }
+            else
+            {
+                uMaterial.material_zero_cost = 0;
+            }
+
             bool success = dalMaterial.Insert(uMaterial);
             //If the data is successfully inserted then the value of success will be true else false
             if (success == true)
@@ -445,6 +466,14 @@ namespace FactoryManagementSoftware.UI
             if (!string.IsNullOrEmpty(cmbCat.Text))
             {
                 errorProvider3.Clear();
+                if(!cmbCat.Text.Equals("Part"))
+                {
+                    cbZeroCost.Visible = true;
+                }
+                else
+                {
+                    cbZeroCost.Visible = false;
+                }
             }
         }
 
