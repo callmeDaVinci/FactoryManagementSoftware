@@ -767,6 +767,7 @@ namespace FactoryManagementSoftware.UI
 
             dgvMaterialUsedRecord.Rows.Clear();
             dgvMaterialUsedRecord.Refresh();
+
             foreach (DataRow item in dt.Rows)
             {
                 int n = dgvMaterialUsedRecord.Rows.Add();
@@ -780,35 +781,45 @@ namespace FactoryManagementSoftware.UI
 
                 OrderQty = Convert.ToInt32(item["quantity_order"].ToString());
                 wastagePercetage = Convert.ToSingle(item["item_wastage_allowed"].ToString());
-                //wastagePercetage = (float)(Math.Truncate((double)Convert.ToSingle(item["item_wastage_allowed"].ToString()) * 100.0) / 100.0);
-                materialUsed = OrderQty * itemWeight / 1000;
 
-                wastageUsed = materialUsed * wastagePercetage;
-
-                if (string.IsNullOrEmpty(materialType))
+                if(item[dalItem.ItemCat].ToString().Equals("Part"))
                 {
-                    materialType = item["item_material"].ToString();
+                    materialUsed = OrderQty * itemWeight / 1000;
 
-                    totalMaterialUsed = materialUsed + wastageUsed;
-                }
-                else if (materialType == item["item_material"].ToString())
-                {
-                    //same data
-                    totalMaterialUsed += materialUsed + wastageUsed;
                 }
                 else
                 {
-                    //first data
-                    
-                    dgvMaterialUsedRecord.Rows[n - 1].Cells[headerTotalMatUsed].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
-                    dgvMaterialUsedRecord.Rows[n - 1].Cells[headerTotalMatUsed].Value = totalMaterialUsed;
-
-                    materialType = item["item_material"].ToString();
-                    totalMaterialUsed = materialUsed + wastageUsed;
-                    n = dgvMaterialUsedRecord.Rows.Add();
+                    materialUsed = OrderQty;
                 }
 
-                
+                wastageUsed = materialUsed * wastagePercetage;
+
+                if (item[dalItem.ItemCat].ToString().Equals("Part"))
+                {
+                    if (string.IsNullOrEmpty(materialType))
+                    {
+                        materialType = item["item_material"].ToString();
+
+                        totalMaterialUsed = materialUsed + wastageUsed;
+                    }
+                    else if (materialType == item["item_material"].ToString())
+                    {
+                        //same data
+                        totalMaterialUsed += materialUsed + wastageUsed;
+                    }
+                    else
+                    {
+                        //first data
+
+                        dgvMaterialUsedRecord.Rows[n - 1].Cells[headerTotalMatUsed].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
+                        dgvMaterialUsedRecord.Rows[n - 1].Cells[headerTotalMatUsed].Value = totalMaterialUsed;
+
+                        materialType = item["item_material"].ToString();
+                        totalMaterialUsed = materialUsed + wastageUsed;
+                        n = dgvMaterialUsedRecord.Rows.Add();
+                    }
+                }
+
                 if (dt.Rows.IndexOf(item) == dt.Rows.Count - 1)
                 {
                     // this is the last item
@@ -827,6 +838,14 @@ namespace FactoryManagementSoftware.UI
                 dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemWastage].Value = Convert.ToSingle(item[dalItem.ItemWastage]).ToString("0.00");
                 dgvMaterialUsedRecord.Rows[n].Cells[headerMatUsed].Value = materialUsed;
                 dgvMaterialUsedRecord.Rows[n].Cells[headerMatUsedAndWastage].Value = materialUsed + wastageUsed;
+
+                if (!item[dalItem.ItemCat].ToString().Equals("Part"))
+                {
+                    dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
+                    dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Value = materialUsed + wastageUsed;
+                }
+                    
+
                 index++;
             }
             tool.listPaintGreyHeader(dgvMaterialUsedRecord);

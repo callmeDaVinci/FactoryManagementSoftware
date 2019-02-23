@@ -219,9 +219,10 @@ namespace FactoryManagementSoftware.UI
         {
             string custName = tool.getCustName(1);
             DataTable dtMat = new DataTable();
-
+            int typeNo = 0;
             dtMat.Columns.Add(dalItem.ItemMaterial);
-            
+            dtMat.Columns.Add("no");
+
             DataTable dt = dalItemCust.custSearch(custName);
 
             if (dt.Rows.Count <= 0)
@@ -235,6 +236,7 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow item in dt.Rows)
                 {
+                    typeNo = 0;
                     itemCode = item["item_code"].ToString();
                     itemMat = item[dalItem.ItemMaterial].ToString();
 
@@ -243,22 +245,63 @@ namespace FactoryManagementSoftware.UI
                         DataTable dtJoin = dalJoin.parentCheck(itemCode);
                         foreach (DataRow Join in dtJoin.Rows)
                         {
-                            if(dalItem.getCatName(Join["join_child_code"].ToString()).Equals("Part"))
+                            if (tool.ifGotChild(Join["join_child_code"].ToString()))
                             {
-                                itemMat = dalItem.getMaterialType(Join["join_child_code"].ToString());
-
-                                if(!string.IsNullOrEmpty(itemMat))
+                                DataTable dtJoin2 = dalJoin.parentCheck(Join["join_child_code"].ToString());
+                                foreach (DataRow Join2 in dtJoin2.Rows)
                                 {
-                                    dtMat.Rows.Add(itemMat);
+                                    typeNo = 0;
+                                    if (dalItem.getCatName(Join2["join_child_code"].ToString()).Equals("Part"))
+                                    {
+                                        itemMat = dalItem.getMaterialType(Join2["join_child_code"].ToString());
+
+                                        if (!string.IsNullOrEmpty(itemMat))
+                                        {
+                                            dtMat.Rows.Add(itemMat, "1");
+                                        }
+                                    }
+                                    else if (dalItem.getCatName(Join2["join_child_code"].ToString()).Equals("Sub Material"))
+                                    {
+                                        itemMat = Join2["join_child_code"].ToString();
+
+                                        if (!string.IsNullOrEmpty(itemMat))
+                                        {
+                                            dtMat.Rows.Add(itemMat, "2");
+                                        }
+                                    }
                                 }
                             }
+                            else
+                            {
+                                if (dalItem.getCatName(Join["join_child_code"].ToString()).Equals("Part"))
+                                {
+                                    itemMat = dalItem.getMaterialType(Join["join_child_code"].ToString());
+
+                                    if (!string.IsNullOrEmpty(itemMat))
+                                    {
+                                        dtMat.Rows.Add(itemMat, "1");
+                                    }
+                                }
+                                else if (dalItem.getCatName(Join["join_child_code"].ToString()).Equals("Sub Material"))
+                                {
+                                    itemMat = Join["join_child_code"].ToString();
+
+                                   
+                                    if (!string.IsNullOrEmpty(itemMat))
+                                    {
+                                        dtMat.Rows.Add(itemMat, "2");
+                                    }
+                                }
+                            }
+                            
                         }
                     }
                     else
                     {
+                        typeNo = 0;
                         if (!string.IsNullOrEmpty(itemMat))
                         {
-                            dtMat.Rows.Add(itemMat);
+                            dtMat.Rows.Add(itemMat, "1");
                         }
                     }
                 }
@@ -318,6 +361,58 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
+        private DataTable SeperateMatAndSubMat(DataTable dt)
+        {
+            materialDAL dalMat = new materialDAL();
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i <= dt.Rows.Count - 2; i++)
+                {
+                    string a = dt.Rows[i]["no"].ToString();
+
+                    if(a.Equals("2"))
+                    {
+                        for (int j = i + 1; j <= dt.Rows.Count - 1; j++)
+                        {
+                            string b = dt.Rows[j]["no"].ToString();
+                            if (b.Equals("1"))
+                            {
+                                //swap row[i] and row[j]
+                                break;
+                            }
+                        }
+                    }
+                }
+                dt.AcceptChanges();
+            }
+
+            //materialDAL dalMat = new materialDAL();
+            //if (dt.Rows.Count > 0)
+            //{
+            //    for (int i = 0; i <= dt.Rows.Count - 2; i++)
+            //    {
+            //        string a = "";//dt.Rows[i]["item_cat"].ToString() get mat type
+
+            //        if (a.Equals("Sub Material"))
+            //        {
+            //            for (int j = i + 1; j <= dt.Rows.Count - 1; j++)
+            //            {
+            //                string b = "";//get current row mat type
+            //                if (b.Equals("Raw Material"))
+            //                {
+            //                    //swap row[i] and row[j]
+            //                    break;
+            //                }
+
+            //            }
+            //        }
+            //    }
+            //    dt.AcceptChanges();
+            //}
+            return dt;
+        }
+
+
         private void getMonthlyStockData()
         {
             createColumnsForMonthlyReportDGV();
@@ -330,6 +425,11 @@ namespace FactoryManagementSoftware.UI
 
             dt.DefaultView.Sort = "item_material ASC";
             dt = dt.DefaultView.ToTable();
+
+            dt.DefaultView.Sort = "no ASC";
+            dt = dt.DefaultView.ToTable();
+
+            dt.Columns.Remove("no");
 
             float openningStock = 0;
             float percentage = 0;
@@ -354,7 +454,6 @@ namespace FactoryManagementSoftware.UI
                 
                 foreach (DataRow pmma in searchdt.Rows)
                 {
-
                     if (openningStock == -1)
                     {
                         openningStock = 0;
@@ -486,8 +585,17 @@ namespace FactoryManagementSoftware.UI
             float wastageUsed = 0;
             float wastagePercetage = 0;
             float itemWeight;
+            DataTable dt;
+            string test = dalItem.getCatName(itemCode);
+            if (dalItem.getCatName(itemCode).Equals("RAW Material"))
+            {
+                dt = dalMatUsed.matSearch(itemCode);
+            }
+            else
+            {
+                dt = dalMatUsed.codeSearch(itemCode);
+            }
 
-            DataTable dt = dalMatUsed.Select();
             dt = AddDuplicates(dt);
             dt.DefaultView.Sort = "item_material ASC";
             dt = dt.DefaultView.ToTable();
@@ -498,32 +606,43 @@ namespace FactoryManagementSoftware.UI
                 OrderQty = Convert.ToInt32(item["quantity_order"].ToString());
                 wastagePercetage = Convert.ToSingle(item["item_wastage_allowed"].ToString());
 
-                materialUsed = OrderQty * itemWeight / 1000;
-
-                wastageUsed = materialUsed * wastagePercetage;
-
-                if (string.IsNullOrEmpty(materialType))
+                if (item[dalItem.ItemCat].ToString().Equals("Part"))
                 {
-                    materialType = item["item_material"].ToString();
-
-                    totalMaterialUsed = materialUsed + wastageUsed;
-                }
-                else if (materialType == item["item_material"].ToString())
-                {
-                    //same data
-                    totalMaterialUsed += materialUsed + wastageUsed;
+                    materialUsed = OrderQty * itemWeight / 1000;
+                    wastageUsed = materialUsed * wastagePercetage;
                 }
                 else
                 {
-                    if(materialType == itemCode)
-                    {
-                        return totalMaterialUsed;
-                    }
-                    //first data
-                    materialType = item["item_material"].ToString();
+                    materialUsed = OrderQty;
+                    wastageUsed = materialUsed * wastagePercetage;
                     totalMaterialUsed = materialUsed + wastageUsed;
                 }
 
+                if (item[dalItem.ItemCat].ToString().Equals("Part"))
+                {
+
+                    if (string.IsNullOrEmpty(materialType))
+                    {
+                        materialType = item["item_material"].ToString();
+
+                        totalMaterialUsed = materialUsed + wastageUsed;
+                    }
+                    else if (materialType == item["item_material"].ToString())
+                    {
+                        //same data
+                        totalMaterialUsed += materialUsed + wastageUsed;
+                    }
+                    else
+                    {
+                        if (materialType == itemCode)
+                        {
+                            return totalMaterialUsed;
+                        }
+                        //first data
+                        materialType = item["item_material"].ToString();
+                        totalMaterialUsed = materialUsed + wastageUsed;
+                    }
+                }
 
                 if (dt.Rows.IndexOf(item) == dt.Rows.Count - 1)
                 {
