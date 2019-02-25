@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.cmbCust = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
@@ -48,6 +48,10 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
+            this.dtpEnd = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.dtpStart = new System.Windows.Forms.DateTimePicker();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -155,14 +159,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvForecastReport.BackgroundColor = System.Drawing.Color.White;
             this.dgvForecastReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvForecastReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvForecastReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecastReport.EnableHeadersVisualStyles = false;
             this.dgvForecastReport.Location = new System.Drawing.Point(23, 199);
@@ -197,7 +201,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(1369, 54);
+            this.button1.Location = new System.Drawing.Point(1465, 53);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(92, 47);
@@ -242,13 +246,14 @@
             this.btnExportAllToExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExportAllToExcel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExportAllToExcel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnExportAllToExcel.Location = new System.Drawing.Point(1465, 55);
+            this.btnExportAllToExcel.Location = new System.Drawing.Point(1359, 56);
             this.btnExportAllToExcel.Margin = new System.Windows.Forms.Padding(2);
             this.btnExportAllToExcel.Name = "btnExportAllToExcel";
             this.btnExportAllToExcel.Size = new System.Drawing.Size(92, 45);
             this.btnExportAllToExcel.TabIndex = 105;
             this.btnExportAllToExcel.Text = "ALL";
             this.btnExportAllToExcel.UseVisualStyleBackColor = false;
+            this.btnExportAllToExcel.Visible = false;
             this.btnExportAllToExcel.Click += new System.EventHandler(this.btnExportAllToExcel_Click);
             // 
             // btnSearch
@@ -281,12 +286,56 @@
             // 
             this.bgWorker.WorkerReportsProgress = true;
             // 
+            // dtpEnd
+            // 
+            this.dtpEnd.CustomFormat = "dd-MM-yyyy";
+            this.dtpEnd.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpEnd.Location = new System.Drawing.Point(210, 133);
+            this.dtpEnd.Name = "dtpEnd";
+            this.dtpEnd.Size = new System.Drawing.Size(162, 38);
+            this.dtpEnd.TabIndex = 111;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(210, 107);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(83, 23);
+            this.label2.TabIndex = 110;
+            this.label2.Text = "OUT END";
+            // 
+            // dtpStart
+            // 
+            this.dtpStart.CustomFormat = "dd-MM-yyyy";
+            this.dtpStart.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpStart.Location = new System.Drawing.Point(23, 133);
+            this.dtpStart.Name = "dtpStart";
+            this.dtpStart.Size = new System.Drawing.Size(162, 38);
+            this.dtpStart.TabIndex = 109;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(19, 107);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(95, 23);
+            this.label8.TabIndex = 108;
+            this.label8.Text = "OUT START";
+            // 
             // frmForecastReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 703);
+            this.Controls.Add(this.dtpEnd);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.dtpStart);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.btnExportAllToExcel);
@@ -338,5 +387,9 @@
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.ComponentModel.BackgroundWorker bgWorker;
+        private System.Windows.Forms.DateTimePicker dtpEnd;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DateTimePicker dtpStart;
+        private System.Windows.Forms.Label label8;
     }
 }

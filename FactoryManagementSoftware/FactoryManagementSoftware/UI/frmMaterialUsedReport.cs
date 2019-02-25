@@ -1029,6 +1029,7 @@ namespace FactoryManagementSoftware.UI
                 tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                 tRange.Borders.Weight = XlBorderWeight.xlThin;
                 tRange.Font.Size = 11;
+                tRange.Font.Name = "Courier New";
                 tRange.EntireColumn.AutoFit();
                 tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
 

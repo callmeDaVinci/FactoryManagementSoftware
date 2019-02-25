@@ -749,6 +749,8 @@ namespace FactoryManagementSoftware.UI
                     string itemCode = "";
                     string month = "";
                     int forecastIndex = 1;
+                    string start = dtpStart.Value.ToString("yyyy/MM/dd");
+                    string end = dtpEnd.Value.ToString("yyyy/MM/dd");
 
                     foreach (DataRow item in dt.Rows)//go into customer's item list
                     {
@@ -768,7 +770,8 @@ namespace FactoryManagementSoftware.UI
                         forecastThree = Convert.ToSingle(item["forecast_three"]);
                         month = item["forecast_current_month"].ToString();
 
-                        DataTable dt3 = daltrfHist.outSearch(cmbCust.Text, getMonthValue(month), itemCode);//load item out to customer record in current month
+                        //DataTable dt3 = daltrfHist.outSearch(cmbCust.Text, getMonthValue(month), itemCode);//load item out to customer record in current month
+                        DataTable dt3 = daltrfHist.rangeItemToCustomerSearch(cmbCust.Text, start, end, itemCode);
 
                         outStock = 0;
 
@@ -1581,7 +1584,7 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
                     xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") READY STOCK VERSUS FORECAST";
                     xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID) +" OUT FROM:"+dtpStart.Text+" TO:"+dtpEnd.Text;
 
                     xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
                     xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
@@ -1615,6 +1618,7 @@ namespace FactoryManagementSoftware.UI
                     rng.EntireColumn.AutoFit();
 
                     Range tRange = xlWorkSheet.UsedRange;
+                    tRange.Font.Name = "Courier New";
                     tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                     tRange.Borders.Weight = XlBorderWeight.xlThin;
 
@@ -1706,6 +1710,10 @@ namespace FactoryManagementSoftware.UI
                         }
 
                         Int32 percentage = ((i+1) * 100) / (dgvForecastReport.RowCount - 2);
+                        if(percentage >= 100)
+                        {
+                            percentage = 100;
+                        }
                         bgWorker.ReportProgress(percentage);
                     }
                     bgWorker.ReportProgress(100);
@@ -1830,7 +1838,7 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
                     xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") READY STOCK VERSUS FORECAST";
                     xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + " OUT FROM:" + dtpStart.Text + " TO:" + dtpEnd.Text;
 
                     xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
                     xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
@@ -2005,7 +2013,7 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
                     xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") READY STOCK VERSUS FORECAST";
                     xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + " OUT FROM:" + dtpStart.Text + " TO:" + dtpEnd.Text;
 
                     xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
                     xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;

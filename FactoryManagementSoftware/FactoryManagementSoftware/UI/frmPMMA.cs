@@ -602,7 +602,15 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow item in dt.Rows)
             {
-                itemWeight = Convert.ToSingle(item["item_part_weight"].ToString());
+                //itemWeight = Convert.ToSingle(item["item_part_weight"].ToString());
+
+                itemWeight = Convert.ToSingle(item[dalItem.ItemQuoPWPcs].ToString()) + Convert.ToSingle(item[dalItem.ItemQuoRWPcs].ToString());
+
+                if (itemWeight <= 0)
+                {
+                    itemWeight = Convert.ToSingle(item[dalItem.ItemProPWPcs].ToString()) + Convert.ToSingle(item[dalItem.ItemProRWPcs].ToString());
+                }
+
                 OrderQty = Convert.ToInt32(item["quantity_order"].ToString());
                 wastagePercetage = Convert.ToSingle(item["item_wastage_allowed"].ToString());
 
@@ -610,6 +618,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     materialUsed = OrderQty * itemWeight / 1000;
                     wastageUsed = materialUsed * wastagePercetage;
+                    totalMaterialUsed += materialUsed + wastageUsed;
                 }
                 else
                 {
@@ -618,41 +627,41 @@ namespace FactoryManagementSoftware.UI
                     totalMaterialUsed = materialUsed + wastageUsed;
                 }
 
-                if (item[dalItem.ItemCat].ToString().Equals("Part"))
-                {
+                //if (item[dalItem.ItemCat].ToString().Equals("Part"))
+                //{
+                //    totalMaterialUsed += materialUsed + wastageUsed;
+                //    //if (string.IsNullOrEmpty(materialType))
+                //    //{
+                //    //    materialType = item["item_material"].ToString();
 
-                    if (string.IsNullOrEmpty(materialType))
-                    {
-                        materialType = item["item_material"].ToString();
+                //    //    totalMaterialUsed = materialUsed + wastageUsed;
+                //    //}
+                //    //else if (materialType == item["item_material"].ToString())
+                //    //{
+                //    //    //same data
+                //    //    totalMaterialUsed += materialUsed + wastageUsed;
+                //    //}
+                //    //else
+                //    //{
+                //    //    if (materialType == itemCode)
+                //    //    {
+                //    //        return totalMaterialUsed;
+                //    //    }
+                //    //    //first data
+                //    //    materialType = item["item_material"].ToString();
+                //    //    totalMaterialUsed = materialUsed + wastageUsed;
+                //    //}
+                //}
 
-                        totalMaterialUsed = materialUsed + wastageUsed;
-                    }
-                    else if (materialType == item["item_material"].ToString())
-                    {
-                        //same data
-                        totalMaterialUsed += materialUsed + wastageUsed;
-                    }
-                    else
-                    {
-                        if (materialType == itemCode)
-                        {
-                            return totalMaterialUsed;
-                        }
-                        //first data
-                        materialType = item["item_material"].ToString();
-                        totalMaterialUsed = materialUsed + wastageUsed;
-                    }
-                }
-
-                if (dt.Rows.IndexOf(item) == dt.Rows.Count - 1)
-                {
-                    // this is the last item
-                    totalMaterialUsed = materialUsed + wastageUsed;
-                    if (materialType == itemCode)
-                    {
-                        return totalMaterialUsed;
-                    }
-                }
+                //if (dt.Rows.IndexOf(item) == dt.Rows.Count - 1)
+                //{
+                //    // this is the last item
+                //    totalMaterialUsed = materialUsed + wastageUsed;
+                //    if (materialType == itemCode)
+                //    {
+                //        return totalMaterialUsed;
+                //    }
+                //}
                 index++;
             }
             return totalMaterialUsed;
@@ -740,6 +749,8 @@ namespace FactoryManagementSoftware.UI
         private void insertItemQuantityOrderData(string month, string year)
         {
             string custName = tool.getCustName(1);
+            string start = dtpStart.Value.ToString("yyyy/MM/dd");
+            string end = dtpEnd.Value.ToString("yyyy/MM/dd");
 
             if (!string.IsNullOrEmpty(custName))
             {
@@ -760,7 +771,8 @@ namespace FactoryManagementSoftware.UI
                     {
                         itemCode = item["item_code"].ToString();
 
-                        DataTable dt3 = dalTrfHist.ItemToCustomerDateSearch(custName, month, year, itemCode);
+                        //DataTable dt3 = dalTrfHist.ItemToCustomerDateSearch(custName, month, year, itemCode);
+                        DataTable dt3 = dalTrfHist.rangeItemToCustomerSearch(custName, start, end, itemCode);
 
                         outStock = 0;
 
@@ -1373,6 +1385,7 @@ namespace FactoryManagementSoftware.UI
                     Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
                     xlWorkSheet.Name = tool.getCustName(1);
 
+                    
                     #region Save data to Sheet
                     xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + tool.getCustName(1) + ") END MONTH STOCK REPORT(" + dtpDate.Text + ")";
 
@@ -1392,7 +1405,7 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet.PageSetup.FitToPagesWide = 1;
                     xlWorkSheet.PageSetup.FitToPagesTall = false;
                     xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
-
+                    
                     xlexcel.PrintCommunication = true;
                     xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
                     // Paste clipboard results to worksheet range
@@ -1406,6 +1419,7 @@ namespace FactoryManagementSoftware.UI
                     tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                     tRange.Borders.Weight = XlBorderWeight.xlThin;
                     tRange.Font.Size = 11;
+                    tRange.Font.Name = "Courier New";
                     tRange.EntireColumn.AutoFit();
                     tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
 

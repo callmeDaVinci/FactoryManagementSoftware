@@ -521,6 +521,7 @@ namespace FactoryManagementSoftware.UI
                     tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                     tRange.Borders.Weight = XlBorderWeight.xlThin;
                     tRange.Font.Size = 11;
+                    tRange.Font.Name = "Courier New";
                     tRange.EntireColumn.AutoFit();
                     tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
 
@@ -586,6 +587,7 @@ namespace FactoryManagementSoftware.UI
         {
             try
             {
+                dgvStockReport.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 SaveFileDialog sfd = new SaveFileDialog();
 
                 sfd.Filter = "Excel Documents (*.xls)|*.xls";
@@ -624,6 +626,7 @@ namespace FactoryManagementSoftware.UI
                     Clipboard.Clear();
                     dgvStockReport.ClearSelection();
                 }
+                dgvStockReport.SelectionMode = DataGridViewSelectionMode.CellSelect;
             }
             catch (Exception ex)
             {
@@ -703,6 +706,7 @@ namespace FactoryManagementSoftware.UI
                             tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                             tRange.Borders.Weight = XlBorderWeight.xlThin;
                             tRange.Font.Size = 11;
+                            tRange.Font.Name = "Courier New";
                             tRange.EntireColumn.AutoFit();
                             tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);//change first row back color to light grey
 
