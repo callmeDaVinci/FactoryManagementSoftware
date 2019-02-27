@@ -825,6 +825,9 @@ namespace FactoryManagementSoftware.UI
             try
             {
                 SaveFileDialog sfd = new SaveFileDialog();
+                string path = @"D:\StockAssistant\Document\InOutReport";
+                Directory.CreateDirectory(path);
+                sfd.InitialDirectory = path;
                 sfd.Filter = "Excel Documents (*.xls)|*.xls";
                 sfd.FileName = setFileName();
 
@@ -843,7 +846,24 @@ namespace FactoryManagementSoftware.UI
 
                     xlexcel.Calculation = XlCalculation.xlCalculationManual;
                     Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                    xlWorkSheet.Name = cmbSubType.Text;
+
+                    if(string.IsNullOrEmpty(cmbSubType.Text))
+                    {
+                        if(!string.IsNullOrEmpty(cmbType.Text))
+                        {
+                            xlWorkSheet.Name = cmbType.Text;
+                        }
+                        else
+                        {
+                            xlWorkSheet.Name = "NAME NOT FOUND";
+                        }
+                        
+                    }
+                    else
+                    {
+                        xlWorkSheet.Name = cmbSubType.Text;
+                    }
+                    
 
                     #region Save data to Sheet
 
@@ -863,7 +883,7 @@ namespace FactoryManagementSoftware.UI
 
                     //Page setup
                     xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                    xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
+                    xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
                     xlWorkSheet.PageSetup.Zoom = false;
                     xlWorkSheet.PageSetup.CenterHorizontally = true;
                     xlWorkSheet.PageSetup.LeftMargin = 1;
@@ -885,7 +905,9 @@ namespace FactoryManagementSoftware.UI
                     tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                     tRange.Borders.Weight = XlBorderWeight.xlThin;
                     tRange.Font.Size = 11;
+                    tRange.Font.Name = "Calibri";
                     tRange.EntireColumn.AutoFit();
+                    tRange.EntireRow.AutoFit();
                     tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
 
                     #endregion

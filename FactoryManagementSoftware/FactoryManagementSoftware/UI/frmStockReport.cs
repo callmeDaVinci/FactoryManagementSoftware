@@ -9,6 +9,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using DataTable = System.Data.DataTable;
+using FactoryManagementSoftware.Properties;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -466,8 +467,14 @@ namespace FactoryManagementSoftware.UI
         {
             try
             {
+                
                 dgvStockReport.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 SaveFileDialog sfd = new SaveFileDialog();
+
+                string path = @"D:\StockAssistant\Document\StockReport";
+                Directory.CreateDirectory(path);
+                sfd.InitialDirectory = path;
+
                 sfd.Filter = "Excel Documents (*.xls)|*.xls";
                 sfd.FileName = setFileName();
 
@@ -502,10 +509,12 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
                     xlWorkSheet.PageSetup.Zoom = false;
                     xlWorkSheet.PageSetup.CenterHorizontally = true;
-                    xlWorkSheet.PageSetup.LeftMargin = 1;
-                    xlWorkSheet.PageSetup.RightMargin = 1;
+                    xlWorkSheet.PageSetup.LeftMargin = 30;
+                    xlWorkSheet.PageSetup.RightMargin = 30;
                     xlWorkSheet.PageSetup.FitToPagesWide = 1;
                     xlWorkSheet.PageSetup.FitToPagesTall = false;
+
+                    
                     xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
 
                     xlexcel.PrintCommunication = true;
@@ -515,14 +524,15 @@ namespace FactoryManagementSoftware.UI
                     Range CR = (Range)xlWorkSheet.Cells[1, 1];
                     CR.Select();
                     xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
-
+                    
                     //content edit
                     Range tRange = xlWorkSheet.UsedRange;
                     tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                     tRange.Borders.Weight = XlBorderWeight.xlThin;
                     tRange.Font.Size = 11;
-                    tRange.Font.Name = "Courier New";
+                    tRange.Font.Name = "Calibri";
                     tRange.EntireColumn.AutoFit();
+                    tRange.EntireRow.AutoFit();
                     tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
 
                     #endregion
@@ -589,7 +599,9 @@ namespace FactoryManagementSoftware.UI
             {
                 dgvStockReport.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 SaveFileDialog sfd = new SaveFileDialog();
-
+                string path2 = @"D:\StockAssistant\Document\StockReport";
+                Directory.CreateDirectory(path2);
+                sfd.InitialDirectory = path2;
                 sfd.Filter = "Excel Documents (*.xls)|*.xls";
                 sfd.FileName = "StockReport(ALL)_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
 
@@ -706,7 +718,8 @@ namespace FactoryManagementSoftware.UI
                             tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                             tRange.Borders.Weight = XlBorderWeight.xlThin;
                             tRange.Font.Size = 11;
-                            tRange.Font.Name = "Courier New";
+                            tRange.Font.Name = "Calibri";
+                            tRange.EntireRow.AutoFit();
                             tRange.EntireColumn.AutoFit();
                             tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);//change first row back color to light grey
 

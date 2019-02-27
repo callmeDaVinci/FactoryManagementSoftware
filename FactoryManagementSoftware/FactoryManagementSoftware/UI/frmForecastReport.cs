@@ -955,7 +955,24 @@ namespace FactoryManagementSoftware.UI
                         {
                             itemCode = item["item_code"].ToString();
 
-                            if(dalItem.getCatName(itemCode).Equals("Part"))
+                            bool subMatChecking = false;
+
+                            if(cbSubMat.Checked)
+                            {
+                                subMatChecking = true;
+                            }
+                            else
+                            {
+                                if(dalItem.getCatName(itemCode).Equals("Part"))
+                                {
+                                    subMatChecking = true;
+                                }
+                                else
+                                {
+                                    subMatChecking = false;
+                                }
+                            }
+                            if(subMatChecking)//dalItem.getCatName(itemCode).Equals("Part")
                             {
                                 int n = dgvForecastReport.Rows.Add();
                                 dgv.Rows[n].Cells[CodeColName].Value = Join["join_child_code"].ToString();
@@ -1563,6 +1580,9 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 SaveFileDialog sfd = new SaveFileDialog();
+                string path = @"D:\StockAssistant\Document\ForecastReport";
+                Directory.CreateDirectory(path);
+                sfd.InitialDirectory = path;
                 sfd.Filter = "Excel Documents (*.xls)|*.xls";
                 sfd.FileName = setFileName();
                 if (sfd.ShowDialog() == DialogResult.OK)
@@ -1618,7 +1638,8 @@ namespace FactoryManagementSoftware.UI
                     rng.EntireColumn.AutoFit();
 
                     Range tRange = xlWorkSheet.UsedRange;
-                    tRange.Font.Name = "Courier New";
+                    tRange.Font.Size = 12;
+                    tRange.Font.Name = "Calibri";
                     tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                     tRange.Borders.Weight = XlBorderWeight.xlThin;
 
@@ -1753,7 +1774,9 @@ namespace FactoryManagementSoftware.UI
             try
             {
                 SaveFileDialog sfd = new SaveFileDialog();
-
+                string path2 = @"D:\StockAssistant\Document\ForecastReport";
+                Directory.CreateDirectory(path2);
+                sfd.InitialDirectory = path2;
                 sfd.Filter = "Excel Documents (*.xls)|*.xls";
                 sfd.FileName = "ForecastReport(ALL)_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
 

@@ -2,6 +2,7 @@
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
@@ -13,6 +14,8 @@ namespace FactoryManagementSoftware.UI
         public frmInOutEdit()
         {
             InitializeComponent();
+
+            dtpTrfDate.Value = DateTime.Today.AddDays(-1);
             createDGV();
         }
         static public bool updateSuccess = false;
@@ -118,7 +121,7 @@ namespace FactoryManagementSoftware.UI
             tool.AddTextBoxColumns(dgv, ToColumnName, ToColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, QtyColumnName, QtyColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, UnitColumnName, UnitColumnName, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, NoteColumnName, NoteColumnName, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, NoteColumnName, NoteColumnName, Fill);
 
             dgv.Columns[QtyColumnName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
@@ -672,7 +675,6 @@ namespace FactoryManagementSoftware.UI
                     childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
                     childItemCode = Join["join_child_code"].ToString();
                     DataTable dtItem = dalItem.codeSearch(childItemCode);
-                    childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
                     if (dtItem.Rows.Count > 0)
                     {
                         DataGridView dgv = dgvTransfer;
@@ -905,31 +907,29 @@ namespace FactoryManagementSoftware.UI
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-                if (Validation())
+                DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message",
+                                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
                 {
-                    DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message",
-                                                                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (dialogResult == DialogResult.Yes)
+                    //foreach row and make transfer action
+                    foreach (DataGridViewRow c in dgvTransfer.Rows)
                     {
-                        //foreach row and make transfer action
-                        foreach (DataGridViewRow c in dgvTransfer.Rows)
-                        {
-                            selectedRow = c.Index;
-                            getData();
+                        selectedRow = c.Index;
+                        getData();
 
-                            if (!transferAction())
-                            {
-                                MessageBox.Show("Action Stop");
-                                Cursor = Cursors.Arrow; // change cursor to normal type 
-                                return;
-                            }
-                            else
-                            {
-                                Close();
-                            }
+                        if (!transferAction())
+                        {
+                            MessageBox.Show("Action Stop");
+                            Cursor = Cursors.Arrow; // change cursor to normal type 
+                            return;
+                        }
+                        else
+                        {
+                            Close();
                         }
                     }
                 }
+                
 
                 Cursor = Cursors.Arrow; // change cursor to normal type 
             }
@@ -996,6 +996,12 @@ namespace FactoryManagementSoftware.UI
                 DataTable dt = dalCust.Select();
                 loadLocationData(dt, cmbTrfFrom, "cust_name");
 
+            }
+            else if(cmbTrfFromCategory.Text.Equals("Assembly"))
+            {
+                cmbTrfFrom.DataSource = null;
+                cmbTrfToCategory.SelectedIndex = 0;
+                cmbTrfTo.SelectedIndex = 4;
             }
             else
             {
@@ -1153,6 +1159,10 @@ namespace FactoryManagementSoftware.UI
                     addToDGV();
 
                     dgvEdit = false;
+
+                    txtTrfQty.Clear();
+                    cmbTrfFrom.SelectedIndex = -1;
+                    cmbTrfTo.SelectedIndex = -1;
                 }
                 changeButton();
                 Cursor = Cursors.Arrow; // change cursor to normal type 
@@ -1203,7 +1213,7 @@ namespace FactoryManagementSoftware.UI
             {
                 btnEdit.Text = "ADD";
                 btnDelete.Hide();
-            }
+            } 
         }
 
         private void dgvTransfer_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -1291,6 +1301,99 @@ namespace FactoryManagementSoftware.UI
             {
                 tool.saveToTextAndMessageToUser(ex);
             }  
+        }
+
+        private void cmbTrfItemName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //SortedDictionary<int, ListInfo> dict = new SortedDictionary<int, ListInfo>();
+
+            //int found = -1;
+            //int current = cmbTrfItemName.SelectedIndex;
+
+            //// collect all items that match:
+            //for (int i = 0; i < comboBox1.Items.Count; i++)
+            //    if (((ListInfo)comboBox1.Items[i]).Name.ToLower().IndexOf(e.KeyChar.ToString().ToLower()) >= 0)
+            //        // case sensitive version:
+            //        // if (((ListInfo)comboBox1.Items[i]).Name.IndexOf(e.KeyChar.ToString()) >= 0)
+            //        dict.Add(i, (ListInfo)comboBox1.Items[i]);
+
+            //// find the one after the current position:
+            //foreach (KeyValuePair<int, ListInfo> kv in dict)
+            //    if (kv.Key > current) { found = kv.Key; break; }
+
+            //// or take the first one:
+            //if (dict.Keys.Count > 0 && found < 0) found = dict.Keys.First();
+
+            //if (found >= 0) comboBox1.SelectedIndex = found;
+
+            //e.Handled = true;
+        }
+
+        private void dgvTransfer_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                //handle the row selection on right click
+                if (e.Button == MouseButtons.Right)
+                {
+                    ContextMenuStrip my_menu = new ContextMenuStrip();
+
+                    dgvTransfer.CurrentCell = dgvTransfer.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
+                    string itemCode = dgvTransfer.Rows[e.RowIndex].Cells[CodeColumnName].Value.ToString();
+                        // Can leave these here - doesn't hurt
+                        dgvTransfer.Rows[e.RowIndex].Selected = true;
+                    dgvTransfer.Focus();
+                    int rowIndex = dgvTransfer.CurrentCell.RowIndex;
+
+                    my_menu.Items.Add(itemCode + "     " + dalItem.getItemName(itemCode)).Name = itemCode;
+                    my_menu.Items.Add("").Name = itemCode;
+
+                    DataTable dt = dalStock.Select(itemCode);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        float totalQty = 0;
+                        foreach (DataRow stock in dt.Rows)
+                        {
+                            string fac = stock["fac_name"].ToString();
+                            string qty = Convert.ToSingle(stock["stock_qty"]).ToString("0.00");
+
+                            int length = fac.Length;
+
+                            if((10 - length) >=0)
+                            {
+                                for (int i = 1; i <= (10 - length); i++)
+                                {
+                                    fac += " ";
+                                }
+                            }
+
+                            my_menu.Items.Add(fac+" "+qty).Name = fac;
+                            totalQty += Convert.ToSingle(qty);
+                        }
+                        my_menu.Items.Add("---------------------").Name = "Line1";
+                        my_menu.Items.Add("Total" + "       " + totalQty.ToString("0.00")).Name = "Total";
+                        my_menu.Items.Add("---------------------").Name = "Line2";
+                    }
+                    else
+                    {
+                        string fac = "null";
+                        string qty = "null";
+                        my_menu.Items.Add(fac + "   " + qty).Name = fac;
+                    }
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
     }
 }

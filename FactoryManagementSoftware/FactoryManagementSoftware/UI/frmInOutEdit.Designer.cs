@@ -98,7 +98,7 @@
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
-            this.btnCancel.Location = new System.Drawing.Point(1324, 602);
+            this.btnCancel.Location = new System.Drawing.Point(1493, 740);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(120, 50);
@@ -236,7 +236,7 @@
             // 
             // cmbTrfItemName
             // 
-            this.cmbTrfItemName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbTrfItemName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
             this.cmbTrfItemName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbTrfItemName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTrfItemName.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -248,6 +248,7 @@
             this.cmbTrfItemName.Size = new System.Drawing.Size(200, 31);
             this.cmbTrfItemName.TabIndex = 65;
             this.cmbTrfItemName.SelectedIndexChanged += new System.EventHandler(this.cmbTrfItemName_SelectedIndexChanged);
+            this.cmbTrfItemName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cmbTrfItemName_KeyPress);
             // 
             // cmbTrfItemCode
             // 
@@ -324,7 +325,7 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(1163, 602);
+            this.button2.Location = new System.Drawing.Point(1367, 740);
             this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(122, 52);
@@ -485,9 +486,10 @@
             this.dgvTransfer.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvTransfer.RowTemplate.Height = 40;
             this.dgvTransfer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTransfer.Size = new System.Drawing.Size(941, 519);
+            this.dgvTransfer.Size = new System.Drawing.Size(1110, 657);
             this.dgvTransfer.TabIndex = 102;
             this.dgvTransfer.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTransfer_CellDoubleClick);
+            this.dgvTransfer.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvTransfer_CellMouseDown);
             this.dgvTransfer.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvTransfer_MouseClick);
             // 
             // label15
@@ -521,7 +523,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1463, 676);
+            this.ClientSize = new System.Drawing.Size(1632, 814);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.dgvTransfer);

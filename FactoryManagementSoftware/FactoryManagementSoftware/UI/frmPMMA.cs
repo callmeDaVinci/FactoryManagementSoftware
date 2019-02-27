@@ -1365,6 +1365,9 @@ namespace FactoryManagementSoftware.UI
             {
                 dgvPMMA.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 SaveFileDialog sfd = new SaveFileDialog();
+                string path = @"D:\StockAssistant\Document\PMMAMaterialUsedReport";
+                Directory.CreateDirectory(path);
+                sfd.InitialDirectory = path;
                 sfd.Filter = "Excel Documents (*.xls)|*.xls";
                 sfd.FileName = setFileName();
 
@@ -1419,8 +1422,9 @@ namespace FactoryManagementSoftware.UI
                     tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                     tRange.Borders.Weight = XlBorderWeight.xlThin;
                     tRange.Font.Size = 11;
-                    tRange.Font.Name = "Courier New";
+                    tRange.Font.Name = "Calibri";
                     tRange.EntireColumn.AutoFit();
+                    tRange.EntireRow.AutoFit();
                     tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
 
                     #endregion

@@ -210,8 +210,24 @@ namespace FactoryManagementSoftware.UI
                     }
                     if (ifGotChild(itemCode))
                     {
-                        dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
-                        dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        if(dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
+                        {
+                            dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                            dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        }
+                        else if(dalItem.checkIfProduction(itemCode))
+                        {
+                            dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
+                            dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        }
+                        else
+                        {
+                            dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
+                            dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        }
                     }
                     if (qty < 0)
                     {
@@ -227,8 +243,27 @@ namespace FactoryManagementSoftware.UI
                     itemCode = dgv.Rows[n].Cells["trf_hist_item_code"].Value.ToString();
                     if (ifGotChild(itemCode))
                     {
-                        dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
-                        dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                        //dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                        //dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+
+                        if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
+                        {
+                            dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                            dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        }
+                        else if (dalItem.checkIfProduction(itemCode))
+                        {
+                            dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
+                            dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        }
+                        else
+                        {
+                            dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
+                            dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        }
                     }
 
 
@@ -307,9 +342,29 @@ namespace FactoryManagementSoftware.UI
                     }
                     if (ifGotChild(itemCode))
                     {
-                        dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
-                        dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        //dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        //dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
+                        {
+                            dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                            dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        }
+                        else if (dalItem.checkIfProduction(itemCode))
+                        {
+                            dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
+                            dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        }
+                        else
+                        {
+                            dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
+                            dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        }
                     }
+
                     if (qty < 0)
                     {
                         dgv.Rows[n].Cells["item_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
@@ -324,8 +379,27 @@ namespace FactoryManagementSoftware.UI
                     itemCode = dgv.Rows[n].Cells["trf_hist_item_code"].Value.ToString();
                     if (ifGotChild(itemCode))
                     {
-                        dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
-                        dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                        //dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+                        //dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline) };
+
+                        if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
+                        {
+                            dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                            dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        }
+                        else if (dalItem.checkIfProduction(itemCode))
+                        {
+                            dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
+                            dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        }
+                        else
+                        {
+                            dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
+                            dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
+
+                        }
                     }
                 }
                 else if (dgv == dgvFactoryStock)
@@ -856,34 +930,6 @@ namespace FactoryManagementSoftware.UI
         //transfer stock
         private void transfer_Click(object sender, EventArgs e)
         {
-            //try
-            //{//Directory.CreateDirectory(@"D:\StockAssistant\SystemError");
-            //    string date = DateTime.Now.Date.ToString("dd_MM_yyyy");
-            //    string filePath = @"D:\StockAssistant\Error\" + date + ".txt";
-            //    string ex = date;
-            //    //Exception ex = "testing";
-
-            //    using (StreamWriter writer = new StreamWriter(filePath, true))
-            //    {
-            //        writer.WriteLine("-----------------------------------------------------------------------------");
-            //        writer.WriteLine("Date : " + DateTime.Now.ToString());
-            //        writer.WriteLine();
-
-            //        while (ex != null)
-            //        {
-            //            writer.WriteLine(ex.GetType().FullName);
-            //            writer.WriteLine("Message : " + ex);
-            //            writer.WriteLine("StackTrace : " + ex);
-            //            ex = null;
-            //        }
-            //    }
-            //}
-
-            //catch (Exception ex)
-            //{
-            //    tool.saveToText(ex);
-            //}
-
             try
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -1288,6 +1334,38 @@ namespace FactoryManagementSoftware.UI
 
 
         #endregion
+
+        private void dgvItem_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int rowIndex = dgvItem.CurrentCell.RowIndex;
+            if (rowIndex >= 0)
+            {            
+                try
+                {
+                    editingItemCat = dgvItem.Rows[rowIndex].Cells["item_cat"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_cat"].Value.ToString();
+                    editingItemName = dgvItem.Rows[rowIndex].Cells["item_name"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_name"].Value.ToString();
+                    editingItemCode = dgvItem.Rows[rowIndex].Cells["item_code"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
+
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    frmInOutEdit frm = new frmInOutEdit();
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.ShowDialog();//Item Edit
+
+                    if (frmInOutEdit.updateSuccess)
+                    {
+                        //txtSearch.Text = editingItemCode; // update date list      
+                    }
+
+                    refreshDataList();
+                    listPaintAndKeepSelected(dgvItem);
+                    Cursor = Cursors.Arrow; // change cursor to normal type
+                }
+                catch (Exception ex)
+                {
+                    tool.saveToTextAndMessageToUser(ex);
+                }
+            }
+        }
     }
 }
 
