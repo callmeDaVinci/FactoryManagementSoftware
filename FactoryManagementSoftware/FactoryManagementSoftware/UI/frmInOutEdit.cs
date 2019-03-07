@@ -177,7 +177,7 @@ namespace FactoryManagementSoftware.UI
             {
                 result = false;
                 errorProvider3.SetError(cmbTrfItemCode, "Item Code Required");
-            }
+            }   
 
             if (string.IsNullOrEmpty(cmbTrfFromCategory.Text))
             {
@@ -533,45 +533,45 @@ namespace FactoryManagementSoftware.UI
         {
             bool successFacStockIn;
 
-            if(tool.ifGotChild(itemCode))
-            {
-                if (dalItem.checkIfProduction(itemCode))
-                {
-                    successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty, sub_unit);
+            //if(tool.ifGotChild(itemCode))
+            //{
+            //    if (dalItem.checkIfProduction(itemCode))
+            //    {
+            //        successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty, sub_unit);
 
-                    DataTable dtJoin = dalJoin.parentCheck(itemCode);
-                    if (dtJoin.Rows.Count > 0)
-                    {
-                        foreach (DataRow Join in dtJoin.Rows)
-                        {
-                            DataTable dtItem = dalItem.codeSearch(Join["join_child_code"].ToString());
+            //        DataTable dtJoin = dalJoin.parentCheck(itemCode);
+            //        if (dtJoin.Rows.Count > 0)
+            //        {
+            //            foreach (DataRow Join in dtJoin.Rows)
+            //            {
+            //                DataTable dtItem = dalItem.codeSearch(Join["join_child_code"].ToString());
 
-                            if (dtItem.Rows.Count > 0)
-                            {
-                                foreach (DataRow item in dtItem.Rows)
-                                {
-                                    string itemCodeChild = item["item_code"].ToString();
-                                    int ifProduction = Convert.ToInt32(dtItem.Rows[0]["item_production"]);
+            //                if (dtItem.Rows.Count > 0)
+            //                {
+            //                    foreach (DataRow item in dtItem.Rows)
+            //                    {
+            //                        string itemCodeChild = item["item_code"].ToString();
+            //                        int ifProduction = Convert.ToInt32(dtItem.Rows[0]["item_production"]);
 
-                                    if (dalItem.getCatName(itemCodeChild).Equals("Part") && ifProduction == 1)
-                                    {
-                                        successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCodeChild, qty, sub_unit);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                else 
-                {
-                    successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty, sub_unit);
-                }            
-            }
-            else
-            {
-                successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty, sub_unit);
-            }
-
+            //                        if (dalItem.getCatName(itemCodeChild).Equals("Part") && ifProduction == 1)
+            //                        {
+            //                            successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCodeChild, qty, sub_unit);
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //    else 
+            //    {
+            //        successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty, sub_unit);
+            //    }            
+            //}
+            //else
+            //{
+                
+            //}
+            successFacStockIn = dalStock.facStockIn(getFactoryID(factoryName), itemCode, qty, sub_unit);
             return successFacStockIn ;
         }
 
@@ -726,7 +726,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     if(tool.ifGotChild(itemCode))
                     {
-                        if(dalItem.checkIfAssembly(itemCode))
+                        if(dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
                         {
                             MessageBox.Show("Assembly parts cannot be production.");
                             result = "Failed";
@@ -734,7 +734,7 @@ namespace FactoryManagementSoftware.UI
                         else
                         {
                             //factory stock in (part)
-                            if (stockIn(to, itemCode, qty, unit))
+                            if (stockIn(to, itemCode, qty, "set"))
                             {
                                 productionRecord(from, to, itemCode, qty);
                             }
@@ -747,7 +747,7 @@ namespace FactoryManagementSoftware.UI
                     else
                     {
                         //factory stock in (part)
-                        if (stockIn(to, itemCode, qty, unit))
+                        if (stockIn(to, itemCode, qty, "piece"))
                         {
                             productionRecord(from, to, itemCode, qty);
                         }
@@ -1055,7 +1055,8 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 n = dgv.Rows.Add();
-                index++;
+                //index++;
+                index = n+1;
                 dgv.Rows[n].Cells[IndexColumnName].Value = index;
             }
             
@@ -1084,7 +1085,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            if (cmbTrfFromCategory.Text.Equals("Assembly") && cmbTrfToCategory.Text.Equals("Factory"))
+            else if (cmbTrfFromCategory.Text.Equals("Assembly") && cmbTrfToCategory.Text.Equals("Factory"))
             {
                 if (tool.ifGotChild(cmbTrfItemCode.Text))
                 {
@@ -1102,9 +1103,9 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            if (cmbTrfFromCategory.Text.Equals("Production") && cmbTrfToCategory.Text.Equals("Factory"))
+            else if (cmbTrfFromCategory.Text.Equals("Production") && cmbTrfToCategory.Text.Equals("Factory"))
             {
-                if (tool.ifGotChild(cmbTrfItemCode.Text) && (dalItem.checkIfProduction(cmbTrfItemCode.Text) || !dalItem.checkIfAssembly(cmbTrfItemCode.Text)))
+                if (tool.ifGotChild(cmbTrfItemCode.Text) && (dalItem.checkIfProduction(cmbTrfItemCode.Text)))
                 {
 
                     string factoryName = "";
@@ -1213,6 +1214,7 @@ namespace FactoryManagementSoftware.UI
             {
                 btnEdit.Text = "ADD";
                 btnDelete.Hide();
+                dgvEdit = false;
             } 
         }
 
@@ -1343,8 +1345,31 @@ namespace FactoryManagementSoftware.UI
                     dgvTransfer.CurrentCell = dgvTransfer.Rows[e.RowIndex].Cells[e.ColumnIndex];
 
                     string itemCode = dgvTransfer.Rows[e.RowIndex].Cells[CodeColumnName].Value.ToString();
-                        // Can leave these here - doesn't hurt
-                        dgvTransfer.Rows[e.RowIndex].Selected = true;
+                    
+                    string from = dgvTransfer.Rows[e.RowIndex].Cells[FromCatColumnName].Value.ToString();
+                    string to = dgvTransfer.Rows[e.RowIndex].Cells[ToCatColumnName].Value.ToString();
+                    float trfQty = Convert.ToSingle(dgvTransfer.Rows[e.RowIndex].Cells[QtyColumnName].Value);
+
+                    if (from.Equals("Factory"))
+                    {
+                        from = dgvTransfer.Rows[e.RowIndex].Cells[FromColumnName].Value.ToString();
+                    }
+                    else
+                    {
+                        from = "";
+                    }
+
+                    if (to.Equals("Factory"))
+                    {
+                        to = dgvTransfer.Rows[e.RowIndex].Cells[ToColumnName].Value.ToString();
+                    }
+                    else
+                    {
+                        to = "";
+                    }
+
+                    // Can leave these here - doesn't hurt
+                    dgvTransfer.Rows[e.RowIndex].Selected = true;
                     dgvTransfer.Focus();
                     int rowIndex = dgvTransfer.CurrentCell.RowIndex;
 
@@ -1355,14 +1380,38 @@ namespace FactoryManagementSoftware.UI
 
                     if (dt.Rows.Count > 0)
                     {
-                        float totalQty = 0;
+                        float beforeTotalQty = 0;
+                        float afterTotalQty = 0;
                         foreach (DataRow stock in dt.Rows)
                         {
                             string fac = stock["fac_name"].ToString();
                             string qty = Convert.ToSingle(stock["stock_qty"]).ToString("0.00");
+                            beforeTotalQty += Convert.ToSingle(qty);
+                            afterTotalQty += Convert.ToSingle(qty);
+
+                            if (from.Equals(fac) && to.Equals(fac))
+                            {
+                                qty =  qty + " --> " +qty;
+                                from = "";
+                                to = "";
+                            }
+
+                            else if (from.Equals(fac))
+                            {
+                                afterTotalQty -= trfQty;
+                                qty = qty + " --> " + (Convert.ToSingle(qty) - trfQty).ToString();
+                                from = "";
+                            }
+
+                            else if (to.Equals(fac))
+                            {
+                                afterTotalQty += trfQty;
+                                qty = qty + " --> " + (Convert.ToSingle(qty) + trfQty).ToString();
+                                to = "";
+                            }
+
 
                             int length = fac.Length;
-
                             if((10 - length) >=0)
                             {
                                 for (int i = 1; i <= (10 - length); i++)
@@ -1371,12 +1420,105 @@ namespace FactoryManagementSoftware.UI
                                 }
                             }
 
-                            my_menu.Items.Add(fac+" "+qty).Name = fac;
-                            totalQty += Convert.ToSingle(qty);
+                            my_menu.Items.Add(fac+" "+qty).Name = fac;                          
                         }
+
+                        if(from != "" && to != "")
+                        {
+                            string fac = "";
+                            string stock = "";
+                            if (from.Equals(to))
+                            {
+                                fac = from;
+                                stock = "0 --> 0";
+                                int length = fac.Length;
+                                if ((10 - length) >= 0)
+                                {
+                                    for (int i = 1; i <= (10 - length); i++)
+                                    {
+                                        fac += " ";
+                                    }
+                                }
+                                my_menu.Items.Add(fac + " " + stock).Name = fac;
+                            }
+                            else
+                            {
+                                fac = from;
+                                stock = "0 --> " + (0 - trfQty);
+                                int length = fac.Length;
+                                if ((10 - length) >= 0)
+                                {
+                                    for (int i = 1; i <= (10 - length); i++)
+                                    {
+                                        fac += " ";
+                                    }
+                                }
+                                my_menu.Items.Add(fac + " " + stock).Name = fac;
+
+                                fac = to;
+                                stock = "0 -- > " + (trfQty);
+
+                                length = fac.Length;
+                                if ((10 - length) >= 0)
+                                {
+                                    for (int i = 1; i <= (10 - length); i++)
+                                    {
+                                        fac += " ";
+                                    }
+                                }
+                                my_menu.Items.Add(fac + " " + stock).Name = fac;
+                            }
+                            
+                            
+
+                        }
+                        else if (from != "")
+                        {
+                            string fac = from;
+                            string stock = "0 --> " + (0 - trfQty);
+                            int length = fac.Length;
+                            afterTotalQty -= trfQty;
+
+                            if ((10 - length) >= 0)
+                            {
+                                for (int i = 1; i <= (10 - length); i++)
+                                {
+                                    fac += " ";
+                                }
+                            }
+                            my_menu.Items.Add(fac + " " + stock).Name = fac;
+                        }
+                        else if (to != "")
+                        {
+                            string fac = to;
+                            string stock = "0 --> " +trfQty;
+                            int length = fac.Length;
+                            afterTotalQty += trfQty;
+
+                            if ((10 - length) >= 0)
+                            {
+                                for (int i = 1; i <= (10 - length); i++)
+                                {
+                                    fac += " ";
+                                }
+                            }
+                            my_menu.Items.Add(fac + " " + stock).Name = fac;
+                        }
+
+                        string total = null;
+
+                        if(beforeTotalQty == afterTotalQty)
+                        {
+                            total = beforeTotalQty.ToString("0.00");
+                        }
+                        else
+                        {
+                            total = beforeTotalQty + " --> " + afterTotalQty;
+                        }
+
                         my_menu.Items.Add("---------------------").Name = "Line1";
-                        my_menu.Items.Add("Total" + "       " + totalQty.ToString("0.00")).Name = "Total";
-                        my_menu.Items.Add("---------------------").Name = "Line2";
+                        my_menu.Items.Add("Total" + "       " + total).Name = "Total";
+                        my_menu.Items.Add("---------------------").Name = "Line2";                         
                     }
                     else
                     {
@@ -1394,6 +1536,21 @@ namespace FactoryManagementSoftware.UI
             {
                 tool.saveToTextAndMessageToUser(ex);
             }
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtpTrfDate_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

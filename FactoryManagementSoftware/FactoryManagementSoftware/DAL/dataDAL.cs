@@ -57,7 +57,13 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = " SELECT TABLE_NAME FROM Factory.INFORMATION_SCHEMA.TABLES WHERE(TABLE_SCHEMA = 'dbo' AND Table_name != 'sysdiagrams') ORDER BY TABLE_NAME ";
+                //String sql = " SELECT TABLE_NAME FROM Factory.INFORMATION_SCHEMA.TABLES WHERE(TABLE_SCHEMA = 'dbo' AND Table_name != 'sysdiagrams') ORDER BY TABLE_NAME ";
+
+                String sql = "SELECT * FROM information_schema.tables";
+
+                
+
+                //SELECT table_name FROM information_schema.tables WHERE table_schema = 'Database Name'
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database

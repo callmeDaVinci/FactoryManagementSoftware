@@ -55,5 +55,10 @@ namespace FactoryManagementSoftware.UI
                 loadData(tableName);
             }
         }
+
+        private void cmbTableName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

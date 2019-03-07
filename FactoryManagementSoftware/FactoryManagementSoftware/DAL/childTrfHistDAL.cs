@@ -34,7 +34,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 ////throw message if any error occurs
-                //MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
                 
             }
             finally

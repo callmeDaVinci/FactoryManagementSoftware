@@ -153,7 +153,8 @@ namespace FactoryManagementSoftware
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            
+            materialUsedDAL dalMatUsed = new materialUsedDAL();
+            dalMatUsed.Delete();
             DataGridView dgv = dgvItemList;
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             if (dgv.SelectedRows.Count > 0)
@@ -164,7 +165,11 @@ namespace FactoryManagementSoftware
                 {
                     if(cmbCat.Text.Equals("Part"))
                     {
-                        uItem.item_code = dgv.Rows[n].Cells[dalItem.ItemCode].Value.ToString(); 
+                        uItem.item_code = dgv.Rows[n].Cells[dalItem.ItemCode].Value.ToString();
+
+                        trfHistDAL dalTrfHist = new trfHistDAL();
+
+                        dalTrfHist.Delete(uItem.item_code);
 
                         bool success = dalItem.Delete(uItem);
 
@@ -274,6 +279,26 @@ namespace FactoryManagementSoftware
                     uItem.item_pro_rw_shot = tool.Float_TryParse(item[dalItem.ItemProRWShot].ToString());
                     uItem.item_pro_cooling = tool.Int_TryParse(item[dalItem.ItemProCooling].ToString());
                     uItem.item_wastage_allowed = tool.Float_TryParse(item[dalItem.ItemWastage].ToString());
+
+                    if(item[dalItem.ItemAssemblyCheck].ToString().Equals("True"))
+                    {
+                        uItem.item_assembly = 1;
+                    }
+                    else
+                    {
+                        uItem.item_assembly = 0;
+                    }
+
+                    if (item[dalItem.ItemProductionCheck].ToString().Equals("True"))
+                    {
+                        uItem.item_production = 1;
+                    }
+                    else
+                    {
+                        uItem.item_production = 0;
+                    }
+
+    
                 }
 
                 frmItemEdit frm = new frmItemEdit(uItem);

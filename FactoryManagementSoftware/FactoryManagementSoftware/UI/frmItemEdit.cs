@@ -174,6 +174,50 @@ namespace FactoryManagementSoftware.UI
                 txtProCooling.Text = u.item_pro_cooling.ToString();
                 txtWastageAllowed.Text = u.item_wastage_allowed.ToString();
 
+                if(u.item_assembly.ToString() != null)
+                {
+                    if(u.item_assembly == 1)
+                    {
+                        cbAssembly.Checked = true;
+                    }
+                    else
+                    {
+                        cbAssembly.Checked = false;
+                    }
+                }
+                else
+                {
+                    cbAssembly.Checked = false;
+                }
+
+                if (u.item_production.ToString() != null)
+                {
+                    if (u.item_production == 1)
+                    {
+                        cbProduction.Checked = true;
+                    }
+                    else
+                    {
+                        cbProduction.Checked = false;
+                    }
+                }
+                else
+                {
+                    cbProduction.Checked = false;
+                }
+
+
+                if(!dalItem.getCatName(u.item_code).Equals("Part"))
+                {
+                    if(dalMaterial.checkIfZeroCost(u.item_code))
+                    {
+                        cbZeroCost.Checked = true;
+                    }
+                    else
+                    {
+                        cbZeroCost.Checked = false;
+                    }
+                }
             }
             else
             {
@@ -664,7 +708,7 @@ namespace FactoryManagementSoftware.UI
                 txtProPWShot.Enabled = false;
                 txtProRWShot.Enabled = false;
                 txtProCooling.Enabled = false;
-                txtWastageAllowed.Enabled = false;
+                txtWastageAllowed.Enabled = true;
             }
         }
 

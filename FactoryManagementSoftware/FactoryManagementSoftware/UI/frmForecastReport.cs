@@ -66,7 +66,7 @@ namespace FactoryManagementSoftware.UI
         }
 
         private int indexNo = 1;
-        private int alphbet = 65;
+        //private int alphbet = 65;
         private bool gotData = false;
         private int colorOrder = 0;
         private string colorName = "Gold";
@@ -1069,8 +1069,23 @@ namespace FactoryManagementSoftware.UI
 
                                 if (ifGotChild(itemCode))
                                 {
-                                    dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
-                                    dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                                    if(dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                                    {
+                                        dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                                        dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                                    }
+                                    else if (!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                                    {
+                                        dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                                        dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                                    }
+                                    else if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
+                                    {
+                                        dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                                        dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                                    }
+
+
                                     checkChild(itemCode, month, forecastOne, forecastTwo, forecastThree, childShotOne, childShotTwo, Convert.ToSingle(outStock), no + "(" + (char)alphbetTest + ")", dgvType);
                                 }
 
@@ -1212,7 +1227,7 @@ namespace FactoryManagementSoftware.UI
 
                         dgv.Rows[n].Cells[IndexColName].Value = indexNo.ToString();
 
-                        if(dalItem.checkIfAssembly(itemCode))//assembly part show blue color, else show green color
+                        if(dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
                         {
                             dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
                             dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
@@ -1224,6 +1239,17 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
 
 
+                        }
+                        else if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                        {
+                            dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                            dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+
+                            dgv.Rows[n].Cells[StockColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            dgv.Rows[n].Cells[OutColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            dgv.Rows[n].Cells[OsantColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                         }
                         else
                         {
@@ -1329,7 +1355,7 @@ namespace FactoryManagementSoftware.UI
                         indexNo++;
                         n = dgv.Rows.Add();
                     }
-                    alphbet = 65;
+                    //alphbet = 65;
                 }
             }
             dgv.ClearSelection();
@@ -1553,6 +1579,14 @@ namespace FactoryManagementSoftware.UI
 
         #region export to excel
 
+        static void OpenCSVWithExcel(string path)
+        {
+            var ExcelApp = new Excel.Application();
+            ExcelApp.Workbooks.OpenText(path, Comma: true);
+
+            ExcelApp.Visible = true;
+        }
+
         private string setFileName()
         {
             string fileName = "Test.xls";
@@ -1737,8 +1771,10 @@ namespace FactoryManagementSoftware.UI
                         }
                         bgWorker.ReportProgress(percentage);
                     }
+
                     bgWorker.ReportProgress(100);
                     System.Threading.Thread.Sleep(1000);
+
                     // Save the excel file under the captured location from the SaveFileDialog
                     xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
                     xlexcel.DisplayAlerts = true;
@@ -1754,8 +1790,9 @@ namespace FactoryManagementSoftware.UI
                     dgvForecastReport.ClearSelection();
 
                     // Open the newly saved excel file
-                    if (File.Exists(sfd.FileName))
-                        System.Diagnostics.Process.Start(sfd.FileName);
+                    //if (File.Exists(sfd.FileName))
+                    //    System.Diagnostics.Process.Start(sfd.FileName);
+                    OpenCSVWithExcel(sfd.FileName);
                 }
             }
             catch (Exception ex)

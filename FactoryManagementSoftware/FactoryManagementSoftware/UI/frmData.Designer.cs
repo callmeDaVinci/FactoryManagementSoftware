@@ -85,6 +85,7 @@
             this.cmbTableName.Name = "cmbTableName";
             this.cmbTableName.Size = new System.Drawing.Size(367, 39);
             this.cmbTableName.TabIndex = 70;
+            this.cmbTableName.SelectedIndexChanged += new System.EventHandler(this.cmbTableName_SelectedIndexChanged);
             // 
             // frmData
             // 

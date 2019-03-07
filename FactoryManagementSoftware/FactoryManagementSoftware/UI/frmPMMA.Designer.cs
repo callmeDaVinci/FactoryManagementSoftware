@@ -37,9 +37,9 @@
             this.button1 = new System.Windows.Forms.Button();
             this.dgvPMMA = new System.Windows.Forms.DataGridView();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblEnd = new System.Windows.Forms.Label();
             this.dtpStart = new System.Windows.Forms.DateTimePicker();
-            this.label8 = new System.Windows.Forms.Label();
+            this.lblStart = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPMMA)).BeginInit();
             this.SuspendLayout();
             // 
@@ -161,15 +161,15 @@
             this.dtpEnd.Size = new System.Drawing.Size(162, 38);
             this.dtpEnd.TabIndex = 115;
             // 
-            // label2
+            // lblEnd
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(666, 24);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(83, 23);
-            this.label2.TabIndex = 114;
-            this.label2.Text = "OUT END";
+            this.lblEnd.AutoSize = true;
+            this.lblEnd.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEnd.Location = new System.Drawing.Point(666, 24);
+            this.lblEnd.Name = "lblEnd";
+            this.lblEnd.Size = new System.Drawing.Size(108, 23);
+            this.lblEnd.TabIndex = 114;
+            this.lblEnd.Text = "IN/OUT END";
             // 
             // dtpStart
             // 
@@ -181,15 +181,15 @@
             this.dtpStart.Size = new System.Drawing.Size(162, 38);
             this.dtpStart.TabIndex = 113;
             // 
-            // label8
+            // lblStart
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(475, 24);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(95, 23);
-            this.label8.TabIndex = 112;
-            this.label8.Text = "OUT START";
+            this.lblStart.AutoSize = true;
+            this.lblStart.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStart.Location = new System.Drawing.Point(475, 24);
+            this.lblStart.Name = "lblStart";
+            this.lblStart.Size = new System.Drawing.Size(120, 23);
+            this.lblStart.TabIndex = 112;
+            this.lblStart.Text = "IN/OUT START";
             // 
             // frmPMMA
             // 
@@ -198,9 +198,9 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
             this.Controls.Add(this.dtpEnd);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblEnd);
             this.Controls.Add(this.dtpStart);
-            this.Controls.Add(this.label8);
+            this.Controls.Add(this.lblStart);
             this.Controls.Add(this.dgvPMMA);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnTransfer);
@@ -228,8 +228,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dgvPMMA;
         private System.Windows.Forms.DateTimePicker dtpEnd;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblEnd;
         private System.Windows.Forms.DateTimePicker dtpStart;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblStart;
     }
 }

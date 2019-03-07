@@ -570,7 +570,7 @@ namespace FactoryManagementSoftware.DAL
                             INNER JOIN tbl_item 
                             ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
                             WHERE 
-                            trf_hist_trf_date 
+                            tbl_trf_hist.trf_hist_trf_date 
                             BETWEEN @start AND @end 
                             AND tbl_item.item_cat = @cat";
           
@@ -625,10 +625,9 @@ namespace FactoryManagementSoftware.DAL
                             INNER JOIN tbl_item 
                             ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
                             WHERE 
-                            trf_hist_trf_date 
+                            tbl_trf_hist.trf_hist_trf_date 
                             BETWEEN @start AND @end 
-                            AND tbl_item_cust.cust_id = @custID 
-                            ORDER BY ";
+                            AND tbl_item_cust.cust_id = @custID";
 
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -658,7 +657,9 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
 
+            if(dt.Rows.Count > 0)
             dt.DefaultView.Sort = "trf_hist_trf_date DESC";
+
             DataTable sortedDt = dt.DefaultView.ToTable();
 
             return sortedDt;
@@ -749,7 +750,7 @@ namespace FactoryManagementSoftware.DAL
                                 INNER JOIN tbl_item 
                                 ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
                                 WHERE 
-                                trf_hist_trf_date 
+                                tbl_trf_hist.trf_hist_trf_date 
                                 BETWEEN @start AND @end";
                 
 
@@ -759,6 +760,58 @@ namespace FactoryManagementSoftware.DAL
    
                 cmd.Parameters.AddWithValue("@start", start);
                 cmd.Parameters.AddWithValue("@end", end);
+
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+            dt.DefaultView.Sort = "trf_hist_added_date DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
+        }
+
+        public DataTable rangeTrfSearch(string itemCode, string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            String sql = null;
+            try
+            {
+
+                //sql query to get data from database
+                sql = @"SELECT * FROM tbl_trf_hist 
+                                WHERE trf_hist_trf_date 
+                                BETWEEN @start AND @end
+                                AND
+                                trf_hist_item_code =@itemCode";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@itemCode", itemCode);
 
 
                 //for executing command
@@ -1027,6 +1080,46 @@ namespace FactoryManagementSoftware.DAL
                 }
             }
             return indexNo;
+        }
+
+        public bool Delete(string itemCode)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "DELETE FROM tbl_trf_hist WHERE trf_hist_item_code=@itemCode";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@itemCode", itemCode);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
         }
     }
 }

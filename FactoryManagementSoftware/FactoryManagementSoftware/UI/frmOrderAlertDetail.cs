@@ -607,8 +607,8 @@ namespace FactoryManagementSoftware.UI
             float wastageUsed = 0;
             float wastagePercetage = 0;
             float itemWeight;
-            float readyStock = 0;
-            float stillNeed = 0;
+            //float readyStock = 0;
+            //float stillNeed = 0;
 
             DataTable dt = dalMatUsed.Select();
             dt = AddDuplicates(dt);

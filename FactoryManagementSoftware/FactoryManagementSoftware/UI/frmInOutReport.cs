@@ -780,18 +780,31 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbSubType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
+            if (cmbBy.Text.Equals(cmbByItem) && cmbCode.SelectedIndex != -1 && cmbType.SelectedIndex != -1 && cmbSubType.SelectedIndex != -1)
             {
-                if (cmbBy.Text.Equals(cmbByItem) && cmbCode.SelectedIndex != -1 && cmbType.SelectedIndex != -1 && cmbSubType.SelectedIndex != -1)
-                {
-                    loadItemTrfHistData(dgvInOutReport);
-                }
+                loadItemTrfHistData(dgvInOutReport);
+            }
+            else if (cmbBy.Text.Equals(cmbByDate))
+            {
+                loadTrfHistData(dgvInOutReport);
+            }
 
-            }
-            catch (Exception ex)
-            {
-                tool.saveToTextAndMessageToUser(ex);
-            }
+            //try
+            //{
+            //    if (cmbBy.Text.Equals(cmbByItem) && cmbCode.SelectedIndex != -1 && cmbType.SelectedIndex != -1 && cmbSubType.SelectedIndex != -1)
+            //    {
+            //        loadItemTrfHistData(dgvInOutReport);
+            //    }
+            //    else if(cmbBy.Text.Equals(cmbByDate))
+            //    {
+            //        loadTrfHistData(dgvInOutReport);
+            //    }
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    tool.saveToTextAndMessageToUser(ex);
+            //}
         }
 
         private void frmInOutReport_Click(object sender, EventArgs e)
