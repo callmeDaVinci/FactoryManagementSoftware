@@ -161,6 +161,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmForecast_Load(object sender, EventArgs e)
         {
+            tool.DoubleBuffered(dgvForecast, true);
             tool.loadCustomerToComboBox(cmbCust);
             cmbCust.SelectedIndex = -1;
 

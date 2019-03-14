@@ -212,6 +212,7 @@
             this.Name = "frmPMMA";
             this.Text = "frmPMMA";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmPMMA_FormClosed);
+            this.Load += new System.EventHandler(this.frmPMMA_Load);
             this.Click += new System.EventHandler(this.frmPMMA_Click);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPMMA)).EndInit();
             this.ResumeLayout(false);

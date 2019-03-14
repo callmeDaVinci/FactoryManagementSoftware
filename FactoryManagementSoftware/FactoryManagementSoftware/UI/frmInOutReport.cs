@@ -980,5 +980,10 @@ namespace FactoryManagementSoftware.UI
             }
         }
         #endregion
+
+        private void frmInOutReport_Load(object sender, EventArgs e)
+        {
+            tool.DoubleBuffered(dgvInOutReport, true);
+        }
     }
 }

@@ -283,6 +283,7 @@
             this.Name = "frmInOutReport";
             this.Text = "frmInOutReport";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmInOutReport_FormClosed);
+            this.Load += new System.EventHandler(this.frmInOutReport_Load);
             this.Click += new System.EventHandler(this.frmInOutReport_Click);
             ((System.ComponentModel.ISupportInitialize)(this.dgvInOutReport)).EndInit();
             this.ResumeLayout(false);

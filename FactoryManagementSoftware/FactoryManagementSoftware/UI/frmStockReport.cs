@@ -134,6 +134,7 @@ namespace FactoryManagementSoftware.UI
         private void frmStockReport_Load(object sender, EventArgs e)
         {
             loadTypeData();
+            tool.DoubleBuffered(dgvStockReport, true);
             dgvStockReport.ClearSelection();
         }
 

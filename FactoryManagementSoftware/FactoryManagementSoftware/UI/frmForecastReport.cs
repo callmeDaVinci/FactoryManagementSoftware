@@ -11,6 +11,7 @@ using Microsoft.Office.Interop.Excel;
 using DataTable = System.Data.DataTable;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -166,6 +167,7 @@ namespace FactoryManagementSoftware.UI
         private void frmForecastReport_Load(object sender, EventArgs e)
         {
             tool.loadCustomerToComboBox(cmbCust);
+            tool.DoubleBuffered(dgvForecastReport, true);
         }
 
         #endregion
@@ -1453,8 +1455,13 @@ namespace FactoryManagementSoftware.UI
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
-
+            //dgvForecastReport.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            foreach (DataGridViewColumn c in dgvForecastReport.Columns)
+            {
+                c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            }
 
             showForecastData();
 
@@ -1462,7 +1469,7 @@ namespace FactoryManagementSoftware.UI
             {
                 dgvc.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-
+            dgvForecastReport.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             Cursor = Cursors.Arrow; // change cursor to normal type
 
 

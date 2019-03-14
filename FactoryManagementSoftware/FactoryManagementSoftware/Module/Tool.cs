@@ -2,6 +2,7 @@
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
@@ -99,6 +100,14 @@ namespace FactoryManagementSoftware.Module
         #endregion
 
         #region Load Data
+
+        public void DoubleBuffered(DataGridView dgv, bool setting)
+        {
+            Type dgvType = dgv.GetType();
+            PropertyInfo pi = dgvType.GetProperty("DoubleBuffered",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+            pi.SetValue(dgv, setting, null);
+        }
 
         public void loadItemCategoryDataToComboBox(ComboBox cmb)
         {

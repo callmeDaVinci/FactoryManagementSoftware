@@ -1544,7 +1544,10 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-      
+        private void frmPMMA_Load(object sender, EventArgs e)
+        {
+            tool.DoubleBuffered(dgvPMMA, true);
+        }
     }
 
 

@@ -899,6 +899,7 @@ namespace FactoryManagementSoftware.UI
         private void frmMaterialUsedReport_Load(object sender, EventArgs e)
         {
             //loadCustomerList();
+            tool.DoubleBuffered(dgvMaterialUsedRecord, true);
         }
 
         private void loadCustomerList()
