@@ -224,10 +224,11 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_cust WHERE cust_name LIKE '%" + keywords + "%'";
+                String sql = "SELECT * FROM tbl_cust WHERE cust_name =@keywords";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@keywords", keywords);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open

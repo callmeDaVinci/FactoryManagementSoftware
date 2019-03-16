@@ -28,23 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnExcel = new System.Windows.Forms.Button();
-            this.lblSubType = new System.Windows.Forms.Label();
-            this.cmbSubType = new System.Windows.Forms.ComboBox();
-            this.lblType = new System.Windows.Forms.Label();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.dgvInOutReport = new System.Windows.Forms.DataGridView();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
             this.lblEndOrName = new System.Windows.Forms.Label();
             this.dtpStart = new System.Windows.Forms.DateTimePicker();
             this.lblStartOrCat = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cmbBy = new System.Windows.Forms.ComboBox();
-            this.cmbName = new System.Windows.Forms.ComboBox();
-            this.cmbCat = new System.Windows.Forms.ComboBox();
-            this.cmbCode = new System.Windows.Forms.ComboBox();
-            this.lblCode = new System.Windows.Forms.Label();
+            this.cbDO = new System.Windows.Forms.CheckBox();
+            this.cbDaily = new System.Windows.Forms.CheckBox();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.cbMat = new System.Windows.Forms.CheckBox();
+            this.cbPart = new System.Windows.Forms.CheckBox();
+            this.btnCheck = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cbSortByItem = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInOutReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,51 +64,17 @@
             this.btnExcel.UseVisualStyleBackColor = false;
             this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
             // 
-            // lblSubType
-            // 
-            this.lblSubType.AutoSize = true;
-            this.lblSubType.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubType.Location = new System.Drawing.Point(290, 112);
-            this.lblSubType.Name = "lblSubType";
-            this.lblSubType.Size = new System.Drawing.Size(83, 23);
-            this.lblSubType.TabIndex = 83;
-            this.lblSubType.Text = "SUB TYPE";
-            // 
-            // cmbSubType
-            // 
-            this.cmbSubType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSubType.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbSubType.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.cmbSubType.FormattingEnabled = true;
-            this.cmbSubType.Location = new System.Drawing.Point(294, 139);
-            this.cmbSubType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmbSubType.Name = "cmbSubType";
-            this.cmbSubType.Size = new System.Drawing.Size(316, 36);
-            this.cmbSubType.TabIndex = 82;
-            this.cmbSubType.SelectedIndexChanged += new System.EventHandler(this.cmbSubType_SelectedIndexChanged);
-            // 
-            // lblType
-            // 
-            this.lblType.AutoSize = true;
-            this.lblType.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblType.Location = new System.Drawing.Point(28, 112);
-            this.lblType.Name = "lblType";
-            this.lblType.Size = new System.Drawing.Size(47, 23);
-            this.lblType.TabIndex = 80;
-            this.lblType.Text = "TYPE";
-            // 
             // cmbType
             // 
             this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbType.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbType.ForeColor = System.Drawing.SystemColors.InfoText;
             this.cmbType.FormattingEnabled = true;
-            this.cmbType.Location = new System.Drawing.Point(32, 139);
+            this.cmbType.Location = new System.Drawing.Point(401, 56);
             this.cmbType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbType.Name = "cmbType";
-            this.cmbType.Size = new System.Drawing.Size(241, 36);
-            this.cmbType.TabIndex = 79;
-            this.cmbType.SelectedIndexChanged += new System.EventHandler(this.cmbType_SelectedIndexChanged);
+            this.cmbType.Size = new System.Drawing.Size(341, 36);
+            this.cmbType.TabIndex = 82;
             // 
             // dgvInOutReport
             // 
@@ -120,17 +86,17 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvInOutReport.BackgroundColor = System.Drawing.Color.White;
             this.dgvInOutReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvInOutReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvInOutReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvInOutReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvInOutReport.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvInOutReport.Location = new System.Drawing.Point(32, 196);
+            this.dgvInOutReport.Location = new System.Drawing.Point(32, 178);
             this.dgvInOutReport.Margin = new System.Windows.Forms.Padding(2);
             this.dgvInOutReport.Name = "dgvInOutReport";
             this.dgvInOutReport.ReadOnly = true;
@@ -139,7 +105,7 @@
             this.dgvInOutReport.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvInOutReport.RowTemplate.Height = 40;
             this.dgvInOutReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvInOutReport.Size = new System.Drawing.Size(1522, 629);
+            this.dgvInOutReport.Size = new System.Drawing.Size(1522, 630);
             this.dgvInOutReport.TabIndex = 78;
             // 
             // dtpEnd
@@ -147,17 +113,16 @@
             this.dtpEnd.CustomFormat = "dd-MM-yyyy";
             this.dtpEnd.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpEnd.Location = new System.Drawing.Point(556, 58);
+            this.dtpEnd.Location = new System.Drawing.Point(217, 58);
             this.dtpEnd.Name = "dtpEnd";
-            this.dtpEnd.Size = new System.Drawing.Size(241, 34);
+            this.dtpEnd.Size = new System.Drawing.Size(156, 34);
             this.dtpEnd.TabIndex = 91;
-            this.dtpEnd.ValueChanged += new System.EventHandler(this.dtpEnd_ValueChanged);
             // 
             // lblEndOrName
             // 
             this.lblEndOrName.AutoSize = true;
             this.lblEndOrName.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEndOrName.Location = new System.Drawing.Point(552, 29);
+            this.lblEndOrName.Location = new System.Drawing.Point(213, 32);
             this.lblEndOrName.Name = "lblEndOrName";
             this.lblEndOrName.Size = new System.Drawing.Size(44, 23);
             this.lblEndOrName.TabIndex = 90;
@@ -168,93 +133,132 @@
             this.dtpStart.CustomFormat = "dd-MM-yyyy";
             this.dtpStart.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpStart.Location = new System.Drawing.Point(294, 58);
+            this.dtpStart.Location = new System.Drawing.Point(32, 58);
             this.dtpStart.Name = "dtpStart";
-            this.dtpStart.Size = new System.Drawing.Size(241, 34);
+            this.dtpStart.Size = new System.Drawing.Size(157, 34);
             this.dtpStart.TabIndex = 89;
-            this.dtpStart.ValueChanged += new System.EventHandler(this.dtpStart_ValueChanged);
             // 
             // lblStartOrCat
             // 
             this.lblStartOrCat.AutoSize = true;
             this.lblStartOrCat.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStartOrCat.Location = new System.Drawing.Point(290, 29);
+            this.lblStartOrCat.Location = new System.Drawing.Point(28, 32);
             this.lblStartOrCat.Name = "lblStartOrCat";
             this.lblStartOrCat.Size = new System.Drawing.Size(56, 23);
             this.lblStartOrCat.TabIndex = 88;
             this.lblStartOrCat.Text = "START";
             // 
-            // label4
+            // cbDO
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(28, 29);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(28, 23);
-            this.label4.TabIndex = 93;
-            this.label4.Text = "BY";
+            this.cbDO.AutoSize = true;
+            this.cbDO.Checked = true;
+            this.cbDO.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDO.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDO.Location = new System.Drawing.Point(32, 98);
+            this.cbDO.Name = "cbDO";
+            this.cbDO.Size = new System.Drawing.Size(241, 27);
+            this.cbDO.TabIndex = 113;
+            this.cbDO.Text = "DELIVERY ORDER ONLY";
+            this.cbDO.UseVisualStyleBackColor = true;
             // 
-            // cmbBy
+            // cbDaily
             // 
-            this.cmbBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbBy.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbBy.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.cmbBy.FormattingEnabled = true;
-            this.cmbBy.Location = new System.Drawing.Point(32, 56);
-            this.cmbBy.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmbBy.Name = "cmbBy";
-            this.cmbBy.Size = new System.Drawing.Size(241, 36);
-            this.cmbBy.TabIndex = 92;
-            this.cmbBy.SelectedIndexChanged += new System.EventHandler(this.cmbBy_SelectedIndexChanged);
+            this.cbDaily.AutoSize = true;
+            this.cbDaily.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDaily.Location = new System.Drawing.Point(286, 98);
+            this.cbDaily.Name = "cbDaily";
+            this.cbDaily.Size = new System.Drawing.Size(87, 27);
+            this.cbDaily.TabIndex = 114;
+            this.cbDaily.Text = "DAILY";
+            this.cbDaily.UseVisualStyleBackColor = true;
+            this.cbDaily.CheckedChanged += new System.EventHandler(this.cbDaily_CheckedChanged);
             // 
-            // cmbName
+            // btnSearch
             // 
-            this.cmbName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbName.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.cmbName.FormattingEnabled = true;
-            this.cmbName.Location = new System.Drawing.Point(556, 56);
-            this.cmbName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmbName.Name = "cmbName";
-            this.cmbName.Size = new System.Drawing.Size(241, 36);
-            this.cmbName.TabIndex = 95;
-            this.cmbName.SelectedIndexChanged += new System.EventHandler(this.cmbName_SelectedIndexChanged);
+            this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearch.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearch.ForeColor = System.Drawing.Color.White;
+            this.btnSearch.Location = new System.Drawing.Point(1462, 143);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(92, 31);
+            this.btnSearch.TabIndex = 116;
+            this.btnSearch.Text = "SEARCH";
+            this.btnSearch.UseVisualStyleBackColor = false;
             // 
-            // cmbCat
+            // txtSearch
             // 
-            this.cmbCat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCat.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbCat.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.cmbCat.FormattingEnabled = true;
-            this.cmbCat.Location = new System.Drawing.Point(294, 56);
-            this.cmbCat.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmbCat.Name = "cmbCat";
-            this.cmbCat.Size = new System.Drawing.Size(241, 36);
-            this.cmbCat.TabIndex = 94;
-            this.cmbCat.SelectedIndexChanged += new System.EventHandler(this.cmbCat_SelectedIndexChanged);
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.Location = new System.Drawing.Point(1234, 143);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(224, 30);
+            this.txtSearch.TabIndex = 115;
             // 
-            // cmbCode
+            // cbMat
             // 
-            this.cmbCode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCode.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbCode.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.cmbCode.FormattingEnabled = true;
-            this.cmbCode.Location = new System.Drawing.Point(820, 56);
-            this.cmbCode.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmbCode.Name = "cmbCode";
-            this.cmbCode.Size = new System.Drawing.Size(241, 36);
-            this.cmbCode.TabIndex = 96;
-            this.cmbCode.SelectedIndexChanged += new System.EventHandler(this.cmbCode_SelectedIndexChanged);
+            this.cbMat.AutoSize = true;
+            this.cbMat.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbMat.Location = new System.Drawing.Point(401, 25);
+            this.cbMat.Name = "cbMat";
+            this.cbMat.Size = new System.Drawing.Size(120, 27);
+            this.cbMat.TabIndex = 117;
+            this.cbMat.Text = "MATERIAL";
+            this.cbMat.UseVisualStyleBackColor = true;
+            this.cbMat.CheckedChanged += new System.EventHandler(this.cbMat_CheckedChanged);
             // 
-            // lblCode
+            // cbPart
             // 
-            this.lblCode.AutoSize = true;
-            this.lblCode.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCode.Location = new System.Drawing.Point(816, 29);
-            this.lblCode.Name = "lblCode";
-            this.lblCode.Size = new System.Drawing.Size(55, 23);
-            this.lblCode.TabIndex = 97;
-            this.lblCode.Text = "CODE";
+            this.cbPart.AutoSize = true;
+            this.cbPart.Checked = true;
+            this.cbPart.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbPart.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbPart.Location = new System.Drawing.Point(536, 25);
+            this.cbPart.Name = "cbPart";
+            this.cbPart.Size = new System.Drawing.Size(76, 27);
+            this.cbPart.TabIndex = 118;
+            this.cbPart.Text = "PART";
+            this.cbPart.UseVisualStyleBackColor = true;
+            this.cbPart.CheckedChanged += new System.EventHandler(this.cbPart_CheckedChanged);
+            // 
+            // btnCheck
+            // 
+            this.btnCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCheck.ForeColor = System.Drawing.Color.White;
+            this.btnCheck.Location = new System.Drawing.Point(747, 48);
+            this.btnCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCheck.Name = "btnCheck";
+            this.btnCheck.Size = new System.Drawing.Size(132, 45);
+            this.btnCheck.TabIndex = 119;
+            this.btnCheck.Text = "CHECK";
+            this.btnCheck.UseVisualStyleBackColor = false;
+            this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(28, 150);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(132, 23);
+            this.label1.TabIndex = 120;
+            this.label1.Text = "IN OUT REPORT";
+            // 
+            // cbSortByItem
+            // 
+            this.cbSortByItem.AutoSize = true;
+            this.cbSortByItem.Checked = true;
+            this.cbSortByItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSortByItem.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSortByItem.Location = new System.Drawing.Point(401, 99);
+            this.cbSortByItem.Name = "cbSortByItem";
+            this.cbSortByItem.Size = new System.Drawing.Size(164, 27);
+            this.cbSortByItem.TabIndex = 121;
+            this.cbSortByItem.Text = "SORT BY ITEM";
+            this.cbSortByItem.UseVisualStyleBackColor = true;
             // 
             // frmInOutReport
             // 
@@ -262,20 +266,20 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
-            this.Controls.Add(this.lblCode);
-            this.Controls.Add(this.cmbCode);
-            this.Controls.Add(this.cmbName);
-            this.Controls.Add(this.cmbCat);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.cmbBy);
+            this.Controls.Add(this.cbSortByItem);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnCheck);
+            this.Controls.Add(this.cbPart);
+            this.Controls.Add(this.cbMat);
+            this.Controls.Add(this.btnSearch);
+            this.Controls.Add(this.txtSearch);
+            this.Controls.Add(this.cbDaily);
+            this.Controls.Add(this.cbDO);
             this.Controls.Add(this.dtpEnd);
             this.Controls.Add(this.lblEndOrName);
             this.Controls.Add(this.dtpStart);
             this.Controls.Add(this.lblStartOrCat);
             this.Controls.Add(this.btnExcel);
-            this.Controls.Add(this.lblSubType);
-            this.Controls.Add(this.cmbSubType);
-            this.Controls.Add(this.lblType);
             this.Controls.Add(this.cmbType);
             this.Controls.Add(this.dgvInOutReport);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -294,20 +298,20 @@
         #endregion
 
         private System.Windows.Forms.Button btnExcel;
-        private System.Windows.Forms.Label lblSubType;
-        public System.Windows.Forms.ComboBox cmbSubType;
-        private System.Windows.Forms.Label lblType;
         public System.Windows.Forms.ComboBox cmbType;
         private System.Windows.Forms.DataGridView dgvInOutReport;
         private System.Windows.Forms.DateTimePicker dtpEnd;
         private System.Windows.Forms.Label lblEndOrName;
         private System.Windows.Forms.DateTimePicker dtpStart;
         private System.Windows.Forms.Label lblStartOrCat;
-        private System.Windows.Forms.Label label4;
-        public System.Windows.Forms.ComboBox cmbBy;
-        public System.Windows.Forms.ComboBox cmbName;
-        public System.Windows.Forms.ComboBox cmbCat;
-        public System.Windows.Forms.ComboBox cmbCode;
-        private System.Windows.Forms.Label lblCode;
+        private System.Windows.Forms.CheckBox cbDO;
+        private System.Windows.Forms.CheckBox cbDaily;
+        private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.CheckBox cbMat;
+        private System.Windows.Forms.CheckBox cbPart;
+        private System.Windows.Forms.Button btnCheck;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox cbSortByItem;
     }
 }
