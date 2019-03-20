@@ -34,6 +34,8 @@ namespace FactoryManagementSoftware.UI
         readonly string cmbTypeNextMonth = "Next Month Forecast";
         readonly string cmbTypeNextNextMonth = "Next Next Month Forecast";
 
+        private string forecastMonth = "!";
+
         #endregion
 
         #region create class object (database)
@@ -1045,7 +1047,15 @@ namespace FactoryManagementSoftware.UI
                 #region Save data to Sheet
 
                 //Header and Footer setup
-                xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + dtpStart.Text + ">" + dtpEnd.Text; 
+
+                if (cmbType.Text.Equals(cmbTypeActual))
+                {
+                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + dtpStart.Text + ">" + dtpEnd.Text;
+                }
+                else
+                {
+                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + forecastMonth;
+                }
                 xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") MATERIAL USED REPORT";
                 xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
                 xlWorkSheet.PageSetup.CenterFooter = DateTime.Now.Date.ToString("dd/MM/yyyy")+" Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
@@ -1205,18 +1215,21 @@ namespace FactoryManagementSoftware.UI
 
                 if (cmbType.Text.Equals(cmbTypeCurrentMonth))
                 {
-                    lblMonth.Text = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonth).ToUpper().ToString() + " MATERIAL USED REPORT";
+                    forecastMonth = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonth).ToUpper().ToString();
+                    lblMonth.Text = forecastMonth  + " MATERIAL USED REPORT";
                 }
                 else if (cmbType.Text.Equals(cmbTypeNextMonth))
                 {
                     int forecastNextMonth = getNextMonth(forecastCurrentMonth);
-                    lblMonth.Text = new DateTimeFormatInfo().GetMonthName(forecastNextMonth).ToUpper().ToString() + " FORECAST MATERIAL USED REPORT";
+                    forecastMonth = new DateTimeFormatInfo().GetMonthName(forecastNextMonth).ToUpper().ToString();
+                    lblMonth.Text = forecastMonth + " FORECAST MATERIAL USED REPORT";
                 }
                 else if (cmbType.Text.Equals(cmbTypeNextNextMonth))
                 {
                     int forecastNextMonth = getNextMonth(forecastCurrentMonth);
                     int forecastNextNextMonth = getNextMonth(forecastNextMonth);
-                    lblMonth.Text = new DateTimeFormatInfo().GetMonthName(forecastNextNextMonth).ToUpper().ToString() + " FORECAST MATERIAL USED REPORT";
+                    forecastMonth = new DateTimeFormatInfo().GetMonthName(forecastNextNextMonth).ToUpper().ToString();
+                    lblMonth.Text = forecastMonth + " FORECAST MATERIAL USED REPORT";
                 }
                 else
                 {

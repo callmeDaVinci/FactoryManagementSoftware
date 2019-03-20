@@ -19,7 +19,7 @@ namespace FactoryManagementSoftware.UI
             try
             {
                 InitializeComponent();
-
+                addDataToTrfHistDateCMB();
                 userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
 
                 if (userPermission >= MainDashboard.ACTION_LVL_TWO)
@@ -46,6 +46,12 @@ namespace FactoryManagementSoftware.UI
         static public int editingIndexNo = -1;
         private bool formLoaded = false;
 
+        private int lastPastDay = 3;
+        readonly string past3Days = "3";
+        readonly string pastWeek = "7";
+        readonly string pastMonth = "30";
+        readonly string pastYear = "365";
+        readonly string All = "ALL";
         #endregion
 
         #region create class object (database)
@@ -87,7 +93,7 @@ namespace FactoryManagementSoftware.UI
                 tool.DoubleBuffered(dgvItem, true);
                 tool.DoubleBuffered(dgvTrf, true);
                 tool.DoubleBuffered(dgvFactoryStock, true);
-                 resetForm();
+                 resetForm();//6s/11384ms/7364ms
             }
             catch (Exception ex)
             {
@@ -96,7 +102,21 @@ namespace FactoryManagementSoftware.UI
             finally
             {
                 formLoaded = true;
+               
             }
+        }
+
+        private void addDataToTrfHistDateCMB()
+        {
+            ComboBox cmb = cmbTransHistDate;
+            cmb.Items.Clear();
+            cmb.Items.Add(past3Days);
+            cmb.Items.Add(pastWeek);
+            cmb.Items.Add(pastMonth);
+            cmb.Items.Add(pastYear);
+            cmb.Items.Add(All);
+
+            cmb.SelectedIndex = 0;
         }
 
         private void loadItemCategoryData()
@@ -108,7 +128,7 @@ namespace FactoryManagementSoftware.UI
             distinctTable.DefaultView.Sort = "item_cat_name ASC";
             cmbSearchCat.DataSource = distinctTable;
             cmbSearchCat.DisplayMember = "item_cat_name";
-            cmbSearchCat.SelectedIndex = 0;
+            cmbSearchCat.SelectedIndex = -1;
         }
 
         private void resetSaveData()
@@ -492,7 +512,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dtItem;
             int n;
-            if(string.IsNullOrEmpty(cmbSearchCat.Text) || cmbSearchCat.Text.Equals("All"))
+            if(cmbSearchCat.Text.Equals("All"))//string.IsNullOrEmpty(cmbSearchCat.Text) || 
             {
                 //show all item from the database
                 dtItem = dalItem.Select();
@@ -506,28 +526,30 @@ namespace FactoryManagementSoftware.UI
 
             List<DataGridViewRow> rows = new List<DataGridViewRow>();
 
-            foreach (DataRow item in dtItem.Rows)
+            if(dtItem.Rows.Count > 0)
             {
-                DataGridViewRow row = new DataGridViewRow();
-                row.CreateCells(dgvItem);
+                foreach (DataRow item in dtItem.Rows)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(dgvItem);
 
-                row.Cells[0].Value = item["item_cat"].ToString();
-                row.Cells[1].Value = item["item_code"].ToString();
-                row.Cells[2].Value = item["item_name"].ToString();
-                row.Cells[3].Value = Convert.ToSingle(item["item_ord"]);
-                row.Cells[4].Value =  Convert.ToSingle(item["item_qty"]).ToString("0.00");
-                rows.Add(row);
-                //n = dgvItem.Rows.Add();
-                //dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
-                //dgvItem.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
-                //dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
-                //dgvItem.Rows[n].Cells["item_ord"].Value = Convert.ToSingle(item["item_ord"]);
-                //dgvItem.Rows[n].Cells["item_qty"].Value = Convert.ToSingle(item["item_qty"]).ToString("0.00");
+                    row.Cells[0].Value = item["item_cat"].ToString();
+                    row.Cells[1].Value = item["item_code"].ToString();
+                    row.Cells[2].Value = item["item_name"].ToString();
+                    row.Cells[3].Value = Convert.ToSingle(item["item_ord"]);
+                    row.Cells[4].Value = Convert.ToSingle(item["item_qty"]).ToString("0.00");
+                    rows.Add(row);
+                    //n = dgvItem.Rows.Add();
+                    //dgvItem.Rows[n].Cells["item_cat"].Value = item["item_cat"].ToString();
+                    //dgvItem.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
+                    //dgvItem.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
+                    //dgvItem.Rows[n].Cells["item_ord"].Value = Convert.ToSingle(item["item_ord"]);
+                    //dgvItem.Rows[n].Cells["item_qty"].Value = Convert.ToSingle(item["item_qty"]).ToString("0.00");
 
+                }
+                dgvItem.Rows.AddRange(rows.ToArray());
             }
-            dgvItem.Rows.AddRange(rows.ToArray());
-
-
+           
             dgvItem.ResumeLayout(false);
             listPaint(dgvItem);
         }
@@ -643,12 +665,34 @@ namespace FactoryManagementSoftware.UI
                 if (string.IsNullOrEmpty(cmbSearchCat.Text) || cmbSearchCat.Text.Equals("All"))
                 {
                     //show all item from the database
-                    dt = daltrfHist.Select();
 
+                    if (!cmbTransHistDate.Text.Equals(All))
+                    {
+                        DateTime Start = DateTime.UtcNow.Date.AddDays(-(Convert.ToInt32(cmbTransHistDate.Text) - 1));
+                        DateTime End = DateTime.Now;
+                        //MessageBox.Show(currenteDate.ToString("yyyy/MM/dd"));
+                        dt = daltrfHist.pastAddedSearch((Convert.ToInt32(cmbTransHistDate.Text) - 1));
+                    }
+                    else
+                    {
+                        dt = daltrfHist.Select();
+                    }
                 }
                 else
                 {
-                    dt = daltrfHist.catSearch(cmbSearchCat.Text);
+                    
+                    
+
+                    if (!cmbTransHistDate.Text.Equals(All))
+                    {
+                        DateTime Start = DateTime.UtcNow.Date.AddDays(-(Convert.ToInt32(cmbTransHistDate.Text) - 1));
+                        DateTime End = DateTime.Now;
+                        dt = daltrfHist.catTrfRangeAddSearch(cmbSearchCat.Text, Start.ToString("yyyy/MM/dd"), End.ToString("yyyy/MM/dd"));
+                    }
+                    else
+                    {
+                        dt = daltrfHist.catSearch(cmbSearchCat.Text);
+                    }
                 }   
             }
 
@@ -1421,6 +1465,25 @@ namespace FactoryManagementSoftware.UI
             itemSearch();
             loadTransferList();
             Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void cmbTransHistDate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (formLoaded)
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                if (cmbTransHistDate.Text.Equals(All))
+                {
+                    loadTransferList();
+                    lastPastDay = -1;
+                }
+                else if(Convert.ToInt32(cmbTransHistDate.Text) != lastPastDay)
+                {
+                    loadTransferList();
+                    lastPastDay = Convert.ToInt32(cmbTransHistDate.Text);
+                }
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
         }
     }
 }

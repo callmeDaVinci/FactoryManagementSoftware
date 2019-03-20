@@ -366,11 +366,11 @@ namespace FactoryManagementSoftware.Module
 
         #region System
 
-        public void saveToText(Exception ex)
+        public void saveToText(Exception ex)//error message
         {
             
             Directory.CreateDirectory(@"D:\StockAssistant\SystemError");
-            string today = DateTime.Now.Date.ToString("dd_MM_yyyy");
+            string today = DateTime.Now.Date.ToString("yyyy_MM_dd");
             string filePath = @"D:\StockAssistant\SystemError\Error_" + today + ".txt";
 
             using (StreamWriter writer = new StreamWriter(filePath, true))
@@ -413,7 +413,7 @@ namespace FactoryManagementSoftware.Module
         public void saveToTextAndMessageToUser(Exception ex)
         {
             Directory.CreateDirectory(@"D:\StockAssistant\SystemError");
-            string today = DateTime.Now.Date.ToString("dd_MM_yyyy");
+            string today = DateTime.Now.Date.ToString("yyyy_MM_dd");
             string filePath = @"D:\StockAssistant\SystemError\Error_" + today + ".txt";
 
             using (StreamWriter writer = new StreamWriter(filePath, true))
@@ -476,7 +476,7 @@ namespace FactoryManagementSoftware.Module
             }
 
             Directory.CreateDirectory(@"D:\StockAssistant\SystemHistory");
-            string today = DateTime.Now.Date.ToString("dd_MM_yyyy");
+            string today = DateTime.Now.Date.ToString("yyyy_MM_dd");
             string filePath = @"D:\StockAssistant\SystemHistory\History_" + today + ".txt";
 
             using (StreamWriter writer = new StreamWriter(filePath, true))

@@ -1204,10 +1204,10 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-                if (type != 1)
-                {
-                    int n = dgv.Rows.Add();
-                }
+                //if (type != 1)
+                //{
+                //    int n = dgv.Rows.Add();
+                //}
 
                 //load parent and child data
                 indexNo = 1;
@@ -1813,6 +1813,57 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void test(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                string path2 = @"D:\StockAssistant\Document\ForecastReport";
+                Directory.CreateDirectory(path2);
+                sfd.InitialDirectory = path2;
+                sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                sfd.FileName = setFileName();
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+                    string path = Path.GetFullPath(sfd.FileName);
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    object misValue = Missing.Value;
+                    Excel.Application xlexcel = new Excel.Application
+                    {
+                        PrintCommunication = false,
+                        ScreenUpdating = false,
+                        DisplayAlerts = false // Without this you will get two confirm overwrite prompts
+                    };
+                    Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+
+                    //Save the excel file under the captured location from the SaveFileDialog
+                    xlWorkBook.SaveAs(sfd.FileName,
+                        XlFileFormat.xlWorkbookNormal,
+                        misValue, misValue, misValue, misValue,
+                        XlSaveAsAccessMode.xlExclusive,
+                        misValue, misValue, misValue, misValue, misValue);
+
+                    insertOneDataToSheet(path, sfd.FileName);
+                    xlexcel.DisplayAlerts = true;
+                    xlWorkBook.Close(true, misValue, misValue);
+                    xlexcel.Quit();
+
+                    releaseObject(xlWorkBook);
+                    releaseObject(xlexcel);
+
+                    // Clear Clipboard and DataGridView selection
+                    Clipboard.Clear();
+                    dgvForecastReport.ClearSelection();
+                }
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
         private void btnExportAllToExcel_Click(object sender, EventArgs e)
         {
             try
@@ -1829,7 +1880,7 @@ namespace FactoryManagementSoftware.UI
                     tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
                     string path = Path.GetFullPath(sfd.FileName);
                     Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                    object misValue = System.Reflection.Missing.Value;
+                    object misValue = Missing.Value;
                     Excel.Application xlexcel = new Excel.Application
                     {
                         PrintCommunication = false,
@@ -1867,7 +1918,7 @@ namespace FactoryManagementSoftware.UI
         private void insertOneDataToSheet(string path, string fileName)
         {
             string custName = tool.getCustName(1);
-            bool singlePartSeparated = false;
+            string sheetNameAdjust = " Non-Assembly";
             Excel.Application excelApp = new Excel.Application
             {
                 Visible = true
@@ -1880,10 +1931,13 @@ namespace FactoryManagementSoftware.UI
                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                Type.Missing, Type.Missing);
 
-            object misValue = System.Reflection.Missing.Value;
+            object misValue = Missing.Value;
 
-            for (int i = 0; i <= 0; i++)
+            for (int i = 1; i <= 2; i++)
             {
+                cmbType.SelectedIndex = i;
+                showForecastData();
+
                 if (gotData)//if datagridview have data
                 {
                     Worksheet xlWorkSheet = null;
@@ -1893,14 +1947,7 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet = g_Workbook.Worksheets.Add(Type.Missing,
                             g_Workbook.Worksheets[count], Type.Missing, Type.Missing);
 
-                    if(singlePartSeparated)
-                    {
-                        xlWorkSheet.Name = "ASSEMBLY/OTHER";
-                    }
-                    else
-                    {
-                        xlWorkSheet.Name = cmbCust.Text;
-                    }
+                    xlWorkSheet.Name = cmbCust.Text+sheetNameAdjust;
 
                     xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
                     xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") READY STOCK VERSUS FORECAST";
@@ -2030,14 +2077,15 @@ namespace FactoryManagementSoftware.UI
 
                         }
                     }
-                    singlePartSeparated = true;
+
+                    sheetNameAdjust = " Assembly & Other";
                     releaseObject(xlWorkSheet);
                     Clipboard.Clear();
                     dgvForecastReport.ClearSelection();
                 }
 
             }
-            //g_Workbook.Worksheets.Item[1].Delete();
+            g_Workbook.Worksheets.Item[1].Delete();
             g_Workbook.Save();
             releaseObject(g_Workbook);
             Cursor = Cursors.Arrow; // change cursor to normal type
@@ -2059,7 +2107,7 @@ namespace FactoryManagementSoftware.UI
                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                Type.Missing, Type.Missing);
 
-            object misValue = System.Reflection.Missing.Value;
+            object misValue = Missing.Value;
 
             for (int i = 0; i <= cmbCust.Items.Count - 1; i++)
             {
