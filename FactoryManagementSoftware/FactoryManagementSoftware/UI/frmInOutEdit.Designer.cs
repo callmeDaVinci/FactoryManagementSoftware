@@ -71,6 +71,8 @@
             this.dgvTransfer = new System.Windows.Forms.DataGridView();
             this.label15 = new System.Windows.Forms.Label();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -521,12 +523,36 @@
             this.btnDelete.Visible = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.ForeColor = System.Drawing.Color.Red;
+            this.label16.Location = new System.Drawing.Point(636, 13);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(140, 23);
+            this.label16.TabIndex = 105;
+            this.label16.Text = "RED: STOCK OUT";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.label17.Location = new System.Drawing.Point(825, 13);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(146, 23);
+            this.label17.TabIndex = 106;
+            this.label17.Text = "GREEN: STOCK IN";
+            // 
             // frmInOutEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1632, 814);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.label16);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.dgvTransfer);
@@ -625,5 +651,7 @@
         private System.Windows.Forms.DataGridView dgvTransfer;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label16;
     }
 }

@@ -94,7 +94,11 @@ namespace FactoryManagementSoftware.UI
 
         DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
         DataGridViewAutoSizeColumnMode DisplayedCells = DataGridViewAutoSizeColumnMode.DisplayedCells;
-        
+
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
+        private const int WM_SETREDRAW = 11;
+
         #endregion
 
         void StartWork()
@@ -1463,7 +1467,15 @@ namespace FactoryManagementSoftware.UI
                 c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             }
 
+            //SendMessage(dgvForecastReport.Handle, WM_SETREDRAW, false, 0);
+            //dgvForecastReport.SuspendLayout();
+            ((ISupportInitialize)dgvForecastReport).BeginInit();
             showForecastData();
+            ((ISupportInitialize)dgvForecastReport).EndInit();
+            //dgvForecastReport.ResumeLayout(false);
+            //SendMessage(dgvForecastReport.Handle, WM_SETREDRAW, true, 0);
+            //dgvForecastReport.Refresh();
+
 
             foreach (DataGridViewColumn dgvc in dgvForecastReport.Columns)
             {

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
@@ -52,6 +53,11 @@ namespace FactoryManagementSoftware.UI
         readonly string pastMonth = "30";
         readonly string pastYear = "365";
         readonly string All = "ALL";
+
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
+        private const int WM_SETREDRAW = 11;
+
         #endregion
 
         #region create class object (database)
@@ -84,8 +90,9 @@ namespace FactoryManagementSoftware.UI
         private void frmInOut_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainDashboard.inOutFormOpen = false;
-        }   
+        }
 
+        
         private void frmInOut_Load(object sender, EventArgs e)
         {
             try
@@ -511,7 +518,7 @@ namespace FactoryManagementSoftware.UI
         private void loadItemList()
         {
             DataTable dtItem;
-            int n;
+            //int n;
             if(cmbSearchCat.Text.Equals("All"))//string.IsNullOrEmpty(cmbSearchCat.Text) || 
             {
                 //show all item from the database
@@ -601,13 +608,32 @@ namespace FactoryManagementSoftware.UI
             //check if the keywords has value or not
             if (!string.IsNullOrEmpty(itemCode))
             {
-                dt = daltrfHist.codeSearch(itemCode);
+
+                if (!cmbTransHistDate.Text.Equals(All))
+                {
+                    //MessageBox.Show(currenteDate.ToString("yyyy/MM/dd"));
+                    dt = daltrfHist.codeRangeSearch(itemCode,Convert.ToInt32(cmbTransHistDate.Text));
+                }
+                else
+                {
+                    dt = daltrfHist.codeSearch(itemCode);
+                }
+
             }
             else
             {
-                //show all transfer records from the database
-                dt = daltrfHist.Select();
+                if (!cmbTransHistDate.Text.Equals(All))
+                {
+                    //MessageBox.Show(currenteDate.ToString("yyyy/MM/dd"));
+                    dt = daltrfHist.pastAddedSearch(Convert.ToInt32(cmbTransHistDate.Text));
+                }
+                else
+                {
+                    dt = daltrfHist.Select();
+                }
             }
+
+
 
             dgvTrf.Rows.Clear();
             if (dt.Rows.Count > 0)
@@ -652,9 +678,23 @@ namespace FactoryManagementSoftware.UI
         private void loadTransferList()
         {         
             DataTable dt;
+            //DataTable dtFilterData = new DataTable();
+
+            //dtFilterData.Columns.Add("trf_hist_id");
+            //dtFilterData.Columns.Add("trf_hist_added_date");
+            //dtFilterData.Columns.Add("trf_hist_trf_date");
+            //dtFilterData.Columns.Add("trf_hist_item_code");
+            //dtFilterData.Columns.Add("trf_hist_item_name");
+            //dtFilterData.Columns.Add("trf_hist_from");
+            //dtFilterData.Columns.Add("trf_hist_qty");
+            //dtFilterData.Columns.Add("trf_hist_unit");
+            //dtFilterData.Columns.Add("trf_hist_note");
+            //dtFilterData.Columns.Add("trf_hist_added_by");
+            //dtFilterData.Columns.Add("trf_result");
+
             //get keyword from text box
             string keywords = txtSearch.Text;
-
+            //SendMessage(dgvTrf.Handle, WM_SETREDRAW, false, 0);
             //check if the keywords has value or not
             if (!string.IsNullOrEmpty(keywords))
             {
@@ -668,10 +708,8 @@ namespace FactoryManagementSoftware.UI
 
                     if (!cmbTransHistDate.Text.Equals(All))
                     {
-                        DateTime Start = DateTime.UtcNow.Date.AddDays(-(Convert.ToInt32(cmbTransHistDate.Text) - 1));
-                        DateTime End = DateTime.Now;
                         //MessageBox.Show(currenteDate.ToString("yyyy/MM/dd"));
-                        dt = daltrfHist.pastAddedSearch((Convert.ToInt32(cmbTransHistDate.Text) - 1));
+                        dt = daltrfHist.pastAddedSearch(Convert.ToInt32(cmbTransHistDate.Text));
                     }
                     else
                     {
@@ -680,14 +718,9 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    
-                    
-
                     if (!cmbTransHistDate.Text.Equals(All))
                     {
-                        DateTime Start = DateTime.UtcNow.Date.AddDays(-(Convert.ToInt32(cmbTransHistDate.Text) - 1));
-                        DateTime End = DateTime.Now;
-                        dt = daltrfHist.catTrfRangeAddSearch(cmbSearchCat.Text, Start.ToString("yyyy/MM/dd"), End.ToString("yyyy/MM/dd"));
+                        dt = daltrfHist.catTrfRangeAddSearch(cmbSearchCat.Text, Convert.ToInt32(cmbTransHistDate.Text));
                     }
                     else
                     {
@@ -695,6 +728,8 @@ namespace FactoryManagementSoftware.UI
                     }
                 }   
             }
+
+            //dgvTrf.DataSource = dt;
 
             dgvTrf.SuspendLayout();
             dgvTrf.Rows.Clear();
@@ -707,6 +742,22 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow trf in sortedDt.Rows)
                 {
+                    //        //dt.Rows.Add(new object[]
+                    //        //            {
+                    //        //                trf["trf_hist_id"].ToString(),
+                    //        //                trf["trf_hist_added_date"].ToString(),
+                    //        //                Convert.ToDateTime(trf["trf_hist_trf_date"]).ToString("dd/MM/yyyy"),
+                    //        //                trf["trf_hist_item_code"].ToString(),
+                    //        //                trf["item_name"].ToString(),
+                    //        //                trf["trf_hist_from"].ToString(),
+                    //        //                trf["trf_hist_to"].ToString(),
+                    //        //                Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00"),
+                    //        //                trf["trf_hist_unit"].ToString(),
+                    //        //                trf["trf_hist_note"].ToString(),
+                    //        //                dalUser.getUsername(Convert.ToInt32(trf["trf_hist_added_by"])),
+                    //        //                trf["trf_result"].ToString()
+                    //        //            });
+
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(dgvTrf);
                     row.Cells[0].Value = trf["trf_hist_id"].ToString();
@@ -723,38 +774,42 @@ namespace FactoryManagementSoftware.UI
                     row.Cells[11].Value = trf["trf_result"].ToString();
                     rows.Add(row);
 
-                    //int n = dgvTrf.Rows.Add();
-                    //dgvTrf.Rows[n].Cells["trf_hist_id"].Value = trf["trf_hist_id"].ToString();
-                    //dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = trf["trf_hist_added_date"].ToString();
-                    //dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(trf["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
-                    //dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = trf["trf_hist_item_code"].ToString();
-                    //dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["item_name"].ToString();
-                    //dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
-                    //dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
-                    //dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00");
-                    //dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
-                    //dgvTrf.Rows[n].Cells["trf_hist_note"].Value = trf["trf_hist_note"].ToString();
-                    //dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = dalUser.getUsername(Convert.ToInt32(trf["trf_hist_added_by"]));
-                    //dgvTrf.Rows[n].Cells["trf_result"].Value = trf["trf_result"].ToString();
+                    //        //int n = dgvTrf.Rows.Add();
+                    //        //dgvTrf.Rows[n].Cells["trf_hist_id"].Value = trf["trf_hist_id"].ToString();
+                    //        //dgvTrf.Rows[n].Cells["trf_hist_added_date"].Value = trf["trf_hist_added_date"].ToString();
+                    //        //dgvTrf.Rows[n].Cells["trf_hist_trf_date"].Value = Convert.ToDateTime(trf["trf_hist_trf_date"]).ToString("dd/MM/yyyy");
+                    //        //dgvTrf.Rows[n].Cells["trf_hist_item_code"].Value = trf["trf_hist_item_code"].ToString();
+                    //        //dgvTrf.Rows[n].Cells["trf_hist_item_name"].Value = trf["item_name"].ToString();
+                    //        //dgvTrf.Rows[n].Cells["trf_hist_from"].Value = trf["trf_hist_from"].ToString();
+                    //        //dgvTrf.Rows[n].Cells["trf_hist_to"].Value = trf["trf_hist_to"].ToString();
+                    //        //dgvTrf.Rows[n].Cells["trf_hist_qty"].Value = Convert.ToSingle(trf["trf_hist_qty"]).ToString("0.00");
+                    //        //dgvTrf.Rows[n].Cells["trf_hist_unit"].Value = trf["trf_hist_unit"].ToString();
+                    //        //dgvTrf.Rows[n].Cells["trf_hist_note"].Value = trf["trf_hist_note"].ToString();
+                    //        //dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = dalUser.getUsername(Convert.ToInt32(trf["trf_hist_added_by"]));
+                    //        //dgvTrf.Rows[n].Cells["trf_result"].Value = trf["trf_result"].ToString();
 
-                    //if (Convert.ToInt32(trf["trf_hist_added_by"]) <= 0)
-                    //{
-                    //    dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = "ADMIN";
-                    //}
+                    //        //if (Convert.ToInt32(trf["trf_hist_added_by"]) <= 0)
+                    //        //{
+                    //        //    dgvTrf.Rows[n].Cells["trf_hist_added_by"].Value = "ADMIN";
+                    //        //}
 
                 }
                 dgvTrf.Rows.AddRange(rows.ToArray());
+
+                //SendMessage(dgvTrf.Handle, WM_SETREDRAW, true, 0);
+                dgvTrf.Refresh();
+
                 dgvTrf.ResumeLayout(false);
 
                 listPaint(dgvTrf);
             }
-        } 
+        }
 
-        #endregion
+                #endregion
 
-        #region get data/validation
+                #region get data/validation
 
-        private float getQty(string itemCode, string factoryName)
+                private float getQty(string itemCode, string factoryName)
         {
             float qty = 0;
             if (IfExists(itemCode, factoryName))
@@ -840,11 +895,13 @@ namespace FactoryManagementSoftware.UI
         {
             if(formLoaded)
             {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 loadItemList();
                 loadTransferList();
                 resetSaveData();
                 dgvFactoryStock.Rows.Clear();
                 dgvTotal.Rows.Clear();
+                Cursor = Cursors.Arrow; // change cursor to normal type
             }
         }
 
@@ -968,10 +1025,8 @@ namespace FactoryManagementSoftware.UI
             if (ht.Type == DataGridViewHitTestType.None)
             {
                 //clicked on grey area
-                dgvItem.ClearSelection();
-                loadTransferList();
+                dgvItem.ClearSelection();              
                 refreshDataList();
-                resetSaveData();
                 txtSearch.Clear();
             }
         }
@@ -984,9 +1039,7 @@ namespace FactoryManagementSoftware.UI
             {
                 //clicked on grey area
                 dgvItem.ClearSelection();
-                loadTransferList();
                 refreshDataList();
-                resetSaveData();
                 txtSearch.Clear();
             }
         }
@@ -1058,11 +1111,15 @@ namespace FactoryManagementSoftware.UI
 
                 refreshDataList();
                 listPaintAndKeepSelected(dgvItem);
-                Cursor = Cursors.Arrow; // change cursor to normal type
+                
             }
             catch (Exception ex)
             {
                 tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                Cursor = Cursors.Arrow; // change cursor to normal type
             }
            
         }
@@ -1072,15 +1129,18 @@ namespace FactoryManagementSoftware.UI
         {
             try
             {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 dgvItem.ClearSelection();
-                loadTransferList();
                 refreshDataList();
-                resetSaveData();
                 txtSearch.Clear();
             }
             catch (Exception ex)
             {
                 tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                Cursor = Cursors.Arrow; // change cursor to normal type
             }
         }
 
@@ -1211,9 +1271,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     //clicked on grey area
                     dgvItem.ClearSelection();
-                    loadTransferList();
                     refreshDataList();
-                    resetSaveData();
                     txtSearch.Clear();
                 }
             }

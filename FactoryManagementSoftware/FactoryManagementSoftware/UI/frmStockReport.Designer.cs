@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.TYPE = new System.Windows.Forms.Label();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.btnExportAllToExcel = new System.Windows.Forms.Button();
@@ -38,6 +38,7 @@
             this.dgvStockReport = new System.Windows.Forms.DataGridView();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.btnCheck = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -128,14 +129,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvStockReport.BackgroundColor = System.Drawing.Color.White;
             this.dgvStockReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvStockReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvStockReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvStockReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStockReport.EnableHeadersVisualStyles = false;
             this.dgvStockReport.Location = new System.Drawing.Point(27, 124);
@@ -165,12 +166,28 @@
             this.progressBar1.TabIndex = 79;
             this.progressBar1.Visible = false;
             // 
+            // btnCheck
+            // 
+            this.btnCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCheck.ForeColor = System.Drawing.Color.White;
+            this.btnCheck.Location = new System.Drawing.Point(549, 51);
+            this.btnCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCheck.Name = "btnCheck";
+            this.btnCheck.Size = new System.Drawing.Size(92, 45);
+            this.btnCheck.TabIndex = 101;
+            this.btnCheck.Text = "CHECK";
+            this.btnCheck.UseVisualStyleBackColor = false;
+            this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
+            // 
             // frmStockReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.btnCheck);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.dgvStockReport);
             this.Controls.Add(this.button1);
@@ -204,5 +221,6 @@
         private System.Windows.Forms.DataGridView dgvStockReport;
         private System.ComponentModel.BackgroundWorker bgWorker;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button btnCheck;
     }
 }

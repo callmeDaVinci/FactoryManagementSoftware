@@ -31,6 +31,9 @@ namespace FactoryManagementSoftware.UI
         //private int alphbet = 65;
         private string editedOldValue, editedNewValue, editedFactory, editedItem, editedTotal, editedUnit;
 
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
+        private const int WM_SETREDRAW = 11;
 
         DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
         DataGridViewAutoSizeColumnMode DisplayedCells = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -344,7 +347,6 @@ namespace FactoryManagementSoftware.UI
                     //alphbet = 65;
                 }
             }
-
             listPaint(dgvStockReport);
             dgv.ClearSelection();
 
@@ -470,23 +472,7 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbSubType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                if (cmbType.Text.Equals(CMBPartHeader))
-                {
-                    loadPartStockData();
-                }
-                else if (cmbType.Text.Equals(CMBMaterialHeader))
-                {
-                    loadMaterialStockData();
-                }
-                Cursor = Cursors.Arrow; // change cursor to normal type
-            }
-            catch (Exception ex)
-            {
-                tool.saveToTextAndMessageToUser(ex);
-            }  
+           
         }
 
         #endregion
@@ -992,6 +978,27 @@ namespace FactoryManagementSoftware.UI
                 {
                     tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
                 }
+            }
+        }
+
+        private void btnCheck_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
+                {
+                    loadPartStockData();
+                }
+                else if (cmbType.Text.Equals(CMBMaterialHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
+                {
+                    loadMaterialStockData();
+                }
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
             }
         }
 

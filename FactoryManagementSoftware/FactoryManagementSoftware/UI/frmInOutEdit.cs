@@ -610,6 +610,7 @@ namespace FactoryManagementSoftware.UI
                             index++;
 
                             dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                            dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
                             dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
                             dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
                             dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
@@ -627,6 +628,7 @@ namespace FactoryManagementSoftware.UI
                         index++;
 
                         dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                        dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
                         dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
                         dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
                         dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
@@ -681,6 +683,7 @@ namespace FactoryManagementSoftware.UI
                         int n = dgv.Rows.Add();
                         index++;
                         dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                        dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
                         dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
                         dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
                         dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
@@ -1083,10 +1086,17 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
                     dgv.Rows[n].Cells[NoteColumnName].Value += " (AFTER BAL:"+(facStock - transferQty).ToString()+")";
                 }
+
+                if (!cmbTrfToCategory.Text.Equals("Factory"))
+                {
+                    dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
+                }
             }
 
             else if (cmbTrfFromCategory.Text.Equals("Assembly") && cmbTrfToCategory.Text.Equals("Factory"))
             {
+                 dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
+                
                 if (tool.ifGotChild(cmbTrfItemCode.Text))
                 {
                     
@@ -1105,6 +1115,7 @@ namespace FactoryManagementSoftware.UI
 
             else if (cmbTrfFromCategory.Text.Equals("Production") && cmbTrfToCategory.Text.Equals("Factory"))
             {
+                dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
                 if (tool.ifGotChild(cmbTrfItemCode.Text) && (dalItem.checkIfProduction(cmbTrfItemCode.Text)))
                 {
 
