@@ -1131,8 +1131,12 @@ namespace FactoryManagementSoftware.UI
                     productionChildStockOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text), -1);
                 }
             }
-            
-            dgv.ClearSelection();
+            else if (cmbTrfToCategory.Text.Equals("Factory"))
+            {
+                dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
+            }
+
+                dgv.ClearSelection();
             dgv.Rows[n].Selected = true;
         }
         

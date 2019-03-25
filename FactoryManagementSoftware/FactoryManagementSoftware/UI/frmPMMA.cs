@@ -419,7 +419,7 @@ namespace FactoryManagementSoftware.UI
             dgvPMMA.Rows.Clear();
             dgvPMMA.Refresh();
             int index = 1;
-            DataTable dt = insertItemMaterialData();
+            DataTable dt = insertItemMaterialData();//23S
             dt = tool.RemoveDuplicates(dt, "item_material");
             dt = RemoveNonZeroCost(dt);
 
@@ -1138,7 +1138,7 @@ namespace FactoryManagementSoftware.UI
                 string outType = cmbType.Text;
                 if (outType.Equals(cmbTypeActual))
                 {
-                    getMonthlyStockData();
+                    getMonthlyStockData();//143S
                     firstForecastChecked = false;
                     secondForecastChecked = false;
                 }

@@ -54,6 +54,8 @@ namespace FactoryManagementSoftware.UI
         readonly string pastYear = "365";
         readonly string All = "ALL";
 
+        private DateTime updatedTime;
+
         [DllImport("user32.dll")]
         private static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
         private const int WM_SETREDRAW = 11;
@@ -100,7 +102,9 @@ namespace FactoryManagementSoftware.UI
                 tool.DoubleBuffered(dgvItem, true);
                 tool.DoubleBuffered(dgvTrf, true);
                 tool.DoubleBuffered(dgvFactoryStock, true);
-                 resetForm();//6s/11384ms/7364ms
+                resetForm();//6s/11384ms/7364ms
+                updatedTime = DateTime.Now;
+                txtLastUpdated.Text = "[LAST UPDATED "+updatedTime.ToString()+"]";
             }
             catch (Exception ex)
             {
@@ -517,6 +521,8 @@ namespace FactoryManagementSoftware.UI
 
         private void loadItemList()
         {
+            updatedTime = DateTime.Now;
+            txtLastUpdated.Text = "[LAST UPDATED " + updatedTime.ToString() + "]";
             DataTable dtItem;
             //int n;
             if(cmbSearchCat.Text.Equals("All"))//string.IsNullOrEmpty(cmbSearchCat.Text) || 
@@ -678,20 +684,8 @@ namespace FactoryManagementSoftware.UI
         private void loadTransferList()
         {         
             DataTable dt;
-            //DataTable dtFilterData = new DataTable();
-
-            //dtFilterData.Columns.Add("trf_hist_id");
-            //dtFilterData.Columns.Add("trf_hist_added_date");
-            //dtFilterData.Columns.Add("trf_hist_trf_date");
-            //dtFilterData.Columns.Add("trf_hist_item_code");
-            //dtFilterData.Columns.Add("trf_hist_item_name");
-            //dtFilterData.Columns.Add("trf_hist_from");
-            //dtFilterData.Columns.Add("trf_hist_qty");
-            //dtFilterData.Columns.Add("trf_hist_unit");
-            //dtFilterData.Columns.Add("trf_hist_note");
-            //dtFilterData.Columns.Add("trf_hist_added_by");
-            //dtFilterData.Columns.Add("trf_result");
-
+            updatedTime = DateTime.Now;
+            txtLastUpdated.Text = "[LAST UPDATED " + updatedTime.ToString() + "]";
             //get keyword from text box
             string keywords = txtSearch.Text;
             //SendMessage(dgvTrf.Handle, WM_SETREDRAW, false, 0);

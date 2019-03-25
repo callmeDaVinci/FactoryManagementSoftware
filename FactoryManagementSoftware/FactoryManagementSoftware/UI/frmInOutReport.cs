@@ -1131,6 +1131,7 @@ namespace FactoryManagementSoftware.UI
         private void btnCheck_Click(object sender, EventArgs e)
         {
             DataGridView dgv = dgvInOutReport;
+            dgv.Rows.Clear();
             DataTable dt = null;
             string start = dtpStart.Value.ToString("yyyy/MM/dd");
             string end = dtpEnd.Value.ToString("yyyy/MM/dd");

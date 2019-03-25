@@ -25,7 +25,6 @@ namespace FactoryManagementSoftware.UI
             {
                 btnOrder.Hide();
             }
-            resetOrderAlert();
         }
 
 
@@ -236,7 +235,6 @@ namespace FactoryManagementSoftware.UI
         {
             resetForm();
             cmbStatusSearch.SelectedIndex = 0;
-            dgvOrderAlert.ClearSelection();
         }
 
         private void resetOrderAlert()
@@ -258,7 +256,6 @@ namespace FactoryManagementSoftware.UI
         {
             loadOrderRecord();
             txtOrdSearch.Clear();
-            resetOrderAlert();
         }
         
         private void loadOrderRecord()
@@ -304,9 +301,7 @@ namespace FactoryManagementSoftware.UI
 
         private void refreshOrderRecord(int orderID)
         {
-            resetOrderAlert();
-            dgvOrderAlert.ClearSelection();
-
+            dgvOrderAlert.Rows.Clear();
             loadOrderRecord();
             dgvOrd.ClearSelection();
             if (orderID != -1)
@@ -449,6 +444,7 @@ namespace FactoryManagementSoftware.UI
 
                     //calculate still need how many qty
 
+                    //forecastnum = balance
                     if (outStock >= Forecast1Num)
                     {
                         Forecast1Num = readyStock;
@@ -518,8 +514,8 @@ namespace FactoryManagementSoftware.UI
 
         private void loadOrderAlertData()
         {
-            createOrderAlertDatagridview();
-            insertOrderAlertData();
+            createOrderAlertDatagridview();//2s
+            insertOrderAlertData();//5s,7s
 
             int n = 0;
             int index = 1;
@@ -1560,6 +1556,12 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvOrderAlert_Sorted(object sender, EventArgs e)
         {
+            dgvOrderAlert.ClearSelection();
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            resetOrderAlert();
             dgvOrderAlert.ClearSelection();
         }
     }

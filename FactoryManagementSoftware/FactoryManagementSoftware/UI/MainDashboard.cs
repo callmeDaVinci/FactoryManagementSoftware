@@ -57,6 +57,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
+                pMMAToolStripMenuItem.Visible = false;
                 forecastToolStripMenuItem.Visible = false;
                 adminToolStripMenuItem.Visible = false;
                 orderToolStripMenuItem1.Visible = false;
