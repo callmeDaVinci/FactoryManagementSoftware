@@ -94,7 +94,7 @@ namespace FactoryManagementSoftware.UI
             MainDashboard.inOutFormOpen = false;
         }
 
-        
+
         private void frmInOut_Load(object sender, EventArgs e)
         {
             try
@@ -103,8 +103,7 @@ namespace FactoryManagementSoftware.UI
                 tool.DoubleBuffered(dgvTrf, true);
                 tool.DoubleBuffered(dgvFactoryStock, true);
                 resetForm();//6s/11384ms/7364ms
-                updatedTime = DateTime.Now;
-                txtLastUpdated.Text = "[LAST UPDATED "+updatedTime.ToString()+"]";
+                dataUpdatedTime();
             }
             catch (Exception ex)
             {
@@ -115,6 +114,12 @@ namespace FactoryManagementSoftware.UI
                 formLoaded = true;
                
             }
+        }
+
+        private void dataUpdatedTime()
+        {
+            updatedTime = DateTime.Now;
+            lblUpdatedTime.Text = updatedTime.ToString();
         }
 
         private void addDataToTrfHistDateCMB()
@@ -147,10 +152,12 @@ namespace FactoryManagementSoftware.UI
             editingItemCat = "";
             editingItemName = "";
             editingItemCode = "";
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
         }
 
         private void refreshDataList()//refresh/update stock qty and order qty
         {
+            dataUpdatedTime();
             if (dgvItem.SelectedRows.Count > 0)//if item data selected,direct update item stock qty and order qty
             {
                 int rowindex = dgvItem.CurrentCell.RowIndex;
@@ -521,8 +528,8 @@ namespace FactoryManagementSoftware.UI
 
         private void loadItemList()
         {
-            updatedTime = DateTime.Now;
-            txtLastUpdated.Text = "[LAST UPDATED " + updatedTime.ToString() + "]";
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            dataUpdatedTime();
             DataTable dtItem;
             //int n;
             if(cmbSearchCat.Text.Equals("All"))//string.IsNullOrEmpty(cmbSearchCat.Text) || 
@@ -543,6 +550,7 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataRow item in dtItem.Rows)
                 {
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(dgvItem);
 
@@ -682,17 +690,24 @@ namespace FactoryManagementSoftware.UI
         }
 
         private void loadTransferList()
-        {         
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             DataTable dt;
-            updatedTime = DateTime.Now;
-            txtLastUpdated.Text = "[LAST UPDATED " + updatedTime.ToString() + "]";
+            dataUpdatedTime();
             //get keyword from text box
             string keywords = txtSearch.Text;
             //SendMessage(dgvTrf.Handle, WM_SETREDRAW, false, 0);
             //check if the keywords has value or not
             if (!string.IsNullOrEmpty(keywords))
             {
-                dt = daltrfHist.Search(keywords);
+                if (!cmbTransHistDate.Text.Equals(All))
+                {
+                    dt = daltrfHist.keywordRangeSearch(keywords, Convert.ToInt32(cmbTransHistDate.Text));
+                }
+                else
+                {
+                    dt = daltrfHist.Search(keywords);
+                }
             }
             else
             {
@@ -736,6 +751,7 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow trf in sortedDt.Rows)
                 {
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                     //        //dt.Rows.Add(new object[]
                     //        //            {
                     //        //                trf["trf_hist_id"].ToString(),
@@ -887,15 +903,27 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbSearchCat_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(formLoaded)
+            if (formLoaded)
             {
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                loadItemList();
-                loadTransferList();
-                resetSaveData();
-                dgvFactoryStock.Rows.Clear();
-                dgvTotal.Rows.Clear();
-                Cursor = Cursors.Arrow; // change cursor to normal type
+                try
+                {
+                    Application.UseWaitCursor = true;
+                    loadItemList();
+                    loadTransferList();
+                    resetSaveData();
+                    dgvFactoryStock.Rows.Clear();
+                    dgvTotal.Rows.Clear();
+                }
+                catch (Exception ex)
+                {
+                    tool.saveToTextAndMessageToUser(ex);
+                }
+                finally
+                {
+                    Application.UseWaitCursor = false;
+                    Cursor = Cursors.Arrow; // change cursor to normal type
+                }
+                
             }
         }
 
@@ -913,7 +941,11 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItem_Sorted(object sender, EventArgs e)
         {
+
             listPaint((DataGridView)sender);
+            Application.UseWaitCursor = false;
+            Cursor = Cursors.Arrow; // change cursor to normal type
+
         }
 
         private void dgvItem_SelectionChanged(object sender, EventArgs e)
@@ -1018,10 +1050,10 @@ namespace FactoryManagementSoftware.UI
 
             if (ht.Type == DataGridViewHitTestType.None)
             {
-                //clicked on grey area
-                dgvItem.ClearSelection();              
-                refreshDataList();
-                txtSearch.Clear();
+                ////clicked on grey area
+                //dgvItem.ClearSelection();              
+                //refreshDataList();
+                //txtSearch.Clear();
             }
         }
 
@@ -1040,6 +1072,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItem_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
         {
+            Application.UseWaitCursor = true;
             object tempObject1 = e.CellValue1;
             object tempObject2 = e.CellValue2;
             if (!(tempObject1 is null) && !(tempObject2 is null))
@@ -1054,8 +1087,10 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItem_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            int Permission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
             int rowIndex = dgvItem.CurrentCell.RowIndex;
-            if (rowIndex >= 0)
+
+            if (rowIndex >= 0 && Permission >= MainDashboard.ACTION_LVL_TWO)
             {
                 try
                 {
@@ -1121,21 +1156,7 @@ namespace FactoryManagementSoftware.UI
         //unselect data when click on empty space
         private void frmInOut_MouseClick(object sender, MouseEventArgs e)
         {
-            try
-            {
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                dgvItem.ClearSelection();
-                refreshDataList();
-                txtSearch.Clear();
-            }
-            catch (Exception ex)
-            {
-                tool.saveToTextAndMessageToUser(ex);
-            }
-            finally
-            {
-                Cursor = Cursors.Arrow; // change cursor to normal type
-            }
+           
         }
 
         //reset
@@ -1524,16 +1545,56 @@ namespace FactoryManagementSoftware.UI
             if (formLoaded)
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                if (cmbTransHistDate.Text.Equals(All))
+                int rowIndex = dgvItem.CurrentCell.RowIndex;
+                if (rowIndex >= 0)
+                {
+                    editingItemCode = dgvItem.Rows[rowIndex].Cells["item_code"].Value == null ? "" : dgvItem.Rows[rowIndex].Cells["item_code"].Value.ToString();
+
+                    if (editingItemCat == null || editingItemName == null || editingItemCode == null)
+                    {
+                        MessageBox.Show("empty value after selected");
+                        dgvFactoryStock.DataSource = null;
+                        dgvTotal.DataSource = null;
+                    }
+                    else
+                    { 
+                        loadTransferList(editingItemCode);
+                    }
+                }
+                else
                 {
                     loadTransferList();
+                }
+
+                if (cmbTransHistDate.Text.Equals(All))
+                {
+                    
                     lastPastDay = -1;
                 }
                 else if(Convert.ToInt32(cmbTransHistDate.Text) != lastPastDay)
                 {
-                    loadTransferList();
+                   
                     lastPastDay = Convert.ToInt32(cmbTransHistDate.Text);
                 }
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                dgvItem.ClearSelection();
+                refreshDataList();
+                txtSearch.Clear();
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
         }
