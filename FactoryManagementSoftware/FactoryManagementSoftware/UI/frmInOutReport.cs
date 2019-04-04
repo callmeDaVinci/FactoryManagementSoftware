@@ -713,8 +713,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                int n = dgv.Rows.Add();
-                dgv.Rows[n].Cells[dalTrfHist.TrfItemName].Value = "No data exist";
+                //int n = dgv.Rows.Add();
+                //dgv.Rows[n].Cells[dalTrfHist.TrfItemName].Value = "No data exist";
+                MessageBox.Show("No data exist");
             }
         }
 
@@ -1151,7 +1152,7 @@ namespace FactoryManagementSoftware.UI
                     dt = dalTrfHist.rangePartTrfSearch(start, end, tool.getCustID(Type));
                 }
             }
-            else if (Type.Equals(CMBMaterialHeader))
+            else if (cbMat.Checked)
             {
                 //show material transfer history during selected period
                 dt = dalTrfHist.rangeMaterialTrfSearch(start, end, Type);

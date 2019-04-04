@@ -465,7 +465,7 @@ namespace FactoryManagementSoftware.Module
             userDAL dalUser = new userDAL();
             uHistory.history_date = date;
             uHistory.history_by = by;
-            uHistory.history_action = action;
+            uHistory.history_action = "["+ dalUser.getUsername(by)+"] "+action;
             uHistory.history_detail = detail;
 
             bool result = dalHistory.insert(uHistory);

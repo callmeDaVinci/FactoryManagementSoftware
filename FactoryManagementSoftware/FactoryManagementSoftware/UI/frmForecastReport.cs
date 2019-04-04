@@ -721,6 +721,22 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private DataTable RemoveMouldData(DataTable dt)
+        {
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = dt.Rows.Count - 1; i >= 0; i--)
+                {
+                    if (dt.Rows[i][dalItem.ItemCat].ToString().Equals("Mould"))
+                    {
+                        dt.Rows[i].Delete();
+                    }
+                }
+                dt.AcceptChanges();
+            }
+            return dt;
+        }
+
         private void insertForecastData()
         {
             string custName = cmbCust.Text;
@@ -737,6 +753,8 @@ namespace FactoryManagementSoftware.UI
             if (!string.IsNullOrEmpty(custName))
             {
                 DataTable dt = dalItemCust.custSearch(custName);//load customer's item list
+
+                dt = RemoveMouldData(dt);
 
                 if (dt.Rows.Count < 1)
                 {   
@@ -1467,14 +1485,9 @@ namespace FactoryManagementSoftware.UI
                 c.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             }
 
-            //SendMessage(dgvForecastReport.Handle, WM_SETREDRAW, false, 0);
-            //dgvForecastReport.SuspendLayout();
             ((ISupportInitialize)dgvForecastReport).BeginInit();
             showForecastData();
             ((ISupportInitialize)dgvForecastReport).EndInit();
-            //dgvForecastReport.ResumeLayout(false);
-            //SendMessage(dgvForecastReport.Handle, WM_SETREDRAW, true, 0);
-            //dgvForecastReport.Refresh();
 
 
             foreach (DataGridViewColumn dgvc in dgvForecastReport.Columns)

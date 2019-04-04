@@ -479,7 +479,7 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_hist_qty = qty;
             utrfHist.trf_hist_unit = unit;
             utrfHist.trf_hist_trf_date = Convert.ToDateTime(date);
-            utrfHist.trf_hist_note = note;
+            utrfHist.trf_hist_note = "[" + dalUser.getUsername(MainDashboard.USER_ID) + "] " + note;
             utrfHist.trf_hist_added_date = DateTime.Now;
             utrfHist.trf_hist_added_by = MainDashboard.USER_ID;
             utrfHist.trf_result = stockResult;

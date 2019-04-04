@@ -44,7 +44,21 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_trf_hist INNER JOIN tbl_item ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code";
+                String sql = @"SELECT  tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result
+                                FROM tbl_trf_hist INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code";
+
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database
@@ -66,7 +80,11 @@ namespace FactoryManagementSoftware.DAL
                 //closing connection
                 conn.Close();
             }
-            return dt;
+
+            dt.DefaultView.Sort = "trf_hist_id DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
         }
         #endregion
 
@@ -183,7 +201,24 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_trf_hist  INNER JOIN tbl_item ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code WHERE tbl_item.item_code LIKE '%" + keywords + "%'OR tbl_item.item_name LIKE '%" + keywords + "%'";
+                String sql = @"SELECT  tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result
+                                FROM tbl_trf_hist  
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE tbl_item.item_code LIKE '%" + keywords + "%'" +
+                                "OR tbl_item.item_name LIKE '%" + keywords + "%' " +
+                                "ORDER BY tbl_trf_hist.trf_hist_id DESC";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -253,7 +288,22 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_trf_hist INNER JOIN tbl_item ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code WHERE tbl_item.item_code LIKE '%" + keywords + "%' ORDER BY tbl_trf_hist.trf_hist_trf_date DESC";
+                String sql = @"SELECT  tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result
+                                FROM tbl_trf_hist INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE tbl_item.item_code LIKE '%" + keywords + "%' " +
+                                "ORDER BY tbl_trf_hist.trf_hist_trf_date DESC";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -288,12 +338,24 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = @"SELECT * FROM tbl_trf_hist INNER JOIN tbl_item 
-                            ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
-                            WHERE (tbl_item.item_code LIKE '%" + keywords + "%' " +
-                            "OR tbl_item.item_name LIKE '%" + keywords + "%' )" +
-                            " AND tbl_trf_hist.trf_hist_added_date >= DATEADD(day, @fromPast, GetDate()) " +
-                            "ORDER BY tbl_trf_hist.trf_hist_trf_date DESC";
+                String sql = @"SELECT  tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result
+                                FROM tbl_trf_hist INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE (tbl_item.item_code LIKE '%" + keywords + "%' " +
+                                "OR tbl_item.item_name LIKE '%" + keywords + "%' )" +
+                                " AND tbl_trf_hist.trf_hist_added_date >= DATEADD(day, @fromPast, GetDate()) " +
+                                "ORDER BY tbl_trf_hist.trf_hist_id DESC";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -330,15 +392,28 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = @"SELECT * FROM tbl_trf_hist INNER JOIN tbl_item 
-                            ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
-                            WHERE tbl_item.item_code LIKE '%" + keywords + "%' " +
-                            " AND tbl_trf_hist.trf_hist_added_date >= DATEADD(day, @fromPast, GetDate()) " +
-                            "ORDER BY tbl_trf_hist.trf_hist_trf_date DESC";
+                String sql = @"SELECT  tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result
+                                FROM tbl_trf_hist INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE tbl_item.item_code =@keywords" +
+                                " AND tbl_trf_hist.trf_hist_added_date >= DATEADD(day, @fromPast, GetDate()) " +
+                                "ORDER BY tbl_trf_hist.trf_hist_id DESC";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
+                cmd.Parameters.AddWithValue("@keywords", keywords);
                 cmd.Parameters.AddWithValue("@fromPast", fromPast * -1);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
@@ -882,7 +957,19 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                sql = @"SELECT * FROM tbl_trf_hist 
+                sql = @"SELECT  tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result
+                                FROM tbl_trf_hist 
                                 INNER JOIN tbl_item 
                                 ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
                                 WHERE 
@@ -914,7 +1001,7 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
 
-            dt.DefaultView.Sort = "trf_hist_added_date DESC";
+            dt.DefaultView.Sort = "trf_hist_id DESC";
             DataTable sortedDt = dt.DefaultView.ToTable();
 
             return sortedDt;
@@ -1075,7 +1162,21 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_trf_hist INNER JOIN tbl_item ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code WHERE tbl_item.item_cat=@category";
+                String sql = @"SELECT  tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result
+                                FROM tbl_trf_hist INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE tbl_item.item_cat=@category";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -1099,7 +1200,11 @@ namespace FactoryManagementSoftware.DAL
                 //closing connection
                 conn.Close();
             }
-            return dt;
+            dt.DefaultView.Sort = "trf_hist_id DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
+            
         }
 
         public DataTable catTrfRangeAddSearch(string keywords, int fromPast)
@@ -1111,7 +1216,19 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = @"SELECT * FROM tbl_trf_hist INNER JOIN tbl_item 
+                String sql = @"SELECT  tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result
+                                FROM tbl_trf_hist INNER JOIN tbl_item 
                                 ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
                                 WHERE tbl_item.item_cat=@category
                                 AND tbl_trf_hist.trf_hist_added_date >= DATEADD(day, @fromPast, GetDate())";
@@ -1139,7 +1256,12 @@ namespace FactoryManagementSoftware.DAL
                 //closing connection
                 conn.Close();
             }
-            return dt;
+
+            dt.DefaultView.Sort = "trf_hist_id DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
+           
         }
 
         #endregion

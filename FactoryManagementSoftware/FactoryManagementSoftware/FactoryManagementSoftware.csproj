@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>74</ApplicationRevision>
+    <ApplicationRevision>109</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -125,6 +125,12 @@
     <Compile Include="DAL\Utilities.cs" />
     <Compile Include="Module\Text.cs" />
     <Compile Include="Module\Tool.cs" />
+    <Compile Include="UI\frmAddItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmAddItem.Designer.cs">
+      <DependentUpon>frmAddItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmCat.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -331,6 +337,15 @@
     <Compile Include="UI\MainDashboard.Designer.cs">
       <DependentUpon>MainDashboard.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\NewInOutReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\NewInOutReport.Designer.cs">
+      <DependentUpon>NewInOutReport.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="UI\frmAddItem.resx">
+      <DependentUpon>frmAddItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmCat.resx">
       <DependentUpon>frmCat.cs</DependentUpon>
     </EmbeddedResource>
@@ -443,6 +458,9 @@
     <EmbeddedResource Include="UI\MainDashboard.resx">
       <DependentUpon>MainDashboard.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\NewInOutReport.resx">
+      <DependentUpon>NewInOutReport.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="FactoryManagementSoftware_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -503,8 +521,16 @@
   <ItemGroup>
     <Content Include="Image\icons8_available_updates_96_deQ_icon.ico" />
     <Content Include="Image\safety_SYA_icon.ico" />
+    <Content Include="Image\x_icon_png_1543129_VTC_icon.ico" />
     <Content Include="Oxygen-Icons.org-Oxygen-Apps-partitionmanager.ico" />
+    <Resource Include="x_icon_png_1543129_VTC_icon.ico" />
     <None Include="Resources\icons8-available-updates-96.png" />
+    <None Include="Resources\icons8-delete-filled-500.png" />
+    <None Include="Resources\icons8-plus-480.png" />
+    <None Include="Resources\icons8-minus-96.png" />
+    <Content Include="Resources\x_icon_png_1543129.jpg" />
+    <Content Include="Resources\x_icon_png_1543129_VTC_icon.ico" />
+    <None Include="Resources\x_icon_png_1543129_VTC_icon1.ico" />
     <Content Include="safety_SYA_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -61,6 +61,7 @@
             this.Controls.Add(this.dgvUserHistory);
             this.Name = "frmUserActionHistory";
             this.Text = "frmUserActionHistory";
+            this.Load += new System.EventHandler(this.frmUserActionHistory_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvUserHistory)).EndInit();
             this.ResumeLayout(false);
 

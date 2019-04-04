@@ -294,7 +294,7 @@
             this.btnExportToExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExportToExcel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExportToExcel.ForeColor = System.Drawing.Color.White;
-            this.btnExportToExcel.Location = new System.Drawing.Point(1422, 45);
+            this.btnExportToExcel.Location = new System.Drawing.Point(1422, 126);
             this.btnExportToExcel.Margin = new System.Windows.Forms.Padding(2);
             this.btnExportToExcel.Name = "btnExportToExcel";
             this.btnExportToExcel.Size = new System.Drawing.Size(120, 50);

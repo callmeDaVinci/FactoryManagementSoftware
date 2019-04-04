@@ -106,39 +106,28 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[dalPMMA.Adjust].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[dalPMMA.BalStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
+            dgv.Columns[IndexColumnName].ReadOnly = true;
+            dgv.Columns[dalItem.ItemCode].ReadOnly = true;
+            dgv.Columns[dalItem.ItemName].ReadOnly = true;
+
+            dgv.Columns[dalPMMA.OpenStock].ReadOnly = true;
+            dgv.Columns[IndexInName].ReadOnly = true;
+            dgv.Columns[IndexOutName].ReadOnly = true;
+            dgv.Columns[IndexBalName].ReadOnly = true;
+            dgv.Columns[IndexWastageName].ReadOnly = true;
+            dgv.Columns[dalPMMA.BalStock].ReadOnly = true;
+
             if (dalUser.getPermissionLevel(MainDashboard.USER_ID) >= 2)
             {
-                dgv.Columns[IndexColumnName].ReadOnly = true;
-                dgv.Columns[dalItem.ItemCode].ReadOnly = true;
-                dgv.Columns[dalItem.ItemName].ReadOnly = true;
-                
-                dgv.Columns[dalPMMA.OpenStock].ReadOnly = true;
-                dgv.Columns[IndexInName].ReadOnly = true;
-                dgv.Columns[IndexOutName].ReadOnly = true;
-                dgv.Columns[IndexBalName].ReadOnly = true;
-                dgv.Columns[IndexWastageName].ReadOnly = true;
-                dgv.Columns[dalPMMA.BalStock].ReadOnly = true;
-
                 dgv.Columns[IndexPercentageName].ReadOnly = false;
                 dgv.Columns[dalPMMA.Adjust].ReadOnly = false;
                 dgv.Columns[dalPMMA.Note].ReadOnly = false;
             }
             else
             {
-                dgv.Columns[IndexColumnName].ReadOnly = true;
-                dgv.Columns[dalItem.ItemCode].ReadOnly = true;
-                dgv.Columns[dalItem.ItemName].ReadOnly = true;
-
-                dgv.Columns[dalPMMA.OpenStock].ReadOnly = true;
-                dgv.Columns[IndexInName].ReadOnly = true;
-                dgv.Columns[IndexOutName].ReadOnly = true;
-
-                dgv.Columns[IndexBalName].ReadOnly = true;
                 dgv.Columns[IndexPercentageName].ReadOnly = true;
-                dgv.Columns[IndexWastageName].ReadOnly = true;
                 dgv.Columns[dalPMMA.Adjust].ReadOnly = true;
                 dgv.Columns[dalPMMA.Note].ReadOnly = true;
-                dgv.Columns[dalPMMA.BalStock].ReadOnly = true;
             }
         }
 
@@ -386,29 +375,6 @@ namespace FactoryManagementSoftware.UI
                 dt.AcceptChanges();
             }
 
-            //materialDAL dalMat = new materialDAL();
-            //if (dt.Rows.Count > 0)
-            //{
-            //    for (int i = 0; i <= dt.Rows.Count - 2; i++)
-            //    {
-            //        string a = "";//dt.Rows[i]["item_cat"].ToString() get mat type
-
-            //        if (a.Equals("Sub Material"))
-            //        {
-            //            for (int j = i + 1; j <= dt.Rows.Count - 1; j++)
-            //            {
-            //                string b = "";//get current row mat type
-            //                if (b.Equals("Raw Material"))
-            //                {
-            //                    //swap row[i] and row[j]
-            //                    break;
-            //                }
-
-            //            }
-            //        }
-            //    }
-            //    dt.AcceptChanges();
-            //}
             return dt;
         }
 
@@ -419,7 +385,7 @@ namespace FactoryManagementSoftware.UI
             dgvPMMA.Rows.Clear();
             dgvPMMA.Refresh();
             int index = 1;
-            DataTable dt = insertItemMaterialData();//23S
+            DataTable dt = insertItemMaterialData();//23S,2S
             dt = tool.RemoveDuplicates(dt, "item_material");
             dt = RemoveNonZeroCost(dt);
 
@@ -1555,60 +1521,3 @@ namespace FactoryManagementSoftware.UI
 }
 
 
-//bool result = false;
-//                        if (tool.ifGotChild(itemCode))
-//                        {
-//                            if (dalItem.checkIfProduction(itemCode))
-//                            {
-//                                uMatUsed.no = forecastIndex;
-//                                uMatUsed.item_code = itemCode;
-//                                uMatUsed.quantity_order = outStock;
-
-//                                result = dalMatUsed.Insert(uMatUsed);
-//                                if (!result)
-//                                {
-//                                    MessageBox.Show("failed to insert material used data");
-//                                    return;
-//                                }
-//                                else
-//                                {
-//                                    forecastIndex++;
-//                                }
-//                            }
-
-//                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
-//                            foreach (DataRow Join in dtJoin.Rows)
-//                            {
-//                                uMatUsed.no = forecastIndex;
-//                                uMatUsed.item_code = Join["join_child_code"].ToString();
-//uMatUsed.quantity_order = outStock;
-
-//                                result = dalMatUsed.Insert(uMatUsed);
-//                                if (!result)
-//                                {
-//                                    MessageBox.Show("failed to insert material used data");
-//                                    return;
-//                                }
-//                                else
-//                                {
-//                                    forecastIndex++;
-//                                }
-//                            }
-//                        }
-//                        else
-//                        {
-//                            uMatUsed.no = forecastIndex;
-//                            uMatUsed.item_code = itemCode;
-//                            uMatUsed.quantity_order = outStock;
-
-//                            result = dalMatUsed.Insert(uMatUsed);
-//                            if (!result)
-//                            {
-//                                MessageBox.Show("failed to insert material used data");
-//                                return;
-//                            }
-//                            else
-//                            {
-//                                forecastIndex++;
-//                            }
-//                        }
