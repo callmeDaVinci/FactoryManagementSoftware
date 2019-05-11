@@ -1240,5 +1240,242 @@ namespace FactoryManagementSoftware.UI
         }
 
         #endregion
+
+        private void btnExportAllToExcel_Click(object sender, EventArgs e)
+        {
+
+            //bgWorker.DoWork += BackgroundWorkerDoWork;
+            //bgWorker.ProgressChanged += BackgroundWorkerProgressChanged;
+            try
+            {
+                dgvMaterialUsedRecord.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                SaveFileDialog sfd = new SaveFileDialog();
+                string path2 = @"D:\StockAssistant\Document\StockReport";
+                Directory.CreateDirectory(path2);
+                sfd.InitialDirectory = path2;
+                sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                sfd.FileName = setFileName();
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    //progressBar1.Show();
+                    tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+
+                    string path = Path.GetFullPath(sfd.FileName);
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    object misValue = System.Reflection.Missing.Value;
+                    Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
+                    xlexcel.PrintCommunication = false;
+                    xlexcel.ScreenUpdating = false;
+                    xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
+                    Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+
+                    //Save the excel file under the captured location from the SaveFileDialog
+                    xlWorkBook.SaveAs(sfd.FileName,
+                        XlFileFormat.xlWorkbookNormal,
+                        misValue, misValue, misValue, misValue,
+                        XlSaveAsAccessMode.xlExclusive,
+                        misValue, misValue, misValue, misValue, misValue);
+
+                    insertDataToSheet(path, sfd.FileName);
+
+                    xlexcel.DisplayAlerts = true;
+                    xlWorkBook.Close(true, misValue, misValue);
+                    xlexcel.Quit();
+
+                    releaseObject(xlWorkBook);
+                    releaseObject(xlexcel);
+
+                    // Clear Clipboard and DataGridView selection
+                    Clipboard.Clear();
+                    dgvMaterialUsedRecord.ClearSelection();
+                }
+
+                //bgWorker.ReportProgress(100);
+                //System.Threading.Thread.Sleep(1000);
+                dgvMaterialUsedRecord.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                //progressBar1.Visible = false;
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+        }
+
+        private void insertDataToSheet(string path, string fileName)
+        {
+            try
+            {
+                Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application
+                {
+                    Visible = true
+                };
+
+                Workbook g_Workbook = excelApp.Workbooks.Open(
+                    path,
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                    Type.Missing, Type.Missing);
+
+                bool gotData = false;
+                object misValue = System.Reflection.Missing.Value;
+
+                //load different data list to datagridview but changing the comboBox selected index
+
+
+                //for (int i = 0; i <= cmbType.Items.Count - 1; i++)
+                //{
+                //    cmbType.SelectedIndex = i;
+                //    for (int j = 0; j <= cmbSubType.Items.Count - 1; j++)
+                //    {
+                //        cmbSubType.SelectedIndex = j;
+                //        if (cmbType.Text.Equals(CMBPartHeader))
+                //        {
+                //            gotData = loadPartStockData();//if data != empty return true, else false
+                //        }
+                //        else if (cmbType.Text.Equals(CMBMaterialHeader))
+                //        {
+                //            gotData = loadMaterialStockData();//if data != empty return true, else false
+                //        }
+
+                //        if (gotData)//if datagridview have data
+                //        {
+                //            Worksheet addedSheet = null;
+
+                //            int count = g_Workbook.Worksheets.Count;
+
+                //            addedSheet = g_Workbook.Worksheets.Add(Type.Missing,
+                //                    g_Workbook.Worksheets[count], Type.Missing, Type.Missing);
+
+                //            addedSheet.Name = cmbSubType.Text;
+
+                //            addedSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
+                //            addedSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbSubType.Text + ") STOCK LIST";
+                //            addedSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
+                //            addedSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+
+                //            //Page setup
+                //            addedSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                //            addedSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
+                //            addedSheet.PageSetup.Zoom = false;
+                //            addedSheet.PageSetup.CenterHorizontally = true;
+                //            addedSheet.PageSetup.LeftMargin = 1;
+                //            addedSheet.PageSetup.RightMargin = 1;
+                //            addedSheet.PageSetup.FitToPagesWide = 1;
+                //            addedSheet.PageSetup.FitToPagesTall = false;
+                //            addedSheet.PageSetup.PrintTitleRows = "$1:$1";
+
+                //            copyAlltoClipboard();
+                //            addedSheet.Select();
+                //            Range CR = (Range)addedSheet.Cells[1, 1];
+                //            CR.Select();
+                //            addedSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+
+                //            Range tRange = addedSheet.UsedRange;
+                //            tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                //            tRange.Borders.Weight = XlBorderWeight.xlThin;
+                //            tRange.Font.Size = 11;
+                //            tRange.Font.Name = "Calibri";
+                //            tRange.EntireRow.AutoFit();
+                //            tRange.EntireColumn.AutoFit();
+                //            tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);//change first row back color to light grey
+
+                //            if (true)//cmbSubType.Text.Equals("PMMA")
+                //            {
+                //                for (int x = 0; x <= dgvStockReport.RowCount - 2; x++)
+                //                {
+                //                    for (int y = 0; y <= dgvStockReport.ColumnCount - 1; y++)
+                //                    {
+                //                        Range range = (Range)addedSheet.Cells[x + 2, y + 1];
+
+                //                        if (x == 0)
+                //                        {
+                //                            Range header = (Range)addedSheet.Cells[x + 1, y + 1];
+                //                            header.Interior.Color = ColorTranslator.ToOle(dgvStockReport.Rows[x].Cells[y].InheritedStyle.BackColor);
+
+                //                            header = (Range)addedSheet.Cells[1, 10];
+                //                            header.Font.Color = Color.Blue;
+
+                //                            header = (Range)addedSheet.Cells[1, 14];
+                //                            header.Font.Color = Color.Red;
+
+                //                            header = (Range)addedSheet.Cells[1, 16];
+                //                            header.Font.Color = Color.Red;
+
+
+                //                        }
+
+                //                        if (dgvStockReport.Rows[x].Cells[y].InheritedStyle.BackColor == SystemColors.Window)
+                //                        {
+                //                            range.Interior.Color = ColorTranslator.ToOle(Color.White);
+                //                            if (x == 0)
+                //                            {
+                //                                Range header = (Range)addedSheet.Cells[x + 1, y + 1];
+                //                                header.Interior.Color = ColorTranslator.ToOle(Color.White);
+                //                            }
+                //                        }
+                //                        else if (dgvStockReport.Rows[x].Cells[y].InheritedStyle.BackColor == Color.Black)
+                //                        {
+                //                            range.Rows.RowHeight = 3;
+                //                            range.Interior.Color = ColorTranslator.ToOle(dgvStockReport.Rows[x].Cells[y].InheritedStyle.BackColor);
+                //                            if (x == 0)
+                //                            {
+                //                                Range header = (Range)addedSheet.Cells[x + 1, y + 1];
+                //                                header.Interior.Color = ColorTranslator.ToOle(dgvStockReport.Rows[x].Cells[y].InheritedStyle.BackColor);
+                //                            }
+                //                        }
+                //                        else
+                //                        {
+                //                            range.Interior.Color = ColorTranslator.ToOle(dgvStockReport.Rows[x].Cells[y].InheritedStyle.BackColor);
+
+                //                            if (x == 0)
+                //                            {
+                //                                Range header = (Range)addedSheet.Cells[x + 1, y + 1];
+                //                                header.Interior.Color = ColorTranslator.ToOle(dgvStockReport.Rows[x].Cells[y].InheritedStyle.BackColor);
+                //                            }
+                //                        }
+                //                        range.Font.Color = dgvStockReport.Rows[x].Cells[y].Style.ForeColor;
+                //                        if (dgvStockReport.Rows[x].Cells[y].Style.ForeColor == Color.Blue)
+                //                        {
+                //                            Range header = (Range)addedSheet.Cells[x + 2, 2];
+                //                            header.Font.Underline = true;
+
+                //                            header = (Range)addedSheet.Cells[x + 2, 3];
+                //                            header.Font.Underline = true;
+                //                        }
+
+                //                    }
+
+                //                    Int32 percentage = ((x + 1) * 100) / (dgvStockReport.RowCount - 2);
+                //                    if (percentage >= 100)
+                //                    {
+                //                        percentage = 100;
+                //                    }
+                //                    bgWorker.ReportProgress(percentage);
+                //                }
+                //            }
+
+                //            releaseObject(addedSheet);
+                //            Clipboard.Clear();
+                //            dgvStockReport.ClearSelection();
+                //        }
+                //    }
+                //}
+                g_Workbook.Worksheets.Item[1].Delete();
+                g_Workbook.Save();
+                releaseObject(g_Workbook);
+            }
+
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                tool.historyRecord(text.System, e.Message, DateTime.Now, MainDashboard.USER_ID);
+            }
+        }
     }
 }

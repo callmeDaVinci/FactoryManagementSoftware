@@ -217,7 +217,7 @@
             this.deliveryReportToolStripMenuItem.Name = "deliveryReportToolStripMenuItem";
             this.deliveryReportToolStripMenuItem.Size = new System.Drawing.Size(247, 28);
             this.deliveryReportToolStripMenuItem.Text = "In Out Report";
-            this.deliveryReportToolStripMenuItem.Click += new System.EventHandler(this.deliveryReportToolStripMenuItem_Click);
+            this.deliveryReportToolStripMenuItem.Click += new System.EventHandler(this.inOutReportToolStripMenuItem_Click);
             // 
             // forecastReportToolStripMenuItem
             // 

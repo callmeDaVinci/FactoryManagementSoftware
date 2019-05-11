@@ -15,9 +15,9 @@ using System.Reflection;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmForecastReport : Form
+    public partial class frmForecastReport_NEW : Form
     {
-        public frmForecastReport()
+        public frmForecastReport_NEW()
         {
             InitializeComponent();
         }
@@ -39,7 +39,7 @@ namespace FactoryManagementSoftware.UI
             November,
             December
         }
-        
+
         enum color
         {
             Gold = 0,
@@ -51,7 +51,7 @@ namespace FactoryManagementSoftware.UI
             Cyan,
             MediumTurquoise,
             LightGray,
-           // Magenta,
+            // Magenta,
             MediumAquamarine,
             LightSalmon,
             Lavender,
@@ -207,28 +207,28 @@ namespace FactoryManagementSoftware.UI
 
         private int getMonthValue(string keyword)
         {
-            
+
             int month = 0;
             if (string.IsNullOrEmpty(keyword))
             {
-                month =  Convert.ToInt32(DateTime.Now.Month.ToString());
+                month = Convert.ToInt32(DateTime.Now.Month.ToString());
             }
             else
             {
                 month = (int)(Month)Enum.Parse(typeof(Month), keyword);
             }
-            
+
 
             return month;
         }
 
         private int getNextMonth(string keyword)
         {
-           
+
             int month = getMonthValue(keyword);
             int nextMonth = 0;
 
-            if(month == 12)
+            if (month == 12)
             {
                 nextMonth = 1;
             }
@@ -315,8 +315,8 @@ namespace FactoryManagementSoftware.UI
                     shortMonth = "Dec";
                     break;
             }
-            
-            
+
+
             return shortMonth;
         }
 
@@ -332,7 +332,7 @@ namespace FactoryManagementSoftware.UI
             }
             return custID;
         }
-    
+
         private bool ifGotChild(string itemCode)
         {
             bool result = false;
@@ -342,7 +342,7 @@ namespace FactoryManagementSoftware.UI
                 result = true;
             }
 
-                return result;
+            return result;
         }
 
         #endregion
@@ -353,11 +353,11 @@ namespace FactoryManagementSoftware.UI
         {
             DataGridView dgv = dgvForecastReport;
 
-            if(dgv != null)
+            if (dgv != null)
             {
                 dgv.Columns.Clear();
             }
-            
+
 
             //create column
             tool.AddTextBoxColumns(dgv, IndexColName, IndexColName, DisplayedCells);
@@ -527,7 +527,7 @@ namespace FactoryManagementSoftware.UI
             //dgvForecastReport2.Columns[Shot2ColName].HeaderCell.Style.ForeColor = Color.Red;
 
             //dgvForecastReport2.Columns["forecast_Three"].HeaderCell.Style.BackColor = Color.PeachPuff;
-          
+
 
             //dgvForecastReport2.Columns[Shot2ColName].HeaderCell.Style.ForeColor = Color.Red;
 
@@ -543,21 +543,21 @@ namespace FactoryManagementSoftware.UI
             string colorName = "Black";
             foreach (DataGridViewRow row in dgvForecastReport.Rows)
             {
-                if(row.Cells[Shot1ColName].Value != null)
+                if (row.Cells[Shot1ColName].Value != null)
                 {
                     shotOne = Convert.ToSingle(row.Cells[Shot1ColName].Value);
                 }
-                
-                if(shotOne < redAlertLevel)
+
+                if (shotOne < redAlertLevel)
                 {
                     row.Cells[Shot1ColName].Style.ForeColor = Color.Red;
                 }
-                else if(row.Cells[MBColName].Value != null)
+                else if (row.Cells[MBColName].Value != null)
                 {
                     //row.Cells[Shot1ColName].Style.ForeColor = Color.Black;
                 }
 
-                if(dgvType == 1)
+                if (dgvType == 1)
                 {
                     if (row.Cells[Shot2ColName].Value != null)
                     {
@@ -592,8 +592,8 @@ namespace FactoryManagementSoftware.UI
 
             if (type)
             {
-                string test ;
-               
+                string test;
+
 
                 if (custType == 1)
                 {
@@ -608,7 +608,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     row.Cells[CodeColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
                     row.Cells[NameColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
-                    
+
                     row.Cells[OutColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
                     row.Cells[OsantColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
 
@@ -631,7 +631,7 @@ namespace FactoryManagementSoftware.UI
                         row.Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = Color.FromName(colorName) };
                     }
 
-                  
+
 
                     if (dgvType == 1)
                     {
@@ -647,7 +647,7 @@ namespace FactoryManagementSoftware.UI
                             row.Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = Color.FromName(colorName) };
                         }
                     }
-                    
+
                 }
                 else
                 {
@@ -659,7 +659,7 @@ namespace FactoryManagementSoftware.UI
             {
                 dgvForecastReport.Rows[rowIndex].Cells[CodeColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
                 dgvForecastReport.Rows[rowIndex].Cells[NameColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
-                
+
                 dgvForecastReport.Rows[rowIndex].Cells[OutColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
                 dgvForecastReport.Rows[rowIndex].Cells[OsantColName].Style = new DataGridViewCellStyle { BackColor = Color.FromName(colorName) };
 
@@ -681,7 +681,7 @@ namespace FactoryManagementSoftware.UI
                     dgvForecastReport.Rows[rowIndex].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black, BackColor = Color.FromName(colorName) };
                 }
 
-             
+
             }
         }
         #endregion
@@ -694,7 +694,7 @@ namespace FactoryManagementSoftware.UI
             int currentMonth = DateTime.Now.Month;
             int currentYear = DateTime.Now.Year;
 
-            for(int i = 0; i < 6; i++)
+            for (int i = 0; i < 6; i++)
             {
                 tmp = 0;
 
@@ -728,7 +728,7 @@ namespace FactoryManagementSoftware.UI
                     MaxOut = tmp;
                 }
 
-              
+
             }
             return MaxOut;
         }
@@ -749,7 +749,7 @@ namespace FactoryManagementSoftware.UI
                 string sort = cmbSort.Text;
                 string order = cmbOrder.Text;
 
-              
+
                 int type = 0;
 
                 if (cmbType.SelectedIndex > 0)
@@ -758,7 +758,7 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 DataTable dt = dalForecast.Select(sort, order);//load sorted data from forecast table
-                loadForecastList(dt, type, dgvType); 
+                loadForecastList(dt, type, dgvType);
             }
         }
 
@@ -798,7 +798,7 @@ namespace FactoryManagementSoftware.UI
                 dt = RemoveMouldData(dt);
 
                 if (dt.Rows.Count < 1)
-                {   
+                {
                     //MessageBox.Show("no data under this record.");
                 }
                 else
@@ -821,17 +821,17 @@ namespace FactoryManagementSoftware.UI
                     {
                         itemCode = item["item_code"].ToString();
 
-                        if(dgvType == 1)
+                        if (dgvType == 1)
                         {
                             forecastOne = Convert.ToSingle(item["forecast_one"]);
                             forecastTwo = Convert.ToSingle(item["forecast_two"]);
                         }
-                        else if(dgvType == 2)
+                        else if (dgvType == 2)
                         {
                             forecastOne = get6MonthsMaxOut(itemCode, custName);
                             forecastTwo = forecastOne;
                         }
-                        
+
                         forecastThree = Convert.ToSingle(item["forecast_three"]);
                         month = item["forecast_current_month"].ToString();
 
@@ -846,11 +846,11 @@ namespace FactoryManagementSoftware.UI
                             {
                                 //To-Do: need to check if from factory
 
-                                if(outRecord["trf_result"].ToString().Equals("Passed")) 
+                                if (outRecord["trf_result"].ToString().Equals("Passed"))
                                 {
                                     outStock += Convert.ToSingle(outRecord["trf_hist_qty"]);
                                 }
-                                
+
                             }
                         }
 
@@ -930,7 +930,7 @@ namespace FactoryManagementSoftware.UI
                         headShot1 += shot1;
                     }
 
-                    if(dgvType == 1)
+                    if (dgvType == 1)
                     {
                         headFcast1 = Convert.ToSingle(row.Cells[Forecast1ColName].Value);
                         float headFcast2 = Convert.ToSingle(row.Cells[Forecast2ColName].Value);
@@ -951,9 +951,9 @@ namespace FactoryManagementSoftware.UI
                     {
                         headFcast1 = Convert.ToSingle(row.Cells[EstimateColName].Value);
                     }
-                   
+
                     headFcast1 += childFcast1;
-                    
+
                     headOutStock += childOutStock;
 
                     float headOutSant = headFcast1 - headOutStock;
@@ -969,7 +969,7 @@ namespace FactoryManagementSoftware.UI
                         type = 2;
                     }
 
-                    if(type == 1)
+                    if (type == 1)
                     {
                         row.Cells[Forecast1ColName].Value = headFcast1.ToString();
                     }
@@ -980,7 +980,7 @@ namespace FactoryManagementSoftware.UI
 
                     row.Cells[OutColName].Value = headOutStock.ToString();
                     row.Cells[Shot1ColName].Value = headShot1.ToString();
-                    
+
                     row.Cells[OsantColName].Value = headOutSant.ToString();
 
                     string checkColor;
@@ -1021,17 +1021,17 @@ namespace FactoryManagementSoftware.UI
 
                     changeBackColor(row, 0, true, dgvType);
                     result = true;
-                   
-                    
+
+
 
                     return true;
-                }               
+                }
             }
 
             return result;
         }
 
-        private void checkChild(string itemCode, string month, string forecastOne, string forecastTwo, string forecastThree, float shotOne, float shotTwo, float outStock,string no, int dgvType)
+        private void checkChild(string itemCode, string month, string forecastOne, string forecastTwo, string forecastThree, float shotOne, float shotTwo, float outStock, string no, int dgvType)
         {
             int alphbetTest = 65;
             string parentItemCode = itemCode;
@@ -1045,7 +1045,7 @@ namespace FactoryManagementSoftware.UI
                     float runnerf = 0;
                     float childShotOne = 0;
                     float childShotTwo = 0;
-                    
+
                     DataTable dtItem = dalItem.codeSearch(Join["join_child_code"].ToString());
 
                     if (dtItem.Rows.Count > 0)
@@ -1056,13 +1056,13 @@ namespace FactoryManagementSoftware.UI
 
                             bool subMatChecking = false;
 
-                            if(cbSubMat.Checked)
+                            if (cbSubMat.Checked)
                             {
                                 subMatChecking = true;
                             }
                             else
                             {
-                                if(dalItem.getCatName(itemCode).Equals("Part"))
+                                if (dalItem.getCatName(itemCode).Equals("Part"))
                                 {
                                     subMatChecking = true;
                                 }
@@ -1071,11 +1071,11 @@ namespace FactoryManagementSoftware.UI
                                     subMatChecking = false;
                                 }
                             }
-                            if(subMatChecking)//dalItem.getCatName(itemCode).Equals("Part")
+                            if (subMatChecking)//dalItem.getCatName(itemCode).Equals("Part")
                             {
                                 int n = dgvForecastReport.Rows.Add();
                                 dgv.Rows[n].Cells[CodeColName].Value = Join["join_child_code"].ToString();
-                             
+
                                 if (!string.IsNullOrEmpty(item["item_part_weight"].ToString()))
                                 {
                                     partf = Convert.ToSingle(item["item_part_weight"]);
@@ -1084,7 +1084,7 @@ namespace FactoryManagementSoftware.UI
                                 {
                                     runnerf = Convert.ToSingle(item["item_runner_weight"]);
                                 }
-  
+
                                 dgv.Rows[n].Cells[IndexColName].Value = no + "(" + (char)alphbetTest + ")";
                                 dgv.Rows[n].Cells[CodeColName].Value = itemCode;
                                 dgv.Rows[n].Cells[NameColName].Value = item["item_name"].ToString();
@@ -1168,7 +1168,7 @@ namespace FactoryManagementSoftware.UI
 
                                 if (ifGotChild(itemCode))
                                 {
-                                    if(dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                                    if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                                     {
                                         dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
                                         dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
@@ -1190,19 +1190,19 @@ namespace FactoryManagementSoftware.UI
 
                                 alphbetTest++;
                             }
-                            
+
                         }
-                        
+
                     }
 
-                    
+
                 }
             }
         }
 
         private void loadForecastList(DataTable dataTable, int type, int dgvType)
         {
-            if(dgvType == 1)
+            if (dgvType == 1)
             {
                 createPMMADGV();
             }
@@ -1210,10 +1210,10 @@ namespace FactoryManagementSoftware.UI
             {
                 createDGV();
             }
-            
+
             DataGridView dgv = dgvForecastReport;
             DataTable dt = dataTable;
-            
+
 
             if (dt.Rows.Count <= 0)
             {
@@ -1222,7 +1222,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if(cmbSort.SelectedIndex <= 0)
+                if (cmbSort.SelectedIndex <= 0)
                 {
                     dt.DefaultView.Sort = "item_name ASC";
                     dt = dt.DefaultView.ToTable();
@@ -1248,7 +1248,7 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[MatTypeColName].Value = dalItem.getMaterialName(item["item_material"].ToString());
                         dgv.Rows[n].Cells[MBColName].Value = item["item_mb"].ToString();
                         dgv.Rows[n].Cells[PartWeightColName].Value = Convert.ToSingle(item["item_part_weight"]).ToString("0.00");
-                        dgv.Rows[n].Cells[RunnerWeightColName].Value = Convert.ToSingle(item["item_runner_weight"]).ToString("0.00"); 
+                        dgv.Rows[n].Cells[RunnerWeightColName].Value = Convert.ToSingle(item["item_runner_weight"]).ToString("0.00");
 
                         string month = item["forecast_current_month"].ToString();
 
@@ -1273,7 +1273,7 @@ namespace FactoryManagementSoftware.UI
                         {
                             dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
                         }
-                        
+
                         if (shotTwo < redAlertLevel)
                         {
                             dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
@@ -1291,8 +1291,8 @@ namespace FactoryManagementSoftware.UI
 
                             dgv.Rows[n].Cells[Forecast1ColName].Value = item["forecast_one"].ToString();
                             dgv.Rows[n].Cells[Forecast2ColName].Value = item["forecast_two"].ToString();
-                            dgv.Rows[n].Cells[Forecast3ColName].Value = item["forecast_three"].ToString();  
-                        } 
+                            dgv.Rows[n].Cells[Forecast3ColName].Value = item["forecast_three"].ToString();
+                        }
                         else
                         {
                             //show estimate number
@@ -1326,7 +1326,7 @@ namespace FactoryManagementSoftware.UI
 
                         dgv.Rows[n].Cells[IndexColName].Value = indexNo.ToString();
 
-                        if(dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
+                        if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
                         {
                             dgv.Rows[n].Cells[CodeColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
                             dgv.Rows[n].Cells[NameColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
@@ -1447,10 +1447,10 @@ namespace FactoryManagementSoftware.UI
                         }
                         else
                         {
-                            dgv.Rows[n].Cells[EstimateColName].Value = get6MonthsMaxOut(itemCode,cmbCust.Text);
+                            dgv.Rows[n].Cells[EstimateColName].Value = get6MonthsMaxOut(itemCode, cmbCust.Text);
                         }
 
-                        checkChild(itemCode, month, forecastOne, forecastTwo, forecastThree, shotOne, shotTwo, Convert.ToSingle(outStock),indexNo.ToString(), dgvType);
+                        checkChild(itemCode, month, forecastOne, forecastTwo, forecastThree, shotOne, shotTwo, Convert.ToSingle(outStock), indexNo.ToString(), dgvType);
                         indexNo++;
                         //n = dgv.Rows.Add();
                     }
@@ -1467,14 +1467,14 @@ namespace FactoryManagementSoftware.UI
             string order = cmbOrder.Text;
             string keywords = txtSearch.Text;
             DataTable dt;
-            
+
 
             if (cmbType.SelectedIndex > 0)
             {
                 type = cmbType.SelectedIndex;
             }
 
-            if(string.IsNullOrEmpty(keywords))
+            if (string.IsNullOrEmpty(keywords))
             {
                 dt = dalForecast.Select(sort, order);
             }
@@ -1520,7 +1520,7 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
                 dt.AcceptChanges();
-                
+
             }
             return dt;
         }
@@ -1595,7 +1595,7 @@ namespace FactoryManagementSoftware.UI
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-           
+
         }
 
         #endregion
@@ -1605,7 +1605,7 @@ namespace FactoryManagementSoftware.UI
         private void cmbSort_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            if(string.IsNullOrEmpty(cmbSort.Text) || cmbSort.SelectedIndex <= 0)
+            if (string.IsNullOrEmpty(cmbSort.Text) || cmbSort.SelectedIndex <= 0)
             {
                 cmbOrder.DataSource = null;
             }
@@ -1621,7 +1621,7 @@ namespace FactoryManagementSoftware.UI
                 cmbOrder.DisplayMember = "order";
                 //cmbOrder.SelectedIndex = 0;
             }
-            
+
         }
 
         private void cmbCust_SelectedIndexChanged(object sender, EventArgs e)
@@ -1630,7 +1630,7 @@ namespace FactoryManagementSoftware.UI
 
             string custName = tool.getCustName(1);
 
-            if(cmbCust.Text.Equals(custName))//PMMA
+            if (cmbCust.Text.Equals(custName))//PMMA
             {
                 //create daikin dgv
                 //dgvForecastReport2.Hide();
@@ -1747,7 +1747,7 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"); ;
                     xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") READY STOCK VERSUS FORECAST";
                     xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID) +" OUT FROM:"+dtpStart.Text+" TO:"+dtpEnd.Text;
+                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + " OUT FROM:" + dtpStart.Text + " TO:" + dtpEnd.Text;
 
                     xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
                     xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
@@ -1757,13 +1757,13 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet.PageSetup.FitToPagesTall = false;
 
                     double pointToCMRate = 0.035;
-                    xlWorkSheet.PageSetup.TopMargin = 1.2/ pointToCMRate;
+                    xlWorkSheet.PageSetup.TopMargin = 1.2 / pointToCMRate;
                     xlWorkSheet.PageSetup.BottomMargin = 1.2 / pointToCMRate;
                     xlWorkSheet.PageSetup.HeaderMargin = 0.6 / pointToCMRate;
                     xlWorkSheet.PageSetup.FooterMargin = 0.6 / pointToCMRate;
                     xlWorkSheet.PageSetup.LeftMargin = 0 / pointToCMRate;
                     xlWorkSheet.PageSetup.RightMargin = 0 / pointToCMRate;
-                   
+
                     xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
 
 
@@ -1784,7 +1784,7 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     rng.VerticalAlignment = XlHAlign.xlHAlignCenter;
-                   
+
                     rng.EntireColumn.AutoFit();
                     //rng.RowHeight = 21;
 
@@ -1887,8 +1887,8 @@ namespace FactoryManagementSoftware.UI
                             }
                         }
 
-                        Int32 percentage = ((i+1) * 100) / (dgvForecastReport.RowCount);
-                        if(percentage >= 100)
+                        Int32 percentage = ((i + 1) * 100) / (dgvForecastReport.RowCount);
+                        if (percentage >= 100)
                         {
 
                             //bgWorker.ReportProgress(progressBar1.Maximum);
@@ -1905,7 +1905,7 @@ namespace FactoryManagementSoftware.UI
                         {
                             bgWorker.ReportProgress(percentage);
                             lblLoading.Text = percentage.ToString() + "%";
-                        }    
+                        }
                     }
 
                     // Save the excel file under the captured location from the SaveFileDialog
@@ -2039,7 +2039,7 @@ namespace FactoryManagementSoftware.UI
             catch (Exception ex)
             {
                 tool.saveToTextAndMessageToUser(ex);
-            } 
+            }
         }
 
         private void insertOneDataToSheet(string path, string fileName)
@@ -2074,7 +2074,7 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet = g_Workbook.Worksheets.Add(Type.Missing,
                             g_Workbook.Worksheets[count], Type.Missing, Type.Missing);
 
-                    xlWorkSheet.Name = cmbCust.Text+sheetNameAdjust;
+                    xlWorkSheet.Name = cmbCust.Text + sheetNameAdjust;
 
                     xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
                     xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") READY STOCK VERSUS FORECAST";
@@ -2282,7 +2282,7 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet.PageSetup.FitToPagesTall = false;
                     xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
 
-                   
+
 
                     // Paste clipboard results to worksheet range
                     copyAlltoClipboard();
@@ -2302,8 +2302,8 @@ namespace FactoryManagementSoftware.UI
                     }
 
 
-                    rng.VerticalAlignment = XlHAlign.xlHAlignCenter;                   
-                    
+                    rng.VerticalAlignment = XlHAlign.xlHAlignCenter;
+
 
                     Range tRange = xlWorkSheet.UsedRange;
                     tRange.Font.Size = 14;
@@ -2396,7 +2396,7 @@ namespace FactoryManagementSoftware.UI
                                 header.Font.Underline = true;
                             }
 
-                           
+
 
                         }
 
@@ -2405,12 +2405,12 @@ namespace FactoryManagementSoftware.UI
                         if (savedPercentage + percentage >= 95)
                         {
                             //bgWorker.ReportProgress(progressBar1.Maximum);
-                            lblLoading.Text = 100.ToString()+"%";
+                            lblLoading.Text = 100.ToString() + "%";
 
                             progressBar1.Maximum = 1000000; // like for example 1,000,000
                             progressBar1.Value = 1000000;
                             progressBar1.Value = 1000000 - 1;
-                        }                      
+                        }
                         else
                         {
                             bgWorker.ReportProgress(savedPercentage + percentage);

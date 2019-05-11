@@ -106,6 +106,54 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool update(historyBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_history 
+                            SET "
+                           + HistoryDate + "=@history_date,"
+                           + HistoryDetail + "=@history_detail"+
+                           " WHERE history_id=@history_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@history_date", u.history_date);
+                cmd.Parameters.AddWithValue("@history_id", 8607);
+                cmd.Parameters.AddWithValue("@history_detail", "***SAVE DATE FOR FORECAST REPORT OUT START DATE***");
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         #endregion
 
         #region Search Data from Database
@@ -138,6 +186,45 @@ namespace FactoryManagementSoftware.DAL
             DataTable sortedDt = dt.DefaultView.ToTable();
 
             return sortedDt;
+        }
+
+        public DateTime GetForecastReportOutStartDate()
+        {
+            int id = 8607;//<---FIX ID for out start date data storing
+            DateTime startDate = new DateTime();
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            DataTable dt = new DataTable();
+            try
+            {
+                String sql = "SELECT history_date FROM tbl_history WHERE history_id = @id ";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@id", id);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+
+                if(dt.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        startDate = Convert.ToDateTime(row["history_date"].ToString()).Date;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return startDate;
         }
 
         #endregion

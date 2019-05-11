@@ -73,6 +73,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
+            this.btnClearAll = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -289,6 +290,7 @@
             this.cmbTrfTo.Name = "cmbTrfTo";
             this.cmbTrfTo.Size = new System.Drawing.Size(209, 31);
             this.cmbTrfTo.TabIndex = 67;
+            this.cmbTrfTo.SelectedIndexChanged += new System.EventHandler(this.cmbTrfTo_SelectedIndexChanged);
             // 
             // cmbTrfQtyUnit
             // 
@@ -493,6 +495,7 @@
             this.dgvTransfer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTransfer.Size = new System.Drawing.Size(1113, 657);
             this.dgvTransfer.TabIndex = 102;
+            this.dgvTransfer.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTransfer_CellContentClick);
             this.dgvTransfer.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTransfer_CellDoubleClick);
             this.dgvTransfer.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvTransfer_CellMouseDown);
             this.dgvTransfer.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvTransfer_MouseClick);
@@ -545,12 +548,29 @@
             this.label17.TabIndex = 106;
             this.label17.Text = "GREEN: STOCK IN";
             // 
+            // btnClearAll
+            // 
+            this.btnClearAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClearAll.BackColor = System.Drawing.Color.Transparent;
+            this.btnClearAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearAll.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClearAll.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
+            this.btnClearAll.Location = new System.Drawing.Point(1503, 7);
+            this.btnClearAll.Margin = new System.Windows.Forms.Padding(2);
+            this.btnClearAll.Name = "btnClearAll";
+            this.btnClearAll.Size = new System.Drawing.Size(96, 27);
+            this.btnClearAll.TabIndex = 107;
+            this.btnClearAll.Text = "CLEAR ALL";
+            this.btnClearAll.UseVisualStyleBackColor = false;
+            this.btnClearAll.Click += new System.EventHandler(this.button1_Click);
+            // 
             // frmInOutEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1632, 814);
+            this.Controls.Add(this.btnClearAll);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.btnDelete);
@@ -594,6 +614,7 @@
             this.MinimizeBox = false;
             this.Name = "frmInOutEdit";
             this.Text = "frmInOutEdit";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frmInOutEdit_Load);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.frmInOutEdit_MouseClick);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
@@ -653,5 +674,6 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button btnClearAll;
     }
 }

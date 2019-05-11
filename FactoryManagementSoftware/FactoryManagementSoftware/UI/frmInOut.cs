@@ -115,8 +115,8 @@ namespace FactoryManagementSoftware.UI
             }  
             finally
             {
-                formLoaded = true;
-                ActiveControl = label1;
+                //itemListLoaded = true;
+               ActiveControl = label1;
             }
         }
 
@@ -220,14 +220,15 @@ namespace FactoryManagementSoftware.UI
             try
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                resetSaveData();
                 loadItemCategoryData();
-                loadItemList();//2.4s
-                loadTransferList();//2.5s
-                txtSearch.Text = null;
+                itemListLoaded = false;
+                loadItemList();
+                resetSaveData();
+                loadTransferList();
                 dgvFactoryStock.Rows.Clear();
                 dgvTotal.Rows.Clear();
-                
+
+
             }
             catch (Exception ex)
             {
@@ -236,6 +237,7 @@ namespace FactoryManagementSoftware.UI
             finally
             {
                 Cursor = Cursors.Arrow; // change cursor to normal type
+                
             }
         }
 
@@ -565,11 +567,11 @@ namespace FactoryManagementSoftware.UI
                 if (cmbSearchCat.Text.Equals("All"))//string.IsNullOrEmpty(cmbSearchCat.Text) || 
                 {
                     //show all item from the database
-                    dtItem = dalItem.Select();
+                    dtItem = dalItem.InOutSelect();
                 }
                 else
                 {
-                    dtItem = dalItem.catSearch(cmbSearchCat.Text);
+                    dtItem = dalItem.catInOutSearch(cmbSearchCat.Text);
                 }
 
             }
@@ -582,6 +584,7 @@ namespace FactoryManagementSoftware.UI
                 dgvItemUIEdit(dgv);
                 dgv.ClearSelection();
             }
+           // itemListLoaded = true;
         }
 
         private void loadTransferList(string itemCode)
@@ -713,6 +716,7 @@ namespace FactoryManagementSoftware.UI
                 dgvTrfUIEdit(dgvTrf);
                 dgvTrf.ClearSelection();
             }
+            //itemListLoaded = true;
         }
 
         private void dgvItemUIEdit(DataGridView dgv)
@@ -910,8 +914,8 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItem_SelectionChanged(object sender, EventArgs e)
         {
-            
-            if (formLoaded && itemListLoaded)
+           
+            if (formLoaded)
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 DataGridView dgv = dgvItem;
@@ -1027,6 +1031,7 @@ namespace FactoryManagementSoftware.UI
             //    //refreshDataList();
             //    //txtSearch.Clear();
             //}
+          
         }
 
         private void dgvFactoryStock_MouseClick(object sender, MouseEventArgs e)
@@ -1588,8 +1593,10 @@ namespace FactoryManagementSoftware.UI
    
         private void frmInOut_Shown(object sender, EventArgs e)
         {
+            
             dgvItem.ClearSelection();
             dgvTrf.ClearSelection();
+            formLoaded = true;
             btn.Location = new Point(txtSearch.ClientSize.Width - btn.Width, (txtSearch.ClientSize.Height - btn.Height) / 2);
         }
 
@@ -1746,6 +1753,56 @@ namespace FactoryManagementSoftware.UI
             // Send EM_SETMARGINS to prevent text from disappearing underneath the button
             SendMessage(txtSearch.Handle, 0xd3, (IntPtr)2, (IntPtr)(btn.Width << 16));
             base.OnLoad(e);
+        }
+
+        private void dgvItem_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (formLoaded && itemListLoaded)
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                dgvTrf.ClearSelection();
+                DataGridView dgv = dgvItem;
+                int rowIndex;
+                if (dgv.CurrentCell != null)
+                {
+                    rowIndex = dgv.CurrentCell.RowIndex;
+                }
+                else
+                {
+                    rowIndex = -1;
+                }
+
+
+                if (rowIndex >= 0)
+                {
+                    editingItemCat = dgv.Rows[rowIndex].Cells[dalItem.ItemCat].Value == null ? "" : dgv.Rows[rowIndex].Cells[dalItem.ItemCat].Value.ToString();
+                    editingItemName = dgv.Rows[rowIndex].Cells[dalItem.ItemName].Value == null ? "" : dgv.Rows[rowIndex].Cells[dalItem.ItemName].Value.ToString();
+                    editingItemCode = dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value == null ? "" : dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
+
+                    if (editingItemCat == null || editingItemName == null || editingItemCode == null)
+                    {
+                        MessageBox.Show("empty value after selected");
+                        dgvFactoryStock.DataSource = null;
+                        dgvTotal.DataSource = null;
+                    }
+                    else
+                    {
+                        dgv.Rows[rowIndex].Cells[dalItem.ItemQty].Value = dalItem.getStockQty(editingItemCode).ToString("0.00");
+                        dgv.Rows[rowIndex].Cells[dalItem.ItemOrd].Value = dalItem.getOrderQty(editingItemCode);
+
+                        loadStockList(editingItemCode);
+                        calTotalStock(editingItemCode);
+                        loadTransferList(editingItemCode);
+                    }
+                }
+                else
+                {
+                    resetSaveData();
+                    dgvFactoryStock.DataSource = null;
+                    dgvTotal.DataSource = null;
+                }
+                Cursor = Cursors.Arrow; // change cursor to normal type 
+            }
         }
     }
 }

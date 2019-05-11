@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>109</ApplicationRevision>
+    <ApplicationRevision>131</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -179,6 +179,12 @@
     <Compile Include="UI\frmForecastReport.Designer.cs">
       <DependentUpon>frmForecastReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmForecastReport_NEW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmForecastReport_NEW.Designer.cs">
+      <DependentUpon>frmForecastReport_NEW.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmHistory.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -246,6 +252,12 @@
     </Compile>
     <Compile Include="UI\frmMaterialUsedReport.Designer.cs">
       <DependentUpon>frmMaterialUsedReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmNewInOutReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmNewInOutReport.Designer.cs">
+      <DependentUpon>frmNewInOutReport.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmNewOrder.cs">
       <SubType>Form</SubType>
@@ -370,6 +382,9 @@
     <EmbeddedResource Include="UI\frmForecastReport.resx">
       <DependentUpon>frmForecastReport.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmForecastReport_NEW.resx">
+      <DependentUpon>frmForecastReport_NEW.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmHistory.resx">
       <DependentUpon>frmHistory.cs</DependentUpon>
     </EmbeddedResource>
@@ -412,6 +427,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMaterialUsedReport.resx">
       <DependentUpon>frmMaterialUsedReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmNewInOutReport.resx">
+      <DependentUpon>frmNewInOutReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmNewOrder.resx">
       <DependentUpon>frmNewOrder.cs</DependentUpon>
@@ -528,6 +546,8 @@
     <None Include="Resources\icons8-delete-filled-500.png" />
     <None Include="Resources\icons8-plus-480.png" />
     <None Include="Resources\icons8-minus-96.png" />
+    <None Include="Resources\icons8-uninstalling-updates-100.png" />
+    <None Include="Resources\icons8-up-filled-100.png" />
     <Content Include="Resources\x_icon_png_1543129.jpg" />
     <Content Include="Resources\x_icon_png_1543129_VTC_icon.ico" />
     <None Include="Resources\x_icon_png_1543129_VTC_icon1.ico" />

@@ -18,8 +18,12 @@ namespace FactoryManagementSoftware
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new MainDashboard(1));
+
+            Application.Run(new frmForecastReport_NEW());
             //Application.Run(new frmLogIn());
-            Application.Run(new frmAddItem());
+
+            //Application.Run(new frmAddItem());
+            //Application.Run(new frmNewInOut());
         }
     }
 }

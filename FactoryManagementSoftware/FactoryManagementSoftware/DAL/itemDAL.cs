@@ -76,7 +76,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT item_cat,item_code, item_name,item_ord,item_qty FROM tbl_item ORDER BY item_cat ASC";
+                String sql = "SELECT * FROM tbl_item ORDER BY item_cat ASC";
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database
@@ -101,6 +101,39 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable InOutSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT item_cat,item_code, item_name,item_ord,item_qty FROM tbl_item ORDER BY item_cat ASC";
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
         public DataTable catSelect(string category)
         {
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -988,7 +1021,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT item_cat,item_code, item_name,item_ord,item_qty FROM tbl_item WHERE item_cat=@category";
+                String sql = "SELECT * FROM tbl_item WHERE item_cat=@category";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -1015,6 +1048,41 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable catInOutSearch(string keywords)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT item_cat,item_code, item_name,item_ord,item_qty FROM tbl_item WHERE item_cat=@category";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@category", keywords);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
         public DataTable nameSearch(string keywords)
         {
             //static methodd to connect database
@@ -1202,6 +1270,56 @@ namespace FactoryManagementSoftware.DAL
                     }
                 }
             }
+            return result;
+        }
+
+        public bool checkIfMBOrPigment(string itemCode)
+        {
+            bool result = false;
+            string materialType = "";
+
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                if (dt.Rows[0][ItemCat] != DBNull.Value)
+                {
+                    materialType = dt.Rows[0][ItemCat].ToString();
+                }
+            }
+
+            if(materialType.Equals("Master Batch") || materialType.Equals("Pigment"))
+            {
+                result = true;
+            }
+            else if(itemCode.Equals("NATURAL") || itemCode.Equals("COMPOUND") || itemCode.Equals("TRANS") )
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
+        public bool checkIfRAWMaterial(string itemCode)
+        {
+            bool result = false;
+            string materialType = "";
+
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                if (dt.Rows[0][ItemCat] != DBNull.Value)
+                {
+                    materialType = dt.Rows[0][ItemCat].ToString();
+                }
+            }
+
+            if (materialType.Equals("RAW Material"))
+            {
+                result = true;
+            }
+
             return result;
         }
 

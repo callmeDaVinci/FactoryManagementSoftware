@@ -422,22 +422,25 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void deliveryReportToolStripMenuItem_Click(object sender, EventArgs e)
+        private void inOutReportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!InOutReportFormOpen)
             {
-                frmInOutReport frm = new frmInOutReport();
+                //frmInOutReport frm = new frmInOutReport();
+                frmNewInOutReport frm = new frmNewInOutReport();
                 frm.MdiParent = this;
+                
                 frm.StartPosition = FormStartPosition.CenterScreen;
+                //frm.WindowState = FormWindowState.Minimized;
                 frm.WindowState = FormWindowState.Maximized;
                 frm.Show();
                 InOutReportFormOpen = true;
             }
             else
             {
-                if (Application.OpenForms.OfType<frmInOutReport>().Count() == 1)
+                if (Application.OpenForms.OfType<frmNewInOutReport>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmInOutReport>().First().BringToFront();
+                    Application.OpenForms.OfType<frmNewInOutReport>().First().BringToFront();
                 }
             }
         }

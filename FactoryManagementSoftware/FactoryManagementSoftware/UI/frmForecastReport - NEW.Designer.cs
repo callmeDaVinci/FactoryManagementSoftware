@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.cmbCust = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
@@ -40,7 +40,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.dgvForecastReport = new System.Windows.Forms.DataGridView();
             this.btnCheck = new System.Windows.Forms.Button();
-            this.btnExportToExcel = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.txtAlertLevel = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -161,14 +161,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvForecastReport.BackgroundColor = System.Drawing.Color.White;
             this.dgvForecastReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvForecastReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvForecastReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecastReport.EnableHeadersVisualStyles = false;
             this.dgvForecastReport.Location = new System.Drawing.Point(23, 199);
@@ -196,21 +196,21 @@
             this.btnCheck.UseVisualStyleBackColor = false;
             this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
             // 
-            // btnExportToExcel
+            // button1
             // 
-            this.btnExportToExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportToExcel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnExportToExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExportToExcel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExportToExcel.ForeColor = System.Drawing.Color.White;
-            this.btnExportToExcel.Location = new System.Drawing.Point(1369, 55);
-            this.btnExportToExcel.Margin = new System.Windows.Forms.Padding(2);
-            this.btnExportToExcel.Name = "btnExportToExcel";
-            this.btnExportToExcel.Size = new System.Drawing.Size(92, 47);
-            this.btnExportToExcel.TabIndex = 101;
-            this.btnExportToExcel.Text = "EXCEL";
-            this.btnExportToExcel.UseVisualStyleBackColor = false;
-            this.btnExportToExcel.Click += new System.EventHandler(this.btnExportToExcel_Click);
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(1369, 55);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(92, 47);
+            this.button1.TabIndex = 101;
+            this.button1.Text = "EXCEL";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.btnExportToExcel_Click);
             // 
             // label6
             // 
@@ -371,7 +371,7 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtAlertLevel);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.btnExportToExcel);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnCheck);
             this.Controls.Add(this.dgvForecastReport);
             this.Controls.Add(this.cmbType);
@@ -409,7 +409,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridView dgvForecastReport;
         private System.Windows.Forms.Button btnCheck;
-        private System.Windows.Forms.Button btnExportToExcel;
+        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtAlertLevel;
         private System.Windows.Forms.Label label7;

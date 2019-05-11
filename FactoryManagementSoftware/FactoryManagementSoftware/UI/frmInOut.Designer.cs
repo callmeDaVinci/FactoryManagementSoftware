@@ -126,7 +126,7 @@
             this.stock_qty});
             this.dgvFactoryStock.EnableHeadersVisualStyles = false;
             this.dgvFactoryStock.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvFactoryStock.Location = new System.Drawing.Point(19, 2);
+            this.dgvFactoryStock.Location = new System.Drawing.Point(28, 2);
             this.dgvFactoryStock.Margin = new System.Windows.Forms.Padding(2);
             this.dgvFactoryStock.Name = "dgvFactoryStock";
             this.dgvFactoryStock.ReadOnly = true;
@@ -182,8 +182,9 @@
             this.dgvItem.RowHeadersVisible = false;
             this.dgvItem.RowTemplate.Height = 40;
             this.dgvItem.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvItem.Size = new System.Drawing.Size(1148, 344);
+            this.dgvItem.Size = new System.Drawing.Size(1139, 344);
             this.dgvItem.TabIndex = 58;
+            this.dgvItem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItem_CellClick);
             this.dgvItem.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvItem_CellFormatting);
             this.dgvItem.SelectionChanged += new System.EventHandler(this.dgvItem_SelectionChanged);
             this.dgvItem.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgvItem_SortCompare);
@@ -208,7 +209,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(20)))), ((int)(((byte)(31)))));
-            this.label2.Location = new System.Drawing.Point(1165, 0);
+            this.label2.Location = new System.Drawing.Point(1156, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(134, 19);
             this.label2.TabIndex = 61;
@@ -249,7 +250,7 @@
             this.Total});
             this.dgvTotal.EnableHeadersVisualStyles = false;
             this.dgvTotal.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvTotal.Location = new System.Drawing.Point(19, 257);
+            this.dgvTotal.Location = new System.Drawing.Point(28, 257);
             this.dgvTotal.Margin = new System.Windows.Forms.Padding(2);
             this.dgvTotal.MultiSelect = false;
             this.dgvTotal.Name = "dgvTotal";
@@ -341,7 +342,7 @@
             this.cmbTransHistDate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTransHistDate.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbTransHistDate.FormattingEnabled = true;
-            this.cmbTransHistDate.Location = new System.Drawing.Point(1347, 3);
+            this.cmbTransHistDate.Location = new System.Drawing.Point(1338, 3);
             this.cmbTransHistDate.Name = "cmbTransHistDate";
             this.cmbTransHistDate.Size = new System.Drawing.Size(78, 25);
             this.cmbTransHistDate.TabIndex = 76;
@@ -352,7 +353,7 @@
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(1157, 13);
+            this.label4.Location = new System.Drawing.Point(1148, 13);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(179, 19);
             this.label4.TabIndex = 77;
@@ -454,7 +455,7 @@
             this.tableLayoutPanel3.ColumnCount = 3;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 99.07173F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 0.92827F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 342F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 351F));
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 2, 1);
             this.tableLayoutPanel3.Controls.Add(this.label5, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.dgvItem, 0, 1);
@@ -475,12 +476,12 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.Controls.Add(this.dgvTotal, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.dgvFactoryStock, 0, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(1165, 22);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(1156, 22);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 74.84472F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.15528F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(337, 342);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(346, 342);
             this.tableLayoutPanel4.TabIndex = 87;
             // 
             // tableLayoutPanel5
@@ -508,7 +509,7 @@
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.7487F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 89.2513F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 89F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 79F));
             this.tableLayoutPanel6.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.label6, 3, 0);
             this.tableLayoutPanel6.Controls.Add(this.cmbTransHistDate, 2, 0);

@@ -476,6 +476,180 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable rangeAllItemProductionSearch(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            string Production = "Production";
+            string Assembly = "Assembly";
+
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                            INNER JOIN tbl_fac
+                            ON tbl_trf_hist.trf_hist_to=tbl_fac.fac_name
+                            WHERE tbl_trf_hist.trf_hist_trf_date 
+                            BETWEEN @start 
+                            AND @end 
+                            AND (tbl_trf_hist.trf_hist_from=@Production OR tbl_trf_hist.trf_hist_from=@Assembly)
+                            ORDER BY tbl_trf_hist.trf_hist_item_code ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@Production", Production);
+                cmd.Parameters.AddWithValue("@Assembly", Assembly);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable rangeItemProductionSearch(string start, string end, string customer)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            string Production = "Production";
+            string Assembly = "Assembly";
+
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                            INNER JOIN tbl_fac
+                            ON tbl_trf_hist.trf_hist_to=tbl_fac.fac_name
+                            WHERE tbl_trf_hist.trf_hist_trf_date 
+                            BETWEEN @start 
+                            AND @end 
+                            AND (tbl_trf_hist.trf_hist_from=@Production OR tbl_trf_hist.trf_hist_from=@Assembly)
+                            ORDER BY tbl_trf_hist.trf_hist_item_code ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@Production", Production);
+                cmd.Parameters.AddWithValue("@Assembly", Assembly);
+                
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+                itemCustDAL dalItemCust = new itemCustDAL();
+
+                dt.AcceptChanges();
+                foreach (DataRow row in dt.Rows)
+                {
+                    string itemCode = row["trf_hist_item_code"].ToString();
+
+                    if(!dalItemCust.ifItemUnderThisCustomer(itemCode,customer))
+                    {
+                        row.Delete();
+                    }
+                }
+                dt.AcceptChanges();
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+
+        public DataTable rangeItemToAllCustomerSearch(string start, string end)
+        {
+            string Passed = "Passed";
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                            INNER JOIN tbl_cust
+                            ON tbl_trf_hist.trf_hist_to=tbl_cust.cust_name
+                            WHERE tbl_trf_hist.trf_hist_trf_date 
+                            BETWEEN @start AND @end 
+                            AND tbl_trf_hist.trf_result =@Passed
+                            ORDER BY tbl_trf_hist.trf_hist_item_code ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@Passed", Passed);
+                //AND tbl_trf_hist.trf_result = @Passed
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+                itemDAL dalItem = new itemDAL();
+                dt.AcceptChanges();
+                foreach (DataRow row in dt.Rows)
+                {
+                    string itemCode = row["trf_hist_item_code"].ToString();
+
+                    if (!dalItem.getCatName(itemCode).Equals("Part"))
+                    {
+                        row.Delete();
+                    }
+                }
+                dt.AcceptChanges();
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable rangeItemToAllCustomerSearch(string start, string end, string itemCode)
         {
             //static methodd to connect database
@@ -545,6 +719,50 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@month", month);
                 cmd.Parameters.AddWithValue("@year", year);
                 cmd.Parameters.AddWithValue("@itemCode", itemCode);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable rangeItemToCustomerSearch(string customer, string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                            WHERE trf_hist_trf_date 
+                            BETWEEN @start 
+                            AND @end 
+                            AND trf_hist_to=@customer  ORDER BY trf_hist_item_code ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@customer", customer);
 
                 //for executing command
                 //getting data from database
@@ -730,7 +948,7 @@ namespace FactoryManagementSoftware.DAL
                             WHERE 
                             tbl_trf_hist.trf_hist_trf_date 
                             BETWEEN @start AND @end 
-                            AND tbl_item.item_cat = @cat";
+                            AND tbl_item.item_cat = @cat ORDER BY tbl_item.item_name ASC";
           
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -760,10 +978,10 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
 
-            dt.DefaultView.Sort = "trf_hist_added_date DESC";
-            DataTable sortedDt = dt.DefaultView.ToTable();
+            //dt.DefaultView.Sort = "trf_hist_added_date DESC";
+            //DataTable sortedDt = dt.DefaultView.ToTable();
 
-            return sortedDt;
+            return dt;
         }
 
         public DataTable rangePartTrfSearch(string start, string end, int custID)
@@ -785,7 +1003,7 @@ namespace FactoryManagementSoftware.DAL
                             WHERE 
                             tbl_trf_hist.trf_hist_trf_date 
                             BETWEEN @start AND @end 
-                            AND tbl_item_cust.cust_id = @custID";
+                            AND tbl_item_cust.cust_id = @custID ORDER BY tbl_item.item_name ASC";
 
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -815,12 +1033,8 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
 
-            if(dt.Rows.Count > 0)
-            dt.DefaultView.Sort = "trf_hist_trf_date DESC";
-
-            DataTable sortedDt = dt.DefaultView.ToTable();
-
-            return sortedDt;
+          
+            return dt;
         }
 
         public DataTable rangeMaterialTrfSearch(string start, string end, string material)
@@ -843,7 +1057,7 @@ namespace FactoryManagementSoftware.DAL
                                 WHERE 
                                 trf_hist_trf_date 
                                 BETWEEN @start AND @end 
-                                AND tbl_item.item_cat != @cat";
+                                AND tbl_item.item_cat != @cat ORDER BY tbl_item.item_name  ASC";
                 }
                 else
                 {
@@ -854,7 +1068,7 @@ namespace FactoryManagementSoftware.DAL
                                 WHERE 
                                 trf_hist_trf_date 
                                 BETWEEN @start AND @end 
-                                AND tbl_item.item_cat = @material";
+                                AND tbl_item.item_cat = @material ORDER BY tbl_item.item_name ASC";
                 }
                
 
@@ -886,10 +1100,9 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
 
-            dt.DefaultView.Sort = "trf_hist_added_date DESC";
-            DataTable sortedDt = dt.DefaultView.ToTable();
+          
 
-            return sortedDt;
+            return dt;
         }
 
         public DataTable rangeTrfSearch(string start, string end)

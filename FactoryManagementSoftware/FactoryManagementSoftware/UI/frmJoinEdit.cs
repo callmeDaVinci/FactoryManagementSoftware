@@ -254,7 +254,7 @@ namespace FactoryManagementSoftware.UI
                         {
                             //Data Successfully Inserted
                             MessageBox.Show("Join successfully created");
-                            this.Close();
+                           // this.Close();
                         }
                         else
                         {

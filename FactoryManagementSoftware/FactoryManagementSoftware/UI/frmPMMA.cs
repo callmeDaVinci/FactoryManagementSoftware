@@ -16,7 +16,7 @@ namespace FactoryManagementSoftware.UI
     {
         public frmPMMA()
         {
-           
+
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             InitializeComponent();
             dataSourceSetup();
@@ -28,6 +28,7 @@ namespace FactoryManagementSoftware.UI
             //}
         }
 
+        private DataTable dgvSource = new DataTable();
         #region Class Object
         facDAL dalFac = new facDAL();
         facStockDAL dalStock = new facStockDAL();
@@ -75,6 +76,24 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region UI setting
+
+        private void createDataTable()
+        {
+            dgvSource.Columns.Clear();
+
+            dgvSource.Columns.Add(IndexColumnName, typeof(string));
+            dgvSource.Columns.Add(dalItem.ItemCode, typeof(string));
+            dgvSource.Columns.Add(dalItem.ItemName, typeof(string));
+            dgvSource.Columns.Add(dalPMMA.OpenStock, typeof(string));
+            dgvSource.Columns.Add(IndexInName, typeof(string));
+            dgvSource.Columns.Add(IndexOutName, typeof(string));
+            dgvSource.Columns.Add(IndexBalName, typeof(string));
+            dgvSource.Columns.Add(IndexPercentageName, typeof(string));
+            dgvSource.Columns.Add(IndexWastageName, typeof(string));
+            dgvSource.Columns.Add(dalPMMA.Adjust, typeof(string));
+            dgvSource.Columns.Add(dalPMMA.Note, typeof(string));
+            dgvSource.Columns.Add(dalPMMA.BalStock, typeof(string));
+        }
 
         private void createColumnsForMonthlyReportDGV()
         {
@@ -382,6 +401,7 @@ namespace FactoryManagementSoftware.UI
         private void getMonthlyStockData()
         {
             createColumnsForMonthlyReportDGV();
+            createDataTable();
             dgvPMMA.Rows.Clear();
             dgvPMMA.Refresh();
             int index = 1;
@@ -472,7 +492,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[n].Cells[IndexOutName].Value = outQty.ToString("0.00");
             dgv.Rows[n].Cells[dalPMMA.Adjust].Value = adjust.ToString("0.00");
             dgv.Rows[n].Cells[dalPMMA.Note].Value = note;
-            dgv.Rows[n].Cells[IndexBalName].Value = (bal+adjust).ToString("0.00");
+            dgv.Rows[n].Cells[IndexBalName].Value = (bal + adjust).ToString("0.00");
 
             if (outQty == 0)
             {
@@ -482,6 +502,21 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[n].Cells[IndexPercentageName].Value = percentage;
             dgv.Rows[n].Cells[IndexWastageName].Value = wastage.ToString("0.00");
             dgv.Rows[n].Cells[dalPMMA.BalStock].Value = (bal - wastage + adjust).ToString("0.00");
+
+            //DataRow dr = dgvSource.NewRow();
+
+            //dr[IndexColumnName] = index;
+            //dr[dalItem.ItemCode] = itemCode;
+            //dr[dalItem.ItemName] = dalItem.getMaterialName(itemCode);
+            //dr[dalPMMA.OpenStock] = openningStock.ToString("0.00");
+            //dr[IndexInName] = inQty.ToString("0.00");
+            //dr[IndexOutName] = outQty.ToString("0.00");
+            //dr[dalPMMA.Adjust] = adjust.ToString("0.00");
+            //dr[dalPMMA.Note] = note;
+            //dr[IndexBalName] = (bal + adjust).ToString("0.00");
+            //dr[IndexPercentageName] = percentage;
+            //dr[IndexWastageName] = wastage.ToString("0.00");
+            //dr[dalPMMA.BalStock] = (bal - wastage + adjust).ToString("0.00");
 
             //update balance stock to table pmma
             updateDataToPMMA( itemCode, Convert.ToDateTime(dtpDate.Text), openningStock,percentage, bal - wastage, adjust, note);
@@ -1098,125 +1133,238 @@ namespace FactoryManagementSoftware.UI
 
         private void btnTransfer_Click(object sender, EventArgs e)
         {
-            try
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            string outType = cmbType.Text;
+            if (outType.Equals(cmbTypeActual))
             {
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                string outType = cmbType.Text;
-                if (outType.Equals(cmbTypeActual))
-                {
-                    getMonthlyStockData();//143S
-                    firstForecastChecked = false;
-                    secondForecastChecked = false;
-                }
-                else if (outType.Equals(cmbTypeForecast))
-                {
-                    int n = checkIfForecastExist();
+                getMonthlyStockData();//143S
+                firstForecastChecked = false;
+                secondForecastChecked = false;
+            }
+            else if (outType.Equals(cmbTypeForecast))
+            {
+                int n = checkIfForecastExist();
 
-                    if (n == 1)
+                if (n == 1)
+                {
+                    getMonthlyStockData();
+                    firstForecastChecked = true;
+                }
+                else if (n == 2)
+                {
+                    if (firstForecastChecked)
                     {
-                        getMonthlyStockData(); 
-                        firstForecastChecked = true;
-                    }
-                    else if (n == 2)
-                    {
-                        if (firstForecastChecked)
-                        {
-                            getMonthlyStockData();
-                            secondForecastChecked = true;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please check the data of the forecast 1 month before checking the data of the forecast 2 month.");
-                        }
-                    }
-                    else if (n == 3)
-                    {
-                        if (secondForecastChecked)
-                        {
-                            getMonthlyStockData();
-                            secondForecastChecked = true;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please check the data of the forecast 2 month before checking the data of the forecast 3 month.");
-                        }
+                        getMonthlyStockData();
+                        secondForecastChecked = true;
                     }
                     else
                     {
-                        MessageBox.Show("Forecast data for this month not exist.");
+                        MessageBox.Show("Please check the data of the forecast 1 month before checking the data of the forecast 2 month.");
                     }
                 }
-
-                foreach (DataGridViewRow row in dgvPMMA.Rows)
+                else if (n == 3)
                 {
-
-                    float openningStock = 0;
-
-                    if (row.Cells[dalPMMA.OpenStock].Value != null)
+                    if (secondForecastChecked)
                     {
-                        openningStock = Convert.ToSingle(row.Cells[dalPMMA.OpenStock].Value.ToString());
+                        getMonthlyStockData();
+                        secondForecastChecked = true;
                     }
-
-                    float inQty = 0;
-                    float outQty = 0;
-
-                    if (row.Cells[IndexInName].Value != null)
+                    else
                     {
-                        inQty = Convert.ToSingle(row.Cells[IndexInName].Value.ToString());
-                    }
-
-                    if (row.Cells[IndexOutName].Value != null)
-                    {
-                        outQty = Convert.ToSingle(row.Cells[IndexOutName].Value.ToString());
-                    }
-
-                    float bal = openningStock + inQty - outQty;
-
-                    float percentage = 0;
-                    float adjust = 0;
-
-                    if (row.Cells[IndexPercentageName].Value != null)
-                    {
-                        percentage = Convert.ToSingle(row.Cells[IndexPercentageName].Value.ToString());
-                    }
-
-                    float wastage = outQty * percentage;
-
-                    if (row.Cells[dalPMMA.Adjust].Value != null)
-                    {
-                        adjust = Convert.ToSingle(row.Cells[dalPMMA.Adjust].Value.ToString());
-                    }
-
-                    string note = "";
-                    if (row.Cells[dalPMMA.Note].Value != null)
-                    {
-                        note = row.Cells[dalPMMA.Note].Value.ToString();
-                    }
-
-                    uPMMA.pmma_item_code = row.Cells[dalItem.ItemCode].Value.ToString();
-                    uPMMA.pmma_date = Convert.ToDateTime(dtpDate.Text);
-                    uPMMA.pmma_openning_stock = openningStock;
-                    uPMMA.pmma_percentage = percentage;
-                    uPMMA.pmma_adjust = adjust;
-                    uPMMA.pmma_note = note;
-                    uPMMA.pmma_bal_stock = bal - wastage + adjust;
-                    uPMMA.pmma_updated_date = DateTime.Now;
-                    uPMMA.pmma_updated_by = MainDashboard.USER_ID;
-
-                    bool success = dalPMMA.update(uPMMA);
-
-                    if (!success)
-                    {
-                        MessageBox.Show("Failed to updated item pmma qty");
+                        MessageBox.Show("Please check the data of the forecast 2 month before checking the data of the forecast 3 month.");
                     }
                 }
+                else
+                {
+                    MessageBox.Show("Forecast data for this month not exist.");
+                }
+            }
 
-                Cursor = Cursors.Arrow; // change cursor to normal type 
-            }
-            catch (Exception ex)
+            foreach (DataGridViewRow row in dgvPMMA.Rows)
             {
-                tool.saveToTextAndMessageToUser(ex);
+
+                float openningStock = 0;
+
+                if (row.Cells[dalPMMA.OpenStock].Value != null)
+                {
+                    openningStock = Convert.ToSingle(row.Cells[dalPMMA.OpenStock].Value.ToString());
+                }
+
+                float inQty = 0;
+                float outQty = 0;
+
+                if (row.Cells[IndexInName].Value != null)
+                {
+                    inQty = Convert.ToSingle(row.Cells[IndexInName].Value.ToString());
+                }
+
+                if (row.Cells[IndexOutName].Value != null)
+                {
+                    outQty = Convert.ToSingle(row.Cells[IndexOutName].Value.ToString());
+                }
+
+                float bal = openningStock + inQty - outQty;
+
+                float percentage = 0;
+                float adjust = 0;
+
+                if (row.Cells[IndexPercentageName].Value != null)
+                {
+                    percentage = Convert.ToSingle(row.Cells[IndexPercentageName].Value.ToString());
+                }
+
+                float wastage = outQty * percentage;
+
+                if (row.Cells[dalPMMA.Adjust].Value != null)
+                {
+                    adjust = Convert.ToSingle(row.Cells[dalPMMA.Adjust].Value.ToString());
+                }
+
+                string note = "";
+                if (row.Cells[dalPMMA.Note].Value != null)
+                {
+                    note = row.Cells[dalPMMA.Note].Value.ToString();
+                }
+
+                uPMMA.pmma_item_code = row.Cells[dalItem.ItemCode].Value.ToString();
+                uPMMA.pmma_date = Convert.ToDateTime(dtpDate.Text);
+                uPMMA.pmma_openning_stock = openningStock;
+                uPMMA.pmma_percentage = percentage;
+                uPMMA.pmma_adjust = adjust;
+                uPMMA.pmma_note = note;
+                uPMMA.pmma_bal_stock = bal - wastage + adjust;
+                uPMMA.pmma_updated_date = DateTime.Now;
+                uPMMA.pmma_updated_by = MainDashboard.USER_ID;
+
+                bool success = dalPMMA.update(uPMMA);
+
+                if (!success)
+                {
+                    MessageBox.Show("Failed to updated item pmma qty");
+                }
             }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type 
+
+            //try
+            //{
+            //    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            //    string outType = cmbType.Text;
+            //    if (outType.Equals(cmbTypeActual))
+            //    {
+            //        getMonthlyStockData();//143S
+            //        firstForecastChecked = false;
+            //        secondForecastChecked = false;
+            //    }
+            //    else if (outType.Equals(cmbTypeForecast))
+            //    {
+            //        int n = checkIfForecastExist();
+
+            //        if (n == 1)
+            //        {
+            //            getMonthlyStockData(); 
+            //            firstForecastChecked = true;
+            //        }
+            //        else if (n == 2)
+            //        {
+            //            if (firstForecastChecked)
+            //            {
+            //                getMonthlyStockData();
+            //                secondForecastChecked = true;
+            //            }
+            //            else
+            //            {
+            //                MessageBox.Show("Please check the data of the forecast 1 month before checking the data of the forecast 2 month.");
+            //            }
+            //        }
+            //        else if (n == 3)
+            //        {
+            //            if (secondForecastChecked)
+            //            {
+            //                getMonthlyStockData();
+            //                secondForecastChecked = true;
+            //            }
+            //            else
+            //            {
+            //                MessageBox.Show("Please check the data of the forecast 2 month before checking the data of the forecast 3 month.");
+            //            }
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show("Forecast data for this month not exist.");
+            //        }
+            //    }
+
+            //    foreach (DataGridViewRow row in dgvPMMA.Rows)
+            //    {
+
+            //        float openningStock = 0;
+
+            //        if (row.Cells[dalPMMA.OpenStock].Value != null)
+            //        {
+            //            openningStock = Convert.ToSingle(row.Cells[dalPMMA.OpenStock].Value.ToString());
+            //        }
+
+            //        float inQty = 0;
+            //        float outQty = 0;
+
+            //        if (row.Cells[IndexInName].Value != null)
+            //        {
+            //            inQty = Convert.ToSingle(row.Cells[IndexInName].Value.ToString());
+            //        }
+
+            //        if (row.Cells[IndexOutName].Value != null)
+            //        {
+            //            outQty = Convert.ToSingle(row.Cells[IndexOutName].Value.ToString());
+            //        }
+
+            //        float bal = openningStock + inQty - outQty;
+
+            //        float percentage = 0;
+            //        float adjust = 0;
+
+            //        if (row.Cells[IndexPercentageName].Value != null)
+            //        {
+            //            percentage = Convert.ToSingle(row.Cells[IndexPercentageName].Value.ToString());
+            //        }
+
+            //        float wastage = outQty * percentage;
+
+            //        if (row.Cells[dalPMMA.Adjust].Value != null)
+            //        {
+            //            adjust = Convert.ToSingle(row.Cells[dalPMMA.Adjust].Value.ToString());
+            //        }
+
+            //        string note = "";
+            //        if (row.Cells[dalPMMA.Note].Value != null)
+            //        {
+            //            note = row.Cells[dalPMMA.Note].Value.ToString();
+            //        }
+
+            //        uPMMA.pmma_item_code = row.Cells[dalItem.ItemCode].Value.ToString();
+            //        uPMMA.pmma_date = Convert.ToDateTime(dtpDate.Text);
+            //        uPMMA.pmma_openning_stock = openningStock;
+            //        uPMMA.pmma_percentage = percentage;
+            //        uPMMA.pmma_adjust = adjust;
+            //        uPMMA.pmma_note = note;
+            //        uPMMA.pmma_bal_stock = bal - wastage + adjust;
+            //        uPMMA.pmma_updated_date = DateTime.Now;
+            //        uPMMA.pmma_updated_by = MainDashboard.USER_ID;
+
+            //        bool success = dalPMMA.update(uPMMA);
+
+            //        if (!success)
+            //        {
+            //            MessageBox.Show("Failed to updated item pmma qty");
+            //        }
+            //    }
+
+            //    Cursor = Cursors.Arrow; // change cursor to normal type 
+            //}
+            //catch (Exception ex)
+            //{
+            //    tool.saveToTextAndMessageToUser(ex);
+            //}
         }
 
         private int getNextMonth(int currentMonth)
@@ -1346,7 +1494,7 @@ namespace FactoryManagementSoftware.UI
             {
                 dgvPMMA.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 SaveFileDialog sfd = new SaveFileDialog();
-                string path = @"D:\StockAssistant\Document\PMMAMaterialUsedReport";
+                string path = @"D:\StockAssistant\Document\PMMAEndMonthStockReport";
                 Directory.CreateDirectory(path);
                 sfd.InitialDirectory = path;
                 sfd.Filter = "Excel Documents (*.xls)|*.xls";
@@ -1375,9 +1523,10 @@ namespace FactoryManagementSoftware.UI
 
 
                     //Header and Footer setup
-                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
+                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + Convert.ToDateTime(dtpStart.Text).ToString("dd/MM/yyyy")+"-"+Convert.ToDateTime(dtpEnd.Text).ToString("dd/MM/yyyy");
                     xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+                    xlWorkSheet.PageSetup.LeftFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+                    xlWorkSheet.PageSetup.CenterFooter = "Checked By                    Confirmed By";
 
                     //Page setup
                     xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
@@ -1406,6 +1555,7 @@ namespace FactoryManagementSoftware.UI
                     tRange.Font.Name = "Calibri";
                     tRange.EntireColumn.AutoFit();
                     tRange.EntireRow.AutoFit();
+                    tRange.RowHeight = 17;
                     tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
 
                     #endregion

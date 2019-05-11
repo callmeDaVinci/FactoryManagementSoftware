@@ -298,6 +298,40 @@ namespace FactoryManagementSoftware.Module
             }
         }
 
+        public string getFactoryName(string factoryID)
+        {
+            string factoryName = "";
+
+            DataTable dtFac = dalFac.idSearch(factoryID);
+
+            if (dtFac.Rows.Count > 0)
+            {
+                foreach (DataRow fac in dtFac.Rows)
+                {
+                    factoryName = fac["fac_name"].ToString();
+                }
+            }
+
+            return factoryName;
+        }
+
+        public string getCustomerName(string itemCode)
+        {
+            string CustomerName = "";
+            
+            DataTable dt = dalItemCust.checkItemCustTable(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow cust in dt.Rows)
+                {
+                    CustomerName = getCustName(Convert.ToInt32(cust["cust_id"].ToString()));
+                }
+            }
+
+            return CustomerName;
+        }
+
         public DataTable RemoveDuplicates(DataTable dt, string columnName)
         {
             if (dt.Rows.Count > 0)
@@ -362,6 +396,19 @@ namespace FactoryManagementSoftware.Module
             return n;
         }
 
+        public bool IfProductsExists(string productCode)
+        {
+            DataTable dt;
+
+            dt = dalItem.codeSearch(productCode);
+
+            if (dt.Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
+       
         #endregion
 
         #region System

@@ -103,6 +103,26 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_uninstalling_updates_100 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-uninstalling-updates-100", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_up_filled_100 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-up-filled-100", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap x_icon_png_1543129_VTC_icon {
             get {
                 object obj = ResourceManager.GetObject("x_icon_png_1543129_VTC_icon", resourceCulture);
