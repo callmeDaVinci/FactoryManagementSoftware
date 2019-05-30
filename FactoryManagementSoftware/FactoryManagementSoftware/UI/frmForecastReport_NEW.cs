@@ -20,6 +20,39 @@ namespace FactoryManagementSoftware.UI
         public frmForecastReport_NEW()
         {
             InitializeComponent();
+            int currentMonth = Convert.ToInt32(DateTime.Now.Month.ToString("00"));
+            string currentMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth);
+            string nextMonthName, nextTwoMonthName, nextThreeMonthName;
+
+            if (currentMonth == 12)
+            {
+                nextMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+            }
+            else
+            {
+                nextMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 1);
+            }
+
+            if (currentMonth == 11)
+            {
+                nextTwoMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+            }
+            else
+            {
+                nextTwoMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 2);
+            }
+
+            if(currentMonth == 10)
+            {
+                nextThreeMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+            }
+            else
+            {
+                nextThreeMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 3);
+            }
+
+            cbForecastMonth1.Text = currentMonthName.ToUpper()+" --> "+nextTwoMonthName.ToUpper();
+            cbForecastMonth2.Text = nextMonthName.ToUpper() + " --> " + nextThreeMonthName.ToUpper();
         }
 
         #region Variable Declare

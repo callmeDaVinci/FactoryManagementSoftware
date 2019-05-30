@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.UI;
 
 namespace FactoryManagementSoftware.Module
 {
@@ -19,6 +20,8 @@ namespace FactoryManagementSoftware.Module
         joinDAL dalJoin = new joinDAL();
         itemCustDAL dalItemCust = new itemCustDAL();
         materialDAL dalMaterial = new materialDAL();
+        trfHistBLL utrfHist = new trfHistBLL();
+        trfHistDAL daltrfHist = new trfHistDAL();
 
         #region UI design
 
@@ -99,7 +102,7 @@ namespace FactoryManagementSoftware.Module
 
         #endregion
 
-        #region Load Data
+        #region Load/Update Data
 
         public void DoubleBuffered(DataGridView dgv, bool setting)
         {
@@ -157,6 +160,27 @@ namespace FactoryManagementSoftware.Module
             DataTable dt = dalCust.Select();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
             distinctTable.DefaultView.Sort = "cust_name ASC";
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "cust_name";
+            cmb.SelectedIndex = -1;
+        }
+
+        public void loadCustomerWithoutOtherToComboBox(ComboBox cmb)
+        {
+            DataTable dt = dalCust.Select();
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
+            distinctTable.DefaultView.Sort = "cust_name ASC";
+
+            distinctTable.AcceptChanges();
+            foreach (DataRow row in distinctTable.Rows)
+            {
+                if (row["cust_name"].ToString().Equals("OTHER"))
+                {
+                    row.Delete();
+                }
+            }
+            distinctTable.AcceptChanges();
+
             cmb.DataSource = distinctTable;
             cmb.DisplayMember = "cust_name";
             cmb.SelectedIndex = -1;
@@ -357,9 +381,144 @@ namespace FactoryManagementSoftware.Module
             return dt;
         }
 
+        public void changeTransferRecord(string stockResult, int id)
+        {
+            if(id == -1)
+            {
+                MessageBox.Show("Failed to change transfer record,id == -1, transfer record not found");
+                historyRecord("System", "id == -1, transfer record not found", utrfHist.trf_hist_updated_date, MainDashboard.USER_ID);
+            }
+            else
+            {
+                utrfHist.trf_hist_updated_date = DateTime.Now;
+                utrfHist.trf_hist_updated_by = MainDashboard.USER_ID;
+                utrfHist.trf_hist_id = id;
+                utrfHist.trf_result = stockResult;
+
+                //Inserting Data into Database
+                bool success = daltrfHist.Update(utrfHist);
+                if (!success)
+                {
+                    //Failed to insert data
+                    MessageBox.Show("Failed to change transfer record");
+                    historyRecord("System", "Failed to change transfer record", utrfHist.trf_hist_updated_date, MainDashboard.USER_ID);
+                }
+            }
+            
+        }
+
+        public string getCatNameFromDataTable(DataTable dt,string itemCode)
+        {
+            string catName = "";
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if(row[dalItem.ItemCode].ToString().Equals(itemCode))
+                    {
+                        catName = row["item_cat"].ToString();
+                        return catName;
+                    }
+                }
+            }
+            return catName;
+        }
+
+        public float getStockQtyFromDataTable(DataTable dt, string itemCode)
+        {
+            float stockQty = 0;
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[dalItem.ItemCode].ToString().Equals(itemCode))
+                    {
+                        stockQty = Convert.ToSingle(row["item_qty"].ToString());
+                        return stockQty;
+                    }
+                }
+            }
+            return stockQty;
+        }
+
+        public string getMaterialNameFromDataTable(DataTable dt, string materialCode)
+        {
+            string materialName = "";
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[dalItem.ItemCode].ToString().Equals(materialCode))
+                    {
+                        materialName = row["item_name"].ToString();
+
+                        return materialName;
+                    }
+                }
+            }
+            return materialName;
+        }
+
+        public float getOrderQtyFromDataTable(DataTable dt, string itemCode)
+        {
+            float orderQty = 0;
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[dalItem.ItemCode].ToString().Equals(itemCode))
+                    {
+                        orderQty = Convert.ToSingle(row["item_ord"].ToString());
+
+                        return orderQty;
+                    }
+                }
+            }
+           
+            return orderQty;
+        }
+
+        public float getPMMAQtyFromDataTable(DataTable dt, string itemCode)
+        {
+            float PMMAQty = -1;
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[dalItem.ItemCode].ToString().Equals(itemCode))
+                    {
+                        PMMAQty = row[dalItem.ItemPMMAQty] == DBNull.Value? -1 : Convert.ToSingle(row[dalItem.ItemPMMAQty].ToString());
+
+                        return PMMAQty;
+                    }
+                }
+            }
+
+            return PMMAQty;
+        }
+
         #endregion
 
         #region Validation
+
+        public bool ifGotChild(string itemCode, DataTable dt)
+        {
+            bool result = false;
+
+            foreach (DataRow join in dt.Rows)
+            {
+                if(join["parent_code"].ToString().Equals(itemCode))
+                {
+                    return true;
+                }
+            }
+            return result;
+        }
 
         public bool ifGotChild(string itemCode)
         {

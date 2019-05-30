@@ -28,18 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvForecast = new System.Windows.Forms.DataGridView();
-            this.NO = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_one = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_two = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_three = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_updtd_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_updtd_by = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbCust = new System.Windows.Forms.ComboBox();
             this.cmbForecast1 = new System.Windows.Forms.ComboBox();
@@ -52,6 +45,17 @@
             this.label5 = new System.Windows.Forms.Label();
             this.btnCheck = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
+            this.cmbForecast4 = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.NO = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.forecast_one = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.forecast_two = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.forecast_three = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.forecast_four = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.forecast_updtd_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.forecast_updtd_by = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecast)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,6 +75,7 @@
             this.forecast_one,
             this.forecast_two,
             this.forecast_three,
+            this.forecast_four,
             this.forecast_updtd_date,
             this.forecast_updtd_by});
             this.dgvForecast.GridColor = System.Drawing.SystemColors.Control;
@@ -83,66 +88,6 @@
             this.dgvForecast.TabIndex = 0;
             this.dgvForecast.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecast_CellEndEdit);
             this.dgvForecast.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvForecast_EditingControlShowing);
-            // 
-            // NO
-            // 
-            this.NO.HeaderText = "NO";
-            this.NO.Name = "NO";
-            // 
-            // item_code
-            // 
-            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_code.HeaderText = "CODE";
-            this.item_code.Name = "item_code";
-            this.item_code.ReadOnly = true;
-            // 
-            // item_name
-            // 
-            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_name.HeaderText = "NAME";
-            this.item_name.Name = "item_name";
-            this.item_name.ReadOnly = true;
-            // 
-            // forecast_one
-            // 
-            this.forecast_one.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.LightYellow;
-            this.forecast_one.DefaultCellStyle = dataGridViewCellStyle4;
-            this.forecast_one.HeaderText = "FORECAST 1";
-            this.forecast_one.Name = "forecast_one";
-            this.forecast_one.Width = 133;
-            // 
-            // forecast_two
-            // 
-            this.forecast_two.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.LightYellow;
-            this.forecast_two.DefaultCellStyle = dataGridViewCellStyle5;
-            this.forecast_two.HeaderText = "FORECAST 2";
-            this.forecast_two.Name = "forecast_two";
-            this.forecast_two.Width = 133;
-            // 
-            // forecast_three
-            // 
-            this.forecast_three.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LightYellow;
-            this.forecast_three.DefaultCellStyle = dataGridViewCellStyle6;
-            this.forecast_three.HeaderText = "FORECAST 3";
-            this.forecast_three.Name = "forecast_three";
-            this.forecast_three.Width = 133;
-            // 
-            // forecast_updtd_date
-            // 
-            this.forecast_updtd_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.forecast_updtd_date.HeaderText = "UPDATED DATE";
-            this.forecast_updtd_date.Name = "forecast_updtd_date";
-            this.forecast_updtd_date.ReadOnly = true;
-            this.forecast_updtd_date.Width = 158;
-            // 
-            // forecast_updtd_by
-            // 
-            this.forecast_updtd_by.HeaderText = "BY";
-            this.forecast_updtd_by.Name = "forecast_updtd_by";
-            this.forecast_updtd_by.ReadOnly = true;
             // 
             // label1
             // 
@@ -166,7 +111,8 @@
             // cmbForecast1
             // 
             this.cmbForecast1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbForecast1.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbForecast1.Enabled = false;
+            this.cmbForecast1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbForecast1.FormattingEnabled = true;
             this.cmbForecast1.Items.AddRange(new object[] {
             "January",
@@ -181,25 +127,27 @@
             "October",
             "November",
             "December"});
-            this.cmbForecast1.Location = new System.Drawing.Point(28, 145);
+            this.cmbForecast1.Location = new System.Drawing.Point(27, 141);
             this.cmbForecast1.Name = "cmbForecast1";
-            this.cmbForecast1.Size = new System.Drawing.Size(280, 39);
+            this.cmbForecast1.Size = new System.Drawing.Size(218, 31);
             this.cmbForecast1.TabIndex = 4;
             this.cmbForecast1.SelectedIndexChanged += new System.EventHandler(this.cmbForecast1_SelectedIndexChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(24, 119);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(23, 119);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(260, 23);
+            this.label2.Size = new System.Drawing.Size(86, 19);
             this.label2.TabIndex = 3;
-            this.label2.Text = "FORECAST 1 (CURRENT MONTH)";
+            this.label2.Text = "FORECAST 1";
             // 
             // cmbForecast2
             // 
             this.cmbForecast2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbForecast2.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbForecast2.Enabled = false;
+            this.cmbForecast2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbForecast2.FormattingEnabled = true;
             this.cmbForecast2.Items.AddRange(new object[] {
             "January",
@@ -214,25 +162,27 @@
             "October",
             "November",
             "December"});
-            this.cmbForecast2.Location = new System.Drawing.Point(333, 145);
+            this.cmbForecast2.Location = new System.Drawing.Point(260, 141);
             this.cmbForecast2.Name = "cmbForecast2";
-            this.cmbForecast2.Size = new System.Drawing.Size(281, 39);
+            this.cmbForecast2.Size = new System.Drawing.Size(219, 31);
             this.cmbForecast2.TabIndex = 6;
             this.cmbForecast2.SelectedIndexChanged += new System.EventHandler(this.cmbForecast2_SelectedIndexChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(329, 119);
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(256, 119);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(227, 23);
+            this.label3.Size = new System.Drawing.Size(86, 19);
             this.label3.TabIndex = 5;
-            this.label3.Text = "FORECAST 2 (NEXT MONTH)";
+            this.label3.Text = "FORECAST 2";
             // 
             // cmbForecast3
             // 
             this.cmbForecast3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbForecast3.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbForecast3.Enabled = false;
+            this.cmbForecast3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbForecast3.FormattingEnabled = true;
             this.cmbForecast3.Items.AddRange(new object[] {
             "January",
@@ -247,28 +197,29 @@
             "October",
             "November",
             "December"});
-            this.cmbForecast3.Location = new System.Drawing.Point(635, 145);
+            this.cmbForecast3.Location = new System.Drawing.Point(495, 141);
             this.cmbForecast3.Name = "cmbForecast3";
-            this.cmbForecast3.Size = new System.Drawing.Size(281, 39);
+            this.cmbForecast3.Size = new System.Drawing.Size(219, 31);
             this.cmbForecast3.TabIndex = 8;
             this.cmbForecast3.SelectedIndexChanged += new System.EventHandler(this.cmbForecast3_SelectedIndexChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(631, 119);
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(491, 119);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(273, 23);
+            this.label4.Size = new System.Drawing.Size(86, 19);
             this.label4.TabIndex = 7;
-            this.label4.Text = "FORECAST 3 (NEXT NEXT MONTH)";
+            this.label4.Text = "FORECAST 3";
             // 
             // txtSearch
             // 
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearch.Location = new System.Drawing.Point(1200, 145);
+            this.txtSearch.Location = new System.Drawing.Point(1254, 145);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(358, 38);
+            this.txtSearch.Size = new System.Drawing.Size(304, 38);
             this.txtSearch.TabIndex = 10;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
@@ -276,7 +227,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(1196, 119);
+            this.label5.Location = new System.Drawing.Point(1250, 119);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(72, 23);
             this.label5.TabIndex = 11;
@@ -313,12 +264,119 @@
             this.btnReset.UseVisualStyleBackColor = false;
             this.btnReset.Click += new System.EventHandler(this.btnReport_Click);
             // 
+            // cmbForecast4
+            // 
+            this.cmbForecast4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbForecast4.Enabled = false;
+            this.cmbForecast4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbForecast4.FormattingEnabled = true;
+            this.cmbForecast4.Items.AddRange(new object[] {
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"});
+            this.cmbForecast4.Location = new System.Drawing.Point(732, 141);
+            this.cmbForecast4.Name = "cmbForecast4";
+            this.cmbForecast4.Size = new System.Drawing.Size(219, 31);
+            this.cmbForecast4.TabIndex = 91;
+            this.cmbForecast4.SelectedIndexChanged += new System.EventHandler(this.cmbForecast4_SelectedIndexChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(730, 119);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(86, 19);
+            this.label6.TabIndex = 90;
+            this.label6.Text = "FORECAST 4";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
+            // 
+            // NO
+            // 
+            this.NO.HeaderText = "NO";
+            this.NO.Name = "NO";
+            // 
+            // item_code
+            // 
+            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_code.HeaderText = "CODE";
+            this.item_code.Name = "item_code";
+            this.item_code.ReadOnly = true;
+            // 
+            // item_name
+            // 
+            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_name.HeaderText = "NAME";
+            this.item_name.Name = "item_name";
+            this.item_name.ReadOnly = true;
+            // 
+            // forecast_one
+            // 
+            this.forecast_one.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.LightYellow;
+            this.forecast_one.DefaultCellStyle = dataGridViewCellStyle9;
+            this.forecast_one.HeaderText = "FORECAST 1";
+            this.forecast_one.Name = "forecast_one";
+            this.forecast_one.Width = 133;
+            // 
+            // forecast_two
+            // 
+            this.forecast_two.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.LightCyan;
+            this.forecast_two.DefaultCellStyle = dataGridViewCellStyle10;
+            this.forecast_two.HeaderText = "FORECAST 2";
+            this.forecast_two.Name = "forecast_two";
+            this.forecast_two.Width = 133;
+            // 
+            // forecast_three
+            // 
+            this.forecast_three.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.LightYellow;
+            this.forecast_three.DefaultCellStyle = dataGridViewCellStyle11;
+            this.forecast_three.HeaderText = "FORECAST 3";
+            this.forecast_three.Name = "forecast_three";
+            this.forecast_three.Width = 133;
+            // 
+            // forecast_four
+            // 
+            this.forecast_four.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.LightCyan;
+            this.forecast_four.DefaultCellStyle = dataGridViewCellStyle12;
+            this.forecast_four.HeaderText = "FORECAST 4";
+            this.forecast_four.Name = "forecast_four";
+            this.forecast_four.Width = 133;
+            // 
+            // forecast_updtd_date
+            // 
+            this.forecast_updtd_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.forecast_updtd_date.HeaderText = "UPDATED DATE";
+            this.forecast_updtd_date.Name = "forecast_updtd_date";
+            this.forecast_updtd_date.ReadOnly = true;
+            this.forecast_updtd_date.Width = 158;
+            // 
+            // forecast_updtd_by
+            // 
+            this.forecast_updtd_by.HeaderText = "BY";
+            this.forecast_updtd_by.Name = "forecast_updtd_by";
+            this.forecast_updtd_by.ReadOnly = true;
+            // 
             // frmForecast
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 703);
+            this.Controls.Add(this.cmbForecast4);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.btnCheck);
             this.Controls.Add(this.label5);
@@ -359,12 +417,15 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnCheck;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.ComboBox cmbForecast4;
+        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DataGridViewTextBoxColumn NO;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_one;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_two;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_three;
+        private System.Windows.Forms.DataGridViewTextBoxColumn forecast_four;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_updtd_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn forecast_updtd_by;
     }

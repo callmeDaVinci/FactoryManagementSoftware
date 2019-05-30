@@ -36,7 +36,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnCheck = new System.Windows.Forms.Button();
             this.dgvMaterialUsedRecord = new System.Windows.Forms.DataGridView();
             this.no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_material = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,6 +61,10 @@
             this.cbZeroCost = new System.Windows.Forms.CheckBox();
             this.cbSubMat = new System.Windows.Forms.CheckBox();
             this.btnExportAllToExcel = new System.Windows.Forms.Button();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.lblSearch = new System.Windows.Forms.Label();
+            this.lblSearchError = new System.Windows.Forms.Label();
+            this.cbBySearch = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaterialUsedRecord)).BeginInit();
             this.SuspendLayout();
             // 
@@ -74,20 +78,20 @@
             this.label1.TabIndex = 78;
             this.label1.Text = "START";
             // 
-            // button2
+            // btnCheck
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(1113, 44);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(122, 52);
-            this.button2.TabIndex = 77;
-            this.button2.Text = "CHECK";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCheck.ForeColor = System.Drawing.Color.White;
+            this.btnCheck.Location = new System.Drawing.Point(1113, 44);
+            this.btnCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCheck.Name = "btnCheck";
+            this.btnCheck.Size = new System.Drawing.Size(122, 52);
+            this.btnCheck.TabIndex = 77;
+            this.btnCheck.Text = "CHECK";
+            this.btnCheck.UseVisualStyleBackColor = false;
+            this.btnCheck.Click += new System.EventHandler(this.button2_Click);
             // 
             // dgvMaterialUsedRecord
             // 
@@ -252,7 +256,7 @@
             this.cmbCust.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCust.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbCust.FormattingEnabled = true;
-            this.cmbCust.Location = new System.Drawing.Point(31, 57);
+            this.cmbCust.Location = new System.Drawing.Point(381, 58);
             this.cmbCust.Name = "cmbCust";
             this.cmbCust.Size = new System.Drawing.Size(330, 39);
             this.cmbCust.TabIndex = 85;
@@ -262,7 +266,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(27, 31);
+            this.label2.Location = new System.Drawing.Point(377, 31);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(97, 23);
             this.label2.TabIndex = 84;
@@ -309,7 +313,7 @@
             this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbType.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbType.FormattingEnabled = true;
-            this.cmbType.Location = new System.Drawing.Point(381, 56);
+            this.cmbType.Location = new System.Drawing.Point(31, 58);
             this.cmbType.Name = "cmbType";
             this.cmbType.Size = new System.Drawing.Size(325, 39);
             this.cmbType.TabIndex = 90;
@@ -319,7 +323,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(377, 30);
+            this.label4.Location = new System.Drawing.Point(27, 32);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 23);
             this.label4.TabIndex = 89;
@@ -378,12 +382,61 @@
             this.btnExportAllToExcel.UseVisualStyleBackColor = false;
             this.btnExportAllToExcel.Click += new System.EventHandler(this.btnExportAllToExcel_Click);
             // 
+            // txtSearch
+            // 
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.Location = new System.Drawing.Point(728, 58);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(354, 38);
+            this.txtSearch.TabIndex = 95;
+            this.txtSearch.Visible = false;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
+            // lblSearch
+            // 
+            this.lblSearch.AutoSize = true;
+            this.lblSearch.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSearch.Location = new System.Drawing.Point(724, 32);
+            this.lblSearch.Name = "lblSearch";
+            this.lblSearch.Size = new System.Drawing.Size(72, 23);
+            this.lblSearch.TabIndex = 96;
+            this.lblSearch.Text = "SEARCH";
+            this.lblSearch.Visible = false;
+            // 
+            // lblSearchError
+            // 
+            this.lblSearchError.AutoSize = true;
+            this.lblSearchError.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSearchError.ForeColor = System.Drawing.Color.Red;
+            this.lblSearchError.Location = new System.Drawing.Point(733, 103);
+            this.lblSearchError.Name = "lblSearchError";
+            this.lblSearchError.Size = new System.Drawing.Size(122, 23);
+            this.lblSearchError.TabIndex = 97;
+            this.lblSearchError.Text = "INVALID ITEM!";
+            this.lblSearchError.Visible = false;
+            // 
+            // cbBySearch
+            // 
+            this.cbBySearch.AutoSize = true;
+            this.cbBySearch.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbBySearch.Location = new System.Drawing.Point(580, 30);
+            this.cbBySearch.Name = "cbBySearch";
+            this.cbBySearch.Size = new System.Drawing.Size(131, 27);
+            this.cbBySearch.TabIndex = 98;
+            this.cbBySearch.Text = "BY SEARCH";
+            this.cbBySearch.UseVisualStyleBackColor = true;
+            this.cbBySearch.CheckedChanged += new System.EventHandler(this.cbBySearch_CheckedChanged);
+            // 
             // frmMaterialUsedReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.cbBySearch);
+            this.Controls.Add(this.lblSearchError);
+            this.Controls.Add(this.lblSearch);
+            this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.btnExportAllToExcel);
             this.Controls.Add(this.cbSubMat);
             this.Controls.Add(this.cbZeroCost);
@@ -397,7 +450,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dtpStart);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnCheck);
             this.Controls.Add(this.dgvMaterialUsedRecord);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -414,7 +467,7 @@
 
         #endregion
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnCheck;
         private System.Windows.Forms.DataGridView dgvMaterialUsedRecord;
         private System.Windows.Forms.DateTimePicker dtpStart;
         private System.Windows.Forms.ComboBox cmbCust;
@@ -439,5 +492,9 @@
         private System.Windows.Forms.CheckBox cbZeroCost;
         private System.Windows.Forms.CheckBox cbSubMat;
         private System.Windows.Forms.Button btnExportAllToExcel;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Label lblSearch;
+        private System.Windows.Forms.Label lblSearchError;
+        private System.Windows.Forms.CheckBox cbBySearch;
     }
 }

@@ -43,6 +43,9 @@
             this.lblNoData = new System.Windows.Forms.Label();
             this.cbDaily = new System.Windows.Forms.CheckBox();
             this.btnExcel = new System.Windows.Forms.Button();
+            this.cbSearch = new System.Windows.Forms.CheckBox();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.lblInvalidSearch = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInOutReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,7 +54,7 @@
             this.dtpEnd.CustomFormat = "dd-MM-yyyy";
             this.dtpEnd.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpEnd.Location = new System.Drawing.Point(219, 48);
+            this.dtpEnd.Location = new System.Drawing.Point(599, 52);
             this.dtpEnd.Name = "dtpEnd";
             this.dtpEnd.Size = new System.Drawing.Size(156, 34);
             this.dtpEnd.TabIndex = 95;
@@ -61,7 +64,7 @@
             // 
             this.lblEndOrName.AutoSize = true;
             this.lblEndOrName.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEndOrName.Location = new System.Drawing.Point(215, 22);
+            this.lblEndOrName.Location = new System.Drawing.Point(595, 26);
             this.lblEndOrName.Name = "lblEndOrName";
             this.lblEndOrName.Size = new System.Drawing.Size(44, 23);
             this.lblEndOrName.TabIndex = 94;
@@ -72,7 +75,7 @@
             this.dtpStart.CustomFormat = "dd-MM-yyyy";
             this.dtpStart.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpStart.Location = new System.Drawing.Point(34, 48);
+            this.dtpStart.Location = new System.Drawing.Point(414, 52);
             this.dtpStart.Name = "dtpStart";
             this.dtpStart.Size = new System.Drawing.Size(157, 34);
             this.dtpStart.TabIndex = 93;
@@ -82,7 +85,7 @@
             // 
             this.lblStartOrCat.AutoSize = true;
             this.lblStartOrCat.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStartOrCat.Location = new System.Drawing.Point(30, 22);
+            this.lblStartOrCat.Location = new System.Drawing.Point(410, 26);
             this.lblStartOrCat.Name = "lblStartOrCat";
             this.lblStartOrCat.Size = new System.Drawing.Size(56, 23);
             this.lblStartOrCat.TabIndex = 92;
@@ -94,7 +97,7 @@
             this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCheck.ForeColor = System.Drawing.Color.White;
-            this.btnCheck.Location = new System.Drawing.Point(764, 34);
+            this.btnCheck.Location = new System.Drawing.Point(779, 34);
             this.btnCheck.Margin = new System.Windows.Forms.Padding(2);
             this.btnCheck.Name = "btnCheck";
             this.btnCheck.Size = new System.Drawing.Size(120, 52);
@@ -109,10 +112,10 @@
             this.cmbType.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbType.ForeColor = System.Drawing.SystemColors.InfoText;
             this.cmbType.FormattingEnabled = true;
-            this.cmbType.Location = new System.Drawing.Point(400, 50);
+            this.cmbType.Location = new System.Drawing.Point(34, 50);
             this.cmbType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbType.Name = "cmbType";
-            this.cmbType.Size = new System.Drawing.Size(341, 36);
+            this.cmbType.Size = new System.Drawing.Size(348, 36);
             this.cmbType.TabIndex = 120;
             this.cmbType.SelectedIndexChanged += new System.EventHandler(this.cmbType_SelectedIndexChanged);
             // 
@@ -155,7 +158,7 @@
             this.cbPart.Checked = true;
             this.cbPart.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbPart.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbPart.Location = new System.Drawing.Point(535, 22);
+            this.cbPart.Location = new System.Drawing.Point(169, 22);
             this.cbPart.Name = "cbPart";
             this.cbPart.Size = new System.Drawing.Size(76, 27);
             this.cbPart.TabIndex = 124;
@@ -167,7 +170,7 @@
             // 
             this.cbMat.AutoSize = true;
             this.cbMat.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbMat.Location = new System.Drawing.Point(400, 22);
+            this.cbMat.Location = new System.Drawing.Point(34, 22);
             this.cbMat.Name = "cbMat";
             this.cbMat.Size = new System.Drawing.Size(120, 27);
             this.cbMat.TabIndex = 123;
@@ -181,7 +184,7 @@
             this.cbOut.Checked = true;
             this.cbOut.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbOut.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbOut.Location = new System.Drawing.Point(535, 93);
+            this.cbOut.Location = new System.Drawing.Point(169, 93);
             this.cbOut.Name = "cbOut";
             this.cbOut.Size = new System.Drawing.Size(65, 27);
             this.cbOut.TabIndex = 126;
@@ -193,7 +196,7 @@
             // 
             this.cbIn.AutoSize = true;
             this.cbIn.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbIn.Location = new System.Drawing.Point(400, 93);
+            this.cbIn.Location = new System.Drawing.Point(34, 93);
             this.cbIn.Name = "cbIn";
             this.cbIn.Size = new System.Drawing.Size(54, 27);
             this.cbIn.TabIndex = 125;
@@ -205,7 +208,8 @@
             // 
             this.lblNoData.AutoSize = true;
             this.lblNoData.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNoData.Location = new System.Drawing.Point(919, 50);
+            this.lblNoData.ForeColor = System.Drawing.Color.Red;
+            this.lblNoData.Location = new System.Drawing.Point(931, 50);
             this.lblNoData.Name = "lblNoData";
             this.lblNoData.Size = new System.Drawing.Size(87, 23);
             this.lblNoData.TabIndex = 127;
@@ -218,7 +222,7 @@
             this.cbDaily.Checked = true;
             this.cbDaily.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbDaily.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbDaily.Location = new System.Drawing.Point(654, 93);
+            this.cbDaily.Location = new System.Drawing.Point(288, 93);
             this.cbDaily.Name = "cbDaily";
             this.cbDaily.Size = new System.Drawing.Size(87, 27);
             this.cbDaily.TabIndex = 128;
@@ -242,12 +246,53 @@
             this.btnExcel.UseVisualStyleBackColor = false;
             this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
             // 
+            // cbSearch
+            // 
+            this.cbSearch.AutoSize = true;
+            this.cbSearch.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSearch.Location = new System.Drawing.Point(260, 22);
+            this.cbSearch.Name = "cbSearch";
+            this.cbSearch.Size = new System.Drawing.Size(131, 27);
+            this.cbSearch.TabIndex = 130;
+            this.cbSearch.Text = "BY SEARCH";
+            this.cbSearch.UseVisualStyleBackColor = true;
+            this.cbSearch.CheckedChanged += new System.EventHandler(this.cbSearch_CheckedChanged);
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.ForeColor = System.Drawing.Color.LightGray;
+            this.txtSearch.Location = new System.Drawing.Point(34, 48);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(348, 38);
+            this.txtSearch.TabIndex = 131;
+            this.txtSearch.Tag = "";
+            this.txtSearch.Text = "SEARCH";
+            this.txtSearch.Visible = false;
+            this.txtSearch.Enter += new System.EventHandler(this.txtSearch_Enter);
+            this.txtSearch.Leave += new System.EventHandler(this.txtSearch_Leave);
+            // 
+            // lblInvalidSearch
+            // 
+            this.lblInvalidSearch.AutoSize = true;
+            this.lblInvalidSearch.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInvalidSearch.ForeColor = System.Drawing.Color.Red;
+            this.lblInvalidSearch.Location = new System.Drawing.Point(931, 52);
+            this.lblInvalidSearch.Name = "lblInvalidSearch";
+            this.lblInvalidSearch.Size = new System.Drawing.Size(122, 23);
+            this.lblInvalidSearch.TabIndex = 132;
+            this.lblInvalidSearch.Text = "INVALID ITEM!";
+            this.lblInvalidSearch.Visible = false;
+            // 
             // frmNewInOutReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.lblInvalidSearch);
+            this.Controls.Add(this.txtSearch);
+            this.Controls.Add(this.cbSearch);
             this.Controls.Add(this.btnExcel);
             this.Controls.Add(this.cbDaily);
             this.Controls.Add(this.lblNoData);
@@ -290,5 +335,8 @@
         private System.Windows.Forms.Label lblNoData;
         private System.Windows.Forms.CheckBox cbDaily;
         private System.Windows.Forms.Button btnExcel;
+        private System.Windows.Forms.CheckBox cbSearch;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Label lblInvalidSearch;
     }
 }

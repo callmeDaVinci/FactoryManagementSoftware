@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblLoading = new System.Windows.Forms.Label();
             this.cbSubMat = new System.Windows.Forms.CheckBox();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
@@ -54,6 +54,8 @@
             this.cmbCust = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
+            this.cbForecastMonth1 = new System.Windows.Forms.CheckBox();
+            this.cbForecastMonth2 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -232,14 +234,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvForecastReport.BackgroundColor = System.Drawing.Color.White;
             this.dgvForecastReport.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvForecastReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvForecastReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecastReport.EnableHeadersVisualStyles = false;
             this.dgvForecastReport.Location = new System.Drawing.Point(26, 196);
@@ -352,12 +354,38 @@
             this.bgWorker.WorkerReportsProgress = true;
             this.bgWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgWorker_DoWork);
             // 
+            // cbForecastMonth1
+            // 
+            this.cbForecastMonth1.AutoSize = true;
+            this.cbForecastMonth1.Checked = true;
+            this.cbForecastMonth1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbForecastMonth1.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbForecastMonth1.Location = new System.Drawing.Point(520, 141);
+            this.cbForecastMonth1.Name = "cbForecastMonth1";
+            this.cbForecastMonth1.Size = new System.Drawing.Size(131, 27);
+            this.cbForecastMonth1.TabIndex = 138;
+            this.cbForecastMonth1.Text = "ZERO COST";
+            this.cbForecastMonth1.UseVisualStyleBackColor = true;
+            // 
+            // cbForecastMonth2
+            // 
+            this.cbForecastMonth2.AutoSize = true;
+            this.cbForecastMonth2.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbForecastMonth2.Location = new System.Drawing.Point(673, 142);
+            this.cbForecastMonth2.Name = "cbForecastMonth2";
+            this.cbForecastMonth2.Size = new System.Drawing.Size(131, 27);
+            this.cbForecastMonth2.TabIndex = 139;
+            this.cbForecastMonth2.Text = "ZERO COST";
+            this.cbForecastMonth2.UseVisualStyleBackColor = true;
+            // 
             // frmForecastReport_NEW
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 703);
+            this.Controls.Add(this.cbForecastMonth2);
+            this.Controls.Add(this.cbForecastMonth1);
             this.Controls.Add(this.lblLoading);
             this.Controls.Add(this.cbSubMat);
             this.Controls.Add(this.dtpEnd);
@@ -425,5 +453,7 @@
         private System.Windows.Forms.ComboBox cmbCust;
         private System.Windows.Forms.Label label1;
         private System.ComponentModel.BackgroundWorker bgWorker;
+        private System.Windows.Forms.CheckBox cbForecastMonth1;
+        private System.Windows.Forms.CheckBox cbForecastMonth2;
     }
 }

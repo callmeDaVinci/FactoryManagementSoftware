@@ -602,9 +602,7 @@ namespace FactoryManagementSoftware.UI
                     if (dtItem.Rows.Count > 0)
                     {
                         DataGridView dgv = dgvTransfer;
-                        
-
-                        if(dalItem.checkIfProduction(childItemCode))
+                        if(dalItem.checkIfAssembly(childItemCode) && dalItem.checkIfProduction(childItemCode))
                         {
                             n = dgv.Rows.Add();
                             index++;
@@ -709,7 +707,7 @@ namespace FactoryManagementSoftware.UI
                 addSubCartonToDGV(factoryName, "CREASING PAD 400 X 305", Convert.ToInt32(Math.Truncate(Convert.ToDecimal(qty) / 80)) * 4);
                 addSubCartonToDGV(factoryName, "CTN 608 X 413 X 455", Convert.ToInt32(Math.Truncate(Convert.ToDecimal(qty) / 80)) * 1);
                 addSubCartonToDGV(factoryName, "LYR PAD 590 X 370", Convert.ToInt32(Math.Truncate(Convert.ToDecimal(qty) / 80)) * 1);
-                addSubCartonToDGV(factoryName, "NESTING 405  X 218 X 601 X  218", Convert.ToInt32(Math.Truncate(Convert.ToDecimal(qty) / 80)) * 2);
+                addSubCartonToDGV(factoryName, "NESTING 405  X 218 X 601 X  218", Convert.ToInt32(Math.Truncate(Convert.ToDecimal(qty) / 80)) * 2);
             }
             else if(parentItemCode.Equals("V02K81000"))//max=50
             {
@@ -1130,9 +1128,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[n].Cells[ToColumnName].Value = cmbTrfTo.Text;
             dgv.Rows[n].Cells[QtyColumnName].Value = txtTrfQty.Text;
             dgv.Rows[n].Cells[UnitColumnName].Value = cmbTrfQtyUnit.Text;
-            //#############################################################################################################################################
             dgv.Rows[n].Cells[NoteColumnName].Value = txtTrfNote.Text;
-            //dgv.Rows[n].Cells[NoteColumnName].Value = "ESTIMATE INITIAL";
 
             if (cmbTrfFromCategory.Text.Equals("Factory"))
             {
@@ -1189,10 +1185,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (tool.ifGotChild(cmbTrfItemCode.Text) && (dalItem.checkIfProduction(cmbTrfItemCode.Text)))
                 {
-
-                    
                     productionChildStockOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text), -1);
-                   
                 }
                 productionAutoOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text));
             }

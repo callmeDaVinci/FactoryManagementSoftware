@@ -18,6 +18,7 @@ namespace FactoryManagementSoftware.DAL
         public string ItemQuoTon { get; } = "item_quo_ton";
         public string ItemBestTon { get; } = "item_best_ton";
         public string ItemProTon { get; } = "item_mc";
+        public string ItemMBRate { get; } = "item_mb_rate";
 
         public string ItemMBatch { get; } = "item_mb";
 
@@ -246,6 +247,7 @@ namespace FactoryManagementSoftware.DAL
                             +ItemName + ","
                             + ItemMaterial + ","
                             + ItemMBatch + ","
+                            + ItemMBRate + ","
                             + ItemColor + ","
                             + ItemQuoTon + ","
                             + ItemBestTon + ","
@@ -271,6 +273,7 @@ namespace FactoryManagementSoftware.DAL
                             "@item_name," +
                             "@item_material," +
                             "@item_mb," +
+                            "@item_mb_rate," +
                             "@item_color," +
                             "@item_quo_ton," +
                             "@item_best_ton," +
@@ -299,6 +302,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_name", u.item_name);
                 cmd.Parameters.AddWithValue("@item_material", u.item_material);
                 cmd.Parameters.AddWithValue("@item_mb", u.item_mb);
+                cmd.Parameters.AddWithValue("@item_mb_rate", u.item_mb_rate);
                 cmd.Parameters.AddWithValue("@item_color", u.item_color);
                 cmd.Parameters.AddWithValue("@item_quo_ton", u.item_quo_ton);
                 cmd.Parameters.AddWithValue("@item_best_ton", u.item_best_ton);
@@ -429,6 +433,7 @@ namespace FactoryManagementSoftware.DAL
                             + ItemName + "=@item_name," 
                             + ItemMaterial + "=@item_material,"
                             + ItemMBatch + "=@item_mb,"
+                            + ItemMBRate + "=@item_mb_rate,"
                             + ItemColor + "=@item_color,"
                             + ItemQuoTon + "=@item_quo_ton,"
                             + ItemBestTon + "=@item_best_ton,"
@@ -457,6 +462,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_name", u.item_name);
                 cmd.Parameters.AddWithValue("@item_material", u.item_material);
                 cmd.Parameters.AddWithValue("@item_mb", u.item_mb);
+                cmd.Parameters.AddWithValue("@item_mb_rate", u.item_mb_rate);
                 cmd.Parameters.AddWithValue("@item_color", u.item_color);
                 cmd.Parameters.AddWithValue("@item_quo_ton", u.item_quo_ton);
                 cmd.Parameters.AddWithValue("@item_best_ton", u.item_best_ton);
@@ -734,7 +740,6 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"UPDATE tbl_item 
                             SET "
-                            + ItemCurrentMonth + "=@item_current_month,"
                             + ItemLastPMMAQty + "=@item_last_pmma_qty,"
                             + ItemUpdateDate + "=@item_updtd_date,"
                             + ItemUpdateBy + "=@item_updtd_by,"
@@ -744,7 +749,6 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@item_code", u.item_code);
-                cmd.Parameters.AddWithValue("@item_current_month", u.item_current_month);
                 cmd.Parameters.AddWithValue("@item_last_pmma_qty", u.item_last_pmma_qty);
                 cmd.Parameters.AddWithValue("@item_pmma_qty", u.item_pmma_qty);
                 cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
@@ -776,6 +780,7 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+
         #endregion
 
         #region Delete data from Database

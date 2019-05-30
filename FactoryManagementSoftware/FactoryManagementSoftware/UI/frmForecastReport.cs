@@ -20,6 +20,40 @@ namespace FactoryManagementSoftware.UI
         public frmForecastReport()
         {
             InitializeComponent();
+
+            int currentMonth = Convert.ToInt32(DateTime.Now.Month.ToString("00"));
+            string currentMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth);
+            string nextMonthName, nextTwoMonthName, nextThreeMonthName;
+
+            if (currentMonth == 12)
+            {
+                nextMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+            }
+            else
+            {
+                nextMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 1);
+            }
+
+            if (currentMonth == 11)
+            {
+                nextTwoMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+            }
+            else
+            {
+                nextTwoMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 2);
+            }
+
+            if (currentMonth == 10)
+            {
+                nextThreeMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+            }
+            else
+            {
+                nextThreeMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 3);
+            }
+
+            cbForecastMonth1.Text = currentMonthName.ToUpper() + " --> " + nextTwoMonthName.ToUpper();
+            cbForecastMonth2.Text = nextMonthName.ToUpper() + " --> " + nextThreeMonthName.ToUpper();
         }
 
         #region Variable Declare
@@ -187,7 +221,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmForecastReport_Load(object sender, EventArgs e)
         {
-            tool.loadCustomerToComboBox(cmbCust);
+            tool.loadCustomerWithoutOtherToComboBox(cmbCust);
             tool.DoubleBuffered(dgvForecastReport, true);
 
             DateTime startDate = dalHist.GetForecastReportOutStartDate();
@@ -317,7 +351,7 @@ namespace FactoryManagementSoftware.UI
             }
             
             
-            return shortMonth;
+            return shortMonth.ToUpper();
         }
 
         private string getCustID(string custName)
@@ -505,34 +539,6 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[Shot2ColName].HeaderCell.Style.BackColor = Color.LightGreen;
             dgv.Columns[Shot2ColName].DefaultCellStyle.BackColor = Color.LightGreen;
             dgv.Columns[Shot2ColName].HeaderCell.Style.ForeColor = Color.Red;
-        }
-
-        private void UIDesign()
-        {
-            //dgvForecastReport2.Columns["index"].HeaderCell.Style.BackColor = Color.Red;
-            //dgvForecastReport2.Columns["index"].DefaultCellStyle.BackColor = Color.Red;
-            //dgvForecastReport2.Columns["mc_ton"].HeaderCell.Style.BackColor = Color.DeepSkyBlue;
-            //dgvForecastReport2.Columns["mc_ton"].Width = 40;
-            //dgvForecastReport2.Columns["item_part_weight"].HeaderCell.Style.BackColor = Color.LightYellow;
-            //dgvForecastReport2.Columns["item_runner_weight"].HeaderCell.Style.BackColor = Color.LightYellow;
-            //dgvForecastReport2.Columns[Forecast1ColName].HeaderCell.Style.BackColor = Color.LightYellow;
-            //dgvForecastReport2.Columns[OutColName].HeaderCell.Style.BackColor = Color.LightYellow;
-            //dgvForecastReport2.Columns["oSant"].HeaderCell.Style.BackColor = Color.LightYellow;
-
-            //dgvForecastReport2.Columns[Shot1ColName].HeaderCell.Style.BackColor = Color.LightYellow;
-            //dgvForecastReport2.Columns[Shot1ColName].HeaderCell.Style.ForeColor = Color.Red;
-
-            //dgvForecastReport2.Columns[Forecast2ColName].HeaderCell.Style.BackColor = Color.LightCyan;
-            //dgvForecastReport2.Columns[Shot2ColName].HeaderCell.Style.BackColor = Color.LightCyan;
-            //dgvForecastReport2.Columns[Shot2ColName].HeaderCell.Style.ForeColor = Color.Red;
-
-            //dgvForecastReport2.Columns["forecast_Three"].HeaderCell.Style.BackColor = Color.PeachPuff;
-          
-
-            //dgvForecastReport2.Columns[Shot2ColName].HeaderCell.Style.ForeColor = Color.Red;
-
-            //dgvForecastReport2.Columns["stock_qty"].HeaderCell.Style.BackColor = Color.Pink;
-            //dgvForecastReport2.Columns["stock_qty"].HeaderCell.Style.ForeColor = Color.Blue;
         }
 
         private void emptyRowBackColorToBlack(int dgvType)
@@ -823,8 +829,17 @@ namespace FactoryManagementSoftware.UI
 
                         if(dgvType == 1)
                         {
-                            forecastOne = Convert.ToSingle(item["forecast_one"]);
-                            forecastTwo = Convert.ToSingle(item["forecast_two"]);
+                            if(cbForecastMonth2.Checked)
+                            {
+                                forecastOne = Convert.ToSingle(item["forecast_two"]);
+                                forecastTwo = Convert.ToSingle(item["forecast_three"]);
+                            }
+                            else
+                            {
+                                forecastOne = Convert.ToSingle(item["forecast_one"]);
+                                forecastTwo = Convert.ToSingle(item["forecast_two"]);
+                            }
+                           
                         }
                         else if(dgvType == 2)
                         {
@@ -832,8 +847,28 @@ namespace FactoryManagementSoftware.UI
                             forecastTwo = forecastOne;
                         }
                         
-                        forecastThree = Convert.ToSingle(item["forecast_three"]);
-                        month = item["forecast_current_month"].ToString();
+                        if(cbForecastMonth2.Checked)
+                        {
+                            forecastThree = item["forecast_four"] == DBNull.Value? 0 : Convert.ToSingle(item["forecast_four"]);
+                            month = item["forecast_current_month"].ToString();
+                            int currentMonth = Convert.ToInt32(DateTime.Now.Month.ToString("00"));
+
+                            if(currentMonth == 12)
+                            {
+                                month = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(1);
+                            }
+                            else
+                            {
+                                month = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(currentMonth + 1);
+                            }
+                        }
+                        else
+                        {
+                            forecastThree = Convert.ToSingle(item["forecast_three"]);
+                            month = item["forecast_current_month"].ToString();
+                        }
+
+                        
 
                         //DataTable dt3 = daltrfHist.outSearch(cmbCust.Text, getMonthValue(month), itemCode);//load item out to customer record in current month
                         DataTable dt3 = daltrfHist.rangeItemToCustomerSearch(cmbCust.Text, start, end, itemCode);
@@ -1262,8 +1297,16 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[Shot1ColName].Value = shotOne.ToString();
                         dgv.Rows[n].Cells[Shot2ColName].Value = shotTwo.ToString();
 
-                        dgv.Columns[Shot1ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 1);
-                        dgv.Columns[Shot2ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 2);
+                        if(cbForecastMonth1.Checked)
+                        {
+                            dgv.Columns[Shot1ColName].HeaderText = "SHOT FOR " + getShortMonth(DateTime.Now.Month.ToString(), 1);
+                            dgv.Columns[Shot2ColName].HeaderText = "SHOT FOR " + getShortMonth(DateTime.Now.Month.ToString(), 2);
+                        }
+                        else
+                        {
+                            dgv.Columns[Shot1ColName].HeaderText = "SHOT FOR " + getShortMonth(DateTime.Now.Month.ToString(), 2);
+                            dgv.Columns[Shot2ColName].HeaderText = "SHOT FOR " + getShortMonth(DateTime.Now.Month.ToString(), 3);
+                        }
 
                         if (shotOne < redAlertLevel)
                         {
@@ -1632,15 +1675,18 @@ namespace FactoryManagementSoftware.UI
 
             if(cmbCust.Text.Equals(custName))//PMMA
             {
-                //create daikin dgv
-                //dgvForecastReport2.Hide();
+                lblForecastRange.Show();
+                cbForecastMonth1.Show();
+                cbForecastMonth2.Show();
+
                 createPMMADGV();
                 dgvForecastReport.Show();
             }
             else
             {
-                //create normal dgv
-                //dgvForecastReport2.Hide();
+                lblForecastRange.Show();
+                cbForecastMonth1.Show();
+                cbForecastMonth2.Show();
                 createDGV();
                 dgvForecastReport.Show();
             }
@@ -2955,6 +3001,23 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("Failed to update history");
             }
 
+        }
+
+        private void cbForecastMonth1_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbForecastMonth1.Checked)
+            {
+                cbForecastMonth2.Checked = false;
+            }
+
+        }
+
+        private void cbForecastMonth2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbForecastMonth2.Checked)
+            {
+                cbForecastMonth1.Checked = false;
+            }
         }
     }
 }

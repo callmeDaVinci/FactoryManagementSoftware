@@ -54,6 +54,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.cbSubMat = new System.Windows.Forms.CheckBox();
             this.lblLoading = new System.Windows.Forms.Label();
+            this.cbForecastMonth2 = new System.Windows.Forms.CheckBox();
+            this.cbForecastMonth1 = new System.Windows.Forms.CheckBox();
+            this.lblForecastRange = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -353,12 +356,54 @@
             this.lblLoading.Visible = false;
             this.lblLoading.Click += new System.EventHandler(this.lblLoading_Click);
             // 
+            // cbForecastMonth2
+            // 
+            this.cbForecastMonth2.AutoSize = true;
+            this.cbForecastMonth2.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbForecastMonth2.Location = new System.Drawing.Point(517, 163);
+            this.cbForecastMonth2.Name = "cbForecastMonth2";
+            this.cbForecastMonth2.Size = new System.Drawing.Size(131, 27);
+            this.cbForecastMonth2.TabIndex = 141;
+            this.cbForecastMonth2.Text = "ZERO COST";
+            this.cbForecastMonth2.UseVisualStyleBackColor = true;
+            this.cbForecastMonth2.Visible = false;
+            this.cbForecastMonth2.CheckedChanged += new System.EventHandler(this.cbForecastMonth2_CheckedChanged);
+            // 
+            // cbForecastMonth1
+            // 
+            this.cbForecastMonth1.AutoSize = true;
+            this.cbForecastMonth1.Checked = true;
+            this.cbForecastMonth1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbForecastMonth1.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbForecastMonth1.Location = new System.Drawing.Point(517, 133);
+            this.cbForecastMonth1.Name = "cbForecastMonth1";
+            this.cbForecastMonth1.Size = new System.Drawing.Size(131, 27);
+            this.cbForecastMonth1.TabIndex = 140;
+            this.cbForecastMonth1.Text = "ZERO COST";
+            this.cbForecastMonth1.UseVisualStyleBackColor = true;
+            this.cbForecastMonth1.Visible = false;
+            this.cbForecastMonth1.CheckedChanged += new System.EventHandler(this.cbForecastMonth1_CheckedChanged);
+            // 
+            // lblForecastRange
+            // 
+            this.lblForecastRange.AutoSize = true;
+            this.lblForecastRange.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblForecastRange.Location = new System.Drawing.Point(513, 107);
+            this.lblForecastRange.Name = "lblForecastRange";
+            this.lblForecastRange.Size = new System.Drawing.Size(150, 23);
+            this.lblForecastRange.TabIndex = 142;
+            this.lblForecastRange.Text = "FORECAST RANGE";
+            this.lblForecastRange.Visible = false;
+            // 
             // frmForecastReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 703);
+            this.Controls.Add(this.lblForecastRange);
+            this.Controls.Add(this.cbForecastMonth2);
+            this.Controls.Add(this.cbForecastMonth1);
             this.Controls.Add(this.lblLoading);
             this.Controls.Add(this.cbSubMat);
             this.Controls.Add(this.dtpEnd);
@@ -423,5 +468,8 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox cbSubMat;
         private System.Windows.Forms.Label lblLoading;
+        private System.Windows.Forms.CheckBox cbForecastMonth2;
+        private System.Windows.Forms.CheckBox cbForecastMonth1;
+        private System.Windows.Forms.Label lblForecastRange;
     }
 }

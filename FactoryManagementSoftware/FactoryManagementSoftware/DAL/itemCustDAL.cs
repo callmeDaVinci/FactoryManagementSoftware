@@ -25,6 +25,12 @@ namespace FactoryManagementSoftware.DAL
                             tbl_item.item_code, 
                             tbl_item.item_name, 
                             tbl_item.item_material,
+                            tbl_item.item_qty,
+                            tbl_item.item_assembly,
+                            tbl_item.item_production,
+                            tbl_item.item_part_weight,
+                            tbl_item.item_runner_weight,
+                            tbl_item.item_wastage_allowed,
                             tbl_item_cust.forecast_current_month,
                             tbl_item_cust.forecast_one,
                             tbl_item_cust.forecast_two,
@@ -68,7 +74,7 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_item_cust (item_code, cust_id, forecast_one, forecast_two, forecast_three, forecast_current_month, item_cust_added_date, item_cust_added_by) VALUES (@item_code, @cust_id, @forecast_one, @forecast_two, @forecast_three, @forecast_current_month, @item_cust_added_date, @item_cust_added_by)";
+                String sql = "INSERT INTO tbl_item_cust (item_code, cust_id, forecast_one, forecast_two, forecast_three, forecast_four, forecast_current_month, item_cust_added_date, item_cust_added_by) VALUES (@item_code, @cust_id, @forecast_one, @forecast_two, @forecast_three, @forecast_four, @forecast_current_month, @item_cust_added_date, @item_cust_added_by)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@item_code", u.item_code);
@@ -76,6 +82,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@forecast_one", u.forecast_one);
                 cmd.Parameters.AddWithValue("@forecast_two", u.forecast_two);
                 cmd.Parameters.AddWithValue("@forecast_three", u.forecast_three);
+                cmd.Parameters.AddWithValue("@forecast_four", u.forecast_four);
                 cmd.Parameters.AddWithValue("@forecast_current_month", u.forecast_current_month);
                 cmd.Parameters.AddWithValue("@item_cust_added_date", u.item_cust_added_date);
                 cmd.Parameters.AddWithValue("@item_cust_added_by", u.item_cust_added_by);
@@ -117,12 +124,13 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "UPDATE tbl_item_cust SET forecast_one=@forecast_one, forecast_two=@forecast_two, forecast_three=@forecast_three, forecast_current_month=@forecast_current_month, forecast_updated_date=@forecast_updated_date, forecast_updated_by=@forecast_updated_by WHERE item_code=@item_code AND cust_id = @cust_id";
+                String sql = "UPDATE tbl_item_cust SET forecast_one=@forecast_one, forecast_two=@forecast_two, forecast_three=@forecast_three,forecast_four=@forecast_four, forecast_current_month=@forecast_current_month, forecast_updated_date=@forecast_updated_date, forecast_updated_by=@forecast_updated_by WHERE item_code=@item_code AND cust_id = @cust_id";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@forecast_one", u.forecast_one);
                 cmd.Parameters.AddWithValue("@forecast_two", u.forecast_two);
                 cmd.Parameters.AddWithValue("@forecast_three", u.forecast_three);
+                cmd.Parameters.AddWithValue("@forecast_four", u.forecast_four);
                 cmd.Parameters.AddWithValue("@forecast_current_month", u.forecast_current_month);
                 cmd.Parameters.AddWithValue("@forecast_updated_date", u.forecast_updated_date);
                 cmd.Parameters.AddWithValue("@forecast_updated_by", u.forecast_updated_by);
@@ -431,10 +439,17 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM ((tbl_item_cust INNER JOIN tbl_item ON tbl_item.item_code LIKE '%" + keywords + "%'AND tbl_item_cust.item_code = tbl_item.item_code) INNER JOIN tbl_cust ON tbl_item_cust.cust_id = tbl_cust.cust_id)";
+                String sql = @"SELECT * FROM ((tbl_item_cust 
+                                INNER JOIN tbl_item 
+                                ON tbl_item.item_code = @keywords" +
+                                "AND tbl_item_cust.item_code = tbl_item.item_code) " +
+                                "INNER JOIN tbl_cust " +
+                                "ON tbl_item_cust.cust_id = tbl_cust.cust_id)";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@keywords", keywords);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open

@@ -292,32 +292,32 @@ namespace FactoryManagementSoftware.UI
         {
             if(initialCat != cmbItemCat.Text)
             {
-                dalOrderAction.orderEdit(id, -1, "Category", initialCat, cmbItemCat.Text, txtNote.Text);
+                dalOrderAction.orderEdit(id, -1, -1, "Category", initialCat, cmbItemCat.Text, txtNote.Text);
             }
 
             if (initialItemCode != cmbItemCode.Text)
             {
-                dalOrderAction.orderEdit(id, -1, "Item Code", initialItemCode, cmbItemCode.Text, txtNote.Text);
+                dalOrderAction.orderEdit(id, -1, -1, "Item Code", initialItemCode, cmbItemCode.Text, txtNote.Text);
             }
 
             if (initialItemName != cmbItemName.Text)
             {
-                dalOrderAction.orderEdit(id, -1, "Item Name", initialItemName, cmbItemName.Text, txtNote.Text);
+                dalOrderAction.orderEdit(id, -1, -1, "Item Name", initialItemName, cmbItemName.Text, txtNote.Text);
             }
 
             if (initialQty != txtQty.Text)
             {
-                dalOrderAction.orderEdit(id, -1, "Qty", initialQty, txtQty.Text, txtNote.Text);
+                dalOrderAction.orderEdit(id, -1, -1, "Qty", initialQty, txtQty.Text, txtNote.Text);
             }
 
             if (initialUnit != cmbQtyUnit.Text)
             {
-                dalOrderAction.orderEdit(id, -1, "Unit", initialUnit, cmbQtyUnit.Text, txtNote.Text);
+                dalOrderAction.orderEdit(id, -1, -1, "Unit", initialUnit, cmbQtyUnit.Text, txtNote.Text);
             }
 
             if (initialDate != dtpRequiredDate.Text)
             {
-                dalOrderAction.orderEdit(id, -1, "Required Date", initialDate, dtpRequiredDate.Text, txtNote.Text);
+                dalOrderAction.orderEdit(id, -1, -1, "Required Date", initialDate, dtpRequiredDate.Text, txtNote.Text);
             }
         }
 

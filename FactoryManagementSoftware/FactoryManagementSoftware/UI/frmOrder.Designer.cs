@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvOrd = new System.Windows.Forms.DataGridView();
             this.ord_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ord_added_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,6 +56,12 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnReset = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.cmbType = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.cbZeroCost = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrderAlert)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
@@ -73,14 +79,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvOrd.BackgroundColor = System.Drawing.Color.White;
             this.dgvOrd.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvOrd.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvOrd.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvOrd.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvOrd.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ord_id,
@@ -95,7 +101,7 @@
             this.ord_status});
             this.dgvOrd.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.dgvOrd.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvOrd.Location = new System.Drawing.Point(28, 117);
+            this.dgvOrd.Location = new System.Drawing.Point(28, 85);
             this.dgvOrd.Margin = new System.Windows.Forms.Padding(2);
             this.dgvOrd.MultiSelect = false;
             this.dgvOrd.Name = "dgvOrd";
@@ -103,7 +109,7 @@
             this.dgvOrd.RowHeadersVisible = false;
             this.dgvOrd.RowTemplate.Height = 40;
             this.dgvOrd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvOrd.Size = new System.Drawing.Size(1519, 355);
+            this.dgvOrd.Size = new System.Drawing.Size(1519, 345);
             this.dgvOrd.TabIndex = 19;
             this.dgvOrd.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrd_CellDoubleClick);
             this.dgvOrd.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvOrd_CellMouseDown);
@@ -183,9 +189,9 @@
             // ord_status
             // 
             this.ord_status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ord_status.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ord_status.DefaultCellStyle = dataGridViewCellStyle6;
             this.ord_status.HeaderText = "Status";
             this.ord_status.Name = "ord_status";
             this.ord_status.ReadOnly = true;
@@ -212,9 +218,10 @@
             this.dgvOrderAlert.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvOrderAlert.RowTemplate.Height = 40;
             this.dgvOrderAlert.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvOrderAlert.Size = new System.Drawing.Size(1519, 164);
+            this.dgvOrderAlert.Size = new System.Drawing.Size(1519, 314);
             this.dgvOrderAlert.TabIndex = 80;
             this.dgvOrderAlert.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrderAlert_CellDoubleClick);
+            this.dgvOrderAlert.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvOrderAlert_CellFormatting);
             this.dgvOrderAlert.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgvOrderAlert_SortCompare);
             this.dgvOrderAlert.Sorted += new System.EventHandler(this.dgvOrderAlert_Sorted);
             // 
@@ -241,12 +248,12 @@
             this.btnOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOrder.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOrder.ForeColor = System.Drawing.Color.White;
-            this.btnOrder.Location = new System.Drawing.Point(1242, 42);
+            this.btnOrder.Location = new System.Drawing.Point(1427, 28);
             this.btnOrder.Margin = new System.Windows.Forms.Padding(2);
             this.btnOrder.Name = "btnOrder";
-            this.btnOrder.Size = new System.Drawing.Size(162, 52);
+            this.btnOrder.Size = new System.Drawing.Size(120, 52);
             this.btnOrder.TabIndex = 81;
-            this.btnOrder.Text = "NEW ORDER";
+            this.btnOrder.Text = "NEW";
             this.btnOrder.UseVisualStyleBackColor = false;
             this.btnOrder.Click += new System.EventHandler(this.btnOrder_Click);
             // 
@@ -254,7 +261,7 @@
             // 
             this.txtOrdSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOrdSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(20)))), ((int)(((byte)(31)))));
-            this.txtOrdSearch.Location = new System.Drawing.Point(383, 56);
+            this.txtOrdSearch.Location = new System.Drawing.Point(383, 42);
             this.txtOrdSearch.Name = "txtOrdSearch";
             this.txtOrdSearch.Size = new System.Drawing.Size(370, 38);
             this.txtOrdSearch.TabIndex = 84;
@@ -264,7 +271,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(379, 30);
+            this.label1.Location = new System.Drawing.Point(379, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 23);
             this.label1.TabIndex = 83;
@@ -273,10 +280,10 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(24, 490);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(24, 494);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 23);
+            this.label2.Size = new System.Drawing.Size(46, 19);
             this.label2.TabIndex = 85;
             this.label2.Text = "ALERT";
             // 
@@ -291,7 +298,7 @@
             "PENDING",
             "RECEIVED",
             "CANCELLED"});
-            this.cmbStatusSearch.Location = new System.Drawing.Point(28, 55);
+            this.cmbStatusSearch.Location = new System.Drawing.Point(28, 41);
             this.cmbStatusSearch.Name = "cmbStatusSearch";
             this.cmbStatusSearch.Size = new System.Drawing.Size(325, 39);
             this.cmbStatusSearch.TabIndex = 87;
@@ -301,7 +308,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(24, 29);
+            this.label3.Location = new System.Drawing.Point(24, 15);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(67, 23);
             this.label3.TabIndex = 86;
@@ -320,7 +327,7 @@
             this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReset.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReset.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
-            this.btnReset.Location = new System.Drawing.Point(1427, 42);
+            this.btnReset.Location = new System.Drawing.Point(1292, 30);
             this.btnReset.Margin = new System.Windows.Forms.Padding(2);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(120, 50);
@@ -330,11 +337,12 @@
             // 
             // btnSearch
             // 
+            this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(85, 482);
+            this.btnSearch.Location = new System.Drawing.Point(1479, 469);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(68, 31);
@@ -343,12 +351,79 @@
             this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
+            // cmbType
+            // 
+            this.cmbType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbType.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbType.FormattingEnabled = true;
+            this.cmbType.Items.AddRange(new object[] {
+            "ALL",
+            "REQUESTING",
+            "PENDING",
+            "RECEIVED",
+            "CANCELLED"});
+            this.cmbType.Location = new System.Drawing.Point(1065, 473);
+            this.cmbType.Name = "cmbType";
+            this.cmbType.Size = new System.Drawing.Size(233, 25);
+            this.cmbType.TabIndex = 108;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(1061, 451);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(39, 19);
+            this.label4.TabIndex = 109;
+            this.label4.Text = "TYPE";
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(947, 451);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(80, 19);
+            this.label5.TabIndex = 111;
+            this.label5.Text = "CUSTOMER";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Enabled = false;
+            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(20)))), ((int)(((byte)(31)))));
+            this.textBox1.Location = new System.Drawing.Point(951, 473);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(108, 25);
+            this.textBox1.TabIndex = 112;
+            this.textBox1.Text = "PMMA";
+            // 
+            // cbZeroCost
+            // 
+            this.cbZeroCost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbZeroCost.AutoSize = true;
+            this.cbZeroCost.Location = new System.Drawing.Point(1328, 471);
+            this.cbZeroCost.Name = "cbZeroCost";
+            this.cbZeroCost.Size = new System.Drawing.Size(121, 27);
+            this.cbZeroCost.TabIndex = 113;
+            this.cbZeroCost.Text = "ZERO COST";
+            this.cbZeroCost.UseVisualStyleBackColor = true;
+            // 
             // frmOrder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1582, 703);
+            this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.cbZeroCost);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.cmbType);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.cmbStatusSearch);
@@ -403,5 +478,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ord_status;
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox cmbType;
+        private System.Windows.Forms.Label label5;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox cbZeroCost;
     }
 }

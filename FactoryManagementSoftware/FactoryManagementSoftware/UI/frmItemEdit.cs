@@ -154,6 +154,7 @@ namespace FactoryManagementSoftware.UI
 
                 cmbMaterialType.Text = u.item_material;
                 cmbMasterBatch.Text = u.item_mb;
+                txtMBRate.Text = u.item_mb_rate.ToString();
                 txtColor.Text = u.item_color;
 
                 txtQuoTon.Text = u.item_quo_ton.ToString();
@@ -255,6 +256,7 @@ namespace FactoryManagementSoftware.UI
 
             u.item_material = cmbMaterialType.Text;
             u.item_mb = cmbMasterBatch.Text;
+            u.item_mb_rate = Convert.ToSingle(txtMBRate.Text);
             u.item_color = txtColor.Text;
 
             u.item_quo_ton = tool.Int_TryParse(txtQuoTon.Text);
@@ -323,6 +325,7 @@ namespace FactoryManagementSoftware.UI
 
             u.item_material = cmbMaterialType.Text;
             u.item_mb = cmbMasterBatch.Text;
+            u.item_mb_rate = Convert.ToSingle(txtMBRate.Text);
             u.item_color = txtColor.Text;
 
             u.item_quo_ton = tool.Int_TryParse(txtQuoTon.Text);
@@ -729,6 +732,19 @@ namespace FactoryManagementSoftware.UI
                 cbPigment.Checked = false;
                 tool.loadMasterBatchToComboBox(cmbMasterBatch);
             }
+        }
+
+        private void tbMBRate_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void frmItemEdit_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

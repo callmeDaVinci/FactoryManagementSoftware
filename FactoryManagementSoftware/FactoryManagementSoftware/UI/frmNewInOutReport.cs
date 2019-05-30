@@ -301,6 +301,76 @@ namespace FactoryManagementSoftware.UI
             return dtForDGV;
         }
 
+        private DataTable FilterDailyPartOutData(DataTable dtForDGV, DataTable dtTrfHist)
+        {
+            string day = "ZERo";
+            string itemCode = null, trfFrom, trfTo;
+            float qty = 0;
+            float total = 0;
+            DataRow dr = dtForDGV.NewRow();
+
+            foreach (DataRow row in dtTrfHist.Rows)
+            {
+                trfFrom = row[dalTrfHist.TrfFrom].ToString();
+                trfTo = row[dalTrfHist.TrfTo].ToString();
+
+                if (row["trf_result"].ToString().Equals("Passed") && (tool.getFactoryID(trfFrom) != -1 && tool.getCustID(trfTo) != -1))
+                {
+                    if (itemCode == null)
+                    {
+                        itemCode = row["trf_hist_item_code"].ToString();
+                        day = Convert.ToDateTime(row["trf_hist_trf_date"].ToString()).ToString("dd/MM");
+                        qty = Convert.ToSingle(row[dalTrfHist.TrfQty].ToString());
+                        total = qty;
+
+                        dr[dalItem.ItemCode] = itemCode;
+                        dr[dalItem.ItemName] = dalItem.getItemName(itemCode);
+                        dr[day] = qty;
+                        dr[totalColName] = total;
+                    }
+                    else if (itemCode == row["trf_hist_item_code"].ToString())
+                    {
+                        if (day == Convert.ToDateTime(row["trf_hist_trf_date"].ToString()).ToString("dd/MM"))
+                        {
+                            qty += Convert.ToSingle(row["trf_hist_qty"].ToString());
+                            total += Convert.ToSingle(row["trf_hist_qty"].ToString());
+                        }
+                        else
+                        {
+                            day = Convert.ToDateTime(row["trf_hist_trf_date"].ToString()).ToString("dd/MM");
+                            qty = Convert.ToSingle(row["trf_hist_qty"].ToString());
+                            total += qty;
+                        }
+
+                        dr[day] = qty;
+                        dr[totalColName] = total;
+                    }
+                    else
+                    {
+
+                        dtForDGV.Rows.Add(dr);
+
+                        total = 0;
+                        itemCode = row["trf_hist_item_code"].ToString();
+                        day = Convert.ToDateTime(row["trf_hist_trf_date"].ToString()).ToString("dd/MM");
+                        qty = Convert.ToSingle(row["trf_hist_qty"].ToString());
+                        total = qty;
+
+                        dr = dtForDGV.NewRow();
+                        dr[dalItem.ItemCode] = itemCode;
+                        dr[dalItem.ItemName] = dalItem.getItemName(itemCode);
+                        dr[day] = qty;
+                        dr[totalColName] = total;
+                    }
+                }
+
+            }
+            if (dr != null)
+                dtForDGV.Rows.Add(dr);
+
+            return dtForDGV;
+        }
+
         private DataTable FilterDailyMatOutData(DataTable dtForDGV, DataTable dtTrfHist)
         {
             string day = "ZERo";
@@ -371,17 +441,20 @@ namespace FactoryManagementSoftware.UI
             return dtForDGV;
         }
 
-        private DataTable FilterNonDailyOutData(DataTable dtForDGV, DataTable dtTrfHist)
+        private DataTable FilterNonDailyPartOutData(DataTable dtForDGV, DataTable dtTrfHist)
         {
             string day = "ZERo";
-            string itemCode = null;
+            string itemCode = null, trfFrom, trfTo;
             float qty = 0;
             float total = 0;
             DataRow dr = dtForDGV.NewRow();
 
             foreach (DataRow row in dtTrfHist.Rows)
             {
-                if (row["trf_result"].ToString().Equals("Passed"))
+                trfFrom = row[dalTrfHist.TrfFrom].ToString();
+                trfTo = row[dalTrfHist.TrfTo].ToString();
+
+                if (row["trf_result"].ToString().Equals("Passed") && tool.getFactoryID(trfFrom) == -1 && tool.getCustID(trfTo) != -1)
                 {
                     if (itemCode == null)
                     {
@@ -418,6 +491,76 @@ namespace FactoryManagementSoftware.UI
                     
                         dtForDGV.Rows.Add(dr);
               
+                        total = 0;
+                        itemCode = row["trf_hist_item_code"].ToString();
+                        day = Convert.ToDateTime(row["trf_hist_trf_date"].ToString()).ToString("dd/MM");
+                        qty = Convert.ToSingle(row["trf_hist_qty"].ToString());
+                        total = qty;
+
+                        dr = dtForDGV.NewRow();
+                        dr[dalItem.ItemCode] = itemCode;
+                        dr[dalItem.ItemName] = dalItem.getItemName(itemCode);
+                        //dr[day] = qty;
+                        dr[totalOutColName] = total;
+                    }
+                }
+            }
+            if (dr != null)
+                dtForDGV.Rows.Add(dr);
+
+            return dtForDGV;
+        }
+
+        private DataTable FilterNonDailyMatOutData(DataTable dtForDGV, DataTable dtTrfHist)
+        {
+            string day = "ZERo";
+            string itemCode = null, trfFrom, trfTo;
+            float qty = 0;
+            float total = 0;
+            DataRow dr = dtForDGV.NewRow();
+
+            foreach (DataRow row in dtTrfHist.Rows)
+            {
+                trfFrom = row[dalTrfHist.TrfFrom].ToString();
+                trfTo = row[dalTrfHist.TrfTo].ToString();
+
+                if (row["trf_result"].ToString().Equals("Passed") && tool.getFactoryID(trfFrom) == -1 && tool.getFactoryID(trfTo) != -1)
+                {
+                    if (itemCode == null)
+                    {
+                        itemCode = row["trf_hist_item_code"].ToString();
+                        day = Convert.ToDateTime(row["trf_hist_trf_date"].ToString()).ToString("dd/MM");
+                        qty = Convert.ToSingle(row[dalTrfHist.TrfQty].ToString());
+
+                        total = qty;
+
+                        dr[dalItem.ItemCode] = itemCode;
+                        dr[dalItem.ItemName] = dalItem.getItemName(itemCode);
+                        //dr[day] = qty;
+                        dr[totalOutColName] = total;
+                    }
+                    else if (itemCode == row["trf_hist_item_code"].ToString())
+                    {
+                        if (day == Convert.ToDateTime(row["trf_hist_trf_date"].ToString()).ToString("dd/MM"))
+                        {
+                            qty += Convert.ToSingle(row["trf_hist_qty"].ToString());
+                            total += Convert.ToSingle(row["trf_hist_qty"].ToString());
+                        }
+                        else
+                        {
+                            day = Convert.ToDateTime(row["trf_hist_trf_date"].ToString()).ToString("dd/MM");
+                            qty = Convert.ToSingle(row["trf_hist_qty"].ToString());
+                            total += qty;
+                        }
+
+                        //dr[day] = qty;
+                        dr[totalOutColName] = total;
+                    }
+                    else
+                    {
+
+                        dtForDGV.Rows.Add(dr);
+
                         total = 0;
                         itemCode = row["trf_hist_item_code"].ToString();
                         day = Convert.ToDateTime(row["trf_hist_trf_date"].ToString()).ToString("dd/MM");
@@ -698,7 +841,7 @@ namespace FactoryManagementSoftware.UI
             //in only
             if (cbIn.Checked && !cbOut.Checked)
             {
-                if (cbPart.Checked)
+                if (cbPart.Checked && !cbSearch.Checked)
                 {
                     if (Type.Equals("All"))
                     {
@@ -711,11 +854,21 @@ namespace FactoryManagementSoftware.UI
                         dtTrfHist = dalTrfHist.rangeItemProductionSearch(start, end, Type);
                     }
                 }
-                else if (cbMat.Checked)
+                else if (cbMat.Checked && !cbSearch.Checked)
                 {
                     //show material transfer history during selected period
                     dtTrfHist = dalTrfHist.rangeMaterialTrfSearch(start, end, Type);
-                   
+                }
+                else if(cbSearch.Checked)
+                {
+                    if (cbPart.Checked)
+                    {
+                        dtTrfHist = dalTrfHist.rangePartTrfKeywordSearch(txtSearch.Text, start, end);
+                    }
+                    else
+                    {
+                        dtTrfHist = dalTrfHist.rangeMatTrfKeywordSearch(txtSearch.Text, start, end);
+                    }
                 }
 
                 dtSourceForDGV = FilterDailyMatInData(dtSourceForDGV, dtTrfHist);
@@ -723,7 +876,7 @@ namespace FactoryManagementSoftware.UI
             //out only
             else if (!cbIn.Checked && cbOut.Checked)
             {
-                if (cbPart.Checked)
+                if (cbPart.Checked && !cbSearch.Checked)
                 {
                     if (Type.Equals("All"))
                     {
@@ -735,14 +888,29 @@ namespace FactoryManagementSoftware.UI
                         //if customer: show selected customer's part only
                         dtTrfHist = dalTrfHist.rangeItemToCustomerSearch(Type, start, end);
                     }
+                    dtSourceForDGV = FilterDailyPartOutData(dtSourceForDGV, dtTrfHist);
                 }
-                else if (cbMat.Checked)
+                else if (cbMat.Checked && !cbSearch.Checked)
                 {
                     //show material transfer history during selected period
                     dtTrfHist = dalTrfHist.rangeMaterialTrfSearch(start, end, Type);
+                    dtSourceForDGV = FilterDailyMatOutData(dtSourceForDGV, dtTrfHist);
+                }
+                else if (cbSearch.Checked)
+                {
+                    if (cbPart.Checked)
+                    {
+                        dtTrfHist = dalTrfHist.rangePartTrfKeywordSearch(txtSearch.Text, start, end);
+                        dtSourceForDGV = FilterDailyPartOutData(dtSourceForDGV, dtTrfHist);
+                    }
+                    else
+                    {
+                        dtTrfHist = dalTrfHist.rangeMatTrfKeywordSearch(txtSearch.Text, start, end);
+                        dtSourceForDGV = FilterDailyMatOutData(dtSourceForDGV, dtTrfHist);
+                    }
                 }
 
-                dtSourceForDGV = FilterDailyMatOutData(dtSourceForDGV, dtTrfHist);
+                
             }
             //in & out
             else if (cbIn.Checked && cbOut.Checked)
@@ -791,7 +959,7 @@ namespace FactoryManagementSoftware.UI
             //in only
             if (cbIn.Checked && !cbOut.Checked)
             {
-                if (cbPart.Checked)
+                if (cbPart.Checked && !cbSearch.Checked)
                 {
                     if (Type.Equals("All"))
                     {
@@ -804,12 +972,23 @@ namespace FactoryManagementSoftware.UI
                         dtTrfHist = dalTrfHist.rangeItemProductionSearch(start, end, Type);
                     }
                 }
-                else if (cbMat.Checked)
+                else if (cbMat.Checked && !cbSearch.Checked)
                 {
                     //show material transfer history during selected period
                    
                     dtTrfHist = dalTrfHist.rangeMaterialTrfSearch(start, end, Type);
                   
+                }
+                else if (cbSearch.Checked)
+                {
+                    if (cbPart.Checked)
+                    {
+                        dtTrfHist = dalTrfHist.rangePartTrfKeywordSearch(txtSearch.Text, start, end);
+                    }
+                    else
+                    {
+                        dtTrfHist = dalTrfHist.rangeMatTrfKeywordSearch(txtSearch.Text, start, end);
+                    }
                 }
 
                 dtSourceForDGV = FilterNonDailyInData(dtSourceForDGV, dtTrfHist);
@@ -818,7 +997,7 @@ namespace FactoryManagementSoftware.UI
             //out only
             else if (!cbIn.Checked && cbOut.Checked)
             {
-                if (cbPart.Checked)
+                if (cbPart.Checked && !cbSearch.Checked)
                 {
                     if (Type.Equals("All"))
                     {
@@ -830,20 +1009,35 @@ namespace FactoryManagementSoftware.UI
                         //if customer: show selected customer's part only
                         dtTrfHist = dalTrfHist.rangeItemToCustomerSearch(Type, start, end);
                     }
+                    dtSourceForDGV = FilterNonDailyPartOutData(dtSourceForDGV, dtTrfHist);
                 }
-                else if (cbMat.Checked)
+                else if (cbMat.Checked && !cbSearch.Checked)
                 {
                     //show material transfer history during selected period
                     dtTrfHist = dalTrfHist.rangeMaterialTrfSearch(start, end, Type);
+                    dtSourceForDGV = FilterNonDailyMatOutData(dtSourceForDGV, dtTrfHist);
+                }
+                else if (cbSearch.Checked)
+                {
+                    if (cbPart.Checked)
+                    {
+                        dtTrfHist = dalTrfHist.rangePartTrfKeywordSearch(txtSearch.Text, start, end);
+                        dtSourceForDGV = FilterNonDailyPartOutData(dtSourceForDGV, dtTrfHist);
+                    }
+                    else
+                    {
+                        dtTrfHist = dalTrfHist.rangeMatTrfKeywordSearch(txtSearch.Text, start, end);
+                        dtSourceForDGV = FilterNonDailyMatOutData(dtSourceForDGV, dtTrfHist);
+                    }
                 }
 
-                dtSourceForDGV = FilterNonDailyOutData(dtSourceForDGV, dtTrfHist);
+                
             }
 
             //in & out
             else if (cbIn.Checked && cbOut.Checked)
             {
-                if (cbPart.Checked)
+                if (cbPart.Checked && !cbSearch.Checked)
                 {
                     if (Type.Equals("All"))
                     {
@@ -859,11 +1053,24 @@ namespace FactoryManagementSoftware.UI
 
                     dtSourceForDGV = FilterNonDailyInAndOutPartData(dtSourceForDGV, dtTrfHist);
                 }
-                else if (cbMat.Checked)
+                else if (cbMat.Checked && !cbSearch.Checked)
                 {
                     //show material transfer history during selected period
                     dtTrfHist = dalTrfHist.rangeMaterialTrfSearch(start, end, Type);
                     dtSourceForDGV = FilterNonDailyInAndOutMatData(dtSourceForDGV, dtTrfHist);
+                }
+                else if (cbSearch.Checked)
+                {
+                    if(cbPart.Checked)
+                    {
+                        dtTrfHist = dalTrfHist.rangePartTrfKeywordSearch(txtSearch.Text, start, end);
+                        dtSourceForDGV = FilterNonDailyInAndOutPartData(dtSourceForDGV, dtTrfHist);
+                    }
+                    else
+                    {
+                        dtTrfHist = dalTrfHist.rangeMatTrfKeywordSearch(txtSearch.Text, start, end);
+                        dtSourceForDGV = FilterNonDailyInAndOutMatData(dtSourceForDGV, dtTrfHist);
+                    }
                 }
             }
 
@@ -875,6 +1082,13 @@ namespace FactoryManagementSoftware.UI
                 DataView dv = dtSourceForDGV.DefaultView;
                 dv.Sort = "item_name ASC";
                 DataTable sortedDT = dv.ToTable();
+
+                int indexNo = 1;
+                foreach (DataRow row in sortedDT.Rows)
+                {
+                    row["#"] = indexNo;
+                    indexNo++;
+                }
 
                 dgv.DataSource = sortedDT;
                 dgvNonDailyUIEdit(dgv);
@@ -902,7 +1116,7 @@ namespace FactoryManagementSoftware.UI
                 dgvInOutReport.DataSource = null;
                 dgvInOutReport.Columns.Clear();
 
-                if (!string.IsNullOrEmpty(cmbType.Text))
+                if (!string.IsNullOrEmpty(cmbType.Text) && !cbSearch.Checked)
                 {
                     //daily data
                     if (cbDaily.Checked)
@@ -914,6 +1128,30 @@ namespace FactoryManagementSoftware.UI
                     else
                     {
                         FilterNonDailyData();
+                    }
+                }
+                else if(cbSearch.Checked)
+                {
+                    string keywords = txtSearch.Text;
+
+                    DataTable dt = dalItem.Search(keywords);
+                    if(dt.Rows.Count <= 0)
+                    {
+                        lblInvalidSearch.Show();
+                    }
+                    else
+                    {
+                        lblInvalidSearch.Hide();
+                        if (cbDaily.Checked)
+                        {
+                            FilterDailyData();
+                        }
+
+                        //total data
+                        else
+                        {
+                            FilterNonDailyData();
+                        }
                     }
                 }
             }
@@ -1148,7 +1386,23 @@ namespace FactoryManagementSoftware.UI
             if (cbPart.Checked)
             {
                 cbMat.Checked = false;
+                //cbSearch.Checked = false;
                 tool.loadCustomerAndAllToComboBox(cmbType);
+
+                if (cbSearch.Checked)
+                {
+                    txtSearch.Show();
+                    cmbType.Hide();
+                }
+                else
+                {
+                    txtSearch.Hide();
+                    cmbType.Show();
+                }
+            }
+            else
+            {
+                cbMat.Checked = true;
             }
         }
 
@@ -1158,7 +1412,24 @@ namespace FactoryManagementSoftware.UI
             if (cbMat.Checked)
             {
                 cbPart.Checked = false;
+                //cbSearch.Checked = false;
                 tool.loadMaterialAndAllToComboBox(cmbType);
+
+                if (cbSearch.Checked)
+                {
+                    txtSearch.Show();
+                    cmbType.Hide();
+                }
+                else
+                {
+                    txtSearch.Hide();
+                    cmbType.Show();
+                }
+                
+            }
+            else
+            {
+                cbPart.Checked = true;
             }
         }
 
@@ -1212,11 +1483,55 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        #endregion
-
         private void frmNewInOut_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainDashboard.InOutReportFormOpen = false;
         }
+
+        private void cbSearch_CheckedChanged(object sender, EventArgs e)
+        {
+            cmbType.DataSource = null;
+            if (cbSearch.Checked)
+            {
+                txtSearch.Show();
+                cmbType.Hide();
+            }
+            else
+            {
+                txtSearch.Hide();
+                cmbType.Show();
+
+                cmbType.DataSource = null;
+                if (cbPart.Checked)
+                {
+                    tool.loadCustomerAndAllToComboBox(cmbType);
+                }
+                else
+                {
+                    tool.loadMaterialAndAllToComboBox(cmbType);
+                }
+            }
+        }
+
+        private void txtSearch_Enter(object sender, EventArgs e)
+        {
+            if (txtSearch.Text.Equals("SEARCH"))
+            {
+                txtSearch.Text = "";
+                txtSearch.ForeColor = Color.Black;
+            }
+        }
+
+        private void txtSearch_Leave(object sender, EventArgs e)
+        {
+            if (txtSearch.Text.Equals(""))
+            {
+                txtSearch.Text = "SEARCH";
+                txtSearch.ForeColor = Color.LightGray;
+            }
+        }
+        #endregion
+
+
     }
 }

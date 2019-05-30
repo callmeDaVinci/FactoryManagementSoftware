@@ -141,12 +141,13 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 String sql = @"INSERT INTO tbl_order_action 
-                                (ord_id, added_date, added_by, action, action_detail, action_from, action_to, note, active)    
-                         VALUES (@ord_id, @added_date, @added_by, @action, @action_detail, @action_from, @action_to, @note, @active)";
+                                (ord_id, trf_id, added_date, added_by, action, action_detail, action_from, action_to, note, active)    
+                         VALUES (@ord_id, @trf_id, @added_date, @added_by, @action, @action_detail, @action_from, @action_to, @note, @active)";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
-
+            
                 cmd.Parameters.AddWithValue("@ord_id", u.ord_id);
+                cmd.Parameters.AddWithValue("@trf_id", u.trf_id);
                 cmd.Parameters.AddWithValue("@added_date", u.added_date);
                 cmd.Parameters.AddWithValue("@added_by", u.added_by);
                 cmd.Parameters.AddWithValue("@action", u.action);
@@ -188,9 +189,10 @@ namespace FactoryManagementSoftware.DAL
 
         #region order action
 
-        private void setActionData(int orderID, string action, string content, string from, string to , string note, bool ifActive)
+        private void setActionData(int orderID,int trfID, string action, string content, string from, string to , string note, bool ifActive)
         {
             uOrderAction.ord_id = orderID;
+            uOrderAction.trf_id = trfID;
             uOrderAction.added_date = DateTime.Now;
             uOrderAction.added_by = MainDashboard.USER_ID;
             uOrderAction.action = action;
@@ -235,7 +237,7 @@ namespace FactoryManagementSoftware.DAL
             }
             else//action record exist,add another action
             {
-                setActionData(orderID, "REQUEST", "", "", "", note, true);
+                setActionData(orderID, -1,"REQUEST", "", "", "", note, true);
             }
 
             success = Insert(uOrderAction);
@@ -261,7 +263,7 @@ namespace FactoryManagementSoftware.DAL
              if(orderID > 0)
             {
                 //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
-                setActionData(orderID, "APPROVE", "", "", "", note, true);
+                setActionData(orderID,-1,"APPROVE", "", "", "", note, true);
                 success = Insert(uOrderAction);
             }
 
@@ -280,14 +282,14 @@ namespace FactoryManagementSoftware.DAL
         }
 
         //order receive
-        public bool orderReceive(int orderID, string content, string from, string to, string note)
+        public bool orderReceive(int orderID, int trfID,string content, string from, string to, string note)
         {
             bool success = false;
 
             if (orderID > 0)
             {
                 //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
-                setActionData(orderID, "RECEIVE", content, from, to, note, true);
+                setActionData(orderID, trfID, "RECEIVE", content, from, to, note, true);
                 success = Insert(uOrderAction);
             }
 
@@ -306,14 +308,14 @@ namespace FactoryManagementSoftware.DAL
         }
 
         //edit order information, like change stock in/out qty, location of from/to, order qty , order required date, etc 
-        public bool orderEdit(int orderID, int actionID, string content, string from, string to, string note)
+        public bool orderEdit(int orderID, int trfID, int actionID, string content, string from, string to, string note)
         {
             bool success = false;
 
             if(orderID > 0)
             {
                 //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
-                setActionData(orderID, "EDIT", content, from, to, "", true);
+                setActionData(orderID, trfID,"EDIT", content, from, to, "", true);
             }
 
             if(actionID == -1)
@@ -348,7 +350,7 @@ namespace FactoryManagementSoftware.DAL
             if (orderID > 0)
             {
                 //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
-                setActionData(orderID, "CLOSED", "", "", "", note, true);
+                setActionData(orderID, -1,"CLOSED", "", "", "", note, true);
                 success = Insert(uOrderAction);
             }
 
@@ -367,12 +369,12 @@ namespace FactoryManagementSoftware.DAL
         }
 
         //order cancel
-        public bool orderCancel(int orderID, string note)
+        public bool orderCancel(int orderID, int trfID, string note)
         {
             bool success = false;
           
             //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
-            setActionData(orderID, "CANCEL", "", "", "", note, false);
+            setActionData(orderID, trfID, "CANCEL", "", "", "", note, false);
   
             success = Insert(uOrderAction);
 

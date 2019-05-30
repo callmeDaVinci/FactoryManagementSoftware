@@ -16,6 +16,7 @@ namespace FactoryManagementSoftware.UI
         private float returnQty;
         private bool actionEdit = false;
         custDAL dalCust = new custDAL();
+        userDAL dalUser = new userDAL();
 
         public frmOrderReceive(int id, string code,string name, float qty,float received, string unit)
         {
@@ -216,7 +217,7 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_hist_qty = Convert.ToSingle(txtQty.Text);
             utrfHist.trf_hist_unit = Unit;
             utrfHist.trf_hist_trf_date = Convert.ToDateTime(dtpTrfDate.Text);
-            utrfHist.trf_hist_note = "Order: Received";
+            utrfHist.trf_hist_note = "[" + dalUser.getUsername(MainDashboard.USER_ID) + "] Order: Received";
             utrfHist.trf_hist_added_date = DateTime.Now;
             utrfHist.trf_hist_added_by = MainDashboard.USER_ID;
             utrfHist.trf_result = stockResult;
@@ -303,8 +304,8 @@ namespace FactoryManagementSoftware.UI
                     from = cmbSubFrom.Text;
                 }
 
-                dalOrderAction.orderReceive(orderID, txtQty.Text, from, cmbTo.Text, txtLotNO.Text);
-                transferRecord("Passed");
+                dalOrderAction.orderReceive(orderID, transferRecord("Passed"),txtQty.Text, from, cmbTo.Text, txtLotNO.Text);
+                
             }
 
             if (!dalItem.updateTotalStock(txtItemCode.Text))
@@ -342,7 +343,7 @@ namespace FactoryManagementSoftware.UI
             if (validation())
             {
                 stockTransfer();
-                this.Close();
+                Close();
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type

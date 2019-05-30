@@ -1,5 +1,6 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
 using System;
 using System.Data;
 using System.Drawing;
@@ -10,6 +11,7 @@ namespace FactoryManagementSoftware.UI
     public partial class frmOrderActionHistory : Form
     {
         userDAL dalUser = new userDAL();
+        Tool tool = new Tool();
 
         public frmOrderActionHistory(int orderID)
         {
@@ -19,6 +21,7 @@ namespace FactoryManagementSoftware.UI
         }
 
         static public bool editSuccess = false;
+
         #region class object
 
         trfCatBLL utrfCat = new trfCatBLL();
@@ -128,6 +131,7 @@ namespace FactoryManagementSoftware.UI
 
                 dgvAction.Rows[n].Cells["order_action_id"].Value = action["order_action_id"].ToString();
                 dgvAction.Rows[n].Cells["order_id"].Value = action["ord_id"].ToString();
+                dgvAction.Rows[n].Cells["trf_id"].Value = action["trf_id"] == DBNull.Value? "-1" : action["trf_id"].ToString();
                 dgvAction.Rows[n].Cells["added_date"].Value = action["added_date"].ToString();
                 dgvAction.Rows[n].Cells["added_by"].Value = action["added_by"].ToString();
                 dgvAction.Rows[n].Cells["action"].Value = action["action"].ToString();
@@ -292,6 +296,7 @@ namespace FactoryManagementSoftware.UI
             float returnQty = 0;
             float orderQty = 0;
             float receivedQty = 0;
+            int trfId = -1;
             //string trfDate = "";
 
             DataTable dt = dalOrderAction.SelectByActionID(actionID);
@@ -306,6 +311,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         returnQty = Convert.ToSingle(action["action_detail"]);
                     }
+                    trfId = action["trf_id"] == DBNull.Value ? 0 : Convert.ToInt32(action["trf_id"]);
                 }
             }
 
@@ -345,6 +351,7 @@ namespace FactoryManagementSoftware.UI
             float returnQty = 0;
             float orderQty = 0;
             float receivedQty = 0;
+            int trfId = 0;
 
             DataTable dt = dalOrderAction.SelectByActionID(actionID);
 
@@ -358,6 +365,8 @@ namespace FactoryManagementSoftware.UI
                     {
                         returnQty = Convert.ToSingle(action["action_detail"]);
                     }
+
+                    trfId = action["trf_id"] == DBNull.Value ? 0 : Convert.ToInt32(action["trf_id"]);
                 }
             }
 
@@ -403,7 +412,10 @@ namespace FactoryManagementSoftware.UI
                 dalOrder.statusUpdate(uOrder);
                 orderRecordUpdate(orderID, orderQty, receivedQty - returnQty);
                 dalOrderAction.deactivate(actionID);
-                transferRecord("Passed", itemCode, to, returnQty.ToString(), unit);
+
+                //transferRecord("Passed", itemCode, to, returnQty.ToString(), unit);
+                tool.changeTransferRecord("Undo", trfId);
+                
                 loadActionHistory(orderID);
             }
         }

@@ -464,5 +464,10 @@ namespace FactoryManagementSoftware.UI
                 }
             }
         }
+
+        private void MainDashboard_Move(object sender, EventArgs e)
+        {
+
+        }
     }
 }

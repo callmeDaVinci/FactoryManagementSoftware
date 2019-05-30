@@ -1652,6 +1652,11 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Red;
                         //dgv.Rows[n].DefaultCellStyle.Font = new Font(Font, FontStyle.Strikeout);
                     }
+                    else
+                    {
+                        dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Black;
+                        dgv.Rows[n].DefaultCellStyle.Font = new Font(Font, FontStyle.Regular);
+                    }
                 }
             }
 

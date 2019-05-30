@@ -4,7 +4,8 @@ namespace FactoryManagementSoftware.BLL
 {
     class orderActionBLL
     {
-        public int ord_id { get; set; } = -1;      
+        public int ord_id { get; set; } = -1;
+        public int trf_id { get; set; }
         public DateTime added_date { get; set; }
         public int added_by { get; set; } = 0;
         public string action { get; set; } = "";

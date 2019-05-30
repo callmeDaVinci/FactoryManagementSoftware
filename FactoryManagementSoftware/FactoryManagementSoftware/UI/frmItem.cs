@@ -258,6 +258,9 @@ namespace FactoryManagementSoftware
 
                     uItem.item_material = item[dalItem.ItemMaterial].ToString();
                     uItem.item_mb = item[dalItem.ItemMBatch].ToString();
+
+                    uItem.item_mb_rate = item[dalItem.ItemMBRate] == DBNull.Value? 0 : Convert.ToSingle(item[dalItem.ItemMBRate].ToString());
+
                     uItem.item_color = item[dalItem.ItemColor].ToString();
 
                     uItem.item_quo_ton = tool.Int_TryParse(item[dalItem.ItemQuoTon].ToString());

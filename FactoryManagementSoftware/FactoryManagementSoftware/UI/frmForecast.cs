@@ -3,7 +3,6 @@ using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using System;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -83,9 +82,10 @@ namespace FactoryManagementSoftware.UI
                     dgvForecast.Rows[n].Cells["NO"].Value = index;
                     dgvForecast.Rows[n].Cells["item_code"].Value = item["item_code"].ToString();
                     dgvForecast.Rows[n].Cells["item_name"].Value = item["item_name"].ToString();
-                    dgvForecast.Rows[n].Cells["forecast_one"].Value = item["forecast_one"].ToString();
-                    dgvForecast.Rows[n].Cells["forecast_two"].Value = item["forecast_two"].ToString();
-                    dgvForecast.Rows[n].Cells["forecast_three"].Value = item["forecast_three"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_one"].Value = item["forecast_one"] == DBNull.Value ? 0.ToString() : item["forecast_one"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_two"].Value = item["forecast_two"] == DBNull.Value ? 0.ToString() : item["forecast_two"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_three"].Value = item["forecast_three"] == DBNull.Value ? 0.ToString() : item["forecast_three"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_four"].Value = item["forecast_four"] == DBNull.Value? 0.ToString() : item["forecast_four"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = item["forecast_updated_date"].ToString();
                     index++;
                     if (int.TryParse(item["forecast_updated_by"].ToString(), out int test))
@@ -132,6 +132,7 @@ namespace FactoryManagementSoftware.UI
                     dgvForecast.Rows[n].Cells["forecast_one"].Value = item["forecast_one"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_two"].Value = item["forecast_two"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_three"].Value = item["forecast_three"].ToString();
+                    dgvForecast.Rows[n].Cells["forecast_four"].Value = item["forecast_four"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = item["forecast_updated_date"].ToString();
 
                     if(item["forecast_updated_by"] != DBNull.Value)
@@ -163,12 +164,13 @@ namespace FactoryManagementSoftware.UI
         {
             tool.DoubleBuffered(dgvForecast, true);
             tool.loadCustomerToComboBox(cmbCust);
-            cmbCust.SelectedIndex = -1;
+            //cmbCust.SelectedIndex = -1;
+            cmbCust.Text = tool.getCustName(1);
 
             var currentMonth = Convert.ToInt32(DateTime.Now.Month.ToString("00"));
 
-
             cmbForecast1.SelectedIndex = currentMonth - 1;
+            dgvMonthHeaderUpdate();
             oldMonth = cmbForecast1.Text;
             loaded = true;
         }
@@ -177,6 +179,14 @@ namespace FactoryManagementSoftware.UI
 
         #region selected index/text changed
 
+        private void dgvMonthHeaderUpdate()
+        {
+            dgvForecast.Columns["forecast_one"].HeaderText = cmbForecast1.Text.ToUpper();
+            dgvForecast.Columns["forecast_two"].HeaderText = cmbForecast2.Text.ToUpper();
+            dgvForecast.Columns["forecast_three"].HeaderText = cmbForecast3.Text.ToUpper();
+            dgvForecast.Columns["forecast_four"].HeaderText = cmbForecast4.Text.ToUpper();
+        }
+
         private void cmbForecast1_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -184,6 +194,7 @@ namespace FactoryManagementSoftware.UI
                 var index1 = cmbForecast1.SelectedIndex;
                 var index2 = index1;
                 var index3 = index1;
+                var index4 = index1;
 
                 if (index1 == 11)
                 {
@@ -204,8 +215,18 @@ namespace FactoryManagementSoftware.UI
                     index3 = index2 + 1;
                 }
                 cmbForecast3.SelectedIndex = index3;
-                string newMonth = cmbForecast1.Text;
 
+                if (index3 == 11)
+                {
+                    index4 = 0;
+                }
+                else
+                {
+                    index4 = index3 + 1;
+                }
+                cmbForecast4.SelectedIndex = index4;
+
+                string newMonth = cmbForecast1.Text;
 
                 if (loaded)
                     tool.historyRecord(text.ForecastEdit, text.getForecastMonthEditString(oldMonth, newMonth), DateTime.Now, MainDashboard.USER_ID);
@@ -216,6 +237,10 @@ namespace FactoryManagementSoftware.UI
             {
                 tool.saveToTextAndMessageToUser(ex);
             }    
+            finally
+            {
+                dgvMonthHeaderUpdate();
+            }
         }
 
         private void cmbForecast2_SelectedIndexChanged(object sender, EventArgs e)
@@ -225,6 +250,7 @@ namespace FactoryManagementSoftware.UI
                 var index2 = cmbForecast2.SelectedIndex;
                 var index1 = index2;
                 var index3 = index2;
+                var index4 = index2;
 
                 if (index2 == 0)
                 {
@@ -245,11 +271,26 @@ namespace FactoryManagementSoftware.UI
                     index3 = index2 + 1;
                 }
                 cmbForecast3.SelectedIndex = index3;
+
+                if (index3 == 11)
+                {
+                    index4 = 0;
+                }
+                else
+                {
+                    index4 = index3 + 1;
+                }
+                cmbForecast4.SelectedIndex = index4;
+
             }
             catch (Exception ex)
             {
                 tool.saveToTextAndMessageToUser(ex);
-            }  
+            }
+            finally
+            {
+                dgvMonthHeaderUpdate();
+            }
         }
 
         private void cmbForecast3_SelectedIndexChanged(object sender, EventArgs e)
@@ -259,6 +300,7 @@ namespace FactoryManagementSoftware.UI
                 var index3 = cmbForecast3.SelectedIndex;
                 var index1 = index3;
                 var index2 = index3;
+                var index4 = index3;
 
                 if (index3 == 0)
                 {
@@ -279,10 +321,74 @@ namespace FactoryManagementSoftware.UI
                     index1 = index2 - 1;
                 }
                 cmbForecast1.SelectedIndex = index1;
+
+                if (index3 == 11)
+                {
+                    index4 = 0;
+                }
+                else
+                {
+                    index4 = index3 + 1;
+                }
+                cmbForecast4.SelectedIndex = index4;
             }
             catch (Exception ex)
             {
                 tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                dgvMonthHeaderUpdate();
+            }
+        }
+
+        private void cmbForecast4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var index4 = cmbForecast4.SelectedIndex;
+                var index1 = index4;
+                var index2 = index4;
+                var index3 = index4;
+
+                if (index4 == 0)
+                {
+                    index3 = 11;
+                }
+                else
+                {
+                    index3 = index4 - 1;
+                }
+                cmbForecast3.SelectedIndex = index3;
+
+                if (index3 == 0)
+                {
+                    index2 = 11;
+                }
+                else
+                {
+                    index2 = index3 - 1;
+                }
+                cmbForecast2.SelectedIndex = index2;
+
+                if (index2 == 0)
+                {
+                    index1 = 11;
+                }
+                else
+                {
+                    index1 = index2 - 1;
+                }
+                cmbForecast1.SelectedIndex = index1;
+
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                dgvMonthHeaderUpdate();
             }
         }
 
@@ -298,9 +404,9 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        #endregion 
+        #endregion
 
-
+        #region cell edit
         private void dgvForecast_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -317,7 +423,19 @@ namespace FactoryManagementSoftware.UI
                 uItemCust.forecast_one = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_one"].Value.ToString());
                 uItemCust.forecast_two = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_two"].Value.ToString());
                 uItemCust.forecast_three = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_three"].Value.ToString());
-                uItemCust.forecast_updated_date = Convert.ToDateTime(dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value);
+                uItemCust.forecast_four = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_four"].Value);
+            //object cell = dgvForecast.Rows[rowIndex].Cells["forecast_four"].Value;
+            //if (cell == null || cell == DBNull.Value || String.IsNullOrWhiteSpace(cell.ToString()))
+            //{
+            //    uItemCust.forecast_four = 0;
+            //}
+            //else
+            //{
+                
+
+            //}
+
+            uItemCust.forecast_updated_date = Convert.ToDateTime(dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value);
                 uItemCust.forecast_current_month = cmbForecast1.Text;
                 uItemCust.forecast_updated_by = MainDashboard.USER_ID;
 
@@ -329,9 +447,13 @@ namespace FactoryManagementSoftware.UI
                 {
                     newForecast = uItemCust.forecast_two.ToString();
                 }
-                else
+                else if(Convert.ToInt32(forecastNum) == 3)
                 {
                     newForecast = uItemCust.forecast_three.ToString();
+                }
+                else
+                {
+                    newForecast = uItemCust.forecast_four.ToString();
                 }
 
                 if (tool.IfExists(uItemCust.item_code, cmbCust.Text))
@@ -399,7 +521,7 @@ namespace FactoryManagementSoftware.UI
             {
                 e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
 
-                if (dgvForecast.CurrentCell.ColumnIndex == 2 || dgvForecast.CurrentCell.ColumnIndex == 3 || dgvForecast.CurrentCell.ColumnIndex == 4) //Desired Column
+                if (dgvForecast.CurrentCell.ColumnIndex == 2 || dgvForecast.CurrentCell.ColumnIndex == 3 || dgvForecast.CurrentCell.ColumnIndex == 4 || dgvForecast.CurrentCell.ColumnIndex == 5) //Desired Column
                 {
                     forecastNum = (dgvForecast.CurrentCell.ColumnIndex - 1).ToString();
                     oldForecast = dgvForecast.CurrentCell.Value.ToString();
@@ -417,6 +539,7 @@ namespace FactoryManagementSoftware.UI
             }
             
         }
+        #endregion
 
         #region button
 
@@ -431,6 +554,13 @@ namespace FactoryManagementSoftware.UI
                 tool.saveToTextAndMessageToUser(ex);
             }
         }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
 
         private void btnReport_Click(object sender, EventArgs e)
         {

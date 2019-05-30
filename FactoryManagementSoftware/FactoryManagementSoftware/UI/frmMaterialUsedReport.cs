@@ -18,6 +18,7 @@ namespace FactoryManagementSoftware.UI
         public frmMaterialUsedReport()
         {
             InitializeComponent();
+
             tool.loadCustomerAndAllToComboBox(cmbCust);
             cbZeroCost.Visible = false;
             addDataToTypeCMB();
@@ -29,10 +30,12 @@ namespace FactoryManagementSoftware.UI
         readonly string headerMatUsedAndWastage = "material_used_include_wastage";
         readonly string headerTotalMatUsed = "total_material_used";
 
-        readonly string cmbTypeActual = "Actual Used";
-        readonly string cmbTypeCurrentMonth = "Current Month Forecast";
-        readonly string cmbTypeNextMonth = "Next Month Forecast";
-        readonly string cmbTypeNextNextMonth = "Next Next Month Forecast";
+        readonly string cmbTypeActualUsed = "ACTUAL USED";
+        readonly string cmbTypeActualStore = "ACTUAL STOCK";
+        private string cmbTypeCurrentMonth = "Current Month Forecast";
+        private string cmbTypeNextMonth = "Next Month Forecast";
+        private string cmbTypeNextNextMonth = "Next Next Month Forecast";
+        private string cmbTypeNextNextNextMonth = "Next Next Next Month Forecast";
 
         private string forecastMonth = "!";
 
@@ -208,10 +211,48 @@ namespace FactoryManagementSoftware.UI
         private void addDataToTypeCMB()
         {
             cmbType.Items.Clear();
-            cmbType.Items.Add(cmbTypeActual);
+
+            int currentMonth = Convert.ToInt32(DateTime.Now.Month.ToString("00"));
+            cmbTypeCurrentMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth);
+
+            if(currentMonth == 12)
+            {
+                cmbTypeNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+            }
+            else
+            {
+                cmbTypeNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth+1);
+            }
+
+            if (currentMonth == 11)
+            {
+                cmbTypeNextNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+            }
+            else
+            {
+                cmbTypeNextNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 2);
+            }
+
+            if (currentMonth == 10)
+            {
+                cmbTypeNextNextNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+            }
+            else
+            {
+                cmbTypeNextNextNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 3);
+            }
+
+            cmbTypeCurrentMonth = cmbTypeCurrentMonth.ToUpper() + " FORECAST";
+            cmbTypeNextMonth = cmbTypeNextMonth.ToUpper() + " FORECAST";
+            cmbTypeNextNextMonth = cmbTypeNextNextMonth.ToUpper() + " FORECAST";
+            cmbTypeNextNextNextMonth = cmbTypeNextNextNextMonth.ToUpper() + " FORECAST";
+
+            cmbType.Items.Add(cmbTypeActualUsed);
+            cmbType.Items.Add(cmbTypeActualStore);
             cmbType.Items.Add(cmbTypeCurrentMonth);
             cmbType.Items.Add(cmbTypeNextMonth);
             cmbType.Items.Add(cmbTypeNextNextMonth);
+            cmbType.Items.Add(cmbTypeNextNextNextMonth);
             cmbType.SelectedIndex = 0;
         }
 
@@ -340,6 +381,10 @@ namespace FactoryManagementSoftware.UI
             {
                 forecast = "forecast_three";
             }
+            else if (cmbType.Text.Equals(cmbTypeNextNextNextMonth))
+            {
+                forecast = "forecast_four";
+            }
 
             string custName = cmbCust.Text;
 
@@ -359,12 +404,12 @@ namespace FactoryManagementSoftware.UI
                     foreach (DataRow item in dt.Rows)
                     {
                         itemCode = item["item_code"].ToString();
-                        ForecastQty = Convert.ToInt32(item[forecast]);
-
+                        //ForecastQty = Convert.ToInt32(item[forecast]);
+                        ForecastQty = item[forecast] == DBNull.Value? 0: Convert.ToInt32(item[forecast]);
                         bool result = false;
                         if (tool.ifGotChild(itemCode))
                         {
-                            if (dalItem.checkIfProduction(itemCode))
+                            if (!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                             {
                                 uMatUsed.no = forecastIndex;
                                 uMatUsed.item_code = itemCode;
@@ -387,7 +432,7 @@ namespace FactoryManagementSoftware.UI
                             {
                                 if (tool.ifGotChild(Join["join_child_code"].ToString()))
                                 {
-                                    if (dalItem.checkIfProduction(Join["join_child_code"].ToString()))
+                                    if (dalItem.checkIfProduction(Join["join_child_code"].ToString()) && !dalItem.checkIfAssembly(Join["join_child_code"].ToString()))
                                     {
                                         uMatUsed.no = forecastIndex;
                                         uMatUsed.item_code = Join["join_child_code"].ToString();
@@ -463,6 +508,264 @@ namespace FactoryManagementSoftware.UI
 
                     
                         
+                    }
+                }
+            }
+
+        }
+
+        private void insertItemActualStoreData()
+        {
+            int actualStock = 0;
+            
+            string custName = cmbCust.Text;
+
+            if (!string.IsNullOrEmpty(custName))
+            {
+                DataTable dt = dalItemCust.custSearch(custName);
+
+                if (dt.Rows.Count <= 0)
+                {
+                    MessageBox.Show("no data under this record.");
+                }
+                else
+                {
+                    string itemCode;
+                    int forecastIndex = 1;
+
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        itemCode = item["item_code"].ToString();
+                        actualStock = Convert.ToInt32(dalItem.getStockQty(itemCode));
+
+                        bool result = false;
+                        if (tool.ifGotChild(itemCode))
+                        {
+                            if (!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                            {
+                                uMatUsed.no = forecastIndex;
+                                uMatUsed.item_code = itemCode;
+                                uMatUsed.quantity_order = actualStock;
+
+                                result = dalMatUsed.Insert(uMatUsed);
+                                if (!result)
+                                {
+                                    MessageBox.Show("failed to insert material used data");
+                                    return;
+                                }
+                                else
+                                {
+                                    forecastIndex++;
+                                }
+                            }
+
+                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            foreach (DataRow Join in dtJoin.Rows)
+                            {
+                                if (tool.ifGotChild(Join["join_child_code"].ToString()))
+                                {
+                                    if (dalItem.checkIfProduction(Join["join_child_code"].ToString()) && !dalItem.checkIfAssembly(Join["join_child_code"].ToString()))
+                                    {
+                                        uMatUsed.no = forecastIndex;
+                                        uMatUsed.item_code = Join["join_child_code"].ToString();
+                                        uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(Join["join_child_code"].ToString())) + actualStock;
+
+                                        result = dalMatUsed.Insert(uMatUsed);
+                                        if (!result)
+                                        {
+                                            MessageBox.Show("failed to insert material used data");
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            forecastIndex++;
+                                        }
+                                    }
+
+                                    DataTable dtJoin2 = dalJoin.parentCheck(Join["join_child_code"].ToString());
+                                    foreach (DataRow Join2 in dtJoin2.Rows)
+                                    {
+                                        uMatUsed.no = forecastIndex;
+                                        uMatUsed.item_code = Join2["join_child_code"].ToString();
+                                        uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(Join2["join_child_code"].ToString())) + Convert.ToInt32(dalItem.getStockQty(Join["join_child_code"].ToString())) + actualStock;
+
+                                        result = dalMatUsed.Insert(uMatUsed);
+                                        if (!result)
+                                        {
+                                            MessageBox.Show("failed to insert material used data");
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            forecastIndex++;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    uMatUsed.no = forecastIndex;
+                                    uMatUsed.item_code = Join["join_child_code"].ToString();
+                                    uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(Join["join_child_code"].ToString()))+ actualStock;
+
+                                    result = dalMatUsed.Insert(uMatUsed);
+                                    if (!result)
+                                    {
+                                        MessageBox.Show("failed to insert material used data");
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        forecastIndex++;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            uMatUsed.no = forecastIndex;
+                            uMatUsed.item_code = itemCode;
+                            uMatUsed.quantity_order = actualStock;
+
+                            result = dalMatUsed.Insert(uMatUsed);
+                            if (!result)
+                            {
+                                MessageBox.Show("failed to insert material used data");
+                                return;
+                            }
+                            else
+                            {
+                                forecastIndex++;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void insertAllItemStoreData()
+        {
+            if (!string.IsNullOrEmpty(cmbCust.Text))
+            {
+                DataTable dt = dalItemCust.Select();
+
+                if (dt.Rows.Count <= 0)
+                {
+                    MessageBox.Show("no data under this record.");
+                }
+                else
+                {
+                    float storeNum = 0;
+                    string itemCode;
+
+                    int forecastIndex = 1;
+
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        itemCode = item["item_code"].ToString();
+
+
+                        storeNum = dalItem.getStockQty(itemCode);
+
+                       
+                        bool result = false;
+                        if (tool.ifGotChild(itemCode))
+                        {
+                            if (!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                            {
+                                uMatUsed.no = forecastIndex;
+                                uMatUsed.item_code = itemCode;
+                                uMatUsed.quantity_order = Convert.ToInt32(storeNum);
+                                result = dalMatUsed.Insert(uMatUsed);
+                                if (!result)
+                                {
+                                    MessageBox.Show("failed to insert material used data");
+                                    return;
+                                }
+                                else
+                                {
+                                    forecastIndex++;
+                                }
+                            }
+
+                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            foreach (DataRow Join in dtJoin.Rows)
+                            {
+                                if (tool.ifGotChild(Join["join_child_code"].ToString()))
+                                {
+                                    if (dalItem.checkIfProduction(Join["join_child_code"].ToString()) && !dalItem.checkIfAssembly(Join["join_child_code"].ToString()))
+                                    {
+                                        uMatUsed.no = forecastIndex;
+                                        uMatUsed.item_code = Join["join_child_code"].ToString();
+                                        uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(Join["join_child_code"].ToString()));
+                                        result = dalMatUsed.Insert(uMatUsed);
+                                        if (!result)
+                                        {
+                                            MessageBox.Show("failed to insert material used data");
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            forecastIndex++;
+                                        }
+                                    }
+
+                                    DataTable dtJoin2 = dalJoin.parentCheck(Join["join_child_code"].ToString());
+                                    foreach (DataRow Join2 in dtJoin2.Rows)
+                                    {
+                                        uMatUsed.no = forecastIndex;
+                                        uMatUsed.item_code = Join2["join_child_code"].ToString();
+                                        uMatUsed.quantity_order = Convert.ToInt32(storeNum);
+
+                                        result = dalMatUsed.Insert(uMatUsed);
+                                        if (!result)
+                                        {
+                                            MessageBox.Show("failed to insert material used data");
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            forecastIndex++;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    uMatUsed.no = forecastIndex;
+                                    uMatUsed.item_code = Join["join_child_code"].ToString();
+                                    uMatUsed.quantity_order = Convert.ToInt32(storeNum);
+
+                                    result = dalMatUsed.Insert(uMatUsed);
+                                    if (!result)
+                                    {
+                                        MessageBox.Show("failed to insert material used data");
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        forecastIndex++;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            uMatUsed.no = forecastIndex;
+                            uMatUsed.item_code = itemCode;
+                            uMatUsed.quantity_order = Convert.ToInt32(storeNum);
+
+                            result = dalMatUsed.Insert(uMatUsed);
+                            if (!result)
+                            {
+                                MessageBox.Show("failed to insert material used data");
+                                return;
+                            }
+                            else
+                            {
+                                forecastIndex++;
+                            }
+                        }
+
                     }
                 }
             }
@@ -580,6 +883,60 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private void insertSearchItemStoreData()
+        {
+            string custName = cmbCust.Text;
+            string keyword = txtSearch.Text;
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                DataTable dt = dalItem.Search(keyword);
+
+                if (dt.Rows.Count <= 0)
+                {
+                    lblSearchError.Show();
+                }
+                else
+                {
+                    lblSearchError.Hide();
+
+                    int storeNum = 0;
+                    string itemCode;
+                    int forecastIndex = 1;
+
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        itemCode = item["item_code"].ToString();
+
+                        storeNum = Convert.ToInt32(dalItem.getStockQty(itemCode));
+                       
+                        bool result = false;
+
+                        uMatUsed.no = forecastIndex;
+                        uMatUsed.item_code = itemCode;
+                        uMatUsed.quantity_order = storeNum;
+
+                        result = dalMatUsed.Insert(uMatUsed);
+                        if (!result)
+                        {
+                            MessageBox.Show("failed to insert material used data");
+                            return;
+                        }
+                        else
+                        {
+                            forecastIndex++;
+                        }
+                        
+                    }
+                }
+            }
+            else
+            {
+                lblSearchError.Show();
+            }
+
+        }
+
         private void insertItemQuantityOrderData()
         {
             string custName = cmbCust.Text;
@@ -647,7 +1004,7 @@ namespace FactoryManagementSoftware.UI
                             {
                                 if (tool.ifGotChild(Join["join_child_code"].ToString()))
                                 {
-                                    if (dalItem.checkIfProduction(Join["join_child_code"].ToString()))
+                                    if (dalItem.checkIfProduction(Join["join_child_code"].ToString()) && !dalItem.checkIfAssembly(Join["join_child_code"].ToString()))
                                     {
                                         uMatUsed.no = forecastIndex;
                                         uMatUsed.item_code = Join["join_child_code"].ToString();
@@ -788,7 +1145,16 @@ namespace FactoryManagementSoftware.UI
             float itemWeight;
 
             DataTable dt = dalMatUsed.Select();
-            dt = AddDuplicates(dt);
+
+            if (cmbType.Text.Equals(cmbTypeActualStore))
+            {
+                dt = RemoveDuplicates(dt);
+            }
+            else
+            {
+                dt = AddDuplicates(dt);
+            }
+            
             dt = RemoveEmpty(dt);
 
             if (cbZeroCost.Checked)
@@ -856,6 +1222,7 @@ namespace FactoryManagementSoftware.UI
                         dgvMaterialUsedRecord.Rows[n - 1].Cells[headerTotalMatUsed].Value = totalMaterialUsed;
 
                         materialType = item["item_material"].ToString();
+
                         totalMaterialUsed = materialUsed + wastageUsed;
                         n = dgvMaterialUsedRecord.Rows.Add();
                     }
@@ -883,6 +1250,7 @@ namespace FactoryManagementSoftware.UI
                 //SUB MATERIAL
                 if (!item[dalItem.ItemCat].ToString().Equals("Part"))
                 {
+                    dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemMaterial].Value = "SUB MATERIAL";
                     dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
                     dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Value = materialUsed + wastageUsed;
                 }
@@ -933,9 +1301,13 @@ namespace FactoryManagementSoftware.UI
             {
                 if(cmbCust.Text.Equals("All"))
                 {
-                    if(cmbType.Text.Equals(cmbTypeActual))
+                    if(cmbType.Text.Equals(cmbTypeActualUsed))
                     {
                         insertAllItemQuantityOrderData();
+                    }
+                    else if(cmbType.Text.Equals(cmbTypeActualStore))
+                    {
+                        insertAllItemStoreData();
                     }
                     else
                     {
@@ -945,9 +1317,20 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    if (cmbType.Text.Equals(cmbTypeActual))
+                    if (cmbType.Text.Equals(cmbTypeActualUsed))
                     {
                         insertItemQuantityOrderData();
+                    }
+                    else if (cmbType.Text.Equals(cmbTypeActualStore))
+                    {
+                        if(cbBySearch.Checked)
+                        {
+                            insertSearchItemStoreData();
+                        }
+                        else
+                        {
+                            insertItemActualStoreData();
+                        }
                     }
                     else
                     {
@@ -955,6 +1338,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     
                 }
+                
                 loadMaterialUsedList();        
             }
 
@@ -982,7 +1366,7 @@ namespace FactoryManagementSoftware.UI
             string title = "";
             string date = dtpStart.Text + " - " + dtpEnd.Text;
             DateTime currentDate = DateTime.Now;
-            if (cmbType.Text.Equals(cmbTypeActual))
+            if (cmbType.Text.Equals(cmbTypeActualUsed))
             {
                 date = dtpStart.Text + " - " + dtpEnd.Text;
                 title = "ActualMaterialUsedReport";
@@ -1048,7 +1432,7 @@ namespace FactoryManagementSoftware.UI
 
                 //Header and Footer setup
 
-                if (cmbType.Text.Equals(cmbTypeActual))
+                if (cmbType.Text.Equals(cmbTypeActualUsed))
                 {
                     xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + dtpStart.Text + ">" + dtpEnd.Text;
                 }
@@ -1198,20 +1582,52 @@ namespace FactoryManagementSoftware.UI
 
             int forecastCurrentMonth = DateTime.Parse("1." + getCurrentForecastMonth() + " 2008").Month;
 
-            if (cmbType.Text.Equals(cmbTypeActual))
+            if (cmbType.Text.Equals(cmbTypeActualUsed))
             {
                 lblMonth.Text = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonth).ToUpper().ToString() + " ACTUAL MATERIAL USED REPORT";
                 dtpStart.Show();
                 dtpEnd.Show();
                 label1.Show();
                 label3.Show();
+                cbBySearch.Hide();
+                lblSearch.Hide();
+                txtSearch.Hide();
+                cbSubMat.Visible = true;
+                cmbCust.Enabled = true;
             }
-            else
+            else if (cmbType.Text.Equals(cmbTypeActualStore))
             {
+                cbBySearch.Show();
+                lblMonth.Text = "QTY ORDER = ACTUAL STORE QTY";
+                //lblSearch.Show();
+                //txtSearch.Show();
+                //dtpStart.Hide();
+                //dtpEnd.Hide();
+                //label1.Hide();
+                //label3.Hide();
+                //cbSubMat.Visible = false;
+                //cmbCust.SelectedIndex = -1;
+                //cmbCust.Enabled = false;
                 dtpStart.Hide();
                 dtpEnd.Hide();
                 label1.Hide();
                 label3.Hide();
+                lblSearch.Hide();
+                txtSearch.Hide();
+                cbSubMat.Visible = true;
+                cmbCust.Enabled = true;
+            }
+            else
+            {
+                cbBySearch.Hide();
+                dtpStart.Hide();
+                dtpEnd.Hide();
+                label1.Hide();
+                label3.Hide();
+                lblSearch.Hide();
+                txtSearch.Hide();
+                cbSubMat.Visible = true;
+                cmbCust.Enabled = true;
 
                 if (cmbType.Text.Equals(cmbTypeCurrentMonth))
                 {
@@ -1475,6 +1891,25 @@ namespace FactoryManagementSoftware.UI
             {
                 MessageBox.Show(e.Message);
                 tool.historyRecord(text.System, e.Message, DateTime.Now, MainDashboard.USER_ID);
+            }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            dgvMaterialUsedRecord.Rows.Clear();
+        }
+
+        private void cbBySearch_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbBySearch.Checked)
+            {
+                txtSearch.Show();
+                cmbCust.Enabled = false;
+            }
+            else
+            {
+                txtSearch.Hide();
+                cmbCust.Enabled = true;
             }
         }
     }

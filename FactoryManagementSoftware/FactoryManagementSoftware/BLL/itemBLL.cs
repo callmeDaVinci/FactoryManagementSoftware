@@ -20,6 +20,7 @@ namespace FactoryManagementSoftware.BLL
         public int item_quo_ct { get; set; } = 0;
         public int item_pro_ct_from { get; set; } = 0;
         public int item_pro_ct_to { get; set; } = 0;
+        public float item_mb_rate { get; set; } = 0;
         public float item_quo_pw_pcs { get; set; } = 0;
         public float item_quo_rw_pcs { get; set; } = 0;
         public float item_pro_pw_pcs { get; set; } = 0; //item_pro_pw_pcs

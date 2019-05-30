@@ -39,17 +39,17 @@ namespace FactoryManagementSoftware.UI
         {
             if (!date.Equals(dtpDateRequired.Text))
             {
-                dalOrderAction.orderEdit(id, -1, "Required Date", date, dtpDateRequired.Text, txtNote.Text);
+                dalOrderAction.orderEdit(id, -1,-1, "Required Date", date, dtpDateRequired.Text, txtNote.Text);
             }
           
             if (!orderQty.Equals(txtQty.Text))
             {
-                dalOrderAction.orderEdit(id, -1, "Qty", orderQty, txtQty.Text, txtNote.Text);
+                dalOrderAction.orderEdit(id, -1,-1, "Qty", orderQty, txtQty.Text, txtNote.Text);
             }
 
             if (!orderUnit.Equals(cmbQtyUnit.Text))
             {
-                dalOrderAction.orderEdit(id, -1, "Unit", orderUnit, cmbQtyUnit.Text, txtNote.Text);
+                dalOrderAction.orderEdit(id, -1, -1, "Unit", orderUnit, cmbQtyUnit.Text, txtNote.Text);
             }
 
             dalOrderAction.orderApprove(id, txtNote.Text);
@@ -72,7 +72,7 @@ namespace FactoryManagementSoftware.UI
                 frmOrder.orderApproved = true;
                 frmOrder.finalOrderNumber = txtQty.Text;
                 checkEdit(uOrder.ord_id);
-                this.Close();
+                Close();
 
             }
         }

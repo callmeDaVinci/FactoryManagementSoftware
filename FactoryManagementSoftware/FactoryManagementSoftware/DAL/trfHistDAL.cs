@@ -591,7 +591,6 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-
         public DataTable rangeItemToAllCustomerSearch(string start, string end)
         {
             string Passed = "Passed";
@@ -672,6 +671,48 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@start", start);
                 cmd.Parameters.AddWithValue("@end", end);
                 cmd.Parameters.AddWithValue("@itemCode", itemCode);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable rangeToAllCustomerSearchByMonth(string month, string year)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                            INNER JOIN tbl_cust
+                            ON tbl_trf_hist.trf_hist_to=tbl_cust.cust_name
+                            WHERE MONTH(tbl_trf_hist.trf_hist_trf_date) = @month AND YEAR(tbl_trf_hist.trf_hist_trf_date) = @year";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@month", month);
+                cmd.Parameters.AddWithValue("@year", year);
 
                 //for executing command
                 //getting data from database
@@ -1003,7 +1044,7 @@ namespace FactoryManagementSoftware.DAL
                             WHERE 
                             tbl_trf_hist.trf_hist_trf_date 
                             BETWEEN @start AND @end 
-                            AND tbl_item_cust.cust_id = @custID ORDER BY tbl_item.item_name ASC";
+                            AND tbl_item_cust.cust_id = @custID ORDER BY tbl_item.item_code ASC";
 
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -1270,6 +1311,113 @@ namespace FactoryManagementSoftware.DAL
             DataTable sortedDt = dt.DefaultView.ToTable();
 
             return sortedDt;
+        }
+
+        public DataTable rangePartTrfKeywordSearch(string keywords, string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            String sql = null;
+            try
+            {
+
+                //sql query to get data from database
+                sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE tbl_trf_hist.trf_hist_trf_date 
+                                BETWEEN @start 
+                                AND @end 
+                                AND (tbl_item.item_code LIKE '%" + keywords + "%' OR tbl_item.item_name LIKE '%" + keywords + "%' ) " +
+                                " AND tbl_item.item_cat = @cat" +
+                                " ORDER BY tbl_trf_hist.trf_hist_item_code ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@cat", "Part");
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+
+            return dt;
+        }
+
+        public DataTable rangeMatTrfKeywordSearch(string keywords, string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            String sql = null;
+            try
+            {
+
+                //sql query to get data from database
+                sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE tbl_trf_hist.trf_hist_trf_date 
+                                BETWEEN @start 
+                                AND @end 
+                                AND (tbl_item.item_code LIKE '%" + keywords + "%' OR tbl_item.item_name LIKE '%" + keywords + "%' ) " +
+                                "AND tbl_item.item_cat != @cat " +
+                                "ORDER BY tbl_trf_hist.trf_hist_item_code ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@cat", "Part");
+
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+
+            return dt;
         }
 
         public DataTable TrfSearch(string itemCode, string month, string year)

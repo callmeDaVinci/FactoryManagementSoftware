@@ -746,7 +746,7 @@ namespace FactoryManagementSoftware.UI
                         bool result = false;
                         if (tool.ifGotChild(itemCode))
                         {
-                            if (dalItem.checkIfProduction(itemCode))
+                            if (!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                             {
                                 uMatUsed.no = forecastIndex;
                                 uMatUsed.item_code = itemCode;
@@ -769,7 +769,7 @@ namespace FactoryManagementSoftware.UI
                             {
                                 if (tool.ifGotChild(Join["join_child_code"].ToString()))
                                 {
-                                    if (dalItem.checkIfProduction(Join["join_child_code"].ToString()))
+                                    if (dalItem.checkIfProduction(Join["join_child_code"].ToString()) && !dalItem.checkIfAssembly(Join["join_child_code"].ToString()))
                                     {
                                         uMatUsed.no = forecastIndex;
                                         uMatUsed.item_code = Join["join_child_code"].ToString();
@@ -1241,6 +1241,22 @@ namespace FactoryManagementSoftware.UI
                 if (!success)
                 {
                     MessageBox.Show("Failed to updated item pmma qty");
+                }
+                else
+                {
+                    uItem.item_code = uPMMA.pmma_item_code;
+                    uItem.item_last_pmma_qty = openningStock;
+                    uItem.item_pmma_qty = bal - wastage + adjust;
+                    uItem.item_updtd_date = uPMMA.pmma_updated_date;
+                    uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                    bool itemPMMMAQtyUpdateSuccess = dalItem.UpdatePMMAQty(uItem);
+
+                    if (!itemPMMMAQtyUpdateSuccess)
+                    {
+                        MessageBox.Show("Failed to updated item pmma qty(@item dal)");
+                    }
+
                 }
             }
 

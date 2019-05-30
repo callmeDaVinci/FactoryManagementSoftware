@@ -34,8 +34,10 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvAction = new System.Windows.Forms.DataGridView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.order_action_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.order_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.trf_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.added_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.added_by = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.action = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,7 +45,6 @@
             this.action_from = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.action_to = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.note = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAction)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,6 +58,7 @@
             this.dgvAction.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.order_action_id,
             this.order_id,
+            this.trf_id,
             this.added_date,
             this.added_by,
             this.action,
@@ -81,6 +83,12 @@
             this.dgvAction.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAction_CellMouseDown);
             this.dgvAction.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvAction_MouseClick);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
             // order_action_id
             // 
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -97,7 +105,15 @@
             this.order_id.HeaderText = "Order ID";
             this.order_id.Name = "order_id";
             this.order_id.ReadOnly = true;
-            this.order_id.Width = 105;
+            this.order_id.Width = 97;
+            // 
+            // trf_id
+            // 
+            this.trf_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.trf_id.HeaderText = "Trf ID";
+            this.trf_id.Name = "trf_id";
+            this.trf_id.ReadOnly = true;
+            this.trf_id.Width = 59;
             // 
             // added_date
             // 
@@ -157,12 +173,6 @@
             this.note.ReadOnly = true;
             this.note.Width = 77;
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
             // frmOrderActionHistory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -184,8 +194,10 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dgvAction;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.DataGridViewTextBoxColumn order_action_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn order_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn trf_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn added_date;
         private System.Windows.Forms.DataGridViewTextBoxColumn added_by;
         private System.Windows.Forms.DataGridViewTextBoxColumn action;
@@ -193,6 +205,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn action_from;
         private System.Windows.Forms.DataGridViewTextBoxColumn action_to;
         private System.Windows.Forms.DataGridViewTextBoxColumn note;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }

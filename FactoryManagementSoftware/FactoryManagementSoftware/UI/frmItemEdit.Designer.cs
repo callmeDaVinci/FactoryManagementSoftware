@@ -80,6 +80,8 @@
             this.cbPigment = new System.Windows.Forms.CheckBox();
             this.cbProduction = new System.Windows.Forms.CheckBox();
             this.cbZeroCost = new System.Windows.Forms.CheckBox();
+            this.txtMBRate = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -130,17 +132,17 @@
             // txtColor
             // 
             this.txtColor.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtColor.Location = new System.Drawing.Point(574, 218);
+            this.txtColor.Location = new System.Drawing.Point(691, 218);
             this.txtColor.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtColor.Name = "txtColor";
-            this.txtColor.Size = new System.Drawing.Size(238, 34);
+            this.txtColor.Size = new System.Drawing.Size(121, 34);
             this.txtColor.TabIndex = 30;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(569, 195);
+            this.label1.Location = new System.Drawing.Point(687, 193);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 19);
             this.label1.TabIndex = 29;
@@ -608,12 +610,34 @@
             this.cbZeroCost.UseVisualStyleBackColor = true;
             this.cbZeroCost.Visible = false;
             // 
+            // txtMBRate
+            // 
+            this.txtMBRate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMBRate.Location = new System.Drawing.Point(551, 218);
+            this.txtMBRate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtMBRate.Name = "txtMBRate";
+            this.txtMBRate.Size = new System.Drawing.Size(121, 34);
+            this.txtMBRate.TabIndex = 78;
+            this.txtMBRate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbMBRate_KeyPress);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(547, 193);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(64, 19);
+            this.label3.TabIndex = 77;
+            this.label3.Text = "MB RATE";
+            // 
             // frmItemEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(861, 741);
+            this.Controls.Add(this.txtMBRate);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.cbZeroCost);
             this.Controls.Add(this.cbProduction);
             this.Controls.Add(this.cbPigment);
@@ -671,6 +695,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Item Edit";
+            this.Load += new System.EventHandler(this.frmItemEdit_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).EndInit();
@@ -732,5 +757,7 @@
         private System.Windows.Forms.CheckBox cbMB;
         private System.Windows.Forms.CheckBox cbProduction;
         private System.Windows.Forms.CheckBox cbZeroCost;
+        private System.Windows.Forms.TextBox txtMBRate;
+        private System.Windows.Forms.Label label3;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -107,6 +108,8 @@ namespace FactoryManagementSoftware.UI
 
         private void frmItemCust_Load(object sender, EventArgs e)
         {
+            Tool tool = new Tool();
+            tool.DoubleBuffered(dgvItemCust,true);
             refreshList();
         }
 
