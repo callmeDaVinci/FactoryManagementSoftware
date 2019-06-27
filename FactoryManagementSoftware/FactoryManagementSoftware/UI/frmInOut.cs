@@ -370,123 +370,6 @@ namespace FactoryManagementSoftware.UI
             dgv.ClearSelection();
         }
 
-        private void listPaintAndKeepSelected(DataGridView dgv)
-        {
-            //bool rowColorChange = true;
-            //dgv.BorderStyle = BorderStyle.None;
-            //dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
-            //dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            //dgv.DefaultCellStyle.SelectionBackColor = Color.DarkTurquoise;
-            //dgv.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
-            dgv.BackgroundColor = Color.White;
-
-            dgv.EnableHeadersVisualStyles = false;
-            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
-            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-
-            foreach (DataGridViewRow row in dgv.Rows)
-            {
-                int n = row.Index;
-                string itemCode = "";
-                if (dgv == dgvItem)
-                {
-                    itemCode = dgv.Rows[n].Cells["item_code"].Value.ToString();
-                    float qty = 0;
-
-                    if (dgv.Rows[n].Cells["item_qty"] != null)
-                    {
-                        float.TryParse(dgv.Rows[n].Cells["item_qty"].Value.ToString(), out (qty));
-                    }
-                    if (ifGotChild(itemCode))
-                    {
-                        if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
-                        {
-                            dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
-                            dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
-
-                        }
-                        else if (!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
-                        {
-                            dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
-                            dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
-
-                        }
-                        else
-                        {
-                            dgv.Rows[n].Cells["item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
-                            dgv.Rows[n].Cells["item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
-
-                        }
-                    }
-
-                    if (qty < 0)
-                    {
-                        dgv.Rows[n].Cells["item_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
-                    }
-                    else
-                    {
-                        dgv.Rows[n].Cells["item_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
-                    }
-                }
-                else if (dgv == dgvTrf)
-                {
-                    itemCode = dgv.Rows[n].Cells["trf_hist_item_code"].Value.ToString();
-                    if (ifGotChild(itemCode))
-                    {
-                        if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
-                        {
-                            dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
-                            dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
-
-                        }
-                        else if (!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
-                        {
-                            dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
-                            dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
-
-                        }
-                        else
-                        {
-                            dgv.Rows[n].Cells["trf_hist_item_code"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
-                            dgv.Rows[n].Cells["trf_hist_item_name"].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
-                        }
-                    }
-                }
-                else if (dgv == dgvFactoryStock)
-                {
-                    float qty = 0;
-
-                    if (dgv.Rows[n].Cells["stock_qty"].Value.ToString() != null)
-                    {
-                        float.TryParse(dgv.Rows[n].Cells["stock_qty"].Value.ToString(), out (qty));
-                    }
-
-                    if (qty < 0)
-                    {
-                        dgv.Rows[n].Cells["stock_qty"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
-                    }
-                }
-                else if (dgv == dgvTotal)
-                {
-                    float qty = 0;
-
-                    if (dgv.Rows[n].Cells["Total"] != null)
-                    {
-                        float.TryParse(dgv.Rows[n].Cells["Total"].Value.ToString(), out (qty));
-                    }
-
-
-                    if (qty < 0)
-                    {
-                        dgv.Rows[n].Cells["Total"].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
-                    }
-                }
-
-
-            }
-        }
-
         private void loadStockList(string itemCode)
         {
             DataTable dt = dalStock.Select(itemCode);
@@ -763,6 +646,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[daltrfHist.TrfAddedBy].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfResult].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
+            dgv.Columns[daltrfHist.TrfQty].DefaultCellStyle.Format = "0.##";
             dgv.Columns[daltrfHist.TrfAddedBy].Visible = false;
             //dgv.Columns[daltrfHist.TrfResult].Visible = false;
         }
@@ -1659,6 +1543,23 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
             }
+            else if (dgv.Columns[e.ColumnIndex].Name == daltrfHist.TrfQty)
+            {
+                double d = Convert.ToDouble(dgv.Rows[n].Cells[daltrfHist.TrfQty].Value);
+                if ((d % 1) > 0)
+                {
+                    //is decimal
+                    //d = Math.Round(d,2);
+
+                    //DataTable dt = (DataTable)dgv.DataSource;
+
+                    //dt.Rows[n][e.ColumnIndex] = Convert.ToSingle(dt.Rows[n][e.ColumnIndex]).ToString("F2");
+
+
+
+                    //dt.Rows[n][e.ColumnIndex] = Convert.ToSingle(d);
+                }
+            }
 
             dgv.ResumeLayout();
         }
@@ -1808,6 +1709,16 @@ namespace FactoryManagementSoftware.UI
                 }
                 Cursor = Cursors.Arrow; // change cursor to normal type 
             }
+        }
+
+        private void lblUpdatedTime_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

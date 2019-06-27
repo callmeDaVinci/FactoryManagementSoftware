@@ -1,4 +1,5 @@
 ﻿using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -10,6 +11,8 @@ namespace FactoryManagementSoftware.UI
         public frmData()
         {
             InitializeComponent();
+            Tool tool = new Tool();
+            tool.DoubleBuffered(dgvData, true);
         }
 
         dataDAL dalData = new dataDAL();

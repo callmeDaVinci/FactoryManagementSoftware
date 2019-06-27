@@ -74,6 +74,8 @@ namespace FactoryManagementSoftware.DAL
                 a.item_runner_weight as child_runner_weight ,
                 a.item_wastage_allowed as child_wastage_allowed ,
                 a.item_qty as child_qty ,
+                a.item_assembly as child_assembly ,
+                a.item_production as child_production ,
                 join_qty 
                 FROM tbl_join 
                 JOIN tbl_item 
@@ -101,6 +103,58 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
+        public DataTable SelectwithParentInfo()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT tbl_join.join_parent_code as parent_code, 
+                tbl_item.item_name as parent_name ,
+                tbl_join.join_child_code as child_code ,
+                a.item_name as child_name ,
+                a.item_cat as child_cat ,
+                a.item_material as child_material ,
+                a.item_mb as child_mb ,
+                a.item_mb_rate as child_mb_rate ,
+                a.item_part_weight as child_part_weight ,
+                a.item_runner_weight as child_runner_weight ,
+                a.item_wastage_allowed as child_wastage_allowed ,
+                a.item_qty as child_qty ,
+                a.item_assembly as child_assembly ,
+                a.item_production as child_production ,
+                join_qty 
+                FROM tbl_join 
+                JOIN tbl_item 
+                ON tbl_join.join_parent_code = tbl_item.item_code 
+                JOIN tbl_item a ON tbl_join.join_child_code = a.item_code";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         #endregion
 
         #region Insert Data in Database
@@ -349,6 +403,43 @@ namespace FactoryManagementSoftware.DAL
             {
                 //sql query to get data from database
                 String sql = "SELECT * FROM tbl_join WHERE join_parent_code = @itemCode";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@itemCode", itemCode);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable childCheck(string itemCode)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_join WHERE join_child_code = @itemCode";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);

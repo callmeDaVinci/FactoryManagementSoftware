@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>\\SAFETY06-MURUGA\StockAssistant\%28INSTALLATION%29\FOR USER\</PublishUrl>
+    <PublishUrl>\\SAFETY06-MURUGA\StockAssistant\%28INSTALLATION%29\FOR ADMIN\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>145</ApplicationRevision>
+    <ApplicationRevision>210</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -103,6 +103,7 @@
     <Compile Include="BLL\facStockBLL.cs" />
     <Compile Include="BLL\orderActionBLL.cs" />
     <Compile Include="BLL\pmmaBLL.cs" />
+    <Compile Include="BLL\pmmaDateBLL.cs" />
     <Compile Include="BLL\trfCatBLL.cs" />
     <Compile Include="BLL\trfHistBLL.cs" />
     <Compile Include="BLL\userBLL.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="DAL\facStockDAL.cs" />
     <Compile Include="DAL\orderActionDAL.cs" />
     <Compile Include="DAL\pmmaDAL.cs" />
+    <Compile Include="DAL\pmmaDateDAL.cs" />
     <Compile Include="DAL\trfCatDAL.cs" />
     <Compile Include="DAL\trfHistDAL.cs" />
     <Compile Include="DAL\userDAL.cs" />
@@ -145,6 +147,18 @@
     </Compile>
     <Compile Include="UI\frmChildStockOutRecord.Designer.cs">
       <DependentUpon>frmChildStockOutRecord.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmOrderCancel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmOrderCancel.Designer.cs">
+      <DependentUpon>frmOrderCancel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmOrderComplete.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmOrderComplete.Designer.cs">
+      <DependentUpon>frmOrderComplete.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmCust.cs">
       <SubType>Form</SubType>
@@ -298,11 +312,11 @@
     <Compile Include="UI\frmOrderRequest.Designer.cs">
       <DependentUpon>frmOrderRequest.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmOrderCancel.cs">
+    <Compile Include="UI\frmOrderCancelOld.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmOrderCancel.Designer.cs">
-      <DependentUpon>frmOrderCancel.cs</DependentUpon>
+    <Compile Include="UI\frmOrderCancelOld.Designer.cs">
+      <DependentUpon>frmOrderCancelOld.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmOrderReceive.cs">
       <SubType>Form</SubType>
@@ -315,6 +329,12 @@
     </Compile>
     <Compile Include="UI\frmPMMA.Designer.cs">
       <DependentUpon>frmPMMA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmPMMADateEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmPMMADateEdit.Designer.cs">
+      <DependentUpon>frmPMMADateEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmStockReport.cs">
       <SubType>Form</SubType>
@@ -366,6 +386,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmChildStockOutRecord.resx">
       <DependentUpon>frmChildStockOutRecord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmOrderCancel.resx">
+      <DependentUpon>frmOrderCancel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmOrderComplete.resx">
+      <DependentUpon>frmOrderComplete.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmCust.resx">
       <DependentUpon>frmCust.cs</DependentUpon>
@@ -452,14 +478,17 @@
     <EmbeddedResource Include="UI\frmOrderRequest.resx">
       <DependentUpon>frmOrderRequest.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmOrderCancel.resx">
-      <DependentUpon>frmOrderCancel.cs</DependentUpon>
+    <EmbeddedResource Include="UI\frmOrderCancelOld.resx">
+      <DependentUpon>frmOrderCancelOld.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderReceive.resx">
       <DependentUpon>frmOrderReceive.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPMMA.resx">
       <DependentUpon>frmPMMA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmPMMADateEdit.resx">
+      <DependentUpon>frmPMMADateEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockReport.resx">
       <DependentUpon>frmStockReport.cs</DependentUpon>

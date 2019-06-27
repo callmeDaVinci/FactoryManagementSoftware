@@ -53,14 +53,14 @@ namespace FactoryManagementSoftware.UI
             {
                 forecastToolStripMenuItem.Visible = true;
                 adminToolStripMenuItem.Visible = false;
-                orderToolStripMenuItem1.Visible = false;
+                orderToolStripMenuItem1.Visible = true;
             }
             else
             {
                 pMMAToolStripMenuItem.Visible = false;
                 forecastToolStripMenuItem.Visible = false;
                 adminToolStripMenuItem.Visible = false;
-                orderToolStripMenuItem1.Visible = false;
+                orderToolStripMenuItem1.Visible = true;
             }
         }
 
@@ -466,6 +466,11 @@ namespace FactoryManagementSoftware.UI
         }
 
         private void MainDashboard_Move(object sender, EventArgs e)
+        {
+
+        }
+
+        private void adminToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }

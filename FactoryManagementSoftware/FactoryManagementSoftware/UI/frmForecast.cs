@@ -414,7 +414,8 @@ namespace FactoryManagementSoftware.UI
                 var datagridview = sender as DataGridView;
 
                 int rowIndex = e.RowIndex;
-                dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value = DateTime.Now;
+                DateTime updatedTime = DateTime.Now;
+                dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value = updatedTime;
                 dgvForecast.Rows[rowIndex].Cells["forecast_updtd_by"].Value = dalUser.getUsername(MainDashboard.USER_ID);
 
                 uItemCust.item_code = dgvForecast.Rows[rowIndex].Cells["item_code"].Value.ToString();
@@ -424,18 +425,9 @@ namespace FactoryManagementSoftware.UI
                 uItemCust.forecast_two = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_two"].Value.ToString());
                 uItemCust.forecast_three = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_three"].Value.ToString());
                 uItemCust.forecast_four = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_four"].Value);
-            //object cell = dgvForecast.Rows[rowIndex].Cells["forecast_four"].Value;
-            //if (cell == null || cell == DBNull.Value || String.IsNullOrWhiteSpace(cell.ToString()))
-            //{
-            //    uItemCust.forecast_four = 0;
-            //}
-            //else
-            //{
-                
 
-            //}
-
-            uItemCust.forecast_updated_date = Convert.ToDateTime(dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value);
+                //uItemCust.forecast_updated_date = Convert.ToDateTime(dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value);
+                uItemCust.forecast_updated_date = updatedTime;
                 uItemCust.forecast_current_month = cmbForecast1.Text;
                 uItemCust.forecast_updated_by = MainDashboard.USER_ID;
 
@@ -463,7 +455,7 @@ namespace FactoryManagementSoftware.UI
                     if (!success)
                     {
                         MessageBox.Show("Failed to updated forecast");
-                        tool.historyRecord(text.System, "Failed to updated forecast(frmForecast)", DateTime.Now, MainDashboard.USER_ID);
+                        tool.historyRecord(text.System, "Failed to updated forecast(frmForecast) "+ uItemCust.item_code, DateTime.Now, MainDashboard.USER_ID);
                     }
                     else
                     {
@@ -477,7 +469,7 @@ namespace FactoryManagementSoftware.UI
                     if (!success)
                     {
                         MessageBox.Show("Failed to add new forecast");
-                        tool.historyRecord(text.System, "Failed to add new forecast(frmForecast)", DateTime.Now, MainDashboard.USER_ID);
+                        tool.historyRecord(text.System, "Failed to add new forecast(frmForecast) "+ uItemCust.item_code, DateTime.Now, MainDashboard.USER_ID);
 
                     }
                 }

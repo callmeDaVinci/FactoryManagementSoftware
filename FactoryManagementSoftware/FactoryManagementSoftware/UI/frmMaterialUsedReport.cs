@@ -566,9 +566,10 @@ namespace FactoryManagementSoftware.UI
                                 {
                                     if (dalItem.checkIfProduction(Join["join_child_code"].ToString()) && !dalItem.checkIfAssembly(Join["join_child_code"].ToString()))
                                     {
+                                        int joinQty = Convert.ToInt16(Join["join_qty"].ToString());
                                         uMatUsed.no = forecastIndex;
                                         uMatUsed.item_code = Join["join_child_code"].ToString();
-                                        uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(Join["join_child_code"].ToString())) + actualStock;
+                                        uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(Join["join_child_code"].ToString())) + actualStock*joinQty;
 
                                         result = dalMatUsed.Insert(uMatUsed);
                                         if (!result)
@@ -585,9 +586,10 @@ namespace FactoryManagementSoftware.UI
                                     DataTable dtJoin2 = dalJoin.parentCheck(Join["join_child_code"].ToString());
                                     foreach (DataRow Join2 in dtJoin2.Rows)
                                     {
+                                        int joinQty = Convert.ToInt16(Join2["join_qty"].ToString());
                                         uMatUsed.no = forecastIndex;
                                         uMatUsed.item_code = Join2["join_child_code"].ToString();
-                                        uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(Join2["join_child_code"].ToString())) + Convert.ToInt32(dalItem.getStockQty(Join["join_child_code"].ToString())) + actualStock;
+                                        uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(Join2["join_child_code"].ToString())) + Convert.ToInt32(dalItem.getStockQty(Join["join_child_code"].ToString()))*joinQty + actualStock;
 
                                         result = dalMatUsed.Insert(uMatUsed);
                                         if (!result)
@@ -603,9 +605,10 @@ namespace FactoryManagementSoftware.UI
                                 }
                                 else
                                 {
+                                    int joinQty = Convert.ToInt16(Join["join_qty"].ToString());
                                     uMatUsed.no = forecastIndex;
                                     uMatUsed.item_code = Join["join_child_code"].ToString();
-                                    uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(Join["join_child_code"].ToString()))+ actualStock;
+                                    uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(Join["join_child_code"].ToString())) + actualStock*joinQty;
 
                                     result = dalMatUsed.Insert(uMatUsed);
                                     if (!result)
@@ -1145,6 +1148,7 @@ namespace FactoryManagementSoftware.UI
             float itemWeight;
 
             DataTable dt = dalMatUsed.Select();
+            DataTable dt_itemInfo = dalItem.Select();
 
             if (cmbType.Text.Equals(cmbTypeActualStore))
             {
@@ -1172,6 +1176,9 @@ namespace FactoryManagementSoftware.UI
             dt.DefaultView.Sort = "item_material ASC";
             dt = dt.DefaultView.ToTable();
 
+
+            DataTable dtJoin = dalJoin.SelectwithChildInfo();
+
             dgvMaterialUsedRecord.Rows.Clear();
             dgvMaterialUsedRecord.Refresh();
 
@@ -1185,8 +1192,12 @@ namespace FactoryManagementSoftware.UI
                 {
                     itemWeight = Convert.ToSingle(item[dalItem.ItemProPWPcs].ToString()) + Convert.ToSingle(item[dalItem.ItemProRWPcs].ToString());
                 }
+                ///////////////////////////////////////////////////////////////////////
 
-                OrderQty = Convert.ToInt32(item["quantity_order"].ToString());
+                string itemCode = item[dalItem.ItemCode].ToString();
+                
+                OrderQty = Convert.ToInt32(item["quantity_order"]);
+
                 wastagePercetage = Convert.ToSingle(item["item_wastage_allowed"].ToString());
 
                 if(item[dalItem.ItemCat].ToString().Equals("Part"))
@@ -1250,11 +1261,182 @@ namespace FactoryManagementSoftware.UI
                 //SUB MATERIAL
                 if (!item[dalItem.ItemCat].ToString().Equals("Part"))
                 {
-                    dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemMaterial].Value = "SUB MATERIAL";
+                    dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemMaterial].Value = tool.getCatNameFromDataTable(dt_itemInfo,itemCode);
                     dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
                     dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Value = materialUsed + wastageUsed;
                 }
                     
+
+                index++;
+            }
+            tool.listPaintGreyHeader(dgvMaterialUsedRecord);
+        }
+
+        private void loadActualStockList()
+        {
+            int index = 1;
+            string materialType = null;
+            int OrderQty;
+            float totalMaterialUsed = 0;
+            float materialUsed = 0;
+            float wastageUsed = 0;
+            float wastagePercetage = 0;
+            float itemWeight;
+
+            DataTable dt = dalMatUsed.Select();
+            DataTable dt_itemInfo = dalItem.Select();
+
+            if (cmbType.Text.Equals(cmbTypeActualStore))
+            {
+                dt = RemoveDuplicates(dt);
+            }
+            else
+            {
+                dt = AddDuplicates(dt);
+            }
+
+            dt = RemoveEmpty(dt);
+
+            if (cbZeroCost.Checked)
+            {
+                dt = RemoveNonZeroCost(dt);
+            }
+
+            if (!cbSubMat.Checked)
+            {
+                dt = RemoveSubMat(dt);
+
+            }
+
+
+            dt.DefaultView.Sort = "item_material ASC";
+            dt = dt.DefaultView.ToTable();
+
+
+            DataTable dtJoin = dalJoin.SelectwithChildInfo();
+
+            dgvMaterialUsedRecord.Rows.Clear();
+            dgvMaterialUsedRecord.Refresh();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                int n = dgvMaterialUsedRecord.Rows.Add();
+
+                itemWeight = Convert.ToSingle(item[dalItem.ItemQuoPWPcs].ToString()) + Convert.ToSingle(item[dalItem.ItemQuoRWPcs].ToString());
+
+                if (itemWeight <= 0)
+                {
+                    itemWeight = Convert.ToSingle(item[dalItem.ItemProPWPcs].ToString()) + Convert.ToSingle(item[dalItem.ItemProRWPcs].ToString());
+                }
+                ///////////////////////////////////////////////////////////////////////
+
+                string itemCode = item[dalItem.ItemCode].ToString();
+
+                OrderQty = Convert.ToInt32(tool.getStockQtyFromDataTable(dt_itemInfo, itemCode));
+
+                if (tool.ifGotParent(itemCode, dtJoin))
+                {
+                    string ParentCode;
+                    int joinQty;
+                    DataTable dt_Parent = dalJoin.childCheck(itemCode);
+
+                    foreach (DataRow row in dt_Parent.Rows)
+                    {
+                        if (row["join_child_code"].ToString().Equals(itemCode))
+                        {
+                            ParentCode = row["join_parent_code"].ToString();
+                            joinQty = Convert.ToInt32(row["join_qty"].ToString());
+                            OrderQty += Convert.ToInt32(tool.getStockQtyFromDataTable(dt_itemInfo, ParentCode)) * joinQty;
+
+                            if (tool.ifGotParent(ParentCode, dtJoin))
+                            {
+                                string GrandparentCode;
+                                DataTable dt_Grandparent = dalJoin.childCheck(ParentCode);
+
+                                foreach (DataRow row2 in dt_Grandparent.Rows)
+                                {
+                                    if (row2["join_child_code"].ToString().Equals(ParentCode))
+                                    {
+                                        GrandparentCode = row2["join_parent_code"].ToString();
+                                        joinQty = Convert.ToInt32(row2["join_qty"].ToString());
+                                        OrderQty += Convert.ToInt32(tool.getStockQtyFromDataTable(dt_itemInfo, GrandparentCode)) * joinQty;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                item["quantity_order"] = OrderQty;
+
+                wastagePercetage = Convert.ToSingle(item["item_wastage_allowed"].ToString());
+
+                if (item[dalItem.ItemCat].ToString().Equals("Part"))
+                {
+                    materialUsed = OrderQty * itemWeight / 1000;
+
+                }
+                else
+                {
+                    materialUsed = OrderQty;
+                }
+
+                wastageUsed = materialUsed * wastagePercetage;
+
+                if (item[dalItem.ItemCat].ToString().Equals("Part"))
+                {
+                    if (string.IsNullOrEmpty(materialType))
+                    {
+                        materialType = item["item_material"].ToString();
+
+                        totalMaterialUsed = materialUsed + wastageUsed;
+                    }
+                    else if (materialType == item["item_material"].ToString())
+                    {
+                        //same data
+                        totalMaterialUsed += materialUsed + wastageUsed;
+                    }
+                    else
+                    {
+                        //first data
+
+                        dgvMaterialUsedRecord.Rows[n - 1].Cells[headerTotalMatUsed].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
+                        dgvMaterialUsedRecord.Rows[n - 1].Cells[headerTotalMatUsed].Value = totalMaterialUsed;
+
+                        materialType = item["item_material"].ToString();
+
+                        totalMaterialUsed = materialUsed + wastageUsed;
+                        n = dgvMaterialUsedRecord.Rows.Add();
+                    }
+                }
+
+                if (dt.Rows.IndexOf(item) == dt.Rows.Count - 1)
+                {
+                    // this is the last item
+                    // = materialUsed + wastageUsed;
+                    dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
+                    dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Value = totalMaterialUsed;
+                }
+
+                dgvMaterialUsedRecord.Rows[n].Cells["no"].Value = index;
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemMaterial].Value = item[dalItem.ItemMaterial].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemName].Value = item[dalItem.ItemName].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemCode].Value = item[dalItem.ItemCode].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemColor].Value = item[dalItem.ItemColor].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemOrd].Value = item["quantity_order"].ToString();
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemProPWPcs].Value = itemWeight;
+                dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemWastage].Value = Convert.ToSingle(item[dalItem.ItemWastage]).ToString("0.00");
+                dgvMaterialUsedRecord.Rows[n].Cells[headerMatUsed].Value = materialUsed;
+                dgvMaterialUsedRecord.Rows[n].Cells[headerMatUsedAndWastage].Value = materialUsed + wastageUsed;
+
+                //SUB MATERIAL
+                if (!item[dalItem.ItemCat].ToString().Equals("Part"))
+                {
+                    dgvMaterialUsedRecord.Rows[n].Cells[dalItem.ItemMaterial].Value = tool.getCatNameFromDataTable(dt_itemInfo, itemCode);
+                    dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Style.Font = new System.Drawing.Font(dgvMaterialUsedRecord.Font, FontStyle.Bold);
+                    dgvMaterialUsedRecord.Rows[n].Cells[headerTotalMatUsed].Value = materialUsed + wastageUsed;
+                }
+
 
                 index++;
             }
@@ -1313,13 +1495,14 @@ namespace FactoryManagementSoftware.UI
                     {
                         insertAllItemForecastData();
                     }
-                    
+                    loadMaterialUsedList();
                 }
                 else
                 {
                     if (cmbType.Text.Equals(cmbTypeActualUsed))
                     {
                         insertItemQuantityOrderData();
+                        loadMaterialUsedList();
                     }
                     else if (cmbType.Text.Equals(cmbTypeActualStore))
                     {
@@ -1331,15 +1514,16 @@ namespace FactoryManagementSoftware.UI
                         {
                             insertItemActualStoreData();
                         }
+                        loadActualStockList();
                     }
                     else
                     {
                         insertItemForecastData();
+                        loadMaterialUsedList();
                     }
                     
                 }
                 
-                loadMaterialUsedList();        
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type

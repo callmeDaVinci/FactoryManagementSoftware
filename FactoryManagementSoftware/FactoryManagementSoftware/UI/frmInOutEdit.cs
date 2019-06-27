@@ -1661,5 +1661,131 @@ namespace FactoryManagementSoftware.UI
         {
 
         }
+
+        private void btnIN_Click(object sender, EventArgs e)
+        {
+            string itemCode = cmbTrfItemCode.Text;
+
+            if (!string.IsNullOrEmpty(itemCode))
+            {
+                if (tool.ifGotChild(itemCode))
+                {
+                    if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))//assembly
+                    {
+                        cmbTrfFromCategory.Text = "Assembly";
+                        cmbTrfToCategory.Text = "Factory";
+                    }
+                    else//production
+                    {
+                        cmbTrfFromCategory.Text = "Production";
+                        cmbTrfToCategory.Text = "Factory";
+                    }
+                }
+                else if (dalItem.getCatName(itemCode).Equals("Part"))
+                {
+                    cmbTrfFromCategory.Text = "Production";
+                    cmbTrfToCategory.Text = "Factory";
+                }
+                else
+                {
+                    if(dalMaterial.checkIfZeroCost(itemCode))
+                    {
+                        cmbTrfFromCategory.Text = "Customer";
+                        cmbTrfTo.Text = "PMMA";
+                        cmbTrfToCategory.Text = "Factory";
+                    }
+                    else
+                    {
+                        cmbTrfFromCategory.Text = "Supplier";
+                        cmbTrfToCategory.Text = "Factory";
+                    }
+                }
+                cmbTrfTo.SelectedIndex = -1;
+
+            }
+            else
+            {
+                cmbTrfFromCategory.SelectedIndex = -1;
+                cmbTrfToCategory.SelectedIndex = -1;
+            }
+        }
+
+        private void btnOUT_Click(object sender, EventArgs e)
+        {
+            string itemCode = cmbTrfItemCode.Text;
+
+            if (!string.IsNullOrEmpty(itemCode))
+            {
+                cmbTrfFromCategory.Text = "Factory";
+                cmbTrfFrom.SelectedIndex = -1;
+
+                if (dalItem.getCatName(itemCode).Equals("Part"))
+                {
+                    string customer = tool.getCustomerName(cmbTrfItemCode.Text);
+
+                    if (!customer.Equals(""))
+                    {
+                        cmbTrfToCategory.Text = "Customer";
+
+                        //DataTable dt = dalCust.Select();
+                        //loadLocationData(dt, cmbTrfTo, "cust_name");
+
+                        cmbTrfTo.Text = customer;
+                    }
+                    else
+                    {
+                        cmbTrfToCategory.SelectedIndex = -1;
+                    }
+                }
+                else
+                {
+                    cmbTrfFromCategory.Text = "Factory";
+                    cmbTrfFrom.SelectedIndex = -1;
+                    cmbTrfToCategory.Text = "Production";
+                    cmbTrfTo.SelectedIndex = -1;
+                }
+                    
+
+            }
+            else
+            {
+                cmbTrfFromCategory.SelectedIndex = -1;
+                cmbTrfToCategory.SelectedIndex = -1;
+            }
+        }
+
+        private void btnSwitch_Click(object sender, EventArgs e)
+        {
+            string itemCode = cmbTrfItemCode.Text;
+
+            if (!string.IsNullOrEmpty(itemCode))
+            {
+                cmbTrfFromCategory.Text = "Factory";
+                cmbTrfToCategory.Text = "Factory";
+
+                cmbTrfFrom.SelectedIndex = -1;
+                cmbTrfTo.SelectedIndex = -1;
+            }
+            else
+            {
+                cmbTrfFromCategory.SelectedIndex = -1;
+                cmbTrfToCategory.SelectedIndex = -1;
+            }
+        }
+
+        private void tableLayoutPanel9_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel13_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

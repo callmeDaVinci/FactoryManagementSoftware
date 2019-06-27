@@ -124,7 +124,7 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_ord (ord_item_code, ord_qty, ord_unit, ord_status, ord_required_date, ord_added_date, ord_added_by, ord_note) VALUES ( @ord_item_code, @ord_qty, @ord_unit, @ord_status, @ord_required_date, @ord_added_date, @ord_added_by, @ord_note)";
+                String sql = "INSERT INTO tbl_ord (ord_item_code, ord_qty, ord_unit, ord_status, ord_required_date, ord_added_date, ord_added_by, ord_note,ord_type,ord_po_no) VALUES ( @ord_item_code, @ord_qty, @ord_unit, @ord_status, @ord_required_date, @ord_added_date, @ord_added_by, @ord_note, @ord_type,@ord_po_no)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@ord_item_code", u.ord_item_code);
@@ -135,6 +135,8 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@ord_added_date", u.ord_added_date);
                 cmd.Parameters.AddWithValue("@ord_added_by", u.ord_added_by);
                 cmd.Parameters.AddWithValue("@ord_note", u.ord_note);
+                cmd.Parameters.AddWithValue("@ord_type", u.ord_type);
+                cmd.Parameters.AddWithValue("@ord_po_no", u.ord_po_no);
 
                 conn.Open();
 
@@ -182,6 +184,8 @@ namespace FactoryManagementSoftware.DAL
                                 ord_pending=@ord_pending,
                                 ord_received=@ord_received,
                                 ord_updated_date=@ord_updated_date,
+                                ord_type=@ord_type,
+                                ord_po_no=@ord_po_no,
                                 ord_updated_by=@ord_updated_by
                                 WHERE ord_id=@ord_id";
 
@@ -196,7 +200,8 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@ord_received", u.ord_received);
                 cmd.Parameters.AddWithValue("@ord_updated_date", u.ord_updated_date);
                 cmd.Parameters.AddWithValue("@ord_updated_by", u.ord_updated_by);
-
+                cmd.Parameters.AddWithValue("@ord_type", u.ord_type);
+                cmd.Parameters.AddWithValue("@ord_po_no", u.ord_po_no);
 
                 conn.Open();
 

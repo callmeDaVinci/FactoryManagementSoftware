@@ -1,4 +1,5 @@
 ﻿using FactoryManagementSoftware.BLL;
+using FactoryManagementSoftware.UI;
 using System;
 using System.Configuration;
 using System.Data;
@@ -164,10 +165,14 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_stock WHERE stock_item_code LIKE '%" + itemCode + "%' AND stock_fac_id LIKE '%" + factoryID + "%'";
+                String sql = "SELECT * FROM tbl_stock WHERE stock_item_code =@itemCode AND stock_fac_id = @factoryID";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@itemCode", itemCode);
+                cmd.Parameters.AddWithValue("@factoryID", factoryID);
+
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
@@ -191,7 +196,7 @@ namespace FactoryManagementSoftware.DAL
         }
         #endregion
 
-        private bool IfExists(string itemCode, string facID)
+        public bool IfExists(string itemCode, string facID)
         {
             DataTable dt = Search(itemCode, facID);
 
@@ -226,7 +231,7 @@ namespace FactoryManagementSoftware.DAL
             uStock.stock_qty = getQty(itemCode, facID) + qty;
             uStock.stock_unit = unit;
             uStock.stock_updtd_date = DateTime.Now;
-            uStock.stock_updtd_by = 0;
+            uStock.stock_updtd_by = MainDashboard.USER_ID;
 
             if (IfExists(itemCode, facID))
             {
@@ -264,7 +269,7 @@ namespace FactoryManagementSoftware.DAL
             uStock.stock_qty = getQty(itemCode, facID) - qty;
             uStock.stock_unit = unit;
             uStock.stock_updtd_date = DateTime.Now;
-            uStock.stock_updtd_by = 0;
+            uStock.stock_updtd_by = MainDashboard.USER_ID;
 
             if (IfExists(itemCode, facID))
             {

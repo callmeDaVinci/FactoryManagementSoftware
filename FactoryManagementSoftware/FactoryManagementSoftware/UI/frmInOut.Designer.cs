@@ -110,7 +110,9 @@
             this.dgvFactoryStock.AllowUserToAddRows = false;
             this.dgvFactoryStock.AllowUserToDeleteRows = false;
             this.dgvFactoryStock.AllowUserToResizeRows = false;
-            this.dgvFactoryStock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvFactoryStock.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvFactoryStock.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
@@ -126,14 +128,14 @@
             this.stock_qty});
             this.dgvFactoryStock.EnableHeadersVisualStyles = false;
             this.dgvFactoryStock.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvFactoryStock.Location = new System.Drawing.Point(36, 2);
+            this.dgvFactoryStock.Location = new System.Drawing.Point(2, 2);
             this.dgvFactoryStock.Margin = new System.Windows.Forms.Padding(2);
             this.dgvFactoryStock.Name = "dgvFactoryStock";
             this.dgvFactoryStock.ReadOnly = true;
             this.dgvFactoryStock.RowHeadersVisible = false;
             this.dgvFactoryStock.RowTemplate.Height = 40;
             this.dgvFactoryStock.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvFactoryStock.Size = new System.Drawing.Size(316, 243);
+            this.dgvFactoryStock.Size = new System.Drawing.Size(357, 264);
             this.dgvFactoryStock.TabIndex = 56;
             this.dgvFactoryStock.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFactoryStock_CellDoubleClick);
             this.dgvFactoryStock.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvFactoryStock_MouseClick);
@@ -141,17 +143,17 @@
             // fac_name
             // 
             this.fac_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.fac_name.HeaderText = "Factory";
+            this.fac_name.HeaderText = "FACTORY";
             this.fac_name.Name = "fac_name";
             this.fac_name.ReadOnly = true;
             // 
             // stock_qty
             // 
             this.stock_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.stock_qty.HeaderText = "Qty";
+            this.stock_qty.HeaderText = "QTY";
             this.stock_qty.Name = "stock_qty";
             this.stock_qty.ReadOnly = true;
-            this.stock_qty.Width = 66;
+            this.stock_qty.Width = 69;
             // 
             // dgvItem
             // 
@@ -182,7 +184,7 @@
             this.dgvItem.RowHeadersVisible = false;
             this.dgvItem.RowTemplate.Height = 40;
             this.dgvItem.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvItem.Size = new System.Drawing.Size(1131, 344);
+            this.dgvItem.Size = new System.Drawing.Size(1124, 344);
             this.dgvItem.TabIndex = 58;
             this.dgvItem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItem_CellClick);
             this.dgvItem.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvItem_CellFormatting);
@@ -209,11 +211,11 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(20)))), ((int)(((byte)(31)))));
-            this.label2.Location = new System.Drawing.Point(1148, 0);
+            this.label2.Location = new System.Drawing.Point(1141, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(134, 19);
+            this.label2.Size = new System.Drawing.Size(164, 19);
             this.label2.TabIndex = 61;
-            this.label2.Text = "QTY EACH FACTORY";
+            this.label2.Text = "QTY FOR EACH FACTORY";
             // 
             // label3
             // 
@@ -235,7 +237,9 @@
             dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.White;
             dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black;
             this.dgvTotal.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvTotal.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
@@ -250,7 +254,7 @@
             this.Total});
             this.dgvTotal.EnableHeadersVisualStyles = false;
             this.dgvTotal.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvTotal.Location = new System.Drawing.Point(36, 257);
+            this.dgvTotal.Location = new System.Drawing.Point(2, 270);
             this.dgvTotal.Margin = new System.Windows.Forms.Padding(2);
             this.dgvTotal.MultiSelect = false;
             this.dgvTotal.Name = "dgvTotal";
@@ -258,7 +262,7 @@
             this.dgvTotal.RowHeadersVisible = false;
             this.dgvTotal.RowTemplate.Height = 40;
             this.dgvTotal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTotal.Size = new System.Drawing.Size(316, 68);
+            this.dgvTotal.Size = new System.Drawing.Size(357, 70);
             this.dgvTotal.TabIndex = 66;
             // 
             // Total
@@ -266,7 +270,7 @@
             this.Total.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.Total.DefaultCellStyle = dataGridViewCellStyle7;
-            this.Total.HeaderText = "Total";
+            this.Total.HeaderText = "TOTAL";
             this.Total.Name = "Total";
             this.Total.ReadOnly = true;
             // 
@@ -338,13 +342,14 @@
             // 
             // cmbTransHistDate
             // 
-            this.cmbTransHistDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbTransHistDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbTransHistDate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTransHistDate.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbTransHistDate.FormattingEnabled = true;
-            this.cmbTransHistDate.Location = new System.Drawing.Point(1330, 3);
+            this.cmbTransHistDate.Location = new System.Drawing.Point(1318, 3);
             this.cmbTransHistDate.Name = "cmbTransHistDate";
-            this.cmbTransHistDate.Size = new System.Drawing.Size(78, 25);
+            this.cmbTransHistDate.Size = new System.Drawing.Size(121, 25);
             this.cmbTransHistDate.TabIndex = 76;
             this.cmbTransHistDate.SelectedIndexChanged += new System.EventHandler(this.cmbTransHistDate_SelectedIndexChanged);
             // 
@@ -353,7 +358,7 @@
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(1140, 13);
+            this.label4.Location = new System.Drawing.Point(1133, 13);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(179, 19);
             this.label4.TabIndex = 77;
@@ -379,6 +384,7 @@
             this.lblUpdatedTime.Size = new System.Drawing.Size(179, 19);
             this.lblUpdatedTime.TabIndex = 83;
             this.lblUpdatedTime.Text = "SHOW DATA FOR THE PAST";
+            this.lblUpdatedTime.Click += new System.EventHandler(this.lblUpdatedTime_Click);
             // 
             // label7
             // 
@@ -389,6 +395,7 @@
             this.label7.Size = new System.Drawing.Size(106, 19);
             this.label7.TabIndex = 84;
             this.label7.Text = "LAST UPDATED:";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -455,7 +462,7 @@
             this.tableLayoutPanel3.ColumnCount = 3;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 99.07173F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 0.92827F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 359F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 366F));
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 2, 1);
             this.tableLayoutPanel3.Controls.Add(this.label5, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.dgvItem, 0, 1);
@@ -476,12 +483,12 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.Controls.Add(this.dgvTotal, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.dgvFactoryStock, 0, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(1148, 22);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(1141, 22);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 74.84472F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.15528F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(354, 342);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 78.65497F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 21.34503F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(361, 342);
             this.tableLayoutPanel4.TabIndex = 87;
             // 
             // tableLayoutPanel5
@@ -508,8 +515,8 @@
             this.tableLayoutPanel6.ColumnCount = 4;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.7487F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 89.2513F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 89F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 87F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 127F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.tableLayoutPanel6.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.label6, 3, 0);
             this.tableLayoutPanel6.Controls.Add(this.cmbTransHistDate, 2, 0);
@@ -583,10 +590,7 @@
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fac_name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn stock_qty;
         private System.Windows.Forms.DataGridView dgvTotal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Total;
         private System.Windows.Forms.Button btnTransfer;
         private System.Windows.Forms.ComboBox cmbSearchCat;
         private System.Windows.Forms.Label label1;
@@ -605,5 +609,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fac_name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn stock_qty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Total;
     }
 }

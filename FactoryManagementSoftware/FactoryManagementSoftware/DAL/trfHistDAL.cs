@@ -3,6 +3,7 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.DAL
@@ -697,6 +698,14 @@ namespace FactoryManagementSoftware.DAL
 
         public DataTable rangeToAllCustomerSearchByMonth(string month, string year)
         {
+            
+            bool isNumeric = int.TryParse(month, out int n);
+
+            if(!isNumeric)
+            {
+                month = DateTime.ParseExact(month, "MMMM", CultureInfo.CurrentCulture).Month.ToString();
+            }
+
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
             //to hold the data from database

@@ -15,6 +15,7 @@ namespace FactoryManagementSoftware.UI
         private string initialQty= "";
         private string initialUnit = "";
         private string initialDate = "";
+        private string initialType = "";
         private bool edit = false;
 
         public frmOrderRequest()
@@ -29,7 +30,7 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
-        public frmOrderRequest(string orderID, string category, string itemCode, string itemName, string qty, string unit, string requiredDate)
+        public frmOrderRequest(string orderID, string category, string itemCode, string itemName, string qty, string unit, string requiredDate, string type)
         {
             InitializeComponent();
 
@@ -43,6 +44,8 @@ namespace FactoryManagementSoftware.UI
             initialQty = qty;
             initialUnit = unit;
             initialDate = requiredDate;
+            initialType = type;
+
             edit = true;
 
             txtOrderID.Text = orderID;
@@ -51,8 +54,19 @@ namespace FactoryManagementSoftware.UI
             cmbItemCode.Text = initialItemCode;
             txtQty.Text = initialQty;
             cmbQtyUnit.Text = initialUnit;
-            dtpRequiredDate.Text = initialDate;
 
+            if(type.Equals("ZERO COST"))
+            {
+                cbZeroCost.Checked = true;
+            }
+            else
+            {
+                cbZeroCost.Checked = false;
+            }
+            
+            DateTime date = DateTime.ParseExact(initialDate, "dd/MM/yyyy", null);
+            dtpRequiredDate.Text = date.ToString();
+     
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
@@ -209,6 +223,32 @@ namespace FactoryManagementSoftware.UI
                 errorProvider6.SetError(dtpRequiredDate, "Item forecast date Required");
             }
 
+            materialDAL dalMat = new materialDAL();
+            if(dalMat.checkIfZeroCost(cmbItemCode.Text))
+            {
+                if(!cbZeroCost.Checked)
+                {
+                    errorProvider7.SetError(cbZeroCost, cmbItemCode.Text + " is a zero cost item");
+                    DialogResult dialogResult = MessageBox.Show(cmbItemCode.Text+" is a zero cost item, are you sure you want to make this a PURCHASE order?\n(You can change it by check/uncheck the ZERO COST section)", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (dialogResult != DialogResult.Yes)
+                    {
+                        result = false;
+                    }
+                }
+            }
+            else
+            {
+                if (cbZeroCost.Checked)
+                {
+                    errorProvider7.SetError(cbZeroCost, cmbItemCode.Text + " NOT a zero cost item");
+                    DialogResult dialogResult = MessageBox.Show(cmbItemCode.Text + " NOT a zero cost item, are you sure you want to make this a ZERO COST order?\n(You can change it by check/uncheck the ZERO COST section)", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (dialogResult != DialogResult.Yes)
+                    {
+                        result = false;
+                    }
+                }
+            }
+
             return result;
         }
 
@@ -226,6 +266,15 @@ namespace FactoryManagementSoftware.UI
                 uOrd.ord_id = id;
                 uOrd.ord_updated_date = DateTime.Now;
                 uOrd.ord_updated_by = MainDashboard.USER_ID;
+            }
+
+            if(cbZeroCost.Checked)
+            {
+                uOrd.ord_type = "ZERO COST";
+            }
+            else
+            {
+                uOrd.ord_type = "PURCHASE";
             }
 
             uOrd.ord_item_code = cmbItemCode.Text;
@@ -290,7 +339,23 @@ namespace FactoryManagementSoftware.UI
 
         private void checkEdit(int id)
         {
-            if(initialCat != cmbItemCat.Text)
+            string type;
+
+            if(cbZeroCost.Checked)
+            {
+                type = "ZERO COST";
+            }
+            else
+            {
+                type = "PURCHASE";
+            }
+
+            if (initialType != type)
+            {
+                dalOrderAction.orderEdit(id, -1, -1, "Type", initialType, type, txtNote.Text);
+            }
+
+            if (initialCat != cmbItemCat.Text)
             {
                 dalOrderAction.orderEdit(id, -1, -1, "Category", initialCat, cmbItemCat.Text, txtNote.Text);
             }
@@ -329,7 +394,7 @@ namespace FactoryManagementSoftware.UI
             bool success;
             if (Validation())
             {
-                DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult dialogResult = MessageBox.Show("Are you sure want to request this order?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
 
@@ -362,11 +427,7 @@ namespace FactoryManagementSoftware.UI
                         if (dalOrderAction.orderRequest(id, txtNote.Text))
                         {
                             MessageBox.Show("New order is requesting..."); 
-                            this.Close();
-                        }
-                        else
-                        {
-                            //delete last add order record?
+                            Close();
                         }
                         
                     }
@@ -382,5 +443,15 @@ namespace FactoryManagementSoftware.UI
         }
 
         #endregion
+
+        private void frmOrderRequest_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbZeroCost_CheckedChanged(object sender, EventArgs e)
+        {
+            errorProvider7.Clear();
+        }
     }
 }

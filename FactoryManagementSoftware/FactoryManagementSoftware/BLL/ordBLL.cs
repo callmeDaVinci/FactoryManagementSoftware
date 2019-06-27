@@ -22,5 +22,7 @@ namespace FactoryManagementSoftware.BLL
         public string ord_note { get; set; }
         public DateTime ord_updated_date { get; set; }
         public int ord_updated_by { get; set; }
+        public string ord_type { get; set; }
+        public int ord_po_no { get; set; }
     }
 }

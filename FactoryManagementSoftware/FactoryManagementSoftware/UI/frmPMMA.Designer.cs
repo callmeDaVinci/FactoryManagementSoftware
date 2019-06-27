@@ -40,6 +40,7 @@
             this.lblEnd = new System.Windows.Forms.Label();
             this.dtpStart = new System.Windows.Forms.DateTimePicker();
             this.lblStart = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPMMA)).BeginInit();
             this.SuspendLayout();
             // 
@@ -191,12 +192,26 @@
             this.lblStart.TabIndex = 112;
             this.lblStart.Text = "IN/OUT START";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Blue;
+            this.label1.Location = new System.Drawing.Point(705, 90);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(123, 23);
+            this.label1.TabIndex = 116;
+            this.label1.Text = "CHANGE DATE";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
             // frmPMMA
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.dtpEnd);
             this.Controls.Add(this.lblEnd);
             this.Controls.Add(this.dtpStart);
@@ -232,5 +247,6 @@
         private System.Windows.Forms.Label lblEnd;
         private System.Windows.Forms.DateTimePicker dtpStart;
         private System.Windows.Forms.Label lblStart;
+        private System.Windows.Forms.Label label1;
     }
 }

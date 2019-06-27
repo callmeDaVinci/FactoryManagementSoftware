@@ -263,7 +263,7 @@ namespace FactoryManagementSoftware.DAL
              if(orderID > 0)
             {
                 //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
-                setActionData(orderID,-1,"APPROVE", "", "", "", note, true);
+                setActionData(orderID,-1,"APPROVE/EDIT", "", "", "", note, true);
                 success = Insert(uOrderAction);
             }
 
@@ -311,14 +311,12 @@ namespace FactoryManagementSoftware.DAL
         public bool orderEdit(int orderID, int trfID, int actionID, string content, string from, string to, string note)
         {
             bool success = false;
-
-            if(orderID > 0)
+            if (orderID > 0)
             {
                 //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
                 setActionData(orderID, trfID,"EDIT", content, from, to, "", true);
             }
-
-            if(actionID == -1)
+            if (actionID == -1)
             {
                 success = Insert(uOrderAction);
             }
@@ -343,7 +341,7 @@ namespace FactoryManagementSoftware.DAL
         }
 
         //close order when fully received
-        public bool orderClose(int orderID, string content, string note)
+        public bool orderClose(int orderID, string note)
         {
             bool success = false;
 
@@ -358,6 +356,31 @@ namespace FactoryManagementSoftware.DAL
             {
                 MessageBox.Show("Failed to make order close action");
                 tool.historyRecord(text.System, "Failed to make order close action(orderActionDAL)", DateTime.Now, MainDashboard.USER_ID);
+
+            }
+            else
+            {
+                tool.historyRecord(text.OrderClose, text.getOrderStatusChangeString(orderID), DateTime.Now, MainDashboard.USER_ID);
+            }
+
+            return success;
+        }
+
+        public bool orderReOpen(int orderID, string note)
+        {
+            bool success = false;
+
+            if (orderID > 0)
+            {
+                //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
+                setActionData(orderID, -1, "REOPEN", "", "", "", note, true);
+                success = Insert(uOrderAction);
+            }
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to make order reopen action");
+                tool.historyRecord(text.System, "Failed to make reopen action(orderActionDAL)", DateTime.Now, MainDashboard.USER_ID);
 
             }
             else

@@ -46,7 +46,12 @@
             this.txtItemName = new System.Windows.Forms.TextBox();
             this.txtItemCode = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.cbZeroCost = new System.Windows.Forms.CheckBox();
+            this.txtPONO = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.SuspendLayout();
             // 
             // btnApprove
@@ -56,7 +61,7 @@
             this.btnApprove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnApprove.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnApprove.ForeColor = System.Drawing.Color.White;
-            this.btnApprove.Location = new System.Drawing.Point(524, 521);
+            this.btnApprove.Location = new System.Drawing.Point(524, 470);
             this.btnApprove.Margin = new System.Windows.Forms.Padding(2);
             this.btnApprove.Name = "btnApprove";
             this.btnApprove.Size = new System.Drawing.Size(135, 52);
@@ -71,7 +76,7 @@
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
-            this.btnCancel.Location = new System.Drawing.Point(681, 522);
+            this.btnCancel.Location = new System.Drawing.Point(681, 471);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(120, 50);
@@ -93,22 +98,22 @@
             // txtNote
             // 
             this.txtNote.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNote.Location = new System.Drawing.Point(26, 342);
+            this.txtNote.Location = new System.Drawing.Point(435, 329);
             this.txtNote.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtNote.Multiline = true;
             this.txtNote.Name = "txtNote";
-            this.txtNote.Size = new System.Drawing.Size(775, 80);
+            this.txtNote.Size = new System.Drawing.Size(366, 34);
             this.txtNote.TabIndex = 114;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(22, 315);
+            this.label2.Location = new System.Drawing.Point(431, 302);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 23);
+            this.label2.Size = new System.Drawing.Size(180, 23);
             this.label2.TabIndex = 113;
-            this.label2.Text = "NOTE";
+            this.label2.Text = "NOTE / PURCHASE TO";
             // 
             // txtQty
             // 
@@ -116,7 +121,7 @@
             this.txtQty.Location = new System.Drawing.Point(26, 238);
             this.txtQty.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtQty.Name = "txtQty";
-            this.txtQty.Size = new System.Drawing.Size(366, 34);
+            this.txtQty.Size = new System.Drawing.Size(224, 34);
             this.txtQty.TabIndex = 112;
             this.txtQty.TextChanged += new System.EventHandler(this.txtQty_TextChanged);
             this.txtQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtQty_KeyPress);
@@ -233,12 +238,52 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // cbZeroCost
+            // 
+            this.cbZeroCost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbZeroCost.AutoSize = true;
+            this.cbZeroCost.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbZeroCost.Location = new System.Drawing.Point(256, 236);
+            this.cbZeroCost.Name = "cbZeroCost";
+            this.cbZeroCost.Size = new System.Drawing.Size(160, 36);
+            this.cbZeroCost.TabIndex = 127;
+            this.cbZeroCost.Text = "ZERO COST";
+            this.cbZeroCost.UseVisualStyleBackColor = true;
+            this.cbZeroCost.CheckedChanged += new System.EventHandler(this.cbZeroCost_CheckedChanged);
+            // 
+            // txtPONO
+            // 
+            this.txtPONO.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPONO.Location = new System.Drawing.Point(26, 329);
+            this.txtPONO.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtPONO.Name = "txtPONO";
+            this.txtPONO.Size = new System.Drawing.Size(366, 34);
+            this.txtPONO.TabIndex = 129;
+            this.txtPONO.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPONO_KeyPress);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(22, 300);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(71, 23);
+            this.label3.TabIndex = 128;
+            this.label3.Text = "P/O NO";
+            // 
+            // errorProvider2
+            // 
+            this.errorProvider2.ContainerControl = this;
+            // 
             // frmOrderApprove
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(829, 620);
+            this.ClientSize = new System.Drawing.Size(829, 547);
+            this.Controls.Add(this.txtPONO);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.cbZeroCost);
             this.Controls.Add(this.txtItemCode);
             this.Controls.Add(this.txtItemName);
             this.Controls.Add(this.txtOrderID);
@@ -261,8 +306,9 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmOrderApprove";
-            this.Text = "Order Approve";
+            this.Text = "Order Approve/Edit";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -287,5 +333,9 @@
         private System.Windows.Forms.TextBox txtItemName;
         private System.Windows.Forms.TextBox txtItemCode;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.CheckBox cbZeroCost;
+        private System.Windows.Forms.TextBox txtPONO;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ErrorProvider errorProvider2;
     }
 }

@@ -10,23 +10,21 @@ using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmOrderCancel : Form
+    public partial class frmOrderComplete : Form
     {
-        public frmOrderCancel()
+        public frmOrderComplete()
         {
             InitializeComponent();
-        }
-
-        private void btnReset_Click(object sender, EventArgs e)
-        {
-            frmOrder.cancel = false;
-            Close();
         }
 
         private void btnOrder_Click(object sender, EventArgs e)
         {
             frmOrder.note = txtNote.Text;
-            frmOrder.cancel = true;
+            Close();
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
             Close();
         }
     }

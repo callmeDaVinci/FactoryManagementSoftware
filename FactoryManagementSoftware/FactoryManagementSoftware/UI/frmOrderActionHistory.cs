@@ -11,6 +11,8 @@ namespace FactoryManagementSoftware.UI
     public partial class frmOrderActionHistory : Form
     {
         userDAL dalUser = new userDAL();
+
+        itemBLL uItem = new itemBLL();
         Tool tool = new Tool();
 
         public frmOrderActionHistory(int orderID)
@@ -154,13 +156,13 @@ namespace FactoryManagementSoftware.UI
 
         private void listPaint(DataGridView dgv)
         {
-            dgv.BorderStyle = BorderStyle.None;
+            dgv.BorderStyle = BorderStyle.FixedSingle;
             dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
-            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.Raised;
             dgv.BackgroundColor = Color.White;
 
             dgv.EnableHeadersVisualStyles = false;
-            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
 
@@ -345,7 +347,7 @@ namespace FactoryManagementSoftware.UI
             //stock out,deactivate
             //reload list
             bool success = false;
-            string to = "";
+            string to = "", from = "";
             string itemCode = "";
             string unit = "";
             float returnQty = 0;
@@ -360,6 +362,7 @@ namespace FactoryManagementSoftware.UI
                 foreach (DataRow action in dt.Rows)
                 {  
                     to = action["action_to"].ToString();
+                    from = action["action_from"].ToString();
 
                     if (float.TryParse(action["action_detail"].ToString(), out returnQty))
                     {
@@ -405,6 +408,23 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
+                if (from.Equals(tool.getCustName(1)))
+                {
+                    uItem.item_code = itemCode;
+                    uItem.item_last_pmma_qty = dalItem.getLastPMMAQty(itemCode);
+                    uItem.item_pmma_qty = dalItem.getPMMAQty(itemCode) - returnQty;
+                    uItem.item_updtd_date = uStock.stock_updtd_date;
+                    uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                    bool itemPMMMAQtyUpdateSuccess = dalItem.UpdatePMMAQty(uItem);
+
+                    if (!itemPMMMAQtyUpdateSuccess)
+                    {
+                        MessageBox.Show("Failed to updated item pmma qty(@item dal)");
+                    }
+
+                }
+
                 frmOrder.receivedReturn = true;
                 dalItem.orderAdd(itemCode, returnQty.ToString());//add order qty to item
                 uOrder.ord_id = orderID;

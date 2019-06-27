@@ -38,21 +38,95 @@ namespace FactoryManagementSoftware.UI
         private string forecastCurrentMonth;
         private string forecastNextMonth;
         private string forecastNextNextMonth;
+        private string forecastNextNextNextMonth;
         private string MaterialCode;
+
+        readonly string headerIndex = "#";
+        readonly string headerType = "TYPE";
+        readonly string headerMat = "MATERIAL";
+        readonly string headerCode = "CODE";
+        readonly string headerName = "NAME";
+        readonly string headerMB = "MB";
+        readonly string headerMBRate = "MB RATE";
+        readonly string headerSubMatRate = "RATE";
+        readonly string headerWeight = "WEIGHT";
+        readonly string headerWastage = "WASTAGE %";
+        readonly string headerReadyStock = "READY STOCK";
+        readonly string headerOut = "OUT";
+        readonly string headerMatUsed = "MAT USED";
+        readonly string headerSubMatUsed = "SUB MAT USED";
+        readonly string headerMBUsed = "MB/PIGMENT USED";
+        readonly string headerStillNeed = "STILL NEED";
+        readonly string headerTotal = "TOTAL";
+
+        readonly string headerOutOne = "OUT 1";
+        readonly string headerOutTwo = "OUT 2";
+        readonly string headerOutThree = "OUT 3";
+        readonly string headerOutFour = "OUT 4";
+
+        readonly string headerForecastOne = "Forecast 1";
+        readonly string headerForecastTwo = "Forecast 2";
+        readonly string headerForecastThree = "Forecast 3";
+        readonly string headerForecastFour = "Forecast 4";
+
+        private string headerBalanceZero = "FORECAST BAL 0";
+        private string headerBalanceOne = "FORECAST BAL 1";
+        private string headerBalanceTwo = "FORECAST BAL 2";
+        private string headerBalanceThree = "FORECAST BAL 3";
+        private string headerBalanceFour = "FORECAST BALANCE 4";
+        readonly string headerPendingOrder = "PENDING ORDER";
+        readonly string headerForecast = "FORECAST";
+
 
         DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
         DataGridViewAutoSizeColumnMode DisplayedCells = DataGridViewAutoSizeColumnMode.DisplayedCells;
         DataGridViewAutoSizeColumnMode DisplayedCellsExceptHeader = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
 
-        public frmOrderAlertDetail(string itemCode)
+        public frmOrderAlertDetail(string itemCode,DataTable dt)
         {
             MaterialCode = itemCode;
             InitializeComponent();
             addDataToForecastCMB();
-            createDGV();
+
+            dgvOrderAlert.DataSource = dt;
+            dgvAlertUIEdit(dgvOrderAlert);
+
+            tool.DoubleBuffered(dgvOrderAlert, true);
+            tool.DoubleBuffered(dgvMaterialUsedForecast,true);
         }
 
         #region UI setting
+
+        private void dgvAlertUIEdit(DataGridView dgv)
+        {
+            dgv.Columns[headerIndex].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+            dgv.Columns[headerCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[headerName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            dgv.Columns[headerType].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerReadyStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerBalanceOne].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerBalanceTwo].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerBalanceThree].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerBalanceFour].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerPendingOrder].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+            int forecastCurrentMonth = DateTime.Parse("1." + getCurrentForecastMonth() + " 2008").Month;
+            int forecastNextMonth = getNextMonth(forecastCurrentMonth);
+            int forecastNextNextMonth = getNextMonth(forecastNextMonth);
+            int forecastNextNextNextMonth = getNextMonth(forecastNextNextMonth);
+
+            string balanceOneName = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonth).ToUpper().ToString() + " BAL";
+            string balanceTwoName = new DateTimeFormatInfo().GetMonthName(forecastNextMonth).ToUpper().ToString() + " BAL";
+            string balanceThreeName = new DateTimeFormatInfo().GetMonthName(forecastNextNextMonth).ToUpper().ToString() + " BAL";
+            string balanceFourName = new DateTimeFormatInfo().GetMonthName(forecastNextNextNextMonth).ToUpper().ToString() + " BAL";
+
+            dgv.Columns[headerBalanceOne].HeaderText = "AFTER " + balanceOneName;
+            dgv.Columns[headerBalanceTwo].HeaderText = "AFTER " + balanceTwoName;
+            dgv.Columns[headerBalanceThree].HeaderText = "AFTER " + balanceThreeName;
+            dgv.Columns[headerBalanceFour].HeaderText = "AFTER " + balanceFourName;
+        }
 
         private void createDGV()
         {
@@ -88,15 +162,76 @@ namespace FactoryManagementSoftware.UI
             forecastCurrentMonth = getForecastMonth(1);
             forecastNextMonth = getForecastMonth(2);
             forecastNextNextMonth = getForecastMonth(3);
+            forecastNextNextNextMonth = getForecastMonth(4);
 
             cmbForecast.Items.Clear();
-            cmbForecast.Items.Add(forecastCurrentMonth);
-            cmbForecast.Items.Add(forecastNextMonth);
-            cmbForecast.Items.Add(forecastNextNextMonth);
+            cmbForecast.Items.Add("UP TO "+forecastCurrentMonth);
+            cmbForecast.Items.Add("UP TO " + forecastNextMonth);
+            cmbForecast.Items.Add("UP TO " + forecastNextNextMonth);
+            cmbForecast.Items.Add("UP TO " + forecastNextNextNextMonth);
+
             cmbForecast.SelectedIndex = 0;
         }
 
+        public DataTable NewRAWMatUsedForeacastTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add("#", typeof(int));
+            dt.Columns.Add(headerMat, typeof(string));
+            dt.Columns.Add(headerCode, typeof(string));
+            dt.Columns.Add(headerName, typeof(string));
+
+            //dt.Columns.Add(headerReadyStock, typeof(float));
+            //dt.Columns.Add(headerForecast, typeof(float));
+            //dt.Columns.Add(headerOut, typeof(float));
+            dt.Columns.Add(headerStillNeed, typeof(float));
+            dt.Columns.Add(headerWeight, typeof(float));
+            dt.Columns.Add(headerWastage, typeof(float));
+            dt.Columns.Add(headerMatUsed, typeof(float));
+            dt.Columns.Add(headerTotal, typeof(float));
+
+            return dt;
+        }
+
+        public DataTable NewMBUsedForeacastTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add("#", typeof(int));
+            dt.Columns.Add(headerMat, typeof(string));
+            dt.Columns.Add(headerCode, typeof(string));
+            dt.Columns.Add(headerName, typeof(string));
+            dt.Columns.Add(headerStillNeed, typeof(float));
+            dt.Columns.Add(headerWeight, typeof(float));
+            dt.Columns.Add(headerWastage, typeof(float));
+            dt.Columns.Add(headerMatUsed, typeof(float));
+            dt.Columns.Add(headerMBRate, typeof(float));
+            dt.Columns.Add(headerMBUsed, typeof(float));
+            dt.Columns.Add(headerTotal, typeof(float));
+
+            return dt;
+        }
+
+        public DataTable NewSubMatForeacastTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add("#", typeof(int));
+            dt.Columns.Add(headerMat, typeof(string));
+            dt.Columns.Add(headerCode, typeof(string));
+            dt.Columns.Add(headerName, typeof(string));
+            dt.Columns.Add(headerStillNeed, typeof(float));
+            dt.Columns.Add(headerSubMatRate, typeof(float));
+            dt.Columns.Add(headerSubMatUsed, typeof(float));
+            dt.Columns.Add(headerTotal, typeof(float));
+
+            return dt;
+        }
+
         #endregion
+
+
 
         private DataTable AddDuplicates(DataTable dt)
         {
@@ -226,6 +361,15 @@ namespace FactoryManagementSoftware.UI
                 int forecastNextNextMonthNum = getNextMonth(forecastNextMonthNum);
                 monthName = new DateTimeFormatInfo().GetMonthName(forecastNextNextMonthNum).ToUpper().ToString();
             }
+            else if (type == 4)
+            {
+                int forecastNextMonthNum = getNextMonth(forecastCurrentMonthNum);
+                int forecastNextNextMonthNum = getNextMonth(forecastNextMonthNum);
+                int forecastNextNextNextMonthNum = getNextMonth(forecastNextNextMonthNum);
+
+                monthName = new DateTimeFormatInfo().GetMonthName(forecastNextNextNextMonthNum).ToUpper().ToString();
+            }
+
             return monthName;
         }
 
@@ -590,11 +734,319 @@ namespace FactoryManagementSoftware.UI
             lblDGV.Text = cmbForecast.Text + " MATERIAL USED FORECAST";
         }
 
+        private void dgvMatUsedForecastUIEdit(DataGridView dgv)
+        {
+            dgv.Columns[headerIndex].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerMat].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[headerName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            //dgv.Columns[headerReadyStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            //dgv.Columns[headerForecast].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            //dgv.Columns[headerOut].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerStillNeed].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerWeight].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerWastage].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerMatUsed].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerTotal].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+           // dgv.Columns[headerReadyStock].HeaderText = "STOCK FORECAST";
+        }
+
+        private void dgvMBUsedForecastUIEdit(DataGridView dgv)
+        {
+            dgv.Columns[headerIndex].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerMat].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[headerName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[headerStillNeed].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerWeight].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerWastage].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerMatUsed].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerMBRate].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerMBUsed].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerTotal].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+        }
+
+        private void dgvSubMatUsedForecastUIEdit(DataGridView dgv)
+        {
+            dgv.Columns[headerIndex].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerMat].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[headerName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[headerStillNeed].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerTotal].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+        }
+
+        private void loadSubMatUsedData(DataTable dtSubMat)
+        {
+            dgvMaterialUsedForecast.DataSource = null;
+
+            DataTable dt = NewSubMatForeacastTable();
+            DataRow dt_row;
+
+            DataTable dt_itemInfo = dalItem.Select();
+
+            int index = 1;
+            float stillNeed = 0, bal1, bal2, bal3, bal4;
+            string itemCode;
+            foreach (DataRow row in dtSubMat.Rows)
+            {
+                if (row[headerMat].ToString().Equals(MaterialCode))
+                {
+                    bal1 = Convert.ToSingle(row[headerBalanceOne]);
+                    bal2 = Convert.ToSingle(row[headerBalanceTwo]);
+                    bal3 = Convert.ToSingle(row[headerBalanceThree]);
+                    bal4 = Convert.ToSingle(row[headerBalanceFour]);
+
+                    dt_row = dt.NewRow();
+                    dt_row[headerIndex] = index;
+                    dt_row[headerMat] = MaterialCode;
+                    dt_row[headerCode] = row[headerCode];
+                    dt_row[headerName] = row[headerName];
+
+                    if (cmbForecast.SelectedIndex == 0)
+                    {
+                        stillNeed = Convert.ToSingle(row[headerBalanceOne]);
+                    }
+                    else if (cmbForecast.SelectedIndex == 1)
+                    {
+                        stillNeed = Convert.ToSingle(row[headerBalanceTwo]);
+                    }
+                    else if (cmbForecast.SelectedIndex == 2)
+                    {
+                        stillNeed = Convert.ToSingle(row[headerBalanceThree]);
+                    }
+                    else if (cmbForecast.SelectedIndex == 3)
+                    {
+                        stillNeed = Convert.ToSingle(row[headerBalanceFour]);
+                    }
+
+                    if (stillNeed >= 0)
+                    {
+                        stillNeed = 0;
+                    }
+
+                    stillNeed *= -1;
+                    dt_row[headerStillNeed] = stillNeed;
+
+                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ///get join qty data
+                    dt_row[headerSubMatRate] = row[headerMBRate];
+                    dt_row[headerSubMatUsed] = Math.Round(stillNeed * Convert.ToSingle(dt_row[headerSubMatRate]), 2);
+
+                    dt.Rows.Add(dt_row);
+                    index++;
+                }
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                float totalSubMatUsed = 0;
+                foreach (DataRow row in dt.Rows)
+                {
+                    totalSubMatUsed += Convert.ToSingle(row[headerSubMatUsed]);
+                }
+
+                dt.Rows[dt.Rows.Count - 1][headerTotal] = Math.Round(totalSubMatUsed, 2);
+
+                dgvMaterialUsedForecast.DataSource = dt;
+                dgvSubMatUsedForecastUIEdit(dgvMaterialUsedForecast);
+                dgvMaterialUsedForecast.ClearSelection();
+            }
+        }
+
+        private void loadMBUsedData(DataTable dtMB)
+        {
+            dgvMaterialUsedForecast.DataSource = null;
+
+            DataTable dt = NewMBUsedForeacastTable();
+            DataRow dt_row;
+
+            DataTable dt_itemInfo = dalItem.Select();
+
+            int index = 1;
+            float stillNeed = 0,bal1,bal2,bal3,bal4;
+            string itemCode;
+            foreach(DataRow row in dtMB.Rows)
+            {      
+                if (row[headerMB].ToString().Equals(MaterialCode))
+                {
+                    itemCode = row[headerCode].ToString();
+                    float itemWeight = Convert.ToSingle(row[headerWeight]);
+                    float wastage = Convert.ToSingle(row[headerWastage]);
+                    float mbRate = Convert.ToSingle(row[headerMBRate]);
+                    bal1 = Convert.ToSingle(row[headerBalanceOne]);
+                    bal2 = Convert.ToSingle(row[headerBalanceTwo]);
+                    bal3 = Convert.ToSingle(row[headerBalanceThree]);
+                    bal4 = Convert.ToSingle(row[headerBalanceFour]);
+
+                    dt_row = dt.NewRow();
+                    dt_row[headerIndex] = index;
+                    dt_row[headerMat] = MaterialCode;
+                    dt_row[headerCode] = row[headerCode];
+                    dt_row[headerName] = row[headerName];
+                    dt_row[headerMBRate] = row[headerMBRate];
+                    dt_row[headerWeight] = row[headerWeight];
+                    dt_row[headerWastage] = row[headerWastage];
+
+                    if (cmbForecast.SelectedIndex == 0)
+                    {
+                        stillNeed = Convert.ToSingle(row[headerBalanceOne]);
+                    }
+                    else if (cmbForecast.SelectedIndex == 1)
+                    {
+                        stillNeed = Convert.ToSingle(row[headerBalanceTwo]);
+                    }
+                    else if (cmbForecast.SelectedIndex == 2)
+                    {
+                        stillNeed = Convert.ToSingle(row[headerBalanceThree]);
+                    }
+                    else if (cmbForecast.SelectedIndex == 3)
+                    {
+                        stillNeed = Convert.ToSingle(row[headerBalanceFour]);
+                    }
+
+                    if (stillNeed >= 0)
+                    {
+                        stillNeed = 0;
+                    }
+
+                    stillNeed *= -1;
+                    dt_row[headerStillNeed] = stillNeed;
+                    dt_row[headerMatUsed] = Math.Round(stillNeed * itemWeight / 1000 * (1 + wastage), 2);
+                    dt_row[headerMBUsed] = Math.Round(Convert.ToSingle(dt_row[headerMatUsed])*mbRate, 2);
+                    dt.Rows.Add(dt_row);
+                    index++;
+                }
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                float totalMBUsed = 0;
+                foreach(DataRow row in dt.Rows)
+                {
+                    totalMBUsed += Convert.ToSingle(row[headerMBUsed]);
+                }
+
+                dt.Rows[dt.Rows.Count - 1][headerTotal] = Math.Round(totalMBUsed, 2);
+
+                dgvMaterialUsedForecast.DataSource = dt;
+                dgvMBUsedForecastUIEdit(dgvMaterialUsedForecast);
+                dgvMaterialUsedForecast.ClearSelection();
+            }
+        }
+
+        private void loadMatUsedData(DataTable dtMat)
+        {
+            dgvMaterialUsedForecast.DataSource = null;
+
+            DataTable dt = NewRAWMatUsedForeacastTable();
+            DataRow dt_row;
+
+            DataTable dt_itemInfo = dalItem.Select();
+
+            int index = 1;
+            float stillNeed = 0, bal1, bal2, bal3, bal4;
+            string itemCode;
+            foreach (DataRow row in dtMat.Rows)
+            {
+                if (row[headerMat].ToString().Equals(MaterialCode))
+                {
+                    itemCode = row[headerCode].ToString();
+                    float itemWeight = Convert.ToSingle(row[headerWeight]);
+                    float wastage = Convert.ToSingle(row[headerWastage]);
+                    float mbRate = Convert.ToSingle(row[headerMBRate]);
+                    bal1 = Convert.ToSingle(row[headerBalanceOne]);
+                    bal2 = Convert.ToSingle(row[headerBalanceTwo]);
+                    bal3 = Convert.ToSingle(row[headerBalanceThree]);
+                    bal4 = Convert.ToSingle(row[headerBalanceFour]);
+
+                    dt_row = dt.NewRow();
+                    dt_row[headerIndex] = index;
+                    dt_row[headerMat] = MaterialCode;
+                    dt_row[headerCode] = row[headerCode];
+                    dt_row[headerName] = row[headerName];
+                    dt_row[headerWeight] = row[headerWeight];
+                    dt_row[headerWastage] = row[headerWastage];
+
+                    if (cmbForecast.SelectedIndex == 0)
+                    {
+                        stillNeed = Convert.ToSingle(row[headerBalanceOne]);
+                        //dt_row[headerReadyStock] = row[headerBalanceOne];
+                        //dt_row[headerForecast] = row[headerForecastOne];
+                        //dt_row[headerOut] = row[headerOutOne];
+                    }
+                    else if (cmbForecast.SelectedIndex == 1)
+                    {
+                        stillNeed = Convert.ToSingle(row[headerBalanceTwo]);
+                        //dt_row[headerReadyStock] = row[headerBalanceTwo];
+                        //dt_row[headerForecast] = row[headerForecastTwo];
+                        //dt_row[headerOut] = row[headerOutTwo];
+                    }
+                    else if (cmbForecast.SelectedIndex == 2)
+                    {
+                        stillNeed = Convert.ToSingle(row[headerBalanceThree]);
+                        //dt_row[headerReadyStock] = row[headerBalanceThree];
+                        //dt_row[headerForecast] = row[headerForecastThree];
+                        //dt_row[headerOut] = row[headerOutThree];
+                    }
+                    else if (cmbForecast.SelectedIndex == 3)
+                    {
+                        stillNeed = Convert.ToSingle(row[headerBalanceFour]);
+                        //dt_row[headerReadyStock] = row[headerBalanceFour];
+                        //dt_row[headerForecast] = row[headerForecastFour];
+                        //dt_row[headerOut] = row[headerOutFour];
+                    }
+
+                    if (stillNeed >= 0)
+                    {
+                        stillNeed = 0;
+                    }
+
+                    stillNeed *= -1;
+                    dt_row[headerStillNeed] = stillNeed;
+                    dt_row[headerMatUsed] = Math.Round(stillNeed * itemWeight / 1000 * (1 + wastage), 2);
+
+                    dt.Rows.Add(dt_row);
+                    index++;
+                }
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                float totalMatUsed = 0;
+                foreach (DataRow row in dt.Rows)
+                {
+                    totalMatUsed += Convert.ToSingle(row[headerMatUsed]);
+                }
+
+                dt.Rows[dt.Rows.Count - 1][headerTotal] = totalMatUsed;
+
+                dgvMaterialUsedForecast.DataSource = dt;
+                dgvMatUsedForecastUIEdit(dgvMaterialUsedForecast);
+                dgvMaterialUsedForecast.ClearSelection();
+            }
+        }
+
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            insertAllItemForecastData();
-            loadMaterialUsedList();
+            DataTable dt_itemInfo = dalItem.Select();
+            string type = tool.getCatNameFromDataTable(dt_itemInfo, MaterialCode);
+            if (type.Equals("RAW Material"))
+            {
+                loadMatUsedData(tool.insertMaterialUsedData(tool.getCustName(1)));
+            }
+            else if(type.Equals("Master Batch") || type.Equals("Pigment"))
+            {
+                loadMBUsedData(tool.insertMaterialUsedData(tool.getCustName(1)));
+            }
+            else if (type.Equals("Sub Material"))
+            {
+                loadSubMatUsedData(tool.insertSubMaterialUsedData(tool.getCustName(1), MaterialCode));
+            }
         }
+
 
         #region backup
         private void loadMaterialUsedList2()
@@ -975,5 +1427,45 @@ namespace FactoryManagementSoftware.UI
 
         }
         #endregion
+
+        private void dgvOrderAlert_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void frmOrderAlertDetail_Load(object sender, EventArgs e)
+        {
+            dgvOrderAlert.ClearSelection();
+
+        }
+
+        private void dgvOrderAlert_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            DataGridView dgv = dgvOrderAlert;
+            dgv.SuspendLayout();
+            int row = e.RowIndex;
+            int col = e.ColumnIndex;
+
+            if (dgv.Columns[col].Name != "#" && dgv.Columns[col].Name != "TYPE" && dgv.Columns[col].Name != headerCode && dgv.Columns[col].Name != headerName)
+            {
+                if (dgv.Rows[row].Cells[col].Value != null)
+                {
+                    if (!string.IsNullOrEmpty(dgv.Rows[row].Cells[col].Value.ToString()))
+                    {
+                        float num = dgv.Rows[row].Cells[col].Value == DBNull.Value ? 0 : Convert.ToSingle(dgv.Rows[row].Cells[col].Value.ToString());
+                        if (num < 0)
+                        {
+                            dgv.Rows[row].Cells[col].Style.ForeColor = Color.Red;
+                        }
+                        else
+                        {
+                            dgv.Rows[row].Cells[col].Style.ForeColor = Color.Black;
+                        }
+                    }
+                }
+            }
+
+            dgv.ResumeLayout();
+        }
     }
 }

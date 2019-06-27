@@ -1,4 +1,5 @@
 ﻿using FactoryManagementSoftware.BLL;
+using FactoryManagementSoftware.UI;
 using System;
 using System.Configuration;
 using System.Data;
@@ -601,8 +602,23 @@ namespace FactoryManagementSoftware.DAL
             float number = Convert.ToSingle(ordQty);
             uItem.item_code = itemCode;
             uItem.item_updtd_date = DateTime.Now;
-            uItem.item_updtd_by = 0;
+            uItem.item_updtd_by = MainDashboard.USER_ID; ;
             uItem.item_ord = getOrderQty(itemCode) + number;
+
+            //Updating data into database
+            bool success = ordUpdate(uItem);
+
+            return success;
+        }
+
+        public bool orderAdd(string itemCode, float ordQty)
+        {
+            itemBLL uItem = new itemBLL();
+
+            uItem.item_code = itemCode;
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = MainDashboard.USER_ID; ;
+            uItem.item_ord = getOrderQty(itemCode) + ordQty;
 
             //Updating data into database
             bool success = ordUpdate(uItem);
@@ -616,8 +632,23 @@ namespace FactoryManagementSoftware.DAL
             float number = Convert.ToSingle(ordQty);
             uItem.item_code = itemCode;
             uItem.item_updtd_date = DateTime.Now;
-            uItem.item_updtd_by = 0;
+            uItem.item_updtd_by = MainDashboard.USER_ID;
             uItem.item_ord = getOrderQty(itemCode) - number;
+
+            //Updating data into database
+            bool success = ordUpdate(uItem);
+
+            return success;
+
+        }
+
+        public bool orderSubtract(string itemCode, float ordQty)
+        {
+            itemBLL uItem = new itemBLL();
+            uItem.item_code = itemCode;
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = MainDashboard.USER_ID;
+            uItem.item_ord = getOrderQty(itemCode) - ordQty;
 
             //Updating data into database
             bool success = ordUpdate(uItem);
@@ -633,7 +664,7 @@ namespace FactoryManagementSoftware.DAL
             float number = Convert.ToSingle(stockQty);
             uItem.item_code = itemCode;
             uItem.item_updtd_date = DateTime.Now;
-            uItem.item_updtd_by = 0;
+            uItem.item_updtd_by = MainDashboard.USER_ID; ;
             uItem.item_qty = getStockQty(itemCode) + number;
 
             //Updating data into database
@@ -648,7 +679,7 @@ namespace FactoryManagementSoftware.DAL
             float number = Convert.ToSingle(stockQty);
             uItem.item_code = itemCode;
             uItem.item_updtd_date = DateTime.Now;
-            uItem.item_updtd_by = 0;
+            uItem.item_updtd_by = MainDashboard.USER_ID; ;
             uItem.item_qty = getStockQty(itemCode) - number;
 
             //Updating data into database
@@ -675,7 +706,7 @@ namespace FactoryManagementSoftware.DAL
             uItem.item_code = itemCode;
             uItem.item_qty = totalStock;
             uItem.item_updtd_date = DateTime.Now;
-            uItem.item_updtd_by = 0;
+            uItem.item_updtd_by = MainDashboard.USER_ID; ;
 
             //Updating data into database
             bool success = qtyUpdate(uItem);
@@ -1088,6 +1119,7 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
         public DataTable nameSearch(string keywords)
         {
             //static methodd to connect database

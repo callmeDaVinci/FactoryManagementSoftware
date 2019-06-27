@@ -167,6 +167,10 @@ namespace FactoryManagementSoftware.UI
 
             dtpDate.ShowUpDown = true;// to prevent the calendar from being displayed
 
+            var dummyYear = 2019;
+            var dummyMonth = DateTime.Now.Month;
+            dtpDate.Value = new DateTime(dummyYear, dummyMonth, 1);
+
             //Out Type
             cmbType.Items.Clear();
             cmbType.Items.Add(cmbTypeActual);
@@ -465,6 +469,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     //insert new data to table pmma
                     percentage = getLastMonthPercentage(itemCode, month, year);
+
                     insertDataToPMMA(itemCode, Convert.ToDateTime(dtpDate.Text), openningStock);
                 }
                 
@@ -1459,7 +1464,7 @@ namespace FactoryManagementSoftware.UI
         private bool checkIfActualExist()
         {
             bool actualExist = false;
-            DateTime selectedDate = Convert.ToDateTime(dtpDate.Text);
+            DateTime selectedDate = Convert.ToDateTime(dtpDate.Value);
             //DateTime selectedDate = Convert.ToDateTime(dtpDate.Text,System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
 
             int CurrentMonth = DateTime.Now.Month;
@@ -1650,6 +1655,11 @@ namespace FactoryManagementSoftware.UI
                 cmbType.Items.Add(cmbTypeForecast);
                 cmbType.SelectedIndex = 0;
             }
+
+            //string month = Convert.ToDateTime(dtpDate.Value).Month.ToString();
+            //string year = Convert.ToDateTime(dtpDate.Value).Year.ToString();
+
+            //MessageBox.Show(month + year);
         }
 
         private void cmbType_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -1680,9 +1690,16 @@ namespace FactoryManagementSoftware.UI
         {
             tool.DoubleBuffered(dgvPMMA, true);
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            label1.ForeColor = Color.Purple;
+            frmPMMADateEdit frm = new frmPMMADateEdit();
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();
+            label1.ForeColor = Color.Blue;
+        }
     }
-
-
 
 }
 

@@ -869,7 +869,10 @@ namespace FactoryManagementSoftware.UI
                         }
 
                         
-
+                        if(itemCode.Equals("V96LAR000"))
+                        {
+                            float test = 0;
+                        }
                         //DataTable dt3 = daltrfHist.outSearch(cmbCust.Text, getMonthValue(month), itemCode);//load item out to customer record in current month
                         DataTable dt3 = daltrfHist.rangeItemToCustomerSearch(cmbCust.Text, start, end, itemCode);
 
@@ -1422,7 +1425,7 @@ namespace FactoryManagementSoftware.UI
 
                         dgv.Rows[n].Cells[OsantColName].Value = item["forecast_osant"].ToString();
 
-                        dgv.Columns[Shot1ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 1);
+                        //dgv.Columns[Shot1ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 1);
                         dgv.Rows[n].Cells[Shot1ColName].Value = item["forecast_shot_one"].ToString();
 
                         if (shotOne < 0)
@@ -1431,10 +1434,14 @@ namespace FactoryManagementSoftware.UI
                         }
                         else
                         {
-                            if (dalItem.checkIfAssembly(itemCode))//assembly part show blue color, else show green color
+                            if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
                             {
                                 dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
 
+                            }
+                            else if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                            {
+                                dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                             }
                             else
                             {
@@ -1443,7 +1450,18 @@ namespace FactoryManagementSoftware.UI
                             }
                         }
 
-                        dgv.Columns[Shot2ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 2);
+                        //dgv.Columns[Shot2ColName].HeaderText = "SHOT FOR " + getShortMonth(month, 2);
+
+                        if (cbForecastMonth1.Checked)
+                        {
+                            dgv.Columns[Shot1ColName].HeaderText = "SHOT FOR " + getShortMonth(DateTime.Now.Month.ToString(), 1);
+                            dgv.Columns[Shot2ColName].HeaderText = "SHOT FOR " + getShortMonth(DateTime.Now.Month.ToString(), 2);
+                        }
+                        else
+                        {
+                            dgv.Columns[Shot1ColName].HeaderText = "SHOT FOR " + getShortMonth(DateTime.Now.Month.ToString(), 2);
+                            dgv.Columns[Shot2ColName].HeaderText = "SHOT FOR " + getShortMonth(DateTime.Now.Month.ToString(), 3);
+                        }
 
                         if (shotTwo < 0)
                         {
@@ -1451,10 +1469,20 @@ namespace FactoryManagementSoftware.UI
                         }
                         else
                         {
-                            if (dalItem.checkIfAssembly(itemCode))//assembly part show blue color, else show green color
-                            {
-                                dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            //if (dalItem.checkIfAssembly(itemCode))//assembly part show blue color, else show green color
+                            //{
+                            //    dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
 
+                            //}
+
+                            if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
+                            {
+                                dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+
+                            }
+                            else if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                            {
+                                dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                             }
                             else
                             {
@@ -1471,11 +1499,25 @@ namespace FactoryManagementSoftware.UI
                             dgv.Columns[Forecast2ColName].HeaderText = "F/cast " + getShortMonth(month, 2);
                             dgv.Columns[Forecast3ColName].HeaderText = "F/cast " + getShortMonth(month, 3);
 
-                            if (dalItem.checkIfAssembly(itemCode))
+                            //if (dalItem.checkIfAssembly(itemCode))
+                            //{
+                            //    dgv.Rows[n].Cells[Forecast1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            //    dgv.Rows[n].Cells[Forecast2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            //    dgv.Rows[n].Cells[Forecast3ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                            //}
+
+                            if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
                             {
                                 dgv.Rows[n].Cells[Forecast1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                                 dgv.Rows[n].Cells[Forecast2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                                 dgv.Rows[n].Cells[Forecast3ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+
+                            }
+                            else if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                            {
+                                dgv.Rows[n].Cells[Forecast1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                                dgv.Rows[n].Cells[Forecast2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
+                                dgv.Rows[n].Cells[Forecast3ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                             }
                             else
                             {

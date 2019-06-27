@@ -1,5 +1,6 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -14,13 +15,16 @@ namespace FactoryManagementSoftware.UI
         private string orderQty;
         private string receivedQty;
         private float returnQty;
+        private string orderType ="";
         private bool actionEdit = false;
         custDAL dalCust = new custDAL();
         userDAL dalUser = new userDAL();
+        Tool tool = new Tool();
 
-        public frmOrderReceive(int id, string code,string name, float qty,float received, string unit)
+        public frmOrderReceive(int id, string code,string name, float qty,float received, string unit, string type)
         {
             InitializeComponent();
+            orderType = type;
             txtItemCode.Text = code;
             txtItemName.Text = name;
             txtUnit.Text = unit;
@@ -66,6 +70,7 @@ namespace FactoryManagementSoftware.UI
         orderActionDAL dalOrderAction = new orderActionDAL();
 
         itemDAL dalItem = new itemDAL();
+        itemBLL uItem = new itemBLL();
 
         facDAL dalFac = new facDAL();
 
@@ -86,7 +91,16 @@ namespace FactoryManagementSoftware.UI
             //show trf_cat_name data from table only
             cmbFrom.DisplayMember = "trf_cat_name";
 
-            cmbFrom.Text = "Supplier";
+            if(orderType.Equals("ZERO COST"))
+            {
+                cmbFrom.Text = "Customer";
+                cmbSubFrom.Text = "PMMA";
+            }
+            else
+            {
+                cmbFrom.Text = "Supplier";
+                cmbSubFrom.SelectedIndex = -1;
+            }
 
             DataTable dt = dalFac.Select();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "fac_name");
@@ -122,6 +136,12 @@ namespace FactoryManagementSoftware.UI
                     actualReceivedQty = Convert.ToSingle(receivedQty);
                 }
                 errorProvider1.SetError(txtQty, "Wrong receive qty." + "\nOrdered Qty: " + orderQty + "\nReceived Qty: " + actualReceivedQty + "\nReceive qty cannot higher than " + maxReceiveQty);
+
+                DialogResult dialogResult = MessageBox.Show("Ordered qty: "+orderQty+"\nPending qty: "+(Convert.ToSingle(orderQty) - actualReceivedQty)+"\nReceive  qty: "+ receivedNumber+"\nThe receive qty has exceeded the pending qty, are you sure want to proccess this action?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    result = true;
+                }
             }
 
             if (receivedNumber <= 0)
@@ -144,7 +164,7 @@ namespace FactoryManagementSoftware.UI
             bool result = false;
             float receivedNumber = Convert.ToSingle(txtQty.Text);
 
-            if (receivedNumber == maxReceiveQty)
+            if (receivedNumber >= maxReceiveQty)
             {
                 result = true;
             }
@@ -276,7 +296,28 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                dalItem.orderSubtract(txtItemCode.Text, txtQty.Text);
+                dalItem.orderSubtract(txtItemCode.Text, txtQty.Text); //subtract order qty
+
+                //change pmma zero cost item qty
+                if (cmbSubFrom.Text.Equals(tool.getCustName(1)))
+                {
+                    dalItem.orderSubtract(txtItemCode.Text, txtQty.Text);
+
+                    uItem.item_code = uStock.stock_item_code;
+                    uItem.item_last_pmma_qty = dalItem.getLastPMMAQty(uItem.item_code);
+                    uItem.item_pmma_qty = dalItem.getPMMAQty(uItem.item_code) + Convert.ToSingle(txtQty.Text);
+                    uItem.item_updtd_date = uStock.stock_updtd_date;
+                    uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                    bool itemPMMMAQtyUpdateSuccess = dalItem.UpdatePMMAQty(uItem);
+
+                    if (!itemPMMMAQtyUpdateSuccess)
+                    {
+                        MessageBox.Show("Failed to updated item pmma qty(@item dal)");
+                    }
+
+                }
+
                 if (actionEdit)
                 {
                     
@@ -333,7 +374,7 @@ namespace FactoryManagementSoftware.UI
 
         private void cancel_Click(object sender, EventArgs e)//close form
         {
-            this.Close();
+            Close();
         }
 
         private void stockIn_Clock(object sender, EventArgs e)
