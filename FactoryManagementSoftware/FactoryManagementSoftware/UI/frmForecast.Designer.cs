@@ -28,11 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvForecast = new System.Windows.Forms.DataGridView();
+            this.NO = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.forecast_one = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.forecast_two = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.forecast_three = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.forecast_four = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.forecast_updtd_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.forecast_updtd_by = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbCust = new System.Windows.Forms.ComboBox();
             this.cmbForecast1 = new System.Windows.Forms.ComboBox();
@@ -47,15 +56,6 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.cmbForecast4 = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.NO = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_one = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_two = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_three = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_four = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_updtd_date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.forecast_updtd_by = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecast)).BeginInit();
             this.SuspendLayout();
             // 
@@ -87,7 +87,80 @@
             this.dgvForecast.Size = new System.Drawing.Size(1531, 492);
             this.dgvForecast.TabIndex = 0;
             this.dgvForecast.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecast_CellEndEdit);
+            this.dgvForecast.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecast_CellEnter);
+            this.dgvForecast.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecast_CellMouseEnter);
+            this.dgvForecast.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecast_CellMouseLeave);
             this.dgvForecast.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvForecast_EditingControlShowing);
+            this.dgvForecast.CursorChanged += new System.EventHandler(this.dgvForecast_CursorChanged);
+            // 
+            // NO
+            // 
+            this.NO.HeaderText = "NO";
+            this.NO.Name = "NO";
+            // 
+            // item_code
+            // 
+            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_code.HeaderText = "CODE";
+            this.item_code.Name = "item_code";
+            this.item_code.ReadOnly = true;
+            // 
+            // item_name
+            // 
+            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_name.HeaderText = "NAME";
+            this.item_name.Name = "item_name";
+            this.item_name.ReadOnly = true;
+            // 
+            // forecast_one
+            // 
+            this.forecast_one.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle17.BackColor = System.Drawing.Color.LightYellow;
+            this.forecast_one.DefaultCellStyle = dataGridViewCellStyle17;
+            this.forecast_one.HeaderText = "FORECAST 1";
+            this.forecast_one.Name = "forecast_one";
+            this.forecast_one.Width = 133;
+            // 
+            // forecast_two
+            // 
+            this.forecast_two.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle18.BackColor = System.Drawing.Color.LightCyan;
+            this.forecast_two.DefaultCellStyle = dataGridViewCellStyle18;
+            this.forecast_two.HeaderText = "FORECAST 2";
+            this.forecast_two.Name = "forecast_two";
+            this.forecast_two.Width = 133;
+            // 
+            // forecast_three
+            // 
+            this.forecast_three.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle19.BackColor = System.Drawing.Color.LightYellow;
+            this.forecast_three.DefaultCellStyle = dataGridViewCellStyle19;
+            this.forecast_three.HeaderText = "FORECAST 3";
+            this.forecast_three.Name = "forecast_three";
+            this.forecast_three.Width = 133;
+            // 
+            // forecast_four
+            // 
+            this.forecast_four.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dataGridViewCellStyle20.BackColor = System.Drawing.Color.LightCyan;
+            this.forecast_four.DefaultCellStyle = dataGridViewCellStyle20;
+            this.forecast_four.HeaderText = "FORECAST 4";
+            this.forecast_four.Name = "forecast_four";
+            this.forecast_four.Width = 133;
+            // 
+            // forecast_updtd_date
+            // 
+            this.forecast_updtd_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.forecast_updtd_date.HeaderText = "UPDATED DATE";
+            this.forecast_updtd_date.Name = "forecast_updtd_date";
+            this.forecast_updtd_date.ReadOnly = true;
+            this.forecast_updtd_date.Width = 158;
+            // 
+            // forecast_updtd_by
+            // 
+            this.forecast_updtd_by.HeaderText = "BY";
+            this.forecast_updtd_by.Name = "forecast_updtd_by";
+            this.forecast_updtd_by.ReadOnly = true;
             // 
             // label1
             // 
@@ -299,75 +372,6 @@
             this.label6.TabIndex = 90;
             this.label6.Text = "FORECAST 4";
             this.label6.Click += new System.EventHandler(this.label6_Click);
-            // 
-            // NO
-            // 
-            this.NO.HeaderText = "NO";
-            this.NO.Name = "NO";
-            // 
-            // item_code
-            // 
-            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_code.HeaderText = "CODE";
-            this.item_code.Name = "item_code";
-            this.item_code.ReadOnly = true;
-            // 
-            // item_name
-            // 
-            this.item_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_name.HeaderText = "NAME";
-            this.item_name.Name = "item_name";
-            this.item_name.ReadOnly = true;
-            // 
-            // forecast_one
-            // 
-            this.forecast_one.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.LightYellow;
-            this.forecast_one.DefaultCellStyle = dataGridViewCellStyle9;
-            this.forecast_one.HeaderText = "FORECAST 1";
-            this.forecast_one.Name = "forecast_one";
-            this.forecast_one.Width = 133;
-            // 
-            // forecast_two
-            // 
-            this.forecast_two.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.LightCyan;
-            this.forecast_two.DefaultCellStyle = dataGridViewCellStyle10;
-            this.forecast_two.HeaderText = "FORECAST 2";
-            this.forecast_two.Name = "forecast_two";
-            this.forecast_two.Width = 133;
-            // 
-            // forecast_three
-            // 
-            this.forecast_three.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.LightYellow;
-            this.forecast_three.DefaultCellStyle = dataGridViewCellStyle11;
-            this.forecast_three.HeaderText = "FORECAST 3";
-            this.forecast_three.Name = "forecast_three";
-            this.forecast_three.Width = 133;
-            // 
-            // forecast_four
-            // 
-            this.forecast_four.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.LightCyan;
-            this.forecast_four.DefaultCellStyle = dataGridViewCellStyle12;
-            this.forecast_four.HeaderText = "FORECAST 4";
-            this.forecast_four.Name = "forecast_four";
-            this.forecast_four.Width = 133;
-            // 
-            // forecast_updtd_date
-            // 
-            this.forecast_updtd_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.forecast_updtd_date.HeaderText = "UPDATED DATE";
-            this.forecast_updtd_date.Name = "forecast_updtd_date";
-            this.forecast_updtd_date.ReadOnly = true;
-            this.forecast_updtd_date.Width = 158;
-            // 
-            // forecast_updtd_by
-            // 
-            this.forecast_updtd_by.HeaderText = "BY";
-            this.forecast_updtd_by.Name = "forecast_updtd_by";
-            this.forecast_updtd_by.ReadOnly = true;
             // 
             // frmForecast
             // 

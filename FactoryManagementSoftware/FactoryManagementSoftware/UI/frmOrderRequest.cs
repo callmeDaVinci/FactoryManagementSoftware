@@ -17,7 +17,7 @@ namespace FactoryManagementSoftware.UI
         private string initialDate = "";
         private string initialType = "";
         private bool edit = false;
-
+        private bool continueOpen = false;
         public frmOrderRequest()
         {
             InitializeComponent();
@@ -26,7 +26,7 @@ namespace FactoryManagementSoftware.UI
 
             loadItemCategoryData();
             cmbItemCat.SelectedIndex = -1;
-
+            continueOpen = true;
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
@@ -150,6 +150,7 @@ namespace FactoryManagementSoftware.UI
                 dt.Clear();
                 dt.Rows.Add("kg");
                 dt.Rows.Add("g");
+                dt.Rows.Add("meter");
 
             }
             else if (itemCat.Equals("Part") || itemCat.Equals("Carton"))
@@ -166,6 +167,7 @@ namespace FactoryManagementSoftware.UI
                 dt.Rows.Add("piece");
                 dt.Rows.Add("kg");
                 dt.Rows.Add("g");
+                dt.Rows.Add("meter");
 
             }
             else
@@ -426,8 +428,17 @@ namespace FactoryManagementSoftware.UI
                         
                         if (dalOrderAction.orderRequest(id, txtNote.Text))
                         {
-                            MessageBox.Show("New order is requesting..."); 
-                            Close();
+                            MessageBox.Show("New order is requesting...");
+
+                            if(continueOpen)
+                            {
+                                txtQty.Clear();
+                            }
+                            else
+                            {
+                                Close();
+                            }
+                            
                         }
                         
                     }

@@ -36,6 +36,7 @@
             this.lblDGV = new System.Windows.Forms.Label();
             this.dgvOrderAlert = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaterialUsedForecast)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrderAlert)).BeginInit();
             this.SuspendLayout();
@@ -95,6 +96,7 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvMaterialUsedForecast.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvMaterialUsedForecast.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMaterialUsedForecast.Cursor = System.Windows.Forms.Cursors.Default;
             this.dgvMaterialUsedForecast.GridColor = System.Drawing.SystemColors.Control;
             this.dgvMaterialUsedForecast.Location = new System.Drawing.Point(25, 310);
             this.dgvMaterialUsedForecast.Margin = new System.Windows.Forms.Padding(2);
@@ -137,10 +139,13 @@
             this.dgvOrderAlert.RowHeadersVisible = false;
             this.dgvOrderAlert.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvOrderAlert.RowTemplate.Height = 40;
-            this.dgvOrderAlert.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvOrderAlert.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvOrderAlert.Size = new System.Drawing.Size(1533, 167);
             this.dgvOrderAlert.TabIndex = 104;
+            this.dgvOrderAlert.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrderAlert_CellContentClick_1);
             this.dgvOrderAlert.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvOrderAlert_CellFormatting);
+            this.dgvOrderAlert.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvOrderAlert_CellMouseDown);
+            this.dgvOrderAlert.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrderAlert_CellMouseEnter);
             // 
             // label1
             // 
@@ -152,12 +157,24 @@
             this.label1.TabIndex = 105;
             this.label1.Text = "ORDER ALERT";
             // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(1133, 83);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(425, 19);
+            this.label2.TabIndex = 106;
+            this.label2.Text = "RIGHT CLICK THE CELL FOR MONTHLY MATERIAL USED QUANTITY";
+            // 
             // frmOrderAlertDetail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dgvOrderAlert);
             this.Controls.Add(this.dgvMaterialUsedForecast);
@@ -187,5 +204,6 @@
         private System.Windows.Forms.Label lblDGV;
         private System.Windows.Forms.DataGridView dgvOrderAlert;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

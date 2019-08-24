@@ -50,6 +50,7 @@ namespace FactoryManagementSoftware.Module
         public string OrderApprove { get; } = "OrderApprove";
         public string OrderCancel { get; } = "OrderCancel";
         public string OrderReceive { get; } = "OrderReceive";
+        public string OrderFollowUp { get; } = "OrderFllowUp";
         public string OrderClose { get; } = "OrderClose";
         public string OrderActionEdit { get; } = "OrderActionEdit";
         public string OrderActionUndo { get; } = "OrderActionUndo";
@@ -64,7 +65,38 @@ namespace FactoryManagementSoftware.Module
 
         public string Excel { get; } = "Excel";
         public string PMMAEdit { get; } = "PMMA Edit";
+
+        //PLANNING////////////////////////////////////////////////////////////////////////////
+        public string planning_status_pending { get; } = "PENDING";//blue
+        public string planning_status_cancelled { get; } = "CANCELLED";//white
+        public string planning_status_warning { get; } = "WARNING";//red
+        public string planning_status_running { get; } = "RUNNING";//green
+        public string planning_status_delayed { get; } = "DELAYED";//yellow
+        public string planning_status_completed { get; } = "COMPLETED";//white
+
+        //LOCATION////////////////////////////////////////////////////////////////////////////
+        public string Factory { get; } = "Factory";
+        public string Production { get; } = "Production";
+        public string Assembly { get; } = "Assembly";
+
+        //UNIT////////////////////////////////////////////////////////////////////////////////
+        public string Unit_KG { get; } = "kg";
+        public string Unit_g { get; } = "g";
+        public string Unit_Set { get; } = "set";
+        public string Unit_Piece { get; } = "piece";
+
+        //ITEM CATEGORY///////////////////////////////////////////////////////////////////////
+        public string Cat_RawMat { get; } = "RAW Material";
+        public string Cat_MB { get; } = "Master Batch";
+        public string Cat_Pigment { get; } = "Pigment";
+        public string Cat_Part { get; } = "Part";
+        public string Cat_Carton { get; } = "Carton";
+        public string Cat_PolyBag { get; } = "Poly Bag";
+        public string Cat_SubMat { get; } = "Sub Material";
+
         #endregion
+
+
 
         #region History Detail String
 

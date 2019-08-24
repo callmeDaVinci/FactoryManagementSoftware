@@ -107,6 +107,7 @@
             this.dgvInOutReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvInOutReport.Size = new System.Drawing.Size(1522, 630);
             this.dgvInOutReport.TabIndex = 78;
+            this.dgvInOutReport.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgvInOutReport_SortCompare);
             // 
             // dtpEnd
             // 

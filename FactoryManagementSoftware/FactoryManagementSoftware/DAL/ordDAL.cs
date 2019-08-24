@@ -322,6 +322,7 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Search item category on Database usingKeywords
+
         public DataTable Search(string keyword)
         {
             //static methodd to connect database
@@ -331,7 +332,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_ord INNER JOIN tbl_item ON tbl_item.item_name LIKE '%" + keyword + "%' AND  tbl_item.item_code = tbl_ord.ord_item_code ";
+                String sql = "SELECT * FROM tbl_ord INNER JOIN tbl_item ON (tbl_item.item_name LIKE '%" + keyword + "%' OR tbl_item.item_code LIKE '%" + keyword + "%')AND  tbl_item.item_code = tbl_ord.ord_item_code ";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -357,7 +358,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable idSearch(string keywords)
+        public DataTable PONOSearch(string keyword)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -366,7 +367,42 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_ord WHERE ord_id LIKE '%" + keywords + "%'";
+                String sql = "SELECT * FROM tbl_ord INNER JOIN tbl_item ON tbl_ord.ord_po_no LIKE '%" + keyword + "%' AND  tbl_item.item_code = tbl_ord.ord_item_code ";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable IDSearch(string keyword)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_ord INNER JOIN tbl_item ON tbl_ord.ord_id LIKE '%" + keyword + "%' AND  tbl_item.item_code = tbl_ord.ord_item_code ";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);

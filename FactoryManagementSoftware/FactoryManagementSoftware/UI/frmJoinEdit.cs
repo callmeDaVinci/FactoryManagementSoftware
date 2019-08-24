@@ -2,7 +2,9 @@
 using System.Data;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
 using System.Windows.Forms;
+
 
 namespace FactoryManagementSoftware.UI
 {
@@ -11,6 +13,27 @@ namespace FactoryManagementSoftware.UI
         public frmJoinEdit()
         {
             InitializeComponent();
+            loadItemCategoryData();
+        }
+
+        public frmJoinEdit(joinBLL u)
+        {
+            InitializeComponent();
+            uJoin = u;
+            loadItemCategoryData();
+
+            cmbParentName.Text = tool.getItemName(u.join_parent_code);
+            cmbParentCode.Text = u.join_parent_code;
+
+            cmbChildCat.Text = dalItem.getCatName(u.join_child_code);
+            cmbChildName.Text = tool.getItemName(u.join_child_code);
+            cmbChildCode.Text = u.join_child_code;
+
+            txtQty.Text = u.join_qty.ToString();
+            txtMax.Text = u.join_max.ToString();
+            txtMin.Text = u.join_min.ToString();
+
+            updateTestName();
         }
 
         itemCatDAL dALItemCat = new itemCatDAL();
@@ -20,21 +43,32 @@ namespace FactoryManagementSoftware.UI
 
         itemDAL dalItem = new itemDAL();
 
+        Tool tool = new Tool();
 
         #region Load/Close
 
         private void loadItemCategoryData()
         {
-            DataTable dtItemCat = dALItemCat.Select();
+            //DataTable dtItemCat = dALItemCat.Select();
 
-            DataTable childTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
-            childTable.Rows.Add("ALL");
-            childTable.DefaultView.Sort = "item_cat_name ASC";
+            //DataTable childTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
+            //childTable.Rows.Add("ALL");
+            //childTable.DefaultView.Sort = "item_cat_name ASC";
+
+            DataTable childTable = new DataTable();
+            childTable.Columns.Add("CATEGORY");
+            childTable.Rows.Add("Carton");
+            childTable.Rows.Add("Part");
+            childTable.Rows.Add("Poly Bag");
+            childTable.Rows.Add("Sub Material");
 
             cmbChildCat.DataSource = childTable;
 
-            cmbChildCat.DisplayMember = "item_cat_name";
+            cmbChildCat.DisplayMember = "CATEGORY";
 
+            
+
+            
             cmbChildCat.SelectedIndex = -1;
 
             cmbParentCat.SelectedIndex = 0;
@@ -47,7 +81,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmJoinEdit_Load(object sender, EventArgs e)
         {
-            loadItemCategoryData();
+            
         }
 
         private void cmbParentCat_SelectedIndexChanged(object sender, EventArgs e)
@@ -75,6 +109,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             cmbParentName.SelectedIndex = -1;
+            updateTestName();
         }
 
         private void cmbChildCat_SelectedIndexChanged(object sender, EventArgs e)
@@ -84,6 +119,20 @@ namespace FactoryManagementSoftware.UI
             if (!string.IsNullOrEmpty(keywords))
             {
                 errorProvider4.Clear();
+
+                if(keywords.Equals("Carton"))
+                {
+                    txtMax.Enabled = true;
+                    txtMin.Enabled = true;
+                    txtQty.Enabled = false;
+                }
+                else
+                {
+                    txtMax.Enabled = false;
+                    txtMin.Enabled = false;
+                    txtQty.Enabled = true;
+                }
+
                 DataTable dt = dalItem.catSearch(keywords);
                 DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
                 distinctTable.DefaultView.Sort = "item_name ASC";
@@ -100,6 +149,7 @@ namespace FactoryManagementSoftware.UI
             {
                 cmbChildCode.DataSource = null;
             }
+            updateTestName();
         }
 
         private void cmbParentName_SelectedIndexChanged(object sender, EventArgs e)
@@ -118,7 +168,9 @@ namespace FactoryManagementSoftware.UI
             {
                 cmbParentCode.DataSource = null;
             }
-           
+
+            updateTestName();
+
         }
 
         private void cmbChildName_SelectedIndexChanged(object sender, EventArgs e)
@@ -137,6 +189,8 @@ namespace FactoryManagementSoftware.UI
             {
                 cmbChildCode.DataSource = null;
             }
+
+            updateTestName();
         }
 
         #endregion
@@ -189,7 +243,31 @@ namespace FactoryManagementSoftware.UI
                 result = false;
             }
 
-            if(cmbParentCode.Text.Equals(cmbChildCode.Text))
+            if (cmbChildCat.Text.Equals("Carton"))
+            {
+                if(string.IsNullOrEmpty(txtMax.Text))
+                {
+                    errorProvider7.SetError(txtMax, "Max Qty Required");
+                    result = false;
+                }
+
+                if (string.IsNullOrEmpty(txtMin.Text))
+                {
+                    errorProvider8.SetError(txtMin, "Min Qty Required");
+                    result = false;
+                }
+
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(txtQty.Text))
+                {
+                    errorProvider7.SetError(txtQty, "Join Qty Required");
+                    result = false;
+                }
+            }
+
+            if (cmbParentCode.Text.Equals(cmbChildCode.Text))
             {
                 MessageBox.Show("Parent cannot same with Child.");
                 result = false;
@@ -210,11 +288,13 @@ namespace FactoryManagementSoftware.UI
         private void cmbParentCode_SelectedIndexChanged(object sender, EventArgs e)
         {
             errorProvider3.Clear();
+            updateTestName();
         }
 
         private void cmbChildCode_SelectedIndexChanged(object sender, EventArgs e)
         {
             errorProvider6.Clear();
+            updateTestName();
         }
 
         #endregion
@@ -226,35 +306,64 @@ namespace FactoryManagementSoftware.UI
                 DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    if (IfProductsExists(cmbParentCode.Text, cmbChildCode.Text))
+                   
+                    uJoin.join_parent_code = cmbParentCode.Text;
+                     
+                    uJoin.join_child_code = cmbChildCode.Text;
+
+                    frmJoin.editedParentCode = uJoin.join_parent_code;
+                    frmJoin.editedChildCode = uJoin.join_child_code;
+
+                    if (cmbChildCat.Text.Equals("Carton"))
                     {
-                        MessageBox.Show("record already exist");
+                        uJoin.join_max = Convert.ToInt32(txtMax.Text);
+                        uJoin.join_min = Convert.ToInt32(txtMin.Text);
+                        uJoin.join_qty = 0;
                     }
                     else
                     {
-                        uJoin.join_parent_code = cmbParentCode.Text;
-                     
-                        uJoin.join_child_code = cmbChildCode.Text;
-                      
-                        uJoin.join_added_date = DateTime.Now;
-                        uJoin.join_added_by = -1;
+                        uJoin.join_max = 0;
+                        uJoin.join_min = 0;
+                        uJoin.join_qty = Convert.ToInt32(txtQty.Text);
+                    }
 
-                        if (!string.IsNullOrEmpty(txtQty.Text))
+                    
+
+                    DataTable dt_existCheck = dalJoin.existCheck(uJoin.join_parent_code, uJoin.join_child_code);
+
+                    bool success = false;
+
+                    if (dt_existCheck.Rows.Count > 0)
+                    {
+                        uJoin.join_updated_date = DateTime.Now;
+                        uJoin.join_updated_by = MainDashboard.USER_ID;
+                        //update data
+                        success = dalJoin.UpdateWithMaxMin(uJoin);
+                        //If the data is successfully inserted then the value of success will be true else false
+                        if (success)
                         {
-                            uJoin.join_qty = Convert.ToInt32(txtQty.Text);
+                            //Data Successfully Inserted
+                            MessageBox.Show("Join updated.");
+                            // this.Close();
                         }
                         else
                         {
-                            uJoin.join_qty = 1;
+                            //Failed to insert data
+                            MessageBox.Show("Failed to update join");
                         }
-                        
-                        bool success = dalJoin.Insert(uJoin);
+                    }
+                    else
+                    {
+                        uJoin.join_added_date = DateTime.Now;
+                        uJoin.join_added_by = MainDashboard.USER_ID;
+                        //insert new data
+                        success = dalJoin.InsertWithMaxMin(uJoin);
                         //If the data is successfully inserted then the value of success will be true else false
-                        if (success == true)
+                        if (success)
                         {
                             //Data Successfully Inserted
                             MessageBox.Show("Join successfully created");
-                           // this.Close();
+                            // this.Close();
                         }
                         else
                         {
@@ -262,8 +371,101 @@ namespace FactoryManagementSoftware.UI
                             MessageBox.Show("Failed to add new join");
                         }
                     }
+                    
                 }
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            updateTestQty();
+            errorProvider7.Clear();
+        }
+
+        private void txtTestParentQty_TextChanged(object sender, EventArgs e)
+        {
+            updateTestQty();
+
+        }
+
+        private void txtMax_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtMin_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtTestParentQty_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtTestChildQty_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtQty_TextChanged(object sender, EventArgs e)
+        {
+            updateTestQty();
+            errorProvider7.Clear();
+        }
+
+        private void updateTestQty()
+        {
+            if (!txtTestParentQty.Text.Equals("") && !txtQty.Text.Equals(""))
+            {
+                if(!cmbChildCat.Text.Equals("Carton"))
+                {
+                    int joinQty = Convert.ToInt32(txtQty.Text);
+                    int testParentQty = Convert.ToInt32(txtTestParentQty.Text);
+                    txtTestChildQty.Text = (joinQty * testParentQty).ToString();
+                }
+                else
+                {
+                    int maxQty = txtMax.Text.Equals("") || txtMax.Text.Equals("0") ? 1: Convert.ToInt16(txtMax.Text);
+                    int minQty = txtMin.Text.Equals("") || txtMin.Text.Equals("0") ? 1 : Convert.ToInt16(txtMin.Text);
+                    int testParentQty = Convert.ToInt32(txtTestParentQty.Text);
+
+                    int fullCartonQty = testParentQty / maxQty;
+
+                    int notFullCartonQty = testParentQty % maxQty / minQty;
+
+                    txtTestChildQty.Text = (fullCartonQty + notFullCartonQty).ToString();
+                }
+                
+            }
+            else
+            {
+                txtTestChildQty.Text = 0.ToString();
+            }
+        }
+
+        private void updateTestName()
+        {
+            txtParentCode.Text = cmbParentName.Text + "(" + cmbParentCode.Text + ")";
+            txtChildCode.Text = cmbChildName.Text + "(" + cmbChildCode.Text + ")";
+        }
+
+        private void txtMin_TextChanged(object sender, EventArgs e)
+        {
+            updateTestQty();
+            errorProvider8.Clear();
         }
     }
 }

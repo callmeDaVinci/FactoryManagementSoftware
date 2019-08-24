@@ -15,6 +15,7 @@ namespace FactoryManagementSoftware.UI
         private string orderQty;
         private string receivedQty;
         private float returnQty;
+        private float overReceivedQty = 0;
         private string orderType ="";
         private bool actionEdit = false;
         custDAL dalCust = new custDAL();
@@ -140,6 +141,7 @@ namespace FactoryManagementSoftware.UI
                 DialogResult dialogResult = MessageBox.Show("Ordered qty: "+orderQty+"\nPending qty: "+(Convert.ToSingle(orderQty) - actualReceivedQty)+"\nReceive  qty: "+ receivedNumber+"\nThe receive qty has exceeded the pending qty, are you sure want to proccess this action?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
+                    overReceivedQty = receivedNumber - maxReceiveQty;
                     result = true;
                 }
             }
@@ -296,12 +298,13 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                dalItem.orderSubtract(txtItemCode.Text, txtQty.Text); //subtract order qty
+                float temp = Convert.ToSingle(txtQty.Text) - overReceivedQty;
+                dalItem.orderSubtract(txtItemCode.Text, temp.ToString()); //subtract order qty
 
                 //change pmma zero cost item qty
                 if (cmbSubFrom.Text.Equals(tool.getCustName(1)))
                 {
-                    dalItem.orderSubtract(txtItemCode.Text, txtQty.Text);
+                    //dalItem.orderSubtract(txtItemCode.Text, txtQty.Text);
 
                     uItem.item_code = uStock.stock_item_code;
                     uItem.item_last_pmma_qty = dalItem.getLastPMMAQty(uItem.item_code);
@@ -374,7 +377,11 @@ namespace FactoryManagementSoftware.UI
 
         private void cancel_Click(object sender, EventArgs e)//close form
         {
-            Close();
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to cancel this action?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+            {
+                Close();
+            }
         }
 
         private void stockIn_Clock(object sender, EventArgs e)

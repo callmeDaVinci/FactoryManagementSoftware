@@ -41,6 +41,9 @@ namespace FactoryManagementSoftware.UI
         private string forecastNextNextNextMonth;
         private string MaterialCode;
 
+        private int oldCell = 0;
+        private int newCell = -1;
+
         readonly string headerIndex = "#";
         readonly string headerType = "TYPE";
         readonly string headerMat = "MATERIAL";
@@ -105,6 +108,8 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             dgv.Columns[headerType].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+            
             dgv.Columns[headerReadyStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerBalanceOne].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerBalanceTwo].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -122,6 +127,11 @@ namespace FactoryManagementSoftware.UI
             string balanceThreeName = new DateTimeFormatInfo().GetMonthName(forecastNextNextMonth).ToUpper().ToString() + " BAL";
             string balanceFourName = new DateTimeFormatInfo().GetMonthName(forecastNextNextNextMonth).ToUpper().ToString() + " BAL";
 
+            if(frmOrder.zeroCost)
+            {
+                dgv.Columns[headerReadyStock].HeaderText = "ZERO COST STOCK";
+            }
+            
             dgv.Columns[headerBalanceOne].HeaderText = "AFTER " + balanceOneName;
             dgv.Columns[headerBalanceTwo].HeaderText = "AFTER " + balanceTwoName;
             dgv.Columns[headerBalanceThree].HeaderText = "AFTER " + balanceThreeName;
@@ -442,7 +452,7 @@ namespace FactoryManagementSoftware.UI
                         Bal2Forecast = Bal1Forecast - Bal2Forecast;
                         Bal3Forecast = Bal2Forecast - Bal3Forecast;
 
-                        DataTable dtJoin = dalJoin.parentCheck(itemCode);//get children list
+                        DataTable dtJoin = dalJoin.loadChildList(itemCode);//get children list
                         foreach (DataRow Join in dtJoin.Rows)
                         {
                             uMatUsed.no = forecastIndex;
@@ -1035,15 +1045,40 @@ namespace FactoryManagementSoftware.UI
             string type = tool.getCatNameFromDataTable(dt_itemInfo, MaterialCode);
             if (type.Equals("RAW Material"))
             {
-                loadMatUsedData(tool.insertMaterialUsedData(tool.getCustName(1)));
+                if(frmOrder.zeroCost)
+                {
+                    loadMatUsedData(tool.insertZeroCostMaterialUsedData(tool.getCustName(1)));
+                }
+                else
+                {
+                    loadMatUsedData(tool.insertMaterialUsedData(tool.getCustName(1)));
+                }
+                
+
             }
             else if(type.Equals("Master Batch") || type.Equals("Pigment"))
             {
-                loadMBUsedData(tool.insertMaterialUsedData(tool.getCustName(1)));
+                if (frmOrder.zeroCost)
+                {
+                    loadMBUsedData(tool.insertZeroCostMaterialUsedData(tool.getCustName(1)));
+                }
+                else
+                {
+                    loadMBUsedData(tool.insertMaterialUsedData(tool.getCustName(1)));
+                }
+                
             }
             else if (type.Equals("Sub Material"))
             {
-                loadSubMatUsedData(tool.insertSubMaterialUsedData(tool.getCustName(1), MaterialCode));
+                if (frmOrder.zeroCost)
+                {
+                    loadSubMatUsedData(tool.insertZeroCostSubMaterialUsedData(tool.getCustName(1), MaterialCode));
+                }
+                else
+                {
+                    loadSubMatUsedData(tool.insertSubMaterialUsedData(tool.getCustName(1), MaterialCode));
+
+                }
             }
         }
 
@@ -1276,7 +1311,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         //show parent
                         //check if got child when foreach item in matused table list
-                        DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                        DataTable dtJoin = dalJoin.loadChildList(itemCode);
                         foreach (DataRow Join in dtJoin.Rows)
                         {
                             float childReadyStock = dalItem.getStockQty(Join["join_child_code"].ToString());
@@ -1466,6 +1501,62 @@ namespace FactoryManagementSoftware.UI
             }
 
             dgv.ResumeLayout();
+        }
+
+        private void dgvOrderAlert_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                DataGridView dgv = dgvOrderAlert;
+                dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                int col = dgv.CurrentCell.ColumnIndex;
+                //handle the row selection on right click
+                if (e.Button == MouseButtons.Right  && col >= 5 && col <= 8)
+                {
+                    ContextMenuStrip my_menu = new ContextMenuStrip();
+
+                    float currentNumber = Convert.ToSingle(dgv.Rows[e.RowIndex].Cells[col].Value);
+                    float previousNumber = Convert.ToSingle(dgv.Rows[e.RowIndex].Cells[col-1].Value);
+                    // Can leave these here - doesn't hurt
+                    dgv.Rows[e.RowIndex].Selected = true;
+                    dgv.Focus();
+                    int rowIndex = dgv.CurrentCell.RowIndex;
+
+                    float matUsed = (currentNumber - previousNumber)* -1;
+                    
+                    
+
+                    my_menu.Items.Add("Monthly Material Used: " + matUsed.ToString("0.#")).Name = "";
+
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+                }
+                oldCell = col;
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
+        private void dgvOrderAlert_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+           
+        }
+
+        private void dgvOrderAlert_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex >= 5 && e.ColumnIndex <= 8)
+            {
+                dgvOrderAlert.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                dgvOrderAlert.Cursor = Cursors.Default;
+            }
         }
     }
 }

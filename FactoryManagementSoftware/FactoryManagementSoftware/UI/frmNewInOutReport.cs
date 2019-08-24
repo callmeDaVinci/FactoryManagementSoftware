@@ -57,7 +57,7 @@ namespace FactoryManagementSoftware.UI
                 dt.Columns.Add("#", typeof(string));
                 dt.Columns.Add(dalItem.ItemCode, typeof(string));
                 dt.Columns.Add(dalItem.ItemName, typeof(string));
-                dt.Columns.Add("TOTAL", typeof(string));
+                dt.Columns.Add("TOTAL", typeof(float));
                 for (DateTime current = start; current <= end; current = current.AddDays(1))
                 {
                     Console.WriteLine(current.Day);
@@ -87,16 +87,16 @@ namespace FactoryManagementSoftware.UI
 
                 if (cbIn.Checked && !cbOut.Checked)
                 {
-                    dt.Columns.Add(totalInColName, typeof(string));
+                    dt.Columns.Add(totalInColName, typeof(float));
                 }
                 else if (!cbIn.Checked && cbOut.Checked)
                 {
-                    dt.Columns.Add(totalOutColName, typeof(string));
+                    dt.Columns.Add(totalOutColName, typeof(float));
                 }
                 else if (cbIn.Checked && cbOut.Checked)
                 {
-                    dt.Columns.Add(totalInColName, typeof(string));
-                    dt.Columns.Add(totalOutColName, typeof(string));
+                    dt.Columns.Add(totalInColName, typeof(float));
+                    dt.Columns.Add(totalOutColName, typeof(float));
                 }
             }
 
@@ -311,6 +311,12 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in dtTrfHist.Rows)
             {
+                //string test = row["trf_hist_item_code"].ToString();
+
+                //if(test.Equals("V84KM4300"))
+                //{
+                //    float testing = 0;
+                //}
                 trfFrom = row[dalTrfHist.TrfFrom].ToString();
                 trfTo = row[dalTrfHist.TrfTo].ToString();
 
@@ -328,6 +334,7 @@ namespace FactoryManagementSoftware.UI
                         dr[day] = qty;
                         dr[totalColName] = total;
                     }
+
                     else if (itemCode == row["trf_hist_item_code"].ToString())
                     {
                         if (day == Convert.ToDateTime(row["trf_hist_trf_date"].ToString()).ToString("dd/MM"))
@@ -873,6 +880,7 @@ namespace FactoryManagementSoftware.UI
 
                 dtSourceForDGV = FilterDailyMatInData(dtSourceForDGV, dtTrfHist);
             }
+
             //out only
             else if (!cbIn.Checked && cbOut.Checked)
             {
@@ -1530,8 +1538,12 @@ namespace FactoryManagementSoftware.UI
                 txtSearch.ForeColor = Color.LightGray;
             }
         }
+
         #endregion
 
-
+        private void dgvInOutReport_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+           
+        }
     }
 }

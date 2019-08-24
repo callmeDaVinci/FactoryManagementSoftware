@@ -97,10 +97,9 @@
             // 
             // txtNote
             // 
-            this.txtNote.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNote.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNote.Location = new System.Drawing.Point(435, 329);
             this.txtNote.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtNote.Multiline = true;
             this.txtNote.Name = "txtNote";
             this.txtNote.Size = new System.Drawing.Size(366, 34);
             this.txtNote.TabIndex = 114;
@@ -136,12 +135,14 @@
             "g",
             "set",
             "box",
-            "piece"});
+            "piece",
+            "meter"});
             this.cmbQtyUnit.Location = new System.Drawing.Point(435, 236);
             this.cmbQtyUnit.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbQtyUnit.Name = "cmbQtyUnit";
             this.cmbQtyUnit.Size = new System.Drawing.Size(366, 36);
             this.cmbQtyUnit.TabIndex = 111;
+            this.cmbQtyUnit.SelectedIndexChanged += new System.EventHandler(this.cmbQtyUnit_SelectedIndexChanged);
             // 
             // lblInOutQuantity
             // 
@@ -233,6 +234,7 @@
             this.txtItemCode.ReadOnly = true;
             this.txtItemCode.Size = new System.Drawing.Size(366, 34);
             this.txtItemCode.TabIndex = 126;
+            this.txtItemCode.TextChanged += new System.EventHandler(this.txtItemCode_TextChanged);
             // 
             // errorProvider1
             // 
@@ -307,6 +309,7 @@
             this.MinimizeBox = false;
             this.Name = "frmOrderApprove";
             this.Text = "Order Approve/Edit";
+            this.Load += new System.EventHandler(this.frmOrderApprove_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             this.ResumeLayout(false);

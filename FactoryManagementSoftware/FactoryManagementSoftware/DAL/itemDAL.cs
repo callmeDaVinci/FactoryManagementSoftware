@@ -4,7 +4,6 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.DAL
 {
@@ -136,6 +135,7 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
         public DataTable catSelect(string category)
         {
             SqlConnection conn = new SqlConnection(myconnstrng);

@@ -615,6 +615,9 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[dalItem.ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[dalItem.ItemOrd].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[dalItem.ItemQty].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+            dgv.Columns[dalItem.ItemQty].DefaultCellStyle.Format = "0.##";
+            dgv.Columns[dalItem.ItemOrd].DefaultCellStyle.Format = "0.##";
         }
 
         private void dgvTrfUIEdit(DataGridView dgv)
@@ -723,7 +726,7 @@ namespace FactoryManagementSoftware.UI
         private bool ifGotChild(string itemCode)
         {
             bool result = false;
-            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+            DataTable dtJoin = dalJoin.loadChildList(itemCode);
             if (dtJoin.Rows.Count > 0)
             {
                 result = true;
@@ -1202,6 +1205,14 @@ namespace FactoryManagementSoftware.UI
             {
                 changeTransferRecord("Undo", rowIndex, id);
                 tool.historyRecord(text.TransferUndo, text.getTransferDetailString(id, qty, unit, itemCode, locationFrom, locationTo), DateTime.Now, MainDashboard.USER_ID);
+
+                matPlanDAL dalMatPlan = new matPlanDAL();
+                if (tool.IfFactoryExists(locationFrom) && (locationTo.Equals(text.Production) || locationTo.Equals(text.Assembly)))
+                {
+                    DataTable dt = dalMatPlan.Select();
+
+                    tool.matPlanAddQty(dt, itemCode, qty);
+                }
             }
 
             return result;
@@ -1246,6 +1257,14 @@ namespace FactoryManagementSoftware.UI
             {
                 changeTransferRecord("Passed", rowIndex, id);
                 tool.historyRecord(text.TransferRedo, text.getTransferDetailString(id, qty, unit, itemCode, locationFrom, locationTo), DateTime.Now, MainDashboard.USER_ID);
+
+                matPlanDAL dalMatPlan = new matPlanDAL();
+                if (tool.IfFactoryExists(locationFrom) && (locationTo.Equals(text.Production) || locationTo.Equals(text.Assembly)))
+                {
+                    DataTable dt = dalMatPlan.Select();
+
+                    tool.matPlanSubtractQty(dt, itemCode, qty);
+                }
             }
 
             return result;
@@ -1328,7 +1347,7 @@ namespace FactoryManagementSoftware.UI
             bool success = true;
 
             string childItemCode;
-            DataTable dtJoin = dalJoin.parentCheck(parentItemCode);
+            DataTable dtJoin = dalJoin.loadChildList(parentItemCode);
             if (dtJoin.Rows.Count > 0)
             {
                 foreach (DataRow Join in dtJoin.Rows)
@@ -1357,7 +1376,7 @@ namespace FactoryManagementSoftware.UI
             bool success = true;
 
             string childItemCode;
-            DataTable dtJoin = dalJoin.parentCheck(parentItemCode);
+            DataTable dtJoin = dalJoin.loadChildList(parentItemCode);
             if (dtJoin.Rows.Count > 0)
             {
                 foreach (DataRow Join in dtJoin.Rows)
@@ -1590,7 +1609,7 @@ namespace FactoryManagementSoftware.UI
                         //dgv.Rows[n].Cells[dalItem.ItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
                         dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
-                    else
+                    else if(dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
                     {
                         //dgv.Rows[n].Cells[dalItem.ItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                         dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
@@ -1719,6 +1738,13 @@ namespace FactoryManagementSoftware.UI
         private void label7_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnTrfHistSearch_Click(object sender, EventArgs e)
+        {
+            frmTransferHistory frm = new frmTransferHistory();
+            
+            frm.ShowDialog();//Item Edit
         }
     }
 }

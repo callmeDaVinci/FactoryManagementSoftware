@@ -307,6 +307,32 @@ namespace FactoryManagementSoftware.DAL
             return success;
         }
 
+        //order follow up action
+        public bool orderFollowUp(int orderID, string actionDate, string feedback, string from, string to)
+        {
+            bool success = false;
+
+            if (orderID > 0)
+            {
+                //(int orderID, string action, string content, string from, string to , string note, bool ifActive)
+                setActionData(orderID, -1, "FOLLOW UP ACTION", actionDate+": "+feedback, from, to, "", true);
+                success = Insert(uOrderAction);
+            }
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to save order follow up action note");
+                tool.historyRecord(text.System, "Failed to save order follow up action note(orderActionDAL)", DateTime.Now, MainDashboard.USER_ID);
+
+            }
+            else
+            {
+                tool.historyRecord(text.OrderFollowUp, text.getOrderStatusChangeString(orderID), DateTime.Now, MainDashboard.USER_ID);
+            }
+
+            return success;
+        }
+
         //edit order information, like change stock in/out qty, location of from/to, order qty , order required date, etc 
         public bool orderEdit(int orderID, int trfID, int actionID, string content, string from, string to, string note)
         {

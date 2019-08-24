@@ -6,9 +6,6 @@ using System.Windows.Forms;
 using System.Drawing;
 using FactoryManagementSoftware.Module;
 using System.Globalization;
-using System.Linq;
-using System.Collections.Generic;
-using Tulpep.NotificationWindow;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Excel;
@@ -34,7 +31,6 @@ namespace FactoryManagementSoftware.UI
             tool.loadMaterialAndAllToComboBox(cmbType);
         }
 
-
         #region variable declare
 
         private int selectedOrderID = -1;
@@ -44,7 +40,7 @@ namespace FactoryManagementSoftware.UI
         static public bool cancel;
         static public bool receivedReturn = false;
         static public bool orderApproved = false;
-
+        static public bool zeroCost = false;
         private int userPermission = -1;
 
         readonly string status_Received = "RECEIVED";
@@ -69,6 +65,7 @@ namespace FactoryManagementSoftware.UI
         readonly string headerMBRate = "MB RATE";
         readonly string headerWeight = "WEIGHT";
         readonly string headerWastage = "WASTAGE %";
+        //private string readyStockHeaderText = "READY STOCK";
         readonly string headerReadyStock = "READY STOCK";
         readonly string headerZeroCostStock = "ZERO COST STOCK";
         private string headerBalanceZero = "FORECAST BAL 0";
@@ -140,7 +137,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = new DataTable();
 
             dt.Columns.Add(headerID, typeof(int));
-            dt.Columns.Add(headerDateRequired, typeof(string));
+            dt.Columns.Add(headerDateRequired, typeof(DateTime));
             dt.Columns.Add(headerType, typeof(string));
             dt.Columns.Add(headerCat, typeof(string));
             dt.Columns.Add(headerCode, typeof(string));
@@ -158,6 +155,15 @@ namespace FactoryManagementSoftware.UI
         private DataTable NewOrderAlertTable()
         {
             DataTable dt = new DataTable();
+
+            //if(cbZeroCost.Checked)
+            //{
+            //    headerReadyStock = headerZeroCostStock;
+            //}
+            //else
+            //{
+            //    headerReadyStock = readyStockHeaderText;
+            //}
 
             dt.Columns.Add("#", typeof(int));
             dt.Columns.Add(headerType, typeof(string));
@@ -225,7 +231,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerBalanceThree].HeaderText = "AFTER " + balanceThreeName;
             dgv.Columns[headerBalanceFour].HeaderText = "AFTER " + balanceFourName;
 
-            if(cbZeroCost.Checked)
+            if (cbZeroCost.Checked)
             {
                 dgv.Columns[headerReadyStock].HeaderText = headerZeroCostStock;
             }
@@ -254,6 +260,10 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerOrdered].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[headerPending].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[headerReceived].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgv.Columns[headerOrdered].DefaultCellStyle.Format = "0.###";
+            dgv.Columns[headerPending].DefaultCellStyle.Format = "0.###";
+            dgv.Columns[headerReceived].DefaultCellStyle.Format = "0.###";
 
         }
 
@@ -293,7 +303,6 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region Load or Reset Form
-
 
         private DataTable AddDuplicates(DataTable dt)
         {
@@ -483,7 +492,6 @@ namespace FactoryManagementSoftware.UI
             cmbStatusSearch.SelectedIndex = 0;
         }
 
-
         private void resetForm()
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -498,7 +506,7 @@ namespace FactoryManagementSoftware.UI
         
         private void loadOrderRecord()
         {
-            System.Data.DataTable dtOrder = NewOrderRecordTable();
+            DataTable dtOrder = NewOrderRecordTable();
             DataRow dtOrder_row;
             DataTable dt_itemInfo = dalItem.Select();
 
@@ -508,7 +516,21 @@ namespace FactoryManagementSoftware.UI
             if (keywords != null)
             {
                 string statusSearch = cmbStatusSearch.Text;
-                DataTable dt = dalOrd.Search(keywords);
+                DataTable dt;
+
+                if(cbCodeNameSearch.Checked)
+                {
+                    dt = dalOrd.Search(keywords);
+                }
+                else if(cbPOSearch.Checked)
+                {
+                    dt = dalOrd.PONOSearch(keywords);
+                }
+                else
+                {
+                    dt = dalOrd.IDSearch(keywords);
+                }
+
                 dt.DefaultView.Sort = "ord_added_date DESC";
                 DataTable sortedDt = dt.DefaultView.ToTable();
 
@@ -525,7 +547,12 @@ namespace FactoryManagementSoftware.UI
 
                             string itemCode = ord["ord_item_code"].ToString();
                             dtOrder_row[headerID] = ord["ord_id"].ToString();
-                            dtOrder_row[headerDateRequired] = Convert.ToDateTime(ord["ord_required_date"]).ToString("dd/MM/yyyy");
+                            //lblDebug.Text = "before date assign";
+
+                            DateTime requiredDate = DateTime.ParseExact(Convert.ToDateTime(ord["ord_required_date"]).ToString("dd/MM/yyyy"), "dd/MM/yyyy", null);
+                            //lblDebug.Text = "After requiredDateAssign";
+                            dtOrder_row[headerDateRequired] = requiredDate;
+                            //lblDebug.Text = "After date assign";
                             dtOrder_row[headerType] = ord["ord_type"].ToString();
                             dtOrder_row[headerCat] = tool.getCatNameFromDataTable(dt_itemInfo, itemCode);
                             dtOrder_row[headerCode] = itemCode;
@@ -547,7 +574,7 @@ namespace FactoryManagementSoftware.UI
 
             if (dtOrder.Rows.Count > 0)
             {
-                dtOrder.DefaultView.Sort = "TYPE DESC";
+                dtOrder.DefaultView.Sort = "ID DESC";
                 dgvOrder.DataSource = dtOrder;
                 dgvOrderUIEdit(dgvOrder);
                 dgvOrder.ClearSelection();
@@ -565,16 +592,15 @@ namespace FactoryManagementSoftware.UI
                 {
                     if (Convert.ToInt32(row.Cells[headerID].Value.ToString()).Equals(orderID))
                     {
+                        int rowIndex = row.Index;
                         row.Selected = true;
+                        dgvOrder.FirstDisplayedScrollingRowIndex = rowIndex;
+
                         break;
                     }
                 }
             }
         }
-
-   
-
-     
 
         private DataTable getOrderStatusTable()
         {
@@ -897,17 +923,36 @@ namespace FactoryManagementSoftware.UI
                                 float mat_Zero_Stock = tool.getPMMAQtyFromDataTable(dt_itemInfo, itemCode);
                                 mat_Ready_Stock = tool.getStockQtyFromDataTable(dt_itemInfo, itemCode);
 
-                                bal1 = mat_Ready_Stock - bal1;
-                                bal1 = mat_Zero_Stock - bal1;
+                                //bal1 = mat_Ready_Stock - bal1;
 
-                                bal2 = mat_Ready_Stock - bal2;
-                                bal2 = mat_Zero_Stock - bal2;
+                                if(bal1 > 0)
+                                {
+                                    bal1 = 0;
+                                }
 
-                                bal3 = mat_Ready_Stock - bal3;
-                                bal3 = mat_Zero_Stock - bal3;
+                                bal1 = mat_Zero_Stock + bal1;
 
-                                bal4 = mat_Ready_Stock - bal4;
-                                bal4 = mat_Zero_Stock - bal4;
+                                if (bal2 > 0)
+                                {
+                                    bal2 = 0;
+                                }
+
+                                bal2 = mat_Zero_Stock + bal2;
+
+                                if (bal3 > 0)
+                                {
+                                    bal3 = 0;
+                                }
+
+                                bal3 = mat_Zero_Stock + bal3;
+
+                                if (bal4 > 0)
+                                {
+                                    bal4 = 0;
+                                }
+
+                                bal4 = mat_Zero_Stock + bal4;
+
 
                                 mat_Ready_Stock = mat_Zero_Stock;
                             }
@@ -993,6 +1038,14 @@ namespace FactoryManagementSoftware.UI
 
                             if (mat_Ready_Stock != -1)
                             {
+                                if (cbZeroCost.Checked)
+                                {
+                                    if (material.Equals("ABS 450Y MH1"))
+                                    {
+                                        float test = 0;
+                                    }
+                                }
+
                                 if (rows.Length == 0)
                                 {
                                     dtAlert_row = dtAlert.NewRow();
@@ -1226,7 +1279,6 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-
         #region data Insert/Update/Search
 
         private void btnOrder_Click(object sender, EventArgs e)
@@ -1340,12 +1392,12 @@ namespace FactoryManagementSoftware.UI
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
 
-            refreshOrderRecord(selectedOrderID);
+            refreshOrderRecord(orderID);
 
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
-        private void orderAprove(int rowIndex, int orderID)
+        private void orderApprove(int rowIndex, int orderID)
         {
             try
             {
@@ -1353,7 +1405,8 @@ namespace FactoryManagementSoftware.UI
                 {
                     string itemCode = dgvOrder.Rows[rowIndex].Cells[headerCode].Value.ToString();
                     string itemName = dgvOrder.Rows[rowIndex].Cells[headerName].Value.ToString();
-                    string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+                    //string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+                    DateTime requiredDate = Convert.ToDateTime(dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value);
                     string qty = dgvOrder.Rows[rowIndex].Cells[headerOrdered].Value.ToString();
                     string unit = dgvOrder.Rows[rowIndex].Cells[headerUnit].Value.ToString();
                     string type = dgvOrder.Rows[rowIndex].Cells[headerType].Value == DBNull.Value? "PURCHASE" : dgvOrder.Rows[rowIndex].Cells[headerType].Value.ToString();
@@ -1368,7 +1421,7 @@ namespace FactoryManagementSoftware.UI
                     if (orderApproved)//if order approved from approve form, then change order status from requesting to pending
                     {
                         dalItem.orderAdd(itemCode, finalOrderNumber);//add order qty to item
-                        refreshOrderRecord(selectedOrderID);
+                        refreshOrderRecord(orderID);
                         orderApproved = false;
                     }
                 }
@@ -1383,7 +1436,10 @@ namespace FactoryManagementSoftware.UI
             {
                 tool.saveToTextAndMessageToUser(ex);
             }
-
+            finally
+            {
+                refreshOrderRecord(orderID);
+            }
 
         }
 
@@ -1395,22 +1451,24 @@ namespace FactoryManagementSoftware.UI
                 {
                     string itemCode = dgvOrder.Rows[rowIndex].Cells[headerCode].Value.ToString();
                     string itemName = dgvOrder.Rows[rowIndex].Cells[headerName].Value.ToString();
-                    string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+                    //string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+                    DateTime requiredDate = Convert.ToDateTime(dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value);
                     string qty = dgvOrder.Rows[rowIndex].Cells[headerOrdered].Value.ToString();
+                    string received = dgvOrder.Rows[rowIndex].Cells[headerReceived].Value.ToString();
                     string unit = dgvOrder.Rows[rowIndex].Cells[headerUnit].Value.ToString();
                     string type = dgvOrder.Rows[rowIndex].Cells[headerType].Value == DBNull.Value ? "PURCHASE" : dgvOrder.Rows[rowIndex].Cells[headerType].Value.ToString();
                     int po_no = dgvOrder.Rows[rowIndex].Cells[headerPONO].Value == DBNull.Value ? -1 : Convert.ToInt32(dgvOrder.Rows[rowIndex].Cells[headerPONO].Value.ToString());
 
 
                     //approve form
-                    frmOrderApprove frm = new frmOrderApprove(orderID.ToString(), requiredDate, itemName, itemCode, qty, unit, type, po_no);
+                    frmOrderApprove frm = new frmOrderApprove(orderID.ToString(), requiredDate, itemName, itemCode, qty, unit, type, po_no, received);
                     frm.StartPosition = FormStartPosition.CenterScreen;
                     frm.ShowDialog();
 
                     if (orderApproved)//if order approved from approve form, then change order status from requesting to pending
                     {
                         dalItem.orderAdd(itemCode, Convert.ToSingle(finalOrderNumber) -Convert.ToSingle(qty));//add order qty to item
-                        refreshOrderRecord(selectedOrderID);
+                        refreshOrderRecord(orderID);
                         orderApproved = false;
                     }
                 }
@@ -1425,7 +1483,10 @@ namespace FactoryManagementSoftware.UI
             {
                 tool.saveToTextAndMessageToUser(ex);
             }
-
+            finally
+            {
+                refreshOrderRecord(orderID);
+            }
 
         }
 
@@ -1457,7 +1518,8 @@ namespace FactoryManagementSoftware.UI
             //{
             string itemCode = dgvOrder.Rows[rowIndex].Cells[headerCode].Value.ToString();
             string itemName = dgvOrder.Rows[rowIndex].Cells[headerName].Value.ToString();
-            string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+            //string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+            DateTime requiredDate = Convert.ToDateTime(dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value);
             string qty = dgvOrder.Rows[rowIndex].Cells[headerOrdered].Value.ToString();
             string unit = dgvOrder.Rows[rowIndex].Cells[headerUnit].Value.ToString();
             float received = Convert.ToSingle(dgvOrder.Rows[rowIndex].Cells[headerReceived].Value);
@@ -1485,7 +1547,7 @@ namespace FactoryManagementSoftware.UI
                 if(cancel)
                 {
                     uOrd.ord_id = orderID;
-                    DateTime date = DateTime.ParseExact(requiredDate, "dd/MM/yyyy", null);
+                    DateTime date = requiredDate;//DateTime.ParseExact(requiredDate, "dd/MM/yyyy", null)
                     uOrd.ord_required_date = date;
                     uOrd.ord_qty = Convert.ToSingle(qty);
                     uOrd.ord_pending = 0;
@@ -1511,7 +1573,7 @@ namespace FactoryManagementSoftware.UI
                 }
 
             }
-            refreshOrderRecord(selectedOrderID);
+            refreshOrderRecord(orderID);
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
@@ -1521,7 +1583,9 @@ namespace FactoryManagementSoftware.UI
 
             string itemCode = dgvOrder.Rows[rowIndex].Cells[headerCode].Value.ToString();
             string itemName = dgvOrder.Rows[rowIndex].Cells[headerName].Value.ToString();
-            string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+            //string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+            DateTime requiredDate = Convert.ToDateTime(dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value);
+
             string qty = dgvOrder.Rows[rowIndex].Cells[headerOrdered].Value.ToString();
             string unit = dgvOrder.Rows[rowIndex].Cells[headerUnit].Value.ToString();
             float received = Convert.ToSingle(dgvOrder.Rows[rowIndex].Cells[headerReceived].Value);
@@ -1533,7 +1597,7 @@ namespace FactoryManagementSoftware.UI
             frm.ShowDialog();
 
             uOrd.ord_id = orderID;
-            DateTime date = DateTime.ParseExact(requiredDate, "dd/MM/yyyy", null);
+            DateTime date = requiredDate;
             uOrd.ord_required_date = date;
             uOrd.ord_qty = Convert.ToSingle(qty);
             uOrd.ord_pending = 0;
@@ -1553,7 +1617,7 @@ namespace FactoryManagementSoftware.UI
                 dalOrderAction.orderClose(orderID, note);
             }
             
-            refreshOrderRecord(selectedOrderID);
+            refreshOrderRecord(orderID);
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
@@ -1567,7 +1631,9 @@ namespace FactoryManagementSoftware.UI
 
                 string itemCode = dgvOrder.Rows[rowIndex].Cells[headerCode].Value.ToString();
                 string itemName = dgvOrder.Rows[rowIndex].Cells[headerName].Value.ToString();
-                string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+                //string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+                DateTime requiredDate = Convert.ToDateTime(dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value);
+
                 string qty = dgvOrder.Rows[rowIndex].Cells[headerOrdered].Value.ToString();
                 string unit = dgvOrder.Rows[rowIndex].Cells[headerUnit].Value.ToString();
                 float received = Convert.ToSingle(dgvOrder.Rows[rowIndex].Cells[headerReceived].Value);
@@ -1575,7 +1641,7 @@ namespace FactoryManagementSoftware.UI
                 string type = dgvOrder.Rows[rowIndex].Cells[headerType].Value == DBNull.Value ? "PURCHASE" : dgvOrder.Rows[rowIndex].Cells[headerType].Value.ToString();
 
                 uOrd.ord_id = orderID;
-                DateTime date = DateTime.ParseExact(requiredDate, "dd/MM/yyyy", null);
+                DateTime date = requiredDate;
                 uOrd.ord_required_date = date;
                 uOrd.ord_qty = Convert.ToSingle(qty);
                 uOrd.ord_pending = uOrd.ord_qty - received;
@@ -1595,17 +1661,24 @@ namespace FactoryManagementSoftware.UI
                     dalOrderAction.orderReOpen(orderID, "");
                 }
 
-                refreshOrderRecord(selectedOrderID);
+                refreshOrderRecord(orderID);
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
         }
 
+        private void orderFollowUpAction(int orderID)
+        {
+            frmOrderFollowUpAction frm = new frmOrderFollowUpAction(orderID);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();
+
+            refreshOrderRecord(orderID);
+        }
 
         #endregion
 
         #region  click / selected index changed action
 
-       
         //handle what will happen when item clicked after right click on datagridview
         private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -1624,7 +1697,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (itemClicked.Equals("Approve"))
             {
-                orderAprove(rowIndex, orderID);
+                orderApprove(rowIndex, orderID);
             }
             else if (itemClicked.Equals("Edit"))
             {
@@ -1646,7 +1719,11 @@ namespace FactoryManagementSoftware.UI
             {
                 orderIncomplete(rowIndex, orderID);
             }
-
+            else if (itemClicked.Equals("Follow Up/ Action"))
+            {
+                orderFollowUpAction(orderID);
+            }
+            
             loadOrderAlertData();
             dgvOrderAlert.ClearSelection();
             lblUpdatedTime.Text = DateTime.Now.ToString();
@@ -1834,8 +1911,7 @@ namespace FactoryManagementSoftware.UI
         {
 
         }
-
-    
+  
         private void dgvOrder_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             DataGridView dgv = dgvOrder;
@@ -1982,7 +2058,7 @@ namespace FactoryManagementSoftware.UI
                             my_menu.Items.Add("Edit").Name = "Edit";
                             my_menu.Items.Add("Complete").Name = "Complete";
                         }
-
+                        my_menu.Items.Add("Follow Up/ Action").Name = "Follow Up/ Action";
                         my_menu.Items.Add("Cancel").Name = "Cancel";
                     }
                     else if (result.Equals(status_Received))
@@ -2013,6 +2089,8 @@ namespace FactoryManagementSoftware.UI
         {
 
         }
+
+        #region print to excel
 
         private string setFileName()
         {
@@ -2170,6 +2248,53 @@ namespace FactoryManagementSoftware.UI
             finally
             {
                 Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+        }
+
+        #endregion
+
+        private void dgvOrder_SelectionChanged(object sender, EventArgs e)
+        {
+            if(dgvOrder.CurrentCell != null)
+            selectedOrderID = Convert.ToInt32(dgvOrder.Rows[dgvOrder.CurrentCell.RowIndex].Cells[headerID].Value);
+        }
+
+        private void cbZeroCost_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbZeroCost.Checked)
+            {
+                zeroCost = true;
+            }
+            else
+            {
+                zeroCost = false;
+            }
+        }
+
+        private void cbCodeNameSearch_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbCodeNameSearch.Checked)
+            {
+                cbPOSearch.Checked = false;
+                cbOrderIDSearch.Checked = false;
+            }
+        }
+
+        private void cbPOSearch_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbPOSearch.Checked)
+            {
+                cbCodeNameSearch.Checked = false;
+                cbOrderIDSearch.Checked = false;
+            }
+        }
+
+        private void cbOrderIDSearch_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbOrderIDSearch.Checked)
+            {
+                cbCodeNameSearch.Checked = false;
+                cbPOSearch.Checked = false;
             }
         }
     }

@@ -245,6 +245,60 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable SearchIncludeID(string keywords)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT  tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_item.item_cat,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result
+                                FROM tbl_trf_hist  
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE tbl_item.item_code LIKE '%" + keywords + "%'" +
+                                "OR tbl_item.item_name LIKE '%" + keywords + "%' " +
+                                "OR tbl_trf_hist.trf_hist_id LIKE '%" + keywords + "%' " +
+                                "ORDER BY tbl_trf_hist.trf_hist_id DESC";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable nameSearch(string keywords)
         {
             //static methodd to connect database
@@ -608,7 +662,7 @@ namespace FactoryManagementSoftware.DAL
                             WHERE tbl_trf_hist.trf_hist_trf_date 
                             BETWEEN @start AND @end 
                             AND tbl_trf_hist.trf_result =@Passed
-                            ORDER BY tbl_trf_hist.trf_hist_item_code ASC";
+                            ORDER BY tbl_trf_hist.trf_hist_item_code ASC, tbl_trf_hist.trf_hist_trf_date ASC";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -806,7 +860,7 @@ namespace FactoryManagementSoftware.DAL
                             WHERE trf_hist_trf_date 
                             BETWEEN @start 
                             AND @end 
-                            AND trf_hist_to=@customer  ORDER BY trf_hist_item_code ASC";
+                            AND trf_hist_to=@customer  ORDER BY trf_hist_item_code ASC , trf_hist_trf_date ASC";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -980,6 +1034,59 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        //public DataTable rangeTrfSearch(string start, string end)
+        //{
+        //    //static methodd to connect database
+        //    SqlConnection conn = new SqlConnection(myconnstrng);
+        //    //to hold the data from database
+        //    DataTable dt = new DataTable();
+
+        //    String sql = null;
+        //    try
+        //    {
+        //        //sql query to get data from database
+        //        sql = @"SELECT * FROM tbl_trf_hist 
+        //                    INNER JOIN tbl_item 
+        //                    ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+        //                    WHERE 
+        //                    tbl_trf_hist.trf_hist_trf_date 
+        //                    BETWEEN @start AND @end 
+        //                    ORDER BY tbl_item.item_name ASC";
+
+
+        //        SqlCommand cmd = new SqlCommand(sql, conn);
+
+        //        cmd.Parameters.AddWithValue("@start", start);
+        //        cmd.Parameters.AddWithValue("@end", end);
+
+
+        //        //for executing command
+        //        //getting data from database
+        //        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+        //        //database connection open
+        //        conn.Open();
+        //        //fill data in our database
+        //        adapter.Fill(dt);
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Module.Tool tool = new Module.Tool();
+        //        tool.saveToText(ex);
+        //    }
+        //    finally
+        //    {
+        //        //closing connection
+        //        conn.Close();
+        //    }
+
+        //    //dt.DefaultView.Sort = "trf_hist_added_date DESC";
+        //    //DataTable sortedDt = dt.DefaultView.ToTable();
+
+        //    return dt;
+        //}
+
         public DataTable rangePartTrfSearch(string start, string end)
         {
             //static methodd to connect database
@@ -1107,7 +1214,7 @@ namespace FactoryManagementSoftware.DAL
                                 WHERE 
                                 trf_hist_trf_date 
                                 BETWEEN @start AND @end 
-                                AND tbl_item.item_cat != @cat ORDER BY tbl_item.item_name  ASC";
+                                AND tbl_item.item_cat != @cat ORDER BY tbl_item.item_name  ASC , tbl_trf_hist.trf_hist_trf_date ASC";
                 }
                 else
                 {
@@ -1118,7 +1225,7 @@ namespace FactoryManagementSoftware.DAL
                                 WHERE 
                                 trf_hist_trf_date 
                                 BETWEEN @start AND @end 
-                                AND tbl_item.item_cat = @material ORDER BY tbl_item.item_name ASC";
+                                AND tbl_item.item_cat = @material ORDER BY tbl_item.item_name ASC , tbl_trf_hist.trf_hist_trf_date ASC";
                 }
                
 
@@ -1342,7 +1449,7 @@ namespace FactoryManagementSoftware.DAL
                                 AND @end 
                                 AND (tbl_item.item_code LIKE '%" + keywords + "%' OR tbl_item.item_name LIKE '%" + keywords + "%' ) " +
                                 " AND tbl_item.item_cat = @cat" +
-                                " ORDER BY tbl_trf_hist.trf_hist_item_code ASC";
+                                " ORDER BY tbl_trf_hist.trf_hist_item_code ASC, tbl_trf_hist.trf_hist_trf_date ASC";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -1395,7 +1502,7 @@ namespace FactoryManagementSoftware.DAL
                                 AND @end 
                                 AND (tbl_item.item_code LIKE '%" + keywords + "%' OR tbl_item.item_name LIKE '%" + keywords + "%' ) " +
                                 "AND tbl_item.item_cat != @cat " +
-                                "ORDER BY tbl_trf_hist.trf_hist_item_code ASC";
+                                "ORDER BY tbl_trf_hist.trf_hist_item_code ASC, tbl_trf_hist.trf_hist_trf_date ASC";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 

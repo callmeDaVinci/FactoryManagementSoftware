@@ -415,8 +415,7 @@ namespace FactoryManagementSoftware.UI
 
                 int rowIndex = e.RowIndex;
                 DateTime updatedTime = DateTime.Now;
-                dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value = updatedTime;
-                dgvForecast.Rows[rowIndex].Cells["forecast_updtd_by"].Value = dalUser.getUsername(MainDashboard.USER_ID);
+                
 
                 uItemCust.item_code = dgvForecast.Rows[rowIndex].Cells["item_code"].Value.ToString();
                 uItemCust.cust_id = tool.getCustID(cmbCust.Text);
@@ -426,20 +425,19 @@ namespace FactoryManagementSoftware.UI
                 uItemCust.forecast_three = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_three"].Value.ToString());
                 uItemCust.forecast_four = Convert.ToSingle(dgvForecast.Rows[rowIndex].Cells["forecast_four"].Value);
 
-                //uItemCust.forecast_updated_date = Convert.ToDateTime(dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value);
                 uItemCust.forecast_updated_date = updatedTime;
                 uItemCust.forecast_current_month = cmbForecast1.Text;
                 uItemCust.forecast_updated_by = MainDashboard.USER_ID;
 
-                if (Convert.ToInt32(forecastNum) == 1)
+                if (Convert.ToInt32(forecastNum) == 2)
                 {
                     newForecast = uItemCust.forecast_one.ToString();
                 }
-                else if (Convert.ToInt32(forecastNum) == 2)
+                else if (Convert.ToInt32(forecastNum) == 3)
                 {
                     newForecast = uItemCust.forecast_two.ToString();
                 }
-                else if(Convert.ToInt32(forecastNum) == 3)
+                else if(Convert.ToInt32(forecastNum) == 4)
                 {
                     newForecast = uItemCust.forecast_three.ToString();
                 }
@@ -448,29 +446,37 @@ namespace FactoryManagementSoftware.UI
                     newForecast = uItemCust.forecast_four.ToString();
                 }
 
-                if (tool.IfExists(uItemCust.item_code, cmbCust.Text))
+                if(oldForecast != newForecast)
                 {
-                    bool success = dalItemCust.Update(uItemCust);
 
-                    if (!success)
+                    if (tool.IfExists(uItemCust.item_code, cmbCust.Text))
                     {
-                        MessageBox.Show("Failed to updated forecast");
-                        tool.historyRecord(text.System, "Failed to updated forecast(frmForecast) "+ uItemCust.item_code, DateTime.Now, MainDashboard.USER_ID);
+                        bool success = dalItemCust.Update(uItemCust);
+
+                        if (!success)
+                        {
+                            MessageBox.Show("Failed to updated forecast");
+                            tool.historyRecord(text.System, "Failed to updated forecast(frmForecast) " + uItemCust.item_code, DateTime.Now, MainDashboard.USER_ID);
+                        }
+                        else
+                        {
+                            dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value = updatedTime;
+                            dgvForecast.Rows[rowIndex].Cells["forecast_updtd_by"].Value = dalUser.getUsername(MainDashboard.USER_ID);
+                            tool.historyRecord(text.ForecastEdit, text.getForecastEditString(cmbCust.Text, forecastNum, uItemCust.item_code, oldForecast, newForecast), DateTime.Now, MainDashboard.USER_ID);
+                        }
                     }
                     else
                     {
-                        tool.historyRecord(text.ForecastEdit, text.getForecastEditString(cmbCust.Text, forecastNum, uItemCust.item_code, oldForecast, newForecast), DateTime.Now, MainDashboard.USER_ID);
-                    }
-                }
-                else
-                {
-                    bool success = dalItemCust.Insert(uItemCust);
-                    //If the data is successfully inserted then the value of success will be true else false
-                    if (!success)
-                    {
-                        MessageBox.Show("Failed to add new forecast");
-                        tool.historyRecord(text.System, "Failed to add new forecast(frmForecast) "+ uItemCust.item_code, DateTime.Now, MainDashboard.USER_ID);
+                        bool success = dalItemCust.Insert(uItemCust);
+                        //If the data is successfully inserted then the value of success will be true else false
+                        if (!success)
+                        {
+                            MessageBox.Show("Failed to add new forecast");
+                            tool.historyRecord(text.System, "Failed to add new forecast(frmForecast) " + uItemCust.item_code, DateTime.Now, MainDashboard.USER_ID);
 
+                        }
+                        dgvForecast.Rows[rowIndex].Cells["forecast_updtd_date"].Value = updatedTime;
+                        dgvForecast.Rows[rowIndex].Cells["forecast_updtd_by"].Value = dalUser.getUsername(MainDashboard.USER_ID);
                     }
                 }
             }
@@ -517,7 +523,6 @@ namespace FactoryManagementSoftware.UI
                 {
                     forecastNum = (dgvForecast.CurrentCell.ColumnIndex - 1).ToString();
                     oldForecast = dgvForecast.CurrentCell.Value.ToString();
-
                     TextBox tb = e.Control as TextBox;
                     if (tb != null)
                     {
@@ -539,6 +544,7 @@ namespace FactoryManagementSoftware.UI
         {
             try
             {
+                txtSearch.Clear();
                 loadForecastList();
             }
             catch (Exception ex)
@@ -552,7 +558,33 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        
+        private void dgvForecast_CursorChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void dgvForecast_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+           
+        }
+
+        private void dgvForecast_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if(e.ColumnIndex >=3 && e.ColumnIndex <= 6)
+            {
+                dgvForecast.Cursor = Cursors.IBeam;
+            }
+            else
+            {
+                dgvForecast.Cursor = Cursors.Default;
+            }
+        }
+
+        private void dgvForecast_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            //dgvForecast.Cursor = Cursors.Default;
+
+        }
 
         private void btnReport_Click(object sender, EventArgs e)
         {

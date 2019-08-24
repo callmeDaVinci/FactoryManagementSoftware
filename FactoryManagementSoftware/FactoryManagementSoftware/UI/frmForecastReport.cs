@@ -21,6 +21,11 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
 
+            int month = DateTime.Now.Month;
+            int year = DateTime.Now.Year;
+            dtpStart.Value = tool.GetStartDate(month, year);
+            dtpEnd.Value = tool.GetEndDate(month, year);
+
             int currentMonth = Convert.ToInt32(DateTime.Now.Month.ToString("00"));
             string currentMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth);
             string nextMonthName, nextTwoMonthName, nextThreeMonthName;
@@ -103,6 +108,8 @@ namespace FactoryManagementSoftware.UI
         private int indexNo = 1;
         //private int alphbet = 65;
         private bool gotData = false;
+        private bool loaded = false;
+        private bool startDateUpdated = false;
         private int colorOrder = 0;
         private string colorName = "Gold";
         private int redAlertLevel = 0;
@@ -223,16 +230,7 @@ namespace FactoryManagementSoftware.UI
         {
             tool.loadCustomerWithoutOtherToComboBox(cmbCust);
             tool.DoubleBuffered(dgvForecastReport, true);
-
-            DateTime startDate = dalHist.GetForecastReportOutStartDate();
-
-            if (startDate == DateTime.MinValue)
-            {
-                //unassigned
-                startDate = DateTime.Now.Date;
-            }
-
-            dtpStart.Value = startDate;
+            loaded = true;
         }
 
         #endregion
@@ -370,7 +368,7 @@ namespace FactoryManagementSoftware.UI
         private bool ifGotChild(string itemCode)
         {
             bool result = false;
-            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+            DataTable dtJoin = dalJoin.loadChildList(itemCode);
             if (dtJoin.Rows.Count > 0)
             {
                 result = true;
@@ -1074,7 +1072,7 @@ namespace FactoryManagementSoftware.UI
             int alphbetTest = 65;
             string parentItemCode = itemCode;
             DataGridView dgv = dgvForecastReport;
-            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+            DataTable dtJoin = dalJoin.loadChildList(itemCode);
             if (dtJoin.Rows.Count > 0)
             {
                 foreach (DataRow Join in dtJoin.Rows)
@@ -1274,7 +1272,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     string itemCode = item["item_code"].ToString();
 
-                    if (!ifGotChild(itemCode) && type != 2)
+                    if (!dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode) && type != 2)  //!ifGotChild(itemCode)
                     {
                         int n = dgv.Rows.Add();
                         dgv.Rows[n].Cells[IndexColName].Value = indexNo.ToString();
@@ -1396,7 +1394,7 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[n].Cells[Shot1ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                             dgv.Rows[n].Cells[Shot2ColName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Bold) };
                         }
-                        else
+                        else if(!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                         {
                             dgv.Rows[n].Cells[MatTypeColName].Value = dalItem.getMaterialName(item["item_material"].ToString());
                             dgv.Rows[n].Cells[MBColName].Value = item["item_mb"].ToString();
@@ -3033,14 +3031,18 @@ namespace FactoryManagementSoftware.UI
 
         private void dtpStart_ValueChanged(object sender, EventArgs e)
         {
-            //tool.historyRecord("(ADMIN)", "***SAVE DATE DATA FOR FORECAST REPORT'S OUT STARTING DATE***", dtpStart.Value.Date, 1);
-            uHist.history_date = dtpStart.Value.Date;
-
-            bool result = dalHist.update(uHist);
-
-            if (!result)
+            if (loaded && !startDateUpdated)
             {
-                MessageBox.Show("Failed to update history");
+                int year = dtpStart.Value.Year;
+                int month = dtpStart.Value.Month;
+
+                startDateUpdated = true;
+                dtpStart.Value = tool.GetStartDate(month, year);
+                dtpEnd.Value = tool.GetEndDate(month, year);
+            }
+            else
+            {
+                startDateUpdated = false;
             }
 
         }
@@ -3060,6 +3062,22 @@ namespace FactoryManagementSoftware.UI
             {
                 cbForecastMonth1.Checked = false;
             }
+        }
+
+
+        private void dgvForecastReport_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            //dgv.Rows[n].Cells[CodeColName].Value = itemCode;
+            //dgv.Rows[n].Cells[NameColName].Value = item["item_name"].ToString();
+            string itemName = dgvForecastReport.Rows[rowIndex].Cells[NameColName].Value.ToString();
+            string itemCode = dgvForecastReport.Rows[rowIndex].Cells[CodeColName].Value.ToString();
+
+            //MessageBox.Show("ItemName: " + itemName + " ItemCode: " + itemCode);
+
+            frmPlanning frm = new frmPlanning(itemName, itemCode);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();
         }
     }
 }

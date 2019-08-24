@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>FactoryManagementSoftware</RootNamespace>
     <AssemblyName>FactoryManagementSoftware</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -26,8 +26,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>210</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -70,6 +70,9 @@
     <Reference Include="itextsharp">
       <HintPath>..\..\..\..\Download\itextsharp\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="SplashScreen, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SplashScreen.Winforms.1.0.0\lib\SplashScreen.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -97,11 +100,14 @@
     <Compile Include="BLL\itemCatBLL.cs" />
     <Compile Include="BLL\itemCustBLL.cs" />
     <Compile Include="BLL\joinBLL.cs" />
+    <Compile Include="BLL\MacBLL.cs" />
     <Compile Include="BLL\materialBLL.cs" />
     <Compile Include="BLL\materialUsedBLL.cs" />
+    <Compile Include="BLL\matPlanBLL.cs" />
     <Compile Include="BLL\ordBLL.cs" />
     <Compile Include="BLL\facStockBLL.cs" />
     <Compile Include="BLL\orderActionBLL.cs" />
+    <Compile Include="BLL\PlanningBLL.cs" />
     <Compile Include="BLL\pmmaBLL.cs" />
     <Compile Include="BLL\pmmaDateBLL.cs" />
     <Compile Include="BLL\trfCatBLL.cs" />
@@ -117,11 +123,14 @@
     <Compile Include="DAL\itemCustDAL.cs" />
     <Compile Include="DAL\itemDAL.cs" />
     <Compile Include="DAL\joinDAL.cs" />
+    <Compile Include="DAL\MacDAL.cs" />
     <Compile Include="DAL\materialDAL.cs" />
     <Compile Include="DAL\materialUsedDAL.cs" />
+    <Compile Include="DAL\matPlanDAL.cs" />
     <Compile Include="DAL\ordDAL.cs" />
     <Compile Include="DAL\facStockDAL.cs" />
     <Compile Include="DAL\orderActionDAL.cs" />
+    <Compile Include="DAL\planningDAL.cs" />
     <Compile Include="DAL\pmmaDAL.cs" />
     <Compile Include="DAL\pmmaDateDAL.cs" />
     <Compile Include="DAL\trfCatDAL.cs" />
@@ -142,11 +151,59 @@
     <Compile Include="UI\frmCat.Designer.cs">
       <DependentUpon>frmCat.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmChangeDate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmChangeDate.Designer.cs">
+      <DependentUpon>frmChangeDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmChildStockOutRecord.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\frmChildStockOutRecord.Designer.cs">
       <DependentUpon>frmChildStockOutRecord.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDialog.Designer.cs">
+      <DependentUpon>frmDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmLoading.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmLoading.Designer.cs">
+      <DependentUpon>frmLoading.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmMachineData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMachineData.Designer.cs">
+      <DependentUpon>frmMachineData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmMachineSchedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMachineSchedule.Designer.cs">
+      <DependentUpon>frmMachineSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmMachineScheduleFromMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMachineScheduleFromMain.Designer.cs">
+      <DependentUpon>frmMachineScheduleFromMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmMacScheduleAdjust.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMacScheduleAdjust.Designer.cs">
+      <DependentUpon>frmMacScheduleAdjust.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmMatPlanningList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMatPlanningList.Designer.cs">
+      <DependentUpon>frmMatPlanningList.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmOrderCancel.cs">
       <SubType>Form</SubType>
@@ -306,6 +363,12 @@
     <Compile Include="UI\frmOrderApprove.Designer.cs">
       <DependentUpon>frmOrderApprove.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmOrderFollowUpAction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmOrderFollowUpAction.Designer.cs">
+      <DependentUpon>frmOrderFollowUpAction.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmOrderRequest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -323,6 +386,24 @@
     </Compile>
     <Compile Include="UI\frmOrderReceive.Designer.cs">
       <DependentUpon>frmOrderReceive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmPlanning.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmPlanning.Designer.cs">
+      <DependentUpon>frmPlanning.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmPlanningAddSubItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmPlanningAddSubItem.Designer.cs">
+      <DependentUpon>frmPlanningAddSubItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmPlanningApply.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmPlanningApply.Designer.cs">
+      <DependentUpon>frmPlanningApply.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmPMMA.cs">
       <SubType>Form</SubType>
@@ -347,6 +428,24 @@
     </Compile>
     <Compile Include="UI\frmStockReportFactoryQty.Designer.cs">
       <DependentUpon>frmStockReportFactoryQty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmStockReverseDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmStockReverseDetail.Designer.cs">
+      <DependentUpon>frmStockReverseDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmTargetQtyConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmTargetQtyConfirm.Designer.cs">
+      <DependentUpon>frmTargetQtyConfirm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmTransferHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmTransferHistory.Designer.cs">
+      <DependentUpon>frmTransferHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmUser.cs">
       <SubType>Form</SubType>
@@ -384,8 +483,32 @@
     <EmbeddedResource Include="UI\frmCat.resx">
       <DependentUpon>frmCat.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmChangeDate.resx">
+      <DependentUpon>frmChangeDate.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmChildStockOutRecord.resx">
       <DependentUpon>frmChildStockOutRecord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDialog.resx">
+      <DependentUpon>frmDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmLoading.resx">
+      <DependentUpon>frmLoading.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmMachineData.resx">
+      <DependentUpon>frmMachineData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmMachineSchedule.resx">
+      <DependentUpon>frmMachineSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmMachineScheduleFromMain.resx">
+      <DependentUpon>frmMachineScheduleFromMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmMacScheduleAdjust.resx">
+      <DependentUpon>frmMacScheduleAdjust.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmMatPlanningList.resx">
+      <DependentUpon>frmMatPlanningList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderCancel.resx">
       <DependentUpon>frmOrderCancel.cs</DependentUpon>
@@ -475,6 +598,9 @@
     <EmbeddedResource Include="UI\frmOrderApprove.resx">
       <DependentUpon>frmOrderApprove.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmOrderFollowUpAction.resx">
+      <DependentUpon>frmOrderFollowUpAction.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderRequest.resx">
       <DependentUpon>frmOrderRequest.cs</DependentUpon>
     </EmbeddedResource>
@@ -483,6 +609,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderReceive.resx">
       <DependentUpon>frmOrderReceive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmPlanning.resx">
+      <DependentUpon>frmPlanning.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmPlanningAddSubItem.resx">
+      <DependentUpon>frmPlanningAddSubItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmPlanningApply.resx">
+      <DependentUpon>frmPlanningApply.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPMMA.resx">
       <DependentUpon>frmPMMA.cs</DependentUpon>
@@ -495,6 +630,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockReportFactoryQty.resx">
       <DependentUpon>frmStockReportFactoryQty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmStockReverseDetail.resx">
+      <DependentUpon>frmStockReverseDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmTargetQtyConfirm.resx">
+      <DependentUpon>frmTargetQtyConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmTransferHistory.resx">
+      <DependentUpon>frmTransferHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmUser.resx">
       <DependentUpon>frmUser.cs</DependentUpon>

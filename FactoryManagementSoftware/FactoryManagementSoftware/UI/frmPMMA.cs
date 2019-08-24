@@ -16,16 +16,10 @@ namespace FactoryManagementSoftware.UI
     {
         public frmPMMA()
         {
-
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             InitializeComponent();
             dataSourceSetup();
             Cursor = Cursors.Arrow; // change cursor to normal type
-            //}
-            //catch (Exception ex)
-            //{
-            //    tool.saveToTextAndMessageToUser(ex);
-            //}
         }
 
         private DataTable dgvSource = new DataTable();
@@ -162,14 +156,18 @@ namespace FactoryManagementSoftware.UI
             
             dtpDate.Format = DateTimePickerFormat.Custom;
             dtpDate.CustomFormat = "MMMM yyyy";
-            
-            
 
             dtpDate.ShowUpDown = true;// to prevent the calendar from being displayed
 
             var dummyYear = 2019;
             var dummyMonth = DateTime.Now.Month;
             dtpDate.Value = new DateTime(dummyYear, dummyMonth, 1);
+
+            int year = dtpDate.Value.Year;
+            int month = dtpDate.Value.Month;
+
+            dtpStart.Value = tool.GetStartDate(month, year);
+            dtpEnd.Value = tool.GetEndDate(month, year);
 
             //Out Type
             cmbType.Items.Clear();
@@ -254,12 +252,12 @@ namespace FactoryManagementSoftware.UI
 
                     if (tool.ifGotChild(itemCode))
                     {
-                        DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                        DataTable dtJoin = dalJoin.loadChildList(itemCode);
                         foreach (DataRow Join in dtJoin.Rows)
                         {
                             if (tool.ifGotChild(Join["join_child_code"].ToString()))
                             {
-                                DataTable dtJoin2 = dalJoin.parentCheck(Join["join_child_code"].ToString());
+                                DataTable dtJoin2 = dalJoin.loadChildList(Join["join_child_code"].ToString());
                                 foreach (DataRow Join2 in dtJoin2.Rows)
                                 {
                                     //typeNo = 0;
@@ -409,6 +407,7 @@ namespace FactoryManagementSoftware.UI
             dgvPMMA.Rows.Clear();
             dgvPMMA.Refresh();
             int index = 1;
+            DataTable dt_itemInfo = dalItem.Select();
             DataTable dt = insertItemMaterialData();//23S,2S
             dt = tool.RemoveDuplicates(dt, "item_material");
             dt = RemoveNonZeroCost(dt);
@@ -442,6 +441,12 @@ namespace FactoryManagementSoftware.UI
                 //get last month bal
                 openningStock = getLastMonthBal(itemCode, month, year);
                 
+                if(tool.getCatNameFromDataTable(dt_itemInfo, itemCode).Equals("Sub Material"))
+                {
+                    int interval = Convert.ToInt32(Math.Floor(openningStock));
+                    openningStock = Convert.ToSingle(interval);
+                }
+
                 foreach (DataRow pmma in searchdt.Rows)
                 {
                     if (openningStock == -1)
@@ -483,8 +488,22 @@ namespace FactoryManagementSoftware.UI
             DataGridView dgv = dgvPMMA;
             int n = dgv.Rows.Add();
 
+            DataTable dt_itemInfo = dalItem.Select();
+
             float inQty = calculateInRecord(itemCode, month, year);
             float outQty = calculateOutRecord(itemCode, month, year);
+
+            if(tool.getCatNameFromDataTable(dt_itemInfo,itemCode).Equals("Sub Material"))
+            {
+                int interval = Convert.ToInt32(Math.Floor(inQty));
+                inQty = Convert.ToSingle(interval);
+
+                interval = Convert.ToInt32(Math.Floor(outQty));
+                outQty = Convert.ToSingle(interval);
+            }
+
+           
+
             float bal = openningStock + inQty - outQty;
                   
             float wastage = outQty * percentage;
@@ -492,12 +511,17 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[n].Cells[IndexColumnName].Value = index;
             dgv.Rows[n].Cells[dalItem.ItemCode].Value = itemCode;
             dgv.Rows[n].Cells[dalItem.ItemName].Value = dalItem.getMaterialName(itemCode);
-            dgv.Rows[n].Cells[dalPMMA.OpenStock].Value = openningStock.ToString("0.00");
-            dgv.Rows[n].Cells[IndexInName].Value = inQty.ToString("0.00");
-            dgv.Rows[n].Cells[IndexOutName].Value = outQty.ToString("0.00");
-            dgv.Rows[n].Cells[dalPMMA.Adjust].Value = adjust.ToString("0.00");
+            dgv.Rows[n].Cells[dalPMMA.OpenStock].Value = openningStock.ToString("0.#");
+            dgv.Rows[n].Cells[IndexInName].Value = inQty.ToString("0.#");
+            dgv.Rows[n].Cells[IndexOutName].Value = outQty.ToString("0.#");
+            dgv.Rows[n].Cells[dalPMMA.Adjust].Value = adjust.ToString("0.#");
             dgv.Rows[n].Cells[dalPMMA.Note].Value = note;
-            dgv.Rows[n].Cells[IndexBalName].Value = (bal + adjust).ToString("0.00");
+            dgv.Rows[n].Cells[IndexBalName].Value = (bal + adjust).ToString("0.#");
+
+            if ((bal + adjust) < 0)
+            {
+                dgv.Rows[n].Cells[IndexBalName].Style.ForeColor = Color.Red;
+            }
 
             if (outQty == 0)
             {
@@ -505,8 +529,13 @@ namespace FactoryManagementSoftware.UI
             }
 
             dgv.Rows[n].Cells[IndexPercentageName].Value = percentage;
-            dgv.Rows[n].Cells[IndexWastageName].Value = wastage.ToString("0.00");
-            dgv.Rows[n].Cells[dalPMMA.BalStock].Value = (bal - wastage + adjust).ToString("0.00");
+            dgv.Rows[n].Cells[IndexWastageName].Value = wastage.ToString("0.#");
+            dgv.Rows[n].Cells[dalPMMA.BalStock].Value = (bal - wastage + adjust).ToString("0.#");
+
+            if((bal - wastage + adjust) < 0)
+            {
+                dgv.Rows[n].Cells[dalPMMA.BalStock].Style.ForeColor = Color.Red;
+            }
 
             //DataRow dr = dgvSource.NewRow();
 
@@ -665,7 +694,7 @@ namespace FactoryManagementSoftware.UI
 
                         if (tool.ifGotChild(itemCode))
                         {
-                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            DataTable dtJoin = dalJoin.loadChildList(itemCode);
                             foreach (DataRow Join in dtJoin.Rows)
                             {
                                 uMatUsed.no = forecastIndex;
@@ -769,7 +798,7 @@ namespace FactoryManagementSoftware.UI
                                 }
                             }
 
-                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            DataTable dtJoin = dalJoin.loadChildList(itemCode);
                             foreach (DataRow Join in dtJoin.Rows)
                             {
                                 if (tool.ifGotChild(Join["join_child_code"].ToString()))
@@ -792,7 +821,7 @@ namespace FactoryManagementSoftware.UI
                                         }
                                     }
 
-                                    DataTable dtJoin2 = dalJoin.parentCheck(Join["join_child_code"].ToString());
+                                    DataTable dtJoin2 = dalJoin.loadChildList(Join["join_child_code"].ToString());
                                     foreach (DataRow Join2 in dtJoin2.Rows)
                                     {
                                         uMatUsed.no = forecastIndex;
@@ -1642,7 +1671,13 @@ namespace FactoryManagementSoftware.UI
         {
             dgvPMMA.Rows.Clear();
 
-            if(checkIfActualExist())//checkIfActualExist()
+            int year = dtpDate.Value.Year;
+            int month = dtpDate.Value.Month;
+
+            dtpStart.Value = tool.GetStartDate(month, year);
+            dtpEnd.Value = tool.GetEndDate(month, year);
+
+            if (checkIfActualExist())//checkIfActualExist()
             {
                 cmbType.Items.Clear();
                 cmbType.Items.Add(cmbTypeActual);
@@ -1656,10 +1691,6 @@ namespace FactoryManagementSoftware.UI
                 cmbType.SelectedIndex = 0;
             }
 
-            //string month = Convert.ToDateTime(dtpDate.Value).Month.ToString();
-            //string year = Convert.ToDateTime(dtpDate.Value).Year.ToString();
-
-            //MessageBox.Show(month + year);
         }
 
         private void cmbType_SelectedIndexChanged_1(object sender, EventArgs e)

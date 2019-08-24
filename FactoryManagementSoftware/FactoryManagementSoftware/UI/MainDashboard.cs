@@ -25,6 +25,8 @@ namespace FactoryManagementSoftware.UI
         static public bool historyFormOpen = false;
         static public bool InOutReportFormOpen = false;
         static public bool PMMAFormOpen = false;
+        static public bool ProductionFormOpen = false;
+
         static public int USER_ID = -1;
 
         static public readonly int ACTION_LVL_ONE = 1;
@@ -48,12 +50,15 @@ namespace FactoryManagementSoftware.UI
             {
                 adminToolStripMenuItem.Visible = true;
                 orderToolStripMenuItem1.Visible = true;
+                productionToolStripMenuItem.Visible = true;
+
             }
             else if(userPermission >= ACTION_LVL_TWO)
             {
                 forecastToolStripMenuItem.Visible = true;
                 adminToolStripMenuItem.Visible = false;
                 orderToolStripMenuItem1.Visible = true;
+                productionToolStripMenuItem.Visible = true;
             }
             else
             {
@@ -61,6 +66,7 @@ namespace FactoryManagementSoftware.UI
                 forecastToolStripMenuItem.Visible = false;
                 adminToolStripMenuItem.Visible = false;
                 orderToolStripMenuItem1.Visible = true;
+                productionToolStripMenuItem.Visible = false;
             }
         }
 
@@ -473,6 +479,26 @@ namespace FactoryManagementSoftware.UI
         private void adminToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void productionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!ProductionFormOpen)
+            {
+                frmMachineSchedule frm = new frmMachineSchedule();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                ProductionFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmMachineSchedule>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmMachineSchedule>().First().BringToFront();
+                }
+            }
         }
     }
 }

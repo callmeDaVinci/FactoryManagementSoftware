@@ -22,6 +22,10 @@ namespace FactoryManagementSoftware.UI
             tool.loadCustomerAndAllToComboBox(cmbCust);
             cbZeroCost.Visible = false;
             addDataToTypeCMB();
+            int month = DateTime.Now.Month;
+            int year = DateTime.Now.Year;
+            dtpStart.Value = tool.GetStartDate(month, year);
+            dtpEnd.Value = tool.GetEndDate(month, year);
         }
 
         #region Valiable Declare
@@ -39,6 +43,8 @@ namespace FactoryManagementSoftware.UI
 
         private string forecastMonth = "!";
 
+        private bool loaded = false;
+        private bool startDateUpdated = false;
         #endregion
 
         #region create class object (database)
@@ -304,12 +310,12 @@ namespace FactoryManagementSoftware.UI
                         bool result = false;
                         if (tool.ifGotChild(itemCode))
                         {
-                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            DataTable dtJoin = dalJoin.loadChildList(itemCode);
                             foreach (DataRow Join in dtJoin.Rows)
                             {
                                 if (tool.ifGotChild(Join["join_child_code"].ToString()))
                                 {
-                                    DataTable dtJoin2 = dalJoin.parentCheck(Join["join_child_code"].ToString());
+                                    DataTable dtJoin2 = dalJoin.loadChildList(Join["join_child_code"].ToString());
                                     foreach (DataRow Join2 in dtJoin2.Rows)
                                     {
                                         uMatUsed.no = forecastIndex;
@@ -427,7 +433,7 @@ namespace FactoryManagementSoftware.UI
                                 }
                             }
 
-                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            DataTable dtJoin = dalJoin.loadChildList(itemCode);
                             foreach (DataRow Join in dtJoin.Rows)
                             {
                                 if (tool.ifGotChild(Join["join_child_code"].ToString()))
@@ -450,7 +456,7 @@ namespace FactoryManagementSoftware.UI
                                         }
                                     }
 
-                                    DataTable dtJoin2 = dalJoin.parentCheck(Join["join_child_code"].ToString());
+                                    DataTable dtJoin2 = dalJoin.loadChildList(Join["join_child_code"].ToString());
                                     foreach (DataRow Join2 in dtJoin2.Rows)
                                     {
                                         uMatUsed.no = forecastIndex;
@@ -559,7 +565,7 @@ namespace FactoryManagementSoftware.UI
                                 }
                             }
 
-                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            DataTable dtJoin = dalJoin.loadChildList(itemCode);
                             foreach (DataRow Join in dtJoin.Rows)
                             {
                                 if (tool.ifGotChild(Join["join_child_code"].ToString()))
@@ -583,7 +589,7 @@ namespace FactoryManagementSoftware.UI
                                         }
                                     }
 
-                                    DataTable dtJoin2 = dalJoin.parentCheck(Join["join_child_code"].ToString());
+                                    DataTable dtJoin2 = dalJoin.loadChildList(Join["join_child_code"].ToString());
                                     foreach (DataRow Join2 in dtJoin2.Rows)
                                     {
                                         int joinQty = Convert.ToInt16(Join2["join_qty"].ToString());
@@ -691,7 +697,7 @@ namespace FactoryManagementSoftware.UI
                                 }
                             }
 
-                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            DataTable dtJoin = dalJoin.loadChildList(itemCode);
                             foreach (DataRow Join in dtJoin.Rows)
                             {
                                 if (tool.ifGotChild(Join["join_child_code"].ToString()))
@@ -713,7 +719,7 @@ namespace FactoryManagementSoftware.UI
                                         }
                                     }
 
-                                    DataTable dtJoin2 = dalJoin.parentCheck(Join["join_child_code"].ToString());
+                                    DataTable dtJoin2 = dalJoin.loadChildList(Join["join_child_code"].ToString());
                                     foreach (DataRow Join2 in dtJoin2.Rows)
                                     {
                                         uMatUsed.no = forecastIndex;
@@ -819,12 +825,12 @@ namespace FactoryManagementSoftware.UI
                         bool result = false;
                         if (tool.ifGotChild(itemCode))
                         {
-                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            DataTable dtJoin = dalJoin.loadChildList(itemCode);
                             foreach (DataRow Join in dtJoin.Rows)
                             {
                                 if (tool.ifGotChild(Join["join_child_code"].ToString()))
                                 {
-                                    DataTable dtJoin2 = dalJoin.parentCheck(Join["join_child_code"].ToString());
+                                    DataTable dtJoin2 = dalJoin.loadChildList(Join["join_child_code"].ToString());
                                     foreach (DataRow Join2 in dtJoin2.Rows)
                                     {
                                         uMatUsed.no = forecastIndex;
@@ -1002,7 +1008,7 @@ namespace FactoryManagementSoftware.UI
                                 }
                             }
 
-                            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                            DataTable dtJoin = dalJoin.loadChildList(itemCode);
                             foreach (DataRow Join in dtJoin.Rows)
                             {
                                 if (tool.ifGotChild(Join["join_child_code"].ToString()))
@@ -1025,7 +1031,7 @@ namespace FactoryManagementSoftware.UI
                                         }
                                     }
 
-                                    DataTable dtJoin2 = dalJoin.parentCheck(Join["join_child_code"].ToString());
+                                    DataTable dtJoin2 = dalJoin.loadChildList(Join["join_child_code"].ToString());
                                     foreach (DataRow Join2 in dtJoin2.Rows)
                                     {
                                         uMatUsed.no = forecastIndex;
@@ -1091,7 +1097,7 @@ namespace FactoryManagementSoftware.UI
             bool result = false;
             if (tool.ifGotChild(itemCode))
             {
-                DataTable dtJoin = dalJoin.parentCheck(itemCode);
+                DataTable dtJoin = dalJoin.loadChildList(itemCode);
                 foreach (DataRow Join in dtJoin.Rows)
                 {
                     if (tool.ifGotChild(Join["join_child_code"].ToString()))
@@ -1338,7 +1344,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     string ParentCode;
                     int joinQty;
-                    DataTable dt_Parent = dalJoin.childCheck(itemCode);
+                    DataTable dt_Parent = dalJoin.loadParentList(itemCode);
 
                     foreach (DataRow row in dt_Parent.Rows)
                     {
@@ -1351,7 +1357,7 @@ namespace FactoryManagementSoftware.UI
                             if (tool.ifGotParent(ParentCode, dtJoin))
                             {
                                 string GrandparentCode;
-                                DataTable dt_Grandparent = dalJoin.childCheck(ParentCode);
+                                DataTable dt_Grandparent = dalJoin.loadParentList(ParentCode);
 
                                 foreach (DataRow row2 in dt_Grandparent.Rows)
                                 {
@@ -1452,6 +1458,7 @@ namespace FactoryManagementSoftware.UI
         {
             //loadCustomerList();
             tool.DoubleBuffered(dgvMaterialUsedRecord, true);
+            loaded = true;
         }
 
         private void loadCustomerList()
@@ -1831,6 +1838,14 @@ namespace FactoryManagementSoftware.UI
                     forecastMonth = new DateTimeFormatInfo().GetMonthName(forecastNextNextMonth).ToUpper().ToString();
                     lblMonth.Text = forecastMonth + " FORECAST MATERIAL USED REPORT";
                 }
+                else if (cmbType.Text.Equals(cmbTypeNextNextNextMonth))
+                {
+                    int forecastNextMonth = getNextMonth(forecastCurrentMonth);
+                    int forecastNextNextMonth = getNextMonth(forecastNextMonth);
+                    int forecastNextNextNextMonth = getNextMonth(forecastNextNextMonth);
+                    forecastMonth = new DateTimeFormatInfo().GetMonthName(forecastNextNextNextMonth).ToUpper().ToString();
+                    lblMonth.Text = forecastMonth + " FORECAST MATERIAL USED REPORT";
+                }
                 else
                 {
                     lblMonth.Text = "MATERIAL USED REPORT";
@@ -2094,6 +2109,23 @@ namespace FactoryManagementSoftware.UI
             {
                 txtSearch.Hide();
                 cmbCust.Enabled = true;
+            }
+        }
+
+        private void dtpStart_ValueChanged(object sender, EventArgs e)
+        {
+            if (loaded && !startDateUpdated)
+            {
+                int year = dtpStart.Value.Year;
+                int month = dtpStart.Value.Month;
+
+                startDateUpdated = true;
+                dtpStart.Value = tool.GetStartDate(month, year);
+                dtpEnd.Value = tool.GetEndDate(month, year);
+            }
+            else
+            {
+                startDateUpdated = false;
             }
         }
     }

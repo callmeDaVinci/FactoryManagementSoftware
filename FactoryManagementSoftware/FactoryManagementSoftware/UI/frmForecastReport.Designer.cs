@@ -182,6 +182,7 @@
             this.dgvForecastReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvForecastReport.Size = new System.Drawing.Size(1534, 497);
             this.dgvForecastReport.TabIndex = 22;
+            this.dgvForecastReport.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecastReport_CellDoubleClick);
             this.dgvForecastReport.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvForecastReport_MouseClick);
             // 
             // btnCheck

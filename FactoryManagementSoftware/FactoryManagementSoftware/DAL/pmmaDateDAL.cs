@@ -74,15 +74,8 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 String sql = @"INSERT INTO tbl_pmma_date 
-                            (" + dateMonth + ","
-                            + dateYear + ","
-                            + dateStart + ","
-                            + dateEnd + ","
-                            + dateUpdatedDate + ","       
-                            + dateUpdatedBy + ") VALUES" +
-                            "(@month," +
-                            "(@year," +
-                            "(@date_start," +
+                            (" + dateMonth + "," + dateYear + "," + dateStart + "," + dateEnd + "," + dateUpdatedDate + "," + dateUpdatedBy + ") VALUES (@month,@year," +
+                            "@date_start," +
                             "@date_end," +
                             "@updated_date," +
                             "@updated_by)";

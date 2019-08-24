@@ -19,118 +19,82 @@ namespace FactoryManagementSoftware.UI
         private bool Edited = false;
         private bool yearEdited = false;
         private int oldYear = DateTime.Now.Year;
+        readonly string startDateString = "StartDate";
+        readonly string endDateString = "EndDate";
+
         pmmaDateDAL dalPmmaDate = new pmmaDateDAL();
+        pmmaDateBLL uPmmaDate = new pmmaDateBLL();
+
+        Tool tool = new Tool();
+        Text text = new Text();
+
+        DataTable dt_PmmaDate;
+
+        #region INITIALIZE/ LOAD DATA/ SAVE DATA
 
         private void InitializeDate()
         {
-
             dtpYear.Format = DateTimePickerFormat.Custom;
             dtpYear.CustomFormat = "yyyy";
             dtpYear.ShowUpDown = true;// to prevent the calendar from being displayed
 
-            DataTable dt = dalPmmaDate.Select();
-            LoadDate(dt);
+            dt_PmmaDate = dalPmmaDate.Select();
+            LoadDate();
             Edited = false;
-            //var dummyYear = 2019;
-            //var dummyMonth = DateTime.Now.Month;
-            //dtpDate.Value = new DateTime(dummyYear, dummyMonth, 1);
         }
 
         private void LoadDate()
         {
             int year = dtpYear.Value.Year;
 
-            dtpJanStart.Value = new DateTime(year, 1, 1);
-            dtpJanEnd.Value = new DateTime(year, 1, DateTime.DaysInMonth(year, 1));
+            dtpJanStart.Value = GetStartDate(1,year,dt_PmmaDate);
+            dtpJanEnd.Value = GetEndDate(1, year, dt_PmmaDate);
 
-            dtpFebStart.Value = new DateTime(year, 2, 1);
-            dtpFebEnd.Value = new DateTime(year, 2, DateTime.DaysInMonth(year, 2));
+            dtpFebStart.Value = GetStartDate(2, year, dt_PmmaDate);
+            dtpFebEnd.Value = GetEndDate(2, year, dt_PmmaDate);
 
-            dtpMarStart.Value = new DateTime(year, 3, 1);
-            dtpMarEnd.Value = new DateTime(year, 3, DateTime.DaysInMonth(year, 3));
+            dtpMarStart.Value = GetStartDate(3, year, dt_PmmaDate);
+            dtpMarEnd.Value = GetEndDate(3, year, dt_PmmaDate);
 
-            dtpAprStart.Value = new DateTime(year, 4, 1);
-            dtpAprEnd.Value = new DateTime(year, 4, DateTime.DaysInMonth(year, 4));
+            dtpAprStart.Value = GetStartDate(4, year, dt_PmmaDate);
+            dtpAprEnd.Value = GetEndDate(4, year, dt_PmmaDate);
 
-            dtpMayStart.Value = new DateTime(year, 5, 1);
-            dtpMayEnd.Value = new DateTime(year, 5, DateTime.DaysInMonth(year, 5));
+            dtpMayStart.Value = GetStartDate(5, year, dt_PmmaDate);
+            dtpMayEnd.Value = GetEndDate(5, year, dt_PmmaDate);
 
-            dtpJunStart.Value = new DateTime(year, 6, 1);
-            dtpJunEnd.Value = new DateTime(year, 6, DateTime.DaysInMonth(year, 6));
+            dtpJunStart.Value = GetStartDate(6, year, dt_PmmaDate);
+            dtpJunEnd.Value = GetEndDate(6, year, dt_PmmaDate);
 
-            dtpJulStart.Value = new DateTime(year, 7, 1);
-            dtpJulEnd.Value = new DateTime(year, 7, DateTime.DaysInMonth(year, 7));
+            dtpJulStart.Value = GetStartDate(7, year, dt_PmmaDate);
+            dtpJulEnd.Value = GetEndDate(7, year, dt_PmmaDate);
 
-            dtpAugStart.Value = new DateTime(year, 8, 1);
-            dtpAugEnd.Value = new DateTime(year, 8, DateTime.DaysInMonth(year, 8));
+            dtpAugStart.Value = GetStartDate(8, year, dt_PmmaDate);
+            dtpAugEnd.Value = GetEndDate(8, year, dt_PmmaDate);
 
-            dtpSepStart.Value = new DateTime(year, 9, 1);
-            dtpSepEnd.Value = new DateTime(year, 9, DateTime.DaysInMonth(year, 9));
+            dtpSepStart.Value = GetStartDate(9, year, dt_PmmaDate);
+            dtpSepEnd.Value = GetEndDate(9, year, dt_PmmaDate);
 
-            dtpOctStart.Value = new DateTime(year, 10, 1);
-            dtpOctEnd.Value = new DateTime(year, 10, DateTime.DaysInMonth(year, 10));
+            dtpOctStart.Value = GetStartDate(10, year, dt_PmmaDate);
+            dtpOctEnd.Value = GetEndDate(10, year, dt_PmmaDate);
 
-            dtpNovStart.Value = new DateTime(year, 11, 1);
-            dtpNovEnd.Value = new DateTime(year, 11, DateTime.DaysInMonth(year, 11));
+            dtpNovStart.Value = GetStartDate(11, year, dt_PmmaDate);
+            dtpNovEnd.Value = GetEndDate(11, year, dt_PmmaDate);
 
-            dtpDecStart.Value = new DateTime(year, 12, 1);
-            dtpDecEnd.Value = new DateTime(year, 12, DateTime.DaysInMonth(year, 12));
+            dtpDecStart.Value = GetStartDate(12, year, dt_PmmaDate);
+            dtpDecEnd.Value = GetEndDate(12, year, dt_PmmaDate);
 
             Edited = false;
         }
 
-        private void LoadDate(DataTable dt)
-        {
-            int year = dtpYear.Value.Year;
-
-            dtpJanStart.Value = new DateTime(year, 1, 1);
-            dtpJanEnd.Value = new DateTime(year, 1, DateTime.DaysInMonth(year, 1));
-
-            dtpFebStart.Value = new DateTime(year, 2, 1);
-            dtpFebEnd.Value = new DateTime(year, 2, DateTime.DaysInMonth(year, 2));
-
-            dtpMarStart.Value = new DateTime(year, 3, 1);
-            dtpMarEnd.Value = new DateTime(year, 3, DateTime.DaysInMonth(year, 3));
-
-            dtpAprStart.Value = new DateTime(year, 4, 1);
-            dtpAprEnd.Value = new DateTime(year, 4, DateTime.DaysInMonth(year, 4));
-
-            dtpMayStart.Value = new DateTime(year, 5, 1);
-            dtpMayEnd.Value = new DateTime(year, 5, DateTime.DaysInMonth(year, 5));
-
-            dtpJunStart.Value = new DateTime(year, 6, 1);
-            dtpJunEnd.Value = new DateTime(year, 6, DateTime.DaysInMonth(year, 6));
-
-            dtpJulStart.Value = new DateTime(year, 7, 1);
-            dtpJulEnd.Value = new DateTime(year, 7, DateTime.DaysInMonth(year, 7));
-
-            dtpAugStart.Value = new DateTime(year, 8, 1);
-            dtpAugEnd.Value = new DateTime(year, 8, DateTime.DaysInMonth(year, 8));
-
-            dtpSepStart.Value = new DateTime(year, 9, 1);
-            dtpSepEnd.Value = new DateTime(year, 9, DateTime.DaysInMonth(year, 9));
-
-            dtpOctStart.Value = new DateTime(year, 10, 1);
-            dtpOctEnd.Value = new DateTime(year, 10, DateTime.DaysInMonth(year, 10));
-
-            dtpNovStart.Value = new DateTime(year, 11, 1);
-            dtpNovEnd.Value = new DateTime(year, 11, DateTime.DaysInMonth(year, 11));
-
-            dtpDecStart.Value = new DateTime(year, 12, 1);
-            dtpDecEnd.Value = new DateTime(year, 12, DateTime.DaysInMonth(year, 12));
-
-
-        }
-
-        private DateTime GetStartDate(int month,int year,DataTable dt)
+        private DateTime GetStartDate(int month, int year, DataTable dt)
         {
             DateTime date = new DateTime(year, month, 1);
 
-            if(dt.Rows.Count > 0)
+            if (dt.Rows.Count > 0)
             {
-                foreach(DataRow row in dt.Rows)
+                foreach (DataRow row in dt.Rows)
                 {
-                    if(row[dalPmmaDate.dateYear].ToString() == year.ToString() && row[dalPmmaDate.dateMonth].ToString() == month.ToString())
+                    if (row[dalPmmaDate.dateYear].ToString() == year.ToString() && row[dalPmmaDate.dateMonth].ToString() == month.ToString())
                     {
                         date = Convert.ToDateTime(row[dalPmmaDate.dateStart]);
                     }
@@ -160,12 +124,199 @@ namespace FactoryManagementSoftware.UI
             return date;
         }
 
-        private void frmPMMADateEdit_Load(object sender, EventArgs e)
+        private void saveDate()
         {
+            bool success = false;
 
+            int year = dtpYear.Value.Year;
+            int month;
+            DateTime startDate, endDate;
+
+            #region SAVE EACH MONTH START & END DATE
+
+            month = 1;
+            startDate = dtpJanStart.Value;
+            endDate = dtpJanEnd.Value;
+            success = saveDate(year,month,startDate,endDate);
+
+            month = 2;
+            startDate = dtpFebStart.Value;
+            endDate = dtpFebEnd.Value;
+            success = saveDate(year, month, startDate, endDate);
+
+            month = 3;
+            startDate = dtpMarStart.Value;
+            endDate = dtpMarEnd.Value;
+            success = saveDate(year, month, startDate, endDate);
+
+            month = 4;
+            startDate = dtpAprStart.Value;
+            endDate = dtpAprEnd.Value;
+            success = saveDate(year, month, startDate, endDate);
+
+            month = 5;
+            startDate = dtpMayStart.Value;
+            endDate = dtpMayEnd.Value;
+            success = saveDate(year, month, startDate, endDate);
+
+            month = 6;
+            startDate = dtpJunStart.Value;
+            endDate = dtpJunEnd.Value;
+            success = saveDate(year, month, startDate, endDate);
+
+            month = 7;
+            startDate = dtpJulStart.Value;
+            endDate = dtpJulEnd.Value;
+            success = saveDate(year, month, startDate, endDate);
+
+            month = 8;
+            startDate = dtpAugStart.Value;
+            endDate = dtpAugEnd.Value;
+            success = saveDate(year, month, startDate, endDate);
+
+            month = 9;
+            startDate = dtpSepStart.Value;
+            endDate = dtpSepEnd.Value;
+            success = saveDate(year, month, startDate, endDate);
+
+            month = 10;
+            startDate = dtpOctStart.Value;
+            endDate = dtpOctEnd.Value;
+            success = saveDate(year, month, startDate, endDate);
+
+            month = 11;
+            startDate = dtpNovStart.Value;
+            endDate = dtpNovEnd.Value;
+            success = saveDate(year, month, startDate, endDate);
+
+            month = 12;
+            startDate = dtpDecStart.Value;
+            endDate = dtpDecEnd.Value;
+            success = saveDate(year, month, startDate, endDate);
+
+            #endregion
+
+            dt_PmmaDate = dalPmmaDate.Select();
+
+            Edited = false;
+
+            if(success)
+            {
+                MessageBox.Show("The data was successfully updated.");
+            }
         }
 
-        private void btnReport_Click(object sender, EventArgs e)
+        private DataTable checkIfExist(int year, int month)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add(startDateString);
+            dt.Columns.Add(endDateString);
+
+            DataRow dr = dt.NewRow();
+            foreach (DataRow row in dt_PmmaDate.Rows)
+            {
+                if(Convert.ToInt16(row[dalPmmaDate.dateYear]) == year && Convert.ToInt16(row[dalPmmaDate.dateMonth]) == month)
+                {
+                    dr[startDateString] = row[dalPmmaDate.dateStart];
+                    dr[endDateString] = row[dalPmmaDate.dateEnd];
+                    dt.Rows.Add(dr);
+                }
+            }
+
+            return dt;
+        }
+
+        private bool saveDate(int year, int month, DateTime startDate, DateTime endDate)
+        {
+            bool success = true;
+            DataTable dt = checkIfExist(year,month);
+            if(dt.Rows.Count > 0)
+            {
+                DateTime oldStartDate = startDate, oldEndDate = endDate;
+
+                foreach(DataRow row in dt.Rows)
+                {
+                    oldStartDate = Convert.ToDateTime(row[startDateString]);
+                    oldEndDate = Convert.ToDateTime(row[endDateString]);
+                }
+
+                if(oldStartDate != startDate || oldEndDate != endDate)
+                {
+                    //update data
+                    uPmmaDate.year = year;
+                    uPmmaDate.month = month;
+                    uPmmaDate.date_start = startDate;
+                    uPmmaDate.date_end = endDate;
+                    uPmmaDate.updated_by = MainDashboard.USER_ID;
+                    uPmmaDate.updated_date = DateTime.Now;
+
+                    success = dalPmmaDate.Update(uPmmaDate);
+
+                    if (!success)
+                    {
+                        //Failed to insert data
+                        MessageBox.Show("Failed to update date data");
+                        tool.historyRecord(text.System, "Failed to update date data (pmmaDateEdit)", uPmmaDate.updated_date, MainDashboard.USER_ID);
+                    }
+                    else
+                    {
+                        if (oldStartDate != startDate && oldEndDate != endDate)
+                        {
+                            tool.historyRecord("PMMA Date Updated", "(" + year + "/" + month + ")" + "Start Date: "+oldStartDate.ToShortDateString()+" --> "+startDate.ToShortDateString() + ", End Date:" + oldEndDate.ToShortDateString() + " --> " + endDate.ToShortDateString(), uPmmaDate.updated_date, MainDashboard.USER_ID);
+                        }
+                        else if (oldStartDate != startDate)
+                        {
+                            tool.historyRecord("PMMA Date Updated", "(" + year + "/" + month + ")" + "Start Date: " + oldStartDate.ToShortDateString() + " --> " + startDate.ToShortDateString(), uPmmaDate.updated_date, MainDashboard.USER_ID);
+                        }
+                        else if (oldEndDate != endDate)
+                        {
+                            tool.historyRecord("PMMA Date Updated", "(" + year + "/" + month + ")" + "End Date: " + oldEndDate.ToShortDateString() + " --> " + endDate.ToShortDateString(), uPmmaDate.updated_date, MainDashboard.USER_ID);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                uPmmaDate.year = year;
+                uPmmaDate.month = month;
+                uPmmaDate.date_start = startDate;
+                uPmmaDate.date_end = endDate;
+                uPmmaDate.updated_by = MainDashboard.USER_ID;
+                uPmmaDate.updated_date = DateTime.Now;
+
+                success = dalPmmaDate.Insert(uPmmaDate);
+
+                if (!success)
+                {
+                    //Failed to insert data
+                    
+                    MessageBox.Show("Failed to add new date data");
+                    tool.historyRecord(text.System, "Failed to add new date data (pmmaDateEdit)", uPmmaDate.updated_date, MainDashboard.USER_ID);
+                }
+                else
+                {
+                    tool.historyRecord("PMMA Date Add", "(" + year + "/" + month + ")" + "Start Date: "+ startDate.ToShortDateString() + ", End Date:" + endDate.ToShortDateString(), uPmmaDate.updated_date, MainDashboard.USER_ID);
+                }
+            }
+
+            return success;
+        }
+
+        #endregion
+
+        #region BUTTON CLICK
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Confirm to save these data?", "Message",
+                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk);
+            if (dialogResult == DialogResult.Yes)
+            {
+                saveDate();
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             if(Edited)
             {
@@ -182,6 +333,10 @@ namespace FactoryManagementSoftware.UI
             }
            
         }
+
+        #endregion
+
+        #region PROTECT UNSAVE DATA
 
         #region dtp value changed
 
@@ -349,5 +504,8 @@ namespace FactoryManagementSoftware.UI
                 LoadDate();
             }
         }
+
+        #endregion
+
     }
 }

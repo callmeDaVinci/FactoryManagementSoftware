@@ -16,6 +16,48 @@ namespace FactoryManagementSoftware.DAL
         itemDAL dalItem = new itemDAL();
 
         #region Select Data from Database
+
+        public DataTable Select()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @" SELECT tbl_item.item_code,tbl_item.item_name,tbl_fac.fac_name, tbl_stock.stock_qty,tbl_stock.stock_unit 
+                                FROM((tbl_stock 
+                                INNER JOIN tbl_item 
+                                ON tbl_item.item_code = tbl_stock.stock_item_code ) 
+                                INNER JOIN tbl_fac 
+                                ON tbl_stock.stock_fac_id = tbl_fac.fac_id)";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable Select(string itemCode)
         {
             //static methodd to connect database

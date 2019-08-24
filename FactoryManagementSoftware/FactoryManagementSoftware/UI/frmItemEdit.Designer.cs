@@ -399,9 +399,9 @@
             this.label13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.label13.Location = new System.Drawing.Point(627, 355);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(71, 19);
+            this.label13.Size = new System.Drawing.Size(54, 19);
             this.label13.TabIndex = 54;
-            this.label13.Text = "CAPACITY";
+            this.label13.Text = "CAVITY";
             // 
             // label14
             // 

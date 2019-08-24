@@ -57,6 +57,10 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbOrderIDSearch = new System.Windows.Forms.CheckBox();
+            this.cbPOSearch = new System.Windows.Forms.CheckBox();
+            this.cbCodeNameSearch = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -72,6 +76,7 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -91,8 +96,9 @@
             this.dgvOrderAlert.BackgroundColor = System.Drawing.Color.White;
             this.dgvOrderAlert.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvOrderAlert.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvOrderAlert.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dgvOrderAlert.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvOrderAlert.Location = new System.Drawing.Point(2, 476);
+            this.dgvOrderAlert.Location = new System.Drawing.Point(2, 477);
             this.dgvOrderAlert.Margin = new System.Windows.Forms.Padding(2);
             this.dgvOrderAlert.Name = "dgvOrderAlert";
             this.dgvOrderAlert.ReadOnly = true;
@@ -100,7 +106,7 @@
             this.dgvOrderAlert.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvOrderAlert.RowTemplate.Height = 40;
             this.dgvOrderAlert.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvOrderAlert.Size = new System.Drawing.Size(1530, 313);
+            this.dgvOrderAlert.Size = new System.Drawing.Size(1530, 315);
             this.dgvOrderAlert.TabIndex = 80;
             this.dgvOrderAlert.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrderAlert_CellDoubleClick);
             this.dgvOrderAlert.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvOrderAlert_CellFormatting);
@@ -127,13 +133,14 @@
             // 
             this.btnOrder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.btnOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOrder.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOrder.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnOrder.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOrder.ForeColor = System.Drawing.Color.White;
-            this.btnOrder.Location = new System.Drawing.Point(1257, 19);
+            this.btnOrder.Location = new System.Drawing.Point(1268, 37);
             this.btnOrder.Margin = new System.Windows.Forms.Padding(2);
             this.btnOrder.Name = "btnOrder";
-            this.btnOrder.Size = new System.Drawing.Size(120, 52);
+            this.btnOrder.Size = new System.Drawing.Size(120, 50);
             this.btnOrder.TabIndex = 81;
             this.btnOrder.Text = "NEW";
             this.btnOrder.UseVisualStyleBackColor = false;
@@ -141,13 +148,13 @@
             // 
             // txtOrdSearch
             // 
-            this.txtOrdSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtOrdSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtOrdSearch.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOrdSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(20)))), ((int)(((byte)(31)))));
-            this.txtOrdSearch.Location = new System.Drawing.Point(3, 28);
+            this.txtOrdSearch.Location = new System.Drawing.Point(3, 40);
             this.txtOrdSearch.Name = "txtOrdSearch";
-            this.txtOrdSearch.Size = new System.Drawing.Size(393, 38);
+            this.txtOrdSearch.Size = new System.Drawing.Size(484, 38);
             this.txtOrdSearch.TabIndex = 84;
             this.txtOrdSearch.TextChanged += new System.EventHandler(this.txtOrdSearch_TextChanged);
             // 
@@ -156,11 +163,11 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(3, 6);
+            this.label1.Location = new System.Drawing.Point(3, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 19);
+            this.label1.Size = new System.Drawing.Size(82, 19);
             this.label1.TabIndex = 83;
-            this.label1.Text = "SEARCH";
+            this.label1.Text = "SEARCH BY:";
             // 
             // label2
             // 
@@ -186,9 +193,9 @@
             "PENDING",
             "RECEIVED",
             "CANCELLED"});
-            this.cmbStatusSearch.Location = new System.Drawing.Point(3, 28);
+            this.cmbStatusSearch.Location = new System.Drawing.Point(3, 40);
             this.cmbStatusSearch.Name = "cmbStatusSearch";
-            this.cmbStatusSearch.Size = new System.Drawing.Size(327, 39);
+            this.cmbStatusSearch.Size = new System.Drawing.Size(277, 39);
             this.cmbStatusSearch.TabIndex = 87;
             this.cmbStatusSearch.SelectedIndexChanged += new System.EventHandler(this.cmbStatusSearch_SelectedIndexChanged);
             // 
@@ -197,7 +204,7 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(3, 6);
+            this.label3.Location = new System.Drawing.Point(3, 18);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 19);
             this.label3.TabIndex = 86;
@@ -216,7 +223,7 @@
             this.btnReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReport.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
-            this.btnReport.Location = new System.Drawing.Point(1406, 21);
+            this.btnReport.Location = new System.Drawing.Point(1406, 37);
             this.btnReport.Margin = new System.Windows.Forms.Padding(2);
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(120, 50);
@@ -232,7 +239,7 @@
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(1432, 22);
+            this.btnSearch.Location = new System.Drawing.Point(1397, 22);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(80, 41);
@@ -289,7 +296,7 @@
             this.textBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(20)))), ((int)(((byte)(31)))));
             this.textBox1.Location = new System.Drawing.Point(3, 32);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(109, 25);
+            this.textBox1.Size = new System.Drawing.Size(105, 25);
             this.textBox1.TabIndex = 112;
             this.textBox1.Text = "PMMA";
             // 
@@ -297,19 +304,20 @@
             // 
             this.cbZeroCost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbZeroCost.AutoSize = true;
-            this.cbZeroCost.Location = new System.Drawing.Point(1298, 35);
+            this.cbZeroCost.Location = new System.Drawing.Point(1263, 35);
             this.cbZeroCost.Name = "cbZeroCost";
             this.cbZeroCost.Size = new System.Drawing.Size(121, 27);
             this.cbZeroCost.TabIndex = 113;
             this.cbZeroCost.Text = "ZERO COST";
             this.cbZeroCost.UseVisualStyleBackColor = true;
+            this.cbZeroCost.CheckedChanged += new System.EventHandler(this.cbZeroCost_CheckedChanged);
             // 
             // label7
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(3, 23);
+            this.label7.Location = new System.Drawing.Point(3, 43);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(106, 19);
             this.label7.TabIndex = 116;
@@ -319,7 +327,7 @@
             // 
             this.lblUpdatedTime.AutoSize = true;
             this.lblUpdatedTime.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUpdatedTime.Location = new System.Drawing.Point(3, 42);
+            this.lblUpdatedTime.Location = new System.Drawing.Point(3, 62);
             this.lblUpdatedTime.Name = "lblUpdatedTime";
             this.lblUpdatedTime.Size = new System.Drawing.Size(179, 19);
             this.lblUpdatedTime.TabIndex = 115;
@@ -334,13 +342,13 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.5493F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 243F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 135F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 97F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 132F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnSearch, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbZeroCost, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 406);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 407);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -355,12 +363,12 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.textBox1, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.label5, 0, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(934, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(903, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(115, 59);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(111, 59);
             this.tableLayoutPanel3.TabIndex = 118;
             // 
             // tableLayoutPanel2
@@ -369,7 +377,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.cmbType, 0, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(1055, 3);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(1020, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -383,16 +391,78 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel5.ColumnCount = 1;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel8, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.txtOrdSearch, 0, 1);
-            this.tableLayoutPanel5.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(342, 3);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(292, 3);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 2;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 38F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 62F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(399, 67);
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.78313F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54.21687F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(490, 83);
             this.tableLayoutPanel5.TabIndex = 119;
             this.tableLayoutPanel5.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel5_Paint);
+            // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel8.ColumnCount = 4;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 91F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 119F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 195F));
+            this.tableLayoutPanel8.Controls.Add(this.cbOrderIDSearch, 3, 0);
+            this.tableLayoutPanel8.Controls.Add(this.cbPOSearch, 2, 0);
+            this.tableLayoutPanel8.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.cbCodeNameSearch, 1, 0);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 1;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(484, 31);
+            this.tableLayoutPanel8.TabIndex = 126;
+            // 
+            // cbOrderIDSearch
+            // 
+            this.cbOrderIDSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbOrderIDSearch.AutoSize = true;
+            this.cbOrderIDSearch.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbOrderIDSearch.Location = new System.Drawing.Point(296, 5);
+            this.cbOrderIDSearch.Name = "cbOrderIDSearch";
+            this.cbOrderIDSearch.Size = new System.Drawing.Size(93, 23);
+            this.cbOrderIDSearch.TabIndex = 127;
+            this.cbOrderIDSearch.Text = "ORDER ID";
+            this.cbOrderIDSearch.UseVisualStyleBackColor = true;
+            this.cbOrderIDSearch.CheckedChanged += new System.EventHandler(this.cbOrderIDSearch_CheckedChanged);
+            // 
+            // cbPOSearch
+            // 
+            this.cbPOSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbPOSearch.AutoSize = true;
+            this.cbPOSearch.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbPOSearch.Location = new System.Drawing.Point(213, 5);
+            this.cbPOSearch.Name = "cbPOSearch";
+            this.cbPOSearch.Size = new System.Drawing.Size(75, 23);
+            this.cbPOSearch.TabIndex = 126;
+            this.cbPOSearch.Text = "PO NO";
+            this.cbPOSearch.UseVisualStyleBackColor = true;
+            this.cbPOSearch.CheckedChanged += new System.EventHandler(this.cbPOSearch_CheckedChanged);
+            // 
+            // cbCodeNameSearch
+            // 
+            this.cbCodeNameSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbCodeNameSearch.AutoSize = true;
+            this.cbCodeNameSearch.Checked = true;
+            this.cbCodeNameSearch.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbCodeNameSearch.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbCodeNameSearch.Location = new System.Drawing.Point(94, 5);
+            this.cbCodeNameSearch.Name = "cbCodeNameSearch";
+            this.cbCodeNameSearch.Size = new System.Drawing.Size(112, 23);
+            this.cbCodeNameSearch.TabIndex = 125;
+            this.cbCodeNameSearch.Text = "CODE/NAME";
+            this.cbCodeNameSearch.UseVisualStyleBackColor = true;
+            this.cbCodeNameSearch.CheckedChanged += new System.EventHandler(this.cbCodeNameSearch_CheckedChanged);
             // 
             // tableLayoutPanel6
             // 
@@ -402,12 +472,12 @@
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel6.Controls.Add(this.label7, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.lblUpdatedTime, 0, 1);
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(791, 3);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(835, 3);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 64.17911F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35.8209F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(206, 67);
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 74.69879F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.3012F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(196, 83);
             this.tableLayoutPanel6.TabIndex = 120;
             // 
             // tableLayoutPanel7
@@ -415,12 +485,12 @@
             this.tableLayoutPanel7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel7.ColumnCount = 6;
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45.57464F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 54.42536F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 44F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 212F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 379F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 148F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 36.78888F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 63.21112F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 47F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 202F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 356F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 137F));
             this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel6, 3, 0);
             this.tableLayoutPanel7.Controls.Add(this.btnOrder, 4, 0);
@@ -431,7 +501,7 @@
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(1528, 73);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(1528, 89);
             this.tableLayoutPanel7.TabIndex = 121;
             // 
             // tableLayoutPanel4
@@ -445,9 +515,9 @@
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 38F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 62F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(333, 67);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.78313F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54.21687F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(283, 83);
             this.tableLayoutPanel4.TabIndex = 123;
             // 
             // button1
@@ -459,7 +529,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(746, 33);
+            this.button1.Location = new System.Drawing.Point(787, 49);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(38, 38);
@@ -479,8 +549,9 @@
             this.dgvOrder.BackgroundColor = System.Drawing.Color.White;
             this.dgvOrder.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvOrder.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvOrder.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dgvOrder.GridColor = System.Drawing.SystemColors.Control;
-            this.dgvOrder.Location = new System.Drawing.Point(2, 81);
+            this.dgvOrder.Location = new System.Drawing.Point(2, 97);
             this.dgvOrder.Margin = new System.Windows.Forms.Padding(2);
             this.dgvOrder.Name = "dgvOrder";
             this.dgvOrder.ReadOnly = true;
@@ -488,11 +559,12 @@
             this.dgvOrder.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvOrder.RowTemplate.Height = 40;
             this.dgvOrder.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvOrder.Size = new System.Drawing.Size(1530, 320);
+            this.dgvOrder.Size = new System.Drawing.Size(1530, 305);
             this.dgvOrder.TabIndex = 123;
             this.dgvOrder.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrder_CellDoubleClick);
             this.dgvOrder.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvOrder_CellFormatting);
             this.dgvOrder.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvOrder_CellMouseDown);
+            this.dgvOrder.SelectionChanged += new System.EventHandler(this.dgvOrder_SelectionChanged);
             this.dgvOrder.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgvOrder_SortCompare);
             this.dgvOrder.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvOrder_MouseClick);
             // 
@@ -507,14 +579,14 @@
             this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel7, 0, 0);
             this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel1, 0, 2);
             this.tableLayoutPanel9.Controls.Add(this.dgvOrder, 0, 1);
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(23, 28);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(23, 25);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 4;
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 41F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.96474F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 38.91688F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(1534, 791);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(1534, 794);
             this.tableLayoutPanel9.TabIndex = 124;
             // 
             // frmOrder
@@ -544,6 +616,8 @@
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.tableLayoutPanel8.ResumeLayout(false);
+            this.tableLayoutPanel8.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
@@ -588,5 +662,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.DataGridView dgvOrder;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
+        private System.Windows.Forms.CheckBox cbOrderIDSearch;
+        private System.Windows.Forms.CheckBox cbPOSearch;
+        private System.Windows.Forms.CheckBox cbCodeNameSearch;
     }
 }

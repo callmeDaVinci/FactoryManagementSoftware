@@ -151,6 +151,7 @@
             this.dgvInOutReport.Size = new System.Drawing.Size(1522, 683);
             this.dgvInOutReport.TabIndex = 122;
             this.dgvInOutReport.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvInOutReport_CellFormatting);
+            this.dgvInOutReport.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dgvInOutReport_SortCompare);
             // 
             // cbPart
             // 

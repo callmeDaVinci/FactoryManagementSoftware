@@ -387,7 +387,7 @@ namespace FactoryManagementSoftware
         private bool ifGotChild(string itemCode)
         {
             bool result = false;
-            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+            DataTable dtJoin = dalJoin.loadChildList(itemCode);
             if (dtJoin.Rows.Count > 0)
             {
                 result = true;

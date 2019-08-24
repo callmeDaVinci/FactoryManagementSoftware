@@ -1202,5 +1202,20 @@ namespace FactoryManagementSoftware.UI
         {
 
         }
+
+        private void dgvInOutReport_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            System.Windows.Forms.Application.UseWaitCursor = true;
+            object tempObject1 = e.CellValue1;
+            object tempObject2 = e.CellValue2;
+            if (!(tempObject1 is null) && !(tempObject2 is null))
+            {
+                if (float.TryParse(tempObject1.ToString(), out float tmp) && float.TryParse(tempObject2.ToString(), out tmp))
+                {
+                    e.SortResult = float.Parse(tempObject1.ToString()).CompareTo(float.Parse(tempObject2.ToString()));
+                    e.Handled = true;//pass by the default sorting
+                }
+            }
+        }
     }
 }

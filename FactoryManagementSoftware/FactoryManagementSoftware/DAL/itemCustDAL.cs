@@ -442,7 +442,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"SELECT * FROM ((tbl_item_cust 
                                 INNER JOIN tbl_item 
                                 ON tbl_item.item_code = @keywords" +
-                                "AND tbl_item_cust.item_code = tbl_item.item_code) " +
+                                " AND tbl_item_cust.item_code = tbl_item.item_code) " +
                                 "INNER JOIN tbl_cust " +
                                 "ON tbl_item_cust.cust_id = tbl_cust.cust_id)";
 

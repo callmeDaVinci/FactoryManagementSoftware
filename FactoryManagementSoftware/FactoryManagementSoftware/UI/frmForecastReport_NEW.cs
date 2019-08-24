@@ -369,7 +369,7 @@ namespace FactoryManagementSoftware.UI
         private bool ifGotChild(string itemCode)
         {
             bool result = false;
-            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+            DataTable dtJoin = dalJoin.loadChildList(itemCode);
             if (dtJoin.Rows.Count > 0)
             {
                 result = true;
@@ -1069,7 +1069,7 @@ namespace FactoryManagementSoftware.UI
             int alphbetTest = 65;
             string parentItemCode = itemCode;
             DataGridView dgv = dgvForecastReport;
-            DataTable dtJoin = dalJoin.parentCheck(itemCode);
+            DataTable dtJoin = dalJoin.loadChildList(itemCode);
             if (dtJoin.Rows.Count > 0)
             {
                 foreach (DataRow Join in dtJoin.Rows)

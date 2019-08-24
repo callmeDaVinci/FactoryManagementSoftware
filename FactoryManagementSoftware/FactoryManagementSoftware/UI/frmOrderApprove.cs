@@ -8,16 +8,51 @@ namespace FactoryManagementSoftware.UI
 {
     public partial class frmOrderApprove : Form
     {
+        private string messageToUser = "Are you sure you want to approve this order?";
         private string date;
         private string orderQty;
         private string orderUnit;
         private string orderType;
+        private string orderReceived = 0.ToString();
         private int orderPoNO;
 
-        public frmOrderApprove(string orderID,string requiredDate,string itemName,string itemCode,string qty,string unit, string type, int pono)
+        public frmOrderApprove(string orderID, DateTime requiredDate, string itemName, string itemCode, string qty, string unit, string type, int pono, string received)
         {
             //DateTime date = DateTime.ParseExact(requiredDate, "dd/MM/yyyy", null);
-            date = requiredDate;
+            date = requiredDate.ToString();
+            orderQty = qty;
+            orderUnit = unit;
+            orderType = type;
+            orderPoNO = pono;
+            orderReceived = received;
+            InitializeComponent();
+            txtOrderID.Text = orderID;
+
+            dtpDateRequired.Value = requiredDate;
+            txtItemName.Text = itemName;
+            txtItemCode.Text = itemCode;
+            txtQty.Text = qty;
+            cmbQtyUnit.Text = unit;
+            txtPONO.Text = orderPoNO.ToString();
+
+            btnApprove.Text = "EDIT";
+            messageToUser = "Are you sure you want to edit this order?";
+            if (orderType.Equals("PURCHASE"))
+            {
+                cbZeroCost.Checked = false;
+            }
+            else
+            {
+                cbZeroCost.Checked = true;
+            }
+
+        }
+
+
+        public frmOrderApprove(string orderID,DateTime requiredDate,string itemName,string itemCode,string qty,string unit, string type, int pono)
+        {
+            //DateTime date = DateTime.ParseExact(requiredDate, "dd/MM/yyyy", null);
+            date = requiredDate.ToString();
             orderQty = qty;
             orderUnit = unit;
             orderType = type;
@@ -26,7 +61,7 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
             txtOrderID.Text = orderID;
 
-            dtpDateRequired.Value = DateTime.ParseExact(requiredDate, "dd/MM/yyyy", null);
+            dtpDateRequired.Value = requiredDate;//DateTime.ParseExact(requiredDate, "dd/MM/yyyy", null)
             txtItemName.Text = itemName;
             txtItemCode.Text = itemCode;
             txtQty.Text = qty;
@@ -54,7 +89,8 @@ namespace FactoryManagementSoftware.UI
 
         private void checkEdit(int id)
         {
-            if (!date.Equals(dtpDateRequired.Text))
+            string oldDate = Convert.ToDateTime(date).Date.ToString("dd/MM/yyyy");
+            if (!oldDate.Equals(dtpDateRequired.Text))
             {
                 dalOrderAction.orderEdit(id, -1,-1, "Required Date", date, dtpDateRequired.Text, txtNote.Text);
             }
@@ -68,7 +104,7 @@ namespace FactoryManagementSoftware.UI
                 dalOrderAction.orderEdit(id, -1, -1, "Unit", orderUnit, cmbQtyUnit.Text, txtNote.Text);
             }
 
-            if (!orderPoNO.Equals(txtPONO.Text))
+            if (!orderPoNO.ToString().Equals(txtPONO.Text))
             {
                 dalOrderAction.orderEdit(id, -1, -1, "P/O NO", orderPoNO.ToString(), txtPONO.Text, txtNote.Text);
             }
@@ -97,8 +133,8 @@ namespace FactoryManagementSoftware.UI
             uOrder.ord_id = Convert.ToInt32(txtOrderID.Text);
             uOrder.ord_required_date = dtpDateRequired.Value.Date;
             uOrder.ord_qty = Convert.ToSingle(txtQty.Text);
-            uOrder.ord_pending = uOrder.ord_qty;
-            uOrder.ord_received = 0;
+            uOrder.ord_pending = uOrder.ord_qty - Convert.ToSingle(orderReceived);
+            uOrder.ord_received = Convert.ToSingle(orderReceived);
             uOrder.ord_item_code = txtItemCode.Text;
             uOrder.ord_status = "PENDING";
             uOrder.ord_po_no = Convert.ToInt32(txtPONO.Text);
@@ -132,7 +168,7 @@ namespace FactoryManagementSoftware.UI
 
             if (Validation())
             {
-                DialogResult dialogResult = MessageBox.Show("Are you sure want to approve this order?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult dialogResult = MessageBox.Show(messageToUser, "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
                     orderAppoveUpdate();
@@ -218,6 +254,21 @@ namespace FactoryManagementSoftware.UI
         private void cbZeroCost_CheckedChanged(object sender, EventArgs e)
         {
             errorProvider2.Clear();
+        }
+
+        private void frmOrderApprove_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtItemCode_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbQtyUnit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
