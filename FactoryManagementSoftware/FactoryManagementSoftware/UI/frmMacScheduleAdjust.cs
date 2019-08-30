@@ -31,6 +31,7 @@ namespace FactoryManagementSoftware.UI
         readonly string toAdd = "TO ADD";
 
         planningDAL dalPlanning = new planningDAL();
+        planningActionDAL dalPlanningAction = new planningActionDAL();
         itemDAL dalItem = new itemDAL();
         Text text = new Text();
         Tool tool = new Tool();
@@ -801,8 +802,18 @@ namespace FactoryManagementSoftware.UI
                                 uPlanning.plan_status = row[headerStatus].ToString();
                                 uPlanning.production_start_date = Convert.ToDateTime(row[headerStartDate]).Date;
                                 uPlanning.production_end_date = Convert.ToDateTime(row[headerEndDate]).Date;
+                                uPlanning.plan_updated_date = DateTime.Now;
+                                uPlanning.plan_updated_by = MainDashboard.USER_ID;
 
-                                success = dalPlanning.statusAndDateUpdate(uPlanning);
+                                DataTable dt_Mac = dalPlanning.macIDSearch(uPlanning.machine_id.ToString());
+                                DataRow oldData = tool.getDataRowFromDataTableByPlanID(dt_Mac,planID.ToString());
+
+                                DateTime oldStart = Convert.ToDateTime(oldData[headerStartDate]);
+                                DateTime oldEnd = Convert.ToDateTime(oldData[headerEndDate]);
+                                string oldStatus = oldData[headerStatus].ToString();
+                                success = dalPlanningAction.planningStatusAndScheduleChange(uPlanning,oldStatus,oldStart,oldEnd);
+
+                                //success = dalPlanning.statusAndDateUpdate(uPlanning);
                             }
                         }
 

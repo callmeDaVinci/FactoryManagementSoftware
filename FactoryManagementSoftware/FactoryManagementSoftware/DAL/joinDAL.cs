@@ -614,7 +614,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable loadChildList(string itemCode)
+        public DataTable loadChildList(string parentCode)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -628,7 +628,7 @@ namespace FactoryManagementSoftware.DAL
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@itemCode", itemCode);
+                cmd.Parameters.AddWithValue("@itemCode", parentCode);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
@@ -651,7 +651,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable loadParentList(string itemCode)
+        public DataTable loadParentList(string childCode)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -665,7 +665,7 @@ namespace FactoryManagementSoftware.DAL
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@itemCode", itemCode);
+                cmd.Parameters.AddWithValue("@itemCode", childCode);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open

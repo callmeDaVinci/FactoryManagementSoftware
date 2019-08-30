@@ -515,13 +515,6 @@ namespace FactoryManagementSoftware.UI
 
         private void frmAddItem_Load(object sender, EventArgs e)
         {
-            //string name = Environment.MachineName;
-            
-            //string ip = Request.GetIPAddress();
-            //string month;
-            //month = DateTime.ParseExact("March", "MMMM", CultureInfo.CurrentCulture).Month.ToString();
-
-            //MessageBox.Show(name);
         }
 
 

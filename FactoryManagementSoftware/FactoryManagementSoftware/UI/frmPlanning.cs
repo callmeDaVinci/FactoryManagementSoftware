@@ -240,7 +240,7 @@ namespace FactoryManagementSoftware.UI
             cmbMatCode.Text = matName;
         }
 
-        private void CalculateTotalRawMateral()
+        private void CalculateTotalRawMaterial()
         {
             float totalMaterial = 0;
 
@@ -255,18 +255,6 @@ namespace FactoryManagementSoftware.UI
             }
 
             txtTotalRawMatKG.Text = totalMaterial.ToString();
-
-            //label30.Text = Convert.ToInt32(Math.Floor(totalMaterial)).ToString();
-            //calculate total qty able to produce
-
-            //float partWeightPerShot = txtPartWeight.Text == "" || txtPartWeight.Text == "0" ? 1 : Convert.ToSingle(txtPartWeight.Text);
-            //float runnerWeightPerShot = txtRunnerWeight.Text == "" || txtRunnerWeight.Text == "0" ? 1 : Convert.ToSingle(txtRunnerWeight.Text);
-            //int cavity = txtCavity.Text == "" ? 0 : Convert.ToInt32(txtCavity.Text);
-
-
-            //int TotalShot = Convert.ToInt32(Math.Floor(totalMaterial * 1000 / (partWeightPerShot + runnerWeightPerShot)));
-
-            //txtAbleToProduceQty.Text = (TotalShot * cavity).ToString();
 
             //calculate total hours need
             CalculateProductionDaysAndHours();
@@ -317,12 +305,11 @@ namespace FactoryManagementSoftware.UI
 
         private void CalculateTotalRecycleMaterial()
         {
-            //recycle material = runner weight per shot * roundup( targetQTY/cavity ) * ( 1 - wastage )
             float totalMaterial = 0;
 
-            if (txtMatBagQty.Text != "" && txtMatBagKG.Text != "")
+            if (txtMatBagQty.Text != "" && txtMatBagKG.Text != "" && txtColorMatPlannedQty.Text != "")
             {
-                totalMaterial = Convert.ToSingle(txtMatBagQty.Text) * Convert.ToSingle(txtMatBagKG.Text) * 1000;
+                totalMaterial = Convert.ToSingle(txtMatBagQty.Text) * Convert.ToSingle(txtMatBagKG.Text) * 1000 + (Convert.ToSingle(txtColorMatPlannedQty.Text) * 1000);
             }
 
             float partWeightPerShot = txtPartWeight.Text == "" ? 1 : Convert.ToSingle(txtPartWeight.Text);
@@ -341,7 +328,6 @@ namespace FactoryManagementSoftware.UI
             float wastage = txtRecycleWastage.Text == "" ? 0 : Convert.ToSingle(txtRecycleWastage.Text);
 
             totalMaterial = totalMaterial * (1 - wastage / 100) / 1000;
-            //totalMaterial = Convert.ToSingle(Math.Floor((totalMaterial * (1 - wastage / 100) / 1000)));
 
             txtRecycleKG.Text = totalMaterial.ToString("0.###");
 
@@ -656,7 +642,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         LoadPartInfo();
                         t.Start();
-                        CalculateTotalRawMateral();
+                        CalculateTotalRawMaterial();
                     }
                     AddDataToForecastTable();
                 }
@@ -688,14 +674,16 @@ namespace FactoryManagementSoftware.UI
                 txtRecycleWastage.Enabled = false;
             }
 
-            CalculateTotalRawMateral();
+            CalculateTotalRawMaterial();
         }
 
         private void txtMatBagQty_TextChanged(object sender, EventArgs e)
         {
             errorProvider4.Clear();
-            CalculateTotalRawMateral();
+            CalculateTotalColorMaterial();
             CalculateTotalRecycleMaterial();
+            CalculateTotalRawMaterial();
+           
 
             double d = txtMatBagQty.Text.Equals("") ? 0 : Convert.ToDouble(txtMatBagQty.Text);
 
@@ -707,18 +695,20 @@ namespace FactoryManagementSoftware.UI
 
         private void txtMatBagKG_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalRawMateral();
+            CalculateTotalColorMaterial();
             CalculateTotalRecycleMaterial();
+            CalculateTotalRawMaterial();
+            
         }
 
         private void txtRecycleKG_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalRawMateral();
+            CalculateTotalRawMaterial();
         }
 
         private void txtRecycleWastage_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalRawMateral();
+            CalculateTotalRawMaterial();
             CalculateTotalRecycleMaterial();
         }
 
@@ -1486,26 +1476,31 @@ namespace FactoryManagementSoftware.UI
 
         private void txtCavity_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalRawMateral();
+            CalculateTotalColorMaterial();
             CalculateTotalRecycleMaterial();
+            CalculateTotalRawMaterial();
+           
         }
 
         private void txtCycleTime_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalRawMateral();
+            CalculateTotalColorMaterial();
             CalculateTotalRecycleMaterial();
+            CalculateTotalRawMaterial();
         }
 
         private void txtPartWeight_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalRawMateral();
+            CalculateTotalColorMaterial();
             CalculateTotalRecycleMaterial();
+            CalculateTotalRawMaterial();
         }
 
         private void txtRunnerWeight_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalRawMateral();
+            CalculateTotalColorMaterial();
             CalculateTotalRecycleMaterial();
+            CalculateTotalRawMaterial();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

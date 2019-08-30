@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationRevision>10</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -107,6 +107,7 @@
     <Compile Include="BLL\ordBLL.cs" />
     <Compile Include="BLL\facStockBLL.cs" />
     <Compile Include="BLL\orderActionBLL.cs" />
+    <Compile Include="BLL\planningActionBLL.cs" />
     <Compile Include="BLL\PlanningBLL.cs" />
     <Compile Include="BLL\pmmaBLL.cs" />
     <Compile Include="BLL\pmmaDateBLL.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="DAL\ordDAL.cs" />
     <Compile Include="DAL\facStockDAL.cs" />
     <Compile Include="DAL\orderActionDAL.cs" />
+    <Compile Include="DAL\planningActionDAL.cs" />
     <Compile Include="DAL\planningDAL.cs" />
     <Compile Include="DAL\pmmaDAL.cs" />
     <Compile Include="DAL\pmmaDateDAL.cs" />
@@ -139,6 +141,12 @@
     <Compile Include="DAL\Utilities.cs" />
     <Compile Include="Module\Text.cs" />
     <Compile Include="Module\Tool.cs" />
+    <Compile Include="UI\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmAddItem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -168,6 +176,18 @@
     </Compile>
     <Compile Include="UI\frmDialog.Designer.cs">
       <DependentUpon>frmDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmItemReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmItemReport.Designer.cs">
+      <DependentUpon>frmItemReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmJustMachineSchedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmJustMachineSchedule.Designer.cs">
+      <DependentUpon>frmJustMachineSchedule.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmLoading.cs">
       <SubType>Form</SubType>
@@ -393,6 +413,12 @@
     <Compile Include="UI\frmPlanning.Designer.cs">
       <DependentUpon>frmPlanning.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmPlanningActionHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmPlanningActionHistory.Designer.cs">
+      <DependentUpon>frmPlanningActionHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmPlanningAddSubItem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -477,6 +503,9 @@
     <Compile Include="UI\NewInOutReport.Designer.cs">
       <DependentUpon>NewInOutReport.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmAddItem.resx">
       <DependentUpon>frmAddItem.cs</DependentUpon>
     </EmbeddedResource>
@@ -491,6 +520,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDialog.resx">
       <DependentUpon>frmDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmItemReport.resx">
+      <DependentUpon>frmItemReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmJustMachineSchedule.resx">
+      <DependentUpon>frmJustMachineSchedule.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmLoading.resx">
       <DependentUpon>frmLoading.cs</DependentUpon>
@@ -612,6 +647,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPlanning.resx">
       <DependentUpon>frmPlanning.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmPlanningActionHistory.resx">
+      <DependentUpon>frmPlanningActionHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPlanningAddSubItem.resx">
       <DependentUpon>frmPlanningAddSubItem.cs</DependentUpon>

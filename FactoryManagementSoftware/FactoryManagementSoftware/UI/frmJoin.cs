@@ -55,7 +55,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerChildCode, typeof(string));
             dt.Columns.Add(headerChildName, typeof(string));
 
-            dt.Columns.Add(headerQty, typeof(int));
+            dt.Columns.Add(headerQty, typeof(float));
             dt.Columns.Add(headerMax, typeof(int));
             dt.Columns.Add(headerMin, typeof(int));
 
@@ -103,6 +103,10 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow row in dt_joinData.Rows)
                 {
+                    if (row["child_code"].ToString().Equals("V76KM4000 0.360"))
+                    {
+                        float jointest = 0;
+                    }
 
                     dtJoin_row = dtJoin.NewRow();
 
@@ -123,8 +127,8 @@ namespace FactoryManagementSoftware.UI
                             selectedRow = index - 1;
                         }
                     }
-
-                    dtJoin_row[headerQty] = row["join_qty"] == DBNull.Value? 0: Convert.ToInt32(row["join_qty"].ToString());
+                    float joinQty = row["join_qty"] == DBNull.Value ? 0 : Convert.ToSingle(row["join_qty"].ToString());
+                    dtJoin_row[headerQty] = joinQty;
                     dtJoin_row[headerMax] = row["join_max"] == DBNull.Value ? 0 : Convert.ToInt32(row["join_max"].ToString());
                     dtJoin_row[headerMin] = row["join_min"] == DBNull.Value ? 0 : Convert.ToInt32(row["join_min"].ToString());
 
@@ -193,7 +197,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.DataSource = dtJoin;
                 dgvJoinUIEdit(dgv);
 
-                if(selectedRow != -1)
+                if(selectedRow > -1 && selectedRow < dgv.Rows.Count)
                 {
                     dgv.ClearSelection();
                     dgv.FirstDisplayedScrollingRowIndex = selectedRow;
@@ -319,7 +323,7 @@ namespace FactoryManagementSoftware.UI
 
             uJoin.join_child_code = dgv.Rows[row].Cells[headerChildCode].Value.ToString();
 
-            uJoin.join_qty = Convert.ToInt16(dgv.Rows[row].Cells[headerQty].Value.ToString());
+            uJoin.join_qty = Convert.ToSingle(dgv.Rows[row].Cells[headerQty].Value.ToString());
             uJoin.join_max = Convert.ToInt16(dgv.Rows[row].Cells[headerMax].Value.ToString());
             uJoin.join_min = Convert.ToInt16(dgv.Rows[row].Cells[headerMin].Value.ToString());
 

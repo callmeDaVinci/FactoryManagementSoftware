@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvSchedule = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.btnExcel = new System.Windows.Forms.Button();
@@ -95,25 +95,26 @@
             this.dgvSchedule.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvSchedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSchedule.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSchedule.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSchedule.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSchedule.GridColor = System.Drawing.Color.Black;
-            this.dgvSchedule.Location = new System.Drawing.Point(2, 293);
-            this.dgvSchedule.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvSchedule.Location = new System.Drawing.Point(3, 292);
+            this.dgvSchedule.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.dgvSchedule.Name = "dgvSchedule";
             this.dgvSchedule.ReadOnly = true;
             this.dgvSchedule.RowHeadersVisible = false;
             this.dgvSchedule.RowTemplate.Height = 40;
             this.dgvSchedule.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSchedule.Size = new System.Drawing.Size(1530, 505);
+            this.dgvSchedule.Size = new System.Drawing.Size(1528, 507);
             this.dgvSchedule.TabIndex = 109;
+            this.dgvSchedule.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSchedule_CellDoubleClick);
             this.dgvSchedule.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvSchedule_CellFormatting);
             this.dgvSchedule.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSchedule_CellMouseDown);
             // 
@@ -135,8 +136,8 @@
             this.btnExcel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnExcel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExcel.ForeColor = System.Drawing.Color.White;
-            this.btnExcel.Location = new System.Drawing.Point(1436, 2);
-            this.btnExcel.Margin = new System.Windows.Forms.Padding(2);
+            this.btnExcel.Location = new System.Drawing.Point(1435, 1);
+            this.btnExcel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnExcel.Name = "btnExcel";
             this.btnExcel.Size = new System.Drawing.Size(90, 36);
             this.btnExcel.TabIndex = 111;
@@ -151,8 +152,8 @@
             this.btnPlan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPlan.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPlan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(160)))), ((int)(((byte)(225)))));
-            this.btnPlan.Location = new System.Drawing.Point(1237, 2);
-            this.btnPlan.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPlan.Location = new System.Drawing.Point(1236, 1);
+            this.btnPlan.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnPlan.Name = "btnPlan";
             this.btnPlan.Size = new System.Drawing.Size(90, 36);
             this.btnPlan.TabIndex = 112;
@@ -167,8 +168,8 @@
             this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCheck.ForeColor = System.Drawing.Color.White;
-            this.btnCheck.Location = new System.Drawing.Point(1406, 2);
-            this.btnCheck.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCheck.Location = new System.Drawing.Point(1405, 1);
+            this.btnCheck.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnCheck.Name = "btnCheck";
             this.btnCheck.Size = new System.Drawing.Size(120, 47);
             this.btnCheck.TabIndex = 114;
@@ -566,8 +567,8 @@
             this.btnMatList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMatList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMatList.ForeColor = System.Drawing.Color.Black;
-            this.btnMatList.Location = new System.Drawing.Point(1338, 2);
-            this.btnMatList.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMatList.Location = new System.Drawing.Point(1337, 1);
+            this.btnMatList.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnMatList.Name = "btnMatList";
             this.btnMatList.Size = new System.Drawing.Size(90, 36);
             this.btnMatList.TabIndex = 118;
@@ -617,17 +618,17 @@
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 32);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // frmMachineSchedule
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.ClientSize = new System.Drawing.Size(1583, 853);
             this.Controls.Add(this.tableLayoutPanel9);
             this.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmMachineSchedule";
             this.Text = "PRODUCTION";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMachineSchedule_FormClosed);

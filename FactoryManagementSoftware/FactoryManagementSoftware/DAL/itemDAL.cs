@@ -511,6 +511,69 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool UpdateFromExcelImport(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemQuoTon + "=@item_quo_ton,"
+                            + ItemProTon + "=@item_pro_ton,"
+                            + ItemProCTTo + "=@item_pro_ct_to,"
+                            + ItemCapacity + "=@item_capacity,"
+                            + ItemProPWShot + "=@item_pro_pw_shot,"
+                            + ItemProRWShot + "=@item_pro_rw_shot,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                
+                cmd.Parameters.AddWithValue("@item_quo_ton", u.item_quo_ton);
+                
+                cmd.Parameters.AddWithValue("@item_pro_ton", u.item_pro_ton);
+               
+                cmd.Parameters.AddWithValue("@item_pro_ct_to", u.item_pro_ct_to);
+                cmd.Parameters.AddWithValue("@item_capacity", u.item_capacity);
+               
+                cmd.Parameters.AddWithValue("@item_pro_pw_shot", u.item_pro_pw_shot);
+                cmd.Parameters.AddWithValue("@item_pro_rw_shot", u.item_pro_rw_shot);
+               
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+               
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         public bool qtyUpdate(itemBLL u)
         {
             bool isSuccess = false;

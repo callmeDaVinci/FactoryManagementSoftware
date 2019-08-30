@@ -324,7 +324,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         uJoin.join_max = 0;
                         uJoin.join_min = 0;
-                        uJoin.join_qty = Convert.ToInt32(txtQty.Text);
+                        uJoin.join_qty = Convert.ToSingle(txtQty.Text);
                     }
 
                     
@@ -432,7 +432,7 @@ namespace FactoryManagementSoftware.UI
             {
                 if(!cmbChildCat.Text.Equals("Carton"))
                 {
-                    int joinQty = Convert.ToInt32(txtQty.Text);
+                    float joinQty = Convert.ToSingle(txtQty.Text);
                     int testParentQty = Convert.ToInt32(txtTestParentQty.Text);
                     txtTestChildQty.Text = (joinQty * testParentQty).ToString();
                 }

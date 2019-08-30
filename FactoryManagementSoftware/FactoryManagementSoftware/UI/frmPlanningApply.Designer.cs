@@ -38,8 +38,8 @@
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbEarlier = new System.Windows.Forms.CheckBox();
             this.cbToLast = new System.Windows.Forms.CheckBox();
+            this.cbEarlier = new System.Windows.Forms.CheckBox();
             this.btnSetBySystem = new System.Windows.Forms.Button();
             this.lblStartDate = new System.Windows.Forms.Label();
             this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
@@ -245,19 +245,6 @@
             this.tableLayoutPanel8.Size = new System.Drawing.Size(216, 34);
             this.tableLayoutPanel8.TabIndex = 119;
             // 
-            // cbEarlier
-            // 
-            this.cbEarlier.AutoSize = true;
-            this.cbEarlier.Enabled = false;
-            this.cbEarlier.Location = new System.Drawing.Point(111, 3);
-            this.cbEarlier.Name = "cbEarlier";
-            this.cbEarlier.Size = new System.Drawing.Size(74, 23);
-            this.cbEarlier.TabIndex = 117;
-            this.cbEarlier.Text = "Earliest";
-            this.cbEarlier.UseVisualStyleBackColor = true;
-            this.cbEarlier.Visible = false;
-            this.cbEarlier.CheckedChanged += new System.EventHandler(this.cbEarlier_CheckedChanged);
-            // 
             // cbToLast
             // 
             this.cbToLast.AutoSize = true;
@@ -270,6 +257,19 @@
             this.cbToLast.Text = "To Last";
             this.cbToLast.UseVisualStyleBackColor = true;
             this.cbToLast.CheckedChanged += new System.EventHandler(this.cbToLast_CheckedChanged);
+            // 
+            // cbEarlier
+            // 
+            this.cbEarlier.AutoSize = true;
+            this.cbEarlier.Enabled = false;
+            this.cbEarlier.Location = new System.Drawing.Point(111, 3);
+            this.cbEarlier.Name = "cbEarlier";
+            this.cbEarlier.Size = new System.Drawing.Size(74, 23);
+            this.cbEarlier.TabIndex = 117;
+            this.cbEarlier.Text = "Earliest";
+            this.cbEarlier.UseVisualStyleBackColor = true;
+            this.cbEarlier.Visible = false;
+            this.cbEarlier.CheckedChanged += new System.EventHandler(this.cbEarlier_CheckedChanged);
             // 
             // btnSetBySystem
             // 
@@ -694,7 +694,7 @@
             this.groupBox4.Size = new System.Drawing.Size(314, 165);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "7. NOTE";
+            this.groupBox4.Text = "7. REMARK";
             // 
             // txtNote
             // 

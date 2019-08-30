@@ -333,7 +333,13 @@ namespace FactoryManagementSoftware.DAL
                     }
                 }
             }
-            return null;
+
+            if(id == -1)
+            {
+                return "SYSTEM ADMIN";
+            }
+
+            return "";
         }
 
         public string getPassword(int id)

@@ -635,6 +635,12 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
                         dgv.Rows[n].Cells[NoteColumnName].Value = "Production Sub Part out";
 
+                        if (childItemCode.Equals("V76KM4000 0.360"))
+                        {
+                            //dgv.Rows[n].Cells[QtyColumnName].Value = childQty * 0.36;
+                            dgv.Rows[n].Cells[UnitColumnName].Value = "meter";
+                        }
+
                         facStockDAL dalFacStock = new facStockDAL();
                         float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
                         float transferQty = Convert.ToSingle(txtTrfQty.Text);
@@ -740,6 +746,36 @@ namespace FactoryManagementSoftware.UI
             {
                 addSubCartonToDGV(factoryName, "CTN 613 X 312 X 265", Convert.ToInt32(Math.Truncate(Convert.ToDecimal(qty) / 50)) * 1);
             }
+            else if(parentItemCode.Equals("R 060 641 050 50"))
+            {
+                int maxQty = 100;
+                int minQty = 50;
+                int ParentQty = Convert.ToInt32(qty);
+
+                int fullCartonQty = ParentQty / maxQty;
+
+                int notFullCartonQty = ParentQty % maxQty / minQty;
+
+                int ChildQty = fullCartonQty + notFullCartonQty;
+                
+                addSubItemToDGV(factoryName, "CTN 910 X 250 X 220", ChildQty, "Factory", "Production", "", "piece", "Auto out(Delivery)");
+                
+            }
+            else if (parentItemCode.Equals("R 060 641 385 60"))
+            {
+                int maxQty = 100;
+                int minQty = 50;
+                int ParentQty = Convert.ToInt32(qty);
+
+                int fullCartonQty = ParentQty / maxQty;
+
+                int notFullCartonQty = ParentQty % maxQty / minQty;
+
+                int ChildQty = fullCartonQty + notFullCartonQty;
+
+                addSubItemToDGV(factoryName, "CTN 630 X 250 X 220 MM", ChildQty, "Factory", "Production", "", "piece", "Auto out(Delivery)");
+                
+            }
         }
 
         private string DeliveryAutoOut(string factoryName, string parentItemCode, float qty)
@@ -809,6 +845,12 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
                         dgv.Rows[n].Cells[NoteColumnName].Value = "Assembly "+dalItem.getCatName(childItemCode);
 
+                        if (childItemCode.Equals("V76KM4000 0.360"))
+                        {
+                            //dgv.Rows[n].Cells[QtyColumnName].Value = childQty * 0.36;
+                            dgv.Rows[n].Cells[UnitColumnName].Value = "meter";
+                        }
+
                         facStockDAL dalFacStock = new facStockDAL();
                         float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
                         float transferQty = Convert.ToSingle(txtTrfQty.Text);
@@ -818,11 +860,6 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
                             dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
                         }
-                        //else
-                        //{
-                        //    dgv.Rows[n].Cells[QtyColumnName].Style.ForeColor = Color.Black;
-                        //}
-                        
                     }
                 }
             }
@@ -1224,7 +1261,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (cmbTrfToCategory.Text.Equals("Customer"))
                 {
-                    dgv.Rows[n].Cells[NoteColumnName].Value += DeliveryAutoOut(cmbTrfFrom.Text, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text));
+                    //dgv.Rows[n].Cells[NoteColumnName].Value += DeliveryAutoOut(cmbTrfFrom.Text, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text));
                 }
             }
 

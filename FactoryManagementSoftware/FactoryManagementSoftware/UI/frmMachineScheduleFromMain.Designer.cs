@@ -45,6 +45,8 @@
             this.dtpEstimateEndDate = new System.Windows.Forms.DateTimePicker();
             this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
             this.btnAutoAdjust = new System.Windows.Forms.Button();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMac)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -157,7 +159,6 @@
             this.dgvMac.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMac.Size = new System.Drawing.Size(1160, 431);
             this.dgvMac.TabIndex = 134;
-            this.dgvMac.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMac_CellClick);
             this.dgvMac.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMac_CellFormatting);
             this.dgvMac.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvMac_CellMouseDown);
             this.dgvMac.SelectionChanged += new System.EventHandler(this.dgvMac_SelectionChanged);
@@ -256,6 +257,14 @@
             this.btnAutoAdjust.UseVisualStyleBackColor = false;
             this.btnAutoAdjust.Click += new System.EventHandler(this.btnAutoAdjust_Click);
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            // 
+            // backgroundWorker2
+            // 
+            this.backgroundWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
+            // 
             // frmMachineScheduleAdjustFromMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -305,5 +314,7 @@
         private System.Windows.Forms.Label lblStartDate;
         private System.Windows.Forms.DateTimePicker dtpEstimateEndDate;
         private System.Windows.Forms.DateTimePicker dtpStartDate;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker2;
     }
 }

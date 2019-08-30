@@ -842,8 +842,9 @@ namespace FactoryManagementSoftware.UI
 
                     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     ///get join qty data
-                    dt_row[headerSubMatRate] = row[headerMBRate];
-                    dt_row[headerSubMatUsed] = Math.Round(stillNeed * Convert.ToSingle(dt_row[headerSubMatRate]), 2);
+                    float joinQty = tool.getJoinQty(row[headerCode].ToString(),MaterialCode);
+                    dt_row[headerSubMatRate] = joinQty;
+                    dt_row[headerSubMatUsed] = Math.Round(stillNeed * Convert.ToSingle(joinQty), 2);
 
                     dt.Rows.Add(dt_row);
                     index++;

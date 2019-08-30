@@ -1,5 +1,6 @@
 ﻿using System;
 using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.BLL;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,9 @@ namespace FactoryManagementSoftware.Module
     {
         Tool tool = new Tool();
         itemDAL dalItem = new itemDAL();
+        planningActionBLL uPlanningAction = new planningActionBLL();
+
+        
         #region History Action String
 
         public string System { get; } = "System";
@@ -73,6 +77,11 @@ namespace FactoryManagementSoftware.Module
         public string planning_status_running { get; } = "RUNNING";//green
         public string planning_status_delayed { get; } = "DELAYED";//yellow
         public string planning_status_completed { get; } = "COMPLETED";//white
+        public string planning_Family_mould_Remark { get; } = "[FAMILY MOULD]";
+        //PLANNING ACTION HISTORY////////////////////////////////////////////////////////////////////////////
+        public string plan_Added { get; } = "PLAN ADD";
+        public string plan_schedule_change { get; } = "PLAN SCHEDULE CHANGE";
+        public string plan_status_change { get; } = "PLAN STATUS CHANGE";
 
         //LOCATION////////////////////////////////////////////////////////////////////////////
         public string Factory { get; } = "Factory";
@@ -116,6 +125,20 @@ namespace FactoryManagementSoftware.Module
 
             return detail;
         }
+
+        public string getNewPlanningDetail(PlanningBLL u)
+        {
+            string detail = u.part_name +"( "+u.part_code+") :"+u.production_target_qty+" Target QTY run at machine "+u.machine_id;
+
+            return detail;
+        }
+
+        //public string getPlanningScheduleChangeDetail(PlanningBLL u)
+        //{
+        //    string detail = u.part_name + "( " + u.part_code + ") :" + u.production_target_qty + " Target QTY run at machine " + u.machine_id;
+
+        //    return detail;
+        //}
 
         public string getOrderString(int ID, float qty, string unit, string itemCode, string date)
         {

@@ -939,10 +939,10 @@ namespace FactoryManagementSoftware.UI
             dgvForecastReport.ClearSelection();
         }
 
-        private bool ifRepeat(string itemCode, int n, string fcast1, string fcast2, string fcast3, string outStock, float shot1, float shot2, int dgvType)
+        private bool ifRepeat(string itemCode, int n, string fcast1, string fcast2, string fcast3, string outStock, float shot1, float shot2, int dgvType, float joinQty)
         {
             bool result = false;
-
+            
             foreach (DataGridViewRow row in dgvForecastReport.Rows)
             {
                 if (row.Cells[CodeColName].Value == null)
@@ -952,6 +952,11 @@ namespace FactoryManagementSoftware.UI
 
                 if (row.Cells[CodeColName].Value.ToString().Equals(itemCode) && row.Index < n)
                 {
+                    if (itemCode.Equals("XTN4+16BFJK"))
+                    {
+                        float test = 0;
+                    }
+
                     float headFcast1 = 0;
                     float headOutStock = Convert.ToSingle(row.Cells[OutColName].Value);
                     float headShot1 = Convert.ToSingle(row.Cells[Shot1ColName].Value);
@@ -963,7 +968,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (shot1 < 0)
                     {
-                        headShot1 += shot1;
+                        headShot1 += shot1*joinQty;
                     }
 
                     if(dgvType == 1)
@@ -974,7 +979,7 @@ namespace FactoryManagementSoftware.UI
                         float headShot2 = Convert.ToSingle(row.Cells[Shot2ColName].Value);
                         if (shot2 < 0)
                         {
-                            headShot2 += shot2;
+                            headShot2 += shot2 * joinQty;
                         }
                         headFcast2 += childFcast2;
                         headFcast3 += childFcast3;
@@ -1081,7 +1086,8 @@ namespace FactoryManagementSoftware.UI
                     float runnerf = 0;
                     float childShotOne = 0;
                     float childShotTwo = 0;
-                    
+                    float joinQty = Convert.ToSingle(Join[dalJoin.JoinQty]);
+
                     DataTable dtItem = dalItem.codeSearch(Join["join_child_code"].ToString());
 
                     if (dtItem.Rows.Count > 0)
@@ -1089,6 +1095,11 @@ namespace FactoryManagementSoftware.UI
                         foreach (DataRow item in dtItem.Rows)
                         {
                             itemCode = item["item_code"].ToString();
+
+                            if (itemCode.Equals("V76KM4000 0.360"))
+                            {
+                                float test = 0;
+                            }
 
                             bool subMatChecking = false;
 
@@ -1130,13 +1141,16 @@ namespace FactoryManagementSoftware.UI
                                 dgv.Rows[n].Cells[PartWeightColName].Value = partf.ToString("0.00");
                                 dgv.Rows[n].Cells[RunnerWeightColName].Value = runnerf.ToString("0.00");
 
-                                if (ifRepeat(itemCode, n, forecastOne, forecastTwo, forecastThree, outStock.ToString(), shotOne, shotTwo, dgvType))
+                                if (ifRepeat(itemCode, n, forecastOne, forecastTwo, forecastThree, outStock.ToString(), shotOne, shotTwo, dgvType, joinQty))
                                 {
                                     changeBackColor(null, n, false, dgvType);
                                 }
                                 else
                                 {
-
+                                    if (itemCode.Equals("XTN4+16BFJK"))
+                                    {
+                                        float test = 0;
+                                    }
                                     dgv.Rows[n].Cells[OutColName].Value = outStock.ToString();
 
                                     float readyStock = Convert.ToSingle(dalItem.getStockQty(itemCode));
@@ -1146,13 +1160,22 @@ namespace FactoryManagementSoftware.UI
                                     float oSant = Convert.ToSingle(forecastOne) - outStock;
                                     dgv.Rows[n].Cells[OsantColName].Value = oSant.ToString();
 
+
                                     if (shotOne >= 0)
                                     {
                                         childShotOne = readyStock;
                                     }
                                     else
                                     {
-                                        childShotOne = readyStock + shotOne;
+                                        //if (itemCode.Equals("V76KM4000 0.360"))
+                                        //{
+                                        //    childShotOne = readyStock + shotOne * 0.36F;
+                                        //}
+                                        //else
+                                        //{
+                                        childShotOne = readyStock + shotOne * joinQty;
+                                        //}
+                                        
                                     }
 
                                     if (childShotOne < 0)
@@ -1174,11 +1197,19 @@ namespace FactoryManagementSoftware.UI
                                     }
                                     else if (shotOne > 0)
                                     {
-                                        childShotTwo = childShotOne + shotTwo;
+                                        //if (itemCode.Equals("V76KM4000 0.360"))
+                                        //{
+                                        //    childShotTwo = childShotOne + shotTwo*0.36f;
+                                        //}
+                                        //else
+                                        //{
+                                            childShotTwo = childShotOne + shotTwo * joinQty;
+                                        //}
+                                        
                                     }
                                     else
                                     {
-                                        childShotTwo = childShotOne - Convert.ToSingle(forecastTwo);
+                                        childShotTwo = childShotOne - Convert.ToSingle(forecastTwo) * joinQty;
                                     }
 
                                     if (childShotTwo < 0)

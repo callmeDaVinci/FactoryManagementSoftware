@@ -25,6 +25,17 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
             InitializeData();
+
+            userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+
+            if (userPermission >= MainDashboard.ACTION_LVL_TWO)
+            {
+                btnPlan.Show();
+            }
+            else
+            {
+                btnPlan.Hide();
+            }
         }
 
         #region Variable/ object setting
@@ -34,11 +45,14 @@ namespace FactoryManagementSoftware.UI
         planningDAL dalPlanning = new planningDAL();
         PlanningBLL uPlanning = new PlanningBLL();
 
+        planningActionDAL dalPlanningAction = new planningActionDAL();
+
         MacDAL dalMac = new MacDAL();
         itemDAL dalItem = new itemDAL();
         Tool tool = new Tool();
         Text text = new Text();
 
+        int userPermission = -1;
         readonly string headerID = "PLAN";
         readonly string headerStartDate = "START";
         readonly string headerEndDate = "ESTIMATE END";
@@ -798,13 +812,14 @@ namespace FactoryManagementSoftware.UI
             dgv.ResumeLayout();
         }
 
-        private void planRunning(int rowIndex)
+        private void planRunning(int rowIndex, string presentStatus)
         {
 
             uPlanning.plan_id = (int)dgvSchedule.Rows[rowIndex].Cells[headerID].Value;
             uPlanning.machine_id = (int)dgvSchedule.Rows[rowIndex].Cells[headerMachine].Value;
             uPlanning.production_start_date = (DateTime)dgvSchedule.Rows[rowIndex].Cells[headerStartDate].Value;
             uPlanning.production_end_date = (DateTime)dgvSchedule.Rows[rowIndex].Cells[headerEndDate].Value;
+
 
             if (tool.ifProductionDateAvailable(uPlanning.machine_id.ToString()))
             {
@@ -828,13 +843,16 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
-        private void planPending(int planID)
+        private void planPending(int planID, string presentStatus)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             uPlanning.plan_id = planID;
             uPlanning.plan_status = text.planning_status_pending;
+            uPlanning.plan_updated_date = DateTime.Now;
+            uPlanning.plan_updated_by = MainDashboard.USER_ID;
 
-            bool success = dalPlanning.statusUpdate(uPlanning);
+            //bool success = dalPlanning.statusUpdate(uPlanning);
+            bool success = dalPlanningAction.planningStatusChange(uPlanning, presentStatus);
 
             if (!success)
             {
@@ -844,13 +862,15 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
-        private void planComplete(int planID)
+        private void planComplete(int planID, string presentStatus)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             uPlanning.plan_id = planID;
             uPlanning.plan_status = text.planning_status_completed;
+            uPlanning.plan_updated_date = DateTime.Now;
+            uPlanning.plan_updated_by = MainDashboard.USER_ID;
 
-            bool success = dalPlanning.statusUpdate(uPlanning);
+            bool success = dalPlanningAction.planningStatusChange(uPlanning, presentStatus);
 
             if (!success)
             {
@@ -860,13 +880,15 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
-        private void planCancel(int planID)
+        private void planCancel(int planID, string presentStatus)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             uPlanning.plan_id = planID;
             uPlanning.plan_status = text.planning_status_cancelled;
+            uPlanning.plan_updated_date = DateTime.Now;
+            uPlanning.plan_updated_by = MainDashboard.USER_ID;
 
-            bool success = dalPlanning.statusUpdate(uPlanning);
+            bool success = dalPlanningAction.planningStatusChange(uPlanning, presentStatus);
 
             if (!success)
             {
@@ -895,7 +917,7 @@ namespace FactoryManagementSoftware.UI
                 if (MessageBox.Show("Are you sure you want to switch this plan to PENDING status?", "Message",
                                                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    planPending(planID);
+                    planPending(planID, presentStatus);
                 }
                     
             }
@@ -903,21 +925,21 @@ namespace FactoryManagementSoftware.UI
             {
                 if (MessageBox.Show("Are you sure you want to switch this plan to RUNNING status?", "Message",MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    planRunning(rowIndex);
+                    planRunning(rowIndex, presentStatus);
                 }
             }
             else if (itemClicked.Equals(text.planning_status_completed))
             {
                 if (MessageBox.Show("Are you sure you want to switch this plan to COMPLETED status?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    planComplete(planID);
+                    planComplete(planID, presentStatus);
                 }
             }
             else if (itemClicked.Equals(text.planning_status_cancelled))
             {
                 if (MessageBox.Show("Are you sure you want to CANCEL this plan?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    planCancel(planID);
+                    planCancel(planID, presentStatus);
                 }
                 
             }
@@ -1008,6 +1030,23 @@ namespace FactoryManagementSoftware.UI
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void dgvSchedule_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string planID = dgvSchedule.Rows[e.RowIndex].Cells[headerID].Value.ToString();
+
+            //MessageBox.Show("Plan ID: "+planID);
+            if(planID != null)
+            {
+                frmPlanningActionHistory frm = new frmPlanningActionHistory(Convert.ToInt32(planID));
+                frm.StartPosition = FormStartPosition.CenterScreen;
+
+                if(!frmPlanningActionHistory.noData)
+                {
+                    frm.ShowDialog();
+                }
+            } 
         }
     }
 }

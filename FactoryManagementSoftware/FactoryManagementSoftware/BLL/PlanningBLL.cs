@@ -41,6 +41,7 @@ namespace FactoryManagementSoftware.BLL
         public DateTime production_end_date { get; set; }
 
         public int machine_id { get; set; }
+        public int family_with { get; set; }
 
 
     }

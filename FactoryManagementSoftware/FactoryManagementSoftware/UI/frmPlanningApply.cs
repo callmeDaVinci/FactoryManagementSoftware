@@ -29,6 +29,9 @@ namespace FactoryManagementSoftware.UI
         planningDAL dalPlanning = new planningDAL();
         PlanningBLL uPlanning = new PlanningBLL();
 
+        planningActionDAL dalPlanningAction = new planningActionDAL();
+        planningActionBLL uPlanningAction = new planningActionBLL();
+
         itemDAL dalItem = new itemDAL();
 
         userDAL dalUser = new userDAL();
@@ -386,19 +389,19 @@ namespace FactoryManagementSoftware.UI
 
 
                         bool success = false;
-                        success = dalPlanning.Insert(uPlanning);
+                        success = dalPlanningAction.planningAdd(uPlanning);
 
 
                         if (!success)
                         {
                             //Failed to insert data
-                            MessageBox.Show("Failed to save Machine data");
-                            tool.historyRecord(text.System, "Failed to save planning data", date, MainDashboard.USER_ID);
+                            MessageBox.Show("Failed to save planning data (frmPlanningApply_398)");
+                            tool.historyRecord(text.System, "Failed to save planning data (frmPlanningApply_398)", date, MainDashboard.USER_ID);
                         }
                         else
                         {
                             dataSaved = true;
-                            tool.historyRecord(text.System, "Save Planning Data", date, MainDashboard.USER_ID);
+                            tool.historyRecord(text.System, "Planning Data Saved", date, MainDashboard.USER_ID);
 
                             //save material plan to use qty
 
@@ -412,42 +415,7 @@ namespace FactoryManagementSoftware.UI
                                     float planToUse = row[frmPlanning.headerQtyNeedForThisPlanning] == null ? 0 : Convert.ToSingle(row[frmPlanning.headerQtyNeedForThisPlanning]);
 
                                     tool.matPlanAddQty(dt, matCode, planToUse);
-                                    ////check if exist
-                                    //bool dataExist = false;
-
-                                    //foreach (DataRow row2 in dt.Rows)
-                                    //{
-                                    //    string mat_code = row2[dalMatPlan.MatCode].ToString();
-
-                                    //    if(mat_code.Equals(matCode))
-                                    //    {
-                                    //        dataExist = true;
-                                    //        float temp = row2[dalMatPlan.PlanToUse] == null ? 0 : Convert.ToSingle(row2[dalMatPlan.PlanToUse]);
-                                    //        planToUse += temp;
-                                    //    }
-                                    //}
-
-                                    //bool successSave = false;
-                                    //uMatPlan.mat_code = matCode;
-                                    //uMatPlan.plan_to_use = planToUse;
-
-                                    //if (dataExist)
-                                    //{
-                                    //    //update
-                                    //    successSave = dalMatPlan.Update(uMatPlan);
-                                    //}
-                                    //else
-                                    //{
-                                    //    //insert
-                                    //    successSave = dalMatPlan.Insert(uMatPlan);
-                                    //}
-
-                                    //if (!successSave)
-                                    //{
-                                    //    //Failed to insert data
-                                    //    MessageBox.Show("Failed to save Material to use data");
-                                    //    tool.historyRecord(text.System, "Failed to save Material to use data", date, MainDashboard.USER_ID);
-                                    //}
+            
                                 }
                             }
 

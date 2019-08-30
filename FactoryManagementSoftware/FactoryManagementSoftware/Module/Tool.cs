@@ -270,8 +270,6 @@ namespace FactoryManagementSoftware.Module
 
         }
 
-       
-
         public void loadMacIDAndAllToComboBox(ComboBox cmb)
         {
             DataTable dt = dalMac.Select();
@@ -430,6 +428,23 @@ namespace FactoryManagementSoftware.Module
             {
                 return z;
             }
+        }
+
+        public float getJoinQty(string parentCode, string childCode)
+        {
+            float joinQty = 0;
+            DataTable dt = dalJoin.loadChildList(parentCode);
+
+            foreach(DataRow row in dt.Rows)
+            {
+                string itemCode = row[dalJoin.JoinChild].ToString();
+
+                if(itemCode.Equals(childCode))
+                {
+                    joinQty = Convert.ToSingle(row[dalJoin.JoinQty]);
+                }
+            }
+            return joinQty;
         }
 
         public int getCustID(string custName)
@@ -1006,6 +1021,25 @@ namespace FactoryManagementSoftware.Module
             return dt_row;
         }
 
+        public DataRow getDataRowFromDataTableByPlanID(DataTable dt, string PlanID)
+        {
+            DataRow dt_row = null;
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[dalPlanning.planID].ToString().Equals(PlanID))
+                    {
+
+                        dt_row = row;
+                        return dt_row;
+                    }
+                }
+            }
+            return dt_row;
+        }
+
         public int GetBalanceStock(string itemCode, int Month, int Year, int Stock)
         {
             DataTable dt_Item = dalItemCust.itemCodeSearch(itemCode);
@@ -1210,11 +1244,11 @@ namespace FactoryManagementSoftware.Module
             dt.Columns.Add(headerReadyStock, typeof(float));
             dt.Columns.Add(headerWeight, typeof(float));
             dt.Columns.Add(headerWastage, typeof(float));
-            dt.Columns.Add(headerBalanceZero, typeof(int));
-            dt.Columns.Add(headerBalanceOne, typeof(int));
-            dt.Columns.Add(headerBalanceTwo, typeof(int));
-            dt.Columns.Add(headerBalanceThree, typeof(int));
-            dt.Columns.Add(headerBalanceFour, typeof(int));
+            dt.Columns.Add(headerBalanceZero, typeof(float));
+            dt.Columns.Add(headerBalanceOne, typeof(float));
+            dt.Columns.Add(headerBalanceTwo, typeof(float));
+            dt.Columns.Add(headerBalanceThree, typeof(float));
+            dt.Columns.Add(headerBalanceFour, typeof(float));
 
             dt.Columns.Add(headerOutOne, typeof(float));
             dt.Columns.Add(headerOutTwo, typeof(float));
@@ -1391,7 +1425,8 @@ namespace FactoryManagementSoftware.Module
                 float childBal_1, childBal_2, childBal_3, childBal_4, child_ReadyStock, mbRate, child_mbRate;
                 float child_childBal_1, child_childBal_2, child_childBal_3, child_childBal_4, child_child_ReadyStock,child_child_mbRate;
                 string itemCode, MB, child_MB, child_child_MB, child_Mat, child_child_Mat;
-                int forecastIndex = 1, child_join_qty, child_child_join_qty;
+                int forecastIndex = 1;
+                float child_join_qty, child_child_join_qty;
 
                 string currentMonth = DateTime.Now.Month.ToString();
                 string nextMonth = DateTime.Now.AddMonths(+1).ToString("MMMM");
@@ -1547,7 +1582,7 @@ namespace FactoryManagementSoftware.Module
                                     //if (!string.IsNullOrEmpty(Join["child_material"].ToString()) || Join["child_cat"].ToString().Equals("Sub Material"))
                                     
                                     child_ReadyStock = Join["child_qty"] == DBNull.Value ? 0 : Convert.ToInt32(Join["child_qty"]);
-                                    child_join_qty = Convert.ToInt32(Join["join_qty"]);
+                                    child_join_qty = Convert.ToSingle(Join["join_qty"]);
                                     child_MB = Join["child_mb"] == DBNull.Value ? "NULL" : Join["child_mb"].ToString();
                                     child_mbRate = Join["child_mb_rate"] == DBNull.Value ? 0 : Convert.ToSingle(Join["child_mb_rate"].ToString());
 
@@ -1562,7 +1597,15 @@ namespace FactoryManagementSoftware.Module
 
                                     if (bal_1 < 0)
                                     {
-                                        childBal_1 = child_ReadyStock + bal_1 * child_join_qty;
+                                        //if (Join["child_code"].ToString().Equals("V76KM4000 0.360"))
+                                        //{
+                                        //    childBal_1 = child_ReadyStock + bal_1 * child_join_qty;
+                                        //}
+                                        //else
+                                        //{
+                                            childBal_1 = child_ReadyStock + bal_1 * child_join_qty;
+                                        //}
+                                        
                                     }
                                     else
                                     {
@@ -1624,10 +1667,10 @@ namespace FactoryManagementSoftware.Module
                                             dtMat_row[headerWastage] = Join["child_wastage_allowed"].ToString();
                                             dtMat_row[headerReadyStock] = child_ReadyStock;
                                             dtMat_row[headerBalanceZero] = child_ReadyStock;
-                                            dtMat_row[headerBalanceOne] = Convert.ToInt32(childBal_1);
-                                            dtMat_row[headerBalanceTwo] = Convert.ToInt32(childBal_2);
-                                            dtMat_row[headerBalanceThree] = Convert.ToInt32(childBal_3);
-                                            dtMat_row[headerBalanceFour] = Convert.ToInt32(childBal_4);
+                                            dtMat_row[headerBalanceOne] = Convert.ToSingle(childBal_1);
+                                            dtMat_row[headerBalanceTwo] = Convert.ToSingle(childBal_2);
+                                            dtMat_row[headerBalanceThree] = Convert.ToSingle(childBal_3);
+                                            dtMat_row[headerBalanceFour] = Convert.ToSingle(childBal_4);
 
                                             dtMat_row[headerOutOne] = 0;
                                             dtMat_row[headerOutTwo] = 0;
@@ -1653,7 +1696,7 @@ namespace FactoryManagementSoftware.Module
                                                     if (true)
                                                     {
                                                         child_child_ReadyStock = Join2["child_qty"] == DBNull.Value ? 0 : Convert.ToInt32(Join2["child_qty"]);
-                                                        child_child_join_qty = Convert.ToInt32(Join2["join_qty"]);
+                                                        child_child_join_qty = Convert.ToSingle(Join2["join_qty"]);
                                                         child_child_MB = Join2["child_mb"] == DBNull.Value ? "NULL" : Join2["child_mb"].ToString();
                                                         child_child_mbRate = Join2["child_mb_rate"] == DBNull.Value ? 0 : Convert.ToSingle(Join2["child_mb_rate"].ToString());
 
@@ -1728,10 +1771,10 @@ namespace FactoryManagementSoftware.Module
                                                         dtMat_row[headerWastage] = Join2["child_wastage_allowed"].ToString();
                                                         dtMat_row[headerReadyStock] = child_child_ReadyStock;
                                                         dtMat_row[headerBalanceZero] = child_child_ReadyStock;
-                                                        dtMat_row[headerBalanceOne] = Convert.ToInt32(child_childBal_1);
-                                                        dtMat_row[headerBalanceTwo] = Convert.ToInt32(child_childBal_2);
-                                                        dtMat_row[headerBalanceThree] = Convert.ToInt32(child_childBal_3);
-                                                        dtMat_row[headerBalanceFour] = Convert.ToInt32(child_childBal_4);
+                                                        dtMat_row[headerBalanceOne] = Convert.ToSingle(child_childBal_1);
+                                                        dtMat_row[headerBalanceTwo] = Convert.ToSingle(child_childBal_2);
+                                                        dtMat_row[headerBalanceThree] = Convert.ToSingle(child_childBal_3);
+                                                        dtMat_row[headerBalanceFour] = Convert.ToSingle(child_childBal_4);
 
                                                         dtMat_row[headerOutOne] = 0;
                                                         dtMat_row[headerOutTwo] = 0;
@@ -1764,10 +1807,10 @@ namespace FactoryManagementSoftware.Module
                                         dtMat_row[headerWastage] = Join["child_wastage_allowed"].ToString();
                                         dtMat_row[headerReadyStock] = child_ReadyStock;
                                         dtMat_row[headerBalanceZero] = child_ReadyStock;
-                                        dtMat_row[headerBalanceOne] = Convert.ToInt32(childBal_1);
-                                        dtMat_row[headerBalanceTwo] = Convert.ToInt32(childBal_2);
-                                        dtMat_row[headerBalanceThree] = Convert.ToInt32(childBal_3);
-                                        dtMat_row[headerBalanceFour] = Convert.ToInt32(childBal_4);
+                                        dtMat_row[headerBalanceOne] = Convert.ToSingle(childBal_1);
+                                        dtMat_row[headerBalanceTwo] = Convert.ToSingle(childBal_2);
+                                        dtMat_row[headerBalanceThree] = Convert.ToSingle(childBal_3);
+                                        dtMat_row[headerBalanceFour] = Convert.ToSingle(childBal_4);
 
                                         dtMat_row[headerOutOne] = 0;
                                         dtMat_row[headerOutTwo] = 0;
@@ -1805,10 +1848,10 @@ namespace FactoryManagementSoftware.Module
                             dtMat_row[headerWastage] = wastageAllowed;
                             dtMat_row[headerReadyStock] = readyStock;
                             dtMat_row[headerBalanceZero] = readyStock;
-                            dtMat_row[headerBalanceOne] = Convert.ToInt32(bal_1);
-                            dtMat_row[headerBalanceTwo] = Convert.ToInt32(bal_2);
-                            dtMat_row[headerBalanceThree] = Convert.ToInt32(bal_3);
-                            dtMat_row[headerBalanceFour] = Convert.ToInt32(bal_4);
+                            dtMat_row[headerBalanceOne] = Convert.ToSingle(bal_1);
+                            dtMat_row[headerBalanceTwo] = Convert.ToSingle(bal_2);
+                            dtMat_row[headerBalanceThree] = Convert.ToSingle(bal_3);
+                            dtMat_row[headerBalanceFour] = Convert.ToSingle(bal_4);
 
                             dtMat_row[headerOutOne] = currentMonthOut;
                             dtMat_row[headerOutTwo] = nextMonthOut;

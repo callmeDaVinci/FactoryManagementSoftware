@@ -917,7 +917,7 @@ namespace FactoryManagementSoftware
 
                 if (!string.IsNullOrEmpty(txtJoinQty.Text))
                 {
-                    uJoin.join_qty = Convert.ToInt32(txtJoinQty.Text);
+                    uJoin.join_qty = Convert.ToSingle(txtJoinQty.Text);
                 }
                 else
                 {
