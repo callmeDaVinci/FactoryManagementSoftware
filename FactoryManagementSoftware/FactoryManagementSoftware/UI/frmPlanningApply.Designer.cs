@@ -81,11 +81,17 @@
             this.ds = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.txtNote = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnUseRecycleOnly = new System.Windows.Forms.Button();
+            this.btnUseRecycleAndOrgin = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.button1 = new System.Windows.Forms.Button();
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -99,10 +105,13 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.groupBox4.SuspendLayout();
+            this.tableLayoutPanel11.SuspendLayout();
+            this.tableLayoutPanel10.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            this.tableLayoutPanel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
             this.SuspendLayout();
@@ -175,10 +184,10 @@
             this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCheck.ForeColor = System.Drawing.Color.White;
-            this.btnCheck.Location = new System.Drawing.Point(1385, 725);
+            this.btnCheck.Location = new System.Drawing.Point(1379, 2);
             this.btnCheck.Margin = new System.Windows.Forms.Padding(2);
             this.btnCheck.Name = "btnCheck";
-            this.btnCheck.Size = new System.Drawing.Size(120, 50);
+            this.btnCheck.Size = new System.Drawing.Size(120, 47);
             this.btnCheck.TabIndex = 110;
             this.btnCheck.Text = "APPLY";
             this.btnCheck.UseVisualStyleBackColor = false;
@@ -204,11 +213,11 @@
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel5, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel6, 1, 0);
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(18, 24);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(18, 18);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(456, 135);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(456, 141);
             this.tableLayoutPanel7.TabIndex = 117;
             // 
             // tableLayoutPanel5
@@ -225,9 +234,9 @@
             this.tableLayoutPanel5.RowCount = 4;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 19.37984F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 27.13178F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.8062F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30.23256F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(222, 129);
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.44444F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30.37037F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(222, 135);
             this.tableLayoutPanel5.TabIndex = 115;
             // 
             // tableLayoutPanel8
@@ -238,11 +247,11 @@
             this.tableLayoutPanel8.Controls.Add(this.cbToLast, 0, 0);
             this.tableLayoutPanel8.Controls.Add(this.cbEarlier, 1, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 92);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 96);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 1;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(216, 34);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(216, 36);
             this.tableLayoutPanel8.TabIndex = 119;
             // 
             // cbToLast
@@ -279,7 +288,7 @@
             this.btnSetBySystem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSetBySystem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSetBySystem.ForeColor = System.Drawing.Color.White;
-            this.btnSetBySystem.Location = new System.Drawing.Point(2, 60);
+            this.btnSetBySystem.Location = new System.Drawing.Point(2, 63);
             this.btnSetBySystem.Margin = new System.Windows.Forms.Padding(2);
             this.btnSetBySystem.Name = "btnSetBySystem";
             this.btnSetBySystem.Size = new System.Drawing.Size(218, 27);
@@ -292,7 +301,7 @@
             // 
             this.lblStartDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblStartDate.AutoSize = true;
-            this.lblStartDate.Location = new System.Drawing.Point(3, 5);
+            this.lblStartDate.Location = new System.Drawing.Point(3, 6);
             this.lblStartDate.Name = "lblStartDate";
             this.lblStartDate.Size = new System.Drawing.Size(81, 19);
             this.lblStartDate.TabIndex = 0;
@@ -305,7 +314,7 @@
             this.dtpStartDate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtpStartDate.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpStartDate.Location = new System.Drawing.Point(3, 27);
+            this.dtpStartDate.Location = new System.Drawing.Point(3, 28);
             this.dtpStartDate.Name = "dtpStartDate";
             this.dtpStartDate.Size = new System.Drawing.Size(216, 30);
             this.dtpStartDate.TabIndex = 15;
@@ -325,14 +334,14 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18.60465F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 29.45737F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 52.71318F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(222, 129);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(222, 135);
             this.tableLayoutPanel6.TabIndex = 116;
             // 
             // lblEndDate
             // 
             this.lblEndDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblEndDate.AutoSize = true;
-            this.lblEndDate.Location = new System.Drawing.Point(3, 4);
+            this.lblEndDate.Location = new System.Drawing.Point(3, 5);
             this.lblEndDate.Name = "lblEndDate";
             this.lblEndDate.Size = new System.Drawing.Size(136, 19);
             this.lblEndDate.TabIndex = 1;
@@ -344,7 +353,7 @@
             this.dtpEstimateEndDate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtpEstimateEndDate.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpEstimateEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEstimateEndDate.Location = new System.Drawing.Point(3, 26);
+            this.dtpEstimateEndDate.Location = new System.Drawing.Point(3, 27);
             this.dtpEstimateEndDate.Name = "dtpEstimateEndDate";
             this.dtpEstimateEndDate.Size = new System.Drawing.Size(216, 30);
             this.dtpEstimateEndDate.TabIndex = 16;
@@ -353,7 +362,7 @@
             // cbIncludeSunday
             // 
             this.cbIncludeSunday.AutoSize = true;
-            this.cbIncludeSunday.Location = new System.Drawing.Point(3, 63);
+            this.cbIncludeSunday.Location = new System.Drawing.Point(3, 66);
             this.cbIncludeSunday.Name = "cbIncludeSunday";
             this.cbIncludeSunday.Size = new System.Drawing.Size(123, 23);
             this.cbIncludeSunday.TabIndex = 114;
@@ -687,7 +696,7 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.txtNote);
+            this.groupBox4.Controls.Add(this.tableLayoutPanel11);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(747, 3);
             this.groupBox4.Name = "groupBox4";
@@ -696,15 +705,84 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "7. REMARK";
             // 
+            // tableLayoutPanel11
+            // 
+            this.tableLayoutPanel11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel11.ColumnCount = 1;
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel11.Controls.Add(this.txtNote, 0, 0);
+            this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel10, 0, 1);
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(6, 18);
+            this.tableLayoutPanel11.Name = "tableLayoutPanel11";
+            this.tableLayoutPanel11.RowCount = 2;
+            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(302, 138);
+            this.tableLayoutPanel11.TabIndex = 118;
+            // 
             // txtNote
             // 
             this.txtNote.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtNote.Location = new System.Drawing.Point(17, 37);
+            this.txtNote.Location = new System.Drawing.Point(3, 3);
             this.txtNote.Multiline = true;
             this.txtNote.Name = "txtNote";
-            this.txtNote.Size = new System.Drawing.Size(278, 72);
+            this.txtNote.Size = new System.Drawing.Size(296, 49);
             this.txtNote.TabIndex = 0;
+            // 
+            // tableLayoutPanel10
+            // 
+            this.tableLayoutPanel10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel10.ColumnCount = 2;
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel10.Controls.Add(this.btnUseRecycleOnly, 0, 0);
+            this.tableLayoutPanel10.Controls.Add(this.btnUseRecycleAndOrgin, 1, 0);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 58);
+            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
+            this.tableLayoutPanel10.RowCount = 1;
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(296, 77);
+            this.tableLayoutPanel10.TabIndex = 117;
+            // 
+            // btnUseRecycleOnly
+            // 
+            this.btnUseRecycleOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUseRecycleOnly.BackColor = System.Drawing.Color.White;
+            this.btnUseRecycleOnly.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUseRecycleOnly.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUseRecycleOnly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(160)))), ((int)(((byte)(225)))));
+            this.btnUseRecycleOnly.Location = new System.Drawing.Point(2, 2);
+            this.btnUseRecycleOnly.Margin = new System.Windows.Forms.Padding(2);
+            this.btnUseRecycleOnly.Name = "btnUseRecycleOnly";
+            this.btnUseRecycleOnly.Size = new System.Drawing.Size(144, 73);
+            this.btnUseRecycleOnly.TabIndex = 113;
+            this.btnUseRecycleOnly.Text = "USE RECYCLE ONLY";
+            this.btnUseRecycleOnly.UseVisualStyleBackColor = false;
+            this.btnUseRecycleOnly.Click += new System.EventHandler(this.btnUseRecycleOnly_Click);
+            // 
+            // btnUseRecycleAndOrgin
+            // 
+            this.btnUseRecycleAndOrgin.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUseRecycleAndOrgin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(203)))), ((int)(((byte)(110)))));
+            this.btnUseRecycleAndOrgin.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnUseRecycleAndOrgin.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUseRecycleAndOrgin.ForeColor = System.Drawing.Color.Black;
+            this.btnUseRecycleAndOrgin.Location = new System.Drawing.Point(150, 2);
+            this.btnUseRecycleAndOrgin.Margin = new System.Windows.Forms.Padding(2);
+            this.btnUseRecycleAndOrgin.Name = "btnUseRecycleAndOrgin";
+            this.btnUseRecycleAndOrgin.Size = new System.Drawing.Size(144, 73);
+            this.btnUseRecycleAndOrgin.TabIndex = 114;
+            this.btnUseRecycleAndOrgin.Text = "USE RECYCLE AND ORIGIN";
+            this.btnUseRecycleAndOrgin.UseVisualStyleBackColor = false;
+            this.btnUseRecycleAndOrgin.Click += new System.EventHandler(this.btnUseRecycleAndOrgin_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -763,8 +841,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel4.ColumnCount = 1;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel9, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel3, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnCheck, 0, 1);
             this.tableLayoutPanel4.Location = new System.Drawing.Point(23, 31);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
@@ -772,6 +850,38 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.335907F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(1507, 777);
             this.tableLayoutPanel4.TabIndex = 116;
+            // 
+            // tableLayoutPanel9
+            // 
+            this.tableLayoutPanel9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel9.ColumnCount = 2;
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90.67288F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.327115F));
+            this.tableLayoutPanel9.Controls.Add(this.button1, 0, 0);
+            this.tableLayoutPanel9.Controls.Add(this.btnCheck, 1, 0);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 723);
+            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
+            this.tableLayoutPanel9.RowCount = 1;
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(1501, 51);
+            this.tableLayoutPanel9.TabIndex = 117;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.BackColor = System.Drawing.Color.White;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Location = new System.Drawing.Point(1238, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(120, 47);
+            this.button1.TabIndex = 117;
+            this.button1.Text = "BACK";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // errorProvider2
             // 
@@ -815,12 +925,15 @@
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.tableLayoutPanel11.ResumeLayout(false);
+            this.tableLayoutPanel11.PerformLayout();
+            this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel9.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).EndInit();
             this.ResumeLayout(false);
@@ -889,5 +1002,11 @@
         private System.Windows.Forms.CheckBox cbEarlier;
         private System.Windows.Forms.CheckBox cbToLast;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnUseRecycleAndOrgin;
+        private System.Windows.Forms.Button btnUseRecycleOnly;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
     }
 }

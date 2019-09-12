@@ -35,6 +35,7 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = dalPlanningAction.SelectByPlanningID(PlanID);
 
+
             if(dt.Rows.Count > 0)
             {
                 LoadPlanningActionHistory(dt);

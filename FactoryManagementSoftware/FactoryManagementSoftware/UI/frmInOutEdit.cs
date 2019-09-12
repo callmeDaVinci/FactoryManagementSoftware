@@ -461,7 +461,8 @@ namespace FactoryManagementSoftware.UI
                 dt.Clear();
                 dt.Rows.Add(text.Unit_Set);
                 dt.Rows.Add(text.Unit_Piece);
-               // cmbTrfQtyUnit.DataSource = dt;
+                dt.Rows.Add(text.Unit_Meter);
+                // cmbTrfQtyUnit.DataSource = dt;
             }
             else if (itemCat.Equals(text.Cat_PolyBag))
             {
@@ -475,7 +476,7 @@ namespace FactoryManagementSoftware.UI
                 dt.Rows.Add(text.Unit_Piece);
                 dt.Rows.Add(text.Unit_KG);
                 dt.Rows.Add(text.Unit_g);
-
+                dt.Rows.Add(text.Unit_Meter);
             }
             else
             {
@@ -548,9 +549,9 @@ namespace FactoryManagementSoftware.UI
 
                 if(tool.IfFactoryExists(locationFrom) && ( locationTo.Equals(text.Production) || locationTo.Equals(text.Assembly)))
                 {
-                    DataTable dt = dalMatPlan.Select();
+                    //DataTable dt = dalMatPlan.Select();
 
-                    tool.matPlanSubtractQty(dt, itemCode, qty);
+                    //tool.matPlanSubtractQty(dt, itemCode, qty);
                 }
             }
             return daltrfHist.getIndexNo(utrfHist);
@@ -758,7 +759,7 @@ namespace FactoryManagementSoftware.UI
 
                 int ChildQty = fullCartonQty + notFullCartonQty;
                 
-                addSubItemToDGV(factoryName, "CTN 910 X 250 X 220", ChildQty, "Factory", "Production", "", "piece", "Auto out(Delivery)");
+                addSubItemToDGV(factoryName, "CTN 910 X 250 X 220", ChildQty, "Factory", "Production", "", "piece", "Auto out");
                 
             }
             else if (parentItemCode.Equals("R 060 641 385 60"))
@@ -773,7 +774,7 @@ namespace FactoryManagementSoftware.UI
 
                 int ChildQty = fullCartonQty + notFullCartonQty;
 
-                addSubItemToDGV(factoryName, "CTN 630 X 250 X 220 MM", ChildQty, "Factory", "Production", "", "piece", "Auto out(Delivery)");
+                addSubItemToDGV(factoryName, "CTN 630 X 250 X 220 MM", ChildQty, "Factory", "Production", "", "piece", "Auto out");
                 
             }
         }

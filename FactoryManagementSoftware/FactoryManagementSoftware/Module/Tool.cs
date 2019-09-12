@@ -446,6 +446,18 @@ namespace FactoryManagementSoftware.Module
             }
             return joinQty;
         }
+        
+        public int getFamilyWithData(int planID)
+        {
+            int familyWith = -1;
+            DataTable dt = dalPlanning.idSearch(planID.ToString());
+
+            foreach (DataRow row in dt.Rows)
+            {
+                familyWith = Convert.ToInt32(row[dalPlanning.familyWith]);
+            }
+            return familyWith;
+        }
 
         public int getCustID(string custName)
         {
@@ -630,10 +642,20 @@ namespace FactoryManagementSoftware.Module
                 foreach (DataRow row in matPlan_data.Rows)
                 {
                     string mat_code = row[dalMatPlan.MatCode].ToString();
+                    bool active = Convert.ToBoolean(row[dalMatPlan.Active]);
 
-                    if (mat_code.Equals(matCode))
+                    if (mat_code.Equals(matCode) && active)
                     {
-                        qty += row[dalMatPlan.PlanToUse] == null ? 0 : Convert.ToSingle(row[dalMatPlan.PlanToUse]);
+                        float planToUse = row[dalMatPlan.PlanToUse] == null ? 0 : Convert.ToSingle(row[dalMatPlan.PlanToUse]);
+                        float matUsed = row[dalMatPlan.MatUsed] == null ? 0 : Convert.ToSingle(row[dalMatPlan.MatUsed]);
+
+                        planToUse -= matUsed;
+                        if(planToUse < 0)
+                        {
+                            planToUse = 0;
+                        }
+
+                        qty += planToUse;
                     }
                 }
 
@@ -3352,7 +3374,7 @@ namespace FactoryManagementSoftware.Module
 
         public bool ifProductionDateAvailable(string macID, DateTime start, DateTime end)
         {
-            bool available = false;
+            bool available = true;
             DataTable dt_planning = dalPlanning.macIDSearch(macID);
 
             if(dt_planning.Rows.Count > 0)
@@ -3370,25 +3392,23 @@ namespace FactoryManagementSoftware.Module
                         {
                             available = true;
                         }
+                        else
+                        {
+                            available = false;
+                        }
 
                         if (plannedEnd == null || start >= plannedEnd)
                         {
                             available = true;
                         }
-
-                        if (!available)
+                        else
                         {
-                            return false;
+                            available = false;
                         }
                     } 
                 }
             }
-            else
-            {
-                available = true;
-            }
-            
-
+           
             return available;
         }
 

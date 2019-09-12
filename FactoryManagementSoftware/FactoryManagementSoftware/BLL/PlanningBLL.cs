@@ -20,8 +20,11 @@ namespace FactoryManagementSoftware.BLL
         public string part_code { get; set; }
         public string part_color { get; set; }
         public string quo_ton { get; set; }
-        public string cycle_time { get; set; }
-        
+        public string plan_ct { get; set; }
+        public string plan_pw { get; set; }
+        public string plan_rw { get; set; }
+        public string plan_cavity { get; set; }
+
         public string material_code { get; set; }
         public string material_bag_kg { get; set; }
         public string material_bag_qty { get; set; }
@@ -41,7 +44,7 @@ namespace FactoryManagementSoftware.BLL
         public DateTime production_end_date { get; set; }
 
         public int machine_id { get; set; }
-        public int family_with { get; set; }
+        public int family_with { get; set; } = -1;
 
 
     }

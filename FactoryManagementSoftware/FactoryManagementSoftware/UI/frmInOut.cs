@@ -1209,9 +1209,9 @@ namespace FactoryManagementSoftware.UI
                 matPlanDAL dalMatPlan = new matPlanDAL();
                 if (tool.IfFactoryExists(locationFrom) && (locationTo.Equals(text.Production) || locationTo.Equals(text.Assembly)))
                 {
-                    DataTable dt = dalMatPlan.Select();
+                   // DataTable dt = dalMatPlan.Select();
 
-                    tool.matPlanAddQty(dt, itemCode, qty);
+                    //tool.matPlanAddQty(dt, itemCode, qty);
                 }
             }
 
@@ -1261,9 +1261,9 @@ namespace FactoryManagementSoftware.UI
                 matPlanDAL dalMatPlan = new matPlanDAL();
                 if (tool.IfFactoryExists(locationFrom) && (locationTo.Equals(text.Production) || locationTo.Equals(text.Assembly)))
                 {
-                    DataTable dt = dalMatPlan.Select();
+                    //DataTable dt = dalMatPlan.Select();
 
-                    tool.matPlanSubtractQty(dt, itemCode, qty);
+                    //tool.matPlanSubtractQty(dt, itemCode, qty);
                 }
             }
 

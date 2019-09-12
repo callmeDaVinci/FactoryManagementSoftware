@@ -22,9 +22,9 @@ namespace FactoryManagementSoftware
 
             //Application.Run(new frmMachineSchedule());
 
-            //Application.Run(new MainDashboard(1));
+            Application.Run(new MainDashboard(1));
 
-            Application.Run(new frmLogIn());
+            //Application.Run(new frmLogIn());
 
             //Application.Run(new frmForecastReport_NEW());
 

@@ -1,9 +1,12 @@
 ﻿using FactoryManagementSoftware.BLL;
+using FactoryManagementSoftware.Module;
 using FactoryManagementSoftware.UI;
 using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
+//using static System.Net.Mime.MediaTypeNames;
 
 namespace FactoryManagementSoftware.DAL
 {
@@ -63,7 +66,8 @@ namespace FactoryManagementSoftware.DAL
 
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
         materialDAL dalMaterial = new materialDAL();
-
+        //Tool tool = new Tool();
+        //Text text = new Text();
         #endregion
 
         #region Select Data from Database
@@ -522,6 +526,7 @@ namespace FactoryManagementSoftware.DAL
                             SET "
                             + ItemQuoTon + "=@item_quo_ton,"
                             + ItemProTon + "=@item_pro_ton,"
+                            + ItemQuoCT + "=@item_quo_ct,"
                             + ItemProCTTo + "=@item_pro_ct_to,"
                             + ItemCapacity + "=@item_capacity,"
                             + ItemProPWShot + "=@item_pro_pw_shot,"
@@ -537,7 +542,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_quo_ton", u.item_quo_ton);
                 
                 cmd.Parameters.AddWithValue("@item_pro_ton", u.item_pro_ton);
-               
+                cmd.Parameters.AddWithValue("@item_quo_ct", u.item_quo_ct);
                 cmd.Parameters.AddWithValue("@item_pro_ct_to", u.item_pro_ct_to);
                 cmd.Parameters.AddWithValue("@item_capacity", u.item_capacity);
                
@@ -547,6 +552,106 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
                 cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
                
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool rawMatUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemMaterial + "=@item_material,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_material", u.item_material);
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool colorMatUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemMBatch + "=@item_mb,"
+                            + ItemMBRate + "=@item_mb_rate,"
+                            + ItemColor + "=@item_color,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_mb", u.item_mb);
+                cmd.Parameters.AddWithValue("@item_mb_rate", u.item_mb_rate);
+                cmd.Parameters.AddWithValue("@item_color", u.item_color);
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();
@@ -873,6 +978,181 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
             return isSuccess;
+        }
+
+        public bool updateAndHistoryRecord(itemBLL u)
+        {
+            
+            //get old data
+            string itemCode = u.item_code;
+            string partWeight = null, runnerWeight = null, cavity = null, proCT = null, quoCT = null, quoTon = null, proTon = null;
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[ItemCat].ToString().Equals("Part"))
+                    {
+                        partWeight = row[ItemProPWShot] == DBNull.Value ? "" : row[ItemProPWShot].ToString();
+                        runnerWeight = row[ItemProRWShot] == DBNull.Value ? "" : row[ItemProRWShot].ToString();
+                        cavity = row[ItemCapacity] == DBNull.Value ? "" : row[ItemCapacity].ToString();
+                        proCT = row[ItemProCTTo] == DBNull.Value ? "" : row[ItemProCTTo].ToString();
+                        quoCT = row[ItemQuoCT] == DBNull.Value ? "" : row[ItemQuoCT].ToString();
+                        
+
+                        quoTon = row[ItemQuoTon] == DBNull.Value ? "" : row[ItemQuoTon].ToString();
+                        proTon = row[ItemProTon] == DBNull.Value ? "" : row[ItemProTon].ToString();
+
+                    }
+                }
+            }
+
+            //update
+            bool success = UpdateFromExcelImport(u);
+            Tool tool = new Tool();
+            Text text = new Text();
+            if (!success)
+            {
+                MessageBox.Show("Failed to update part info(893)!");
+                tool.historyRecord(text.System, "Failed to update part info(893)!", DateTime.Now, MainDashboard.USER_ID);
+            }
+            else
+            {
+                #region History Record
+
+                if (!partWeight.Equals(u.item_pro_pw_shot.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Part Weight(pro shot) : " + partWeight + " -->" + u.item_pro_pw_shot, DateTime.Now, MainDashboard.USER_ID);
+                }
+
+                if (!runnerWeight.Equals(u.item_pro_rw_shot.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Runner Weight(pro shot) : " + runnerWeight + " -->" + u.item_pro_rw_shot, DateTime.Now, MainDashboard.USER_ID);
+                }
+
+                if (!cavity.Equals(u.item_capacity.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Cavity : " + cavity + " -->" + u.item_capacity, DateTime.Now, MainDashboard.USER_ID);
+                }
+
+                if (!quoCT.Equals(u.item_quo_ct.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "QUO CT : " + quoCT + " -->" + u.item_quo_ct, DateTime.Now, MainDashboard.USER_ID);
+                }
+
+                if (!proCT.Equals(u.item_pro_ct_to.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "PRO CT(MAX) : " + proCT + " -->" + u.item_pro_ct_to, DateTime.Now, MainDashboard.USER_ID);
+                }
+
+                if (!quoTon.Equals(u.item_quo_ton.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Quo Ton : " + quoTon + " -->" + u.item_quo_ton, DateTime.Now, MainDashboard.USER_ID);
+                }
+
+                if (!proTon.Equals(u.item_pro_ton.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Pro Ton: " + proTon + " -->" + u.item_pro_ton, DateTime.Now, MainDashboard.USER_ID);
+                }
+                #endregion
+            }
+
+            return success;
+        }
+
+        public bool rawMatUpdateAndHistoryRecord(itemBLL u)
+        {
+
+            
+            string itemCode = u.item_code;
+            string rawMaterial = null;
+            DataTable dt = codeSearch(itemCode);
+
+            //get old data
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[ItemCat].ToString().Equals("Part"))
+                    {
+                        rawMaterial = row[ItemMaterial] == DBNull.Value ? "" : row[ItemMaterial].ToString();
+                    }
+                }
+            }
+
+            //update
+            bool success = rawMatUpdate(u);
+            Tool tool = new Tool();
+            Text text = new Text();
+            if (!success)
+            {
+                MessageBox.Show("Failed to update raw material(1035)!");
+                tool.historyRecord(text.System, "Failed to update raw material(1035)!", DateTime.Now, MainDashboard.USER_ID);
+            }
+            else
+            {
+                //History Record
+                if (!rawMaterial.Equals(u.item_material.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Raw Material : " + rawMaterial + " -->" + u.item_material, DateTime.Now, MainDashboard.USER_ID);
+                }
+            }
+
+            return success;
+        }
+
+        public bool colorMatUpdateAndHistoryRecord(itemBLL u)
+        {
+
+
+            string itemCode = u.item_code;
+            string colorMaterial = null, color = null, colorUsage = null;
+            DataTable dt = codeSearch(itemCode);
+
+            //get old data
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[ItemCat].ToString().Equals("Part"))
+                    {
+                        colorMaterial = row[ItemMBatch] == DBNull.Value ? "" : row[ItemMBatch].ToString();
+                        color = row[ItemColor] == DBNull.Value ? "" : row[ItemColor].ToString();
+                        colorUsage = row[ItemMBRate] == DBNull.Value ? "" : row[ItemMBRate].ToString();
+                    }
+                }
+            }
+
+            //update
+            bool success = colorMatUpdate(u);
+            Tool tool = new Tool();
+            Text text = new Text();
+            if (!success)
+            {
+                MessageBox.Show("Failed to update color material(1078)!");
+                tool.historyRecord(text.System, "Failed to update color material(1078)!", DateTime.Now, MainDashboard.USER_ID);
+            }
+            else
+            {
+                //History Record
+                if (!colorMaterial.Equals(u.item_mb.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Color Material : " + colorMaterial + " -->" + u.item_mb, DateTime.Now, MainDashboard.USER_ID);
+                }
+
+                if (!color.Equals(u.item_color.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Item Color : " + color + " -->" + u.item_color, DateTime.Now, MainDashboard.USER_ID);
+                }
+
+                if (!colorUsage.Equals(u.item_mb_rate.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Color Usage : " + colorUsage + " -->" + u.item_mb_rate, DateTime.Now, MainDashboard.USER_ID);
+                }
+            }
+
+            return success;
         }
 
         #endregion
@@ -1544,6 +1824,8 @@ namespace FactoryManagementSoftware.DAL
             return userID;
         }
         #endregion
+
+
     }
 }
 

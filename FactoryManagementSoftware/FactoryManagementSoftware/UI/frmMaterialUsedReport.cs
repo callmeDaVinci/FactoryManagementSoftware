@@ -1013,7 +1013,7 @@ namespace FactoryManagementSoftware.UI
                             {
                                 if (tool.ifGotChild(Join["join_child_code"].ToString()))
                                 {
-                                    if (dalItem.checkIfProduction(Join["join_child_code"].ToString()) && !dalItem.checkIfAssembly(Join["join_child_code"].ToString()))
+                                    if (dalItem.checkIfProduction(Join["join_child_code"].ToString()))
                                     {
                                         uMatUsed.no = forecastIndex;
                                         uMatUsed.item_code = Join["join_child_code"].ToString();

@@ -17,14 +17,19 @@ namespace FactoryManagementSoftware.UI
 {
     public partial class frmPlanning : Form
     {
+        #region Variable Declare
         itemDAL dalItem = new itemDAL();
         itemCustDAL dalItemCust = new itemCustDAL();
         userDAL dalUser = new userDAL();
         joinDAL dalJoin = new joinDAL();
         trfHistDAL dalTrfHist = new trfHistDAL();
         Tool tool = new Tool();
+        Text text = new Text();
         matPlanDAL dalmatPlan = new matPlanDAL();
         PlanningBLL uPlanning = new PlanningBLL();
+
+        habitDAL dalHabit = new habitDAL();
+        habitBLL uHabit = new habitBLL();
 
         readonly string headerCheck = "FOR";
         readonly string headerDescription = "DESCRIPTION";
@@ -33,20 +38,24 @@ namespace FactoryManagementSoftware.UI
         readonly string headerIndex = "#";
         readonly string headerType = "TYPE";
         static public readonly string headerCode = "CODE";
-        readonly string headerName = "NAME";
+        static public readonly string headerName = "NAME";
+        static public readonly string headerShort = "SHORT";
         readonly string headerStock = "CURRENT STOCK";
         readonly string headerPlanningUsed = "PLANNED TO USE";
         readonly string headerAvaiableQty = "AVAIABLE QTY";
         static public  readonly string headerQtyNeedForThisPlanning = "QTY NEED FOR THIS PLANNING";
-        readonly string headerShort = "SHORT";
+        
         readonly string OtherPurpose = "FOR OTHER PURPOSE";
         private bool ableToCalculateQty = true;
         private bool ableToLoadData = false;
         private bool materialChecked = false;
+        private bool partInfoEdited = false;
+        private bool loaded = false;
 
         private string purpose = "FOR OTHER PURPOSE";
         private string name = null;
         private string code = null;
+        #endregion
 
         public frmPlanning()
         {
@@ -118,6 +127,44 @@ namespace FactoryManagementSoftware.UI
             }
 
             cmbPartName.SelectedIndex = -1;
+
+            getHabitData();
+        }
+
+        private void getHabitData()
+        {
+            string belongTo = text.habit_belongTo_PlanningPage;
+            string HourPerDayHabitData = "23";
+            string WastageHabitData = "5";
+
+            DataTable dt = dalHabit.HabitSearch(belongTo);
+
+            foreach(DataRow row in dt.Rows)
+            {
+                string name = row[dalHabit.HabitName].ToString();
+
+                if(name.Equals(text.habit_planning_HourPerDay))
+                {
+                    if (float.TryParse(row[dalHabit.HabitData].ToString(), out float result))
+                    {
+                        HourPerDayHabitData = result.ToString();
+                    }
+
+                }
+
+                if (name.Equals(text.habit_planning_Wastage))
+                {
+                    if (float.TryParse(row[dalHabit.HabitData].ToString(), out float result))
+                    {
+                        WastageHabitData = result.ToString();
+                    }
+
+                }
+
+            }
+
+            txtHoursPerDay.Text = HourPerDayHabitData;
+            txtMatWastage.Text = WastageHabitData;
         }
 
         private DataTable NewForecastTable()
@@ -193,11 +240,12 @@ namespace FactoryManagementSoftware.UI
                         txtPartWeight.Text = row[dalItem.ItemProPWShot] == DBNull.Value ? "" : row[dalItem.ItemProPWShot].ToString();
                         txtRunnerWeight.Text = row[dalItem.ItemProRWShot] == DBNull.Value ? "" : row[dalItem.ItemProRWShot].ToString();
                         txtCavity.Text = row[dalItem.ItemCapacity] == DBNull.Value ? "" : row[dalItem.ItemCapacity].ToString();
-                        txtCycleTime.Text = row[dalItem.ItemProCTTo] == DBNull.Value ? "" : row[dalItem.ItemProCTTo].ToString();
+                        txtProCT.Text = row[dalItem.ItemProCTTo] == DBNull.Value ? "" : row[dalItem.ItemProCTTo].ToString();
+                        txtQuoCT.Text = row[dalItem.ItemQuoCT] == DBNull.Value ? "" : row[dalItem.ItemQuoCT].ToString();
 
-                        if(string.IsNullOrEmpty(txtCycleTime.Text))
+                        if (string.IsNullOrEmpty(txtProCT.Text))
                         {
-                            txtCycleTime.Text = row[dalItem.ItemQuoCT] == DBNull.Value ? "" : row[dalItem.ItemQuoCT].ToString();
+                            txtProCT.Text = row[dalItem.ItemQuoCT] == DBNull.Value ? "" : row[dalItem.ItemQuoCT].ToString();
                         }
 
                         txtQuoTon.Text = row[dalItem.ItemQuoTon] == DBNull.Value ? "" : row[dalItem.ItemQuoTon].ToString();
@@ -240,13 +288,13 @@ namespace FactoryManagementSoftware.UI
             cmbMatCode.Text = matName;
         }
 
-        private void CalculateTotalRawMaterial()
+        private void CalTotalMatAfterWastage()
         {
             float totalMaterial = 0;
 
-            if (txtMatBagQty.Text != "" && txtMatBagKG.Text != "")
+            if (txtMatAfterWastage.Text != "")
             {
-                totalMaterial = Convert.ToSingle(txtMatBagQty.Text) * Convert.ToSingle(txtMatBagKG.Text);
+                totalMaterial = Convert.ToSingle(txtMatAfterWastage.Text);
             }
 
             if (cbRecycleUse.Checked && txtRecycleKG.Text != "")
@@ -254,17 +302,22 @@ namespace FactoryManagementSoftware.UI
                 totalMaterial += Convert.ToSingle(txtRecycleKG.Text);
             }
 
-            txtTotalRawMatKG.Text = totalMaterial.ToString();
 
-            //calculate total hours need
-            CalculateProductionDaysAndHours();
+            txtTotalMat.Text = totalMaterial.ToString("0.###");
 
+            ////calculate total hours need
+            //CalculateProductionDaysAndHours();
         }
 
         private void CalculateProductionDaysAndHours()
         {
-            CalculateTotalRecycleMaterial();
-            float totalMaterial = txtTotalMat.Text == "" ? 0 : Convert.ToSingle(txtTotalMat.Text);
+            //CalTotalRecycleMat();
+
+            float totalRawMat = txtMatBeforeWastage.Text == "" ? 0 : Convert.ToSingle(txtMatBeforeWastage.Text);
+            float totalRecycleMat = txtRecycleKG.Text == "" ? 0 : Convert.ToSingle(txtRecycleKG.Text);
+
+            float totalMatBeforeWastage = totalRawMat + totalRecycleMat;
+
             float partWeightPerShot = txtPartWeight.Text == "" ? 1 : Convert.ToSingle(txtPartWeight.Text);
             float runnerWeightPerShot = txtRunnerWeight.Text == "" ? 1 : Convert.ToSingle(txtRunnerWeight.Text);
             int cavity = txtCavity.Text == "" ? 0 : Convert.ToInt32(txtCavity.Text);
@@ -279,12 +332,10 @@ namespace FactoryManagementSoftware.UI
                 runnerWeightPerShot = 1;
             }
 
-            int TotalShot = Convert.ToInt32(Math.Floor(totalMaterial * 1000 / (partWeightPerShot + runnerWeightPerShot)));
-
-            txtAbleToProduceQty.Text = (TotalShot * cavity).ToString();
+            int TotalShot = Convert.ToInt32(Math.Floor(totalMatBeforeWastage * 1000 / (partWeightPerShot + runnerWeightPerShot)));
 
             //calculate total hours need
-            int cycleTime = txtCycleTime.Text == "" ? 0 : Convert.ToInt32(txtCycleTime.Text);
+            int cycleTime = txtProCT.Text == "" ? 0 : Convert.ToInt32(txtProCT.Text);
             int totalSec = cycleTime * TotalShot;
 
             float totalHrs = Convert.ToSingle(totalSec) / 3600;
@@ -303,14 +354,10 @@ namespace FactoryManagementSoftware.UI
             txtProHours.Text = (totalHrs - Convert.ToSingle(totalDay * hoursPerDay)).ToString("0.##");
         }
 
-        private void CalculateTotalRecycleMaterial()
+        private void CalTotalRecycleMat()
         {
-            float totalMaterial = 0;
-
-            if (txtMatBagQty.Text != "" && txtMatBagKG.Text != "" && txtColorMatPlannedQty.Text != "")
-            {
-                totalMaterial = Convert.ToSingle(txtMatBagQty.Text) * Convert.ToSingle(txtMatBagKG.Text) * 1000 + (Convert.ToSingle(txtColorMatPlannedQty.Text) * 1000);
-            }
+            float totalRecycleMat = txtMatAfterWastage.Text == "" ? 0 : Convert.ToSingle(txtMatAfterWastage.Text);
+            totalRecycleMat *= 1000;
 
             float partWeightPerShot = txtPartWeight.Text == "" ? 1 : Convert.ToSingle(txtPartWeight.Text);
             float runnerWeightPerShot = txtRunnerWeight.Text == "" ? 1 : Convert.ToSingle(txtRunnerWeight.Text);
@@ -322,28 +369,60 @@ namespace FactoryManagementSoftware.UI
                 totalWeightPerShot = 1;
             }
 
-            int totalShot = Convert.ToInt32(Math.Floor(totalMaterial / totalWeightPerShot));
-            totalMaterial = Convert.ToSingle(totalShot) * runnerWeightPerShot;
-
-            float wastage = txtRecycleWastage.Text == "" ? 0 : Convert.ToSingle(txtRecycleWastage.Text);
-
-            totalMaterial = totalMaterial * (1 - wastage / 100) / 1000;
-
-            txtRecycleKG.Text = totalMaterial.ToString("0.###");
-
-        }
-
-        private void CalculateTotalColorMaterial()
-        {
-            materialChecked = false;
-            float totalMaterial = 0;
-
-            if (txtMatBagKG.Text != "" && txtMatBagQty.Text != "" && txtColorUsage.Text != "")
+            if (partWeightPerShot != 0 && runnerWeightPerShot != 0)
             {
-                totalMaterial = Convert.ToSingle(txtMatBagKG.Text) * Convert.ToSingle(txtMatBagQty.Text) * Convert.ToSingle(txtColorUsage.Text) / 100;
+                totalRecycleMat = runnerRecycleCalculate(totalRecycleMat / (totalWeightPerShot) * runnerWeightPerShot);
+                
+            }
+            else
+            {
+                totalRecycleMat = 0;
             }
 
-            txtColorMatPlannedQty.Text = (totalMaterial).ToString("0.##");
+            if(totalRecycleMat != 0)
+            {
+                totalRecycleMat /= 1000;
+            }
+
+            txtRecycleKG.Text = totalRecycleMat.ToString("0.###");
+        }
+
+        private float runnerRecycleCalculate(float runnerLeft)
+        {
+            float partWeightPerShot = txtPartWeight.Text == "" ? 1 : Convert.ToSingle(txtPartWeight.Text);
+            float runnerWeightPerShot = txtRunnerWeight.Text == "" ? 1 : Convert.ToSingle(txtRunnerWeight.Text);
+
+            if (runnerLeft > (partWeightPerShot+runnerWeightPerShot))
+            {
+                return Convert.ToSingle(Math.Floor(runnerRecycleCalculate(runnerLeft / (partWeightPerShot + runnerWeightPerShot) * runnerWeightPerShot) + runnerLeft));
+            }
+            else
+            {
+                return 0;
+            }
+            
+        }
+
+        private void CalColorMatAndTotalRawMatBeforeWastage()
+        {
+            materialChecked = false;
+            dgvCheckList.DataSource = null;
+            float totalRawMat = 0;
+            float totalColorMat = 0;
+
+            if (txtMatBagQty.Text != "" && txtMatBagKG.Text != "" && txtColorUsage.Text != "")
+            {
+                totalRawMat = Convert.ToSingle(txtMatBagQty.Text) * Convert.ToSingle(txtMatBagKG.Text);
+                totalColorMat = totalRawMat * Convert.ToSingle(txtColorUsage.Text) / 100;
+            }
+
+            totalColorMat *= 1000;
+            totalColorMat = (float)Math.Floor(totalColorMat);
+
+            totalColorMat /= 1000;
+
+            txtColorMatPlannedQty.Text = totalColorMat.ToString("0.###");
+            txtMatBeforeWastage.Text = (totalRawMat + totalColorMat).ToString("0.###");
         }
 
         private void AddDataToForecastTable()
@@ -555,7 +634,10 @@ namespace FactoryManagementSoftware.UI
                 }
             }
             else
+            {
                 e.Handled = true;
+            }
+                
         }
 
         private void txtRecycleKG_KeyPress(object sender, KeyPressEventArgs e)
@@ -570,7 +652,7 @@ namespace FactoryManagementSoftware.UI
 
         private void txtColorName_KeyPress(object sender, KeyPressEventArgs e)
         {
-            e.Handled = true;
+            //e.Handled = true;
         }
 
         private void txtColorMatPlannedQty_KeyPress(object sender, KeyPressEventArgs e)
@@ -587,7 +669,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmPlanning_Load(object sender, EventArgs e)
         {
-            CalculateTotalRecycleMaterial();
+            CalTotalRecycleMat();
             ActiveControl = cmbPartName;
 
             if(name != null)
@@ -595,34 +677,62 @@ namespace FactoryManagementSoftware.UI
                 cmbPartName.Text = name;
                 cmbPartCode.Text = code;
             }
+            loaded = true;
         }
 
         private void cmbPartName_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
             errorProvider1.Clear();
             string keywords = cmbPartName.Text;
 
             if (!string.IsNullOrEmpty(keywords))
             {
                 ableToLoadData = false;
-                DataTable dt = dalItem.Search(keywords);
+                DataTable dt = dalItem.nameSearch(keywords);
+
+                foreach(DataRow row in dt.Rows)
+                {
+                    string itemCat = row[dalItem.ItemCat].ToString();
+
+                    if(!itemCat.Equals(text.Cat_Part))
+                    {
+                        row.Delete();
+                    }
+                }
+
+                dt.AcceptChanges();
+
                 cmbPartCode.DataSource = dt;
                 cmbPartCode.DisplayMember = "item_code";
                 cmbPartCode.ValueMember = "item_code";
                 cmbPartCode.SelectedIndex = -1;
                 ableToLoadData = true;
+
+                int count = cmbPartCode.Items.Count;
+
+                if(count == 1)
+                {
+                    cmbPartCode.SelectedIndex = 0;
+                }
             }
             else
             {
                 cmbPartCode.DataSource = null;
             }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void cmbPartCode_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
             materialChecked = false;
+            dgvCheckList.DataSource = null;
             errorProvider2.Clear();
             Thread t = null;
+            bool aborted = false;
             if (ableToLoadData)
             {
                 try
@@ -641,15 +751,16 @@ namespace FactoryManagementSoftware.UI
                     else
                     {
                         LoadPartInfo();
+                        partInfoEdited = false;
                         t.Start();
-                        CalculateTotalRawMaterial();
+                        //CalTotalMatAfterWastage();
                     }
                     AddDataToForecastTable();
                 }
                 catch (ThreadAbortException)
                 {
                     // ignore it
-                    Thread.ResetAbort();
+                    aborted = true;
                 }
                 catch (Exception ex)
                 {
@@ -657,82 +768,146 @@ namespace FactoryManagementSoftware.UI
                 }
                 finally
                 {
+                    if(!aborted)
                     t.Abort();
+
+                    txtMatBagQty.Focus();
+                }
+            }
+            if(!cbEditMode.Checked)
+            {
+                btnPartInfoSave.Visible = false;
+            }
+
+            btnRawMatUpdate.Visible = false;
+            btnColorMatUpdate.Visible = false;
+        }
+
+        private void cbRecycleUse_CheckedChanged(object sender, EventArgs e)
+        {
+            CalTotalMatAfterWastage();
+        }
+
+        private void CalRawMatAfterWastage()
+        {
+            materialChecked = false;
+            dgvCheckList.DataSource = null;
+            float totalMaterialAfterWastage = txtMatBeforeWastage.Text == "" ? 0 : Convert.ToSingle(txtMatBeforeWastage.Text);
+
+            float wastage = txtMatWastage.Text == "" ? 0 : Convert.ToSingle(txtMatWastage.Text);
+
+            totalMaterialAfterWastage = totalMaterialAfterWastage * (1 - wastage / 100);
+
+            totalMaterialAfterWastage = (float)Math.Floor(totalMaterialAfterWastage * 100) / 100;
+            txtMatAfterWastage.Text = totalMaterialAfterWastage.ToString("0.##");
+
+           
+        }
+
+        private void txtMatBagQty_TextChanged(object sender, EventArgs e)
+        {
+            if(loaded)
+            {
+                errorProvider4.Clear();
+
+                CalColorMatAndTotalRawMatBeforeWastage();
+                CalRawMatAfterWastage();
+                CalTotalRecycleMat();
+                CalTotalMatAfterWastage();
+
+                //give warning if qty have decimal point
+                double d = txtMatBagQty.Text.Equals("") ? 0 : Convert.ToDouble(txtMatBagQty.Text);
+
+                if (!(Math.Abs(d % 1) <= (double.Epsilon * 100)))
+                {
+                    errorProvider4.SetError(txtMatBagQty, "Decimal Point Exist");
                 }
             }
             
         }
 
-        private void cbRecycleUse_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbRecycleUse.Checked)
-            {
-                txtRecycleWastage.Enabled = true;
-            }
-            else
-            {
-                txtRecycleWastage.Enabled = false;
-            }
-
-            CalculateTotalRawMaterial();
-        }
-
-        private void txtMatBagQty_TextChanged(object sender, EventArgs e)
-        {
-            errorProvider4.Clear();
-            CalculateTotalColorMaterial();
-            CalculateTotalRecycleMaterial();
-            CalculateTotalRawMaterial();
-           
-
-            double d = txtMatBagQty.Text.Equals("") ? 0 : Convert.ToDouble(txtMatBagQty.Text);
-
-            if( !(Math.Abs(d % 1) <= (double.Epsilon * 100)))
-            {
-                errorProvider4.SetError(txtMatBagQty, "Decimal Point Exist");
-            }
-        }
-
         private void txtMatBagKG_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalColorMaterial();
-            CalculateTotalRecycleMaterial();
-            CalculateTotalRawMaterial();
-            
+            if (loaded)
+            {
+                CalColorMatAndTotalRawMatBeforeWastage();
+                CalRawMatAfterWastage();
+                CalTotalRecycleMat();
+                CalTotalMatAfterWastage();
+            }  
         }
 
         private void txtRecycleKG_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalRawMaterial();
+            //CalculateTotalRawMaterial();
         }
 
-        private void txtRecycleWastage_TextChanged(object sender, EventArgs e)
+        private void txtRawMatWastage_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalRawMaterial();
-            CalculateTotalRecycleMaterial();
+            if (loaded)
+            {
+                CalRawMatAfterWastage();
+                CalTotalRecycleMat();
+                CalTotalMatAfterWastage();
+            }
+
+            string habitData = txtMatWastage.Text;
+            //save habit
+            uHabit.belong_to = text.habit_belongTo_PlanningPage;
+            uHabit.habit_name = text.habit_planning_Wastage;
+            uHabit.habit_data = habitData;
+            uHabit.added_date = DateTime.Now;
+            uHabit.added_by = MainDashboard.USER_ID;
+
+            dalHabit.HabitInsertAndHistoryRecord(uHabit);
         }
 
         private void txtTotalMatKG_TextChanged(object sender, EventArgs e)
         {
-            materialChecked = false;
-            CalculateTotalColorMaterial();
-            dgvCheckList.DataSource = null;
+            //materialChecked = false;
+            //CalculateTotalColorMaterial();
+            //dgvCheckList.DataSource = null;
 
-            float txttotalMat = txtTotalRawMatKG.Text.Equals("") ? 0 : Convert.ToSingle(txtTotalRawMatKG.Text);
-            float txtcolorMat = txtColorMat.Text.Equals("")? 0 : Convert.ToSingle(txtColorMat.Text);
+            //float txttotalMat = txtTotalRawMatKG.Text.Equals("") ? 0 : Convert.ToSingle(txtTotalRawMatKG.Text);
+            //float txtcolorMat = txtColorMat.Text.Equals("")? 0 : Convert.ToSingle(txtColorMat.Text);
 
-            txtTotalMat.Text = (txttotalMat + txtcolorMat).ToString();
+            //txtTotalMat.Text = (txttotalMat + txtcolorMat).ToString();
         }
 
         private void txtColorUsage_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalColorMaterial();
+            btnColorMatUpdate.Visible = true;
+            if (loaded)
+            {
+                CalColorMatAndTotalRawMatBeforeWastage();
+                CalTotalMatAfterWastage();
+            }
+           
         }
 
         private void txtHoursPerDay_TextChanged(object sender, EventArgs e)
         {
             CalculateProductionDaysAndHours();
-            
+
+            string habitData = txtHoursPerDay.Text;
+            //save habit
+            uHabit.belong_to = text.habit_belongTo_PlanningPage;
+            uHabit.habit_name = text.habit_planning_HourPerDay;
+            uHabit.habit_data = habitData;
+            uHabit.added_date = DateTime.Now;
+            uHabit.added_by = MainDashboard.USER_ID;
+
+            dalHabit.HabitInsertAndHistoryRecord(uHabit);
+
+            //loading
+            //message to ask if want to change current running and pending plan date follow new hour per day
+            //if yes then change
+            //change by machine
+            //get machine data
+            //load machine data
+            //load schedule by machine data
+            //adjust start and end date with the new hour per day
+            //finish changed
         }
 
         private void label23_Click(object sender, EventArgs e)
@@ -740,25 +915,172 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private int MAXQtyPerBagCanProduce()
+        {
+            materialChecked = false;
+            dgvCheckList.DataSource = null;
+            float totalRawMat = 0;
+            float totalColorMat = 0;
+
+            if (txtMatBagKG.Text != "")
+            {
+                totalRawMat = 1 * Convert.ToSingle(txtMatBagKG.Text);
+            }
+
+            if (txtColorUsage.Text != "")
+            {
+                totalColorMat = totalRawMat * Convert.ToSingle(txtColorUsage.Text) / 100;
+            }
+
+            totalColorMat *= 1000;
+            totalColorMat = (float)Math.Floor(totalColorMat);
+
+            totalColorMat /= 1000;
+
+            float TotalMatBeforeWastage = totalRawMat + totalColorMat;
+
+            float wastage = txtMatWastage.Text == "" ? 0 : Convert.ToSingle(txtMatWastage.Text);
+
+            float totalMaterialAfterWastage = TotalMatBeforeWastage * (1 - wastage / 100);
+            totalMaterialAfterWastage = (float)Math.Floor(totalMaterialAfterWastage * 100) / 100;
+
+            float totalRecycleMat = 0;
+
+            float partWeightPerShot = txtPartWeight.Text == "" ? 1 : Convert.ToSingle(txtPartWeight.Text);
+            float runnerWeightPerShot = txtRunnerWeight.Text == "" ? 1 : Convert.ToSingle(txtRunnerWeight.Text);
+
+            if (cbRecycleUse.Checked)
+            {
+                totalRecycleMat = totalMaterialAfterWastage;
+                totalRecycleMat *= 1000;
+
+                float totalWeightPerShot = partWeightPerShot + runnerWeightPerShot;
+
+                if (totalWeightPerShot == 0)
+                {
+                    totalWeightPerShot = 1;
+                }
+
+                if (partWeightPerShot != 0 && runnerWeightPerShot != 0)
+                {
+                    totalRecycleMat = runnerRecycleCalculate(totalRecycleMat / (totalWeightPerShot) * runnerWeightPerShot);
+
+                }
+                else
+                {
+                    totalRecycleMat = 0;
+                }
+
+                if (totalRecycleMat != 0)
+                {
+                    totalRecycleMat /= 1000;
+                }
+
+            }
+
+            float TotalMat = totalMaterialAfterWastage + totalRecycleMat;
+
+            int cavity = txtCavity.Text == "" ? 0 : Convert.ToInt32(txtCavity.Text);
+
+            int TotalShot = Convert.ToInt32(Math.Floor(TotalMat * 1000 / (partWeightPerShot + runnerWeightPerShot)));
+
+            return TotalShot * cavity;
+        }
+
+        private int MAXQtyPerBagCanProduce(int bagQty)
+        {
+            materialChecked = false;
+            dgvCheckList.DataSource = null;
+            float totalRawMat = 0;
+            float totalColorMat = 0;
+
+            if (txtMatBagKG.Text != "")
+            {
+                totalRawMat = bagQty * Convert.ToSingle(txtMatBagKG.Text);
+            }
+
+            if (txtColorUsage.Text != "")
+            {
+                totalColorMat = totalRawMat * Convert.ToSingle(txtColorUsage.Text) / 100;
+            }
+
+            totalColorMat *= 1000;
+            totalColorMat = (float)Math.Floor(totalColorMat);
+
+            totalColorMat /= 1000;
+
+            float TotalMatBeforeWastage = totalRawMat + totalColorMat;
+
+            float wastage = txtMatWastage.Text == "" ? 0 : Convert.ToSingle(txtMatWastage.Text);
+
+            float totalMaterialAfterWastage = TotalMatBeforeWastage * (1 - wastage / 100);
+            totalMaterialAfterWastage = (float)Math.Floor(totalMaterialAfterWastage * 100) / 100;
+
+            float totalRecycleMat = 0;
+
+            float partWeightPerShot = txtPartWeight.Text == "" ? 1 : Convert.ToSingle(txtPartWeight.Text);
+            float runnerWeightPerShot = txtRunnerWeight.Text == "" ? 1 : Convert.ToSingle(txtRunnerWeight.Text);
+
+            if (cbRecycleUse.Checked)
+            {
+                totalRecycleMat = totalMaterialAfterWastage;
+                totalRecycleMat *= 1000;
+
+                float totalWeightPerShot = partWeightPerShot + runnerWeightPerShot;
+
+                if (totalWeightPerShot == 0)
+                {
+                    totalWeightPerShot = 1;
+                }
+
+                if (partWeightPerShot != 0 && runnerWeightPerShot != 0)
+                {
+                    totalRecycleMat = runnerRecycleCalculate(totalRecycleMat / (totalWeightPerShot) * runnerWeightPerShot);
+
+                }
+                else
+                {
+                    totalRecycleMat = 0;
+                }
+
+                if (totalRecycleMat != 0)
+                {
+                    totalRecycleMat /= 1000;
+                }
+
+            }
+
+            float TotalMat = totalMaterialAfterWastage + totalRecycleMat;
+
+            int cavity = txtCavity.Text == "" ? 0 : Convert.ToInt32(txtCavity.Text);
+
+            int TotalShot = Convert.ToInt32(Math.Floor(TotalMat * 1000 / (partWeightPerShot + runnerWeightPerShot)));
+
+            return TotalShot * cavity;
+        }
+
         private void txtTargetQty_TextChanged(object sender, EventArgs e)
         {
             materialChecked = false;
+            dgvCheckList.DataSource = null;
             if (ableToCalculateQty)
             {
-                int targetQty = txtTargetQty.Text == "" ? 0 : Convert.ToInt32(txtTargetQty.Text);
-                int cavity = txtCavity.Text == "" ? 0 : Convert.ToInt32(txtCavity.Text);
-                double totalShot = 0;
+                int MaxQtyAbleToProducePerBag = MAXQtyPerBagCanProduce();
 
-                double matBagKG = txtMatBagKG.Text == "" ? 0 : Convert.ToDouble(txtMatBagKG.Text);
-                double partWeightPerShot = txtPartWeight.Text == "" ? 1 : Convert.ToDouble(txtPartWeight.Text);
-                double runnerWeightPerShot = txtRunnerWeight.Text == "" ? 1 : Convert.ToDouble(txtRunnerWeight.Text);
+                int TargetQty = txtTargetQty.Text == "" ? 0 : Convert.ToInt32(txtTargetQty.Text);
 
-                if (cavity != 0)
+
+                int TotalRawMatBagQty = TargetQty/ MaxQtyAbleToProducePerBag;
+
+                MaxQtyAbleToProducePerBag = MAXQtyPerBagCanProduce(TotalRawMatBagQty);
+
+                if(MaxQtyAbleToProducePerBag < TargetQty)
                 {
-                    totalShot = Math.Ceiling(Convert.ToDouble(targetQty) / Convert.ToDouble(cavity));
+                    TotalRawMatBagQty++;
                 }
 
-                txtMatBagQty.Text = (totalShot * (partWeightPerShot + runnerWeightPerShot) / 1000 / matBagKG).ToString("0.##");
+
+                txtMatBagQty.Text = TotalRawMatBagQty.ToString();
             }
         }
 
@@ -822,45 +1144,12 @@ namespace FactoryManagementSoftware.UI
                 getPurpose();
                 if (check)
                 {
-                    //MessageBox.Show("check at " + row);
                     cbOtherPurpose.Checked = false;
-
-
-                    //if (purpose == OtherPurpose || string.IsNullOrEmpty(purpose))
-                    //{
-                    //    purpose = text;
-                    //}
-                    //else
-                    //{
-                    //    purpose += "/ "+text;
-                    //}
-                    
-                    //purpose = "";
-                    //DataTable dt = (DataTable)dgvForecast.DataSource;
-                    //foreach (DataRow row in dt.Rows)
-                    //{
-                        
-                    //    if(Convert.ToBoolean(row[headerCheck]))
-                    //    {
-                    //        string text = dgvForecast.Rows[rowIndex].Cells[headerDescription].Value.ToString();
-
-                    //        if(purpose.Equals(""))
-                    //        {
-                    //            purpose = text;
-                    //        }
-                    //        else
-                    //        {
-                    //            purpose += "/ " + text;
-                    //        }
-                    //    }
-                    //}
 
                 }
 
 
             }
-
-
 
         }
 
@@ -896,6 +1185,14 @@ namespace FactoryManagementSoftware.UI
         {
             if (cbOtherPurpose.Checked)
             {
+                string text = txtOtherPurpose.Text;
+
+                if (string.IsNullOrEmpty(text) || text.Equals("Fill in planning purpose here"))
+                {
+                    cbOtherPurpose.BackColor = Color.Red;
+                }
+
+                txtOtherPurpose.BackColor = SystemColors.Info;
                 dgvForecast.ClearSelection();
                 purpose = OtherPurpose;
                 txtOtherPurpose.Enabled = true;
@@ -907,8 +1204,11 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                bool ableToUnCheck = false;
+                txtOtherPurpose.BackColor = Color.White;
+                cbOtherPurpose.BackColor = Color.White;
 
+                bool ableToUnCheck = false;
+                
                 foreach (DataGridViewRow rows in dgvForecast.Rows)
                 {
                     if (Convert.ToBoolean(rows.Cells[headerCheck].Value))
@@ -1079,19 +1379,21 @@ namespace FactoryManagementSoftware.UI
 
         public void StartForm()
         {
-            try
-            {
+            //try
+            //{
                 Application.Run(new frmLoading());
-            }
-             catch (ThreadAbortException)
-            {
-                // ignore it
-                Thread.ResetAbort();
-            }
+            //}
+            // catch (ThreadAbortException)
+            //{
+            //    // ignore it
+            //    Thread.ResetAbort();
+            //}
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnMaterialCheck_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
             errorProvider3.Clear();
             if(Validation())
             {
@@ -1111,10 +1413,12 @@ namespace FactoryManagementSoftware.UI
                     btnEdit.Visible = false;
                     btnDelete.Visible = false;
                     LoadMatCheckList();
-                    btnAdd.Visible = true;
+                    
                 }
             }
-           
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+
         }
 
         private void LoadMatCheckList()
@@ -1275,9 +1579,14 @@ namespace FactoryManagementSoftware.UI
             //add datatable to datagridview if got data
             if (dt_MAT.Rows.Count > 0)
             {
+                btnAdd.Visible = true;
                 dgvCheckList.DataSource = dt_MAT;
                 dgvCheckListUIEdit(dgvCheckList);
                 dgvCheckList.ClearSelection();
+            }
+            else
+            {
+                MessageBox.Show("No data for material check list.\n Please check the material for this planning or continue process to next step.");
             }
 
         }
@@ -1315,27 +1624,26 @@ namespace FactoryManagementSoftware.UI
             if (string.IsNullOrEmpty(cmbPartName.Text))
             {
                 result = false;
-                errorProvider1.SetError(cmbPartName, "Part Name Required");
+                errorProvider1.SetError(lblPartName, "Part Name Required");
             }
 
             if (string.IsNullOrEmpty(cmbPartCode.Text))
             {
                 result = false;
-                errorProvider2.SetError(cmbPartCode, "Part Code Required");
+                errorProvider2.SetError(lblPartCode, "Part Code Required");
             }
 
-            double d = txtMatBagQty.Text.Equals("") ? 0 : Convert.ToDouble(txtMatBagQty.Text);
-            if (!(Math.Abs(d % 1) <= (double.Epsilon * 100)))
-            {
-                errorProvider4.Clear();
-                result = false;
-                errorProvider4.SetError(txtMatBagQty, "Decimal Point Exist");
-            }
+            //double d = txtMatBagQty.Text.Equals("") ? 0 : Convert.ToDouble(txtMatBagQty.Text);
+            //if (!(Math.Abs(d % 1) <= (double.Epsilon * 100)))
+            //{
+            //    errorProvider4.Clear();
+            //    result = false;
+            //    errorProvider4.SetError(txtMatBagQty, "Decimal Point Exist");
+            //}
 
             return result;
 
         }
-
 
         private void txtOtherPurpose_Enter(object sender, EventArgs e)
         {
@@ -1359,8 +1667,37 @@ namespace FactoryManagementSoftware.UI
         {
             uPlanning.part_name = cmbPartName.Text;
             uPlanning.part_code = cmbPartCode.Text;
+
+            uPlanning.plan_cavity = txtCavity.Text;
+            if (string.IsNullOrEmpty(txtCavity.Text))
+            {
+                uPlanning.plan_cavity = "0";
+            }
+
             uPlanning.quo_ton = txtQuoTon.Text;
-            uPlanning.cycle_time = txtCycleTime.Text;
+            if (string.IsNullOrEmpty(txtQuoTon.Text))
+            {
+                uPlanning.quo_ton = "0";
+            }
+
+            uPlanning.plan_ct = txtProCT.Text;
+            if(string.IsNullOrEmpty(txtProCT.Text))
+            {
+                uPlanning.plan_ct = "0";
+            }
+
+            uPlanning.plan_pw = txtPartWeight.Text;
+            if (string.IsNullOrEmpty(txtPartWeight.Text))
+            {
+                uPlanning.plan_pw = "0";
+            }
+
+            uPlanning.plan_rw = txtRunnerWeight.Text;
+            if (string.IsNullOrEmpty(txtRunnerWeight.Text))
+            {
+                uPlanning.plan_rw = "0";
+            }
+
             uPlanning.production_purpose = purpose;
 
             uPlanning.material_code = cmbMatCode.Text;
@@ -1387,6 +1724,8 @@ namespace FactoryManagementSoftware.UI
 
         private void btnNextStep_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
             if (Validation())
             {
                 if(materialChecked)
@@ -1400,6 +1739,13 @@ namespace FactoryManagementSoftware.UI
 
                     if(frmPlanningApply.dataSaved)
                     {
+                        Cursor = Cursors.Arrow; // change cursor to normal type
+
+                        //Hide();
+                        //frmCustomMessageBox frm2 = new frmCustomMessageBox();
+                        //frm2.StartPosition = FormStartPosition.CenterScreen;
+                        //frm2.Closed += (s, args) => Close();
+                        //frm2.Show();
                         Close();
                     }
                 }
@@ -1410,7 +1756,9 @@ namespace FactoryManagementSoftware.UI
                 }
                 
             }
-                
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+
         }
 
         private void dgvCheckList_MouseClick(object sender, MouseEventArgs e)
@@ -1476,35 +1824,89 @@ namespace FactoryManagementSoftware.UI
 
         private void txtCavity_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalColorMaterial();
-            CalculateTotalRecycleMaterial();
-            CalculateTotalRawMaterial();
-           
+            string cavity = txtCavity.Text;
+
+            if(string.IsNullOrEmpty(cavity) || cavity.Equals("0"))
+            {
+                lblCavity.BackColor = Color.Red;
+            }
+            else
+            {
+                lblCavity.BackColor = Color.White;                
+            }
+
+            CalColorMatAndTotalRawMatBeforeWastage();
+            CalTotalRecycleMat();
+            CalTotalMatAfterWastage();
+            partInfoEdited = true;
         }
 
         private void txtCycleTime_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalColorMaterial();
-            CalculateTotalRecycleMaterial();
-            CalculateTotalRawMaterial();
+            string cycleTime = txtProCT.Text;
+
+            if (string.IsNullOrEmpty(cycleTime) || cycleTime.Equals("0"))
+            {
+                lblProCT.BackColor = Color.Red;
+            }
+            else
+            {
+                lblProCT.BackColor = Color.White;
+                
+            }
+
+            CalColorMatAndTotalRawMatBeforeWastage();
+            CalTotalRecycleMat();
+            CalTotalMatAfterWastage();
+
+            CalculateProductionDaysAndHours();
+            partInfoEdited = true;
         }
 
         private void txtPartWeight_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalColorMaterial();
-            CalculateTotalRecycleMaterial();
-            CalculateTotalRawMaterial();
+            string partWeightPerShot = txtPartWeight.Text;
+
+            if (string.IsNullOrEmpty(partWeightPerShot) || partWeightPerShot.Equals("0"))
+            {
+                lblPW.BackColor = Color.Red;
+            }
+            else
+            {
+                lblPW.BackColor = Color.White;
+                
+            }
+
+            CalColorMatAndTotalRawMatBeforeWastage();
+            CalTotalRecycleMat();
+            CalTotalMatAfterWastage();
+            partInfoEdited = true;
         }
 
         private void txtRunnerWeight_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalColorMaterial();
-            CalculateTotalRecycleMaterial();
-            CalculateTotalRawMaterial();
+            string runnerWeightPerShot = txtRunnerWeight.Text;
+
+            if (string.IsNullOrEmpty(runnerWeightPerShot) || runnerWeightPerShot.Equals("0"))
+            {
+                lblRW.BackColor = Color.Red;
+            }
+            else
+            {
+                lblRW.BackColor = Color.White;
+                
+            }
+
+            CalColorMatAndTotalRawMatBeforeWastage();
+            CalTotalRecycleMat();
+            CalTotalMatAfterWastage();
+            partInfoEdited = true;
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
             int rowIndex = dgvCheckList.CurrentCell.RowIndex;
             string itemName= null;
             if(rowIndex != -1)
@@ -1524,8 +1926,8 @@ namespace FactoryManagementSoftware.UI
                 reIndex(dt);
                 MessageBox.Show("Item ("+itemName+") deleted successfully.");
             }
-            
 
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void dgvCheckList_Sorted(object sender, EventArgs e)
@@ -1535,6 +1937,8 @@ namespace FactoryManagementSoftware.UI
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
             frmPlanningAddSubItem frm = new frmPlanningAddSubItem(txtAbleToProduceQty.Text);
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();
@@ -1570,13 +1974,17 @@ namespace FactoryManagementSoftware.UI
 
                 reIndex(dt_MAT);
             }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            int rowIndex = dgvCheckList.CurrentCell.RowIndex;
 
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             
+
+            int rowIndex = dgvCheckList.CurrentCell.RowIndex;
 
             if (rowIndex != -1)
             {
@@ -1608,6 +2016,7 @@ namespace FactoryManagementSoftware.UI
 
             }
 
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -1619,13 +2028,18 @@ namespace FactoryManagementSoftware.UI
         {
             string text = txtOtherPurpose.Text;
 
-            if(!string.IsNullOrEmpty(text))
+            if(!string.IsNullOrEmpty(text) && !text.Equals("Fill in planning purpose here"))
             {
                 purpose = text;
+                cbOtherPurpose.BackColor = Color.White;
+
             }
             else
             {
                 purpose = OtherPurpose;
+
+                if(cbOtherPurpose.Checked)
+                cbOtherPurpose.BackColor = Color.Red;
             }
         }
 
@@ -1641,19 +2055,19 @@ namespace FactoryManagementSoftware.UI
 
         private void txtColorMatPlannedQty_TextChanged(object sender, EventArgs e)
         {
-            string colorMat = txtColorMatPlannedQty.Text;
-            txtColorMat.Text = colorMat;
+            //string colorMat = txtColorMatPlannedQty.Text;
+            //txtColorMat.Text = colorMat;
         }
 
         private void txtColorMat_TextChanged(object sender, EventArgs e)
         {
-            float txttotalMat = txtTotalRawMatKG.Text.Equals("") ? 0 : Convert.ToSingle(txtTotalRawMatKG.Text);
-            float txtcolorMat = txtColorMat.Text.Equals("") ? 0 : Convert.ToSingle(txtColorMat.Text);
+            //float txttotalMat = txtTotalRawMatKG.Text.Equals("") ? 0 : Convert.ToSingle(txtTotalRawMatKG.Text);
+            //float txtcolorMat = txtColorMat.Text.Equals("") ? 0 : Convert.ToSingle(txtColorMat.Text);
 
-            txtTotalMat.Text = (txttotalMat + txtcolorMat).ToString();
+            //txtTotalMat.Text = (txttotalMat + txtcolorMat).ToString();
         }
 
-        private void txtTotalMat_TextChanged(object sender, EventArgs e)
+        private void calculateAbleToProduce()
         {
             float totalMaterial = txtTotalMat.Text.Equals("") ? 0 : Convert.ToSingle(txtTotalMat.Text);
             float partWeightPerShot = txtPartWeight.Text == "" || txtPartWeight.Text == "0" ? 1 : Convert.ToSingle(txtPartWeight.Text);
@@ -1664,6 +2078,239 @@ namespace FactoryManagementSoftware.UI
             int TotalShot = Convert.ToInt32(Math.Floor(totalMaterial * 1000 / (partWeightPerShot + runnerWeightPerShot)));
 
             txtAbleToProduceQty.Text = (TotalShot * cavity).ToString();
+        }
+
+        private void txtTotalMat_TextChanged(object sender, EventArgs e)
+        {
+            calculateAbleToProduce();
+
+            //calculate total hours need
+            CalculateProductionDaysAndHours();
+        }
+
+        private void txtQuoTon_TextChanged(object sender, EventArgs e)
+        {
+            partInfoEdited = true;
+        }
+
+        private void cbEditMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbEditMode.Checked)
+            {
+                btnPartInfoSave.Visible = true;
+
+                txtQuoTon.BackColor = SystemColors.Info;
+                txtProTon.BackColor = SystemColors.Info;
+                txtProCT.BackColor = SystemColors.Info;
+                txtCavity.BackColor = SystemColors.Info;
+                txtPartWeight.BackColor = SystemColors.Info;
+                txtRunnerWeight.BackColor = SystemColors.Info;
+                txtQuoCT.BackColor = SystemColors.Info;
+            }
+            else
+            {
+                btnPartInfoSave.Visible = false;
+
+                txtQuoTon.BackColor = Color.White;
+                txtProTon.BackColor = Color.White;
+                txtProCT.BackColor = Color.White;
+                txtCavity.BackColor = Color.White;
+                txtPartWeight.BackColor = Color.White;
+                txtRunnerWeight.BackColor = Color.White;
+                txtQuoCT.BackColor = Color.White;
+            }
+        }
+
+        private void txtProTon_TextChanged(object sender, EventArgs e)
+        {
+            partInfoEdited = true;
+        }
+
+        private void btnPartInfoSave_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to save these data?", "Message",
+                                                               MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes && partInfoEdited)
+            {
+               
+                itemBLL uItem = new itemBLL();
+
+                string itemCode = cmbPartCode.Text;
+
+                if(!string.IsNullOrEmpty(itemCode))
+                {
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    uItem.item_code = itemCode;
+                    uItem.item_quo_ton = string.IsNullOrEmpty(txtQuoTon.Text)? 0 : Convert.ToInt32(txtQuoTon.Text);
+                    uItem.item_pro_ton = string.IsNullOrEmpty(txtProTon.Text) ? 0 : Convert.ToInt32(txtProTon.Text);
+                    uItem.item_capacity = string.IsNullOrEmpty(txtCavity.Text) ? 0 : Convert.ToInt32(txtCavity.Text);
+                    uItem.item_quo_ct = string.IsNullOrEmpty(txtQuoCT.Text) ? 0 : Convert.ToInt32(txtQuoCT.Text);
+                    uItem.item_pro_ct_to = string.IsNullOrEmpty(txtProCT.Text) ? 0 : Convert.ToInt32(txtProCT.Text);
+                    uItem.item_pro_pw_shot = string.IsNullOrEmpty(txtPartWeight.Text) ? 0 : Convert.ToInt32(txtPartWeight.Text);
+                    uItem.item_pro_rw_shot = string.IsNullOrEmpty(txtRunnerWeight.Text) ? 0 : Convert.ToInt32(txtRunnerWeight.Text);
+                    uItem.item_updtd_date = DateTime.Now;
+                    uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                    if(dalItem.updateAndHistoryRecord(uItem))
+                    {
+                        MessageBox.Show("Data saved!");
+                    }
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+        }
+
+        private void txtTotalRawAfterWastage_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void txtColorName_TextChanged(object sender, EventArgs e)
+        {
+            btnColorMatUpdate.Visible = true;
+        }
+
+        private void txtTotalRawAfterWastage_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void dgvForecast_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //MessageBox.Show("cell click" + e.RowIndex);
+            int rowIndex = e.RowIndex;
+            int colIndex = e.ColumnIndex;
+            groupBox1.Focus();
+            bool check = Convert.ToBoolean(dgvForecast.Rows[rowIndex].Cells[headerCheck].Value);
+
+            if (check)
+            {
+                dgvForecast.Rows[rowIndex].Cells[headerCheck].Value = false;
+
+                bool purposeChecked = false;
+
+                DataTable dt = (DataTable)dgvForecast.DataSource;
+                foreach (DataRow row in dt.Rows)
+                {
+                    if(Convert.ToBoolean(row[headerCheck]))
+                    {
+                        purposeChecked = true;
+                    }
+                }
+
+                if(!purposeChecked)
+                {
+                    cbOtherPurpose.Checked = true;
+                }
+            }
+            else
+            {
+                dgvForecast.Rows[rowIndex].Cells[headerCheck].Value = true;
+                cbOtherPurpose.Checked = false;
+            }
+
+            getPurpose();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void btnRawMatUpdate_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to update raw material info for this item?", "Message",
+                                                              MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+            {
+
+                itemBLL uItem = new itemBLL();
+
+                string itemCode = cmbPartCode.Text;
+                string rawMat = cmbMatCode.Text;
+
+                if (!string.IsNullOrEmpty(itemCode))
+                {
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    uItem.item_code = itemCode;
+                    uItem.item_material = rawMat;
+
+                    uItem.item_updtd_date = DateTime.Now;
+                    uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                    if (dalItem.rawMatUpdateAndHistoryRecord(uItem))
+                    {
+                        MessageBox.Show("Data saved!");
+                    }
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+        }
+
+        private void cmbMatCode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnRawMatUpdate.Visible = true;
+        }
+
+        private void cmbColorMatCode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnColorMatUpdate.Visible = true;
+        }
+
+        private void btnColorMatUpdate_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to update color material info for this item?", "Message",
+                                                              MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+            {
+
+                itemBLL uItem = new itemBLL();
+
+                string itemCode = cmbPartCode.Text;
+                string colorMat = cmbColorMatCode.Text;
+                string color = txtColorName.Text;
+                string colorUsage = txtColorUsage.Text;
+
+                if (!string.IsNullOrEmpty(itemCode))
+                {
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    uItem.item_code = itemCode;
+                    uItem.item_mb = colorMat;
+                    uItem.item_mb_rate = Convert.ToSingle(colorUsage);
+                    uItem.item_color = color;
+
+                    uItem.item_updtd_date = DateTime.Now;
+                    uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                    if (dalItem.colorMatUpdateAndHistoryRecord(uItem))
+                    {
+                        MessageBox.Show("Data saved!");
+                    }
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+        }
+
+        private void txtQuoCT_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (cbEditMode.Checked)
+            {
+                if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+                {
+                    e.Handled = true;
+                }
+            }
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtQuoCT_TextChanged(object sender, EventArgs e)
+        {
+            partInfoEdited = true;
         }
     }
 }

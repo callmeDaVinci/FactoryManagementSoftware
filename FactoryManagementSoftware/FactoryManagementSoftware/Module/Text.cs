@@ -78,11 +78,18 @@ namespace FactoryManagementSoftware.Module
         public string planning_status_delayed { get; } = "DELAYED";//yellow
         public string planning_status_completed { get; } = "COMPLETED";//white
         public string planning_Family_mould_Remark { get; } = "[FAMILY MOULD]";
+
         //PLANNING ACTION HISTORY////////////////////////////////////////////////////////////////////////////
         public string plan_Added { get; } = "PLAN ADD";
         public string plan_schedule_change { get; } = "PLAN SCHEDULE CHANGE";
         public string plan_status_change { get; } = "PLAN STATUS CHANGE";
+        public string plan_family_with_change { get; } = "PLAN FAMILY CHANGE";
 
+        //Habit HISTORY////////////////////////////////////////////////////////////////////////////
+        public string habit_insert { get; } = "HABIT INSERT";
+        public string habit_belongTo_PlanningPage { get; } = "PLANNING PAGE";
+        public string habit_planning_HourPerDay { get; } = "PLANNING: HOUR PER DAY";
+        public string habit_planning_Wastage { get; } = "PLANNING: MATERIAL WASTAGE %";
         //LOCATION////////////////////////////////////////////////////////////////////////////
         public string Factory { get; } = "Factory";
         public string Production { get; } = "Production";
@@ -93,6 +100,7 @@ namespace FactoryManagementSoftware.Module
         public string Unit_g { get; } = "g";
         public string Unit_Set { get; } = "set";
         public string Unit_Piece { get; } = "piece";
+        public string Unit_Meter { get; } = "meter";
 
         //ITEM CATEGORY///////////////////////////////////////////////////////////////////////
         public string Cat_RawMat { get; } = "RAW Material";
@@ -102,6 +110,7 @@ namespace FactoryManagementSoftware.Module
         public string Cat_Carton { get; } = "Carton";
         public string Cat_PolyBag { get; } = "Poly Bag";
         public string Cat_SubMat { get; } = "Sub Material";
+        public string Cat_Mould { get; } = "Mould";
 
         #endregion
 

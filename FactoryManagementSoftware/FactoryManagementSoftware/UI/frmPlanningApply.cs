@@ -61,11 +61,11 @@ namespace FactoryManagementSoftware.UI
             tool.loadMacIDToComboBox(cmbID);
         }
 
-        public frmPlanningApply(PlanningBLL u, DataTable dt)
+        public frmPlanningApply(PlanningBLL u, DataTable materialData)
         {
             InitializeComponent();
             uPlanning = u;
-            dt_mat = dt;
+            dt_mat = materialData;
             loadMacData();
             //loadMacIDToComboBox(cmbID);
             tool.loadMacIDToComboBox(cmbID);
@@ -126,7 +126,7 @@ namespace FactoryManagementSoftware.UI
 
                 available = tool.ifProductionDateAvailable(cmbID.Text, start, end);
 
-                if (!available)
+                if (!available && frmMacScheduleAdjust.ToRunPlanFamilyWith == -1)
                 {
                     //MessageBox.Show("date fail");
                     errorProvider2.SetError(lblStartDate, "Production date clash with other plan");
@@ -147,7 +147,13 @@ namespace FactoryManagementSoftware.UI
                 errorProvider1.SetError(cmbID, "Machine ID Required");
             }
 
+            if(frmMacScheduleAdjust.ToRunPlanFamilyWith == -1)
             result = checkDateAvailable();
+            else
+            {
+                errorProvider2.Clear();
+                errorProvider3.Clear();
+            }
 
             return result;
         }
@@ -157,7 +163,7 @@ namespace FactoryManagementSoftware.UI
             lblPartName.Text = u.part_name;
             lblPartCode.Text = u.part_code;
             lblQuoTon.Text = u.quo_ton;
-            lblCycleTime.Text = u.cycle_time + " SEC";
+            lblCycleTime.Text = u.plan_ct + " SEC";
             lblProductionFor.Text = u.production_purpose;
 
             lblMaterial.Text = u.material_code;
@@ -360,9 +366,30 @@ namespace FactoryManagementSoftware.UI
             Application.Run(new frmLoading());
         }
 
+        private string MatShortRemark()
+        {
+            string shortRemark = "";
+
+            foreach(DataRow row in dt_mat.Rows)
+            {
+                float matShort = Convert.ToSingle(row[frmPlanning.headerShort]);
+
+                if(matShort < 0)
+                {
+                    string itemCode = row[frmPlanning.headerCode].ToString();
+                    string itemName = row[frmPlanning.headerName].ToString();
+
+                    shortRemark += "["+itemCode + " SHORT " + matShort+"] ";
+                }
+            }
+
+            return shortRemark;
+        }
+
         private void btnCheck_Click(object sender, EventArgs e)
         {
-
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            
             Thread t = null;
 
             try
@@ -370,7 +397,7 @@ namespace FactoryManagementSoftware.UI
                 
                 if (Validation())
                 {
-                    DialogResult dialogResult = MessageBox.Show("Are you sure you want to process this planning?", "Message",
+                    DialogResult dialogResult = MessageBox.Show("Are you sure you want to apply this planning?", "Message",
                                                                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (dialogResult == DialogResult.Yes)
                     {
@@ -380,13 +407,56 @@ namespace FactoryManagementSoftware.UI
                         string note = txtNote.Text;
 
                         uPlanning.plan_status = text.planning_status_pending;
-                        uPlanning.plan_note = note;
+
+                        //check material short
+                        uPlanning.plan_note = note + MatShortRemark();
                         uPlanning.machine_id = Convert.ToInt32(cmbID.Text);
                         uPlanning.production_start_date = dtpStartDate.Value;
                         uPlanning.production_end_date = dtpEstimateEndDate.Value;
                         uPlanning.plan_added_date = date;
                         uPlanning.plan_added_by = MainDashboard.USER_ID;
 
+                        if(frmMacScheduleAdjust.ToRunPlanFamilyWith != -1)
+                        {
+                            //check selected plan familywith data
+                            int familyWith = tool.getFamilyWithData(frmMacScheduleAdjust.ToRunPlanFamilyWith);
+
+                            //if = -1, get selected plan id
+                            if (familyWith == -1)
+                            {
+                                //update selected plan familyWith and remark data
+
+                                familyWith = frmMacScheduleAdjust.ToRunPlanFamilyWith;
+
+                                DataTable dt_Mac = dalPlanning.macIDSearch(cmbID.Text.ToString());
+                                DataRow oldData = tool.getDataRowFromDataTableByPlanID(dt_Mac, familyWith.ToString());
+
+                                string oldNote = oldData[dalPlanning.planNote].ToString();
+
+                                PlanningBLL updateFamily = new PlanningBLL();
+                                updateFamily.plan_id = familyWith;
+                                updateFamily.plan_note = text.planning_Family_mould_Remark + oldNote;
+                                updateFamily.family_with = familyWith;
+                                updateFamily.plan_updated_date = DateTime.Now;
+                                updateFamily.plan_updated_by = MainDashboard.USER_ID;
+
+                                
+                                dalPlanningAction.planningFamilyWithChange(updateFamily, "-1");
+                            }
+
+
+                            if (familyWith == 0)
+                            {
+                                uPlanning.family_with = -1;
+                            }
+                            else
+                            {
+                                uPlanning.family_with = familyWith;
+                            }
+                            
+                            uPlanning.plan_note = text.planning_Family_mould_Remark;
+                            
+                        }
 
                         bool success = false;
                         success = dalPlanningAction.planningAdd(uPlanning);
@@ -405,19 +475,46 @@ namespace FactoryManagementSoftware.UI
 
                             //save material plan to use qty
 
-                            DataTable dt = dalMatPlan.Select();
+                            //DataTable dt = dalMatPlan.Select();
 
                             if(dt_mat.Rows.Count > 0)
                             {
-                                foreach (DataRow row in dt_mat.Rows)
-                                {
-                                    string matCode = row[frmPlanning.headerCode].ToString();
-                                    float planToUse = row[frmPlanning.headerQtyNeedForThisPlanning] == null ? 0 : Convert.ToSingle(row[frmPlanning.headerQtyNeedForThisPlanning]);
+                                //get planID for this planning
+                                int planID = dalPlanning.getLastInsertedPlanID();
 
-                                    tool.matPlanAddQty(dt, matCode, planToUse);
-            
+                                if(planID != -1)
+                                {
+                                    foreach (DataRow row in dt_mat.Rows)
+                                    {
+                                        string matCode = row[frmPlanning.headerCode].ToString();
+                                        float planToUse = row[frmPlanning.headerQtyNeedForThisPlanning] == null ? 0 : Convert.ToSingle(row[frmPlanning.headerQtyNeedForThisPlanning]);
+
+                                        uMatPlan.mat_code = matCode;
+                                        uMatPlan.plan_id = planID;
+                                        uMatPlan.plan_to_use = planToUse;
+                                        uMatPlan.mat_used = 0;
+                                        uMatPlan.active = true;
+                                        uMatPlan.mat_note = "";
+                                        uMatPlan.updated_date = date;
+                                        uMatPlan.updated_by = MainDashboard.USER_ID;
+
+                                        //tool.matPlanAddQty(dt, matCode, planToUse);
+
+                                        if(!dalMatPlan.Insert(uMatPlan))
+                                        {
+                                            //MessageBox.Show("Failed to insert material plan data.");
+                                            tool.historyRecord(text.System, "Failed to insert material plan data.", date, MainDashboard.USER_ID);
+                                        }
+                                    }
                                 }
+                                else
+                                {
+                                    MessageBox.Show("Plan ID not found! Cannot save material plan data.");
+                                    tool.historyRecord(text.System, "Plan ID not found! Cannot save material plan data.", date, MainDashboard.USER_ID);
+                                }
+                                
                             }
+
 
                             Close();
                         }
@@ -433,6 +530,7 @@ namespace FactoryManagementSoftware.UI
             }
             catch (Exception ex)
             {
+                
                 tool.saveToTextAndMessageToUser(ex);
             }
             finally
@@ -441,7 +539,7 @@ namespace FactoryManagementSoftware.UI
                 t.Abort();
             }
 
-           
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
@@ -529,6 +627,9 @@ namespace FactoryManagementSoftware.UI
 
         private void btnSetBySystem_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            Cursor = Cursors.Arrow; // change cursor to normal type
+
             string macID = cmbID.Text;
 
             if (string.IsNullOrEmpty(macID))
@@ -552,6 +653,8 @@ namespace FactoryManagementSoftware.UI
                     dtpStartDate.Value = tool.earlierAvailableDate(macID, includeSunday ,uPlanning);
                 }
             }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void cbToLast_CheckedChanged(object sender, EventArgs e)
@@ -579,13 +682,15 @@ namespace FactoryManagementSoftware.UI
             //handle the row selection on right click
             if (e.Button == MouseButtons.Right && e.RowIndex > -1)
             {
+                
                 ContextMenuStrip my_menu = new ContextMenuStrip();
                 dgvMac.CurrentCell = dgvMac.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 // Can leave these here - doesn't hurt
                 dgvMac.Rows[e.RowIndex].Selected = true;
                 dgvMac.Focus();
                 int rowIndex = dgvMac.CurrentCell.RowIndex;
-
+                int macID = Convert.ToInt32(dgvMac.Rows[rowIndex].Cells[headerID].Value);
+                cmbID.Text = macID.ToString();
                 try
                 {
                     my_menu.Items.Add("Edit Schedule").Name = "Edit Schedule";
@@ -612,6 +717,7 @@ namespace FactoryManagementSoftware.UI
             int rowIndex = dgv.CurrentCell.RowIndex;
             int macID = Convert.ToInt32(dgv.Rows[rowIndex].Cells[headerID].Value);
 
+            
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             contextMenuStrip1.Hide();
 
@@ -635,6 +741,7 @@ namespace FactoryManagementSoftware.UI
             string itemName = lblPartName.Text, itemCode = lblPartCode.Text;
             DateTime start = dtpStartDate.Value;
             DateTime end = dtpEstimateEndDate.Value;
+            uPlanning.machine_id = macID;
 
             frmMacScheduleAdjust frm = new frmMacScheduleAdjust(macID.ToString(),uPlanning,start,end);
             frm.StartPosition = FormStartPosition.CenterScreen;
@@ -644,11 +751,33 @@ namespace FactoryManagementSoftware.UI
             {
                 dtpStartDate.Value = frmMacScheduleAdjust.start;
                 dtpEstimateEndDate.Value = frmMacScheduleAdjust.end;
+
+                if(frmMacScheduleAdjust.ToRunPlanFamilyWith != -1)
+                {
+                    errorProvider2.Clear();
+                    errorProvider3.Clear();
+                }
             }
 
             loadMacData();
 
             
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            dataSaved = false;
+            Close();
+        }
+
+        private void btnUseRecycleOnly_Click(object sender, EventArgs e)
+        {
+            txtNote.Text = "USE RECYCLE ONLY";
+        }
+
+        private void btnUseRecycleAndOrgin_Click(object sender, EventArgs e)
+        {
+            txtNote.Text = "USE RECYCLE AND ORGIN";
         }
     }
 }

@@ -263,12 +263,21 @@ namespace FactoryManagementSoftware.DAL
             DataTable dt = new DataTable();
             try
             {
+                int id = -1;
+
+                bool successfullyParsed = int.TryParse(keywords, out id);
+
+                if (!successfullyParsed)
+                {
+                    id = -1;
+                }
+
                 //sql query to get data from database
                 String sql = "SELECT * FROM tbl_mac WHERE mac_id=@keywords";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@keywords", keywords);
+                cmd.Parameters.AddWithValue("@keywords", id);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open

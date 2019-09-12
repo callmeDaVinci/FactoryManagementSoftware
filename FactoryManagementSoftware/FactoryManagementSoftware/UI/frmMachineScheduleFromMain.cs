@@ -44,13 +44,13 @@ namespace FactoryManagementSoftware.UI
         Text text = new Text();
         Tool tool = new Tool();
 
+        int formClose = -1;
         bool blink = false;
         bool dataChange = false;
         bool loaded = false;
         bool ableLoadDate = true;
         bool ableLoadSchedule = true;
         bool RunAction = false;
-        bool ableToClose = false;
         static public bool applied = false;
 
         //static public DateTime start;
@@ -167,12 +167,12 @@ namespace FactoryManagementSoftware.UI
                 DataTable dt_Schedule = NewScheduleTable();
                 DataRow row_Schedule;
                 bool match = true;
-
+                int referFamilyWith = tool.getFamilyWithData(uPlanning.plan_id);
                 foreach (DataRow row in dt.Rows)
                 {
                     match = true;
                     int planID = Convert.ToInt32(row[dalPlanning.planID]);
-
+                    int familyWith = Convert.ToInt32(row[dalPlanning.familyWith]);
                     #region Status Filtering
 
                     string status = row[dalPlanning.planStatus].ToString();
@@ -207,15 +207,21 @@ namespace FactoryManagementSoftware.UI
                         row_Schedule[headerProductionPurpose] = row[dalPlanning.productionPurpose];
 
                         row_Schedule[headerTargetQty] = row[dalPlanning.targetQty];
+                        row_Schedule[headerStatus] = row[dalPlanning.planStatus];
 
-                        if(planID == uPlanning.plan_id && RunAction)
+                        if ((planID == uPlanning.plan_id || referFamilyWith == familyWith )&& RunAction)
                         {
-                            row_Schedule[headerStatus] = headerToRun;
+
+                            if(planID == uPlanning.plan_id)
+                            {
+                                row_Schedule[headerStatus] = headerToRun;
+                            }
+                            else if (referFamilyWith != -1)
+                            {
+                                row_Schedule[headerStatus] = headerToRun;
+                            }
                         }
-                        else
-                        {
-                            row_Schedule[headerStatus] = row[dalPlanning.planStatus];
-                        }
+
                         row_Schedule[headerFamilyWith] = row[dalPlanning.familyWith];
                         row_Schedule[headerRemark] = row[dalPlanning.planNote];
                         dt_Schedule.Rows.Add(row_Schedule);
@@ -321,8 +327,19 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if(i != row)
                     {
-                        int firstFamilyWith = Convert.ToInt32(dgv.Rows[i].Cells[headerFamilyWith].Value);
-                        int secondFamilyWith = Convert.ToInt32(dgv.Rows[row].Cells[headerFamilyWith].Value);
+                        int firstFamilyWith = -1;
+                        int secondFamilyWith = -1;
+
+                        if (i >= 0 && dgv.Rows[i].Cells[headerFamilyWith].Value != DBNull.Value)
+                        {
+                            firstFamilyWith = Convert.ToInt32(dgv.Rows[i].Cells[headerFamilyWith].Value);
+                        }
+
+                         
+                        if (row >= 0 && dgv.Rows[row].Cells[headerFamilyWith].Value != DBNull.Value)
+                        {
+                            secondFamilyWith = Convert.ToInt32(dgv.Rows[row].Cells[headerFamilyWith].Value);
+                        }
 
                         if(firstFamilyWith != secondFamilyWith || firstFamilyWith == -1 )
                         {
@@ -566,7 +583,8 @@ namespace FactoryManagementSoftware.UI
                     u.part_name = (string)dgv.Rows[row].Cells[headerPartName].Value;
                     u.production_purpose = (string)dgv.Rows[row].Cells[headerProductionPurpose].Value;
                     u.production_target_qty = dgv.Rows[row].Cells[headerTargetQty].Value.ToString();
-
+                    u.family_with = Convert.ToInt32(dgv.Rows[row].Cells[headerFamilyWith].Value);
+                    u.plan_note = dgv.Rows[row].Cells[headerRemark].Value.ToString();
                     DataTable dt = (DataTable)dgv.DataSource;
 
                     dt.Rows.RemoveAt(row);
@@ -597,6 +615,8 @@ namespace FactoryManagementSoftware.UI
                     dr[headerProductionPurpose] = u.production_purpose;
                     dr[headerTargetQty] = u.production_target_qty;
                     dr[headerStatus] = u.plan_status;
+                    dr[headerFamilyWith] = u.family_with;
+                    dr[headerRemark] = u.plan_note;
 
                     dt.Rows.InsertAt(dr, position);
 
@@ -637,8 +657,15 @@ namespace FactoryManagementSoftware.UI
 
             DataGridView dgv = dgvMac;
 
-            DateTime previousRowStart = Convert.ToDateTime(dgv.Rows[0].Cells[headerStartDate].Value).Date;
-            DateTime previousRowEnd = Convert.ToDateTime(dgv.Rows[0].Cells[headerEndDate].Value).Date;
+            DateTime previousRowStart = new DateTime();
+            DateTime previousRowEnd = new DateTime();
+            if (dt.Rows.Count > 0)
+            {
+                previousRowStart = Convert.ToDateTime(dgv.Rows[0].Cells[headerStartDate].Value).Date;
+                previousRowEnd = Convert.ToDateTime(dgv.Rows[0].Cells[headerEndDate].Value).Date;
+
+            }
+
             int previousRowFamilyWith = -1;
 
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -693,60 +720,108 @@ namespace FactoryManagementSoftware.UI
             dt.AcceptChanges();
             foreach (DataRow row in dt.Rows)
             {
-                previousRowFamilyWith = Convert.ToInt32(row[headerFamilyWith]);
-
-                if(previousRowFamilyWith != -1)
+                
+                if (row.RowState != DataRowState.Deleted)
                 {
-                    DateTime earliestStart;
-                    DateTime latestEnd;
+                    string status = row[headerStatus].ToString();
+                    if (!status.Equals(text.planning_status_cancelled) && !status.Equals(text.planning_status_completed))
+                    {
+                        previousRowFamilyWith = Convert.ToInt32(row[headerFamilyWith]);
 
-                    if (previousRowEnd == default(DateTime))
-                    {
-                        previousRowStart = Convert.ToDateTime(row[headerStartDate]).Date;
-                        previousRowEnd = Convert.ToDateTime(row[headerEndDate]).Date;
-                        earliestStart = previousRowStart;
-                    }
-                    else
-                    {
-                        earliestStart = addOneDay(previousRowEnd, includeSunday);
-                    }
-
-                    latestEnd = Convert.ToDateTime(row[headerEndDate]).Date;
-                    foreach (DataRow row2 in dt.Rows)
-                    {
-                        int familyWith = Convert.ToInt32(row2[headerFamilyWith]);
-                        
-                        if(familyWith == previousRowFamilyWith)
+                        if (previousRowFamilyWith != -1)
                         {
-                            DateTime start = Convert.ToDateTime(row2[headerStartDate]).Date;
-                            DateTime end = Convert.ToDateTime(row2[headerEndDate]).Date;
+                            DateTime earliestStart;
+                            DateTime latestEnd;
+
+                            if (previousRowEnd == default(DateTime))
+                            {
+                                previousRowStart = Convert.ToDateTime(row[headerStartDate]).Date;
+                                previousRowEnd = Convert.ToDateTime(row[headerEndDate]).Date;
+                                earliestStart = previousRowStart;
+                            }
+                            else
+                            {
+                                earliestStart = addOneDay(previousRowEnd, includeSunday);
+                            }
+
+                            latestEnd = Convert.ToDateTime(row[headerEndDate]).Date;
+                            foreach (DataRow row2 in dt.Rows)
+                            {
+                                if (row2.RowState != DataRowState.Deleted)
+                                {
+                                    int familyWith = Convert.ToInt32(row2[headerFamilyWith]);
+
+                                    if (familyWith == previousRowFamilyWith)
+                                    {
+                                        DateTime start = Convert.ToDateTime(row2[headerStartDate]).Date;
+                                        DateTime end = Convert.ToDateTime(row2[headerEndDate]).Date;
+
+                                        int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includeSunday);
+
+
+                                        row2[headerStartDate] = earliestStart.Date;
+
+                                        end = tool.EstimateEndDate(earliestStart.Date, proDayRequired, includeSunday);
+
+                                        row2[headerEndDate] = end;
+
+                                        if (latestEnd < end)
+                                        {
+                                            latestEnd = end;
+                                        }
+
+                                        DataRow newRow = new_dt.NewRow();
+                                        newRow = row2;
+                                        new_dt.ImportRow(newRow);
+                                        //newRow[headerPlanID] = row2[headerPlanID];
+                                        //newRow[headerStartDate] = row2[headerStartDate];
+                                        //newRow[headerEndDate] = row2[headerEndDate];
+                                        //newRow[headerPartName] = row2[headerPartName];
+                                        //newRow[headerPartCode] = row2[headerPartCode];
+                                        //newRow[headerProductionPurpose] = row2[headerProductionPurpose];
+                                        //newRow[headerTargetQty] = row2[headerTargetQty];
+                                        //newRow[headerStatus] = row2[headerStatus];
+                                        //newRow[headerFamilyWith] = row2[headerFamilyWith];
+                                        //newRow[headerRemark] = row2[headerRemark];
+
+                                        //new_dt.Rows.Add(newRow);
+                                        previousRowEnd = latestEnd;
+                                        row2.Delete();
+                                    }
+                                }
+                                 
+                            }
+                        }
+                        else
+                        {
+                            if (previousRowEnd == default(DateTime))
+                            {
+                                previousRowEnd = Convert.ToDateTime(row[headerStartDate]).Date;
+                            }
+
+                            DateTime start = Convert.ToDateTime(row[headerStartDate]).Date;
+                            DateTime end = Convert.ToDateTime(row[headerEndDate]).Date;
 
                             int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includeSunday);
 
-                            end = tool.EstimateEndDate(start, proDayRequired, includeSunday);
+                            previousRowEnd = addOneDay(previousRowEnd, includeSunday);
 
-                            if(latestEnd < end)
-                            {
-                                latestEnd = end;
-                            }
+                            row[headerStartDate] = previousRowEnd.Date;
 
-                            row2[headerStartDate] = earliestStart.Date;
-                            row2[headerEndDate] = end;
+                            previousRowEnd = tool.EstimateEndDate(previousRowEnd, proDayRequired, includeSunday);
 
-                            new_dt.Rows.Add(row2);
+                            row[headerEndDate] = previousRowEnd.Date;
 
-                            previousRowEnd = latestEnd;
-                            dt.Rows.Remove(row2);
+                            DataRow newRow = new_dt.NewRow();
+                            newRow = row;
+                            new_dt.ImportRow(newRow);
+                            row.Delete();
                         }
                     }
-                    dt.AcceptChanges();
+                    
                     
                 }
-                else
-                {
-
-                }
-
+                
             }
 
             return new_dt;
@@ -755,6 +830,13 @@ namespace FactoryManagementSoftware.UI
         private void btnAutoAdjust_Click(object sender, EventArgs e)
         {
             autoAdjustDate();
+
+            DataTable dt = newAutoAdjustDate();
+
+            DataTable dtSource = (DataTable)dgvMac.DataSource;
+
+            dgvMac.DataSource = dt;
+
         }
 
         private void dgvMac_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -838,7 +920,15 @@ namespace FactoryManagementSoftware.UI
             else if (itemClicked.Equals(text.planning_status_running))
             {
                 dataChange = true;
-                dgv.Rows[rowIndex].Cells[headerStatus].Value = text.planning_status_running;
+                if(RunAction)
+                {
+                    dgv.Rows[rowIndex].Cells[headerStatus].Value = headerToRun;
+                }
+                else
+                {
+                    dgv.Rows[rowIndex].Cells[headerStatus].Value = text.planning_status_running;
+                }
+            
             }
             else if (itemClicked.Equals(text.planning_status_completed))
             {
@@ -995,11 +1085,19 @@ namespace FactoryManagementSoftware.UI
                 backgroundWorker1.RunWorkerAsync();           
             }
 
-            while (!ableToClose)
+            while(formClose == -1)
             {
-                
+
             }
-            Close();
+
+            if(formClose == 1)
+            {
+                Close();
+            }
+            else
+            {
+                formClose = -1;
+            }
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e)
@@ -1024,8 +1122,9 @@ namespace FactoryManagementSoftware.UI
             {
                 int upPlanID = (int)dgv.Rows[row -1].Cells[headerPlanID].Value;
                 string upStatus = dgv.Rows[row - 1].Cells[headerStatus].Value.ToString();
+                string downStatus = dgv.Rows[row].Cells[headerStatus].Value.ToString();
 
-                if (upStatus.Equals(text.planning_status_running) || upStatus.Equals(headerToRun))
+                if ((upStatus.Equals(text.planning_status_running) || upStatus.Equals(headerToRun))  && upStatus != downStatus)
                 {
                     DialogResult dialogResult;
                     if (upStatus.Equals(text.planning_status_running))
@@ -1061,6 +1160,8 @@ namespace FactoryManagementSoftware.UI
                     u.part_name = (string)dgv.Rows[row].Cells[headerPartName].Value;
                     u.production_purpose = (string)dgv.Rows[row].Cells[headerProductionPurpose].Value;
                     u.production_target_qty = dgv.Rows[row].Cells[headerTargetQty].Value.ToString();
+                    u.family_with = Convert.ToInt32(dgv.Rows[row].Cells[headerFamilyWith].Value);
+                    u.plan_note = dgv.Rows[row].Cells[headerRemark].Value.ToString();
 
                     DataTable dt = (DataTable)dgv.DataSource;
 
@@ -1080,6 +1181,8 @@ namespace FactoryManagementSoftware.UI
                     dr[headerProductionPurpose] = u.production_purpose;
                     dr[headerTargetQty] = u.production_target_qty;
                     dr[headerStatus] = u.plan_status;
+                    dr[headerFamilyWith] = u.family_with;
+                    dr[headerRemark] = u.plan_note;
 
                     dt.Rows.InsertAt(dr, position);
 
@@ -1100,12 +1203,20 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMac_SelectionChanged(object sender, EventArgs e)
         {
-
+            if(dgvMac.CurrentRow != null)
             currentSelectedRow = dgvMac.CurrentRow.Index;
         }
 
         private void changeRunningPlanData()
         {
+            int referFamilyWithData = tool.getFamilyWithData(uPlanning.plan_id);
+
+            bool includedSunday = false;
+
+            if(cbIncludeSunday.Checked)
+            {
+                includedSunday = true;
+            }
             if(ableLoadDate)
             {
                 DataTable dt = (DataTable)dgvMac.DataSource;
@@ -1113,12 +1224,25 @@ namespace FactoryManagementSoftware.UI
                 for(int i = 0; i < dgvMac.Rows.Count; i++)
                 {
                     int planID = Convert.ToInt32(dgvMac.Rows[i].Cells[headerPlanID].Value);
-                    if(planID == uPlanning.plan_id)
+                    int familyWith = Convert.ToInt32(dgvMac.Rows[i].Cells[headerFamilyWith].Value);
+
+                    if (planID == uPlanning.plan_id)
                     {
                         dgvMac.Rows[i].Cells[headerStartDate].Value = dtpStartDate.Value.Date;
                         dgvMac.Rows[i].Cells[headerEndDate].Value = dtpEstimateEndDate.Value.Date;
                 
                     }
+                    else if(familyWith == referFamilyWithData)
+                    {
+                        DateTime start = Convert.ToDateTime(dgvMac.Rows[i].Cells[headerStartDate].Value).Date;
+                        DateTime end = Convert.ToDateTime(dgvMac.Rows[i].Cells[headerEndDate].Value).Date;
+
+                        int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includedSunday);
+
+                        dgvMac.Rows[i].Cells[headerStartDate].Value = dtpStartDate.Value.Date;
+                        dgvMac.Rows[i].Cells[headerEndDate].Value = tool.EstimateEndDate(dtpStartDate.Value.Date,proDayRequired,includedSunday);
+                    }
+                    
                 }
             }
 
@@ -1222,7 +1346,8 @@ namespace FactoryManagementSoftware.UI
                             DateTime oldStart = Convert.ToDateTime(oldData[dalPlanning.productionStartDate]);
                             DateTime oldEnd = Convert.ToDateTime(oldData[dalPlanning.productionEndDate]);
                             string oldStatus = oldData[dalPlanning.planStatus].ToString();
-                            success = dalPlanningAction.planningStatusAndScheduleChange(uPlanning, oldStatus, oldStart, oldEnd);
+                            int oldFamilyWith = Convert.ToInt32(oldData[dalPlanning.familyWith]);
+                            success = dalPlanningAction.planningStatusAndScheduleChange(uPlanning, oldStatus, oldStart, oldEnd, oldFamilyWith);
 
                             //success = dalPlanning.statusAndDateUpdate(uPlanning);
                         }
@@ -1234,25 +1359,43 @@ namespace FactoryManagementSoftware.UI
 
 
                         MessageBox.Show("Change successfully!");
-                        ableToClose = true;
+                        formClose = 1;
                     }
                     else
                     {
                         Blink("Unable to update data!");
+                        formClose = 0;
                     }
 
                 }
-
+                else
+                {
+                    formClose = 0;
+                }
             }
         }
 
         private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
         {
             int planID = (int)e.Argument;
-            if (MessageBox.Show("Are you sure you want to apply planning with these dates?", "Message",
-                                                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
 
+            int newFamilyWith = -1;
+
+            DataTable dt = (DataTable)dgvMac.DataSource;
+
+            foreach(DataRow row in dt.Rows)
+            {
+                int oldFamilyWith = Convert.ToInt32(row[headerFamilyWith]);
+
+                if(oldFamilyWith == planID)
+                {
+                    if(newFamilyWith == -1)
+                    {
+                        newFamilyWith = Convert.ToInt32(row[headerPlanID]);
+                    }
+
+                    row[headerFamilyWith] = newFamilyWith;
+                }
             }
 
         }

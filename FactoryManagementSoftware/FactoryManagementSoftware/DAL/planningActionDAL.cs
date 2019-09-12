@@ -81,7 +81,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_planning_action WHERE planning_id = @planningID";
+                String sql = "SELECT * FROM tbl_planning_action WHERE planning_id = @planningID ORDER BY added_date DESC";
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -230,7 +230,7 @@ namespace FactoryManagementSoftware.DAL
                     uPlanningAction.action_detail = text.getNewPlanningDetail(u);
                     uPlanningAction.action_from = "";
                     uPlanningAction.action_to = "";
-                    uPlanningAction.note = row[dalPlanning.planNote].ToString();
+                    uPlanningAction.note = row[dalPlanning.planNote].ToString() + " [Cavity: " + row[dalPlanning.planCavity].ToString() + "; PW(shot): " + row[dalPlanning.planPW].ToString() + " ;RW(shot): " + row[dalPlanning.planRW].ToString()+"]";
 
                     bool actionSaveSuccess = Insert(uPlanningAction);
 
@@ -281,8 +281,43 @@ namespace FactoryManagementSoftware.DAL
             return success;
         }
 
+        //production plan status change
+        public bool planningFamilyWithChange(PlanningBLL u, string oldFamilyWith)
+        {
+            bool success = dalPlanning.familyWithUpdate(u);
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to change production plan's family with data!");
+                tool.historyRecord(text.System, "Failed to change production plan's family with data!", DateTime.Now, MainDashboard.USER_ID);
+            }
+            else
+            {
+                tool.historyRecord(text.plan_family_with_change, "PLAN ID " + u.plan_id + ": " + oldFamilyWith + " --> " + u.family_with, DateTime.Now, MainDashboard.USER_ID);
+
+                uPlanningAction.planning_id = u.plan_id;
+                uPlanningAction.added_date = u.plan_updated_date;
+                uPlanningAction.added_by = u.plan_updated_by;
+                uPlanningAction.action = text.plan_family_with_change;
+                uPlanningAction.action_detail = "";
+                uPlanningAction.action_from = oldFamilyWith;
+                uPlanningAction.action_to = u.family_with.ToString();
+                uPlanningAction.note = "";
+
+                bool actionSaveSuccess = Insert(uPlanningAction);
+
+                if (!actionSaveSuccess)
+                {
+                    MessageBox.Show("Failed to save planning action data (planningActionDAL_planningStatusChange)");
+                    tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningFamilyWithChange)", DateTime.Now, MainDashboard.USER_ID);
+                }
+            }
+
+            return success;
+        }
+
         //production plan status & schedule change
-        public bool planningStatusAndScheduleChange(PlanningBLL u, string presentStatus, DateTime oldStart, DateTime oldEnd)
+        public bool planningStatusAndScheduleChange(PlanningBLL u, string presentStatus, DateTime oldStart, DateTime oldEnd, int oldFamilyWith)
         {
             bool success = dalPlanning.scheduleDataUpdate(u);
 
@@ -337,6 +372,28 @@ namespace FactoryManagementSoftware.DAL
                     {
                         MessageBox.Show("Failed to save planning action data (planningActionDAL_planningScheduleChange)");
                         tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningscheduleChange)", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+
+                if (u.family_with != oldFamilyWith)
+                {
+                    tool.historyRecord(text.plan_family_with_change, "PLAN ID " + u.plan_id + ": " + oldFamilyWith + " --> " + u.family_with, DateTime.Now, MainDashboard.USER_ID);
+
+                    uPlanningAction.planning_id = u.plan_id;
+                    uPlanningAction.added_date = u.plan_updated_date;
+                    uPlanningAction.added_by = u.plan_updated_by;
+                    uPlanningAction.action = text.plan_family_with_change;
+                    uPlanningAction.action_detail = "";
+                    uPlanningAction.action_from = oldFamilyWith.ToString();
+                    uPlanningAction.action_to = u.family_with.ToString();
+                    uPlanningAction.note = "";
+
+                    bool actionSaveSuccess = Insert(uPlanningAction);
+
+                    if (!actionSaveSuccess)
+                    {
+                        MessageBox.Show("Failed to save planning action data (planningActionDAL_planningStatusChange)");
+                        tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningFamilyWithChange(396))", DateTime.Now, MainDashboard.USER_ID);
                     }
                 }
             }

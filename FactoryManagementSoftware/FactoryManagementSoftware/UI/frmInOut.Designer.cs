@@ -137,7 +137,7 @@
             this.dgvFactoryStock.RowHeadersVisible = false;
             this.dgvFactoryStock.RowTemplate.Height = 40;
             this.dgvFactoryStock.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvFactoryStock.Size = new System.Drawing.Size(384, 264);
+            this.dgvFactoryStock.Size = new System.Drawing.Size(385, 264);
             this.dgvFactoryStock.TabIndex = 56;
             this.dgvFactoryStock.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFactoryStock_CellDoubleClick);
             this.dgvFactoryStock.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvFactoryStock_MouseClick);
@@ -187,7 +187,7 @@
             this.dgvItem.RowHeadersVisible = false;
             this.dgvItem.RowTemplate.Height = 40;
             this.dgvItem.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvItem.Size = new System.Drawing.Size(1097, 344);
+            this.dgvItem.Size = new System.Drawing.Size(1096, 344);
             this.dgvItem.TabIndex = 58;
             this.dgvItem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItem_CellClick);
             this.dgvItem.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvItem_CellFormatting);
@@ -214,7 +214,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(20)))), ((int)(((byte)(31)))));
-            this.label2.Location = new System.Drawing.Point(1114, 0);
+            this.label2.Location = new System.Drawing.Point(1113, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(164, 19);
             this.label2.TabIndex = 61;
@@ -265,7 +265,7 @@
             this.dgvTotal.RowHeadersVisible = false;
             this.dgvTotal.RowTemplate.Height = 40;
             this.dgvTotal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTotal.Size = new System.Drawing.Size(384, 70);
+            this.dgvTotal.Size = new System.Drawing.Size(385, 70);
             this.dgvTotal.TabIndex = 66;
             // 
             // Total
@@ -465,7 +465,7 @@
             this.tableLayoutPanel3.ColumnCount = 3;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 99.07173F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 0.92827F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 393F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 394F));
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 2, 1);
             this.tableLayoutPanel3.Controls.Add(this.label5, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.dgvItem, 0, 1);
@@ -486,12 +486,12 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.Controls.Add(this.dgvTotal, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.dgvFactoryStock, 0, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(1114, 22);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(1113, 22);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 78.65497F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 21.34503F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(388, 342);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(389, 342);
             this.tableLayoutPanel4.TabIndex = 87;
             // 
             // tableLayoutPanel5

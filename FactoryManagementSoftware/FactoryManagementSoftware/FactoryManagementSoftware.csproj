@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>\\SAFETY06-MURUGA\StockAssistant\%28INSTALLATION%29\FOR ADMIN\</PublishUrl>
+    <PublishUrl>\\SAFETY06-MURUGA\StockAssistant\%28INSTALLATION%29\FOR USER\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>10</ApplicationRevision>
+    <ApplicationRevision>18</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -95,6 +95,7 @@
     <Compile Include="BLL\custBLL.cs" />
     <Compile Include="BLL\facBLL.cs" />
     <Compile Include="BLL\forecastBLL.cs" />
+    <Compile Include="BLL\habitBLL.cs" />
     <Compile Include="BLL\historyBLL.cs" />
     <Compile Include="BLL\itemBLL.cs" />
     <Compile Include="BLL\itemCatBLL.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="DAL\dataDAL.cs" />
     <Compile Include="DAL\facDAL.cs" />
     <Compile Include="DAL\forecastDAL.cs" />
+    <Compile Include="DAL\habitDAL.cs" />
     <Compile Include="DAL\historyDAL.cs" />
     <Compile Include="DAL\itemCatDAL.cs" />
     <Compile Include="DAL\itemCustDAL.cs" />
@@ -170,6 +172,12 @@
     </Compile>
     <Compile Include="UI\frmChildStockOutRecord.Designer.cs">
       <DependentUpon>frmChildStockOutRecord.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmCustomMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmCustomMessageBox.Designer.cs">
+      <DependentUpon>frmCustomMessageBox.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmDialog.cs">
       <SubType>Form</SubType>
@@ -517,6 +525,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmChildStockOutRecord.resx">
       <DependentUpon>frmChildStockOutRecord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmCustomMessageBox.resx">
+      <DependentUpon>frmCustomMessageBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDialog.resx">
       <DependentUpon>frmDialog.cs</DependentUpon>

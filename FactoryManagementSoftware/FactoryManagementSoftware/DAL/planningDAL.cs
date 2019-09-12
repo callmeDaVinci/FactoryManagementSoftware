@@ -16,6 +16,10 @@ namespace FactoryManagementSoftware.DAL
         public string planUpdatedby { get; } = "plan_updated_by";
         public string planStatus { get; } = "plan_status";
         public string planNote { get; } = "plan_note";
+        public string planCT { get; } = "plan_ct";
+        public string planPW { get; } = "plan_pw";
+        public string planRW { get; } = "plan_rw";
+        public string planCavity { get; } = "plan_cavity";
 
         public string productionPurpose { get; } = "production_purpose";
 
@@ -62,7 +66,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"SELECT * FROM tbl_plan 
                                 INNER JOIN tbl_item 
                                 ON tbl_plan.part_code = tbl_item.item_code 
-                                INNER JOIN tbl_mac ON tbl_plan.machine_id = tbl_mac.mac_id ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date";
+                                INNER JOIN tbl_mac ON tbl_plan.machine_id = tbl_mac.mac_id ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC";
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database
@@ -120,6 +124,20 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public int getLastInsertedPlanID()
+        {
+            int PlanID = -1;
+
+            DataTable lastInsertedData = lastRecordSelect();
+
+            foreach(DataRow row in lastInsertedData.Rows)
+            {
+                PlanID = Convert.ToInt32(row[planID]);
+            }
+
+            return PlanID;
+        }
+
         #endregion
 
         #region Insert Data in Database
@@ -136,6 +154,10 @@ namespace FactoryManagementSoftware.DAL
                             + planAddedBy + ","
                             + planStatus + ","
                             + planNote + ","
+                            + planCT + ","
+                            + planPW + ","
+                            + planRW + ","
+                            + planCavity + ","
                             + partCode + ","
                             + productionPurpose + ","
                             + materialCode + ","
@@ -157,6 +179,10 @@ namespace FactoryManagementSoftware.DAL
                             "@plan_added_by," +
                             "@plan_status," +
                             "@plan_note," +
+                            "@plan_ct," +
+                            "@plan_pw," +
+                            "@plan_rw," +
+                            "@plan_cavity," +
                             "@part_code," +
                             "@production_purpose," +
                             "@material_code," +
@@ -181,6 +207,10 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@plan_added_by", u.plan_added_by);
                 cmd.Parameters.AddWithValue("@plan_status", u.plan_status);
                 cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
+                cmd.Parameters.AddWithValue("@plan_ct", u.plan_ct);
+                cmd.Parameters.AddWithValue("@plan_pw", u.plan_pw);
+                cmd.Parameters.AddWithValue("@plan_rw", u.plan_rw);
+                cmd.Parameters.AddWithValue("@plan_cavity", u.plan_cavity);
                 cmd.Parameters.AddWithValue("@part_code", u.part_code);
                 cmd.Parameters.AddWithValue("@production_purpose", u.production_purpose);
                 cmd.Parameters.AddWithValue("@material_code", u.material_code);
@@ -287,6 +317,7 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"UPDATE tbl_plan SET
                                 family_with=@family_with,
+                                plan_note=@plan_note,
                                 plan_updated_date=@plan_updated_date,
                                 plan_updated_by=@plan_updated_by
                                 WHERE plan_id=@plan_id";
@@ -295,6 +326,7 @@ namespace FactoryManagementSoftware.DAL
 
                 cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
                 cmd.Parameters.AddWithValue("@family_with", u.family_with);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
 
@@ -395,7 +427,7 @@ namespace FactoryManagementSoftware.DAL
                                 ON tbl_plan.part_code = tbl_item.item_code
                                 INNER JOIN tbl_mac ON tbl_plan.machine_id = tbl_mac.mac_id
                                 WHERE tbl_plan.part_code LIKE '%" + keywords + "%' OR tbl_item.item_name LIKE '%" + keywords + "%'" +
-                                "ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date";
+                                "ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -434,11 +466,11 @@ namespace FactoryManagementSoftware.DAL
                                 INNER JOIN tbl_item
                                 ON tbl_plan.part_code = tbl_item.item_code
                                 INNER JOIN tbl_mac ON tbl_plan.machine_id = tbl_mac.mac_id 
-                                WHERE tbl_plan.plan_id LIKE '%" + keywords + "%'" +
-                                "ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date";
+                                WHERE tbl_plan.plan_id=@keywords ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@keywords", keywords);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
