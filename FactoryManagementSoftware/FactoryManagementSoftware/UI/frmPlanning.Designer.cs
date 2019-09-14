@@ -247,7 +247,7 @@
             this.cbEditMode.Location = new System.Drawing.Point(185, 3);
             this.cbEditMode.Name = "cbEditMode";
             this.cbEditMode.Size = new System.Drawing.Size(104, 23);
-            this.cbEditMode.TabIndex = 31;
+            this.cbEditMode.TabIndex = 101;
             this.cbEditMode.Text = "EDIT MODE";
             this.cbEditMode.UseVisualStyleBackColor = true;
             this.cbEditMode.CheckedChanged += new System.EventHandler(this.cbEditMode_CheckedChanged);
@@ -294,14 +294,14 @@
             this.tableLayoutPanel23.RowCount = 1;
             this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel23.Size = new System.Drawing.Size(140, 30);
-            this.tableLayoutPanel23.TabIndex = 107;
+            this.tableLayoutPanel23.TabIndex = 7;
             // 
             // txtQuoCT
             // 
             this.txtQuoCT.Location = new System.Drawing.Point(3, 3);
             this.txtQuoCT.Name = "txtQuoCT";
             this.txtQuoCT.Size = new System.Drawing.Size(55, 25);
-            this.txtQuoCT.TabIndex = 18;
+            this.txtQuoCT.TabIndex = 0;
             this.txtQuoCT.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtQuoCT.TextChanged += new System.EventHandler(this.txtQuoCT_TextChanged);
             this.txtQuoCT.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtQuoCT_KeyPress);
@@ -311,7 +311,7 @@
             this.txtProCT.Location = new System.Drawing.Point(73, 3);
             this.txtProCT.Name = "txtProCT";
             this.txtProCT.Size = new System.Drawing.Size(55, 25);
-            this.txtProCT.TabIndex = 19;
+            this.txtProCT.TabIndex = 0;
             this.txtProCT.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtProCT.TextChanged += new System.EventHandler(this.txtCycleTime_TextChanged);
             this.txtProCT.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCycleTime_KeyPress);
@@ -328,7 +328,7 @@
             this.tableLayoutPanel22.RowCount = 1;
             this.tableLayoutPanel22.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel22.Size = new System.Drawing.Size(140, 30);
-            this.tableLayoutPanel22.TabIndex = 107;
+            this.tableLayoutPanel22.TabIndex = 1;
             // 
             // lblQuoCT
             // 
@@ -337,7 +337,7 @@
             this.lblQuoCT.Location = new System.Drawing.Point(3, 11);
             this.lblQuoCT.Name = "lblQuoCT";
             this.lblQuoCT.Size = new System.Drawing.Size(61, 19);
-            this.lblQuoCT.TabIndex = 108;
+            this.lblQuoCT.TabIndex = 1;
             this.lblQuoCT.Text = "QUO CT";
             // 
             // lblProCT
@@ -365,7 +365,7 @@
             this.txtQuoTon.Location = new System.Drawing.Point(3, 43);
             this.txtQuoTon.Name = "txtQuoTon";
             this.txtQuoTon.Size = new System.Drawing.Size(111, 25);
-            this.txtQuoTon.TabIndex = 15;
+            this.txtQuoTon.TabIndex = 3;
             this.txtQuoTon.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtQuoTon.TextChanged += new System.EventHandler(this.txtQuoTon_TextChanged);
             this.txtQuoTon.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtQuoTon_KeyPress);
@@ -375,7 +375,7 @@
             this.txtRunnerWeight.Location = new System.Drawing.Point(149, 203);
             this.txtRunnerWeight.Name = "txtRunnerWeight";
             this.txtRunnerWeight.Size = new System.Drawing.Size(129, 25);
-            this.txtRunnerWeight.TabIndex = 20;
+            this.txtRunnerWeight.TabIndex = 9;
             this.txtRunnerWeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtRunnerWeight.TextChanged += new System.EventHandler(this.txtRunnerWeight_TextChanged);
             this.txtRunnerWeight.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRunnerWeight_KeyPress);
@@ -395,7 +395,7 @@
             this.txtPartWeight.Location = new System.Drawing.Point(3, 203);
             this.txtPartWeight.Name = "txtPartWeight";
             this.txtPartWeight.Size = new System.Drawing.Size(111, 25);
-            this.txtPartWeight.TabIndex = 19;
+            this.txtPartWeight.TabIndex = 8;
             this.txtPartWeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtPartWeight.TextChanged += new System.EventHandler(this.txtPartWeight_TextChanged);
             this.txtPartWeight.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPartWeight_KeyPress);
@@ -407,7 +407,7 @@
             this.lblCavity.Location = new System.Drawing.Point(3, 101);
             this.lblCavity.Name = "lblCavity";
             this.lblCavity.Size = new System.Drawing.Size(54, 19);
-            this.lblCavity.TabIndex = 8;
+            this.lblCavity.TabIndex = 0;
             this.lblCavity.Text = "CAVITY";
             // 
             // lblPW
@@ -425,7 +425,7 @@
             this.txtCavity.Location = new System.Drawing.Point(3, 123);
             this.txtCavity.Name = "txtCavity";
             this.txtCavity.Size = new System.Drawing.Size(111, 25);
-            this.txtCavity.TabIndex = 17;
+            this.txtCavity.TabIndex = 5;
             this.txtCavity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtCavity.TextChanged += new System.EventHandler(this.txtCavity_TextChanged);
             this.txtCavity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCavity_KeyPress);
@@ -445,7 +445,7 @@
             this.txtProTon.Location = new System.Drawing.Point(149, 43);
             this.txtProTon.Name = "txtProTon";
             this.txtProTon.Size = new System.Drawing.Size(129, 25);
-            this.txtProTon.TabIndex = 16;
+            this.txtProTon.TabIndex = 4;
             this.txtProTon.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtProTon.TextChanged += new System.EventHandler(this.txtProTon_TextChanged);
             this.txtProTon.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtProTon_KeyPress);
@@ -470,7 +470,7 @@
             this.cmbPartCode.Location = new System.Drawing.Point(3, 145);
             this.cmbPartCode.Name = "cmbPartCode";
             this.cmbPartCode.Size = new System.Drawing.Size(292, 25);
-            this.cmbPartCode.TabIndex = 3;
+            this.cmbPartCode.TabIndex = 2;
             this.cmbPartCode.SelectedIndexChanged += new System.EventHandler(this.cmbPartCode_SelectedIndexChanged);
             // 
             // lblPartCode
@@ -549,7 +549,7 @@
             this.cmbMatCode.Location = new System.Drawing.Point(3, 42);
             this.cmbMatCode.Name = "cmbMatCode";
             this.cmbMatCode.Size = new System.Drawing.Size(442, 25);
-            this.cmbMatCode.TabIndex = 18;
+            this.cmbMatCode.TabIndex = 102;
             this.cmbMatCode.SelectedIndexChanged += new System.EventHandler(this.cmbMatCode_SelectedIndexChanged);
             // 
             // tableLayoutPanel21
@@ -634,7 +634,7 @@
             this.txtMatAfterWastage.Location = new System.Drawing.Point(311, 3);
             this.txtMatAfterWastage.Name = "txtMatAfterWastage";
             this.txtMatAfterWastage.Size = new System.Drawing.Size(128, 25);
-            this.txtMatAfterWastage.TabIndex = 32;
+            this.txtMatAfterWastage.TabIndex = 104;
             this.txtMatAfterWastage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtMatAfterWastage.TextChanged += new System.EventHandler(this.txtColorMat_TextChanged);
             this.txtMatAfterWastage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtColorMat_KeyPress);
@@ -647,7 +647,7 @@
             this.txtMatWastage.Location = new System.Drawing.Point(135, 3);
             this.txtMatWastage.Name = "txtMatWastage";
             this.txtMatWastage.Size = new System.Drawing.Size(38, 25);
-            this.txtMatWastage.TabIndex = 25;
+            this.txtMatWastage.TabIndex = 13;
             this.txtMatWastage.Text = "5";
             this.txtMatWastage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtMatWastage.TextChanged += new System.EventHandler(this.txtRawMatWastage_TextChanged);
@@ -686,7 +686,7 @@
             this.txtTotalMat.Location = new System.Drawing.Point(312, 3);
             this.txtTotalMat.Name = "txtTotalMat";
             this.txtTotalMat.Size = new System.Drawing.Size(127, 25);
-            this.txtTotalMat.TabIndex = 34;
+            this.txtTotalMat.TabIndex = 106;
             this.txtTotalMat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtTotalMat.TextChanged += new System.EventHandler(this.txtTotalMat_TextChanged);
             this.txtTotalMat.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
@@ -744,7 +744,7 @@
             this.txtMatBagQty.Location = new System.Drawing.Point(3, 3);
             this.txtMatBagQty.Name = "txtMatBagQty";
             this.txtMatBagQty.Size = new System.Drawing.Size(60, 34);
-            this.txtMatBagQty.TabIndex = 1;
+            this.txtMatBagQty.TabIndex = 11;
             this.txtMatBagQty.Text = "1";
             this.txtMatBagQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtMatBagQty.TextChanged += new System.EventHandler(this.txtMatBagQty_TextChanged);
@@ -768,7 +768,7 @@
             this.txtMatBagKG.Location = new System.Drawing.Point(91, 3);
             this.txtMatBagKG.Name = "txtMatBagKG";
             this.txtMatBagKG.Size = new System.Drawing.Size(38, 25);
-            this.txtMatBagKG.TabIndex = 19;
+            this.txtMatBagKG.TabIndex = 12;
             this.txtMatBagKG.Text = "25";
             this.txtMatBagKG.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtMatBagKG.TextChanged += new System.EventHandler(this.txtMatBagKG_TextChanged);
@@ -781,7 +781,7 @@
             this.txtMatBeforeWastage.Location = new System.Drawing.Point(311, 3);
             this.txtMatBeforeWastage.Name = "txtMatBeforeWastage";
             this.txtMatBeforeWastage.Size = new System.Drawing.Size(128, 25);
-            this.txtMatBeforeWastage.TabIndex = 107;
+            this.txtMatBeforeWastage.TabIndex = 103;
             this.txtMatBeforeWastage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtMatBeforeWastage.TextChanged += new System.EventHandler(this.txtTotalRawAfterWastage_TextChanged);
             this.txtMatBeforeWastage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTotalRawAfterWastage_KeyPress);
@@ -830,7 +830,7 @@
             this.txtRecycleKG.Location = new System.Drawing.Point(3, 3);
             this.txtRecycleKG.Name = "txtRecycleKG";
             this.txtRecycleKG.Size = new System.Drawing.Size(170, 25);
-            this.txtRecycleKG.TabIndex = 23;
+            this.txtRecycleKG.TabIndex = 105;
             this.txtRecycleKG.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtRecycleKG.TextChanged += new System.EventHandler(this.txtRecycleKG_TextChanged);
             this.txtRecycleKG.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRecycleKG_KeyPress);
@@ -854,7 +854,7 @@
             this.cbRecycleUse.Location = new System.Drawing.Point(3, 200);
             this.cbRecycleUse.Name = "cbRecycleUse";
             this.cbRecycleUse.Size = new System.Drawing.Size(170, 23);
-            this.cbRecycleUse.TabIndex = 27;
+            this.cbRecycleUse.TabIndex = 14;
             this.cbRecycleUse.Text = "RUNNER RECYCLE USE";
             this.cbRecycleUse.UseVisualStyleBackColor = true;
             this.cbRecycleUse.CheckedChanged += new System.EventHandler(this.cbRecycleUse_CheckedChanged);
@@ -947,7 +947,7 @@
             this.txtColorMatPlannedQty.Location = new System.Drawing.Point(239, 96);
             this.txtColorMatPlannedQty.Name = "txtColorMatPlannedQty";
             this.txtColorMatPlannedQty.Size = new System.Drawing.Size(122, 34);
-            this.txtColorMatPlannedQty.TabIndex = 31;
+            this.txtColorMatPlannedQty.TabIndex = 110;
             this.txtColorMatPlannedQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtColorMatPlannedQty.TextChanged += new System.EventHandler(this.txtColorMatPlannedQty_TextChanged);
             this.txtColorMatPlannedQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtColorMatPlannedQty_KeyPress);
@@ -992,7 +992,7 @@
             this.cmbColorMatCode.Location = new System.Drawing.Point(3, 28);
             this.cmbColorMatCode.Name = "cmbColorMatCode";
             this.cmbColorMatCode.Size = new System.Drawing.Size(230, 25);
-            this.cmbColorMatCode.TabIndex = 32;
+            this.cmbColorMatCode.TabIndex = 109;
             this.cmbColorMatCode.SelectedIndexChanged += new System.EventHandler(this.cmbColorMatCode_SelectedIndexChanged);
             // 
             // txtColorUsage
@@ -1003,7 +1003,7 @@
             this.txtColorUsage.Location = new System.Drawing.Point(239, 28);
             this.txtColorUsage.Name = "txtColorUsage";
             this.txtColorUsage.Size = new System.Drawing.Size(122, 25);
-            this.txtColorUsage.TabIndex = 33;
+            this.txtColorUsage.TabIndex = 16;
             this.txtColorUsage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtColorUsage.TextChanged += new System.EventHandler(this.txtColorUsage_TextChanged);
             this.txtColorUsage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtColorUsage_KeyPress);
@@ -1061,7 +1061,7 @@
             this.txtProDays.Location = new System.Drawing.Point(3, 3);
             this.txtProDays.Name = "txtProDays";
             this.txtProDays.Size = new System.Drawing.Size(38, 34);
-            this.txtProDays.TabIndex = 31;
+            this.txtProDays.TabIndex = 107;
             this.txtProDays.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtProDays.TextChanged += new System.EventHandler(this.txtProDays_TextChanged);
             this.txtProDays.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox9_KeyPress);
@@ -1074,7 +1074,7 @@
             this.txtProHours.Location = new System.Drawing.Point(315, 3);
             this.txtProHours.Name = "txtProHours";
             this.txtProHours.Size = new System.Drawing.Size(83, 34);
-            this.txtProHours.TabIndex = 34;
+            this.txtProHours.TabIndex = 108;
             this.txtProHours.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtProHours.TextChanged += new System.EventHandler(this.txtProHours_TextChanged);
             this.txtProHours.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox11_KeyPress);
@@ -1106,11 +1106,12 @@
             this.txtHoursPerDay.Location = new System.Drawing.Point(181, 3);
             this.txtHoursPerDay.Name = "txtHoursPerDay";
             this.txtHoursPerDay.Size = new System.Drawing.Size(61, 25);
-            this.txtHoursPerDay.TabIndex = 32;
+            this.txtHoursPerDay.TabIndex = 15;
             this.txtHoursPerDay.Text = "23";
             this.txtHoursPerDay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtHoursPerDay.TextChanged += new System.EventHandler(this.txtHoursPerDay_TextChanged);
             this.txtHoursPerDay.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox10_KeyPress);
+            this.txtHoursPerDay.Leave += new System.EventHandler(this.txtHoursPerDay_Leave);
             // 
             // groupBox5
             // 
@@ -1178,7 +1179,7 @@
             this.txtOtherPurpose.Multiline = true;
             this.txtOtherPurpose.Name = "txtOtherPurpose";
             this.txtOtherPurpose.Size = new System.Drawing.Size(370, 86);
-            this.txtOtherPurpose.TabIndex = 36;
+            this.txtOtherPurpose.TabIndex = 10;
             this.txtOtherPurpose.Text = "Fill in planning purpose here";
             this.txtOtherPurpose.TextChanged += new System.EventHandler(this.txtOtherPurpose_TextChanged);
             this.txtOtherPurpose.Enter += new System.EventHandler(this.txtOtherPurpose_Enter);
@@ -1217,7 +1218,7 @@
             this.txtAbleToProduceQty.MinimumSize = new System.Drawing.Size(80, 38);
             this.txtAbleToProduceQty.Name = "txtAbleToProduceQty";
             this.txtAbleToProduceQty.Size = new System.Drawing.Size(358, 38);
-            this.txtAbleToProduceQty.TabIndex = 19;
+            this.txtAbleToProduceQty.TabIndex = 111;
             this.txtAbleToProduceQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtAbleToProduceQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAbleToProduceQty_KeyPress);
             // 
@@ -1239,7 +1240,7 @@
             this.txtTargetQty.Location = new System.Drawing.Point(3, 25);
             this.txtTargetQty.Name = "txtTargetQty";
             this.txtTargetQty.Size = new System.Drawing.Size(358, 34);
-            this.txtTargetQty.TabIndex = 17;
+            this.txtTargetQty.TabIndex = 18;
             this.txtTargetQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtTargetQty.TextChanged += new System.EventHandler(this.txtTargetQty_TextChanged);
             this.txtTargetQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTargetQty_KeyPress);

@@ -65,6 +65,7 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
             uPlanning = u;
+            tool.DoubleBuffered(dgvMac, true);
             dt_mat = materialData;
             loadMacData();
             //loadMacIDToComboBox(cmbID);
@@ -742,25 +743,43 @@ namespace FactoryManagementSoftware.UI
             DateTime start = dtpStartDate.Value;
             DateTime end = dtpEstimateEndDate.Value;
             uPlanning.machine_id = macID;
+            uPlanning.production_start_date = start;
+            uPlanning.production_end_date = end;
 
-            frmMacScheduleAdjust frm = new frmMacScheduleAdjust(macID.ToString(),uPlanning,start,end);
+            //frmMacScheduleAdjust frm = new frmMacScheduleAdjust(macID.ToString(),uPlanning,start,end);
+
+            frmMachineScheduleAdjustFromMain frm = new frmMachineScheduleAdjustFromMain(uPlanning);
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();
 
-            if(frmMacScheduleAdjust.applied)
+            if(frmMachineScheduleAdjustFromMain.applied)
             {
-                dtpStartDate.Value = frmMacScheduleAdjust.start;
-                dtpEstimateEndDate.Value = frmMacScheduleAdjust.end;
+                dtpStartDate.Value = frmMachineScheduleAdjustFromMain.start.Date;
+                dtpEstimateEndDate.Value = frmMachineScheduleAdjustFromMain.end.Date;
 
-                if(frmMacScheduleAdjust.ToRunPlanFamilyWith != -1)
+                if(frmMachineScheduleAdjustFromMain.ToAddPlanFamilyWith != -1)
                 {
                     errorProvider2.Clear();
                     errorProvider3.Clear();
+
+                    string note = txtNote.Text;
+
+                    txtNote.Text = text.planning_Family_mould_Remark + note;
+                    
+
+                }
+                else
+                {
+                    string note = txtNote.Text;
+
+                    note = note.Replace(text.planning_Family_mould_Remark, "");
+
+                    txtNote.Text = note;
                 }
             }
 
             loadMacData();
-
+            dgvMac.Rows[row].Selected = true;
             
         }
 

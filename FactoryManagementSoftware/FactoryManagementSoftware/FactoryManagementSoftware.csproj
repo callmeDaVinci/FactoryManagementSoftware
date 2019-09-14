@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>\\SAFETY06-MURUGA\StockAssistant\%28INSTALLATION%29\FOR USER\</PublishUrl>
+    <PublishUrl>\\SAFETY06-MURUGA\StockAssistant\%28INSTALLATION%29\FOR ADMIN\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>

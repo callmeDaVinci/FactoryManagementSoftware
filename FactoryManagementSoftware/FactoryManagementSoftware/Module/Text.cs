@@ -84,6 +84,9 @@ namespace FactoryManagementSoftware.Module
         public string plan_schedule_change { get; } = "PLAN SCHEDULE CHANGE";
         public string plan_status_change { get; } = "PLAN STATUS CHANGE";
         public string plan_family_with_change { get; } = "PLAN FAMILY CHANGE";
+        public string plan_proday_change { get; } = "PLAN PRODUCTION DAY CHANGE";
+        public string plan_prohour_change { get; } = "PLAN PRODUCTION HOUR CHANGE";
+        public string plan_prohourperday_change { get; } = "PLAN PRODUCTION HOUR PER DAY CHANGE";
 
         //Habit HISTORY////////////////////////////////////////////////////////////////////////////
         public string habit_insert { get; } = "HABIT INSERT";

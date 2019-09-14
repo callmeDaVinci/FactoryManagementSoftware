@@ -11,6 +11,7 @@ using Microsoft.Office.Interop.Excel;
 using System.Threading;
 using DataTable = System.Data.DataTable;
 using Font = System.Drawing.Font;
+using System.Threading.Tasks;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -31,6 +32,8 @@ namespace FactoryManagementSoftware.UI
             {
                 btnPlan.Hide();
             }
+
+            tool.DoubleBuffered(dgvSchedule, true);
         }
 
         #region Variable/ object setting
@@ -47,6 +50,8 @@ namespace FactoryManagementSoftware.UI
         itemDAL dalItem = new itemDAL();
         Tool tool = new Tool();
         Text text = new Text();
+
+        habitDAL dalHabit = new habitDAL();
 
         int userPermission = -1;
         readonly string headerID = "PLAN";
@@ -834,6 +839,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataGridView dgv = dgvSchedule;
             dgv.SuspendLayout();
+
             int row = e.RowIndex;
             int col = e.ColumnIndex;
 
@@ -935,8 +941,9 @@ namespace FactoryManagementSoftware.UI
 
         #region plan status change
 
-        private void planRunning(int rowIndex, string presentStatus)
+        private bool planRunning(int rowIndex, string presentStatus)
         {
+            bool statusChanged = false;
 
             uPlanning.plan_id = (int)dgvSchedule.Rows[rowIndex].Cells[headerID].Value;
             uPlanning.machine_id = (int)dgvSchedule.Rows[rowIndex].Cells[headerMachine].Value;
@@ -952,8 +959,9 @@ namespace FactoryManagementSoftware.UI
 
                 if (frmMachineScheduleAdjustFromMain.applied)
                 {
-                    loadScheduleData();
- 
+                    //loadScheduleData();
+
+                    statusChanged = true;
                     //inactive mat plan
 
                     uMatPlan.plan_id = uPlanning.plan_id;
@@ -962,7 +970,67 @@ namespace FactoryManagementSoftware.UI
                     uMatPlan.updated_by = MainDashboard.USER_ID;
 
                     dalMatPlan.ActiveUpdate(uMatPlan);
-                    
+
+                    if (presentStatus == text.planning_status_cancelled || presentStatus == text.planning_status_completed)
+                    {
+                        //get habit data
+                        float oldHourPerDay = 0;
+                        float newHourPerDay = 0;
+
+                        DataTable dt = dalHabit.HabitSearch(text.habit_belongTo_PlanningPage, text.habit_planning_HourPerDay);
+
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            newHourPerDay = Convert.ToSingle(row[dalHabit.HabitData]);
+                        }
+
+                        //get this plan hour per day data
+                        DataTable dt_plan = dalPlanning.idSearch(uPlanning.plan_id.ToString());
+
+                        foreach (DataRow row in dt_plan.Rows)
+                        {
+                            oldHourPerDay = Convert.ToSingle(row[dalPlanning.productionHourPerDay]);
+
+                            //compare
+                            if (oldHourPerDay != newHourPerDay)
+                            {
+                                int oldProDay = 0, newProDay = 0;
+                                float oldProHour = 0, newProHour = 0;
+
+                                oldProDay = Convert.ToInt32(row[dalPlanning.productionDay]);
+                                oldProHour = Convert.ToSingle(row[dalPlanning.productionHour]);
+
+                                float totalHour = oldProDay * oldHourPerDay + oldProHour;
+
+                                newProDay = Convert.ToInt32(totalHour / newHourPerDay);
+                                newProHour = totalHour - newProDay * newHourPerDay;
+
+                                if (newProHour < 0)
+                                {
+                                    newProHour = 0;
+                                }
+
+                                DateTime start = Convert.ToDateTime(row[dalPlanning.productionStartDate]);
+                                DateTime end = Convert.ToDateTime(row[dalPlanning.productionEndDate]);
+
+                                //change this plan data
+                                //update
+                                //change production day & hour data
+                                uPlanning.plan_id = uPlanning.plan_id;
+                                uPlanning.production_hour = newProHour.ToString();
+                                uPlanning.production_day = newProDay.ToString();
+                                uPlanning.production_hour_per_day = newHourPerDay.ToString();
+                                uPlanning.production_start_date = start.Date;
+                                uPlanning.production_end_date = end.Date;
+                                uPlanning.plan_updated_date = DateTime.Now;
+                                uPlanning.plan_updated_by = MainDashboard.USER_ID;
+
+                                //update to db
+                                dalPlanningAction.planningScheduleAndProDayChange(uPlanning, oldProDay.ToString(), oldProHour.ToString(), oldHourPerDay.ToString(), start.Date.ToString(), end.Date.ToString());
+                            }
+                        }
+                    }
+
                 }
 
             }
@@ -974,11 +1042,13 @@ namespace FactoryManagementSoftware.UI
             
 
             Cursor = Cursors.Arrow; // change cursor to normal type
+            return statusChanged;
         }
 
-        private void planPending(int planID, string presentStatus)
+        private bool planPending(int planID, string presentStatus)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            bool statusChanged = false;
             DateTime date = DateTime.Now;
             uPlanning.plan_id = planID;
             uPlanning.plan_status = text.planning_status_pending;
@@ -995,20 +1065,83 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 //inactive mat plan
-
+                statusChanged = true;
                 uMatPlan.plan_id = planID;
                 uMatPlan.active = true;
                 uMatPlan.updated_date = date;
                 uMatPlan.updated_by = MainDashboard.USER_ID;
 
                 dalMatPlan.ActiveUpdate(uMatPlan);
+
+                if (presentStatus == text.planning_status_cancelled || presentStatus == text.planning_status_completed)
+                {
+                    //get habit data
+                    float oldHourPerDay = 0;
+                    float newHourPerDay = 0;
+
+                    DataTable dt = dalHabit.HabitSearch(text.habit_belongTo_PlanningPage, text.habit_planning_HourPerDay);
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        newHourPerDay = Convert.ToSingle(row[dalHabit.HabitData]);
+                    }
+
+                    //get this plan hour per day data
+                    DataTable dt_plan = dalPlanning.idSearch(planID.ToString());
+
+                    foreach (DataRow row in dt_plan.Rows)
+                    {
+                        oldHourPerDay = Convert.ToSingle(row[dalPlanning.productionHourPerDay]);
+
+                        //compare
+                        if (oldHourPerDay != newHourPerDay)
+                        {
+                            int oldProDay = 0, newProDay = 0;
+                            float oldProHour = 0, newProHour = 0;
+
+                            oldProDay = Convert.ToInt32(row[dalPlanning.productionDay]);
+                            oldProHour = Convert.ToSingle(row[dalPlanning.productionHour]);
+
+                            float totalHour = oldProDay * oldHourPerDay + oldProHour;
+
+                            newProDay = Convert.ToInt32(totalHour / newHourPerDay);
+                            newProHour = totalHour - newProDay * newHourPerDay;
+
+                            if(newProHour < 0)
+                            {
+                                newProHour = 0;
+                            }
+
+                            DateTime start = Convert.ToDateTime(row[dalPlanning.productionStartDate]);
+                            DateTime end = Convert.ToDateTime(row[dalPlanning.productionEndDate]);
+
+                            //change this plan data
+                            //update
+                            //change production day & hour data
+                            uPlanning.plan_id = planID;
+                            uPlanning.production_hour = newProHour.ToString();
+                            uPlanning.production_day = newProDay.ToString();
+                            uPlanning.production_hour_per_day = newHourPerDay.ToString();
+                            uPlanning.production_start_date = start.Date;
+                            uPlanning.production_end_date = end.Date;
+                            uPlanning.plan_updated_date = DateTime.Now;
+                            uPlanning.plan_updated_by = MainDashboard.USER_ID;
+
+                            //update to db
+                            dalPlanningAction.planningScheduleAndProDayChange(uPlanning, oldProDay.ToString(), oldProHour.ToString(), oldHourPerDay.ToString(), start.Date.ToString(), end.Date.ToString());
+                        }
+                    }
+                }
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
+
+            return statusChanged;
         }
 
-        private void planComplete(int planID, string presentStatus)
+        private bool planComplete(int planID, string presentStatus)
         {
+            bool statusChanged = false;
             DateTime date = DateTime.Now;
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             uPlanning.plan_id = planID;
@@ -1025,7 +1158,7 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 //inactive mat plan
-
+                statusChanged = true;
                 uMatPlan.plan_id = planID;
                 uMatPlan.active = false;
                 uMatPlan.updated_date = date;
@@ -1034,12 +1167,14 @@ namespace FactoryManagementSoftware.UI
                 dalMatPlan.ActiveUpdate(uMatPlan);
             }
             Cursor = Cursors.Arrow; // change cursor to normal type
+
+            return statusChanged;
         }
 
-        private void planCancel(int planID, string presentStatus)
+        private bool planCancel(int planID, string presentStatus)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
+            bool statusChanged = false;
             DateTime date = DateTime.Now;
             uPlanning.plan_id = planID;
             uPlanning.plan_status = text.planning_status_cancelled;
@@ -1055,7 +1190,7 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 //inactive mat plan
-
+                statusChanged = true;
                 uMatPlan.plan_id = planID;
                 uMatPlan.active = false;
                 uMatPlan.updated_date = date;
@@ -1063,13 +1198,17 @@ namespace FactoryManagementSoftware.UI
 
                 dalMatPlan.ActiveUpdate(uMatPlan);
             }
+
+            
             Cursor = Cursors.Arrow; // change cursor to normal type
+            return statusChanged;
         }
 
         private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+            dgvSchedule.SuspendLayout();
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
+            
             DataGridView dgv = dgvSchedule;
             string itemClicked = e.ClickedItem.Name.ToString();
             int rowIndex = dgv.CurrentCell.RowIndex;
@@ -1085,30 +1224,86 @@ namespace FactoryManagementSoftware.UI
                 if (MessageBox.Show("Are you sure you want to switch this plan to PENDING status?", "Message",
                                                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    planPending(planID, presentStatus);
+                    if (planPending(planID, presentStatus))
+                    {
+                        DataTable dt = (DataTable)dgvSchedule.DataSource;
+                        if (cbPending.Checked)
+                        {
+                            dt.Rows[rowIndex][headerStatus] = text.planning_status_pending;
+                        }
+                        else
+                        {
+                            dt.Rows.RemoveAt(rowIndex);
+                            dt.AcceptChanges();
+                        }
+                    }
                 }
                     
             }
             else if (itemClicked.Equals(text.planning_status_running))
-            {
-                planRunning(rowIndex, presentStatus);
-                //if (MessageBox.Show("Are you sure you want to switch this plan to RUNNING status?", "Message",MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                //{
-                    
-                //}
+            {              
+                if (planRunning(rowIndex, presentStatus))
+                {
+                    DataTable dt = (DataTable)dgvSchedule.DataSource;
+                    if (cbRunning.Checked)
+                    {
+                        dt.Rows[rowIndex][headerStatus] = text.planning_status_running;
+                    }
+                    else
+                    {
+                        dt.Rows.RemoveAt(rowIndex);
+                        dt.AcceptChanges();
+                    }
+                }
             }
             else if (itemClicked.Equals(text.planning_status_completed))
             {
                 if (MessageBox.Show("Are you sure you want to switch this plan to COMPLETED status?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    planComplete(planID, presentStatus);
+                    if (planComplete(planID, presentStatus))
+                    {
+                        DataTable dt = (DataTable)dgvSchedule.DataSource;
+                        if (cbCompleted.Checked)
+                        {
+                            dt.Rows[rowIndex][headerStatus] = text.planning_status_completed;
+                        }
+                        else
+                        {
+                            dt.Rows.RemoveAt(rowIndex);
+                            dt.AcceptChanges();
+                        }
+
+                        var w = new Form() { Size = new Size(0, 0) };
+                        Task.Delay(TimeSpan.FromSeconds(3))
+                            .ContinueWith((t) => w.Close(), TaskScheduler.FromCurrentSynchronizationContext());
+
+                        MessageBox.Show(w,  "PLAN " + planID + " completed!", "SYSTEM");
+                    }
                 }
             }
             else if (itemClicked.Equals(text.planning_status_cancelled))
             {
                 if (MessageBox.Show("Are you sure you want to CANCEL this plan?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    planCancel(planID, presentStatus);
+                    if(planCancel(planID, presentStatus))
+                    {
+                        DataTable dt = (DataTable)dgvSchedule.DataSource;
+                        if (cbCancelled.Checked)
+                        {
+                            dt.Rows[rowIndex][headerStatus] = text.planning_status_cancelled;
+                        }
+                        else
+                        {
+                            dt.Rows.RemoveAt(rowIndex);
+                            dt.AcceptChanges();
+                        }
+
+                        var w = new Form() { Size = new Size(0, 0) };
+                        Task.Delay(TimeSpan.FromSeconds(3))
+                            .ContinueWith((t) => w.Close(), TaskScheduler.FromCurrentSynchronizationContext());
+
+                        MessageBox.Show(w, "PLAN "+planID+" cancelled!", "SYSTEM");
+                    }
                 }
                 
             }
@@ -1117,11 +1312,11 @@ namespace FactoryManagementSoftware.UI
                 editSchedule(rowIndex);
             }
 
-            loadScheduleData();
-            dgvSchedule.ClearSelection();
+            //loadScheduleData();
+            //dgvSchedule.ClearSelection();
 
             Cursor = Cursors.Arrow; // change cursor to normal type
-
+            dgvSchedule.ResumeLayout();
         }
 
         private void editSchedule(int rowIndex)
@@ -1138,6 +1333,7 @@ namespace FactoryManagementSoftware.UI
             if(frmMachineScheduleAdjustFromMain.applied)
             {
                 loadScheduleData();
+                dgvSchedule.FirstDisplayedScrollingRowIndex = rowIndex;
             }
         }
 
@@ -1227,7 +1423,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
             Thread t = null;
             try

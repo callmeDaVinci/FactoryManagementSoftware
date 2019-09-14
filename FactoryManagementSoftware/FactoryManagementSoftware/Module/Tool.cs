@@ -3184,14 +3184,38 @@ namespace FactoryManagementSoftware.Module
 
         #region Validation
 
+        public int getNumberOfProDay(int PlanID)
+        {
+            int proDay = 0;
+
+            DataTable dt_planning = dalPlanning.idSearch(PlanID.ToString());
+
+            foreach(DataRow row in dt_planning.Rows)
+            {
+                int proDayRequried = Convert.ToInt32(row[dalPlanning.productionDay]);
+                float proHourRequried = Convert.ToSingle(row[dalPlanning.productionHour]);
+                float prohourPerDay = Convert.ToSingle(row[dalPlanning.productionHourPerDay]);
+
+                float totalHour = prohourPerDay * proDayRequried + proHourRequried;
+
+                if(proHourRequried != 0)
+                {
+                    proDay = Convert.ToInt32(totalHour / prohourPerDay);
+
+                    proHourRequried = totalHour - proDay * prohourPerDay;
+                }
+
+                if(proHourRequried >= 0)
+                {
+                    proDay++;
+                }
+            }
+
+            return proDay;
+        }
+
         public int getNumberOfDayBetweenTwoDate(DateTime startDate, DateTime endDate, bool includeSunday)
         {
-            //double calcBusinessDays = 1 + ((endDate - startDate).TotalDays * 5 - (startDate.DayOfWeek - endDate.DayOfWeek) * 2) / 7;
-
-            //if (startDate.DayOfWeek == DayOfWeek.Sunday && !includeSunday) calcBusinessDays--;
-
-            ////return Convert.ToInt32(calcBusinessDays);
-
             var dayDifference = (int)endDate.Date.Subtract(startDate.Date).TotalDays;
 
             if(includeSunday)

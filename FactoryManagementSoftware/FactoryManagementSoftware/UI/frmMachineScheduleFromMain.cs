@@ -33,6 +33,8 @@ namespace FactoryManagementSoftware.UI
         readonly string familyWith = "Family With";
         readonly string resetFamilyWith = "Reset Family With";
         readonly string headerToRun = "TO RUN";
+        readonly string ToAdd = "TO ADD";
+        readonly string ToEdit = "TO EDIT";
 
         private string MacID = "";
         planningDAL dalPlanning = new planningDAL();
@@ -50,13 +52,17 @@ namespace FactoryManagementSoftware.UI
         bool loaded = false;
         bool ableLoadDate = true;
         bool ableLoadSchedule = true;
+        bool ableChangeDTP = true;
         bool RunAction = false;
+        bool AddAction = false;
         static public bool applied = false;
 
-        //static public DateTime start;
-        //static public DateTime end;
+        static public DateTime start;
+        static public DateTime end;
 
+        static public int ToAddPlanFamilyWith = -1;
         private int currentSelectedRow = -1;
+        private int selectedRow = -1;
         #endregion
 
         public frmMachineScheduleAdjustFromMain()
@@ -64,13 +70,18 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
         }
 
+        //call from main schedule
         public frmMachineScheduleAdjustFromMain(PlanningBLL u, bool RunActionMake)
         {
             InitializeComponent();
             uPlanning = u;
             MacID = u.machine_id.ToString();
             RunAction = RunActionMake;
-            if(RunActionMake)
+
+            lblStartDate.Text = "TO RUN START DATE";
+            lblEndDate.Text = "TO RUN END DATE";
+
+            if (RunActionMake)
             {
                 dtpStartDate.Value = u.production_start_date;
                 dtpEstimateEndDate.Value = u.production_end_date;
@@ -82,6 +93,23 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        //call from planning apply
+        public frmMachineScheduleAdjustFromMain(PlanningBLL u)
+        {
+            InitializeComponent();
+            uPlanning = u;
+            MacID = u.machine_id.ToString();
+            AddAction = true;
+
+            lblStartDate.Text = "TO ADD START DATE";
+            lblEndDate.Text = "TO ADD END DATE";
+
+            dtpStartDate.Value = u.production_start_date;
+            dtpEstimateEndDate.Value = u.production_end_date;
+
+            start = dtpStartDate.Value.Date;
+            end = dtpEstimateEndDate.Value.Date;
+        }
 
         #region UI Setting
 
@@ -153,6 +181,7 @@ namespace FactoryManagementSoftware.UI
 
         private void loadScheduleData()
         {
+            blink = false;
             if (ableLoadSchedule)
             {
                 dtpStartDate.Value = uPlanning.production_start_date;
@@ -229,11 +258,35 @@ namespace FactoryManagementSoftware.UI
 
                 }
 
+                if(AddAction)
+                {
+                    row_Schedule = dt_Schedule.NewRow();
+
+                    row_Schedule[headerPlanID] = -1;
+                    row_Schedule[headerStartDate] = dtpStartDate.Value.Date;
+                    row_Schedule[headerEndDate] = dtpEstimateEndDate.Value.Date;
+
+                    row_Schedule[headerPartName] = uPlanning.part_name;
+                    row_Schedule[headerPartCode] = uPlanning.part_code;
+                    row_Schedule[headerProductionPurpose] = uPlanning.production_purpose;
+
+                    row_Schedule[headerTargetQty] = uPlanning.production_target_qty;
+                    row_Schedule[headerStatus] = ToAdd;
+
+                    row_Schedule[headerFamilyWith] = uPlanning.family_with;
+                    row_Schedule[headerRemark] = uPlanning.plan_note;
+                    dt_Schedule.Rows.Add(row_Schedule);
+                }
+
                 dgvMac.DataSource = null;
 
                 if (dt_Schedule.Rows.Count > 0)
                 {
-                    dgvMac.DataSource = dt_Schedule;
+                    DataTable dtSorted = new DataTable();
+                    dt_Schedule.DefaultView.Sort = headerStartDate+" asc,"+headerEndDate+" asc";
+                    dtSorted = dt_Schedule.DefaultView.ToTable();
+
+                    dgvMac.DataSource = dtSorted;
                     dgvScheduleUIEdit(dgvMac);
                     dgvMac.ClearSelection();
                     currentSelectedRow = -1;
@@ -255,7 +308,7 @@ namespace FactoryManagementSoftware.UI
             loadScheduleData();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
             loadScheduleData();
         }
@@ -289,9 +342,13 @@ namespace FactoryManagementSoftware.UI
                 {
                     backColor = Color.FromArgb(52, 160, 225);
                 }
-                else if (value.Equals(text.planning_status_running) || value.Equals(headerToRun))
+                else if (value.Equals(text.planning_status_running) || value.Equals(headerToRun) )
                 {
                     backColor = Color.FromArgb(0, 184, 148);
+                }
+                else if (value.Equals(ToAdd) || value.Equals(ToEdit))
+                {
+                    backColor = Color.FromArgb(253, 203, 110);
                 }
                 else if (value.Equals(text.planning_status_warning))
                 {
@@ -341,7 +398,7 @@ namespace FactoryManagementSoftware.UI
                             secondFamilyWith = Convert.ToInt32(dgv.Rows[row].Cells[headerFamilyWith].Value);
                         }
 
-                        if(firstFamilyWith != secondFamilyWith || firstFamilyWith == -1 )
+                        if(firstFamilyWith != secondFamilyWith || (firstFamilyWith == -1 || secondFamilyWith == -1))
                         {
                             if (i < row)
                             {
@@ -379,99 +436,11 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-
             if (value.Equals(text.planning_status_cancelled) || value.Equals(text.planning_status_completed))
             {
                 dgv.Rows[row].Cells[headerStartDate].Style.ForeColor = Color.Black;
                 dgv.Rows[row].Cells[headerEndDate].Style.ForeColor = Color.Black;
             }
-
-            #region old way invalid date checking (invalid = color red)
-            ///////////////////////////////////////
-            //else if (dgv.Columns[col].Name == headerEndDate && !value.Equals(text.planning_status_cancelled) && !value.Equals(text.planning_status_completed))
-            //{
-            //    dgv.Rows[row].Cells[headerStartDate].Style.ForeColor = Color.Black;
-            //    dgv.Rows[row].Cells[headerEndDate].Style.ForeColor = Color.Black;
-
-            //    if (row + 1 < dgv.Rows.Count)
-            //    {
-            //        DateTime start = Convert.ToDateTime(dgv.Rows[row].Cells[headerStartDate].Value);
-            //        DateTime end = Convert.ToDateTime(dgv.Rows[row].Cells[headerEndDate].Value);
-
-            //        int nextIndex = row + 1;
-
-            //        string nextStatus = dgv.Rows[nextIndex].Cells[headerStatus].Value.ToString();
-
-            //        for (int i = row + 1; i < dgv.Rows.Count; i++)
-            //        {
-            //            nextStatus = dgv.Rows[i].Cells[headerStatus].Value.ToString();
-
-            //            if(!nextStatus.Equals(text.planning_status_cancelled) && !nextStatus.Equals(text.planning_status_completed))
-            //            {
-            //                break;
-            //            }
-            //            else
-            //            {
-            //                nextIndex++;
-            //            }
-            //        }
-
-            //        if (!nextStatus.Equals(text.planning_status_cancelled) && !nextStatus.Equals(text.planning_status_completed))
-            //        {
-            //            DateTime secondStart = Convert.ToDateTime(dgv.Rows[nextIndex].Cells[headerStartDate].Value);
-            //            DateTime secondEnd = Convert.ToDateTime(dgv.Rows[nextIndex].Cells[headerEndDate].Value);
-
-            //            if (!tool.ifProductionDateAvailable(start, end, secondStart, secondEnd))
-            //            {
-            //                dgv.Rows[row].Cells[headerStartDate].Style.ForeColor = Color.Red;
-            //                dgv.Rows[row].Cells[headerEndDate].Style.ForeColor = Color.Red;
-
-            //                dgv.Rows[row + 1].Cells[headerStartDate].Style.ForeColor = Color.Red;
-            //                dgv.Rows[row + 1].Cells[headerEndDate].Style.ForeColor = Color.Red;
-            //            }
-            //        }
-
-
-            //    }
-            //    else if (row == dgv.Rows.Count - 1 && row != 0)
-            //    {
-            //        int lastIndex = row - 1;
-
-            //        string lastStatus = dgv.Rows[row -1].Cells[headerStatus].Value.ToString();
-
-            //        for (int i = row - 1; i >= 0; i--)
-            //        {
-            //            lastStatus = dgv.Rows[i].Cells[headerStatus].Value.ToString();
-            //            lastIndex = i;
-
-            //            if (!lastStatus.Equals(text.planning_status_cancelled) && !lastStatus.Equals(text.planning_status_completed))
-            //            {
-            //                break;
-            //            }
-            //        }
-
-            //        DateTime start = Convert.ToDateTime(dgv.Rows[lastIndex].Cells[headerStartDate].Value);
-            //        DateTime end = Convert.ToDateTime(dgv.Rows[lastIndex].Cells[headerEndDate].Value);
-
-            //        DateTime secondStart = Convert.ToDateTime(dgv.Rows[row].Cells[headerStartDate].Value);
-            //        DateTime secondEnd = Convert.ToDateTime(dgv.Rows[row].Cells[headerEndDate].Value);
-
-            //        if (!tool.ifProductionDateAvailable(start, end, secondStart, secondEnd))
-            //        {
-            //            dgv.Rows[row].Cells[headerStartDate].Style.ForeColor = Color.Red;
-            //            dgv.Rows[row].Cells[headerEndDate].Style.ForeColor = Color.Red;
-            //        }
-            //    }
-            //}
-
-            //if(value.Equals(text.planning_status_cancelled) || value.Equals(text.planning_status_completed))
-            //{
-            //    dgv.Rows[row].Cells[headerStartDate].Style.ForeColor = Color.Black;
-            //    dgv.Rows[row].Cells[headerEndDate].Style.ForeColor = Color.Black;
-            //}
-            /////////////////////////////////////////
-            /////
-            #endregion
         }
 
         private bool Validation()
@@ -509,10 +478,10 @@ namespace FactoryManagementSoftware.UI
 
         private async void Blink(string warning)
         {
-            lblWarning.Text = warning;
-            lblWarning.Visible = true;
             while (blink)
             {
+                lblWarning.Text = warning;
+                lblWarning.Visible = true;
                 await Task.Delay(500);
                 lblWarning.BackColor = lblWarning.BackColor == Color.Red ? Color.White : Color.Red;
             }
@@ -543,7 +512,7 @@ namespace FactoryManagementSoftware.UI
             }
            
 
-            if (row != -1 && row != dgv.RowCount -1)
+            if (row > 0 && row != dgv.RowCount -1)
             {
                 PlanningBLL u = new PlanningBLL();
 
@@ -591,19 +560,6 @@ namespace FactoryManagementSoftware.UI
 
                     int position = row + 1;
 
-                    //int proDayRequired = tool.getNumberOfDayBetweenTwoDate(u.production_start_date.Date, u.production_end_date.Date, includeSunday);
-
-                    //DateTime start = (DateTime)dgv.Rows[row].Cells[headerEndDate].Value;
-
-                    //start = start.Date.AddDays(1);
-
-                    //if (!includeSunday && tool.checkIfSunday(start))
-                    //{
-                    //    start = start.Date.AddDays(1);
-                    //}
-
-                    //DateTime end = tool.EstimateEndDate(start, proDayRequired, includeSunday);
-
                     DataRow dr;
                     dr = dt.NewRow();
 
@@ -631,6 +587,11 @@ namespace FactoryManagementSoftware.UI
                 
             }
           
+            else if(row == 0)
+            {
+                blink = true;
+                Blink("Please select a row.");
+            }
         }
 
         private DateTime addOneDay(DateTime day, bool includeSunday)
@@ -642,62 +603,6 @@ namespace FactoryManagementSoftware.UI
                 day = day.AddDays(1);
             }
             return day.Date;
-        }
-
-        private void autoAdjustDate()
-        {
-            bool includeSunday = false;
-
-            if (cbIncludeSunday.Checked)
-            {
-                includeSunday = true;
-            }
-
-            DataTable dt = (DataTable)dgvMac.DataSource;
-
-            DataGridView dgv = dgvMac;
-
-            DateTime previousRowStart = new DateTime();
-            DateTime previousRowEnd = new DateTime();
-            if (dt.Rows.Count > 0)
-            {
-                previousRowStart = Convert.ToDateTime(dgv.Rows[0].Cells[headerStartDate].Value).Date;
-                previousRowEnd = Convert.ToDateTime(dgv.Rows[0].Cells[headerEndDate].Value).Date;
-
-            }
-
-            int previousRowFamilyWith = -1;
-
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                if(i == 0)
-                {
-                    previousRowStart = Convert.ToDateTime(dgv.Rows[i].Cells[headerStartDate].Value).Date;
-                    previousRowEnd = Convert.ToDateTime(dgv.Rows[i].Cells[headerEndDate].Value).Date;
-                    previousRowFamilyWith = Convert.ToInt32(dgv.Rows[i].Cells[headerFamilyWith].Value);
-                }
-                else
-                {
-                    string status = dgv.Rows[i].Cells[headerStatus].Value.ToString();
-
-                    if (!status.Equals(text.planning_status_cancelled) && !status.Equals(text.planning_status_completed))
-                    {
-                        DateTime oldStart = Convert.ToDateTime(dgv.Rows[i].Cells[headerStartDate].Value).Date;
-                        DateTime oldEnd = Convert.ToDateTime(dgv.Rows[i].Cells[headerEndDate].Value).Date;
-
-
-                        int proDayRequired = tool.getNumberOfDayBetweenTwoDate(oldStart, oldEnd, includeSunday);
-
-                        previousRowEnd = addOneDay(previousRowEnd, includeSunday);
-
-                        dgv.Rows[i].Cells[headerStartDate].Value = previousRowEnd;
-
-                        previousRowEnd = tool.EstimateEndDate(previousRowEnd, proDayRequired, includeSunday);
-                        dgv.Rows[i].Cells[headerEndDate].Value = previousRowEnd;
-
-                    }
-                }
-            }
         }
 
         private DataTable newAutoAdjustDate()
@@ -720,7 +625,6 @@ namespace FactoryManagementSoftware.UI
             dt.AcceptChanges();
             foreach (DataRow row in dt.Rows)
             {
-                
                 if (row.RowState != DataRowState.Deleted)
                 {
                     string status = row[headerStatus].ToString();
@@ -745,19 +649,20 @@ namespace FactoryManagementSoftware.UI
                             }
 
                             latestEnd = Convert.ToDateTime(row[headerEndDate]).Date;
+
                             foreach (DataRow row2 in dt.Rows)
                             {
                                 if (row2.RowState != DataRowState.Deleted)
                                 {
                                     int familyWith = Convert.ToInt32(row2[headerFamilyWith]);
-
+                                    int PlanID = Convert.ToInt32(row2[headerPlanID]);
                                     if (familyWith == previousRowFamilyWith)
                                     {
                                         DateTime start = Convert.ToDateTime(row2[headerStartDate]).Date;
                                         DateTime end = Convert.ToDateTime(row2[headerEndDate]).Date;
 
-                                        int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includeSunday);
-
+                                        //int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includeSunday);
+                                        int proDayRequired = tool.getNumberOfProDay(PlanID);
 
                                         row2[headerStartDate] = earliestStart.Date;
 
@@ -773,18 +678,6 @@ namespace FactoryManagementSoftware.UI
                                         DataRow newRow = new_dt.NewRow();
                                         newRow = row2;
                                         new_dt.ImportRow(newRow);
-                                        //newRow[headerPlanID] = row2[headerPlanID];
-                                        //newRow[headerStartDate] = row2[headerStartDate];
-                                        //newRow[headerEndDate] = row2[headerEndDate];
-                                        //newRow[headerPartName] = row2[headerPartName];
-                                        //newRow[headerPartCode] = row2[headerPartCode];
-                                        //newRow[headerProductionPurpose] = row2[headerProductionPurpose];
-                                        //newRow[headerTargetQty] = row2[headerTargetQty];
-                                        //newRow[headerStatus] = row2[headerStatus];
-                                        //newRow[headerFamilyWith] = row2[headerFamilyWith];
-                                        //newRow[headerRemark] = row2[headerRemark];
-
-                                        //new_dt.Rows.Add(newRow);
                                         previousRowEnd = latestEnd;
                                         row2.Delete();
                                     }
@@ -794,17 +687,23 @@ namespace FactoryManagementSoftware.UI
                         }
                         else
                         {
+                            DateTime start = Convert.ToDateTime(row[headerStartDate]).Date;
+                            DateTime end = Convert.ToDateTime(row[headerEndDate]).Date;
+                            int PlanID = Convert.ToInt32(row[headerPlanID]);
+
+                            //get data from db///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            //int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includeSunday);
+                            int proDayRequired = tool.getNumberOfProDay(PlanID);
+
                             if (previousRowEnd == default(DateTime))
                             {
                                 previousRowEnd = Convert.ToDateTime(row[headerStartDate]).Date;
                             }
-
-                            DateTime start = Convert.ToDateTime(row[headerStartDate]).Date;
-                            DateTime end = Convert.ToDateTime(row[headerEndDate]).Date;
-
-                            int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includeSunday);
-
-                            previousRowEnd = addOneDay(previousRowEnd, includeSunday);
+                            else
+                            {
+                                previousRowEnd = addOneDay(previousRowEnd, includeSunday);
+                                
+                            }
 
                             row[headerStartDate] = previousRowEnd.Date;
 
@@ -829,14 +728,42 @@ namespace FactoryManagementSoftware.UI
 
         private void btnAutoAdjust_Click(object sender, EventArgs e)
         {
-            autoAdjustDate();
+            //autoAdjustDate();
+            blink = false;
+
+            dgvMac.Focus();
+            int row = currentSelectedRow;
 
             DataTable dt = newAutoAdjustDate();
-
-            DataTable dtSource = (DataTable)dgvMac.DataSource;
+            //DataTable dtSource = (DataTable)dgvMac.DataSource;
 
             dgvMac.DataSource = dt;
 
+            if (AddAction)
+            {
+                for (int i = 0; i < dgvMac.Rows.Count; i++)
+                {
+                    int planID = Convert.ToInt32(dgvMac.Rows[i].Cells[headerPlanID].Value);
+
+                    if (planID == uPlanning.plan_id)
+                    {
+                        ableChangeDTP = false;
+                        dtpStartDate.Value = Convert.ToDateTime(dgvMac.Rows[i].Cells[headerStartDate].Value);
+                        dtpEstimateEndDate.Value = Convert.ToDateTime(dgvMac.Rows[i].Cells[headerEndDate].Value);
+                        ableChangeDTP = true;
+                    }
+                }
+            }
+
+            if(row > 0)
+            {
+                dgvMac.Rows[row].Selected = true;
+                currentSelectedRow = row;
+            }
+            else
+            {
+                dgvMac.ClearSelection();
+            }
         }
 
         private void dgvMac_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -944,6 +871,7 @@ namespace FactoryManagementSoftware.UI
             {
                 DateTime start = Convert.ToDateTime(dgv.Rows[rowIndex].Cells[headerStartDate].Value);
                 DateTime end = Convert.ToDateTime(dgv.Rows[rowIndex].Cells[headerEndDate].Value);
+                int planID = Convert.ToInt32(dgv.Rows[rowIndex].Cells[headerPlanID].Value);
 
                 bool includeSunday = false;
                 if (cbIncludeSunday.Checked)
@@ -951,7 +879,8 @@ namespace FactoryManagementSoftware.UI
                     includeSunday = true;
                 }
 
-                int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includeSunday);
+                //int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includeSunday);
+                int proDayRequired = tool.getNumberOfProDay(planID);
 
                 frmChangeDate frm = new frmChangeDate(start, end, proDayRequired, includeSunday);
                 frm.StartPosition = FormStartPosition.CenterScreen;
@@ -1018,7 +947,8 @@ namespace FactoryManagementSoftware.UI
                             includeSunday = true;
                         }
 
-                        int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includeSunday);
+                        //int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includeSunday);
+                        int proDayRequired = tool.getNumberOfProDay(planID);
 
                         dgvMac.Rows[rowIndex].Cells[headerStartDate].Value = selectedStart.ToShortDateString();
 
@@ -1056,22 +986,24 @@ namespace FactoryManagementSoftware.UI
                     int familyWith = Convert.ToInt32(dgvMac.Rows[rowIndex].Cells[headerFamilyWith].Value);
                     int planID = Convert.ToInt32(dgvMac.Rows[rowIndex].Cells[headerPlanID].Value);
 
-                    dgvMac.Rows[rowIndex].Cells[headerFamilyWith].Value = -1;
-
-                    string Remark = dgv.Rows[rowIndex].Cells[headerRemark].Value.ToString();
-
-                    Remark = Remark.Replace(text.planning_Family_mould_Remark, "");
-
-                    dgv.Rows[rowIndex].Cells[headerRemark].Value = Remark;
-
-                    if(familyWith == planID)
+                    if(familyWith != -1)
                     {
-                        if (!backgroundWorker2.IsBusy)
+                        dgvMac.Rows[rowIndex].Cells[headerFamilyWith].Value = -1;
+
+                        string Remark = dgv.Rows[rowIndex].Cells[headerRemark].Value.ToString();
+
+                        Remark = Remark.Replace(text.planning_Family_mould_Remark, "");
+
+                        dgv.Rows[rowIndex].Cells[headerRemark].Value = Remark;
+
+                        if (familyWith == planID)
                         {
-                            backgroundWorker2.RunWorkerAsync(planID);
+                            if (!backgroundWorker2.IsBusy)
+                            {
+                                backgroundWorker2.RunWorkerAsync(planID);
+                            }
                         }
                     }
-
                 }
 
             }
@@ -1082,7 +1014,9 @@ namespace FactoryManagementSoftware.UI
         {
             if (!backgroundWorker1.IsBusy)
             {
-                backgroundWorker1.RunWorkerAsync();           
+                backgroundWorker1.RunWorkerAsync();
+                start = dtpStartDate.Value.Date;
+                end = dtpEstimateEndDate.Value.Date;
             }
 
             while(formClose == -1)
@@ -1102,52 +1036,56 @@ namespace FactoryManagementSoftware.UI
 
         private void btnMoveUp_Click(object sender, EventArgs e)
         {
-
             blink = false;
             errorProvider1.Clear();
 
             bool abletoChangeData = true;
 
-            DataGridView dgv = dgvMac;  
+            DataGridView dgv = dgvMac;
             dgvMac.Focus();
 
             int row = dgv.CurrentRow.Index;
 
-            if(currentSelectedRow != -1)
+         
+            if (currentSelectedRow != -1)
             {
                 row = currentSelectedRow;
             }
 
             if (row > 0)
             {
-                int upPlanID = (int)dgv.Rows[row -1].Cells[headerPlanID].Value;
+                int upPlanID = (int)dgv.Rows[row - 1].Cells[headerPlanID].Value;
                 string upStatus = dgv.Rows[row - 1].Cells[headerStatus].Value.ToString();
                 string downStatus = dgv.Rows[row].Cells[headerStatus].Value.ToString();
 
-                if ((upStatus.Equals(text.planning_status_running) || upStatus.Equals(headerToRun))  && upStatus != downStatus)
+                if ((upStatus.Equals(text.planning_status_running) || upStatus.Equals(headerToRun)) && upStatus != downStatus)
                 {
-                    DialogResult dialogResult;
+                    //DialogResult dialogResult;
                     if (upStatus.Equals(text.planning_status_running))
                     {
-                        dialogResult = MessageBox.Show("PLAN " + upPlanID + " is RUNNING now, you want to switch it to PENDING?", "Message",
-                                                              MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    }
-                    else
-                    {
-                        dialogResult = MessageBox.Show("PLAN " + upPlanID + " is planning to run, you want to switch it to PENDING?", "Message",
-                                                              MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    }
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        abletoChangeData = true;
-                        dgv.Rows[row - 1].Cells[headerStatus].Value = text.planning_status_pending;
-                    }
-                    else
-                    {
+                        blink = true;
+                        Blink("PLAN " + upPlanID + " is RUNNING now!");
                         abletoChangeData = false;
+                       // dialogResult = MessageBox.Show("PLAN " + upPlanID + " is RUNNING now, you want to switch it to PENDING?", "Message",MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     }
-                }
+                    else
+                    {
+                        blink = true;
+                        Blink("PLAN " + upPlanID + " is planning to run!");
+                        abletoChangeData = false;
+                        //dialogResult = MessageBox.Show("PLAN " + upPlanID + " is planning to run, you want to switch it to PENDING?", "Message",MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    }
 
+                    //if (dialogResult == DialogResult.Yes)
+                    //{
+                    //    abletoChangeData = true;
+                    //    dgv.Rows[row - 1].Cells[headerStatus].Value = text.planning_status_pending;
+                    //}
+                    //else
+                    //{
+                    //    abletoChangeData = false;
+                    //}
+                }
                 if (abletoChangeData)
                 {
                     PlanningBLL u = new PlanningBLL();
@@ -1186,8 +1124,6 @@ namespace FactoryManagementSoftware.UI
 
                     dt.Rows.InsertAt(dr, position);
 
-
-
                     //autoAdjustDate();
                     dgv.ClearSelection();
                     dgvMac.Rows[position].Selected = true;
@@ -1199,12 +1135,24 @@ namespace FactoryManagementSoftware.UI
                 }
 
             }
+
+            else if (row == 0)
+            {
+                blink = true;
+                Blink("Please select a row.");
+            }
         }
 
         private void dgvMac_SelectionChanged(object sender, EventArgs e)
         {
             if(dgvMac.CurrentRow != null)
-            currentSelectedRow = dgvMac.CurrentRow.Index;
+            {
+                currentSelectedRow = dgvMac.CurrentRow.Index;
+                selectedRow = dgvMac.CurrentRow.Index;
+            }
+
+            //if (dgvMac.CurrentCell != null)
+            //selectedRow = dgvMac.CurrentCell.RowIndex;
         }
 
         private void changeRunningPlanData()
@@ -1237,7 +1185,9 @@ namespace FactoryManagementSoftware.UI
                         DateTime start = Convert.ToDateTime(dgvMac.Rows[i].Cells[headerStartDate].Value).Date;
                         DateTime end = Convert.ToDateTime(dgvMac.Rows[i].Cells[headerEndDate].Value).Date;
 
-                        int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includedSunday);
+                        //int proDayRequired = tool.getNumberOfDayBetweenTwoDate(start, end, includedSunday);
+
+                        int proDayRequired = tool.getNumberOfProDay(planID);
 
                         dgvMac.Rows[i].Cells[headerStartDate].Value = dtpStartDate.Value.Date;
                         dgvMac.Rows[i].Cells[headerEndDate].Value = tool.EstimateEndDate(dtpStartDate.Value.Date,proDayRequired,includedSunday);
@@ -1248,48 +1198,80 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private void changeAddingPlanData()
+        {
+            if (ableLoadDate)
+            {
+                DataTable dt = (DataTable)dgvMac.DataSource;
+
+                for (int i = 0; i < dgvMac.Rows.Count; i++)
+                {
+                    int planID = Convert.ToInt32(dgvMac.Rows[i].Cells[headerPlanID].Value);
+
+                    if (planID == uPlanning.plan_id)
+                    {
+                        dgvMac.Rows[i].Cells[headerStartDate].Value = dtpStartDate.Value.Date;
+                        dgvMac.Rows[i].Cells[headerEndDate].Value = dtpEstimateEndDate.Value.Date;
+                    }
+                }
+            }
+
+        }
+
         private void dtpStartDate_ValueChanged(object sender, EventArgs e)
         {
-            ableLoadDate = false;
-            DateTime start = dtpStartDate.Value.Date;
-
-            bool includeSunday = false;
-
-            if(cbIncludeSunday.Checked)
+            blink = false;
+            if (ableChangeDTP)
             {
-                includeSunday = true;
-            }
-            int proDayRequired = tool.getNumberOfDayBetweenTwoDate(uPlanning.production_start_date,uPlanning.production_end_date,includeSunday);
+                ableLoadDate = false;
+                DateTime start = dtpStartDate.Value.Date;
 
-            DateTime end = tool.EstimateEndDate(start, proDayRequired, includeSunday);
+                bool includeSunday = false;
 
-            dtpEstimateEndDate.Value = end;
+                if (cbIncludeSunday.Checked)
+                {
+                    includeSunday = true;
+                }
+                int proDayRequired = tool.getNumberOfDayBetweenTwoDate(uPlanning.production_start_date, uPlanning.production_end_date, includeSunday);
+                //int proDayRequired = tool.getNumberOfProDay(planID);
 
-            if(RunAction)
-            {
-                ableLoadDate = true;
-                changeRunningPlanData();
-            }
+                DateTime end = tool.EstimateEndDate(start, proDayRequired, includeSunday);
 
-            if(dtpStartDate.Value.Date != uPlanning.production_start_date.Date)
-            {
-                dataChange = true;
+                dtpEstimateEndDate.Value = end;
+
+                if (RunAction)
+                {
+                    ableLoadDate = true;
+                    changeRunningPlanData();
+                }
+
+                else if (AddAction)
+                {
+                    ableLoadDate = true;
+                    changeAddingPlanData();
+                }
+
+                if (dtpStartDate.Value.Date != uPlanning.production_start_date.Date)
+                {
+                    dataChange = true;
+                }
             }
         }
 
         private void dtpEstimateEndDate_ValueChanged(object sender, EventArgs e)
         {
-            if (RunAction)
+            blink = false;
+            if ((RunAction || AddAction) && ableChangeDTP)
             {
                 DataTable dt = (DataTable)dgvMac.DataSource;
 
                 for (int i = 0; i < dgvMac.Rows.Count; i++)
                 {
                     int PlanID = Convert.ToInt32(dgvMac.Rows[i].Cells[headerPlanID].Value);
+
                     if (PlanID == uPlanning.plan_id)
                     {
                         dgvMac.Rows[i].Cells[headerEndDate].Value = dtpEstimateEndDate.Value.Date;
-
                     }
                 }
             }
@@ -1351,6 +1333,10 @@ namespace FactoryManagementSoftware.UI
 
                             //success = dalPlanning.statusAndDateUpdate(uPlanning);
                         }
+                        else
+                        {
+                            ToAddPlanFamilyWith = Convert.ToInt32(row[headerFamilyWith]);
+                        }
                     }
 
                     if (success)
@@ -1398,6 +1384,11 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+        }
+
+        private void backgroundWorker3_DoWork(object sender, DoWorkEventArgs e)
+        {
+     
         }
     }
 }

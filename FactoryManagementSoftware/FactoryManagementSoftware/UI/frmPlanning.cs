@@ -31,6 +31,11 @@ namespace FactoryManagementSoftware.UI
         habitDAL dalHabit = new habitDAL();
         habitBLL uHabit = new habitBLL();
 
+        planningDAL dalPlan = new planningDAL();
+        PlanningBLL uPlan = new PlanningBLL();
+
+        planningActionDAL dalPlanAction = new planningActionDAL();
+
         readonly string headerCheck = "FOR";
         readonly string headerDescription = "DESCRIPTION";
         readonly string headerBalance = "ESTIMATE CLOSING BALANCE";
@@ -888,26 +893,6 @@ namespace FactoryManagementSoftware.UI
         private void txtHoursPerDay_TextChanged(object sender, EventArgs e)
         {
             CalculateProductionDaysAndHours();
-
-            string habitData = txtHoursPerDay.Text;
-            //save habit
-            uHabit.belong_to = text.habit_belongTo_PlanningPage;
-            uHabit.habit_name = text.habit_planning_HourPerDay;
-            uHabit.habit_data = habitData;
-            uHabit.added_date = DateTime.Now;
-            uHabit.added_by = MainDashboard.USER_ID;
-
-            dalHabit.HabitInsertAndHistoryRecord(uHabit);
-
-            //loading
-            //message to ask if want to change current running and pending plan date follow new hour per day
-            //if yes then change
-            //change by machine
-            //get machine data
-            //load machine data
-            //load schedule by machine data
-            //adjust start and end date with the new hour per day
-            //finish changed
         }
 
         private void label23_Click(object sender, EventArgs e)
@@ -1379,15 +1364,14 @@ namespace FactoryManagementSoftware.UI
 
         public void StartForm()
         {
-            //try
-            //{
+            try
+            {
                 Application.Run(new frmLoading());
-            //}
-            // catch (ThreadAbortException)
-            //{
-            //    // ignore it
-            //    Thread.ResetAbort();
-            //}
+            }
+            catch (ThreadAbortException)
+            {
+                
+            }
         }
 
         private void btnMaterialCheck_Click(object sender, EventArgs e)
@@ -1665,6 +1649,7 @@ namespace FactoryManagementSoftware.UI
 
         private void getPlanningData()
         {
+            uPlanning.plan_id = -1;
             uPlanning.part_name = cmbPartName.Text;
             uPlanning.part_code = cmbPartCode.Text;
 
@@ -2311,6 +2296,337 @@ namespace FactoryManagementSoftware.UI
         private void txtQuoCT_TextChanged(object sender, EventArgs e)
         {
             partInfoEdited = true;
+        }
+
+        private void txtHoursPerDay_Leave(object sender, EventArgs e)
+        {
+            string habitData = txtHoursPerDay.Text;
+
+            //check old data
+            string oldHabitData = "";
+
+            DataTable dt = dalHabit.HabitSearch(text.habit_belongTo_PlanningPage, text.habit_planning_HourPerDay);
+
+            foreach(DataRow row in dt.Rows)
+            {
+                oldHabitData = row[dalHabit.HabitData].ToString();
+            }
+
+            if(oldHabitData != habitData)
+            {
+                //save habit
+                uHabit.belong_to = text.habit_belongTo_PlanningPage;
+                uHabit.habit_name = text.habit_planning_HourPerDay;
+                uHabit.habit_data = habitData;
+                uHabit.added_date = DateTime.Now;
+                uHabit.added_by = MainDashboard.USER_ID;
+
+                dalHabit.HabitInsertAndHistoryRecord(uHabit);
+
+                //message to ask if want to change current running and pending plan date follow new hour per day
+                if (MessageBox.Show("Total working hour per day changed!\nDo you want to update all the current running or pending plan as well?", "Message",
+                                                                  MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Thread t = null;
+                    bool aborted = false;
+                    //if yes then change
+                    //loading
+                    try
+                    {
+                        t = new Thread(new ThreadStart(StartForm));
+                        Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                        
+                        //get machine data
+                        DataTable dt_plan = dalPlan.Select();
+                        int previousMacID = -1, previousFamilyWith = -1;
+                        DateTime previousStart = DateTime.Today;
+                        DateTime previousEnd = DateTime.Today;
+
+                        foreach(DataRow row in dt_plan.Rows)
+                        {
+                            string status = row[dalPlan.planStatus].ToString();
+
+                            if(status != text.planning_status_cancelled && status != text.planning_status_completed)
+                            {
+                                int currentMacID = Convert.ToInt32(row[dalPlan.machineID]);
+                                int currentFamilyWith = Convert.ToInt32(row[dalPlan.familyWith]);
+                                int oldProDay = Convert.ToInt32(row[dalPlan.productionDay]);
+                                float oldProHour = Convert.ToSingle(row[dalPlan.productionHour]);
+                                float oldProHourPerDay = Convert.ToSingle(row[dalPlan.productionHourPerDay]);
+
+                                float totalHour = oldProHourPerDay * oldProDay + oldProHour;
+
+                                DateTime oldStart = Convert.ToDateTime(row[dalPlan.productionStartDate]);
+                                DateTime oldEnd = Convert.ToDateTime(row[dalPlan.productionEndDate]);
+
+                                int newProDay = 0;
+                                float newProHour = 0, newProHourPerDay = 0;
+
+                                if(habitData != oldProHourPerDay.ToString())
+                                {
+                                    newProHourPerDay = Convert.ToSingle(habitData);
+
+                                    if (status == text.planning_status_running)
+                                    {
+                                        
+
+                                        if (newProHourPerDay != 0)
+                                        {
+                                            newProDay = Convert.ToInt32(Math.Floor(totalHour / Convert.ToSingle(newProHourPerDay)));
+                                            newProHour = totalHour - Convert.ToSingle(newProDay * newProHourPerDay);
+                                        }
+                                        else
+                                        {
+                                            newProDay = oldProDay;
+                                            newProHour = oldProHour;
+                                            newProHourPerDay = oldProHourPerDay;
+                                        }
+
+                                        //get total day left 
+                                        DateTime today = DateTime.Today;
+                                        int proDayLeft = 0;
+
+                                        if (today <= oldEnd)
+                                        {
+                                            proDayLeft = tool.getNumberOfDayBetweenTwoDate(today, oldEnd, false);
+                                        }
+                                        
+
+                                        int totalProDay = newProDay;
+
+                                        if (newProHour > 0)
+                                        {
+                                            totalProDay++;
+                                        }
+
+                                        //change start & end date
+                                        DateTime newStart = DateTime.Today;
+
+                                        DateTime newEnd = new DateTime();
+
+                                        if (proDayLeft <= 0)
+                                        {
+                                            newStart = oldStart;
+                                            newEnd = oldEnd;
+                                        }
+                                        else
+                                        {
+                                            float totalHourLeft = oldProHourPerDay * proDayLeft;
+
+                                            int totalProDayLeft = 0;
+                                            float totalProHourLeft = 0;
+
+                                            if (newProHourPerDay != 0)
+                                            {
+                                                totalProDayLeft = Convert.ToInt32(Math.Floor(totalHourLeft / Convert.ToSingle(newProHourPerDay)));
+                                                totalProHourLeft = totalHourLeft - Convert.ToSingle(totalProDayLeft * newProHourPerDay);
+
+                                                if(totalProHourLeft > 0)
+                                                {
+                                                    totalProDayLeft++;
+                                                }
+
+                                                totalProDay = totalProDayLeft;
+                                            }
+
+                                            newEnd = tool.EstimateEndDate(newStart, totalProDay, false);
+                                        }
+                                        
+                                        if (tool.checkIfSunday(newEnd))
+                                        {
+                                            newEnd.AddDays(1);
+                                        }
+
+                                        if (previousMacID == -1)
+                                        {
+                                            previousMacID = currentMacID;
+                                            //previousStart = previousStart;
+                                        }
+                                        else if (previousMacID == currentMacID)
+                                        {
+                                            if(previousFamilyWith == currentFamilyWith && previousFamilyWith != -1)
+                                            {
+                                                newStart = oldStart;
+                                            }
+                                            else
+                                            {
+                                                newStart = previousEnd.AddDays(1);
+
+                                                if (tool.checkIfSunday(newStart))
+                                                {
+                                                    newStart.AddDays(1);
+                                                }
+                                            }
+
+                                            newEnd = tool.EstimateEndDate(newStart, totalProDay, false);
+
+                                            if (tool.checkIfSunday(newEnd))
+                                            {
+                                                newEnd.AddDays(1);
+                                            }
+                                           
+                                        }
+                                        else
+                                        {
+                                            previousMacID = currentMacID;
+                                        }
+
+                                        if (previousFamilyWith == currentFamilyWith && previousFamilyWith != -1)
+                                        {
+                                            if (previousEnd < newEnd)
+                                            {
+                                                previousEnd = newEnd;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            previousEnd = newEnd;
+                                        }
+
+                                        if(newProHour < 0)
+                                        {
+                                            newProHour = 0;
+                                        }
+
+                                        previousStart = oldStart;
+                                        previousFamilyWith = currentFamilyWith;
+                                        //change production day & hour data
+                                        uPlan.plan_id = Convert.ToInt32(row[dalPlan.planID]);
+                                        uPlan.production_hour = newProHour.ToString();
+                                        uPlan.production_day = newProDay.ToString();
+                                        uPlan.production_hour_per_day = newProHourPerDay.ToString();
+                                        uPlan.production_start_date = oldStart.Date;
+                                        uPlan.production_end_date = newEnd.Date;
+                                        uPlan.plan_updated_date = DateTime.Now;
+                                        uPlan.plan_updated_by = MainDashboard.USER_ID;
+
+                                        //update to db
+                                        dalPlanAction.planningScheduleAndProDayChange(uPlan, oldProDay.ToString(), oldProHour.ToString(), oldProHourPerDay.ToString(), oldStart.Date.ToString(), newEnd.Date.ToString());
+                                    }
+                                    else if (status == text.planning_status_pending)
+                                    {
+
+                                        if (newProHourPerDay != 0)
+                                        {
+                                            newProDay = Convert.ToInt32(Math.Floor(totalHour / Convert.ToSingle(newProHourPerDay)));
+                                            newProHour = totalHour - Convert.ToSingle(newProDay * newProHourPerDay);
+                                        }
+                                        else
+                                        {
+                                            newProDay = oldProDay;
+                                            newProHour = oldProHour;
+                                            newProHourPerDay = oldProHourPerDay;
+                                        }
+
+                                        int totalProDay = newProDay;
+
+                                        if(newProHour > 0)
+                                        {
+                                            totalProDay++;
+                                        }
+
+                                        //change start & end date
+                                        DateTime newStart = Convert.ToDateTime(row[dalPlan.productionStartDate]);
+
+                                        DateTime newEnd = tool.EstimateEndDate(newStart, totalProDay, false);
+
+                                        
+
+                                        if (tool.checkIfSunday(newEnd))
+                                        {
+                                            newEnd.AddDays(1);
+                                        }
+
+                                        
+
+                                        if (previousMacID == -1)
+                                        {
+                                            currentMacID = previousMacID;
+                                           
+                                        }
+                                        else if(previousMacID == currentMacID)
+                                        {
+                                            if (previousFamilyWith == currentFamilyWith && previousFamilyWith != -1)
+                                            {
+                                                newStart = previousStart;
+                                            }
+                                            else
+                                            {
+                                                newStart = previousEnd.AddDays(1);
+
+                                                if (tool.checkIfSunday(newStart))
+                                                {
+                                                    newStart.AddDays(1);
+                                                }
+                                            }
+                                           
+
+                                            newEnd = tool.EstimateEndDate(newStart, totalProDay, false);
+
+                                            if (tool.checkIfSunday(newEnd))
+                                            {
+                                                newEnd.AddDays(1);
+                                            }
+                                          
+                                        }
+                                        else
+                                        {
+                                            currentMacID = previousMacID;
+                                            
+                                        }
+
+                                        if (previousFamilyWith == currentFamilyWith && previousFamilyWith != -1)
+                                        {
+                                            if(previousEnd < newEnd)
+                                            {
+                                                previousEnd = newEnd;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            previousEnd = newEnd;
+                                        }
+
+                                        previousFamilyWith = currentFamilyWith;
+                                        previousStart = newStart;
+
+                                        //change production day & hour data
+                                        uPlan.plan_id = Convert.ToInt32(row[dalPlan.planID]);
+                                        uPlan.production_hour = newProHour.ToString();
+                                        uPlan.production_day = newProDay.ToString();
+                                        uPlan.production_hour_per_day = newProHourPerDay.ToString();
+                                        uPlan.production_start_date = newStart.Date;
+                                        uPlan.production_end_date = newEnd.Date;
+                                        uPlan.plan_updated_date = DateTime.Now;
+                                        uPlan.plan_updated_by = MainDashboard.USER_ID;
+
+                                        //update to db
+                                        dalPlanAction.planningScheduleAndProDayChange(uPlan, oldProDay.ToString(), oldProHour.ToString(), oldProHourPerDay.ToString(), newStart.Date.ToString(), newEnd.Date.ToString());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (ThreadAbortException)
+                    {
+                        // ignore it
+                        aborted = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        tool.saveToTextAndMessageToUser(ex);
+                    }
+                    finally
+                    {
+                        Cursor = Cursors.Arrow; // change cursor to normal type
+                        //finish changed
+                        if (!aborted)
+                            t.Abort();
+                    }
+                   
+
+                }
+            }
         }
     }
 }

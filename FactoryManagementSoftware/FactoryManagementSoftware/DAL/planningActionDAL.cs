@@ -281,6 +281,133 @@ namespace FactoryManagementSoftware.DAL
             return success;
         }
 
+        //production plan schedule and pro day change
+        public bool planningScheduleAndProDayChange(PlanningBLL u, string oldProDay, string oldProHour, string oldProHourPerDay, string oldStart, string oldEnd)
+        {
+            bool success = dalPlanning.scheduleAndProDayUpdate(u);
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to change production plan's schedule or pro day!");
+                tool.historyRecord(text.System, "Failed to change production plan's schedule or pro day!", DateTime.Now, MainDashboard.USER_ID);
+            }
+            else
+            {
+                if(u.production_start_date.Date.ToString() != oldStart)
+                {
+                    tool.historyRecord(text.plan_schedule_change, "PLAN ID " + u.plan_id + " Start Date: " + oldStart + " --> " + u.production_start_date.Date.ToString(), DateTime.Now, MainDashboard.USER_ID);
+
+                    uPlanningAction.planning_id = u.plan_id;
+                    uPlanningAction.added_date = u.plan_updated_date;
+                    uPlanningAction.added_by = u.plan_updated_by;
+                    uPlanningAction.action = text.plan_schedule_change;
+                    uPlanningAction.action_detail = "";
+                    uPlanningAction.action_from = oldStart;
+                    uPlanningAction.action_to = u.production_start_date.ToShortDateString();
+                    uPlanningAction.note = "";
+
+                    bool actionSaveSuccess = Insert(uPlanningAction);
+
+                    if (!actionSaveSuccess)
+                    {
+                        MessageBox.Show("Failed to save planning action data (planningActionDAL_planningScheduleAndProDayChange)");
+                        tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningScheduleAndProDayChange)", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+
+                if (u.production_end_date.Date.ToString() != oldEnd)
+                {
+                    tool.historyRecord(text.plan_schedule_change, "PLAN ID " + u.plan_id + " End Date: " + oldEnd + " --> " + u.production_end_date.Date.ToString(), DateTime.Now, MainDashboard.USER_ID);
+
+                    uPlanningAction.planning_id = u.plan_id;
+                    uPlanningAction.added_date = u.plan_updated_date;
+                    uPlanningAction.added_by = u.plan_updated_by;
+                    uPlanningAction.action = text.plan_schedule_change;
+                    uPlanningAction.action_detail = "";
+                    uPlanningAction.action_from = oldEnd;
+                    uPlanningAction.action_to = u.production_end_date.ToShortDateString();
+                    uPlanningAction.note = "";
+
+                    bool actionSaveSuccess = Insert(uPlanningAction);
+
+                    if (!actionSaveSuccess)
+                    {
+                        MessageBox.Show("Failed to save planning action data (planningActionDAL_planningScheduleAndProDayChange)");
+                        tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningScheduleAndProDayChange)", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+
+                if (u.production_day.ToString() != oldProDay)
+                {
+                    tool.historyRecord(text.plan_proday_change, "PLAN ID " + u.plan_id + " Pro Day: " + oldProDay + " --> " + u.production_day.ToString(), DateTime.Now, MainDashboard.USER_ID);
+
+                    uPlanningAction.planning_id = u.plan_id;
+                    uPlanningAction.added_date = u.plan_updated_date;
+                    uPlanningAction.added_by = u.plan_updated_by;
+                    uPlanningAction.action = text.plan_proday_change;
+                    uPlanningAction.action_detail = "";
+                    uPlanningAction.action_from = oldProDay;
+                    uPlanningAction.action_to = u.production_day.ToString();
+                    uPlanningAction.note = "";
+
+                    bool actionSaveSuccess = Insert(uPlanningAction);
+
+                    if (!actionSaveSuccess)
+                    {
+                        MessageBox.Show("Failed to save planning action data (planningActionDAL_planningScheduleAndProDayChange)");
+                        tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningScheduleAndProDayChange)", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+
+                if (u.production_hour.ToString() != oldProHour)
+                {
+                    tool.historyRecord(text.plan_prohour_change, "PLAN ID " + u.plan_id + " Pro Hour: " + oldProHour + " --> " + u.production_hour.ToString(), DateTime.Now, MainDashboard.USER_ID);
+
+                    uPlanningAction.planning_id = u.plan_id;
+                    uPlanningAction.added_date = u.plan_updated_date;
+                    uPlanningAction.added_by = u.plan_updated_by;
+                    uPlanningAction.action = text.plan_prohour_change;
+                    uPlanningAction.action_detail = "";
+                    uPlanningAction.action_from = oldProHour;
+                    uPlanningAction.action_to = u.production_hour.ToString();
+                    uPlanningAction.note = "";
+
+                    bool actionSaveSuccess = Insert(uPlanningAction);
+
+                    if (!actionSaveSuccess)
+                    {
+                        MessageBox.Show("Failed to save planning action data (planningActionDAL_planningScheduleAndProDayChange)");
+                        tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningScheduleAndProDayChange)", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+
+                if (u.production_hour_per_day.ToString() != oldProHourPerDay)
+                {
+                    tool.historyRecord(text.plan_prohourperday_change, "PLAN ID " + u.plan_id + " Pro Hour Per Day: " + oldProHourPerDay + " --> " + u.production_hour_per_day.ToString(), DateTime.Now, MainDashboard.USER_ID);
+
+                    uPlanningAction.planning_id = u.plan_id;
+                    uPlanningAction.added_date = u.plan_updated_date;
+                    uPlanningAction.added_by = u.plan_updated_by;
+                    uPlanningAction.action = text.plan_prohourperday_change;
+                    uPlanningAction.action_detail = "";
+                    uPlanningAction.action_from = oldProHourPerDay;
+                    uPlanningAction.action_to = u.production_hour_per_day.ToString();
+                    uPlanningAction.note = "";
+
+                    bool actionSaveSuccess = Insert(uPlanningAction);
+
+                    if (!actionSaveSuccess)
+                    {
+                        MessageBox.Show("Failed to save planning action data (planningActionDAL_planningScheduleAndProDayChange)");
+                        tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningScheduleAndProDayChange)", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+
+            }
+
+            return success;
+        }
+
         //production plan status change
         public bool planningFamilyWithChange(PlanningBLL u, string oldFamilyWith)
         {
