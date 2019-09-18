@@ -34,7 +34,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnExcel = new System.Windows.Forms.Button();
             this.btnPlan = new System.Windows.Forms.Button();
-            this.btnCheck = new System.Windows.Forms.Button();
+            this.btnFilterApply = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -66,10 +66,11 @@
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.btnMatList = new System.Windows.Forms.Button();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpMainSchedule = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.btnFilter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSchedule)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -84,7 +85,7 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
-            this.tableLayoutPanel9.SuspendLayout();
+            this.tlpMainSchedule.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -109,14 +110,14 @@
             this.dgvSchedule.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSchedule.GridColor = System.Drawing.Color.Black;
-            this.dgvSchedule.Location = new System.Drawing.Point(3, 300);
+            this.dgvSchedule.Location = new System.Drawing.Point(3, 305);
             this.dgvSchedule.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.dgvSchedule.Name = "dgvSchedule";
             this.dgvSchedule.ReadOnly = true;
             this.dgvSchedule.RowHeadersVisible = false;
             this.dgvSchedule.RowTemplate.Height = 40;
             this.dgvSchedule.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSchedule.Size = new System.Drawing.Size(1528, 499);
+            this.dgvSchedule.Size = new System.Drawing.Size(1528, 494);
             this.dgvSchedule.TabIndex = 109;
             this.dgvSchedule.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSchedule_CellDoubleClick);
             this.dgvSchedule.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvSchedule_CellFormatting);
@@ -126,7 +127,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 7);
+            this.label1.Location = new System.Drawing.Point(4, 14);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(249, 20);
@@ -156,7 +157,7 @@
             this.btnPlan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPlan.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPlan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(160)))), ((int)(((byte)(225)))));
-            this.btnPlan.Location = new System.Drawing.Point(1236, 1);
+            this.btnPlan.Location = new System.Drawing.Point(1235, 1);
             this.btnPlan.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnPlan.Name = "btnPlan";
             this.btnPlan.Size = new System.Drawing.Size(90, 36);
@@ -165,29 +166,29 @@
             this.btnPlan.UseVisualStyleBackColor = false;
             this.btnPlan.Click += new System.EventHandler(this.btnPlan_Click);
             // 
-            // btnCheck
+            // btnFilterApply
             // 
-            this.btnCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCheck.ForeColor = System.Drawing.Color.White;
-            this.btnCheck.Location = new System.Drawing.Point(1405, 1);
-            this.btnCheck.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.btnCheck.Name = "btnCheck";
-            this.btnCheck.Size = new System.Drawing.Size(120, 47);
-            this.btnCheck.TabIndex = 114;
-            this.btnCheck.Text = "APPLY";
-            this.btnCheck.UseVisualStyleBackColor = false;
-            this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
+            this.btnFilterApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFilterApply.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnFilterApply.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFilterApply.ForeColor = System.Drawing.Color.White;
+            this.btnFilterApply.Location = new System.Drawing.Point(1405, 1);
+            this.btnFilterApply.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.btnFilterApply.Name = "btnFilterApply";
+            this.btnFilterApply.Size = new System.Drawing.Size(120, 47);
+            this.btnFilterApply.TabIndex = 114;
+            this.btnFilterApply.Text = "APPLY";
+            this.btnFilterApply.UseVisualStyleBackColor = false;
+            this.btnFilterApply.Click += new System.EventHandler(this.btnCheck_Click);
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 52);
+            this.groupBox1.Location = new System.Drawing.Point(3, 51);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1528, 155);
+            this.groupBox1.Size = new System.Drawing.Size(1528, 154);
             this.groupBox1.TabIndex = 113;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "FILTER";
@@ -209,7 +210,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1522, 129);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1522, 128);
             this.tableLayoutPanel1.TabIndex = 115;
             // 
             // groupBox2
@@ -218,7 +219,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(1220, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(299, 123);
+            this.groupBox2.Size = new System.Drawing.Size(299, 122);
             this.groupBox2.TabIndex = 115;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "SEARCH";
@@ -235,7 +236,7 @@
             this.tableLayoutPanel6.RowCount = 2;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 48.19277F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 51.80723F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(293, 97);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(293, 96);
             this.tableLayoutPanel6.TabIndex = 116;
             // 
             // txtSearch
@@ -298,7 +299,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(934, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(280, 123);
+            this.groupBox3.Size = new System.Drawing.Size(280, 122);
             this.groupBox3.TabIndex = 115;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "LOCATION";
@@ -318,7 +319,7 @@
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 37F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 63F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(274, 97);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(274, 96);
             this.tableLayoutPanel4.TabIndex = 115;
             // 
             // cmbMachine
@@ -379,7 +380,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(528, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(400, 123);
+            this.groupBox4.Size = new System.Drawing.Size(400, 122);
             this.groupBox4.TabIndex = 116;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "PERIOD";
@@ -399,7 +400,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 37F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 63F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(394, 97);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(394, 96);
             this.tableLayoutPanel3.TabIndex = 115;
             // 
             // dtpTo
@@ -448,7 +449,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(3, 3);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(519, 123);
+            this.groupBox5.Size = new System.Drawing.Size(519, 122);
             this.groupBox5.TabIndex = 117;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "STATUS";
@@ -471,7 +472,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(513, 97);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(513, 96);
             this.tableLayoutPanel2.TabIndex = 115;
             // 
             // cbCompleted
@@ -552,19 +553,21 @@
             // 
             // tableLayoutPanel7
             // 
-            this.tableLayoutPanel7.ColumnCount = 3;
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 86.97644F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 6.609948F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 6.348167F));
-            this.tableLayoutPanel7.Controls.Add(this.btnMatList, 1, 0);
-            this.tableLayoutPanel7.Controls.Add(this.btnPlan, 0, 0);
-            this.tableLayoutPanel7.Controls.Add(this.btnExcel, 2, 0);
+            this.tableLayoutPanel7.ColumnCount = 4;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel7.Controls.Add(this.btnFilter, 0, 0);
+            this.tableLayoutPanel7.Controls.Add(this.btnExcel, 3, 0);
+            this.tableLayoutPanel7.Controls.Add(this.btnMatList, 2, 0);
+            this.tableLayoutPanel7.Controls.Add(this.btnPlan, 1, 0);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(1528, 43);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(1528, 42);
             this.tableLayoutPanel7.TabIndex = 115;
             // 
             // btnMatList
@@ -574,7 +577,7 @@
             this.btnMatList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMatList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMatList.ForeColor = System.Drawing.Color.Black;
-            this.btnMatList.Location = new System.Drawing.Point(1337, 1);
+            this.btnMatList.Location = new System.Drawing.Point(1335, 1);
             this.btnMatList.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnMatList.Name = "btnMatList";
             this.btnMatList.Size = new System.Drawing.Size(90, 36);
@@ -588,67 +591,69 @@
             this.tableLayoutPanel8.ColumnCount = 2;
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 91.77546F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.224543F));
-            this.tableLayoutPanel8.Controls.Add(this.btnCheck, 1, 0);
+            this.tableLayoutPanel8.Controls.Add(this.btnFilterApply, 1, 0);
             this.tableLayoutPanel8.Controls.Add(this.lblResetAll, 0, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 213);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 211);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 1;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel8.Size = new System.Drawing.Size(1528, 50);
             this.tableLayoutPanel8.TabIndex = 116;
             // 
-            // tableLayoutPanel9
+            // tlpMainSchedule
             // 
-            this.tableLayoutPanel9.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tlpMainSchedule.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel9.ColumnCount = 1;
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel10, 0, 3);
-            this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel7, 0, 0);
-            this.tableLayoutPanel9.Controls.Add(this.dgvSchedule, 0, 4);
-            this.tableLayoutPanel9.Controls.Add(this.groupBox1, 0, 1);
-            this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel8, 0, 2);
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(21, 12);
-            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
-            this.tableLayoutPanel9.RowCount = 5;
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.226175F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.25F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.125F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.25F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 62.5F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(1534, 800);
-            this.tableLayoutPanel9.TabIndex = 117;
+            this.tlpMainSchedule.ColumnCount = 1;
+            this.tlpMainSchedule.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMainSchedule.Controls.Add(this.tableLayoutPanel10, 0, 3);
+            this.tlpMainSchedule.Controls.Add(this.tableLayoutPanel7, 0, 0);
+            this.tlpMainSchedule.Controls.Add(this.dgvSchedule, 0, 4);
+            this.tlpMainSchedule.Controls.Add(this.groupBox1, 0, 1);
+            this.tlpMainSchedule.Controls.Add(this.tableLayoutPanel8, 0, 2);
+            this.tlpMainSchedule.Location = new System.Drawing.Point(21, 12);
+            this.tlpMainSchedule.Name = "tlpMainSchedule";
+            this.tlpMainSchedule.RowCount = 5;
+            this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6F));
+            this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7F));
+            this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
+            this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 62F));
+            this.tlpMainSchedule.Size = new System.Drawing.Size(1534, 800);
+            this.tlpMainSchedule.TabIndex = 117;
             // 
             // tableLayoutPanel10
             // 
-            this.tableLayoutPanel10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tableLayoutPanel10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel10.ColumnCount = 2;
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 260F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1268F));
             this.tableLayoutPanel10.Controls.Add(this.btnRefresh, 1, 0);
             this.tableLayoutPanel10.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 269);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 267);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(1528, 27);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(1528, 34);
             this.tableLayoutPanel10.TabIndex = 119;
             // 
             // btnRefresh
             // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
             this.btnRefresh.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_available_updates_96;
             this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefresh.ForeColor = System.Drawing.Color.White;
-            this.btnRefresh.Location = new System.Drawing.Point(262, 2);
+            this.btnRefresh.Location = new System.Drawing.Point(259, 2);
             this.btnRefresh.Margin = new System.Windows.Forms.Padding(2);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(25, 23);
+            this.btnRefresh.Size = new System.Drawing.Size(30, 30);
             this.btnRefresh.TabIndex = 118;
             this.btnRefresh.UseVisualStyleBackColor = false;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
@@ -659,13 +664,28 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // btnFilter
+            // 
+            this.btnFilter.BackColor = System.Drawing.Color.White;
+            this.btnFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFilter.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFilter.ForeColor = System.Drawing.Color.Black;
+            this.btnFilter.Location = new System.Drawing.Point(3, 1);
+            this.btnFilter.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.btnFilter.Name = "btnFilter";
+            this.btnFilter.Size = new System.Drawing.Size(125, 36);
+            this.btnFilter.TabIndex = 119;
+            this.btnFilter.Text = "SHOW FILTER";
+            this.btnFilter.UseVisualStyleBackColor = false;
+            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
+            // 
             // frmMachineSchedule
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1583, 853);
-            this.Controls.Add(this.tableLayoutPanel9);
+            this.Controls.Add(this.tlpMainSchedule);
             this.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmMachineSchedule";
@@ -692,7 +712,7 @@
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
-            this.tableLayoutPanel9.ResumeLayout(false);
+            this.tlpMainSchedule.ResumeLayout(false);
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
             this.ResumeLayout(false);
@@ -705,7 +725,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnExcel;
         private System.Windows.Forms.Button btnPlan;
-        private System.Windows.Forms.Button btnCheck;
+        private System.Windows.Forms.Button btnFilterApply;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label3;
@@ -736,10 +756,11 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
+        private System.Windows.Forms.TableLayoutPanel tlpMainSchedule;
         private System.Windows.Forms.Button btnMatList;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
         private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.Button btnFilter;
     }
 }

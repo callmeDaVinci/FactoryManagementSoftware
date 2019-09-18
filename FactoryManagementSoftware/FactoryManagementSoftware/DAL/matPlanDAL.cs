@@ -41,7 +41,9 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"SELECT * FROM tbl_matplan 
                                 INNER JOIN tbl_item 
                                 ON tbl_matplan.mat_code = tbl_item.item_code
-                                INNER JOIN tbl_plan ON tbl_matplan.plan_id = tbl_plan.plan_id ORDER BY tbl_item.item_cat ASC, tbl_matplan.mat_code ASC";
+                                INNER JOIN tbl_plan ON tbl_matplan.plan_id = tbl_plan.plan_id 
+                                INNER JOIN tbl_mac ON tbl_plan.machine_id = tbl_mac.mac_id
+                                ORDER BY tbl_item.item_cat ASC, tbl_matplan.mat_code ASC";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);

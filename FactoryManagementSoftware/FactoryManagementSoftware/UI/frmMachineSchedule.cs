@@ -34,6 +34,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             tool.DoubleBuffered(dgvSchedule, true);
+            FilterHideOrShow(filterHide);
         }
 
         #region Variable/ object setting
@@ -86,9 +87,29 @@ namespace FactoryManagementSoftware.UI
 
         private bool loaded = false;
         private bool ableLoadData = true;
+        private bool filterHide = true;
         #endregion
 
         #region UI Setting
+
+        private void FilterHideOrShow(bool hide)
+        {
+            if(hide)
+            {
+                btnFilter.Text = "SHOW FILTER";
+                tlpMainSchedule.RowStyles[1] = new RowStyle(SizeType.Percent, 0);
+                tlpMainSchedule.RowStyles[2] = new RowStyle(SizeType.Percent, 0);
+                tlpMainSchedule.RowStyles[4] = new RowStyle(SizeType.Percent, 85f);
+                //tlpMainSchedule.RowStyles[5] = new RowStyle(SizeType.Percent, 83f);
+            }
+            else
+            {
+                btnFilter.Text = "HIDE FILTER";
+                tlpMainSchedule.RowStyles[1] = new RowStyle(SizeType.Percent, 20f);
+                tlpMainSchedule.RowStyles[2] = new RowStyle(SizeType.Percent, 7f);
+                tlpMainSchedule.RowStyles[4] = new RowStyle(SizeType.Percent, 62f);
+            }
+        }
 
         private DataTable NewScheduleTable()
         {
@@ -268,6 +289,49 @@ namespace FactoryManagementSoftware.UI
             
         }
 
+        private DataTable specialDataSort(DataTable dt)
+        {
+            DataTable sortedDt = dt.Clone();
+            string Fac = null;
+            dt.AcceptChanges();
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row.RowState != DataRowState.Deleted)
+                {
+                    string newFac = row[dalMac.MacLocation].ToString();
+                    if (Fac != newFac)
+                    {
+                        foreach (DataRow row2 in dt.Rows)
+                        {
+                            if (row2.RowState != DataRowState.Deleted)
+                            {
+                                string FacSearch = row2[dalMac.MacLocation].ToString();
+
+                                if (Fac == FacSearch)
+                                {
+                                    DataRow newRow2 = sortedDt.NewRow();
+                                    newRow2 = row2;
+                                    sortedDt.ImportRow(newRow2);
+                                    row2.Delete();
+                                }
+                            }
+
+
+                        }
+                    }
+
+                    DataRow newRow = sortedDt.NewRow();
+                    newRow = row;
+                    sortedDt.ImportRow(newRow);
+                    row.Delete();
+                    Fac = newFac;
+                }
+
+            }
+
+            return sortedDt;
+        }
+
         private void loadScheduleData()
         {
             #region Search Filtering
@@ -292,6 +356,9 @@ namespace FactoryManagementSoftware.UI
                 dt = dalPlanning.Select();
 
             }
+
+            dt = specialDataSort(dt);
+
             #endregion
 
             DataTable dt_Schedule = NewScheduleTable();
@@ -822,10 +889,11 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region material list check
+
         private void btnMatList_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            
+
             frmMatPlanningList frm = new frmMatPlanningList();
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();
@@ -835,6 +903,7 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region datagridview cell formatting
+
         private void dgvSchedule_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             DataGridView dgv = dgvSchedule;
@@ -876,6 +945,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     ColorSet = Color.FromArgb(64, 64, 64);
                 }
+
                 dgv.Rows[row].Cells[headerStatus].Style.BackColor = ColorSet;
                 dgv.Rows[row].Cells[headerStatus].Style.ForeColor = Color.Black;
                 //if (ColorSet != dgv.DefaultCellStyle.BackColor)
@@ -890,7 +960,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (value == "")
                 {
-                    dgv.Rows[row].Height = 6;
+                    dgv.Rows[row].Height = 12;
                     //dgv.Rows[row].Cells[headerStatus].Style.BackColor = Color.FromArgb(64, 64, 64);
                     dgv.Rows[row].DefaultCellStyle.BackColor = Color.FromArgb(64, 64, 64);
                 }
@@ -1445,6 +1515,20 @@ namespace FactoryManagementSoftware.UI
                 t.Abort();
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            if (filterHide)
+            {
+                filterHide = false;
+            }
+            else
+            {
+                filterHide = true;
+            }
+
+            FilterHideOrShow(filterHide);
         }
     }
 }

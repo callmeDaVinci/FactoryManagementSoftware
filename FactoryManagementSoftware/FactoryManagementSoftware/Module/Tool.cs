@@ -384,6 +384,25 @@ namespace FactoryManagementSoftware.Module
             cmb.SelectedIndex = -1;
         }
 
+        public void loadAllColorMatToComboBox(ComboBox cmb)
+        {
+            DataTable dt = dalMaterial.catSearch("Master Batch");
+            DataTable dt2 = dalMaterial.catSearch("Pigment");
+
+            DataTable dtAll = dt.Copy();
+            dtAll.Merge(dt2);
+
+            dtAll.DefaultView.Sort = "material_code ASC";
+
+            dtAll.Rows.Add("COMPOUND");
+            dtAll.Rows.Add("NATURAL");
+
+            cmb.DataSource = dtAll;
+
+            cmb.DisplayMember = "material_code";
+            cmb.SelectedIndex = -1;
+        }
+
         public void loadCustomerAndAllToComboBox(ComboBox cmb)
         {
             DataTable dt = dalCust.Select();
@@ -3412,22 +3431,17 @@ namespace FactoryManagementSoftware.Module
                         DateTime plannedStart = Convert.ToDateTime(row[dalPlanning.productionStartDate]);
                         DateTime plannedEnd = Convert.ToDateTime(row[dalPlanning.productionEndDate]);
 
-                        if (plannedStart == null || end <= plannedStart)
+                        if (plannedStart == null || end < plannedStart || end == plannedStart)
+                        {
+                            available = true;
+                        }
+                        else if (plannedEnd == null || start > plannedEnd || start == plannedEnd)
                         {
                             available = true;
                         }
                         else
                         {
-                            available = false;
-                        }
-
-                        if (plannedEnd == null || start >= plannedEnd)
-                        {
-                            available = true;
-                        }
-                        else
-                        {
-                            available = false;
+                            return false;
                         }
                     } 
                 }

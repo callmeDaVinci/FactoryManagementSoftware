@@ -718,7 +718,13 @@ namespace FactoryManagementSoftware.UI
                         }
                     }
                     
-                    
+                    else
+                    {
+                        DataRow newRow = new_dt.NewRow();
+                        newRow = row;
+                        new_dt.ImportRow(newRow);
+                        row.Delete();
+                    }
                 }
                 
             }
@@ -891,10 +897,10 @@ namespace FactoryManagementSoftware.UI
                     dataChange = true;
                     dgv.Rows[rowIndex].Cells[headerStartDate].Value = frmChangeDate.start.Date;
                     dgv.Rows[rowIndex].Cells[headerEndDate].Value = frmChangeDate.end.Date;
-                    ableLoadDate = false;
-                    dtpStartDate.Value = frmChangeDate.start.Date;
-                    dtpEstimateEndDate.Value = frmChangeDate.end.Date;
-                    ableLoadDate = true;
+                    //ableLoadDate = false;
+                    //dtpStartDate.Value = frmChangeDate.start.Date;
+                    //dtpEstimateEndDate.Value = frmChangeDate.end.Date;
+                    //ableLoadDate = true;
                 }
             }
 

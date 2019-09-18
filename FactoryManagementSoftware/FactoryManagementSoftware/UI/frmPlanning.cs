@@ -51,6 +51,9 @@ namespace FactoryManagementSoftware.UI
         static public  readonly string headerQtyNeedForThisPlanning = "QTY NEED FOR THIS PLANNING";
         
         readonly string OtherPurpose = "FOR OTHER PURPOSE";
+
+        static public bool planEditing = false;
+    
         private bool ableToCalculateQty = true;
         private bool ableToLoadData = false;
         private bool materialChecked = false;
@@ -93,6 +96,20 @@ namespace FactoryManagementSoftware.UI
             code = itemCode;
         }
 
+        public frmPlanning(int planID)
+        {
+            InitializeComponent();
+
+            InitialData();
+
+            int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+
+            if (userPermission >= MainDashboard.ACTION_LVL_THREE)
+            {
+                cbEditMode.Visible = true;
+            }
+        }
+
         private void reIndex(DataTable dt)
         {
             int index = 1;
@@ -133,10 +150,57 @@ namespace FactoryManagementSoftware.UI
 
             cmbPartName.SelectedIndex = -1;
 
-            getHabitData();
+            loadHabitData();
+
         }
 
-        private void getHabitData()
+        private void InitialData(int PlanID)
+        {
+            string keywords = "Part";
+
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                DataTable dt = dalItem.catSearch(keywords);
+                DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
+                distinctTable.DefaultView.Sort = "item_name ASC";
+                cmbPartName.DataSource = distinctTable;
+                cmbPartName.DisplayMember = "item_name";
+                cmbPartName.ValueMember = "item_name";
+
+                if (string.IsNullOrEmpty(cmbPartName.Text))
+                {
+                    cmbPartCode.DataSource = null;
+                }
+            }
+            else
+            {
+                cmbPartName.DataSource = null;
+            }
+
+            cmbPartName.SelectedIndex = -1;
+
+            loadHabitData();
+
+            //load planing db data, search planid
+            DataTable dt_plan = dalPlan.idSearch(PlanID.ToString());
+
+            foreach(DataRow row in dt_plan.Rows)
+            {
+                string itemCode = row[dalPlan.partCode].ToString();
+                string itemName = tool.getItemName(itemCode);
+
+            }
+            //set item name
+            //set item code
+            //set purpose
+            //set raw material code (get from material plan list)
+            //set color material code ( get from material plan list)
+            //
+            //set
+
+        }
+
+        private void loadHabitData()
         {
             string belongTo = text.habit_belongTo_PlanningPage;
             string HourPerDayHabitData = "23";
@@ -275,14 +339,16 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadColorMaterial(string matCode)
         {
+            tool.loadAllColorMatToComboBox(cmbColorMatCode);
+
             if (dalItem.getCatName(matCode).Equals("Pigment"))
             {
-                tool.loadPigmentToComboBox(cmbColorMatCode);
+                //tool.loadPigmentToComboBox(cmbColorMatCode);
                 cmbColorMatCode.Text = matCode;
             }
             else
             {
-                tool.loadMasterBatchToComboBox(cmbColorMatCode);
+                //tool.loadMasterBatchToComboBox(cmbColorMatCode);
                 cmbColorMatCode.Text = matCode;
             }
         }
@@ -933,18 +999,21 @@ namespace FactoryManagementSoftware.UI
 
             float partWeightPerShot = txtPartWeight.Text == "" ? 1 : Convert.ToSingle(txtPartWeight.Text);
             float runnerWeightPerShot = txtRunnerWeight.Text == "" ? 1 : Convert.ToSingle(txtRunnerWeight.Text);
+            float totalWeightPerShot = partWeightPerShot + runnerWeightPerShot;
+
+            if (totalWeightPerShot == 0)
+            {
+                totalWeightPerShot = 1;
+            }
 
             if (cbRecycleUse.Checked)
             {
                 totalRecycleMat = totalMaterialAfterWastage;
                 totalRecycleMat *= 1000;
 
-                float totalWeightPerShot = partWeightPerShot + runnerWeightPerShot;
+                
 
-                if (totalWeightPerShot == 0)
-                {
-                    totalWeightPerShot = 1;
-                }
+                
 
                 if (partWeightPerShot != 0 && runnerWeightPerShot != 0)
                 {
@@ -967,7 +1036,7 @@ namespace FactoryManagementSoftware.UI
 
             int cavity = txtCavity.Text == "" ? 0 : Convert.ToInt32(txtCavity.Text);
 
-            int TotalShot = Convert.ToInt32(Math.Floor(TotalMat * 1000 / (partWeightPerShot + runnerWeightPerShot)));
+            int TotalShot = Convert.ToInt32(Math.Floor(TotalMat * 1000 / (totalWeightPerShot)));
 
             return TotalShot * cavity;
         }
