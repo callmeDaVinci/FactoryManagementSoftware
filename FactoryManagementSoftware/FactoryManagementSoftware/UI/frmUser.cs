@@ -176,5 +176,10 @@ namespace FactoryManagementSoftware.UI
             }
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
+
+        private void frmUser_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            MainDashboard.userFormOpen = false;
+        }
     }
 }

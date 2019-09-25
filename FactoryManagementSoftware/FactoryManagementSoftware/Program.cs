@@ -18,13 +18,13 @@ namespace FactoryManagementSoftware
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //Application.Run(new frmItemReport());
+            Application.Run(new frmMatPlanningList());
 
             //Application.Run(new frmMachineSchedule());
 
             //Application.Run(new MainDashboard(1));
 
-            Application.Run(new frmLogIn());
+            //Application.Run(new frmLogIn());
 
             //Application.Run(new frmForecastReport_NEW());
 

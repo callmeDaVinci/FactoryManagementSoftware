@@ -29,14 +29,23 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvTrf = new System.Windows.Forms.DataGridView();
             this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.cbTransferType = new System.Windows.Forms.CheckBox();
+            this.cbAddedType = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.cmbTrfItemCat = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.dtpEndDate = new System.Windows.Forms.DateTimePicker();
+            this.label4 = new System.Windows.Forms.Label();
             this.cmbTrfToCategory = new System.Windows.Forms.ComboBox();
             this.cmbTrfTo = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -45,17 +54,9 @@
             this.cmbTrfFrom = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
-            this.cmbTrfItemCat = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.btnCheck = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.cbAddedType = new System.Windows.Forms.CheckBox();
-            this.cbTransferType = new System.Windows.Forms.CheckBox();
             this.cbCalculateTotal = new System.Windows.Forms.CheckBox();
             this.lblTotalQty = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTrf)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -66,16 +67,24 @@
             this.dgvTrf.AllowUserToAddRows = false;
             this.dgvTrf.AllowUserToDeleteRows = false;
             this.dgvTrf.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
             this.dgvTrf.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvTrf.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvTrf.BackgroundColor = System.Drawing.Color.White;
-            this.dgvTrf.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvTrf.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgvTrf.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTrf.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.dgvTrf.GridColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTrf.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvTrf.GridColor = System.Drawing.Color.White;
             this.dgvTrf.Location = new System.Drawing.Point(2, 30);
             this.dgvTrf.Margin = new System.Windows.Forms.Padding(2);
             this.dgvTrf.Name = "dgvTrf";
@@ -147,6 +156,83 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "FILTER";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.White;
+            this.label10.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.label10.Location = new System.Drawing.Point(781, 37);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(45, 19);
+            this.label10.TabIndex = 92;
+            this.label10.Text = "RESET";
+            this.label10.Click += new System.EventHandler(this.label10_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.White;
+            this.label9.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.label9.Location = new System.Drawing.Point(575, 38);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(45, 19);
+            this.label9.TabIndex = 91;
+            this.label9.Text = "RESET";
+            this.label9.Click += new System.EventHandler(this.label9_Click);
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.Color.White;
+            this.label8.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.label8.Location = new System.Drawing.Point(1447, 11);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(72, 19);
+            this.label8.TabIndex = 90;
+            this.label8.Text = "RESET ALL";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
+            // 
+            // cbTransferType
+            // 
+            this.cbTransferType.AutoSize = true;
+            this.cbTransferType.Checked = true;
+            this.cbTransferType.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbTransferType.Location = new System.Drawing.Point(176, 98);
+            this.cbTransferType.Name = "cbTransferType";
+            this.cbTransferType.Size = new System.Drawing.Size(94, 23);
+            this.cbTransferType.TabIndex = 89;
+            this.cbTransferType.Text = "TRANSFER";
+            this.cbTransferType.UseVisualStyleBackColor = true;
+            this.cbTransferType.CheckedChanged += new System.EventHandler(this.cbTransferType_CheckedChanged);
+            // 
+            // cbAddedType
+            // 
+            this.cbAddedType.AutoSize = true;
+            this.cbAddedType.Location = new System.Drawing.Point(92, 98);
+            this.cbAddedType.Name = "cbAddedType";
+            this.cbAddedType.Size = new System.Drawing.Size(77, 23);
+            this.cbAddedType.TabIndex = 88;
+            this.cbAddedType.Text = "ADDED";
+            this.cbAddedType.UseVisualStyleBackColor = true;
+            this.cbAddedType.CheckedChanged += new System.EventHandler(this.cbAddedType_CheckedChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(8, 101);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(78, 19);
+            this.label6.TabIndex = 87;
+            this.label6.Text = "DATE TYPE:";
+            // 
             // txtSearch
             // 
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -159,15 +245,18 @@
             this.txtSearch.TabIndex = 86;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
-            // label5
+            // cmbTrfItemCat
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1125, 37);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(191, 19);
-            this.label5.TabIndex = 85;
-            this.label5.Text = "SEARCH (BY CODE/NAME/ID)";
+            this.cmbTrfItemCat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTrfItemCat.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbTrfItemCat.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.cmbTrfItemCat.FormattingEnabled = true;
+            this.cmbTrfItemCat.Location = new System.Drawing.Point(871, 59);
+            this.cmbTrfItemCat.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmbTrfItemCat.Name = "cmbTrfItemCat";
+            this.cmbTrfItemCat.Size = new System.Drawing.Size(239, 25);
+            this.cmbTrfItemCat.TabIndex = 57;
+            this.cmbTrfItemCat.SelectedIndexChanged += new System.EventHandler(this.cmbTrfItemCat_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -179,9 +268,19 @@
             this.label1.TabIndex = 74;
             this.label1.Text = "END DATE";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(1125, 37);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(230, 19);
+            this.label5.TabIndex = 85;
+            this.label5.Text = "SEARCH (BY CODE/NAME/ID/NOTE)";
+            // 
             // dtpEndDate
             // 
-            this.dtpEndDate.CustomFormat = "ddMMMMyy";
+            this.dtpEndDate.CustomFormat = "dd MMMM yy";
             this.dtpEndDate.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpEndDate.Location = new System.Drawing.Point(205, 59);
@@ -189,6 +288,16 @@
             this.dtpEndDate.Size = new System.Drawing.Size(186, 25);
             this.dtpEndDate.TabIndex = 73;
             this.dtpEndDate.ValueChanged += new System.EventHandler(this.dtpEndDate_ValueChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(870, 36);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(77, 19);
+            this.label4.TabIndex = 58;
+            this.label4.Text = "CATEGORY";
             // 
             // cmbTrfToCategory
             // 
@@ -280,29 +389,6 @@
             this.dtpStartDate.Value = new System.DateTime(2019, 2, 28, 0, 0, 0, 0);
             this.dtpStartDate.ValueChanged += new System.EventHandler(this.dtpStartDate_ValueChanged);
             // 
-            // cmbTrfItemCat
-            // 
-            this.cmbTrfItemCat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTrfItemCat.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbTrfItemCat.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.cmbTrfItemCat.FormattingEnabled = true;
-            this.cmbTrfItemCat.Location = new System.Drawing.Point(871, 59);
-            this.cmbTrfItemCat.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.cmbTrfItemCat.Name = "cmbTrfItemCat";
-            this.cmbTrfItemCat.Size = new System.Drawing.Size(239, 25);
-            this.cmbTrfItemCat.TabIndex = 57;
-            this.cmbTrfItemCat.SelectedIndexChanged += new System.EventHandler(this.cmbTrfItemCat_SelectedIndexChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(870, 36);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 19);
-            this.label4.TabIndex = 58;
-            this.label4.Text = "CATEGORY";
-            // 
             // btnCheck
             // 
             this.btnCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -318,40 +404,6 @@
             this.btnCheck.Text = "APPLY";
             this.btnCheck.UseVisualStyleBackColor = false;
             this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(8, 101);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(78, 19);
-            this.label6.TabIndex = 87;
-            this.label6.Text = "DATE TYPE:";
-            // 
-            // cbAddedType
-            // 
-            this.cbAddedType.AutoSize = true;
-            this.cbAddedType.Location = new System.Drawing.Point(92, 98);
-            this.cbAddedType.Name = "cbAddedType";
-            this.cbAddedType.Size = new System.Drawing.Size(77, 23);
-            this.cbAddedType.TabIndex = 88;
-            this.cbAddedType.Text = "ADDED";
-            this.cbAddedType.UseVisualStyleBackColor = true;
-            this.cbAddedType.CheckedChanged += new System.EventHandler(this.cbAddedType_CheckedChanged);
-            // 
-            // cbTransferType
-            // 
-            this.cbTransferType.AutoSize = true;
-            this.cbTransferType.Checked = true;
-            this.cbTransferType.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbTransferType.Location = new System.Drawing.Point(176, 98);
-            this.cbTransferType.Name = "cbTransferType";
-            this.cbTransferType.Size = new System.Drawing.Size(94, 23);
-            this.cbTransferType.TabIndex = 89;
-            this.cbTransferType.Text = "TRANSFER";
-            this.cbTransferType.UseVisualStyleBackColor = true;
-            this.cbTransferType.CheckedChanged += new System.EventHandler(this.cbTransferType_CheckedChanged);
             // 
             // cbCalculateTotal
             // 
@@ -371,49 +423,6 @@
             this.lblTotalQty.Name = "lblTotalQty";
             this.lblTotalQty.Size = new System.Drawing.Size(296, 32);
             this.lblTotalQty.TabIndex = 103;
-            // 
-            // label8
-            // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.White;
-            this.label8.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.label8.Location = new System.Drawing.Point(1447, 11);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(72, 19);
-            this.label8.TabIndex = 90;
-            this.label8.Text = "RESET ALL";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.BackColor = System.Drawing.Color.White;
-            this.label9.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label9.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.label9.Location = new System.Drawing.Point(575, 38);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(45, 19);
-            this.label9.TabIndex = 91;
-            this.label9.Text = "RESET";
-            this.label9.Click += new System.EventHandler(this.label9_Click);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.Color.White;
-            this.label10.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label10.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.label10.Location = new System.Drawing.Point(781, 37);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(45, 19);
-            this.label10.TabIndex = 92;
-            this.label10.Text = "RESET";
-            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // frmTransferHistory
             // 

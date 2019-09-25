@@ -29,6 +29,7 @@ namespace FactoryManagementSoftware.UI
                 btnOrder.Hide();
             }
             tool.loadMaterialAndAllToComboBox(cmbType);
+            AlertHideOrShow(AlertHiden);
         }
 
         #region variable declare
@@ -81,6 +82,7 @@ namespace FactoryManagementSoftware.UI
         readonly string headerForecast4 = "FORECAST 4";
         //readonly string headerOutStock = "OUT STOCK";
 
+        private bool AlertHiden = true;
         DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
         DataGridViewAutoSizeColumnMode DisplayedCells = DataGridViewAutoSizeColumnMode.DisplayedCells;
         #endregion
@@ -131,6 +133,38 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region UI setting
+
+        private void AlertHideOrShow(bool hide)
+        {
+            if (hide)
+            {
+                btnFilter.Text = "SHOW ORDER ALERT";
+                tlpOrder.RowStyles[0] = new RowStyle(SizeType.Percent, 12f);
+                tlpOrder.RowStyles[1] = new RowStyle(SizeType.Percent, 79f);
+                tlpOrder.RowStyles[2] = new RowStyle(SizeType.Percent, 9f);
+                tlpOrder.RowStyles[3] = new RowStyle(SizeType.Percent, 0f);
+
+                tlpAlert.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
+                tlpAlert.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0f);
+                tlpAlert.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 0f);
+                tlpAlert.ColumnStyles[3] = new ColumnStyle(SizeType.Percent, 0f);
+                tlpAlert.ColumnStyles[4] = new ColumnStyle(SizeType.Percent, 0f);
+            }
+            else
+            {
+                MessageBox.Show("This function is temporary stop, please contact system admin for more information.");
+                //btnFilter.Text = "HIDE ORDER ALERT";
+                //tlpOrder.RowStyles[0] = new RowStyle(SizeType.Percent, 12f);
+                //tlpOrder.RowStyles[1] = new RowStyle(SizeType.Percent, 39f);
+                //tlpOrder.RowStyles[2] = new RowStyle(SizeType.Percent, 9f);
+                //tlpOrder.RowStyles[3] = new RowStyle(SizeType.Percent, 40f);
+                //tlpAlert.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 60f);
+                //tlpAlert.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 10f);
+                //tlpAlert.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 10f);
+                //tlpAlert.ColumnStyles[3] = new ColumnStyle(SizeType.Percent, 10f);
+                //tlpAlert.ColumnStyles[4] = new ColumnStyle(SizeType.Percent, 10f);
+            }
+        }
 
         private DataTable NewOrderRecordTable()
         {
@@ -2053,7 +2087,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         my_menu.Items.Add("Receive").Name = "Receive";
 
-                        if (userPermission >= MainDashboard.ACTION_LVL_THREE)
+                        if (userPermission >= MainDashboard.ACTION_LVL_TWO)
                         {
                             my_menu.Items.Add("Edit").Name = "Edit";
                             my_menu.Items.Add("Complete").Name = "Complete";
@@ -2063,7 +2097,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (result.Equals(status_Received))
                     {
-                        if (userPermission >= MainDashboard.ACTION_LVL_THREE)
+                        if (userPermission >= MainDashboard.ACTION_LVL_TWO)
                         {
                             my_menu.Items.Add("Incomplete").Name = "Incomplete";
                         }
@@ -2296,6 +2330,20 @@ namespace FactoryManagementSoftware.UI
                 cbCodeNameSearch.Checked = false;
                 cbPOSearch.Checked = false;
             }
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            if (AlertHiden)
+            {
+                AlertHiden = false;
+            }
+            else
+            {
+                AlertHiden = true;
+            }
+
+            AlertHideOrShow(AlertHiden);
         }
     }
 }

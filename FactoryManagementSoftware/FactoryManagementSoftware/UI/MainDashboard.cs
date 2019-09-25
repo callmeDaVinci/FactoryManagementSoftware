@@ -455,7 +455,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (!PMMAFormOpen)
             {
-                frmPMMA frm = new frmPMMA();
+                frmNewPMMA frm = new frmNewPMMA();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
@@ -464,9 +464,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (Application.OpenForms.OfType<frmPMMA>().Count() == 1)
+                if (Application.OpenForms.OfType<frmNewPMMA>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmPMMA>().First().BringToFront();
+                    Application.OpenForms.OfType<frmNewPMMA>().First().BringToFront();
                 }
             }
         }

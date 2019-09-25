@@ -16,8 +16,8 @@ namespace FactoryManagementSoftware.UI
             InitializeDate();
         }
 
-        private bool Edited = false;
-        private bool yearEdited = false;
+        static public bool dateChanged = false;
+        static public bool Edited = false;
         private int oldYear = DateTime.Now.Year;
         readonly string startDateString = "StartDate";
         readonly string endDateString = "EndDate";
@@ -198,12 +198,18 @@ namespace FactoryManagementSoftware.UI
 
             dt_PmmaDate = dalPmmaDate.Select();
 
-            Edited = false;
+           
 
             if(success)
             {
                 MessageBox.Show("The data was successfully updated.");
+
+                if(Edited)
+                {
+                    dateChanged = true;
+                }
             }
+            Edited = false;
         }
 
         private DataTable checkIfExist(int year, int month)

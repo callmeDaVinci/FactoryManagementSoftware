@@ -611,10 +611,10 @@ namespace FactoryManagementSoftware.UI
                                 }
                                 else
                                 {
-                                    int joinQty = Convert.ToInt16(Join["join_qty"].ToString());
+                                    float joinQty = Convert.ToSingle(Join["join_qty"].ToString());
                                     uMatUsed.no = forecastIndex;
                                     uMatUsed.item_code = Join["join_child_code"].ToString();
-                                    uMatUsed.quantity_order = Convert.ToInt32(dalItem.getStockQty(Join["join_child_code"].ToString())) + actualStock*joinQty;
+                                    uMatUsed.quantity_order = Convert.ToSingle(dalItem.getStockQty(Join["join_child_code"].ToString())) + actualStock*joinQty;
 
                                     result = dalMatUsed.Insert(uMatUsed);
                                     if (!result)

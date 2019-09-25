@@ -770,22 +770,25 @@ namespace FactoryManagementSoftware.UI
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
+            timer1.Stop();
+            timer1.Start();
 
-            if (!string.IsNullOrEmpty(txtSearch.Text))
-            {
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            //if (!string.IsNullOrEmpty(txtSearch.Text))
+            //{
+            //    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 
-                btn.Visible = true;
-                loadItemList();
-                loadTransferList();
-                Cursor = Cursors.Arrow; // change cursor to normal type
-            }
-            else
-            {
-                btn.Visible = false;
-            }
+            //    btn.Visible = true;
+            //    loadItemList();
+            //    loadTransferList();
+            //    Cursor = Cursors.Arrow; // change cursor to normal type
+            //}
+            //else
+            //{
+            //    btn.Visible = false;
+            //}
           
         }
+
 
         private void dgvItem_Sorted(object sender, EventArgs e)
         {
@@ -1745,6 +1748,25 @@ namespace FactoryManagementSoftware.UI
             frmTransferHistory frm = new frmTransferHistory();
             
             frm.ShowDialog();//Item Edit
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            if (string.IsNullOrEmpty(txtSearch.Text))
+            {
+                btn.Visible = false;
+            }
+            else
+            {
+                btn.Visible = true;
+            }
+
+            loadItemList();
+            loadTransferList();
+            Cursor = Cursors.Arrow; // change cursor to normal type
+
         }
     }
 }

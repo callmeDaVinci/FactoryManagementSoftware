@@ -153,6 +153,8 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvScheduleUIEdit(DataGridView dgv)
         {
+
+            dgv.Columns[headerPartCode].Frozen = true;
             dgv.Columns[headerID].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerStartDate].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerEndDate].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -604,10 +606,10 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet.PageSetup.FitToPagesTall = false;
 
                     double pointToCMRate = 0.035;
-                    xlWorkSheet.PageSetup.TopMargin = 1.2 / pointToCMRate;
-                    xlWorkSheet.PageSetup.BottomMargin = 1.2 / pointToCMRate;
-                    xlWorkSheet.PageSetup.HeaderMargin = 0.6 / pointToCMRate;
-                    xlWorkSheet.PageSetup.FooterMargin = 0.6 / pointToCMRate;
+                    xlWorkSheet.PageSetup.TopMargin = 1.5 / pointToCMRate;
+                    xlWorkSheet.PageSetup.BottomMargin = 1.0 / pointToCMRate;
+                    xlWorkSheet.PageSetup.HeaderMargin = 1.0 / pointToCMRate;
+                    xlWorkSheet.PageSetup.FooterMargin = 1.0 / pointToCMRate;
                     xlWorkSheet.PageSetup.LeftMargin = 0 / pointToCMRate;
                     xlWorkSheet.PageSetup.RightMargin = 0 / pointToCMRate;
 
@@ -625,7 +627,7 @@ namespace FactoryManagementSoftware.UI
                     Range tRange = xlWorkSheet.UsedRange;
                     tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                     tRange.Borders.Weight = XlBorderWeight.xlThin;
-                    tRange.Font.Size = 11;
+                    tRange.Font.Size = 12;
                     tRange.Font.Name = "Calibri";
                     tRange.EntireColumn.AutoFit();
                     tRange.EntireRow.AutoFit();
@@ -648,12 +650,19 @@ namespace FactoryManagementSoftware.UI
                                 range.Rows.RowHeight = 30;
                                 range.Font.Color = ColorTranslator.ToOle(dgvSchedule.Rows[i].Cells[j].InheritedStyle.ForeColor);
 
-                                if(j == 4 || j == 5)
+                                if (j == 3 || j == 6 || j == 7 || j == 9 || j == 12 || j == 15 || j == 11 || j == 14)
+                                {
+                                    range.Cells.Font.Bold = true;
+                                    range.Font.Size = 16;
+                                    range.Cells.Font.Color = ColorTranslator.ToOle(Color.Black);
+                                }
+
+                                if (j == 4 || j == 5)
                                 {
                                     range.ColumnWidth = 10;
                                 }
 
-                                if(j == 6 || j == 7 || j == 11 || j == 14 || j == 16)
+                                if (j == 6 || j == 7 || j == 11 || j == 14 || j == 16)
                                 {
                                     range.Cells.HorizontalAlignment = XlHAlign.xlHAlignLeft;
                                     range.Cells.VerticalAlignment = XlVAlign.xlVAlignCenter;
@@ -667,15 +676,17 @@ namespace FactoryManagementSoftware.UI
                                 if (dgvSchedule.Rows[i].Cells[j].InheritedStyle.BackColor == Color.Gainsboro)
                                 {
                                     range.Interior.Color = Color.White;
+                                    range.Rows.RowHeight = 40;
                                 }
                                 else if (dgvSchedule.Rows[i].Cells[j].InheritedStyle.BackColor == Color.FromArgb(64, 64, 64))
                                 {
                                     range.Rows.RowHeight = 4;
-                                    range.Interior.Color = Color.LightGray;
+                                    range.Interior.Color = Color.Black;
                                 }
                                 else
                                 {
                                     range.Interior.Color = ColorTranslator.ToOle(dgvSchedule.Rows[i].Cells[j].InheritedStyle.BackColor);
+                                    range.Rows.RowHeight = 40;
                                 }
                             }
                         }
@@ -948,21 +959,15 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Rows[row].Cells[headerStatus].Style.BackColor = ColorSet;
                 dgv.Rows[row].Cells[headerStatus].Style.ForeColor = Color.Black;
-                //if (ColorSet != dgv.DefaultCellStyle.BackColor)
-                //{
-                //    dgv.Rows[row].Cells[headerStatus].Style.ForeColor = Color.Black;
-
-                //}
-                //else
-                //{
-                //dgv.Rows[row].Cells[headerStatus].Style.ForeColor = Color.Black;
-                //}
 
                 if (value == "")
                 {
                     dgv.Rows[row].Height = 12;
-                    //dgv.Rows[row].Cells[headerStatus].Style.BackColor = Color.FromArgb(64, 64, 64);
                     dgv.Rows[row].DefaultCellStyle.BackColor = Color.FromArgb(64, 64, 64);
+                }
+                else
+                {
+                    dgv.Rows[row].Height = 50;
                 }
             }
 

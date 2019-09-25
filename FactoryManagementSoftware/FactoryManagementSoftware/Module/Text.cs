@@ -115,6 +115,38 @@ namespace FactoryManagementSoftware.Module
         public string Cat_SubMat { get; } = "Sub Material";
         public string Cat_Mould { get; } = "Mould";
 
+        //DGV TABLE HEADER NAME///////////////////////////////////////////////////////////////
+        public string Header_Index { get; } = "#";
+        public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
+        public string Header_PartCode { get; } = "PART CODE";
+        public string Header_PartNameWithParent { get; } = "PART NAME_(PARENT)";
+        public string Header_PartName { get; } = "PART NAME";
+        public string Header_Parent { get; } = "PARENT";
+        public string Header_OpeningStock { get; } = "OPENING STOCK";
+        public string Header_In_KG_Piece { get; } = "IN(KG/PIECE)";
+        public string Header_Out_KG_Piece { get; } = "OUT(KG/PIECE)";
+        public string Header_BalStock { get; } = "BAL. STOCK";
+        public string Header_Percentage { get; } = "%";
+        public string Header_Wastage { get; } = "WASTAGE";
+        public string Header_Adjust { get; } = "ADJUST";
+        public string Header_Remark { get; } = "REMARK";
+        public string Header_Note { get; } = "NOTE";
+        public string Header_Type { get; } = "TYPE";
+        public string Header_MatType { get; } = "MAT. TYPE";
+        public string Header_Mat { get; } = "MATERIAL";
+        public string Header_MatCode { get; } = "MAT. CODE";
+        public string Header_MatName { get; } = "MAT. NAME";
+        public string Header_Color { get; } = "COLOR";
+        public string Header_ItemWeight_KG { get; } = "ITEM WEIGHT(KG)";
+        public string Header_ItemWeight_G { get; } = "ITEM WEIGHT(g)";
+        public string Header_Delivered { get; } = "DELIVERED";
+        public string Header_MaterialUsed_G { get; } = "MAT. USED(g)";
+        public string Header_MaterialUsed_KG_Piece { get; } = "MAT. USED(KG/PIECE)";
+        public string Header_MaterialUsed_KG { get; } = "MAT. USED(KG)";
+        public string Header_MaterialUsedWithWastage { get; } = "MAT. USED WITH WASTAGE";
+        public string Header_TotalMaterialUsed_KG_Piece { get; } = "TOTAL MAT. USED(KG/PIECE)";
+        public string Header_TotalMaterialUsed_KG { get; } = "TOTAL MAT. USED(KG)";
+
         #endregion
 
 

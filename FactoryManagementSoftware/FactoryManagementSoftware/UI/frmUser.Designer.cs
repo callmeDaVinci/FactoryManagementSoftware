@@ -132,6 +132,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmUser";
             this.Text = "frmUser";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmUser_FormClosed);
             this.Load += new System.EventHandler(this.frmUser_Load);
             this.Click += new System.EventHandler(this.frmUser_Click);
             ((System.ComponentModel.ISupportInitialize)(this.dgvUser)).EndInit();

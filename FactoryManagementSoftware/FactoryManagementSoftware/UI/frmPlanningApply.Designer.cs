@@ -141,6 +141,7 @@
             // 
             this.cmbID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbID.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmbID.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbID.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbID.FormattingEnabled = true;
@@ -181,6 +182,7 @@
             // 
             this.btnCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnCheck.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCheck.ForeColor = System.Drawing.Color.White;
@@ -259,6 +261,7 @@
             this.cbToLast.AutoSize = true;
             this.cbToLast.Checked = true;
             this.cbToLast.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbToLast.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbToLast.Location = new System.Drawing.Point(3, 3);
             this.cbToLast.Name = "cbToLast";
             this.cbToLast.Size = new System.Drawing.Size(74, 23);
@@ -270,6 +273,7 @@
             // cbEarlier
             // 
             this.cbEarlier.AutoSize = true;
+            this.cbEarlier.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbEarlier.Enabled = false;
             this.cbEarlier.Location = new System.Drawing.Point(111, 3);
             this.cbEarlier.Name = "cbEarlier";
@@ -285,6 +289,7 @@
             this.btnSetBySystem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSetBySystem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.btnSetBySystem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSetBySystem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSetBySystem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSetBySystem.ForeColor = System.Drawing.Color.White;
@@ -311,6 +316,7 @@
             // 
             this.dtpStartDate.CalendarFont = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStartDate.CalendarForeColor = System.Drawing.Color.Black;
+            this.dtpStartDate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dtpStartDate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtpStartDate.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
@@ -350,6 +356,7 @@
             // dtpEstimateEndDate
             // 
             this.dtpEstimateEndDate.CalendarFont = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpEstimateEndDate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dtpEstimateEndDate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtpEstimateEndDate.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpEstimateEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
@@ -362,6 +369,7 @@
             // cbIncludeSunday
             // 
             this.cbIncludeSunday.AutoSize = true;
+            this.cbIncludeSunday.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbIncludeSunday.Location = new System.Drawing.Point(3, 66);
             this.cbIncludeSunday.Name = "cbIncludeSunday";
             this.cbIncludeSunday.Size = new System.Drawing.Size(123, 23);
@@ -754,6 +762,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUseRecycleOnly.BackColor = System.Drawing.Color.White;
+            this.btnUseRecycleOnly.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnUseRecycleOnly.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUseRecycleOnly.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUseRecycleOnly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(160)))), ((int)(((byte)(225)))));
@@ -772,6 +781,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUseRecycleAndOrgin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(203)))), ((int)(((byte)(110)))));
+            this.btnUseRecycleAndOrgin.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnUseRecycleAndOrgin.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnUseRecycleAndOrgin.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUseRecycleAndOrgin.ForeColor = System.Drawing.Color.Black;
@@ -871,6 +881,7 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.BackColor = System.Drawing.Color.White;
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.Black;

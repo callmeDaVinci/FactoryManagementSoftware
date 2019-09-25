@@ -26,6 +26,7 @@ namespace FactoryManagementSoftware.UI
 
         DataTable dt_TrfHist;
         DataTable dt_TrfData;
+        DataTable dt_Item;
 
         readonly string headerID = "ID";
         readonly string headerAddedDate = "ADDED DATE";
@@ -43,7 +44,9 @@ namespace FactoryManagementSoftware.UI
         public frmTransferHistory()
         {
             InitializeComponent();
+            dt_Item = dalItem.Select();
 
+            tool.DoubleBuffered(dgvTrf, true);
             loadItemCategoryData(cmbTrfItemCat);
 
             loadLocationCategoryData();
@@ -217,107 +220,113 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow row in dt_TrfHist.Rows)
             {
                 DateTime date;
+                string result = row[dalTrfHist.TrfResult].ToString();
 
-                if(cbTransferType.Checked)
+                if(result == "Passed")
                 {
-                    date = Convert.ToDateTime(row[dalTrfHist.TrfDate]).Date;
-                }
-                else
-                {
-                    date = Convert.ToDateTime(row[dalTrfHist.TrfAddedDate]).Date;
-                }
+                    if (cbTransferType.Checked)
+                    {
+                        date = Convert.ToDateTime(row[dalTrfHist.TrfDate]).Date;
+                    }
+                    else
+                    {
+                        date = Convert.ToDateTime(row[dalTrfHist.TrfAddedDate]).Date;
+                    }
 
-                //Filter Date
-                if(date <= endDate && date >= startDate)
-                {
-                    periodWanted = true;
-                }
-                else
-                {
-                    periodWanted = false;
-                }
+                    //Filter Date
+                    if (date <= endDate && date >= startDate)
+                    {
+                        periodWanted = true;
+                    }
+                    else
+                    {
+                        periodWanted = false;
+                    }
 
-                //Filter Location From
-                if(cmbTrfFromCategory.SelectedIndex == -1)
-                {
-                    fromWanted = true;
-                }
-                else
-                {
-                    string from =row[dalTrfHist.TrfFrom].ToString();
-
-                    if(from.Equals(cmbTrfFromCategory.Text) || from.Equals(cmbTrfFrom.Text))
+                    //Filter Location From
+                    if (cmbTrfFromCategory.SelectedIndex == -1)
                     {
                         fromWanted = true;
                     }
                     else
                     {
-                        fromWanted = false;
+                        string from = row[dalTrfHist.TrfFrom].ToString();
+
+                        if (from.Equals(cmbTrfFromCategory.Text) || from.Equals(cmbTrfFrom.Text))
+                        {
+                            fromWanted = true;
+                        }
+                        else
+                        {
+                            fromWanted = false;
+                        }
                     }
-                }
 
-                //Filter Location To
-                if (cmbTrfToCategory.SelectedIndex == -1)
-                {
-                    toWanted = true;
-                }
-                else
-                {
-                    string to = row[dalTrfHist.TrfTo].ToString();
-
-                    if (to.Equals(cmbTrfToCategory.Text) || to.Equals(cmbTrfTo.Text))
+                    //Filter Location To
+                    if (cmbTrfToCategory.SelectedIndex == -1)
                     {
                         toWanted = true;
                     }
                     else
                     {
-                        toWanted = false;
+                        string to = row[dalTrfHist.TrfTo].ToString();
+
+                        if (to.Equals(cmbTrfToCategory.Text) || to.Equals(cmbTrfTo.Text))
+                        {
+                            toWanted = true;
+                        }
+                        else
+                        {
+                            toWanted = false;
+                        }
                     }
-                }
 
-                //Filter Category
-                if (cmbTrfItemCat.SelectedIndex == -1 || cmbTrfItemCat.Text.Equals("All"))
-                {
-                    catWanted = true;
-                }
-                else
-                {
-                    string cat = row[dalTrfHist.TrfItemCat].ToString();
-
-                    if (cat.Equals(cmbTrfItemCat.Text))
+                    //Filter Category
+                    if (cmbTrfItemCat.SelectedIndex == -1 || cmbTrfItemCat.Text.Equals("All"))
                     {
                         catWanted = true;
                     }
                     else
                     {
+                        string cat = row[dalTrfHist.TrfItemCat].ToString();
+
+                        if (cat.Equals(cmbTrfItemCat.Text))
+                        {
+                            catWanted = true;
+                        }
+                        else
+                        {
+                            catWanted = false;
+                        }
+                    }
+
+                    //Save data wanted
+                    if (periodWanted && fromWanted && toWanted && catWanted)
+                    {
+                        row_TrfData = dt_TrfData.NewRow();
+
+                        row_TrfData[headerID] = row[dalTrfHist.TrfID];
+                        row_TrfData[headerAddedDate] = row[dalTrfHist.TrfAddedDate];
+                        row_TrfData[headerTrfDate] = Convert.ToDateTime(row[dalTrfHist.TrfDate]).Date;
+                        row_TrfData[headerCode] = row[dalTrfHist.TrfItemCode];
+                        row_TrfData[headerName] = row[dalTrfHist.TrfItemName];
+                        row_TrfData[headerFrom] = row[dalTrfHist.TrfFrom];
+                        row_TrfData[headerTo] = row[dalTrfHist.TrfTo];
+                        row_TrfData[headerQty] = row[dalTrfHist.TrfQty];
+                        row_TrfData[headerUnit] = row[dalTrfHist.TrfUnit];
+                        row_TrfData[headerNote] = row[dalTrfHist.TrfNote];
+                        row_TrfData[headerResult] = row[dalTrfHist.TrfResult];
+
+                        dt_TrfData.Rows.Add(row_TrfData);
+
+                        periodWanted = false;
+                        fromWanted = false;
+                        toWanted = false;
                         catWanted = false;
                     }
                 }
 
-                //Save data wanted
-                if (periodWanted && fromWanted && toWanted && catWanted)
-                {
-                    row_TrfData = dt_TrfData.NewRow();
-
-                    row_TrfData[headerID] = row[dalTrfHist.TrfID];
-                    row_TrfData[headerAddedDate] = row[dalTrfHist.TrfAddedDate];
-                    row_TrfData[headerTrfDate] = Convert.ToDateTime(row[dalTrfHist.TrfDate]).Date;
-                    row_TrfData[headerCode] = row[dalTrfHist.TrfItemCode];
-                    row_TrfData[headerName] = row[dalTrfHist.TrfItemName];
-                    row_TrfData[headerFrom] = row[dalTrfHist.TrfFrom];
-                    row_TrfData[headerTo] = row[dalTrfHist.TrfTo];
-                    row_TrfData[headerQty] = row[dalTrfHist.TrfQty];
-                    row_TrfData[headerUnit] = row[dalTrfHist.TrfUnit];
-                    row_TrfData[headerNote] = row[dalTrfHist.TrfNote];
-                    row_TrfData[headerResult] = row[dalTrfHist.TrfResult];
-
-                    dt_TrfData.Rows.Add(row_TrfData);
-
-                    periodWanted = false;
-                    fromWanted = false;
-                    toWanted = false;
-                    catWanted = false;
-                }
+                
             }
 
             if (dt_TrfData.Rows.Count > 0)
@@ -338,12 +347,29 @@ namespace FactoryManagementSoftware.UI
 
                 dgvTrf.ClearSelection();
             }
+            else
+            {
+                MessageBox.Show("No data found!");
+            }
         }
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            filterData();
-            calculateTotal();
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                filterData();
+                calculateTotal();
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            
         }
 
         private void cbTransferType_CheckedChanged(object sender, EventArgs e)
@@ -433,13 +459,16 @@ namespace FactoryManagementSoftware.UI
 
                 if (ifGotChild(itemCode))
                 {
-                    if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                    bool assembly = dalItem.checkIfAssembly(itemCode, dt_Item);
+                    bool production = dalItem.checkIfProduction(itemCode, dt_Item);
+
+                    if (assembly && production)
                     {
                         //dgv.Rows[n].Cells[dalTrfHist.TrfItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
                         dgv.Rows[n].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
 
                     }
-                    else if (!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                    else if (!assembly && production)
                     {
                         //dgv.Rows[n].Cells[dalTrfHist.TrfItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
                         dgv.Rows[n].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
@@ -452,27 +481,28 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
             }
-            else if (dgv.Columns[e.ColumnIndex].Name == headerResult)
-            {
-                if (dgv.Rows[n].Cells[headerResult].Value != null)
-                {
-                    if (dgv.Rows[n].Cells[headerResult].Value.ToString().Equals("Undo"))
-                    {
-                        dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Red;
-                        dgv.Rows[n].DefaultCellStyle.Font = new Font(Font, FontStyle.Strikeout);
-                    }
-                    else if (dgv.Rows[n].Cells[headerResult].Value.ToString().Equals("Failed"))
-                    {
-                        dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Red;
-                        //dgv.Rows[n].DefaultCellStyle.Font = new Font(Font, FontStyle.Strikeout);
-                    }
-                    else
-                    {
-                        dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Black;
-                        dgv.Rows[n].DefaultCellStyle.Font = new Font(Font, FontStyle.Regular);
-                    }
-                }
-            }
+
+            //else if (dgv.Columns[e.ColumnIndex].Name == headerResult)
+            //{
+            //    if (dgv.Rows[n].Cells[headerResult].Value != null)
+            //    {
+            //        if (dgv.Rows[n].Cells[headerResult].Value.ToString().Equals("Undo"))
+            //        {
+            //            dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Red;
+            //            dgv.Rows[n].DefaultCellStyle.Font = new Font(Font, FontStyle.Strikeout);
+            //        }
+            //        else if (dgv.Rows[n].Cells[headerResult].Value.ToString().Equals("Failed"))
+            //        {
+            //            dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Red;
+            //            //dgv.Rows[n].DefaultCellStyle.Font = new Font(Font, FontStyle.Strikeout);
+            //        }
+            //        else
+            //        {
+            //            dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Black;
+            //            dgv.Rows[n].DefaultCellStyle.Font = new Font(Font, FontStyle.Regular);
+            //        }
+            //    }
+            //}
         
 
             dgv.ResumeLayout();

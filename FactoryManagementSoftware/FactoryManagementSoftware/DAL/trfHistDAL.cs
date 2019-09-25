@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Windows.Forms;
+using FactoryManagementSoftware.Module;
 
 namespace FactoryManagementSoftware.DAL
 {
@@ -34,7 +35,7 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
-
+        //Tool tool = new Tool();
         #region Select Data from Database
         public DataTable Select()
         {
@@ -273,6 +274,7 @@ namespace FactoryManagementSoftware.DAL
                                 WHERE tbl_item.item_code LIKE '%" + keywords + "%'" +
                                 "OR tbl_item.item_name LIKE '%" + keywords + "%' " +
                                 "OR tbl_trf_hist.trf_hist_id LIKE '%" + keywords + "%' " +
+                                 "OR tbl_trf_hist.trf_hist_note LIKE '%" + keywords + "%' " +
                                 "ORDER BY tbl_trf_hist.trf_hist_id DESC";
 
                 //for executing command
@@ -857,10 +859,12 @@ namespace FactoryManagementSoftware.DAL
             {
                 //sql query to get data from database
                 String sql = @"SELECT * FROM tbl_trf_hist 
-                            WHERE trf_hist_trf_date 
+                                INNER JOIN tbl_item
+                            ON tbl_trf_hist.trf_hist_item_code=tbl_item.item_code
+                            WHERE tbl_trf_hist.trf_hist_trf_date 
                             BETWEEN @start 
                             AND @end 
-                            AND trf_hist_to=@customer  ORDER BY trf_hist_item_code ASC , trf_hist_trf_date ASC";
+                            AND tbl_trf_hist.trf_hist_to=@customer  ORDER BY tbl_trf_hist.trf_hist_item_code ASC , tbl_trf_hist.trf_hist_trf_date ASC";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -1010,6 +1014,58 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@end", end);
                 cmd.Parameters.AddWithValue("@cat", cat);
                 cmd.Parameters.AddWithValue("@to", to);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable rangeMaterialInFromPMMASearch(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            string cat = "Part";
+            string from = "PMMA";
+
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE 
+                                trf_hist_trf_date 
+                                BETWEEN @start AND @end 
+                                AND trf_hist_from=@from
+                                AND tbl_item.item_cat != @cat";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@cat", cat);
+                cmd.Parameters.AddWithValue("@from", from);
 
                 //for executing command
                 //getting data from database

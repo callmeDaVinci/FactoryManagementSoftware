@@ -77,7 +77,7 @@ namespace FactoryManagementSoftware.DAL
                 tbl_item.item_name as parent_name ,
                 tbl_join.join_child_code as child_code ,
                 a.item_name as child_name ,join_qty, join_max, join_min, join_added_date, join_added_by,
-                join_updated_date,join_updated_by 
+                join_updated_date,join_updated_by ,tbl_item.item_quo_pw_pcs,tbl_item.item_quo_rw_pcs,tbl_item.item_part_weight,tbl_item.item_runner_weight,tbl_item.item_wastage_allowed
                 FROM tbl_join 
                 JOIN tbl_item 
                 ON tbl_join.join_parent_code = tbl_item.item_code 
@@ -105,6 +105,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+       
         public DataTable SelectwithChildInfo()
         {
             //static methodd to connect database

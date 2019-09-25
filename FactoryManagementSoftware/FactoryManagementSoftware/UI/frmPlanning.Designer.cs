@@ -227,6 +227,7 @@
             this.btnPartInfoSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPartInfoSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.btnPartInfoSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnPartInfoSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnPartInfoSave.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPartInfoSave.ForeColor = System.Drawing.Color.White;
@@ -244,6 +245,7 @@
             // 
             this.cbEditMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbEditMode.AutoSize = true;
+            this.cbEditMode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbEditMode.Location = new System.Drawing.Point(185, 3);
             this.cbEditMode.Name = "cbEditMode";
             this.cbEditMode.Size = new System.Drawing.Size(104, 23);
@@ -464,6 +466,7 @@
             // 
             this.cmbPartCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbPartCode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmbPartCode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbPartCode.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.cmbPartCode.FormattingEnabled = true;
@@ -574,6 +577,7 @@
             this.btnRawMatUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRawMatUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.btnRawMatUpdate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRawMatUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnRawMatUpdate.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRawMatUpdate.ForeColor = System.Drawing.Color.White;
@@ -851,6 +855,7 @@
             this.cbRecycleUse.AutoSize = true;
             this.cbRecycleUse.Checked = true;
             this.cbRecycleUse.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbRecycleUse.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbRecycleUse.Location = new System.Drawing.Point(3, 200);
             this.cbRecycleUse.Name = "cbRecycleUse";
             this.cbRecycleUse.Size = new System.Drawing.Size(170, 23);
@@ -903,6 +908,7 @@
             this.btnColorMatUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnColorMatUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.btnColorMatUpdate.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnColorMatUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnColorMatUpdate.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnColorMatUpdate.ForeColor = System.Drawing.Color.White;
@@ -1192,6 +1198,7 @@
             this.cbOtherPurpose.BackColor = System.Drawing.Color.Red;
             this.cbOtherPurpose.Checked = true;
             this.cbOtherPurpose.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbOtherPurpose.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbOtherPurpose.Location = new System.Drawing.Point(3, 325);
             this.cbOtherPurpose.Name = "cbOtherPurpose";
             this.cbOtherPurpose.Size = new System.Drawing.Size(166, 23);
@@ -1295,6 +1302,7 @@
             // btnMaterialCheck
             // 
             this.btnMaterialCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnMaterialCheck.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMaterialCheck.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnMaterialCheck.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMaterialCheck.ForeColor = System.Drawing.Color.White;
@@ -1311,6 +1319,7 @@
             // 
             this.btnEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEdit.BackColor = System.Drawing.Color.White;
+            this.btnEdit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEdit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(160)))), ((int)(((byte)(225)))));
@@ -1328,6 +1337,7 @@
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDelete.BackColor = System.Drawing.Color.White;
+            this.btnDelete.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(118)))), ((int)(((byte)(117)))));
@@ -1345,6 +1355,7 @@
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAdd.ForeColor = System.Drawing.Color.White;
@@ -1390,6 +1401,7 @@
             // 
             this.btnNextStep.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnNextStep.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnNextStep.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnNextStep.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnNextStep.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNextStep.ForeColor = System.Drawing.Color.White;
@@ -1569,6 +1581,7 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.BackColor = System.Drawing.Color.White;
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.Black;

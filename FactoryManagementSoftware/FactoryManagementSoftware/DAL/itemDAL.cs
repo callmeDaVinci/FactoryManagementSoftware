@@ -1653,6 +1653,27 @@ namespace FactoryManagementSoftware.DAL
             return result;
         }
 
+        public bool checkIfAssembly(string code, DataTable dt)
+        {
+            bool result = false;
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach(DataRow row in dt.Rows)
+                {
+                    if (row[ItemCode].ToString() == code)
+                    {
+                        int assembly = row[ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[ItemAssemblyCheck]);
+                        if (assembly == 1)
+                        {
+                            result = true;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
         public bool checkIfMBOrPigment(string itemCode)
         {
             bool result = false;
@@ -1715,6 +1736,27 @@ namespace FactoryManagementSoftware.DAL
                     if (Convert.ToInt32(dt.Rows[0]["item_production"]) == 1)
                     {
                         result = true;
+                    }
+                }
+            }
+            return result;
+        }
+
+        public bool checkIfProduction(string code,DataTable dt)
+        {
+            bool result = false;
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[ItemCode].ToString() == code)
+                    {
+                        int production = row[ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[ItemProductionCheck]);
+                        if (production == 1)
+                        {
+                            result = true;
+                        }
                     }
                 }
             }

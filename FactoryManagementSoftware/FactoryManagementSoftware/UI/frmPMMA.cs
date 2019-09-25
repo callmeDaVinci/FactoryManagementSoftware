@@ -458,9 +458,9 @@ namespace FactoryManagementSoftware.UI
                         }
                     }
 
-                    if (float.TryParse(pmma[dalPMMA.Percentage].ToString(), out float j))
+                    if (float.TryParse(pmma[dalPMMA.Wastage].ToString(), out float j))
                     {
-                        percentage += Convert.ToSingle(pmma[dalPMMA.Percentage]);
+                        percentage += Convert.ToSingle(pmma[dalPMMA.Wastage]);
                     }
 
                 if (float.TryParse(pmma[dalPMMA.Adjust].ToString(), out float k))
@@ -937,7 +937,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     if (float.TryParse(pmma[dalPMMA.BalStock].ToString(), out float i))
                     {
-                        lastMonthPercentage = Convert.ToSingle(pmma[dalPMMA.Percentage]);
+                        lastMonthPercentage = Convert.ToSingle(pmma[dalPMMA.Wastage]);
                     }
 
                 }
@@ -956,12 +956,12 @@ namespace FactoryManagementSoftware.UI
             uPMMA.pmma_added_date = DateTime.Now;
             uPMMA.pmma_added_by = MainDashboard.USER_ID;
 
-            bool success = dalPMMA.insert(uPMMA);
+            //bool success = dalPMMA.insert(uPMMA);
 
-            if(!success)
-            {
-                MessageBox.Show("Failed to insert data to PMMA");
-            }
+            //if(!success)
+            //{
+            //    MessageBox.Show("Failed to insert data to PMMA");
+            //}
         }
 
         private void updateDataToPMMA(string itemCode, DateTime date, float openingStock, float percentage, float balStock, float adjust, string note)
@@ -969,19 +969,19 @@ namespace FactoryManagementSoftware.UI
             uPMMA.pmma_item_code = itemCode;
             uPMMA.pmma_date = date;
             uPMMA.pmma_openning_stock = openingStock;
-            uPMMA.pmma_percentage = percentage;
+            uPMMA.pmma_wastage = percentage;
             uPMMA.pmma_adjust = adjust;
             uPMMA.pmma_note = note;
             uPMMA.pmma_bal_stock =  balStock;
             uPMMA.pmma_updated_date = DateTime.Now;
             uPMMA.pmma_updated_by = MainDashboard.USER_ID;
 
-            bool success = dalPMMA.update(uPMMA);
+            //bool success = dalPMMA.update(uPMMA);
 
-            if (!success)
-            {
-                MessageBox.Show("Failed to insert data to PMMA");
-            }
+            //if (!success)
+            //{
+            //    MessageBox.Show("Failed to insert data to PMMA");
+            //}
         }
 
         private void loadMaterialList(DataTable dt)
@@ -1136,7 +1136,7 @@ namespace FactoryManagementSoftware.UI
                 uPMMA.pmma_item_code = itemCode;
                 uPMMA.pmma_date = date;
                 uPMMA.pmma_openning_stock = openningStock;
-                uPMMA.pmma_percentage = percentage;
+                uPMMA.pmma_wastage = percentage;
                 uPMMA.pmma_adjust = adjust;
                 uPMMA.pmma_note = note;
                 uPMMA.pmma_bal_stock = bal - wastage + adjust;
@@ -1144,17 +1144,17 @@ namespace FactoryManagementSoftware.UI
                 uPMMA.pmma_updated_by = MainDashboard.USER_ID;
 
 
-                bool success = dalPMMA.update(uPMMA);
+                //bool success = dalPMMA.update(uPMMA);
 
-                if (!success)
-                {
-                    MessageBox.Show("Failed to updated PMMA item");
-                    tool.historyRecord(text.System, "Failed to updated PMMA item(frmPMMA)", DateTime.Now, MainDashboard.USER_ID);
-                }
-                else
-                {
-                    tool.historyRecord(text.PMMAEdit, text.getPMMAEditString(itemCode, date.ToString("MMMMyy"), editedHeaderText, editedOldValue, editedNewValue), DateTime.Now, MainDashboard.USER_ID);
-                }
+                //if (!success)
+                //{
+                //    MessageBox.Show("Failed to updated PMMA item");
+                //    tool.historyRecord(text.System, "Failed to updated PMMA item(frmPMMA)", DateTime.Now, MainDashboard.USER_ID);
+                //}
+                //else
+                //{
+                //    tool.historyRecord(text.PMMAEdit, text.getPMMAEditString(itemCode, date.ToString("MMMMyy"), editedHeaderText, editedOldValue, editedNewValue), DateTime.Now, MainDashboard.USER_ID);
+                //}
 
             }
             catch (Exception ex)
@@ -1263,35 +1263,35 @@ namespace FactoryManagementSoftware.UI
                 uPMMA.pmma_item_code = row.Cells[dalItem.ItemCode].Value.ToString();
                 uPMMA.pmma_date = Convert.ToDateTime(dtpDate.Text);
                 uPMMA.pmma_openning_stock = openningStock;
-                uPMMA.pmma_percentage = percentage;
+                uPMMA.pmma_wastage = percentage;
                 uPMMA.pmma_adjust = adjust;
                 uPMMA.pmma_note = note;
                 uPMMA.pmma_bal_stock = bal - wastage + adjust;
                 uPMMA.pmma_updated_date = DateTime.Now;
                 uPMMA.pmma_updated_by = MainDashboard.USER_ID;
 
-                bool success = dalPMMA.update(uPMMA);
+                //bool success = dalPMMA.update(uPMMA);
 
-                if (!success)
-                {
-                    MessageBox.Show("Failed to updated item pmma qty");
-                }
-                else
-                {
-                    uItem.item_code = uPMMA.pmma_item_code;
-                    uItem.item_last_pmma_qty = openningStock;
-                    uItem.item_pmma_qty = bal - wastage + adjust;
-                    uItem.item_updtd_date = uPMMA.pmma_updated_date;
-                    uItem.item_updtd_by = MainDashboard.USER_ID;
+                //if (!success)
+                //{
+                //    MessageBox.Show("Failed to updated item pmma qty");
+                //}
+                //else
+                //{
+                //    uItem.item_code = uPMMA.pmma_item_code;
+                //    uItem.item_last_pmma_qty = openningStock;
+                //    uItem.item_pmma_qty = bal - wastage + adjust;
+                //    uItem.item_updtd_date = uPMMA.pmma_updated_date;
+                //    uItem.item_updtd_by = MainDashboard.USER_ID;
 
-                    bool itemPMMMAQtyUpdateSuccess = dalItem.UpdatePMMAQty(uItem);
+                //    bool itemPMMMAQtyUpdateSuccess = dalItem.UpdatePMMAQty(uItem);
 
-                    if (!itemPMMMAQtyUpdateSuccess)
-                    {
-                        MessageBox.Show("Failed to updated item pmma qty(@item dal)");
-                    }
+                //    if (!itemPMMMAQtyUpdateSuccess)
+                //    {
+                //        MessageBox.Show("Failed to updated item pmma qty(@item dal)");
+                //    }
 
-                }
+                //}
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type 
@@ -1729,6 +1729,16 @@ namespace FactoryManagementSoftware.UI
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();
             label1.ForeColor = Color.Blue;
+        }
+
+        private void dtpStart_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtpEnd_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 

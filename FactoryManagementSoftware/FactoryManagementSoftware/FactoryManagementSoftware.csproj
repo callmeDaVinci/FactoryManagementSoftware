@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>20</ApplicationRevision>
+    <ApplicationRevision>42</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -232,6 +232,12 @@
     </Compile>
     <Compile Include="UI\frmMatPlanningList.Designer.cs">
       <DependentUpon>frmMatPlanningList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmNewPMMA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmNewPMMA.Designer.cs">
+      <DependentUpon>frmNewPMMA.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmOrderCancel.cs">
       <SubType>Form</SubType>
@@ -475,6 +481,12 @@
     <Compile Include="UI\frmTargetQtyConfirm.Designer.cs">
       <DependentUpon>frmTargetQtyConfirm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmTemp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmTemp.Designer.cs">
+      <DependentUpon>frmTemp.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmTransferHistory.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -555,6 +567,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMatPlanningList.resx">
       <DependentUpon>frmMatPlanningList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmNewPMMA.resx">
+      <DependentUpon>frmNewPMMA.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderCancel.resx">
       <DependentUpon>frmOrderCancel.cs</DependentUpon>
@@ -685,6 +700,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmTargetQtyConfirm.resx">
       <DependentUpon>frmTargetQtyConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmTemp.resx">
+      <DependentUpon>frmTemp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmTransferHistory.resx">
       <DependentUpon>frmTransferHistory.cs</DependentUpon>

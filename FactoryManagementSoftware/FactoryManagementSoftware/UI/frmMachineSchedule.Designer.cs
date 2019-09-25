@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvSchedule = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.btnExcel = new System.Windows.Forms.Button();
@@ -64,13 +64,13 @@
             this.cbWarning = new System.Windows.Forms.CheckBox();
             this.lblResetAll = new System.Windows.Forms.Label();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnFilter = new System.Windows.Forms.Button();
             this.btnMatList = new System.Windows.Forms.Button();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpMainSchedule = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnFilter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSchedule)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -100,14 +100,14 @@
             this.dgvSchedule.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvSchedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSchedule.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSchedule.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSchedule.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSchedule.GridColor = System.Drawing.Color.Black;
             this.dgvSchedule.Location = new System.Drawing.Point(3, 305);
@@ -138,6 +138,7 @@
             // 
             this.btnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExcel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.btnExcel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExcel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnExcel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExcel.ForeColor = System.Drawing.Color.White;
@@ -154,6 +155,7 @@
             // 
             this.btnPlan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPlan.BackColor = System.Drawing.Color.White;
+            this.btnPlan.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnPlan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPlan.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPlan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(160)))), ((int)(((byte)(225)))));
@@ -170,6 +172,7 @@
             // 
             this.btnFilterApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnFilterApply.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnFilterApply.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnFilterApply.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFilterApply.ForeColor = System.Drawing.Color.White;
@@ -270,6 +273,7 @@
             // cbPlanningID
             // 
             this.cbPlanningID.AutoSize = true;
+            this.cbPlanningID.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbPlanningID.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbPlanningID.Location = new System.Drawing.Point(146, 3);
             this.cbPlanningID.Name = "cbPlanningID";
@@ -284,6 +288,7 @@
             this.cbItem.AutoSize = true;
             this.cbItem.Checked = true;
             this.cbItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbItem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbItem.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbItem.Location = new System.Drawing.Point(3, 3);
             this.cbItem.Name = "cbItem";
@@ -326,6 +331,7 @@
             // 
             this.cmbMachine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbMachine.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmbMachine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbMachine.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbMachine.ForeColor = System.Drawing.SystemColors.InfoText;
@@ -341,6 +347,7 @@
             // 
             this.cmbFactory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbFactory.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cmbFactory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFactory.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbFactory.FormattingEnabled = true;
@@ -405,6 +412,7 @@
             // 
             // dtpTo
             // 
+            this.dtpTo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpTo.Location = new System.Drawing.Point(200, 38);
             this.dtpTo.Name = "dtpTo";
@@ -425,6 +433,7 @@
             // 
             // dtpFrom
             // 
+            this.dtpFrom.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpFrom.Location = new System.Drawing.Point(3, 38);
             this.dtpFrom.Name = "dtpFrom";
@@ -478,6 +487,7 @@
             // cbCompleted
             // 
             this.cbCompleted.AutoSize = true;
+            this.cbCompleted.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbCompleted.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbCompleted.Location = new System.Drawing.Point(3, 51);
             this.cbCompleted.Name = "cbCompleted";
@@ -489,6 +499,7 @@
             // cbCancelled
             // 
             this.cbCancelled.AutoSize = true;
+            this.cbCancelled.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbCancelled.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbCancelled.Location = new System.Drawing.Point(174, 51);
             this.cbCancelled.Name = "cbCancelled";
@@ -502,6 +513,7 @@
             this.cbPending.AutoSize = true;
             this.cbPending.Checked = true;
             this.cbPending.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbPending.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbPending.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbPending.Location = new System.Drawing.Point(3, 3);
             this.cbPending.Name = "cbPending";
@@ -515,6 +527,7 @@
             this.cbRunning.AutoSize = true;
             this.cbRunning.Checked = true;
             this.cbRunning.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbRunning.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbRunning.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbRunning.Location = new System.Drawing.Point(174, 3);
             this.cbRunning.Name = "cbRunning";
@@ -528,6 +541,7 @@
             this.cbWarning.AutoSize = true;
             this.cbWarning.Checked = true;
             this.cbWarning.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbWarning.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbWarning.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbWarning.ForeColor = System.Drawing.Color.Black;
             this.cbWarning.Location = new System.Drawing.Point(345, 3);
@@ -570,10 +584,27 @@
             this.tableLayoutPanel7.Size = new System.Drawing.Size(1528, 42);
             this.tableLayoutPanel7.TabIndex = 115;
             // 
+            // btnFilter
+            // 
+            this.btnFilter.BackColor = System.Drawing.Color.White;
+            this.btnFilter.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFilter.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFilter.ForeColor = System.Drawing.Color.Black;
+            this.btnFilter.Location = new System.Drawing.Point(3, 1);
+            this.btnFilter.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.btnFilter.Name = "btnFilter";
+            this.btnFilter.Size = new System.Drawing.Size(125, 36);
+            this.btnFilter.TabIndex = 119;
+            this.btnFilter.Text = "SHOW FILTER";
+            this.btnFilter.UseVisualStyleBackColor = false;
+            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
+            // 
             // btnMatList
             // 
             this.btnMatList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMatList.BackColor = System.Drawing.Color.White;
+            this.btnMatList.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMatList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMatList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMatList.ForeColor = System.Drawing.Color.Black;
@@ -631,7 +662,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel10.ColumnCount = 2;
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1268F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1300F));
             this.tableLayoutPanel10.Controls.Add(this.btnRefresh, 1, 0);
             this.tableLayoutPanel10.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 267);
@@ -647,6 +678,7 @@
             this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
             this.btnRefresh.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_available_updates_96;
             this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefresh.ForeColor = System.Drawing.Color.White;
@@ -663,21 +695,6 @@
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // btnFilter
-            // 
-            this.btnFilter.BackColor = System.Drawing.Color.White;
-            this.btnFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFilter.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFilter.ForeColor = System.Drawing.Color.Black;
-            this.btnFilter.Location = new System.Drawing.Point(3, 1);
-            this.btnFilter.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.btnFilter.Name = "btnFilter";
-            this.btnFilter.Size = new System.Drawing.Size(125, 36);
-            this.btnFilter.TabIndex = 119;
-            this.btnFilter.Text = "SHOW FILTER";
-            this.btnFilter.UseVisualStyleBackColor = false;
-            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // 
             // frmMachineSchedule
             // 

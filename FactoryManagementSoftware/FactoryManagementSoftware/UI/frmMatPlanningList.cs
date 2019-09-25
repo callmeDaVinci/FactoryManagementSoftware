@@ -25,7 +25,9 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
             tool.DoubleBuffered(dgvMatList, true);
+
             loadSortingData();
+
             LoadMatList();
         }
 
@@ -50,6 +52,7 @@ namespace FactoryManagementSoftware.UI
         readonly string sortByPart = "Part";
 
         private bool closeForm = false;
+        private bool loaded = false;
         #region UI Setting
 
 
@@ -67,7 +70,9 @@ namespace FactoryManagementSoftware.UI
             dt.DefaultView.Sort = "sort ASC";
             cmbSort.DataSource = dt;
             cmbSort.DisplayMember = "sort";
-            cmbSort.SelectedIndex = 2;
+            cmbSort.Text = "Factory";
+
+            string test = cmbSort.Text;
         }
 
         private DataTable NewMatListTable()
@@ -131,7 +136,7 @@ namespace FactoryManagementSoftware.UI
             if(sortBy.Equals(sortByFac))
             {
                 DataView dv = dt.DefaultView;
-                dv.Sort = dalMac.MacLocation+ " asc";
+                dv.Sort = dalMac.MacLocation+ " asc, "+ dalMac.MacID+" asc";
                 dt = dv.ToTable();
             }
             else if (sortBy.Equals(sortByMac))
@@ -211,13 +216,10 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        private void dgvMatList_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            
-        }
-
         private void frmMatPlanningList_Load(object sender, EventArgs e)
         {
+            loaded = true;
+
             if (closeForm)
             {
                 Close();
@@ -236,10 +238,15 @@ namespace FactoryManagementSoftware.UI
             if (dgv.Columns[col].Name == headerMatCode)
             {
                 string matCode = dgv.Rows[row].Cells[headerMatCode].Value.ToString();
+
                 if(string.IsNullOrEmpty(matCode))
                 {
                     dgv.Rows[row].Height = 4;
                     dgv.Rows[row].DefaultCellStyle.BackColor = Color.FromArgb(64, 64, 64);
+                }
+                else
+                {
+                    dgv.Rows[row].Height = 50;
                 }
             }
                 
@@ -261,29 +268,32 @@ namespace FactoryManagementSoftware.UI
         {
             //Thread t = null;
             //bool aborted = false;
+            if(loaded)
+            {
+                try
+                {
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                                                 //t = new Thread(new ThreadStart(StartForm));
+                    LoadMatList();
+                }
+                //catch (ThreadAbortException)
+                //{
+                //    // ignore it
+                //    //aborted = true;
+                //}
+                catch (Exception ex)
+                {
+                    tool.saveToTextAndMessageToUser(ex);
+                }
+                finally
+                {
+                    //if (!aborted)
+                    //    t.Abort();
 
-            try
-            {
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                //t = new Thread(new ThreadStart(StartForm));
-                LoadMatList();
+                    Cursor = Cursors.Arrow; // change cursor to normal type
+                }
             }
-            //catch (ThreadAbortException)
-            //{
-            //    // ignore it
-            //    //aborted = true;
-            //}
-            catch (Exception ex)
-            {
-                tool.saveToTextAndMessageToUser(ex);
-            }
-            finally
-            {
-                //if (!aborted)
-                //    t.Abort();
-
-                Cursor = Cursors.Arrow; // change cursor to normal type
-            }
+           
 
         }
     }

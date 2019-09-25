@@ -68,9 +68,43 @@ namespace FactoryManagementSoftware.Module
         public readonly string headerJoinMax = "JOIN MAX";
         public readonly string headerJoinMin = "JOIN MIN";
 
+        public readonly string Header_Index  = "#";
+        public readonly string Header_MatCode = "MAT. CODE";
+        public readonly string Header_MatName = "MAT. NAME";
+        public readonly string Header_PartName = "PART NAME";
+        public readonly string Header_PartCode = "PART CODE";
+        public readonly string Header_Parent = "PARENT";
+        public readonly string Header_Delivered = "DELIVERED";
+        public readonly string Header_ItemWeight_G = "ITEM WEIGHT(g)";
+        public readonly string Header_MaterialUsed_KG_Piece = "MAT. USED(KG/PIECE)";
+        public readonly string Header_Wastage = "WASTAGE";
+        public readonly string Header_MaterialUsedWithWastage = "MAT. USED WITH WASTAGE";
+        public readonly string Header_TotalMaterialUsed_KG_Piece = "TOTAL MAT. USED(KG/PIECE)";
         #endregion
 
         #region UI design
+
+        private DataTable NewMatUsedTable()
+        {
+            DataTable dt = new DataTable();
+
+
+            dt.Columns.Add(Header_Index, typeof(int));
+            dt.Columns.Add(Header_MatCode, typeof(string));
+            dt.Columns.Add(Header_MatName, typeof(string));
+            dt.Columns.Add(Header_PartName, typeof(string));
+            dt.Columns.Add(Header_PartCode, typeof(string));
+            dt.Columns.Add(Header_Parent, typeof(string));
+            dt.Columns.Add(Header_Delivered, typeof(int));
+            dt.Columns.Add(Header_ItemWeight_G, typeof(float));
+            dt.Columns.Add(Header_MaterialUsed_KG_Piece, typeof(float));
+            dt.Columns.Add(Header_Wastage, typeof(float));
+            dt.Columns.Add(Header_MaterialUsedWithWastage, typeof(float));
+            dt.Columns.Add(Header_TotalMaterialUsed_KG_Piece, typeof(float));
+
+
+            return dt;
+        }
 
         //without min width
         public void AddTextBoxColumns(DataGridView dgv,string HeaderText, string Name, DataGridViewAutoSizeColumnMode autoSize)
@@ -149,6 +183,295 @@ namespace FactoryManagementSoftware.Module
         #endregion
 
         #region Load/Update Data
+
+        //public void UpdateZeroCostStock()
+        //{
+        //    #region Datatable Data
+
+        //    //get all pmma item
+        //    string PMMA2 = getCustName(1);
+        //    DataTable dt_PMMAItem = dalItemCust.custSearch(PMMA2);
+
+        //    //create datatable
+        //    dt_MatUsed = NewMatUsedTable();
+        //    DataRow row_DGVSouce;
+
+        //    //get all item info
+        //    dt_Item = dalItem.Select();
+
+        //    //get zero cost material list
+        //    dt_ZeroCostMat = dalMat.SelectZeroCostMaterial();
+
+        //    //get all part list
+        //    DataTable dt_Part = dalItem.catSelect(text.Cat_Part);
+        //    DataTable dt_PartForChecking = dt_Part.Copy();
+
+        //    //get all join list(for sub material checking)
+        //    DataTable dt_Join = dalJoin.Select();
+        //    DataTable dt_JoinforChecking = dt_Join.Copy();
+
+        //    //get all transfer history(for in out)
+        //    string from = dtpFrom.Value.ToString("yyyy/MM/dd");
+        //    string to = dtpTo.Value.ToString("yyyy/MM/dd");
+        //    string PMMA = tool.getCustName(1);
+
+        //    DataTable dt_PartTrfToPMMAHist = dalTrfHist.rangeItemToCustomerSearch(PMMA, from, to);
+        //    #endregion
+
+        //    int index = 1;
+        //    int dgvRowIndex = 0;
+        //    string previousMatCode = null;
+        //    float totalMatUsed = 0;
+        //    //foreach material list
+        //    foreach (DataRow matRow in dt_ZeroCostMat.Rows)
+        //    {
+        //        string matCode = matRow[dalMat.MatCode].ToString();
+        //        string matName = matRow[dalMat.MatName].ToString();
+        //        string matCat = matRow[dalMat.MatCat].ToString();
+
+        //        if (previousMatCode == null)
+        //        {
+        //            previousMatCode = matCode;
+        //            totalMatUsed = 0;
+        //        }
+
+        //        else if (previousMatCode != matCode)
+        //        {
+        //            if (dgvRowIndex - 1 >= 0)
+        //                dt_MatUsed.Rows[dgvRowIndex - 1][text.Header_TotalMaterialUsed_KG_Piece] = Math.Round(totalMatUsed, 2);
+
+        //            totalMatUsed = 0;
+
+        //            previousMatCode = matCode;
+        //            row_DGVSouce = dt_MatUsed.NewRow();
+        //            dt_MatUsed.Rows.Add(row_DGVSouce);
+        //            dgvRowIndex++;
+        //        }
+
+        //        if (matCat == text.Cat_SubMat)
+        //        {
+        //            //foreach all join list (for sub material)
+        //            foreach (DataRow joinRow in dt_Join.Rows)
+        //            {
+        //                if (joinRow.RowState != DataRowState.Deleted)
+        //                {
+        //                    string childCode = joinRow["child_code"].ToString();
+
+        //                    if (childCode == matCode)
+        //                    {
+        //                        string parentCode = joinRow["parent_code"].ToString();
+
+        //                        if (ifPMMAItem(parentCode, dt_JoinforChecking, dt_PMMAItem))
+        //                        {
+        //                            string parentName = joinRow["parent_name"].ToString();
+
+        //                            //Get delivered out data
+        //                            dt_DeliveredData.Rows.Clear();
+        //                            float deliveredQty = DeliveredToPMMAQty(parentCode, dt_JoinforChecking, dt_PartTrfToPMMAHist);
+
+        //                            float itemWeight = Convert.ToSingle(joinRow[dalItem.ItemQuoPWPcs].ToString()) + Convert.ToSingle(joinRow[dalItem.ItemQuoRWPcs].ToString());
+
+        //                            if (itemWeight <= 0)
+        //                            {
+        //                                itemWeight = Convert.ToSingle(joinRow[dalItem.ItemProPWPcs].ToString()) + Convert.ToSingle(joinRow[dalItem.ItemProRWPcs].ToString());
+        //                            }
+
+        //                            float matUsedInKG = deliveredQty * itemWeight / 1000;
+        //                            float wastage = tool.getItemWastageAllowedFromDataTable(dt_Item, matCode);
+        //                            int MatUsedWithWastage = (int)Math.Ceiling(deliveredQty + deliveredQty * wastage);
+        //                            totalMatUsed += MatUsedWithWastage;
+
+        //                            #region New Test: with parent code/name
+        //                            foreach (DataRow row in dt_DeliveredData.Rows)
+        //                            {
+        //                                string DeliveredCode = row[text.Header_PartCode] == DBNull.Value ? null : row[text.Header_PartCode].ToString();
+        //                                string DeliveredName = row[text.Header_PartName] == DBNull.Value ? null : row[text.Header_PartName].ToString();
+
+        //                                float qty = Convert.ToSingle(row[text.Header_Delivered]);
+        //                                string parent = DeliveredName + "(" + DeliveredCode + ")";
+
+        //                                if ((DeliveredName != null && DeliveredCode != null) || (deliveredQty == 0 && parentCode == DeliveredCode))
+        //                                {
+
+        //                                    if (DeliveredCode == parentCode)
+        //                                    {
+        //                                        parent = "";
+        //                                    }
+
+        //                                    matUsedInKG = qty * itemWeight / 1000;
+        //                                    MatUsedWithWastage = (int)Math.Ceiling(qty + qty * wastage);
+
+        //                                    row_DGVSouce = dt_MatUsed.NewRow();
+        //                                    row_DGVSouce[text.Header_Index] = index;
+        //                                    row_DGVSouce[text.Header_MatCode] = matCode;
+        //                                    row_DGVSouce[text.Header_MatName] = matName;
+        //                                    row_DGVSouce[text.Header_PartName] = parentName;
+        //                                    row_DGVSouce[text.Header_PartCode] = parentCode;
+        //                                    row_DGVSouce[text.Header_Parent] = parent;
+        //                                    row_DGVSouce[text.Header_ItemWeight_G] = itemWeight;
+        //                                    row_DGVSouce[text.Header_Wastage] = wastage;
+        //                                    row_DGVSouce[text.Header_Delivered] = Math.Round(deliveredQty, 2);
+        //                                    row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = deliveredQty;
+        //                                    row_DGVSouce[text.Header_MaterialUsedWithWastage] = MatUsedWithWastage;
+
+        //                                    dt_MatUsed.Rows.Add(row_DGVSouce);
+        //                                    dgvRowIndex++;
+        //                                    index++;
+        //                                }
+        //                            }
+        //                            //joinRow.Delete();
+
+        //                            #endregion
+
+
+        //                            #region oldway
+
+        //                            //row_DGVSouce = dt_MatUsed.NewRow();
+        //                            //row_DGVSouce[text.Header_Index] = index;
+        //                            //row_DGVSouce[text.Header_MatCode] = matCode;
+        //                            //row_DGVSouce[text.Header_MatName] = matName;
+        //                            //row_DGVSouce[text.Header_PartName] = parentName;
+        //                            //row_DGVSouce[text.Header_PartCode] = parentCode;
+        //                            //row_DGVSouce[text.Header_ItemWeight_G] = itemWeight;
+        //                            //row_DGVSouce[text.Header_Wastage] = wastage;
+        //                            //row_DGVSouce[text.Header_Delivered] = Math.Round(deliveredQty, 2);
+        //                            //row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = deliveredQty;
+        //                            //row_DGVSouce[text.Header_MaterialUsedWithWastage] = MatUsedWithWastage;
+
+        //                            //dt_MatUsed.Rows.Add(row_DGVSouce);
+        //                            //dgvRowIndex++;
+        //                            //index++;
+
+        //                            //joinRow.Delete();
+        //                            #endregion
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            dt_Join.AcceptChanges();
+        //        }
+        //        else
+        //        {
+        //            //foreach all part list(for raw material)
+        //            foreach (DataRow partRow in dt_Part.Rows)
+        //            {
+        //                if (partRow.RowState != DataRowState.Deleted)
+        //                {
+        //                    string itemMatCode = partRow[dalItem.ItemMaterial].ToString();
+
+        //                    if (itemMatCode == matCode)
+        //                    {
+        //                        string itemCode = partRow[dalItem.ItemCode].ToString();
+
+        //                        //check if item belong to PMMA
+        //                        if (ifPMMAItem(itemCode, dt_JoinforChecking, dt_PMMAItem))
+        //                        {
+        //                            string itemName = partRow[dalItem.ItemName].ToString();
+
+        //                            float itemWeight = Convert.ToSingle(partRow[dalItem.ItemQuoPWPcs].ToString()) + Convert.ToSingle(partRow[dalItem.ItemQuoRWPcs].ToString());
+
+        //                            if (itemWeight <= 0)
+        //                            {
+        //                                itemWeight = Convert.ToSingle(partRow[dalItem.ItemProPWPcs].ToString()) + Convert.ToSingle(partRow[dalItem.ItemProRWPcs].ToString());
+        //                            }
+
+        //                            float wastage = partRow[dalItem.ItemWastage] == DBNull.Value ? 0 : Convert.ToSingle(partRow[dalItem.ItemWastage]);
+
+        //                            //Get delivered out data
+        //                            dt_DeliveredData.Rows.Clear();
+        //                            float deliveredQty = DeliveredToPMMAQty(itemCode, dt_JoinforChecking, dt_PartTrfToPMMAHist);
+        //                            float matUsedInKG = deliveredQty * itemWeight / 1000;
+        //                            totalMatUsed += (float)Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
+
+
+        //                            #region New Test: with parent code/name
+        //                            foreach (DataRow row in dt_DeliveredData.Rows)
+        //                            {
+        //                                string DeliveredCode = row[text.Header_PartCode] == DBNull.Value ? null : row[text.Header_PartCode].ToString();
+
+        //                                if (itemCode == "V99CJP0M0")
+        //                                {
+        //                                    float TEST = 0;
+        //                                }
+        //                                string DeliveredName = row[text.Header_PartName] == DBNull.Value ? null : row[text.Header_PartName].ToString();
+        //                                float qty = Convert.ToSingle(row[text.Header_Delivered]);
+        //                                string parent = DeliveredName + "(" + DeliveredCode + ")";
+
+        //                                if ((DeliveredName != null && DeliveredCode != null) || (deliveredQty == 0 && itemCode == DeliveredCode))
+        //                                {
+        //                                    row_DGVSouce = dt_MatUsed.NewRow();
+
+        //                                    if (DeliveredCode == itemCode)
+        //                                    {
+        //                                        parent = "";
+        //                                    }
+
+        //                                    matUsedInKG = qty * itemWeight / 1000;
+
+        //                                    row_DGVSouce[text.Header_Index] = index;
+        //                                    row_DGVSouce[text.Header_MatCode] = matCode;
+        //                                    row_DGVSouce[text.Header_MatName] = matName;
+        //                                    row_DGVSouce[text.Header_PartName] = itemName;
+        //                                    row_DGVSouce[text.Header_PartCode] = itemCode;
+        //                                    row_DGVSouce[text.Header_Parent] = parent;
+        //                                    row_DGVSouce[text.Header_ItemWeight_G] = itemWeight;
+        //                                    row_DGVSouce[text.Header_Wastage] = wastage;
+        //                                    row_DGVSouce[text.Header_Delivered] = Math.Round(qty, 2);
+        //                                    row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = Math.Round(matUsedInKG, 2);
+        //                                    row_DGVSouce[text.Header_MaterialUsedWithWastage] = Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
+
+        //                                    dt_MatUsed.Rows.Add(row_DGVSouce);
+        //                                    index++;
+        //                                    dgvRowIndex++;
+        //                                }
+        //                            }
+
+        //                            //partRow.Delete();
+        //                            #endregion
+
+        //                            #region old way
+        //                            //row_DGVSouce = dt_MatUsed.NewRow();
+
+        //                            //row_DGVSouce[text.Header_Index] = index;
+        //                            //row_DGVSouce[text.Header_MatCode] = matCode;
+        //                            //row_DGVSouce[text.Header_MatName] = matName;
+        //                            //row_DGVSouce[text.Header_PartName] = itemName;
+        //                            //row_DGVSouce[text.Header_PartCode] = itemCode;
+        //                            //row_DGVSouce[text.Header_ItemWeight_G] = itemWeight;
+        //                            //row_DGVSouce[text.Header_Wastage] = wastage;
+        //                            //row_DGVSouce[text.Header_Delivered] = Math.Round(deliveredQty, 2);
+        //                            //row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = Math.Round(matUsedInKG, 2);
+        //                            //row_DGVSouce[text.Header_MaterialUsedWithWastage] = Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
+
+        //                            //dt_MatUsed.Rows.Add(row_DGVSouce);
+        //                            //index++;
+        //                            //dgvRowIndex++;
+
+        //                            //partRow.Delete();
+        //                            #endregion
+        //                        }
+        //                    }
+
+        //                    if (!ifZeroCostMat(itemMatCode, dt_ZeroCostMat))
+        //                    {
+        //                        //partRow.Delete();
+        //                    }
+        //                }
+        //            }
+        //            //dt_Part.AcceptChanges();
+        //        }
+        //    }
+
+        //    if (dgvRowIndex - 1 >= 0)
+        //        dt_MatUsed.Rows[dgvRowIndex - 1][text.Header_TotalMaterialUsed_KG_Piece] = Math.Round(totalMatUsed, 2);
+
+        //    if (dt_MatUsed.Rows.Count > 0)
+        //    {
+        //        dgvMatUsed.DataSource = dt_MatUsed;
+        //        dgvMatUsed.ClearSelection();
+        //    }
+
+        //}
 
         public DateTime GetStartDate(int month, int year)
         {
@@ -920,6 +1243,25 @@ namespace FactoryManagementSoftware.Module
             return stockQty;
         }
 
+        public float getItemWastageAllowedFromDataTable(DataTable dt, string ItemCode)
+        {
+            float WastageAllowed = 0;
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[dalItem.ItemCode].ToString().Equals(ItemCode))
+                    {
+                        WastageAllowed = Convert.ToSingle(row[dalItem.ItemWastage]);
+
+                        return WastageAllowed;
+                    }
+                }
+            }
+            return WastageAllowed;
+        }
+
         public string getItemNameFromDataTable(DataTable dt, string ItemCode)
         {
             string ItemName = "";
@@ -1224,7 +1566,7 @@ namespace FactoryManagementSoftware.Module
             {
                 foreach (DataRow row in dt_Out.Rows)
                 {
-                    if (row["trf_result"].ToString().Equals("Passed"))
+                    if (row["trf_result"].ToString().Equals("Passed") && !row["trf_hist_to"].ToString().Equals("OTHER"))
                     {
                         deliveredOut += Convert.ToInt32(row["trf_hist_qty"]);
                     }
@@ -3615,10 +3957,22 @@ namespace FactoryManagementSoftware.Module
 
         public void saveToText(Exception ex)//error message
         {
-            
+            string errorMessage = ex.Message;
             Directory.CreateDirectory(@"D:\StockAssistant\SystemError");
             string today = DateTime.Now.Date.ToString("yyyy_MM_dd");
             string filePath = @"D:\StockAssistant\SystemError\Error_" + today + ".txt";
+
+            string str = "";
+
+            if(File.Exists(filePath))
+            {
+                using (StreamReader sreader = new StreamReader(filePath))
+                {
+                    str = sreader.ReadToEnd();
+                }
+
+                File.Delete(filePath);
+            }
 
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
@@ -3637,31 +3991,59 @@ namespace FactoryManagementSoftware.Module
 
                     ex = ex.InnerException;
                 }
+
+                writer.Write(str);
             }
 
             Directory.CreateDirectory(@"D:\StockAssistant\SystemHistory");
             filePath = @"D:\StockAssistant\SystemHistory\History_" + today + ".txt";
 
-            if (ex != null)
+            str = "";
+            if (File.Exists(filePath))
             {
-                using (StreamWriter writer = new StreamWriter(filePath, true))
+                using (StreamReader sreader = new StreamReader(filePath))
+                {
+                    str = sreader.ReadToEnd();
+                }
+                File.Delete(filePath);
+            }
+
+            using (StreamWriter writer = new StreamWriter(filePath, true))
+            {
+                if (errorMessage != null)
                 {
                     writer.WriteLine("-----------------------------------------------------------------------------");
                     writer.WriteLine("Date : " + DateTime.Now.ToString());
                     writer.WriteLine();
                     writer.WriteLine("Action : SYSTEM ERROR");
                     writer.WriteLine();
-                    writer.WriteLine("Detail : " + ex.Message);
+                    writer.WriteLine("Detail : " + errorMessage);
                     writer.WriteLine();
                 }
+                
+                writer.Write(str);
             }
+            
         }
 
         public void saveToTextAndMessageToUser(Exception ex)
         {
+            string errorMessage = ex.Message;
             Directory.CreateDirectory(@"D:\StockAssistant\SystemError");
             string today = DateTime.Now.Date.ToString("yyyy_MM_dd");
             string filePath = @"D:\StockAssistant\SystemError\Error_" + today + ".txt";
+
+            string str = "";
+
+            if (File.Exists(filePath))
+            {
+                using (StreamReader sreader = new StreamReader(filePath))
+                {
+                    str = sreader.ReadToEnd();
+                }
+
+                File.Delete(filePath);
+            }
 
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
@@ -3682,28 +4064,42 @@ namespace FactoryManagementSoftware.Module
 
                     ex = ex.InnerException;
                 }
+                writer.Write(str);
             }
 
             Directory.CreateDirectory(@"D:\StockAssistant\SystemHistory");
             filePath = @"D:\StockAssistant\SystemHistory\History_" + today + ".txt";
 
-            if(ex != null)
+            str = "";
+            if (File.Exists(filePath))
             {
-                using (StreamWriter writer = new StreamWriter(filePath, true))
+                using (StreamReader sreader = new StreamReader(filePath))
+                {
+                    str = sreader.ReadToEnd();
+                }
+                File.Delete(filePath);
+            }
+
+
+            using (StreamWriter writer = new StreamWriter(filePath, true))
+            {
+                if (errorMessage != null)
                 {
                     writer.WriteLine("-----------------------------------------------------------------------------");
                     writer.WriteLine("Date : " + DateTime.Now.ToString());
                     writer.WriteLine();
                     writer.WriteLine("Action : SYSTEM ERROR");
                     writer.WriteLine();
-                    writer.WriteLine("Detail : " + ex.Message);
+                    writer.WriteLine("Detail : " + errorMessage);
                     writer.WriteLine();
                 }
-            }
-           
-        }
 
-       
+                writer.Write(str);
+            }
+            
+           
+
+        }
 
         public void historyRecord(string action, string detail, DateTime date, int by)
         {
@@ -3731,6 +4127,16 @@ namespace FactoryManagementSoftware.Module
             string today = DateTime.Now.Date.ToString("yyyy_MM_dd");
             string filePath = @"D:\StockAssistant\SystemHistory\History_" + today + ".txt";
 
+            string str = "";
+            if (File.Exists(filePath))
+            {
+                using (StreamReader sreader = new StreamReader(filePath))
+                {
+                    str = sreader.ReadToEnd();
+                }
+                File.Delete(filePath);
+            }
+
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
                 writer.WriteLine("-----------------------------------------------------------------------------");
@@ -3742,6 +4148,8 @@ namespace FactoryManagementSoftware.Module
                 writer.WriteLine();
                 writer.WriteLine("By : " + dalUser.getUsername(by));
                 writer.WriteLine();
+
+                writer.Write(str);
             }
         }
 
