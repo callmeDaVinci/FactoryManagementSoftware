@@ -512,7 +512,7 @@ namespace FactoryManagementSoftware.UI
             }
            
 
-            if (row > 0 && row != dgv.RowCount -1)
+            if (row >= 0 && row != dgv.RowCount -1)
             {
                 PlanningBLL u = new PlanningBLL();
 

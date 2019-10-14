@@ -93,8 +93,10 @@ namespace FactoryManagementSoftware.Module
         public string habit_belongTo_PlanningPage { get; } = "PLANNING PAGE";
         public string habit_planning_HourPerDay { get; } = "PLANNING: HOUR PER DAY";
         public string habit_planning_Wastage { get; } = "PLANNING: MATERIAL WASTAGE %";
+
         //LOCATION////////////////////////////////////////////////////////////////////////////
         public string Factory { get; } = "Factory";
+        public string Customer { get; } = "Customer";
         public string Production { get; } = "Production";
         public string Assembly { get; } = "Assembly";
 

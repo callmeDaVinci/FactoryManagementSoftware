@@ -83,9 +83,9 @@
             // 
             this.btnCancel.BackColor = System.Drawing.Color.Transparent;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancel.ForeColor = System.Drawing.Color.Black;
-            this.btnCancel.Location = new System.Drawing.Point(656, 591);
+            this.btnCancel.Location = new System.Drawing.Point(640, 591);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(120, 50);
@@ -122,14 +122,14 @@
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(780, 589);
+            this.btnSave.Location = new System.Drawing.Point(764, 591);
             this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(122, 52);
+            this.btnSave.Size = new System.Drawing.Size(122, 50);
             this.btnSave.TabIndex = 46;
             this.btnSave.Text = "SAVE";
             this.btnSave.UseVisualStyleBackColor = false;
@@ -157,7 +157,8 @@
             // 
             // cmbParentName
             // 
-            this.cmbParentName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbParentName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbParentName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbParentName.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbParentName.ForeColor = System.Drawing.SystemColors.InfoText;
             this.cmbParentName.FormattingEnabled = true;
@@ -196,7 +197,8 @@
             // 
             // cmbChildName
             // 
-            this.cmbChildName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbChildName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbChildName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbChildName.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbChildName.ForeColor = System.Drawing.SystemColors.InfoText;
             this.cmbChildName.FormattingEnabled = true;
@@ -224,20 +226,21 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(4, 33);
+            this.label7.Location = new System.Drawing.Point(457, 33);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(40, 19);
+            this.label7.Size = new System.Drawing.Size(78, 19);
             this.label7.TabIndex = 70;
-            this.label7.Text = "*QTY";
+            this.label7.Text = "CHILD QTY";
             // 
             // txtQty
             // 
             this.txtQty.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtQty.Location = new System.Drawing.Point(10, 55);
+            this.txtQty.Location = new System.Drawing.Point(457, 55);
             this.txtQty.Name = "txtQty";
-            this.txtQty.Size = new System.Drawing.Size(423, 36);
+            this.txtQty.Size = new System.Drawing.Size(414, 36);
             this.txtQty.TabIndex = 72;
             this.txtQty.Text = "1";
+            this.txtQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtQty.TextChanged += new System.EventHandler(this.txtQty_TextChanged);
             // 
             // errorProvider1
@@ -343,11 +346,12 @@
             // 
             this.txtMin.Enabled = false;
             this.txtMin.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMin.Location = new System.Drawing.Point(677, 55);
+            this.txtMin.Location = new System.Drawing.Point(223, 55);
             this.txtMin.Name = "txtMin";
             this.txtMin.Size = new System.Drawing.Size(194, 36);
             this.txtMin.TabIndex = 79;
             this.txtMin.Text = "1";
+            this.txtMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtMin.TextChanged += new System.EventHandler(this.txtMin_TextChanged);
             this.txtMin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMin_KeyPress);
             // 
@@ -355,11 +359,12 @@
             // 
             this.txtMax.Enabled = false;
             this.txtMax.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMax.Location = new System.Drawing.Point(451, 55);
+            this.txtMax.Location = new System.Drawing.Point(10, 55);
             this.txtMax.Name = "txtMax";
-            this.txtMax.Size = new System.Drawing.Size(194, 36);
+            this.txtMax.Size = new System.Drawing.Size(188, 36);
             this.txtMax.TabIndex = 78;
             this.txtMax.Text = "1";
+            this.txtMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtMax.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             this.txtMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMax_KeyPress);
             // 
@@ -367,21 +372,21 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(673, 33);
+            this.label6.Location = new System.Drawing.Point(219, 33);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(36, 19);
+            this.label6.Size = new System.Drawing.Size(125, 19);
             this.label6.TabIndex = 75;
-            this.label6.Text = "MIN";
+            this.label6.Text = "PARENT QTY (MIN)";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(453, 33);
+            this.label2.Location = new System.Drawing.Point(6, 33);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(39, 19);
+            this.label2.Size = new System.Drawing.Size(128, 19);
             this.label2.TabIndex = 73;
-            this.label2.Text = "MAX";
+            this.label2.Text = "PARENT QTY (MAX)";
             // 
             // groupBox4
             // 
@@ -426,6 +431,7 @@
             this.txtTestChildQty.Size = new System.Drawing.Size(79, 36);
             this.txtTestChildQty.TabIndex = 81;
             this.txtTestChildQty.Text = "1";
+            this.txtTestChildQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtTestChildQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTestChildQty_KeyPress);
             // 
             // txtTestParentQty
@@ -436,6 +442,7 @@
             this.txtTestParentQty.Size = new System.Drawing.Size(79, 36);
             this.txtTestParentQty.TabIndex = 72;
             this.txtTestParentQty.Text = "1";
+            this.txtTestParentQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtTestParentQty.TextChanged += new System.EventHandler(this.txtTestParentQty_TextChanged);
             this.txtTestParentQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTestParentQty_KeyPress);
             // 

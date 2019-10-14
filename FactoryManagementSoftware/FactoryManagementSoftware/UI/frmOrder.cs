@@ -152,17 +152,17 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                MessageBox.Show("This function is temporary stop, please contact system admin for more information.");
-                //btnFilter.Text = "HIDE ORDER ALERT";
-                //tlpOrder.RowStyles[0] = new RowStyle(SizeType.Percent, 12f);
-                //tlpOrder.RowStyles[1] = new RowStyle(SizeType.Percent, 39f);
-                //tlpOrder.RowStyles[2] = new RowStyle(SizeType.Percent, 9f);
-                //tlpOrder.RowStyles[3] = new RowStyle(SizeType.Percent, 40f);
-                //tlpAlert.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 60f);
-                //tlpAlert.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 10f);
-                //tlpAlert.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 10f);
-                //tlpAlert.ColumnStyles[3] = new ColumnStyle(SizeType.Percent, 10f);
-                //tlpAlert.ColumnStyles[4] = new ColumnStyle(SizeType.Percent, 10f);
+                //MessageBox.Show("This function is temporary stop, please contact system admin for more information.");
+                btnFilter.Text = "HIDE ORDER ALERT";
+                tlpOrder.RowStyles[0] = new RowStyle(SizeType.Percent, 12f);
+                tlpOrder.RowStyles[1] = new RowStyle(SizeType.Percent, 39f);
+                tlpOrder.RowStyles[2] = new RowStyle(SizeType.Percent, 9f);
+                tlpOrder.RowStyles[3] = new RowStyle(SizeType.Percent, 40f);
+                tlpAlert.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 60f);
+                tlpAlert.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 10f);
+                tlpAlert.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 10f);
+                tlpAlert.ColumnStyles[3] = new ColumnStyle(SizeType.Percent, 10f);
+                tlpAlert.ColumnStyles[4] = new ColumnStyle(SizeType.Percent, 10f);
             }
         }
 

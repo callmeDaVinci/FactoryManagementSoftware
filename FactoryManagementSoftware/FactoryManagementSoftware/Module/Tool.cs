@@ -851,6 +851,20 @@ namespace FactoryManagementSoftware.Module
             return itemName;
         }
 
+        public string getItemCat(string itemCode)
+        {
+            string itemCat = "";
+
+            DataTable dtItem = dalItem.codeSearch(itemCode);
+
+            foreach (DataRow item in dtItem.Rows)
+            {
+                itemCat = item["item_cat"].ToString();
+            }
+
+            return itemCat;
+        }
+
         public int getFactoryID(string factoryName)
         {
             string factoryID = "";
@@ -903,6 +917,27 @@ namespace FactoryManagementSoftware.Module
             }
 
             return CustomerName;
+        }
+
+        public DataTable CopyDGVToDatatable(DataGridView dgv)
+        {
+            DataTable dt = new DataTable();
+            foreach (DataGridViewColumn col in dgv.Columns)
+            {
+                dt.Columns.Add(col.Name);
+            }
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                DataRow dRow = dt.NewRow();
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    dRow[cell.ColumnIndex] = cell.Value;
+                }
+                dt.Rows.Add(dRow);
+            }
+
+            return dt;
         }
 
         public DataTable RemoveDuplicates(DataTable dt, string columnName)
@@ -1281,6 +1316,25 @@ namespace FactoryManagementSoftware.Module
             return ItemName;
         }
 
+        public string getItemCatFromDataTable(DataTable dt, string ItemCode)
+        {
+            string catName = "";
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[dalItem.ItemCode].ToString().Equals(ItemCode))
+                    {
+                        catName = row["item_cat"].ToString();
+
+                        return catName;
+                    }
+                }
+            }
+            return catName;
+        }
+
         public float getOrderQtyFromDataTable(DataTable dt, string itemCode)
         {
             float orderQty = 0;
@@ -1612,6 +1666,24 @@ namespace FactoryManagementSoftware.Module
             balance += qtyNeedFromParent;
             //DataTable dt3 = daltrfHist.rangeItemToCustomerSearch(cmbCust.Text, start, end, itemCode);
             return balance;
+        }
+
+        public float getStockBalance(string itemCode,string facName, DataTable dt)
+        {
+            float balanceQty = 0;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string code = row[dalItem.ItemCode].ToString();
+                string fac = row["fac_name"].ToString();
+
+                if(code == itemCode && fac == facName)
+                {
+                    balanceQty = row["stock_qty"] == DBNull.Value? 0 : Convert.ToSingle(row["stock_qty"]);
+                }
+            }
+
+            return balanceQty;
         }
 
         public DataTable NewMatTable()
@@ -3203,6 +3275,21 @@ namespace FactoryManagementSoftware.Module
             dtMat = AddDuplicates(dtMat);
             dtMat = calStillNeed(dtMat);
             return dtMat;
+        }
+
+        public string getBetween(string strSource, string strStart, string strEnd)
+        {
+            int Start, End;
+            if (strSource.Contains(strStart) && strSource.Contains(strEnd))
+            {
+                Start = strSource.IndexOf(strStart, 0) + strStart.Length;
+                End = strSource.IndexOf(strEnd, Start);
+                return strSource.Substring(Start, End - Start);
+            }
+            else
+            {
+                return "";
+            }
         }
 
         public DataTable insertSubMaterialUsedData(string customer, string SubMat)

@@ -306,8 +306,11 @@ namespace FactoryManagementSoftware.UI
                 {
                     if (row[dalItem.ItemCat].ToString().Equals("Part"))
                     {
-                        txtPartWeight.Text = row[dalItem.ItemProPWShot] == DBNull.Value ? "" : row[dalItem.ItemProPWShot].ToString();
-                        txtRunnerWeight.Text = row[dalItem.ItemProRWShot] == DBNull.Value ? "" : row[dalItem.ItemProRWShot].ToString();
+                        float partWeight = float.TryParse(row[dalItem.ItemProPWShot].ToString(), out float i) ? Convert.ToSingle(row[dalItem.ItemProPWShot].ToString()) : 0;
+                        float runnerWeight = float.TryParse(row[dalItem.ItemProRWShot].ToString(), out float k) ? Convert.ToSingle(row[dalItem.ItemProRWShot].ToString()) : 0;
+
+                        txtPartWeight.Text = partWeight.ToString("0.##");
+                        txtRunnerWeight.Text = runnerWeight.ToString("0.##");
                         txtCavity.Text = row[dalItem.ItemCapacity] == DBNull.Value ? "" : row[dalItem.ItemCapacity].ToString();
                         txtProCT.Text = row[dalItem.ItemProCTTo] == DBNull.Value ? "" : row[dalItem.ItemProCTTo].ToString();
                         txtQuoCT.Text = row[dalItem.ItemQuoCT] == DBNull.Value ? "" : row[dalItem.ItemQuoCT].ToString();
@@ -647,7 +650,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (cbEditMode.Checked)
             {
-                if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+                if (!char.IsNumber(e.KeyChar) && (Keys)e.KeyChar != Keys.Back && e.KeyChar != '.')
                 {
                     e.Handled = true;
                 }
@@ -673,7 +676,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (cbEditMode.Checked)
             {
-                if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+                if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back && e.KeyChar != '.')
                 {
                     e.Handled = true;
                 }
@@ -2200,8 +2203,8 @@ namespace FactoryManagementSoftware.UI
                     uItem.item_capacity = string.IsNullOrEmpty(txtCavity.Text) ? 0 : Convert.ToInt32(txtCavity.Text);
                     uItem.item_quo_ct = string.IsNullOrEmpty(txtQuoCT.Text) ? 0 : Convert.ToInt32(txtQuoCT.Text);
                     uItem.item_pro_ct_to = string.IsNullOrEmpty(txtProCT.Text) ? 0 : Convert.ToInt32(txtProCT.Text);
-                    uItem.item_pro_pw_shot = string.IsNullOrEmpty(txtPartWeight.Text) ? 0 : Convert.ToInt32(txtPartWeight.Text);
-                    uItem.item_pro_rw_shot = string.IsNullOrEmpty(txtRunnerWeight.Text) ? 0 : Convert.ToInt32(txtRunnerWeight.Text);
+                    uItem.item_pro_pw_shot = string.IsNullOrEmpty(txtPartWeight.Text) ? 0 : Convert.ToSingle(txtPartWeight.Text);
+                    uItem.item_pro_rw_shot = string.IsNullOrEmpty(txtRunnerWeight.Text) ? 0 : Convert.ToSingle(txtRunnerWeight.Text);
                     uItem.item_updtd_date = DateTime.Now;
                     uItem.item_updtd_by = MainDashboard.USER_ID;
 

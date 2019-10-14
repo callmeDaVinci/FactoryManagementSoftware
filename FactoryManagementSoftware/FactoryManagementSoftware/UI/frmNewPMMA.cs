@@ -390,6 +390,12 @@ namespace FactoryManagementSoftware.UI
 
                                 if (ifPMMAItem(parentCode, dt_JoinforChecking, dt_PMMAItem))
                                 {
+
+                                    if(matCode == "V44K61000")
+                                    {
+                                        float TEST = 0;
+                                    }
+
                                     string parentName = joinRow["parent_name"].ToString();
 
                                     //Get delivered out data
@@ -403,9 +409,12 @@ namespace FactoryManagementSoftware.UI
                                         itemWeight = Convert.ToSingle(joinRow[dalItem.ItemProPWPcs].ToString()) + Convert.ToSingle(joinRow[dalItem.ItemProRWPcs].ToString());
                                     }
 
-                                    float matUsedInKG = deliveredQty * itemWeight / 1000;
+                                    //float matUsedInKG = deliveredQty * itemWeight / 1000;
                                     float wastage = tool.getItemWastageAllowedFromDataTable(dt_Item, matCode);
-                                    int MatUsedWithWastage = (int)Math.Ceiling(deliveredQty + deliveredQty * wastage);
+                                    //int MatUsedWithWastage = (int)Math.Ceiling(deliveredQty + deliveredQty * wastage);
+
+                                    float wastageAdd = deliveredQty * wastage;
+                                    int MatUsedWithWastage = (int)Math.Ceiling(deliveredQty + wastageAdd);
                                     totalMatUsed += MatUsedWithWastage;
 
                                     #region New Test: with parent code/name
@@ -425,8 +434,10 @@ namespace FactoryManagementSoftware.UI
                                                 parent = "";
                                             }
 
-                                            matUsedInKG = qty * itemWeight / 1000;
-                                            MatUsedWithWastage = (int)Math.Ceiling(qty + qty * wastage);
+                                            //matUsedInKG = qty * itemWeight / 1000;
+
+                                            wastageAdd = qty * wastage;
+                                            MatUsedWithWastage = (int)Math.Ceiling(qty + wastageAdd);
 
                                             row_DGVSouce = dt_MatUsed.NewRow();
                                             row_DGVSouce[text.Header_Index] = index;
@@ -437,8 +448,8 @@ namespace FactoryManagementSoftware.UI
                                             row_DGVSouce[text.Header_Parent] = parent;
                                             row_DGVSouce[text.Header_ItemWeight_G] = itemWeight;
                                             row_DGVSouce[text.Header_Wastage] = wastage;
-                                            row_DGVSouce[text.Header_Delivered] = Math.Round(deliveredQty, 2);
-                                            row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = deliveredQty;
+                                            row_DGVSouce[text.Header_Delivered] = Math.Round(qty, 2);
+                                            row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = qty;
                                             row_DGVSouce[text.Header_MaterialUsedWithWastage] = MatUsedWithWastage;
 
                                             dt_MatUsed.Rows.Add(row_DGVSouce);
@@ -490,6 +501,7 @@ namespace FactoryManagementSoftware.UI
                             {
                                 string itemCode = partRow[dalItem.ItemCode].ToString();
 
+                                
                                 //check if item belong to PMMA
                                 if (ifPMMAItem(itemCode,dt_JoinforChecking,dt_PMMAItem))
                                 {
@@ -516,10 +528,10 @@ namespace FactoryManagementSoftware.UI
                                     {
                                         string DeliveredCode = row[text.Header_PartCode] == DBNull.Value ? null : row[text.Header_PartCode].ToString();
 
-                                        if(itemCode == "V99CJP0M0")
-                                        {
-                                            float TEST = 0;
-                                        }
+                                        //if(itemCode == "V99CJP0M0")
+                                        //{
+                                        //    float TEST = 0;
+                                        //}
                                         string DeliveredName = row[text.Header_PartName] == DBNull.Value ? null : row[text.Header_PartName].ToString();
                                         float qty = Convert.ToSingle(row[text.Header_Delivered]);
                                         string parent = DeliveredName + "(" + DeliveredCode + ")";
@@ -852,15 +864,13 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow trfHistRow in dt_ToPMMA.Rows)
             {
                 dbItemCode = trfHistRow[dalTrfHist.TrfItemCode].ToString();
+                string result = trfHistRow[dalTrfHist.TrfResult].ToString();
                 //get single out
-                if (itemCode == dbItemCode)
+                if (itemCode == dbItemCode && result == "Passed")
                 {
                     dbItemName = trfHistRow[dalItem.ItemName].ToString();
                     int qty = trfHistRow[dalTrfHist.TrfQty] == DBNull.Value ? 0 : Convert.ToInt32(trfHistRow[dalTrfHist.TrfQty]);
                     DeliveredQty += qty;
-
-                    
-                   
                 }
 
             }

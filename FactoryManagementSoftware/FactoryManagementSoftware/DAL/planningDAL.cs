@@ -505,7 +505,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable idSearch(string keywords)
+        public DataTable idSearch(string planID)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -518,11 +518,11 @@ namespace FactoryManagementSoftware.DAL
                                 INNER JOIN tbl_item
                                 ON tbl_plan.part_code = tbl_item.item_code
                                 INNER JOIN tbl_mac ON tbl_plan.machine_id = tbl_mac.mac_id 
-                                WHERE tbl_plan.plan_id=@keywords ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC";
+                                WHERE tbl_plan.plan_id=@planID ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@keywords", keywords);
+                cmd.Parameters.AddWithValue("@planID", planID);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open

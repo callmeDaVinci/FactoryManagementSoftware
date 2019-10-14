@@ -86,6 +86,11 @@ namespace FactoryManagementSoftware.UI
         childTrfHistDAL dalChildTrf = new childTrfHistDAL();
         childTrfHistBLL uChildTrfHist = new childTrfHistBLL();
 
+        matPlanDAL dalMatPlan = new matPlanDAL();
+        matPlanBLL uMatPlan = new matPlanBLL();
+
+        MacDAL dalMac = new MacDAL();
+
         Tool tool = new Tool();
         Text text = new Text();
 
@@ -433,7 +438,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dtItem;
             string keywords = txtSearch.Text;
 
-            if (!string.IsNullOrEmpty(keywords))
+            if (!string.IsNullOrEmpty(keywords) && keywords != "Search")
             {
                 if (cmbSearchCat.Text.Equals("All"))//string.IsNullOrEmpty(cmbSearchCat.Text) || 
                 {
@@ -554,7 +559,7 @@ namespace FactoryManagementSoftware.UI
             string keywords = txtSearch.Text;
 
             //check if the keywords has value or not
-            if (!string.IsNullOrEmpty(keywords))
+            if (!string.IsNullOrEmpty(keywords) && keywords != "Search")
             {
                 if (!cmbTransHistDate.Text.Equals(All))
                 {
@@ -1185,6 +1190,8 @@ namespace FactoryManagementSoftware.UI
 
             float qty = Convert.ToSingle(dgvTrf.Rows[rowIndex].Cells["trf_hist_qty"].Value.ToString());
 
+            string note = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfNote].Value.ToString();
+
             if (ifFactory(locationFrom))
             {
                 result = stockIn(locationFrom, itemCode, qty, unit);
@@ -1216,10 +1223,68 @@ namespace FactoryManagementSoftware.UI
 
                     //tool.matPlanAddQty(dt, itemCode, qty);
                 }
+
+                string textFind = tool.getBetween(note, "[For Plan ", "]");
+                int planID = -1;
+                if(textFind != "" && int.TryParse(textFind, out planID))
+                {
+                    if(planID != -1)
+                    {
+                        //update transferred qty
+                        DataTable dt_MatPlan = dalMatPlan.Select();
+
+                        foreach (DataRow mat in dt_MatPlan.Rows)
+                        {
+                            bool active = Convert.ToBoolean(mat[dalMatPlan.Active]);
+
+                            if (active)
+                            {
+                                float checkingQty = float.TryParse(mat[dalMatPlan.Prepare].ToString(), out float j) ? Convert.ToSingle(mat[dalMatPlan.Prepare].ToString()) : 0;
+                                string orgFrom = mat[dalMatPlan.MatFrom].ToString();
+                                bool match = true;
+                                int checkingPlanID = int.TryParse(mat[dalMatPlan.PlanID].ToString(), out int k) ? Convert.ToInt32(mat[dalMatPlan.PlanID]) : 0;
+
+                                if (itemCode != mat[dalMatPlan.MatCode].ToString())
+                                {
+                                    match = false;
+                                }
+
+                                else if (planID != checkingPlanID)
+                                {
+                                    match = false;
+                                }
+
+                                if (match)
+                                {
+                                    //get plan id
+                                    
+                                    float Transferred = float.TryParse(mat[dalMatPlan.Transferred].ToString(), out float l) ? Convert.ToSingle(mat[dalMatPlan.Transferred].ToString()) : 0;
+
+                                    uMatPlan.mat_code = itemCode;
+                                    uMatPlan.plan_id = planID;
+                                    uMatPlan.mat_transferred = Transferred - qty < 0? 0: Transferred - qty;
+                                    uMatPlan.mat_preparing = checkingQty;
+                                    uMatPlan.mat_from = orgFrom;
+                                    uMatPlan.updated_date = DateTime.Now;
+                                    uMatPlan.updated_by = MainDashboard.USER_ID;
+
+                                    if (!dalMatPlan.MatPrepareUpdate(uMatPlan))
+                                    {
+                                        MessageBox.Show("Failed to update material preparing data.");
+                                    }
+                                }
+                            }
+
+
+                        }
+                    }
+                }
             }
 
             return result;
         }
+
+       
 
         private bool redo(int rowIndex)
         {
@@ -1236,6 +1301,8 @@ namespace FactoryManagementSoftware.UI
             string unit = dgvTrf.Rows[rowIndex].Cells["trf_hist_unit"].Value.ToString();
 
             float qty = Convert.ToSingle(dgvTrf.Rows[rowIndex].Cells["trf_hist_qty"].Value.ToString());
+
+            string note = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfNote].Value.ToString();
 
             if (ifFactory(locationFrom))
             {
@@ -1267,6 +1334,62 @@ namespace FactoryManagementSoftware.UI
                     //DataTable dt = dalMatPlan.Select();
 
                     //tool.matPlanSubtractQty(dt, itemCode, qty);
+                }
+
+                string textFind = tool.getBetween(note, "[For Plan ", "]");
+                int planID = -1;
+                if (textFind != "" && int.TryParse(textFind, out planID))
+                {
+                    if (planID != -1)
+                    {
+                        //update transferred qty
+                        DataTable dt_MatPlan = dalMatPlan.Select();
+
+                        foreach (DataRow mat in dt_MatPlan.Rows)
+                        {
+                            bool active = Convert.ToBoolean(mat[dalMatPlan.Active]);
+
+                            if (active)
+                            {
+                                float checkingQty = float.TryParse(mat[dalMatPlan.Prepare].ToString(), out float j) ? Convert.ToSingle(mat[dalMatPlan.Prepare].ToString()) : 0;
+                                string orgFrom = mat[dalMatPlan.MatFrom].ToString();
+                                bool match = true;
+                                int checkingPlanID = int.TryParse(mat[dalMatPlan.PlanID].ToString(), out int k) ? Convert.ToInt32(mat[dalMatPlan.PlanID]) : 0;
+
+                                if (itemCode != mat[dalMatPlan.MatCode].ToString())
+                                {
+                                    match = false;
+                                }
+
+                                else if (planID != checkingPlanID)
+                                {
+                                    match = false;
+                                }
+
+                                if (match)
+                                {
+                                    //get plan id
+
+                                    float Transferred = float.TryParse(mat[dalMatPlan.Transferred].ToString(), out float l) ? Convert.ToSingle(mat[dalMatPlan.Transferred].ToString()) : 0;
+
+                                    uMatPlan.mat_code = itemCode;
+                                    uMatPlan.plan_id = planID;
+                                    uMatPlan.mat_transferred = Transferred + qty ;
+                                    uMatPlan.mat_preparing = checkingQty;
+                                    uMatPlan.mat_from = orgFrom;
+                                    uMatPlan.updated_date = DateTime.Now;
+                                    uMatPlan.updated_by = MainDashboard.USER_ID;
+
+                                    if (!dalMatPlan.MatPrepareUpdate(uMatPlan))
+                                    {
+                                        MessageBox.Show("Failed to update material preparing data.");
+                                    }
+                                }
+                            }
+
+
+                        }
+                    }
                 }
             }
 
@@ -1483,7 +1606,12 @@ namespace FactoryManagementSoftware.UI
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 dgvItem.ClearSelection();
-                txtSearch.Clear();
+
+                txtSearch.Text = "Search";
+                txtSearch.ForeColor = SystemColors.GrayText;
+
+             
+
                 refreshDataList();
                 
             }
@@ -1754,7 +1882,7 @@ namespace FactoryManagementSoftware.UI
         {
             timer1.Stop();
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            if (string.IsNullOrEmpty(txtSearch.Text))
+            if (string.IsNullOrEmpty(txtSearch.Text)  || txtSearch.Text == "Search")
             {
                 btn.Visible = false;
             }
@@ -1767,6 +1895,24 @@ namespace FactoryManagementSoftware.UI
             loadTransferList();
             Cursor = Cursors.Arrow; // change cursor to normal type
 
+        }
+
+        private void txtSearch_Enter(object sender, EventArgs e)
+        {
+            if (txtSearch.Text == "Search")
+            {
+                txtSearch.Text = "";
+                txtSearch.ForeColor = SystemColors.WindowText;
+            }
+        }
+
+        private void txtSearch_Leave(object sender, EventArgs e)
+        {
+            if (txtSearch.Text.Length == 0)
+            {
+                txtSearch.Text = "Search";
+                txtSearch.ForeColor = SystemColors.GrayText;
+            }
         }
     }
 }

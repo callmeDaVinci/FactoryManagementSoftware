@@ -12,6 +12,9 @@ namespace FactoryManagementSoftware.DAL
 
         public string MatCode { get; } = "mat_code";
         public string PlanToUse { get; } = "plan_to_use";
+        public string Transferred { get; } = "mat_transferred";
+        public string Prepare { get; } = "mat_preparing";
+        public string MatFrom { get; } = "mat_from";
         public string PlanID { get; } = "plan_id";
         public string Active { get; } = "active";
         public string MatUsed { get; } = "mat_used";
@@ -276,6 +279,111 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+
+        public bool MatPlanToUseUpdate(matPlanBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_matplan 
+                            SET "
+                            + PlanToUse + "=@plan_to_use," 
+                            + UpdatedDate + "=@updated_date, "
+                            + UpdatedBy + "=@updated_by " +
+                            " WHERE mat_code=@mat_code AND plan_id=@plan_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@mat_code", u.mat_code);
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@plan_to_use", u.plan_to_use);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool MatPrepareUpdate(matPlanBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_matplan 
+                            SET "
+                            + Prepare + "=@mat_preparing, "
+                             + Transferred + "=@mat_transferred, "
+                            + MatFrom + "=@mat_from, "
+                            + UpdatedDate + "=@updated_date, "
+                            + UpdatedBy + "=@updated_by " +
+                            " WHERE mat_code=@mat_code AND plan_id=@plan_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@mat_code", u.mat_code);
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@mat_transferred", u.mat_transferred);
+                cmd.Parameters.AddWithValue("@mat_preparing", u.mat_preparing);
+                cmd.Parameters.AddWithValue("@mat_from", u.mat_from);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+    
 
         #endregion
     }

@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnSwitchToStockCheck = new System.Windows.Forms.Button();
             this.btnSwitchToMatUsed = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -272,14 +272,14 @@
             this.dgvMatStock.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgvMatStock.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMatStock.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMatStock.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMatStock.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvMatStock.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMatStock.GridColor = System.Drawing.Color.White;
             this.dgvMatStock.Location = new System.Drawing.Point(4, 1);
@@ -308,14 +308,14 @@
             this.dgvMatUsed.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgvMatUsed.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMatUsed.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Gainsboro;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMatUsed.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMatUsed.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvMatUsed.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMatUsed.GridColor = System.Drawing.Color.White;
             this.dgvMatUsed.Location = new System.Drawing.Point(756, 1);
@@ -338,7 +338,7 @@
             this.btnExcel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnExcel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExcel.ForeColor = System.Drawing.Color.White;
-            this.btnExcel.Location = new System.Drawing.Point(1157, 14);
+            this.btnExcel.Location = new System.Drawing.Point(1370, 10);
             this.btnExcel.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.btnExcel.Name = "btnExcel";
             this.btnExcel.Size = new System.Drawing.Size(165, 36);
@@ -354,13 +354,14 @@
             this.btnAllExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAllExcel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAllExcel.ForeColor = System.Drawing.Color.Black;
-            this.btnAllExcel.Location = new System.Drawing.Point(1340, 14);
+            this.btnAllExcel.Location = new System.Drawing.Point(1169, 10);
             this.btnAllExcel.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.btnAllExcel.Name = "btnAllExcel";
             this.btnAllExcel.Size = new System.Drawing.Size(197, 36);
             this.btnAllExcel.TabIndex = 135;
             this.btnAllExcel.Text = "EXPORT ALL TO EXCEL";
             this.btnAllExcel.UseVisualStyleBackColor = false;
+            this.btnAllExcel.Visible = false;
             this.btnAllExcel.Click += new System.EventHandler(this.btnExportAllToExcel_Click);
             // 
             // progressBar1
@@ -386,13 +387,14 @@
             this.cbFastMode.AutoSize = true;
             this.cbFastMode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbFastMode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbFastMode.Location = new System.Drawing.Point(1430, 52);
+            this.cbFastMode.Location = new System.Drawing.Point(1169, 52);
             this.cbFastMode.Margin = new System.Windows.Forms.Padding(4);
             this.cbFastMode.Name = "cbFastMode";
             this.cbFastMode.Size = new System.Drawing.Size(105, 23);
             this.cbFastMode.TabIndex = 137;
             this.cbFastMode.Text = "FAST MODE";
             this.cbFastMode.UseVisualStyleBackColor = true;
+            this.cbFastMode.Visible = false;
             // 
             // frmNewPMMA
             // 

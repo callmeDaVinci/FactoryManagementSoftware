@@ -16,8 +16,9 @@ namespace FactoryManagementSoftware.UI
             loadItemCategoryData();
         }
 
-        public frmJoinEdit(joinBLL u)
+        public frmJoinEdit(joinBLL u, bool closeAfterSave)
         {
+            closeAfter = closeAfterSave;
             InitializeComponent();
             uJoin = u;
             loadItemCategoryData();
@@ -44,7 +45,7 @@ namespace FactoryManagementSoftware.UI
         itemDAL dalItem = new itemDAL();
 
         Tool tool = new Tool();
-
+        private bool closeAfter = false;
         #region Load/Close
 
         private void loadItemCategoryData()
@@ -124,21 +125,26 @@ namespace FactoryManagementSoftware.UI
                 {
                     txtMax.Enabled = true;
                     txtMin.Enabled = true;
-                    txtQty.Enabled = false;
+                    txtQty.Enabled = true;
                 }
                 else
                 {
-                    txtMax.Enabled = false;
-                    txtMin.Enabled = false;
+                    txtMax.Enabled = true;
+                    txtMin.Enabled = true;
                     txtQty.Enabled = true;
                 }
 
                 DataTable dt = dalItem.catSearch(keywords);
-                DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
-                distinctTable.DefaultView.Sort = "item_name ASC";
-                cmbChildName.DataSource = distinctTable;
-                cmbChildName.DisplayMember = "item_name";
-                cmbChildName.ValueMember = "item_name";
+
+                if(dt.Rows.Count > 0)
+                {
+                    DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
+                    distinctTable.DefaultView.Sort = "item_name ASC";
+                    cmbChildName.DataSource = distinctTable;
+                    cmbChildName.DisplayMember = "item_name";
+                    cmbChildName.ValueMember = "item_name";
+
+                }
 
                 if (string.IsNullOrEmpty(cmbChildName.Text))
                 {
@@ -159,7 +165,7 @@ namespace FactoryManagementSoftware.UI
 
             if (!string.IsNullOrEmpty(keywords))
             {
-                DataTable dt = dalItem.Search(keywords);
+                DataTable dt = dalItem.nameSearch(keywords);
                 cmbParentCode.DataSource = dt;
                 cmbParentCode.DisplayMember = "item_code";
                 cmbParentCode.ValueMember = "item_code";
@@ -180,7 +186,7 @@ namespace FactoryManagementSoftware.UI
 
             if (!string.IsNullOrEmpty(keywords))
             {
-                DataTable dt = dalItem.Search(keywords);
+                DataTable dt = dalItem.nameSearch(keywords);
                 cmbChildCode.DataSource = dt;
                 cmbChildCode.DisplayMember = "item_code";
                 cmbChildCode.ValueMember = "item_code";
@@ -243,28 +249,22 @@ namespace FactoryManagementSoftware.UI
                 result = false;
             }
 
-            if (cmbChildCat.Text.Equals("Carton"))
+            if (string.IsNullOrEmpty(txtMax.Text))
             {
-                if(string.IsNullOrEmpty(txtMax.Text))
-                {
-                    errorProvider7.SetError(txtMax, "Max Qty Required");
-                    result = false;
-                }
-
-                if (string.IsNullOrEmpty(txtMin.Text))
-                {
-                    errorProvider8.SetError(txtMin, "Min Qty Required");
-                    result = false;
-                }
-
+                errorProvider7.SetError(txtMax, "Max Qty Required");
+                result = false;
             }
-            else
+
+            if (string.IsNullOrEmpty(txtMin.Text))
             {
-                if (string.IsNullOrEmpty(txtQty.Text))
-                {
-                    errorProvider7.SetError(txtQty, "Join Qty Required");
-                    result = false;
-                }
+                errorProvider8.SetError(txtMin, "Min Qty Required");
+                result = false;
+            }
+
+            if (string.IsNullOrEmpty(txtQty.Text))
+            {
+                errorProvider7.SetError(txtQty, "Join Qty Required");
+                result = false;
             }
 
             if (cmbParentCode.Text.Equals(cmbChildCode.Text))
@@ -318,12 +318,12 @@ namespace FactoryManagementSoftware.UI
                     {
                         uJoin.join_max = Convert.ToInt32(txtMax.Text);
                         uJoin.join_min = Convert.ToInt32(txtMin.Text);
-                        uJoin.join_qty = 0;
+                        uJoin.join_qty = Convert.ToInt32(txtQty.Text);
                     }
                     else
                     {
-                        uJoin.join_max = 0;
-                        uJoin.join_min = 0;
+                        uJoin.join_max = Convert.ToInt32(txtMax.Text);
+                        uJoin.join_min = Convert.ToInt32(txtMin.Text);
                         uJoin.join_qty = Convert.ToSingle(txtQty.Text);
                     }
 
@@ -344,7 +344,8 @@ namespace FactoryManagementSoftware.UI
                         {
                             //Data Successfully Inserted
                             MessageBox.Show("Join updated.");
-                            // this.Close();
+                            
+                            
                         }
                         else
                         {
@@ -371,7 +372,11 @@ namespace FactoryManagementSoftware.UI
                             MessageBox.Show("Failed to add new join");
                         }
                     }
-                    
+
+                    if (success && closeAfter)
+                    {
+                        Close();
+                    }
                 }
             }
         }

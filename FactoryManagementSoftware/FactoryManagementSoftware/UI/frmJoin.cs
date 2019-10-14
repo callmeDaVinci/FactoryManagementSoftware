@@ -328,7 +328,7 @@ namespace FactoryManagementSoftware.UI
             uJoin.join_min = Convert.ToInt16(dgv.Rows[row].Cells[headerMin].Value.ToString());
 
             txtSearch.Clear();
-            frmJoinEdit frm = new frmJoinEdit(uJoin);
+            frmJoinEdit frm = new frmJoinEdit(uJoin,false);
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//Item Edit
             loadData();

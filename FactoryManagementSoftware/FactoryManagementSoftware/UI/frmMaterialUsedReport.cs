@@ -1627,10 +1627,24 @@ namespace FactoryManagementSoftware.UI
                 {
                     xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + dtpStart.Text + ">" + dtpEnd.Text;
                 }
-                else
+                else if (cmbType.Text.Equals(cmbTypeCurrentMonth))
                 {
+                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + forecastMonth + " FORECAST";
+                }
+                else if (cmbType.Text.Equals(cmbTypeNextMonth))
+                {
+                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + forecastMonth + " FORECAST";
+
+                }
+                else if (cmbType.Text.Equals(cmbTypeNextNextMonth))
+                {
+                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + forecastMonth + " FORECAST";
+                }
+                else
+                {  
                     xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + forecastMonth;
                 }
+
                 xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCust.Text + ") MATERIAL USED REPORT";
                 xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
                 xlWorkSheet.PageSetup.CenterFooter = DateTime.Now.Date.ToString("dd/MM/yyyy")+" Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
