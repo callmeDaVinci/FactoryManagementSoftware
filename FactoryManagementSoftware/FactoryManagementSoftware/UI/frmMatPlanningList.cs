@@ -24,11 +24,11 @@ namespace FactoryManagementSoftware.UI
         public frmMatPlanningList()
         {
             InitializeComponent();
-            tool.DoubleBuffered(dgvMatList, true);
+            tool.DoubleBuffered(dgvMatListByMat, true);
 
-            loadSortingData();
+            //loadSortingData();
 
-            LoadMatList();
+            LoadMatListByMat();
         }
 
         #region Variable / Object Declare
@@ -41,10 +41,24 @@ namespace FactoryManagementSoftware.UI
         MacDAL dalMac = new MacDAL();
         Tool tool = new Tool();
         Text text = new Text();
+        joinBLL uJoin = new joinBLL();
+
+        readonly string headerID = "PLAN";
+        readonly string headerMatUse = "MAT. USE (KG/PIECE)";
+
+        readonly string headerTargetQty = "TARGET QTY";
+        readonly string headerAbleProduceQty = "ABLE PRODUCE";
+        readonly string headerPartCode = "PART CODE";
+        readonly string headerPartName = "PART NAME";
+
+        //readonly string headerItem = "PLAN FOR";
+        readonly string ContextEditMaterial = "Edit Material";
+        readonly string ContextJoinMaterial = "Join Material";
+        readonly string ContextAddMaterial = "Add Material";
 
         readonly string headerType = "TYPE";
         readonly string headerMatCode = "MATERIAL";
-        readonly string headerPlanID = "PLAN ID";
+        readonly string headerPlanID = "PLAN";
         readonly string headerFac = "FAC.";
         readonly string headerStart = "START";
         readonly string headerEnd = "END";
@@ -76,6 +90,8 @@ namespace FactoryManagementSoftware.UI
         private string oldValue = null;
         //private string editingValue = null;
         private DataTable dt_MatStock;
+        private DataTable dt_MaterialPlan;
+        private bool switchToByPlanPage = false;
 
         #endregion
 
@@ -84,21 +100,21 @@ namespace FactoryManagementSoftware.UI
 
         private void loadSortingData()
         {
-            DataTable dt = new DataTable();
+            //DataTable dt = new DataTable();
 
-            dt.Columns.Add("sort");
-            dt.Rows.Add(sortByFac);
-            dt.Rows.Add(sortByMac);
-            dt.Rows.Add(sortByMat);
-            dt.Rows.Add(sortByPart);
-            dt.Rows.Add(sortByPlan);
+            //dt.Columns.Add("sort");
+            //dt.Rows.Add(sortByFac);
+            //dt.Rows.Add(sortByMac);
+            //dt.Rows.Add(sortByMat);
+            //dt.Rows.Add(sortByPart);
+            //dt.Rows.Add(sortByPlan);
 
-            dt.DefaultView.Sort = "sort ASC";
-            cmbSort.DataSource = dt;
-            cmbSort.DisplayMember = "sort";
-            cmbSort.Text = "Material";
+            //dt.DefaultView.Sort = "sort ASC";
+            //cmbSort.DataSource = dt;
+            //cmbSort.DisplayMember = "sort";
+            //cmbSort.Text = "Material";
 
-            string test = cmbSort.Text;
+            //string test = cmbSort.Text;
         }
 
         private DataTable NewMatStockTable()
@@ -116,7 +132,29 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
-        private DataTable NewMatListTable()
+        private DataTable NewMatListByPlanTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(headerFac, typeof(string));
+            dt.Columns.Add(headerMac, typeof(string));
+            dt.Columns.Add(headerID, typeof(int));
+            //dt.Columns.Add(headerItem, typeof(string));
+            dt.Columns.Add(headerPartCode, typeof(string));
+            dt.Columns.Add(headerPartName, typeof(string));
+
+            dt.Columns.Add(headerStart, typeof(DateTime));
+            dt.Columns.Add(headerEnd, typeof(DateTime));
+
+            dt.Columns.Add(headerAbleProduceQty, typeof(float));
+            dt.Columns.Add(headerTargetQty, typeof(float));
+
+            dt.Columns.Add(headerMatCode, typeof(string));
+            dt.Columns.Add(headerMatUse, typeof(float));
+            return dt;
+        }
+
+        private DataTable NewMatListByMatTable()
         {
             DataTable dt = new DataTable();
 
@@ -144,7 +182,7 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
-        private void dgvMatListUIEdit(DataGridView dgv)
+        private void dgvMatListByMatUIEdit(DataGridView dgv)
         {
             dgv.Columns[headerType].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerMatCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -188,19 +226,210 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private void dgvMatListByPlanUIEdit(DataGridView dgv)
+        {
+            dgv.Columns[headerFac].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerMac].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerPartCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerPartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[headerStart].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerEnd].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerAbleProduceQty].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerTargetQty].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerMatCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[headerMatUse].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            //alignment//////////////////////////////////////////////////////////////////////////////////////////////////
+            dgv.Columns[headerFac].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerMac].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerStart].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerEnd].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerMatUse].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerTargetQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerAbleProduceQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            //dgv.Columns[headerFac].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            //dgv.Columns[headerTransferPending].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+            //dgv.Columns[headerFrom].DefaultCellStyle.Font = new Font("Segoe UI", 8, FontStyle.Regular);
+
+            foreach (DataGridViewColumn column in dgv.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+
+
+
+        }
         #endregion
 
         #region Load Data
 
-        private void LoadMatList()
+        private DataTable specialDataSort(DataTable dt)
         {
-            
-            dgvMatList.DataSource = null;
+            DataTable sortedDt = dt.Clone();
+            string Fac = null;
+            dt.AcceptChanges();
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row.RowState != DataRowState.Deleted)
+                {
+                    string newFac = row[dalMac.MacLocation].ToString();
+                    if (Fac != newFac)
+                    {
+                        foreach (DataRow row2 in dt.Rows)
+                        {
+                            if (row2.RowState != DataRowState.Deleted)
+                            {
+                                string FacSearch = row2[dalMac.MacLocation].ToString();
+
+                                if (Fac == FacSearch)
+                                {
+                                    DataRow newRow2 = sortedDt.NewRow();
+                                    newRow2 = row2;
+                                    sortedDt.ImportRow(newRow2);
+                                    row2.Delete();
+                                }
+                            }
+
+
+                        }
+                    }
+
+                    DataRow newRow = sortedDt.NewRow();
+                    newRow = row;
+                    sortedDt.ImportRow(newRow);
+                    row.Delete();
+                    Fac = newFac;
+                }
+
+            }
+
+            return sortedDt;
+        }
+
+        private void LoadMatListByPlan()
+        {
+            dgvMatListByPlan.DataSource = null;
+            lblUpdatedTime.Text = DateTime.Now.ToString();
+            #region variable
+
+            DataTable dt_MAT = NewMatListByPlanTable();
+            DataRow row_dtMat;
+            DataTable dt_ItemInfo = dalItem.Select();
+
+
+            float prepareQty = 0;
+            string prePartCode = null;
+            string partCode = null;
+            bool isSamePlan = false;
+
+            DataTable dt = dalMatPlan.Select();
+            DataTable dt_Stock = dalStock.Select();
+            //string sortBy = cmbSort.Text;
+            #endregion
+
+            DataView dv = dt.DefaultView;
+            dv.Sort = dalMac.MacID + " asc, " + dalPlan.productionStartDate + " asc, " + dalPlan.partCode + " asc";
+            dt = dv.ToTable();
+
+            dt = specialDataSort(dt);
+
+            dt_MaterialPlan = dt;
+
+            #region data proccessing
+
+            foreach (DataRow row in dt.Rows)
+            {
+                bool active = Convert.ToBoolean(row[dalMatPlan.Active]);
+                if (active)
+                {
+                    partCode = row[dalPlan.partCode].ToString();
+
+                    if (prePartCode == null || prePartCode == partCode)
+                    {
+                        if (prePartCode != null)
+                        {
+                            isSamePlan = true;
+                        }
+                        prePartCode = partCode;
+                    }
+                    else
+                    {
+                        row_dtMat = dt_MAT.NewRow();
+                        dt_MAT.Rows.Add(row_dtMat);
+                        prePartCode = partCode;
+                    }
+
+                    row_dtMat = dt_MAT.NewRow();
+
+                    if (!isSamePlan)
+                    {
+                        //row_dtMat[headerFac] = row[dalMac.MacLocation].ToString();
+                        //row_dtMat[headerMac] = row[dalPlan.machineID];
+
+                        //row_dtMat[headerPartCode] = partCode;
+                        //row_dtMat[headerPartName] = tool.getItemNameFromDataTable(dt_ItemInfo, partCode);
+                        //row_dtMat[headerStart] = row[dalPlan.productionStartDate];
+                        //row_dtMat[headerEnd] = row[dalPlan.productionEndDate];
+
+                        //row_dtMat[headerAbleProduceQty] = row[dalPlan.ableQty];
+                        //row_dtMat[headerTargetQty] = row[dalPlan.targetQty];
+                    }
+                    row_dtMat[headerFac] = row[dalMac.MacLocation].ToString();
+                    row_dtMat[headerMac] = row[dalPlan.machineID];
+
+                    row_dtMat[headerPartCode] = partCode;
+                    row_dtMat[headerPartName] = tool.getItemNameFromDataTable(dt_ItemInfo, partCode);
+                    row_dtMat[headerStart] = row[dalPlan.productionStartDate];
+                    row_dtMat[headerEnd] = row[dalPlan.productionEndDate];
+
+                    row_dtMat[headerAbleProduceQty] = row[dalPlan.ableQty];
+                    row_dtMat[headerTargetQty] = row[dalPlan.targetQty];
+
+                    row_dtMat[headerID] = row[dalPlan.planID].ToString();
+
+
+                    row_dtMat[headerMatCode] = row[dalMatPlan.MatCode];
+                    row_dtMat[headerMatUse] = row[dalMatPlan.PlanToUse];
+
+
+                    dt_MAT.Rows.Add(row_dtMat);
+                    isSamePlan = false;
+                }
+            }
+
+            #endregion
+
+            #region set dgv data source
+            if (dt_MAT.Rows.Count > 0)
+            {
+                dgvMatListByPlan.DataSource = dt_MAT;
+
+                dgvMatListByPlanUIEdit(dgvMatListByPlan);
+
+                dgvMatListByPlan.ClearSelection();
+
+                //addComboBoxToDGVCell();
+            }
+            else
+            {
+                MessageBox.Show("No data found!");
+            }
+            #endregion
+        }
+
+        private void LoadMatListByMat()
+        {
+            lblUpdatedTime.Text = DateTime.Now.ToString();
+
+            dgvMatListByMat.DataSource = null;
             dataChanged = false;
             btnSave.Visible = false;
 
             #region variable
-            DataTable dt_MAT = NewMatListTable();
+            DataTable dt_MAT = NewMatListByMatTable();
             DataRow row_dtMat;
             DataTable dt_ItemInfo = dalItem.Select();
 
@@ -216,12 +445,21 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = dalMatPlan.Select();
             DataTable dt_Stock = dalStock.Select();
+            dt_MaterialPlan = dt.Copy();
             //string sortBy = cmbSort.Text;
             #endregion
 
             DataView dv = dt.DefaultView;
             dv.Sort = dalItem.ItemCat + " asc, " + "mat_code asc, " + dalMac.MacLocation + " asc, " + dalPlan.productionStartDate + " asc";
             dt = dv.ToTable();
+
+
+           
+            dv = dt_MaterialPlan.DefaultView;
+            dv.Sort = dalMac.MacID + " asc, " + dalPlan.productionStartDate + " asc, " + dalPlan.partCode + " asc";
+            dt_MaterialPlan = dv.ToTable();
+
+            dt_MaterialPlan = specialDataSort(dt_MaterialPlan);
 
             #region sorting
             //if (sortBy.Equals(sortByFac))
@@ -359,16 +597,16 @@ namespace FactoryManagementSoftware.UI
             #region set dgv data source
             if (dt_MAT.Rows.Count > 0)
             {
-                dgvMatList.DataSource = dt_MAT;
+                dgvMatListByMat.DataSource = dt_MAT;
 
-                dgvMatListUIEdit(dgvMatList);
-                CheckifRunning(dgvMatList);
+                dgvMatListByMatUIEdit(dgvMatListByMat);
+                CheckifRunning(dgvMatListByMat);
 
-                dgvMatList.Columns[headerStatus].Visible = false;
+                dgvMatListByMat.Columns[headerStatus].Visible = false;
 
-                dgvMatList.Columns[headerStillNeed].Visible = false;
+                dgvMatListByMat.Columns[headerStillNeed].Visible = false;
 
-                dgvMatList.ClearSelection();
+                dgvMatListByMat.ClearSelection();
 
             }
             else
@@ -636,7 +874,7 @@ namespace FactoryManagementSoftware.UI
 
         private void addComboBoxToDGVCell()
         {
-            DataGridView dgv = dgvMatList;
+            DataGridView dgv = dgvMatListByMat;
 
             DataTable dt_RequiredList = (DataTable)dgv.DataSource;
 
@@ -805,6 +1043,8 @@ namespace FactoryManagementSoftware.UI
 
         private void frmMatPlanningList_Load(object sender, EventArgs e)
         {
+            switchToByPlanPage = false;
+            SwitchPage();
             loaded = true;
             
             if (closeForm)
@@ -812,17 +1052,23 @@ namespace FactoryManagementSoftware.UI
                 Close();
             }
 
-            CheckifRunning(dgvMatList);
+            CheckifRunning(dgvMatListByMat);
 
-            dgvMatList.Columns[headerStatus].Visible = false;
+            dgvMatListByMat.Columns[headerStatus].Visible = false;
 
-            dgvMatList.ClearSelection();
+            dgvMatListByMat.ClearSelection();
            
         }
 
         private void dgvMatList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            DataGridView dgv = dgvMatList;
+            
+            DataGridView dgv = dgvMatListByMat;
+
+            if(switchToByPlanPage)
+            {
+                dgv = dgvMatListByPlan;
+            }
 
             int row = e.RowIndex;
             int col = e.ColumnIndex;
@@ -841,29 +1087,7 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[row].Height = 60;
                 }
             }
-            //else if (dgv.Columns[col].Name == headerTransferPending)
-            //{
-            //    string checkIfNull = dgv.Rows[row].Cells[headerTransferPending].Value.ToString();
-
-            //    if (!string.IsNullOrEmpty(checkIfNull))
-            //    {
-            //        float trfPending = float.TryParse(dgv.Rows[row].Cells[headerTransferPending].Value.ToString(), out float i) ? Convert.ToSingle(dgv.Rows[row].Cells[headerTransferPending].Value.ToString()) : 0;
-
-            //        if (trfPending <= 0)
-            //        {
-            //            dgv.Rows[row].Cells[headerTransferPending].Style.BackColor = Color.White;
-            //        }
-            //        else
-            //        {
-            //            dgv.Rows[row].Cells[headerTransferPending].Style.BackColor = Color.FromArgb(255, 118, 117);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        dgv.Rows[row].Cells[headerTransferPending].Style.BackColor = Color.DimGray;
-            //    }
-
-            //}
+            
         }
 
         public void StartForm()
@@ -888,7 +1112,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                                                  //t = new Thread(new ThreadStart(StartForm));
-                    LoadMatList();
+                    LoadMatListByMat();
                 }
                 //catch (ThreadAbortException)
                 //{
@@ -913,12 +1137,13 @@ namespace FactoryManagementSoftware.UI
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            DataGridView dgv = dgvMatList;
+            DataGridView dgv = dgvMatListByMat;
   
             if(matPrepare)
             {
                 matPrepare = false;
                 dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dgv.ReadOnly = true;
                 dgv.Columns[headerPrepare].DefaultCellStyle.BackColor = Color.White;
                 dgv.ReadOnly = true;
                 dgv.Columns[headerFrom].Visible = true;
@@ -933,6 +1158,7 @@ namespace FactoryManagementSoftware.UI
                 matPrepare = true;
                 dgv.ReadOnly = false;
                 dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
+                dgv.ReadOnly = false;
                 dgv.Columns[headerPrepare].DefaultCellStyle.BackColor = SystemColors.Info;
 
                 dgv.Columns[headerFrom].Visible = true;
@@ -952,7 +1178,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMatList_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridView dgv = dgvMatList;
+            DataGridView dgv = dgvMatListByMat;
             int row = dgv.CurrentCell.RowIndex;
             int col = dgv.CurrentCell.ColumnIndex;
 
@@ -975,10 +1201,10 @@ namespace FactoryManagementSoftware.UI
 
         private void Column1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            DataGridView dgv = dgvMatList;
+            DataGridView dgv = dgvMatListByMat;
             int row = dgv.CurrentCell.RowIndex;
             int col = dgv.CurrentCell.ColumnIndex;
-            string previousValue = dgvMatList.CurrentCell.EditedFormattedValue.ToString();
+            string previousValue = dgvMatListByMat.CurrentCell.EditedFormattedValue.ToString();
             char key = e.KeyChar;
             string newValue = null;
 
@@ -1039,7 +1265,7 @@ namespace FactoryManagementSoftware.UI
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void stockDataUpdate()
         {
-            DataGridView dgv = dgvMatList;
+            DataGridView dgv = dgvMatListByMat;
 
             refreshMatStock();
             foreach (DataGridViewRow MR in dgv.Rows)
@@ -1179,7 +1405,7 @@ namespace FactoryManagementSoftware.UI
 
         private void stockDataUpdate(int row)
         {
-            DataGridView dgv = dgvMatList;
+            DataGridView dgv = dgvMatListByMat;
 
             string matCode = dgv.Rows[row].Cells[headerMatCode].Value.ToString();
             refreshMatStock(matCode);
@@ -1321,26 +1547,26 @@ namespace FactoryManagementSoftware.UI
         private void dgvMatList_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
             btnSave.Visible = true;
-            DataGridView dgv = dgvMatList;
-            string newValue = dgvMatList.CurrentCell.EditedFormattedValue.ToString();
-            int row = dgvMatList.CurrentCell.RowIndex;
-            int col = dgvMatList.CurrentCell.ColumnIndex;
+            DataGridView dgv = dgvMatListByMat;
+            string newValue = dgvMatListByMat.CurrentCell.EditedFormattedValue.ToString();
+            int row = dgvMatListByMat.CurrentCell.RowIndex;
+            int col = dgvMatListByMat.CurrentCell.ColumnIndex;
 
             if (dgv.Columns[col].Name == headerPrepare)
             {
-                if (oldValue != newValue && dgvMatList.IsCurrentCellDirty)
+                if (oldValue != newValue && dgvMatListByMat.IsCurrentCellDirty)
                 {
                     dataChanged = true;
                 }
             }
             else if (dgv.Columns[col].Name == headerFrom)
             {
-                if (oldValue != newValue && dgvMatList.IsCurrentCellDirty)
+                if (oldValue != newValue && dgvMatListByMat.IsCurrentCellDirty)
                 {
                     dataChanged = true;
                 }
 
-                dgv.CurrentCell = dgvMatList[col - 1, row];
+                dgv.CurrentCell = dgvMatListByMat[col - 1, row];
                 dgv.ClearSelection();
 
                 
@@ -1350,7 +1576,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMatList_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            oldValue = dgvMatList[e.ColumnIndex, e.RowIndex].Value.ToString();
+            oldValue = dgvMatListByMat[e.ColumnIndex, e.RowIndex].Value.ToString();
         }
 
         private void dgvMatList_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -1401,7 +1627,7 @@ namespace FactoryManagementSoftware.UI
         {
             bool passed = true;
 
-            foreach(DataGridViewRow row in dgvMatList.Rows)
+            foreach(DataGridViewRow row in dgvMatListByMat.Rows)
             {
                 string total = row.Cells[headerStillNeed].Value.ToString();
 
@@ -1431,7 +1657,7 @@ namespace FactoryManagementSoftware.UI
                                                               MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        DataTable dt = (DataTable)dgvMatList.DataSource;
+                        DataTable dt = (DataTable)dgvMatListByMat.DataSource;
                         DateTime now = DateTime.Now;
                         foreach (DataRow row in dt.Rows)
                         {
@@ -1484,9 +1710,9 @@ namespace FactoryManagementSoftware.UI
                             if (matPrepare)
                             {
                                 matPrepare = false;
-                                dgvMatList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                                dgvMatList.Columns[headerPrepare].DefaultCellStyle.BackColor = Color.Gainsboro;
-                                dgvMatList.ReadOnly = true;
+                                dgvMatListByMat.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                                dgvMatListByMat.Columns[headerPrepare].DefaultCellStyle.BackColor = Color.Gainsboro;
+                                dgvMatListByMat.ReadOnly = true;
                             }
                         }
                     }
@@ -1512,20 +1738,24 @@ namespace FactoryManagementSoftware.UI
         {
             try
             {
-                
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 
-                LoadMatList();
-
-                if (matPrepare)
+                if(switchToByPlanPage)
                 {
-                    matPrepare = false;
-                    dgvMatList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                    dgvMatList.Columns[headerPrepare].DefaultCellStyle.BackColor = Color.Gainsboro;
-                    dgvMatList.ReadOnly = true;
-
+                    LoadMatListByPlan();
                 }
+                else
+                {
+                    LoadMatListByMat();
+                    if (matPrepare)
+                    {
+                        matPrepare = false;
+                        dgvMatListByMat.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                        dgvMatListByMat.Columns[headerPrepare].DefaultCellStyle.BackColor = Color.Gainsboro;
+                        dgvMatListByMat.ReadOnly = true;
 
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -1533,6 +1763,14 @@ namespace FactoryManagementSoftware.UI
             }
             finally
             {
+                if (switchToByPlanPage)
+                {
+                    dgvMatListByPlan.ClearSelection();
+                }
+                else
+                {
+                    dgvMatListByMat.ClearSelection();
+                }
 
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
@@ -1549,7 +1787,7 @@ namespace FactoryManagementSoftware.UI
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();
 
-            LoadMatList();
+            LoadMatListByMat();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -1559,11 +1797,407 @@ namespace FactoryManagementSoftware.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            frmMatListEdit frm = new frmMatListEdit();
-            frm.StartPosition = FormStartPosition.CenterScreen;
-            frm.ShowDialog();
+           
+            switchToByPlanPage = true;
+            SwitchPage();
 
-            LoadMatList();
+            //frmMatListEdit frm = new frmMatListEdit();
+            //frm.StartPosition = FormStartPosition.CenterScreen;
+            //frm.ShowDialog();
+
+            //LoadMatList();
+  
+        }
+
+        private void SwitchPage()
+        {
+            Cursor = Cursors.WaitCursor;
+            tlpMaterialList.SuspendLayout();
+            if (switchToByPlanPage)
+            {
+                btnByMat.ForeColor = Color.Black;
+                btnByPlan.ForeColor = Color.FromArgb(52, 139, 209);
+
+                tlpHeaderButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpHeaderButton.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpHeaderButton.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 150f);
+
+                tlpMaterialList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 0f);
+                tlpMaterialList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100f);
+
+                LoadMatListByPlan();
+            }
+            else
+            {
+                btnByPlan.ForeColor = Color.Black;
+                btnByMat.ForeColor = Color.FromArgb(52, 139, 209);
+
+                tlpHeaderButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 150f);
+                tlpHeaderButton.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 150f);
+                tlpHeaderButton.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 0f);
+
+                tlpMaterialList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
+                tlpMaterialList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0f);
+
+                LoadMatListByMat();
+            }
+            tlpMaterialList.ResumeLayout();
+            Cursor = Cursors.Arrow;
+        }
+
+        private void btnByMat_Click(object sender, EventArgs e)
+        {
+           
+            switchToByPlanPage = false;
+            SwitchPage();
+           
+        }
+
+        private void dgvMatListByPlan_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            DataGridView dgv = dgvMatListByPlan;
+
+            if(!switchToByPlanPage)
+            {
+                dgv = dgvMatListByMat;
+            }
+
+            //handle the row selection on right click
+            int rowIndex = dgv.CurrentCell.RowIndex;
+
+            string matCode = dgv.Rows[rowIndex].Cells[headerMatCode].Value.ToString();
+
+            if (e.Button == MouseButtons.Right && e.RowIndex > -1 && !string.IsNullOrEmpty(matCode))
+            {
+                ContextMenuStrip my_menu = new ContextMenuStrip();
+                dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                // Can leave these here - doesn't hurt
+                dgv.Rows[e.RowIndex].Selected = true;
+                dgv.Focus();
+
+                try
+                {
+                    my_menu.Items.Add(ContextAddMaterial).Name = ContextAddMaterial;
+                    my_menu.Items.Add(ContextEditMaterial).Name = ContextEditMaterial;
+                    my_menu.Items.Add(ContextJoinMaterial).Name = ContextJoinMaterial;
+                   
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+                    contextMenuStrip1 = my_menu;
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            DataGridView dgv = dgvMatListByPlan;
+
+            if (!switchToByPlanPage)
+            {
+                dgv = dgvMatListByMat;
+            }
+
+            dgv.SuspendLayout();
+            string itemClicked = e.ClickedItem.Name.ToString();
+            int rowIndex = dgv.CurrentCell.RowIndex;
+
+
+            int planID = dgv.Rows[rowIndex].Cells[headerID].Value == DBNull.Value ? -1 : Convert.ToInt32(dgv.Rows[rowIndex].Cells[headerID].Value);
+
+            if (planID != -1)
+            {
+                if (itemClicked.Equals(ContextEditMaterial))
+                {
+                    EditMaterial(rowIndex);
+
+                }
+                else if (itemClicked.Equals(ContextJoinMaterial))
+                {
+
+                    PairMaterial(rowIndex, planID);
+                }
+                else if (itemClicked.Equals(ContextAddMaterial))
+                {
+
+                    AddMaterial(rowIndex);
+                }
+            }
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            contextMenuStrip1.Hide();
+
+
+            //loadScheduleData();
+            //dgvSchedule.ClearSelection();
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+            dgv.ResumeLayout();
+        }
+
+
+        private void PairMaterial(int row, int planID)
+        {
+            DataGridView dgv = dgvMatListByPlan;
+
+            if (!switchToByPlanPage)
+            {
+                dgv = dgvMatListByMat;
+            }
+
+            string parentCode = "";
+            //get parent code by searching plain id in mat_plan db
+            DataTable dt_Plan = dalPlan.idSearch(planID.ToString());
+
+
+            foreach (DataRow row_Plan in dt_Plan.Rows)
+            {
+                parentCode = row_Plan[dalItem.ItemCode].ToString();
+            }
+
+            uJoin.join_parent_code = parentCode;
+
+            uJoin.join_child_code = "";
+
+            uJoin.join_qty = 1;
+            uJoin.join_max = 1;
+            uJoin.join_min = 1;
+
+            frmJoinEdit frm = new frmJoinEdit(uJoin, true);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//Item Edit
+
+            if(switchToByPlanPage)
+            {
+                LoadMatListByPlan();
+            }
+            else
+            {
+                LoadMatListByMat();
+            }
+            
+
+            dgv.FirstDisplayedScrollingRowIndex = row;
+            dgv.Rows[row].Selected = true;
+        }
+
+        private void EditMaterial(int row)
+        {
+            DataGridView dgv = dgvMatListByPlan;
+            string useQty = headerMatUse;
+
+            if (!switchToByPlanPage)
+            {
+                dgv = dgvMatListByMat;
+                useQty = headerPlanToUse;
+            }
+
+            int planID = int.TryParse(dgv.Rows[row].Cells[headerID].Value.ToString(), out int i) ? Convert.ToInt32(dgv.Rows[row].Cells[headerID].Value.ToString()) : -1;
+            float planToUse = float.TryParse(dgv.Rows[row].Cells[useQty].Value.ToString(), out float j) ? Convert.ToSingle(dgv.Rows[row].Cells[useQty].Value.ToString()) : 0;
+
+            uMatPlan.plan_id = planID;
+            //uMatPlan.part_code = dgv.Rows[row].Cells[headerPartCode].Value.ToString();
+            //uMatPlan.part_name = dgv.Rows[row].Cells[headerPartName].Value.ToString();
+
+            //uMatPlan.pro_location = dgv.Rows[row].Cells[headerFac].Value.ToString();
+            //uMatPlan.pro_machine = dgv.Rows[row].Cells[headerMac].Value.ToString();
+            //uMatPlan.pro_max_qty = dgv.Rows[row].Cells[headerAbleProduceQty].Value.ToString();
+            //uMatPlan.pro_target_qty = dgv.Rows[row].Cells[headerTargetQty].Value.ToString();
+            //uMatPlan.pro_start = dgv.Rows[row].Cells[headerStart].Value.ToString();
+            //uMatPlan.pro_end = dgv.Rows[row].Cells[headerEnd].Value.ToString();
+
+            uMatPlan.mat_code = dgv.Rows[row].Cells[headerMatCode].Value.ToString();
+            uMatPlan.mat_name = tool.getItemName(uMatPlan.mat_code);
+            uMatPlan.mat_cat = tool.getItemCat(uMatPlan.mat_code);
+            uMatPlan.plan_to_use = planToUse;
+
+
+            string parentCode = "";
+            //get parent code by searching plain id in mat_plan db
+            DataTable dt_Plan = dalPlan.idSearch(planID.ToString());
+
+
+            foreach (DataRow row_Plan in dt_Plan.Rows)
+            {
+                parentCode = row_Plan[dalItem.ItemCode].ToString();
+            }
+
+
+            //frmMatAddOrEdit frm = new frmMatAddOrEdit(uMatPlan, false);
+            frmMatAddOrEdit frm = new frmMatAddOrEdit(dt_MaterialPlan, uMatPlan, parentCode, false);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//Item Edit
+
+            if (switchToByPlanPage)
+            {
+                LoadMatListByPlan();
+            }
+            else
+            {
+                LoadMatListByMat();
+            }
+
+
+            dgv.FirstDisplayedScrollingRowIndex = row;
+            dgv.Rows[row].Selected = true;
+        }
+
+        private void AddMaterial(int row)
+        {
+            DataGridView dgv = dgvMatListByPlan;
+
+            if (!switchToByPlanPage)
+            {
+                dgv = dgvMatListByMat;
+            }
+
+            int planID = int.TryParse(dgv.Rows[row].Cells[headerID].Value.ToString(), out int i) ? Convert.ToInt32(dgv.Rows[row].Cells[headerID].Value.ToString()) : -1;
+            //float planToUse = float.TryParse(dgv.Rows[row].Cells[headerMatUse].Value.ToString(), out float j) ? Convert.ToSingle(dgv.Rows[row].Cells[headerMatUse].Value.ToString()) : 0;
+
+            //uMatPlan.plan_id = planID;
+            //uMatPlan.part_code = dgv.Rows[row].Cells[headerPartCode].Value.ToString();
+            //uMatPlan.part_name = dgv.Rows[row].Cells[headerPartName].Value.ToString();
+
+            //uMatPlan.pro_location = dgv.Rows[row].Cells[headerFac].Value.ToString();
+            //uMatPlan.pro_machine = dgv.Rows[row].Cells[headerMac].Value.ToString();
+            //uMatPlan.pro_max_qty = dgv.Rows[row].Cells[headerAbleProduceQty].Value.ToString();
+            //uMatPlan.pro_target_qty = dgv.Rows[row].Cells[headerTargetQty].Value.ToString();
+            //uMatPlan.pro_start = dgv.Rows[row].Cells[headerStart].Value.ToString();
+            //uMatPlan.pro_end = dgv.Rows[row].Cells[headerEnd].Value.ToString();
+
+            //uMatPlan.mat_code = dgv.Rows[row].Cells[headerMatCode].Value.ToString();
+            //uMatPlan.mat_name = tool.getItemName(uMatPlan.mat_code);
+            //uMatPlan.mat_cat = tool.getItemCat(uMatPlan.mat_code);
+            //uMatPlan.plan_to_use = planToUse;
+
+
+            string parentCode = "";
+            //get parent code by searching plain id in mat_plan db
+            DataTable dt_Plan = dalPlan.idSearch(planID.ToString());
+
+
+            foreach (DataRow row_Plan in dt_Plan.Rows)
+            {
+                parentCode = row_Plan[dalItem.ItemCode].ToString();
+
+            }
+
+            frmMatAddOrEdit frm = new frmMatAddOrEdit(dt_MaterialPlan, parentCode, true);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//Item Edit
+
+            if (switchToByPlanPage)
+            {
+                LoadMatListByPlan();
+            }
+            else
+            {
+                LoadMatListByMat();
+            }
+
+
+            if (frmMatAddOrEdit.dataSaved)
+                row++;
+
+            dgv.FirstDisplayedScrollingRowIndex = row;
+            dgv.Rows[row].Selected = true;
+        }
+
+        private void btnAddMat_Click(object sender, EventArgs e)
+        {
+            frmMatAddOrEdit frm = new frmMatAddOrEdit(dt_MaterialPlan);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//Item Edit
+
+            if(switchToByPlanPage)
+            {
+                LoadMatListByPlan();
+            }
+            else
+            {
+                LoadMatListByMat();
+            }
+
+        }
+
+        private void dgvMatListByMat_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var ht = dgvMatListByMat.HitTest(e.X, e.Y);
+
+            if (ht.Type == DataGridViewHitTestType.None)
+            {
+                //clicked on grey area
+                dgvMatListByMat.ClearSelection();
+            }
+        }
+
+        private void dgvMatListByPlan_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var ht = dgvMatListByPlan.HitTest(e.X, e.Y);
+
+            if (ht.Type == DataGridViewHitTestType.None)
+            {
+                //clicked on grey area
+                dgvMatListByPlan.ClearSelection();
+            }
+        }
+
+        private void dgvMatListByMat_MouseClick(object sender, MouseEventArgs e)
+        {
+            var ht = dgvMatListByMat.HitTest(e.X, e.Y);
+
+            if (ht.Type == DataGridViewHitTestType.None)
+            {
+                //clicked on grey area
+                dgvMatListByMat.ClearSelection();
+            }
+        }
+
+        private void dgvMatListByPlan_MouseClick(object sender, MouseEventArgs e)
+        {
+            var ht = dgvMatListByPlan.HitTest(e.X, e.Y);
+
+            if (ht.Type == DataGridViewHitTestType.None)
+            {
+                //clicked on grey area
+                dgvMatListByPlan.ClearSelection();
+            }
+        }
+
+        private void frmMatPlanningList_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(switchToByPlanPage)
+            {
+                dgvMatListByPlan.ClearSelection();
+            }
+            else
+            {
+                dgvMatListByMat.ClearSelection();
+            }
+            
+        }
+
+        private void tlpHeaderButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (switchToByPlanPage)
+            {
+                dgvMatListByPlan.ClearSelection();
+            }
+            else
+            {
+                dgvMatListByMat.ClearSelection();
+            }
         }
     }
 }

@@ -31,6 +31,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gbMatChecklist = new System.Windows.Forms.GroupBox();
+            this.lblTrfDate = new System.Windows.Forms.Label();
             this.dtpTrfDate = new System.Windows.Forms.DateTimePicker();
             this.cbCheckAll = new System.Windows.Forms.CheckBox();
             this.btnAutoInOut = new System.Windows.Forms.Button();
@@ -42,7 +43,6 @@
             this.btnDeliverChecklist = new System.Windows.Forms.Button();
             this.btnTrfChecklist = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
-            this.lblTrfDate = new System.Windows.Forms.Label();
             this.gbMatChecklist.SuspendLayout();
             this.tlpMatChecklist.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTransfer)).BeginInit();
@@ -68,6 +68,18 @@
             this.gbMatChecklist.TabIndex = 137;
             this.gbMatChecklist.TabStop = false;
             this.gbMatChecklist.Text = "MATERIAL CHECKLIST";
+            // 
+            // lblTrfDate
+            // 
+            this.lblTrfDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTrfDate.AutoSize = true;
+            this.lblTrfDate.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTrfDate.Location = new System.Drawing.Point(1019, 17);
+            this.lblTrfDate.Name = "lblTrfDate";
+            this.lblTrfDate.Size = new System.Drawing.Size(108, 19);
+            this.lblTrfDate.TabIndex = 141;
+            this.lblTrfDate.Text = "TRANSFER DATE";
+            this.lblTrfDate.Visible = false;
             // 
             // dtpTrfDate
             // 
@@ -261,30 +273,18 @@
             // btnBack
             // 
             this.btnBack.BackColor = System.Drawing.Color.Transparent;
-            this.btnBack.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_chevron_left_100;
+            this.btnBack.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_go_back_64;
             this.btnBack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBack.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBack.ForeColor = System.Drawing.Color.White;
-            this.btnBack.Location = new System.Drawing.Point(16, 10);
+            this.btnBack.Location = new System.Drawing.Point(26, 10);
             this.btnBack.Margin = new System.Windows.Forms.Padding(2);
             this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(36, 36);
+            this.btnBack.Size = new System.Drawing.Size(38, 38);
             this.btnBack.TabIndex = 140;
             this.btnBack.UseVisualStyleBackColor = false;
             this.btnBack.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // lblTrfDate
-            // 
-            this.lblTrfDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTrfDate.AutoSize = true;
-            this.lblTrfDate.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTrfDate.Location = new System.Drawing.Point(1019, 17);
-            this.lblTrfDate.Name = "lblTrfDate";
-            this.lblTrfDate.Size = new System.Drawing.Size(108, 19);
-            this.lblTrfDate.TabIndex = 141;
-            this.lblTrfDate.Text = "TRANSFER DATE";
-            this.lblTrfDate.Visible = false;
             // 
             // frmMatCheckList
             // 

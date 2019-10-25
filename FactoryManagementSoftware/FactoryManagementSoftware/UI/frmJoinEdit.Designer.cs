@@ -41,7 +41,7 @@
             this.cmbChildName = new System.Windows.Forms.ComboBox();
             this.cmbChildCat = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.txtQty = new System.Windows.Forms.TextBox();
+            this.txtChildQty = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
@@ -232,16 +232,16 @@
             this.label7.TabIndex = 70;
             this.label7.Text = "CHILD QTY";
             // 
-            // txtQty
+            // txtChildQty
             // 
-            this.txtQty.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtQty.Location = new System.Drawing.Point(457, 55);
-            this.txtQty.Name = "txtQty";
-            this.txtQty.Size = new System.Drawing.Size(414, 36);
-            this.txtQty.TabIndex = 72;
-            this.txtQty.Text = "1";
-            this.txtQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtQty.TextChanged += new System.EventHandler(this.txtQty_TextChanged);
+            this.txtChildQty.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtChildQty.Location = new System.Drawing.Point(457, 55);
+            this.txtChildQty.Name = "txtChildQty";
+            this.txtChildQty.Size = new System.Drawing.Size(414, 36);
+            this.txtChildQty.TabIndex = 72;
+            this.txtChildQty.Text = "1";
+            this.txtChildQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtChildQty.TextChanged += new System.EventHandler(this.txtQty_TextChanged);
             // 
             // errorProvider1
             // 
@@ -333,7 +333,7 @@
             this.groupBox3.Controls.Add(this.txtMax);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.label2);
-            this.groupBox3.Controls.Add(this.txtQty);
+            this.groupBox3.Controls.Add(this.txtChildQty);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Location = new System.Drawing.Point(15, 322);
             this.groupBox3.Name = "groupBox3";
@@ -509,7 +509,7 @@
         private System.Windows.Forms.ComboBox cmbChildName;
         private System.Windows.Forms.ComboBox cmbChildCat;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox txtQty;
+        private System.Windows.Forms.TextBox txtChildQty;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.ErrorProvider errorProvider3;

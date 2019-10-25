@@ -30,7 +30,7 @@ namespace FactoryManagementSoftware.UI
             cmbChildName.Text = tool.getItemName(u.join_child_code);
             cmbChildCode.Text = u.join_child_code;
 
-            txtQty.Text = u.join_qty.ToString();
+            txtChildQty.Text = u.join_qty.ToString();
             txtMax.Text = u.join_max.ToString();
             txtMin.Text = u.join_min.ToString();
 
@@ -125,13 +125,13 @@ namespace FactoryManagementSoftware.UI
                 {
                     txtMax.Enabled = true;
                     txtMin.Enabled = true;
-                    txtQty.Enabled = true;
+                    txtChildQty.Enabled = true;
                 }
                 else
                 {
                     txtMax.Enabled = true;
                     txtMin.Enabled = true;
-                    txtQty.Enabled = true;
+                    txtChildQty.Enabled = true;
                 }
 
                 DataTable dt = dalItem.catSearch(keywords);
@@ -261,9 +261,9 @@ namespace FactoryManagementSoftware.UI
                 result = false;
             }
 
-            if (string.IsNullOrEmpty(txtQty.Text))
+            if (string.IsNullOrEmpty(txtChildQty.Text))
             {
-                errorProvider7.SetError(txtQty, "Join Qty Required");
+                errorProvider7.SetError(txtChildQty, "Join Qty Required");
                 result = false;
             }
 
@@ -318,13 +318,13 @@ namespace FactoryManagementSoftware.UI
                     {
                         uJoin.join_max = Convert.ToInt32(txtMax.Text);
                         uJoin.join_min = Convert.ToInt32(txtMin.Text);
-                        uJoin.join_qty = Convert.ToInt32(txtQty.Text);
+                        uJoin.join_qty = Convert.ToInt32(txtChildQty.Text);
                     }
                     else
                     {
                         uJoin.join_max = Convert.ToInt32(txtMax.Text);
                         uJoin.join_min = Convert.ToInt32(txtMin.Text);
-                        uJoin.join_qty = Convert.ToSingle(txtQty.Text);
+                        uJoin.join_qty = Convert.ToSingle(txtChildQty.Text);
                     }
 
                     
@@ -433,27 +433,28 @@ namespace FactoryManagementSoftware.UI
 
         private void updateTestQty()
         {
-            if (!txtTestParentQty.Text.Equals("") && !txtQty.Text.Equals(""))
+            if (!txtTestParentQty.Text.Equals("") && !txtChildQty.Text.Equals(""))
             {
-                if(!cmbChildCat.Text.Equals("Carton"))
+               
+                int maxQty = txtMax.Text.Equals("") || txtMax.Text.Equals("0") ? 1 : Convert.ToInt32(txtMax.Text);
+                int minQty = txtMin.Text.Equals("") || txtMin.Text.Equals("0") ? 1 : Convert.ToInt32(txtMin.Text);
+                int childQty = txtChildQty.Text.Equals("") || txtChildQty.Text.Equals("0") ? 1 : Convert.ToInt32(txtChildQty.Text);
+
+                int testParentQty = Convert.ToInt32(txtTestParentQty.Text);
+
+                int fullCartonQty = testParentQty / maxQty;
+
+                int notFullCartonQty = testParentQty % maxQty;
+
+                int testChildQty = fullCartonQty * childQty;
+
+                if(notFullCartonQty >= minQty)
                 {
-                    float joinQty = Convert.ToSingle(txtQty.Text);
-                    int testParentQty = Convert.ToInt32(txtTestParentQty.Text);
-                    txtTestChildQty.Text = (joinQty * testParentQty).ToString();
+                    testChildQty += childQty;
                 }
-                else
-                {
-                    int maxQty = txtMax.Text.Equals("") || txtMax.Text.Equals("0") ? 1: Convert.ToInt16(txtMax.Text);
-                    int minQty = txtMin.Text.Equals("") || txtMin.Text.Equals("0") ? 1 : Convert.ToInt16(txtMin.Text);
-                    int testParentQty = Convert.ToInt32(txtTestParentQty.Text);
 
-                    int fullCartonQty = testParentQty / maxQty;
+                txtTestChildQty.Text = testChildQty.ToString();
 
-                    int notFullCartonQty = testParentQty % maxQty / minQty;
-
-                    txtTestChildQty.Text = (fullCartonQty + notFullCartonQty).ToString();
-                }
-                
             }
             else
             {

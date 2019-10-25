@@ -60,7 +60,7 @@ namespace FactoryManagementSoftware.Module
         public string OrderActionUndo { get; } = "OrderActionUndo";
 
         public string ForecastEdit { get; } = "ForecastEdit";
-
+        public string ForecastInsert { get; } = "ForecastInsert";
         public string ForecastReport { get; } = "ForecastReport";
         public string StockReport { get; } = "StockReport";
         public string TransferReport { get; } = "TransferReport";
@@ -209,7 +209,38 @@ namespace FactoryManagementSoftware.Module
 
         public string getForecastEditString(string customer, string forecastNum, string itemCode, string from, string to)
         {
-            string detail = customer+" forecast "+forecastNum + " (" + itemCode + ") " + tool.getItemName(itemCode) +" from "+from+" to "+to;
+            if(int.TryParse(customer, out int i))
+            {
+                customer = tool.getCustName(Convert.ToInt32(customer));
+            }
+
+            string detail = "[" + customer + "_" + forecastNum + "] " + tool.getItemName(itemCode) + " (" + itemCode + "):" + from + " -> " + to;
+
+            return detail;
+        }
+
+        public string getForecastInsertString(itemForecastBLL u)
+        {
+            string customer = "null";
+            if (int.TryParse(u.cust_id.ToString(), out int i))
+            {
+                customer = tool.getCustName(Convert.ToInt32(u.cust_id));
+            }
+
+            string detail = "[" + customer + "_" + u.forecast_month + u.forecast_year + "] " + tool.getItemName(u.item_code) + " (" + u.item_code + "):" + u.forecast_qty;
+
+            return detail;
+
+        }
+        public string getForecastEditString(itemForecastBLL u)
+        {
+            string customer = "null";
+            if (int.TryParse(u.cust_id.ToString(), out int i))
+            {
+                customer = tool.getCustName(Convert.ToInt32(u.cust_id));
+            }
+
+            string detail = "[" + customer + "_" + u.forecast_month +u.forecast_year+ "] " + tool.getItemName(u.item_code) + " (" + u.item_code + "):" + u.forecast_old_qty + " -> " + u.forecast_qty;
 
             return detail;
         }

@@ -56,6 +56,7 @@ namespace FactoryManagementSoftware.UI
         //readonly string headerItem = "PLAN FOR";
         readonly string ContextEditMaterial = "Edit Material";
         readonly string ContextPairMaterial = "Pair Material";
+        readonly string ContextAddMaterial = "Add Material";
 
         private DataTable dt_MaterialPlan;
 
@@ -346,6 +347,7 @@ namespace FactoryManagementSoftware.UI
                     
                     my_menu.Items.Add(ContextEditMaterial).Name = ContextEditMaterial;
                     my_menu.Items.Add(ContextPairMaterial).Name = ContextPairMaterial;
+                    my_menu.Items.Add(ContextAddMaterial).Name = ContextAddMaterial;
 
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
                     contextMenuStrip1 = my_menu;
@@ -386,6 +388,11 @@ namespace FactoryManagementSoftware.UI
 
                     PairMaterial(rowIndex, planID);
                 }
+                else if (itemClicked.Equals(ContextAddMaterial))
+                {
+
+                    AddMaterial(rowIndex);
+                }
             }
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             contextMenuStrip1.Hide();
@@ -425,6 +432,9 @@ namespace FactoryManagementSoftware.UI
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//Item Edit
             LoadMatList();
+
+            dgvMatList.FirstDisplayedScrollingRowIndex = row;
+            dgvMatList.Rows[row].Selected = true;
         }
 
         private void EditMaterial(int row)
@@ -450,10 +460,48 @@ namespace FactoryManagementSoftware.UI
             uMatPlan.mat_cat = tool.getItemCat(uMatPlan.mat_code);
             uMatPlan.plan_to_use = planToUse;
 
-            frmMatAddOrEdit frm = new frmMatAddOrEdit(uMatPlan);
+            frmMatAddOrEdit frm = new frmMatAddOrEdit(uMatPlan, false);
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//Item Edit
             LoadMatList();
+
+            dgvMatList.FirstDisplayedScrollingRowIndex = row;
+            dgvMatList.Rows[row].Selected = true;
+        }
+
+        private void AddMaterial(int row)
+        {
+            DataGridView dgv = dgvMatList;
+
+            int planID = int.TryParse(dgv.Rows[row].Cells[headerID].Value.ToString(), out int i) ? Convert.ToInt32(dgv.Rows[row].Cells[headerID].Value.ToString()) : -1;
+            float planToUse = float.TryParse(dgv.Rows[row].Cells[headerMatUse].Value.ToString(), out float j) ? Convert.ToSingle(dgv.Rows[row].Cells[headerMatUse].Value.ToString()) : 0;
+
+            uMatPlan.plan_id = planID;
+            uMatPlan.part_code = dgv.Rows[row].Cells[headerPartCode].Value.ToString();
+            uMatPlan.part_name = dgv.Rows[row].Cells[headerPartName].Value.ToString();
+
+            uMatPlan.pro_location = dgv.Rows[row].Cells[headerFac].Value.ToString();
+            uMatPlan.pro_machine = dgv.Rows[row].Cells[headerMac].Value.ToString();
+            uMatPlan.pro_max_qty = dgv.Rows[row].Cells[headerAbleProduceQty].Value.ToString();
+            uMatPlan.pro_target_qty = dgv.Rows[row].Cells[headerTargetQty].Value.ToString();
+            uMatPlan.pro_start = dgv.Rows[row].Cells[headerStart].Value.ToString();
+            uMatPlan.pro_end = dgv.Rows[row].Cells[headerEnd].Value.ToString();
+
+            uMatPlan.mat_code = dgv.Rows[row].Cells[headerMatCode].Value.ToString();
+            uMatPlan.mat_name = tool.getItemName(uMatPlan.mat_code);
+            uMatPlan.mat_cat = tool.getItemCat(uMatPlan.mat_code);
+            uMatPlan.plan_to_use = planToUse;
+
+            frmMatAddOrEdit frm = new frmMatAddOrEdit(uMatPlan, true);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//Item Edit
+            LoadMatList();
+
+            if (frmMatAddOrEdit.dataSaved)
+                row++;
+
+            dgvMatList.FirstDisplayedScrollingRowIndex = row;
+            dgvMatList.Rows[row].Selected = true;
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -506,7 +554,7 @@ namespace FactoryManagementSoftware.UI
             //uJoin.join_max = 1;
             //uJoin.join_min = 1;
 
-            frmMatAddOrEdit frm = new frmMatAddOrEdit();
+            frmMatAddOrEdit frm = new frmMatAddOrEdit(dt_MaterialPlan);
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//Item Edit
             LoadMatList();

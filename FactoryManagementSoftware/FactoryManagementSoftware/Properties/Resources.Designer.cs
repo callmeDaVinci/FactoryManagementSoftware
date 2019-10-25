@@ -73,6 +73,26 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_available_updates_961 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-available-updates-961", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_back_96 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-back-96", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_back_to_64 {
             get {
                 object obj = ResourceManager.GetObject("icons8-back-to-64", resourceCulture);
@@ -103,6 +123,16 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_go_back_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-go-back-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_minus_96 {
             get {
                 object obj = ResourceManager.GetObject("icons8-minus-96", resourceCulture);
@@ -116,6 +146,26 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap icons8_plus_480 {
             get {
                 object obj = ResourceManager.GetObject("icons8-plus-480", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_refresh_208 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-refresh-208", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_refresh_480 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-refresh-480", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

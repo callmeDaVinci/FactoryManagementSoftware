@@ -16,12 +16,19 @@ namespace FactoryManagementSoftware.UI
             loadItemCategoryData();
         }
 
-        public frmMatAddOrEdit(matPlanBLL u)
+        public frmMatAddOrEdit(DataTable dt)
+        {
+            InitializeComponent();
+            loadItemCategoryData();
+            dt_matplan = dt;
+        }
+
+        public frmMatAddOrEdit(matPlanBLL u, bool addingMaterial)
         {
             InitializeComponent();
 
             editMode = true;
-
+            addMode = addingMaterial;
             uMatPlan = u;
             loadItemCategoryData();
 
@@ -39,26 +46,94 @@ namespace FactoryManagementSoftware.UI
             txtStart.Text = Convert.ToDateTime(u.pro_start).ToShortDateString();
             txtEnd.Text = Convert.ToDateTime(u.pro_end).ToShortDateString();
 
-            cmbChildCat.Text = u.mat_cat;
+            if (!addingMaterial)
+            {
+                cmbChildCat.Text = u.mat_cat;
 
-            cmbChildName.Items.Add(u.mat_name);
-            cmbChildName.SelectedIndex = 0;
+                cmbChildName.Items.Add(u.mat_name);
+                cmbChildName.SelectedIndex = 0;
 
-            cmbChildCode.Items.Add(u.mat_code);
-            cmbChildCode.SelectedIndex = 0;
+                cmbChildCode.Items.Add(u.mat_code);
+                cmbChildCode.SelectedIndex = 0;
 
-            txtMatUseQty.Text = u.plan_to_use.ToString();
+                txtMatUseQty.Text = u.plan_to_use.ToString();
 
-            updateTestName();
+                cmbChildCat.Enabled = false;
+                cmbChildName.Enabled = false;
+                cmbChildCode.Enabled = false;
+            }
 
             cmbParentName.Enabled = false;
             cmbParentCode.Enabled = false;
             cmbPlanID.Enabled = false;
 
-            cmbChildCat.Enabled = false;
-            cmbChildName.Enabled = false;
-            cmbChildCode.Enabled = false;
+            updateTestName();
+        }
 
+        public frmMatAddOrEdit(DataTable dt, string ParentCode, bool AddMaterial)
+        {
+            InitializeComponent();
+            dt_matplan = dt;
+            editMode = false;
+            addMode = AddMaterial;
+
+            loadItemCategoryData();
+
+            cmbParentName.Text = tool.getItemName(ParentCode);
+            cmbParentCode.Text = ParentCode;
+
+            loadPlanID();
+            //LoadPlanData();
+            cmbPlanID.SelectedIndex = 0;
+            cmbParentName.Enabled = false;
+            cmbParentCode.Enabled = false;
+            //cmbPlanID.Enabled = false;
+
+            txtMatUseQty.Clear();
+            updateTestName();
+
+        }
+        public frmMatAddOrEdit(DataTable dt, matPlanBLL u, string ParentCode, bool AddMaterial)
+        {
+            InitializeComponent();
+            dt_matplan = dt;
+
+            if(!AddMaterial)
+            editMode = false;
+
+            addMode = AddMaterial;
+            
+            loadItemCategoryData();
+
+            cmbParentName.Text = tool.getItemName(ParentCode);
+            cmbParentCode.Text = ParentCode;
+
+            loadPlanID();
+            LoadPlanData(u.plan_id);
+            if (!AddMaterial)
+            {
+                editMode = true;
+                cmbChildCat.Text = u.mat_cat;
+
+                cmbChildName.Items.Add(u.mat_name);
+                cmbChildName.SelectedIndex = 0;
+
+                cmbChildCode.Items.Add(u.mat_code);
+                cmbChildCode.SelectedIndex = 0;
+
+                txtMatUseQty.Text = u.plan_to_use.ToString();
+
+                cmbChildCat.Enabled = false;
+                cmbChildName.Enabled = false;
+                cmbChildCode.Enabled = false;
+            }
+
+            cmbPlanID.SelectedIndex = 0;
+            cmbParentName.Enabled = false;
+            cmbParentCode.Enabled = false;
+            //cmbPlanID.Enabled = false;
+
+            updateTestName();
         }
 
         #region variable/ object declare
@@ -68,7 +143,7 @@ namespace FactoryManagementSoftware.UI
         matPlanDAL dalMatPlan = new matPlanDAL();
         matPlanBLL uMatPlan = new matPlanBLL();
         planningDAL dalPlan = new planningDAL();
-
+        MacDAL dalMac = new MacDAL();
         joinBLL uJoin = new joinBLL();
         joinDAL dalJoin = new joinDAL();
 
@@ -77,8 +152,12 @@ namespace FactoryManagementSoftware.UI
         Tool tool = new Tool();
         Text text = new Text();
 
+        DataTable dt_matplan;
         private bool editMode = false;
+        private bool addMode = false;
         private bool loaded = false;
+        private bool parentNameSelected = false;
+        static public bool dataSaved = false;
         #endregion
 
         #region Load Data
@@ -107,26 +186,27 @@ namespace FactoryManagementSoftware.UI
 
         private void updateTestQty()
         {
-            if (!txtTestParentQty.Text.Equals("") && !txtQty.Text.Equals(""))
+            if (!txtTestParentQty.Text.Equals("") && !txtChildQty.Text.Equals(""))
             {
-                if (!cmbChildCat.Text.Equals("Carton"))
+
+                int maxQty = txtMax.Text.Equals("") || txtMax.Text.Equals("0") ? 1 : Convert.ToInt32(txtMax.Text);
+                int minQty = txtMin.Text.Equals("") || txtMin.Text.Equals("0") ? 1 : Convert.ToInt32(txtMin.Text);
+                int childQty = txtChildQty.Text.Equals("") || txtChildQty.Text.Equals("0") ? 1 : Convert.ToInt32(txtChildQty.Text);
+
+                int testParentQty = Convert.ToInt32(txtTestParentQty.Text);
+
+                int fullCartonQty = testParentQty / maxQty;
+
+                int notFullCartonQty = testParentQty % maxQty;
+
+                int testChildQty = fullCartonQty * childQty;
+
+                if (notFullCartonQty >= minQty)
                 {
-                    float joinQty = Convert.ToSingle(txtQty.Text);
-                    int testParentQty = Convert.ToInt32(txtTestParentQty.Text);
-                    txtTestChildQty.Text = (joinQty * testParentQty).ToString();
+                    testChildQty += childQty;
                 }
-                else
-                {
-                    int maxQty = txtMax.Text.Equals("") || txtMax.Text.Equals("0") ? 1 : Convert.ToInt16(txtMax.Text);
-                    int minQty = txtMin.Text.Equals("") || txtMin.Text.Equals("0") ? 1 : Convert.ToInt16(txtMin.Text);
-                    int testParentQty = Convert.ToInt32(txtTestParentQty.Text);
 
-                    int fullCartonQty = testParentQty / maxQty;
-
-                    int notFullCartonQty = testParentQty % maxQty / minQty;
-
-                    txtTestChildQty.Text = (fullCartonQty + notFullCartonQty).ToString();
-                }
+                txtTestChildQty.Text = testChildQty.ToString();
 
             }
             else
@@ -152,56 +232,56 @@ namespace FactoryManagementSoftware.UI
             if (string.IsNullOrEmpty(cmbParentCat.Text))
             {
 
-                errorProvider1.SetError(cmbParentCat, "Item Category Required");
+                errorProvider1.SetError(lblParentCat, "Item Category Required");
                 result = false;
             }
 
             if (string.IsNullOrEmpty(cmbParentName.Text))
             {
 
-                errorProvider2.SetError(cmbParentName, "Item Name Required");
+                errorProvider2.SetError(lblParentName, "Item Name Required");
                 result = false;
             }
 
             if (string.IsNullOrEmpty(cmbParentCode.Text))
             {
 
-                errorProvider3.SetError(cmbParentCode, "Item Code Required");
-                result = false;
-            }
-
-            if (string.IsNullOrEmpty(cmbChildCat.Text))
-            {
-
-                errorProvider4.SetError(cmbChildCat, "Item Category Required");
-                result = false;
-            }
-
-            if (string.IsNullOrEmpty(cmbChildName.Text))
-            {
-
-                errorProvider5.SetError(cmbChildName, "Item name Required");
-                result = false;
-            }
-
-            if (string.IsNullOrEmpty(cmbChildCode.Text))
-            {
-
-                errorProvider6.SetError(cmbChildCode, "Item code Required");
+                errorProvider3.SetError(lblParentCode, "Item Code Required");
                 result = false;
             }
 
             if (string.IsNullOrEmpty(cmbPlanID.Text))
             {
 
-                errorProvider6.SetError(cmbChildCode, "Item code Required");
+                errorProvider4.SetError(lblPlanID, "Plan ID Required");
+                result = false;
+            }
+
+            if (string.IsNullOrEmpty(cmbChildCat.Text))
+            {
+
+                errorProvider5.SetError(lblChildCat, "Item Category Required");
+                result = false;
+            }
+
+            if (string.IsNullOrEmpty(cmbChildName.Text))
+            {
+
+                errorProvider6.SetError(lblChildName, "Item Name Required");
+                result = false;
+            }
+
+            if (string.IsNullOrEmpty(cmbChildCode.Text))
+            {
+
+                errorProvider7.SetError(lblChildCode, "Item code Required");
                 result = false;
             }
 
             if (string.IsNullOrEmpty(txtMatUseQty.Text))
             {
 
-                errorProvider6.SetError(cmbChildCode, "Item code Required");
+                errorProvider8.SetError(lblMatUseQty, "Material Use Qty Required");
                 result = false;
             }
 
@@ -209,19 +289,19 @@ namespace FactoryManagementSoftware.UI
             {
                 if (string.IsNullOrEmpty(txtMax.Text))
                 {
-                    errorProvider7.SetError(txtMax, "Max Qty Required");
+                    errorProvider9.SetError(lblMax, "Max Qty Required");
                     result = false;
                 }
 
                 if (string.IsNullOrEmpty(txtMin.Text))
                 {
-                    errorProvider8.SetError(txtMin, "Min Qty Required");
+                    errorProvider10.SetError(lblMin, "Min Qty Required");
                     result = false;
                 }
 
-                if (string.IsNullOrEmpty(txtQty.Text))
+                if (string.IsNullOrEmpty(txtChildQty.Text))
                 {
-                    errorProvider7.SetError(txtQty, "Join Qty Required");
+                    errorProvider11.SetError(lblChildQty, "Join Qty Required");
                     result = false;
                 }
             }
@@ -253,12 +333,23 @@ namespace FactoryManagementSoftware.UI
         {
             if(cbEditJoin.Checked)
             {
-                gbJoin.Enabled = true;
-                gbTest.Enabled = true;
+                string itemCat = cmbChildCat.Text;
 
-                txtMax.BackColor = SystemColors.Info;
-                txtMin.BackColor = SystemColors.Info;
-                txtQty.BackColor = SystemColors.Info;
+                if(itemCat == text.Cat_RawMat || itemCat == text.Cat_MB || itemCat == text.Cat_Pigment)
+                {
+                    MessageBox.Show("Raw Material/Pigment/Master Batch cannot be join to the part.");
+                    cbEditJoin.Checked = false;
+                }
+                else
+                {
+                    gbJoin.Enabled = true;
+                    gbTest.Enabled = true;
+
+                    txtMax.BackColor = SystemColors.Info;
+                    txtMin.BackColor = SystemColors.Info;
+                    txtChildQty.BackColor = SystemColors.Info;
+                }
+                
             }
             else
             {
@@ -267,7 +358,7 @@ namespace FactoryManagementSoftware.UI
 
                 txtMax.BackColor = Color.White;
                 txtMin.BackColor = Color.White;
-                txtQty.BackColor = Color.White;
+                txtChildQty.BackColor = Color.White;
             }
         }
 
@@ -303,25 +394,25 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbChildCat_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(!editMode)
+            if(!editMode || addMode)
             {
                 string keywords = cmbChildCat.Text;
 
                 if (!string.IsNullOrEmpty(keywords))
                 {
-                    errorProvider4.Clear();
+                    errorProvider5.Clear();
 
                     if (keywords.Equals("Carton"))
                     {
                         txtMax.Enabled = true;
                         txtMin.Enabled = true;
-                        txtQty.Enabled = true;
+                        txtChildQty.Enabled = true;
                     }
                     else
                     {
                         txtMax.Enabled = true;
                         txtMin.Enabled = true;
-                        txtQty.Enabled = true;
+                        txtChildQty.Enabled = true;
                     }
 
                     DataTable dt = dalItem.catSearch(keywords);
@@ -353,6 +444,7 @@ namespace FactoryManagementSoftware.UI
         private void cmbParentName_SelectedIndexChanged(object sender, EventArgs e)
         {
             errorProvider2.Clear();
+            parentNameSelected = false;
             string keywords = cmbParentName.Text;
 
             if (!string.IsNullOrEmpty(keywords))
@@ -361,6 +453,8 @@ namespace FactoryManagementSoftware.UI
                 cmbParentCode.DataSource = dt;
                 cmbParentCode.DisplayMember = "item_code";
                 cmbParentCode.ValueMember = "item_code";
+
+                cmbParentCode.SelectedIndex = -1;
             }
             else
             {
@@ -368,13 +462,14 @@ namespace FactoryManagementSoftware.UI
             }
 
             updateTestName();
+            parentNameSelected = true;
         }
 
         private void cmbChildName_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(!editMode)
+            if(!editMode || addMode)
             {
-                errorProvider5.Clear();
+                errorProvider6.Clear();
                 string keywords = cmbChildName.Text;
 
                 if (!string.IsNullOrEmpty(keywords))
@@ -394,32 +489,84 @@ namespace FactoryManagementSoftware.UI
             
         }
 
+        private void loadPlanID()
+        {
+            if(!editMode)
+            {
+                bool planFound = false;
+                string itemCode = cmbParentCode.Text;
+                cmbPlanID.DataSource = null;
+               
+                foreach (DataRow rows in dt_matplan.Rows)
+                {
+                    string status = rows[dalPlan.planStatus].ToString();
+
+                    if(status != text.planning_status_completed && status != text.planning_status_cancelled)
+                    {
+                        string partCode = rows[dalPlan.partCode].ToString();
+
+                        if(itemCode == partCode)
+                        {
+                            planFound = true;
+                            bool duplicate = false;
+                            string planID = rows[dalPlan.planID].ToString();
+                            foreach (object item in cmbPlanID.Items)
+                            {
+                                string text = (item as string);
+                                //do stuff with the text
+
+                                if(!string.IsNullOrEmpty(text))
+                                {
+                                    if(text == planID)
+                                    {
+                                        duplicate = true;
+                                    }
+                                }
+                            }
+
+                            if(!duplicate)
+                            cmbPlanID.Items.Add(planID);
+                        }
+                    }
+                }
+
+
+                if (!planFound)
+                {
+                    MessageBox.Show("Plan not found!");
+                }
+            }
+        }
+
         private void cmbParentCode_SelectedIndexChanged(object sender, EventArgs e)
         {
             errorProvider3.Clear();
 
-            if(loaded && !editMode)
+            string text = cmbParentCode.GetItemText(cmbParentCode.SelectedItem);
+            if (parentNameSelected && loaded && !editMode && cmbParentCode.SelectedIndex >= 0 && !string.IsNullOrEmpty(text) && text != "System.Data.DataRowView")
             {
                 //load mat plan data
+                loadPlanID();
             }
             updateTestName();
         }
 
         private void cmbChildCode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            errorProvider6.Clear();
+            errorProvider7.Clear();
             updateTestName();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult;
-            DateTime date = DateTime.Now;
-            //update mat plan data
-
-            if (Validation())
+            if(Validation())
             {
-                if (editMode)
+                DialogResult dialogResult;
+                DateTime date = DateTime.Now;
+                bool readyToClose = false;
+
+                //update mat plan data
+                if (editMode && !addMode)
                 {
                     dialogResult = MessageBox.Show("Are you sure want to update data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -435,11 +582,12 @@ namespace FactoryManagementSoftware.UI
                         if (!dalMatPlan.MatPlanToUseUpdate(uMatPlan))
                         {
                             MessageBox.Show("Failed to update material plan to use data.");
+                            readyToClose = false;
                         }
                         else
                         {
                             MessageBox.Show("Data Updated!");
-                            Close();
+                            readyToClose = true;
                         }
                     }
 
@@ -465,26 +613,21 @@ namespace FactoryManagementSoftware.UI
                         {
                             //MessageBox.Show("Failed to insert material plan data.");
                             tool.historyRecord(text.System, "Failed to insert material plan data.", date, MainDashboard.USER_ID);
+                            readyToClose = false;
                         }
                         else
                         {
                             MessageBox.Show("Data inserted!");
-                            Close();
+                            readyToClose = true;
                         }
                     }
 
-                        
+
                 }
 
-            }
-
-            //save Join Data
-            if (Validation() && cbEditJoin.Checked)
-            {
-                dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (dialogResult == DialogResult.Yes)
+                //save Join Data
+                if (cbEditJoin.Checked)
                 {
-
                     uJoin.join_parent_code = cmbParentCode.Text;
 
                     uJoin.join_child_code = cmbChildCode.Text;
@@ -492,20 +635,9 @@ namespace FactoryManagementSoftware.UI
                     frmJoin.editedParentCode = uJoin.join_parent_code;
                     frmJoin.editedChildCode = uJoin.join_child_code;
 
-                    if (cmbChildCat.Text.Equals("Carton"))
-                    {
-                        uJoin.join_max = Convert.ToInt32(txtMax.Text);
-                        uJoin.join_min = Convert.ToInt32(txtMin.Text);
-                        uJoin.join_qty = Convert.ToInt32(txtQty.Text);
-                    }
-                    else
-                    {
-                        uJoin.join_max = Convert.ToInt32(txtMax.Text);
-                        uJoin.join_min = Convert.ToInt32(txtMin.Text);
-                        uJoin.join_qty = Convert.ToSingle(txtQty.Text);
-                    }
-
-
+                    uJoin.join_max = Convert.ToInt32(txtMax.Text);
+                    uJoin.join_min = Convert.ToInt32(txtMin.Text);
+                    uJoin.join_qty = Convert.ToInt32(txtChildQty.Text);
 
                     DataTable dt_existCheck = dalJoin.existCheck(uJoin.join_parent_code, uJoin.join_child_code);
 
@@ -515,20 +647,23 @@ namespace FactoryManagementSoftware.UI
                     {
                         uJoin.join_updated_date = DateTime.Now;
                         uJoin.join_updated_by = MainDashboard.USER_ID;
+
                         //update data
                         success = dalJoin.UpdateWithMaxMin(uJoin);
+
                         //If the data is successfully inserted then the value of success will be true else false
                         if (success)
                         {
                             //Data Successfully Inserted
                             MessageBox.Show("Join updated.");
-
+                            readyToClose = true;
 
                         }
                         else
                         {
                             //Failed to insert data
                             MessageBox.Show("Failed to update join");
+                            readyToClose = false;
                         }
                     }
                     else
@@ -542,21 +677,24 @@ namespace FactoryManagementSoftware.UI
                         {
                             //Data Successfully Inserted
                             MessageBox.Show("Join successfully created");
-                            // this.Close();
+                            readyToClose = true;
                         }
                         else
                         {
                             //Failed to insert data
                             MessageBox.Show("Failed to add new join");
+                            readyToClose = false;
                         }
                     }
+                }
 
-                    if (success)
-                    {
-                        Close();
-                    }
+                if (readyToClose)
+                {
+                    dataSaved = true;
+                    Close();
                 }
             }
+          
         }
 
         private void txtMax_KeyPress(object sender, KeyPressEventArgs e)
@@ -570,7 +708,7 @@ namespace FactoryManagementSoftware.UI
         private void txtMin_TextChanged(object sender, EventArgs e)
         {
             updateTestQty();
-            errorProvider8.Clear();
+            errorProvider10.Clear();
         }
 
         private void txtMin_KeyPress(object sender, KeyPressEventArgs e)
@@ -592,7 +730,7 @@ namespace FactoryManagementSoftware.UI
         private void txtMax_TextChanged(object sender, EventArgs e)
         {
             updateTestQty();
-            errorProvider7.Clear();
+            errorProvider9.Clear();
         }
 
         private void txtFac_KeyPress(object sender, KeyPressEventArgs e)
@@ -636,6 +774,83 @@ namespace FactoryManagementSoftware.UI
         private void frmMatAddOrEdit_Load(object sender, EventArgs e)
         {
             loaded = true;
+        }
+
+
+        private void LoadPlanData()
+        {
+            int planID = int.TryParse(cmbPlanID.Text, out int i) ? Convert.ToInt32(cmbPlanID.Text) : -1;
+
+            foreach (DataRow row in dt_matplan.Rows)
+            {
+                if (planID.ToString() == row[dalPlan.planID].ToString())
+                {
+                    //get data
+                    txtFac.Text = row[dalMac.MacLocation].ToString();
+                    txtMac.Text = row[dalPlan.machineID].ToString();
+
+                    txtAblePro.Text = row[dalPlan.ableQty].ToString();
+                    txtTargetQty.Text = row[dalPlan.targetQty].ToString();
+
+                    txtStart.Text = Convert.ToDateTime(row[dalPlan.productionStartDate]).ToShortDateString();
+                    txtEnd.Text = Convert.ToDateTime(row[dalPlan.productionEndDate]).ToShortDateString();
+
+                    break;
+                }
+            }
+        }
+
+        private void LoadPlanData(int planID)
+        {
+
+            foreach (DataRow row in dt_matplan.Rows)
+            {
+                if (planID.ToString() == row[dalPlan.planID].ToString())
+                {
+                    //get data
+                    txtFac.Text = row[dalMac.MacLocation].ToString();
+                    txtMac.Text = row[dalPlan.machineID].ToString();
+
+                    txtAblePro.Text = row[dalPlan.ableQty].ToString();
+                    txtTargetQty.Text = row[dalPlan.targetQty].ToString();
+
+                    txtStart.Text = Convert.ToDateTime(row[dalPlan.productionStartDate]).ToShortDateString();
+                    txtEnd.Text = Convert.ToDateTime(row[dalPlan.productionEndDate]).ToShortDateString();
+
+                    break;
+                }
+            }
+        }
+
+        private void cmbPlanID_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            errorProvider4.Clear();
+
+            if (!editMode)
+            {
+                LoadPlanData();
+
+            }
+        }
+
+        private void txtMatUseQty_TextChanged(object sender, EventArgs e)
+        {
+            errorProvider8.Clear();
+        }
+
+        private void txtQty_TextChanged(object sender, EventArgs e)
+        {
+            errorProvider11.Clear();
+        }
+
+        private void txtTestParentQty_TextChanged(object sender, EventArgs e)
+        {
+            updateTestQty();
+        }
+
+        private void txtTestChildQty_TextChanged(object sender, EventArgs e)
+        {
+            updateTestQty();
         }
     }
 }

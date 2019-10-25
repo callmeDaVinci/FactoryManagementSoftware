@@ -120,6 +120,9 @@ namespace FactoryManagementSoftware.DAL
         public bool Update(itemCustBLL u)
         {
             bool isSuccess = false;
+            Module.Tool tool = new Module.Tool();
+            Module.Text text = new Module.Text();
+
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             try
@@ -155,11 +158,12 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+                tool.saveToText(ex);
             }
             finally
             {
                 conn.Close();
+
             }
             return isSuccess;
         }

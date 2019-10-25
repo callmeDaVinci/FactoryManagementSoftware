@@ -18,7 +18,7 @@
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Background</UpdateMode>
+    <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>64</ApplicationRevision>
+    <ApplicationRevision>70</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -100,6 +100,7 @@
     <Compile Include="BLL\itemBLL.cs" />
     <Compile Include="BLL\itemCatBLL.cs" />
     <Compile Include="BLL\itemCustBLL.cs" />
+    <Compile Include="BLL\itemForecastBLL.cs" />
     <Compile Include="BLL\joinBLL.cs" />
     <Compile Include="BLL\MacBLL.cs" />
     <Compile Include="BLL\materialBLL.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="DAL\itemCatDAL.cs" />
     <Compile Include="DAL\itemCustDAL.cs" />
     <Compile Include="DAL\itemDAL.cs" />
+    <Compile Include="DAL\itemForecastDAL.cs" />
     <Compile Include="DAL\joinDAL.cs" />
     <Compile Include="DAL\MacDAL.cs" />
     <Compile Include="DAL\materialDAL.cs" />
@@ -184,6 +186,12 @@
     </Compile>
     <Compile Include="UI\frmDialog.Designer.cs">
       <DependentUpon>frmDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmForecast_NEW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmForecast_NEW.Designer.cs">
+      <DependentUpon>frmForecast_NEW.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmItemReport.cs">
       <SubType>Form</SubType>
@@ -562,6 +570,9 @@
     <EmbeddedResource Include="UI\frmDialog.resx">
       <DependentUpon>frmDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmForecast_NEW.resx">
+      <DependentUpon>frmForecast_NEW.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItemReport.resx">
       <DependentUpon>frmItemReport.cs</DependentUpon>
     </EmbeddedResource>
@@ -820,9 +831,14 @@
     <None Include="Resources\icons8-minus-96.png" />
     <None Include="Resources\icons8-uninstalling-updates-100.png" />
     <None Include="Resources\icons8-up-filled-100.png" />
+    <None Include="Resources\icons8-back-96.png" />
+    <None Include="Resources\icons8-available-updates-961.png" />
     <Content Include="Resources\icons8-back-to-64.png" />
     <None Include="Resources\icons8-back-to-641.png" />
     <None Include="Resources\icons8-chevron-left-100.png" />
+    <None Include="Resources\icons8-go-back-64.png" />
+    <None Include="Resources\icons8-refresh-208.png" />
+    <None Include="Resources\icons8-refresh-480.png" />
     <Content Include="Resources\x_icon_png_1543129.jpg" />
     <Content Include="Resources\x_icon_png_1543129_VTC_icon.ico" />
     <None Include="Resources\x_icon_png_1543129_VTC_icon1.ico" />

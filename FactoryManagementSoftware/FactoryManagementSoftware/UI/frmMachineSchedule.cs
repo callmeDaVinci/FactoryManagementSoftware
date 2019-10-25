@@ -636,8 +636,10 @@ namespace FactoryManagementSoftware.UI
 
                     #endregion
 
+                    DataTable dt_test = (DataTable)dgvSchedule.DataSource;
+
                     //int row = dgvSchedule.RowCount - 1;
-                    //int col = dgvSchedule.st;
+                    //int col = dgvSchedule.ColumnCount - 1;
 
                     //MessageBox.Show("row: " + row + " col: " + col);
                     if (true)//cmbSubType.Text.Equals("PMMA")

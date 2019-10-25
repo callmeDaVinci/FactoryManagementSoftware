@@ -78,6 +78,7 @@
             this.btnOUT = new System.Windows.Forms.Button();
             this.btnSwitch = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblPartCodeReset = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -118,7 +119,7 @@
             this.lblUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblUnit.AutoSize = true;
             this.lblUnit.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUnit.Location = new System.Drawing.Point(218, 5);
+            this.lblUnit.Location = new System.Drawing.Point(214, 5);
             this.lblUnit.Name = "lblUnit";
             this.lblUnit.Size = new System.Drawing.Size(40, 19);
             this.lblUnit.TabIndex = 60;
@@ -258,10 +259,10 @@
             // 
             // label7
             // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(214, 5);
+            this.label7.Location = new System.Drawing.Point(213, 5);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(108, 19);
             this.label7.TabIndex = 63;
@@ -384,7 +385,7 @@
             // 
             this.lblCategoryError.AutoSize = true;
             this.lblCategoryError.ForeColor = System.Drawing.Color.Red;
-            this.lblCategoryError.Location = new System.Drawing.Point(87, 0);
+            this.lblCategoryError.Location = new System.Drawing.Point(86, 0);
             this.lblCategoryError.Name = "lblCategoryError";
             this.lblCategoryError.Size = new System.Drawing.Size(18, 20);
             this.lblCategoryError.TabIndex = 73;
@@ -394,9 +395,9 @@
             // 
             this.lblTrfDateError.AutoSize = true;
             this.lblTrfDateError.ForeColor = System.Drawing.Color.Red;
-            this.lblTrfDateError.Location = new System.Drawing.Point(328, 0);
+            this.lblTrfDateError.Location = new System.Drawing.Point(327, 0);
             this.lblTrfDateError.Name = "lblTrfDateError";
-            this.lblTrfDateError.Size = new System.Drawing.Size(18, 20);
+            this.lblTrfDateError.Size = new System.Drawing.Size(13, 20);
             this.lblTrfDateError.TabIndex = 74;
             this.lblTrfDateError.Text = "*";
             this.lblTrfDateError.Click += new System.EventHandler(this.label8_Click);
@@ -445,7 +446,7 @@
             // 
             this.lblQuantityError.AutoSize = true;
             this.lblQuantityError.ForeColor = System.Drawing.Color.Red;
-            this.lblQuantityError.Location = new System.Drawing.Point(88, 0);
+            this.lblQuantityError.Location = new System.Drawing.Point(86, 0);
             this.lblQuantityError.Name = "lblQuantityError";
             this.lblQuantityError.Size = new System.Drawing.Size(18, 20);
             this.lblQuantityError.TabIndex = 79;
@@ -455,7 +456,7 @@
             // 
             this.lblUnitError.AutoSize = true;
             this.lblUnitError.ForeColor = System.Drawing.Color.Red;
-            this.lblUnitError.Location = new System.Drawing.Point(264, 0);
+            this.lblUnitError.Location = new System.Drawing.Point(260, 0);
             this.lblUnitError.Name = "lblUnitError";
             this.lblUnitError.Size = new System.Drawing.Size(18, 20);
             this.lblUnitError.TabIndex = 80;
@@ -614,7 +615,7 @@
             this.btnIN.Location = new System.Drawing.Point(2, 2);
             this.btnIN.Margin = new System.Windows.Forms.Padding(2);
             this.btnIN.Name = "btnIN";
-            this.btnIN.Size = new System.Drawing.Size(121, 52);
+            this.btnIN.Size = new System.Drawing.Size(119, 52);
             this.btnIN.TabIndex = 108;
             this.btnIN.Text = "IN";
             this.btnIN.UseVisualStyleBackColor = false;
@@ -626,7 +627,7 @@
             this.btnOUT.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOUT.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOUT.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.btnOUT.Location = new System.Drawing.Point(127, 2);
+            this.btnOUT.Location = new System.Drawing.Point(125, 2);
             this.btnOUT.Margin = new System.Windows.Forms.Padding(2);
             this.btnOUT.Name = "btnOUT";
             this.btnOUT.Size = new System.Drawing.Size(122, 52);
@@ -641,7 +642,7 @@
             this.btnSwitch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSwitch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSwitch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.btnSwitch.Location = new System.Drawing.Point(257, 2);
+            this.btnSwitch.Location = new System.Drawing.Point(253, 2);
             this.btnSwitch.Margin = new System.Windows.Forms.Padding(2);
             this.btnSwitch.Name = "btnSwitch";
             this.btnSwitch.Size = new System.Drawing.Size(122, 52);
@@ -653,11 +654,13 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnCount = 5;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.71963F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.28037F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 114F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 19F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 82F));
+            this.tableLayoutPanel1.Controls.Add(this.lblPartCodeReset, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblCategoryError, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label7, 2, 0);
@@ -668,6 +671,21 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(426, 24);
             this.tableLayoutPanel1.TabIndex = 111;
+            // 
+            // lblPartCodeReset
+            // 
+            this.lblPartCodeReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblPartCodeReset.AutoSize = true;
+            this.lblPartCodeReset.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblPartCodeReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPartCodeReset.ForeColor = System.Drawing.Color.Blue;
+            this.lblPartCodeReset.Location = new System.Drawing.Point(370, 5);
+            this.lblPartCodeReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPartCodeReset.Name = "lblPartCodeReset";
+            this.lblPartCodeReset.Size = new System.Drawing.Size(52, 19);
+            this.lblPartCodeReset.TabIndex = 149;
+            this.lblPartCodeReset.Text = "TODAY";
+            this.lblPartCodeReset.Click += new System.EventHandler(this.lblPartCodeReset_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -723,7 +741,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.18033F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.81967F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 170F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 174F));
             this.tableLayoutPanel5.Controls.Add(this.btnIN, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnOUT, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSwitch, 2, 0);
@@ -800,7 +818,7 @@
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.44954F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.55046F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 46F));
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 164F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 168F));
             this.tableLayoutPanel10.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblQuantityError, 1, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblUnit, 2, 0);
@@ -1004,5 +1022,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
+        private System.Windows.Forms.Label lblPartCodeReset;
     }
 }

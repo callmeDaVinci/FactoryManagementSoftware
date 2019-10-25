@@ -37,17 +37,17 @@
             this.gbJoin = new System.Windows.Forms.GroupBox();
             this.txtMin = new System.Windows.Forms.TextBox();
             this.txtMax = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtQty = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.lblMin = new System.Windows.Forms.Label();
+            this.lblMax = new System.Windows.Forms.Label();
+            this.txtChildQty = new System.Windows.Forms.TextBox();
+            this.lblChildQty = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtMatUseQty = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblMatUseQty = new System.Windows.Forms.Label();
+            this.lblChildCat = new System.Windows.Forms.Label();
             this.cmbChildCat = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblChildCode = new System.Windows.Forms.Label();
+            this.lblChildName = new System.Windows.Forms.Label();
             this.cmbChildName = new System.Windows.Forms.ComboBox();
             this.cmbChildCode = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -64,12 +64,12 @@
             this.txtFac = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.cmbPlanID = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lblPlanID = new System.Windows.Forms.Label();
+            this.lblParentCat = new System.Windows.Forms.Label();
             this.cmbParentCat = new System.Windows.Forms.ComboBox();
             this.cmbParentCode = new System.Windows.Forms.ComboBox();
-            this.lblItemCode = new System.Windows.Forms.Label();
-            this.lblItemName = new System.Windows.Forms.Label();
+            this.lblParentCode = new System.Windows.Forms.Label();
+            this.lblParentName = new System.Windows.Forms.Label();
             this.cmbParentName = new System.Windows.Forms.ComboBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -82,6 +82,9 @@
             this.errorProvider6 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider7 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider8 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProvider9 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProvider10 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProvider11 = new System.Windows.Forms.ErrorProvider(this.components);
             this.gbTest.SuspendLayout();
             this.gbJoin.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -94,6 +97,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider11)).BeginInit();
             this.SuspendLayout();
             // 
             // gbTest
@@ -141,6 +147,7 @@
             this.txtTestChildQty.TabIndex = 81;
             this.txtTestChildQty.Text = "1";
             this.txtTestChildQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTestChildQty.TextChanged += new System.EventHandler(this.txtTestChildQty_TextChanged);
             // 
             // txtTestParentQty
             // 
@@ -151,15 +158,16 @@
             this.txtTestParentQty.TabIndex = 72;
             this.txtTestParentQty.Text = "1";
             this.txtTestParentQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTestParentQty.TextChanged += new System.EventHandler(this.txtTestParentQty_TextChanged);
             // 
             // gbJoin
             // 
             this.gbJoin.Controls.Add(this.txtMin);
             this.gbJoin.Controls.Add(this.txtMax);
-            this.gbJoin.Controls.Add(this.label6);
-            this.gbJoin.Controls.Add(this.label2);
-            this.gbJoin.Controls.Add(this.txtQty);
-            this.gbJoin.Controls.Add(this.label7);
+            this.gbJoin.Controls.Add(this.lblMin);
+            this.gbJoin.Controls.Add(this.lblMax);
+            this.gbJoin.Controls.Add(this.txtChildQty);
+            this.gbJoin.Controls.Add(this.lblChildQty);
             this.gbJoin.Enabled = false;
             this.gbJoin.Location = new System.Drawing.Point(12, 489);
             this.gbJoin.Name = "gbJoin";
@@ -194,56 +202,57 @@
             this.txtMax.TextChanged += new System.EventHandler(this.txtMax_TextChanged);
             this.txtMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMax_KeyPress);
             // 
-            // label6
+            // lblMin
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(219, 33);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(125, 19);
-            this.label6.TabIndex = 75;
-            this.label6.Text = "PARENT QTY (MIN)";
+            this.lblMin.AutoSize = true;
+            this.lblMin.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMin.Location = new System.Drawing.Point(219, 33);
+            this.lblMin.Name = "lblMin";
+            this.lblMin.Size = new System.Drawing.Size(125, 19);
+            this.lblMin.TabIndex = 75;
+            this.lblMin.Text = "PARENT QTY (MIN)";
             // 
-            // label2
+            // lblMax
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 33);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(128, 19);
-            this.label2.TabIndex = 73;
-            this.label2.Text = "PARENT QTY (MAX)";
+            this.lblMax.AutoSize = true;
+            this.lblMax.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMax.Location = new System.Drawing.Point(6, 33);
+            this.lblMax.Name = "lblMax";
+            this.lblMax.Size = new System.Drawing.Size(128, 19);
+            this.lblMax.TabIndex = 73;
+            this.lblMax.Text = "PARENT QTY (MAX)";
             // 
-            // txtQty
+            // txtChildQty
             // 
-            this.txtQty.BackColor = System.Drawing.Color.White;
-            this.txtQty.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtQty.Location = new System.Drawing.Point(457, 55);
-            this.txtQty.Name = "txtQty";
-            this.txtQty.Size = new System.Drawing.Size(414, 36);
-            this.txtQty.TabIndex = 72;
-            this.txtQty.Text = "1";
-            this.txtQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtQty_KeyPress);
+            this.txtChildQty.BackColor = System.Drawing.Color.White;
+            this.txtChildQty.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtChildQty.Location = new System.Drawing.Point(457, 55);
+            this.txtChildQty.Name = "txtChildQty";
+            this.txtChildQty.Size = new System.Drawing.Size(414, 36);
+            this.txtChildQty.TabIndex = 72;
+            this.txtChildQty.Text = "1";
+            this.txtChildQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtChildQty.TextChanged += new System.EventHandler(this.txtQty_TextChanged);
+            this.txtChildQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtQty_KeyPress);
             // 
-            // label7
+            // lblChildQty
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(457, 33);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(78, 19);
-            this.label7.TabIndex = 70;
-            this.label7.Text = "CHILD QTY";
+            this.lblChildQty.AutoSize = true;
+            this.lblChildQty.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblChildQty.Location = new System.Drawing.Point(457, 33);
+            this.lblChildQty.Name = "lblChildQty";
+            this.lblChildQty.Size = new System.Drawing.Size(78, 19);
+            this.lblChildQty.TabIndex = 70;
+            this.lblChildQty.Text = "CHILD QTY";
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.txtMatUseQty);
-            this.groupBox2.Controls.Add(this.label15);
-            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.lblMatUseQty);
+            this.groupBox2.Controls.Add(this.lblChildCat);
             this.groupBox2.Controls.Add(this.cmbChildCat);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.lblChildCode);
+            this.groupBox2.Controls.Add(this.lblChildName);
             this.groupBox2.Controls.Add(this.cmbChildName);
             this.groupBox2.Controls.Add(this.cmbChildCode);
             this.groupBox2.Location = new System.Drawing.Point(463, 12);
@@ -263,27 +272,28 @@
             this.txtMatUseQty.TabIndex = 81;
             this.txtMatUseQty.Text = "1";
             this.txtMatUseQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMatUseQty.TextChanged += new System.EventHandler(this.txtMatUseQty_TextChanged);
             this.txtMatUseQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox7_KeyPress);
             // 
-            // label15
+            // lblMatUseQty
             // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(2, 279);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(245, 19);
-            this.label15.TabIndex = 80;
-            this.label15.Text = "*MATERIAL USE QUANTITY (KG/PIECE)";
+            this.lblMatUseQty.AutoSize = true;
+            this.lblMatUseQty.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMatUseQty.Location = new System.Drawing.Point(2, 279);
+            this.lblMatUseQty.Name = "lblMatUseQty";
+            this.lblMatUseQty.Size = new System.Drawing.Size(245, 19);
+            this.lblMatUseQty.TabIndex = 80;
+            this.lblMatUseQty.Text = "*MATERIAL USE QUANTITY (KG/PIECE)";
             // 
-            // label1
+            // lblChildCat
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(2, 42);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 19);
-            this.label1.TabIndex = 64;
-            this.label1.Text = "*CATEGORY";
+            this.lblChildCat.AutoSize = true;
+            this.lblChildCat.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblChildCat.Location = new System.Drawing.Point(2, 42);
+            this.lblChildCat.Name = "lblChildCat";
+            this.lblChildCat.Size = new System.Drawing.Size(83, 19);
+            this.lblChildCat.TabIndex = 64;
+            this.lblChildCat.Text = "*CATEGORY";
             // 
             // cmbChildCat
             // 
@@ -298,25 +308,25 @@
             this.cmbChildCat.TabIndex = 65;
             this.cmbChildCat.SelectedIndexChanged += new System.EventHandler(this.cmbChildCat_SelectedIndexChanged);
             // 
-            // label3
+            // lblChildCode
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(2, 202);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(52, 19);
-            this.label3.TabIndex = 62;
-            this.label3.Text = "*CODE";
+            this.lblChildCode.AutoSize = true;
+            this.lblChildCode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblChildCode.Location = new System.Drawing.Point(2, 202);
+            this.lblChildCode.Name = "lblChildCode";
+            this.lblChildCode.Size = new System.Drawing.Size(52, 19);
+            this.lblChildCode.TabIndex = 62;
+            this.lblChildCode.Text = "*CODE";
             // 
-            // label5
+            // lblChildName
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(2, 122);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(54, 19);
-            this.label5.TabIndex = 63;
-            this.label5.Text = "*NAME";
+            this.lblChildName.AutoSize = true;
+            this.lblChildName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblChildName.Location = new System.Drawing.Point(2, 122);
+            this.lblChildName.Name = "lblChildName";
+            this.lblChildName.Size = new System.Drawing.Size(54, 19);
+            this.lblChildName.TabIndex = 63;
+            this.lblChildName.Text = "*NAME";
             // 
             // cmbChildName
             // 
@@ -360,12 +370,12 @@
             this.groupBox1.Controls.Add(this.txtFac);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.cmbPlanID);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.lblPlanID);
+            this.groupBox1.Controls.Add(this.lblParentCat);
             this.groupBox1.Controls.Add(this.cmbParentCat);
             this.groupBox1.Controls.Add(this.cmbParentCode);
-            this.groupBox1.Controls.Add(this.lblItemCode);
-            this.groupBox1.Controls.Add(this.lblItemName);
+            this.groupBox1.Controls.Add(this.lblParentCode);
+            this.groupBox1.Controls.Add(this.lblParentName);
             this.groupBox1.Controls.Add(this.cmbParentName);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
@@ -509,26 +519,27 @@
             this.cmbPlanID.Name = "cmbPlanID";
             this.cmbPlanID.Size = new System.Drawing.Size(79, 31);
             this.cmbPlanID.TabIndex = 63;
+            this.cmbPlanID.SelectedIndexChanged += new System.EventHandler(this.cmbPlanID_SelectedIndexChanged);
             // 
-            // label8
+            // lblPlanID
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(6, 282);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(67, 19);
-            this.label8.TabIndex = 62;
-            this.label8.Text = "*PLAN ID";
+            this.lblPlanID.AutoSize = true;
+            this.lblPlanID.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPlanID.Location = new System.Drawing.Point(6, 282);
+            this.lblPlanID.Name = "lblPlanID";
+            this.lblPlanID.Size = new System.Drawing.Size(67, 19);
+            this.lblPlanID.TabIndex = 62;
+            this.lblPlanID.Text = "*PLAN ID";
             // 
-            // label4
+            // lblParentCat
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(6, 42);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(83, 19);
-            this.label4.TabIndex = 56;
-            this.label4.Text = "*CATEGORY";
+            this.lblParentCat.AutoSize = true;
+            this.lblParentCat.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblParentCat.Location = new System.Drawing.Point(6, 42);
+            this.lblParentCat.Name = "lblParentCat";
+            this.lblParentCat.Size = new System.Drawing.Size(83, 19);
+            this.lblParentCat.TabIndex = 56;
+            this.lblParentCat.Text = "*CATEGORY";
             // 
             // cmbParentCat
             // 
@@ -559,25 +570,25 @@
             this.cmbParentCode.TabIndex = 61;
             this.cmbParentCode.SelectedIndexChanged += new System.EventHandler(this.cmbParentCode_SelectedIndexChanged);
             // 
-            // lblItemCode
+            // lblParentCode
             // 
-            this.lblItemCode.AutoSize = true;
-            this.lblItemCode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemCode.Location = new System.Drawing.Point(6, 202);
-            this.lblItemCode.Name = "lblItemCode";
-            this.lblItemCode.Size = new System.Drawing.Size(52, 19);
-            this.lblItemCode.TabIndex = 42;
-            this.lblItemCode.Text = "*CODE";
+            this.lblParentCode.AutoSize = true;
+            this.lblParentCode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblParentCode.Location = new System.Drawing.Point(6, 202);
+            this.lblParentCode.Name = "lblParentCode";
+            this.lblParentCode.Size = new System.Drawing.Size(52, 19);
+            this.lblParentCode.TabIndex = 42;
+            this.lblParentCode.Text = "*CODE";
             // 
-            // lblItemName
+            // lblParentName
             // 
-            this.lblItemName.AutoSize = true;
-            this.lblItemName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemName.Location = new System.Drawing.Point(6, 122);
-            this.lblItemName.Name = "lblItemName";
-            this.lblItemName.Size = new System.Drawing.Size(54, 19);
-            this.lblItemName.TabIndex = 44;
-            this.lblItemName.Text = "*NAME";
+            this.lblParentName.AutoSize = true;
+            this.lblParentName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblParentName.Location = new System.Drawing.Point(6, 122);
+            this.lblParentName.Name = "lblParentName";
+            this.lblParentName.Size = new System.Drawing.Size(54, 19);
+            this.lblParentName.TabIndex = 44;
+            this.lblParentName.Text = "*NAME";
             // 
             // cmbParentName
             // 
@@ -665,10 +676,23 @@
             // 
             this.errorProvider8.ContainerControl = this;
             // 
+            // errorProvider9
+            // 
+            this.errorProvider9.ContainerControl = this;
+            // 
+            // errorProvider10
+            // 
+            this.errorProvider10.ContainerControl = this;
+            // 
+            // errorProvider11
+            // 
+            this.errorProvider11.ContainerControl = this;
+            // 
             // frmMatAddOrEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(917, 839);
             this.Controls.Add(this.cbEditJoin);
@@ -699,6 +723,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider11)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -714,23 +741,23 @@
         private System.Windows.Forms.GroupBox gbJoin;
         private System.Windows.Forms.TextBox txtMin;
         private System.Windows.Forms.TextBox txtMax;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtQty;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lblMin;
+        private System.Windows.Forms.Label lblMax;
+        private System.Windows.Forms.TextBox txtChildQty;
+        private System.Windows.Forms.Label lblChildQty;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblChildCat;
         private System.Windows.Forms.ComboBox cmbChildCat;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblChildCode;
+        private System.Windows.Forms.Label lblChildName;
         private System.Windows.Forms.ComboBox cmbChildName;
         private System.Windows.Forms.ComboBox cmbChildCode;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblParentCat;
         private System.Windows.Forms.ComboBox cmbParentCat;
         private System.Windows.Forms.ComboBox cmbParentCode;
-        private System.Windows.Forms.Label lblItemCode;
-        private System.Windows.Forms.Label lblItemName;
+        private System.Windows.Forms.Label lblParentCode;
+        private System.Windows.Forms.Label lblParentName;
         private System.Windows.Forms.ComboBox cmbParentName;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSave;
@@ -747,10 +774,10 @@
         private System.Windows.Forms.TextBox txtFac;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox cmbPlanID;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblPlanID;
         private System.Windows.Forms.CheckBox cbEditJoin;
         private System.Windows.Forms.TextBox txtMatUseQty;
-        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label lblMatUseQty;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.ErrorProvider errorProvider3;
@@ -759,5 +786,8 @@
         private System.Windows.Forms.ErrorProvider errorProvider6;
         private System.Windows.Forms.ErrorProvider errorProvider7;
         private System.Windows.Forms.ErrorProvider errorProvider8;
+        private System.Windows.Forms.ErrorProvider errorProvider9;
+        private System.Windows.Forms.ErrorProvider errorProvider10;
+        private System.Windows.Forms.ErrorProvider errorProvider11;
     }
 }

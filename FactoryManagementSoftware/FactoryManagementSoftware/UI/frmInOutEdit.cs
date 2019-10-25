@@ -645,10 +645,15 @@ namespace FactoryManagementSoftware.UI
 
                     int fullQty = ParentQty / joinMax;
 
-                    int notFullQty = ParentQty % joinMax / JoinMin;
+                    int notFullQty = ParentQty % joinMax;
 
-                    childQty = (fullQty + notFullQty) * joinQty;
+                    childQty = fullQty * joinQty;
 
+                    if (notFullQty >= JoinMin)
+                    {
+                        childQty += joinQty;
+
+                    }
                     //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
                     childItemCode = Join["join_child_code"].ToString();
                     DataTable dtItem = dalItem.codeSearch(childItemCode);
@@ -898,9 +903,14 @@ namespace FactoryManagementSoftware.UI
 
                     int fullQty = ParentQty / joinMax;
 
-                    int notFullQty = ParentQty % joinMax / JoinMin;
+                    int notFullQty = ParentQty % joinMax;
 
-                    childQty = (fullQty + notFullQty) * joinQty;
+                    childQty = fullQty * joinQty;
+
+                    if(notFullQty >= JoinMin)
+                    {
+                        childQty += joinQty;
+                    }
 
                     //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
 
@@ -2053,6 +2063,11 @@ namespace FactoryManagementSoftware.UI
         private void cmbTrfFrom_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void lblPartCodeReset_Click(object sender, EventArgs e)
+        {
+            dtpTrfDate.Text = DateTime.Now.Date.ToShortDateString();
         }
     }
 }

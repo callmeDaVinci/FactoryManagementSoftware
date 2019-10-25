@@ -494,6 +494,12 @@ namespace FactoryManagementSoftware.Module
             return date;
         }
 
+        public int GetPermissionLevel(int user)
+        {
+            userDAL dalUser = new userDAL();
+            return dalUser.getPermissionLevel(user);
+        }
+
         public DateTime GetEndDate(int month, int year)
         {
             DataTable dt = dalPmmaDate.Select();
@@ -543,8 +549,20 @@ namespace FactoryManagementSoftware.Module
             DataTable dtItemCat = dalItemCat.Select();
             DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
             distinctTable.DefaultView.Sort = "item_cat_name ASC";
+
+            distinctTable.AcceptChanges();
+            foreach (DataRow row in distinctTable.Rows)
+            {
+                if (row["item_cat_name"].ToString().Equals("Mould"))
+                {
+                    row.Delete();
+                }
+            }
+            distinctTable.AcceptChanges();
+
             cmb.DataSource = distinctTable;
             cmb.DisplayMember = "item_cat_name";
+            cmb.SelectedIndex = -1;
         }
 
         public void loadFactory(ComboBox cmb)
@@ -863,6 +881,48 @@ namespace FactoryManagementSoftware.Module
             }
 
             return itemCat;
+        }
+
+        public DataRow getItemForecastDataRow(DataTable dt, string itemCode, int year, int month)
+        {
+            DataRow forecast = null;
+            itemForecastDAL dalItemForecast = new itemForecastDAL();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string code = row[dalItemForecast.ItemCode].ToString();
+                int yearData = Convert.ToInt32(row[dalItemForecast.ForecastYear].ToString());
+                int monthData = Convert.ToInt32(row[dalItemForecast.ForecastMonth].ToString());
+                bool itemMatch = code == itemCode && yearData == year && monthData == month;
+
+                if (itemMatch)
+                {
+                    return row;
+                }
+            }
+
+            return forecast;
+        }
+
+        public float getItemForecast(DataTable dt, string itemCode, int year, int month)
+        {
+            float forecast = 0;
+            itemForecastDAL dalItemForecast = new itemForecastDAL();
+
+            foreach(DataRow row in dt.Rows)
+            {
+                string code = row[dalItemForecast.ItemCode].ToString();
+                int yearData = Convert.ToInt32(row[dalItemForecast.ForecastYear].ToString());
+                int monthData = Convert.ToInt32(row[dalItemForecast.ForecastMonth].ToString());
+                bool itemMatch = code == itemCode && yearData == year && monthData == month;
+
+                if(itemMatch)
+                {
+                    return float.TryParse(row[dalItemForecast.ForecastQty].ToString(), out float i) ? Convert.ToSingle(row[dalItemForecast.ForecastQty].ToString()) : 0;
+                }
+            }
+
+            return forecast;
         }
 
         public int getFactoryID(string factoryName)
