@@ -38,7 +38,7 @@ namespace FactoryManagementSoftware.DAL
         public string ItemProPWShot { get; } = "item_pro_pw_shot";
         public string ItemProRWShot { get; } = "item_pro_rw_shot";
 
-        public string ItemCapacity { get; } = "item_capacity";
+        public string ItemCavity { get; } = "item_capacity";
         public string ItemProCooling { get; } = "item_pro_cooling";
 
         public string ItemCat { get; } = "item_cat";
@@ -260,7 +260,7 @@ namespace FactoryManagementSoftware.DAL
                             + ItemQuoCT + ","
                             + ItemProCTFrom + ","
                             + ItemProCTTo + ","
-                            + ItemCapacity + ","
+                            + ItemCavity + ","
                             + ItemQuoPWPcs + ","
                             + ItemQuoRWPcs + ","
                             + ItemProPWPcs + ","
@@ -446,7 +446,7 @@ namespace FactoryManagementSoftware.DAL
                             + ItemQuoCT + "=@item_quo_ct,"
                             + ItemProCTFrom + "=@item_pro_ct_from,"
                             + ItemProCTTo + "=@item_pro_ct_to,"
-                            + ItemCapacity + "=@item_capacity,"
+                            + ItemCavity + "=@item_capacity,"
                             + ItemQuoPWPcs + "=@item_quo_pw_pcs,"
                             + ItemQuoRWPcs + "=@item_quo_rw_pcs,"
                             + ItemProPWPcs + "=@item_pro_pw_pcs,"
@@ -528,7 +528,7 @@ namespace FactoryManagementSoftware.DAL
                             + ItemProTon + "=@item_pro_ton,"
                             + ItemQuoCT + "=@item_quo_ct,"
                             + ItemProCTTo + "=@item_pro_ct_to,"
-                            + ItemCapacity + "=@item_capacity,"
+                            + ItemCavity + "=@item_capacity,"
                             + ItemProPWShot + "=@item_pro_pw_shot,"
                             + ItemProRWShot + "=@item_pro_rw_shot,"
                             + ItemUpdateDate + "=@item_updtd_date,"
@@ -996,7 +996,7 @@ namespace FactoryManagementSoftware.DAL
                     {
                         partWeight = row[ItemProPWShot] == DBNull.Value ? "" : row[ItemProPWShot].ToString();
                         runnerWeight = row[ItemProRWShot] == DBNull.Value ? "" : row[ItemProRWShot].ToString();
-                        cavity = row[ItemCapacity] == DBNull.Value ? "" : row[ItemCapacity].ToString();
+                        cavity = row[ItemCavity] == DBNull.Value ? "" : row[ItemCavity].ToString();
                         proCT = row[ItemProCTTo] == DBNull.Value ? "" : row[ItemProCTTo].ToString();
                         quoCT = row[ItemQuoCT] == DBNull.Value ? "" : row[ItemQuoCT].ToString();
                         

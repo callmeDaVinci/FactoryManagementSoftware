@@ -93,6 +93,7 @@
     <Compile Include="BLL\CheckChildBLL.cs" />
     <Compile Include="BLL\childTrfHistBLL.cs" />
     <Compile Include="BLL\custBLL.cs" />
+    <Compile Include="BLL\dataTrfBLL.cs" />
     <Compile Include="BLL\facBLL.cs" />
     <Compile Include="BLL\forecastBLL.cs" />
     <Compile Include="BLL\habitBLL.cs" />

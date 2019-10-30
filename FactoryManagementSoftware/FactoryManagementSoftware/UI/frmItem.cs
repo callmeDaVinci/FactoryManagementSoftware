@@ -271,7 +271,7 @@ namespace FactoryManagementSoftware
                     uItem.item_quo_ct = tool.Int_TryParse(item[dalItem.ItemQuoCT].ToString());
                     uItem.item_pro_ct_from = tool.Int_TryParse(item[dalItem.ItemProCTFrom].ToString());
                     uItem.item_pro_ct_to = tool.Int_TryParse(item[dalItem.ItemProCTTo].ToString());
-                    uItem.item_capacity = tool.Int_TryParse(item[dalItem.ItemCapacity].ToString());
+                    uItem.item_capacity = tool.Int_TryParse(item[dalItem.ItemCavity].ToString());
 
                     uItem.item_quo_pw_pcs = tool.Float_TryParse(item[dalItem.ItemQuoPWPcs].ToString());
                     uItem.item_quo_rw_pcs = tool.Float_TryParse(item[dalItem.ItemQuoRWPcs].ToString());
@@ -456,7 +456,7 @@ namespace FactoryManagementSoftware
                 dgv.Rows[n].Cells[dalItem.ItemQuoRWPcs].Value = item[dalItem.ItemQuoRWPcs].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemProPWShot].Value = item[dalItem.ItemProPWShot].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemProRWShot].Value = item[dalItem.ItemProRWShot].ToString();
-                dgv.Rows[n].Cells[dalItem.ItemCapacity].Value = item[dalItem.ItemCapacity].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemCavity].Value = item[dalItem.ItemCavity].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemProCooling].Value = item[dalItem.ItemProCooling].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemProPWPcs].Value = partf.ToString("0.00");
                 dgv.Rows[n].Cells[dalItem.ItemProRWPcs].Value = runnerf.ToString("0.00");
@@ -506,7 +506,7 @@ namespace FactoryManagementSoftware
                 dgv.Rows[n].Cells[dalItem.ItemQuoRWPcs].Value = item[dalItem.ItemQuoRWPcs].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemProPWShot].Value = item[dalItem.ItemProPWShot].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemProRWShot].Value = item[dalItem.ItemProRWShot].ToString();
-                dgv.Rows[n].Cells[dalItem.ItemCapacity].Value = item[dalItem.ItemCapacity].ToString();
+                dgv.Rows[n].Cells[dalItem.ItemCavity].Value = item[dalItem.ItemCavity].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemProCooling].Value = item[dalItem.ItemProCooling].ToString();
                 dgv.Rows[n].Cells[dalItem.ItemProPWPcs].Value = partf.ToString("0.00");
                 dgv.Rows[n].Cells[dalItem.ItemProRWPcs].Value = runnerf.ToString("0.00");
@@ -589,7 +589,7 @@ namespace FactoryManagementSoftware
             tool.AddTextBoxColumns(dgv, "Pro RW(pcs)", dalItem.ItemProRWPcs, DisplayedCellsExceptHeader, minWidth + offSet);
             tool.AddTextBoxColumns(dgv, "Pro PW(shot)", dalItem.ItemProPWShot, DisplayedCellsExceptHeader, minWidth + offSet);
             tool.AddTextBoxColumns(dgv, "Pro RW(shot)", dalItem.ItemProRWShot, DisplayedCellsExceptHeader, minWidth + offSet);
-            tool.AddTextBoxColumns(dgv, "C", dalItem.ItemCapacity, DisplayedCellsExceptHeader, 30);
+            tool.AddTextBoxColumns(dgv, "C", dalItem.ItemCavity, DisplayedCellsExceptHeader, 30);
             tool.AddTextBoxColumns(dgv, "Pro CL", dalItem.ItemProCooling, DisplayedCellsExceptHeader, minWidth);
         }
 

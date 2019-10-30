@@ -311,7 +311,7 @@ namespace FactoryManagementSoftware.UI
 
                         txtPartWeight.Text = partWeight.ToString("0.##");
                         txtRunnerWeight.Text = runnerWeight.ToString("0.##");
-                        txtCavity.Text = row[dalItem.ItemCapacity] == DBNull.Value ? "" : row[dalItem.ItemCapacity].ToString();
+                        txtCavity.Text = row[dalItem.ItemCavity] == DBNull.Value ? "" : row[dalItem.ItemCavity].ToString();
                         txtProCT.Text = row[dalItem.ItemProCTTo] == DBNull.Value ? "" : row[dalItem.ItemProCTTo].ToString();
                         txtQuoCT.Text = row[dalItem.ItemQuoCT] == DBNull.Value ? "" : row[dalItem.ItemQuoCT].ToString();
 

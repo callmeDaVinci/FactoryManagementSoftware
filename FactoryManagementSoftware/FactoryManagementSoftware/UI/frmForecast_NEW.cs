@@ -584,10 +584,15 @@ namespace FactoryManagementSoftware.UI
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if(Validation())
+            if(cmbCustomer.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a customer.");
+            }
+            else if (Validation())
             {
                 loadForecastListAndComboBox();
             }
+           
         }
 
         private void lblYearToReset_Click(object sender, EventArgs e)

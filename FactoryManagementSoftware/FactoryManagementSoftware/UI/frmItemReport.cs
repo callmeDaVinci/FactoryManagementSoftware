@@ -547,7 +547,7 @@ namespace FactoryManagementSoftware.UI
 
             dtStock_row[headerQuoTon] = item[dalItem.ItemQuoTon] == DBNull.Value? 0 : Convert.ToInt32(item[dalItem.ItemQuoTon]);
             dtStock_row[headerProTon] = item[dalItem.ItemProTon] == DBNull.Value ? 0 : Convert.ToInt32(item[dalItem.ItemProTon]);
-            dtStock_row[headerCavity] = item[dalItem.ItemCapacity] == DBNull.Value ? 0 : Convert.ToInt32(item[dalItem.ItemCapacity]);
+            dtStock_row[headerCavity] = item[dalItem.ItemCavity] == DBNull.Value ? 0 : Convert.ToInt32(item[dalItem.ItemCavity]);
 
             int ct = item[dalItem.ItemProCTTo] == DBNull.Value? item[dalItem.ItemProCTFrom] == DBNull.Value ? 
                                                     item[dalItem.ItemQuoCT] == DBNull.Value ? 

@@ -40,7 +40,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = @"SELECT * FROM tbl_join ";
+                String sql = @"SELECT * FROM tbl_join";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
