@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>\\SAFETY06-MURUGA\StockAssistant\%28INSTALLATION%29\FOR USER\</PublishUrl>
+    <PublishUrl>\\SAFETY06-MURUGA\StockAssistant\%28INSTALLATION%29\FOR ADMIN\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>70</ApplicationRevision>
+    <ApplicationRevision>80</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -194,6 +194,12 @@
     <Compile Include="UI\frmForecast_NEW.Designer.cs">
       <DependentUpon>frmForecast_NEW.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmInOutReport_NEW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmInOutReport_NEW.Designer.cs">
+      <DependentUpon>frmInOutReport_NEW.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmItemReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -247,6 +253,12 @@
     </Compile>
     <Compile Include="UI\frmMatCheckList.Designer.cs">
       <DependentUpon>frmMatCheckList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmMaterialUsedReport_NEW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMaterialUsedReport_NEW.Designer.cs">
+      <DependentUpon>frmMaterialUsedReport_NEW.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmMatListEdit.cs">
       <SubType>Form</SubType>
@@ -574,6 +586,9 @@
     <EmbeddedResource Include="UI\frmForecast_NEW.resx">
       <DependentUpon>frmForecast_NEW.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmInOutReport_NEW.resx">
+      <DependentUpon>frmInOutReport_NEW.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItemReport.resx">
       <DependentUpon>frmItemReport.cs</DependentUpon>
     </EmbeddedResource>
@@ -600,6 +615,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMatCheckList.resx">
       <DependentUpon>frmMatCheckList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmMaterialUsedReport_NEW.resx">
+      <DependentUpon>frmMaterialUsedReport_NEW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMatListEdit.resx">
       <DependentUpon>frmMatListEdit.cs</DependentUpon>

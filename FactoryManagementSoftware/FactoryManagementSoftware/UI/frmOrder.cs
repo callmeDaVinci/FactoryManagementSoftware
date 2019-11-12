@@ -28,7 +28,7 @@ namespace FactoryManagementSoftware.UI
             {
                 btnOrder.Hide();
             }
-            tool.loadMaterialAndAllToComboBox(cmbType);
+            tool.LoadMaterialAndAllToComboBox(cmbType);
             AlertHideOrShow(AlertHiden);
         }
 
@@ -88,6 +88,9 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region create class object (database)
+        itemForecastDAL dalItemForecast = new itemForecastDAL();
+        itemForecastBLL uItemForecast = new itemForecastBLL();
+
         custBLL uCust = new custBLL();
         custDAL dalCust = new custDAL();
 
@@ -651,6 +654,9 @@ namespace FactoryManagementSoftware.UI
         {
             //DataTable dt = dalItemCust.Select();//load all customer's item list
 
+
+            DataTable dt_ItemForecast = dalItemForecast.Select();
+
             DataTable dt = dalItemCust.custSearch(tool.getCustName(1));
             dt = RemoveDuplicates(dt);
             dt.DefaultView.Sort = "cust_name ASC, item_name ASC, item_code ASC";
@@ -687,10 +693,15 @@ namespace FactoryManagementSoftware.UI
                     MB = item["item_mb"] == DBNull.Value ? "NULL" : item["item_mb"].ToString();
                     mbRate = item["item_mb_rate"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_mb_rate"].ToString());
                     readyStock = item["item_qty"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_qty"].ToString());
-                    forecast_1 = item["forecast_one"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_one"]);
-                    forecast_2 = item["forecast_two"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_two"]);
-                    forecast_3 = item["forecast_three"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_three"]);
-                    forecast_4 = item["forecast_four"] == DBNull.Value? 0 : Convert.ToInt32(item["forecast_four"]);
+                    forecast_1 = GetForecastQty(dt_ItemForecast, itemCode, 1);
+                    forecast_2 = GetForecastQty(dt_ItemForecast, itemCode, 2);
+                    forecast_3 = GetForecastQty(dt_ItemForecast, itemCode, 3);
+                    forecast_4 = GetForecastQty(dt_ItemForecast, itemCode, 4);
+
+                    //forecast_1 = item["forecast_one"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_one"]);
+                    //forecast_2 = item["forecast_two"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_two"]);
+                    //forecast_3 = item["forecast_three"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_three"]);
+                    //forecast_4 = item["forecast_four"] == DBNull.Value? 0 : Convert.ToInt32(item["forecast_four"]);
                     itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
                     itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
                     wastageAllowed = item["item_wastage_allowed"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_wastage_allowed"].ToString());
@@ -881,6 +892,24 @@ namespace FactoryManagementSoftware.UI
             }
 
             return dtMat;
+        }
+
+        private float GetForecastQty(DataTable dt_ItemForecast, string itemCode, int forecastNum)
+        {
+            int month = DateTime.Now.Month;
+            int year = DateTime.Now.Year;
+
+            month += forecastNum - 1;
+
+            if (month > 12)
+            {
+                month -= 12;
+                year++;
+
+            }
+          
+            return tool.getItemForecast(dt_ItemForecast, itemCode, year, month);
+
         }
 
         private void loadOrderAlertData()
@@ -1168,130 +1197,7 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-                #region old way
-                //currentMaterial = item[headerMat].ToString();
-                //if (lastMaterial != null && lastMaterial != currentMaterial)
-                //{
-                //    //readyStock = dalItem.getStockQty(lastMaterial);
-
-                //    balanceOne = readyStock - totalMaterialUsed;
-                //    balanceTwo = readyStock - totalMaterialUsedTwo;
-                //    balanceThree = readyStock - totalMaterialUsedThree;
-
-                //    if (!string.IsNullOrEmpty(lastMaterial))
-                //    {
-                //        dtAlert_row = dtAlert.NewRow();
-                //        dtAlert_row[headerIndex] = index;
-                //        dtAlert_row[headerCode] = lastMaterial;
-                //        dtAlert_row[headerName] = dalItem.getMaterialName(lastMaterial);
-                //        dtAlert_row[headerReadyStock] = readyStock;
-                //        dtAlert_row[headerBalanceOne] = balanceOne;
-                //        dtAlert_row[headerBalanceTwo] = balanceTwo;
-                //        dtAlert_row[headerBalanceThree] = balanceThree;
-                //        dtAlert_row[headerPendingOrder] = 0;
-
-                //        dtAlert.Rows.Add(dtAlert_row);
-                //        index++;
-                //    }
-
-                //    totalMaterialUsed = 0;
-                //    totalMaterialUsedTwo = 0;
-                //    totalMaterialUsedThree = 0;
-                //}
-
-                //lastMaterial = currentMaterial;
-
-                ////readyStock = dalItem.getStockQty(item[headerCode].ToString());
-
-                //itemWeight = (item[headerWeight] == DBNull.Value) ? 0 : Convert.ToSingle(item[headerWeight].ToString());
-                //wastagePercetage = (item[headerWastage] == DBNull.Value) ? 0 : Convert.ToSingle(item[headerWastage].ToString());
-
-
-                //OrderQty = Convert.ToSingle(item[headerBalanceOne].ToString());
-                //OrderQtyTwo = Convert.ToSingle(item[headerBalanceTwo].ToString());
-                //OrderQtyThree = Convert.ToSingle(item[headerBalanceThree].ToString());
-
-                //if (true)//non child part, dalItemCust.checkIfExistinItemCustTable(item[headerCode].ToString())
-                //{
-                //    stillNeed1 = OrderQty;
-
-                //    stillNeed2 = OrderQtyTwo;
-
-                //    stillNeed3 = OrderQtyThree;
-                //}
-                //else//child part
-                //{
-                //    if (Convert.ToSingle(item[headerForecast1].ToString()) >= 0)
-                //    {
-                //        childForecast1 = 0;
-                //    }
-                //    else
-                //    {
-                //        childForecast1 = Convert.ToSingle(item[headerForecast1].ToString());
-                //    }
-
-                //    childShot1 =  Math.Abs(childForecast1);
-
-                //    if (Convert.ToSingle(item[headerForecast2].ToString()) >= 0)
-                //    {
-                //        childForecast2 = 0;
-                //    }
-                //    else
-                //    {
-                //        if (Convert.ToSingle(item[headerForecast1].ToString()) < 0)
-                //        {
-                //            childForecast2 = Convert.ToSingle(item[headerForecast1].ToString()) - Convert.ToSingle(item[headerForecast2].ToString());
-                //        }
-                //        else
-                //        {
-                //            childForecast2 = Convert.ToSingle(item[headerForecast2].ToString());
-                //        }
-                //    }
-
-                //    childShot2 = childShot1 - Math.Abs(childForecast2);
-
-                //    if (Convert.ToSingle(item[headerForecast3].ToString()) >= 0)
-                //    {
-                //        childForecast3 = 0;
-                //    }
-                //    else
-                //    {
-                //        if (Convert.ToSingle(item[headerForecast2].ToString()) < 0)
-                //        {
-                //            childForecast3 = Convert.ToSingle(item[headerForecast2].ToString()) - Convert.ToSingle(item[headerForecast3].ToString());
-                //        }
-                //        else
-                //        {
-                //            childForecast3 = Convert.ToSingle(item[headerForecast3].ToString());
-                //        }
-                //    }
-
-                //    childShot3 = childShot2 - Math.Abs(childForecast3);
-
-                //    stillNeed1 = childShot1;
-
-                //    stillNeed2 = childShot2;
-
-                //    stillNeed3 = childShot3;
-                //}
-
-                //stillNeed1 = tool.stillNeedCheck(stillNeed1);
-                //stillNeed2 = tool.stillNeedCheck(stillNeed2);
-                //stillNeed3 = tool.stillNeedCheck(stillNeed3);
-
-                //materialUsed = stillNeed1 * itemWeight / 1000;
-                //wastageUsed = materialUsed * wastagePercetage;
-                //totalMaterialUsed += materialUsed + wastageUsed;
-
-                //materialUsedTwo = stillNeed2 * itemWeight / 1000;
-                //wastageUsedTwo = materialUsedTwo * wastagePercetage;
-                //totalMaterialUsedTwo += materialUsedTwo + wastageUsedTwo;
-
-                //materialUsedThree = stillNeed3 * itemWeight / 1000;
-                //wastageUsedThree = materialUsedThree * wastagePercetage;
-                //totalMaterialUsedThree += materialUsedThree + wastageUsedThree;
-
-                #endregion
+             
             }
 
             #endregion
@@ -1895,8 +1801,10 @@ namespace FactoryManagementSoftware.UI
         private void btnSearch_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
             loadOrderAlertData();
             dgvOrderAlert.ClearSelection();
+
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 

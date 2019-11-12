@@ -26,31 +26,35 @@ namespace FactoryManagementSoftware.UI
             dtpStart.Value = tool.GetStartDate(month, year);
             dtpEnd.Value = tool.GetEndDate(month, year);
 
-            int currentMonth = Convert.ToInt32(DateTime.Now.Month.ToString("00"));
+            int currentMonth = DateTime.Now.Month;
             string currentMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth);
             string nextMonthName, nextTwoMonthName, nextThreeMonthName;
 
-            if (currentMonth == 12)
+            if (currentMonth + 1 > 12)
             {
-                nextMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+                nextMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 1 - 12);
             }
             else
             {
                 nextMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 1);
             }
 
-            if (currentMonth == 11)
+            if (currentMonth + 2 > 12)
             {
-                nextTwoMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+                nextTwoMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 2 - 12);
             }
             else
             {
                 nextTwoMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 2);
             }
 
-            if (currentMonth == 10)
+            //if (currentMonth == 10)
+            //{
+            //    nextThreeMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+            //}
+            if (currentMonth + 3 > 12)
             {
-                nextThreeMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+                nextThreeMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 3 - 12);
             }
             else
             {

@@ -16,7 +16,7 @@ namespace FactoryManagementSoftware.UI
         public frmNewInOutReport()
         {
             InitializeComponent();
-            tool.loadCustomerAndAllToComboBox(cmbType);
+            tool.LoadCustomerAndAllToComboBox(cmbType);
         }
 
         #region Variable/Object Declare
@@ -1395,7 +1395,7 @@ namespace FactoryManagementSoftware.UI
             {
                 cbMat.Checked = false;
                 //cbSearch.Checked = false;
-                tool.loadCustomerAndAllToComboBox(cmbType);
+                tool.LoadCustomerAndAllToComboBox(cmbType);
 
                 if (cbSearch.Checked)
                 {
@@ -1421,7 +1421,7 @@ namespace FactoryManagementSoftware.UI
             {
                 cbPart.Checked = false;
                 //cbSearch.Checked = false;
-                tool.loadMaterialAndAllToComboBox(cmbType);
+                tool.LoadMaterialAndAllToComboBox(cmbType);
 
                 if (cbSearch.Checked)
                 {
@@ -1512,11 +1512,11 @@ namespace FactoryManagementSoftware.UI
                 cmbType.DataSource = null;
                 if (cbPart.Checked)
                 {
-                    tool.loadCustomerAndAllToComboBox(cmbType);
+                    tool.LoadCustomerAndAllToComboBox(cmbType);
                 }
                 else
                 {
-                    tool.loadMaterialAndAllToComboBox(cmbType);
+                    tool.LoadMaterialAndAllToComboBox(cmbType);
                 }
             }
         }

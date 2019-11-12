@@ -461,41 +461,6 @@ namespace FactoryManagementSoftware.UI
 
             dt_MaterialPlan = specialDataSort(dt_MaterialPlan);
 
-            #region sorting
-            //if (sortBy.Equals(sortByFac))
-            //{
-            //    DataView dv = dt.DefaultView;
-            //    //dv.Sort = dalMac.MacLocation+ " asc";
-            //    //dv.Sort = dalMac.MacLocation + " asc, " + dalMac.MacID + " asc";
-            //    dv.Sort = dalMac.MacLocation + " asc, " + dalItem.ItemCat + " asc, " + "mat_code asc, " + dalMac.MacID + " asc, " + dalPlan.productionStartDate + " asc";
-            //    dt = dv.ToTable();
-            //}
-            //else if (sortBy.Equals(sortByMac))
-            //{
-            //    DataView dv = dt.DefaultView;
-            //    dv.Sort = dalMac.MacID + " asc";
-            //    dt = dv.ToTable();
-            //}
-            //else if (sortBy.Equals(sortByPlan))
-            //{
-            //    DataView dv = dt.DefaultView;
-            //    dv.Sort = dalPlan.planID + " asc";
-            //    dt = dv.ToTable();
-            //}
-            //else if (sortBy.Equals(sortByPart))
-            //{
-            //    DataView dv = dt.DefaultView;
-            //    dv.Sort = dalPlan.partCode + " asc";
-            //    dt = dv.ToTable();
-            //}
-            //else if (sortBy.Equals(sortByMat))
-            //{
-            //    DataView dv = dt.DefaultView;
-            //    dv.Sort = dalItem.ItemCat + " asc, " + "mat_code asc, " + dalMac.MacLocation + " asc, " + dalPlan.productionStartDate + " asc";
-            //    dt = dv.ToTable();
-            //}
-            #endregion
-
             #region data proccessing
 
             string preFacName = null;
@@ -525,6 +490,7 @@ namespace FactoryManagementSoftware.UI
                             TransferPending = 0;
                             preFacName = facName;
                             stockQty = tool.getStockBalance(matCode, facName, dt_Stock);
+
                             remainingStock = stockQty;
                         }
                         else if(preFacName == facName)
@@ -575,7 +541,13 @@ namespace FactoryManagementSoftware.UI
 
                     stillNeed = planToUse - transferred < 0 ? 0 : planToUse - transferred;
 
+                    //stillNeed = Convert.ToSingle(stillNeed.ToString("0.##"));
+
+                    //double test = stillNeed;
                     row_dtMat[headerStillNeed] = stillNeed;
+
+                    remainingStock = Convert.ToSingle(Math.Round(Convert.ToDouble(remainingStock), 2));
+
                     row_dtMat[headerStock] = remainingStock;
 
                     TransferPending = planToUse - remainingStock;
@@ -626,7 +598,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (string.IsNullOrEmpty(status))
                 {
-                    row.Cells[headerTransferPending].Style.BackColor = Color.DimGray;
+                    row.Cells[headerTransferPending].Style.BackColor = Color.Gainsboro;
                 }
                 else if(status == text.planning_status_pending)
                 {
@@ -1079,8 +1051,8 @@ namespace FactoryManagementSoftware.UI
 
                 if (string.IsNullOrEmpty(matCode))
                 {
-                    dgv.Rows[row].Height = 5;
-                    dgv.Rows[row].DefaultCellStyle.BackColor = Color.DimGray;
+                    dgv.Rows[row].Height = 3;
+                    dgv.Rows[row].DefaultCellStyle.BackColor = Color.Gainsboro;
                 }
                 else
                 {

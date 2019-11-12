@@ -57,7 +57,6 @@
             this.dgvForecast = new System.Windows.Forms.DataGridView();
             this.label9 = new System.Windows.Forms.Label();
             this.lblUpdatedTime = new System.Windows.Forms.Label();
-            this.btnRefresh = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.btnExcel = new System.Windows.Forms.Button();
             this.btnImport = new System.Windows.Forms.Button();
@@ -69,6 +68,7 @@
             this.tlpForecast = new System.Windows.Forms.TableLayoutPanel();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecast)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -84,7 +84,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(730, 35);
+            this.label1.Location = new System.Drawing.Point(570, 35);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(103, 19);
@@ -96,10 +96,10 @@
             this.cmbMonthFrom.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbMonthFrom.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbMonthFrom.FormattingEnabled = true;
-            this.cmbMonthFrom.Location = new System.Drawing.Point(734, 58);
+            this.cmbMonthFrom.Location = new System.Drawing.Point(574, 58);
             this.cmbMonthFrom.Margin = new System.Windows.Forms.Padding(4);
             this.cmbMonthFrom.Name = "cmbMonthFrom";
-            this.cmbMonthFrom.Size = new System.Drawing.Size(166, 25);
+            this.cmbMonthFrom.Size = new System.Drawing.Size(156, 25);
             this.cmbMonthFrom.TabIndex = 138;
             this.cmbMonthFrom.SelectedIndexChanged += new System.EventHandler(this.cmbMonth_SelectedIndexChanged);
             // 
@@ -123,7 +123,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(534, 35);
+            this.label2.Location = new System.Drawing.Point(419, 35);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 19);
@@ -136,7 +136,7 @@
             this.lblYearFromReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblYearFromReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblYearFromReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblYearFromReset.Location = new System.Drawing.Point(659, 35);
+            this.lblYearFromReset.Location = new System.Drawing.Point(502, 35);
             this.lblYearFromReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblYearFromReset.Name = "lblYearFromReset";
             this.lblYearFromReset.Size = new System.Drawing.Size(49, 19);
@@ -149,10 +149,10 @@
             this.cmbYearFrom.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbYearFrom.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbYearFrom.FormattingEnabled = true;
-            this.cmbYearFrom.Location = new System.Drawing.Point(538, 58);
+            this.cmbYearFrom.Location = new System.Drawing.Point(423, 58);
             this.cmbYearFrom.Margin = new System.Windows.Forms.Padding(4);
             this.cmbYearFrom.Name = "cmbYearFrom";
-            this.cmbYearFrom.Size = new System.Drawing.Size(166, 25);
+            this.cmbYearFrom.Size = new System.Drawing.Size(128, 25);
             this.cmbYearFrom.TabIndex = 140;
             this.cmbYearFrom.SelectedIndexChanged += new System.EventHandler(this.cmbYear_SelectedIndexChanged);
             // 
@@ -194,7 +194,7 @@
             this.lblMonthToReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblMonthToReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMonthToReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblMonthToReset.Location = new System.Drawing.Point(1257, 35);
+            this.lblMonthToReset.Location = new System.Drawing.Point(1007, 35);
             this.lblMonthToReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMonthToReset.Name = "lblMonthToReset";
             this.lblMonthToReset.Size = new System.Drawing.Size(49, 19);
@@ -207,10 +207,10 @@
             this.cmbMonthTo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbMonthTo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbMonthTo.FormattingEnabled = true;
-            this.cmbMonthTo.Location = new System.Drawing.Point(1136, 58);
+            this.cmbMonthTo.Location = new System.Drawing.Point(900, 58);
             this.cmbMonthTo.Margin = new System.Windows.Forms.Padding(4);
             this.cmbMonthTo.Name = "cmbMonthTo";
-            this.cmbMonthTo.Size = new System.Drawing.Size(166, 25);
+            this.cmbMonthTo.Size = new System.Drawing.Size(156, 25);
             this.cmbMonthTo.TabIndex = 150;
             this.cmbMonthTo.SelectedIndexChanged += new System.EventHandler(this.cmbMonthTo_SelectedIndexChanged);
             // 
@@ -218,7 +218,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(1132, 35);
+            this.label4.Location = new System.Drawing.Point(896, 35);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 19);
@@ -230,10 +230,10 @@
             this.cmbYearTo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbYearTo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbYearTo.FormattingEnabled = true;
-            this.cmbYearTo.Location = new System.Drawing.Point(940, 58);
+            this.cmbYearTo.Location = new System.Drawing.Point(755, 58);
             this.cmbYearTo.Margin = new System.Windows.Forms.Padding(4);
             this.cmbYearTo.Name = "cmbYearTo";
-            this.cmbYearTo.Size = new System.Drawing.Size(166, 25);
+            this.cmbYearTo.Size = new System.Drawing.Size(128, 25);
             this.cmbYearTo.TabIndex = 152;
             this.cmbYearTo.SelectedIndexChanged += new System.EventHandler(this.cmbYearTo_SelectedIndexChanged);
             // 
@@ -243,7 +243,7 @@
             this.lblYearToReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblYearToReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblYearToReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblYearToReset.Location = new System.Drawing.Point(1061, 35);
+            this.lblYearToReset.Location = new System.Drawing.Point(834, 35);
             this.lblYearToReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblYearToReset.Name = "lblYearToReset";
             this.lblYearToReset.Size = new System.Drawing.Size(49, 19);
@@ -255,7 +255,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(936, 35);
+            this.label11.Location = new System.Drawing.Point(751, 35);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(62, 19);
@@ -269,7 +269,7 @@
             this.btnFilterApply.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFilterApply.ForeColor = System.Drawing.Color.White;
-            this.btnFilterApply.Location = new System.Drawing.Point(1344, 47);
+            this.btnFilterApply.Location = new System.Drawing.Point(1413, 51);
             this.btnFilterApply.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.Size = new System.Drawing.Size(124, 36);
@@ -283,10 +283,10 @@
             this.cmbPartCode.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbPartCode.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbPartCode.FormattingEnabled = true;
-            this.cmbPartCode.Location = new System.Drawing.Point(273, 58);
+            this.cmbPartCode.Location = new System.Drawing.Point(211, 58);
             this.cmbPartCode.Margin = new System.Windows.Forms.Padding(4);
             this.cmbPartCode.Name = "cmbPartCode";
-            this.cmbPartCode.Size = new System.Drawing.Size(237, 25);
+            this.cmbPartCode.Size = new System.Drawing.Size(192, 25);
             this.cmbPartCode.TabIndex = 147;
             this.cmbPartCode.SelectedIndexChanged += new System.EventHandler(this.cmbPartCode_SelectedIndexChanged);
             // 
@@ -296,7 +296,7 @@
             this.lblPartCodeReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblPartCodeReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPartCodeReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblPartCodeReset.Location = new System.Drawing.Point(465, 35);
+            this.lblPartCodeReset.Location = new System.Drawing.Point(354, 35);
             this.lblPartCodeReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPartCodeReset.Name = "lblPartCodeReset";
             this.lblPartCodeReset.Size = new System.Drawing.Size(49, 19);
@@ -308,7 +308,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(273, 35);
+            this.label7.Location = new System.Drawing.Point(214, 35);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(80, 19);
@@ -323,7 +323,7 @@
             this.cmbPartName.Location = new System.Drawing.Point(12, 58);
             this.cmbPartName.Margin = new System.Windows.Forms.Padding(4);
             this.cmbPartName.Name = "cmbPartName";
-            this.cmbPartName.Size = new System.Drawing.Size(237, 25);
+            this.cmbPartName.Size = new System.Drawing.Size(191, 25);
             this.cmbPartName.TabIndex = 144;
             this.cmbPartName.SelectedIndexChanged += new System.EventHandler(this.cmbPartName_SelectedIndexChanged);
             // 
@@ -333,7 +333,7 @@
             this.lblPartNameReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblPartNameReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPartNameReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblPartNameReset.Location = new System.Drawing.Point(204, 35);
+            this.lblPartNameReset.Location = new System.Drawing.Point(157, 35);
             this.lblPartNameReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPartNameReset.Name = "lblPartNameReset";
             this.lblPartNameReset.Size = new System.Drawing.Size(49, 19);
@@ -358,7 +358,7 @@
             this.lblMonthFromReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblMonthFromReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMonthFromReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblMonthFromReset.Location = new System.Drawing.Point(855, 35);
+            this.lblMonthFromReset.Location = new System.Drawing.Point(681, 35);
             this.lblMonthFromReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMonthFromReset.Name = "lblMonthFromReset";
             this.lblMonthFromReset.Size = new System.Drawing.Size(49, 19);
@@ -462,30 +462,12 @@
             this.lblUpdatedTime.TabIndex = 155;
             this.lblUpdatedTime.Text = "SHOW DATA FOR THE PAST";
             // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
-            this.btnRefresh.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_refresh_480;
-            this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefresh.ForeColor = System.Drawing.Color.White;
-            this.btnRefresh.Location = new System.Drawing.Point(114, 2);
-            this.btnRefresh.Margin = new System.Windows.Forms.Padding(2);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(36, 36);
-            this.btnRefresh.TabIndex = 154;
-            this.btnRefresh.UseVisualStyleBackColor = false;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
             // label10
             // 
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(4, 10);
+            this.label10.Location = new System.Drawing.Point(4, 14);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(103, 19);
@@ -576,28 +558,30 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 16F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(322, 34);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(147, 41);
             this.tableLayoutPanel3.TabIndex = 161;
             // 
             // tableLayoutPanel4
             // 
-            this.tableLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.tableLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel4.ColumnCount = 4;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 41F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1262F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 129F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.Controls.Add(this.cbEditMode, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.label10, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel3, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.btnRefresh, 1, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 207);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 200);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1544, 40);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1544, 47);
             this.tableLayoutPanel4.TabIndex = 162;
+            this.tableLayoutPanel4.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel4_Paint);
             // 
             // cbEditMode
             // 
@@ -628,8 +612,8 @@
             this.tlpForecast.Name = "tlpForecast";
             this.tlpForecast.RowCount = 4;
             this.tlpForecast.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75F));
-            this.tlpForecast.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 115F));
-            this.tlpForecast.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tlpForecast.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 122F));
+            this.tlpForecast.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
             this.tlpForecast.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 257F));
             this.tlpForecast.Size = new System.Drawing.Size(1550, 806);
             this.tlpForecast.TabIndex = 163;
@@ -643,6 +627,24 @@
             // 
             this.errorProvider2.ContainerControl = this;
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
+            this.btnRefresh.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_refresh_480;
+            this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefresh.ForeColor = System.Drawing.Color.White;
+            this.btnRefresh.Location = new System.Drawing.Point(114, 5);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(2);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(36, 36);
+            this.btnRefresh.TabIndex = 154;
+            this.btnRefresh.UseVisualStyleBackColor = false;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
             // frmForecast_NEW
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -655,7 +657,7 @@
             this.Name = "frmForecast_NEW";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmForecast_NEW";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmForecast_NEW_FormClosed);
             this.Load += new System.EventHandler(this.frmForecast_NEW_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

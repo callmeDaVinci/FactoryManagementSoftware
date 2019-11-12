@@ -107,7 +107,7 @@ namespace FactoryManagementSoftware.UI
 
             if (!string.IsNullOrEmpty(keywords))
             {
-                DataTable dt = dalItem.catSearch(keywords);
+                DataTable dt = dalItem.CatSearch(keywords);
                 DataTable dtItemName = dt.DefaultView.ToTable(true, "item_name");
 
                 dtItemName.DefaultView.Sort = "item_name ASC";

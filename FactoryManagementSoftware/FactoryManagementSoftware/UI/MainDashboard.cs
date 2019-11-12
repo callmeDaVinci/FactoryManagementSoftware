@@ -240,7 +240,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (!forecastReportInputFormOpen)
             {
-                frmForecastReport frm = new frmForecastReport();
+                frmForecastReport_NEW frm = new frmForecastReport_NEW();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
@@ -249,9 +249,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (Application.OpenForms.OfType<frmForecastReport>().Count() == 1)
+                if (Application.OpenForms.OfType<frmForecastReport_NEW>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmForecastReport>().First().BringToFront();
+                    Application.OpenForms.OfType<frmForecastReport_NEW>().First().BringToFront();
                 }
             }
 
@@ -327,7 +327,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (!MaterialUsedReportFormOpen)
             {
-                frmMaterialUsedReport frm = new frmMaterialUsedReport();
+                frmMaterialUsedReport_NEW frm = new frmMaterialUsedReport_NEW();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
@@ -336,9 +336,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (Application.OpenForms.OfType<frmMaterialUsedReport>().Count() == 1)
+                if (Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmMaterialUsedReport>().First().BringToFront();
+                    Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().First().BringToFront();
                 }
             }
         }
@@ -367,7 +367,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (!forecastInputFormOpen)
             {
-                frmForecast frm = new frmForecast();
+                frmForecast_NEW frm = new frmForecast_NEW();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
@@ -376,9 +376,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (Application.OpenForms.OfType<frmForecast>().Count() == 1)
+                if (Application.OpenForms.OfType<frmForecast_NEW>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmForecast>().First().BringToFront();
+                    Application.OpenForms.OfType<frmForecast_NEW>().First().BringToFront();
                 }
             }
         }

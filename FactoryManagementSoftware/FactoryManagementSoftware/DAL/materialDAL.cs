@@ -29,7 +29,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_material";
+                String sql = "SELECT * FROM tbl_material INNER JOIN tbl_item ON tbl_material.material_code = tbl_item.item_code ORDER BY tbl_material.material_cat ASC, tbl_material.material_name ASC";
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database
@@ -63,7 +63,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_material WHERE material_zero_cost = 1 ORDER BY material_cat ASC, material_name ASC";
+                String sql = "SELECT * FROM tbl_material INNER JOIN tbl_item ON tbl_material.material_code = tbl_item.item_code WHERE material_zero_cost = 1 ORDER BY tbl_material.material_cat ASC, tbl_material.material_name ASC";
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database

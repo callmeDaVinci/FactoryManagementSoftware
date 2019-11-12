@@ -88,6 +88,7 @@ namespace FactoryManagementSoftware.UI
                     dgvForecast.Rows[n].Cells["forecast_four"].Value = item["forecast_four"] == DBNull.Value? 0.ToString() : item["forecast_four"].ToString();
                     dgvForecast.Rows[n].Cells["forecast_updtd_date"].Value = item["forecast_updated_date"].ToString();
                     index++;
+
                     if (int.TryParse(item["forecast_updated_by"].ToString(), out int test))
                     {
                         if (Convert.ToInt32(item["forecast_updated_by"]) <= 0)

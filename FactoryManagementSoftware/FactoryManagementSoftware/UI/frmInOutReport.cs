@@ -984,11 +984,11 @@ namespace FactoryManagementSoftware.UI
 
             if (cbMat.Checked)
             {
-                tool.loadMaterialAndAllToComboBox(cmbType);
+                tool.LoadMaterialAndAllToComboBox(cmbType);
             }
             else
             {
-                tool.loadCustomerAndAllToComboBox(cmbType);
+                tool.LoadCustomerAndAllToComboBox(cmbType);
             }
         }
 
@@ -1116,7 +1116,7 @@ namespace FactoryManagementSoftware.UI
             if(cbMat.Checked)
             {
                 cbPart.Checked = false;
-                tool.loadMaterialAndAllToComboBox(cmbType);
+                tool.LoadMaterialAndAllToComboBox(cmbType);
             }
         }
 
@@ -1125,7 +1125,7 @@ namespace FactoryManagementSoftware.UI
             if (cbPart.Checked)
             {
                 cbMat.Checked = false;
-                tool.loadCustomerAndAllToComboBox(cmbType);
+                tool.LoadCustomerAndAllToComboBox(cmbType);
             }
         }
 

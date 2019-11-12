@@ -22,6 +22,7 @@ namespace FactoryManagementSoftware.UI
 
         materialDAL dalMat = new materialDAL();
         itemDAL dalItem = new itemDAL();
+        itemBLL uItem = new itemBLL();
         joinDAL dalJoin = new joinDAL();
         trfHistDAL dalTrfHist = new trfHistDAL();
         custDAL dalCust = new custDAL();
@@ -462,26 +463,7 @@ namespace FactoryManagementSoftware.UI
                                     #endregion
 
 
-                                    #region oldway
-
-                                    //row_DGVSouce = dt_MatUsed.NewRow();
-                                    //row_DGVSouce[text.Header_Index] = index;
-                                    //row_DGVSouce[text.Header_MatCode] = matCode;
-                                    //row_DGVSouce[text.Header_MatName] = matName;
-                                    //row_DGVSouce[text.Header_PartName] = parentName;
-                                    //row_DGVSouce[text.Header_PartCode] = parentCode;
-                                    //row_DGVSouce[text.Header_ItemWeight_G] = itemWeight;
-                                    //row_DGVSouce[text.Header_Wastage] = wastage;
-                                    //row_DGVSouce[text.Header_Delivered] = Math.Round(deliveredQty, 2);
-                                    //row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = deliveredQty;
-                                    //row_DGVSouce[text.Header_MaterialUsedWithWastage] = MatUsedWithWastage;
-
-                                    //dt_MatUsed.Rows.Add(row_DGVSouce);
-                                    //dgvRowIndex++;
-                                    //index++;
-
-                                    //joinRow.Delete();
-                                    #endregion
+                                   
                                 }
                             }
                         }
@@ -787,6 +769,23 @@ namespace FactoryManagementSoftware.UI
 
                     index++;
 
+                    if (Convert.ToInt32(month) == DateTime.Now.Month || Convert.ToInt32(year) > DateTime.Now.Year)
+                    {
+                        uItem.item_code = matCode;
+                        uItem.item_last_pmma_qty = 0;
+                        uItem.item_pmma_qty = balance;
+                        uItem.item_updtd_date = DateTime.Now;
+                        uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                        bool itemPMMMAQtyUpdateSuccess = dalItem.UpdatePMMAQty(uItem);
+
+                        if (!itemPMMMAQtyUpdateSuccess)
+                        {
+                            MessageBox.Show("Failed to updated item pmma qty(@item dal)");
+                        }
+                    }
+
+
                     //update/insert to database
                     uPMMA.pmma_item_code = matCode;
                     uPMMA.pmma_openning_stock = openStock;
@@ -938,6 +937,8 @@ namespace FactoryManagementSoftware.UI
             {
                 //t = new Thread(new ThreadStart(StartForm));
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                frmLoading.ShowLoadingScreen();
                 editModeAvailable = false;
                 cbEditMode.Checked = false;
                 editModeAvailable = true;
@@ -964,7 +965,7 @@ namespace FactoryManagementSoftware.UI
             {
                 //if (!aborted)
                 //    t.Abort();
-
+                frmLoading.CloseForm();
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
 

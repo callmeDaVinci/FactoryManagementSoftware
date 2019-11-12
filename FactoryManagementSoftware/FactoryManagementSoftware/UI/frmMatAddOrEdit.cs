@@ -371,7 +371,7 @@ namespace FactoryManagementSoftware.UI
             if (!string.IsNullOrEmpty(keywords))
             {
                 errorProvider1.Clear();
-                DataTable dt = dalItem.catSearch(keywords);
+                DataTable dt = dalItem.CatSearch(keywords);
                 DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
                 distinctTable.DefaultView.Sort = "item_name ASC";
                 cmbParentName.DataSource = distinctTable;
@@ -415,7 +415,7 @@ namespace FactoryManagementSoftware.UI
                         txtChildQty.Enabled = true;
                     }
 
-                    DataTable dt = dalItem.catSearch(keywords);
+                    DataTable dt = dalItem.CatSearch(keywords);
 
                     if (dt.Rows.Count > 0)
                     {

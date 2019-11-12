@@ -61,6 +61,7 @@ namespace FactoryManagementSoftware.UI
         itemDAL dalItem = new itemDAL();
         trfHistDAL dalTrfHist = new trfHistDAL();
         pmmaDateDAL dalPmmaDate = new pmmaDateDAL();
+        userDAL dalUser = new userDAL();
         Tool tool = new Tool();
         Text text = new Text();
 
@@ -96,7 +97,7 @@ namespace FactoryManagementSoftware.UI
 
             //dt.Columns.Add(headerForecast, typeof(float));
             dt.Columns.Add(headerUpdatedDate, typeof(DateTime));
-            dt.Columns.Add(headerUpdatedBy, typeof(int));
+            dt.Columns.Add(headerUpdatedBy, typeof(string));
 
             return dt;
         }
@@ -288,6 +289,10 @@ namespace FactoryManagementSoftware.UI
         private void loadForecastList()
         {
             Cursor = Cursors.WaitCursor;
+
+            btnSearch.Enabled = false;
+            frmLoading.ShowLoadingScreen();
+
             cbEditMode.Checked = false;
             dgvForecast.DataSource = null;
             string keywords = cmbCustomer.Text;
@@ -349,7 +354,18 @@ namespace FactoryManagementSoftware.UI
                                 {
                                     date = Convert.ToDateTime(data[dalItemForecast.UpdatedDate]);
                                     dt_Row[headerUpdatedDate] = data[dalItemForecast.UpdatedDate];
-                                    dt_Row[headerUpdatedBy] = data[dalItemForecast.UpdatedBy];
+
+                                    int updatedID = int.TryParse(data[dalItemForecast.UpdatedBy].ToString(), out updatedID) ? updatedID : 0;
+
+                                    if (updatedID <= 0)
+                                    {
+                                        dt_Row[headerUpdatedBy] = "ADMIN";
+                                    }
+                                    else
+                                    {
+                                        dt_Row[headerUpdatedBy] = dalUser.getUsername(updatedID);
+                                    }
+                                    //dt_Row[headerUpdatedBy] = data[dalItemForecast.UpdatedBy];
                                 }
                             }
                             else
@@ -382,13 +398,22 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+            frmLoading.CloseForm();
+
+            btnSearch.Enabled = true;
+
             Cursor = Cursors.Arrow;
         }
 
         private void loadForecastListAndComboBox()
         {
             Cursor = Cursors.WaitCursor;
+
             cbEditMode.Checked = false;
+
+            btnSearch.Enabled = false;
+            frmLoading.ShowLoadingScreen();
+
             dgvForecast.DataSource = null;
             string keywords = cmbCustomer.Text;
             CalTotalMonth();
@@ -449,7 +474,17 @@ namespace FactoryManagementSoftware.UI
                             {
                                 date = Convert.ToDateTime(data[dalItemForecast.UpdatedDate]);
                                 dt_Row[headerUpdatedDate] = data[dalItemForecast.UpdatedDate];
-                                dt_Row[headerUpdatedBy] = data[dalItemForecast.UpdatedBy];
+
+                                int updatedID = int.TryParse(data[dalItemForecast.UpdatedBy].ToString(), out updatedID) ? updatedID : 0;
+
+                                if (updatedID <= 0)
+                                {
+                                    dt_Row[headerUpdatedBy] = "ADMIN";
+                                }
+                                else
+                                {
+                                    dt_Row[headerUpdatedBy] = dalUser.getUsername(updatedID);
+                                }
                             }  
                         }
                         else
@@ -482,6 +517,11 @@ namespace FactoryManagementSoftware.UI
                     dgvForecast.ClearSelection();
                 }
             }
+
+
+            frmLoading.CloseForm();
+
+            btnSearch.Enabled = true;
 
             Cursor = Cursors.Arrow;
         }
@@ -700,15 +740,25 @@ namespace FactoryManagementSoftware.UI
         private void cbEditMode_CheckedChanged(object sender, EventArgs e)
         {
             DataGridView dgv = dgvForecast;
+
             if (cbEditMode.Checked)
             {
-                dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
-                dgv.ReadOnly = false;
-
-                for (int i = 0; i < forecastMonthQty; i++)
+                if(dgv.DataSource != null)
                 {
-                    dgv.Columns[3 + i].DefaultCellStyle.BackColor = SystemColors.Info;
+                    dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
+                    dgv.ReadOnly = false;
+
+                    for (int i = 0; i < forecastMonthQty; i++)
+                    {
+                        dgv.Columns[3 + i].DefaultCellStyle.BackColor = SystemColors.Info;
+                    }
                 }
+                else
+                {
+                    MessageBox.Show("No data.");
+                    cbEditMode.Checked = false;
+                }
+                
 
             }
             else
@@ -716,10 +766,14 @@ namespace FactoryManagementSoftware.UI
                 dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgv.ReadOnly = true;
 
-                for (int i = 0; i < forecastMonthQty; i++)
+                if (dgv.DataSource != null)
                 {
-                    dgv.Columns[3 + i].DefaultCellStyle.BackColor = Color.Gainsboro;
+                    for (int i = 0; i < forecastMonthQty; i++)
+                    {
+                        dgv.Columns[3 + i].DefaultCellStyle.BackColor = Color.Gainsboro;
+                    }
                 }
+                    
             }
         }
 
@@ -816,6 +870,16 @@ namespace FactoryManagementSoftware.UI
             }
 
 
+
+        }
+
+        private void frmForecast_NEW_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            MainDashboard.forecastInputFormOpen = false;
+        }
+
+        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
+        {
 
         }
 

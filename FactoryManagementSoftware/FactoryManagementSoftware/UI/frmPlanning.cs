@@ -63,6 +63,8 @@ namespace FactoryManagementSoftware.UI
         private string purpose = "FOR OTHER PURPOSE";
         private string name = null;
         private string code = null;
+
+        private static frmLoading splashForm;
         #endregion
 
         public frmPlanning()
@@ -131,7 +133,7 @@ namespace FactoryManagementSoftware.UI
 
             if (!string.IsNullOrEmpty(keywords))
             {
-                DataTable dt = dalItem.catSearch(keywords);
+                DataTable dt = dalItem.CatSearch(keywords);
                 DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
                 distinctTable.DefaultView.Sort = "item_name ASC";
                 cmbPartName.DataSource = distinctTable;
@@ -160,7 +162,7 @@ namespace FactoryManagementSoftware.UI
 
             if (!string.IsNullOrEmpty(keywords))
             {
-                DataTable dt = dalItem.catSearch(keywords);
+                DataTable dt = dalItem.CatSearch(keywords);
                 DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
                 distinctTable.DefaultView.Sort = "item_name ASC";
                 cmbPartName.DataSource = distinctTable;
@@ -805,8 +807,7 @@ namespace FactoryManagementSoftware.UI
             materialChecked = false;
             dgvCheckList.DataSource = null;
             errorProvider2.Clear();
-            Thread t = null;
-            bool aborted = false;
+            
             if (ableToLoadData)
             {
                 try
@@ -817,34 +818,29 @@ namespace FactoryManagementSoftware.UI
                     txtMatBagQty.Clear();
                     cmbColorMatCode.SelectedIndex = -1;
 
-                    t = new Thread(new ThreadStart(StartForm));
+                 
                     if (dalItem.checkIfAssembly(cmbPartCode.Text) && !dalItem.checkIfProduction(cmbPartCode.Text) && tool.ifGotChild(cmbPartCode.Text))
                     {
                         MessageBox.Show(cmbPartCode.Text + " " + cmbPartName.Text + " is a assembly part!");
                     }
                     else
                     {
+                        frmLoading.ShowLoadingScreen();
                         LoadPartInfo();
                         partInfoEdited = false;
-                        t.Start();
+                      
                         //CalTotalMatAfterWastage();
                     }
                     AddDataToForecastTable();
                 }
-                catch (ThreadAbortException)
-                {
-                    // ignore it
-                    aborted = true;
-                }
+             
                 catch (Exception ex)
                 {
                     tool.saveToTextAndMessageToUser(ex);
                 }
                 finally
                 {
-                    if(!aborted)
-                    t.Abort();
-
+                    frmLoading.CloseForm();
                     txtMatBagQty.Focus();
                 }
             }
@@ -1444,6 +1440,8 @@ namespace FactoryManagementSoftware.UI
             {
                 
             }
+
+           
         }
 
         private void btnMaterialCheck_Click(object sender, EventArgs e)

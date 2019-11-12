@@ -209,7 +209,7 @@ namespace FactoryManagementSoftware.UI
             bool gotData = true;
             index_Public = 1;
             DataTable dt;
-            dt = dalItem.catSearch(cmbSubType.Text);
+            dt = dalItem.CatSearch(cmbSubType.Text);
             dt.DefaultView.Sort = "item_name ASC";
             dt = dt.DefaultView.ToTable();
 
@@ -246,7 +246,7 @@ namespace FactoryManagementSoftware.UI
             bool gotData = true;
             //DataTable dt = dalItemCust.custSearch(cmbSubType.Text);//load customer's item list
 
-            DataTable dt = dalItem.catSearch(cmbSubType.Text);
+            DataTable dt = dalItem.CatSearch(cmbSubType.Text);
             dt.DefaultView.Sort = "item_name ASC";
             dt = dt.DefaultView.ToTable();
 

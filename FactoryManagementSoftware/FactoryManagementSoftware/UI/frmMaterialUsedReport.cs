@@ -19,7 +19,7 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
 
-            tool.loadCustomerAndAllToComboBox(cmbCust);
+            tool.LoadCustomerAndAllToComboBox(cmbCust);
             cbZeroCost.Visible = false;
             addDataToTypeCMB();
             int month = DateTime.Now.Month;
@@ -84,6 +84,7 @@ namespace FactoryManagementSoftware.UI
 
         userDAL dalUser = new userDAL();
 
+        itemForecastDAL dalItemForecast = new itemForecastDAL();
         Tool tool = new Tool();
         Text text = new Text();
         #endregion
@@ -221,27 +222,27 @@ namespace FactoryManagementSoftware.UI
             int currentMonth = Convert.ToInt32(DateTime.Now.Month.ToString("00"));
             cmbTypeCurrentMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth);
 
-            if(currentMonth == 12)
+            if (currentMonth + 1 > 12)
             {
-                cmbTypeNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+                cmbTypeNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 1 - 12);
             }
             else
             {
-                cmbTypeNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth+1);
+                cmbTypeNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 1);
             }
 
-            if (currentMonth == 11)
+            if (currentMonth + 2 > 12)
             {
-                cmbTypeNextNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+                cmbTypeNextNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 2 - 12);
             }
             else
             {
                 cmbTypeNextNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 2);
             }
 
-            if (currentMonth == 10)
+            if (currentMonth + 3 > 12)
             {
-                cmbTypeNextNextNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(1);
+                cmbTypeNextNextNextMonth = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth + 3 - 12);
             }
             else
             {
@@ -264,27 +265,35 @@ namespace FactoryManagementSoftware.UI
 
         private void insertAllItemForecastData()
         {
-            string forecast = "forecast_one";
+            int forecastNum = 1;
+
             if (cmbType.Text.Equals(cmbTypeNextMonth))
             {
-                forecast = "forecast_two";
+
+                forecastNum = 2;
             }
             else if (cmbType.Text.Equals(cmbTypeNextNextMonth))
             {
-                forecast = "forecast_three";
+
+                forecastNum = 3;
+            }
+            else if (cmbType.Text.Equals(cmbTypeNextNextNextMonth))
+            {
+
+                forecastNum = 4;
             }
 
             if (!string.IsNullOrEmpty(cmbCust.Text))
             {
                 DataTable dt = dalItemCust.Select();
-
+                DataTable dt_ItemForecast = dalItemForecast.Select();
                 if (dt.Rows.Count <= 0)
                 {
                     MessageBox.Show("no data under this record.");
                 }
                 else
                 {
-                    int Forecast2 = 0;
+                    float ForecastQty = 0;
                     string itemCode;
 
                     // string forecastNO = "";
@@ -294,17 +303,11 @@ namespace FactoryManagementSoftware.UI
                     {
                         itemCode = item["item_code"].ToString();
 
-                        DataTable dt3 = dalItemCust.itemCodeSearch(itemCode);
+                        ForecastQty = tool.GetForecastQty(dt_ItemForecast, itemCode, forecastNum);
 
-                        Forecast2 = 0;
-
-                        if (dt3.Rows.Count > 0)
+                        if (ForecastQty < 0)
                         {
-
-                            foreach (DataRow outRecord in dt3.Rows)
-                            {
-                                Forecast2 += Convert.ToInt32(outRecord[forecast]);
-                            }
+                            ForecastQty = 0;
                         }
 
                         bool result = false;
@@ -320,7 +323,7 @@ namespace FactoryManagementSoftware.UI
                                     {
                                         uMatUsed.no = forecastIndex;
                                         uMatUsed.item_code = Join2["join_child_code"].ToString();
-                                        uMatUsed.quantity_order = Forecast2;
+                                        uMatUsed.quantity_order = ForecastQty;
 
                                         result = dalMatUsed.Insert(uMatUsed);
                                         if (!result)
@@ -338,7 +341,7 @@ namespace FactoryManagementSoftware.UI
                                 {
                                     uMatUsed.no = forecastIndex;
                                     uMatUsed.item_code = Join["join_child_code"].ToString();
-                                    uMatUsed.quantity_order = Forecast2;
+                                    uMatUsed.quantity_order = ForecastQty;
 
                                     result = dalMatUsed.Insert(uMatUsed);
                                     if (!result)
@@ -357,7 +360,7 @@ namespace FactoryManagementSoftware.UI
                         {
                             uMatUsed.no = forecastIndex;
                             uMatUsed.item_code = itemCode;
-                            uMatUsed.quantity_order = Forecast2;
+                            uMatUsed.quantity_order = ForecastQty;
 
                             result = dalMatUsed.Insert(uMatUsed);
                             if (!result)
@@ -377,19 +380,23 @@ namespace FactoryManagementSoftware.UI
 
         private void insertItemForecastData()
         {
-            int ForecastQty = 0;
-            string forecast = "forecast_one";
+            float ForecastQty = 0;
+            int forecastNum = 1;
+ 
             if (cmbType.Text.Equals(cmbTypeNextMonth))
             {
-                forecast = "forecast_two";
+    
+                forecastNum = 2;
             }
             else if (cmbType.Text.Equals(cmbTypeNextNextMonth))
             {
-                forecast = "forecast_three";
+      
+                forecastNum = 3;
             }
             else if (cmbType.Text.Equals(cmbTypeNextNextNextMonth))
             {
-                forecast = "forecast_four";
+      
+                forecastNum = 4;
             }
 
             string custName = cmbCust.Text;
@@ -397,7 +404,7 @@ namespace FactoryManagementSoftware.UI
             if (!string.IsNullOrEmpty(custName))
             {
                 DataTable dt = dalItemCust.custSearch(custName);
-
+                DataTable dt_ItemForecast = dalItemForecast.Select(tool.getCustID(custName).ToString());
                 if (dt.Rows.Count <= 0)
                 {
                     MessageBox.Show("no data under this record.");
@@ -411,7 +418,14 @@ namespace FactoryManagementSoftware.UI
                     {
                         itemCode = item["item_code"].ToString();
                         //ForecastQty = Convert.ToInt32(item[forecast]);
-                        ForecastQty = item[forecast] == DBNull.Value? 0: Convert.ToInt32(item[forecast]);
+                        ForecastQty = tool.GetForecastQty(dt_ItemForecast, itemCode, forecastNum);
+
+                        if(ForecastQty < 0)
+                        {
+                            ForecastQty = 0;
+                        }
+
+                        //ForecastQty = item[forecast] == DBNull.Value? 0: Convert.ToInt32(item[forecast]);
                         bool result = false;
                         if (tool.ifGotChild(itemCode))
                         {

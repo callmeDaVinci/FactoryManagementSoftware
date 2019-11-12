@@ -43,6 +43,7 @@ namespace FactoryManagementSoftware.DAL
             {
                 //sql query to get data from database
                 String sql = "SELECT * FROM tbl_item_forecast ORDER BY cust_id ASC, item_code ASC, forecast_year ASC, forecast_month ASC";
+
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database
@@ -94,17 +95,35 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable Select(string custID, string year)
+
+        public DataTable SelectWithCustAndRange(int custID, int startMonth, int startYear, int endMonth, int endYear)
         {
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             DataTable dt = new DataTable();
             try
             {
-                String sql = "SELECT * FROM tbl_item_forecast WHERE cust_id = @custID ORDER BY item_code ASC, forecast_year ASC, forecast_month ASC";
+                String sql = @"SELECT * 
+                             FROM tbl_item_forecast 
+                             INNER JOIN tbl_item 
+                             ON tbl_item_forecast.item_code = tbl_item.item_code
+                             WHERE cust_id = @custID 
+                             AND tbl_item_forecast.forecast_year >= @startYear
+                             AND tbl_item_forecast.forecast_year <= @endYear
+                             AND (tbl_item_forecast.forecast_month >= @startMonth OR tbl_item_forecast.forecast_month <= @endMonth)
+                             ORDER BY tbl_item_forecast.item_code ASC, tbl_item_forecast.forecast_year ASC, tbl_item_forecast.forecast_month ASC";
+
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
+                //AND tbl_item_forecast.forecast_year <= @endMonth
+                //             AND tbl_item_forecast.forecast_month <= @startMonth
+                //             AND tbl_item_forecast.forecast_month >= @endMonth
+
                 cmd.Parameters.AddWithValue("@custID", custID);
+                cmd.Parameters.AddWithValue("@startMonth", startMonth);
+                cmd.Parameters.AddWithValue("@startYear", startYear);
+                cmd.Parameters.AddWithValue("@endMonth", endMonth);
+                cmd.Parameters.AddWithValue("@endYear", endYear);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 conn.Open();
                 adapter.Fill(dt);
@@ -121,17 +140,32 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable Select(string custID,string year, string month)
+        public DataTable SelectWithRange(int startMonth, int startYear, int endMonth, int endYear)
         {
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             DataTable dt = new DataTable();
             try
             {
-                String sql = "SELECT * FROM tbl_item_forecast WHERE cust_id = @custID ORDER BY item_code ASC, forecast_year ASC, forecast_month ASC";
+                String sql = @"SELECT * 
+                             FROM tbl_item_forecast 
+                             INNER JOIN tbl_item 
+                             ON tbl_item_forecast.item_code = tbl_item.item_code
+                             WHERE tbl_item_forecast.forecast_year >= @startYear
+                             AND tbl_item_forecast.forecast_year <= @endYear
+                             AND (tbl_item_forecast.forecast_month >= @startMonth OR tbl_item_forecast.forecast_month <= @endMonth)
+                             ORDER BY tbl_item_forecast.item_code ASC, tbl_item_forecast.forecast_year ASC, tbl_item_forecast.forecast_month ASC";
+
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@custID", custID);
+                //AND tbl_item_forecast.forecast_year <= @endMonth
+                //             AND tbl_item_forecast.forecast_month <= @startMonth
+                //             AND tbl_item_forecast.forecast_month >= @endMonth
+
+                cmd.Parameters.AddWithValue("@startMonth", startMonth);
+                cmd.Parameters.AddWithValue("@startYear", startYear);
+                cmd.Parameters.AddWithValue("@endMonth", endMonth);
+                cmd.Parameters.AddWithValue("@endYear", endYear);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 conn.Open();
                 adapter.Fill(dt);

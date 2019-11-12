@@ -419,7 +419,7 @@ namespace FactoryManagementSoftware
         private void LoadPartList(DataGridView dgv)
         {
             int index = 1;
-            DataTable dt = dalItem.catSearch(cmbCat.Text);
+            DataTable dt = dalItem.CatSearch(cmbCat.Text);
             dt.DefaultView.Sort = "item_name ASC";
             dt = dt.DefaultView.ToTable();
 
@@ -523,7 +523,7 @@ namespace FactoryManagementSoftware
 
         private void LoadMaterialList(DataGridView dgv)
         {
-            DataTable dt = dalItem.catSearch(cmbCat.Text);
+            DataTable dt = dalItem.CatSearch(cmbCat.Text);
             dt.DefaultView.Sort = "item_name ASC";
             dt = dt.DefaultView.ToTable();
             dgv.Rows.Clear();

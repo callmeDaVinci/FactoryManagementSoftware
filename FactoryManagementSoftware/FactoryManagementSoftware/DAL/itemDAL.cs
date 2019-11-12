@@ -971,7 +971,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+                Tool tool = new Tool(); tool.saveToText(ex);
             }
             finally
             {
@@ -1391,7 +1391,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable catSearch(string keywords)
+        public DataTable CatSearch(string keywords)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1405,6 +1405,89 @@ namespace FactoryManagementSoftware.DAL
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@category", keywords);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable MatSearch(string keywords)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                if(keywords.ToUpper().Equals("ALL"))
+                {
+                    dt = AllMatSearch();
+                }
+                else
+                {
+                    //sql query to get data from database
+                    String sql = "SELECT * FROM tbl_item WHERE item_cat=@category";
+
+                    //for executing command
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@category", keywords);
+                    //getting data from database
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    //database connection open
+                    conn.Open();
+                    //fill data in our database
+                    adapter.Fill(dt);
+                }
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Tool tool = new Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable AllMatSearch()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            string cat = "Part";
+            string mould = "Mould";
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_item WHERE item_cat != @cat AND item_cat != @mould";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@cat", cat);
+                cmd.Parameters.AddWithValue("@mould", mould);
+
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open

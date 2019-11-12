@@ -94,7 +94,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmLogIn_KeyDown(object sender, KeyEventArgs e)
         {
-            MessageBox.Show("haha");
+            //MessageBox.Show("haha");
             if (e.KeyCode == Keys.Enter)
             {
                 MessageBox.Show("enter");

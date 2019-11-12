@@ -664,7 +664,7 @@ namespace FactoryManagementSoftware.DAL
                             WHERE tbl_trf_hist.trf_hist_trf_date 
                             BETWEEN @start AND @end 
                             AND tbl_trf_hist.trf_result =@Passed
-                            ORDER BY tbl_trf_hist.trf_hist_item_code ASC, tbl_trf_hist.trf_hist_trf_date ASC";
+                            ORDER BY tbl_cust.cust_name ASC, tbl_trf_hist.trf_hist_item_code ASC, tbl_trf_hist.trf_hist_trf_date ASC";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -1080,6 +1080,505 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable ItemInSearch(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            string Production = "Production";
+            string Assembly = "Assembly";
+
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                            INNER JOIN tbl_fac
+                            ON tbl_trf_hist.trf_hist_to=tbl_fac.fac_name
+                            INNER JOIN tbl_item
+                            ON tbl_trf_hist.trf_hist_item_code=tbl_item.item_code
+                            WHERE tbl_trf_hist.trf_hist_trf_date 
+                            BETWEEN @start 
+                            AND @end 
+                            AND (tbl_trf_hist.trf_hist_from=@Production OR tbl_trf_hist.trf_hist_from=@Assembly)
+                            ORDER BY tbl_item.item_name ASC, tbl_trf_hist.trf_hist_trf_date  ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@Production", Production);
+                cmd.Parameters.AddWithValue("@Assembly", Assembly);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                Tool tool = new Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable ItemInSearch(string start, string end, string customer)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            string Production = "Production";
+            string Assembly = "Assembly";
+
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                            INNER JOIN tbl_fac
+                            ON tbl_trf_hist.trf_hist_to=tbl_fac.fac_name
+                            INNER JOIN tbl_item
+                            ON tbl_trf_hist.trf_hist_item_code=tbl_item.item_code
+                            WHERE tbl_trf_hist.trf_hist_trf_date 
+                            BETWEEN @start 
+                            AND @end 
+                            AND (tbl_trf_hist.trf_hist_from=@Production OR tbl_trf_hist.trf_hist_from=@Assembly)
+                            ORDER BY tbl_item.item_name ASC, tbl_trf_hist.trf_hist_trf_date  ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@Production", Production);
+                cmd.Parameters.AddWithValue("@Assembly", Assembly);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+                itemCustDAL dalItemCust = new itemCustDAL();
+
+                dt.AcceptChanges();
+                foreach (DataRow row in dt.Rows)
+                {
+                    string itemCode = row["trf_hist_item_code"].ToString();
+
+                    if (!dalItemCust.ifItemUnderThisCustomer(itemCode, customer))
+                    {
+                        row.Delete();
+                    }
+                }
+                dt.AcceptChanges();
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable ItemToAllCustomerSearch(string start, string end)
+        {
+            string Passed = "Passed";
+            string cat = "Part";
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                            INNER JOIN tbl_cust
+                            ON tbl_trf_hist.trf_hist_to=tbl_cust.cust_name
+                            INNER JOIN tbl_item
+                            ON tbl_trf_hist.trf_hist_item_code=tbl_item.item_code
+                            WHERE tbl_trf_hist.trf_hist_trf_date 
+                            BETWEEN @start AND @end 
+                            AND tbl_trf_hist.trf_result =@Passed AND tbl_item.item_cat = @cat
+                            ORDER BY tbl_cust.cust_name ASC, tbl_item.item_name ASC, tbl_trf_hist.trf_hist_trf_date ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@Passed", Passed);
+                cmd.Parameters.AddWithValue("@cat", cat);
+                //AND tbl_trf_hist.trf_result = @Passed
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+                //itemDAL dalItem = new itemDAL();
+                //dt.AcceptChanges();
+                //foreach (DataRow row in dt.Rows)
+                //{
+                //    string itemCode = row["trf_hist_item_code"].ToString();
+
+                //    if (!dalItem.getCatName(itemCode).Equals("Part"))
+                //    {
+                //        row.Delete();
+                //    }
+                //}
+                //dt.AcceptChanges();
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable ItemToCustomerSearch(string start, string end, string customer)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                if(customer.ToUpper().Equals("ALL"))
+                {
+                    dt = ItemToAllCustomerSearch(start, end);
+                }
+                else
+                {
+                    //sql query to get data from database
+                    String sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item
+                            ON tbl_trf_hist.trf_hist_item_code=tbl_item.item_code
+                            WHERE tbl_trf_hist.trf_hist_trf_date 
+                            BETWEEN @start 
+                            AND @end 
+                            AND tbl_trf_hist.trf_hist_to=@customer  ORDER BY tbl_item.item_name ASC , tbl_trf_hist.trf_hist_trf_date ASC";
+
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+
+                    cmd.Parameters.AddWithValue("@start", start);
+                    cmd.Parameters.AddWithValue("@end", end);
+                    cmd.Parameters.AddWithValue("@customer", customer);
+
+                    //for executing command
+                    //getting data from database
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    //database connection open
+                    conn.Open();
+                    //fill data in our database
+                    adapter.Fill(dt);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable ItemInOutSearch(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            string cat = "Part";
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE 
+                                trf_hist_trf_date 
+                                BETWEEN @start AND @end 
+                                AND tbl_item.item_cat = @cat 
+                                ORDER BY tbl_item.item_name ASC, tbl_trf_hist.trf_hist_trf_date ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@cat", cat);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable MaterialOutSearch(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            string cat = "Part";
+            string mould = "Mould";
+            string to = "Production";
+
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE 
+                                trf_hist_trf_date 
+                                BETWEEN @start AND @end 
+                                AND trf_hist_to=@to
+                                AND tbl_item.item_cat != @cat AND tbl_item.item_cat != @mould 
+                                ORDER BY tbl_item.item_cat ASC, tbl_item.item_name ASC, tbl_trf_hist.trf_hist_trf_date ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@cat", cat);
+                cmd.Parameters.AddWithValue("@to", to);
+                cmd.Parameters.AddWithValue("@mould", mould);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable MaterialOutSearch(string start, string end, string type)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            string to = "Production";
+
+            try
+            {
+                if(type.ToUpper().Equals("ALL"))
+                {
+                    dt = MaterialOutSearch(start, end);
+                }
+                else
+                {
+                    //sql query to get data from database
+                    String sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE 
+                                trf_hist_trf_date 
+                                BETWEEN @start AND @end 
+                                AND trf_hist_to=@to
+                                AND tbl_item.item_cat = @cat 
+                                ORDER BY tbl_item.item_name ASC, tbl_trf_hist.trf_hist_trf_date ASC";
+
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+
+                    cmd.Parameters.AddWithValue("@start", start);
+                    cmd.Parameters.AddWithValue("@end", end);
+                    cmd.Parameters.AddWithValue("@cat", type);
+                    cmd.Parameters.AddWithValue("@to", to);
+
+                    //for executing command
+                    //getting data from database
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    //database connection open
+                    conn.Open();
+                    //fill data in our database
+                    adapter.Fill(dt);
+                }
+                
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable MaterialInOutSearch(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            string cat = "Part";
+            string mould = "Mould";
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE 
+                                trf_hist_trf_date 
+                                BETWEEN @start AND @end 
+                                AND tbl_item.item_cat != @cat AND tbl_item.item_cat != @mould 
+                                ORDER BY tbl_item.item_cat ASC, tbl_item.item_name ASC, tbl_trf_hist.trf_hist_trf_date ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@cat", cat);
+                cmd.Parameters.AddWithValue("@mould", mould);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable MaterialInOutSearch(string start, string end, string type)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            try
+            {
+                if(type.ToUpper().Equals("ALL"))
+                {
+                    dt = MaterialInOutSearch(start, end);
+                }
+                else
+                {
+                    //sql query to get data from database
+                    String sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE 
+                                trf_hist_trf_date 
+                                BETWEEN @start AND @end 
+                                AND tbl_item.item_cat = @cat 
+                                ORDER BY tbl_item.item_name ASC, tbl_trf_hist.trf_hist_trf_date ASC";
+
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+
+                    cmd.Parameters.AddWithValue("@start", start);
+                    cmd.Parameters.AddWithValue("@end", end);
+                    cmd.Parameters.AddWithValue("@cat", type);
+
+                    //for executing command
+                    //getting data from database
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    //database connection open
+                    conn.Open();
+                    //fill data in our database
+                    adapter.Fill(dt);
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable rangeMaterialInFromPMMASearch(string start, string end)
         {
             //static methodd to connect database
@@ -1303,7 +1802,7 @@ namespace FactoryManagementSoftware.DAL
             String sql = null;
             try
             {
-                if(material.Equals("All"))
+                if(material.ToUpper().Equals("ALL"))
                 {
                     //sql query to get data from database
                     sql = @"SELECT * FROM tbl_trf_hist 
