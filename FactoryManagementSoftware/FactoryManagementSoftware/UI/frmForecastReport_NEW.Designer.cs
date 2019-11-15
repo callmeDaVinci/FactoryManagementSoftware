@@ -349,11 +349,12 @@
             this.lblNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblNote.AutoSize = true;
             this.lblNote.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNote.Location = new System.Drawing.Point(1281, 28);
+            this.lblNote.Location = new System.Drawing.Point(1141, 28);
             this.lblNote.Name = "lblNote";
-            this.lblNote.Size = new System.Drawing.Size(260, 12);
+            this.lblNote.Size = new System.Drawing.Size(400, 12);
             this.lblNote.TabIndex = 165;
-            this.lblNote.Text = "*Maximum delivered qty per month within past 6 months.";
+            this.lblNote.Text = "*Maximum delivered qty per month within past 6 months.  -1: No data found in data" +
+    "base.";
             this.lblNote.Visible = false;
             // 
             // label10

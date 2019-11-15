@@ -65,7 +65,7 @@ namespace FactoryManagementSoftware.Module
         readonly string headerMB = "MB";
         readonly string headerMBRate = "MB RATE";
         readonly string headerWeight = "WEIGHT";
-        readonly string headerWastage = "WASTAGE %";
+        readonly string headerWastage = "WASTAGE RATE";
         //public readonly string headerReadyStock = "STOCK";
         public readonly string headerUnit = "UNIT";
         readonly string headerOutOne = "OUT 1";
@@ -289,7 +289,7 @@ namespace FactoryManagementSoftware.Module
         #region Load/Update Data
 
 
-        public DateTime GetStartDate(int month, int year)
+        public DateTime GetPMMAStartDate(int month, int year)
         {
             
             DataTable dt = dalPmmaDate.Select();
@@ -310,8 +310,61 @@ namespace FactoryManagementSoftware.Module
             return date;
         }
 
-        public DateTime GetStartDate(int month, int year, DataTable dt)
+        public DateTime GetPMMAMonthAndYear(DateTime trfDate)
         {
+            DataTable dt = dalPmmaDate.Select();
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    DateTime dateStart = Convert.ToDateTime(row[dalPmmaDate.dateStart].ToString());
+                    DateTime dateEnd = Convert.ToDateTime(row[dalPmmaDate.dateEnd].ToString());
+
+                    if(trfDate >= dateStart && trfDate <= dateEnd)
+                    {
+                        int month = Convert.ToInt32(row[dalPmmaDate.dateMonth].ToString());
+                        int year = Convert.ToInt32(row[dalPmmaDate.dateYear].ToString());
+
+                        return new DateTime(year, month, 1);
+                    }
+                   
+                }
+            }
+
+            return DateTime.MaxValue;
+        }
+
+        public DateTime GetPMMAMonthAndYear(DateTime trfDate, DataTable dt)
+        {
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    DateTime dateStart = Convert.ToDateTime(row[dalPmmaDate.dateStart].ToString());
+                    DateTime dateEnd = Convert.ToDateTime(row[dalPmmaDate.dateEnd].ToString());
+
+                    if (trfDate >= dateStart && trfDate <= dateEnd)
+                    {
+                        int month = Convert.ToInt32(row[dalPmmaDate.dateMonth].ToString());
+                        int year = Convert.ToInt32(row[dalPmmaDate.dateYear].ToString());
+
+                        return new DateTime(year, month, 1);
+                    }
+
+                }
+            }
+
+            return DateTime.MaxValue;
+        }
+
+        public DateTime GetPMMAStartDate(int month, int year, DataTable dt)
+        {
+            
+            if(month <= 0 || month > 12 || year <= 0)
+            {
+                return DateTime.MaxValue;
+            }
 
             DateTime date = new DateTime(year, month, 1);
 
@@ -329,7 +382,7 @@ namespace FactoryManagementSoftware.Module
             return date;
         }
 
-        public DateTime GetEndDate(int month, int year)
+        public DateTime GetPMMAEndDate(int month, int year)
         {
             DataTable dt = dalPmmaDate.Select();
 
@@ -351,8 +404,12 @@ namespace FactoryManagementSoftware.Module
             return date;
         }
 
-        public DateTime GetEndDate(int month, int year, DataTable dt)
+        public DateTime GetPMMAEndDate(int month, int year, DataTable dt)
         {
+            if (month <= 0 || month > 12 || year <= 0)
+            {
+                return DateTime.MaxValue;
+            }
             var lastDayOfMonth = DateTime.DaysInMonth(year, month);
 
             DateTime date = new DateTime(year, month, lastDayOfMonth);
@@ -1503,8 +1560,8 @@ namespace FactoryManagementSoftware.Module
             }
 
             //calculate out
-            string start = GetStartDate(Month, Year).ToString("yyyy/MM/dd");
-            string end = GetEndDate(Month, Year).ToString("yyyy/MM/dd");
+            string start = GetPMMAStartDate(Month, Year).ToString("yyyy/MM/dd");
+            string end = GetPMMAEndDate(Month, Year).ToString("yyyy/MM/dd");
 
             DataTable dt_Out = dalTrfHist.rangeItemToAllCustomerSearch(start, end, itemCode);
 
@@ -1604,8 +1661,8 @@ namespace FactoryManagementSoftware.Module
             }
 
             //calculate out
-            string start = GetStartDate(Month, Year).ToString("yyyy/MM/dd");
-            string end = GetEndDate(Month, Year).ToString("yyyy/MM/dd");
+            string start = GetPMMAStartDate(Month, Year).ToString("yyyy/MM/dd");
+            string end = GetPMMAEndDate(Month, Year).ToString("yyyy/MM/dd");
 
             DataTable dt_Out = dalTrfHist.rangeItemToAllCustomerSearch(start, end, itemCode);
 
@@ -1978,10 +2035,12 @@ namespace FactoryManagementSoftware.Module
                     forecast_2 = GetForecastQty(dt_ItemForecast, itemCode, 2);
                     forecast_3 = GetForecastQty(dt_ItemForecast, itemCode, 3);
                     forecast_4 = GetForecastQty(dt_ItemForecast, itemCode, 4);
-                    //forecast_1 = item["forecast_one"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_one"]);
-                    //forecast_2 = item["forecast_two"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_two"]);
-                    //forecast_3 = item["forecast_three"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_three"]);
-                    //forecast_4 = item["forecast_four"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_four"]);
+
+                    forecast_1 = forecast_1 <= -1 ? 0 : forecast_1;
+                    forecast_2 = forecast_2 <= -1 ? 0 : forecast_2;
+                    forecast_3 = forecast_3 <= -1 ? 0 : forecast_3;
+                    forecast_4 = forecast_4 <= -1 ? 0 : forecast_4;
+
                     itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
                     itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
                     wastageAllowed = item["item_wastage_allowed"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_wastage_allowed"].ToString());
@@ -2586,8 +2645,8 @@ namespace FactoryManagementSoftware.Module
         {
             float deliveredQty = 0;
 
-            DateTime start = GetStartDate(month, year, dt_PMMADate);
-            DateTime end = GetEndDate(month, year, dt_PMMADate);
+            DateTime start = GetPMMAStartDate(month, year, dt_PMMADate);
+            DateTime end = GetPMMAEndDate(month, year, dt_PMMADate);
 
             if (!customer.Equals(getCustName(1)))
             {
@@ -2933,7 +2992,11 @@ namespace FactoryManagementSoftware.Module
                     forecast_3 = GetForecastQty(dt_ItemForecast, itemCode, 3);
                     forecast_4 = GetForecastQty(dt_ItemForecast, itemCode, 4);
 
-                   
+                    forecast_1 = forecast_1 <= -1 ? 0 : forecast_1;
+                    forecast_2 = forecast_2 <= -1 ? 0 : forecast_2;
+                    forecast_3 = forecast_3 <= -1 ? 0 : forecast_3;
+                    forecast_4 = forecast_4 <= -1 ? 0 : forecast_4;
+
                     itemPartWeight = item[dalItem.ItemQuoPWPcs] == DBNull.Value ? item[dalItem.ItemProPWPcs] == DBNull.Value ? 0 : Convert.ToSingle(item[dalItem.ItemProPWPcs].ToString()) : Convert.ToSingle(item[dalItem.ItemQuoPWPcs].ToString());
                     itemRunnerWeight = item[dalItem.ItemQuoRWPcs] == DBNull.Value ? item[dalItem.ItemProRWPcs] == DBNull.Value ? 0 : Convert.ToSingle(item[dalItem.ItemProRWPcs].ToString()) : Convert.ToSingle(item[dalItem.ItemQuoRWPcs].ToString());
                     wastageAllowed = item["item_wastage_allowed"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_wastage_allowed"].ToString());

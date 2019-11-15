@@ -1348,8 +1348,8 @@ namespace FactoryManagementSoftware.UI
             }
 
             //calculate out
-            string start = tool.GetStartDate(Month, Year).ToString("yyyy/MM/dd");
-            string end = tool.GetEndDate(Month, Year).ToString("yyyy/MM/dd");
+            string start = tool.GetPMMAStartDate(Month, Year).ToString("yyyy/MM/dd");
+            string end = tool.GetPMMAEndDate(Month, Year).ToString("yyyy/MM/dd");
 
             DataTable dt_Out = dalTrfHist.rangeItemToAllCustomerSearch(start, end, itemCode);
 

@@ -43,7 +43,7 @@ namespace FactoryManagementSoftware.UI
             Aquamarine,
             Orange,
             Yellow,
-            MediumSpringGreen,
+            //MediumSpringGreen,
             Lavender,
             LightGray,
             LightBlue
@@ -73,6 +73,7 @@ namespace FactoryManagementSoftware.UI
         readonly string headerPartCode = "PART CODE";
         readonly string headerColorMat = "COLOR MATERIAL";
         readonly string headerPartWeight = "PART WEIGHT/G (RUNNER)";
+        readonly string headerPlannedQty = "PLANNED QTY";
         readonly string headerReadyStock = "READY STOCK";
         readonly string headerEstimate = "ESTIMATE*";
         string headerForecast1 = "FCST/ NEEDED";
@@ -160,6 +161,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerPartCode, typeof(string));
             dt.Columns.Add(headerColorMat, typeof(string));
             dt.Columns.Add(headerPartWeight, typeof(string));
+            dt.Columns.Add(headerPlannedQty, typeof(float));
             dt.Columns.Add(headerReadyStock, typeof(float));
             dt.Columns.Add(headerEstimate, typeof(float));
 
@@ -892,14 +894,14 @@ namespace FactoryManagementSoftware.UI
 
                         dt_Data.Rows.Add(dt_Row);
                         index++;
-                        //loadChild(dt_Data, uData);
+        
                     }
                 }
 
                 #endregion
 
                 #region load assembly part
-                //slow speed
+
                 foreach (DataRow row in dt.Rows)
                 {
                     uData.part_code = row[dalItem.ItemCode].ToString();
@@ -1437,6 +1439,11 @@ namespace FactoryManagementSoftware.UI
                 {
                     string childCode = row[dalJoin.JoinChild].ToString();
 
+                    if(childCode == "V29LAR000")
+                    {
+                        float test = 0;
+                    }
+
                     DataRow row_Item = tool.getDataRowFromDataTable(dt_Item, childCode);
 
                     bool itemMatch = row_Item[dalItem.ItemCat].ToString().Equals(text.Cat_Part);
@@ -1521,6 +1528,10 @@ namespace FactoryManagementSoftware.UI
 
                             uChildData.forecast3 = uParentData.forecast3 * joinQty;
                         }
+
+                        uChildData.forecast1 = uChildData.forecast1 < 0 ? uChildData.forecast1 * -1 : uChildData.forecast1;
+                        uChildData.forecast2 = uChildData.forecast2 < 0 ? uChildData.forecast2 * -1 : uChildData.forecast2;
+                        uChildData.forecast3 = uChildData.forecast3 < 0 ? uChildData.forecast3 * -1 : uChildData.forecast3;
 
                         uChildData.bal1 = uChildData.ready_stock - uChildData.forecast1;
 
@@ -1664,7 +1675,7 @@ namespace FactoryManagementSoftware.UI
                 int currentMonth = DateTime.Now.Month;
                 int currentYear = DateTime.Now.Year;
 
-                if (DateTime.Today > tool.GetEndDate(currentMonth, currentYear))
+                if (DateTime.Today > tool.GetPMMAEndDate(currentMonth, currentYear))
                 {
                     includeCurrentMonth = true;
                 }
@@ -1687,8 +1698,8 @@ namespace FactoryManagementSoftware.UI
 
                     }
 
-                    DateTime start = tool.GetStartDate(currentMonth, currentYear, dt_PMMADate);
-                    DateTime end = tool.GetEndDate(currentMonth, currentYear, dt_PMMADate);
+                    DateTime start = tool.GetPMMAStartDate(currentMonth, currentYear, dt_PMMADate);
+                    DateTime end = tool.GetPMMAEndDate(currentMonth, currentYear, dt_PMMADate);
 
                     foreach (DataRow row in dt_TrfHist.Rows)
                     {
@@ -1788,7 +1799,7 @@ namespace FactoryManagementSoftware.UI
                     //{
                     //    cmbForecastFrom.Text = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
                     //}
-                    DateTime outTo = tool.GetEndDate(month, year);
+                    DateTime outTo = tool.GetPMMAEndDate(month, year);
 
                     if (DateTime.Today > outTo && custChanging)
                     {
@@ -1804,7 +1815,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        dtpOutFrom.Value = tool.GetStartDate(month, year);
+                        dtpOutFrom.Value = tool.GetPMMAStartDate(month, year);
                         dtpOutTo.Value = outTo;
                     }
 
@@ -1894,7 +1905,7 @@ namespace FactoryManagementSoftware.UI
                             xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri\"&12 (" + cmbCustomer.Text + ") READY STOCK VERSUS FORECAST";
                             xlWorkSheet.PageSetup.RightHeader = "&\"Calibri\"&8 PG -&P";
                             xlWorkSheet.PageSetup.CenterFooter = "&\"Calibri\"&8 Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + ", OUT PEROID FROM:" + dtpOutFrom.Text + " TO:" + dtpOutTo.Text;
-                            xlWorkSheet.PageSetup.LeftFooter = "&\"Calibri\"&8 * Maximum delivered qty per month within past 6 months.";
+                            xlWorkSheet.PageSetup.LeftFooter = "&\"Calibri\"&8 * Maximum delivered qty per month within past 6 months.\n-1: No data found in database.";
 
 
                             xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
@@ -2272,7 +2283,7 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri\"&12 (" + cmbCustomer.Text + ") READY STOCK VERSUS FORECAST";
                     xlWorkSheet.PageSetup.RightHeader = "&\"Calibri\"&8 PG -&P";
                     xlWorkSheet.PageSetup.CenterFooter = "&\"Calibri\"&8 Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + ", OUT PEROID FROM:" + dtpOutFrom.Text + " TO:" + dtpOutTo.Text;
-                    xlWorkSheet.PageSetup.LeftFooter = "&\"Calibri\"&8 * Maximum delivered qty per month within past 6 months.";
+                    xlWorkSheet.PageSetup.LeftFooter = "&\"Calibri\"&8 * Maximum delivered qty per month within past 6 months.\n-1: No data found in database.";
 
 
                     xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;

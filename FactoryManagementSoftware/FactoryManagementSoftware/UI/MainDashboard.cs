@@ -433,7 +433,7 @@ namespace FactoryManagementSoftware.UI
             if (!InOutReportFormOpen)
             {
                 //frmInOutReport frm = new frmInOutReport();
-                frmNewInOutReport frm = new frmNewInOutReport();
+                frmInOutReport_NEW frm = new frmInOutReport_NEW();
                 frm.MdiParent = this;
                 
                 frm.StartPosition = FormStartPosition.CenterScreen;
@@ -444,9 +444,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (Application.OpenForms.OfType<frmNewInOutReport>().Count() == 1)
+                if (Application.OpenForms.OfType<frmInOutReport_NEW>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmNewInOutReport>().First().BringToFront();
+                    Application.OpenForms.OfType<frmInOutReport_NEW>().First().BringToFront();
                 }
             }
         }

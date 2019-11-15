@@ -415,6 +415,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt_AllStockData = dalStock.Select();
             DataTable dt_JoinInfo = dalJoin.SelectAll();
             DataTable dt_StockData;
+            DataTable dt_Join = dalJoin.SelectAll();
 
             dt_PublicItemInfo = dt_ItemInfo;
             dt.DefaultView.Sort = "item_name ASC";
@@ -431,7 +432,10 @@ namespace FactoryManagementSoftware.UI
                 {
                     string itemCode = item[dalItem.ItemCode].ToString();
 
-                    if (!dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
+                    int assembly = item[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(item[dalItem.ItemAssemblyCheck]);
+                    int production = item[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(item[dalItem.ItemProductionCheck]);
+
+                    if (assembly == 0 && production == 0) //!dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode)
                     {
                         float readyStock = Convert.ToSingle(item["item_qty"]);
                        
@@ -448,7 +452,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     string itemCode = item[dalItem.ItemCode].ToString();
 
-                    if (ifGotChild(itemCode))
+                    if (tool.ifGotChild2(itemCode, dt_Join))  //ifGotChild(itemCode)
                     {
                         //add empty space
                         dtStock_row = dt_Stock.NewRow();
@@ -483,7 +487,7 @@ namespace FactoryManagementSoftware.UI
                                     addRowtoDataTable(dt_ChildStockData, childCode, childName, childStockQty);
 
                                     //check if have child
-                                    if (ifGotChild(childCode))
+                                    if (tool.ifGotChild2(childCode, dt_Join))  //ifGotChild(childCode)
                                     {
                                         DataTable dtJoin_SubChild = tool.getJoinDataTableFromDataTable(dt_JoinInfo, childCode);
 
@@ -1389,13 +1393,12 @@ namespace FactoryManagementSoftware.UI
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            Thread t = new Thread(new ThreadStart(StartForm));
             try
             {
                 if (Validation())
                 {
+                    frmLoading.ShowLoadingScreen();
                     lblUpdatedTime.Text = DateTime.Now.ToLongTimeString();
-                    t.Start();
                     Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
                     if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
@@ -1411,19 +1414,12 @@ namespace FactoryManagementSoftware.UI
                 }
                
             }
-            catch (ThreadAbortException)
-            {
-                // ignore it
-                Thread.ResetAbort();
-            }
             catch (Exception ex)
             {
                 tool.saveToTextAndMessageToUser(ex);
             }
-            finally
-            {
-               t.Abort();
-            } 
+
+            frmLoading.CloseForm();
         }
 
         public void StartForm()

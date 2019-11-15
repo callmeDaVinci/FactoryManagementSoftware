@@ -109,8 +109,8 @@ namespace FactoryManagementSoftware.UI
             int year = DateTime.Now.Year;
             int month = DateTime.Now.Month;
 
-            dtpFrom.Value = tool.GetStartDate(month, year);
-            dtpTo.Value = tool.GetEndDate(month, year);
+            dtpFrom.Value = tool.GetPMMAStartDate(month, year);
+            dtpTo.Value = tool.GetPMMAEndDate(month, year);
 
             cmbStockMonth.Text = month.ToString();
             cmbStockYear.Text = year.ToString();
@@ -126,8 +126,8 @@ namespace FactoryManagementSoftware.UI
                 int year = string.IsNullOrEmpty(cmbStockYear.Text) ? 0 : Convert.ToInt32(cmbStockYear.Text);
                 int month = string.IsNullOrEmpty(cmbStockMonth.Text) ? 0 : Convert.ToInt32(cmbStockMonth.Text);
 
-                dtpFrom.Value = tool.GetStartDate(month, year);
-                dtpTo.Value = tool.GetEndDate(month, year);
+                dtpFrom.Value = tool.GetPMMAStartDate(month, year);
+                dtpTo.Value = tool.GetPMMAEndDate(month, year);
             }   
         }
 

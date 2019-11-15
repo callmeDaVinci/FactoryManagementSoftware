@@ -53,7 +53,7 @@ namespace FactoryManagementSoftware.UI
         readonly string headerMBRate = "MB RATE";
         readonly string headerSubMatRate = "RATE";
         readonly string headerWeight = "WEIGHT";
-        readonly string headerWastage = "WASTAGE %";
+        readonly string headerWastage = "WASTAGE RATE";
         readonly string headerReadyStock = "READY STOCK";
         readonly string headerOut = "OUT";
         readonly string headerMatUsed = "MAT USED";

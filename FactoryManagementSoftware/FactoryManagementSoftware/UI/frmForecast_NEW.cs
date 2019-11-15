@@ -22,7 +22,9 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
             tool.DoubleBuffered(dgvForecast, true);
+
             if(tool.GetPermissionLevel(MainDashboard.USER_ID) >= MainDashboard.ACTION_LVL_THREE || MainDashboard.USER_ID == -1)
+
             {
                 cbEditMode.Enabled = true;
             }
@@ -132,6 +134,7 @@ namespace FactoryManagementSoftware.UI
 
             cmbYearFrom.DataSource = Enumerable.Range(2019, DateTime.Now.Year - 2019 + 2).ToList();
 
+            cmbMonthFrom.Text = DateTime.Now.Month.ToString();
             cmbYearFrom.Text = DateTime.Now.Year.ToString();
 
             cmbYearTo.Text = DateTime.Now.AddMonths(forecastMonthQty - 1).Year.ToString();

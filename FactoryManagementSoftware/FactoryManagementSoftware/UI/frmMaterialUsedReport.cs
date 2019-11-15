@@ -24,8 +24,8 @@ namespace FactoryManagementSoftware.UI
             addDataToTypeCMB();
             int month = DateTime.Now.Month;
             int year = DateTime.Now.Year;
-            dtpStart.Value = tool.GetStartDate(month, year);
-            dtpEnd.Value = tool.GetEndDate(month, year);
+            dtpStart.Value = tool.GetPMMAStartDate(month, year);
+            dtpEnd.Value = tool.GetPMMAEndDate(month, year);
         }
 
         #region Valiable Declare
@@ -2148,8 +2148,8 @@ namespace FactoryManagementSoftware.UI
                 int month = dtpStart.Value.Month;
 
                 startDateUpdated = true;
-                dtpStart.Value = tool.GetStartDate(month, year);
-                dtpEnd.Value = tool.GetEndDate(month, year);
+                dtpStart.Value = tool.GetPMMAStartDate(month, year);
+                dtpEnd.Value = tool.GetPMMAEndDate(month, year);
             }
             else
             {

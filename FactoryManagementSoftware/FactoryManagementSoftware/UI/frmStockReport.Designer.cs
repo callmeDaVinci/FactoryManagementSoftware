@@ -56,7 +56,7 @@
             // 
             this.lblType.AutoSize = true;
             this.lblType.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblType.Location = new System.Drawing.Point(26, 34);
+            this.lblType.Location = new System.Drawing.Point(23, 37);
             this.lblType.Name = "lblType";
             this.lblType.Size = new System.Drawing.Size(39, 19);
             this.lblType.TabIndex = 34;
@@ -65,13 +65,14 @@
             // cmbType
             // 
             this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbType.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbType.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbType.ForeColor = System.Drawing.SystemColors.InfoText;
             this.cmbType.FormattingEnabled = true;
+            this.cmbType.ItemHeight = 23;
             this.cmbType.Location = new System.Drawing.Point(27, 58);
             this.cmbType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbType.Name = "cmbType";
-            this.cmbType.Size = new System.Drawing.Size(189, 36);
+            this.cmbType.Size = new System.Drawing.Size(189, 31);
             this.cmbType.TabIndex = 33;
             this.cmbType.SelectedIndexChanged += new System.EventHandler(this.cmbType_SelectedIndexChanged);
             // 
@@ -80,14 +81,14 @@
             this.btnExportAllToExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExportAllToExcel.BackColor = System.Drawing.Color.Transparent;
             this.btnExportAllToExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExportAllToExcel.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnExportAllToExcel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnExportAllToExcel.Location = new System.Drawing.Point(1429, 42);
+            this.btnExportAllToExcel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExportAllToExcel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnExportAllToExcel.Location = new System.Drawing.Point(1429, 58);
             this.btnExportAllToExcel.Margin = new System.Windows.Forms.Padding(2);
             this.btnExportAllToExcel.Name = "btnExportAllToExcel";
-            this.btnExportAllToExcel.Size = new System.Drawing.Size(120, 50);
+            this.btnExportAllToExcel.Size = new System.Drawing.Size(124, 36);
             this.btnExportAllToExcel.TabIndex = 74;
-            this.btnExportAllToExcel.Text = "ALL";
+            this.btnExportAllToExcel.Text = "EXCEL ALL";
             this.btnExportAllToExcel.UseVisualStyleBackColor = false;
             this.btnExportAllToExcel.Click += new System.EventHandler(this.btnExportAllToExcel_Click);
             // 
@@ -95,7 +96,7 @@
             // 
             this.lblSubType.AutoSize = true;
             this.lblSubType.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubType.Location = new System.Drawing.Point(223, 35);
+            this.lblSubType.Location = new System.Drawing.Point(223, 37);
             this.lblSubType.Name = "lblSubType";
             this.lblSubType.Size = new System.Drawing.Size(68, 19);
             this.lblSubType.TabIndex = 76;
@@ -104,27 +105,27 @@
             // cmbSubType
             // 
             this.cmbSubType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSubType.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbSubType.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbSubType.ForeColor = System.Drawing.SystemColors.InfoText;
             this.cmbSubType.FormattingEnabled = true;
             this.cmbSubType.Location = new System.Drawing.Point(227, 58);
             this.cmbSubType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbSubType.Name = "cmbSubType";
-            this.cmbSubType.Size = new System.Drawing.Size(287, 36);
+            this.cmbSubType.Size = new System.Drawing.Size(287, 31);
             this.cmbSubType.TabIndex = 75;
             this.cmbSubType.SelectedIndexChanged += new System.EventHandler(this.cmbSubType_SelectedIndexChanged);
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(1298, 42);
+            this.button1.Location = new System.Drawing.Point(1301, 58);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(120, 50);
+            this.button1.Size = new System.Drawing.Size(124, 36);
             this.button1.TabIndex = 77;
             this.button1.Text = "EXCEL";
             this.button1.UseVisualStyleBackColor = false;
@@ -138,24 +139,24 @@
             // 
             this.btnCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
             this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCheck.ForeColor = System.Drawing.Color.White;
-            this.btnCheck.Location = new System.Drawing.Point(688, 42);
+            this.btnCheck.Location = new System.Drawing.Point(681, 52);
             this.btnCheck.Margin = new System.Windows.Forms.Padding(2);
             this.btnCheck.Name = "btnCheck";
-            this.btnCheck.Size = new System.Drawing.Size(120, 50);
+            this.btnCheck.Size = new System.Drawing.Size(124, 37);
             this.btnCheck.TabIndex = 101;
-            this.btnCheck.Text = "CHECK";
+            this.btnCheck.Text = "SEARCH";
             this.btnCheck.UseVisualStyleBackColor = false;
             this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
             // 
             // dtpEndDate
             // 
-            this.dtpEndDate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpEndDate.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.dtpEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEndDate.Location = new System.Drawing.Point(525, 58);
+            this.dtpEndDate.Location = new System.Drawing.Point(525, 59);
             this.dtpEndDate.Name = "dtpEndDate";
-            this.dtpEndDate.Size = new System.Drawing.Size(151, 34);
+            this.dtpEndDate.Size = new System.Drawing.Size(151, 30);
             this.dtpEndDate.TabIndex = 102;
             this.dtpEndDate.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
@@ -163,7 +164,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(521, 36);
+            this.label1.Location = new System.Drawing.Point(521, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 19);
             this.label1.TabIndex = 103;
@@ -175,7 +176,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar1.Location = new System.Drawing.Point(27, 5);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(1522, 23);
+            this.progressBar1.Size = new System.Drawing.Size(1526, 23);
             this.progressBar1.TabIndex = 79;
             this.progressBar1.Visible = false;
             // 
@@ -210,17 +211,17 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(23, 141);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(120, 19);
+            this.label3.Size = new System.Drawing.Size(102, 19);
             this.label3.TabIndex = 105;
-            this.label3.Text = "STOCK QTY TABLE";
+            this.label3.Text = "STOCK REPORT";
             // 
             // cbIncludeSubMat
             // 
             this.cbIncludeSubMat.AutoSize = true;
-            this.cbIncludeSubMat.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbIncludeSubMat.Location = new System.Drawing.Point(227, 101);
+            this.cbIncludeSubMat.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbIncludeSubMat.Location = new System.Drawing.Point(227, 96);
             this.cbIncludeSubMat.Name = "cbIncludeSubMat";
-            this.cbIncludeSubMat.Size = new System.Drawing.Size(220, 27);
+            this.cbIncludeSubMat.Size = new System.Drawing.Size(184, 23);
             this.cbIncludeSubMat.TabIndex = 106;
             this.cbIncludeSubMat.Text = "INCLUDE SUB MATERIAL";
             this.cbIncludeSubMat.UseVisualStyleBackColor = true;
@@ -231,7 +232,7 @@
             // 
             this.lblInfo.AutoSize = true;
             this.lblInfo.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInfo.Location = new System.Drawing.Point(813, 58);
+            this.lblInfo.Location = new System.Drawing.Point(810, 52);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(149, 19);
             this.lblInfo.TabIndex = 108;
@@ -241,7 +242,7 @@
             // 
             this.lblUpdatedTime.AutoSize = true;
             this.lblUpdatedTime.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUpdatedTime.Location = new System.Drawing.Point(813, 75);
+            this.lblUpdatedTime.Location = new System.Drawing.Point(810, 71);
             this.lblUpdatedTime.Name = "lblUpdatedTime";
             this.lblUpdatedTime.Size = new System.Drawing.Size(179, 19);
             this.lblUpdatedTime.TabIndex = 107;

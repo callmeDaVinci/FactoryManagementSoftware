@@ -96,6 +96,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = new DataTable();
 
             string reportType = cmbReportType.Text;
+
             if (reportType.Equals(reportType_Delivered))
             {
                 headerOutQty = "DELIVERED";
@@ -296,8 +297,8 @@ namespace FactoryManagementSoftware.UI
 
                 if (cmbCustomer.Text.Equals(tool.getCustName(1)))
                 {
-                    dtpFrom.Value = tool.GetStartDate(month, year);
-                    dtpTo.Value = tool.GetEndDate(month, year);
+                    dtpFrom.Value = tool.GetPMMAStartDate(month, year);
+                    dtpTo.Value = tool.GetPMMAEndDate(month, year);
                 }
                 else
                 {
@@ -515,7 +516,7 @@ namespace FactoryManagementSoftware.UI
             dgvMatUsedReport.DataSource = null;
 
             #region Datatable Data
-
+            dt_DeliveredData = NewDeliveredDataTable();
             //get all pmma item
             string custName = cmbCustomer.Text;
 
@@ -1190,6 +1191,8 @@ namespace FactoryManagementSoftware.UI
         {
             string reportType = cmbReportType.Text;
             dt_DeliveredData = NewDeliveredDataTable();
+            dgvMatUsedReport.DataSource = null;
+
             if (reportType.Equals(reportType_Delivered))
             {
                 gbMonthYear.Enabled = true;

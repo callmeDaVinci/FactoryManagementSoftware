@@ -147,7 +147,7 @@
             this.dgvInOutReport.RowHeadersVisible = false;
             this.dgvInOutReport.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvInOutReport.RowTemplate.Height = 40;
-            this.dgvInOutReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvInOutReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullColumnSelect;
             this.dgvInOutReport.Size = new System.Drawing.Size(1522, 683);
             this.dgvInOutReport.TabIndex = 122;
             this.dgvInOutReport.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvInOutReport_CellFormatting);

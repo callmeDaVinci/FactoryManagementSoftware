@@ -166,8 +166,8 @@ namespace FactoryManagementSoftware.UI
             int year = dtpDate.Value.Year;
             int month = dtpDate.Value.Month;
 
-            dtpStart.Value = tool.GetStartDate(month, year);
-            dtpEnd.Value = tool.GetEndDate(month, year);
+            dtpStart.Value = tool.GetPMMAStartDate(month, year);
+            dtpEnd.Value = tool.GetPMMAEndDate(month, year);
 
             //Out Type
             cmbType.Items.Clear();
@@ -1674,8 +1674,8 @@ namespace FactoryManagementSoftware.UI
             int year = dtpDate.Value.Year;
             int month = dtpDate.Value.Month;
 
-            dtpStart.Value = tool.GetStartDate(month, year);
-            dtpEnd.Value = tool.GetEndDate(month, year);
+            dtpStart.Value = tool.GetPMMAStartDate(month, year);
+            dtpEnd.Value = tool.GetPMMAEndDate(month, year);
 
             if (checkIfActualExist())//checkIfActualExist()
             {

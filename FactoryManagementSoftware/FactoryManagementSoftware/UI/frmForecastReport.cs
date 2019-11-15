@@ -23,8 +23,8 @@ namespace FactoryManagementSoftware.UI
 
             int month = DateTime.Now.Month;
             int year = DateTime.Now.Year;
-            dtpStart.Value = tool.GetStartDate(month, year);
-            dtpEnd.Value = tool.GetEndDate(month, year);
+            dtpStart.Value = tool.GetPMMAStartDate(month, year);
+            dtpEnd.Value = tool.GetPMMAEndDate(month, year);
 
             int currentMonth = DateTime.Now.Month;
             string currentMonthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(currentMonth);
@@ -3072,8 +3072,8 @@ namespace FactoryManagementSoftware.UI
                 int month = dtpStart.Value.Month;
 
                 startDateUpdated = true;
-                dtpStart.Value = tool.GetStartDate(month, year);
-                dtpEnd.Value = tool.GetEndDate(month, year);
+                dtpStart.Value = tool.GetPMMAStartDate(month, year);
+                dtpEnd.Value = tool.GetPMMAEndDate(month, year);
             }
             else
             {
