@@ -1545,12 +1545,12 @@ namespace FactoryManagementSoftware.UI
 
                         #region Save data to Sheet
 
-                        xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&14 (" + start + "-" + end + ")" + title + " REPORT";
+                        xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&14 "  + title + " REPORT";
 
                         //Header and Footer setup
-                        xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
+                        xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 (" +start + "-" + end + ")";
                         xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                        xlWorkSheet.PageSetup.CenterFooter = "&\"Calibri,Bold\"&11 PG -&P" + "Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + " "+ DateTime.Now;
+                        xlWorkSheet.PageSetup.CenterFooter = "&\"Calibri,Bold\"&11 " + "Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + " at "+ DateTime.Now;
 
                         //Page setup
                         xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;

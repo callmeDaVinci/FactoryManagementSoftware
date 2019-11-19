@@ -858,16 +858,12 @@ namespace FactoryManagementSoftware.UI
         {
 
 
-            Thread t = null;
+            
             try
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                t = new Thread(new ThreadStart(StartForm));
+                frmLoading.ShowLoadingScreen();
                 loadScheduleData();
-            }
-            catch (ThreadAbortException)
-            {
-                // ignore it
             }
             catch (Exception ex)
             {
@@ -875,7 +871,7 @@ namespace FactoryManagementSoftware.UI
             }
             finally
             {
-                t.Abort();
+                frmLoading.CloseForm();
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
 

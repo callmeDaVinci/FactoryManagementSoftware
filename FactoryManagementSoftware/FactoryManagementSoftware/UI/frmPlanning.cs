@@ -2325,8 +2325,9 @@ namespace FactoryManagementSoftware.UI
                 string itemCode = cmbPartCode.Text;
                 string colorMat = cmbColorMatCode.Text;
                 string color = txtColorName.Text;
-                string colorUsage = txtColorUsage.Text;
+                float colorUsage = float.TryParse(txtColorUsage.Text, out colorUsage)? colorUsage/100 : 0;
 
+                
                 if (!string.IsNullOrEmpty(itemCode))
                 {
                     Cursor = Cursors.WaitCursor; // change cursor to hourglass type

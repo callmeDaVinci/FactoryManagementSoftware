@@ -1279,6 +1279,48 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable ItemToCustomerAllTimeSearch(string customer)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                            INNER JOIN tbl_item
+                        ON tbl_trf_hist.trf_hist_item_code=tbl_item.item_code
+                        WHERE tbl_trf_hist.trf_hist_to=@customer   
+                        ORDER BY tbl_item.item_name ASC, tbl_trf_hist.trf_hist_item_code ASC, tbl_trf_hist.trf_hist_trf_date ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@customer", customer);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+                
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable ItemToCustomerSearch(string start, string end, string customer)
         {
             //static methodd to connect database

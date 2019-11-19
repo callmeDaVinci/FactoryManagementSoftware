@@ -51,6 +51,7 @@ namespace FactoryManagementSoftware.UI
             
             if (validation())
             {
+               
                 int userID = dalUser.userLogin(username, password);
                 if (userID != -1)
                 {
@@ -63,16 +64,19 @@ namespace FactoryManagementSoftware.UI
                     }   
                     else
                     {
+                        frmLoading.ShowLoadingScreen();
                         tool.historyRecord(text.LogIn, text.Success, DateTime.Now, userID);
                         MainDashboard frm = new MainDashboard(userID);
                         frm.Show();
+                        frmLoading.CloseForm();
                         Hide();
                     }  
                 }
                 else
                 {
                     MessageBox.Show("username or password invalid. please try again.");
-                } 
+                }
+                
             }
         }
 

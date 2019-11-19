@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>82</ApplicationRevision>
+    <ApplicationRevision>84</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -67,6 +67,11 @@
     <ApplicationIcon>safety_SYA_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="itextsharp">
       <HintPath>..\..\..\..\Download\itextsharp\itextsharp.dll</HintPath>
     </Reference>
@@ -76,6 +81,9 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -496,6 +504,12 @@
     <Compile Include="UI\frmPMMADateEdit.Designer.cs">
       <DependentUpon>frmPMMADateEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmReport.Designer.cs">
+      <DependentUpon>frmReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmStockReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -746,6 +760,9 @@
     <EmbeddedResource Include="UI\frmPMMADateEdit.resx">
       <DependentUpon>frmPMMADateEdit.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmReport.resx">
+      <DependentUpon>frmReport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockReport.resx">
       <DependentUpon>frmStockReport.cs</DependentUpon>
     </EmbeddedResource>
@@ -779,6 +796,7 @@
     <EmbeddedResource Include="UI\NewInOutReport.resx">
       <DependentUpon>NewInOutReport.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Report1.rdlc" />
     <None Include="FactoryManagementSoftware_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
