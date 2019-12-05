@@ -1315,6 +1315,7 @@ namespace FactoryManagementSoftware.UI
                             if (row[headerStatus].ToString().Equals(headerToRun))
                             {
                                 uPlanning.plan_status = text.planning_status_running;
+                                uPlanning.recording = true;
                             }
                             else
                             {
@@ -1327,6 +1328,7 @@ namespace FactoryManagementSoftware.UI
                             uPlanning.plan_note = row[headerRemark].ToString();
                             uPlanning.plan_updated_date = DateTime.Now;
                             uPlanning.plan_updated_by = MainDashboard.USER_ID;
+                            
 
                             DataTable dt_Mac = dalPlanning.macIDSearch(MacID);
                             DataRow oldData = tool.getDataRowFromDataTableByPlanID(dt_Mac, row[headerPlanID].ToString());

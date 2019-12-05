@@ -20,6 +20,8 @@ namespace FactoryManagementSoftware.UI
             try
             {
                 InitializeComponent();
+                dt_Fac = dalFac.Select();
+                dt_Cust = dalCust.Select();
                 addDataToTrfHistDateCMB();
                 userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
 
@@ -54,7 +56,8 @@ namespace FactoryManagementSoftware.UI
         readonly string pastYear = "365";
         readonly string All = "ALL";
 
-        
+        DataTable dt_Fac;
+        DataTable dt_Cust;
 
         private DateTime updatedTime;
 
@@ -71,6 +74,8 @@ namespace FactoryManagementSoftware.UI
         facDAL dalFac = new facDAL();
 
         itemDAL dalItem = new itemDAL();
+
+        custDAL dalCust = new custDAL();
 
         itemCatDAL dalItemCat = new itemCatDAL();
 
@@ -225,6 +230,8 @@ namespace FactoryManagementSoftware.UI
             try
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                dt_Fac = dalFac.Select();
+                dt_Cust = dalCust.Select();
                 loadItemCategoryData();
                 itemListLoaded = false;
                 loadItemList();
@@ -661,6 +668,19 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region get data/validation
+
+        private bool CheckIfTrfOutToCustomer(string trfFrom, string trfTo)
+        {
+            bool fromFactory = tool.IfFactoryExists(dt_Fac, trfFrom);
+            bool toCustomer = tool.IfCustomer(dt_Cust, trfTo);
+
+            if (fromFactory && toCustomer)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         private float getQty(string itemCode, string factoryName)
         {
@@ -1644,58 +1664,72 @@ namespace FactoryManagementSoftware.UI
 
             DataGridView dgv = dgvTrf;
             dgv.SuspendLayout();
-            int n = e.RowIndex;
+            int row = e.RowIndex;
+            int col = e.ColumnIndex;
             string itemCode = null;
 
-            if (dgv.Columns[e.ColumnIndex].Name == daltrfHist.TrfItemCode)
+            if (dgv.Columns[col].Name == daltrfHist.TrfItemCode)
             {
-                itemCode = dgv.Rows[n].Cells[daltrfHist.TrfItemCode].Value.ToString();
+                itemCode = dgv.Rows[row].Cells[daltrfHist.TrfItemCode].Value.ToString();
 
                 if (ifGotChild(itemCode))
                 {
                     if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                     {
                         //dgv.Rows[n].Cells[daltrfHist.TrfItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
-                        dgv.Rows[n].Cells[daltrfHist.TrfItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[row].Cells[daltrfHist.TrfItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
 
                     }
                     else if (!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                     {
                         //dgv.Rows[n].Cells[daltrfHist.TrfItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
-                        dgv.Rows[n].Cells[daltrfHist.TrfItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[row].Cells[daltrfHist.TrfItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
 
                     }
                     else
                     {
                         //dgv.Rows[n].Cells[daltrfHist.TrfItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
-                        dgv.Rows[n].Cells[daltrfHist.TrfItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[row].Cells[daltrfHist.TrfItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
                 }
             }
-            else if (dgv.Columns[e.ColumnIndex].Name == daltrfHist.TrfResult)
+            else if (dgv.Columns[col].Name == daltrfHist.TrfResult)
             {
-                if (dgv.Rows[n].Cells[daltrfHist.TrfResult].Value != null)
+                if (dgv.Rows[row].Cells[daltrfHist.TrfResult].Value != null)
                 {
-                    if (dgv.Rows[n].Cells[daltrfHist.TrfResult].Value.ToString().Equals("Undo"))
+                    if (dgv.Rows[row].Cells[daltrfHist.TrfResult].Value.ToString().Equals("Undo"))
                     {
-                        dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Red;
-                        dgv.Rows[n].DefaultCellStyle.Font = new Font(Font, FontStyle.Strikeout);
+                        dgv.Rows[row].DefaultCellStyle.ForeColor = Color.Red;
+                        dgv.Rows[row].DefaultCellStyle.Font = new Font(Font, FontStyle.Strikeout);
                     }
-                    else if (dgv.Rows[n].Cells[daltrfHist.TrfResult].Value.ToString().Equals("Failed"))
+                    else if (dgv.Rows[row].Cells[daltrfHist.TrfResult].Value.ToString().Equals("Failed"))
                     {
-                        dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Red;
+                        dgv.Rows[row].DefaultCellStyle.ForeColor = Color.Red;
                         //dgv.Rows[n].DefaultCellStyle.Font = new Font(Font, FontStyle.Strikeout);
                     }
                     else
                     {
-                        dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Black;
-                        dgv.Rows[n].DefaultCellStyle.Font = new Font(Font, FontStyle.Regular);
+                        dgv.Rows[row].DefaultCellStyle.ForeColor = Color.Black;
+                        dgv.Rows[row].DefaultCellStyle.Font = new Font(Font, FontStyle.Regular);
+
+                        string from = dgv.Rows[row].Cells[daltrfHist.TrfFrom].Value.ToString();
+                        string to = dgv.Rows[row].Cells[daltrfHist.TrfTo].Value.ToString();
+
+                        if(CheckIfTrfOutToCustomer(from, to))
+                        {
+                            dgv.Rows[row].Cells[daltrfHist.TrfQty].Style.BackColor = Color.FromArgb(255, 118, 117);
+                        }
+                        else
+                        {
+                            dgv.Rows[row].Cells[daltrfHist.TrfQty].Style.BackColor = dgv.Rows[row].Cells[daltrfHist.TrfItemCode].Style.BackColor;
+                        }
+
                     }
                 }
             }
-            else if (dgv.Columns[e.ColumnIndex].Name == daltrfHist.TrfQty)
+            else if (dgv.Columns[col].Name == daltrfHist.TrfQty)
             {
-                double d = Convert.ToDouble(dgv.Rows[n].Cells[daltrfHist.TrfQty].Value);
+                double d = Convert.ToDouble(dgv.Rows[row].Cells[daltrfHist.TrfQty].Value);
                 if ((d % 1) > 0)
                 {
                     //is decimal
@@ -1873,9 +1907,13 @@ namespace FactoryManagementSoftware.UI
 
         private void btnTrfHistSearch_Click(object sender, EventArgs e)
         {
-            frmTransferHistory frm = new frmTransferHistory();
-            
-            frm.ShowDialog();//Item Edit
+            frmTransferHistory frm = new frmTransferHistory
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            frm.Show();
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)

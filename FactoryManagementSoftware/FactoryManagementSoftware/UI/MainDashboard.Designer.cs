@@ -41,6 +41,8 @@
             this.categoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dAILYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.productionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.forecastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,7 +56,6 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.productionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -66,6 +67,7 @@
             this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.adminToolStripMenuItem,
+            this.dAILYToolStripMenuItem,
             this.productionToolStripMenuItem,
             this.stockToolStripMenuItem,
             this.orderToolStripMenuItem1,
@@ -161,6 +163,20 @@
             this.dataToolStripMenuItem.Text = "Data";
             this.dataToolStripMenuItem.Click += new System.EventHandler(this.dataToolStripMenuItem_Click);
             // 
+            // dAILYToolStripMenuItem
+            // 
+            this.dAILYToolStripMenuItem.Name = "dAILYToolStripMenuItem";
+            this.dAILYToolStripMenuItem.Size = new System.Drawing.Size(66, 27);
+            this.dAILYToolStripMenuItem.Text = "DAILY";
+            this.dAILYToolStripMenuItem.Click += new System.EventHandler(this.dAILYToolStripMenuItem_Click);
+            // 
+            // productionToolStripMenuItem
+            // 
+            this.productionToolStripMenuItem.Name = "productionToolStripMenuItem";
+            this.productionToolStripMenuItem.Size = new System.Drawing.Size(130, 27);
+            this.productionToolStripMenuItem.Text = "PRODUCTION";
+            this.productionToolStripMenuItem.Click += new System.EventHandler(this.productionToolStripMenuItem_Click);
+            // 
             // stockToolStripMenuItem
             // 
             this.stockToolStripMenuItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
@@ -208,6 +224,7 @@
             this.reportToolStripMenuItem.Size = new System.Drawing.Size(82, 27);
             this.reportToolStripMenuItem.Text = "REPORT";
             this.reportToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.reportToolStripMenuItem.Click += new System.EventHandler(this.reportToolStripMenuItem_Click);
             // 
             // stockReportToolStripMenuItem
             // 
@@ -259,13 +276,6 @@
             // 
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
-            // 
-            // productionToolStripMenuItem
-            // 
-            this.productionToolStripMenuItem.Name = "productionToolStripMenuItem";
-            this.productionToolStripMenuItem.Size = new System.Drawing.Size(130, 27);
-            this.productionToolStripMenuItem.Text = "PRODUCTION";
-            this.productionToolStripMenuItem.Click += new System.EventHandler(this.productionToolStripMenuItem_Click);
             // 
             // MainDashboard
             // 
@@ -323,6 +333,7 @@
         private System.Windows.Forms.ToolStripMenuItem pMMAToolStripMenuItem;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ToolStripMenuItem productionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dAILYToolStripMenuItem;
     }
 }
 

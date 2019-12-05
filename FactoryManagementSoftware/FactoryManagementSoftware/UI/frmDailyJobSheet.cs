@@ -10,12 +10,17 @@ using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmReport : Form
+    public partial class frmDailyJobSheet : Form
     {
-        public frmReport()
+        public frmDailyJobSheet()
         {
             InitializeComponent();
-            
+        }
+
+        private void frmDailyJobSheet_Load(object sender, EventArgs e)
+        {
+
+            this.reportViewer1.RefreshReport();
         }
     }
 }

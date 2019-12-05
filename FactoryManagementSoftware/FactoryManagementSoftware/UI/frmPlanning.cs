@@ -537,6 +537,7 @@ namespace FactoryManagementSoftware.UI
                 else
                 {
                     month = 1;
+                    year++;
                 }
 
                 monthName = new DateTime(year, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
@@ -554,6 +555,7 @@ namespace FactoryManagementSoftware.UI
                 else
                 {
                     month = 1;
+                    year++;
                 }
 
                 monthName = new DateTime(year, month, 1).ToString("MMM", CultureInfo.InvariantCulture);

@@ -44,6 +44,8 @@ namespace FactoryManagementSoftware.DAL
         public string machineID { get; } = "machine_id";
         public string familyWith { get; } = "family_with";
 
+        public string recording { get; } = "recording";
+
         #endregion
 
         #region variable/class object declare
@@ -261,6 +263,49 @@ namespace FactoryManagementSoftware.DAL
 
         #region Update data in Database
 
+        public bool RecordingUpdate(PlanningBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_plan SET
+                                recording=@recording
+                                WHERE plan_id=@plan_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@recording", u.recording);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         public bool statusUpdate(PlanningBLL u)
         {
             bool isSuccess = false;
@@ -280,6 +325,56 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@plan_status", u.plan_status);
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool statusAndRecordingUpdate(PlanningBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_plan SET
+                                plan_status=@plan_status,
+                                plan_updated_date=@plan_updated_date,
+                                plan_updated_by=@plan_updated_by,
+                                recording=@recording
+                                WHERE plan_id=@plan_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@plan_status", u.plan_status);
+                cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
+                cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
+                cmd.Parameters.AddWithValue("@recording", u.recording);
 
                 conn.Open();
 
@@ -381,6 +476,60 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool scheduleDataAndRecordingUpdate(PlanningBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_plan SET
+                                plan_status=@plan_status,family_with=@family_with, production_start_date=@production_start_date, production_end_date=@production_end_date,
+                                plan_note=@plan_note,
+                                plan_updated_date=@plan_updated_date,
+                                plan_updated_by=@plan_updated_by,
+                                recording=@recording
+                                WHERE plan_id=@plan_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@plan_status", u.plan_status);
+                cmd.Parameters.AddWithValue("@family_with", u.family_with);
+                cmd.Parameters.AddWithValue("@production_start_date", u.production_start_date);
+                cmd.Parameters.AddWithValue("@production_end_date", u.production_end_date);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
+                cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
+                cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
+                cmd.Parameters.AddWithValue("@recording", u.recording);
 
                 conn.Open();
 

@@ -63,7 +63,7 @@
             this.cbRunning = new System.Windows.Forms.CheckBox();
             this.cbWarning = new System.Windows.Forms.CheckBox();
             this.lblResetAll = new System.Windows.Forms.Label();
-            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpButton = new System.Windows.Forms.TableLayoutPanel();
             this.btnFilter = new System.Windows.Forms.Button();
             this.btnMatList = new System.Windows.Forms.Button();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
@@ -83,7 +83,7 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel7.SuspendLayout();
+            this.tlpButton.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.tlpMainSchedule.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
@@ -164,7 +164,7 @@
             this.btnPlan.Name = "btnPlan";
             this.btnPlan.Size = new System.Drawing.Size(90, 36);
             this.btnPlan.TabIndex = 112;
-            this.btnPlan.Text = "PLAN";
+            this.btnPlan.Text = "PLANNING";
             this.btnPlan.UseVisualStyleBackColor = false;
             this.btnPlan.Click += new System.EventHandler(this.btnPlan_Click);
             // 
@@ -565,24 +565,24 @@
             this.lblResetAll.Text = "RESET ALL";
             this.lblResetAll.Click += new System.EventHandler(this.ResetAll_Click);
             // 
-            // tableLayoutPanel7
+            // tlpButton
             // 
-            this.tableLayoutPanel7.ColumnCount = 4;
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel7.Controls.Add(this.btnFilter, 0, 0);
-            this.tableLayoutPanel7.Controls.Add(this.btnExcel, 3, 0);
-            this.tableLayoutPanel7.Controls.Add(this.btnMatList, 2, 0);
-            this.tableLayoutPanel7.Controls.Add(this.btnPlan, 1, 0);
-            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-            this.tableLayoutPanel7.RowCount = 1;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(1528, 42);
-            this.tableLayoutPanel7.TabIndex = 115;
+            this.tlpButton.ColumnCount = 4;
+            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpButton.Controls.Add(this.btnFilter, 0, 0);
+            this.tlpButton.Controls.Add(this.btnExcel, 3, 0);
+            this.tlpButton.Controls.Add(this.btnMatList, 2, 0);
+            this.tlpButton.Controls.Add(this.btnPlan, 1, 0);
+            this.tlpButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpButton.Location = new System.Drawing.Point(3, 3);
+            this.tlpButton.Name = "tlpButton";
+            this.tlpButton.RowCount = 1;
+            this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpButton.Size = new System.Drawing.Size(1528, 42);
+            this.tlpButton.TabIndex = 115;
             // 
             // btnFilter
             // 
@@ -640,7 +640,7 @@
             this.tlpMainSchedule.ColumnCount = 1;
             this.tlpMainSchedule.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMainSchedule.Controls.Add(this.tableLayoutPanel10, 0, 3);
-            this.tlpMainSchedule.Controls.Add(this.tableLayoutPanel7, 0, 0);
+            this.tlpMainSchedule.Controls.Add(this.tlpButton, 0, 0);
             this.tlpMainSchedule.Controls.Add(this.dgvSchedule, 0, 4);
             this.tlpMainSchedule.Controls.Add(this.groupBox1, 0, 1);
             this.tlpMainSchedule.Controls.Add(this.tableLayoutPanel8, 0, 2);
@@ -726,7 +726,7 @@
             this.groupBox5.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.tableLayoutPanel7.ResumeLayout(false);
+            this.tlpButton.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
             this.tlpMainSchedule.ResumeLayout(false);
@@ -771,7 +771,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.TableLayoutPanel tlpButton;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
         private System.Windows.Forms.TableLayoutPanel tlpMainSchedule;
         private System.Windows.Forms.Button btnMatList;

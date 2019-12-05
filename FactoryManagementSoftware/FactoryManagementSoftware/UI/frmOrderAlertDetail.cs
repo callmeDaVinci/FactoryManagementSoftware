@@ -117,7 +117,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerBalanceFour].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerPendingOrder].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-            int forecastCurrentMonth = DateTime.Parse("1." + getCurrentForecastMonth() + " 2008").Month;
+            int forecastCurrentMonth = DateTime.Parse("1." + DateTime.Now.Month + " 2008").Month;
             int forecastNextMonth = getNextMonth(forecastCurrentMonth);
             int forecastNextNextMonth = getNextMonth(forecastNextMonth);
             int forecastNextNextNextMonth = getNextMonth(forecastNextNextMonth);
@@ -357,7 +357,7 @@ namespace FactoryManagementSoftware.UI
         {
             string monthName = "";
 
-            int forecastCurrentMonthNum = DateTime.Parse("1." + getCurrentForecastMonth() + " 2008").Month;
+            int forecastCurrentMonthNum = DateTime.Parse("1." + DateTime.Now.Month + " 2008").Month;
             monthName = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonthNum).ToUpper().ToString();
 
             if (type == 2)
@@ -1032,8 +1032,8 @@ namespace FactoryManagementSoftware.UI
                     totalMatUsed += Convert.ToSingle(row[headerMatUsed]);
                 }
 
-                dt.Rows[dt.Rows.Count - 1][headerTotal] = totalMatUsed;
-
+                dt.Rows[dt.Rows.Count - 1][headerTotal] = decimal.Round((decimal)totalMatUsed, 2, MidpointRounding.AwayFromZero);
+                
                 dgvMaterialUsedForecast.DataSource = dt;
                 dgvMatUsedForecastUIEdit(dgvMaterialUsedForecast);
                 dgvMaterialUsedForecast.ClearSelection();
@@ -1048,7 +1048,7 @@ namespace FactoryManagementSoftware.UI
             {
                 if(frmOrder.zeroCost)
                 {
-                    loadMatUsedData(tool.insertZeroCostMaterialUsedData(tool.getCustName(1)));
+                    loadMatUsedData(tool.InsertZeroCostMaterialUsedData(tool.getCustName(1)));
                 }
                 else
                 {
@@ -1061,7 +1061,7 @@ namespace FactoryManagementSoftware.UI
             {
                 if (frmOrder.zeroCost)
                 {
-                    loadMBUsedData(tool.insertZeroCostMaterialUsedData(tool.getCustName(1)));
+                    loadMBUsedData(tool.InsertZeroCostMaterialUsedData(tool.getCustName(1)));
                 }
                 else
                 {

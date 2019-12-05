@@ -253,7 +253,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerBalanceFour].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerPendingOrder].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-            int forecastCurrentMonth = DateTime.Parse("1." + getCurrentForecastMonth() + " 2008").Month;
+            int forecastCurrentMonth = DateTime.Parse("1." + DateTime.Now.Month + " 2008").Month;
             int forecastNextMonth = getNextMonth(forecastCurrentMonth);
             int forecastNextNextMonth = getNextMonth(forecastNextMonth);
             int forecastNextNextNextMonth = getNextMonth(forecastNextNextMonth);
@@ -302,39 +302,6 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerPending].DefaultCellStyle.Format = "0.###";
             dgv.Columns[headerReceived].DefaultCellStyle.Format = "0.###";
 
-        }
-
-        private void createOrderAlertDatagridview()
-        {
-            DataGridView dgv = dgvOrderAlert;
-            dgv.Columns.Clear();
-
-            int forecastCurrentMonth = DateTime.Parse("1." + getCurrentForecastMonth() + " 2008").Month;
-            int forecastNextMonth = getNextMonth(forecastCurrentMonth);
-            int forecastNextNextMonth = getNextMonth(forecastNextMonth);
-            int forecastNextNextNextMonth = getNextMonth(forecastNextNextMonth);
-
-            string balanceOneName = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonth).ToUpper().ToString() + " BAL";
-            string balanceTwoName = new DateTimeFormatInfo().GetMonthName(forecastNextMonth).ToUpper().ToString() + " BAL";
-            string balanceThreeName = new DateTimeFormatInfo().GetMonthName(forecastNextNextMonth).ToUpper().ToString() + " BAL";
-            string balanceFourName = new DateTimeFormatInfo().GetMonthName(forecastNextNextNextMonth).ToUpper().ToString() + " BAL";
-
-            tool.AddTextBoxColumns(dgv, headerIndex, headerIndex, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, headerCode, dalItem.ItemCode, Fill);
-            tool.AddTextBoxColumns(dgv, headerName, dalItem.ItemName, Fill);
-            tool.AddTextBoxColumns(dgv, headerReadyStock, dalItem.ItemQty, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, balanceOneName, headerBalanceOne, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, balanceTwoName, headerBalanceTwo, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, balanceThreeName, headerBalanceThree, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, balanceFourName, headerBalanceFour, DisplayedCells);
-
-            dgv.Columns[dalItem.ItemQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerBalanceOne].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerBalanceTwo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerBalanceThree].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerBalanceFour].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-
-            dgv.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
         }
 
         #endregion
@@ -921,7 +888,7 @@ namespace FactoryManagementSoftware.UI
 
             if(cbZeroCost.Checked)
             {
-                dtMat = tool.insertZeroCostMaterialUsedData(tool.getCustName(1));
+                dtMat = tool.InsertZeroCostMaterialUsedData(tool.getCustName(1));
             }
             else
             {

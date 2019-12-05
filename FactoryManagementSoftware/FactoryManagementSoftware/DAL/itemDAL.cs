@@ -1442,7 +1442,7 @@ namespace FactoryManagementSoftware.DAL
                 else
                 {
                     //sql query to get data from database
-                    String sql = "SELECT * FROM tbl_item WHERE item_cat=@category";
+                    String sql = "SELECT * FROM tbl_item WHERE item_cat=@category ORDER BY item_name ASC, item_code ASC";
 
                     //for executing command
                     SqlCommand cmd = new SqlCommand(sql, conn);

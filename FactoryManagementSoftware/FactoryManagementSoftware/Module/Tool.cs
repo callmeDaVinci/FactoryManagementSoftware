@@ -2023,7 +2023,7 @@ namespace FactoryManagementSoftware.Module
                     //counter++;
                     itemCode = item["item_code"].ToString();
 
-                    if(itemCode.Equals("V96LAR000"))
+                    if(itemCode.Equals("V02K81000"))
                     {
                         float test = 0;
                     }
@@ -2922,10 +2922,11 @@ namespace FactoryManagementSoftware.Module
             return dt_Data;
         }
 
-        public DataTable insertZeroCostMaterialUsedData(string customer)
+        public DataTable InsertZeroCostMaterialUsedData(string customer)
         {
             DataTable dt;
             DataTable dt_ItemForecast;
+
             if (customer.Equals("All"))
             {
                 dt = dalItemCust.Select();//load all customer's item list
@@ -2976,9 +2977,9 @@ namespace FactoryManagementSoftware.Module
                 {
                     //counter++;
                     itemCode = item["item_code"].ToString();
-                    
 
-                    if (itemCode.Equals("V0LKM4000"))
+
+                    if (itemCode.Equals("V0KPCH200"))
                     {
                         float test = 0;
                     }
@@ -3362,16 +3363,16 @@ namespace FactoryManagementSoftware.Module
                                         dtMat_row[headerIndex] = forecastIndex;
                                         dtMat_row[headerMat] = child_Mat;
 
-                                        //if (child_Mat.Equals("ABS 450Y MH1"))
-                                        //{
-                                        //    string testCode = itemCode;
-                                        //    float tes1t = bal_1;
-                                            
-                                        //    float tes2t = bal_2;
-                                        //    float tes3t = bal_3;
-                                        //    float tes4t = bal_4;
+                                        if (child_Mat.Equals("ABS 450Y MH1"))
+                                        {
+                                            string testCode = itemCode;
+                                            float tes1t = bal_1;
 
-                                        //}
+                                            float tes2t = bal_2;
+                                            float tes3t = bal_3;
+                                            float tes4t = bal_4;
+
+                                        }
 
                                         if (Join["child_code"].ToString().Equals("C92HZF100"))
                                         {
@@ -3392,10 +3393,10 @@ namespace FactoryManagementSoftware.Module
                                         dtMat_row[headerWastage] = Join["child_wastage_allowed"].ToString();
                                         dtMat_row[headerReadyStock] = child_ReadyStock;
                                         dtMat_row[headerBalanceZero] = child_ReadyStock;
-                                        dtMat_row[headerBalanceOne] = Convert.ToInt32(childBal_1);
-                                        dtMat_row[headerBalanceTwo] = Convert.ToInt32(childBal_2);
-                                        dtMat_row[headerBalanceThree] = Convert.ToInt32(childBal_3);
-                                        dtMat_row[headerBalanceFour] = Convert.ToInt32(childBal_4);
+                                        dtMat_row[headerBalanceOne] = Convert.ToInt32(bal_1);
+                                        dtMat_row[headerBalanceTwo] = Convert.ToInt32(bal_2);
+                                        dtMat_row[headerBalanceThree] = Convert.ToInt32(bal_3);
+                                        dtMat_row[headerBalanceFour] = Convert.ToInt32(bal_4);
 
                                         dtMat_row[headerOutOne] = 0;
                                         dtMat_row[headerOutTwo] = 0;
@@ -4518,7 +4519,7 @@ namespace FactoryManagementSoftware.Module
 
             foreach (DataRow join in dt.Rows)
             {
-                if(join["parent_code"].ToString().Equals(itemCode))
+                if(join["parent_code"].ToString().Equals(itemCode) && (join["child_cat"].ToString().Equals("Part") || join["child_cat"].ToString().Equals("Sub Material")))
                 {
                     return true;
                 }

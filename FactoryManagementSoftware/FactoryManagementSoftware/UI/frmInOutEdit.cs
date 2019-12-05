@@ -32,6 +32,18 @@ namespace FactoryManagementSoftware.UI
             callFromMatChecklist = true;
         }
 
+        public frmInOutEdit(DataTable dt, bool _fromProductionRecord)
+        {
+            InitializeComponent();
+            //#############################################################################################################################################
+            dtpTrfDate.Value = DateTime.Today.AddDays(-1);
+            //dtpTrfDate.Value = DateTime.Today.AddDays(-30);
+            createDGV();
+
+            dt_ProductionRecord = dt;
+            callFromProductionRecord = true;
+            callFromMatChecklist = false;
+        }
         static public bool updateSuccess = false;
 
         #region create class object (database)
@@ -92,10 +104,18 @@ namespace FactoryManagementSoftware.UI
 
         readonly string headerType = "TYPE";
         readonly string headerMatCode = "MATERIAL";
-        readonly string headIndex = "#";
+        readonly string headerIndex = "#";
         readonly string headerFrom = "FROM";
         readonly string headerTo = "TO";
         readonly string headerQty = "QTY (KG/PIECE)";
+
+        readonly string header_Cat = "Cat";
+        readonly string header_ProDate = "DATE";
+        readonly string header_ItemCode = "ITEM CODE";
+        readonly string header_From = "FROM";
+        readonly string header_To = "TO";
+        readonly string header_Qty = "QTY";
+        readonly private string header_PlanID = "PLAN ID";
 
         private string date = "!";
         private string category = "!";
@@ -112,9 +132,11 @@ namespace FactoryManagementSoftware.UI
         private int selectedRow = -1;
         private bool dgvEdit = false;
         private bool callFromMatChecklist = false;
+        private bool callFromProductionRecord = false;
         static public bool matTrfSuccess = false;
 
         static public DataTable dt_MatChecklist;
+        static public DataTable dt_ProductionRecord;
         DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
         DataGridViewAutoSizeColumnMode DisplayedCells = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
@@ -375,9 +397,13 @@ namespace FactoryManagementSoftware.UI
 
             txtTrfQty.Focus();
 
-            if(callFromMatChecklist)
+            if (callFromMatChecklist)
             {
                 addToDGV(dt_MatChecklist);
+            }
+            else if (callFromProductionRecord)
+            {
+                addToDGV(dt_ProductionRecord,callFromProductionRecord);
             }
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
@@ -711,7 +737,16 @@ namespace FactoryManagementSoftware.UI
 
                         facStockDAL dalFacStock = new facStockDAL();
                         float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
-                        float transferQty = Convert.ToSingle(txtTrfQty.Text);
+
+                        float transferQty = 0;
+                        if (callFromProductionRecord)
+                        {
+                            transferQty = qty;
+                        }
+                        else
+                        {
+                            transferQty = Convert.ToSingle(txtTrfQty.Text);
+                        }
 
                         if (facStock - transferQty < 0)
                         {
@@ -1411,6 +1446,68 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[n].Selected = true;
         }
 
+        private void addToDGV(DataTable dt, bool fromProductionRecord)
+        {
+            DataGridView dgv = dgvTransfer;
+            DataTable dt_ItemInfo = dalItem.Select();
+            int n;
+            if (dgvEdit)
+            {
+                n = selectedRow;
+            }
+            else
+            {
+                n = dgv.Rows.Add();
+                //index++;
+                index = n + 1;
+                dgv.Rows[n].Cells[IndexColumnName].Value = index;
+            }
+            string ProDate = null, itemCat = null, itemCode = null, itemName = null, fromCat = null, from = null, to = null, proQty = null, planID = null, unit = null;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                ProDate = row[header_ProDate].ToString();
+                itemCat = row[header_Cat].ToString();
+                itemCode = row[header_ItemCode].ToString();
+                itemName = tool.getItemNameFromDataTable(dt_ItemInfo, itemCode);
+                from = row[header_From].ToString();
+                to = row[header_To].ToString();
+                proQty = row[header_Qty].ToString();
+                planID = row[header_PlanID].ToString();
+                
+            }
+
+            dtpTrfDate.Text = ProDate;
+            if (itemCat == text.Cat_SubMat || itemCat == text.Cat_Part)
+            {
+                unit = text.Unit_Piece;
+            }
+            else
+            {
+                unit = text.Unit_KG;
+            }
+
+            dgv.Rows[n].Cells[DateColumnName].Value = ProDate;
+            dgv.Rows[n].Cells[CatColumnName].Value = itemCat;
+            dgv.Rows[n].Cells[CodeColumnName].Value = itemCode;
+            dgv.Rows[n].Cells[NameColumnName].Value = itemName;
+            dgv.Rows[n].Cells[FromCatColumnName].Value = text.Production;
+            dgv.Rows[n].Cells[FromColumnName].Value = "";
+            dgv.Rows[n].Cells[QtyColumnName].Value = proQty;
+            dgv.Rows[n].Cells[UnitColumnName].Value = unit;
+            dgv.Rows[n].Cells[NoteColumnName].Value = "[For Plan " + planID + "]";
+            dgv.Rows[n].Cells[ToCatColumnName].Value = text.Factory;
+            dgv.Rows[n].Cells[ToColumnName].Value = to;
+            dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
+
+            if (tool.ifGotChild(itemCode))
+            {
+                productionChildStockOut(to, itemCode, Convert.ToSingle(proQty), -1);
+            }
+            dgv.ClearSelection();
+            dgv.Rows[n].Selected = true;
+        }
+
         private void addToDGV(DataTable dt)
         {
             DataGridView dgv = dgvTransfer;
@@ -1421,7 +1518,7 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow row in dt.Rows)
             {
                 n = dgv.Rows.Add();
-                index = Convert.ToInt32(row[headIndex].ToString());
+                index = Convert.ToInt32(row[headerIndex].ToString());
                 string itemCode = row[headerMatCode].ToString();
                 string itemCat = row[headerType].ToString();
                 string from = row[headerFrom].ToString();
@@ -1445,8 +1542,17 @@ namespace FactoryManagementSoftware.UI
                 dgv.Rows[n].Cells[NameColumnName].Value = tool.getItemNameFromDataTable(dt_ItemInfo,itemCode);
                 dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
                 dgv.Rows[n].Cells[FromColumnName].Value = from;
-                dgv.Rows[n].Cells[ToCatColumnName].Value = text.Factory;
-                dgv.Rows[n].Cells[ToColumnName].Value = to;
+
+                if(tool.IfFactoryExists(to))
+                {
+                    dgv.Rows[n].Cells[ToCatColumnName].Value = text.Factory;
+                    dgv.Rows[n].Cells[ToColumnName].Value = to;
+                }
+                else
+                {
+                    dgv.Rows[n].Cells[ToCatColumnName].Value = to;
+                }
+
                 dgv.Rows[n].Cells[QtyColumnName].Value = qty;
 
 

@@ -709,6 +709,9 @@ namespace FactoryManagementSoftware.UI
                             string trfFrom = trfRow[dalTrfHist.TrfFrom].ToString();
                             string trfTo = trfRow[dalTrfHist.TrfTo].ToString();
                             double trfQty = double.TryParse(trfRow[dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : 0;
+
+                            trfQty = Math.Round(trfQty, 2);
+
                             DateTime trfDate = DateTime.TryParse(trfRow[dalTrfHist.TrfDate].ToString(), out trfDate) ? trfDate : DateTime.MaxValue;
                             //bool matched = false;
 
@@ -884,7 +887,7 @@ namespace FactoryManagementSoftware.UI
 
                     dt_TrfHist.AcceptChanges();
 
-                    if (true)
+                    if (itemSearchMatched)
                     {
                         //print datarow to datatable
                         if (inOutType == inOutType_In)
@@ -893,6 +896,8 @@ namespace FactoryManagementSoftware.UI
                             {
                                 row_In[header_Customer] = itemCustOrCat;
                             }
+
+                            totalTrfInQty = Math.Round(totalTrfInQty, 2);
 
                             row_In[header_Index] = index;
                             row_In[header_ItemCode] = itemCode;
@@ -908,6 +913,8 @@ namespace FactoryManagementSoftware.UI
                                 row_Out[header_Customer] = itemCustOrCat;
                             }
 
+                            totalTrfOutQty = Math.Round(totalTrfOutQty, 2);
+
                             row_Out[header_Index] = index;
                             row_Out[header_ItemCode] = itemCode;
                             row_Out[header_ItemName] = itemName;
@@ -922,6 +929,9 @@ namespace FactoryManagementSoftware.UI
                                 row_In[header_Customer] = itemCustOrCat;
                                 row_Out[header_Customer] = itemCustOrCat;
                             }
+
+                            totalTrfInQty = Math.Round(totalTrfInQty, 2);
+                            totalTrfOutQty = Math.Round(totalTrfOutQty, 2);
 
                             row_In[header_Index] = index;
                             row_In[header_ItemCode] = itemCode;

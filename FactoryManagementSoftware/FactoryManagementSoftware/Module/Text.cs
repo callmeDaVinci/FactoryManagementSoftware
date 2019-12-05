@@ -100,6 +100,10 @@ namespace FactoryManagementSoftware.Module
         public string Production { get; } = "Production";
         public string Assembly { get; } = "Assembly";
 
+        //SHIFT////////////////////////////////////////////////////////////////////////////
+        public string Shift_Morning { get; } = "MORNING";
+        public string Shift_Night { get; } = "NIGHT";
+
         //UNIT////////////////////////////////////////////////////////////////////////////////
         public string Unit_KG { get; } = "kg";
         public string Unit_g { get; } = "g";
@@ -116,6 +120,7 @@ namespace FactoryManagementSoftware.Module
         public string Cat_PolyBag { get; } = "Poly Bag";
         public string Cat_SubMat { get; } = "Sub Material";
         public string Cat_Mould { get; } = "Mould";
+        public string Cat_Packaging { get; } = "Packaging";
 
         //DGV TABLE HEADER NAME///////////////////////////////////////////////////////////////
         public string Header_Index { get; } = "#";

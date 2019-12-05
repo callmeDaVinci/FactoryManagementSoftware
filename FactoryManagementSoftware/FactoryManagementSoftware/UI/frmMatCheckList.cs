@@ -38,7 +38,7 @@ namespace FactoryManagementSoftware.UI
         Text text = new Text();
         userDAL dalUser = new userDAL();
 
-        readonly string headIndex = "#";
+        readonly string headerIndex = "#";
         readonly string headerPlanID = "PLAN ID";
         readonly string headerType = "TYPE";
         readonly string headerMatCode = "MATERIAL";
@@ -66,7 +66,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(headIndex, typeof(int));
+            dt.Columns.Add(headerIndex, typeof(int));
             dt.Columns.Add(headerType, typeof(string));
             dt.Columns.Add(headerMatCode, typeof(string));
             dt.Columns.Add(headerTotalCollect, typeof(float));
@@ -83,7 +83,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(headIndex, typeof(int));
+            dt.Columns.Add(headerIndex, typeof(int));
             dt.Columns.Add(headerFrom, typeof(string));
             dt.Columns.Add(headerTo, typeof(string));
             dt.Columns.Add(headerType, typeof(string));
@@ -100,7 +100,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvTransferUIEdit(DataGridView dgv)
         {
-            dgv.Columns[headIndex].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerIndex].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerType].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerMatCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[headerTotalCollect].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -110,7 +110,7 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[headerCollectBag].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerDeliverBag].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[headIndex].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerIndex].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerTotalCollect].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerFrom].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerTo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -130,7 +130,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvDeliverUIEdit(DataGridView dgv)
         {
-            dgv.Columns[headIndex].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerIndex].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerFrom].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerTo].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerType].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -143,7 +143,7 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[headerDeliverBag].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerPlanID].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[headIndex].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerIndex].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerFrom].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerTo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -259,7 +259,7 @@ namespace FactoryManagementSoftware.UI
                             else
                             {
                                 row_SK = dt_SK.NewRow();
-                                row_SK[headIndex] = index;
+                                row_SK[headerIndex] = index;
                                 row_SK[headerType] = cat;
                                 row_SK[headerMatCode] = matCode;
                                 row_SK[headerTotalCollect] = DBNull.Value;
@@ -290,7 +290,7 @@ namespace FactoryManagementSoftware.UI
                         else
                         {
                             row_SK = dt_SK.NewRow();
-                            row_SK[headIndex] = index;
+                            row_SK[headerIndex] = index;
                             row_SK[headerType] = cat;
                             row_SK[headerMatCode] = matCode;
                             row_SK[headerTotalCollect] = fromTotal;
@@ -332,7 +332,7 @@ namespace FactoryManagementSoftware.UI
                        
 
                         row_SK = dt_SK.NewRow();
-                        row_SK[headIndex] = index;
+                        row_SK[headerIndex] = index;
                         row_SK[headerType] = cat;
                         row_SK[headerMatCode] = preMatCode;
                         row_SK[headerTotalCollect] = fromTotal;
@@ -381,7 +381,7 @@ namespace FactoryManagementSoftware.UI
             if (unprintData)
             {
                 row_SK = dt_SK.NewRow();
-                row_SK[headIndex] = index;
+                row_SK[headerIndex] = index;
                 row_SK[headerType] = cat;
                 row_SK[headerMatCode] = preMatCode;
                 row_SK[headerTotalCollect] = fromTotal;
@@ -490,7 +490,7 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     dt_row = dt.NewRow();
-                    dt_row[headIndex] = index;
+                    dt_row[headerIndex] = index;
                     dt_row[headerType] = cat;
                     dt_row[headerMatCode] = matCode;
                     dt_row[headerPlanID] = row[dalMatPlan.PlanID];

@@ -366,6 +366,7 @@ namespace FactoryManagementSoftware.UI
                 else
                 {
                     dgv.Rows[row].Height = 60;
+                    dgv.Rows[row].DefaultCellStyle.BackColor = Color.White;
                 }
             }
             else if (dgv.Columns[col].Name == headerBal1)
@@ -996,6 +997,10 @@ namespace FactoryManagementSoftware.UI
                                 uData.outStd = uData.estimate - uData.deliveredOut;
                             }
                         }
+                        else if(uData.forecast1 > -1)
+                        {
+                            uData.outStd = uData.forecast1 - uData.deliveredOut;
+                        }
 
                         uData.bal1 = uData.ready_stock;
 
@@ -1017,6 +1022,11 @@ namespace FactoryManagementSoftware.UI
                                 uData.bal2 = uData.bal1 - uData.estimate;
                             }
                         }
+                        else if (uData.forecast2 > -1)
+                        {
+                            uData.bal2 = uData.bal1 - uData.forecast2;
+                        }
+
 
                         if (!uData.color.Equals(uData.color_mat) && !string.IsNullOrEmpty(uData.color_mat))
                         {
@@ -1124,6 +1134,10 @@ namespace FactoryManagementSoftware.UI
                                 uData.outStd = uData.estimate - uData.deliveredOut;
                             }
                         }
+                        else if(uData.forecast1 > -1)
+                        {
+                            uData.outStd = uData.forecast1 - uData.deliveredOut;
+                        }
 
                         uData.bal1 = uData.ready_stock;
 
@@ -1144,6 +1158,10 @@ namespace FactoryManagementSoftware.UI
                             {
                                 uData.bal2 = uData.bal1 - uData.estimate;
                             }
+                        }
+                        else if (uData.forecast2 > -1)
+                        {
+                            uData.bal2 = uData.bal1 - uData.forecast2;
                         }
 
                         if (!uData.color.Equals(uData.color_mat) && !string.IsNullOrEmpty(uData.color_mat))
@@ -1628,7 +1646,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     string childCode = row[dalJoin.JoinChild].ToString();
 
-                    if(childCode == "V29LAR000")
+                    if(parentCode == "CF ET 20MM 20MM")
                     {
                         float test = 0;
                     }
@@ -1695,28 +1713,63 @@ namespace FactoryManagementSoftware.UI
                         {
                             uChildData.forecast2 = 0;
 
-                            if (uParentData.bal2 - uParentData.forecast3 < 0)
+                            if (uParentData.forecast3 <= -1)
                             {
-                                uChildData.forecast3 = (uParentData.bal2 - uParentData.forecast3) * joinQty;
+                                if (uParentData.bal2 - uParentData.estimate < 0)
+                                {
+                                    uChildData.forecast3 = (uParentData.bal2 - uParentData.estimate) * joinQty;
+                                }
+                                else
+                                {
+                                    uChildData.forecast3 = 0;
+                                }
                             }
                             else
                             {
-                                uChildData.forecast3 = 0;
+                                if (uParentData.bal2 - uParentData.forecast3 < 0)
+                                {
+                                    uChildData.forecast3 = (uParentData.bal2 - uParentData.forecast3) * joinQty;
+                                }
+                                else
+                                {
+                                    uChildData.forecast3 = 0;
+                                }
                             }
+
+                            
                         }
                         else
                         {
                             if (uParentData.bal1 < 0)
                             {
-                                uChildData.forecast2 = uParentData.forecast2 * joinQty;
+                                if (uParentData.forecast2 <= -1)
+                                {
+                                    uChildData.forecast2 = uParentData.estimate * joinQty;
+                                }
+                                else
+                                {
+                                    uChildData.forecast2 = uParentData.forecast2 * joinQty;
+                                }
+                               
                             }
                             else
                             {
                                 uChildData.forecast2 = uParentData.bal2 * -1 * joinQty;
                             }
 
-                            uChildData.forecast3 = uParentData.forecast3 * joinQty;
+                            if (uParentData.forecast3 <= -1)
+                            {
+                                uChildData.forecast3 = uParentData.estimate * joinQty;
+                            }
+                            else
+                            {
+                                uChildData.forecast3 = uParentData.forecast3 * joinQty;
+                            }
+
+                            
                         }
+
+                        
 
                         uChildData.forecast1 = uChildData.forecast1 < 0 ? uChildData.forecast1 * -1 : uChildData.forecast1;
                         uChildData.forecast2 = uChildData.forecast2 < 0 ? uChildData.forecast2 * -1 : uChildData.forecast2;

@@ -62,7 +62,7 @@ namespace FactoryManagementSoftware.UI
             childTable.Rows.Add("Part");
             childTable.Rows.Add("Poly Bag");
             childTable.Rows.Add("Sub Material");
-
+            childTable.Rows.Add("Packaging");
             cmbChildCat.DataSource = childTable;
 
             cmbChildCat.DisplayMember = "CATEGORY";

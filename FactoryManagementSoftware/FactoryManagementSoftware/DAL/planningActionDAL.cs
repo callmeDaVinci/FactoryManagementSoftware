@@ -249,7 +249,16 @@ namespace FactoryManagementSoftware.DAL
         //production plan status change
         public bool planningStatusChange(PlanningBLL u, string oldStatus)
         {
-            bool success = dalPlanning.statusUpdate(u);
+            bool success;
+
+            if (u.plan_status == text.planning_status_cancelled || u.plan_status == text.planning_status_running)
+            {
+                success = dalPlanning.statusAndRecordingUpdate(u);
+            }
+            else
+            {
+                success = dalPlanning.statusUpdate(u);
+            }
 
             if (!success)
             {
@@ -446,7 +455,16 @@ namespace FactoryManagementSoftware.DAL
         //production plan status & schedule change
         public bool planningStatusAndScheduleChange(PlanningBLL u, string presentStatus, DateTime oldStart, DateTime oldEnd, int oldFamilyWith)
         {
-            bool success = dalPlanning.scheduleDataUpdate(u);
+            bool success;
+
+            if (u.plan_status == text.planning_status_cancelled || u.plan_status == text.planning_status_running)
+            {
+                success = dalPlanning.scheduleDataAndRecordingUpdate(u);
+            }
+            else
+            {
+                success = dalPlanning.scheduleDataUpdate(u);
+            }
 
             if (!success)
             {

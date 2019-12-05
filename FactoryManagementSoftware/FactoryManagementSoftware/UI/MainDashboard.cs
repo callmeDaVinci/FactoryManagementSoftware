@@ -26,6 +26,7 @@ namespace FactoryManagementSoftware.UI
         static public bool InOutReportFormOpen = false;
         static public bool PMMAFormOpen = false;
         static public bool ProductionFormOpen = false;
+        static public bool DailyJobSheetFormOpen = false;
 
         static public int USER_ID = -1;
 
@@ -70,10 +71,12 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+
         private void itemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!itemFormOpen)
             {
+
                 frmItem item = new frmItem();
                 item.MdiParent = this;
                 item.StartPosition = FormStartPosition.CenterScreen;
@@ -287,12 +290,16 @@ namespace FactoryManagementSoftware.UI
         {
             if (!ordFormOpen)
             {
-                frmOrder ord = new frmOrder();
-                ord.MdiParent = this;
-                ord.StartPosition = FormStartPosition.CenterScreen;
-                ord.WindowState = FormWindowState.Maximized;
+                frmLoading.ShowLoadingScreen();
+                frmOrder ord = new frmOrder
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
                 ord.Show();
                 ordFormOpen = true;
+                frmLoading.CloseForm();
             }
             else
             {
@@ -307,12 +314,16 @@ namespace FactoryManagementSoftware.UI
         {
             if (!inOutFormOpen)
             {
-                frmInOut inOut = new frmInOut();
-                inOut.MdiParent = this;
-                inOut.StartPosition = FormStartPosition.CenterScreen;
-                inOut.WindowState = FormWindowState.Maximized;
+                frmLoading.ShowLoadingScreen();
+                frmInOut inOut = new frmInOut
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
                 inOut.Show();
                 inOutFormOpen = true;
+                frmLoading.CloseForm();
             }
             else
             {
@@ -367,12 +378,16 @@ namespace FactoryManagementSoftware.UI
         {
             if (!forecastInputFormOpen)
             {
-                frmForecast_NEW frm = new frmForecast_NEW();
-                frm.MdiParent = this;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
+                frmLoading.ShowLoadingScreen();
+                frmForecast_NEW frm = new frmForecast_NEW
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
                 frm.Show();
                 forecastInputFormOpen = true;
+                frmLoading.CloseForm();
             }
             else
             {
@@ -455,12 +470,16 @@ namespace FactoryManagementSoftware.UI
         {
             if (!PMMAFormOpen)
             {
-                frmNewPMMA frm = new frmNewPMMA();
-                frm.MdiParent = this;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
+                frmLoading.ShowLoadingScreen();
+                frmNewPMMA frm = new frmNewPMMA
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
                 frm.Show();
                 PMMAFormOpen = true;
+                frmLoading.CloseForm();
             }
             else
             {
@@ -485,12 +504,16 @@ namespace FactoryManagementSoftware.UI
         {
             if (!ProductionFormOpen)
             {
-                frmMachineSchedule frm = new frmMachineSchedule();
-                frm.MdiParent = this;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
+                frmLoading.ShowLoadingScreen();
+                frmMachineSchedule frm = new frmMachineSchedule
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
                 frm.Show();
                 ProductionFormOpen = true;
+                frmLoading.CloseForm();
             }
             else
             {
@@ -499,6 +522,37 @@ namespace FactoryManagementSoftware.UI
                     Application.OpenForms.OfType<frmMachineSchedule>().First().BringToFront();
                 }
             }
+        }
+
+        private void dAILYToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dalUser.getPermissionLevel(USER_ID) >= ACTION_LVL_FIVE)
+            {
+                if (!DailyJobSheetFormOpen)
+                {
+                    frmLoading.ShowLoadingScreen();
+                    frmProductionRecord frm = new frmProductionRecord();
+                    frm.MdiParent = this;
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Maximized;
+                    frm.Show();
+                    DailyJobSheetFormOpen = true;
+                    frmLoading.CloseForm();
+                }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmProductionRecord>().Count() == 1)
+                    {
+                        Application.OpenForms.OfType<frmProductionRecord>().First().BringToFront();
+                    }
+                }
+            }
+                
+        }
+
+        private void reportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

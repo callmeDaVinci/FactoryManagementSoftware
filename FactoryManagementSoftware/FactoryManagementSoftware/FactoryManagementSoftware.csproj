@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>FactoryManagementSoftware</RootNamespace>
     <AssemblyName>FactoryManagementSoftware</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>84</ApplicationRevision>
+    <ApplicationRevision>94</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -52,10 +52,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2B23B89D170568062A2DA232DD05A840B767F1AA</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>0F00F4B4AEF95CE251A19F48CA540716077AC86C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>FactoryManagementSoftware_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>FactoryManagementSoftware_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -71,17 +71,41 @@
     <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="itextsharp">
       <HintPath>..\..\..\..\Download\itextsharp\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1400.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1400.0\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1400.0\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.2015.12.0.2.2403\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
     <Reference Include="SplashScreen, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SplashScreen.Winforms.1.0.0\lib\SplashScreen.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
@@ -122,6 +146,7 @@
     <Compile Include="BLL\PlanningBLL.cs" />
     <Compile Include="BLL\pmmaBLL.cs" />
     <Compile Include="BLL\pmmaDateBLL.cs" />
+    <Compile Include="BLL\ProductionRecordBLL.cs" />
     <Compile Include="BLL\trfCatBLL.cs" />
     <Compile Include="BLL\trfHistBLL.cs" />
     <Compile Include="BLL\userBLL.cs" />
@@ -148,12 +173,14 @@
     <Compile Include="DAL\planningDAL.cs" />
     <Compile Include="DAL\pmmaDAL.cs" />
     <Compile Include="DAL\pmmaDateDAL.cs" />
+    <Compile Include="DAL\ProductionRecordDAL.cs" />
     <Compile Include="DAL\trfCatDAL.cs" />
     <Compile Include="DAL\trfHistDAL.cs" />
     <Compile Include="DAL\userDAL.cs" />
     <Compile Include="DAL\Utilities.cs" />
     <Compile Include="Module\Text.cs" />
     <Compile Include="Module\Tool.cs" />
+    <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="UI\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +216,12 @@
     </Compile>
     <Compile Include="UI\frmCustomMessageBox.Designer.cs">
       <DependentUpon>frmCustomMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmDailyJobSheet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDailyJobSheet.Designer.cs">
+      <DependentUpon>frmDailyJobSheet.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmDialog.cs">
       <SubType>Form</SubType>
@@ -504,11 +537,11 @@
     <Compile Include="UI\frmPMMADateEdit.Designer.cs">
       <DependentUpon>frmPMMADateEdit.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmReport.cs">
+    <Compile Include="UI\frmProductionRecord.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmReport.Designer.cs">
-      <DependentUpon>frmReport.cs</DependentUpon>
+    <Compile Include="UI\frmProductionRecord.Designer.cs">
+      <DependentUpon>frmProductionRecord.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmStockReport.cs">
       <SubType>Form</SubType>
@@ -593,6 +626,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmCustomMessageBox.resx">
       <DependentUpon>frmCustomMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDailyJobSheet.resx">
+      <DependentUpon>frmDailyJobSheet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDialog.resx">
       <DependentUpon>frmDialog.cs</DependentUpon>
@@ -760,8 +796,8 @@
     <EmbeddedResource Include="UI\frmPMMADateEdit.resx">
       <DependentUpon>frmPMMADateEdit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmReport.resx">
-      <DependentUpon>frmReport.cs</DependentUpon>
+    <EmbeddedResource Include="UI\frmProductionRecord.resx">
+      <DependentUpon>frmProductionRecord.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockReport.resx">
       <DependentUpon>frmStockReport.cs</DependentUpon>
@@ -796,7 +832,7 @@
     <EmbeddedResource Include="UI\NewInOutReport.resx">
       <DependentUpon>NewInOutReport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Report1.rdlc" />
+    <None Include="FactoryManagementSoftware_1_TemporaryKey.pfx" />
     <None Include="FactoryManagementSoftware_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -849,6 +885,11 @@
       <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
@@ -861,6 +902,19 @@
     <Content Include="Image\safety_SYA_icon.ico" />
     <Content Include="Image\x_icon_png_1543129_VTC_icon.ico" />
     <Content Include="Oxygen-Icons.org-Oxygen-Apps-partitionmanager.ico" />
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="x_icon_png_1543129_VTC_icon.ico" />
     <None Include="Resources\icons8-available-updates-96.png" />
     <None Include="Resources\icons8-delete-filled-500.png" />
@@ -880,6 +934,9 @@
     <Content Include="Resources\x_icon_png_1543129_VTC_icon.ico" />
     <None Include="Resources\x_icon_png_1543129_VTC_icon1.ico" />
     <Content Include="safety_SYA_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
