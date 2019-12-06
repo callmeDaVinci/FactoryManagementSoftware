@@ -1876,27 +1876,6 @@ namespace FactoryManagementSoftware.UI
                 year++;
 
             }
-            //if (forecastNum == 2)
-            //{
-            //    month++;
-
-            //    if (month > 12)
-            //    {
-            //        month -= 12;
-            //        year++;
-            //    }
-            //}
-            //else if (forecastNum == 3)
-            //{
-            //    month += 2;
-
-            //    if (month > 12)
-            //    {
-            //        month -= 12;
-            //        year++;
-            //    }
-            //}
-
             return tool.getItemForecast(dt_ItemForecast, itemCode, year, month);
         }
 
@@ -1905,57 +1884,93 @@ namespace FactoryManagementSoftware.UI
             float MaxOut = 0, tmp = 0;
             bool includeCurrentMonth = false;
 
-            if (pastMonthQty <= 0)
+            if(customer.Equals("PMMA"))
             {
-                DateTime start = dtpOutFrom.Value;
-                DateTime end = dtpOutTo.Value;
-
-                foreach (DataRow row in dt_TrfHist.Rows)
+                if (pastMonthQty <= 0)
                 {
-                    string item = row[dalTrfHist.TrfItemCode].ToString();
-                    if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                    DateTime start = dtpOutFrom.Value;
+                    DateTime end = dtpOutTo.Value;
+
+                    foreach (DataRow row in dt_TrfHist.Rows)
                     {
-                        DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
-                        //string cust = row[dalTrfHist.TrfTo].ToString();
-
-
-                        if (trfDate >= start && trfDate <= end)
+                        string item = row[dalTrfHist.TrfItemCode].ToString();
+                        if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
                         {
-                            MaxOut += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                            DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+                            //string cust = row[dalTrfHist.TrfTo].ToString();
+
+
+                            if (trfDate >= start && trfDate <= end)
+                            {
+                                MaxOut += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                            }
                         }
+                    }
+                }
+                else
+                {
+                    int currentMonth = DateTime.Now.Month;
+                    int currentYear = DateTime.Now.Year;
+
+                    if (DateTime.Today > tool.GetPMMAEndDate(currentMonth, currentYear))
+                    {
+                        includeCurrentMonth = true;
+                    }
+
+                    for (int i = 0; i < pastMonthQty; i++)
+                    {
+                        tmp = 0;
+
+                        if (!(i == 0 && includeCurrentMonth))
+                        {
+                            if (currentMonth == 1)
+                            {
+                                currentMonth = 12;
+                                currentYear--;
+                            }
+                            else
+                            {
+                                currentMonth--;
+                            }
+
+                        }
+
+                        DateTime start = tool.GetPMMAStartDate(currentMonth, currentYear, dt_PMMADate);
+                        DateTime end = tool.GetPMMAEndDate(currentMonth, currentYear, dt_PMMADate);
+
+                        //dtpOutFrom.Value = new DateTime(year, month, 1);
+                        //dtpOutTo.Value = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+
+                        foreach (DataRow row in dt_TrfHist.Rows)
+                        {
+                            string item = row[dalTrfHist.TrfItemCode].ToString();
+                            if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                            {
+                                DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+
+                                if (trfDate >= start && trfDate <= end)
+                                {
+                                    tmp += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                                }
+                            }
+                        }
+
+                        //get maxout
+                        if (MaxOut < tmp)
+                        {
+                            MaxOut = tmp;
+                        }
+
+
                     }
                 }
             }
             else
             {
-                int currentMonth = DateTime.Now.Month;
-                int currentYear = DateTime.Now.Year;
-
-                if (DateTime.Today > tool.GetPMMAEndDate(currentMonth, currentYear))
+                if (pastMonthQty <= 0)
                 {
-                    includeCurrentMonth = true;
-                }
-
-                for (int i = 0; i < pastMonthQty; i++)
-                {
-                    tmp = 0;
-
-                    if (!(i == 0 && includeCurrentMonth))
-                    {
-                        if (currentMonth == 1)
-                        {
-                            currentMonth = 12;
-                            currentYear--;
-                        }
-                        else
-                        {
-                            currentMonth--;
-                        }
-
-                    }
-
-                    DateTime start = tool.GetPMMAStartDate(currentMonth, currentYear, dt_PMMADate);
-                    DateTime end = tool.GetPMMAEndDate(currentMonth, currentYear, dt_PMMADate);
+                    DateTime start = dtpOutFrom.Value;
+                    DateTime end = dtpOutTo.Value;
 
                     foreach (DataRow row in dt_TrfHist.Rows)
                     {
@@ -1966,20 +1981,57 @@ namespace FactoryManagementSoftware.UI
 
                             if (trfDate >= start && trfDate <= end)
                             {
-                                tmp += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                                MaxOut += Convert.ToSingle(row[dalTrfHist.TrfQty]);
                             }
                         }
                     }
+                }
+                else
+                {
+                    int currentMonth = DateTime.Now.Month;
+                    int currentYear = DateTime.Now.Year;
 
-                    //get maxout
-                    if (MaxOut < tmp)
+                    for (int i = 0; i < pastMonthQty; i++)
                     {
-                        MaxOut = tmp;
+                        tmp = 0;
+
+                        if (currentMonth == 1)
+                        {
+                            currentMonth = 12;
+                            currentYear--;
+                        }
+                        else
+                        {
+                            currentMonth--;
+                        }
+
+                        DateTime start = new DateTime(currentYear, currentMonth, 1);
+                        DateTime end = new DateTime(currentYear, currentMonth, DateTime.DaysInMonth(currentYear, currentMonth));
+
+                        foreach (DataRow row in dt_TrfHist.Rows)
+                        {
+                            string item = row[dalTrfHist.TrfItemCode].ToString();
+                            if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                            {
+                                DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+
+                                if (trfDate >= start && trfDate <= end)
+                                {
+                                    tmp += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                                }
+                            }
+                        }
+
+                        //get maxout
+                        if (MaxOut < tmp)
+                        {
+                            MaxOut = tmp;
+                        }
                     }
-
-
                 }
             }
+
+          
 
             return MaxOut;
         }

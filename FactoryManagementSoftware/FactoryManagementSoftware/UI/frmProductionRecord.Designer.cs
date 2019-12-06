@@ -115,6 +115,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItemList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecordHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMeterReading)).BeginInit();
@@ -204,8 +205,9 @@
             this.dgvRecordHistory.RowHeadersVisible = false;
             this.dgvRecordHistory.RowTemplate.Height = 40;
             this.dgvRecordHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvRecordHistory.Size = new System.Drawing.Size(677, 222);
+            this.dgvRecordHistory.Size = new System.Drawing.Size(677, 265);
             this.dgvRecordHistory.TabIndex = 154;
+            this.dgvRecordHistory.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvRecordHistory_CellMouseDown);
             this.dgvRecordHistory.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRecordHistory_RowEnter);
             this.dgvRecordHistory.SelectionChanged += new System.EventHandler(this.dgvRecordHistory_SelectionChanged);
             // 
@@ -866,6 +868,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.txtPlanID);
             this.panel1.Controls.Add(this.label5);
@@ -1047,6 +1050,19 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.Blue;
+            this.label9.Location = new System.Drawing.Point(310, 198);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(33, 12);
+            this.label9.TabIndex = 260;
+            this.label9.Text = "CLEAR";
+            this.label9.Click += new System.EventHandler(this.label9_Click);
+            // 
             // frmProductionRecord
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -1169,5 +1185,6 @@
         private System.Windows.Forms.TextBox txtSheetID;
         private System.ComponentModel.BackgroundWorker bgWorker;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label label9;
     }
 }

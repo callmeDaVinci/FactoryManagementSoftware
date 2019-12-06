@@ -21,6 +21,9 @@ namespace FactoryManagementSoftware.BLL
         public double reject_percentage { get; set; }
         public DateTime updated_date { get; set; }
         public int updated_by { get; set; }
+        public bool active { get; set; }
+        public string packaging_code { get; set; }
+        public int packaging_qty { get; set; }
 
         public DateTime time { get; set; }
         public string production_operator { get; set; }

@@ -35,6 +35,8 @@ namespace FactoryManagementSoftware.UI
         PlanningBLL uPlan = new PlanningBLL();
 
         planningActionDAL dalPlanAction = new planningActionDAL();
+        itemForecastDAL dalItemForecast = new itemForecastDAL();
+        pmmaDateDAL dalPmmaDate = new pmmaDateDAL();
 
         readonly string headerCheck = "FOR";
         readonly string headerDescription = "DESCRIPTION";
@@ -501,19 +503,89 @@ namespace FactoryManagementSoftware.UI
             txtMatBeforeWastage.Text = (totalRawMat + totalColorMat).ToString("0.###");
         }
 
+        private float GetForecastQty(DataTable dt_ItemForecast, string itemCode, int forecastNum)
+        {
+            int month = DateTime.Now.Month;
+            int year = DateTime.Now.Year;
+
+            month += forecastNum - 1;
+
+            if (month > 12)
+            {
+                month -= 12;
+                year++;
+
+            }
+            return tool.getItemForecast(dt_ItemForecast, itemCode, year, month);
+        }
+
+        private float GetMaxOut(string itemCode, string customer, int pastMonthQty, DataTable dt_TrfHist, DataTable dt_PMMADate)
+        {
+            float deliveredOut = 0;
+            int currentMonth = DateTime.Now.Month;
+            int currentYear = DateTime.Now.Year;
+
+            if (customer.Equals("PMMA"))
+            {
+                DateTime start = tool.GetPMMAStartDate(currentMonth, currentYear, dt_PMMADate);
+                DateTime end = tool.GetPMMAEndDate(currentMonth, currentYear, dt_PMMADate);
+
+                foreach (DataRow row in dt_TrfHist.Rows)
+                {
+                    string item = row[dalTrfHist.TrfItemCode].ToString();
+                    if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                    {
+                        DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+                        //string cust = row[dalTrfHist.TrfTo].ToString();
+
+
+                        if (trfDate >= start && trfDate <= end)
+                        {
+                            deliveredOut += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                DateTime start = new DateTime(currentYear, currentMonth, 1);
+                DateTime end = new DateTime(currentYear, currentMonth, DateTime.DaysInMonth(currentYear, currentMonth));
+
+                foreach (DataRow row in dt_TrfHist.Rows)
+                {
+                    string item = row[dalTrfHist.TrfItemCode].ToString();
+                    if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                    {
+                        DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+
+                        if (trfDate >= start && trfDate <= end)
+                        {
+                            deliveredOut += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                        }
+                    }
+                }
+
+            }
+            return deliveredOut;
+        }
+
         private void AddDataToForecastTable()
         {
             DataTable dt_Forecast = NewForecastTable();
             DataRow row_dtForecast;
+            DataTable dt_ItemForecast = dalItemForecast.Select();
+
             int month, year;
             string itemCode = cmbPartCode.Text;
 
             if (!string.IsNullOrEmpty(itemCode))
             {
+                float readyStock = dalItem.getStockQty(itemCode);
                 row_dtForecast = dt_Forecast.NewRow();
                 row_dtForecast[headerCheck] = false;
                 row_dtForecast[headerDescription] = "READY STOCK";
-                row_dtForecast[headerBalance] = dalItem.getStockQty(itemCode);
+                row_dtForecast[headerBalance] = readyStock;
 
                 dt_Forecast.Rows.Add(row_dtForecast);
 
@@ -523,10 +595,28 @@ namespace FactoryManagementSoftware.UI
                 string monthName;
                 monthName = new DateTime(year, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
 
+                float forecast1 = GetForecastQty(dt_ItemForecast, itemCode, 1);
+                float forecast2 = GetForecastQty(dt_ItemForecast, itemCode, 2);
+                float forecast3 = GetForecastQty(dt_ItemForecast, itemCode, 3);
+
+                forecast1 = forecast1 == -1 ? 0 : forecast1;
+                forecast2 = forecast2 == -1 ? 0 : forecast2;
+                forecast3 = forecast3 == -1 ? 0 : forecast3;
+
+                string customer = tool.getCustomerName(itemCode);
+                DataTable dt_TrfHist = dalTrfHist.rangeItemToCustomerSearch(customer);
+                DataTable dt_PMMADate = dalPmmaDate.Select();
+
+                float deliveredOut = GetMaxOut(itemCode, customer, 0, dt_TrfHist, dt_PMMADate);
+
+                float balance1 = readyStock - forecast1 + deliveredOut;
+                float balance2 = balance1 - forecast2;
+                float balance3 = balance2 - forecast3;
+
                 row_dtForecast = dt_Forecast.NewRow();
                 row_dtForecast[headerCheck] = false;
                 row_dtForecast[headerDescription] = monthName+" "+year;
-                row_dtForecast[headerBalance] = tool.GetBalanceStock(itemCode, month, year);
+                row_dtForecast[headerBalance] = balance1;
 
                 dt_Forecast.Rows.Add(row_dtForecast);
 
@@ -544,7 +634,7 @@ namespace FactoryManagementSoftware.UI
                 row_dtForecast = dt_Forecast.NewRow();
                 row_dtForecast[headerCheck] = false;
                 row_dtForecast[headerDescription] = monthName + " " + year;
-                row_dtForecast[headerBalance] = tool.GetBalanceStock(itemCode, month, year);
+                row_dtForecast[headerBalance] = balance2; /*tool.GetBalanceStock(itemCode, month, year);*/
 
                 dt_Forecast.Rows.Add(row_dtForecast);
 
@@ -562,7 +652,7 @@ namespace FactoryManagementSoftware.UI
                 row_dtForecast = dt_Forecast.NewRow();
                 row_dtForecast[headerCheck] = false;
                 row_dtForecast[headerDescription] = monthName + " " + year;
-                row_dtForecast[headerBalance] = tool.GetBalanceStock(itemCode, month, year);
+                row_dtForecast[headerBalance] = balance3;/* tool.GetBalanceStock(itemCode, month, year);*/
 
                 dt_Forecast.Rows.Add(row_dtForecast);
             }

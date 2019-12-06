@@ -1341,6 +1341,13 @@ namespace FactoryManagementSoftware.UI
             if(dgvEdit)
             {
                 n = selectedRow;
+
+                if(dgv.DataSource == null)
+                {
+                    n = dgv.Rows.Add();
+                    index = n + 1;
+                    dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                }
             }
             else
             {

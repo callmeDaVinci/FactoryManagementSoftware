@@ -62,8 +62,15 @@ namespace FactoryManagementSoftware.UI
 
         static public void CloseForm()
         {
-            if(loadingForm != null)
-            loadingForm.Invoke(new CloseDelegate(CloseFormInternal));
+            
+            if (loadingForm != null)
+            {
+                if (!loadingForm.IsHandleCreated)
+                    loadingForm.CreateControl();
+
+                loadingForm.Invoke(new CloseDelegate(CloseFormInternal));
+            }
+            
             
         }
 

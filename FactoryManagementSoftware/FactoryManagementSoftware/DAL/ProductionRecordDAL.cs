@@ -26,6 +26,9 @@ namespace FactoryManagementSoftware.DAL
         public string RejectPercentage { get; } = "reject_percentage";
         public string UpdatedDate { get; } = "updated_date";
         public string UpdatedBy { get; } = "updated_by";
+        public string Active { get; } = "active";
+        public string PackagingQty { get; } = "packaging_qty";
+        public string PackagingCode { get; } = "packaging_code";
 
         public string ProTime { get; } = "time";
         public string ProOperator { get; } = "operator";
@@ -125,6 +128,50 @@ namespace FactoryManagementSoftware.DAL
             return dt;
 
         }
+
+        public DataTable MeterRecordSelect(ProductionRecordBLL u)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_production_meter_reading 
+                               WHERE sheet_id = @sheet_id";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+
+                cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);
+
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+
+        }
+
         public DataTable LastRecordSelect()
         {
             //static methodd to connect database
@@ -178,6 +225,7 @@ namespace FactoryManagementSoftware.DAL
         public bool InsertProductionRecord(ProductionRecordBLL u)
         {
             bool isSuccess = false;
+            u.active = true;
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             try
@@ -197,7 +245,10 @@ namespace FactoryManagementSoftware.DAL
                             + TotalProduced + ","
                             + TotalReject + ","
                             + UpdatedDate + ","
-                            + UpdatedBy + ") VALUES" +
+                            + UpdatedBy + ","
+                            + Active + ","
+                            + PackagingQty + ","
+                            + PackagingCode + ") VALUES" +
                             "(@plan_id," +
                             "@production_date," +
                             "@shift," +
@@ -212,7 +263,10 @@ namespace FactoryManagementSoftware.DAL
                             "@total_produced," +
                             "@total_reject," +
                             "@updated_date," +
-                            "@updated_by)";
+                             "@updated_by," +
+                            "@active," +
+                            "@packaging_qty," +
+                            "@packaging_code)";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -231,6 +285,9 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@total_reject", u.total_reject);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+                cmd.Parameters.AddWithValue("@active", u.active);
+                cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
+                cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
 
                 conn.Open();
 
@@ -316,9 +373,53 @@ namespace FactoryManagementSoftware.DAL
 
         #region Update data in Database
 
+        public bool TempCommand(ProductionRecordBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_production_record 
+                            SET "
+                            + Active + "=@active";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@active", u.active);
+               
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         public bool ProductionRecordUpdate(ProductionRecordBLL u)
         {
             bool isSuccess = false;
+            u.active = true;
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             try
@@ -338,6 +439,9 @@ namespace FactoryManagementSoftware.DAL
                             + FullBox + "=@full_box,"
                             + TotalProduced + "=@total_produced,"
                             + TotalReject + "=@total_reject,"
+                            + Active + "=@active,"
+                            + PackagingCode + "=@packaging_code,"
+                            + PackagingQty + "=@packaging_qty,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
                             " WHERE sheet_id=@sheet_id";
@@ -360,7 +464,108 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@total_reject", u.total_reject);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
-              
+                cmd.Parameters.AddWithValue("@active", u.active);
+                cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
+                cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool ReactiveSheetData(ProductionRecordBLL u)
+        {
+            u.active = true;
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_production_record 
+                            SET "
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by,"
+                            + Active + "=@active" +
+                            " WHERE sheet_id=@sheet_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+                cmd.Parameters.AddWithValue("@active", u.active);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool RemoveSheetData(ProductionRecordBLL u)
+        {
+            u.active = false;
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_production_record 
+                            SET "
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by,"
+                            + Active + "=@active" +
+                            " WHERE sheet_id=@sheet_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+                cmd.Parameters.AddWithValue("@active", u.active);
+
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();

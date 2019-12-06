@@ -893,6 +893,55 @@ namespace FactoryManagementSoftware.Module
             return forecast;
         }
 
+        public int TotalProductionStockInInOneDay(DataTable dt_Trf, string itemCode, DateTime day)
+        {
+            dt_Trf.DefaultView.Sort = dalTrfHist.TrfDate + " DESC";
+            dt_Trf = dt_Trf.DefaultView.ToTable();
+
+            int totalStockIn = -1;
+            Text text = new Text();
+            foreach(DataRow row in dt_Trf.Rows)
+            {
+                string status = row[dalTrfHist.TrfResult].ToString();
+
+                if(status == "Passed")
+                {
+                    DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate].ToString());
+
+                    if(trfDate < day)
+                    {
+                        return totalStockIn;
+                    }
+
+                    string trfItem = row[dalTrfHist.TrfItemCode].ToString();
+
+                    if (trfDate == day && trfItem == itemCode)
+                    {
+                        string trfFrom = row[dalTrfHist.TrfFrom].ToString();
+                        string trfTo = row[dalTrfHist.TrfTo].ToString();
+
+                        bool recordMatch = trfFrom == text.Production || trfFrom == text.Assembly;
+                        recordMatch = recordMatch && IfFactoryExists(trfTo);
+
+                        if (recordMatch)
+                        {
+                            if (totalStockIn == -1)
+                            {
+                                totalStockIn = 0;
+                            }
+
+                            int stockInQty = int.TryParse(row[dalTrfHist.TrfQty].ToString(), out stockInQty) ? stockInQty : 0;
+
+                            totalStockIn += stockInQty;
+                        }
+                    }
+                }
+               
+            }
+
+            return totalStockIn;
+        }
+
         public float getItemForecast(DataTable dt, string itemCode, int year, int month)
         {
             float forecast = -1;
