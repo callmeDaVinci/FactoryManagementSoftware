@@ -29,6 +29,7 @@ namespace FactoryManagementSoftware.DAL
         public string Active { get; } = "active";
         public string PackagingQty { get; } = "packaging_qty";
         public string PackagingCode { get; } = "packaging_code";
+        public string PackagingMax { get; } = "packaging_max";
 
         public string ProTime { get; } = "time";
         public string ProOperator { get; } = "operator";
@@ -149,6 +150,49 @@ namespace FactoryManagementSoftware.DAL
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
 
                 cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);
+
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+
+        }
+
+        public DataTable PackagingRecordSelect(int sheetID)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_pro_packaging
+                               WHERE sheet_id = @sheet_id";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+
+                cmd.Parameters.AddWithValue("@sheet_id", sheetID);
 
                 //database connection open
                 conn.Open();
@@ -340,6 +384,64 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@time", u.time);
                 cmd.Parameters.AddWithValue("@production_operator", u.production_operator);
                 cmd.Parameters.AddWithValue("@meter_reading", u.meter_reading);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertProductionPackaging(ProductionRecordBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_pro_packaging
+                            (" + SheetID + ","
+                            + PackagingCode + ","
+                            + PackagingQty + ","
+                            + PackagingMax + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@sheet_id," +
+                            "@packaging_code," +
+                            "@packaging_qty," +
+                             "@packaging_max," +
+                            "@updated_date," +
+                            "@updated_by)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);
+                cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
+                cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
+                cmd.Parameters.AddWithValue("@packaging_max", u.packaging_max);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
 
                 conn.Open();
 
@@ -652,6 +754,45 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 String sql = "DELETE FROM tbl_production_meter_reading WHERE sheet_id=@sheet_id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool DeletePackagingData(ProductionRecordBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "DELETE FROM tbl_pro_packaging WHERE sheet_id=@sheet_id";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);

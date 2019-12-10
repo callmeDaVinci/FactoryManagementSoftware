@@ -2,7 +2,7 @@
 
 namespace FactoryManagementSoftware.BLL
 {
-    class ProductionRecordBLL
+    public class ProductionRecordBLL
     {
         public int sheet_id { get; set; }
         public int plan_id { get; set; }
@@ -24,6 +24,7 @@ namespace FactoryManagementSoftware.BLL
         public bool active { get; set; }
         public string packaging_code { get; set; }
         public int packaging_qty { get; set; }
+        public int packaging_max { get; set; }
 
         public DateTime time { get; set; }
         public string production_operator { get; set; }

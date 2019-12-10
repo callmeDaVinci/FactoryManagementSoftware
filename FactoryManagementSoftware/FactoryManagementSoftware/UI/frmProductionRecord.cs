@@ -36,8 +36,12 @@ namespace FactoryManagementSoftware.UI
 
         DataTable dt_ItemInfo;
         DataTable dt_JoinInfo;
+        DataTable dt_MultiPackaging;
 
-        readonly private string string_NewSheet = "NEW SHEET";
+        readonly private string string_NewSheet = "NEW";
+        readonly private string string_Multi = "MULTI";
+        readonly private string string_MultiPackaging = "MULTI PACKAGING";
+
         readonly private string header_Time = "TIME";
         readonly private string header_Operator = "OPERATOR";
         readonly private string header_MeterReading = "METER READING";
@@ -57,6 +61,11 @@ namespace FactoryManagementSoftware.UI
         readonly private string header_UpdatedBy = "UPDATED BY";
         readonly private string header_Total = "TOTAL";
 
+        readonly static public string header_PackagingCode = "CODE";
+        readonly static public string header_PackagingName = "NAME";
+        readonly static public string header_PackagingQty = "QTY";
+        readonly static public string header_PackagingMax = "MAX PER BOX";
+
         readonly string header_Cat = "Cat";
         readonly string header_ProDate = "DATE";
         readonly string header_ItemCode = "ITEM CODE";
@@ -68,6 +77,19 @@ namespace FactoryManagementSoftware.UI
         private bool addingNewSheet = false;
         private bool sheetLoaded = false;
         private bool dailyRecordLoaded = false;
+
+        private DataTable NewPackagingTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(header_PackagingCode, typeof(string));
+            dt.Columns.Add(header_PackagingName, typeof(string));
+            dt.Columns.Add(header_PackagingMax, typeof(int));
+            dt.Columns.Add(header_PackagingQty, typeof(int));
+
+            return dt;
+        }
+
         private DataTable NewItemListTable()
         {
             DataTable dt = new DataTable();
@@ -248,11 +270,15 @@ namespace FactoryManagementSoftware.UI
 
             if (newSheet)
             {
-                tlpSheet.RowStyles[0] = new RowStyle(SizeType.Percent, 0);
-                tlpSheet.RowStyles[1] = new RowStyle(SizeType.Percent, 100);
+                if (dgvItemList.SelectedRows.Count > 0)
+                {
+                    tlpSheet.RowStyles[0] = new RowStyle(SizeType.Percent, 0);
+                    tlpSheet.RowStyles[1] = new RowStyle(SizeType.Percent, 100);
 
-                btnNewSheet.Visible = false;
-                dgvMeterReading.ResumeLayout();
+                    btnNewSheet.Visible = false;
+                    dgvMeterReading.ResumeLayout();
+                }
+                    
             }
             else
             {
@@ -546,7 +572,7 @@ namespace FactoryManagementSoftware.UI
                                     string packagingCode= rowItem[dalItem.ItemCode].ToString();
                                     string packagingQty = row[dalJoin.JoinMax].ToString();
 
-                                    txtPackingQty.Text = packagingQty;
+                                    txtPackingMaxQty.Text = packagingQty;
                                     cmbPackingName.Text = packagingName;
                                     cmbPackingCode.Text = packagingCode;
 
@@ -560,7 +586,7 @@ namespace FactoryManagementSoftware.UI
 
 
                 //get balance of last shift
-                txtBalanceOfLastShift.Text = GetBalanceLeft(dalProRecord.Select(), planID).ToString();
+                txtBalanceOfLastShift.Text = GetLatestBalanceLeft(dalProRecord.Select(), planID).ToString();
             }
 
             sheetLoaded = true;
@@ -587,8 +613,6 @@ namespace FactoryManagementSoftware.UI
 
                 uProRecord.sheet_id = Convert.ToInt32(sheetID);
                 DataTable dt_ProductionRecord = dalProRecord.ProductionRecordSelect(uProRecord);
-
-
 
                 lblPartName.Text = itemName;
                 lblPartCode.Text = itemCode;
@@ -632,9 +656,9 @@ namespace FactoryManagementSoftware.UI
                         txtFullBox.Text = row[dalProRecord.FullBox].ToString();
                         txtTotalStockIn.Text = row[dalProRecord.TotalProduced].ToString();
 
-                        cmbPackingName.Text = tool.getItemName(row[dalProRecord.PackagingCode].ToString());
-                        cmbPackingCode.Text = row[dalProRecord.PackagingCode].ToString();
-                        txtPackingQty.Text = row[dalProRecord.PackagingQty].ToString();
+                        //cmbPackingName.Text = tool.getItemName(row[dalProRecord.PackagingCode].ToString());
+                        //cmbPackingCode.Text = row[dalProRecord.PackagingCode].ToString();
+                        //txtPackingMaxQty.Text = row[dalProRecord.PackagingQty].ToString();
 
                         //txtTotalReject.Text = row[dalProRecord.ProLotNo].ToString();
                         // txtRejectPercentage.Text = row[dalProRecord.ProLotNo].ToString();
@@ -644,38 +668,41 @@ namespace FactoryManagementSoftware.UI
 
                 LoadMeterReadingData(Convert.ToInt32(sheetID));
                 CalculateHourlyShot();
+
                 //get packaging data
-                foreach (DataRow row in dt_JoinInfo.Rows)
-                {
-                    string parentCode = row[dalJoin.JoinParent].ToString();
+                LoadPackagingList(Convert.ToInt32(sheetID));
 
-                    if (parentCode == itemCode)
-                    {
-                        string childCode = row[dalJoin.JoinChild].ToString();
+                //foreach (DataRow row in dt_JoinInfo.Rows)
+                //{
+                //    string parentCode = row[dalJoin.JoinParent].ToString();
 
-                        foreach (DataRow rowItem in dt_ItemInfo.Rows)
-                        {
-                            if (rowItem[dalItem.ItemCode].ToString().Equals(childCode))
-                            {
-                                string cat = rowItem[dalItem.ItemCat].ToString();
+                //    if (parentCode == itemCode)
+                //    {
+                //        string childCode = row[dalJoin.JoinChild].ToString();
 
-                                if (cat.Equals(text.Cat_Carton) || cat.Equals(text.Cat_Packaging))
-                                {
-                                    string packagingName = rowItem[dalItem.ItemName].ToString();
-                                    string packagingCode = rowItem[dalItem.ItemCode].ToString();
-                                    string packagingQty = row[dalJoin.JoinMax].ToString();
+                //        foreach (DataRow rowItem in dt_ItemInfo.Rows)
+                //        {
+                //            if (rowItem[dalItem.ItemCode].ToString().Equals(childCode))
+                //            {
+                //                string cat = rowItem[dalItem.ItemCat].ToString();
 
-                                    txtPackingQty.Text = packagingQty;
-                                    cmbPackingName.Text = packagingName;
-                                    cmbPackingCode.Text = packagingCode;
+                //                if (cat.Equals(text.Cat_Carton) || cat.Equals(text.Cat_Packaging))
+                //                {
+                //                    string packagingName = rowItem[dalItem.ItemName].ToString();
+                //                    string packagingCode = rowItem[dalItem.ItemCode].ToString();
+                //                    string packagingQty = row[dalJoin.JoinMax].ToString();
 
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                //                    txtPackingMaxQty.Text = packagingQty;
+                //                    cmbPackingName.Text = packagingName;
+                //                    cmbPackingCode.Text = packagingCode;
 
-                }
+                //                    break;
+                //                }
+                //            }
+                //        }
+                //    }
+
+                //}
 
             }
 
@@ -782,11 +809,11 @@ namespace FactoryManagementSoftware.UI
         {
             if(sheetLoaded)
             {
-                int qty = int.TryParse(txtPackingQty.Text, out qty) ? qty : -1;
+                int qty = int.TryParse(txtPackingMaxQty.Text, out qty) ? qty : -1;
                 string packagingName = cmbPackingName.Text;
                 string packagingCode = cmbPackingCode.Text;
 
-                if (qty != -1 && !string.IsNullOrEmpty(packagingName) && !string.IsNullOrEmpty(packagingCode))
+                if (qty != -1 && !string.IsNullOrEmpty(packagingName) && !string.IsNullOrEmpty(packagingCode) && packagingCode != string_MultiPackaging)
                 {
                     string itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
                     string itemName = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartName].Value.ToString();
@@ -860,6 +887,74 @@ namespace FactoryManagementSoftware.UI
            
         }
 
+        private void LoadPackagingList(int sheetID)
+        {
+            DataTable dt = NewPackagingTable();
+
+            DataTable dt_PackagingFromDB = dalProRecord.PackagingRecordSelect(sheetID);
+
+            foreach (DataRow row in dt_PackagingFromDB.Rows)
+            {
+                DataRow dt_Row = dt.NewRow();
+
+                string packagingCode = row[dalProRecord.PackagingCode].ToString();
+
+                dt_Row[header_PackagingCode] = packagingCode;
+                dt_Row[header_PackagingName] = tool.getItemName(packagingCode);
+                dt_Row[header_PackagingMax] = row[dalProRecord.PackagingMax].ToString();
+                dt_Row[header_PackagingQty] = row[dalProRecord.PackagingQty].ToString();
+
+                dt.Rows.Add(dt_Row);
+            }
+
+            dt_MultiPackaging = dt.Copy();
+
+            if(dt_MultiPackaging.Rows.Count > 0)
+            {
+                string name = dt_MultiPackaging.Rows[0][header_PackagingName].ToString();
+                string code = dt_MultiPackaging.Rows[0][header_PartCode].ToString();
+
+                int rowCount = dt_MultiPackaging.Rows.Count;
+
+                if (rowCount >= 2)
+                {
+                    lblClear.Visible = false;
+                    LoadPackingToCMB(string_MultiPackaging);
+                    txtPackingMaxQty.Text = "MULTI";
+
+                    int totalStockIn = 0;
+                    int totalFullBox = 0;
+
+                    foreach (DataRow row in dt_MultiPackaging.Rows)
+                    {
+                        int boxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingQty].ToString());
+                        int maxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingMax].ToString());
+
+                        totalFullBox += boxQty;
+
+                        totalStockIn += boxQty * maxQty;
+                    }
+
+
+                    txtFullBox.Text = totalFullBox.ToString();
+
+                }
+                else if (rowCount == 1)
+                {
+                    lblClear.Visible = true;
+                    loadPackingData();
+
+                    cmbPackingName.Text = name;
+                    cmbPackingCode.Text = code;
+
+                    txtPackingMaxQty.Text = dt_MultiPackaging.Rows[0][header_PackagingMax].ToString();
+                    txtFullBox.Text = dt_MultiPackaging.Rows[0][header_PackagingQty].ToString();
+                }
+            }
+           
+
+        }
+
         private bool SaveOnly()
         {
             bool success = false;
@@ -873,7 +968,7 @@ namespace FactoryManagementSoftware.UI
 
                 string Shift = text.Shift_Night;
                 string PackagingCode = cmbPackingCode.Text;
-                int PackagingQty = int.TryParse(txtPackingQty.Text, out PackagingQty)? PackagingQty : 0;
+                int PackagingQty = int.TryParse(txtPackingMaxQty.Text, out PackagingQty)? PackagingQty : 0;
                 int meterStart = Convert.ToInt32(txtMeterStart.Text);
                 int meterEnd = meterStart;
                 int lastShiftBalance = Convert.ToInt32(txtBalanceOfLastShift.Text);
@@ -973,6 +1068,30 @@ namespace FactoryManagementSoftware.UI
                         }
                         
                     }
+
+
+                    //remove packaging data from db
+                    dalProRecord.DeletePackagingData(uProRecord);
+
+                    if (dt_MultiPackaging != null)
+                    {
+                        //save packaging data
+                        foreach(DataRow row in dt_MultiPackaging.Rows)
+                        {
+                            uProRecord.packaging_code = row[header_PackagingCode].ToString();
+                            uProRecord.packaging_max = Convert.ToInt32(row[header_PackagingMax].ToString());
+                            uProRecord.packaging_qty = Convert.ToInt32(row[header_PackagingQty].ToString());
+
+                            if(!dalProRecord.InsertProductionPackaging(uProRecord))
+                            {
+                                MessageBox.Show("Failed to save packaging data!");
+                            }
+                        }
+                    }
+
+
+
+
                     frmLoading.CloseForm();
                     MessageBox.Show("Data saved!");
 
@@ -1040,7 +1159,21 @@ namespace FactoryManagementSoftware.UI
            
         }
 
-        private int GetBalanceLeft(DataTable dt, string planID)
+        private void LoadPackingToCMB(string dataToShow)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Data");
+            dt.Rows.Add(dataToShow);
+
+            cmbPackingName.DataSource = dt;
+            cmbPackingName.DisplayMember = "Data";
+
+            cmbPackingCode.DataSource = dt;
+            cmbPackingCode.DisplayMember = "Data";
+
+        }
+
+        private int GetLatestBalanceLeft(DataTable dt, string planID)
         {
             int balance = 0;
 
@@ -1091,12 +1224,7 @@ namespace FactoryManagementSoftware.UI
             
         }
 
-        private void label19_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
+        private void txtMeterStart_TextChanged(object sender, EventArgs e)
         {
             errorProvider5.Clear();
             CalculateHourlyShot();
@@ -1222,13 +1350,25 @@ namespace FactoryManagementSoftware.UI
 
         private void btnNewSheet_Click(object sender, EventArgs e)
         {
-            sheetLoaded = false;
-            addingNewSheet = true;
-            AddNewSheetUI(true);
+            if (dgvItemList.SelectedRows.Count > 0)
+            {
+                DateTime proDate = DateTime.Today.AddDays(-1);
 
-            LoadNewSheetData();
+                dtpProDate.Value = tool.SubtractDayIfSunday(proDate);
+                dt_MultiPackaging = null;
+                sheetLoaded = false;
 
-            sheetLoaded = true;
+                addingNewSheet = true;
+                AddNewSheetUI(true);
+                LoadNewSheetData();
+
+                sheetLoaded = true;
+            }
+            else
+            {
+                MessageBox.Show("Please select a item before adding new sheet.");
+            }
+                
         }
 
         private void tlpSheet_Paint(object sender, PaintEventArgs e)
@@ -1254,18 +1394,16 @@ namespace FactoryManagementSoftware.UI
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            
+            if(SaveOnly())
+            {
+                AddNewSheetUI(false);
 
-            SaveOnly();
-            AddNewSheetUI(false);
+                //load record history
+                LoadDailyRecord();
+                dgvRecordHistory.ClearSelection();
 
-            //load record history
-            LoadDailyRecord();
-            dgvRecordHistory.ClearSelection();
-
-            
-            dailyRecordLoaded = true;
-
+                dailyRecordLoaded = true;
+            }
         }
 
         private void ClearData()
@@ -1279,7 +1417,7 @@ namespace FactoryManagementSoftware.UI
             cmbPackingCode.SelectedIndex = -1;
 
             txtProLotNo.Clear();
-            txtPackingQty.Clear();
+            txtPackingMaxQty.Clear();
             txtRawMatLotNo.Clear();
             txtColorMatLotNo.Clear();
             txtMeterStart.Clear();
@@ -1342,19 +1480,21 @@ namespace FactoryManagementSoftware.UI
         private void txtBalanceOfLastShift_TextChanged(object sender, EventArgs e)
         {
             errorProvider6.Clear();
-            CalculateTotalRejectAndPercentage();
+            //CalculateTotalRejectAndPercentage();
         }
 
         private void txtBalanceOfThisShift_TextChanged(object sender, EventArgs e)
         {
             errorProvider7.Clear();
-            CalculateTotalRejectAndPercentage();
+            CalculateTotalStockIn();
+            //CalculateTotalRejectAndPercentage();
         }
 
         private void txtFullBox_TextChanged(object sender, EventArgs e)
         {
             errorProvider8.Clear();
             CalculateTotalStockIn();
+            SavePackagingToDT();
         }
 
         private void dgvMeterReading_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -1415,93 +1555,138 @@ namespace FactoryManagementSoftware.UI
 
         private void CalculateHourlyShot()
         {
-            int meterStart = 0;
-
-            if (string.IsNullOrEmpty(txtMeterStart.Text))
+            if(true)
             {
-                errorProvider5.Clear();
-                errorProvider5.SetError(lblMeterStartAt, "Please input meter start value");
-            }
-            else
-            {
-                meterStart = int.TryParse(txtMeterStart.Text, out meterStart) ? meterStart : 0;
-            }
+                int meterStart = 0;
 
-            DataTable dt = (DataTable)dgvMeterReading.DataSource;
-
-            if(dt != null)
-            {
-                foreach (DataRow row in dt.Rows)
+                if (string.IsNullOrEmpty(txtMeterStart.Text))
                 {
-                    int meterReading = int.TryParse(row[header_MeterReading].ToString(), out meterReading) ? meterReading : -1;
+                    errorProvider5.Clear();
+                    errorProvider5.SetError(lblMeterStartAt, "Please input meter start value");
+                }
+                else
+                {
+                    meterStart = int.TryParse(txtMeterStart.Text, out meterStart) ? meterStart : 0;
+                }
 
-                    if (meterReading != -1)
+                DataTable dt = (DataTable)dgvMeterReading.DataSource;
+
+                if (dt != null)
+                {
+                    foreach (DataRow row in dt.Rows)
                     {
-                        row[header_Hourly] = meterReading - meterStart;
-                        meterStart = meterReading;
-                    }
-                    else
-                    {
-                        row[header_Hourly] = 0;
+                        int meterReading = int.TryParse(row[header_MeterReading].ToString(), out meterReading) ? meterReading : -1;
+
+                        if (meterReading != -1)
+                        {
+                            row[header_Hourly] = meterReading - meterStart;
+                            meterStart = meterReading;
+                        }
+                        else
+                        {
+                            row[header_Hourly] = 0;
+                        }
                     }
                 }
-            }
-           
 
-            CalculateTotalShot();
+
+                CalculateTotalShot();
+            }
+            
 
         }
 
         private void CalculateTotalShot()
         {
-            DataTable dt = (DataTable)dgvMeterReading.DataSource;
-
-            int totalShot = 0;
-
-            if (dt != null)
+            if(true)
             {
-                foreach (DataRow row in dt.Rows)
+                DataTable dt = (DataTable)dgvMeterReading.DataSource;
+
+                int totalShot = 0;
+
+                if (dt != null)
                 {
-                    int hourly = int.TryParse(row[header_Hourly].ToString(), out hourly) ? hourly : 0;
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        int hourly = int.TryParse(row[header_Hourly].ToString(), out hourly) ? hourly : 0;
 
-                    totalShot += hourly;
+                        totalShot += hourly;
+                    }
                 }
-            }
-            
 
-            txtTotalShot.Text = totalShot.ToString();
+
+                txtTotalShot.Text = totalShot.ToString();
+            }
         }
 
         private void CalculateTotalStockIn()
         {
-            int packingMaxQty = int.TryParse(txtPackingQty.Text, out packingMaxQty) ? packingMaxQty : 0;
+            if(true)
+            {
+                int balanceLeft = int.TryParse(txtBalanceOfThisShift.Text, out balanceLeft) ? balanceLeft : 0;
 
-            int fullBoxQty = int.TryParse(txtFullBox.Text, out fullBoxQty) ? fullBoxQty : 0;
+                if (dt_MultiPackaging != null && dt_MultiPackaging.Rows.Count >= 2)
+                {
+                    lblClear.Visible = false;
+                    LoadPackingToCMB(string_MultiPackaging);
+                    txtPackingMaxQty.Text = "MULTI";
 
-            txtTotalStockIn.Text = (packingMaxQty * fullBoxQty).ToString();
+                    int totalStockIn = 0;
+                    int totalFullBox = 0;
 
-            
+                    foreach (DataRow row in dt_MultiPackaging.Rows)
+                    {
+                        int boxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingQty].ToString());
+                        int maxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingMax].ToString());
 
+                        totalFullBox += boxQty;
+
+                        totalStockIn += boxQty * maxQty;
+                    }
+
+                    totalStockIn += balanceLeft;
+                    txtFullBox.Text = totalFullBox.ToString();
+                    txtTotalStockIn.Text = totalStockIn.ToString();
+
+                }
+                else
+                {
+                    int packingMaxQty = int.TryParse(txtPackingMaxQty.Text, out packingMaxQty) ? packingMaxQty : 0;
+
+                    int fullBoxQty = int.TryParse(txtFullBox.Text, out fullBoxQty) ? fullBoxQty : 0;
+
+                    txtTotalStockIn.Text = (packingMaxQty * fullBoxQty + balanceLeft).ToString();
+                }
+            }
         }
 
         private void CalculateTotalRejectAndPercentage()
         {
-            int totalShot = int.TryParse(txtTotalShot.Text, out totalShot) ? totalShot : 0;
-            int cavity = int.TryParse(lblCavity.Text, out cavity) ? cavity : 0;
-            int totalIn = int.TryParse(txtTotalStockIn.Text, out totalIn) ? totalIn : 0;
-            int balanceOfLastShift = int.TryParse(txtBalanceOfLastShift.Text, out balanceOfLastShift) ? balanceOfLastShift : 0;
-            int balanceOfThisShift = int.TryParse(txtBalanceOfThisShift.Text, out balanceOfThisShift) ? balanceOfThisShift : 0;
-
-            int totalReject = totalShot * cavity - (totalIn + balanceOfThisShift - balanceOfLastShift);
-            txtTotalReject.Text = totalReject.ToString();
-
-            if(totalShot * cavity == 0)
+            if(true)
             {
-                totalShot = 1;
-                cavity = 1;
+                int availableQty = int.TryParse(txtAvailableQty.Text, out availableQty) ? availableQty : 0;
+                int totalIn = int.TryParse(txtTotalStockIn.Text, out totalIn) ? totalIn : 0;
+
+                int totalReject = availableQty - totalIn;
+                txtTotalReject.Text = totalReject.ToString();
+
+                string rejectPercentageString = "NULL";
+
+                if (availableQty <= 0)
+                {
+                    rejectPercentageString = "NULL";
+                }
+                else
+                {
+                    decimal rejectPercentage = (decimal)totalReject / availableQty * 100;
+
+                    rejectPercentage = Decimal.Round(rejectPercentage, 2);
+
+                    rejectPercentageString = rejectPercentage.ToString();
+                }
+
+                txtRejectPercentage.Text = rejectPercentageString;
             }
-            double rejectPercentage = (double) totalReject / (totalShot * cavity) * 100;
-            txtRejectPercentage.Text = rejectPercentage.ToString();
         }
 
         private void dgvMeterReading_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -1531,13 +1716,20 @@ namespace FactoryManagementSoftware.UI
             {
                 timer1.Stop();
                 timer1.Start();
+
+                CalculateTotalStockIn();
+                SavePackagingToDT();
             }
-           
         }
 
         private void txtTotalShot_TextChanged(object sender, EventArgs e)
         {
-            CalculateTotalRejectAndPercentage();
+            int totalShot = int.TryParse(txtTotalShot.Text, out totalShot) ? totalShot : 0;
+            int cavity = int.TryParse(lblCavity.Text, out cavity) ? cavity : 0;
+
+            txtAvailableQty.Text = (totalShot * cavity).ToString();
+
+            
         }
 
         private void btnAddItem_Click(object sender, EventArgs e)
@@ -1701,6 +1893,8 @@ namespace FactoryManagementSoftware.UI
                 timer1.Start();
                 
             }
+
+            SavePackagingToDT();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -1727,7 +1921,7 @@ namespace FactoryManagementSoftware.UI
             //}
         }
 
-        private void label9_Click(object sender, EventArgs e)
+        private void Clear_Click(object sender, EventArgs e)
         {
             cmbPackingName.SelectedIndex = -1;
         }
@@ -1765,6 +1959,164 @@ namespace FactoryManagementSoftware.UI
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void AddMorePackaging_Click(object sender, EventArgs e)
+        {
+            int sheetID = int.TryParse(txtSheetID.Text, out sheetID) ? sheetID : -1;
+
+            frmProPackaging frm;
+
+            if (dt_MultiPackaging != null && dt_MultiPackaging.Rows.Count > 0)
+            {
+                frm = new frmProPackaging(dt_MultiPackaging)
+                {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+            }
+            else
+            {
+                frm = new frmProPackaging(sheetID)
+                {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+            }
+
+            frm.ShowDialog();
+
+            if(frmProPackaging.dataSaved)
+            {
+                SavePackagingToDT(frmProPackaging.dt_Packaging);
+                //dt_MultiPackaging = frmProPackaging.dt_Packaging.Copy();
+
+                //int rowCount = dt_MultiPackaging.Rows.Count;
+                //if (rowCount >= 2)
+                //{
+                //    lblClear.Visible = false;
+                //    LoadPackingToCMB(string_MultiPackaging);
+                //    txtPackingMaxQty.Text = "MULTI";
+                //    //get total box
+                //    //get total qty
+                //    //auto fill in data
+                //    int totalStockIn = 0;
+                //    int totalFullBox = 0;
+
+                //    foreach(DataRow row in dt_MultiPackaging.Rows)
+                //    {
+                //        int boxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingQty].ToString());
+                //        int maxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingMax].ToString());
+
+                //        totalFullBox += boxQty;
+
+                //        totalStockIn += boxQty * maxQty;
+                //    }
+
+                    
+                //    txtFullBox.Text = totalFullBox.ToString();
+                //    txtTotalStockIn.Text = totalStockIn.ToString();
+
+                //}
+                //else if (rowCount == 1)
+                //{
+                //    lblClear.Visible = true;
+                //    loadPackingData();
+
+                //    cmbPackingName.Text = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingName].ToString();
+                //    cmbPackingCode.Text = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingCode].ToString();
+
+                //    txtPackingMaxQty.Text = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingMax].ToString();
+                //    txtFullBox.Text = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingQty].ToString();
+                //}
+                //}
+                //}
+            }
+           
+        }
+
+        private void SavePackagingToDT()//for only one packaging data
+        {
+            bool DataPassed = cmbPackingName.Text != string_MultiPackaging;
+
+            DataPassed &= cmbPackingCode.Text != string_MultiPackaging;
+
+            DataPassed &= txtPackingMaxQty.Text != string_Multi;
+
+            if(DataPassed)
+            {
+                dt_MultiPackaging = null;
+
+
+                dt_MultiPackaging = NewPackagingTable();
+
+                int maxQty = int.TryParse(txtPackingMaxQty.Text, out maxQty) ? maxQty : 0;
+                int totalBox = int.TryParse(txtFullBox.Text, out totalBox) ? totalBox : 0;
+
+                string packagingCode = cmbPackingCode.Text;
+                string packagingName = cmbPackingName.Text;
+
+                DataRow dt_Row = dt_MultiPackaging.NewRow();
+
+                dt_Row[header_PackagingCode] = packagingCode;
+                dt_Row[header_PackagingName] = packagingName;
+                dt_Row[header_PackagingMax] = maxQty;
+                dt_Row[header_PackagingQty] = totalBox;
+
+                dt_MultiPackaging.Rows.Add(dt_Row);
+            }
+        }
+
+        private void SavePackagingToDT(DataTable dt)
+        {
+            dt_MultiPackaging = null;
+            dt_MultiPackaging = dt.Copy();
+
+            int rowCount = dt_MultiPackaging.Rows.Count;
+
+            if (rowCount >= 2)
+            {
+                lblClear.Visible = false;
+                LoadPackingToCMB(string_MultiPackaging);
+                txtPackingMaxQty.Text = string_Multi;
+
+                int totalStockIn = 0;
+                int totalFullBox = 0;
+
+                foreach (DataRow row in dt_MultiPackaging.Rows)
+                {
+                    int boxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingQty].ToString());
+                    int maxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingMax].ToString());
+
+                    totalFullBox += boxQty;
+
+                    totalStockIn += boxQty * maxQty;
+                }
+
+
+                txtFullBox.Text = totalFullBox.ToString();
+                txtTotalStockIn.Text = totalStockIn.ToString();
+
+            }
+            else if (rowCount == 1)
+            {
+                lblClear.Visible = true;
+                loadPackingData();
+
+                cmbPackingName.Text = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingName].ToString();
+                cmbPackingCode.Text = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingCode].ToString();
+
+                txtPackingMaxQty.Text = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingMax].ToString();
+                txtFullBox.Text = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingQty].ToString();
+            }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void txtAvailableQty_TextChanged(object sender, EventArgs e)
+        {
+            CalculateTotalRejectAndPercentage();
         }
     }
 }

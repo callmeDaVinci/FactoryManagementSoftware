@@ -543,6 +543,12 @@
     <Compile Include="UI\frmProductionRecord.Designer.cs">
       <DependentUpon>frmProductionRecord.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmProPackaging.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmProPackaging.Designer.cs">
+      <DependentUpon>frmProPackaging.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmStockReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -798,6 +804,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmProductionRecord.resx">
       <DependentUpon>frmProductionRecord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmProPackaging.resx">
+      <DependentUpon>frmProPackaging.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockReport.resx">
       <DependentUpon>frmStockReport.cs</DependentUpon>

@@ -4359,6 +4359,36 @@ namespace FactoryManagementSoftware.Module
             return ifSunday;
         }
 
+        public DateTime AddDayIfSunday(DateTime date)
+        {
+            bool ifSunday = false;
+            DayOfWeek day = date.DayOfWeek;
+            if (day == DayOfWeek.Sunday)
+            {
+                ifSunday = true;
+            }
+
+            if(ifSunday)
+            {
+                date.AddDays(1);
+            }
+
+            return date;
+        }
+
+        public DateTime SubtractDayIfSunday(DateTime date)
+        {
+            DayOfWeek day = date.DayOfWeek;
+
+            if (day == DayOfWeek.Sunday)
+            {
+                DateTime newDate = date.AddDays(-1);
+                return newDate;
+            }
+
+            return date;
+        }
+
         public DateTime EstimateEndDate(DateTime Start, int proDayRequired, bool IncludeSunday)
         {
             DateTime estimateEndDate = Start;
