@@ -22,6 +22,8 @@ namespace FactoryManagementSoftware.DAL
         public string MacUpdatedBy { get; } = "mac_updated_by";
         public string MacUpdatedDate { get; } = "mac_updated_date";
 
+        public string MacLotNo { get; } = "mac_lot_no";
+
         #endregion
 
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
@@ -99,6 +101,7 @@ namespace FactoryManagementSoftware.DAL
 
         public bool Insert(MacBLL u)
         {
+
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
 
@@ -108,11 +111,13 @@ namespace FactoryManagementSoftware.DAL
                             (" + MacName + ","
                             + MacTon + ","
                             + MacLocation + ","
+                            + MacLotNo + ","
                             + MacAddedBy + ","
                             + MacAddedDate + ") VALUES" +
                             "(@mac_name," +
                             "@mac_ton," +
                             "@mac_location," +
+                            "@mac_lot_no," +
                             "@mac_added_by," +
                             "@mac_added_date)";
 
@@ -121,6 +126,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@mac_name", u.mac_name);
                 cmd.Parameters.AddWithValue("@mac_ton", u.mac_ton);
                 cmd.Parameters.AddWithValue("@mac_location", u.mac_location);
+                cmd.Parameters.AddWithValue("@mac_lot_no", u.mac_lot_no);
                 cmd.Parameters.AddWithValue("@mac_added_by", u.mac_added_by);
                 cmd.Parameters.AddWithValue("@mac_added_date", u.mac_added_date);
 
@@ -179,6 +185,53 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@mac_name", u.mac_name);
                 cmd.Parameters.AddWithValue("@mac_ton", u.mac_ton);
                 cmd.Parameters.AddWithValue("@mac_location", u.mac_location);
+                cmd.Parameters.AddWithValue("@mac_updated_by", u.mac_updated_by);
+                cmd.Parameters.AddWithValue("@mac_updated_date", u.mac_updated_date);
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool UpdateLotNo(MacBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_mac 
+                            SET "
+                            + MacLotNo + "=@mac_lot_no,"
+                            + MacUpdatedBy + "=@mac_updated_by,"
+                            + MacUpdatedDate + "=@mac_updated_date" +
+                            " WHERE mac_id=@mac_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@mac_id", u.mac_id);
+                cmd.Parameters.AddWithValue("@mac_lot_no", u.mac_lot_no);
                 cmd.Parameters.AddWithValue("@mac_updated_by", u.mac_updated_by);
                 cmd.Parameters.AddWithValue("@mac_updated_date", u.mac_updated_date);
                 conn.Open();

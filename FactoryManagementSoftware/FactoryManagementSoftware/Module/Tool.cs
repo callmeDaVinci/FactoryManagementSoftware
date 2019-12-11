@@ -428,6 +428,27 @@ namespace FactoryManagementSoftware.Module
             return date;
         }
 
+        public int GetNextLotNo(DataTable dt, int macID)
+        {
+            int LotNo = 0;
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (Convert.ToInt32(row[dalMac.MacID].ToString()) == macID)
+                    {
+                        LotNo = int.TryParse(row[dalMac.MacLotNo].ToString(), out LotNo)? LotNo : 1;
+
+                        return LotNo + 1;
+                    }
+
+                }
+            }
+
+            return LotNo + 1;
+        }
+
         public int GetPermissionLevel(int user)
         {
             userDAL dalUser = new userDAL();
@@ -4326,6 +4347,20 @@ namespace FactoryManagementSoftware.Module
             }
 
             return proDay;
+        }
+
+        public string GetAlphabet(int index)
+        {
+            const string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            var value = "";
+
+            if (index >= letters.Length)
+                value += letters[index / letters.Length - 1];
+
+            value += letters[index % letters.Length];
+
+            return value;
         }
 
         public int getNumberOfDayBetweenTwoDate(DateTime startDate, DateTime endDate, bool includeSunday)

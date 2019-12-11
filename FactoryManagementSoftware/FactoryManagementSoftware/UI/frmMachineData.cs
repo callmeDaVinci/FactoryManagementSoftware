@@ -162,6 +162,7 @@ namespace FactoryManagementSoftware.UI
                 uMac.mac_name = macName;
                 uMac.mac_ton = Convert.ToInt32(macTon);
                 uMac.mac_location = macLocation;
+                uMac.mac_lot_no = 1;
 
                 bool success = false;
 

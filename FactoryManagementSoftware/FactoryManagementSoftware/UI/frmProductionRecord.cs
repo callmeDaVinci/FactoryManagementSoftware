@@ -18,6 +18,8 @@ namespace FactoryManagementSoftware.UI
 
             dt_ItemInfo = dalItem.Select();
             dt_JoinInfo = dalJoin.SelectAll();
+            dt_Mac = dalMac.Select();
+
         }
 
         Text text = new Text();
@@ -27,16 +29,19 @@ namespace FactoryManagementSoftware.UI
         planningDAL dalPlan = new planningDAL();
         PlanningBLL uPlan = new PlanningBLL();
         MacDAL dalMac = new MacDAL();
+        MacBLL uMac = new MacBLL();
         userDAL dalUser = new userDAL();
         joinDAL dalJoin = new joinDAL();
         joinBLL uJoin = new joinBLL();
         ProductionRecordDAL dalProRecord = new ProductionRecordDAL();
         ProductionRecordBLL uProRecord = new ProductionRecordBLL();
         trfHistDAL dalTrf = new trfHistDAL();
+        
 
         DataTable dt_ItemInfo;
         DataTable dt_JoinInfo;
         DataTable dt_MultiPackaging;
+        DataTable dt_Mac;
 
         readonly private string string_NewSheet = "NEW";
         readonly private string string_Multi = "MULTI";
@@ -73,10 +78,14 @@ namespace FactoryManagementSoftware.UI
         readonly string header_To = "TO";
         readonly string header_Qty = "QTY";
 
+        private int macID = 0;
+        private int lotNo = 0;
+
         private bool loaded = false;
         private bool addingNewSheet = false;
         private bool sheetLoaded = false;
         private bool dailyRecordLoaded = false;
+
 
         private DataTable NewPackagingTable()
         {
@@ -449,6 +458,8 @@ namespace FactoryManagementSoftware.UI
             if(itemRow >= 0)
             {
                 string planID = dgvItemList.Rows[itemRow].Cells[header_PlanID].Value.ToString();
+                macID = int.TryParse(dgvItemList.Rows[itemRow].Cells[header_Machine].Value.ToString(), out macID) ? macID : 0;
+
                 DataTable dt = NewSheetRecordTable();
                 DataRow dt_Row;
                 DataTable dt_ProductionRecord = dalProRecord.Select();
@@ -526,6 +537,13 @@ namespace FactoryManagementSoftware.UI
                 string itemName = dgvItemList.Rows[selectedItem].Cells[header_PartName].Value.ToString();
                 string itemCode = dgvItemList.Rows[selectedItem].Cells[header_PartCode].Value.ToString();
                 string planID = dgvItemList.Rows[selectedItem].Cells[header_PlanID].Value.ToString();
+
+                
+                int macID = Convert.ToInt32(dgvItemList.Rows[selectedItem].Cells[header_Machine].Value.ToString());
+
+                lotNo = tool.GetNextLotNo(dt_Mac, macID);
+
+                txtProLotNo.Text = SetAlphabetToProLotNo(macID, lotNo);
 
                 lblPartName.Text = itemName;
                 lblPartCode.Text = itemCode;
@@ -610,7 +628,7 @@ namespace FactoryManagementSoftware.UI
                 string planID = dgvItemList.Rows[selectedItem].Cells[header_PlanID].Value.ToString();
                 string sheetID = dgvRecordHistory.Rows[selectedDailyRecord].Cells[header_SheetID].Value.ToString();
                 string shift = dgvRecordHistory.Rows[selectedDailyRecord].Cells[header_Shift].Value.ToString();
-
+                
                 uProRecord.sheet_id = Convert.ToInt32(sheetID);
                 DataTable dt_ProductionRecord = dalProRecord.ProductionRecordSelect(uProRecord);
 
@@ -647,7 +665,18 @@ namespace FactoryManagementSoftware.UI
                         lblColorUsage.Text = colorRate.ToString("0.##");
 
                         dtpProDate.Value = Convert.ToDateTime(row[dalProRecord.ProDate].ToString());
-                        txtProLotNo.Text = row[dalProRecord.ProLotNo].ToString();
+
+                        int _ProLotNo = int.TryParse(row[dalProRecord.ProLotNo].ToString(), out _ProLotNo) ? _ProLotNo : -1;
+
+                        if(_ProLotNo != -1)
+                        {
+                            txtProLotNo.Text = SetAlphabetToProLotNo(macID, _ProLotNo);
+                        }
+                        else
+                        {
+                            txtProLotNo.Text = row[dalProRecord.ProLotNo].ToString();
+                        }
+                        
                         txtRawMatLotNo.Text = row[dalProRecord.RawMatLotNo].ToString();
                         txtColorMatLotNo.Text = row[dalProRecord.ColorMatLotNo].ToString();
                         txtMeterStart.Text = row[dalProRecord.MeterStart].ToString();
@@ -991,7 +1020,7 @@ namespace FactoryManagementSoftware.UI
                 uProRecord.shift = Shift;
                 uProRecord.packaging_code = PackagingCode;
                 uProRecord.packaging_qty = PackagingQty;
-                uProRecord.production_lot_no = txtProLotNo.Text;
+                uProRecord.production_lot_no = lotNo.ToString();
                 uProRecord.raw_mat_lot_no = txtRawMatLotNo.Text;
                 uProRecord.color_mat_lot_no = txtColorMatLotNo.Text;
                 uProRecord.meter_start = meterStart;
@@ -1070,7 +1099,7 @@ namespace FactoryManagementSoftware.UI
                     }
 
 
-                    //remove packaging data from db
+                    //remove packaging data from db and insert new data
                     dalProRecord.DeletePackagingData(uProRecord);
 
                     if (dt_MultiPackaging != null)
@@ -1089,7 +1118,20 @@ namespace FactoryManagementSoftware.UI
                         }
                     }
 
+                    //update lot no
+                    if(lotNo > 0)
+                    {
+                        uMac.mac_id = macID;
+                        uMac.mac_lot_no = lotNo;
+                        uMac.mac_updated_date = updateTime;
+                        uMac.mac_updated_by = MainDashboard.USER_ID;
 
+                        if (!dalMac.UpdateLotNo(uMac))
+                        {
+                            MessageBox.Show("Failed to update machine lot no!");
+                        }
+
+                    }
 
 
                     frmLoading.CloseForm();
@@ -1235,45 +1277,13 @@ namespace FactoryManagementSoftware.UI
             MainDashboard.DailyJobSheetFormOpen = false;
         }
 
-        private void txtMeterStart_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void txtBalanceOfLastShift_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void txtBalanceOfThisShift_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void txtFullBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
-            {
-                e.Handled = true;
-            }
-        }
-
         private void txtTotalStockIn_TextChanged(object sender, EventArgs e)
         {
             errorProvider9.Clear();
             CalculateTotalRejectAndPercentage();
         }
 
-        private void txtTotalStockIn_KeyPress(object sender, KeyPressEventArgs e)
+        private void OnlyNumeric_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
             {
@@ -1281,25 +1291,7 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void txtPackingQty_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void txtTotalShot_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = true;
-        }
-
-        private void txtTotalReject_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = true;
-        }
-
-        private void txtRejectPercentage_KeyPress(object sender, KeyPressEventArgs e)
+        private void UnableKeyIn_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true;
         }
@@ -1352,6 +1344,8 @@ namespace FactoryManagementSoftware.UI
         {
             if (dgvItemList.SelectedRows.Count > 0)
             {
+                dt_Mac = dalMac.Select();
+
                 DateTime proDate = DateTime.Today.AddDays(-1);
 
                 dtpProDate.Value = tool.SubtractDayIfSunday(proDate);
@@ -1394,6 +1388,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("lot no: "+ lotNo);
             if(SaveOnly())
             {
                 AddNewSheetUI(false);
@@ -2117,6 +2112,31 @@ namespace FactoryManagementSoftware.UI
         private void txtAvailableQty_TextChanged(object sender, EventArgs e)
         {
             CalculateTotalRejectAndPercentage();
+        }
+
+        private void txtProLotNo_TextChanged(object sender, EventArgs e)
+        {
+            //lotNo = int.TryParse(txtProLotNo.Text, out lotNo) ? lotNo : 0;
+        }
+
+        private string SetAlphabetToProLotNo(int macID, int lotNo)
+        {
+            return tool.GetAlphabet(macID - 1) + " - " + lotNo;
+        }
+
+        private void txtProLotNo_Leave(object sender, EventArgs e)
+        {
+
+            lotNo = int.TryParse(txtProLotNo.Text, out lotNo) ? lotNo : 0;
+
+            txtProLotNo.Text = SetAlphabetToProLotNo(macID, lotNo);
+            //txtProLotNo.Text = tool.GetAlphabet(macID-1) + " - " + lotNo;
+        }
+
+        private void txtProLotNo_Enter(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty(txtProLotNo.Text))
+            txtProLotNo.Text = lotNo.ToString();
         }
     }
 }

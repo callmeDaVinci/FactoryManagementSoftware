@@ -30,12 +30,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvItemList = new System.Windows.Forms.DataGridView();
             this.dgvRecordHistory = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
@@ -174,24 +174,24 @@
             this.dgvItemList.AllowUserToOrderColumns = true;
             this.dgvItemList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
             this.dgvItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItemList.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle20.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItemList.DefaultCellStyle = dataGridViewCellStyle20;
             this.dgvItemList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvItemList.GridColor = System.Drawing.Color.WhiteSmoke;
             this.dgvItemList.Location = new System.Drawing.Point(4, 51);
@@ -214,24 +214,24 @@
             this.dgvRecordHistory.AllowUserToOrderColumns = true;
             this.dgvRecordHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvRecordHistory.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecordHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle21.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle21.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle21.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecordHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle21;
             this.dgvRecordHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvRecordHistory.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRecordHistory.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle22.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle22.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle22.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRecordHistory.DefaultCellStyle = dataGridViewCellStyle22;
             this.dgvRecordHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRecordHistory.GridColor = System.Drawing.Color.WhiteSmoke;
             this.dgvRecordHistory.Location = new System.Drawing.Point(4, 522);
@@ -410,6 +410,7 @@
             this.txtPlanID.Size = new System.Drawing.Size(69, 25);
             this.txtPlanID.TabIndex = 258;
             this.txtPlanID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtPlanID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UnableKeyIn_KeyPress);
             // 
             // txtSheetID
             // 
@@ -421,6 +422,7 @@
             this.txtSheetID.Size = new System.Drawing.Size(69, 25);
             this.txtSheetID.TabIndex = 256;
             this.txtSheetID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtSheetID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UnableKeyIn_KeyPress);
             // 
             // label5
             // 
@@ -455,6 +457,10 @@
             this.txtProLotNo.Size = new System.Drawing.Size(171, 25);
             this.txtProLotNo.TabIndex = 216;
             this.txtProLotNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtProLotNo.TextChanged += new System.EventHandler(this.txtProLotNo_TextChanged);
+            this.txtProLotNo.Enter += new System.EventHandler(this.txtProLotNo_Enter);
+            this.txtProLotNo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
+            this.txtProLotNo.Leave += new System.EventHandler(this.txtProLotNo_Leave);
             // 
             // lblDate
             // 
@@ -669,6 +675,7 @@
             this.txtAvailableQty.TabIndex = 308;
             this.txtAvailableQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtAvailableQty.TextChanged += new System.EventHandler(this.txtAvailableQty_TextChanged);
+            this.txtAvailableQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UnableKeyIn_KeyPress);
             // 
             // label22
             // 
@@ -703,6 +710,7 @@
             this.txtTotalShot.TabIndex = 306;
             this.txtTotalShot.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtTotalShot.TextChanged += new System.EventHandler(this.txtTotalShot_TextChanged);
+            this.txtTotalShot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UnableKeyIn_KeyPress);
             // 
             // lblBalanceLast
             // 
@@ -736,6 +744,7 @@
             this.txtRejectPercentage.Size = new System.Drawing.Size(131, 25);
             this.txtRejectPercentage.TabIndex = 301;
             this.txtRejectPercentage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtRejectPercentage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UnableKeyIn_KeyPress);
             // 
             // txtTotalStockIn
             // 
@@ -749,6 +758,7 @@
             this.txtTotalStockIn.TabIndex = 302;
             this.txtTotalStockIn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtTotalStockIn.TextChanged += new System.EventHandler(this.txtTotalStockIn_TextChanged);
+            this.txtTotalStockIn.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
             // 
             // lblFullCarton
             // 
@@ -771,6 +781,7 @@
             this.txtTotalReject.Size = new System.Drawing.Size(131, 25);
             this.txtTotalReject.TabIndex = 299;
             this.txtTotalReject.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTotalReject.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.UnableKeyIn_KeyPress);
             // 
             // txtBalanceOfLastShift
             // 
@@ -784,6 +795,7 @@
             this.txtBalanceOfLastShift.TabIndex = 304;
             this.txtBalanceOfLastShift.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBalanceOfLastShift.TextChanged += new System.EventHandler(this.txtBalanceOfLastShift_TextChanged);
+            this.txtBalanceOfLastShift.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
             // 
             // txtBalanceOfThisShift
             // 
@@ -797,6 +809,7 @@
             this.txtBalanceOfThisShift.TabIndex = 298;
             this.txtBalanceOfThisShift.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBalanceOfThisShift.TextChanged += new System.EventHandler(this.txtBalanceOfThisShift_TextChanged);
+            this.txtBalanceOfThisShift.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
             // 
             // label41
             // 
@@ -821,6 +834,7 @@
             this.txtFullBox.TabIndex = 300;
             this.txtFullBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtFullBox.TextChanged += new System.EventHandler(this.txtFullBox_TextChanged);
+            this.txtFullBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
             // 
             // lblTotalStockIn
             // 
@@ -854,24 +868,24 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvMeterReading.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvMeterReading.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMeterReading.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle23.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle23.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMeterReading.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle23;
             this.dgvMeterReading.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMeterReading.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMeterReading.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle24.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle24.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle24.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMeterReading.DefaultCellStyle = dataGridViewCellStyle24;
             this.dgvMeterReading.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvMeterReading.Location = new System.Drawing.Point(4, 1);
             this.dgvMeterReading.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
@@ -914,6 +928,7 @@
             this.txtPackingMaxQty.TabIndex = 269;
             this.txtPackingMaxQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtPackingMaxQty.TextChanged += new System.EventHandler(this.txtPackingQty_TextChanged);
+            this.txtPackingMaxQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
             // 
             // label20
             // 
@@ -1117,6 +1132,7 @@
             this.txtMeterStart.TabIndex = 272;
             this.txtMeterStart.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtMeterStart.TextChanged += new System.EventHandler(this.txtMeterStart_TextChanged);
+            this.txtMeterStart.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
             // 
             // lblColorMat
             // 

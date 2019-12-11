@@ -17,5 +17,6 @@ namespace FactoryManagementSoftware.BLL
         public DateTime mac_added_date { get; set; }
         public int mac_updated_by { get; set; }
         public DateTime mac_updated_date { get; set; }
+        public int mac_lot_no { get; set; }
     }
 }

@@ -14,8 +14,10 @@ namespace FactoryManagementSoftware.Module
         itemDAL dalItem = new itemDAL();
         planningActionBLL uPlanningAction = new planningActionBLL();
 
-        
-        #region History Action String
+
+        #region Action String
+
+        public const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         public string System { get; } = "System";
 
