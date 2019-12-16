@@ -52,6 +52,7 @@
             this.deliveryReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.forecastReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.materialUsedReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.productionReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -77,7 +78,7 @@
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(1320, 31);
+            this.menuStrip.Size = new System.Drawing.Size(1348, 31);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "MenuStrip";
             // 
@@ -218,7 +219,8 @@
             this.stockReportToolStripMenuItem,
             this.deliveryReportToolStripMenuItem,
             this.forecastReportToolStripMenuItem,
-            this.materialUsedReportToolStripMenuItem});
+            this.materialUsedReportToolStripMenuItem,
+            this.productionReportToolStripMenuItem});
             this.reportToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
             this.reportToolStripMenuItem.Size = new System.Drawing.Size(82, 27);
@@ -254,15 +256,22 @@
             this.materialUsedReportToolStripMenuItem.Text = "Material Used Report";
             this.materialUsedReportToolStripMenuItem.Click += new System.EventHandler(this.materialUsedReportToolStripMenuItem_Click);
             // 
+            // productionReportToolStripMenuItem
+            // 
+            this.productionReportToolStripMenuItem.Name = "productionReportToolStripMenuItem";
+            this.productionReportToolStripMenuItem.Size = new System.Drawing.Size(247, 28);
+            this.productionReportToolStripMenuItem.Text = "Production Report";
+            this.productionReportToolStripMenuItem.Click += new System.EventHandler(this.productionReportToolStripMenuItem_Click);
+            // 
             // statusStrip
             // 
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 673);
+            this.statusStrip.Location = new System.Drawing.Point(0, 696);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip.Size = new System.Drawing.Size(1320, 25);
+            this.statusStrip.Size = new System.Drawing.Size(1348, 25);
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "StatusStrip";
             // 
@@ -282,7 +291,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(1320, 698);
+            this.ClientSize = new System.Drawing.Size(1348, 721);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -334,6 +343,7 @@
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ToolStripMenuItem productionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dAILYToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem productionReportToolStripMenuItem;
     }
 }
 

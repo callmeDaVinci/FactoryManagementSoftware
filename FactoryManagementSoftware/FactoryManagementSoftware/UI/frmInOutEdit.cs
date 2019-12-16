@@ -109,6 +109,7 @@ namespace FactoryManagementSoftware.UI
         readonly string headerTo = "TO";
         readonly string headerQty = "QTY (KG/PIECE)";
 
+        readonly private string header_Shift = "SHIFT";
         readonly string header_Cat = "Cat";
         readonly string header_ProDate = "DATE";
         readonly string header_ItemCode = "ITEM CODE";
@@ -1469,7 +1470,7 @@ namespace FactoryManagementSoftware.UI
                 index = n + 1;
                 dgv.Rows[n].Cells[IndexColumnName].Value = index;
             }
-            string ProDate = null, itemCat = null, itemCode = null, itemName = null, fromCat = null, from = null, to = null, proQty = null, planID = null, unit = null;
+            string ProDate = null, itemCat = null, itemCode = null, itemName = null, fromCat = null, from = null, to = null, proQty = null, planID = null, unit = null, shift = null;
 
             foreach (DataRow row in dt.Rows)
             {
@@ -1481,7 +1482,8 @@ namespace FactoryManagementSoftware.UI
                 to = row[header_To].ToString();
                 proQty = row[header_Qty].ToString();
                 planID = row[header_PlanID].ToString();
-                
+                shift = row[header_Shift].ToString();
+
             }
 
             dtpTrfDate.Text = ProDate;
@@ -1502,7 +1504,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[n].Cells[FromColumnName].Value = "";
             dgv.Rows[n].Cells[QtyColumnName].Value = proQty;
             dgv.Rows[n].Cells[UnitColumnName].Value = unit;
-            dgv.Rows[n].Cells[NoteColumnName].Value = "[For Plan " + planID + "]";
+            dgv.Rows[n].Cells[NoteColumnName].Value = "[Plan " + planID + "("+shift+")]";
             dgv.Rows[n].Cells[ToCatColumnName].Value = text.Factory;
             dgv.Rows[n].Cells[ToColumnName].Value = to;
             dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);

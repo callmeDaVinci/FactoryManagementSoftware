@@ -286,7 +286,7 @@ namespace FactoryManagementSoftware.UI
 
         private void InitializeData()
         {
-            tool.loadFactoryAndAll(cmbFactory);
+            tool.loadFactoryAndAllExceptStore(cmbFactory);
             ResetData();
         }
 
@@ -858,8 +858,6 @@ namespace FactoryManagementSoftware.UI
         {
             if (cmbMachine.Text != null && ableLoadData)
             {
-
-
                 ableLoadData = false;
                 cmbFactory.Text = tool.getFactoryNameFromMachineID(cmbMachine.Text);
                 ableLoadData = true;

@@ -469,6 +469,21 @@ namespace FactoryManagementSoftware.Module
             return factoryName;
         }
 
+        public string getFactoryNameFromMachineID(string machineID, DataTable dt)
+        {
+            string factoryName = "";
+
+            foreach(DataRow row in dt.Rows)
+            {
+                if(row[dalMac.MacID].ToString() == machineID)
+                {
+                    factoryName = row[dalMac.MacLocation].ToString();
+                }
+            }
+            
+            return factoryName;
+        }
+
         public void DoubleBuffered(DataGridView dgv, bool setting)
         {
             Type dgvType = dgv.GetType();
@@ -514,6 +529,31 @@ namespace FactoryManagementSoftware.Module
             DataTable lacationTable = dt.DefaultView.ToTable(true, "fac_name");
             lacationTable.Rows.Add("All");
             lacationTable.DefaultView.Sort = "fac_name ASC";
+
+            //lacationTable.DefaultView.Sort = columnName+" ASC";
+            cmb.DataSource = lacationTable;
+            cmb.DisplayMember = "fac_name";
+            cmb.SelectedIndex = 0;
+
+        }
+
+        public void loadFactoryAndAllExceptStore(ComboBox cmb)
+        {
+            DataTable dt = dalFac.Select();
+            DataTable lacationTable = dt.DefaultView.ToTable(true, "fac_name");
+            lacationTable.Rows.Add("All");
+            lacationTable.DefaultView.Sort = "fac_name ASC";
+
+            for (int i = lacationTable.Rows.Count - 1; i >= 0; i--)
+            {
+                DataRow dr = lacationTable.Rows[i];
+                if (dr["fac_name"].ToString() == "STORE" || dr["fac_name"].ToString() == "No.9")
+                {
+                    dr.Delete();
+                }
+                    
+            }
+            lacationTable.AcceptChanges();
 
             //lacationTable.DefaultView.Sort = columnName+" ASC";
             cmb.DataSource = lacationTable;

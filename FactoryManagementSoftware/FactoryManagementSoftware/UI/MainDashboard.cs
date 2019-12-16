@@ -27,6 +27,7 @@ namespace FactoryManagementSoftware.UI
         static public bool PMMAFormOpen = false;
         static public bool ProductionFormOpen = false;
         static public bool DailyJobSheetFormOpen = false;
+        static public bool ProductionReportFormOpen = false;
 
         static public int USER_ID = -1;
 
@@ -526,7 +527,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dAILYToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dalUser.getPermissionLevel(USER_ID) >= ACTION_LVL_FIVE)
+            if (true)
             {
                 if (!DailyJobSheetFormOpen)
                 {
@@ -553,6 +554,28 @@ namespace FactoryManagementSoftware.UI
         private void reportToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void productionReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!ProductionReportFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmProductionReport frm = new frmProductionReport();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                ProductionReportFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmProductionReport>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmProductionReport>().First().BringToFront();
+                }
+            }
         }
     }
 }

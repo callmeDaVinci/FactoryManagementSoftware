@@ -41,6 +41,7 @@ namespace FactoryManagementSoftware.DAL
         public string productionStartDate { get; } = "production_start_date";
         public string productionEndDate { get; } = "production_End_date";
 
+        public string planProduced { get; } = "plan_produced";
         public string machineID { get; } = "machine_id";
         public string familyWith { get; } = "family_with";
 
@@ -262,6 +263,49 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Update data in Database
+
+        public bool TotalProducedUpdate(PlanningBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_plan SET
+                                plan_produced=@plan_produced
+                                WHERE plan_id=@plan_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@plan_produced", u.plan_produced);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
 
         public bool RecordingUpdate(PlanningBLL u)
         {
