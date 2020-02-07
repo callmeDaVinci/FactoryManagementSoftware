@@ -45,5 +45,12 @@ namespace FactoryManagementSoftware.BLL
 
         public int item_assembly { get; set; }
         public int item_production { get; set; }
+
+        public int Size_tbl_code_1 { get; set; }
+        public int Size_tbl_code_2 { get; set; }
+        public int Size_tbl_code_3 { get; set; }
+        public int Type_tbl_code { get; set; }
+        public int Category_tbl_code { get; set; }
+        public int Stdpacking_tbl_code { get; set; }
     }
 }

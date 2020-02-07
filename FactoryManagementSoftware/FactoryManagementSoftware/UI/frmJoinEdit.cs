@@ -473,5 +473,15 @@ namespace FactoryManagementSoftware.UI
             updateTestQty();
             errorProvider8.Clear();
         }
+
+        private void lblItemName_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblItemCode_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

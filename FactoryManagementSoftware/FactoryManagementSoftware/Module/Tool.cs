@@ -588,7 +588,6 @@ namespace FactoryManagementSoftware.Module
         {
             DataTable dt = dalMac.Select();
 
-
             DataTable distinctTable = new DataTable();
             distinctTable = dt.DefaultView.ToTable(true, "mac_id");
             distinctTable.Rows.Add("All");
@@ -614,6 +613,16 @@ namespace FactoryManagementSoftware.Module
             {
                 cmb.DataSource = null;
             }
+        }
+
+        public void loadSPPItemNameDataToComboBox(ComboBox cmb)
+        {
+            DataTable dt = dalItem.SPPSearch();
+            DataTable dtItemName = dt.DefaultView.ToTable(true, "item_name");
+
+            dtItemName.DefaultView.Sort = "item_name ASC";
+            cmb.DataSource = dtItemName;
+            cmb.DisplayMember = "item_name";
         }
 
         public void loadItemCodeDataToComboBox(ComboBox cmb, string keywords)
@@ -4055,6 +4064,12 @@ namespace FactoryManagementSoftware.Module
 
                 string year = DateTime.Now.Year.ToString();
                 //MessageBox.Show(nextMonth);
+
+                string start = GetPMMAStartDate(DateTime.Now.Month, DateTime.Now.Year).ToString("yyyy/MM/dd");
+                string end = GetPMMAEndDate(DateTime.Now.Month, DateTime.Now.Year).ToString("yyyy/MM/dd");
+
+                
+
                 DataTable dt_currentMonthTrfOutHist = dalTrfHist.rangeToAllCustomerSearchByMonth(currentMonth, year);
                 DataTable dt_nextMonthTrfOutHist = dalTrfHist.rangeToAllCustomerSearchByMonth(nextMonth, year);
                 DataTable dt_nextNextMonthTrfOutHist = dalTrfHist.rangeToAllCustomerSearchByMonth(nextNextMonth, year);
@@ -4067,10 +4082,12 @@ namespace FactoryManagementSoftware.Module
                     //counter++;
                     itemCode = item["item_code"].ToString();
 
-                    if (itemCode.Equals("V96LAR000"))
+                    if (itemCode.Equals("V88K9J100"))
                     {
                         float test = 0;
                     }
+
+                    DataTable dt_Out = dalTrfHist.rangeItemToAllCustomerSearch(start, end, itemCode);
 
                     MB = item["item_mb"] == DBNull.Value ? "NULL" : item["item_mb"].ToString();
                     mbRate = item["item_mb_rate"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_mb_rate"].ToString());
@@ -4079,10 +4096,6 @@ namespace FactoryManagementSoftware.Module
                     forecast_2 = GetForecastQty(dt_ItemForecast, itemCode, 2);
                     forecast_3 = GetForecastQty(dt_ItemForecast, itemCode, 3);
                     forecast_4 = GetForecastQty(dt_ItemForecast, itemCode, 4);
-                    //forecast_1 = item["forecast_one"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_one"]);
-                    //forecast_2 = item["forecast_two"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_two"]);
-                    //forecast_3 = item["forecast_three"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_three"]);
-                    //forecast_4 = item["forecast_four"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_four"]);
                     itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
                     itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
                     wastageAllowed = item["item_wastage_allowed"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_wastage_allowed"].ToString());
@@ -4090,9 +4103,9 @@ namespace FactoryManagementSoftware.Module
                     #region cal out data
 
                     currentMonthOut = 0;
-                    if (dt_currentMonthTrfOutHist.Rows.Count > 0)
+                    if (dt_Out.Rows.Count > 0)
                     {
-                        foreach (DataRow outRecord in dt_currentMonthTrfOutHist.Rows)
+                        foreach (DataRow outRecord in dt_Out.Rows)
                         {
                             if (outRecord["trf_result"].ToString().Equals("Passed") && outRecord["trf_hist_item_code"].ToString().Equals(itemCode))
                             {
@@ -4161,7 +4174,15 @@ namespace FactoryManagementSoftware.Module
                     }
 
                     bal_3 = bal_2 - forecast_3;
-                    bal_4 = bal_3 - forecast_4;
+
+                    if(forecast_4 != -1)
+                    {
+                        bal_4 = bal_3 - forecast_4;
+                    }
+                    else
+                    {
+                        bal_4 = bal_3;
+                    }
 
                     #endregion
 
@@ -4172,7 +4193,9 @@ namespace FactoryManagementSoftware.Module
                         {
                             if (Join["parent_code"].ToString().Equals(itemCode))
                             {
-                                if (Join["child_cat"].ToString().Equals("Sub Material") && Join["child_code"].ToString().Equals(SubMat))
+                                string childCodeCheck = Join["child_code"].ToString();
+                                string childCatCheck = Join["child_cat"].ToString();
+                                if (Join["child_cat"].ToString().Equals("Sub Material") && Join["child_code"].ToString().Equals(SubMat) || Join["child_cat"].ToString().Equals("Part"))
                                 {
                                     child_ReadyStock = Join["child_qty"] == DBNull.Value ? 0 : Convert.ToInt32(Join["child_qty"]);
                                     child_join_qty = Convert.ToInt32(Join["join_qty"]);

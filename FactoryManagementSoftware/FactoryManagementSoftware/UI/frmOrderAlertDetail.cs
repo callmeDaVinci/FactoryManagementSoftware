@@ -1042,8 +1042,10 @@ namespace FactoryManagementSoftware.UI
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
+            frmLoading.ShowLoadingScreen();
             DataTable dt_itemInfo = dalItem.Select();
             string type = tool.getCatNameFromDataTable(dt_itemInfo, MaterialCode);
+
             if (type.Equals("RAW Material"))
             {
                 if(frmOrder.zeroCost)
@@ -1081,6 +1083,7 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
+            frmLoading.CloseForm();
         }
 
 

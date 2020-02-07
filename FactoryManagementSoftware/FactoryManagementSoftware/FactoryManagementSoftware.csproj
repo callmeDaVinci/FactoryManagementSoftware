@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>100</ApplicationRevision>
+    <ApplicationRevision>113</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -147,6 +147,7 @@
     <Compile Include="BLL\pmmaBLL.cs" />
     <Compile Include="BLL\pmmaDateBLL.cs" />
     <Compile Include="BLL\ProductionRecordBLL.cs" />
+    <Compile Include="BLL\SPPDataBLL.cs" />
     <Compile Include="BLL\trfCatBLL.cs" />
     <Compile Include="BLL\trfHistBLL.cs" />
     <Compile Include="BLL\userBLL.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="DAL\pmmaDAL.cs" />
     <Compile Include="DAL\pmmaDateDAL.cs" />
     <Compile Include="DAL\ProductionRecordDAL.cs" />
+    <Compile Include="DAL\SPPDataDAL.cs" />
     <Compile Include="DAL\trfCatDAL.cs" />
     <Compile Include="DAL\trfHistDAL.cs" />
     <Compile Include="DAL\userDAL.cs" />
@@ -555,6 +557,42 @@
     <Compile Include="UI\frmProPackaging.Designer.cs">
       <DependentUpon>frmProPackaging.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmSPP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSPP.Designer.cs">
+      <DependentUpon>frmSPP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSPPAddItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSPPAddItem.Designer.cs">
+      <DependentUpon>frmSPPAddItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSPPCalculation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSPPCalculation.Designer.cs">
+      <DependentUpon>frmSPPCalculation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSPPDataSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSPPDataSetting.Designer.cs">
+      <DependentUpon>frmSPPDataSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSPPInventory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSPPInventory.Designer.cs">
+      <DependentUpon>frmSPPInventory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSPPItemEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSPPItemEdit.Designer.cs">
+      <DependentUpon>frmSPPItemEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmStockReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -817,6 +855,24 @@
     <EmbeddedResource Include="UI\frmProPackaging.resx">
       <DependentUpon>frmProPackaging.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSPP.resx">
+      <DependentUpon>frmSPP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSPPAddItem.resx">
+      <DependentUpon>frmSPPAddItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSPPCalculation.resx">
+      <DependentUpon>frmSPPCalculation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSPPDataSetting.resx">
+      <DependentUpon>frmSPPDataSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSPPInventory.resx">
+      <DependentUpon>frmSPPInventory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSPPItemEdit.resx">
+      <DependentUpon>frmSPPItemEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockReport.resx">
       <DependentUpon>frmStockReport.cs</DependentUpon>
     </EmbeddedResource>
@@ -920,6 +976,41 @@
     <Content Include="Image\safety_SYA_icon.ico" />
     <Content Include="Image\x_icon_png_1543129_VTC_icon.ico" />
     <Content Include="Oxygen-Icons.org-Oxygen-Apps-partitionmanager.ico" />
+    <None Include="Resources\icons8-product-24.png" />
+    <None Include="Resources\icons8-product-96.png" />
+    <None Include="Resources\icons8-product-96 %281%29.png" />
+    <None Include="Resources\icons8-warehouse-96.png" />
+    <None Include="Resources\icons8-warehouse-90.png" />
+    <None Include="Resources\icons8-warehouse-64.png" />
+    <None Include="Resources\icons8-product-100.png" />
+    <None Include="Resources\icons8-data-transfer-100.png" />
+    <None Include="Resources\icons8-data-transfer-96.png" />
+    <None Include="Resources\icons8-data-transfer-80.png" />
+    <None Include="Resources\icons8-windows-10-96.png" />
+    <None Include="Resources\icons8-truck-96.png" />
+    <None Include="Resources\icons8-high-importance-96.png" />
+    <None Include="Resources\icons8-purchase-order-96.png" />
+    <None Include="Resources\icons8-plus-math-96.png" />
+    <None Include="Resources\icons8-task-planning-96.png" />
+    <None Include="Resources\icons8-tasklist-96.png" />
+    <None Include="Resources\icons8-plus-math-32.png" />
+    <None Include="Resources\icons8-plus-math-64.png" />
+    <None Include="Resources\icons8-purchase-order-64.png" />
+    <None Include="Resources\icons8-truck-64.png" />
+    <None Include="Resources\icons8-high-importance-64.png" />
+    <None Include="Resources\icons8-data-transfer-64.png" />
+    <None Include="Resources\icons8-box-96.png" />
+    <None Include="Resources\icons8-back-32.png" />
+    <None Include="Resources\icons8-back-32 %281%29.png" />
+    <None Include="Resources\icons8-settings-64.png" />
+    <None Include="Resources\icons8-data-transfer-961.png" />
+    <None Include="Resources\icons8-windows-10-961.png" />
+    <None Include="Resources\icons8-calculator-64.png" />
+    <None Include="Resources\socket.png" />
+    <None Include="Resources\socket1.png" />
+    <None Include="Resources\socket.64px.ico" />
+    <None Include="Resources\elbow.64px.ico" />
+    <None Include="Resources\tee.64px.ico" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

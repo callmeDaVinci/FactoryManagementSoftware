@@ -1279,7 +1279,7 @@ namespace FactoryManagementSoftware.UI
                 if(SaveOnly())
                 {
                     DataTable dt = NewStockInTable();
-                    DataRow dt_Row = dt.NewRow();
+                    DataRow dt_Row ;
 
                     //get totalStockIn qty from box qty and max pcs per box
                     //check if one or multi packaging box
@@ -1292,12 +1292,35 @@ namespace FactoryManagementSoftware.UI
 
                         foreach (DataRow row in dt_MultiPackaging.Rows)
                         {
+                            string packingCode = row[frmProPackaging.header_PackagingCode].ToString();
                             int boxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingQty].ToString());
                             int maxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingMax].ToString());
 
                             totalFullBox += boxQty;
 
                             totalStockIn += boxQty * maxQty;
+
+                            dt_Row = dt.NewRow();
+                            dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                            dt_Row[header_ItemCode] = packingCode;
+                            dt_Row[header_Cat] = tool.getItemCat(packingCode);
+
+                            dt_Row[header_From] =  dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+                            dt_Row[header_To] = text.Production;
+
+                            dt_Row[header_Qty] = boxQty;
+                            dt_Row[header_PlanID] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
+
+                            if (cbMorning.Checked)
+                            {
+                                dt_Row[header_Shift] = "M";
+                            }
+                            else if (cbNight.Checked)
+                            {
+                                dt_Row[header_Shift] = "N";
+                            }
+
+                            dt.Rows.Add(dt_Row);
                         }
                     }
                     else
@@ -1307,8 +1330,32 @@ namespace FactoryManagementSoftware.UI
                         int fullBoxQty = int.TryParse(txtFullBox.Text, out fullBoxQty) ? fullBoxQty : 0;
 
                         totalStockIn = packingMaxQty * fullBoxQty;
+
+                        dt_Row = dt.NewRow();
+                        dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                        dt_Row[header_ItemCode] = cmbPackingCode.Text;
+                        dt_Row[header_Cat] = tool.getItemCat(cmbPackingCode.Text);
+
+                        dt_Row[header_From] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+                        dt_Row[header_To] = text.Production;
+
+                        dt_Row[header_Qty] = fullBoxQty;
+                        dt_Row[header_PlanID] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
+
+                        if (cbMorning.Checked)
+                        {
+                            dt_Row[header_Shift] = "M";
+                        }
+                        else if (cbNight.Checked)
+                        {
+                            dt_Row[header_Shift] = "N";
+                        }
+
+                        dt.Rows.Add(dt_Row);
                     }
 
+
+                    dt_Row = dt.NewRow();
                     dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
                     dt_Row[header_ItemCode] = lblPartCode.Text;
                     dt_Row[header_Cat] = text.Cat_Part;

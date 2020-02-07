@@ -144,6 +144,7 @@
             this.lblItemName.Size = new System.Drawing.Size(54, 19);
             this.lblItemName.TabIndex = 44;
             this.lblItemName.Text = "*NAME";
+            this.lblItemName.Click += new System.EventHandler(this.lblItemName_Click);
             // 
             // lblItemCode
             // 
@@ -154,6 +155,7 @@
             this.lblItemCode.Size = new System.Drawing.Size(52, 19);
             this.lblItemCode.TabIndex = 42;
             this.lblItemCode.Text = "*CODE";
+            this.lblItemCode.Click += new System.EventHandler(this.lblItemCode_Click);
             // 
             // cmbParentName
             // 

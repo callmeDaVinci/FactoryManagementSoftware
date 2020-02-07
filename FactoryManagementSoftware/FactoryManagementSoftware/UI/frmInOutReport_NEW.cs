@@ -61,6 +61,8 @@ namespace FactoryManagementSoftware.UI
         facDAL dalFac = new facDAL();
         pmmaDateDAL dalPMMADate = new pmmaDateDAL();
         userDAL dalUser = new userDAL();
+        SPPDataDAL dalSPP = new SPPDataDAL();
+
         Tool tool = new Tool();
         Text text = new Text();
         DataTable dt_Fac;
@@ -89,7 +91,7 @@ namespace FactoryManagementSoftware.UI
                 dt.Columns.Add(header_Type, typeof(string));
             }
 
-            dt.Columns.Add(header_Total, typeof(double));
+            dt.Columns.Add(header_Total, typeof(string));
 
 
             string dateType = cmbDateType.Text;
@@ -240,8 +242,8 @@ namespace FactoryManagementSoftware.UI
             if (matched)
             {
                 double qty = double.TryParse(dgv.Rows[row].Cells[col].Value.ToString(), out qty) ? qty : -1;
-
-                if (qty > 0)
+                string test = dgv.Rows[row].Cells[col].Value.ToString();
+                if (qty > 0 || !string.IsNullOrEmpty(test))
                 {
                     if (inOutType == inOutType_In)
                     {
@@ -431,7 +433,7 @@ namespace FactoryManagementSoftware.UI
 
             dt_year.Columns.Add("year");
 
-            for (int i =year; i <= 2019; i++)
+            for (int i =year; i <= DateTime.Now.Year; i++)
             {
                 dt_year.Rows.Add(i);
             }
@@ -529,7 +531,16 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        dt_ItemList = dalItemCust.custSearch(itemType);
+                        if (itemType == "SPP")
+                        {
+                            dt_ItemList = dalItemCust.SPPCustSearch(itemType);
+                        }
+                        else
+                        {
+                            dt_ItemList = dalItemCust.custSearch(itemType);
+                        }
+
+                       
                     }
                 }
                 #endregion
@@ -618,7 +629,14 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (inOutType == inOutType_Out)
                     {
-                        dt_TrfHist = dalTrfHist.ItemToCustomerSearch(start, end, itemType);
+                        if(itemType == "SPP")
+                        {
+                            dt_TrfHist = dalTrfHist.SPPItemToCustomerSearch(start, end, itemType);
+                        }
+                        else
+                        {
+                            dt_TrfHist = dalTrfHist.ItemToCustomerSearch(start, end, itemType);
+                        }
                     }
                     else if (inOutType == inOutType_InOut)
                     {
@@ -635,6 +653,7 @@ namespace FactoryManagementSoftware.UI
 
                 #region print data
                 int index = 1;
+                int qtyPerBag = 0;
                 double singleTrfQty = 0;
                 double totalTrfInQty = 0;
                 double totalTrfOutQty = 0;
@@ -649,6 +668,9 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow itemRow in dt_ItemList.Rows)
                 {
+                    if(itemType == "SPP")
+                    qtyPerBag = int.TryParse(itemRow[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+
                     itemFound = false;
                     dataPrinted = false;
                     row_In = dt.NewRow();
@@ -832,8 +854,18 @@ namespace FactoryManagementSoftware.UI
                                         preYear = year;
                                     }
 
-
-                                    row_Out[trfDate.ToString("dd/MM yy")] = singleOutQty;
+                                    int bagQty = 0;
+                                    if (qtyPerBag != 0)
+                                    {
+                                        bagQty = (int)singleOutQty / qtyPerBag;
+                                        row_Out[trfDate.ToString("dd/MM yy")] = singleOutQty + " ( " + bagQty + " BAGS)";
+                                    }
+                                    else
+                                    {
+                                        row_Out[trfDate.ToString("dd/MM yy")] = singleOutQty;
+                                    }
+                                    
+                                    
                                 }
 
                                 else if (dateType == dateType_Monthly)
@@ -850,7 +882,18 @@ namespace FactoryManagementSoftware.UI
                                         preYear = year;
                                     }
 
-                                    row_Out[month + "/" + year] = singleOutQty;
+                                    int bagQty = 0;
+                                    if (qtyPerBag != 0)
+                                    {
+                                        bagQty = (int)singleOutQty / qtyPerBag;
+                                        row_Out[month + "/" + year] = singleOutQty + " ( " + bagQty + " BAGS)";
+                                    }
+                                    else
+                                    {
+                                        row_Out[month + "/" + year] = singleOutQty ;
+                                    }
+
+                                    
                                 }
 
                                 else if (dateType == dateType_Yearly)
@@ -866,7 +909,17 @@ namespace FactoryManagementSoftware.UI
                                         preYear = year;
                                     }
 
-                                    row_Out[year.ToString()] = singleOutQty;
+                                    int bagQty = 0;
+                                    if (qtyPerBag != 0)
+                                    {
+                                        bagQty = (int)singleOutQty / qtyPerBag;
+                                        row_Out[year.ToString()] = singleOutQty + " ( " + bagQty + " BAGS)";
+                                    }
+                                    else
+                                    {
+                                        row_Out[year.ToString()] = singleOutQty ;
+                                    }
+                                    
                                 }
                             }
 
@@ -918,7 +971,19 @@ namespace FactoryManagementSoftware.UI
                             row_Out[header_Index] = index;
                             row_Out[header_ItemCode] = itemCode;
                             row_Out[header_ItemName] = itemName;
-                            row_Out[header_Total] = totalTrfOutQty;
+
+                            int bagQty = 0;
+                            if (qtyPerBag != 0)
+                            {
+                                bagQty = (int)totalTrfOutQty / qtyPerBag;
+                                row_Out[header_Total] = totalTrfOutQty + " ( " + bagQty + " BAGS)";
+                            }
+                            else
+                            {
+                                row_Out[header_Total] = totalTrfOutQty ;
+                            }
+                            
+
                             dt.Rows.Add(row_Out);
                             index++;
                         }

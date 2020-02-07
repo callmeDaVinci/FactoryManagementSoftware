@@ -28,6 +28,7 @@ namespace FactoryManagementSoftware.UI
         static public bool ProductionFormOpen = false;
         static public bool DailyJobSheetFormOpen = false;
         static public bool ProductionReportFormOpen = false;
+        static public bool SPPFormOpen = false;
 
         static public int USER_ID = -1;
 
@@ -47,9 +48,10 @@ namespace FactoryManagementSoftware.UI
             USER_ID = userID;
 
             int userPermission = dalUser.getPermissionLevel(USER_ID);
-
-            if(userPermission >= ACTION_LVL_FOUR)
+            sPPToolStripMenuItem.Visible = true;
+            if (userPermission >= ACTION_LVL_FOUR)
             {
+                sPPToolStripMenuItem.Visible = true;
                 adminToolStripMenuItem.Visible = true;
                 orderToolStripMenuItem1.Visible = true;
                 productionToolStripMenuItem.Visible = true;
@@ -58,12 +60,14 @@ namespace FactoryManagementSoftware.UI
             else if(userPermission >= ACTION_LVL_TWO)
             {
                 forecastToolStripMenuItem.Visible = true;
+                //sPPToolStripMenuItem.Visible = false;
                 adminToolStripMenuItem.Visible = false;
                 orderToolStripMenuItem1.Visible = true;
                 productionToolStripMenuItem.Visible = true;
             }
             else
             {
+                //sPPToolStripMenuItem.Visible = false;
                 pMMAToolStripMenuItem.Visible = false;
                 forecastToolStripMenuItem.Visible = false;
                 adminToolStripMenuItem.Visible = false;
@@ -574,6 +578,28 @@ namespace FactoryManagementSoftware.UI
                 if (Application.OpenForms.OfType<frmProductionReport>().Count() == 1)
                 {
                     Application.OpenForms.OfType<frmProductionReport>().First().BringToFront();
+                }
+            }
+        }
+
+        private void sPPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!SPPFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmSPP frm = new frmSPP();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                SPPFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmSPP>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmSPP>().First().BringToFront();
                 }
             }
         }

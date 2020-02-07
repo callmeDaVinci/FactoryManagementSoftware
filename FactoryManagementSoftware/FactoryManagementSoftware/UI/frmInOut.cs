@@ -1691,6 +1691,11 @@ namespace FactoryManagementSoftware.UI
                         //dgv.Rows[n].Cells[daltrfHist.TrfItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                         dgv.Rows[row].Cells[daltrfHist.TrfItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
+
+                    if (itemCode.Substring(1, 2) == text.Inspection_Pass)
+                    {
+                        dgv.Rows[row].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
+                    }
                 }
             }
             else if (dgv.Columns[col].Name == daltrfHist.TrfResult)
@@ -1778,6 +1783,11 @@ namespace FactoryManagementSoftware.UI
                     {
                         //dgv.Rows[n].Cells[dalItem.ItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                         dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                    }
+
+                    if(itemCode.Substring(1, 2) == text.Inspection_Pass)
+                    {
+                        dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
                 }
             }

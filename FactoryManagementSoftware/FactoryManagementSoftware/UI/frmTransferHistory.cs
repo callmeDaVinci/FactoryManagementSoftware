@@ -16,6 +16,7 @@ namespace FactoryManagementSoftware.UI
     public partial class frmTransferHistory : Form
     {
         Tool tool = new Tool();
+        Text text = new Text();
         trfCatDAL daltrfCat = new trfCatDAL();
         facDAL dalFac = new facDAL();
         custDAL dalCust = new custDAL();
@@ -478,6 +479,11 @@ namespace FactoryManagementSoftware.UI
                     {
                         //dgv.Rows[n].Cells[dalTrfHist.TrfItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                         dgv.Rows[n].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                    }
+
+                    if (itemCode.Substring(1, 2) == text.Inspection_Pass)
+                    {
+                        dgv.Rows[n].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
                 }
             }

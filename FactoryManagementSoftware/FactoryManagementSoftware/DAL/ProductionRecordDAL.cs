@@ -57,7 +57,8 @@ namespace FactoryManagementSoftware.DAL
                 //sql query to get data from database
                 String sql = @"SELECT * FROM tbl_production_record 
                                 INNER JOIN tbl_plan 
-                                ON tbl_plan.plan_id = tbl_production_record.plan_id";
+                                ON tbl_plan.plan_id = tbl_production_record.plan_id 
+                                ORDER BY tbl_production_record.plan_id ASC, tbl_production_record.production_date ASC, tbl_production_record.sheet_id ASC";
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC

@@ -98,9 +98,21 @@ namespace FactoryManagementSoftware.Module
 
         //LOCATION////////////////////////////////////////////////////////////////////////////
         public string Factory { get; } = "Factory";
+
+        public string Factory_2 { get; } = "No.2";
+        public string Factory_9 { get; } = "No.9";
+        public string Factory_11 { get; } = "No.11";
+        public string Factory_30 { get; } = "No.30";
+        public string Factory_40 { get; } = "No.40";
+        
+        public string Factory_Store { get; } = "STORE";
+
         public string Customer { get; } = "Customer";
         public string Production { get; } = "Production";
         public string Assembly { get; } = "Assembly";
+        public string Inspection { get; } = "Inspection";
+        public string Inspection_Pass { get; } = "OK";
+
 
         //SHIFT////////////////////////////////////////////////////////////////////////////
         public string Shift_Morning { get; } = "MORNING";
@@ -112,6 +124,8 @@ namespace FactoryManagementSoftware.Module
         public string Unit_Set { get; } = "set";
         public string Unit_Piece { get; } = "piece";
         public string Unit_Meter { get; } = "meter";
+        public string Unit_Millimetre { get; } = "mm";
+        public string Unit_Inch { get; } = "in";
 
         //ITEM CATEGORY///////////////////////////////////////////////////////////////////////
         public string Cat_RawMat { get; } = "RAW Material";
@@ -156,6 +170,25 @@ namespace FactoryManagementSoftware.Module
         public string Header_TotalMaterialUsed_KG_Piece { get; } = "TOTAL MAT. USED(KG/PIECE)";
         public string Header_TotalMaterialUsed_KG { get; } = "TOTAL MAT. USED(KG)";
 
+        //SPP CATEGORY
+        public string Cat_CommonPart { get; } = "COMMON PART";
+        public string Cat_Body { get; } = "BODY";
+        public string Cat_Assembled { get; } = "ASSEMBLED";
+        public string Cat_ReadyGoods { get; } = " READY GOODS";
+
+        
+        //SPP TYPE
+        public string Type_EqualSocket { get; } = "EQUAL SOCKET";
+        public string Type_EqualElbow { get; } = "EQUAL ELBOW";
+        public string Type_EqualTee { get; } = "EQUAL TEE";
+        public string Type_Bush { get; } = "BUSH";
+        public string Type_Grip { get; } = "GRIP";
+        public string Type_Oring { get; } = "O RING";
+        public string Type_Cap { get; } = "CAP";
+        public string Type_Reducing { get; } = "REDUCING";
+
+        //SPP SIZE
+        
         #endregion
 
 

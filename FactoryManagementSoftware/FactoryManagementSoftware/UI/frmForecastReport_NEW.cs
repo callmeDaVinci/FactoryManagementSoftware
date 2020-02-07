@@ -86,8 +86,10 @@ namespace FactoryManagementSoftware.UI
         readonly Color AssemblyColor = Color.Blue;
         readonly Color ProductionColor = Color.Green;
         readonly Color ProductionAndAssemblyColor = Color.Purple;
+        readonly Color InspectionColor = Color.Peru;
 
         readonly string AssemblyMarking = "Blue";
+        readonly string InspectionMarking = "Peru";
         readonly string ProductionMarking = "Green";
         readonly string ProductionAndAssemblyMarking = "Purple";
         readonly string typeSingle = "SINGLE";
@@ -314,6 +316,14 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
 
                     dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = ProductionAndAssemblyColor;
+                    dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
+                }
+                else if (parentColor.Equals(InspectionMarking))
+                {
+                    dgv.Rows[i].Cells[headerPartName].Style.ForeColor = InspectionColor;
+                    dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+
+                    dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = InspectionColor;
                     dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
                 }
 
@@ -1212,6 +1222,11 @@ namespace FactoryManagementSoftware.UI
                         else if (assembly == 1 && production == 1)
                         {
                             dt_Row[headerParentColor] = ProductionAndAssemblyMarking;
+                        }
+
+                        if (uData.part_code.Substring(1, 2) == text.Inspection_Pass)
+                        {
+                            dt_Row[headerParentColor] = InspectionMarking;
                         }
 
                         dt_Data.Rows.Add(dt_Row);
@@ -2564,11 +2579,6 @@ namespace FactoryManagementSoftware.UI
 
                 string cust = cmbCustomer.Text;
 
-                if(cust.Equals("FILO"))
-                {
-                    float test = 0;
-                }
-
                 DataTable dt = NewForecastReportTable();
 
                 if (dgvForecastReport.DataSource != null)
@@ -2587,7 +2597,7 @@ namespace FactoryManagementSoftware.UI
 
                     xlWorkSheet.Name = cmbCustomer.Text;
 
-                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri\"&8 " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"); ;
+                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri\"&8 " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"); 
                     xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri\"&12 (" + cmbCustomer.Text + ") READY STOCK VERSUS FORECAST";
                     xlWorkSheet.PageSetup.RightHeader = "&\"Calibri\"&8 PG -&P";
                     xlWorkSheet.PageSetup.CenterFooter = "&\"Calibri\"&8 Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + ", OUT PEROID FROM:" + dtpOutFrom.Text + " TO:" + dtpOutTo.Text;
@@ -2597,7 +2607,7 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
                     xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
                     xlWorkSheet.PageSetup.Zoom = false;
-                
+                    
                     xlWorkSheet.PageSetup.FitToPagesWide = 1;
                     xlWorkSheet.PageSetup.FitToPagesTall = false;
 
@@ -2799,200 +2809,7 @@ namespace FactoryManagementSoftware.UI
                         }
 
                     }
-                    //xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy"); ;
-                    //xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 (" + cmbCustomer.Text + ") READY STOCK VERSUS FORECAST";
-                    //xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                    //xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + " OUT FROM:" + dtpOutFrom.Text + " TO:" + dtpOutTo.Text;
-
-                    //xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                    //xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
-                    //xlWorkSheet.PageSetup.Zoom = false;
-
-                    //double pointToCMRate = 0.035;
-                    //xlWorkSheet.PageSetup.TopMargin = 1.2 / pointToCMRate;
-                    //xlWorkSheet.PageSetup.BottomMargin = 1.2 / pointToCMRate;
-                    //xlWorkSheet.PageSetup.HeaderMargin = 0.6 / pointToCMRate;
-                    //xlWorkSheet.PageSetup.FooterMargin = 0.6 / pointToCMRate;
-                    //xlWorkSheet.PageSetup.LeftMargin = 0 / pointToCMRate;
-                    //xlWorkSheet.PageSetup.RightMargin = 0 / pointToCMRate;
-
-                    //xlWorkSheet.PageSetup.FitToPagesWide = 1;
-                    //xlWorkSheet.PageSetup.FitToPagesTall = false;
-                    //xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
-
-
-
-                    //// Paste clipboard results to worksheet range
-                    //copyAlltoClipboard();
-                    //xlWorkSheet.Select();
-                    //Range CR = (Range)xlWorkSheet.Cells[1, 1];
-                    //CR.Select();
-                    //xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
-
-                    //Range tRange = xlWorkSheet.UsedRange;
-                    //tRange.Font.Size = 14;
-                    //tRange.Font.Name = "Calibri";
-                    //tRange.RowHeight = 21;
-                    //tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-                    //tRange.Borders.Weight = XlBorderWeight.xlThin;
-                    //tRange.EntireColumn.AutoFit();
-              
-
-                    ////first column: index 
-                    //Range indexCol = xlWorkSheet.Columns[1];
-                    //indexCol.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                    //indexCol.VerticalAlignment = XlHAlign.xlHAlignCenter;
-
-                    //DataGridView dgv = dgvForecastReport;
-
-                    //int Index = dgv.Columns[headerIndex].Index;
-                    //int weightIndex = dgv.Columns[headerPartWeight].Index;
-
-                    //int bal1Index = dgv.Columns[headerBal1].Index;
-                    //int bal2Index = dgv.Columns[headerBal2].Index;
-
-                    //int nameIndex = dgv.Columns[headerPartName].Index;
-                    //int codeIndex = dgv.Columns[headerPartCode].Index;
-
-                    //int stockIndex = dgv.Columns[headerReadyStock].Index;
-                    //int estimateIndex = dgv.Columns[headerEstimate].Index;
-
-                    //int forecast1Index = dgv.Columns[headerForecast1].Index;
-                    //int forecast2Index = dgv.Columns[headerForecast2].Index;
-                    //int forecast3Index = dgv.Columns[headerForecast3].Index;
-
-                    //int outIndex = dgv.Columns[headerOut].Index;
-                    //int outStdIndex = dgv.Columns[headerOutStd].Index;
-
-                    //for (int j = 0; j <= dt_OrginalData.Rows.Count - 1; j++)
-                    //{
-                    //    Range rangeIndex = (Range)xlWorkSheet.Cells[j + 2, Index + 1];
-                    //    Range rangeWeight = (Range)xlWorkSheet.Cells[j + 2, weightIndex + 1];
-
-                    //    Range rangeName = (Range)xlWorkSheet.Cells[j + 2, nameIndex + 1];
-                    //    Range rangeCode = (Range)xlWorkSheet.Cells[j + 2, codeIndex + 1];
-
-                    //    Range rangeStock = (Range)xlWorkSheet.Cells[j + 2, stockIndex + 1];
-                    //    Range rangeEstimate = (Range)xlWorkSheet.Cells[j + 2, estimateIndex + 1];
-
-                    //    Range rangeForecast1 = (Range)xlWorkSheet.Cells[j + 2, forecast1Index + 1];
-                    //    Range rangeForecast2 = (Range)xlWorkSheet.Cells[j + 2, forecast2Index + 1];
-                    //    Range rangeForecast3 = (Range)xlWorkSheet.Cells[j + 2, forecast3Index + 1];
-
-                    //    Range rangeOut = (Range)xlWorkSheet.Cells[j + 2, outIndex + 1];
-                    //    Range rangeOutStd = (Range)xlWorkSheet.Cells[j + 2, outStdIndex + 1];
-
-                    //    Range rangeRow = (Range)xlWorkSheet.Rows[j + 2];
-                    //    rangeRow.Rows.RowHeight = 40;
-                    //    rangeRow.Cells.VerticalAlignment = XlVAlign.xlVAlignCenter;
-
-                    //    rangeIndex.Cells.HorizontalAlignment = XlVAlign.xlVAlignCenter;
-                    //    rangeWeight.Cells.HorizontalAlignment = XlVAlign.xlVAlignCenter;
-
-                    //    //color bal font
-                    //    Range rangeBal1 = (Range)xlWorkSheet.Cells[j + 2, bal1Index + 1];
-                    //    rangeBal1.Font.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[bal1Index].InheritedStyle.ForeColor);
-
-                    //    Range rangeBal2 = (Range)xlWorkSheet.Cells[j + 2, bal2Index + 1];
-                    //    rangeBal2.Font.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[bal2Index].InheritedStyle.ForeColor);
-
-                    //    string itemCode = dgv.Rows[j].Cells[headerPartCode].Value.ToString();
-
-                    //    //color empty space
-                    //    if (string.IsNullOrEmpty(itemCode))
-                    //    {
-                    //        rangeRow.Rows.RowHeight = 3;
-                    //        Range rng = xlWorkSheet.Range[xlWorkSheet.Cells[j + 2, 1], xlWorkSheet.Cells[j + 2, xlWorkSheet.UsedRange.Columns.Count]];
-                    //        //Range rng2 = xlWorkSheet.Range(xlWorkSheet.Cells[i, 1], xlWorkSheet.Cells[i, xlWorkSheet.UsedRange.Columns.Count]);
-                    //        //Range changeRowBackColor = xlWorkSheet.get_Range(i+2, last);
-                    //        rng.Interior.Color = Color.Black;
-                    //    }
-                    //    else
-                    //    {
-                    //        rangeName.Font.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[nameIndex].InheritedStyle.ForeColor);
-                    //        rangeCode.Font.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[codeIndex].InheritedStyle.ForeColor);
-
-                    //        rangeName.Interior.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[nameIndex].InheritedStyle.BackColor);
-                    //        rangeCode.Interior.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[codeIndex].InheritedStyle.BackColor);
-
-                    //        rangeStock.Interior.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[stockIndex].InheritedStyle.BackColor);
-                    //        rangeEstimate.Interior.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[estimateIndex].InheritedStyle.BackColor);
-
-                    //        rangeForecast1.Interior.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[forecast1Index].InheritedStyle.BackColor);
-                    //        rangeForecast2.Interior.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[forecast2Index].InheritedStyle.BackColor);
-                    //        rangeForecast3.Interior.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[forecast3Index].InheritedStyle.BackColor);
-
-                    //        rangeBal1.Interior.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[bal1Index].InheritedStyle.BackColor);
-                    //        rangeBal2.Interior.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[bal2Index].InheritedStyle.BackColor);
-
-                    //        rangeOut.Interior.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[outIndex].InheritedStyle.BackColor);
-                    //        rangeOutStd.Interior.Color = ColorTranslator.ToOle(dgv.Rows[j].Cells[outStdIndex].InheritedStyle.BackColor);
-
-                    //    }
-
-
-                    //    string parentColor = dt.Rows[j][headerParentColor].ToString();
-                    //    string type = dt.Rows[j][headerType].ToString();
-                    //    string balType = dt.Rows[j][headerBalType].ToString();
-
-                    //    //change parent color
-                    //    if (parentColor.Equals(AssemblyMarking))
-                    //    {
-                    //        rangeName.Font.Underline = true;
-                    //        rangeCode.Font.Underline = true;
-                    //    }
-                    //    else if (parentColor.Equals(ProductionMarking))
-                    //    {
-                    //        rangeName.Font.Underline = true;
-                    //        rangeCode.Font.Underline = true;
-                    //    }
-                    //    else if (parentColor.Equals(ProductionAndAssemblyMarking))
-                    //    {
-                    //        rangeName.Font.Underline = true;
-                    //        rangeCode.Font.Underline = true;
-                    //    }
-
-                    //    if (type.Equals(typeChild))
-                    //    {
-                    //        rangeForecast1.Font.Italic = true;
-                    //        rangeForecast2.Font.Italic = true;
-                    //        rangeForecast3.Font.Italic = true;
-                    //    }
-
-                    //    if (balType.Equals(balType_Total))
-                    //    {
-                    //        rangeBal1.Font.Bold = true;
-                    //        rangeBal1.Font.Italic = true;
-                    //        rangeBal1.Font.Underline = true;
-
-                    //        rangeBal2.Font.Bold = true;
-                    //        rangeBal2.Font.Italic = true;
-                    //        rangeBal2.Font.Underline = true;
-                    //        //dgv.Rows[i].Cells[headerBal1].Style.Font = _BalFont;
-                    //        //dgv.Rows[i].Cells[headerBal2].Style.Font = _BalFont;
-                    //    }
-                    //    else
-                    //    {
-                    //        rangeBal1.Font.Bold = true;
-                    //        rangeBal2.Font.Bold = true;
-                    //    }
-
-
-
-                    //    //range.Cells.Font.Color = ColorTranslator.ToOle(Color.Red);
-                    //    //range.Cells.Font.Bold = true;
-                    //    //range.Font.Size = 16;
-                    //    //range.Cells.Font.Color = ColorTranslator.ToOle(Color.Black);
-                    //    //range.Cells.HorizontalAlignment = XlHAlign.xlHAlignLeft;
-                    //    //range.Cells.VerticalAlignment = XlVAlign.xlVAlignCenter;
-                    //    //range.Rows.RowHeight = 30;
-                    //    //range.Font.Color = ColorTranslator.ToOle(dgv.Rows[i].Cells[j].InheritedStyle.ForeColor);
-                    //    //range.Rows.RowHeight = 4;
-                    //    //range.Interior.Color = Color.Black;
-                    //    //range.Interior.Color = ColorTranslator.ToOle(dgv.Rows[i].Cells[j].InheritedStyle.BackColor);
-                    //    //range.ColumnWidth = 10;
-
-                    //}
+                   
 
                     releaseObject(xlWorkSheet);
                     Clipboard.Clear();

@@ -40,6 +40,7 @@ namespace FactoryManagementSoftware.UI
         readonly string AssemblyColor = "BLUE";
         readonly string ProductionColor = "GREEN";
         readonly string ProductionAndAssemblyColor = "Purple";
+        readonly string InspectionColor = "PERU";
 
         private int index_Public = 0;
         private float public_IndexNO = 1;
@@ -384,6 +385,11 @@ namespace FactoryManagementSoftware.UI
                 {
                     dtStock_row[headerParentColor] = AssemblyColor;
                 }
+
+                if (itemCode.Substring(1, 2) == text.Inspection_Pass)
+                {
+                    dtStock_row[headerParentColor] = InspectionColor;
+                }
             }
 
             //check if repeat
@@ -416,6 +422,8 @@ namespace FactoryManagementSoftware.UI
             DataTable dt_JoinInfo = dalJoin.SelectAll();
             DataTable dt_StockData;
             DataTable dt_Join = dalJoin.SelectAll();
+            bool gotSinglePart = false;
+            bool gotSetPart = false;
 
             dt_PublicItemInfo = dt_ItemInfo;
             dt.DefaultView.Sort = "item_name ASC";
@@ -443,6 +451,7 @@ namespace FactoryManagementSoftware.UI
 
                         addRowtoDataTable(dt_StockData, item["item_code"].ToString(), item["item_name"].ToString(), readyStock);
                         public_IndexNO++;
+                        gotSinglePart = true;
                     }
                 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -455,8 +464,16 @@ namespace FactoryManagementSoftware.UI
                     if (tool.ifGotChild2(itemCode, dt_Join))  //ifGotChild(itemCode)
                     {
                         //add empty space
-                        dtStock_row = dt_Stock.NewRow();
-                        dt_Stock.Rows.Add(dtStock_row);
+                        if(gotSinglePart)
+                        {
+                            dtStock_row = dt_Stock.NewRow();
+                            dt_Stock.Rows.Add(dtStock_row);
+                            
+                        }
+                       else
+                        {
+                            gotSinglePart = true;
+                        }
 
                         //add parent item
                         float readyStock = Convert.ToSingle(item["item_qty"]);
@@ -722,7 +739,12 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].Cells[headerCode].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
                         dgv.Rows[rowIndex].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
                     }
-                    
+                    else if (color.Equals(InspectionColor))
+                    {
+                        dgv.Rows[rowIndex].Cells[headerCode].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                        dgv.Rows[rowIndex].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
+                    }
+
                 }
 
                 if (row[headerRepeat] != DBNull.Value)

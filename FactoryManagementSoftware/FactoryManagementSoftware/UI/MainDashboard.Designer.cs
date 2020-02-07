@@ -57,6 +57,7 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.sPPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -74,6 +75,7 @@
             this.orderToolStripMenuItem1,
             this.forecastToolStripMenuItem,
             this.pMMAToolStripMenuItem,
+            this.sPPToolStripMenuItem,
             this.reportToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
@@ -286,6 +288,13 @@
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
+            // sPPToolStripMenuItem
+            // 
+            this.sPPToolStripMenuItem.Name = "sPPToolStripMenuItem";
+            this.sPPToolStripMenuItem.Size = new System.Drawing.Size(51, 27);
+            this.sPPToolStripMenuItem.Text = "SPP";
+            this.sPPToolStripMenuItem.Click += new System.EventHandler(this.sPPToolStripMenuItem_Click);
+            // 
             // MainDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -344,6 +353,7 @@
         private System.Windows.Forms.ToolStripMenuItem productionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dAILYToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem productionReportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sPPToolStripMenuItem;
     }
 }
 

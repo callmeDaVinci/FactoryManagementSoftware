@@ -60,6 +60,12 @@ namespace FactoryManagementSoftware.DAL
         public string ItemAssemblyCheck { get; } = "item_assembly";
         public string ItemProductionCheck { get; } = "item_production";
 
+        public string ItemSize1 { get; } = "size_tbl_code_1";
+        public string ItemSize2 { get; } = "size_tbl_code_2";
+        public string ItemSize3 { get; } = "size_tbl_code_3";
+        public string TypeTblCode { get; } = "type_tbl_code";
+        public string CategoryTblCode { get; } = "category_tbl_code";
+
         #endregion
 
         #region variable/class object declare
@@ -84,6 +90,255 @@ namespace FactoryManagementSoftware.DAL
                 String sql = "SELECT * FROM tbl_item ORDER BY item_cat ASC";
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SPPSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT tbl_item.item_name as NAME FROM tbl_item
+                            INNER JOIN tbl_spp_category 
+                            ON (tbl_item.category_tbl_code = tbl_spp_category.tbl_code )";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SPPCommonSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+
+            string commonPart = new Text().Cat_CommonPart;
+
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT tbl_spp_size.size_numerator as SIZE , tbl_spp_size.size_unit as UNIT ,tbl_spp_type.type_name as TYPE , tbl_item.item_qty as STOCK
+                            FROM tbl_item
+                            INNER JOIN tbl_spp_category 
+                            ON (tbl_item.category_tbl_code = tbl_spp_category.tbl_code AND tbl_spp_category.category_name = @commonPart)
+                            INNER JOIN tbl_spp_type
+                            ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                            INNER JOIN tbl_spp_size
+                            ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@commonPart", commonPart);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SPPUniqueSelect()
+        {
+            //static method to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+
+            string commonPart = new Text().Cat_CommonPart;
+
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT tbl_spp_category.category_name as CATEGORY , 
+                            tbl_spp_type.type_name as TYPE , 
+                            tbl_spp_size.size_numerator as SIZE , 
+                            tbl_spp_size.size_unit as UNIT ,
+                            tbl_item.item_code as CODE , 
+                            tbl_item.item_qty as QUANTITY,
+                            tbl_spp_stdpacking.qty_per_bag as STD_PACKING
+                            FROM tbl_item
+                            INNER JOIN tbl_spp_category 
+                            ON (tbl_item.category_tbl_code = tbl_spp_category.tbl_code AND tbl_spp_category.category_name != @commonPart)
+                            INNER JOIN tbl_spp_type
+                            ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                            INNER JOIN tbl_spp_size
+                            ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code 
+                            FULL JOIN tbl_spp_stdpacking
+                            ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                            ORDER BY tbl_spp_type.type_name ASC, tbl_spp_size.size_numerator ASC,  tbl_spp_category.category_name ASC";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@commonPart", commonPart);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SPPNonReadyGoodsSelect()
+        {
+            //static method to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+
+            string readyGoods = new Text().Cat_ReadyGoods;
+
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT tbl_spp_category.category_name as CATEGORY , 
+                            tbl_spp_type.type_name as TYPE , 
+                            tbl_spp_size.size_numerator as SIZE , 
+                            tbl_spp_size.size_unit as UNIT ,
+                            tbl_item.item_code as CODE , 
+                            tbl_item.item_qty as QUANTITY,
+                            tbl_spp_stdpacking.qty_per_bag as STD_PACKING
+                            FROM tbl_item
+                            INNER JOIN tbl_spp_category 
+                            ON (tbl_item.category_tbl_code = tbl_spp_category.tbl_code AND tbl_spp_category.category_name != @readyGoods)
+                            INNER JOIN tbl_spp_type
+                            ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                            INNER JOIN tbl_spp_size
+                            ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code 
+                            FULL JOIN tbl_spp_stdpacking
+                            ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                            ORDER BY tbl_spp_type.type_name ASC, tbl_spp_size.size_numerator ASC,  tbl_spp_category.category_name ASC";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@readyGoods", readyGoods);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SPPReadyGoodsSelect()
+        {
+            //static method to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+
+            string readyGoods = new Text().Cat_ReadyGoods;
+
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT 
+                            tbl_spp_type.type_name as TYPE , 
+                            tbl_spp_size.size_numerator as SIZE , 
+                            tbl_spp_size.size_unit as UNIT ,
+                            tbl_item.item_code as CODE , 
+                            tbl_item.item_name as NAME ,
+                            tbl_item.item_qty as QUANTITY,
+                            tbl_spp_stdpacking.qty_per_bag as STD_PACKING
+                            FROM tbl_item
+                            INNER JOIN tbl_spp_category 
+                            ON (tbl_item.category_tbl_code = tbl_spp_category.tbl_code AND tbl_spp_category.category_name = @readyGoods)
+                            INNER JOIN tbl_spp_type
+                            ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                            INNER JOIN tbl_spp_size
+                            ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code 
+                            FULL JOIN tbl_spp_stdpacking
+                            ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                            ORDER BY tbl_spp_type.type_name ASC, tbl_spp_size.size_numerator ASC,  tbl_spp_category.category_name ASC";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@readyGoods", readyGoods);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
@@ -488,6 +743,54 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
                 cmd.Parameters.AddWithValue("@item_assembly", u.item_assembly);
                 cmd.Parameters.AddWithValue("@item_production", u.item_production);
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool SPPUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemSize1 + "=@Size_tbl_code_1,"
+                            + TypeTblCode + "=@Type_tbl_code,"
+                            + CategoryTblCode + "=@Category_tbl_code" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@Size_tbl_code_1", u.Size_tbl_code_1);
+                cmd.Parameters.AddWithValue("@Type_tbl_code", u.Type_tbl_code);
+                cmd.Parameters.AddWithValue("@Category_tbl_code", u.Category_tbl_code);
+
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();
@@ -1235,6 +1538,43 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable SPPSearch()
+        {
+            string keywords = "CF";
+
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_item WHERE (item_code LIKE '%" + keywords + "%'OR item_name LIKE '%" + keywords + "%') AND (isRemoved = 0 OR isRemoved is NULL)";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable InOutSearch(string keywords)
         {
             //static methodd to connect database
@@ -1628,6 +1968,42 @@ namespace FactoryManagementSoftware.DAL
             {
                 //sql query to get data from database
                 String sql = "SELECT * FROM tbl_item WHERE item_code=@item_code";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@item_code", keywords);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SPPCodeSearch(string keywords)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_item WHERE tbl_item.item_code=@item_code INNER JOIN tbl_spp_category ON tbl_item.item_code = tbl_spp_category.item_code";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
