@@ -190,6 +190,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add("STOCK");
             dt.Columns.Add("PCS/BAG");
             dt.Columns.Add("TOTAL BAG(S)");
+            dt.Columns.Add("MAX STOCK LEVEL");
             string preSize = "";
             string currentSize = "";
 
@@ -212,6 +213,30 @@ namespace FactoryManagementSoftware.UI
                     
                     dt.Rows[i]["TOTAL BAG(S)"] = bagQty;
 
+                    int maxStockLevel = 0;
+
+                    if(currentSize == "20")
+                    {
+                        maxStockLevel = text.StockLevel_20;
+                    }
+                    else if (currentSize == "25")
+                    {
+                        maxStockLevel = text.StockLevel_25;
+                    }
+                    else if (currentSize == "32")
+                    {
+                        maxStockLevel = text.StockLevel_32;
+                    }
+                    else if (currentSize == "50")
+                    {
+                        maxStockLevel = text.StockLevel_50;
+                    }
+                    else if (currentSize == "63")
+                    {
+                        maxStockLevel = text.StockLevel_63;
+                    }
+
+                    dt.Rows[i]["MAX STOCK LEVEL"] = maxStockLevel;
                 }
 
                 if (preSize == "")
@@ -232,7 +257,10 @@ namespace FactoryManagementSoftware.UI
          
             dgvUnique.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             dgvUnique.Columns["PCS/BAG"].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgvUnique.Columns["MAX STOCK LEVEL"].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
             dgvUnique.DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            dgvUnique.Columns["PCS/BAG"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvUnique.Columns["MAX STOCK LEVEL"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvUnique.Columns["TOTAL BAG(S)"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvUnique.Columns["SIZE"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgvUnique.Columns["UNIT"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -324,23 +352,79 @@ namespace FactoryManagementSoftware.UI
         {
             DataGridView dgv = dgvUnique;
             dgv.SuspendLayout();
-            int n = e.RowIndex;
+
+            int rowIndex = e.RowIndex;
+            int colIndex = e.ColumnIndex;
 
             if (dgv.Columns[e.ColumnIndex].Name == "TYPE")
             {
-                if (dgv.Rows[n].Cells["TYPE"].Value == DBNull.Value)
+                if (dgv.Rows[rowIndex].Cells["TYPE"].Value == DBNull.Value)
                 {
-                    dgv.Rows[n].Height = 5;
-                    dgv.Rows[n].DefaultCellStyle.BackColor = Color.FromArgb(64,64,64);
+                    dgv.Rows[rowIndex].Height = 5;
+                    dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(64,64,64);
                 }
                 else
                 {
-                    dgv.Rows[n].Height = 50;
+                    dgv.Rows[rowIndex].Height = 50;
 
                 }
             }
+            else if (dgv.Columns[colIndex].Name == "TOTAL BAG(S)")
+            {
+                int bagQty = int.TryParse(dgv.Rows[rowIndex].Cells["TOTAL BAG(S)"].Value.ToString(), out bagQty) ? bagQty : -1;
+                int size = int.TryParse(dgv.Rows[rowIndex].Cells["SIZE"].Value.ToString(), out size) ? size : 0;
+                int stockLevel = 0;
 
+                if(bagQty != -1)
+                {
+                    if (size == 20)
+                    {
+                        stockLevel = text.StockLevel_20;
+                    }
+                    else if (size == 25)
+                    {
+                        stockLevel = text.StockLevel_25;
+                    }
+                    else if (size == 32)
+                    {
+                        stockLevel = text.StockLevel_32;
+                    }
+                    else if (size == 50)
+                    {
+                        stockLevel = text.StockLevel_50;
+                    }
+                    else if (size == 63)
+                    {
+                        stockLevel = text.StockLevel_63;
+                    }
 
+                    if (bagQty >= stockLevel)
+                    {
+                        dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(0, 184, 148);//green
+                    }
+                    else if (bagQty < stockLevel / 2)
+                    {
+                        dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(255, 118, 117);//red
+                    }
+                    else
+                    {
+                        dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(253, 203, 110);//yellow
+                    }
+                }
+               else
+                {
+                    if (dgv.Rows[rowIndex].Cells["TYPE"].Value == DBNull.Value)
+                    {
+                        dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(64, 64, 64);
+                    }
+                    else
+                    {
+                        dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.White;
+
+                    }
+                }
+
+            }
 
             dgv.ResumeLayout();
         }
@@ -750,7 +834,7 @@ namespace FactoryManagementSoftware.UI
             //tRange.Borders.Weight = XlBorderWeight.xlThin;
 
             //Range FirstRow = (Range)xlWorkSheet.Application.Rows[1, Type.Missing];
-            Range FirstRow = xlWorkSheet.get_Range("a1:h1").Cells;
+            Range FirstRow = xlWorkSheet.get_Range("a1:i1").Cells;
             FirstRow.WrapText = true;
             FirstRow.Font.Size = 8;
 
@@ -773,6 +857,7 @@ namespace FactoryManagementSoftware.UI
             int StockIndex = dgv.Columns["STOCK(PCS)"].Index;
             int StdIndex = dgv.Columns["PCS/BAG"].Index;
             int BagIndex = dgv.Columns["TOTAL BAG(S)"].Index;
+            int StockLevelIndex = dgv.Columns["MAX STOCK LEVEL"].Index;
 
             xlWorkSheet.Cells[1, CatIndex + 1].ColumnWidth = 12;
             xlWorkSheet.Cells[1, TypeIndex + 1].ColumnWidth = 12;
@@ -784,6 +869,7 @@ namespace FactoryManagementSoftware.UI
             xlWorkSheet.Cells[1, BagIndex + 1].ColumnWidth = 10;
 
             xlWorkSheet.Cells[1, StdIndex + 1].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            xlWorkSheet.Cells[1, StockLevelIndex + 1].HorizontalAlignment = XlHAlign.xlHAlignCenter;
             xlWorkSheet.Cells[1, BagIndex + 1].HorizontalAlignment = XlHAlign.xlHAlignCenter;
 
             //xlWorkSheet.Cells[1, StdIndex + 1].Font.Italic = true;
@@ -797,6 +883,11 @@ namespace FactoryManagementSoftware.UI
                 rangeStd.Font.Italic = true;
                 rangeStd.Font.Size = 8;
                 rangeStd.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+
+                Range rangeStockLevel = (Range)xlWorkSheet.Cells[j + 2, StockLevelIndex + 1];
+                rangeStockLevel.Font.Italic = true;
+                rangeStockLevel.Font.Size = 8;
+                rangeStockLevel.HorizontalAlignment = XlHAlign.xlHAlignCenter;
 
                 Range rangeBag = (Range)xlWorkSheet.Cells[j + 2, BagIndex + 1];
                 rangeBag.HorizontalAlignment = XlHAlign.xlHAlignCenter;

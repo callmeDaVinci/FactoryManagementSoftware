@@ -25,6 +25,30 @@ namespace FactoryManagementSoftware.UI
             dt_ReadyGoods = dalItem.SPPReadyGoodsSelect();
         }
 
+        public frmSPPAddItem(bool mode)
+        {
+            InitializeComponent();
+            dt_ReadyGoods = dalItem.SPPReadyGoodsSelect();
+            lblNote.Visible = true;
+            txtNote.Visible = true;
+            CallFromNewPO = true;
+        }
+
+        public frmSPPAddItem( string type, string size, string unit, string targetPcs)
+        {
+            InitializeComponent();
+            dt_ReadyGoods = dalItem.SPPReadyGoodsSelect();
+
+            itemEditing = true;
+            lblSize.Text = size;
+            lblUnit.Text = unit;
+            lblType.Text = type;
+            editingTargetPcs = targetPcs;
+            lblNote.Visible = true;
+            txtNote.Visible = true;
+            CallFromNewPO = true;
+        }
+
         public frmSPPAddItem(string code, string type, string size, string unit, string targetPcs)
         {
             InitializeComponent();
@@ -47,6 +71,7 @@ namespace FactoryManagementSoftware.UI
 
         DataTable dt_ReadyGoods;
 
+        bool CallFromNewPO = false;
         bool ConvertFromPcs = false;
         bool ConvertFromBags = false;
         bool itemEditing = false;
@@ -62,6 +87,7 @@ namespace FactoryManagementSoftware.UI
         static public string item_Code;
         static public string item_Target_Pcs;
         static public string item_Target_Bags;
+        static public string item_Note;
 
         private void txtQtyPerPacket_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -296,6 +322,11 @@ namespace FactoryManagementSoftware.UI
                 item_Code = lblCode.Text;
                 item_Target_Pcs = txtPcsQty.Text;
                 item_Target_Bags = txtBagQty.Text;
+                
+                if(CallFromNewPO)
+                {
+                    item_Note = txtNote.Text;
+                }
 
                 if (itemEditing)
                 {

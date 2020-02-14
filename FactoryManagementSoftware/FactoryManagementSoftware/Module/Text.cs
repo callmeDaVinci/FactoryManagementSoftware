@@ -113,7 +113,6 @@ namespace FactoryManagementSoftware.Module
         public string Inspection { get; } = "Inspection";
         public string Inspection_Pass { get; } = "OK";
 
-
         //SHIFT////////////////////////////////////////////////////////////////////////////
         public string Shift_Morning { get; } = "MORNING";
         public string Shift_Night { get; } = "NIGHT";
@@ -187,8 +186,13 @@ namespace FactoryManagementSoftware.Module
         public string Type_Cap { get; } = "CAP";
         public string Type_Reducing { get; } = "REDUCING";
 
-        //SPP SIZE
-        
+        //SPP STOCK LEVEL
+        public int StockLevel_20 { get; } = 50;
+        public int StockLevel_25 { get; } = 60;
+        public int StockLevel_32 { get; } = 40;
+        public int StockLevel_50 { get; } = 30;
+        public int StockLevel_63 { get; } = 0;
+
         #endregion
 
 

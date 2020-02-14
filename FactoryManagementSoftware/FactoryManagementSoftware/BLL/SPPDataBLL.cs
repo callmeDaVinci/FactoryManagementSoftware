@@ -48,6 +48,31 @@ namespace FactoryManagementSoftware.BLL
         //category table
         public string Category_Name { get; set; }
 
+        //customer table
+        public string Full_Name { get; set; }
+        public string Short_Name { get; set; }
+        public string Registration_No { get; set; }
+        public string Address_1 { get; set; }
+        public string Address_2 { get; set; }
+        public string Address_City { get; set; }
+        public string Address_State { get; set; }
+        public string Address_Postal_Code { get; set; }
+        public string Address_Country { get; set; }
+        public string Fax { get; set; }
+        public string Phone_1 { get; set; }
+        public string Phone_2 { get; set; }
+        public string Email { get; set; }
+        public string Website { get; set; }
+
+        //po table
+        public int PO_code { get; set; }
+        public DateTime PO_date { get; set; }
+        public int Customer_tbl_code { get; set; }
+        public int PO_qty { get; set; }
+        public int Delivered_qty { get; set; }
+        public bool DefaultShippingAddress { get; set; }
+        public string PO_note { get; set; }
+
         //common
         public DateTime Updated_Date { get; set; }
         public int Updated_By { get; set; }

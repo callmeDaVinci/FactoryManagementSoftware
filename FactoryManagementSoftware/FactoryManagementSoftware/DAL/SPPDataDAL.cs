@@ -52,8 +52,31 @@ namespace FactoryManagementSoftware.DAL
         //category table
         public string CategoryName { get; } = "category_name";
 
-        
-       
+        //customer table
+        public string FullName { get; } = "full_name";
+        public string ShortName { get; } = "short_name";
+        public string RegistrationNo { get; } = "registration_no";
+        public string Address1 { get; } = "address_1";
+        public string Address2 { get; } = "address_2";
+        public string AddressCity { get; } = "address_city";
+        public string AddressState { get; } = "address_state";
+        public string AddressPostalCode { get; } = "address_postal_code";
+        public string AddressCountry { get; } = "address_country";
+        public string Fax { get; } = "fax";
+        public string Phone1 { get; } = "phone_1";
+        public string Phone2 { get; } = "phone_2";
+        public string Email { get; } = "email";
+        public string Website { get; } = "website";
+
+        //PO table
+        public string POCode { get; } = "po_code";
+        public string PODate { get; } = "po_date";
+        public string CustomerTableCode { get; } = "customer_tbl_code";
+        public string POQty { get; } = "po_qty";
+        public string DeliveredQty { get; } = "delivered_qty";
+        public string DefaultShippingAddress { get; } = "defaultShippingAddress";
+        public string PONote { get; } = "po_note";
+
         #endregion
 
         #region variable/class object declare
@@ -310,6 +333,207 @@ namespace FactoryManagementSoftware.DAL
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable CustomerSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_spp_customer";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable CustomerWithoutRemovedDataSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_spp_customer WHERE isRemoved IS NULL OR isRemoved = @false ";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable POSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_spp_po INNER JOIN tbl_spp_customer ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code ORDER BY po_code ASC";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable POSelectWithSizeAndType()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_spp_po 
+                               INNER JOIN tbl_spp_customer 
+                               ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                               INNER JOIN tbl_item
+                               ON tbl_spp_po.item_code = tbl_item.item_code
+                               INNER JOIN tbl_spp_size
+                               ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code
+                               INNER JOIN tbl_spp_type
+                               ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                               ORDER BY tbl_spp_po.po_code ASC";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+
+        }
+        public DataTable POWithoutRemovedDataSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_spp_po WHERE isRemoved IS NULL OR isRemoved = @false ";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
@@ -709,6 +933,185 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
 
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertCustomer(SPPDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_spp_customer 
+                            (" + FullName + ","
+                            + ShortName + ","
+                            + RegistrationNo + ","
+                            + Address1 + ","
+                            + Address2 + ","
+                            + AddressCity + ","
+                            + AddressState + ","
+                            + AddressPostalCode + ","
+                            + AddressCountry + ","
+                            + Fax + ","
+                            + Phone1 + ","
+                            + Phone2 + ","
+                            + Email + ","
+                            + Website + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@Full_Name," +
+                            "@Short_Name," +
+                            "@Registration_No," +
+                            "@Address_1," +
+                            "@Address_2," +
+                            "@Address_City," +
+                            "@Address_State," +
+                            "@Address_Postal_Code," +
+                            "@Address_Country," +
+                            "@Fax," +
+                            "@Phone_1," +
+                            "@Phone_2," +
+                            "@Email," +
+                            "@Website," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Full_Name", u.Full_Name);
+                cmd.Parameters.AddWithValue("@Short_Name", u.Short_Name);
+                cmd.Parameters.AddWithValue("@Registration_No", u.Registration_No);
+                cmd.Parameters.AddWithValue("@Address_1", u.Address_1);
+                cmd.Parameters.AddWithValue("@Address_2", u.Address_2);
+                cmd.Parameters.AddWithValue("@Address_City", u.Address_City);
+                cmd.Parameters.AddWithValue("@Address_State", u.Address_State);
+                cmd.Parameters.AddWithValue("@Address_Postal_Code", u.Address_Postal_Code);
+                cmd.Parameters.AddWithValue("@Address_Country", u.Address_Country);
+                cmd.Parameters.AddWithValue("@Fax", u.Fax);
+                cmd.Parameters.AddWithValue("@Phone_1", u.Phone_1);
+                cmd.Parameters.AddWithValue("@Phone_2", u.Phone_2);
+                cmd.Parameters.AddWithValue("@Email", u.Email);
+                cmd.Parameters.AddWithValue("@Website", u.Website);
+
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertPO(SPPDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_spp_po 
+                            (" + POCode + ","
+                            + CustomerTableCode + ","
+                            + ItemCode + ","
+                            + POQty + ","
+                            + DeliveredQty + ","
+                            + Address1 + ","
+                            + Address2 + ","
+                            + AddressCity + ","
+                            + AddressState + ","
+                            + AddressPostalCode + ","
+                            + AddressCountry + ","
+                            + DefaultShippingAddress + ","
+                             + PONote + ","
+                            + PODate + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@PO_code," +
+                            "@Customer_tbl_code," +
+                            "@Item_code," +
+                            "@PO_qty," +
+                            "@Delivered_qty," +
+                            "@Address_1," +
+                            "@Address_2," +
+                            "@Address_City," +
+                            "@Address_State," +
+                            "@Address_Postal_Code," +
+                            "@Address_Country," +
+                            "@DefaultShippingAddress," +
+                             "@PO_note," +
+                            "@PO_date," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
+                cmd.Parameters.AddWithValue("@PO_date", u.PO_date);
+                cmd.Parameters.AddWithValue("@PO_note", u.PO_note);
+                cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);
+                cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+                cmd.Parameters.AddWithValue("@PO_qty", u.PO_qty);
+                cmd.Parameters.AddWithValue("@Delivered_qty", u.Delivered_qty);
+                cmd.Parameters.AddWithValue("@DefaultShippingAddress", u.DefaultShippingAddress);
+                cmd.Parameters.AddWithValue("@Address_1", u.Address_1);
+                cmd.Parameters.AddWithValue("@Address_2", u.Address_2);
+                cmd.Parameters.AddWithValue("@Address_City", u.Address_City);
+                cmd.Parameters.AddWithValue("@Address_State", u.Address_State);
+                cmd.Parameters.AddWithValue("@Address_Postal_Code", u.Address_Postal_Code);
+                cmd.Parameters.AddWithValue("@Address_Country", u.Address_Country);
+
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
 
                 conn.Open();
 
@@ -1191,6 +1594,297 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool CustomerUpdate(SPPDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_customer 
+                            SET "
+                            + FullName + "=@Full_Name,"
+                            + ShortName + "=@Short_Name,"
+                            + RegistrationNo + "=@Registration_No,"
+                            + Address1 + "=@Address_1,"
+                            + Address2 + "=@Address_2,"
+                            + AddressCity + "=@Address_City,"
+                            + AddressState + "=@Address_State,"
+                            + AddressPostalCode + "=@Address_Postal_Code,"
+                            + AddressCountry + "=@Address_Country,"
+                            + Fax + "=@Fax,"
+                            + Phone1 + "=@Phone_1,"
+                            + Phone2 + "=@Phone_2,"
+                            + Email + "=@Email,"
+                            + Website + "=@Website,"
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Full_Name", u.Full_Name);
+                cmd.Parameters.AddWithValue("@Short_Name", u.Short_Name);
+                cmd.Parameters.AddWithValue("@Registration_No", u.Registration_No);
+                cmd.Parameters.AddWithValue("@Address_1", u.Address_1);
+                cmd.Parameters.AddWithValue("@Address_2", u.Address_2);
+                cmd.Parameters.AddWithValue("@Address_City", u.Address_City);
+                cmd.Parameters.AddWithValue("@Address_State", u.Address_State);
+                cmd.Parameters.AddWithValue("@Address_Postal_Code", u.Address_Postal_Code);
+                cmd.Parameters.AddWithValue("@Address_Country", u.Address_Country);
+                cmd.Parameters.AddWithValue("@Fax", u.Fax);
+                cmd.Parameters.AddWithValue("@Phone_1", u.Phone_1);
+                cmd.Parameters.AddWithValue("@Phone_2", u.Phone_2);
+                cmd.Parameters.AddWithValue("@Email", u.Email);
+                cmd.Parameters.AddWithValue("@Website", u.Website);
+
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool CustomerRemove(SPPDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_customer 
+                            SET "
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+              
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool POUpdate(SPPDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_po 
+                            SET "
+                            + POCode + "=@PO_code,"
+                            + CustomerTableCode + "=@Customer_tbl_code,"
+                            + ItemCode + "=@Item_code,"
+                            + POQty + "=@PO_qty,"
+                            + DefaultShippingAddress + "=@DefaultShippingAddress,"
+                            + Address1 + "=@Address_1,"
+                            + Address2 + "=@Address_2,"
+                            + AddressCity + "=@Address_City,"
+                            + AddressState + "=@Address_State,"
+                            + AddressPostalCode + "=@Address_Postal_Code,"
+                            + AddressCountry + "=@Address_Country,"
+                            + PONote + "=@PO_note,"
+                            + PODate + "=@PO_date,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
+                cmd.Parameters.AddWithValue("@PO_note", u.PO_note);
+                cmd.Parameters.AddWithValue("@PO_date", u.PO_date);
+                cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);
+                cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+                cmd.Parameters.AddWithValue("@PO_qty", u.PO_qty);
+                cmd.Parameters.AddWithValue("@DefaultShippingAddress", u.DefaultShippingAddress);
+                cmd.Parameters.AddWithValue("@Address_1", u.Address_1);
+                cmd.Parameters.AddWithValue("@Address_2", u.Address_2);
+                cmd.Parameters.AddWithValue("@Address_City", u.Address_City);
+                cmd.Parameters.AddWithValue("@Address_State", u.Address_State);
+                cmd.Parameters.AddWithValue("@Address_Postal_Code", u.Address_Postal_Code);
+                cmd.Parameters.AddWithValue("@Address_Country", u.Address_Country);
+
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool PORemove(SPPDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_po 
+                            SET "
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool PODelete(SPPDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "DELETE FROM tbl_spp_po WHERE po_code =@PO_code";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         #endregion
 
     }

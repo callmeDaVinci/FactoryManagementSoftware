@@ -75,6 +75,8 @@
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.btnRemoveFromList = new System.Windows.Forms.Button();
+            this.txtNote = new System.Windows.Forms.TextBox();
+            this.lblNote = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gbTargetQty.SuspendLayout();
@@ -447,36 +449,40 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(782, 48);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(786, 48);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 23);
+            this.label1.Size = new System.Drawing.Size(42, 19);
             this.label1.TabIndex = 6;
             this.label1.Text = "TYPE:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(786, 84);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(790, 84);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 23);
+            this.label2.Size = new System.Drawing.Size(38, 19);
             this.label2.TabIndex = 7;
             this.label2.Text = "SIZE:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(774, 122);
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(779, 122);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(59, 23);
+            this.label3.Size = new System.Drawing.Size(49, 19);
             this.label3.TabIndex = 8;
             this.label3.Text = "CODE:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(768, 164);
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(775, 164);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(65, 23);
+            this.label4.Size = new System.Drawing.Size(53, 19);
             this.label4.TabIndex = 9;
             this.label4.Text = "STOCK:";
             // 
@@ -582,18 +588,20 @@
             // lblTargetBag
             // 
             this.lblTargetBag.AutoSize = true;
-            this.lblTargetBag.Location = new System.Drawing.Point(233, 50);
+            this.lblTargetBag.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTargetBag.Location = new System.Drawing.Point(233, 54);
             this.lblTargetBag.Name = "lblTargetBag";
-            this.lblTargetBag.Size = new System.Drawing.Size(43, 23);
+            this.lblTargetBag.Size = new System.Drawing.Size(36, 19);
             this.lblTargetBag.TabIndex = 186;
             this.lblTargetBag.Text = "BAG";
             // 
             // lblTargetPcs
             // 
             this.lblTargetPcs.AutoSize = true;
-            this.lblTargetPcs.Location = new System.Drawing.Point(14, 50);
+            this.lblTargetPcs.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTargetPcs.Location = new System.Drawing.Point(14, 54);
             this.lblTargetPcs.Name = "lblTargetPcs";
-            this.lblTargetPcs.Size = new System.Drawing.Size(40, 23);
+            this.lblTargetPcs.Size = new System.Drawing.Size(33, 19);
             this.lblTargetPcs.TabIndex = 185;
             this.lblTargetPcs.Text = "PCS";
             // 
@@ -713,10 +721,30 @@
             this.btnRemoveFromList.Name = "btnRemoveFromList";
             this.btnRemoveFromList.Size = new System.Drawing.Size(239, 36);
             this.btnRemoveFromList.TabIndex = 186;
-            this.btnRemoveFromList.Text = "REMOVE FROM TARGET LIST";
+            this.btnRemoveFromList.Text = "REMOVE FROM LIST";
             this.btnRemoveFromList.UseVisualStyleBackColor = false;
             this.btnRemoveFromList.Visible = false;
             this.btnRemoveFromList.Click += new System.EventHandler(this.btnRemoveFromList_Click);
+            // 
+            // txtNote
+            // 
+            this.txtNote.Location = new System.Drawing.Point(772, 439);
+            this.txtNote.Multiline = true;
+            this.txtNote.Name = "txtNote";
+            this.txtNote.Size = new System.Drawing.Size(521, 93);
+            this.txtNote.TabIndex = 187;
+            this.txtNote.Visible = false;
+            // 
+            // lblNote
+            // 
+            this.lblNote.AutoSize = true;
+            this.lblNote.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNote.Location = new System.Drawing.Point(768, 417);
+            this.lblNote.Name = "lblNote";
+            this.lblNote.Size = new System.Drawing.Size(43, 19);
+            this.lblNote.TabIndex = 191;
+            this.lblNote.Text = "NOTE";
+            this.lblNote.Visible = false;
             // 
             // frmSPPAddItem
             // 
@@ -724,6 +752,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1348, 721);
+            this.Controls.Add(this.lblNote);
+            this.Controls.Add(this.txtNote);
             this.Controls.Add(this.btnRemoveFromList);
             this.Controls.Add(this.lblUnit);
             this.Controls.Add(this.lblStock);
@@ -802,5 +832,7 @@
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnRemoveFromList;
+        private System.Windows.Forms.Label lblNote;
+        private System.Windows.Forms.TextBox txtNote;
     }
 }

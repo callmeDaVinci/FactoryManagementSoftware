@@ -435,6 +435,7 @@ namespace FactoryManagementSoftware.UI
             string size = dt.Rows[rowIndex][header_Size].ToString();
             string unit = dt.Rows[rowIndex][header_Unit].ToString();
             string targetPcs = dt_Source.Rows[rowIndex][header_Target_Pcs].ToString();
+
             if (rowIndex >= 0)
             {
                 frmSPPAddItem frm = new frmSPPAddItem(code, type, size, unit, targetPcs)
@@ -489,5 +490,441 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("Please select a row!");
             }
         }
+
+        private void dgvMatPrepareList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            DataGridView dgv = dgvMatPrepareList;
+
+            int rowIndex = e.RowIndex;
+            int colIndex = e.ColumnIndex;
+
+            if(dgv.Columns[colIndex].Name == header_RequiredQty)
+            {
+                int stock = int.TryParse(dgv.Rows[rowIndex].Cells[header_Stock].Value.ToString(), out stock) ? stock : 0;
+                int requiredQty = int.TryParse(dgv.Rows[rowIndex].Cells[header_RequiredQty].Value.ToString(), out requiredQty) ? requiredQty : 0;
+                int size = int.TryParse(dgv.Rows[rowIndex].Cells[header_Size].Value.ToString(), out size) ? size : 0;
+                int stockLevel = 0;
+
+                if (requiredQty > stock)
+                {
+                    dgv.Rows[rowIndex].Cells[header_RequiredQty].Style.ForeColor = Color.Red;
+                }
+                else
+                {
+                    dgv.Rows[rowIndex].Cells[header_RequiredQty].Style.ForeColor = Color.Black;
+                }
+
+                if(size == 20)
+                {
+                    stockLevel = text.StockLevel_20;
+                }
+                else if (size == 25)
+                {
+                    stockLevel = text.StockLevel_25;
+                }
+                else if (size == 32)
+                {
+                    stockLevel = text.StockLevel_32;
+                }
+                else if (size == 50)
+                {
+                    stockLevel = text.StockLevel_50;
+                }
+                else if (size == 63)
+                {
+                    stockLevel = text.StockLevel_63;
+                }
+
+
+            }
+        }
+
+        #region export to excel
+
+        static void OpenCSVWithExcel(string path)
+        {
+            var ExcelApp = new Excel.Application();
+            ExcelApp.Workbooks.OpenText(path, Comma: true);
+
+            ExcelApp.Visible = true;
+        }
+
+        private string setFileName()
+        {
+            string fileName = "Test.xls";
+
+            DateTime currentDate = DateTime.Now;
+            fileName = "SPP Material Prepare List_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
+            return fileName;
+        }
+
+        private void copyDGVtoClipboard(DataGridView dgv)
+        {
+            dgv.SelectAll();
+            DataObject dataObj = dgv.GetClipboardContent();
+            if (dataObj != null)
+                Clipboard.SetDataObject(dataObj);
+        }
+
+        private void releaseObject(object obj)
+        {
+            try
+            {
+                Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                MessageBox.Show("Exception Occurred while releasing object " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
+
+        private void BtnExcel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                string path2 = @"D:\StockAssistant\Document\SPP Material Prepare List";
+                Directory.CreateDirectory(path2);
+                sfd.InitialDirectory = path2;
+                sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                sfd.FileName = "SPP Material Prepare List_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+                    string path = Path.GetFullPath(sfd.FileName);
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    object misValue = Missing.Value;
+                    Excel.Application xlexcel = new Excel.Application
+                    {
+                        PrintCommunication = false,
+                        ScreenUpdating = false,
+                        DisplayAlerts = false // Without this you will get two confirm overwrite prompts
+                    };
+                    Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+
+                    //Save the excel file under the captured location from the SaveFileDialog
+                    xlWorkBook.SaveAs(sfd.FileName,
+                        XlFileFormat.xlWorkbookNormal,
+                        misValue, misValue, misValue, misValue,
+                        XlSaveAsAccessMode.xlExclusive,
+                        misValue, misValue, misValue, misValue, misValue);
+
+                    InsertAllDataToSheet(path, sfd.FileName);
+                    xlexcel.DisplayAlerts = true;
+                    xlWorkBook.Close(true, misValue, misValue);
+                    xlexcel.Quit();
+
+                    releaseObject(xlWorkBook);
+                    releaseObject(xlexcel);
+
+                    // Clear Clipboard and DataGridView selection
+                    Clipboard.Clear();
+                    dgvTargetItem.ClearSelection();
+                    dgvMatPrepareList.ClearSelection();
+                }
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
+        private void InsertAllDataToSheet(string path, string fileName)
+        {
+            DataGridView dgv = dgvTargetItem;
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            Excel.Application excelApp = new Excel.Application
+            {
+                Visible = true
+            };
+
+            Workbook g_Workbook = excelApp.Workbooks.Open(
+               path,
+               Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+               Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+               Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+               Type.Missing, Type.Missing);
+
+            object misValue = Missing.Value;
+
+            if (dt.Rows.Count > 0)//if datagridview have data
+            {
+                Worksheet xlWorkSheet = null;
+
+                int count = g_Workbook.Worksheets.Count;
+
+                xlWorkSheet = g_Workbook.Worksheets.Add(Type.Missing,
+                        g_Workbook.Worksheets[count], Type.Missing, Type.Missing);
+
+                xlWorkSheet.Name = "TARGET LIST";
+
+                xlWorkSheet.PageSetup.LeftHeader = "&\"Courier New\"&8 " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                xlWorkSheet.PageSetup.CenterHeader = "&\"Courier New\"&12 SPP TARGET LIST";
+                xlWorkSheet.PageSetup.RightHeader = "&\"Courier New\"&8 PG -&P";
+                xlWorkSheet.PageSetup.CenterFooter = "&\"Courier New\"&8 Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+
+                xlWorkSheet.PageSetup.CenterHorizontally = true;
+                xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
+                xlWorkSheet.PageSetup.Zoom = false;
+
+                xlWorkSheet.PageSetup.FitToPagesWide = 1;
+                xlWorkSheet.PageSetup.FitToPagesTall = false;
+
+                double pointToCMRate = 0.035;
+                xlWorkSheet.PageSetup.TopMargin = 1.2 / pointToCMRate;
+                xlWorkSheet.PageSetup.BottomMargin = 1.2 / pointToCMRate;
+                xlWorkSheet.PageSetup.HeaderMargin = 0.6 / pointToCMRate;
+                xlWorkSheet.PageSetup.FooterMargin = 0.6 / pointToCMRate;
+                xlWorkSheet.PageSetup.LeftMargin = 0.7 / pointToCMRate;
+                xlWorkSheet.PageSetup.RightMargin = 0.7 / pointToCMRate;
+
+                xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+
+
+
+                // Paste clipboard results to worksheet range
+                copyDGVtoClipboard(dgvTargetItem);
+
+                xlWorkSheet.Select();
+                Range CR = (Range)xlWorkSheet.Cells[1, 1];
+                CR.Select();
+                xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+
+                #region old format setting
+
+                Range tRange = xlWorkSheet.UsedRange;
+                tRange.Font.Size = 11;
+                tRange.RowHeight = 30;
+                tRange.VerticalAlignment = XlHAlign.xlHAlignCenter;
+                tRange.Font.Name = "Courier New";
+
+                tRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing);
+
+                //tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                //tRange.Borders.Weight = XlBorderWeight.xlThin;
+
+                //Range FirstRow = (Range)xlWorkSheet.Application.Rows[1, Type.Missing];
+                Range FirstRow = xlWorkSheet.get_Range("a1:e1").Cells;
+                FirstRow.WrapText = true;
+                FirstRow.Font.Size = 8;
+
+                FirstRow.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                FirstRow.VerticalAlignment = XlHAlign.xlHAlignCenter;
+                FirstRow.RowHeight = 20;
+                FirstRow.Interior.Color = Color.WhiteSmoke;
+                FirstRow.Borders.LineStyle = XlLineStyle.xlContinuous;
+                FirstRow.Borders.Weight = XlBorderWeight.xlThin;
+
+                //tRange.EntireColumn.AutoFit();
+
+                //DataTable dt = (DataTable)dgv.DataSource;
+
+
+                int TypeIndex = dgv.Columns[header_Type].Index;
+                int SizeIndex = dgv.Columns[header_Size].Index;
+                int UnitIndex = dgv.Columns[header_Unit].Index;
+                int CodeIndex = dgv.Columns[header_Code].Index;
+                int TargetIndex = dgv.Columns[header_Target_Qty].Index;
+
+
+                xlWorkSheet.Cells[1, SizeIndex + 1].ColumnWidth = 6;
+                xlWorkSheet.Cells[1, UnitIndex + 1].ColumnWidth = 6;
+                xlWorkSheet.Cells[1, TypeIndex + 1].ColumnWidth = 25;
+                xlWorkSheet.Cells[1, CodeIndex + 1].ColumnWidth = 25;
+                xlWorkSheet.Cells[1, TargetIndex + 1].ColumnWidth = 15;
+
+                for (int j = 0; j <= dt.Rows.Count - 1; j++)
+                {
+
+                    Range rangeSize = (Range)xlWorkSheet.Cells[j + 2, SizeIndex + 1];
+                    Range rangeUnit = (Range)xlWorkSheet.Cells[j + 2, UnitIndex + 1];
+                    Range rangeType = (Range)xlWorkSheet.Cells[j + 2, TypeIndex + 1];
+                    Range rangeTarget = (Range)xlWorkSheet.Cells[j + 2, TargetIndex + 1];
+
+                    rangeSize.HorizontalAlignment = XlHAlign.xlHAlignRight;
+                    rangeUnit.HorizontalAlignment = XlHAlign.xlHAlignLeft;
+
+                    rangeTarget.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+
+                    System.Drawing.Color color = System.Drawing.Color.Black;
+                    rangeType.Borders[XlBordersIndex.xlEdgeRight].Color = color;
+                    rangeType.Borders[XlBordersIndex.xlEdgeLeft].Color = color;
+
+                    rangeTarget.Borders[XlBordersIndex.xlEdgeRight].Color = color;
+                    rangeTarget.Borders[XlBordersIndex.xlEdgeLeft].Color = color;
+
+
+
+                }
+
+                #endregion
+
+                releaseObject(xlWorkSheet);
+                Clipboard.Clear();
+
+                dgvTargetItem.ClearSelection();
+            }
+
+
+            dgv = dgvMatPrepareList;
+            dt = (DataTable)dgv.DataSource;
+
+            MoveMaterialPrepareDataToSheet(g_Workbook);
+
+            g_Workbook.Worksheets.Item[1].Delete();
+            g_Workbook.Save();
+            releaseObject(g_Workbook);
+            //frmLoading.CloseForm();
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void MoveMaterialPrepareDataToSheet(Workbook g_Workbook)
+        {
+            DataGridView dgv = dgvMatPrepareList;
+            #region move data to sheet
+            Worksheet xlWorkSheet = null;
+
+            int count = g_Workbook.Worksheets.Count;
+
+            xlWorkSheet = g_Workbook.Worksheets.Add(Type.Missing,
+                    g_Workbook.Worksheets[count], Type.Missing, Type.Missing);
+
+            xlWorkSheet.Name = "MATERIAL LIST";
+
+            xlWorkSheet.PageSetup.LeftHeader = "&\"Courier New\"&8 " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            xlWorkSheet.PageSetup.CenterHeader = "&\"Courier New\"&12 SPP MATERIAL PREPARE LIST";
+            xlWorkSheet.PageSetup.RightHeader = "&\"Courier New\"&8 PG -&P";
+            xlWorkSheet.PageSetup.CenterFooter = "&\"Courier New\"&8 Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+
+            xlWorkSheet.PageSetup.CenterHorizontally = true;
+            xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+            xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
+            xlWorkSheet.PageSetup.Zoom = false;
+
+            xlWorkSheet.PageSetup.FitToPagesWide = 1;
+            xlWorkSheet.PageSetup.FitToPagesTall = false;
+
+            double pointToCMRate = 0.035;
+            xlWorkSheet.PageSetup.TopMargin = 1.2 / pointToCMRate;
+            xlWorkSheet.PageSetup.BottomMargin = 1.2 / pointToCMRate;
+            xlWorkSheet.PageSetup.HeaderMargin = 0.6 / pointToCMRate;
+            xlWorkSheet.PageSetup.FooterMargin = 0.6 / pointToCMRate;
+            xlWorkSheet.PageSetup.LeftMargin = 0.7 / pointToCMRate;
+            xlWorkSheet.PageSetup.RightMargin = 0.7 / pointToCMRate;
+
+            xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+
+
+
+            // Paste clipboard results to worksheet range
+            copyDGVtoClipboard(dgvMatPrepareList);
+
+            xlWorkSheet.Select();
+            Range CR = (Range)xlWorkSheet.Cells[1, 1];
+            CR.Select();
+            xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+
+            #region old format setting
+
+            Range tRange = xlWorkSheet.UsedRange;
+            tRange.Font.Size = 11;
+            tRange.RowHeight = 30;
+            tRange.VerticalAlignment = XlHAlign.xlHAlignCenter;
+            tRange.Font.Name = "Courier New";
+
+            tRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing);
+
+            //tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+            //tRange.Borders.Weight = XlBorderWeight.xlThin;
+
+            //Range FirstRow = (Range)xlWorkSheet.Application.Rows[1, Type.Missing];
+            Range FirstRow = xlWorkSheet.get_Range("a1:g1").Cells;
+            FirstRow.WrapText = true;
+            FirstRow.Font.Size = 8;
+
+            FirstRow.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            FirstRow.VerticalAlignment = XlHAlign.xlHAlignCenter;
+            FirstRow.RowHeight = 20;
+            FirstRow.Interior.Color = Color.WhiteSmoke;
+            FirstRow.Borders.LineStyle = XlLineStyle.xlContinuous;
+            FirstRow.Borders.Weight = XlBorderWeight.xlThin;
+
+            //tRange.EntireColumn.AutoFit();
+
+            //DataTable dt = (DataTable)dgv.DataSource;
+
+            int SizeIndex = dgv.Columns[header_Size].Index;
+            int UnitIndex = dgv.Columns[header_Unit].Index;
+            int CatIndex = dgv.Columns[header_Category].Index;
+            int TypeIndex = dgv.Columns[header_Type].Index;
+            int CodeIndex = dgv.Columns[header_Code].Index;
+            int StockIndex = dgv.Columns[header_Stock].Index;
+            int RequiredQtyIndex = dgv.Columns[header_RequiredQty].Index;
+
+            xlWorkSheet.Cells[1, SizeIndex + 1].ColumnWidth = 6;
+            xlWorkSheet.Cells[1, UnitIndex + 1].ColumnWidth = 6;
+            xlWorkSheet.Cells[1, CatIndex + 1].ColumnWidth = 12;
+            xlWorkSheet.Cells[1, TypeIndex + 1].ColumnWidth = 12;
+            xlWorkSheet.Cells[1, CodeIndex + 1].ColumnWidth = 12;
+            xlWorkSheet.Cells[1, StockIndex + 1].ColumnWidth = 10;
+            xlWorkSheet.Cells[1, RequiredQtyIndex + 1].ColumnWidth = 10;
+
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            for (int j = 0; j <= dt.Rows.Count - 1; j++)
+            {
+                Range rangeStock = (Range)xlWorkSheet.Cells[j + 2, StockIndex + 1];
+                rangeStock.Font.Italic = true;
+                rangeStock.Font.Size = 8;
+                rangeStock.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+
+                Range rangeRequiredQty = (Range)xlWorkSheet.Cells[j + 2, RequiredQtyIndex + 1];
+                rangeRequiredQty.Font.Bold = true;
+                //rangeRequiredQty.Font.Size = 8;
+                rangeRequiredQty.HorizontalAlignment = XlHAlign.xlHAlignRight;
+
+                Range rangeSize = (Range)xlWorkSheet.Cells[j + 2, SizeIndex + 1];
+                Range rangeUnit = (Range)xlWorkSheet.Cells[j + 2, UnitIndex + 1];
+
+                Range rangeType = (Range)xlWorkSheet.Cells[j + 2, TypeIndex + 1];
+
+                Range rangeCode = (Range)xlWorkSheet.Cells[j + 2, CodeIndex + 1];
+                rangeCode.HorizontalAlignment = XlHAlign.xlHAlignLeft;
+
+                Color color = Color.Black;
+                rangeStock.Borders[XlBordersIndex.xlEdgeRight].Color = color;
+                rangeStock.Borders[XlBordersIndex.xlEdgeLeft].Color = color;
+
+                rangeType.Borders[XlBordersIndex.xlEdgeRight].Color = color;
+                rangeType.Borders[XlBordersIndex.xlEdgeLeft].Color = color;
+
+                rangeCode.Borders[XlBordersIndex.xlEdgeRight].Color = color;
+                rangeCode.Borders[XlBordersIndex.xlEdgeLeft].Color = color;
+
+                rangeUnit.Borders[XlBordersIndex.xlEdgeRight].Color = color;
+
+
+
+            }
+
+            #endregion
+
+            releaseObject(xlWorkSheet);
+            Clipboard.Clear();
+
+            dgvMatPrepareList.ClearSelection();
+            #endregion
+        }
+
+        #endregion
     }
 }

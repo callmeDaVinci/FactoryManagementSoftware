@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>113</ApplicationRevision>
+    <ApplicationRevision>117</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -575,6 +575,12 @@
     <Compile Include="UI\frmSPPCalculation.Designer.cs">
       <DependentUpon>frmSPPCalculation.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmSPPCustomerEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSPPCustomerEdit.Designer.cs">
+      <DependentUpon>frmSPPCustomerEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmSPPDataSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -592,6 +598,18 @@
     </Compile>
     <Compile Include="UI\frmSPPItemEdit.Designer.cs">
       <DependentUpon>frmSPPItemEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSPPNewPO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSPPNewPO.Designer.cs">
+      <DependentUpon>frmSPPNewPO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSPPPOList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSPPPOList.Designer.cs">
+      <DependentUpon>frmSPPPOList.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmStockReport.cs">
       <SubType>Form</SubType>
@@ -864,6 +882,9 @@
     <EmbeddedResource Include="UI\frmSPPCalculation.resx">
       <DependentUpon>frmSPPCalculation.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSPPCustomerEdit.resx">
+      <DependentUpon>frmSPPCustomerEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSPPDataSetting.resx">
       <DependentUpon>frmSPPDataSetting.cs</DependentUpon>
     </EmbeddedResource>
@@ -872,6 +893,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSPPItemEdit.resx">
       <DependentUpon>frmSPPItemEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSPPNewPO.resx">
+      <DependentUpon>frmSPPNewPO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSPPPOList.resx">
+      <DependentUpon>frmSPPPOList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockReport.resx">
       <DependentUpon>frmStockReport.cs</DependentUpon>

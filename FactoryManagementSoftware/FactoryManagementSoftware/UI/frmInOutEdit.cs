@@ -84,6 +84,8 @@ namespace FactoryManagementSoftware.UI
         Tool tool = new Tool();
         Text text = new Text();
 
+        SPPDataDAL dalData = new SPPDataDAL();
+
         #endregion
 
         #region Variable
@@ -1042,6 +1044,10 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
                             dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
                         }
+                        else
+                        {
+                            dgv.Rows[n].Cells[NoteColumnName].Value = "";
+                        }
                     }
                 }
             }
@@ -1384,10 +1390,19 @@ namespace FactoryManagementSoftware.UI
             }
             else if (cmbTrfToCategory.Text.Equals("Customer"))
             {
-                DataTable dt = dalCust.Select();
-                loadLocationData(dt, cmbTrfTo, "cust_name");
+                if (cmbTrfItemCode.Text.Substring(1, 2) == text.Inspection_Pass)
+                {
+                    DataTable dt = dalData.CustomerWithoutRemovedDataSelect();
+                    loadLocationData(dt, cmbTrfTo, dalData.ShortName);
+                }
+                else
+                {
+                    DataTable dt = dalCust.Select();
+                    loadLocationData(dt, cmbTrfTo, "cust_name");
 
-                cmbTrfTo.Text = tool.getCustomerName(cmbTrfItemCode.Text);
+                    cmbTrfTo.Text = tool.getCustomerName(cmbTrfItemCode.Text);
+                }
+               
 
             }
             else
@@ -1868,7 +1883,7 @@ namespace FactoryManagementSoftware.UI
             to = dgv.Rows[n].Cells[ToColumnName].Value.ToString();
             unit = dgv.Rows[n].Cells[UnitColumnName].Value.ToString();
             qty = Convert.ToSingle(dgv.Rows[n].Cells[QtyColumnName].Value);
-            note = dgv.Rows[n].Cells[NoteColumnName].Value.ToString();
+            note = dgv.Rows[n].Cells[NoteColumnName].Value == null ?string.Empty : dgv.Rows[n].Cells[NoteColumnName].Value.ToString();
 
             qty = unitCheck(qty, unit);
             unit = checkUnit(unit);
