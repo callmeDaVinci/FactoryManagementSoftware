@@ -66,6 +66,7 @@ namespace FactoryManagementSoftware.BLL
 
         //po table
         public int PO_code { get; set; }
+        public string PO_no { get; set; }
         public DateTime PO_date { get; set; }
         public int Customer_tbl_code { get; set; }
         public int PO_qty { get; set; }

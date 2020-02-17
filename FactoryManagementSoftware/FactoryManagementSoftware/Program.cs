@@ -18,7 +18,7 @@ namespace FactoryManagementSoftware
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //Application.Run(new frmSPPCustomerEdit());
+            //Application.Run(new frmSPPItemEdit());
 
             Application.Run(new MainDashboard(1));
 

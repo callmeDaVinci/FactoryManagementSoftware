@@ -70,6 +70,7 @@ namespace FactoryManagementSoftware.DAL
 
         //PO table
         public string POCode { get; } = "po_code";
+        public string PONo { get; } = "po_no";
         public string PODate { get; } = "po_date";
         public string CustomerTableCode { get; } = "customer_tbl_code";
         public string POQty { get; } = "po_qty";
@@ -125,6 +126,45 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable SizeForReadyGoodsSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_spp_size WHERE isRemoved IS NULL OR isRemoved = @false";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable TypeSelect()
         {
             //static methodd to connect database
@@ -140,6 +180,84 @@ namespace FactoryManagementSoftware.DAL
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable TypeWithoutRemovedDataSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_spp_type WHERE isRemoved IS NULL OR isRemoved = @false ";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable TypeForReadyGoodsSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_spp_type WHERE (isRemoved IS NULL OR isRemoved = @false) AND (isCommon IS NULL OR isCommon = @false)";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
@@ -1062,6 +1180,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"INSERT INTO tbl_spp_po 
                             (" + POCode + ","
                             + CustomerTableCode + ","
+                            + PONo + ","
                             + ItemCode + ","
                             + POQty + ","
                             + DeliveredQty + ","
@@ -1078,6 +1197,7 @@ namespace FactoryManagementSoftware.DAL
                             + UpdatedBy + ") VALUES" +
                             "(@PO_code," +
                             "@Customer_tbl_code," +
+                            "@PO_no," +
                             "@Item_code," +
                             "@PO_qty," +
                             "@Delivered_qty," +
@@ -1096,6 +1216,7 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
+                cmd.Parameters.AddWithValue("@PO_no", u.PO_no);
                 cmd.Parameters.AddWithValue("@PO_date", u.PO_date);
                 cmd.Parameters.AddWithValue("@PO_note", u.PO_note);
                 cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);
@@ -1734,6 +1855,7 @@ namespace FactoryManagementSoftware.DAL
                             SET "
                             + POCode + "=@PO_code,"
                             + CustomerTableCode + "=@Customer_tbl_code,"
+                            + PONo + "=@PO_no,"
                             + ItemCode + "=@Item_code,"
                             + POQty + "=@PO_qty,"
                             + DefaultShippingAddress + "=@DefaultShippingAddress,"
@@ -1752,6 +1874,7 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
+                cmd.Parameters.AddWithValue("@PO_no", u.PO_no);
                 cmd.Parameters.AddWithValue("@PO_note", u.PO_note);
                 cmd.Parameters.AddWithValue("@PO_date", u.PO_date);
                 cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);

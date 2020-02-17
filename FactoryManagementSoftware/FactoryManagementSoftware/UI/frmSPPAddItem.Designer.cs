@@ -665,6 +665,7 @@
             this.lblType.Size = new System.Drawing.Size(129, 23);
             this.lblType.TabIndex = 181;
             this.lblType.Text = "EQUAL SOCKET";
+            this.lblType.Click += new System.EventHandler(this.lblType_Click);
             // 
             // lblSize
             // 
@@ -674,6 +675,7 @@
             this.lblSize.Size = new System.Drawing.Size(28, 23);
             this.lblSize.TabIndex = 182;
             this.lblSize.Text = "20";
+            this.lblSize.Click += new System.EventHandler(this.lblSize_Click);
             // 
             // lblCode
             // 

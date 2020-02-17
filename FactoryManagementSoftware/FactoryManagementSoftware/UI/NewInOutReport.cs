@@ -17,27 +17,12 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
         }
 
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        private void label14_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void NewInOutReport_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            MainDashboard.InOutReportFormOpen = false;
-        }
-
-        private void NewInOutReport_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void btnExcel_Click(object sender, EventArgs e)
+        private void label12_Click(object sender, EventArgs e)
         {
 
         }

@@ -264,10 +264,14 @@ namespace FactoryManagementSoftware.UI
 
         private void CalculatePcsQty()
         {
+            
+
             errorProvider2.Clear();
             int bagQty = int.TryParse(txtBagQty.Text, out bagQty) ? bagQty : 0;
 
             txtPcsQty.Text = (bagQty * stdPackingPerBag).ToString();
+
+           
         }
 
         private void txtBagQty_TextChanged(object sender, EventArgs e)
@@ -368,6 +372,16 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("Item removed!");
                 Close();
             }
+        }
+
+        private void lblSize_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblType_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
