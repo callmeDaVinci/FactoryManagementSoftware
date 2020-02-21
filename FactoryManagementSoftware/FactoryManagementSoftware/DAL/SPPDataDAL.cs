@@ -77,7 +77,14 @@ namespace FactoryManagementSoftware.DAL
         public string DeliveredQty { get; } = "delivered_qty";
         public string DefaultShippingAddress { get; } = "defaultShippingAddress";
         public string PONote { get; } = "po_note";
+        public string ToDeliveryQty { get; } = "to_delivery_qty";
 
+        //DO table
+        public string DONo { get; } = "do_no";
+        public string POTableCode { get; } = "po_tbl_code";
+        public string DOToDeliveryQty { get; } = "to_delivery_qty";
+        public string DODate { get; } = "do_date";
+        
         #endregion
 
         #region variable/class object declare
@@ -636,6 +643,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
 
         }
+
         public DataTable POWithoutRemovedDataSelect()
         {
             //static methodd to connect database
@@ -675,6 +683,87 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable DOSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_spp_do 
+                             ORDER BY do_no DESC";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable DOSelectWithPO()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_spp_do 
+                             INNER JOIN tbl_spp_po
+                             ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
+                             INNER JOIN tbl_spp_customer 
+                             ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                             ORDER BY do_no ASC";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
         #endregion
 
         #region Insert Data in Database
@@ -1262,6 +1351,64 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool InsertDO(SPPDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_spp_do 
+                            (" + DONo + ","
+                            + POTableCode + ","
+                            + DOToDeliveryQty + ","
+                            + DODate + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@DO_no," +
+                            "@PO_tbl_code," +
+                            "@DO_to_delivery_qty," +
+                            "@DO_date," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+           
+                cmd.Parameters.AddWithValue("@DO_no", u.DO_no);
+                cmd.Parameters.AddWithValue("@PO_tbl_code", u.PO_tbl_code);
+                cmd.Parameters.AddWithValue("@DO_to_delivery_qty", u.DO_to_delivery_qty);
+                cmd.Parameters.AddWithValue("@DO_date", u.DO_date);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         #endregion
 
         #region Update data in Database
@@ -1970,6 +2117,58 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool POToDeliveryDataUpdate(SPPDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_po 
+                            SET "
+                            + DeliveredQty + "=@Delivered_qty,"
+                            + ToDeliveryQty + "=@To_delivery_qty,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@Delivered_qty", u.Delivered_qty);
+                cmd.Parameters.AddWithValue("@To_delivery_qty", u.To_delivery_qty);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         public bool PODelete(SPPDataBLL u)
         {
             bool isSuccess = false;
@@ -1981,6 +2180,63 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool DOUpdate(SPPDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_do 
+                            SET "
+                            + DONo + "=@DO_no,"
+                            + POTableCode + "=@PO_tbl_code,"
+                            + DOToDeliveryQty + "=@DO_to_delivery_qty,"
+                            + DODate + "=@DO_date,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@DO_no", u.DO_no);
+                cmd.Parameters.AddWithValue("@PO_tbl_code", u.PO_tbl_code);
+                cmd.Parameters.AddWithValue("@DO_to_delivery_qty", u.DO_to_delivery_qty);
+                cmd.Parameters.AddWithValue("@DO_date", u.DO_date);
+
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
 
                 conn.Open();
 

@@ -965,6 +965,8 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow row in dtSPP.Rows)
                 {
+                    //string text = row["join_child_code"].ToString().Substring(0, 2);
+                    if (row["join_child_code"].ToString().Substring(0, 2) == "CF")
                     parentItemCode = row["join_child_code"].ToString();
                 }
             }

@@ -213,7 +213,8 @@ namespace FactoryManagementSoftware.DAL
                             tbl_spp_size.size_unit as UNIT ,
                             tbl_item.item_code as CODE , 
                             tbl_item.item_qty as QUANTITY,
-                            tbl_spp_stdpacking.qty_per_bag as STD_PACKING
+                            tbl_spp_stdpacking.qty_per_bag as STD_PACKING,
+                            tbl_item.to_delivery_qty as TO_DELIVERY_QTY
                             FROM tbl_item
                             INNER JOIN tbl_spp_category 
                             ON (tbl_item.category_tbl_code = tbl_spp_category.tbl_code AND tbl_spp_category.category_name != @commonPart)

@@ -73,10 +73,18 @@ namespace FactoryManagementSoftware.BLL
         public int Delivered_qty { get; set; }
         public bool DefaultShippingAddress { get; set; }
         public string PO_note { get; set; }
+        public int To_delivery_qty { get; set; }
 
         //common
         public DateTime Updated_Date { get; set; }
         public int Updated_By { get; set; }
         public bool IsRemoved { get; set; }
+
+        //do table
+        public int DO_no { get; set; }
+        public int PO_tbl_code { get; set; }
+        public int DO_to_delivery_qty { get; set; }
+        public DateTime DO_date { get; set; }
+
     }
 }
