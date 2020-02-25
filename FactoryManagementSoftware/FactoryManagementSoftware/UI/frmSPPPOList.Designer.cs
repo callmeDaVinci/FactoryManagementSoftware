@@ -61,6 +61,9 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.lblMainList = new System.Windows.Forms.Label();
             this.lblSubList = new System.Windows.Forms.Label();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbEditInBagUnit = new System.Windows.Forms.CheckBox();
+            this.cbEditInPcsUnit = new System.Windows.Forms.CheckBox();
             this.tlpPOList.SuspendLayout();
             this.gbFilter.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -74,6 +77,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvPOItemList)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel8.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpPOList
@@ -272,7 +276,7 @@
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(256, 459);
             this.tableLayoutPanel6.TabIndex = 173;
             // 
@@ -284,11 +288,11 @@
             this.tableLayoutPanel7.Controls.Add(this.btnConfirmToAddDO, 1, 0);
             this.tableLayoutPanel7.Controls.Add(this.btnBackToPOList, 0, 0);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 422);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 402);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(250, 34);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(250, 54);
             this.tableLayoutPanel7.TabIndex = 172;
             // 
             // btnConfirmToAddDO
@@ -299,10 +303,10 @@
             this.btnConfirmToAddDO.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnConfirmToAddDO.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnConfirmToAddDO.ForeColor = System.Drawing.Color.White;
-            this.btnConfirmToAddDO.Location = new System.Drawing.Point(131, 1);
+            this.btnConfirmToAddDO.Location = new System.Drawing.Point(131, 9);
             this.btnConfirmToAddDO.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.btnConfirmToAddDO.Name = "btnConfirmToAddDO";
-            this.btnConfirmToAddDO.Size = new System.Drawing.Size(116, 33);
+            this.btnConfirmToAddDO.Size = new System.Drawing.Size(116, 45);
             this.btnConfirmToAddDO.TabIndex = 172;
             this.btnConfirmToAddDO.Text = "DO CONFIRM";
             this.btnConfirmToAddDO.UseVisualStyleBackColor = false;
@@ -315,10 +319,10 @@
             this.btnBackToPOList.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnBackToPOList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBackToPOList.ForeColor = System.Drawing.Color.Black;
-            this.btnBackToPOList.Location = new System.Drawing.Point(3, 1);
+            this.btnBackToPOList.Location = new System.Drawing.Point(3, 9);
             this.btnBackToPOList.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.btnBackToPOList.Name = "btnBackToPOList";
-            this.btnBackToPOList.Size = new System.Drawing.Size(122, 33);
+            this.btnBackToPOList.Size = new System.Drawing.Size(122, 45);
             this.btnBackToPOList.TabIndex = 172;
             this.btnBackToPOList.Text = "<- PO LIST";
             this.btnBackToPOList.UseVisualStyleBackColor = false;
@@ -352,8 +356,10 @@
             this.dgvDOList.RowHeadersVisible = false;
             this.dgvDOList.RowTemplate.Height = 50;
             this.dgvDOList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDOList.Size = new System.Drawing.Size(250, 417);
+            this.dgvDOList.Size = new System.Drawing.Size(250, 397);
             this.dgvDOList.TabIndex = 156;
+            this.dgvDOList.DataSourceChanged += new System.EventHandler(this.dgvDOList_DataSourceChanged);
+            this.dgvDOList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOList_CellClick);
             // 
             // tableLayoutPanel3
             // 
@@ -366,7 +372,7 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(256, 459);
             this.tableLayoutPanel3.TabIndex = 172;
             // 
@@ -378,11 +384,11 @@
             this.tableLayoutPanel5.Controls.Add(this.btnCancelDOMode, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnAddDO, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 422);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 402);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(250, 34);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(250, 54);
             this.tableLayoutPanel5.TabIndex = 172;
             // 
             // btnCancelDOMode
@@ -393,10 +399,10 @@
             this.btnCancelDOMode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelDOMode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancelDOMode.ForeColor = System.Drawing.Color.Black;
-            this.btnCancelDOMode.Location = new System.Drawing.Point(4, 1);
+            this.btnCancelDOMode.Location = new System.Drawing.Point(4, 9);
             this.btnCancelDOMode.Margin = new System.Windows.Forms.Padding(4, 1, 4, 0);
             this.btnCancelDOMode.Name = "btnCancelDOMode";
-            this.btnCancelDOMode.Size = new System.Drawing.Size(82, 33);
+            this.btnCancelDOMode.Size = new System.Drawing.Size(82, 45);
             this.btnCancelDOMode.TabIndex = 172;
             this.btnCancelDOMode.Text = "CANCEL";
             this.btnCancelDOMode.UseVisualStyleBackColor = false;
@@ -411,10 +417,10 @@
             this.btnAddDO.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnAddDO.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddDO.ForeColor = System.Drawing.Color.Black;
-            this.btnAddDO.Location = new System.Drawing.Point(97, 1);
+            this.btnAddDO.Location = new System.Drawing.Point(97, 9);
             this.btnAddDO.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.btnAddDO.Name = "btnAddDO";
-            this.btnAddDO.Size = new System.Drawing.Size(150, 33);
+            this.btnAddDO.Size = new System.Drawing.Size(150, 45);
             this.btnAddDO.TabIndex = 172;
             this.btnAddDO.Text = "ADD DO";
             this.btnAddDO.UseVisualStyleBackColor = false;
@@ -448,7 +454,7 @@
             this.dgvPOList.RowHeadersVisible = false;
             this.dgvPOList.RowTemplate.Height = 50;
             this.dgvPOList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPOList.Size = new System.Drawing.Size(250, 417);
+            this.dgvPOList.Size = new System.Drawing.Size(250, 397);
             this.dgvPOList.TabIndex = 156;
             this.dgvPOList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPOList_CellClick);
             this.dgvPOList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPOList_CellDoubleClick);
@@ -461,7 +467,7 @@
             this.dgvPOItemList.AllowUserToOrderColumns = true;
             this.dgvPOItemList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvPOItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.dgvPOItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
+            this.dgvPOItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvPOItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
@@ -491,6 +497,7 @@
             this.dgvPOItemList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvPOItemList.Size = new System.Drawing.Size(780, 463);
             this.dgvPOItemList.TabIndex = 155;
+            this.dgvPOItemList.DataSourceChanged += new System.EventHandler(this.dgvPOItemList_DataSourceChanged);
             // 
             // tableLayoutPanel4
             // 
@@ -500,9 +507,9 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel8, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel1, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.lblMainList, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblSubList, 3, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 179);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -578,12 +585,57 @@
             this.lblSubList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSubList.AutoSize = true;
             this.lblSubList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubList.Location = new System.Drawing.Point(536, 20);
+            this.lblSubList.Location = new System.Drawing.Point(2, 14);
             this.lblSubList.Margin = new System.Windows.Forms.Padding(2, 0, 2, 5);
             this.lblSubList.Name = "lblSubList";
             this.lblSubList.Size = new System.Drawing.Size(92, 19);
             this.lblSubList.TabIndex = 157;
             this.lblSubList.Text = "PO ITEM LIST";
+            // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.ColumnCount = 3;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel8.Controls.Add(this.cbEditInPcsUnit, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.cbEditInBagUnit, 1, 0);
+            this.tableLayoutPanel8.Controls.Add(this.lblSubList, 0, 0);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(537, 3);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 1;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(780, 38);
+            this.tableLayoutPanel8.TabIndex = 172;
+            // 
+            // cbEditInBagUnit
+            // 
+            this.cbEditInBagUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbEditInBagUnit.AutoSize = true;
+            this.cbEditInBagUnit.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbEditInBagUnit.Location = new System.Drawing.Point(634, 12);
+            this.cbEditInBagUnit.Name = "cbEditInBagUnit";
+            this.cbEditInBagUnit.Size = new System.Drawing.Size(143, 23);
+            this.cbEditInBagUnit.TabIndex = 158;
+            this.cbEditInBagUnit.Text = "EDIT IN BAG UNIT";
+            this.cbEditInBagUnit.UseVisualStyleBackColor = true;
+            this.cbEditInBagUnit.Visible = false;
+            this.cbEditInBagUnit.CheckedChanged += new System.EventHandler(this.cbEditInBagUnit_CheckedChanged);
+            // 
+            // cbEditInPcsUnit
+            // 
+            this.cbEditInPcsUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbEditInPcsUnit.AutoSize = true;
+            this.cbEditInPcsUnit.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbEditInPcsUnit.Location = new System.Drawing.Point(437, 12);
+            this.cbEditInPcsUnit.Name = "cbEditInPcsUnit";
+            this.cbEditInPcsUnit.Size = new System.Drawing.Size(140, 23);
+            this.cbEditInPcsUnit.TabIndex = 159;
+            this.cbEditInPcsUnit.Text = "EDIT IN PCS UNIT";
+            this.cbEditInPcsUnit.UseVisualStyleBackColor = true;
+            this.cbEditInPcsUnit.Visible = false;
+            this.cbEditInPcsUnit.CheckedChanged += new System.EventHandler(this.cbEditInPcsUnit_CheckedChanged);
             // 
             // frmSPPPOList
             // 
@@ -612,6 +664,8 @@
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel8.ResumeLayout(false);
+            this.tableLayoutPanel8.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -647,5 +701,8 @@
         private System.Windows.Forms.Button btnConfirmToAddDO;
         private System.Windows.Forms.Button btnBackToPOList;
         private System.Windows.Forms.DataGridView dgvDOList;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
+        private System.Windows.Forms.CheckBox cbEditInPcsUnit;
+        private System.Windows.Forms.CheckBox cbEditInBagUnit;
     }
 }

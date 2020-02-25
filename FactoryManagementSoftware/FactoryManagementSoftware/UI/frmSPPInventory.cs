@@ -188,7 +188,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = dalItem.SPPUniqueSelect();
             dt.Columns.Add("STOCK");
-            dt.Columns.Add("TO DELIVERY QTY");
+            dt.Columns.Add("DELIVERY QTY");
             dt.Columns.Add("PCS/BAG");
             dt.Columns.Add("TOTAL BAG(S)");
             dt.Columns.Add("MAX STOCK LEVEL");
@@ -209,7 +209,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (qtyPerBag > 0)
                 {
-                    dt.Rows[i]["TO DELIVERY QTY"] = toDeliveryQty;
+                    dt.Rows[i]["DELIVERY QTY"] = toDeliveryQty;
                     int bagQty = stockQty / qtyPerBag;
 
                     //dt.Rows[i]["STOCK"] = stockQty + " ("+bagQty+" bags)";
@@ -270,8 +270,8 @@ namespace FactoryManagementSoftware.UI
             dgvUnique.Columns["TOTAL BAG(S)"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvUnique.Columns["SIZE"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgvUnique.Columns["UNIT"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgvUnique.Columns["TO DELIVERY QTY"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgvUnique.Columns["TO DELIVERY QTY"].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgvUnique.Columns["DELIVERY QTY"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvUnique.Columns["DELIVERY QTY"].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
             dgvUnique.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
 
@@ -1023,5 +1023,10 @@ namespace FactoryManagementSoftware.UI
         }
 
         #endregion
+
+        private void btnFilterApply_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

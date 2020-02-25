@@ -414,6 +414,7 @@
             this.btnFilterApply.TabIndex = 145;
             this.btnFilterApply.Text = "APPLY";
             this.btnFilterApply.UseVisualStyleBackColor = false;
+            this.btnFilterApply.Click += new System.EventHandler(this.btnFilterApply_Click);
             // 
             // cmbUniqueType
             // 
