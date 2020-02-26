@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpPOList = new System.Windows.Forms.TableLayoutPanel();
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.cbCompletedPO = new System.Windows.Forms.CheckBox();
@@ -54,16 +54,16 @@
             this.btnCancelDOMode = new System.Windows.Forms.Button();
             this.btnAddDO = new System.Windows.Forms.Button();
             this.dgvPOList = new System.Windows.Forms.DataGridView();
-            this.dgvPOItemList = new System.Windows.Forms.DataGridView();
+            this.dgvItemList = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbEditInPcsUnit = new System.Windows.Forms.CheckBox();
+            this.cbEditInBagUnit = new System.Windows.Forms.CheckBox();
+            this.lblSubList = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnAddNewPO = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.lblMainList = new System.Windows.Forms.Label();
-            this.lblSubList = new System.Windows.Forms.Label();
-            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbEditInBagUnit = new System.Windows.Forms.CheckBox();
-            this.cbEditInPcsUnit = new System.Windows.Forms.CheckBox();
             this.tlpPOList.SuspendLayout();
             this.gbFilter.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -74,10 +74,10 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPOList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPOItemList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItemList)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpPOList
@@ -256,7 +256,7 @@
             this.tlpList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.tlpList.Controls.Add(this.tableLayoutPanel6, 1, 0);
             this.tlpList.Controls.Add(this.tableLayoutPanel3, 0, 0);
-            this.tlpList.Controls.Add(this.dgvPOItemList, 3, 0);
+            this.tlpList.Controls.Add(this.dgvItemList, 3, 0);
             this.tlpList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpList.Location = new System.Drawing.Point(3, 229);
             this.tlpList.Name = "tlpList";
@@ -310,6 +310,7 @@
             this.btnConfirmToAddDO.TabIndex = 172;
             this.btnConfirmToAddDO.Text = "DO CONFIRM";
             this.btnConfirmToAddDO.UseVisualStyleBackColor = false;
+            this.btnConfirmToAddDO.Click += new System.EventHandler(this.btnConfirmToAddDO_Click);
             // 
             // btnBackToPOList
             // 
@@ -339,14 +340,14 @@
             this.dgvDOList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvDOList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDOList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDOList.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDOList.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvDOList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDOList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvDOList.Location = new System.Drawing.Point(3, 1);
@@ -437,14 +438,14 @@
             this.dgvPOList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvPOList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPOList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvPOList.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPOList.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvPOList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvPOList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvPOList.Location = new System.Drawing.Point(3, 1);
@@ -460,44 +461,47 @@
             this.dgvPOList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPOList_CellDoubleClick);
             this.dgvPOList.SelectionChanged += new System.EventHandler(this.dgvPOList_SelectionChanged);
             // 
-            // dgvPOItemList
+            // dgvItemList
             // 
-            this.dgvPOItemList.AllowUserToAddRows = false;
-            this.dgvPOItemList.AllowUserToDeleteRows = false;
-            this.dgvPOItemList.AllowUserToOrderColumns = true;
-            this.dgvPOItemList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.dgvPOItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.dgvPOItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvPOItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvPOItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPOItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvPOItemList.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvPOItemList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvPOItemList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.dgvPOItemList.Location = new System.Drawing.Point(537, 1);
-            this.dgvPOItemList.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.dgvPOItemList.Name = "dgvPOItemList";
-            this.dgvPOItemList.RowHeadersVisible = false;
-            this.dgvPOItemList.RowTemplate.Height = 50;
-            this.dgvPOItemList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPOItemList.Size = new System.Drawing.Size(780, 463);
-            this.dgvPOItemList.TabIndex = 155;
-            this.dgvPOItemList.DataSourceChanged += new System.EventHandler(this.dgvPOItemList_DataSourceChanged);
+            this.dgvItemList.AllowUserToAddRows = false;
+            this.dgvItemList.AllowUserToDeleteRows = false;
+            this.dgvItemList.AllowUserToOrderColumns = true;
+            this.dgvItemList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.dgvItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.dgvItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dgvItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            this.dgvItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvItemList.Cursor = System.Windows.Forms.Cursors.Hand;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItemList.DefaultCellStyle = dataGridViewCellStyle7;
+            this.dgvItemList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvItemList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.dgvItemList.Location = new System.Drawing.Point(537, 1);
+            this.dgvItemList.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.dgvItemList.Name = "dgvItemList";
+            this.dgvItemList.RowHeadersVisible = false;
+            this.dgvItemList.RowTemplate.Height = 50;
+            this.dgvItemList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvItemList.Size = new System.Drawing.Size(780, 463);
+            this.dgvItemList.TabIndex = 155;
+            this.dgvItemList.DataSourceChanged += new System.EventHandler(this.dgvPOItemList_DataSourceChanged);
+            this.dgvItemList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItemList_CellEndEdit);
+            this.dgvItemList.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvItemList_EditingControlShowing);
+            this.dgvItemList.SelectionChanged += new System.EventHandler(this.dgvItemList_SelectionChanged);
             // 
             // tableLayoutPanel4
             // 
@@ -517,6 +521,63 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(1320, 44);
             this.tableLayoutPanel4.TabIndex = 167;
+            // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.ColumnCount = 3;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel8.Controls.Add(this.cbEditInPcsUnit, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.cbEditInBagUnit, 1, 0);
+            this.tableLayoutPanel8.Controls.Add(this.lblSubList, 0, 0);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(537, 3);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 1;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(780, 38);
+            this.tableLayoutPanel8.TabIndex = 172;
+            // 
+            // cbEditInPcsUnit
+            // 
+            this.cbEditInPcsUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbEditInPcsUnit.AutoSize = true;
+            this.cbEditInPcsUnit.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbEditInPcsUnit.Location = new System.Drawing.Point(437, 12);
+            this.cbEditInPcsUnit.Name = "cbEditInPcsUnit";
+            this.cbEditInPcsUnit.Size = new System.Drawing.Size(140, 23);
+            this.cbEditInPcsUnit.TabIndex = 159;
+            this.cbEditInPcsUnit.Text = "EDIT IN PCS UNIT";
+            this.cbEditInPcsUnit.UseVisualStyleBackColor = true;
+            this.cbEditInPcsUnit.Visible = false;
+            this.cbEditInPcsUnit.CheckedChanged += new System.EventHandler(this.cbEditInPcsUnit_CheckedChanged);
+            // 
+            // cbEditInBagUnit
+            // 
+            this.cbEditInBagUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbEditInBagUnit.AutoSize = true;
+            this.cbEditInBagUnit.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbEditInBagUnit.Location = new System.Drawing.Point(634, 12);
+            this.cbEditInBagUnit.Name = "cbEditInBagUnit";
+            this.cbEditInBagUnit.Size = new System.Drawing.Size(143, 23);
+            this.cbEditInBagUnit.TabIndex = 158;
+            this.cbEditInBagUnit.Text = "EDIT IN BAG UNIT";
+            this.cbEditInBagUnit.UseVisualStyleBackColor = true;
+            this.cbEditInBagUnit.Visible = false;
+            this.cbEditInBagUnit.CheckedChanged += new System.EventHandler(this.cbEditInBagUnit_CheckedChanged);
+            // 
+            // lblSubList
+            // 
+            this.lblSubList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblSubList.AutoSize = true;
+            this.lblSubList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSubList.Location = new System.Drawing.Point(2, 14);
+            this.lblSubList.Margin = new System.Windows.Forms.Padding(2, 0, 2, 5);
+            this.lblSubList.Name = "lblSubList";
+            this.lblSubList.Size = new System.Drawing.Size(92, 19);
+            this.lblSubList.TabIndex = 157;
+            this.lblSubList.Text = "PO ITEM LIST";
             // 
             // tableLayoutPanel1
             // 
@@ -580,63 +641,6 @@
             this.lblMainList.TabIndex = 166;
             this.lblMainList.Text = "PO LIST";
             // 
-            // lblSubList
-            // 
-            this.lblSubList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblSubList.AutoSize = true;
-            this.lblSubList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSubList.Location = new System.Drawing.Point(2, 14);
-            this.lblSubList.Margin = new System.Windows.Forms.Padding(2, 0, 2, 5);
-            this.lblSubList.Name = "lblSubList";
-            this.lblSubList.Size = new System.Drawing.Size(92, 19);
-            this.lblSubList.TabIndex = 157;
-            this.lblSubList.Text = "PO ITEM LIST";
-            // 
-            // tableLayoutPanel8
-            // 
-            this.tableLayoutPanel8.ColumnCount = 3;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel8.Controls.Add(this.cbEditInPcsUnit, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.cbEditInBagUnit, 1, 0);
-            this.tableLayoutPanel8.Controls.Add(this.lblSubList, 0, 0);
-            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(537, 3);
-            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 1;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(780, 38);
-            this.tableLayoutPanel8.TabIndex = 172;
-            // 
-            // cbEditInBagUnit
-            // 
-            this.cbEditInBagUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbEditInBagUnit.AutoSize = true;
-            this.cbEditInBagUnit.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbEditInBagUnit.Location = new System.Drawing.Point(634, 12);
-            this.cbEditInBagUnit.Name = "cbEditInBagUnit";
-            this.cbEditInBagUnit.Size = new System.Drawing.Size(143, 23);
-            this.cbEditInBagUnit.TabIndex = 158;
-            this.cbEditInBagUnit.Text = "EDIT IN BAG UNIT";
-            this.cbEditInBagUnit.UseVisualStyleBackColor = true;
-            this.cbEditInBagUnit.Visible = false;
-            this.cbEditInBagUnit.CheckedChanged += new System.EventHandler(this.cbEditInBagUnit_CheckedChanged);
-            // 
-            // cbEditInPcsUnit
-            // 
-            this.cbEditInPcsUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbEditInPcsUnit.AutoSize = true;
-            this.cbEditInPcsUnit.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbEditInPcsUnit.Location = new System.Drawing.Point(437, 12);
-            this.cbEditInPcsUnit.Name = "cbEditInPcsUnit";
-            this.cbEditInPcsUnit.Size = new System.Drawing.Size(140, 23);
-            this.cbEditInPcsUnit.TabIndex = 159;
-            this.cbEditInPcsUnit.Text = "EDIT IN PCS UNIT";
-            this.cbEditInPcsUnit.UseVisualStyleBackColor = true;
-            this.cbEditInPcsUnit.Visible = false;
-            this.cbEditInPcsUnit.CheckedChanged += new System.EventHandler(this.cbEditInPcsUnit_CheckedChanged);
-            // 
             // frmSPPPOList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -660,12 +664,12 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPOList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPOItemList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItemList)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -679,7 +683,7 @@
         private System.Windows.Forms.Button btnExcel;
         private System.Windows.Forms.TableLayoutPanel tlpList;
         private System.Windows.Forms.DataGridView dgvPOList;
-        private System.Windows.Forms.DataGridView dgvPOItemList;
+        private System.Windows.Forms.DataGridView dgvItemList;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Button btnAddNewPO;
         private System.Windows.Forms.Label lblMainList;
