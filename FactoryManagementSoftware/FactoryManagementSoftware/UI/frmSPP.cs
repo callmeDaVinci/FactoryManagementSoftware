@@ -84,5 +84,16 @@ namespace FactoryManagementSoftware.UI
 
             frm.ShowDialog();
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            frmSPPDOList frm = new frmSPPDOList
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+
+            frm.ShowDialog();
+        }
     }
 }

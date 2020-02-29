@@ -587,6 +587,12 @@
     <Compile Include="UI\frmSPPDataSetting.Designer.cs">
       <DependentUpon>frmSPPDataSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmSPPDOList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSPPDOList.Designer.cs">
+      <DependentUpon>frmSPPDOList.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmSPPInventory.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -887,6 +893,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSPPDataSetting.resx">
       <DependentUpon>frmSPPDataSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSPPDOList.resx">
+      <DependentUpon>frmSPPDOList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSPPInventory.resx">
       <DependentUpon>frmSPPInventory.cs</DependentUpon>

@@ -9,12 +9,8 @@ using System.Drawing;
 using Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 using System.IO;
-using System.ComponentModel;
-using System.Threading;
-using System.Globalization;
 using System.Linq;
 using Font = System.Drawing.Font;
-using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
 
@@ -34,6 +30,27 @@ namespace FactoryManagementSoftware.UI
             btnFilter.Text = text_HideFilter;
             dt_POList = dalSPP.POSelect();
             LoadCustomerList();
+
+        }
+
+        public frmSPPPOList(DataTable dt)
+        {
+            InitializeComponent();
+
+            tool.DoubleBuffered(dgvPOList, true);
+            tool.DoubleBuffered(dgvDOList, true);
+            tool.DoubleBuffered(dgvItemList, true);
+
+
+            btnFilter.Text = text_HideFilter;
+            dt_POList = dalSPP.POSelect();
+            LoadCustomerList();
+
+            EditMode = true;
+
+            AddingDOStep2();
+
+            POToDO(dt);
 
         }
 
@@ -61,10 +78,12 @@ namespace FactoryManagementSoftware.UI
         readonly string text_POList = "PO LIST";
         readonly string text_POItemList = "PO ITEM LIST";
         readonly string text_CombineDO = "COMBINE DO";
+        readonly string text_DOUpdate = "DO UPDATE";
         readonly string text_Cancel = "CANCEL";
         readonly string text_CombineConfirm = "COMBINE CONFIRM";
 
         readonly string text_DOList = "DO TO ADD";
+        readonly string text_EditDOList = "DO TO EDIT";
         readonly string text_DOItemList = "DO ITEM LIST";
 
         readonly string text_AvailableStock = "AVAILABLE";
@@ -77,7 +96,7 @@ namespace FactoryManagementSoftware.UI
 
         readonly string header_POTblCode = "PO TBL CODE";
         readonly string header_POCode = "PO CODE";
-        readonly string header_PONo = "PO NO";
+        readonly string header_PONoString = "PO NO";
         readonly string header_PODate = "PO DATE";
         readonly string header_CustomerCode = "CUSTOMER CODE";
         readonly string header_Customer = "CUSTOMER";
@@ -95,6 +114,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_Note = "NOTE";
         readonly string header_StockCheck = "STOCK CHECK";
         readonly string header_DONo = "DO #";
+        readonly string header_DOTblCode = "DO TBL CODE";
         readonly string header_DONoString = "DO NO";
         readonly string header_CombinedCode = "COMBINED CODE";
         readonly string header_Stock = "STOCK QTY";
@@ -108,6 +128,7 @@ namespace FactoryManagementSoftware.UI
 
         private DataTable dt_POList;
         private DataTable dt_DOItemList_1;
+        private DataTable dt_DOEditList;
 
         private bool addingDOMode = false;
         private bool ableToNextStep = false;
@@ -116,6 +137,7 @@ namespace FactoryManagementSoftware.UI
         private bool addingDOStep2 = false;
         private bool combineDO = false;
         private bool combiningDO = false;
+        private bool EditMode = false;
 
         private int selectedDO = 0;
         private int oldData = 0;
@@ -127,7 +149,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(header_PONo, typeof(string));
+            dt.Columns.Add(header_PONoString, typeof(string));
             dt.Columns.Add(header_PODate, typeof(DateTime));
             dt.Columns.Add(header_Size, typeof(string));
             dt.Columns.Add(header_Unit, typeof(string));
@@ -146,12 +168,17 @@ namespace FactoryManagementSoftware.UI
 
             
             dt.Columns.Add(header_PODate, typeof(DateTime));
+            
             dt.Columns.Add(header_POCode, typeof(int));
-            dt.Columns.Add(header_PONo, typeof(string));
-           
+            dt.Columns.Add(header_PONoString, typeof(string));
+
+            
+
             dt.Columns.Add(header_Customer, typeof(string));
             dt.Columns.Add(header_CustomerCode, typeof(int));
             dt.Columns.Add(header_Progress, typeof(string));
+
+            dt.Columns.Add(header_DONoString, typeof(string));
 
             return dt;
         }
@@ -165,7 +192,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_DONoString, typeof(string));
             dt.Columns.Add(header_PODate, typeof(DateTime));
             dt.Columns.Add(header_POCode, typeof(int));
-            dt.Columns.Add(header_PONo, typeof(string));
+            dt.Columns.Add(header_PONoString, typeof(string));
             
             dt.Columns.Add(header_Customer, typeof(string));
             dt.Columns.Add(header_CustomerCode, typeof(int));
@@ -195,6 +222,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
+            dt.Columns.Add(header_DOTblCode, typeof(int));
             dt.Columns.Add(header_POTblCode, typeof(int));
             dt.Columns.Add(header_DataMode, typeof(string));
             dt.Columns.Add(header_Type, typeof(string));
@@ -226,7 +254,7 @@ namespace FactoryManagementSoftware.UI
             if (dgv == dgvPOList)
             {
                 dgv.Columns[header_POCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgv.Columns[header_PONo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[header_PONoString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_PODate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_Customer].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_Progress].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -236,7 +264,7 @@ namespace FactoryManagementSoftware.UI
             else if (dgv == dgvDOList)
             {
                 dgv.Columns[header_POCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgv.Columns[header_PONo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[header_PONoString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_PODate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_Customer].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_DONo].Visible = false;
@@ -258,7 +286,7 @@ namespace FactoryManagementSoftware.UI
                     dgv.Columns[header_OrderQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     dgv.Columns[header_Note].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 }
-                else if(addingDOStep2)
+                else if(addingDOStep2 || EditMode)
                 {
                     dgv.Columns[header_DONo].Visible = false;
                     dgv.Columns[header_Stock].Visible = false;
@@ -270,6 +298,7 @@ namespace FactoryManagementSoftware.UI
                     dgv.Columns[header_Balance].Visible = false;
                     dgv.Columns[header_DataMode].Visible = false;
                     dgv.Columns[header_POTblCode].Visible = false;
+                    dgv.Columns[header_DOTblCode].Visible = false;
 
                     dgv.Columns[header_DONoString].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
                     //dgv.Columns[header_StockString].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
@@ -331,8 +360,13 @@ namespace FactoryManagementSoftware.UI
             lblMainList.Text = text_DOList;
             lblSubList.Text = text_DOItemList;
 
+            if(EditMode)
+            {
+                lblMainList.Text = text_EditDOList;
+            }
+
             tlpList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 0);
-            tlpList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 40);
+            tlpList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 45);
         }
 
         private void ShowPOList()
@@ -342,7 +376,7 @@ namespace FactoryManagementSoftware.UI
 
            
             tlpList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0);
-            tlpList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 40);
+            tlpList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 45);
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
@@ -353,8 +387,18 @@ namespace FactoryManagementSoftware.UI
         private void frmSPPPOList_Load(object sender, EventArgs e)
         {
             ShowOrHideFilter();
-            ShowPOList();
-            LoadPOList();
+
+            if (!EditMode)
+            {
+                ShowPOList();
+                LoadPOList();
+            }
+            else
+            {
+                dgvDOList.ClearSelection();
+                dgvItemList.ClearSelection();
+            }
+          
         }
 
         private void LoadCustomerList()
@@ -398,12 +442,45 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
+        private string GetDONo(DataTable dt_DO, string poNo)
+        {
+            string DONo = "";
+
+            string preDoNo = null;
+            foreach(DataRow row in dt_DO.Rows)
+            {
+                string currentDO = row[dalSPP.DONo].ToString();
+                string PONo = row[dalSPP.PONo].ToString();
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if (poNo == PONo && !isRemoved)
+                {
+                    if(preDoNo == null || preDoNo != currentDO)
+                    {
+
+                        if(preDoNo != null)
+                        {
+                            DONo += "/";
+                        }
+
+                        DONo += Convert.ToInt16(currentDO).ToString("D6");
+                        preDoNo = currentDO;
+                    }
+                   
+                }
+            }
+
+            return DONo;
+        }
+
         private void LoadPOList()
         {
             btnEdit.Visible = false;
             dgvItemList.DataSource = null;
 
             DataTable dt = NewPOTable();
+            DataTable dt_DOList = dalSPP.DOWithInfoSelect();
+
             DataRow dt_row;
 
             int prePOCode = -1;
@@ -465,11 +542,12 @@ namespace FactoryManagementSoftware.UI
 
                         
                         dt_row[header_POCode] = poCode;
-                        dt_row[header_PONo] = row[dalSPP.PONo];
+                        dt_row[header_PONoString] = row[dalSPP.PONo];
                         dt_row[header_PODate] = Convert.ToDateTime(row[dalSPP.PODate]).Date;
                         dt_row[header_Customer] = row[dalSPP.ShortName];
                         dt_row[header_CustomerCode] = row[dalSPP.CustomerTableCode];
                         dt_row[header_Progress] = progress + "%";
+                        dt_row[header_DONoString] = GetDONo(dt_DOList, row[dalSPP.PONo].ToString()) ;
                         dt.Rows.Add(dt_row);
                     }
                    
@@ -727,7 +805,7 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private DataTable GetDOItem(DataTable dt_POSource , string poCode, int DONo, string customerName)
+        private DataTable GetDOItem(DataTable dt_DBSource , string poCode, int DONo, string customerName)
         {
             
 
@@ -735,7 +813,7 @@ namespace FactoryManagementSoftware.UI
             DataRow dt_Row;
 
             string preType = null;
-            foreach (DataRow row in dt_POSource.Rows)
+            foreach (DataRow row in dt_DBSource.Rows)
             {
                 if (poCode == row[dalSPP.POCode].ToString())
                 {
@@ -755,6 +833,11 @@ namespace FactoryManagementSoftware.UI
                     int stockQty = int.TryParse(row[dalItem.ItemQty].ToString(), out stockQty) ? stockQty : 0;
                     int deliveryQty = int.TryParse(row[dalSPP.POQty].ToString(), out deliveryQty) ? deliveryQty : 0;
 
+                    if(EditMode)
+                    {
+                        deliveryQty = int.TryParse(row[dalSPP.DOToDeliveryQty].ToString(), out deliveryQty) ? deliveryQty : 0;
+                    }
+
                     int qtyPerBag = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
 
                     int deliveryBag = deliveryQty / qtyPerBag;
@@ -770,9 +853,17 @@ namespace FactoryManagementSoftware.UI
                     dt_Row[header_POCode] = row[dalSPP.POCode];
                     dt_Row[header_DONo] = DONo;
                     dt_Row[header_DONoString] = DONo.ToString("D6") + "-NEW";
+
+                    if (EditMode)
+                    {
+                        dt_Row[header_DOTblCode] = row[dalSPP.TableCode];
+                        dt_Row[header_DataMode] = text_ToEdit;
+                        dt_Row[header_DONoString] = DONo.ToString("D6") + "-EDIT";
+                    }
+
                     dt_Row[header_Customer] = customerName;
-                    dt_Row[header_DeliveryPCS] = row[dalSPP.POQty];
-                    dt_Row[header_DeliveryQTY] = row[dalSPP.POQty] + " (" + deliveryBag + "bags)";
+                    dt_Row[header_DeliveryPCS] = deliveryQty;
+                    dt_Row[header_DeliveryQTY] = deliveryQty + " (" + deliveryBag + "bags)";
                     dt_Row[header_DeliveryBAG] = deliveryBag;
                     dt_Row[header_StdPacking] = qtyPerBag;
                     dt_DOItemList.Rows.Add(dt_Row);
@@ -1159,7 +1250,7 @@ namespace FactoryManagementSoftware.UI
                         customerShortName = db[dalSPP.ShortName].ToString();
                         dt_Row = dt_Excel.NewRow();
 
-                        dt_Row[header_PONo] = db[dalSPP.PONo];
+                        dt_Row[header_PONoString] = db[dalSPP.PONo];
                         dt_Row[header_PODate] = Convert.ToDateTime(db[dalSPP.PODate]).Date;
                         dt_Row[header_Size] = db[dalSPP.SizeNumerator];
                         dt_Row[header_Unit] = db[dalSPP.SizeUnit] ;
@@ -1276,7 +1367,7 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = (DataTable)dgvItemList.DataSource;
 
-            int PONOIndex = dgv.Columns[header_PONo].Index;
+            int PONOIndex = dgv.Columns[header_PONoString].Index;
             int PODateIndex = dgv.Columns[header_PODate].Index;
             int SizeIndex = dgv.Columns[header_Size].Index;
             int UnitIndex = dgv.Columns[header_Unit].Index;
@@ -1366,7 +1457,7 @@ namespace FactoryManagementSoftware.UI
             return DoNo;
         }
 
-        //private 
+
         private void POToDO()
         {
             DataTable dt = (DataTable)dgvPOList.DataSource;
@@ -1384,14 +1475,14 @@ namespace FactoryManagementSoftware.UI
                 {
                     selected = bool.TryParse(row[header_Selected].ToString(), out selected) ? selected : false;
                 }
-                
-                if(selected)
+
+                if (selected)
                 {
                     dt_Row = dt_DO.NewRow();
 
                     dt_Row[header_DONo] = doNo;
                     dt_Row[header_DONoString] = doNo.ToString("D6") + "-NEW";
-                    dt_Row[header_PONo] = row[header_PONo];
+                    dt_Row[header_PONoString] = row[header_PONoString];
                     dt_Row[header_POCode] = row[header_POCode];
                     dt_Row[header_PODate] = row[header_PODate];
                     dt_Row[header_Customer] = row[header_Customer];
@@ -1403,7 +1494,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            if(IfCustomerDuplicated(dt_DO.Copy()))
+            if (IfCustomerDuplicated(dt_DO.Copy()))
             {
                 btnAddNewPO.Visible = true;
             }
@@ -1425,10 +1516,55 @@ namespace FactoryManagementSoftware.UI
             dgvDOList.ClearSelection();
         }
 
+        private void POToDO(DataTable dt)
+        {
+            DataTable dt_DO = NewDOTable();
+            DataRow dt_Row;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                dt_Row = dt_DO.NewRow();
+
+                dt_Row[header_DONo] = row[header_DONo];
+                dt_Row[header_DONoString] = row[header_DONoString];
+                dt_Row[header_PONoString] = row[header_PONoString];
+                dt_Row[header_POCode] = row[header_POCode];
+                dt_Row[header_PODate] = row[header_PODate];
+                dt_Row[header_Customer] = row[header_Customer];
+                dt_Row[header_CustomerCode] = row[header_CustomerCode];
+                dt_Row[header_StockCheck] = text_AvailableStock;
+                dt_Row[header_CombinedCode] = DBNull.Value;
+                dt_DO.Rows.Add(dt_Row);
+            }
+
+            btnAddNewPO.Visible = false;
+
+            CombineDOItemList(dt_DO);
+            DOItemStockChecking(dt_DO);
+
+            dgvItemList.DataSource = dt_DOItemList_1;
+            DgvUIEdit(dgvItemList);
+
+            dgvDOList.DataSource = dt_DO;
+            DgvUIEdit(dgvDOList);
+
+            dgvDOList.ClearSelection();
+            dgvItemList.ClearSelection();
+        }
+
         private void CombineDOItemList(DataTable dt_DOMainList)
         {
             dt_DOItemList_1 = NewDOItemTable();
-            DataTable dt_POSource = dalSPP.POSelectWithSizeAndType();
+
+            DataTable dt_DBSource;
+            if (EditMode)
+            {
+                dt_DBSource = dalSPP.DOWithInfoSelect();
+            }
+            else
+            {
+                dt_DBSource = dalSPP.POSelectWithSizeAndType();
+            }
 
             foreach (DataRow row in dt_DOMainList.Rows)
             {
@@ -1445,7 +1581,8 @@ namespace FactoryManagementSoftware.UI
                     string customerName = row[header_Customer].ToString();
 
                     //get all "to add" data
-                    dt_DOItemList_1.Merge(GetDOItem(dt_POSource, poCode, DONo,customerName));
+                    
+                    dt_DOItemList_1.Merge(GetDOItem(dt_DBSource, poCode, DONo,customerName));
                 }
             }
 
@@ -1467,8 +1604,9 @@ namespace FactoryManagementSoftware.UI
 
                 string type = row[header_Type].ToString();
                 string size = row[header_Size].ToString();
+                string doNo = row[header_DONo].ToString();
 
-                if (preType == null || preType != type)
+                if (preType == null || (preType != type || preSize != size) )
                 {
                     preType = type;
                     preSize = size;
@@ -1476,8 +1614,11 @@ namespace FactoryManagementSoftware.UI
                     foreach(DataRow row2 in DODataList.Rows)
                     {
                         bool isDelivered = bool.TryParse(row2[dalSPP.IsDelivered].ToString(), out isDelivered) ? isDelivered : false;
+                        bool isRemoved = bool.TryParse(row2[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
 
-                        if (!isDelivered)
+                        string doNo2 = row2[dalSPP.DONo].ToString();
+
+                        if (!isDelivered && doNo2 != doNo && !isRemoved)
                         {
                             string DBType = row2[dalSPP.TypeName].ToString();
                             string DBSize = row2[dalSPP.SizeNumerator].ToString();
@@ -1493,7 +1634,9 @@ namespace FactoryManagementSoftware.UI
                                 dt_Row = dtDOItemList_2.NewRow();
 
                                 dt_Row[header_POTblCode] = row2["tbl_code1"];
+                                
                                 dt_Row[header_DataMode] = text_DB;
+                                dt_Row[header_DOTblCode] = row2[dalSPP.TableCode];
                                 dt_Row[header_Size] = size;
                                 dt_Row[header_Unit] = row[header_Unit];
                                 dt_Row[header_Type] = type;
@@ -1501,7 +1644,7 @@ namespace FactoryManagementSoftware.UI
                                 dt_Row[header_StockString] = row[header_StockString];
                                 dt_Row[header_DONo] = row2[dalSPP.DONo];
                                 dt_Row[header_POCode] = row2[dalSPP.POCode];
-                                dt_Row[header_DONoString] = row2[dalSPP.DONo];
+                                dt_Row[header_DONoString] = Convert.ToInt16(row2[dalSPP.DONo]).ToString("D6");
                                 dt_Row[header_Customer] = row2[dalSPP.ShortName];
                                 dt_Row[header_DeliveryPCS] = row2[dalSPP.DOToDeliveryQty];
                                 dt_Row[header_DeliveryQTY] = row2[dalSPP.DOToDeliveryQty] + " (" + deliveryBag + "bags)";
@@ -1590,6 +1733,52 @@ namespace FactoryManagementSoftware.UI
             dt_DOItemList_1 = dt.Copy();
         }
 
+        private void DOItemStockChecking(string DONo, string POCode)
+        {
+            DataTable dt_DO = (DataTable)dgvDOList.DataSource;
+
+            DataTable dt_DOItemList_2 = (DataTable)dgvItemList.DataSource;
+
+            foreach (DataRow rowMain in dt_DO.Rows)
+            {
+                string poCodeMain = rowMain[header_POCode].ToString();
+                string dONoMain = rowMain[header_DONo].ToString();
+
+                if (poCodeMain == POCode && dONoMain == DONo)
+                {
+                    rowMain[header_StockCheck] = text_AvailableStock;
+                }
+            }
+
+            foreach (DataRow rowSub in dt_DOItemList_2.Rows)
+            {
+                string poCodeSub = rowSub[header_POCode].ToString();
+                string dONoSub = rowSub[header_DONo].ToString();
+
+                if (poCodeSub == POCode && dONoSub == DONo)
+                {
+                    int stock = int.TryParse(rowSub[header_Balance].ToString(), out stock) ? stock : int.TryParse(rowSub[header_Stock].ToString(), out stock) ? stock : 0;
+
+                    if (stock < 0)
+                    {
+                        foreach (DataRow rowMain in dt_DO.Rows)
+                        {
+                            string poCodeMain = rowMain[header_POCode].ToString();
+                            string dONoMain = rowMain[header_DONo].ToString();
+
+                            if (poCodeMain == POCode && dONoMain == DONo)
+                            {
+                                rowMain[header_StockCheck] = text_InsufficientStock;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+        }
+
         private DataTable RefreshDOList()
         {
             DataTable dt = (DataTable)dgvDOList.DataSource;
@@ -1635,7 +1824,7 @@ namespace FactoryManagementSoftware.UI
                     string combinedCode = row[header_CombinedCode].ToString();
                     dt_Row[header_DONo] = DoNo;
                     dt_Row[header_DONoString] = DoNo.ToString("D6") + "-NEW";
-                    dt_Row[header_PONo] = row[header_PONo];
+                    dt_Row[header_PONoString] = row[header_PONoString];
                     dt_Row[header_POCode] = row[header_POCode];
                     dt_Row[header_PODate] = row[header_PODate];
                     dt_Row[header_Customer] = row[header_Customer];
@@ -1654,7 +1843,7 @@ namespace FactoryManagementSoftware.UI
 
                                 dt_Row[header_DONo] = DoNo;
                                 dt_Row[header_DONoString] = "";
-                                dt_Row[header_PONo] = row3[header_PONo];
+                                dt_Row[header_PONoString] = row3[header_PONoString];
                                 dt_Row[header_POCode] = row3[header_POCode];
                                 dt_Row[header_PODate] = row3[header_PODate];
                                 dt_Row[header_Customer] = row3[header_Customer];
@@ -1737,13 +1926,22 @@ namespace FactoryManagementSoftware.UI
         {
             if (addingDOStep2)
             {
-                DialogResult dialogResult = MessageBox.Show("All your edited data will be lost.\nAre you sure you want to back to the PO List?", "Message",
-                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (dialogResult == DialogResult.Yes)
+                if(EditMode)
                 {
-                    AddingDOStep1();
+                    Close();
                 }
+                else
+                {
+                    DialogResult dialogResult = MessageBox.Show("All your edited data will be lost.\nAre you sure you want to back to the PO List?", "Message",
+                                                          MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        AddingDOStep1();
+                    }
+                }
+               
             }
+            
                 
         }
 
@@ -1773,15 +1971,18 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = (DataTable)dgvPOList.DataSource;
 
-            if (dt.Columns.Contains(header_Selected))
+            if (dt != null && dt.Columns.Contains(header_Selected))
             {
                 dt.Columns.Remove(header_Selected);
             }
 
             btnAddDO.Enabled = true;
 
+            LoadPOList();
+
             dgvPOList.ClearSelection();
             ShowPOList();
+
         }
 
         private DataTable AddSelectedColumn(DataTable dt)
@@ -1848,20 +2049,21 @@ namespace FactoryManagementSoftware.UI
 
         private void AddingDOStep2()
         {
-
-            
             dgvItemList.DataSource = null;
             addingDOStep1 = false;
             addingDOStep2 = true;
             POMode = false;
 
             btnExcel.Visible = false;
+            btnFilter.Visible = false;
 
             cbEditInPcsUnit.Visible = true;
             cbEditInBagUnit.Visible = true;
 
-            cbEditInPcsUnit.Checked = false;
-            cbEditInBagUnit.Checked = false;
+            //cbEditInPcsUnit.Checked = false;
+            //cbEditInBagUnit.Checked = false;
+
+            
 
             lblMainList.Text = text_DOList;
             lblSubList.Text = text_DOItemList;
@@ -1870,13 +2072,26 @@ namespace FactoryManagementSoftware.UI
             btnCancelDOMode.Visible = true;
             btnConfirmToAddDO.Visible = true;
             btnBackToPOList.Visible = true;
+
+            if(EditMode)
+            {
+                //change back to po list: cancel text, white back color, black fore color, align to right
+                btnBackToPOList.Text = text_Cancel;
+                btnBackToPOList.BackColor = Color.White;
+                btnBackToPOList.ForeColor = Color.Black;
+                btnBackToPOList.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+                btnBackToPOList.FlatStyle = FlatStyle.Flat;
+
+                btnBack.Visible = false;
+
+                btnConfirmToAddDO.Text = text_DOUpdate;
+
+                lblMainList.Text = text_EditDOList;
+            }
+
             ShowDOList();
 
-            
-
             dgvPOList.ClearSelection();
-
-            
         }
 
         private void DeliveryQtyEditMode()
@@ -1946,7 +2161,7 @@ namespace FactoryManagementSoftware.UI
 
                 if(selected)
                 {
-                    combinedCode += row[header_PONo].ToString();
+                    combinedCode += row[header_PONoString].ToString();
                 }
             }
 
@@ -2066,99 +2281,12 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvDOList_DataSourceChanged(object sender, EventArgs e)
         {
-            DataGridView dgv = dgvDOList;
-            dgv.SuspendLayout();
-
-            for (int i = 0; i < dgv.Rows.Count; i++)
-            {
-                for (int j = 0; j < dgv.Columns.Count; j++)
-                {
-                    if (dgv.Columns[j].Name == header_StockCheck)
-                    {
-                        if (dgv.Rows[i].Cells[j].Value.ToString() == text_AvailableStock)
-                        {
-                            dgv.Rows[i].Cells[j].Style.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            dgv.Rows[i].Cells[j].Style.ForeColor = Color.Red;
-
-                        }
-                    }
-                }
-            }
-
-            dgv.ResumeLayout();
-
+           
         }
 
-        private void dgvPOItemList_DataSourceChanged(object sender, EventArgs e)
+        private void dgvItemList_DataSourceChanged(object sender, EventArgs e)
         {
-            if(addingDOStep2)
-            {
-                bool twoEmptyInaRow = false;
-
-                DataGridView dgv = dgvItemList;
-                dgv.SuspendLayout();
-
-                for (int i = 0; i < dgv.Rows.Count; i++)
-                {
-                    for (int j = 0; j < dgv.Columns.Count; j++)
-                    {
-                        if (dgv.Columns[j].Name == header_Balance)
-                        {
-                            if(dgv.Rows[i].Cells[j].Value == DBNull.Value)
-                            {
-                                if(twoEmptyInaRow)
-                                {
-                                    dgv.Rows[i].Height = 3;
-                                    dgv.Rows[i].DefaultCellStyle.BackColor = Color.Black;
-                                }
-                                else
-                                {
-                                    dgv.Rows[i].Height = 25;
-                                    twoEmptyInaRow = true;
-                                }
-
-                                
-                            }
-                            else
-                            {
-                                twoEmptyInaRow = false;
-                                dgv.Rows[i].Height = 50;
-
-                                int bal = int.TryParse(dgv.Rows[i].Cells[j].Value.ToString(), out bal) ? bal : 0;
-
-                                if(bal < 0)
-                                {
-                                    dgv.Rows[i].Cells[header_BalanceString].Style.ForeColor = Color.Red;
-                                }
-                                else
-                                {
-                                    dgv.Rows[i].Cells[header_BalanceString].Style.ForeColor = Color.Black;
-                                }
-                            }
-                            
-                        }
-                        else if (dgv.Columns[j].Name == header_DataMode)
-                        {
-                            if (dgv.Rows[i].Cells[j].Value != DBNull.Value)
-                            {
-                                if (dgv.Rows[i].Cells[j].Value.ToString() != text_DB)
-                                {
-                                    dgv.Rows[i].Cells[header_DONoString].Style.BackColor = Color.FromArgb(253, 203, 110);
-                                }
-                            }
-                            else
-                            {
-                                //dgv.Rows[i].Cells[header_DONoString].Style.BackColor = Color.White;
-                            }
-                        }
-                    }
-                }
-
-                dgv.ResumeLayout();
-            }
+            
         }
 
         private void cbEditInPcsUnit_CheckedChanged(object sender, EventArgs e)
@@ -2314,6 +2442,11 @@ namespace FactoryManagementSoftware.UI
                         }
 
                         UpdateBalance(currentRow);
+
+                        string DONo = dgv.Rows[currentRow].Cells[header_DONo].Value.ToString();
+                        string POCode = dgv.Rows[currentRow].Cells[header_POCode].Value.ToString();
+
+                        DOItemStockChecking(DONo, POCode);
                     }
 
                 }
@@ -2390,8 +2523,9 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void InsertDODataToDB()
+        private bool InsertDODataToDB()
         {
+            bool success = true;
             DataTable dt = (DataTable)dgvItemList.DataSource;
 
             cbEditInBagUnit.Checked = false;
@@ -2407,6 +2541,7 @@ namespace FactoryManagementSoftware.UI
                 if(DONo != -1)
                 {
                     uSpp.DO_no = DONo;
+                    
                     uSpp.PO_tbl_code = Convert.ToInt32(row[header_POTblCode]);
                     uSpp.DO_to_delivery_qty = Convert.ToInt32(row[header_DeliveryPCS]);
                     uSpp.DO_date = updatedDate;
@@ -2415,7 +2550,7 @@ namespace FactoryManagementSoftware.UI
 
                     string dataMode = row[header_DataMode].ToString();
 
-                    bool success = true;
+                   
 
                     if(dataMode == text_ToAdd)
                     {
@@ -2428,8 +2563,10 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (dataMode == text_ToUpdate)
                     {
-                        //success = dalSPP.InsertDO(uSpp);
+                        uSpp.Table_Code = Convert.ToInt32(row[header_DOTblCode]);
+                        success = dalSPP.DOUpdate(uSpp);
                     }
+                   
 
                     if (!success)
                     {
@@ -2437,6 +2574,8 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
             }
+
+            return success;
         }
 
         private void btnConfirmToAddDO_Click(object sender, EventArgs e)
@@ -2445,9 +2584,203 @@ namespace FactoryManagementSoftware.UI
                                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Yes)
             {
-                InsertDODataToDB();
+                if(InsertDODataToDB())
+                {
+                    string message = "";
+                    if(EditMode)
+                    {
+                        message = "DO updated!";
+                    }
+                    else
+                    {
+                        message = "DO added!";
+
+                    }
+                    MessageBox.Show(message);
+                    POListMode();
+                }
             }
             
+        }
+
+        private void dgvItemList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            //if (addingDOStep2 || EditMode)
+            //{
+            //    bool twoEmptyInaRow = false;
+
+            //    DataGridView dgv = dgvItemList;
+            //    dgv.SuspendLayout();
+
+            //    for (int i = 0; i < dgv.Rows.Count; i++)
+            //    {
+            //        for (int j = 0; j < dgv.Columns.Count; j++)
+            //        {
+            //            string colName = dgv.Columns[j].Name;
+
+            //            if (dgv.Columns[j].Name == header_Balance)
+            //            {
+            //                if (dgv.Rows[i].Cells[j].Value == DBNull.Value)
+            //                {
+            //                    if (twoEmptyInaRow)
+            //                    {
+            //                        dgv.Rows[i].Height = 3;
+            //                        dgv.Rows[i].DefaultCellStyle.BackColor = Color.Black;
+            //                        dgv.Rows[i].Cells[header_DONoString].Style.BackColor = Color.Black;
+            //                    }
+            //                    else
+            //                    {
+            //                        dgv.Rows[i].Height = 25;
+            //                        twoEmptyInaRow = true;
+            //                    }
+
+
+            //                }
+            //                else
+            //                {
+            //                    twoEmptyInaRow = false;
+            //                    dgv.Rows[i].Height = 50;
+
+            //                    int bal = int.TryParse(dgv.Rows[i].Cells[j].Value.ToString(), out bal) ? bal : 0;
+
+            //                    if (bal < 0)
+            //                    {
+            //                        dgv.Rows[i].Cells[header_BalanceString].Style.ForeColor = Color.Red;
+            //                    }
+            //                    else
+            //                    {
+            //                        dgv.Rows[i].Cells[header_BalanceString].Style.ForeColor = Color.Black;
+            //                    }
+            //                }
+
+            //            }
+
+            //            else if (dgv.Columns[j].Name == header_DataMode)
+            //            {
+            //                if (dgv.Rows[i].Cells[j].Value != DBNull.Value)
+            //                {
+            //                    string text = dgv.Rows[i].Cells[j].Value.ToString();
+            //                    if (dgv.Rows[i].Cells[j].Value.ToString() != text_DB)
+            //                    {
+            //                        dgv.Rows[i].Cells[header_DONoString].Style.BackColor = Color.FromArgb(253, 203, 110);
+            //                    }
+            //                    else
+            //                    {
+            //                        dgv.Rows[i].Cells[header_DONoString].Style.BackColor = Color.White;
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    dgv.Rows[i].Cells[header_DONoString].Style.BackColor = Color.White;
+            //                }
+
+            //            }
+            //        }
+            //    }
+
+            //    dgv.ResumeLayout();
+            //}
+        }
+
+        private void dgvItemList_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            if (addingDOStep2 || EditMode)
+            {
+                bool twoEmptyInaRow = false;
+
+                DataGridView dgv = dgvItemList;
+                dgv.SuspendLayout();
+
+                for (int i = 0; i < dgv.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dgv.Columns.Count; j++)
+                    {
+                        string colName = dgv.Columns[j].Name;
+
+                        if (dgv.Columns[j].Name == header_Balance)
+                        {
+                            if (dgv.Rows[i].Cells[j].Value == DBNull.Value)
+                            {
+                                if (twoEmptyInaRow)
+                                {
+                                    dgv.Rows[i].Height = 3;
+                                    dgv.Rows[i].DefaultCellStyle.BackColor = Color.Black;
+                                }
+                                else
+                                {
+                                    dgv.Rows[i].Height = 25;
+                                    twoEmptyInaRow = true;
+                                }
+
+
+                            }
+                            else
+                            {
+                                twoEmptyInaRow = false;
+                                dgv.Rows[i].Height = 50;
+
+                                int bal = int.TryParse(dgv.Rows[i].Cells[j].Value.ToString(), out bal) ? bal : 0;
+
+                                if (bal < 0)
+                                {
+                                    dgv.Rows[i].Cells[header_BalanceString].Style.ForeColor = Color.Red;
+                                }
+                                else
+                                {
+                                    dgv.Rows[i].Cells[header_BalanceString].Style.ForeColor = Color.Black;
+                                }
+                            }
+
+                        }
+                        else if (dgv.Columns[j].Name == header_DataMode)
+                        {
+                            if (dgv.Rows[i].Cells[j].Value != DBNull.Value)
+                            {
+                                string text = dgv.Rows[i].Cells[j].Value.ToString();
+                                if (dgv.Rows[i].Cells[j].Value.ToString() != text_DB)
+                                {
+                                    dgv.Rows[i].Cells[header_DONoString].Style.BackColor = Color.FromArgb(253, 203, 110);
+                                }
+                            }
+                            else
+                            {
+                                //dgv.Rows[i].Cells[header_DONoString].Style.BackColor = Color.White;
+                            }
+                        }
+                    }
+                }
+
+                dgv.ResumeLayout();
+            }
+        }
+
+        private void dgvDOList_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            DataGridView dgv = dgvDOList;
+            dgv.SuspendLayout();
+
+            for (int i = 0; i < dgv.Rows.Count; i++)
+            {
+                for (int j = 0; j < dgv.Columns.Count; j++)
+                {
+                    if (dgv.Columns[j].Name == header_StockCheck)
+                    {
+                        if (dgv.Rows[i].Cells[j].Value.ToString() == text_AvailableStock)
+                        {
+                            dgv.Rows[i].Cells[j].Style.ForeColor = Color.Green;
+                        }
+                        else
+                        {
+                            dgv.Rows[i].Cells[j].Style.ForeColor = Color.Red;
+
+                        }
+                    }
+                }
+            }
+
+            dgv.ResumeLayout();
+
+            dgv.ClearSelection();
         }
     }
 }
