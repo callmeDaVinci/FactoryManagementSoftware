@@ -278,14 +278,15 @@ namespace FactoryManagementSoftware.UI
         }
         private void frmSPPNewPO_Load(object sender, EventArgs e)
         {
-            loadLocationData(dt_CustomerList, cmbCustomer, dalData.FullName);
+            
             loadLocationData(dt_TypeList, cmbType, dalData.TypeName);
             loadLocationData(dt_SizeList, cmbSize, dalData.SizeNumerator);
 
             if (!poEditing)
             {
                 cmbCustomer.SelectedIndex = -1;
-                
+                loadLocationData(dt_CustomerList, cmbCustomer, dalData.FullName);
+
             }
             else
             {
@@ -614,14 +615,20 @@ namespace FactoryManagementSoftware.UI
                 uData.Address_State = txtState.Text.ToUpper();
                 uData.Address_Country = txtCountry.Text.ToUpper();
                 uData.Address_Postal_Code = txtPostalCode.Text.ToUpper();
-                
+
+                uData.DefaultShippingAddress = false;
+
+                if (cbUseDefaultAddress.Checked)
+                {
+                    uData.DefaultShippingAddress = true;
+                }
+
                 uData.IsRemoved = false;
                 uData.Updated_Date = DateTime.Now;
                 uData.Updated_By = MainDashboard.USER_ID;
 
                 if (poEditing)
                 {
-
                     uData.PO_code = Convert.ToInt32(EditingPOCode);
                     dalData.PODelete(uData);
                 }

@@ -497,7 +497,7 @@ namespace FactoryManagementSoftware.UI
                                     DataRow itemInfoRow = tool.getDataRowFromDataTable(dt_ItemInfo, childCode);
 
                                     string childName = itemInfoRow[dalItem.ItemName].ToString();
-                                    float childStockQty = Convert.ToSingle(itemInfoRow[dalItem.ItemQty]);
+                                    float childStockQty = Convert.ToSingle(itemInfoRow[dalItem.ItemStock]);
 
                                     DataTable dt_ChildStockData = tool.getStockDataTableFromDataTable(dt_AllStockData, childCode);
 
@@ -520,7 +520,7 @@ namespace FactoryManagementSoftware.UI
                                                     DataRow itemInfoRow2 = tool.getDataRowFromDataTable(dt_ItemInfo, subChildCode);
 
                                                     string subChildName = itemInfoRow2[dalItem.ItemName].ToString();
-                                                    float subChildStockQty = Convert.ToSingle(itemInfoRow2[dalItem.ItemQty]);
+                                                    float subChildStockQty = Convert.ToSingle(itemInfoRow2[dalItem.ItemStock]);
 
                                                     DataTable dt_SubChildStockData = tool.getStockDataTableFromDataTable(dt_AllStockData, subChildCode);
 
@@ -1066,7 +1066,7 @@ namespace FactoryManagementSoftware.UI
 
                                 }
 
-                                Int32 percentage = ((i + 1) * 100) / (dgvNewStock.RowCount - 2);
+                                Int32 percentage = ((i + 1) * 100) / (dgvNewStock.RowCount - 1);
                                 if (percentage >= 100)
                                 {
                                     percentage = 100;
@@ -1354,7 +1354,7 @@ namespace FactoryManagementSoftware.UI
 
                                     }
 
-                                    Int32 percentage = ((x + 1) * 100) / (dgvNewStock.RowCount - 2);
+                                    Int32 percentage = ((x + 1) * 100) / (dgvNewStock.RowCount - 1);
                                     if (percentage >= 100)
                                     {
                                         percentage = 100;

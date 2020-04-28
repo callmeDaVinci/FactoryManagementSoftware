@@ -78,6 +78,7 @@ namespace FactoryManagementSoftware.BLL
         //do table
         public int DO_no { get; set; }
         public int PO_tbl_code { get; set; }
+        public int Trf_tbl_code { get; set; }
         public int DO_to_delivery_qty { get; set; }
         public DateTime DO_date { get; set; }
         public bool IsDelivered { get; set; }

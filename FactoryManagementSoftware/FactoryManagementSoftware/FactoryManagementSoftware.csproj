@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>117</ApplicationRevision>
+    <ApplicationRevision>119</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -224,6 +224,12 @@
     </Compile>
     <Compile Include="UI\frmDailyJobSheet.Designer.cs">
       <DependentUpon>frmDailyJobSheet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmDeliveryDate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDeliveryDate.Designer.cs">
+      <DependentUpon>frmDeliveryDate.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmDialog.cs">
       <SubType>Form</SubType>
@@ -703,6 +709,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDailyJobSheet.resx">
       <DependentUpon>frmDailyJobSheet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDeliveryDate.resx">
+      <DependentUpon>frmDeliveryDate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDialog.resx">
       <DependentUpon>frmDialog.cs</DependentUpon>

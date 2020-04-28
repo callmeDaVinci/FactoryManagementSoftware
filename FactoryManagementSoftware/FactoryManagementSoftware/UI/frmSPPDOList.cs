@@ -46,32 +46,12 @@ namespace FactoryManagementSoftware.UI
 
         readonly string text_ShowFilter = "SHOW FILTER...";
         readonly string text_HideFilter = "HIDE FILTER";
-        readonly string text_SelectPO = "PLEASE SELECT PO";
-        readonly string text_AddDo = "ADD DO";
-        readonly string text_NextStep = "NEXT STEP";
-        readonly string text_SelectAll = "SELECT ALL";
-        readonly string text_AddNewPO = "+ NEW PO";
-        readonly string text_POList = "PO LIST";
-        readonly string text_POItemList = "PO ITEM LIST";
-        readonly string text_CombineDO = "COMBINE DO";
-        readonly string text_Cancel = "CANCEL";
-        readonly string text_CombineConfirm = "COMBINE CONFIRM";
+        readonly string text_CompleteDO = "Complete D/O";
+        readonly string text_InCompleteDO = "Incomplete D/O";
 
-        readonly string text_DOList = "DO TO ADD";
-        readonly string text_DOItemList = "DO ITEM LIST";
-
-        readonly string text_AvailableStock = "AVAILABLE";
-        readonly string text_InsufficientStock = "INSUFFICIENT";
-
-        readonly string text_DB = "DB";
-        readonly string text_ToAdd = "TO ADD";
-        readonly string text_ToEdit = "TO EDIT";
-        readonly string text_ToUpdate = "TO UPDATE";
-
-        readonly string header_POTblCode = "PO TBL CODE";
-        readonly string header_POCode = "PO CODE";
-        readonly string header_PONo = "PO NO";
-        readonly string header_PODate = "PO DATE";
+        readonly string header_POCode = "P/O CODE";
+        readonly string header_PONo = "P/O NO";
+        readonly string header_PODate = "P/O DATE";
         readonly string header_CustomerCode = "CUSTOMER CODE";
         readonly string header_Customer = "CUSTOMER";
         readonly string header_Progress = "PROGRESS";
@@ -87,8 +67,10 @@ namespace FactoryManagementSoftware.UI
         readonly string header_DeliveredQty = "DELIVERED QTY";
         readonly string header_Note = "NOTE";
         readonly string header_StockCheck = "STOCK CHECK";
-        readonly string header_DONo = "DO #";
-        readonly string header_DONoString = "DO NO";
+        readonly string header_DONo = "D/O #";
+        readonly string header_DONoString = "D/O NO";
+        readonly string header_DOTblCode = "D/O TABLE CODE";
+        
         readonly string header_CombinedCode = "COMBINED CODE";
         readonly string header_Stock = "STOCK QTY";
         readonly string header_StockString = "STOCK";
@@ -98,6 +80,21 @@ namespace FactoryManagementSoftware.UI
         readonly string header_Balance = "BAL No";
         readonly string header_StdPacking = "StdPacking";
         readonly string header_BalanceString = "BAL.";
+        readonly string header_TrfTableCode = "TRANSFER CODE";
+        readonly string headerIndex = "#";
+        readonly string headerPlanID = "PLAN ID";
+        readonly string headerType = "TYPE";
+        readonly string headerMatCode = "MATERIAL";
+        readonly string headerItem = "PLAN FOR";
+
+        readonly string headerCollectBag = "COLLECT BAG";
+        readonly string headerDeliverBag = "DELIVER BAG";
+        readonly string headerFrom = "FROM";
+        readonly string headerTo = "TO";
+        readonly string headerReceivedBy = "RECEIVED BY";
+        readonly string headerCheck = "CHECK";
+        readonly string headerQty = "QTY (KG/PIECE)";
+
 
         private DataTable dt_DOList;
         private DataTable dt_DOItemList_1;
@@ -118,6 +115,43 @@ namespace FactoryManagementSoftware.UI
 
         #region data table 
 
+        private DataTable NewDeliverTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(headerIndex, typeof(int));
+            dt.Columns.Add(headerFrom, typeof(string));
+            dt.Columns.Add(headerTo, typeof(string));
+            dt.Columns.Add(headerType, typeof(string));
+            dt.Columns.Add(headerMatCode, typeof(string));
+            dt.Columns.Add(headerPlanID, typeof(int));
+            dt.Columns.Add(headerItem, typeof(string));
+            dt.Columns.Add(headerQty, typeof(float));
+            dt.Columns.Add(headerDeliverBag, typeof(string));
+            dt.Columns.Add(headerReceivedBy, typeof(string));
+            dt.Columns.Add(headerCheck, typeof(bool));
+
+            return dt;
+
+        }
+
+        private DataTable NewCompleteTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(header_DOTblCode, typeof(string));
+            dt.Columns.Add(header_DONo, typeof(string));
+            dt.Columns.Add(header_Customer, typeof(string));
+            dt.Columns.Add(header_CustomerCode, typeof(string));
+            dt.Columns.Add(header_ItemCode, typeof(string));
+            dt.Columns.Add(header_DeliveryPCS, typeof(string));
+            dt.Columns.Add(header_DeliveryBAG, typeof(string));
+
+            return dt;
+
+        }
+
+        
         private DataTable NewDOTable()
         {
             DataTable dt = new DataTable();
@@ -139,25 +173,19 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
-            //dt.Columns.Add(header_POTblCode, typeof(int));
-            //dt.Columns.Add(header_DataMode, typeof(string));
+            dt.Columns.Add(header_DOTblCode, typeof(int));
+            dt.Columns.Add(header_TrfTableCode, typeof(int));
             dt.Columns.Add(header_Index, typeof(int));
             dt.Columns.Add(header_Type, typeof(string));
             dt.Columns.Add(header_Size, typeof(string));
             dt.Columns.Add(header_Unit, typeof(string));
 
-            //dt.Columns.Add(header_Stock, typeof(int));
-            //dt.Columns.Add(header_StockString, typeof(string));
             dt.Columns.Add(header_ItemCode, typeof(string));
-            //dt.Columns.Add(header_DONo, typeof(int));
-            //dt.Columns.Add(header_DONoString, typeof(string));
-            //dt.Columns.Add(header_Customer, typeof(string));
+
             dt.Columns.Add(header_DeliveryPCS, typeof(int));
             dt.Columns.Add(header_DeliveryBAG, typeof(int));
             dt.Columns.Add(header_DeliveryQTY, typeof(string));
-            //dt.Columns.Add(header_Balance, typeof(int));
-            //dt.Columns.Add(header_BalanceString, typeof(string));
-            //dt.Columns.Add(header_Note, typeof(string));
+
             dt.Columns.Add(header_StdPacking, typeof(int));
             return dt;
         }
@@ -298,7 +326,9 @@ namespace FactoryManagementSoftware.UI
         {
             ShowOrHideFilter();
             LoadDOList();
-           
+            //int id =  dalTrfHist.GetLastInsertedID();
+
+            //MessageBox.Show(id.ToString());
         }
 
         private void LoadDOList()
@@ -428,6 +458,12 @@ namespace FactoryManagementSoftware.UI
 
                     int bag = deliveryQty / stdPacking;
 
+                    int DOTableCode = int.TryParse(row[dalSPP.TableCode].ToString(), out DOTableCode) ? DOTableCode : -1;
+                   // int TrfTableCode = int.TryParse(row[dalSPP.TrfTableCode].ToString(), out TrfTableCode) ? TrfTableCode : -1;
+
+                    dt_Row[header_DOTblCode] = DOTableCode;
+                    //dt_Row[header_TrfTableCode] = TrfTableCode;
+
                     dt_Row[header_Index] = index;
                     dt_Row[header_Size] = row[dalSPP.SizeNumerator];
                     dt_Row[header_Unit] = row[dalSPP.SizeUnit].ToString().ToUpper();
@@ -460,7 +496,7 @@ namespace FactoryManagementSoftware.UI
             DataGridView dgv = dgvDOList;
             int rowIndex = -1;
 
-            if (dgv.SelectedRows.Count <= 0)
+            if (dgv.SelectedRows.Count <= 0 || dgv.CurrentRow == null)
             {
                 rowIndex = -1;
             }
@@ -532,6 +568,8 @@ namespace FactoryManagementSoftware.UI
 
 
                 frm.ShowDialog();
+
+                LoadDOList();
             }
            
         }
@@ -555,6 +593,147 @@ namespace FactoryManagementSoftware.UI
                     LoadDOList();
                 }
             }
+        }
+
+        private void btnAddNewDO_Click(object sender, EventArgs e)
+        {
+            frmSPPPOList frm = new frmSPPPOList(true)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+
+            frm.ShowDialog();
+            LoadDOList();
+        }
+
+        private void dgvDOList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                DataGridView dgv = dgvDOList;
+
+
+                //handle the row selection on right click
+                if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+                {
+                    ContextMenuStrip my_menu = new ContextMenuStrip();
+
+
+                    dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    // Can leave these here - doesn't hurt
+                    dgv.Rows[e.RowIndex].Selected = true;
+                    dgv.Focus();
+                    int rowIndex = dgv.CurrentCell.RowIndex;
+
+                    string code =  dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
+                    ShowDOItem(code);
+
+                    my_menu.Items.Add(text_CompleteDO).Name = text_CompleteDO;
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(DOList_ItemClicked);
+
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
+        private void DOList_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                DataGridView dgv = dgvDOList;
+
+                int rowIndex = dgv.CurrentCell.RowIndex;
+
+                if (rowIndex >= 0)
+                {
+                    string ClickedItem = e.ClickedItem.Name.ToString();
+                    if (ClickedItem.Equals(text_CompleteDO))
+                    {
+                        CompleteDO(rowIndex);
+                    }
+                   
+                }
+
+
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
+        private void CompleteDO(int rowIndex)
+        {
+            DataTable dt_Item = (DataTable)dgvItemList.DataSource;
+            DataGridView dgv = dgvDOList;
+
+            
+            string doCode = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
+            string customerShortName = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
+            string customerCode = dgv.Rows[rowIndex].Cells[header_CustomerCode].Value.ToString();
+
+            DataTable dt = NewCompleteTable();
+            DataRow dt_Row;
+           
+
+            foreach(DataRow row in dt_Item.Rows)
+            {
+                string doTableCode = row[header_DOTblCode].ToString();
+                string itemCode = row[header_ItemCode].ToString();
+                string PcsQty = row[header_DeliveryPCS].ToString();
+                string BagQty = row[header_DeliveryBAG].ToString();
+
+                if(!string.IsNullOrEmpty(itemCode))
+                {
+                    dt_Row = dt.NewRow();
+
+                    dt_Row[header_DOTblCode] = doTableCode;
+                    dt_Row[header_DONo] = doCode;
+                    dt_Row[header_Customer] = customerShortName;
+                    dt_Row[header_CustomerCode] = customerCode;
+
+                    dt_Row[header_ItemCode] = itemCode;
+                    dt_Row[header_DeliveryPCS] = PcsQty;
+                    dt_Row[header_DeliveryBAG] = BagQty;
+
+                    dt.Rows.Add(dt_Row);
+                }
+                
+
+            }
+
+
+            frmDeliveryDate frm = new frmDeliveryDate(dt)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            frm.ShowDialog();//Item Edit
+
+            if (frmInOutEdit.TrfSuccess)
+            {
+                MessageBox.Show("transfer success");
+
+                LoadDOList();
+            }
+        }
+
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

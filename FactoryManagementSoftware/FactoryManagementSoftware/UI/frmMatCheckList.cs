@@ -769,7 +769,7 @@ namespace FactoryManagementSoftware.UI
                 frm.ShowDialog();//Item Edit
                 DataTable dt_MatPlan = dalMatPlan.Select();
 
-                if (frmInOutEdit.matTrfSuccess)
+                if (frmInOutEdit.TrfSuccess)
                 {
                     foreach(DataRow row in dt.Rows)
                     {

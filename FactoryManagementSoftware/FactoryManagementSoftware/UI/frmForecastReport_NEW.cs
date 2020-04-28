@@ -969,7 +969,7 @@ namespace FactoryManagementSoftware.UI
                         uData.rw_per_shot = row[dalItem.ItemProRWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProRWShot]);
                         uData.cavity = row[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row[dalItem.ItemCavity]);
                         uData.cavity = uData.cavity == 0 ? 1 : uData.cavity;
-                        uData.ready_stock = row[dalItem.ItemQty] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemQty]);
+                        uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
 
                         var result = GetProduceQty(uData.part_code, dt_MacSchedule);
                         uData.toProduce = result.Item1;
@@ -1106,7 +1106,7 @@ namespace FactoryManagementSoftware.UI
                         uData.rw_per_shot = row[dalItem.ItemProRWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProRWShot]);
                         uData.cavity = row[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row[dalItem.ItemCavity]);
                         uData.cavity = uData.cavity == 0 ? 1 : uData.cavity;
-                        uData.ready_stock = row[dalItem.ItemQty] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemQty]);
+                        uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
 
                         var result = GetProduceQty(uData.part_code, dt_MacSchedule);
                         uData.toProduce = result.Item1;
@@ -1712,7 +1712,7 @@ namespace FactoryManagementSoftware.UI
                         uChildData.rw_per_shot = row_Item[dalItem.ItemProRWShot] == DBNull.Value ? 0 : Convert.ToSingle(row_Item[dalItem.ItemProRWShot]);
                         uChildData.cavity = row_Item[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row_Item[dalItem.ItemCavity]);
                         uChildData.cavity = uChildData.cavity == 0 ? 1 : uChildData.cavity;
-                        uChildData.ready_stock = row_Item[dalItem.ItemQty] == DBNull.Value ? 0 : Convert.ToSingle(row_Item[dalItem.ItemQty]);
+                        uChildData.ready_stock = row_Item[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row_Item[dalItem.ItemStock]);
 
                         if (uParentData.bal1 >= 0)
                         {

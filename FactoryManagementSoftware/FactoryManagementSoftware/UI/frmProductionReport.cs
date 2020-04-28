@@ -787,5 +787,10 @@ namespace FactoryManagementSoftware.UI
         {
             MainDashboard.ProductionReportFormOpen = false;
         }
+
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

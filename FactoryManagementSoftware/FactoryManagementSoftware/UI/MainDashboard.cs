@@ -81,7 +81,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (!itemFormOpen)
             {
-
+                
                 frmItem item = new frmItem();
                 item.MdiParent = this;
                 item.StartPosition = FormStartPosition.CenterScreen;
@@ -602,6 +602,16 @@ namespace FactoryManagementSoftware.UI
                     Application.OpenForms.OfType<frmSPP>().First().BringToFront();
                 }
             }
+        }
+
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolTip_Popup(object sender, PopupEventArgs e)
+        {
+
         }
     }
 }

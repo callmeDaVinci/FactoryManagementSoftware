@@ -45,6 +45,9 @@ namespace FactoryManagementSoftware.UI
         private readonly string dateType_Yearly = "YEARLY";
 
         private readonly string header_Index = "#";
+        private readonly string header_Material = "MATERIAL";
+        private readonly string header_Stock = "STOCK";
+        private readonly string header_LastDelivered = "LAST DELIVERED";
         private readonly string header_Customer = "CUSTOMER";
         private readonly string header_ItemCode = "CODE";
         private readonly string header_ItemName = "NAME";
@@ -84,7 +87,9 @@ namespace FactoryManagementSoftware.UI
 
             dt.Columns.Add(header_ItemCode, typeof(string));
             dt.Columns.Add(header_ItemName, typeof(string));
-
+            dt.Columns.Add(header_Material, typeof(string));
+            dt.Columns.Add(header_Stock, typeof(string));
+            dt.Columns.Add(header_LastDelivered, typeof(string));
             string inOutType = cmbInOutType.Text;
             if(inOutType == inOutType_InOut)
             {
@@ -212,7 +217,7 @@ namespace FactoryManagementSoftware.UI
             //color in or out qty
             string colName = dgv.Columns[col].Name;
 
-            bool matched = colName != header_Index && colName != header_ItemCode && colName != header_ItemName && colName != header_Total;
+            bool matched = colName != header_Index && colName != header_ItemCode && colName != header_ItemName && colName != header_Total && colName != header_Material && colName != header_Stock && colName !=header_LastDelivered;
             string inOutType = cmbInOutType.Text;
 
             if (cmbItemType.Text.ToUpper() == "ALL")
@@ -686,6 +691,9 @@ namespace FactoryManagementSoftware.UI
 
                     string itemCode = itemRow[dalItem.ItemCode].ToString();
                     string itemName = itemRow[dalItem.ItemName].ToString();
+                    string itemMaterial = itemRow[dalItem.ItemMaterial].ToString();
+                    string itemStock = itemRow[dalItem.ItemStock].ToString();
+                    DateTime lastDelivered = DateTime.MaxValue;
 
                     int preDay = 0;
                     int preMonth = 0;
@@ -708,9 +716,11 @@ namespace FactoryManagementSoftware.UI
                     {
                         string trfItemCode = trfRow[dalItem.ItemCode].ToString();
                         string passed = trfRow[dalTrfHist.TrfResult].ToString();
-
+                        string trfFrom = trfRow[dalTrfHist.TrfFrom].ToString();
+                        string trfTo = trfRow[dalTrfHist.TrfTo].ToString();
+                        
+                     
                         itemSearchMatched = itemName.Contains(itemSearch.ToUpper()) || itemCode.Contains(itemSearch.ToUpper());
-
 
                         if (string.IsNullOrEmpty(itemSearch))
                         {
@@ -725,11 +735,12 @@ namespace FactoryManagementSoftware.UI
                             continue;
                         }
 
-                        if (trfItemCode == itemCode && itemSearchMatched)
+                        if (trfItemCode == itemCode &&  tool.IfFactoryExists(trfFrom) && !tool.IfFactoryExists(trfTo))
                         {
                             itemFound = true;
-                            string trfFrom = trfRow[dalTrfHist.TrfFrom].ToString();
-                            string trfTo = trfRow[dalTrfHist.TrfTo].ToString();
+                            
+
+
                             double trfQty = double.TryParse(trfRow[dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : 0;
 
                             trfQty = Math.Round(trfQty, 2);
@@ -737,6 +748,7 @@ namespace FactoryManagementSoftware.UI
                             DateTime trfDate = DateTime.TryParse(trfRow[dalTrfHist.TrfDate].ToString(), out trfDate) ? trfDate : DateTime.MaxValue;
                             //bool matched = false;
 
+                            lastDelivered = trfDate;
                             int day = 0;
                             int month = 0;
                             int year = 0;
@@ -971,6 +983,17 @@ namespace FactoryManagementSoftware.UI
                             row_Out[header_Index] = index;
                             row_Out[header_ItemCode] = itemCode;
                             row_Out[header_ItemName] = itemName;
+
+                            if(lastDelivered != DateTime.MaxValue)
+                            {
+                                row_Out[header_LastDelivered] = lastDelivered.ToShortDateString();
+                                lastDelivered = DateTime.MaxValue;
+                            }
+                           
+
+                            
+                            row_Out[header_Material] = itemMaterial;
+                            row_Out[header_Stock] = itemStock;
 
                             int bagQty = 0;
                             if (qtyPerBag != 0)

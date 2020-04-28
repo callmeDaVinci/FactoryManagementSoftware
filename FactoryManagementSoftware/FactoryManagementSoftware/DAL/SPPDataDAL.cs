@@ -85,7 +85,8 @@ namespace FactoryManagementSoftware.DAL
         public string DOToDeliveryQty { get; } = "to_delivery_qty";
         public string DODate { get; } = "do_date";
         public string IsDelivered { get; } = "isDelivered";
-
+        public string TrfTableCode { get; } = "trf_tbl_code";
+        
         #endregion
 
         #region variable/class object declare
@@ -617,7 +618,7 @@ namespace FactoryManagementSoftware.DAL
                                ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
                                FULL JOIN tbl_spp_stdpacking
                                ON tbl_item.item_code = tbl_spp_stdpacking.item_code
-                               ORDER BY tbl_spp_po.po_code ASC";
+                               ORDER BY tbl_spp_po.po_code ASC, tbl_spp_po.item_code ASC";
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
@@ -2182,7 +2183,6 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"UPDATE tbl_spp_po 
                             SET "
-                            + DeliveredQty + "=@Delivered_qty,"
                             + ToDeliveryQty + "=@To_delivery_qty,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
@@ -2222,6 +2222,57 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
             return isSuccess;
+        }
+
+        public bool PODeliveredDataUpdate(SPPDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_po 
+                            SET "
+                            + DeliveredQty + "=@Delivered_qty,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@Delivered_qty", u.Delivered_qty);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+
         }
 
         public bool PODelete(SPPDataBLL u)
@@ -2331,6 +2382,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"UPDATE tbl_spp_do 
                             SET "
                             + IsDelivered + "=@IsDelivered,"
+                            + TrfTableCode + "=@Trf_tbl_code,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
                             " WHERE tbl_code=@Table_Code";
@@ -2338,7 +2390,7 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@IsDelivered", u.IsDelivered);
-
+                cmd.Parameters.AddWithValue("@Trf_tbl_code", u.Trf_tbl_code);
                 cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);

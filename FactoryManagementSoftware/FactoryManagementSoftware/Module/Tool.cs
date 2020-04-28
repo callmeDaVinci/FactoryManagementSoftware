@@ -779,6 +779,30 @@ namespace FactoryManagementSoftware.Module
             return result;
         }
 
+        public bool IfSPPCustomer(string keywords)
+        {
+            bool result = false;
+
+            SPPDataDAL dalSPP = new SPPDataDAL();
+
+            DataTable dt = dalSPP.CustomerSelect();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string customer = row[dalSPP.ShortName].ToString();
+
+                keywords = keywords.ToUpper();
+                customer = customer.ToUpper();
+
+                if (keywords.Equals(customer))
+                {
+                    return true;
+                }
+            }
+
+            return result;
+        }
+
         public void LoadMaterialToComboBox(ComboBox cmb)
         {
             DataTable dtItemCat = dalItemCat.Select();
@@ -1032,6 +1056,31 @@ namespace FactoryManagementSoftware.Module
             }
 
             return forecast;
+        }
+
+        public int GetLatestTrfID()
+        {
+            int ID = -1;
+
+            DataTable dt = dalTrfHist.Select();
+            dt.DefaultView.Sort = dalTrfHist.TrfID + " DESC";
+            dt = dt.DefaultView.ToTable();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                bool result = bool.TryParse(row[dalTrfHist.TrfResult].ToString(), out result) ? result : false;
+
+                if (result)
+                {
+                    int number = int.TryParse(row[dalTrfHist.TrfID].ToString(), out number) ? number : 0;
+
+                    ID = number;
+
+                    return ID;
+                }
+            }
+
+            return ID;
         }
 
         public int getFactoryID(string factoryName)
@@ -2671,7 +2720,7 @@ namespace FactoryManagementSoftware.Module
                         uChildData.rw_per_shot = row_Item[dalItem.ItemProRWShot] == DBNull.Value ? 0 : Convert.ToSingle(row_Item[dalItem.ItemProRWShot]);
                         uChildData.cavity = row_Item[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row_Item[dalItem.ItemCavity]);
                         uChildData.cavity = uChildData.cavity == 0 ? 1 : uChildData.cavity;
-                        uChildData.ready_stock = row_Item[dalItem.ItemQty] == DBNull.Value ? 0 : Convert.ToSingle(row_Item[dalItem.ItemQty]);
+                        uChildData.ready_stock = row_Item[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row_Item[dalItem.ItemStock]);
 
                         if (uParentData.bal1 >= 0)
                         {
@@ -2843,7 +2892,7 @@ namespace FactoryManagementSoftware.Module
                         uData.rw_per_shot = row[dalItem.ItemProRWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProRWShot]);
                         uData.cavity = row[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row[dalItem.ItemCavity]);
                         uData.cavity = uData.cavity == 0 ? 1 : uData.cavity;
-                        uData.ready_stock = row[dalItem.ItemQty] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemQty]);
+                        uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
 
                         uData.forecast1 = GetForecastQty(dt_ItemForecast, uData.part_code, 1);
                         uData.forecast2 = GetForecastQty(dt_ItemForecast, uData.part_code, 2);
@@ -2945,7 +2994,7 @@ namespace FactoryManagementSoftware.Module
                         uData.rw_per_shot = row[dalItem.ItemProRWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProRWShot]);
                         uData.cavity = row[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row[dalItem.ItemCavity]);
                         uData.cavity = uData.cavity == 0 ? 1 : uData.cavity;
-                        uData.ready_stock = row[dalItem.ItemQty] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemQty]);
+                        uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
 
                         uData.forecast1 = GetForecastQty(dt_ItemForecast, uData.part_code, 1);
                         uData.forecast2 = GetForecastQty(dt_ItemForecast, uData.part_code, 2);

@@ -179,7 +179,7 @@ namespace FactoryManagementSoftware.UI
                 int rowindex = dgv.CurrentCell.RowIndex;
                 int columnindex = dgv.CurrentCell.ColumnIndex;
                 string itemCode = dgv.Rows[rowindex].Cells[dalItem.ItemCode].Value.ToString();
-                dgv.Rows[rowindex].Cells[dalItem.ItemQty].Value = dalItem.getStockQty(itemCode).ToString("0.00");
+                dgv.Rows[rowindex].Cells[dalItem.ItemStock].Value = dalItem.getStockQty(itemCode).ToString("0.00");
                 dgv.Rows[rowindex].Cells[dalItem.ItemOrd].Value = dalItem.getOrderQty(itemCode);
                 loadStockList(itemCode);
                 calTotalStock(itemCode);
@@ -193,7 +193,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (editingItemCode == dgv.Rows[n].Cells[dalItem.ItemCode].Value.ToString())
                     {
-                        dgv.Rows[n].Cells[dalItem.ItemQty].Value = dalItem.getStockQty(editingItemCode).ToString("0.00");
+                        dgv.Rows[n].Cells[dalItem.ItemStock].Value = dalItem.getStockQty(editingItemCode).ToString("0.00");
                         dgv.Rows[n].Cells[dalItem.ItemOrd].Value = dalItem.getOrderQty(editingItemCode);
                     }
                 }
@@ -217,7 +217,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (itemCode == dgv.Rows[n].Cells[dalItem.ItemCode].Value.ToString())
                 {
-                    dgv.Rows[n].Cells[dalItem.ItemQty].Value = dalItem.getStockQty(itemCode).ToString("0.00");
+                    dgv.Rows[n].Cells[dalItem.ItemStock].Value = dalItem.getStockQty(itemCode).ToString("0.00");
                     dgv.Rows[n].Cells[dalItem.ItemOrd].Value = dalItem.getOrderQty(itemCode);
                 }
 
@@ -283,9 +283,9 @@ namespace FactoryManagementSoftware.UI
                     
                     float qty = 0;
 
-                    if (dgv.Rows[n].Cells[dalItem.ItemQty] != null)
+                    if (dgv.Rows[n].Cells[dalItem.ItemStock] != null)
                     {
-                        float.TryParse(dgv.Rows[n].Cells[dalItem.ItemQty].Value.ToString(), out (qty));
+                        float.TryParse(dgv.Rows[n].Cells[dalItem.ItemStock].Value.ToString(), out (qty));
                     }
                     if (ifGotChild(itemCode))
                     {
@@ -307,11 +307,11 @@ namespace FactoryManagementSoftware.UI
                     }
                     if (qty < 0)
                     {
-                        dgv.Rows[n].Cells[dalItem.ItemQty].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
+                        dgv.Rows[n].Cells[dalItem.ItemStock].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
                     }
                     else
                     {
-                        dgv.Rows[n].Cells[dalItem.ItemQty].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
+                        dgv.Rows[n].Cells[dalItem.ItemStock].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
                     }
                 }
                 else if (dgv == dgvTrf)
@@ -620,15 +620,15 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[dalItem.ItemCode].HeaderText = "CODE";
             dgv.Columns[dalItem.ItemName].HeaderText = "NAME";
             dgv.Columns[dalItem.ItemOrd].HeaderText = "ORDER PENDING";
-            dgv.Columns[dalItem.ItemQty].HeaderText = "QTY";
+            dgv.Columns[dalItem.ItemStock].HeaderText = "QTY";
 
             dgv.Columns[dalItem.ItemCat].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[dalItem.ItemCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[dalItem.ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[dalItem.ItemOrd].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[dalItem.ItemQty].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[dalItem.ItemStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-            dgv.Columns[dalItem.ItemQty].DefaultCellStyle.Format = "0.##";
+            dgv.Columns[dalItem.ItemStock].DefaultCellStyle.Format = "0.##";
             dgv.Columns[dalItem.ItemOrd].DefaultCellStyle.Format = "0.##";
         }
 
@@ -859,7 +859,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        dgv.Rows[rowIndex].Cells[dalItem.ItemQty].Value = dalItem.getStockQty(editingItemCode).ToString("0.00");
+                        dgv.Rows[rowIndex].Cells[dalItem.ItemStock].Value = dalItem.getStockQty(editingItemCode).ToString("0.00");
                         dgv.Rows[rowIndex].Cells[dalItem.ItemOrd].Value = dalItem.getOrderQty(editingItemCode);
 
                         loadStockList(editingItemCode);
@@ -1792,22 +1792,22 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            else if (dgv.Columns[e.ColumnIndex].Name == dalItem.ItemQty)
+            else if (dgv.Columns[e.ColumnIndex].Name == dalItem.ItemStock)
             {
                 float qty = 0;
 
-                if (dgv.Rows[n].Cells[dalItem.ItemQty] != null)
+                if (dgv.Rows[n].Cells[dalItem.ItemStock] != null)
                 {
-                    float.TryParse(dgv.Rows[n].Cells[dalItem.ItemQty].Value.ToString(), out (qty));
+                    float.TryParse(dgv.Rows[n].Cells[dalItem.ItemStock].Value.ToString(), out (qty));
                 }
 
                 if (qty < 0)
                 {
-                    dgv.Rows[n].Cells[dalItem.ItemQty].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
+                    dgv.Rows[n].Cells[dalItem.ItemStock].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
                 }
                 else
                 {
-                    dgv.Rows[n].Cells[dalItem.ItemQty].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
+                    dgv.Rows[n].Cells[dalItem.ItemStock].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
                 }
             }
 
@@ -1887,7 +1887,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        dgv.Rows[rowIndex].Cells[dalItem.ItemQty].Value = dalItem.getStockQty(editingItemCode).ToString("0.00");
+                        dgv.Rows[rowIndex].Cells[dalItem.ItemStock].Value = dalItem.getStockQty(editingItemCode).ToString("0.00");
                         dgv.Rows[rowIndex].Cells[dalItem.ItemOrd].Value = dalItem.getOrderQty(editingItemCode);
 
                         loadStockList(editingItemCode);

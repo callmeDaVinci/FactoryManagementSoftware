@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -64,6 +65,7 @@
             this.btnAddNewPO = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.lblMainList = new System.Windows.Forms.Label();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tlpPOList.SuspendLayout();
             this.gbFilter.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -122,9 +124,9 @@
             this.cbCompletedPO.AutoSize = true;
             this.cbCompletedPO.Location = new System.Drawing.Point(54, 69);
             this.cbCompletedPO.Name = "cbCompletedPO";
-            this.cbCompletedPO.Size = new System.Drawing.Size(133, 23);
+            this.cbCompletedPO.Size = new System.Drawing.Size(138, 23);
             this.cbCompletedPO.TabIndex = 158;
-            this.cbCompletedPO.Text = "COMPLETED PO";
+            this.cbCompletedPO.Text = "COMPLETED P/O";
             this.cbCompletedPO.UseVisualStyleBackColor = true;
             this.cbCompletedPO.CheckedChanged += new System.EventHandler(this.cbCompletedPO_CheckedChanged);
             // 
@@ -135,9 +137,9 @@
             this.cbInProgressPO.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbInProgressPO.Location = new System.Drawing.Point(54, 29);
             this.cbInProgressPO.Name = "cbInProgressPO";
-            this.cbInProgressPO.Size = new System.Drawing.Size(138, 23);
+            this.cbInProgressPO.Size = new System.Drawing.Size(143, 23);
             this.cbInProgressPO.TabIndex = 157;
-            this.cbInProgressPO.Text = "IN PROGRESS PO";
+            this.cbInProgressPO.Text = "IN PROGRESS P/O";
             this.cbInProgressPO.UseVisualStyleBackColor = true;
             this.cbInProgressPO.CheckedChanged += new System.EventHandler(this.cbInProgressPO_CheckedChanged);
             // 
@@ -308,7 +310,7 @@
             this.btnConfirmToAddDO.Name = "btnConfirmToAddDO";
             this.btnConfirmToAddDO.Size = new System.Drawing.Size(116, 45);
             this.btnConfirmToAddDO.TabIndex = 172;
-            this.btnConfirmToAddDO.Text = "DO CONFIRM";
+            this.btnConfirmToAddDO.Text = "D/O CONFIRM";
             this.btnConfirmToAddDO.UseVisualStyleBackColor = false;
             this.btnConfirmToAddDO.Click += new System.EventHandler(this.btnConfirmToAddDO_Click);
             // 
@@ -325,7 +327,7 @@
             this.btnBackToPOList.Name = "btnBackToPOList";
             this.btnBackToPOList.Size = new System.Drawing.Size(122, 45);
             this.btnBackToPOList.TabIndex = 172;
-            this.btnBackToPOList.Text = "<- PO LIST";
+            this.btnBackToPOList.Text = "<- P/O LIST";
             this.btnBackToPOList.UseVisualStyleBackColor = false;
             this.btnBackToPOList.Click += new System.EventHandler(this.btnBackToPOList_Click);
             // 
@@ -424,7 +426,7 @@
             this.btnAddDO.Name = "btnAddDO";
             this.btnAddDO.Size = new System.Drawing.Size(150, 45);
             this.btnAddDO.TabIndex = 172;
-            this.btnAddDO.Text = "ADD DO";
+            this.btnAddDO.Text = "ADD D/O";
             this.btnAddDO.UseVisualStyleBackColor = false;
             this.btnAddDO.Click += new System.EventHandler(this.btnAddDO_Click);
             // 
@@ -459,7 +461,9 @@
             this.dgvPOList.Size = new System.Drawing.Size(315, 397);
             this.dgvPOList.TabIndex = 156;
             this.dgvPOList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPOList_CellClick);
+            this.dgvPOList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPOList_CellContentClick);
             this.dgvPOList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPOList_CellDoubleClick);
+            this.dgvPOList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvPOList_CellMouseDown);
             this.dgvPOList.SelectionChanged += new System.EventHandler(this.dgvPOList_SelectionChanged);
             // 
             // dgvItemList
@@ -502,6 +506,7 @@
             this.dgvItemList.DataSourceChanged += new System.EventHandler(this.dgvItemList_DataSourceChanged);
             this.dgvItemList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItemList_CellEndEdit);
             this.dgvItemList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvItemList_CellFormatting);
+            this.dgvItemList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvPOItem_CellMouseDown);
             this.dgvItemList.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvItemList_DataBindingComplete);
             this.dgvItemList.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvItemList_EditingControlShowing);
             this.dgvItemList.SelectionChanged += new System.EventHandler(this.dgvItemList_SelectionChanged);
@@ -577,9 +582,9 @@
             this.lblSubList.Location = new System.Drawing.Point(2, 14);
             this.lblSubList.Margin = new System.Windows.Forms.Padding(2, 0, 2, 5);
             this.lblSubList.Name = "lblSubList";
-            this.lblSubList.Size = new System.Drawing.Size(92, 19);
+            this.lblSubList.Size = new System.Drawing.Size(97, 19);
             this.lblSubList.TabIndex = 157;
-            this.lblSubList.Text = "PO ITEM LIST";
+            this.lblSubList.Text = "P/O ITEM LIST";
             // 
             // tableLayoutPanel1
             // 
@@ -609,7 +614,7 @@
             this.btnAddNewPO.Name = "btnAddNewPO";
             this.btnAddNewPO.Size = new System.Drawing.Size(124, 32);
             this.btnAddNewPO.TabIndex = 167;
-            this.btnAddNewPO.Text = "+ NEW PO";
+            this.btnAddNewPO.Text = "+ NEW P/O";
             this.btnAddNewPO.UseVisualStyleBackColor = false;
             this.btnAddNewPO.Click += new System.EventHandler(this.btnAddNewPO_Click);
             // 
@@ -639,9 +644,15 @@
             this.lblMainList.Location = new System.Drawing.Point(2, 20);
             this.lblMainList.Margin = new System.Windows.Forms.Padding(2, 0, 2, 5);
             this.lblMainList.Name = "lblMainList";
-            this.lblMainList.Size = new System.Drawing.Size(57, 19);
+            this.lblMainList.Size = new System.Drawing.Size(62, 19);
             this.lblMainList.TabIndex = 166;
-            this.lblMainList.Text = "PO LIST";
+            this.lblMainList.Text = "P/O LIST";
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // frmSPPPOList
             // 
@@ -710,5 +721,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
         private System.Windows.Forms.CheckBox cbEditInPcsUnit;
         private System.Windows.Forms.CheckBox cbEditInBagUnit;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }

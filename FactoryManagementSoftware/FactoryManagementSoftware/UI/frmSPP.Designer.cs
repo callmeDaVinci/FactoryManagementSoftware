@@ -183,7 +183,7 @@
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(160, 97);
             this.button7.TabIndex = 150;
-            this.button7.Text = "DELIVERY LIST";
+            this.button7.Text = "D/O LIST";
             this.button7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.button7.UseVisualStyleBackColor = false;
@@ -202,7 +202,7 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(160, 97);
             this.button6.TabIndex = 149;
-            this.button6.Text = "PO LIST";
+            this.button6.Text = "P/O LIST";
             this.button6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.button6.UseVisualStyleBackColor = false;
@@ -221,7 +221,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(160, 97);
             this.button4.TabIndex = 147;
-            this.button4.Text = "NEW PO";
+            this.button4.Text = "NEW P/O";
             this.button4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.button4.UseVisualStyleBackColor = false;
@@ -258,7 +258,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(259, 206);
             this.button2.TabIndex = 145;
-            this.button2.Text = "PO VS INVENTORY";
+            this.button2.Text = "P/O VS INVENTORY";
             this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.button2.UseVisualStyleBackColor = false;

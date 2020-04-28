@@ -53,7 +53,7 @@ namespace FactoryManagementSoftware.DAL
 
         public string ItemCurrentMonth { get; } = "item_current_month";
         public string ItemLastQty { get; } = "item_last_qty";
-        public string ItemQty { get; } = "item_qty";
+        public string ItemStock { get; } = "item_qty";
         public string ItemLastPMMAQty { get; } = "item_last_pmma_qty";
         public string ItemPMMAQty { get; } = "item_pmma_qty";
 

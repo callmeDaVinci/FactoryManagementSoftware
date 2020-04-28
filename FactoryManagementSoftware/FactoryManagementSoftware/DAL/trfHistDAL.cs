@@ -88,6 +88,46 @@ namespace FactoryManagementSoftware.DAL
 
             return sortedDt;
         }
+
+        public int GetLastInsertedID()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            int ID = -1;
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT MAX(trf_hist_id) FROM tbl_trf_hist ";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+                ID = Convert.ToInt32(dt.Rows[0][0] == DBNull.Value ? -1 : dt.Rows[0][0]);
+
+            }
+            catch (Exception ex)
+            {
+                Tool tool = new Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+           
+
+            return ID;
+        }
         #endregion
 
         #region Insert Data in Database
@@ -96,10 +136,35 @@ namespace FactoryManagementSoftware.DAL
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
+            
 
             try
             {
-                String sql = "INSERT INTO tbl_trf_hist (trf_hist_item_code, trf_hist_from, trf_hist_to, trf_hist_qty, trf_hist_unit, trf_hist_trf_date, trf_hist_note, trf_hist_added_date, trf_hist_added_by, trf_result, trf_hist_from_order) VALUES (@trf_hist_item_code,  @trf_hist_from, @trf_hist_to, @trf_hist_qty, @trf_hist_unit, @trf_hist_trf_date, @trf_hist_note, @trf_hist_added_date, @trf_hist_added_by, @trf_result, @trf_hist_from_order)";
+                String sql = @"INSERT INTO tbl_trf_hist 
+                            (trf_hist_item_code, 
+                            trf_hist_from, 
+                            trf_hist_to, 
+                            trf_hist_qty, 
+                            trf_hist_unit, 
+                            trf_hist_trf_date, 
+                            trf_hist_note, 
+                            trf_hist_added_date, 
+                            trf_hist_added_by, 
+                            trf_result, 
+                            trf_hist_from_order) 
+                            VALUES 
+                            (@trf_hist_item_code, 
+                            @trf_hist_from, 
+                            @trf_hist_to, 
+                            @trf_hist_qty, 
+                            @trf_hist_unit, 
+                            @trf_hist_trf_date, 
+                            @trf_hist_note, 
+                            @trf_hist_added_date, 
+                            @trf_hist_added_by, 
+                            @trf_result, 
+                            @trf_hist_from_order)";
+
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@trf_hist_item_code", u.trf_hist_item_code);
@@ -141,6 +206,80 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
             return isSuccess;
+        }
+
+        public int InsertAndGetPrimaryKey(trfHistBLL u)
+        {
+            int ID = -1;
+            DataTable dt = new DataTable();
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_trf_hist 
+                            (trf_hist_item_code, 
+                            trf_hist_from, 
+                            trf_hist_to, 
+                            trf_hist_qty, 
+                            trf_hist_unit, 
+                            trf_hist_trf_date, 
+                            trf_hist_note, 
+                            trf_hist_added_date, 
+                            trf_hist_added_by, 
+                            trf_result, 
+                            trf_hist_from_order) 
+                            VALUES 
+                            (@trf_hist_item_code, 
+                            @trf_hist_from, 
+                            @trf_hist_to, 
+                            @trf_hist_qty, 
+                            @trf_hist_unit, 
+                            @trf_hist_trf_date, 
+                            @trf_hist_note, 
+                            @trf_hist_added_date, 
+                            @trf_hist_added_by, 
+                            @trf_result, 
+                            @trf_hist_from_order)
+                            SELECT SCOPE_IDENTITY();";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@trf_hist_item_code", u.trf_hist_item_code);
+                cmd.Parameters.AddWithValue("@trf_hist_from", u.trf_hist_from);
+                cmd.Parameters.AddWithValue("@trf_hist_to", u.trf_hist_to);
+                cmd.Parameters.AddWithValue("@trf_hist_qty", u.trf_hist_qty);
+                cmd.Parameters.AddWithValue("@trf_hist_unit", u.trf_hist_unit);
+                cmd.Parameters.AddWithValue("@trf_hist_trf_date", u.trf_hist_trf_date);
+                cmd.Parameters.AddWithValue("@trf_hist_note", u.trf_hist_note);
+                cmd.Parameters.AddWithValue("@trf_hist_added_date", u.trf_hist_added_date);
+                cmd.Parameters.AddWithValue("@trf_hist_added_by", u.trf_hist_added_by);
+                cmd.Parameters.AddWithValue("@trf_result", u.trf_result);
+                cmd.Parameters.AddWithValue("@trf_hist_from_order", u.trf_hist_from_order);
+
+                conn.Open();
+
+                //int rows = cmd.ExecuteNonQuery();
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(dt);
+
+                ID = Convert.ToInt32(dt.Rows[0][0] == DBNull.Value ? -1 : dt.Rows[0][0]);
+
+                int rows = dt.Rows.Count;
+
+
+            }
+            catch (Exception ex)
+            {
+                Tool tool = new Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return ID;
         }
 
         #endregion
@@ -1321,6 +1460,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+       
 
         public DataTable SPPItemToCustomerSearch(string start, string end, string customer)
         {
@@ -1343,7 +1483,6 @@ namespace FactoryManagementSoftware.DAL
                             WHERE tbl_trf_hist.trf_hist_trf_date 
                             BETWEEN @start 
                             AND @end 
-                            AND (tbl_trf_hist.trf_hist_to=@customer  OR  tbl_trf_hist.trf_hist_to=@OTHER )
                             ORDER BY tbl_item.item_name ASC, tbl_trf_hist.trf_hist_item_code ASC, tbl_trf_hist.trf_hist_trf_date ASC";
 
                     SqlCommand cmd = new SqlCommand(sql, conn);

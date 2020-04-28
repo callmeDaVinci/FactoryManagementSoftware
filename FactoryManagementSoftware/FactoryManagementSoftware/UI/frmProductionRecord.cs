@@ -14,6 +14,20 @@ namespace FactoryManagementSoftware.UI
         public frmProductionRecord()
         {
             InitializeComponent();
+
+            userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+
+            if (userPermission >= MainDashboard.ACTION_LVL_FOUR)
+            {
+                lblRemoveCompleted.Show();
+                lblClearList.Show();
+            }
+            else
+            {
+                lblRemoveCompleted.Hide();
+                lblClearList.Hide();
+            }
+
             loadPackingData();
             CreateMeterReadingData();
 
@@ -48,6 +62,7 @@ namespace FactoryManagementSoftware.UI
         DataTable dt_MultiPackaging;
         DataTable dt_Mac;
 
+        int userPermission = -1;
         readonly private string string_NewSheet = "NEW";
         readonly private string string_Multi = "MULTI";
         readonly private string string_MultiPackaging = "MULTI PACKAGING";
@@ -375,10 +390,22 @@ namespace FactoryManagementSoftware.UI
 
             if (dt.Rows.Count > 0)
             {
+                if (userPermission >= MainDashboard.ACTION_LVL_FOUR)
+                {
+                    lblRemoveCompleted.Show();
+                    lblClearList.Show();
+                }
+
                 dgv.DataSource = dt;
                 dgvItemListStyleEdit(dgv);
-                //dgv.ClearSelection();
+                dgv.ClearSelection();
             }
+            else
+            {
+                lblRemoveCompleted.Hide();
+                lblClearList.Hide();
+            }
+
         }
 
         private void CheckIfStockIn()
@@ -1293,6 +1320,7 @@ namespace FactoryManagementSoftware.UI
                         foreach (DataRow row in dt_MultiPackaging.Rows)
                         {
                             string packingCode = row[frmProPackaging.header_PackagingCode].ToString();
+
                             int boxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingQty].ToString());
                             int maxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingMax].ToString());
 
@@ -1300,15 +1328,54 @@ namespace FactoryManagementSoftware.UI
 
                             totalStockIn += boxQty * maxQty;
 
+                            if (!string.IsNullOrEmpty(packingCode))
+                            {
+                                dt_Row = dt.NewRow();
+                                dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                                dt_Row[header_ItemCode] = packingCode;
+                                dt_Row[header_Cat] = tool.getItemCat(packingCode);
+
+                                dt_Row[header_From] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+                                dt_Row[header_To] = text.Production;
+
+                                dt_Row[header_Qty] = boxQty;
+                                dt_Row[header_PlanID] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
+
+                                if (cbMorning.Checked)
+                                {
+                                    dt_Row[header_Shift] = "M";
+                                }
+                                else if (cbNight.Checked)
+                                {
+                                    dt_Row[header_Shift] = "N";
+                                }
+
+
+                                dt.Rows.Add(dt_Row);
+                            }
+                            
+                        }
+                    }
+                    else
+                    {
+                        
+                        int packingMaxQty = int.TryParse(txtPackingMaxQty.Text, out packingMaxQty) ? packingMaxQty : 0;
+
+                        int fullBoxQty = int.TryParse(txtFullBox.Text, out fullBoxQty) ? fullBoxQty : 0;
+
+                        totalStockIn = packingMaxQty * fullBoxQty;
+
+                        if (!string.IsNullOrEmpty(cmbPackingCode.Text))
+                        {
                             dt_Row = dt.NewRow();
                             dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                            dt_Row[header_ItemCode] = packingCode;
-                            dt_Row[header_Cat] = tool.getItemCat(packingCode);
+                            dt_Row[header_ItemCode] = cmbPackingCode.Text;
+                            dt_Row[header_Cat] = tool.getItemCat(cmbPackingCode.Text);
 
-                            dt_Row[header_From] =  dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+                            dt_Row[header_From] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
                             dt_Row[header_To] = text.Production;
 
-                            dt_Row[header_Qty] = boxQty;
+                            dt_Row[header_Qty] = fullBoxQty;
                             dt_Row[header_PlanID] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
 
                             if (cbMorning.Checked)
@@ -1322,24 +1389,21 @@ namespace FactoryManagementSoftware.UI
 
                             dt.Rows.Add(dt_Row);
                         }
+                            
                     }
-                    else
+
+
+                    if(!string.IsNullOrEmpty(lblPartCode.Text))
                     {
-                        int packingMaxQty = int.TryParse(txtPackingMaxQty.Text, out packingMaxQty) ? packingMaxQty : 0;
-
-                        int fullBoxQty = int.TryParse(txtFullBox.Text, out fullBoxQty) ? fullBoxQty : 0;
-
-                        totalStockIn = packingMaxQty * fullBoxQty;
-
                         dt_Row = dt.NewRow();
                         dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                        dt_Row[header_ItemCode] = cmbPackingCode.Text;
-                        dt_Row[header_Cat] = tool.getItemCat(cmbPackingCode.Text);
+                        dt_Row[header_ItemCode] = lblPartCode.Text;
+                        dt_Row[header_Cat] = text.Cat_Part;
 
-                        dt_Row[header_From] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
-                        dt_Row[header_To] = text.Production;
+                        dt_Row[header_From] = text.Production;
+                        dt_Row[header_To] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
 
-                        dt_Row[header_Qty] = fullBoxQty;
+                        dt_Row[header_Qty] = totalStockIn;
                         dt_Row[header_PlanID] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
 
                         if (cbMorning.Checked)
@@ -1353,29 +1417,7 @@ namespace FactoryManagementSoftware.UI
 
                         dt.Rows.Add(dt_Row);
                     }
-
-
-                    dt_Row = dt.NewRow();
-                    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                    dt_Row[header_ItemCode] = lblPartCode.Text;
-                    dt_Row[header_Cat] = text.Cat_Part;
-
-                    dt_Row[header_From] = text.Production;
-                    dt_Row[header_To] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
-
-                    dt_Row[header_Qty] = totalStockIn;
-                    dt_Row[header_PlanID] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
-
-                    if(cbMorning.Checked)
-                    {
-                        dt_Row[header_Shift] = "M";
-                    }
-                    else if(cbNight.Checked)
-                    {
-                        dt_Row[header_Shift] = "N";
-                    }
-
-                    dt.Rows.Add(dt_Row);
+                   
 
                     //MatTrfDate = dtpTrfDate.Text;
                     frmInOutEdit frm = new frmInOutEdit(dt, true);
@@ -1653,7 +1695,8 @@ namespace FactoryManagementSoftware.UI
             {
                 //int rowIndex = dgvItemList.CurrentCell.RowIndex;
 
-                frmLoading.ShowLoadingScreen();
+                // frmLoading.ShowLoadingScreen();
+                Cursor = Cursors.WaitCursor;
                 errorProvider3.Clear();
                 errorProvider4.Clear();
                 AddNewSheetUI(false);
@@ -1662,8 +1705,8 @@ namespace FactoryManagementSoftware.UI
                 LoadDailyRecord();
 
                 dgvRecordHistory.ClearSelection();
-                frmLoading.CloseForm();
-
+                //frmLoading.CloseForm();
+                Cursor = Cursors.Arrow;
                 dailyRecordLoaded = true;
                 //MessageBox.Show("selection changed");
             }
@@ -1978,6 +2021,72 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void RemoveCompleted()
+        {
+            loaded = false;
+            DataGridView dgv = dgvItemList;
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            if(dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    string planStatus = row[header_Status].ToString();
+
+                    if (planStatus == text.planning_status_completed)
+                    {
+                        int planID = Convert.ToInt32(row[header_PlanID].ToString());
+
+                        uPlan.plan_id = planID;
+                        uPlan.recording = false;
+
+                        if (!dalPlan.RecordingUpdate(uPlan))
+                        {
+
+                            MessageBox.Show("Failed to update daily plan!");
+
+
+                        }
+                    }
+                }
+
+                LoadItemListData();
+                loaded = true;
+            }
+           
+        }
+
+        private void ClearList()
+        {
+            loaded = false;
+            DataGridView dgv = dgvItemList;
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            if(dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    string planStatus = row[header_Status].ToString();
+
+                    int planID = Convert.ToInt32(row[header_PlanID].ToString());
+
+                    uPlan.plan_id = planID;
+                    uPlan.recording = false;
+
+                    if (!dalPlan.RecordingUpdate(uPlan))
+                    {
+
+                        MessageBox.Show("Failed to update daily plan!");
+
+
+                    }
+                }
+
+                LoadItemListData();
+                loaded = true;
+            }
+            
+        }
         private void dgvItemList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -2399,6 +2508,63 @@ namespace FactoryManagementSoftware.UI
                 errorProvider1.SetError(lblDate, "Please select a different date");
                 errorProvider2.SetError(lblShift, "Please select a different shift");
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void txtBalanceOfLastShift_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
+            {
+                SelectNextControl((Control)sender, true, true, true, true);
+            }
+        }
+
+        private void txtBalanceOfThisShift_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
+            {
+                SelectNextControl((Control)sender, true, true, true, true);
+            }
+        }
+
+        private void txtFullBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
+            {
+                SelectNextControl((Control)sender, true, true, true, true);
+            }
+        }
+
+        private void txtTotalStockIn_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
+            {
+                SaveAndStock();
+
+                AddNewSheetUI(false);
+                LoadDailyRecord();
+                dgvRecordHistory.ClearSelection();
+                dailyRecordLoaded = true;
+            }
+        }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+            
+            Cursor = Cursors.WaitCursor;
+            RemoveCompleted();
+            Cursor = Cursors.Arrow;
+        }
+
+        private void lblClearList_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            ClearList();
+            Cursor = Cursors.Arrow;
         }
     }
 }

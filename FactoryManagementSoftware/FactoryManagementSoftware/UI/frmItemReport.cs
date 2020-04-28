@@ -673,7 +673,7 @@ namespace FactoryManagementSoftware.UI
                                     DataRow itemInfoRow = tool.getDataRowFromDataTable(dt_ItemInfo, childCode);
 
                                     string childName = itemInfoRow[dalItem.ItemName].ToString();
-                                    float childStockQty = Convert.ToSingle(itemInfoRow[dalItem.ItemQty]);
+                                    float childStockQty = Convert.ToSingle(itemInfoRow[dalItem.ItemStock]);
 
                                     //DataTable dt_ChildStockData = tool.getStockDataTableFromDataTable(dt_AllStockData, childCode);
 
@@ -696,7 +696,7 @@ namespace FactoryManagementSoftware.UI
                                                     DataRow itemInfoRow2 = tool.getDataRowFromDataTable(dt_ItemInfo, subChildCode);
 
                                                     string subChildName = itemInfoRow2[dalItem.ItemName].ToString();
-                                                    float subChildStockQty = Convert.ToSingle(itemInfoRow2[dalItem.ItemQty]);
+                                                    float subChildStockQty = Convert.ToSingle(itemInfoRow2[dalItem.ItemStock]);
 
                                                     //DataTable dt_SubChildStockData = tool.getStockDataTableFromDataTable(dt_AllStockData, subChildCode);
 
