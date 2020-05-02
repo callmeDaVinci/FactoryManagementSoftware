@@ -36,7 +36,7 @@ namespace FactoryManagementSoftware.UI
 
         readonly static public string header_PackagingCode = "CODE";
         readonly static public string header_PackagingName = "NAME";
-        readonly static public string header_PackagingQty = "TOTAL BOX";
+        readonly static public string header_PackagingQty = "TOTAL QTY";
         readonly static public string header_PackagingMax = "QTY/BOX";
 
         static public bool dataSaved = false;

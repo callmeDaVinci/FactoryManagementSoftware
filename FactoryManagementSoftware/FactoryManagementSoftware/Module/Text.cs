@@ -29,6 +29,10 @@ namespace FactoryManagementSoftware.Module
         public string ItemEdit { get; } = "ItemEdit";
         public string ItemDelete { get; } = "ItemDelete";
 
+        public string AddDailyJobSheet { get; } = "AddDailyJobSheet";
+        public string EditDailyJobSheet { get; } = "EditDailyJobSheet";
+        public string RemoveDailyJobSheet { get; } = "RemoveDailyJobSheet";
+
         public string AddItemJoin { get; } = "AddItemJoin";
         public string ItemJoinEdit { get; } = "ItemJoinEdit";
         public string ItemJoinDelete { get; } = "ItemJoinDelete";

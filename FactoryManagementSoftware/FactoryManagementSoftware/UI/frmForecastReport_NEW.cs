@@ -1874,9 +1874,9 @@ namespace FactoryManagementSoftware.UI
             int month = DateTime.ParseExact(monthString, "MMMM", CultureInfo.CurrentCulture).Month;
             int year;
 
-            if (month < DateTime.Now.Month)
+            if (month > DateTime.Now.Month)
             {
-                year = DateTime.Now.Year + 1;
+                year = DateTime.Now.Year - 1;
             }
             else
             {
@@ -2105,9 +2105,9 @@ namespace FactoryManagementSoftware.UI
                 int month = DateTime.ParseExact(monthString, "MMMM", CultureInfo.CurrentCulture).Month;
                 int year;
 
-                if (month < DateTime.Now.Month)
+                if (month > DateTime.Now.Month)
                 {
-                    year = DateTime.Now.Year + 1;
+                    year = DateTime.Now.Year - 1;
                 }
                 else
                 {

@@ -34,7 +34,7 @@ namespace FactoryManagementSoftware.DAL
         public string ProTime { get; } = "time";
         public string ProOperator { get; } = "operator";
         public string ProMeterReading { get; } = "meter_reading";
-
+        public string ParentCode { get; } = "parent_code";
 
         #endregion
 
@@ -342,7 +342,8 @@ namespace FactoryManagementSoftware.DAL
                             + UpdatedBy + ","
                             + Active + ","
                             + PackagingQty + ","
-                            + PackagingCode + ") VALUES" +
+                             + PackagingCode + ","
+                            + ParentCode + ") VALUES" +
                             "(@plan_id," +
                             "@production_date," +
                             "@shift," +
@@ -360,7 +361,8 @@ namespace FactoryManagementSoftware.DAL
                              "@updated_by," +
                             "@active," +
                             "@packaging_qty," +
-                            "@packaging_code)";
+                             "@packaging_code," +
+                            "@parent_code)";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -382,6 +384,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@active", u.active);
                 cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
                 cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
+                cmd.Parameters.AddWithValue("@parent_code", u.parent_code);
 
                 conn.Open();
 
@@ -594,6 +597,7 @@ namespace FactoryManagementSoftware.DAL
                             + Active + "=@active,"
                             + PackagingCode + "=@packaging_code,"
                             + PackagingQty + "=@packaging_qty,"
+                            + ParentCode + "=@parent_code,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
                             " WHERE sheet_id=@sheet_id";
@@ -619,6 +623,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@active", u.active);
                 cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
                 cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
+                cmd.Parameters.AddWithValue("@parent_code", u.parent_code);
 
                 conn.Open();
 

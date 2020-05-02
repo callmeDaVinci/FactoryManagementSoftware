@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvPackaging = new System.Windows.Forms.DataGridView();
             this.btnAddItem = new System.Windows.Forms.Button();
             this.btnDone = new System.Windows.Forms.Button();
@@ -47,7 +47,6 @@
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider4 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label4 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPackaging)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
@@ -63,26 +62,26 @@
             this.dgvPackaging.AllowUserToOrderColumns = true;
             this.dgvPackaging.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvPackaging.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPackaging.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPackaging.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvPackaging.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPackaging.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvPackaging.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPackaging.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvPackaging.GridColor = System.Drawing.Color.WhiteSmoke;
-            this.dgvPackaging.Location = new System.Drawing.Point(13, 67);
+            this.dgvPackaging.Location = new System.Drawing.Point(13, 81);
             this.dgvPackaging.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.dgvPackaging.MultiSelect = false;
             this.dgvPackaging.Name = "dgvPackaging";
@@ -90,7 +89,7 @@
             this.dgvPackaging.RowHeadersVisible = false;
             this.dgvPackaging.RowTemplate.Height = 40;
             this.dgvPackaging.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPackaging.Size = new System.Drawing.Size(848, 329);
+            this.dgvPackaging.Size = new System.Drawing.Size(848, 315);
             this.dgvPackaging.TabIndex = 154;
             this.dgvPackaging.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvPackaging_CellMouseDown);
             // 
@@ -116,7 +115,7 @@
             this.btnDone.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnDone.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDone.ForeColor = System.Drawing.Color.White;
-            this.btnDone.Location = new System.Drawing.Point(736, 398);
+            this.btnDone.Location = new System.Drawing.Point(736, 400);
             this.btnDone.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.btnDone.Name = "btnDone";
             this.btnDone.Size = new System.Drawing.Size(125, 36);
@@ -132,7 +131,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(604, 398);
+            this.button1.Location = new System.Drawing.Point(604, 400);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(125, 36);
@@ -157,9 +156,9 @@
             this.lblPcs.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPcs.Location = new System.Drawing.Point(12, 16);
             this.lblPcs.Name = "lblPcs";
-            this.lblPcs.Size = new System.Drawing.Size(33, 19);
+            this.lblPcs.Size = new System.Drawing.Size(65, 19);
             this.lblPcs.TabIndex = 249;
-            this.lblPcs.Text = "PCS";
+            this.lblPcs.Text = "PCS/BOX";
             // 
             // cmbPackingName
             // 
@@ -178,7 +177,7 @@
             this.txtPackagingMax.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPackagingMax.Location = new System.Drawing.Point(13, 38);
             this.txtPackagingMax.Name = "txtPackagingMax";
-            this.txtPackagingMax.Size = new System.Drawing.Size(57, 25);
+            this.txtPackagingMax.Size = new System.Drawing.Size(64, 25);
             this.txtPackagingMax.TabIndex = 247;
             this.txtPackagingMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtPackagingMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPackingQty_KeyPress);
@@ -199,9 +198,9 @@
             this.lblTotalBox.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalBox.Location = new System.Drawing.Point(538, 16);
             this.lblTotalBox.Name = "lblTotalBox";
-            this.lblTotalBox.Size = new System.Drawing.Size(78, 19);
+            this.lblTotalBox.Size = new System.Drawing.Size(76, 19);
             this.lblTotalBox.TabIndex = 252;
-            this.lblTotalBox.Text = "TOTAL BOX";
+            this.lblTotalBox.Text = "TOTAL QTY";
             // 
             // lblBoxName
             // 
@@ -209,9 +208,9 @@
             this.lblBoxName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBoxName.Location = new System.Drawing.Point(92, 16);
             this.lblBoxName.Name = "lblBoxName";
-            this.lblBoxName.Size = new System.Drawing.Size(79, 19);
+            this.lblBoxName.Size = new System.Drawing.Size(48, 19);
             this.lblBoxName.TabIndex = 253;
-            this.lblBoxName.Text = "BOX NAME";
+            this.lblBoxName.Text = "NAME";
             // 
             // lblBoxCode
             // 
@@ -219,9 +218,9 @@
             this.lblBoxCode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBoxCode.Location = new System.Drawing.Point(329, 16);
             this.lblBoxCode.Name = "lblBoxCode";
-            this.lblBoxCode.Size = new System.Drawing.Size(77, 19);
+            this.lblBoxCode.Size = new System.Drawing.Size(46, 19);
             this.lblBoxCode.TabIndex = 254;
-            this.lblBoxCode.Text = "BOX CODE";
+            this.lblBoxCode.Text = "CODE";
             // 
             // errorProvider1
             // 
@@ -239,16 +238,6 @@
             // 
             this.errorProvider4.ContainerControl = this;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(76, 41);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(14, 19);
-            this.label4.TabIndex = 255;
-            this.label4.Text = "/";
-            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -261,7 +250,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(874, 451);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.lblBoxCode);
             this.Controls.Add(this.lblBoxName);
             this.Controls.Add(this.lblTotalBox);
@@ -305,7 +293,6 @@
         private System.Windows.Forms.Label lblBoxName;
         private System.Windows.Forms.Label lblBoxCode;
         private System.Windows.Forms.ErrorProvider errorProvider1;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.ErrorProvider errorProvider3;
         private System.Windows.Forms.ErrorProvider errorProvider4;

@@ -196,15 +196,19 @@ namespace FactoryManagementSoftware.UI
             tool.AddTextBoxColumns(dgv, IndexColumnName, IndexColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, DateColumnName, DateColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, CatColumnName, CatColumnName, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, CodeColumnName, CodeColumnName, Fill);
-            tool.AddTextBoxColumns(dgv, NameColumnName, NameColumnName, Fill);
+            tool.AddTextBoxColumns(dgv, CodeColumnName, CodeColumnName, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, NameColumnName, NameColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, FromCatColumnName, FromCatColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, FromColumnName, FromColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, ToCatColumnName, ToCatColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, ToColumnName, ToColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, QtyColumnName, QtyColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, UnitColumnName, UnitColumnName, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, NoteColumnName, NoteColumnName, Fill);
+            tool.AddTextBoxColumns(dgv, NoteColumnName, NoteColumnName, DisplayedCells);
+
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
             dgv.Columns[QtyColumnName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
@@ -505,7 +509,12 @@ namespace FactoryManagementSoftware.UI
 
             string itemCode = cmbTrfItemCode.Text;
 
-            if(!string.IsNullOrEmpty(itemCode))
+            DataTable dt_Item = dalItem.codeSearch(itemCode);
+
+            bool assembly = dalItem.checkIfAssembly(itemCode, dt_Item);
+            bool production = dalItem.checkIfProduction(itemCode, dt_Item);
+
+            if (!string.IsNullOrEmpty(itemCode))
             {
                 if (tool.ifGotChild(itemCode))
                 {
@@ -515,11 +524,11 @@ namespace FactoryManagementSoftware.UI
                         cmbTrfFromCategory.Text = text.Assembly;
 
                     }
-                    else if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))//assembly
+                    else if(assembly && !production)
                     {
                         cmbTrfFromCategory.Text = text.Assembly;
                     }
-                    else//production
+                    else
                     {
                         cmbTrfFromCategory.Text = text.Production;
                     }
@@ -549,9 +558,10 @@ namespace FactoryManagementSoftware.UI
                     cmbTrfTo.Text = text.Factory_Store;
                     //cmbTrfTo.SelectedIndex = 5;
                 }
+              
                 else
                 {
-                    cmbTrfTo.SelectedIndex = 4;
+                    cmbTrfTo.Text = text.Factory_9;
                 }
             }
             else if(cmbTrfFromCategory.Text.Equals(text.Inspection))
