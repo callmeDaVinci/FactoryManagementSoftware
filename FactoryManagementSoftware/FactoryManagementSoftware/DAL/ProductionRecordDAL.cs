@@ -35,7 +35,9 @@ namespace FactoryManagementSoftware.DAL
         public string ProOperator { get; } = "operator";
         public string ProMeterReading { get; } = "meter_reading";
         public string ParentCode { get; } = "parent_code";
-
+        public string Note { get; } = "note";
+        public string directIn { get; } = "directIn";
+        public string directOut { get; } = "directOut";
         #endregion
 
         #region variable/class object declare
@@ -342,8 +344,11 @@ namespace FactoryManagementSoftware.DAL
                             + UpdatedBy + ","
                             + Active + ","
                             + PackagingQty + ","
-                             + PackagingCode + ","
-                            + ParentCode + ") VALUES" +
+                            + PackagingCode + ","
+                            + directIn + ","
+                             + directOut + ","
+                            + ParentCode + ","
+                            + Note + ") VALUES" +
                             "(@plan_id," +
                             "@production_date," +
                             "@shift," +
@@ -362,7 +367,10 @@ namespace FactoryManagementSoftware.DAL
                             "@active," +
                             "@packaging_qty," +
                              "@packaging_code," +
-                            "@parent_code)";
+                              "@directIn," +
+                               "@directOut," +
+                                "@parent_code," +
+                            "@note)";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -385,6 +393,9 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
                 cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
                 cmd.Parameters.AddWithValue("@parent_code", u.parent_code);
+                cmd.Parameters.AddWithValue("@note", u.note);
+                cmd.Parameters.AddWithValue("@directIn", u.directIn);
+                cmd.Parameters.AddWithValue("@directOut", u.directOut);
 
                 conn.Open();
 
@@ -598,6 +609,9 @@ namespace FactoryManagementSoftware.DAL
                             + PackagingCode + "=@packaging_code,"
                             + PackagingQty + "=@packaging_qty,"
                             + ParentCode + "=@parent_code,"
+                            + Note + "=@note,"
+                            + directIn + "=@directIn,"
+                             + directOut + "=@directOut,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
                             " WHERE sheet_id=@sheet_id";
@@ -624,6 +638,9 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
                 cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
                 cmd.Parameters.AddWithValue("@parent_code", u.parent_code);
+                cmd.Parameters.AddWithValue("@note", u.note);
+                cmd.Parameters.AddWithValue("@directIn", u.directIn);
+                cmd.Parameters.AddWithValue("@directOut", u.directOut);
 
                 conn.Open();
 

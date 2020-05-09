@@ -530,6 +530,7 @@ namespace FactoryManagementSoftware.UI
                     if(cbShowOnlyOneRowForEachPlan.Checked)
                     {
                         dt_Row[header_ProDateTo] = proDate;
+                        dt_Row[header_ProDateFrom] = proDate;
                     }
                     else
                     {
@@ -567,7 +568,11 @@ namespace FactoryManagementSoftware.UI
                 string previousPlanID = null;
                 int totalStockIn = 0;
 
-                foreach(DataRow row in dt.Rows)
+                //sorting dt by planID and date
+                dt.DefaultView.Sort = header_PlanID+" ASC";
+                dt = dt.DefaultView.ToTable();
+
+                foreach (DataRow row in dt.Rows)
                 {
                     DateTime proDate = Convert.ToDateTime(row[header_ProDateTo]);
 
@@ -605,6 +610,17 @@ namespace FactoryManagementSoftware.UI
 
                     //    dt_FilterDuplicatePlan.Rows.Add(row);
                     //}
+
+                }
+
+                dt_FilterDuplicatePlan.DefaultView.Sort = header_Mac + " ASC, " + header_ProDateFrom + " ASC";
+                dt_FilterDuplicatePlan = dt_FilterDuplicatePlan.DefaultView.ToTable();
+
+                int indexNo = 1;
+                foreach (DataRow row in dt_FilterDuplicatePlan.Rows)
+                {
+                    row[header_Index] = indexNo;
+                    indexNo++;
 
                 }
 

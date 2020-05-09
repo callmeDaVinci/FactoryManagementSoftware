@@ -116,7 +116,7 @@ namespace FactoryManagementSoftware.UI
                 tool.DoubleBuffered(dgvItem, true);
                 tool.DoubleBuffered(dgvTrf, true);
                 tool.DoubleBuffered(dgvFactoryStock, true);
-                resetForm();//6s/11384ms/7364ms
+                resetForm();
                 dataUpdatedTime();
             }
             catch (Exception ex)
@@ -651,13 +651,13 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[daltrfHist.TrfID].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfAddedDate].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfDate].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfItemCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[daltrfHist.TrfItemCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[daltrfHist.TrfFrom].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfTo].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfQty].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfUnit].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfNote].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[daltrfHist.TrfNote].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[daltrfHist.TrfAddedBy].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfResult].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
@@ -1160,7 +1160,11 @@ namespace FactoryManagementSoftware.UI
                 {
                     MessageBox.Show("Please go to the ORDER PAGE to change the record");
                 }
-                refreshDataList();
+               
+                string itemCode = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfItemCode].Value.ToString();
+                loadStockList(itemCode);
+                calTotalStock(itemCode);
+               
                 //listPaintAndKeepSelected(dgvItem);
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
@@ -1237,12 +1241,6 @@ namespace FactoryManagementSoftware.UI
                 tool.historyRecord(text.TransferUndo, text.getTransferDetailString(id, qty, unit, itemCode, locationFrom, locationTo), DateTime.Now, MainDashboard.USER_ID);
 
                 matPlanDAL dalMatPlan = new matPlanDAL();
-                if (tool.IfFactoryExists(locationFrom) && (locationTo.Equals(text.Production) || locationTo.Equals(text.Assembly)))
-                {
-                   // DataTable dt = dalMatPlan.Select();
-
-                    //tool.matPlanAddQty(dt, itemCode, qty);
-                }
 
                 string textFind = tool.getBetween(note, "[For Plan ", "]");
                 int planID = -1;
@@ -1304,8 +1302,6 @@ namespace FactoryManagementSoftware.UI
             return result;
         }
 
-       
-
         private bool redo(int rowIndex)
         {
             bool result = false;
@@ -1349,12 +1345,6 @@ namespace FactoryManagementSoftware.UI
                 tool.historyRecord(text.TransferRedo, text.getTransferDetailString(id, qty, unit, itemCode, locationFrom, locationTo), DateTime.Now, MainDashboard.USER_ID);
 
                 matPlanDAL dalMatPlan = new matPlanDAL();
-                if (tool.IfFactoryExists(locationFrom) && (locationTo.Equals(text.Production) || locationTo.Equals(text.Assembly)))
-                {
-                    //DataTable dt = dalMatPlan.Select();
-
-                    //tool.matPlanSubtractQty(dt, itemCode, qty);
-                }
 
                 string textFind = tool.getBetween(note, "[For Plan ", "]");
                 int planID = -1;

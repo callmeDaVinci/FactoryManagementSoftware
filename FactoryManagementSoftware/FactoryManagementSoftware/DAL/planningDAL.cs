@@ -47,6 +47,9 @@ namespace FactoryManagementSoftware.DAL
 
         public string recording { get; } = "recording";
 
+        public string Checked { get; } = "checked";
+        public string CheckedBy { get; } = "check_by";
+        public string CHeckedDate { get; } = "check_date";
         #endregion
 
         #region variable/class object declare
@@ -322,6 +325,53 @@ namespace FactoryManagementSoftware.DAL
 
                 cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
                 cmd.Parameters.AddWithValue("@recording", u.recording);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool CheckedUpdate(PlanningBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_plan SET
+                                checked=@Checked,
+                                check_by=@CheckedBy,
+                                check_date=@CheckedDate
+                                WHERE plan_id=@plan_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@Checked", u.Checked);
+                cmd.Parameters.AddWithValue("@CheckedBy", u.CheckedBy);
+                cmd.Parameters.AddWithValue("@CheckedDate", u.CheckedDate);
 
                 conn.Open();
 

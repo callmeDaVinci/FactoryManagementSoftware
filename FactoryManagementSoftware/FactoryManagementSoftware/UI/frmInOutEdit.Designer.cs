@@ -119,7 +119,7 @@
             this.lblUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblUnit.AutoSize = true;
             this.lblUnit.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUnit.Location = new System.Drawing.Point(213, 2);
+            this.lblUnit.Location = new System.Drawing.Point(212, 2);
             this.lblUnit.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.lblUnit.Name = "lblUnit";
             this.lblUnit.Size = new System.Drawing.Size(40, 19);
@@ -264,7 +264,7 @@
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(217, 0);
+            this.label7.Location = new System.Drawing.Point(216, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(76, 21);
             this.label7.TabIndex = 63;
@@ -387,7 +387,7 @@
             // 
             this.lblCategoryError.AutoSize = true;
             this.lblCategoryError.ForeColor = System.Drawing.Color.Red;
-            this.lblCategoryError.Location = new System.Drawing.Point(88, 0);
+            this.lblCategoryError.Location = new System.Drawing.Point(87, 0);
             this.lblCategoryError.Name = "lblCategoryError";
             this.lblCategoryError.Size = new System.Drawing.Size(18, 20);
             this.lblCategoryError.TabIndex = 73;
@@ -397,7 +397,7 @@
             // 
             this.lblTrfDateError.AutoSize = true;
             this.lblTrfDateError.ForeColor = System.Drawing.Color.Red;
-            this.lblTrfDateError.Location = new System.Drawing.Point(299, 0);
+            this.lblTrfDateError.Location = new System.Drawing.Point(298, 0);
             this.lblTrfDateError.Name = "lblTrfDateError";
             this.lblTrfDateError.Size = new System.Drawing.Size(18, 20);
             this.lblTrfDateError.TabIndex = 74;
@@ -458,7 +458,7 @@
             // 
             this.lblUnitError.AutoSize = true;
             this.lblUnitError.ForeColor = System.Drawing.Color.Red;
-            this.lblUnitError.Location = new System.Drawing.Point(253, 0);
+            this.lblUnitError.Location = new System.Drawing.Point(252, 0);
             this.lblUnitError.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.lblUnitError.Name = "lblUnitError";
             this.lblUnitError.Size = new System.Drawing.Size(18, 20);
@@ -637,7 +637,7 @@
             this.btnOUT.Location = new System.Drawing.Point(146, 2);
             this.btnOUT.Margin = new System.Windows.Forms.Padding(5, 2, 5, 2);
             this.btnOUT.Name = "btnOUT";
-            this.btnOUT.Size = new System.Drawing.Size(136, 50);
+            this.btnOUT.Size = new System.Drawing.Size(135, 50);
             this.btnOUT.TabIndex = 109;
             this.btnOUT.Text = "OUT";
             this.btnOUT.UseVisualStyleBackColor = false;
@@ -651,10 +651,10 @@
             this.btnSwitch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSwitch.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSwitch.ForeColor = System.Drawing.Color.Black;
-            this.btnSwitch.Location = new System.Drawing.Point(292, 2);
+            this.btnSwitch.Location = new System.Drawing.Point(291, 2);
             this.btnSwitch.Margin = new System.Windows.Forms.Padding(5, 2, 2, 2);
             this.btnSwitch.Name = "btnSwitch";
-            this.btnSwitch.Size = new System.Drawing.Size(132, 50);
+            this.btnSwitch.Size = new System.Drawing.Size(133, 50);
             this.btnSwitch.TabIndex = 110;
             this.btnSwitch.Text = "SWITCH";
             this.btnSwitch.UseVisualStyleBackColor = false;
@@ -668,7 +668,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.28037F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 104F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
             this.tableLayoutPanel1.Controls.Add(this.lblPartCodeReset, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblCategoryError, 1, 0);
@@ -749,7 +749,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.18033F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.81967F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 138F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 139F));
             this.tableLayoutPanel5.Controls.Add(this.btnIN, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnOUT, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSwitch, 2, 0);
@@ -827,7 +827,7 @@
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 37.91469F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62.08531F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 43F));
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 172F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 173F));
             this.tableLayoutPanel10.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblQuantityError, 1, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblUnit, 2, 0);

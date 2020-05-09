@@ -29,6 +29,8 @@ namespace FactoryManagementSoftware.Module
         public string ItemEdit { get; } = "ItemEdit";
         public string ItemDelete { get; } = "ItemDelete";
 
+        public string CheckedJobSheet { get; } = "CheckedJobSheet";
+        public string UncheckedJobSheet { get; } = "UncheckedJobSheet";
         public string AddDailyJobSheet { get; } = "AddDailyJobSheet";
         public string EditDailyJobSheet { get; } = "EditDailyJobSheet";
         public string RemoveDailyJobSheet { get; } = "RemoveDailyJobSheet";
@@ -111,6 +113,7 @@ namespace FactoryManagementSoftware.Module
         
         public string Factory_Store { get; } = "STORE";
 
+        public string Other { get; } = "Other";
         public string Customer { get; } = "Customer";
         public string Production { get; } = "Production";
         public string Assembly { get; } = "Assembly";

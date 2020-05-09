@@ -49,6 +49,11 @@ namespace FactoryManagementSoftware.BLL
         public int family_with { get; set; } = -1;
         public bool recording { get; set; }
 
+        public bool Checked { get; set; }
+        public DateTime CheckedDate { get; set; }
+        public int CheckedBy { get; set; }
+
+
 
     }
 }

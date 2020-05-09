@@ -89,7 +89,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_ItemName, typeof(string));
             dt.Columns.Add(header_Material, typeof(string));
             dt.Columns.Add(header_Stock, typeof(string));
-            dt.Columns.Add(header_LastDelivered, typeof(string));
+            dt.Columns.Add(header_LastDelivered, typeof(DateTime));
             string inOutType = cmbInOutType.Text;
             if(inOutType == inOutType_InOut)
             {
@@ -188,6 +188,9 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvInOutUIEdit(DataGridView dgv)
         {
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
             //dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -670,6 +673,7 @@ namespace FactoryManagementSoftware.UI
                 DataRow row_In = dt.NewRow(), row_Out = dt.NewRow();
 
                 bool itemFound = false;
+                DataTable dt_SppCustomer = dalSPP.CustomerWithoutRemovedDataSelect();
 
                 foreach (DataRow itemRow in dt_ItemList.Rows)
                 {
@@ -735,7 +739,27 @@ namespace FactoryManagementSoftware.UI
                             continue;
                         }
 
-                        if (trfItemCode == itemCode &&  tool.IfFactoryExists(trfFrom) && !tool.IfFactoryExists(trfTo))
+                        bool listedCustomer = true;
+
+                        if (itemType == "SPP")
+                        {
+                            
+
+                            foreach (DataRow row in dt_SppCustomer.Rows)
+                            {
+                                string fullName = row[dalSPP.FullName].ToString();
+                                string shortName = row[dalSPP.ShortName].ToString();
+
+                                if (trfTo == fullName || trfTo == shortName || trfTo == "SPP" || trfTo == "OTHER")
+                                {
+                                    listedCustomer = true;
+                                    break;
+                                }
+                                listedCustomer = false;
+                            }
+                        }
+
+                        if (trfItemCode == itemCode &&  tool.IfFactoryExists(trfFrom) && !tool.IfFactoryExists(trfTo) && listedCustomer)
                         {
                             itemFound = true;
                             
@@ -744,6 +768,11 @@ namespace FactoryManagementSoftware.UI
                             double trfQty = double.TryParse(trfRow[dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : 0;
 
                             trfQty = Math.Round(trfQty, 2);
+
+                            if(trfQty == 3360)
+                            {
+                                float test = 0;
+                            }
 
                             DateTime trfDate = DateTime.TryParse(trfRow[dalTrfHist.TrfDate].ToString(), out trfDate) ? trfDate : DateTime.MaxValue;
                             //bool matched = false;
@@ -1434,6 +1463,29 @@ namespace FactoryManagementSoftware.UI
         {
             bool fromFactory = tool.IfFactoryExists(dt_Fac, trfFrom);
             bool toFactory = tool.IfFactoryExists(dt_Fac, trfTo);
+            
+            string itemType = cmbItemType.Text;
+
+            if(itemType == "SPP")
+            {
+                bool listedCustomer = false;
+                //check spp customer
+                DataTable dt = dalSPP.CustomerWithoutRemovedDataSelect();
+
+                foreach(DataRow row in dt.Rows)
+                {
+                    string fullName = row[dalSPP.FullName].ToString();
+                    string shortName = row[dalSPP.ShortName].ToString();
+
+                    if(trfTo == fullName || trfTo == shortName)
+                    {
+                        listedCustomer = true;
+                        break;
+                    }
+                }
+
+                toFactory &= listedCustomer;
+            }
 
             if (fromFactory && !toFactory)
             {

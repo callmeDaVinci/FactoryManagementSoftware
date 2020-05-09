@@ -1793,9 +1793,24 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Rows[n].Cells[QtyColumnName].Value = proQty;
                 dgv.Rows[n].Cells[UnitColumnName].Value = unit;
-                dgv.Rows[n].Cells[NoteColumnName].Value = "[Plan " + planID + "(" + shift + ")]";
-               
-                
+
+
+                if(shift == "M" || shift == "N")
+                {
+                    dgv.Rows[n].Cells[NoteColumnName].Value = "[Plan " + planID + "(" + shift + ")]";
+                }
+                else if (shift == "MB" || shift == "NB")
+                {
+
+                    dgv.Rows[n].Cells[NoteColumnName].Value = "[Plan " + planID + "(" + shift.Substring(0, 1) + ") Balance Stock In]";
+                }
+                else if (shift == "MBO" || shift == "NBO")
+                {
+
+                    dgv.Rows[n].Cells[NoteColumnName].Value = "[Plan " + planID + "(" + shift.Substring(0, 1) + ") Old Balance Stock Out]";
+                }
+
+
 
                 if (tool.ifGotChild(itemCode))
                 {

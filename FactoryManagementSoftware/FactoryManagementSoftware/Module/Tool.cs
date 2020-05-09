@@ -745,8 +745,8 @@ namespace FactoryManagementSoftware.Module
             {
                 string customer = row["cust_name"].ToString();
 
-                keywords = keywords.ToUpper();
-                customer = customer.ToUpper();
+                //keywords = keywords.ToUpper();
+                //customer = customer.ToUpper();
 
                 if (keywords.Equals(customer))
                 {
@@ -987,7 +987,7 @@ namespace FactoryManagementSoftware.Module
             return forecast;
         }
 
-        public int TotalProductionStockInInOneDay(DataTable dt_Trf, string itemCode, DateTime day)
+        public int TotalProductionStockInInOneDay(DataTable dt_Trf, string itemCode, DateTime day, string planID, string shift)
         {
             dt_Trf.DefaultView.Sort = dalTrfHist.TrfDate + " DESC";
             dt_Trf = dt_Trf.DefaultView.ToTable();
@@ -1009,8 +1009,48 @@ namespace FactoryManagementSoftware.Module
 
                     string trfItem = row[dalTrfHist.TrfItemCode].ToString();
 
-                    if (trfDate == day && trfItem == itemCode)
+                    string productionInfo = row[dalTrfHist.TrfNote].ToString();
+                    string _shift = "";
+                    string _planID = "";
+                    bool startCopy = false;
+                    bool IDCopied = false;
+
+                    for (int i = 0; i < productionInfo.Length; i++)
                     {
+                        if (productionInfo[i].ToString() == "P")
+                        {
+                            startCopy = true;
+                        }
+
+                        if (startCopy)
+                        {
+
+                            if (char.IsDigit(productionInfo[i]))
+                            {
+                                IDCopied = true;
+                                _planID += productionInfo[i];
+                            }
+                            else if (IDCopied)
+                            {
+                                _shift += productionInfo[i + 1];
+                                IDCopied = false;
+                            }
+
+                        }
+                    }
+
+                    if(_shift.ToUpper() == "M")
+                    {
+                        _shift = text.Shift_Morning;
+                    }
+                    else if (_shift.ToUpper() == "N")
+                    {
+                        _shift = text.Shift_Night;
+                    }
+
+                    if (trfDate == day && trfItem == itemCode && shift == _shift && planID == _planID)
+                    {
+                        
                         string trfFrom = row[dalTrfHist.TrfFrom].ToString();
                         string trfTo = row[dalTrfHist.TrfTo].ToString();
 
@@ -1027,6 +1067,16 @@ namespace FactoryManagementSoftware.Module
                             int stockInQty = int.TryParse(row[dalTrfHist.TrfQty].ToString(), out stockInQty) ? stockInQty : 0;
 
                             totalStockIn += stockInQty;
+                        }
+
+                        if(IfFactoryExists(trfFrom) && !IfFactoryExists(trfTo))
+                        {
+                            if (totalStockIn == -1)
+                            {
+                                totalStockIn = 0;
+                            }
+
+                            totalStockIn -= int.TryParse(row[dalTrfHist.TrfQty].ToString(), out int outStock) ? outStock : 0;
                         }
                     }
                 }

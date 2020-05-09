@@ -404,7 +404,7 @@
             this.dgvInOutReport.Name = "dgvInOutReport";
             this.dgvInOutReport.ReadOnly = true;
             this.dgvInOutReport.RowHeadersVisible = false;
-            this.dgvInOutReport.RowTemplate.Height = 40;
+            this.dgvInOutReport.RowTemplate.Height = 50;
             this.dgvInOutReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvInOutReport.Size = new System.Drawing.Size(1542, 530);
             this.dgvInOutReport.TabIndex = 152;

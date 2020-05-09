@@ -15,6 +15,8 @@ namespace FactoryManagementSoftware.BLL
         public int meter_end { get; set; }
         public int last_shift_balance { get; set; }
         public int current_shift_balance { get; set; }
+        public int directIn { get; set; }
+        public int directOut { get; set; }
         public int full_box { get; set; }
         public int total_produced { get; set; }
         public int total_reject { get; set; }
@@ -30,5 +32,6 @@ namespace FactoryManagementSoftware.BLL
         public string production_operator { get; set; }
         public int meter_reading { get; set; }
         public string parent_code { get; set; }
+        public string note { get; set; }
     }
 }
