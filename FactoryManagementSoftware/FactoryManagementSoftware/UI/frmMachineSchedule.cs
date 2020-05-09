@@ -1303,7 +1303,8 @@ namespace FactoryManagementSoftware.UI
             uPlanning.plan_status = text.planning_status_cancelled;
             uPlanning.plan_updated_date = date;
             uPlanning.plan_updated_by = MainDashboard.USER_ID;
-            uPlanning.recording = false;
+
+            //uPlanning.recording = false;
 
             bool success = dalPlanningAction.planningStatusChange(uPlanning, presentStatus);
 

@@ -9,9 +9,9 @@ using FactoryManagementSoftware.Module;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmProductionRecordNew : Form
+    public partial class frmProductionRecord : Form
     {
-        public frmProductionRecordNew()
+        public frmProductionRecord()
         {
             InitializeComponent();
             AutoScroll = true;

@@ -458,17 +458,18 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"UPDATE tbl_plan SET
                                 plan_status=@plan_status,
                                 plan_updated_date=@plan_updated_date,
-                                plan_updated_by=@plan_updated_by,
-                                recording=@recording
+                                plan_updated_by=@plan_updated_by
                                 WHERE plan_id=@plan_id";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
+
+                // recording=@recording
 
                 cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
                 cmd.Parameters.AddWithValue("@plan_status", u.plan_status);
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
-                cmd.Parameters.AddWithValue("@recording", u.recording);
+                //cmd.Parameters.AddWithValue("@recording", u.recording);
 
                 conn.Open();
 

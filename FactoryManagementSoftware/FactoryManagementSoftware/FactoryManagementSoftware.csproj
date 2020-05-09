@@ -545,6 +545,12 @@
     <Compile Include="UI\frmPMMADateEdit.Designer.cs">
       <DependentUpon>frmPMMADateEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmProductionRecordNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmProductionRecordNew.Designer.cs">
+      <DependentUpon>frmProductionRecordNew.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmProductionRecord.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -878,6 +884,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPMMADateEdit.resx">
       <DependentUpon>frmPMMADateEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmProductionRecordNew.resx">
+      <DependentUpon>frmProductionRecordNew.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmProductionRecord.resx">
       <DependentUpon>frmProductionRecord.cs</DependentUpon>
