@@ -383,5 +383,10 @@ namespace FactoryManagementSoftware.UI
         {
 
         }
+
+        private void lblCode_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

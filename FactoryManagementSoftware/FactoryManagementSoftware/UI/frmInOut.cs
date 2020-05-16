@@ -58,7 +58,7 @@ namespace FactoryManagementSoftware.UI
 
         DataTable dt_Fac;
         DataTable dt_Cust;
-
+        DataTable dtJoin;
         private DateTime updatedTime;
 
         [DllImport("user32.dll")]
@@ -232,6 +232,7 @@ namespace FactoryManagementSoftware.UI
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 dt_Fac = dalFac.Select();
                 dt_Cust = dalCust.Select();
+                dtJoin = dalJoin.SelectwithChildInfo();
                 loadItemCategoryData();
                 itemListLoaded = false;
                 loadItemList();
@@ -751,7 +752,8 @@ namespace FactoryManagementSoftware.UI
         private bool ifGotChild(string itemCode)
         {
             bool result = false;
-            DataTable dtJoin = dalJoin.loadChildList(itemCode);
+           // DataTable dtJoin = dalJoin.loadChildList(itemCode);
+            
             if (dtJoin.Rows.Count > 0)
             {
                 result = true;
@@ -1662,7 +1664,7 @@ namespace FactoryManagementSoftware.UI
             {
                 itemCode = dgv.Rows[row].Cells[daltrfHist.TrfItemCode].Value.ToString();
 
-                if (ifGotChild(itemCode))
+                if (tool.ifGotChild(itemCode,dtJoin))
                 {
                     if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                     {
@@ -1950,6 +1952,62 @@ namespace FactoryManagementSoftware.UI
             {
                 txtSearch.Text = "Search";
                 txtSearch.ForeColor = SystemColors.GrayText;
+            }
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void JumpToSelectedTrfIDRow()
+        {
+            int searchingID = int.TryParse(txtJumpID.Text, out searchingID) ? searchingID : -1;
+
+            if (searchingID > 0)
+            {
+                bool IDFound = false;
+                DataTable dt = (DataTable)dgvTrf.DataSource;
+
+
+                foreach (DataGridViewRow row in dgvTrf.Rows)
+                {
+                    string listID = row.Cells[daltrfHist.TrfID].Value.ToString();
+
+                    if (listID == searchingID.ToString())
+                    {
+                        //dgvTrf.FirstDisplayedScrollingRowIndex = dgvTrf.SelectedRows[i].Index;
+
+                        int rowIndex = row.Index;
+                        dgvTrf.CurrentCell = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfID];
+
+                        IDFound = true;
+                    }
+                }
+
+
+                if (!IDFound)
+                {
+                    MessageBox.Show("ID not found!");
+                }
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            JumpToSelectedTrfIDRow();
+
+        }
+
+        private void txtJumpID_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
+            {
+                JumpToSelectedTrfIDRow();
             }
         }
     }

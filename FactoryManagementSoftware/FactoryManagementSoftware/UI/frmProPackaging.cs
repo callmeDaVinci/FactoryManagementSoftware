@@ -39,6 +39,10 @@ namespace FactoryManagementSoftware.UI
         readonly static public string header_PackagingQty = "TOTAL QTY";
         readonly static public string header_PackagingMax = "QTY/BOX";
 
+        readonly private string string_AddItem = "ADD ITEM";
+        readonly private string string_EditItem = "EDIT ITEM";
+
+        private int EditingRowIndex = -1;
         static public bool dataSaved = false;
 
         static public DataTable dt_Packaging;
@@ -153,6 +157,7 @@ namespace FactoryManagementSoftware.UI
 
         private void Cancel_Click(object sender, EventArgs e)
         {
+            dataSaved = false;
             Close();
         }
 
@@ -202,28 +207,66 @@ namespace FactoryManagementSoftware.UI
 
                 DataTable dt = (DataTable)dgvPackaging.DataSource;
 
-                DataRow dt_Row = dt.NewRow();
+                if(EditingRowIndex == -1)
+                {
+                    DataRow dt_Row = dt.NewRow();
 
-                dt_Row[header_PackagingCode] = packagingCode;
-                dt_Row[header_PackagingName] = packagingName;
-                dt_Row[header_PackagingMax] = maxQty;
-                dt_Row[header_PackagingQty] = totalBox;
+                    dt_Row[header_PackagingCode] = packagingCode;
+                    dt_Row[header_PackagingName] = packagingName;
+                    dt_Row[header_PackagingMax] = maxQty;
+                    dt_Row[header_PackagingQty] = totalBox;
 
-                dt.Rows.Add(dt_Row);
+                    dt.Rows.Add(dt_Row);
+                }
+                else
+                {
+                    dt.Rows[EditingRowIndex][header_PackagingCode] = packagingCode;
+                    dt.Rows[EditingRowIndex][header_PackagingName] = packagingName;
+                    dt.Rows[EditingRowIndex][header_PackagingMax] = maxQty;
+                    dt.Rows[EditingRowIndex][header_PackagingQty] = totalBox;
+
+                    EditingRowIndex = -1;
+                    btnAddItem.Text = string_AddItem;
+                }
+               
 
                 ClearData();
             }
         }
 
+        private bool CheckIfNullItemExist(DataTable dt)
+        {
+            bool result = false;
+
+            foreach(DataRow row in dt.Rows)
+            {
+                string code = row[header_PackagingCode].ToString();
+
+                if(string.IsNullOrEmpty(code))
+                {
+                    return true;
+                }
+            }
+
+            return result;
+        }
         private void btnSaveAndStock_Click(object sender, EventArgs e)
         {
             dt_Packaging = (DataTable)dgvPackaging.DataSource;
 
             if (dt_Packaging.Rows.Count > 0)
             {
-                dataSaved = true;
-                MessageBox.Show("Packaging data added!");
-                Close();
+                if(CheckIfNullItemExist(dt_Packaging))
+                {
+                    MessageBox.Show("Packaging item cannot be EMPTY!\n(double click to edit row)");
+                }
+                else
+                {
+                    dataSaved = true;
+                    MessageBox.Show("Packaging data added!");
+                    Close();
+                }
+                
             }
             else
             {
@@ -289,6 +332,34 @@ namespace FactoryManagementSoftware.UI
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void RowEdit(DataGridView dgv,int row)
+        {
+            btnAddItem.Text = string_EditItem;
+            EditingRowIndex = row;
+            string qtyPerBox = dgv.Rows[row].Cells[header_PackagingMax].Value.ToString();
+            string code = dgv.Rows[row].Cells[header_PackagingCode].Value.ToString();
+            string name = dgv.Rows[row].Cells[header_PackagingName].Value.ToString();
+            string totalBox = dgv.Rows[row].Cells[header_PackagingQty].Value.ToString();
+
+            txtPackagingMax.Text = qtyPerBox;
+            txtTotalBox.Text = totalBox;
+
+            cmbPackingName.Text = name;
+            cmbPackingCode.Text = code;
+        }
+
+        private void dgvPackaging_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dgv = dgvPackaging;
+
+            if(dgv.CurrentCell != null)
+            {
+                int row = dgv.CurrentCell.RowIndex;
+
+                RowEdit(dgv, row);
+            }
         }
     }
 }

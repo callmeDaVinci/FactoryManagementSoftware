@@ -685,6 +685,7 @@
             this.lblCode.Size = new System.Drawing.Size(108, 23);
             this.lblCode.TabIndex = 183;
             this.lblCode.Text = "(OK) CFES 20";
+            this.lblCode.Click += new System.EventHandler(this.lblCode_Click);
             // 
             // lblStock
             // 

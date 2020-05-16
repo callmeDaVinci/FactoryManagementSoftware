@@ -31,6 +31,9 @@ namespace FactoryManagementSoftware.DAL
         public string PackagingCode { get; } = "packaging_code";
         public string PackagingMax { get; } = "packaging_max";
 
+       
+        public string ParentQty { get; } = "parent_qty";
+
         public string ProTime { get; } = "time";
         public string ProOperator { get; } = "operator";
         public string ProMeterReading { get; } = "meter_reading";
@@ -235,6 +238,49 @@ namespace FactoryManagementSoftware.DAL
             {
                 //sql query to get data from database
                 String sql = @"SELECT * FROM tbl_pro_packaging
+                               WHERE sheet_id = @sheet_id";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+
+                cmd.Parameters.AddWithValue("@sheet_id", sheetID);
+
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+
+        }
+
+        public DataTable ParentRecordSelect(int sheetID)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_pro_parent
                                WHERE sheet_id = @sheet_id";
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
@@ -504,6 +550,59 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
                 cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
                 cmd.Parameters.AddWithValue("@packaging_max", u.packaging_max);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertProductionParentData(ProductionRecordBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_pro_parent
+                            (" + SheetID + ","
+                            + ParentCode + ","
+                            + ParentQty + ") VALUES" +
+                            "(@sheet_id," +
+                            "@parent_code," +
+                             "@parent_qty," +
+                            "@updated_date," +
+                            "@updated_by)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);
+                cmd.Parameters.AddWithValue("@parent_code", u.parent_code);
+                cmd.Parameters.AddWithValue("@parent_qty", u.parent_qty);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
 
@@ -896,6 +995,44 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool DeleteParentData(ProductionRecordBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "DELETE FROM tbl_pro_parent WHERE sheet_id=@sheet_id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         #endregion
     }
 }

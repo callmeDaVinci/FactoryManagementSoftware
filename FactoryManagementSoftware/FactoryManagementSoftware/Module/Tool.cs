@@ -288,6 +288,20 @@ namespace FactoryManagementSoftware.Module
 
         #region Load/Update Data
 
+        public int GetQtyPerBag(DataTable dt, string itemCode)
+        {
+            int qtyPerBag = 0;
+            foreach (DataRow row in dt.Rows)
+            {
+                if(itemCode == row["CODE"].ToString())
+                {
+                    qtyPerBag = int.TryParse(row["STD_PACKING"].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+                }
+                
+            }
+
+            return qtyPerBag;
+        }
 
         public DateTime GetPMMAStartDate(int month, int year)
         {
@@ -987,6 +1001,132 @@ namespace FactoryManagementSoftware.Module
             return forecast;
         }
 
+        public Tuple<int, int> GetPreviousBalanceClearRecord(DataTable dt_Trf, string itemCode, DateTime day, string planID, string shift, bool isBalanceIn)
+        {
+            dt_Trf.DefaultView.Sort = dalTrfHist.TrfDate + " DESC";
+            dt_Trf = dt_Trf.DefaultView.ToTable();
+
+            int trfTableCode = -1;
+            int trfQty = -1;
+
+            Text text = new Text();
+            
+            foreach (DataRow row in dt_Trf.Rows)
+            {
+                string status = row[dalTrfHist.TrfResult].ToString();
+
+                if (status == "Passed")
+                {
+                    DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate].ToString());
+
+                    if (trfDate < day)
+                    {
+                        return Tuple.Create(trfTableCode, trfQty);
+                    }
+
+                    string trfItem = row[dalTrfHist.TrfItemCode].ToString();
+
+                    string productionInfo = row[dalTrfHist.TrfNote].ToString();
+                    string _shift = "";
+                    string _planID = "";
+                    string balanceClearType = "";
+                    bool startCopy = false;
+                    bool IDCopied = false;
+                    bool ShiftCopied = false;
+                    
+
+                    for (int i = 0; i < productionInfo.Length; i++)
+                    {
+                        if (productionInfo[i].ToString() == "P")
+                        {
+                            startCopy = true;
+                        }
+                        else if (ShiftCopied && (productionInfo[i].ToString() == "O" || productionInfo[i].ToString() == "B"))
+                        {
+                            startCopy = true;
+                        }
+                        else if (ShiftCopied && productionInfo[i].ToString() == "]")
+                        {
+                            startCopy = false;
+                        }
+
+                        if (startCopy)
+                        {
+
+                            if (char.IsDigit(productionInfo[i]))
+                            {
+                                IDCopied = true;
+                                _planID += productionInfo[i];
+                            }
+                            else if (IDCopied)
+                            {
+                                _shift += productionInfo[i + 1];
+                                IDCopied = false;
+                                ShiftCopied = true;
+                                startCopy = false;
+                            }
+                            else if(ShiftCopied)
+                            {
+                                balanceClearType += productionInfo[i];
+                            }
+
+                        }
+                    }
+
+                    if (_shift.ToUpper() == "M")
+                    {
+                        _shift = text.Shift_Morning;
+                    }
+                    else if (_shift.ToUpper() == "N")
+                    {
+                        _shift = text.Shift_Night;
+                    }
+
+                    string trfFrom = row[dalTrfHist.TrfFrom].ToString();
+                    string trfTo = row[dalTrfHist.TrfTo].ToString();
+
+                    bool dataMatch = trfDate == day && trfItem == itemCode && shift == _shift && planID == _planID;
+
+                    if(isBalanceIn)
+                    {
+                        if(balanceClearType == text.Note_BalanceStockIn)
+                        {
+                            dataMatch &= true;
+
+                            dataMatch &= trfFrom == text.Production || trfFrom == text.Assembly;
+
+                            dataMatch &= IfFactoryExists(trfTo);
+                        }
+                        else
+                        {
+                            dataMatch = false;
+                        }
+                    }
+                    else
+                    {
+                        if (balanceClearType == text.Note_OldBalanceStockOut)
+                        {
+                            dataMatch &= true;
+                            dataMatch &= IfFactoryExists(trfFrom) && trfTo == text.Other;
+                        }
+                        else
+                        {
+                            dataMatch = false;
+                        }
+                    }
+
+                    if (dataMatch)
+                    {
+                        trfTableCode = int.TryParse(row[dalTrfHist.TrfID].ToString(), out trfTableCode) ? trfTableCode : -1;
+                        trfQty = int.TryParse(row[dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : -1;
+                    }
+                }
+
+            }
+
+            return Tuple.Create(trfTableCode, trfQty);
+        }
+
         public int TotalProductionStockInInOneDay(DataTable dt_Trf, string itemCode, DateTime day, string planID, string shift)
         {
             dt_Trf.DefaultView.Sort = dalTrfHist.TrfDate + " DESC";
@@ -1414,6 +1554,12 @@ namespace FactoryManagementSoftware.Module
                     {
                         break;
                     }
+
+                    string code = dt.Rows[i][headerCode].ToString();
+                    if(code =="V95KUS000")
+                    {
+                        float test = 0;
+                    }
                     for (int j = i - 1; j >= 0; j--)
                     {
                         if (dt.Rows[i][headerCode].ToString() == dt.Rows[j][headerCode].ToString())
@@ -1421,55 +1567,135 @@ namespace FactoryManagementSoftware.Module
                             jQty = Convert.ToSingle(dt.Rows[j][headerBalanceZero].ToString());
                             iQty = Convert.ToSingle(dt.Rows[i][headerBalanceZero].ToString());
 
-                            if (jQty > 0)
-                                jQty = 0;
+                            if (jQty > 0 && iQty > 0)
+                            {
+                                if (jQty < iQty)
+                                {
+                                    jQty -= iQty;
+                                    iQty = 0;
+                                }
+                                else
+                                {
+                                    iQty -= jQty;
+                                    jQty = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (jQty > 0)
+                                    jQty = 0;
 
-                            if(iQty > 0)
-                                iQty = 0;
+                                if (iQty > 0)
+                                    iQty = 0;
+                            }
 
                             dt.Rows[j][headerBalanceZero] = (jQty + iQty).ToString();
 
                             jQty = Convert.ToSingle(dt.Rows[j][headerBalanceOne].ToString());
                             iQty = Convert.ToSingle(dt.Rows[i][headerBalanceOne].ToString());
 
-                            if (jQty > 0)
-                                jQty = 0;
+                            if (jQty > 0 && iQty > 0)
+                            {
+                                if (jQty < iQty)
+                                {
+                                    jQty -= iQty;
+                                    iQty = 0;
+                                }
+                                else
+                                {
+                                    iQty -= jQty;
+                                    jQty = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (jQty > 0)
+                                    jQty = 0;
 
-                            if (iQty > 0)
-                                iQty = 0;
+                                if (iQty > 0)
+                                    iQty = 0;
+                            }
 
                             dt.Rows[j][headerBalanceOne] = (jQty + iQty).ToString();
 
                             jQty = Convert.ToSingle(dt.Rows[j][headerBalanceTwo].ToString());
                             iQty = Convert.ToSingle(dt.Rows[i][headerBalanceTwo].ToString());
 
-                            if (jQty > 0)
-                                jQty = 0;
+                            if(jQty > 0 && iQty > 0)
+                            {
+                                if(jQty < iQty)
+                                {
+                                    jQty -= iQty;
+                                    iQty = 0;
+                                }
+                                else
+                                {
+                                    iQty -= jQty;
+                                    jQty = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (jQty > 0)
+                                    jQty = 0;
 
-                            if (iQty > 0)
-                                iQty = 0;
-
+                                if (iQty > 0)
+                                    iQty = 0;
+                            }
+                            
                             dt.Rows[j][headerBalanceTwo] = (jQty + iQty).ToString();
 
                             jQty = Convert.ToSingle(dt.Rows[j][headerBalanceThree].ToString());
                             iQty = Convert.ToSingle(dt.Rows[i][headerBalanceThree].ToString());
 
-                            if (jQty > 0)
-                                jQty = 0;
+                            if (jQty > 0 && iQty > 0)
+                            {
+                                if (jQty < iQty)
+                                {
+                                    jQty -= iQty;
+                                    iQty = 0;
+                                }
+                                else
+                                {
+                                    iQty -= jQty;
+                                    jQty = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (jQty > 0)
+                                    jQty = 0;
 
-                            if (iQty > 0)
-                                iQty = 0;
+                                if (iQty > 0)
+                                    iQty = 0;
+                            }
 
                             dt.Rows[j][headerBalanceThree] = (jQty + iQty).ToString();
 
                             jQty = Convert.ToSingle(dt.Rows[j][headerBalanceFour].ToString());
                             iQty = Convert.ToSingle(dt.Rows[i][headerBalanceFour].ToString());
 
-                            if (jQty > 0)
-                                jQty = 0;
+                            if (jQty > 0 && iQty > 0)
+                            {
+                                if (jQty < iQty)
+                                {
+                                    jQty -= iQty;
+                                    iQty = 0;
+                                }
+                                else
+                                {
+                                    iQty -= jQty;
+                                    jQty = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (jQty > 0)
+                                    jQty = 0;
 
-                            if (iQty > 0)
-                                iQty = 0;
+                                if (iQty > 0)
+                                    iQty = 0;
+                            }
 
                             dt.Rows[j][headerBalanceFour] = (jQty + iQty).ToString();
 
@@ -1601,6 +1827,69 @@ namespace FactoryManagementSoftware.Module
                 }
             }
             return catName;
+        }
+
+        public DateTime GetTransferDate(string trfID)
+        {
+            DataTable dt = dalTrfHist.Select(trfID);
+
+            return Convert.ToDateTime(dt.Rows[0][dalTrfHist.TrfDate].ToString()).Date;
+        }
+
+        public float GetZeroCostPendingOrder(DataTable dt,string itemCode)
+        {
+            string statusSearch = "PENDING";
+
+            dt.DefaultView.Sort = "ord_added_date DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            float totalPending = 0;
+
+            foreach (DataRow ord in sortedDt.Rows)
+            {
+                string orderType = ord["ord_type"].ToString();
+                if (ord["ord_status"].ToString().Equals(statusSearch) && itemCode == ord[dalItem.ItemCode].ToString() && orderType == "ZERO COST")
+                {
+
+                    int orderID = Convert.ToInt32(ord["ord_id"].ToString());
+
+                    if (orderID > 8)
+                    {
+                        float pendingOrder = float.TryParse(ord["ord_pending"].ToString(), out pendingOrder) ? pendingOrder : 0;
+                        totalPending += pendingOrder;
+                    }
+                }
+            }
+
+            return totalPending;
+        }
+
+        public float GetPurchasePendingOrder(DataTable dt, string itemCode)
+        {
+            string statusSearch = "PENDING";
+
+            dt.DefaultView.Sort = "ord_added_date DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            float totalPending = 0;
+
+            foreach (DataRow ord in sortedDt.Rows)
+            {
+                string orderType = ord["ord_type"].ToString();
+                if (ord["ord_status"].ToString().Equals(statusSearch) && itemCode == ord[dalItem.ItemCode].ToString() && orderType == "PURCHASE")
+                {
+
+                    int orderID = Convert.ToInt32(ord["ord_id"].ToString());
+
+                    if (orderID > 8)
+                    {
+                        float pendingOrder = float.TryParse(ord["ord_pending"].ToString(), out pendingOrder) ? pendingOrder : 0;
+                        totalPending += pendingOrder;
+                    }
+                }
+            }
+
+            return totalPending;
         }
 
         public float getOrderQtyFromDataTable(DataTable dt, string itemCode)
@@ -3169,6 +3458,7 @@ namespace FactoryManagementSoftware.Module
             }
             else
             {
+                #region variable setting
                 float bal_1, bal_2, bal_3, bal_4, readyStock, currentMonthOut, nextMonthOut, itemPartWeight, itemRunnerWeight, wastageAllowed;
                 float nextNextMonthOut, nextNextNextMonthOut;
                 float forecast_1, forecast_2, forecast_3, forecast_4;
@@ -3190,14 +3480,13 @@ namespace FactoryManagementSoftware.Module
                 DataTable dt_nextNextNextMonthTrfOutHist = dalTrfHist.rangeToAllCustomerSearchByMonth(nextNextNextMonth, year);
 
                 DataTable dtJoin = dalJoin.SelectwithChildInfo();
+                #endregion
 
                 foreach (DataRow item in dt.Rows)
                 {
-                    //counter++;
                     itemCode = item["item_code"].ToString();
 
-
-                    if (itemCode.Equals("V0KPCH200"))
+                    if(itemCode == "V84KUU0V0")
                     {
                         float test = 0;
                     }
@@ -3272,8 +3561,7 @@ namespace FactoryManagementSoftware.Module
 
                     #endregion
 
-                    //calculate still need how many qty
-
+                    #region calculate still need how many qty
                     if (currentMonthOut >= forecast_1)
                     {
                         bal_1 = readyStock;
@@ -3321,6 +3609,7 @@ namespace FactoryManagementSoftware.Module
                     {
                         bal_4 = forecast_4 * -1 + nextNextNextMonthOut;
                     }
+                    #endregion
 
                     #region child
                     if (ifGotChild(itemCode, dtJoin))
@@ -3362,6 +3651,12 @@ namespace FactoryManagementSoftware.Module
                         {
                             if (Join["parent_code"].ToString().Equals(itemCode))
                             {
+                                string childCode = Join["child_code"].ToString();
+                                if (childCode == "V95KUS000")
+                                {
+                                    float test2 = 0;
+                                }
+
                                 if (Join["child_cat"].ToString().Equals("Part") || Join["child_cat"].ToString().Equals("Sub Material"))
                                 {
                                     child_ReadyStock = Join["child_qty"] == DBNull.Value ? 0 : Convert.ToInt32(Join["child_qty"]);
@@ -3387,9 +3682,10 @@ namespace FactoryManagementSoftware.Module
                                     }
                                     else
                                     {
-                                        childBal_1 = child_ReadyStock;
+                                        childBal_1 = 0;
+                                        //childBal_1 = child_ReadyStock;
                                     }
-                                    // got problem here, cannot dedute ready stock
+
                                     if (bal_2 > 0)
                                     {
                                         childBal_2 = childBal_1;
@@ -3602,7 +3898,9 @@ namespace FactoryManagementSoftware.Module
                                             float tes4t = bal_4;
 
                                         }
-  
+
+                                       
+
                                         dtMat_row[headerCode] = Join["child_code"].ToString();
                                         dtMat_row[headerName] = getItemNameFromDataTable(dt_ItemInfo, Join["child_code"].ToString());
                                         dtMat_row[headerMB] = child_MB;

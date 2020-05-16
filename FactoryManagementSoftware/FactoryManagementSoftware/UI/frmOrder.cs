@@ -885,8 +885,8 @@ namespace FactoryManagementSoftware.UI
 
             //DataTable dtMat = insertMaterialUsedData();
             DataTable dtMat;
-
-            if(cbZeroCost.Checked)
+            DataTable dt_OrderAllData = dalOrd.Select();
+            if (cbZeroCost.Checked)
             {
                 dtMat = tool.InsertZeroCostMaterialUsedData(tool.getCustName(1));
             }
@@ -1007,7 +1007,17 @@ namespace FactoryManagementSoftware.UI
                                     dtAlert_row[headerBalanceTwo] = Math.Round(bal2, 2);
                                     dtAlert_row[headerBalanceThree] = Math.Round(bal3, 2);
                                     dtAlert_row[headerBalanceFour] = Math.Round(bal4, 2);
-                                    dtAlert_row[headerPendingOrder] = tool.getOrderQtyFromDataTable(dt_itemInfo, itemCode);
+
+                                    if(cbZeroCost.Checked)
+                                    {
+                                        dtAlert_row[headerPendingOrder] = tool.GetZeroCostPendingOrder(dt_OrderAllData, itemCode);
+                                    }
+                                    else
+                                    {
+                                        //dtAlert_row[headerPendingOrder] = tool.getOrderQtyFromDataTable(dt_itemInfo, itemCode);
+                                        dtAlert_row[headerPendingOrder] = tool.GetPurchasePendingOrder(dt_OrderAllData, itemCode);
+                                    }
+                                    
 
                                     dtAlert.Rows.Add(dtAlert_row);
                                     index++;
@@ -1089,7 +1099,17 @@ namespace FactoryManagementSoftware.UI
                                     dtAlert_row[headerBalanceTwo] = Math.Round(mat_Ready_Stock + bal2, 2);
                                     dtAlert_row[headerBalanceThree] = Math.Round(mat_Ready_Stock + bal3, 2);
                                     dtAlert_row[headerBalanceFour] = Math.Round(mat_Ready_Stock + bal4, 2);
-                                    dtAlert_row[headerPendingOrder] = tool.getOrderQtyFromDataTable(dt_itemInfo, material);
+                                   
+
+                                    if (cbZeroCost.Checked)
+                                    {
+                                        dtAlert_row[headerPendingOrder] = tool.GetZeroCostPendingOrder(dt_OrderAllData, material);
+                                    }
+                                    else
+                                    {
+                                        dtAlert_row[headerPendingOrder] = tool.GetPurchasePendingOrder(dt_OrderAllData, material);
+                                        //dtAlert_row[headerPendingOrder] = tool.getOrderQtyFromDataTable(dt_itemInfo, material);
+                                    }
 
                                     dtAlert.Rows.Add(dtAlert_row);
                                     index++;
@@ -1142,7 +1162,18 @@ namespace FactoryManagementSoftware.UI
                                         dtAlert_row[headerBalanceTwo] = Math.Round(mat_Ready_Stock +  bal2 * MB_rate, 2);
                                         dtAlert_row[headerBalanceThree] = Math.Round(mat_Ready_Stock + bal3 * MB_rate, 2);
                                         dtAlert_row[headerBalanceFour] = Math.Round(mat_Ready_Stock +  bal4 * MB_rate, 2);
-                                        dtAlert_row[headerPendingOrder] = tool.getOrderQtyFromDataTable(dt_itemInfo, itemMB);
+                                       
+
+                                        if (cbZeroCost.Checked)
+                                        {
+                                            dtAlert_row[headerPendingOrder] = tool.GetZeroCostPendingOrder(dt_OrderAllData, itemMB);
+                                        }
+                                        else
+                                        {
+                                            dtAlert_row[headerPendingOrder] = tool.GetPurchasePendingOrder(dt_OrderAllData, itemMB);
+                                            //dtAlert_row[headerPendingOrder] = tool.getOrderQtyFromDataTable(dt_itemInfo, itemMB);
+                                        }
+
 
                                         dtAlert.Rows.Add(dtAlert_row);
                                         index++;

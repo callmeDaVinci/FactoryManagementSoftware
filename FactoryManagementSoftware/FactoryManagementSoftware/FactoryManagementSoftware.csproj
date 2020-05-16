@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>144</ApplicationRevision>
+    <ApplicationRevision>157</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -320,6 +320,12 @@
     </Compile>
     <Compile Include="UI\frmMatPlanningList.Designer.cs">
       <DependentUpon>frmMatPlanningList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmMultiParent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMultiParent.Designer.cs">
+      <DependentUpon>frmMultiParent.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmNewPMMA.cs">
       <SubType>Form</SubType>
@@ -763,6 +769,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMatPlanningList.resx">
       <DependentUpon>frmMatPlanningList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmMultiParent.resx">
+      <DependentUpon>frmMultiParent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmNewPMMA.resx">
       <DependentUpon>frmNewPMMA.cs</DependentUpon>

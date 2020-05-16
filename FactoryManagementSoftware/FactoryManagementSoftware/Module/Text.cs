@@ -130,6 +130,7 @@ namespace FactoryManagementSoftware.Module
         public string Unit_Set { get; } = "set";
         public string Unit_Piece { get; } = "piece";
         public string Unit_Meter { get; } = "meter";
+        public string Unit_Bag{ get; } = "bag";
         public string Unit_Millimetre { get; } = "mm";
         public string Unit_Inch { get; } = "in";
 
@@ -192,6 +193,11 @@ namespace FactoryManagementSoftware.Module
         public string Type_Oring { get; } = "O RING";
         public string Type_Cap { get; } = "CAP";
         public string Type_Reducing { get; } = "REDUCING";
+
+        //Message
+        public string Message_DataNotSaved { get; } = "You changes have not been saved.\nDiscard changes?";
+        public string Note_OldBalanceStockOut { get; } = "Old Balance Stock Out";
+        public string Note_BalanceStockIn { get; } = "Balance Stock In";
 
         //SPP STOCK LEVEL
         public int StockLevel_20 { get; } = 50;

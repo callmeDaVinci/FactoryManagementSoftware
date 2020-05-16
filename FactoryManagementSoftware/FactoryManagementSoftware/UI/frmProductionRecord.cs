@@ -1553,7 +1553,9 @@ namespace FactoryManagementSoftware.UI
 
                         totalStockIn += packingMaxQty * fullBoxQty;
 
-                        if (!string.IsNullOrEmpty(cmbPackingCode.Text))
+                        string itemType = cmbPackingCode.Text.Substring(0, 3);
+
+                        if (!string.IsNullOrEmpty(cmbPackingCode.Text) && itemType == "CTN")
                         {
                             dt_Row = dt.NewRow();
                             dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");

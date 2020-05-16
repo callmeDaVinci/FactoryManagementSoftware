@@ -156,10 +156,11 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMatUsedUIEdit(DataGridView dgv)
         {
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             //dgv.Columns[text.Header_PartName].DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 8F, FontStyle.Bold);
-            dgv.Columns[text.Header_Parent].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
-            dgv.Columns[text.Header_MatType].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
-
+            dgv.Columns[text.Header_Parent].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgv.Columns[text.Header_MatType].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+            dgv.Columns[text.Header_MatCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 
             dgv.Columns[text.Header_PartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[text.Header_PartCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -184,13 +185,14 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_MaterialUsedWithWastage].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[text.Header_TotalMaterialUsed_KG_Piece].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-            dgv.Columns[text.Header_TotalMaterialUsed_KG_Piece].DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F, FontStyle.Bold);
+            dgv.Columns[text.Header_TotalMaterialUsed_KG_Piece].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
 
             dgv.Columns[text.Header_TotalMaterialUsed_KG_Piece].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
             dgv.Columns[text.Header_MatName].Frozen = true;
 
-            dgv.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 6F, FontStyle.Regular);
+            
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
         }
 
         private void dgvMatUsedReport_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

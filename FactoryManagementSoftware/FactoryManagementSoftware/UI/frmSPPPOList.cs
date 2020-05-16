@@ -167,6 +167,7 @@ namespace FactoryManagementSoftware.UI
         private int oldData = 0;
         private int adjustRow = -1;
         private int adjustCol = -1;
+        private int TotalToDeliveryBag = 0;
         #endregion
 
         private DataTable NewExcelTable()
@@ -273,7 +274,7 @@ namespace FactoryManagementSoftware.UI
 
         private void DgvUIEdit(DataGridView dgv)
         {
-            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
             dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Red;
@@ -323,14 +324,16 @@ namespace FactoryManagementSoftware.UI
                     dgv.Columns[header_Stock].Visible = false;
                     dgv.Columns[header_DeliveryPCS].Visible = false;
                     dgv.Columns[header_DeliveryBAG].Visible = false;
-                    //dgv.Columns[header_POCode].Visible = false;
+                    dgv.Columns[header_POCode].Visible = false;
                     dgv.Columns[header_Note].Visible = false;
                     dgv.Columns[header_StdPacking].Visible = false;
                     dgv.Columns[header_Balance].Visible = false;
                     dgv.Columns[header_DataMode].Visible = false;
-                    //dgv.Columns[header_POTblCode].Visible = false;
-                    //dgv.Columns[header_DOTblCode].Visible = false;
+                    dgv.Columns[header_POTblCode].Visible = false;
+                    dgv.Columns[header_DOTblCode].Visible = false;
 
+                    dgv.Columns[header_BalanceString].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                    dgv.Columns[header_StockString].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
                     dgv.Columns[header_DONoString].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
                     //dgv.Columns[header_StockString].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
                     dgv.Columns[header_DeliveryQTY].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
@@ -343,6 +346,7 @@ namespace FactoryManagementSoftware.UI
                     dgv.Columns[header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                     dgv.Columns[header_Type].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                     dgv.Columns[header_DeliveryPCS].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    dgv.Columns[header_DeliveredQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     dgv.Columns[header_DeliveryBAG].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     dgv.Columns[header_Note].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 }
@@ -400,7 +404,7 @@ namespace FactoryManagementSoftware.UI
             tlpList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 45);
         }
 
-        private void ShowPOList()
+        private void ShowPOListUI()
         {
             lblMainList.Text = text_POList;
             lblSubList.Text = text_POItemList;
@@ -421,7 +425,7 @@ namespace FactoryManagementSoftware.UI
 
             if (!EditMode)
             {
-                ShowPOList();
+                ShowPOListUI();
                 LoadPOList();
             }
             else
@@ -984,7 +988,8 @@ namespace FactoryManagementSoftware.UI
 
                     int deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
 
-                    if(EditMode)
+                    
+                    if (EditMode)
                     {
                         deliveryQty = int.TryParse(row[dalSPP.DOToDeliveryQty].ToString(), out deliveryQty) ? deliveryQty : 0;
                     }
@@ -992,9 +997,8 @@ namespace FactoryManagementSoftware.UI
                     int qtyPerBag = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
 
                     int deliveryBag = deliveryQty / qtyPerBag;
-                    dt_Row = dt_DOItemList.NewRow();
 
-                    
+                    dt_Row = dt_DOItemList.NewRow();
 
                     if(deliveredQty != deliveryQty)
                     {
@@ -1006,6 +1010,9 @@ namespace FactoryManagementSoftware.UI
                         {
                             dt_Row[header_POTblCode] = row[dalSPP.TableCode];
                         }
+
+                        deliveryQty -= deliveredQty;
+                        deliveryBag = deliveryQty / qtyPerBag;
 
                         dt_Row[header_DataMode] = text_ToAdd;
                         dt_Row[header_Size] = row[dalSPP.SizeNumerator];
@@ -1032,7 +1039,9 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[header_StdPacking] = qtyPerBag;
                         dt_DOItemList.Rows.Add(dt_Row);
                     }
-                   
+
+                    
+                    TotalToDeliveryBag += deliveryBag;
                 }
             }
 
@@ -1624,6 +1633,7 @@ namespace FactoryManagementSoftware.UI
 
         private void POToDO()
         {
+            TotalToDeliveryBag = 0;
             DataTable dt = (DataTable)dgvPOList.DataSource;
 
             DataTable dt_DO = NewDOTable();
@@ -1674,6 +1684,8 @@ namespace FactoryManagementSoftware.UI
             dgvItemList.DataSource = dt_DOItemList_1;
             DgvUIEdit(dgvItemList);
             dgvItemList.ClearSelection();
+
+            
 
             dgvDOList.DataSource = dt_DO;
             DgvUIEdit(dgvDOList);
@@ -2162,7 +2174,7 @@ namespace FactoryManagementSoftware.UI
             LoadPOList();
 
             dgvPOList.ClearSelection();
-            ShowPOList();
+            ShowPOListUI();
 
         }
 
@@ -2225,7 +2237,7 @@ namespace FactoryManagementSoftware.UI
 
             dgvPOList.ClearSelection();
            
-            ShowPOList();
+            ShowPOListUI();
         }
 
         private void AddingDOStep2()
@@ -2908,6 +2920,23 @@ namespace FactoryManagementSoftware.UI
             //}
         }
 
+        private void UpdateTotalToDeliveryBag()
+        {
+            DataTable dt = (DataTable)dgvItemList.DataSource;
+            TotalToDeliveryBag = 0;
+            foreach(DataRow row in dt.Rows)
+            {
+                string dataMode = row[header_DataMode].ToString();
+
+                if(dataMode == text_ToAdd || dataMode == text_ToEdit)
+                {
+                    int toDeliveryBag = int.TryParse(row[header_DeliveryBAG].ToString(), out toDeliveryBag) ? toDeliveryBag : 0;
+                    TotalToDeliveryBag += toDeliveryBag;
+                }
+            }
+
+            lblSubList.Text = text_DOItemList + " ( Total Bags: " + TotalToDeliveryBag + ")";
+        }
         private void dgvItemList_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             if (addingDOStep2 || EditMode)
@@ -2976,6 +3005,7 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
+                UpdateTotalToDeliveryBag();
                 dgv.ResumeLayout();
             }
         }

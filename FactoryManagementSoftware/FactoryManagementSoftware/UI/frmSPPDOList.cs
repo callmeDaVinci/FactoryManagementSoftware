@@ -53,6 +53,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_PONo = "P/O NO";
         readonly string header_PODate = "P/O DATE";
         readonly string header_CustomerCode = "CUSTOMER CODE";
+        readonly string header_DeliveredDate = "DELIVERED";
         readonly string header_Customer = "CUSTOMER";
         readonly string header_Progress = "PROGRESS";
         readonly string header_Selected = "SELECTED";
@@ -165,7 +166,7 @@ namespace FactoryManagementSoftware.UI
 
             dt.Columns.Add(header_Customer, typeof(string));
             dt.Columns.Add(header_CustomerCode, typeof(int));
-
+            dt.Columns.Add(header_DeliveredDate, typeof(DateTime));
             return dt;
         }
 
@@ -359,6 +360,7 @@ namespace FactoryManagementSoftware.UI
 
                     bool dataMatched = !isRemoved;
 
+                    string trfID = row[dalSPP.TrfTableCode].ToString();
                     #region DO TYPE
 
                     if (!isDelivered && cbInProgress.Checked)
@@ -406,6 +408,12 @@ namespace FactoryManagementSoftware.UI
                         dt_row[header_PODate] = Convert.ToDateTime(row[dalSPP.PODate]).Date;
                         dt_row[header_Customer] = row[dalSPP.ShortName];
                         dt_row[header_CustomerCode] = row[dalSPP.CustomerTableCode];
+
+                        if(isDelivered && !string.IsNullOrEmpty(trfID))
+                        {
+                            dt_row[header_DeliveredDate] = tool.GetTransferDate(trfID);
+                        }
+                        
                         dt.Rows.Add(dt_row);
                     }
 
@@ -441,41 +449,51 @@ namespace FactoryManagementSoftware.UI
 
                     string type = row[dalSPP.TypeName].ToString();
 
-                    if (preType == null)
+                    if (!string.IsNullOrEmpty(type) &&  (deliveryQty > 0))
                     {
-                        preType = type;
-                    }
-                    else if (preType != type)
-                    {
-                        preType = type;
+                        if (preType == null)
+                        {
+                            preType = type;
+                        }
+                        else if (preType != type)
+                        {
+                            preType = type;
+                            dt_Row = dt_DOItemList.NewRow();
+                            dt_DOItemList.Rows.Add(dt_Row);
+                        }
+
                         dt_Row = dt_DOItemList.NewRow();
-                        dt_DOItemList.Rows.Add(dt_Row);
+
+                        int stdPacking = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out stdPacking) ? stdPacking : 0;
+
+                        int bag = deliveryQty / stdPacking;
+
+                        int DOTableCode = int.TryParse(row[dalSPP.TableCode].ToString(), out DOTableCode) ? DOTableCode : -1;
+                        // int TrfTableCode = int.TryParse(row[dalSPP.TrfTableCode].ToString(), out TrfTableCode) ? TrfTableCode : -1;
+
+                        dt_Row[header_DOTblCode] = DOTableCode;
+                        //dt_Row[header_TrfTableCode] = TrfTableCode;
+
+                        if (deliveryQty > 0)
+                        {
+                            dt_Row[header_Index] = index;
+                            dt_Row[header_Size] = row[dalSPP.SizeNumerator];
+                            dt_Row[header_Unit] = row[dalSPP.SizeUnit].ToString().ToUpper();
+                            dt_Row[header_Type] = type;
+                            dt_Row[header_ItemCode] = row[dalSPP.ItemCode];
+                            dt_Row[header_StdPacking] = stdPacking;
+                            dt_Row[header_DeliveryPCS] = deliveryQty;
+                            dt_Row[header_DeliveryBAG] = bag;
+                            dt_Row[header_DeliveryQTY] = deliveryQty + " (" + bag + "bags)";
+
+                            dt_DOItemList.Rows.Add(dt_Row);
+                            index++;
+                        }
+
                     }
+                       
 
-                    dt_Row = dt_DOItemList.NewRow();
 
-                    int stdPacking = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out stdPacking) ? stdPacking : 0;
-
-                    int bag = deliveryQty / stdPacking;
-
-                    int DOTableCode = int.TryParse(row[dalSPP.TableCode].ToString(), out DOTableCode) ? DOTableCode : -1;
-                   // int TrfTableCode = int.TryParse(row[dalSPP.TrfTableCode].ToString(), out TrfTableCode) ? TrfTableCode : -1;
-
-                    dt_Row[header_DOTblCode] = DOTableCode;
-                    //dt_Row[header_TrfTableCode] = TrfTableCode;
-
-                    dt_Row[header_Index] = index;
-                    dt_Row[header_Size] = row[dalSPP.SizeNumerator];
-                    dt_Row[header_Unit] = row[dalSPP.SizeUnit].ToString().ToUpper();
-                    dt_Row[header_Type] = type;
-                    dt_Row[header_ItemCode] = row[dalSPP.ItemCode];
-                    dt_Row[header_StdPacking] = stdPacking;
-                    dt_Row[header_DeliveryPCS] = deliveryQty;
-                    dt_Row[header_DeliveryBAG] = bag;
-                    dt_Row[header_DeliveryQTY] = deliveryQty + " (" + bag + "bags)";
-
-                    dt_DOItemList.Rows.Add(dt_Row);
-                    index++;
                 }
             }
 

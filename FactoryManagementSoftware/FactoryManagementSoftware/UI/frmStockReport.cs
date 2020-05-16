@@ -156,6 +156,7 @@ namespace FactoryManagementSoftware.UI
             loadTypeData();
             tool.DoubleBuffered(dgvNewStock, true);
             dgvNewStock.ClearSelection();
+
         }
 
         private void frmStockReport_FormClosed(object sender, FormClosedEventArgs e)
@@ -405,12 +406,12 @@ namespace FactoryManagementSoftware.UI
             dt_Stock.Rows.Add(dtStock_row);
         }
 
-        private bool newLoadPartStockData()
+        private bool LoadPartStockData()
         {
             public_IndexNO = 1;
             public_SubIndexNO = 0;
             public_SecondSubIndexNO = 0;
-
+            
             bool gotData = true;
             DataTable dt = dalItemCust.custSearch(cmbSubType.Text);//load customer's item list
             
@@ -419,9 +420,10 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt_ItemInfo = dalItem.Select();
             DataTable dt_AllStockData = dalStock.Select();
+            DataTable dt_Join = dalJoin.SelectwithChildInfo();
             DataTable dt_JoinInfo = dalJoin.SelectAll();
             DataTable dt_StockData;
-            DataTable dt_Join = dalJoin.SelectAll();
+            //DataTable dt_Join = dalJoin.SelectAll();
             bool gotSinglePart = false;
             bool gotSetPart = false;
 
@@ -439,6 +441,8 @@ namespace FactoryManagementSoftware.UI
                 foreach (DataRow item in dt.Rows)
                 {
                     string itemCode = item[dalItem.ItemCode].ToString();
+
+                   
 
                     int assembly = item[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(item[dalItem.ItemAssemblyCheck]);
                     int production = item[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(item[dalItem.ItemProductionCheck]);
@@ -461,7 +465,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     string itemCode = item[dalItem.ItemCode].ToString();
 
-                    if (tool.ifGotChild2(itemCode, dt_Join))  //ifGotChild(itemCode)
+                    if (tool.ifGotChild(itemCode, dt_Join))  //ifGotChild(itemCode)
                     {
                         //add empty space
                         if(gotSinglePart)
@@ -504,7 +508,7 @@ namespace FactoryManagementSoftware.UI
                                     addRowtoDataTable(dt_ChildStockData, childCode, childName, childStockQty);
 
                                     //check if have child
-                                    if (tool.ifGotChild2(childCode, dt_Join))  //ifGotChild(childCode)
+                                    if (tool.ifGotChild(childCode, dt_Join))  //ifGotChild(childCode)
                                     {
                                         DataTable dtJoin_SubChild = tool.getJoinDataTableFromDataTable(dt_JoinInfo, childCode);
 
@@ -1239,7 +1243,7 @@ namespace FactoryManagementSoftware.UI
                         cmbSubType.SelectedIndex = j;
                         if (cmbType.Text.Equals(CMBPartHeader))
                         {
-                            gotData = newLoadPartStockData();//if data != empty return true, else false
+                            gotData = LoadPartStockData();//if data != empty return true, else false
                         }
                         else if (cmbType.Text.Equals(CMBMaterialHeader))
                         {
@@ -1425,7 +1429,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
                     {
-                        newLoadPartStockData();                     
+                        LoadPartStockData();                     
                     }
                     else if (cmbType.Text.Equals(CMBMaterialHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
                     {

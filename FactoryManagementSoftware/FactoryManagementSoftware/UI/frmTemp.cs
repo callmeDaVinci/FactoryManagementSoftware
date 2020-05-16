@@ -17,9 +17,9 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
         }
 
-      
+        private void tableLayoutPanel29_Paint(object sender, PaintEventArgs e)
+        {
 
-
-       
+        }
     }
 }
