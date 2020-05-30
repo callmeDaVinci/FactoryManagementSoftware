@@ -253,7 +253,9 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerBalanceFour].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerPendingOrder].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-            int forecastCurrentMonth = DateTime.Parse("1." + DateTime.Now.Month + " 2008").Month;
+            //int month = DateTime.Now.Month;
+
+            int forecastCurrentMonth = DateTime.Now.Month;
             int forecastNextMonth = getNextMonth(forecastCurrentMonth);
             int forecastNextNextMonth = getNextMonth(forecastNextMonth);
             int forecastNextNextNextMonth = getNextMonth(forecastNextNextMonth);

@@ -481,7 +481,7 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
 
-                    if (itemCode.Substring(1, 2) == text.Inspection_Pass)
+                    if (itemCode.Substring(0, 3) == text.Inspection_Pass)
                     {
                         dgv.Rows[n].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }

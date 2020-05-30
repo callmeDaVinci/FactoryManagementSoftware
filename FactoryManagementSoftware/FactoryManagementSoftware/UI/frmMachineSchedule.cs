@@ -529,10 +529,37 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void checkIfFamilyMould(DataTable dt)
+        private bool checkIfFamilyMould(int planID, int planIDtoCompare)
         {
+            string familyID_1 = "";
+            string familyID_2 = "";
+            bool result = false;
 
+            DataTable dt_Plan = dalPlanning.Select();
+
+            foreach(DataRow row in dt_Plan.Rows)
+            {
+                string planID_DB = row[dalPlanning.planID].ToString();
+
+                if(planID_DB == planID.ToString())
+                {
+                    familyID_1 = row[dalPlanning.familyWith].ToString();
+                }
+
+                if (planID_DB == planIDtoCompare.ToString())
+                {
+                    familyID_2 = row[dalPlanning.familyWith].ToString();
+                }
+            }
+
+            if(familyID_1 != "" && familyID_1 != "-1" && familyID_1 == familyID_2)
+            {
+                result = true;
+            }
+
+            return result;
         }
+
 
         private void frmMachineSchedule_Load(object sender, EventArgs e)
         {
@@ -1038,8 +1065,15 @@ namespace FactoryManagementSoftware.UI
                                 int otherMacID = Convert.ToInt32(dgv.Rows[i].Cells[headerMachine].Value);
                                 if (startDate == otherStart && macID == otherMacID)
                                 {
-                                    dgv.Rows[row].Cells[headerStartDate].Style.BackColor = Color.Yellow;
-                                    dgv.Rows[i].Cells[headerStartDate].Style.BackColor = Color.Yellow;
+                                    int planID = Convert.ToInt32(dgv.Rows[row].Cells[headerID].Value);
+                                    int otherPlanID = Convert.ToInt32(dgv.Rows[i].Cells[headerID].Value);
+
+                                    if(checkIfFamilyMould(planID,otherPlanID))
+                                    {
+                                        dgv.Rows[row].Cells[headerStartDate].Style.BackColor = Color.Yellow;
+                                        dgv.Rows[i].Cells[headerStartDate].Style.BackColor = Color.Yellow;
+                                    }
+                                   
 
                                 }
                             }

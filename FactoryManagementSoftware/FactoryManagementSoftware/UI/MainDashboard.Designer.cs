@@ -219,7 +219,7 @@
             // 
             this.sPPToolStripMenuItem.Name = "sPPToolStripMenuItem";
             this.sPPToolStripMenuItem.Size = new System.Drawing.Size(51, 27);
-            this.sPPToolStripMenuItem.Text = "SPP";
+            this.sPPToolStripMenuItem.Text = "SBB";
             this.sPPToolStripMenuItem.Click += new System.EventHandler(this.sPPToolStripMenuItem_Click);
             // 
             // reportToolStripMenuItem

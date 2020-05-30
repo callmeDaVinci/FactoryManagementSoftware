@@ -357,7 +357,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                Module.Tool tool = new Module.Tool();
+                Tool tool = new Tool();
                 tool.saveToText(ex);
             }
             finally
@@ -409,6 +409,58 @@ namespace FactoryManagementSoftware.DAL
                 adapter.Fill(dt);
 
 
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SearchByID(string trfID)
+        {
+            string Passed = "Passed";
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                            WHERE trf_hist_id = @trfID ";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@trfID", trfID);
+;
+                //AND tbl_trf_hist.trf_result = @Passed
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+                itemDAL dalItem = new itemDAL();
+                dt.AcceptChanges();
+                foreach (DataRow row in dt.Rows)
+                {
+                    string itemCode = row["trf_hist_item_code"].ToString();
+
+                    if (!dalItem.getCatName(itemCode).Equals("Part"))
+                    {
+                        row.Delete();
+                    }
+                }
+                dt.AcceptChanges();
             }
             catch (Exception ex)
             {

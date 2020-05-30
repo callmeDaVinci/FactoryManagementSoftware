@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>157</ApplicationRevision>
+    <ApplicationRevision>187</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -64,7 +64,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>safety_SYA_icon.ico</ApplicationIcon>
+    <ApplicationIcon>Image\safety_SYA_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
@@ -236,6 +236,12 @@
     </Compile>
     <Compile Include="UI\frmDialog.Designer.cs">
       <DependentUpon>frmDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmExportSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmExportSetting.Designer.cs">
+      <DependentUpon>frmExportSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmForecast_NEW.cs">
       <SubType>Form</SubType>
@@ -728,6 +734,9 @@
     <EmbeddedResource Include="UI\frmDialog.resx">
       <DependentUpon>frmDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmExportSetting.resx">
+      <DependentUpon>frmExportSetting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmForecast_NEW.resx">
       <DependentUpon>frmForecast_NEW.cs</DependentUpon>
     </EmbeddedResource>
@@ -1036,6 +1045,7 @@
   <ItemGroup>
     <Content Include="Image\icons8-back-to-64.png" />
     <Content Include="Image\icons8_available_updates_96_deQ_icon.ico" />
+    <None Include="Image\safety-logo.png" />
     <Content Include="Image\safety_SYA_icon.ico" />
     <Content Include="Image\x_icon_png_1543129_VTC_icon.ico" />
     <Content Include="Oxygen-Icons.org-Oxygen-Apps-partitionmanager.ico" />
@@ -1074,6 +1084,7 @@
     <None Include="Resources\socket.64px.ico" />
     <None Include="Resources\elbow.64px.ico" />
     <None Include="Resources\tee.64px.ico" />
+    <None Include="Resources\safety-logo.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

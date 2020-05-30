@@ -1684,7 +1684,7 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[row].Cells[daltrfHist.TrfItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
 
-                    if (itemCode.Substring(1, 2) == text.Inspection_Pass)
+                    if (itemCode.Substring(0, 3) == text.Inspection_Pass)
                     {
                         dgv.Rows[row].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
@@ -1777,10 +1777,15 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
 
-                    if(itemCode.Substring(1, 2) == text.Inspection_Pass)
+                    if(itemCode.Length > 3)
                     {
-                        dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        string test = itemCode.Substring(0, 3);
+                        if (itemCode.Substring(0, 3) == text.Inspection_Pass)
+                        {
+                            dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        }
                     }
+                    
                 }
             }
 
@@ -2008,6 +2013,24 @@ namespace FactoryManagementSoftware.UI
             if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
             {
                 JumpToSelectedTrfIDRow();
+            }
+        }
+
+        private void txtJumpID_Enter(object sender, EventArgs e)
+        {
+            if (txtJumpID.Text == "transfer id")
+            {
+                txtJumpID.Text = "";
+                txtJumpID.ForeColor = SystemColors.WindowText;
+            }
+        }
+
+        private void txtJumpID_Leave(object sender, EventArgs e)
+        {
+            if (txtJumpID.Text.Length == 0)
+            {
+                txtJumpID.Text = "transfer id";
+                txtJumpID.ForeColor = SystemColors.GrayText;
             }
         }
     }

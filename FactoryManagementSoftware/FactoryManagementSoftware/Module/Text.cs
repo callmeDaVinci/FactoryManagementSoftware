@@ -21,7 +21,7 @@ namespace FactoryManagementSoftware.Module
 
         public string System { get; } = "System";
 
-        //admin/////////////////////////////////////////////////////////////////// 
+        #region Admin
         public string LogIn { get; } = "LogIn";
         public string LogOut { get; } = "LogOut";
 
@@ -50,12 +50,34 @@ namespace FactoryManagementSoftware.Module
         public string AddUser { get; } = "AddUser";
         public string UserEdit { get; } = "UserEdit";
         public string UserDelete { get; } = "UserDelete";
+        #endregion
 
-        //user////////////////////////////////////////////////////////////////////////////
+        #region Company Info
+
+        public string Company_Name_CN { get; } = "安全塑膠有限公司";
+        public string Company_Name_EN { get; } = "SAFETY PLASTICS SDN. BHD.";
+        public string Company_RegistrationNo { get; } = "(No.Syarikat:188981-U)";
+        public string Company_AddressAndContact { get; } = @"No: 2, Jalan 10/152, Taman Perindustrian O.U.G, Batu 6,
+            Jalan Puchong, 58200 Kuala Lumpur.
+            Tel: 03 - 77855278, 03 - 77820399 Fax: 03 - 77820399
+            Email: safety_plasic @yahoo.com";
+        #endregion
+
+        #region Font Type
+
+        public string Font_Type_KaiTi { get; } = "KaiTi";
+        public string Font_Type_TimesNewRoman { get; } = "Times New Roman";
+
+        #endregion
+
+        #region Transfer/Order/Report/Excel/PMMA Edit/forecast
         public string Transfer { get; } = "Transfer";
         public string TransferUndo { get; } = "TransferUndo";
+        public string TransferUndoBySystem { get; } = "TransferUndoBySystem";
         public string TransferRedo { get; } = "TransferRedo";
-        //public string TransferReject { get; } = "TransferReject";
+        public string Undo { get; } = "Undo";
+        public string Passed { get; } = "Passed";
+        
 
         public string AddOrder { get; } = "AddOrder";
         public string OrderRequest { get; } = "OrderRequest";
@@ -77,8 +99,9 @@ namespace FactoryManagementSoftware.Module
 
         public string Excel { get; } = "Excel";
         public string PMMAEdit { get; } = "PMMA Edit";
+        #endregion
 
-        //PLANNING////////////////////////////////////////////////////////////////////////////
+        #region Planning 
         public string planning_status_pending { get; } = "PENDING";//blue
         public string planning_status_cancelled { get; } = "CANCELLED";//white
         public string planning_status_warning { get; } = "WARNING";//red
@@ -95,14 +118,17 @@ namespace FactoryManagementSoftware.Module
         public string plan_proday_change { get; } = "PLAN PRODUCTION DAY CHANGE";
         public string plan_prohour_change { get; } = "PLAN PRODUCTION HOUR CHANGE";
         public string plan_prohourperday_change { get; } = "PLAN PRODUCTION HOUR PER DAY CHANGE";
+        #endregion
 
-        //Habit HISTORY////////////////////////////////////////////////////////////////////////////
+        #region Habit
         public string habit_insert { get; } = "HABIT INSERT";
         public string habit_belongTo_PlanningPage { get; } = "PLANNING PAGE";
         public string habit_planning_HourPerDay { get; } = "PLANNING: HOUR PER DAY";
         public string habit_planning_Wastage { get; } = "PLANNING: MATERIAL WASTAGE %";
+        #endregion
 
-        //LOCATION////////////////////////////////////////////////////////////////////////////
+        #region Location
+
         public string Factory { get; } = "Factory";
 
         public string Factory_2 { get; } = "No.2";
@@ -113,18 +139,23 @@ namespace FactoryManagementSoftware.Module
         
         public string Factory_Store { get; } = "STORE";
 
+
+
         public string Other { get; } = "Other";
         public string Customer { get; } = "Customer";
         public string Production { get; } = "Production";
         public string Assembly { get; } = "Assembly";
         public string Inspection { get; } = "Inspection";
-        public string Inspection_Pass { get; } = "OK";
+        public string Inspection_Pass { get; } = "(OK";
 
-        //SHIFT////////////////////////////////////////////////////////////////////////////
+        #endregion
+
+        #region Shift
         public string Shift_Morning { get; } = "MORNING";
         public string Shift_Night { get; } = "NIGHT";
+        #endregion
 
-        //UNIT////////////////////////////////////////////////////////////////////////////////
+        #region Unit
         public string Unit_KG { get; } = "kg";
         public string Unit_g { get; } = "g";
         public string Unit_Set { get; } = "set";
@@ -133,8 +164,10 @@ namespace FactoryManagementSoftware.Module
         public string Unit_Bag{ get; } = "bag";
         public string Unit_Millimetre { get; } = "mm";
         public string Unit_Inch { get; } = "in";
+        #endregion
 
-        //ITEM CATEGORY///////////////////////////////////////////////////////////////////////
+        #region Item Category
+
         public string Cat_RawMat { get; } = "RAW Material";
         public string Cat_MB { get; } = "Master Batch";
         public string Cat_Pigment { get; } = "Pigment";
@@ -145,7 +178,9 @@ namespace FactoryManagementSoftware.Module
         public string Cat_Mould { get; } = "Mould";
         public string Cat_Packaging { get; } = "Packaging";
 
-        //DGV TABLE HEADER NAME///////////////////////////////////////////////////////////////
+        #endregion
+
+        #region  DGV TABLE HEADER NAME
         public string Header_Index { get; } = "#";
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
         public string Header_PartCode { get; } = "PART CODE";
@@ -176,15 +211,27 @@ namespace FactoryManagementSoftware.Module
         public string Header_MaterialUsedWithWastage { get; } = "MAT. USED WITH WASTAGE";
         public string Header_TotalMaterialUsed_KG_Piece { get; } = "TOTAL MAT. USED(KG/PIECE)";
         public string Header_TotalMaterialUsed_KG { get; } = "TOTAL MAT. USED(KG)";
+        #endregion
 
-        //SPP CATEGORY
+        #region SPP/SBB Info; Item Type
+
+        public string SPP_BrandName { get; } = "SPP";
+        public string SBB_BrandName { get; } = "SBB";
+
+        public string EqualElbow_Short { get; } = "EE";
+        public string EqualSocket_Short { get; } = "ES";
+        public string EqualTee_Short { get; } = "ET";
+
+        #endregion
+
+        #region SPP/SBB CATEGORY
         public string Cat_CommonPart { get; } = "COMMON PART";
         public string Cat_Body { get; } = "BODY";
         public string Cat_Assembled { get; } = "ASSEMBLED";
         public string Cat_ReadyGoods { get; } = " READY GOODS";
+        #endregion
 
-        
-        //SPP TYPE
+        #region SPP/SBB TYPE
         public string Type_EqualSocket { get; } = "EQUAL SOCKET";
         public string Type_EqualElbow { get; } = "EQUAL ELBOW";
         public string Type_EqualTee { get; } = "EQUAL TEE";
@@ -193,21 +240,23 @@ namespace FactoryManagementSoftware.Module
         public string Type_Oring { get; } = "O RING";
         public string Type_Cap { get; } = "CAP";
         public string Type_Reducing { get; } = "REDUCING";
+        #endregion
 
-        //Message
+        #region Message
         public string Message_DataNotSaved { get; } = "You changes have not been saved.\nDiscard changes?";
         public string Note_OldBalanceStockOut { get; } = "Old Balance Stock Out";
         public string Note_BalanceStockIn { get; } = "Balance Stock In";
+        #endregion
 
-        //SPP STOCK LEVEL
+        #region SPP/SBB STOCK LEVEL
         public int StockLevel_20 { get; } = 50;
         public int StockLevel_25 { get; } = 60;
         public int StockLevel_32 { get; } = 40;
         public int StockLevel_50 { get; } = 30;
         public int StockLevel_63 { get; } = 0;
-
         #endregion
 
+        #endregion
 
 
         #region History Detail String

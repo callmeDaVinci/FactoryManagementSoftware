@@ -387,7 +387,7 @@ namespace FactoryManagementSoftware.UI
                     dtStock_row[headerParentColor] = AssemblyColor;
                 }
 
-                if (itemCode.Substring(1, 2) == text.Inspection_Pass)
+                if (itemCode.Substring(0, 3) == text.Inspection_Pass)
                 {
                     dtStock_row[headerParentColor] = InspectionColor;
                 }

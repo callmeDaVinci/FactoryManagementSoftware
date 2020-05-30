@@ -1224,7 +1224,7 @@ namespace FactoryManagementSoftware.UI
                             dt_Row[headerParentColor] = ProductionAndAssemblyMarking;
                         }
 
-                        if (uData.part_code.Substring(1, 2) == text.Inspection_Pass)
+                        if (uData.part_code.Substring(0, 3) == text.Inspection_Pass)
                         {
                             dt_Row[headerParentColor] = InspectionMarking;
                         }
@@ -2105,23 +2105,25 @@ namespace FactoryManagementSoftware.UI
                 int month = DateTime.ParseExact(monthString, "MMMM", CultureInfo.CurrentCulture).Month;
                 int year;
 
-                if (month > DateTime.Now.Month)
-                {
-                    year = DateTime.Now.Year - 1;
-                }
-                else
-                {
-                    year = DateTime.Now.Year;
-                }
+                year = DateTime.Now.Year;
+
+                //if (month > DateTime.Now.Month)
+                //{
+                //    year = DateTime.Now.Year - 1;
+                //    if (cmbCustomer.Text.Equals(tool.getCustName(1)))
+                //    {
+                //        year = DateTime.Now.Year;
+                //    }
+
+                //}
+                //else
+                //{
+                //    year = DateTime.Now.Year;
+                //}
 
 
                 if (cmbCustomer.Text.Equals(tool.getCustName(1)))
                 {
-
-                    //if (cmbForecastFrom.SelectedIndex != -1)
-                    //{
-                    //    cmbForecastFrom.Text = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
-                    //}
                     DateTime outTo = tool.GetPMMAEndDate(month, year);
 
                     if (DateTime.Today > outTo && custChanging)
@@ -2223,7 +2225,7 @@ namespace FactoryManagementSoftware.UI
 
                             Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
                             Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
+   
                             xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri\"&8 " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"); ;
                             xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri\"&12 (" + cmbCustomer.Text + ") READY STOCK VERSUS FORECAST";
                             xlWorkSheet.PageSetup.RightHeader = "&\"Calibri\"&8 PG -&P";

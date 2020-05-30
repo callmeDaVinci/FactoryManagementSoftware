@@ -590,14 +590,14 @@ namespace FactoryManagementSoftware.UI
                         #region Customer Filter
 
                         customer = cmbCustomer.Text;
-
+                        //string sppCustomer = row[dalSPP.FullName].ToString();
                         if (string.IsNullOrEmpty(customer) || customer == "ALL")
                         {
-                            dataMatched = dataMatched && true;
+                            dataMatched &= true;
                         }
-                        else if (row[dalSPP.FullName].ToString() == customer)
+                        else if (FullName == customer)
                         {
-                            dataMatched = dataMatched && true;
+                            dataMatched &= true;
                         }
                         else
                         {
@@ -1288,8 +1288,8 @@ namespace FactoryManagementSoftware.UI
                 string path2 = @"D:\StockAssistant\Document\SPP PO Report";
                 Directory.CreateDirectory(path2);
                 sfd.InitialDirectory = path2;
-                sfd.Filter = "Excel Documents (*.xls)|*.xls";
-                sfd.FileName = "SPP PO Report_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
+                sfd.Filter = "Excel Documents (*.xls)|*.xlsx";
+                sfd.FileName = "SPPPOReport_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
 
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
@@ -1306,11 +1306,19 @@ namespace FactoryManagementSoftware.UI
                     Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
 
                     //Save the excel file under the captured location from the SaveFileDialog
-                    xlWorkBook.SaveAs(sfd.FileName,
-                        XlFileFormat.xlWorkbookNormal,
-                        misValue, misValue, misValue, misValue,
-                        XlSaveAsAccessMode.xlExclusive,
-                        misValue, misValue, misValue, misValue, misValue);
+                    //xlWorkBook.SaveAs(sfd.FileName,
+                    //    XlFileFormat.xlWorkbookDefault,
+                    //    misValue, misValue, misValue, misValue,
+                    //    XlSaveAsAccessMode.xlExclusive,
+                    //    misValue, misValue, misValue, misValue, misValue);
+
+                    //xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
+                    //       misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+
+                    xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal, Missing.Value,
+                    Missing.Value, false, false, XlSaveAsAccessMode.xlExclusive,
+                   misValue, misValue,
+                    Missing.Value, Missing.Value, Missing.Value);
 
                     InsertAllDataToSheet(path, sfd.FileName);
                     xlexcel.DisplayAlerts = true;
@@ -1519,11 +1527,11 @@ namespace FactoryManagementSoftware.UI
 
             tRange.BorderAround(Type.Missing, Excel.XlBorderWeight.xlThin, Excel.XlColorIndex.xlColorIndexAutomatic, Type.Missing);
 
-            //tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-            //tRange.Borders.Weight = XlBorderWeight.xlThin;
+            tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+            tRange.Borders.Weight = XlBorderWeight.xlThin;
 
-            //Range FirstRow = (Range)xlWorkSheet.Application.Rows[1, Type.Missing];
-            Range FirstRow = xlWorkSheet.get_Range("a1:i1").Cells;
+            Range FirstRow = (Range)xlWorkSheet.Application.Rows[1, Type.Missing];
+            //Range FirstRow = xlWorkSheet.get_Range("a1:i1").Cells;
             FirstRow.WrapText = true;
             FirstRow.Font.Size = 8;
 
@@ -1586,14 +1594,14 @@ namespace FactoryManagementSoftware.UI
                 rangePODate.Borders[XlBordersIndex.xlEdgeRight].Color = color;
                 rangePODate.Borders[XlBordersIndex.xlEdgeLeft].Color = color;
 
-                
+
 
                 rangeType.Borders[XlBordersIndex.xlEdgeRight].Color = color;
                 rangeType.Borders[XlBordersIndex.xlEdgeLeft].Color = color;
 
                 rangeDelievered.Borders[XlBordersIndex.xlEdgeRight].Color = color;
                 rangeDelievered.Borders[XlBordersIndex.xlEdgeLeft].Color = color;
-                
+
 
                 rangeNote.Borders[XlBordersIndex.xlEdgeRight].Color = color;
                 rangeNote.Borders[XlBordersIndex.xlEdgeLeft].Color = color;

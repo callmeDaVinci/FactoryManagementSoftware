@@ -520,7 +520,7 @@ namespace FactoryManagementSoftware.UI
             {
                 if (tool.ifGotChild(itemCode))
                 {
-                    if (itemCode.Substring(1, 2) == text.Inspection_Pass)
+                    if (itemCode.Substring(0, 3) == text.Inspection_Pass)
                     {
                         //cmbTrfFromCategory.Text = text.Inspection;
                         cmbTrfFromCategory.Text = text.Assembly;
@@ -555,7 +555,7 @@ namespace FactoryManagementSoftware.UI
             {
                 cmbTrfToCategory.SelectedIndex = 0;
 
-                if (cmbTrfItemCode.Text.Substring(1, 2) == text.Inspection_Pass)
+                if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
                 {
                     cmbTrfTo.Text = text.Factory_Store;
                     //cmbTrfTo.SelectedIndex = 5;
@@ -607,7 +607,7 @@ namespace FactoryManagementSoftware.UI
                 dt.Rows.Add(text.Unit_Piece);
                 dt.Rows.Add(text.Unit_Meter);
 
-                if (cmbTrfItemCode.Text.Substring(1, 2) == text.Inspection_Pass && cmbTrfFromCategory.Text == text.Assembly)
+                if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass && cmbTrfFromCategory.Text == text.Assembly)
                 {
                     dt.Rows.Add(text.Unit_Bag);
                     lblStdPacking.Visible = true;
@@ -637,7 +637,7 @@ namespace FactoryManagementSoftware.UI
             cmbTrfQtyUnit.DisplayMember = "item_unit";
             cmbTrfQtyUnit.SelectedIndex = -1;
 
-            if ( !string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Substring(1, 2) == text.Inspection_Pass)
+            if ( !string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
             {
                 cmbTrfQtyUnit.Text = text.Unit_Bag;
             }
@@ -727,7 +727,7 @@ namespace FactoryManagementSoftware.UI
             return successFacStockOut;
         }
 
-        private bool productionChildStockOut(string factoryName, string parentItemCode, float qty, int indexNo)
+        private bool productionChildStockOut(string factoryName, string parentItemCode, float qty, int indexNo, string note)
         {
             bool success = true;
             int n;
@@ -792,7 +792,7 @@ namespace FactoryManagementSoftware.UI
                                     dgv.Rows[n].Cells[ToColumnName].Value = factoryName;
                                     dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
                                     dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
-                                    dgv.Rows[n].Cells[NoteColumnName].Value = "Production Sub Part in";
+                                    dgv.Rows[n].Cells[NoteColumnName].Value = note+"Sub Part in";
                                 }
 
                             }
@@ -812,7 +812,7 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[n].Cells[ToColumnName].Value = "";
                             dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
                             dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
-                            dgv.Rows[n].Cells[NoteColumnName].Value = "Production Sub Part out";
+                            dgv.Rows[n].Cells[NoteColumnName].Value = note+"Sub Part out";
 
                             if (childItemCode.Equals("V76KM4000 0.360"))
                             {
@@ -836,7 +836,7 @@ namespace FactoryManagementSoftware.UI
                             if (facStock - transferQty < 0)
                             {
                                 dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                                dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
+                                dgv.Rows[n].Cells[NoteColumnName].Value = note+"AFTER BAL=" + (facStock - transferQty);
                             }
                         }
                       
@@ -847,7 +847,7 @@ namespace FactoryManagementSoftware.UI
             return success;
         }
 
-        private bool productionChildStockIn(string factoryName, string parentItemCode, float qty, int indexNo)
+        private bool productionChildStockIn(string factoryName, string parentItemCode, float qty, int indexNo, string note)
         {
             bool success = true;
             int n;
@@ -912,7 +912,7 @@ namespace FactoryManagementSoftware.UI
                                     dgv.Rows[n].Cells[ToColumnName].Value = "";
                                     dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
                                     dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
-                                    dgv.Rows[n].Cells[NoteColumnName].Value = "Production Sub Part Out";
+                                    dgv.Rows[n].Cells[NoteColumnName].Value = note + "Sub Part Out";
 
                                     facStockDAL dalFacStock = new facStockDAL();
                                     float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
@@ -951,7 +951,7 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[n].Cells[ToColumnName].Value = factoryName;
                             dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
                             dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
-                            dgv.Rows[n].Cells[NoteColumnName].Value = "Production Sub Part in";
+                            dgv.Rows[n].Cells[NoteColumnName].Value = note + "Sub Part in";
 
                             if (childItemCode.Equals("V76KM4000 0.360"))
                             {
@@ -987,7 +987,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[n].Cells[ToColumnName].Value = "";
             dgv.Rows[n].Cells[QtyColumnName].Value = qty;
             dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
-            dgv.Rows[n].Cells[NoteColumnName].Value = "Production Carton out";
+            //dgv.Rows[n].Cells[NoteColumnName].Value = " Carton out";
 
             facStockDAL dalFacStock = new facStockDAL();
             float facStock = dalFacStock.getQty(ItemCode, tool.getFactoryID(factoryName).ToString());
@@ -1130,7 +1130,7 @@ namespace FactoryManagementSoftware.UI
   
             string childItemCode;
 
-            if (parentItemCode.Substring(1, 2) == text.Inspection_Pass && cmbTrfFromCategory.Text.Equals(text.Assembly))
+            if (parentItemCode.Substring(0, 3) == text.Inspection_Pass && cmbTrfFromCategory.Text.Equals(text.Assembly))
             {
                 DataTable dtSPP = dalJoin.loadChildList(parentItemCode);
 
@@ -1598,21 +1598,22 @@ namespace FactoryManagementSoftware.UI
             errorProvider3.Clear();
             loadLocationCategoryData();
             lblStdPacking.Visible = false;
-            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) &&  cmbTrfItemCode.Text.Substring(1, 2) == text.Inspection_Pass && cmbTrfFromCategory.Text == text.Assembly)
+            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) &&  cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass && cmbTrfFromCategory.Text == text.Assembly)
             {
                 unitDataSource();
                 cmbTrfQtyUnit.Text = text.Unit_Bag;
             }
-            else if (ifGotChild() || !string.IsNullOrEmpty(cmbTrfItemCode.Text ))
-            {
+            //else if (ifGotChild())
+            //{
 
-                cmbTrfQtyUnit.Text = text.Unit_Set;
-
-            }
+            //    cmbTrfQtyUnit.Text = text.Unit_Set;
+            //}
             
             else
             {
-                cmbTrfQtyUnit.Text = text.Unit_Piece;
+                //cmbTrfQtyUnit.Text = text.Unit_Piece;
+                cmbTrfQtyUnit.SelectedIndex = -1;
+
             }
 
         }
@@ -1621,7 +1622,7 @@ namespace FactoryManagementSoftware.UI
         {
             errorProvider4.Clear();
 
-            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Substring(1, 2) == text.Inspection_Pass)
+            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
             {
                 unitDataSource();
             }
@@ -1643,7 +1644,7 @@ namespace FactoryManagementSoftware.UI
                 cmbTrfFrom.DataSource = null;
                 cmbTrfToCategory.SelectedIndex = 0;
 
-                if (cmbTrfItemCode.Text.Substring(1, 2) == text.Inspection_Pass)
+                if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
                 {
                     cmbTrfTo.Text = text.Factory_Store;
                     //cmbTrfTo.SelectedIndex = 5;
@@ -1680,7 +1681,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (cmbTrfToCategory.Text.Equals("Customer"))
             {
-                if (cmbTrfItemCode.Text.Substring(1, 2) == text.Inspection_Pass)
+                if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
                 {
                     DataTable dt = dalData.CustomerWithoutRemovedDataSelect();
                     loadLocationData(dt, cmbTrfTo, dalData.ShortName);
@@ -1755,7 +1756,7 @@ namespace FactoryManagementSoftware.UI
             string unit = cmbTrfQtyUnit.Text;
             string trfQty = txtTrfQty.Text;
             string note = "";
-            if (cmbTrfItemCode.Text.Substring(1, 2) == text.Inspection_Pass)
+            if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
             {
                 int qtyPerBag = int.TryParse(lblStdPacking.Text.Replace(string_QtyPerBag, string.Empty), out qtyPerBag) ? qtyPerBag : 0;
                 int totalBags = int.TryParse(txtTrfQty.Text, out totalBags) ? totalBags : 0;
@@ -1858,7 +1859,7 @@ namespace FactoryManagementSoftware.UI
                 if (tool.ifGotChild(cmbTrfItemCode.Text)) //&& dalItem.checkIfProduction(cmbTrfItemCode.Text)
                 {
                     if (!dgvEdit)
-                        productionChildStockOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text), -1);
+                        productionChildStockOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text), -1,"");
                 }
                 //productionAutoOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text));
             }
@@ -1950,33 +1951,34 @@ namespace FactoryManagementSoftware.UI
                 dgv.Rows[n].Cells[QtyColumnName].Value = proQty;
                 dgv.Rows[n].Cells[UnitColumnName].Value = unit;
 
+                string note = "[production note]";
 
                 if(shift == "M" || shift == "N")
                 {
-                    dgv.Rows[n].Cells[NoteColumnName].Value = "[Plan " + planID + "(" + shift + ")]";
+                    note = "[Plan " + planID + "(" + shift + ")]";
                 }
                 else if (shift == "MB" || shift == "NB")
                 {
 
-                    dgv.Rows[n].Cells[NoteColumnName].Value = "[Plan " + planID + "(" + shift.Substring(0, 1) + ") " + text.Note_BalanceStockIn + "]";
+                    note = "[Plan " + planID + "(" + shift.Substring(0, 1) + ") " + text.Note_BalanceStockIn + "]";
                 }
                 else if (shift == "MBO" || shift == "NBO")
                 {
 
-                    dgv.Rows[n].Cells[NoteColumnName].Value = "[Plan " + planID + "(" + shift.Substring(0, 1) + ") "+ text.Note_OldBalanceStockOut +"]";
+                    note = "[Plan " + planID + "(" + shift.Substring(0, 1) + ") "+ text.Note_OldBalanceStockOut +"]";
                 }
 
-
+                dgv.Rows[n].Cells[NoteColumnName].Value = note;
 
                 if (tool.ifGotChild(itemCode))
                 {
                     if (shift == "MBO" || shift == "NBO")
                     {
-                        productionChildStockIn(from, itemCode, Convert.ToSingle(proQty), -1);
+                        productionChildStockIn(from, itemCode, Convert.ToSingle(proQty), -1, note);
                     }
                     else
                     {
-                        productionChildStockOut(to, itemCode, Convert.ToSingle(proQty), -1);
+                        productionChildStockOut(to, itemCode, Convert.ToSingle(proQty), -1, note);
                     }
                         
                 }

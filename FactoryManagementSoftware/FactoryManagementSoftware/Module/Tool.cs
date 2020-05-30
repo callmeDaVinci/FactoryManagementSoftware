@@ -1149,17 +1149,62 @@ namespace FactoryManagementSoftware.Module
 
                     string trfItem = row[dalTrfHist.TrfItemCode].ToString();
 
+                    #region old method
+                    //string productionInfo = row[dalTrfHist.TrfNote].ToString();
+                    //string _shift = "";
+                    //string _planID = "";
+                    //bool startCopy = false;
+                    //bool IDCopied = false;
+
+                    //for (int i = 0; i < productionInfo.Length; i++)
+                    //{
+                    //    if (productionInfo[i].ToString() == "P")
+                    //    {
+                    //        startCopy = true;
+                    //    }
+
+                    //    if (startCopy)
+                    //    {
+
+                    //        if (char.IsDigit(productionInfo[i]))
+                    //        {
+                    //            IDCopied = true;
+                    //            _planID += productionInfo[i];
+                    //        }
+                    //        else if (IDCopied)
+                    //        {
+                    //            _shift += productionInfo[i + 1];
+                    //            IDCopied = false;
+                    //        }
+
+                    //    }
+                    //}
+
+                   
+                    #endregion
+
                     string productionInfo = row[dalTrfHist.TrfNote].ToString();
                     string _shift = "";
                     string _planID = "";
+                    string balanceClearType = "";
                     bool startCopy = false;
                     bool IDCopied = false;
+                    bool ShiftCopied = false;
+
 
                     for (int i = 0; i < productionInfo.Length; i++)
                     {
                         if (productionInfo[i].ToString() == "P")
                         {
                             startCopy = true;
+                        }
+                        else if (ShiftCopied && (productionInfo[i].ToString() == "O" || productionInfo[i].ToString() == "B"))
+                        {
+                            startCopy = true;
+                        }
+                        else if (ShiftCopied && productionInfo[i].ToString() == "]")
+                        {
+                            startCopy = false;
                         }
 
                         if (startCopy)
@@ -1170,16 +1215,22 @@ namespace FactoryManagementSoftware.Module
                                 IDCopied = true;
                                 _planID += productionInfo[i];
                             }
-                            else if (IDCopied)
+                            else if (IDCopied && i + 1 < productionInfo.Length)
                             {
                                 _shift += productionInfo[i + 1];
                                 IDCopied = false;
+                                ShiftCopied = true;
+                                startCopy = false;
+                            }
+                            else if (ShiftCopied)
+                            {
+                                balanceClearType += productionInfo[i];
                             }
 
                         }
                     }
 
-                    if(_shift.ToUpper() == "M")
+                    if (_shift.ToUpper() == "M")
                     {
                         _shift = text.Shift_Morning;
                     }
@@ -1209,7 +1260,7 @@ namespace FactoryManagementSoftware.Module
                             totalStockIn += stockInQty;
                         }
 
-                        if(IfFactoryExists(trfFrom) && !IfFactoryExists(trfTo))
+                        if(IfFactoryExists(trfFrom) && !IfFactoryExists(trfTo) && balanceClearType == text.Note_OldBalanceStockOut)
                         {
                             if (totalStockIn == -1)
                             {
@@ -1708,6 +1759,95 @@ namespace FactoryManagementSoftware.Module
 
             }
             return dt;
+        }
+
+        public bool UndoTransferRecord(int trfID)
+        {
+            bool result = false;
+            Text text = new Text();
+            DataTable dt_Trf = dalTrfHist.SearchByID(trfID.ToString());
+
+            if(dt_Trf.Rows.Count == 1)
+            {
+                string trfItemCode = dt_Trf.Rows[0][dalTrfHist.TrfItemCode].ToString();
+
+                string trfFrom = dt_Trf.Rows[0][dalTrfHist.TrfFrom].ToString();
+
+                string trfTo = dt_Trf.Rows[0][dalTrfHist.TrfTo].ToString();
+
+                string unit = dt_Trf.Rows[0][dalTrfHist.TrfUnit].ToString();
+
+                float trfQty = float.TryParse(dt_Trf.Rows[0][dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : 0 ;
+
+                string note = dt_Trf.Rows[0][dalTrfHist.TrfNote].ToString();
+
+                #region stock In/Out
+                if (IfFactoryExists(trfFrom))
+                {
+                    result = stockIn(trfFrom, trfItemCode, trfQty, unit);
+
+                    if (IfFactoryExists(trfTo))
+                    {
+                        result = stockOut(trfTo, trfItemCode, trfQty, unit);
+                    }
+                }
+                else if (IfFactoryExists(trfTo))
+                {
+                    result = stockOut(trfTo, trfItemCode, trfQty, unit);
+                }
+
+                #endregion
+
+                #region Undo transfer history
+                if (result)
+                {
+                    utrfHist.trf_hist_updated_date = DateTime.Now;
+                    utrfHist.trf_hist_updated_by = MainDashboard.USER_ID;
+                    utrfHist.trf_hist_id = trfID;
+                    utrfHist.trf_result = text.Undo;
+
+                    //Inserting Data into Database
+                    bool success = dalTrfHist.Update(utrfHist);
+                    if (!success)
+                    {
+                        //Failed to insert data
+                        MessageBox.Show("Failed to change transfer record");
+                        historyRecord("System", "Failed to change transfer record", utrfHist.trf_hist_updated_date, MainDashboard.USER_ID);
+                    }
+                    else
+                    {
+                        historyRecord(text.TransferUndoBySystem, text.getTransferDetailString(trfID, trfQty, unit, trfItemCode, trfFrom, trfTo), DateTime.Now, MainDashboard.USER_ID);
+                    }
+
+                }
+
+                #endregion
+
+            }
+            else
+            {
+                MessageBox.Show("Transfer record not found or muliti records exist with same ID!");
+            }
+
+            return result;
+        }
+
+        private bool stockIn(string factoryName, string itemCode, float qty, string unit)
+        {
+            bool successFacStockIn;
+    
+            successFacStockIn = new facStockDAL().facStockIn(getFactoryID(factoryName).ToString(), itemCode, qty, unit);
+
+            return successFacStockIn;
+        }
+
+        private bool stockOut(string factoryName, string itemCode, float qty, string unit)
+        {
+            bool successFacStockOut = false;
+
+            successFacStockOut = new facStockDAL().facStockOut(getFactoryID(factoryName).ToString(), itemCode, qty, unit);
+
+            return successFacStockOut;
         }
 
         public void changeTransferRecord(string stockResult, int id)
@@ -5132,10 +5272,19 @@ namespace FactoryManagementSoftware.Module
         public bool ifGotChild(string itemCode)
         {
             bool result = false;
+            Text text = new Text();
             DataTable dtJoin = dalJoin.loadChildList(itemCode);
+
             if (dtJoin.Rows.Count > 0)
             {
-                result = true;
+                foreach(DataRow row in dtJoin.Rows)
+                {
+                    string childCat = getItemCat(row[dalJoin.JoinChild].ToString());
+                    if (childCat == text.Cat_Part || childCat == text.Cat_SubMat)
+                    {
+                        return true;
+                    }
+                }
             }
 
             return result;
