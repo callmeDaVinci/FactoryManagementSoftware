@@ -189,6 +189,12 @@
     <Compile Include="UI\BaseForm.Designer.cs">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmActionLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmActionLog.Designer.cs">
+      <DependentUpon>frmActionLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmAddItem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,6 +242,12 @@
     </Compile>
     <Compile Include="UI\frmDialog.Designer.cs">
       <DependentUpon>frmDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmDONumberChange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDONumberChange.Designer.cs">
+      <DependentUpon>frmDONumberChange.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmExportSetting.cs">
       <SubType>Form</SubType>
@@ -710,6 +722,9 @@
     <EmbeddedResource Include="UI\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmActionLog.resx">
+      <DependentUpon>frmActionLog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmAddItem.resx">
       <DependentUpon>frmAddItem.cs</DependentUpon>
     </EmbeddedResource>
@@ -733,6 +748,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDialog.resx">
       <DependentUpon>frmDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDONumberChange.resx">
+      <DependentUpon>frmDONumberChange.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmExportSetting.resx">
       <DependentUpon>frmExportSetting.cs</DependentUpon>

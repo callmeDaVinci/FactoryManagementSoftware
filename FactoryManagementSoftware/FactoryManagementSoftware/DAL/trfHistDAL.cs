@@ -2031,6 +2031,58 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+
+        public DataTable rangeMaterialOutToPMMASearch(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            string cat = "Part";
+            string to = "PMMA";
+
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE 
+                                trf_hist_trf_date 
+                                BETWEEN @start AND @end 
+                                AND trf_hist_to=@to
+                                AND tbl_item.item_cat != @cat";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@cat", cat);
+                cmd.Parameters.AddWithValue("@to", to);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
         //public DataTable rangeTrfSearch(string start, string end)
         //{
         //    //static methodd to connect database

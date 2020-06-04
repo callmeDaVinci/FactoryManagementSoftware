@@ -1546,7 +1546,7 @@ namespace FactoryManagementSoftware.UI
                                 if (!UpdateDOandPO(dt_DODataBase, dt_PODataBase, itemCode, trfID, trfQty))
                                 {
                                     //undo transfer record
-                                    MessageBox.Show("Undo Action");
+                                    MessageBox.Show("DO/PO update failed!");
                                 }
                             }
 

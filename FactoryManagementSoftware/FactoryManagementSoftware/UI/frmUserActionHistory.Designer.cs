@@ -52,6 +52,7 @@
             this.dgvUserHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvUserHistory.Size = new System.Drawing.Size(1100, 660);
             this.dgvUserHistory.TabIndex = 40;
+            this.dgvUserHistory.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUserHistory_CellContentClick);
             // 
             // frmUserActionHistory
             // 

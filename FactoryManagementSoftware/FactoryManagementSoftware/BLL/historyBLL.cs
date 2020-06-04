@@ -13,5 +13,8 @@ namespace FactoryManagementSoftware.BLL
         public int history_by { get; set; }
         public string history_action { get; set; }
         public string history_detail { get; set; }
+
+        public int data_id { get; set; }
+        public string page_name { get; set; }
     }
 }

@@ -753,11 +753,14 @@ namespace FactoryManagementSoftware.UI
         {
             bool result = false;
            // DataTable dtJoin = dalJoin.loadChildList(itemCode);
-            
-            if (dtJoin.Rows.Count > 0)
+            if(tool.getItemCat(itemCode) == text.Cat_Part)
             {
-                result = true;
+                if (dtJoin.Rows.Count > 0)
+                {
+                    result = true;
+                }
             }
+           
 
             return result;
         }

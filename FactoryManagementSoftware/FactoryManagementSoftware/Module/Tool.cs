@@ -288,6 +288,65 @@ namespace FactoryManagementSoftware.Module
 
         #region Load/Update Data
 
+        public void OnlyNumeric_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        public bool IfDONoExist(string doNO)
+        {
+            SPPDataDAL dalSPP = new SPPDataDAL();
+            DataTable dt_DO = dalSPP.DOSelect();
+
+            foreach(DataRow row in dt_DO.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if(!isRemoved)
+                {
+                    string DONoFromDB = row[dalSPP.DONo].ToString();
+
+                    if(doNO == DONoFromDB)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+
+        }
+
+        public int GetNewDONo()
+        {
+            int DoNo = 1;
+            SPPDataDAL dalSPP = new SPPDataDAL();
+
+            DataTable dt = dalSPP.DOSelect();
+            dt.DefaultView.Sort = dalSPP.DONo + " DESC";
+            dt = dt.DefaultView.ToTable();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if (!isRemoved)
+                {
+                    int number = int.TryParse(row[dalSPP.DONo].ToString(), out number) ? number : 0;
+
+                    DoNo = number + 1;
+
+                    return DoNo;
+                }
+
+            }
+
+            return DoNo;
+        }
+
         public int GetQtyPerBag(DataTable dt, string itemCode)
         {
             int qtyPerBag = 0;
@@ -5594,6 +5653,62 @@ namespace FactoryManagementSoftware.Module
             }
         }
 
+        public void historyRecord(string action, string detail, DateTime date, int by, string page_name, int data_id)
+        {
+            string machineName = Environment.MachineName;
+            string ip = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.GetValue(1).ToString();
+
+            //save history
+            historyDAL dalHistory = new historyDAL();
+            historyBLL uHistory = new historyBLL();
+
+            userDAL dalUser = new userDAL();
+            uHistory.history_date = date;
+            uHistory.history_by = by;
+            uHistory.history_action = "[" + dalUser.getUsername(by) + " (" + machineName + " " + ip + " ) " + "] " + action;
+            uHistory.history_detail = detail;
+            uHistory.page_name = page_name;
+            uHistory.data_id = data_id;
+
+            bool result = dalHistory.insertWithDataID(uHistory);
+
+            if (!result)
+            {
+                MessageBox.Show("Failed to add new history");
+            }
+
+            Directory.CreateDirectory(@"D:\StockAssistant\SystemHistory");
+            string today = DateTime.Now.Date.ToString("yyyy_MM_dd");
+            string filePath = @"D:\StockAssistant\SystemHistory\History_" + today + ".txt";
+
+            string str = "";
+            if (File.Exists(filePath))
+            {
+                using (StreamReader sreader = new StreamReader(filePath))
+                {
+                    str = sreader.ReadToEnd();
+                }
+                File.Delete(filePath);
+            }
+
+            using (StreamWriter writer = new StreamWriter(filePath, true))
+            {
+                writer.WriteLine("-----------------------------------------------------------------------------");
+                writer.WriteLine("Date : " + DateTime.Now.ToString());
+                writer.WriteLine();
+                writer.WriteLine("Action : " + action);
+                writer.WriteLine();
+                writer.WriteLine("Detail : " + detail);
+                writer.WriteLine();
+                writer.WriteLine("By : " + dalUser.getUsername(by));
+                writer.WriteLine();
+                writer.WriteLine("Page: " + page_name+"; Data ID: "+ data_id);
+                writer.WriteLine();
+
+                writer.Write(str);
+            }
+
+        }
         #endregion
     }
 }

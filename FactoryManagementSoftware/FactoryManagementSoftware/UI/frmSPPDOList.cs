@@ -49,7 +49,9 @@ namespace FactoryManagementSoftware.UI
         readonly string text_ShowFilter = "SHOW FILTER...";
         readonly string text_HideFilter = "HIDE FILTER";
         readonly string text_CompleteDO = "Complete D/O";
-        readonly string text_InCompleteDO = "Incomplete D/O";
+        readonly string text_InCompleteDO = "D/O Incomplete";
+        readonly string text_UndoRemove = "Undo Remove";
+        readonly string text_ChangeDONumber = "Change D/O Number";
         readonly string text_SelectDO = "SELECT D/O";
         readonly string text_Export= "Export >>";
         readonly string text_CancelSelectingMode = "CANCEL";
@@ -58,7 +60,7 @@ namespace FactoryManagementSoftware.UI
 
         readonly string header_POCode = "P/O CODE";
         readonly string header_PONo = "P/O NO";
-        readonly string header_PODate = "P/O DATE";
+        readonly string header_PODate = "P/O RECEIVED DATE";
         readonly string header_CustomerCode = "CUSTOMER CODE";
         readonly string header_DeliveredDate = "DELIVERED";
         readonly string header_Customer = "CUSTOMER";
@@ -77,8 +79,10 @@ namespace FactoryManagementSoftware.UI
         readonly string header_StockCheck = "STOCK CHECK";
         readonly string header_DONo = "D/O #";
         readonly string header_DONoString = "D/O NO";
+        readonly string header_DataType = "DATA TYPE";
+
+        readonly string header_POTblCode = "P/O TABLE CODE";
         readonly string header_DOTblCode = "D/O TABLE CODE";
-        
         readonly string header_CombinedCode = "COMBINED CODE";
         readonly string header_Stock = "STOCK QTY";
         readonly string header_StockString = "STOCK";
@@ -103,6 +107,9 @@ namespace FactoryManagementSoftware.UI
         readonly string headerCheck = "CHECK";
         readonly string headerQty = "QTY (KG/PIECE)";
 
+        readonly string DataType_Removed = "REMOVED";
+        readonly string DataType_InProgress = "IN PROGRESS";
+        readonly string DataType_Delivered = "DELIVERED";
 
         private DataTable dt_DOList;
         private DataTable dt_DOItemList_1;
@@ -158,13 +165,12 @@ namespace FactoryManagementSoftware.UI
             return dt;
 
         }
-
-        
+       
         private DataTable NewDOTable()
         {
             DataTable dt = new DataTable();
 
-
+            dt.Columns.Add(header_DataType, typeof(string));
             dt.Columns.Add(header_DONo, typeof(int));
             dt.Columns.Add(header_DONoString, typeof(string));
             dt.Columns.Add(header_PODate, typeof(DateTime));
@@ -186,6 +192,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
+            dt.Columns.Add(header_POTblCode, typeof(int));
             dt.Columns.Add(header_DOTblCode, typeof(int));
             dt.Columns.Add(header_TrfTableCode, typeof(int));
             dt.Columns.Add(header_Index, typeof(int));
@@ -296,8 +303,13 @@ namespace FactoryManagementSoftware.UI
 
             if (rowIndex >= 0)
             {
-                
-                btnRemove.Visible = true;
+                string dataType = dgv.Rows[rowIndex].Cells[header_DataType].Value.ToString();
+
+                if(dataType == DataType_InProgress)
+                    btnRemove.Visible = true;
+                else
+                    btnRemove.Visible = false;
+
                 string code = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
                 ShowDOItem(code);
 
@@ -330,7 +342,10 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    btnEdit.Visible = true;
+                    if (dataType == DataType_InProgress)
+                        btnEdit.Visible = true;
+                    else
+                        btnEdit.Visible = false;
                 }
             }
             else
@@ -449,71 +464,89 @@ namespace FactoryManagementSoftware.UI
 
                 if ((preDOCode == -1 || preDOCode != doCode) && row[dalSPP.DONo] != DBNull.Value)
                 {
-                    preDOCode = doCode;
+                    
 
                     int deliveryQty = int.TryParse(row[dalSPP.ToDeliveryQty].ToString(), out deliveryQty) ? deliveryQty : 0;
 
-                    bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
-                    bool isDelivered = bool.TryParse(row[dalSPP.IsDelivered].ToString(), out isDelivered) ? isDelivered : false;
-
-                    bool dataMatched = !isRemoved;
-
-                    string trfID = row[dalSPP.TrfTableCode].ToString();
-                    #region DO TYPE
-
-                    if (!isDelivered && cbInProgress.Checked)
+                    if(deliveryQty > 0)
                     {
-                        dataMatched = dataMatched && true;
-                    }
-                    else if (isDelivered && cbCompleted.Checked)
-                    {
-                        dataMatched = dataMatched && true;
-                    }
-                    else
-                    {
-                        dataMatched = false;
-                    }
+                        preDOCode = doCode;
+                        bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+                        bool isDelivered = bool.TryParse(row[dalSPP.IsDelivered].ToString(), out isDelivered) ? isDelivered : false;
+                        string trfID = row[dalSPP.TrfTableCode].ToString();
 
-                    #endregion
+                        bool dataMatched = true;
+                        string dataType = "";
+                        #region DO TYPE
 
-                    #region Customer Filter
-
-                    string customer = cmbCustomer.Text;
-
-                    if (string.IsNullOrEmpty(customer) || customer == "ALL")
-                    {
-                        dataMatched = dataMatched && true;
-                    }
-                    else if (row[dalSPP.FullName].ToString() == customer)
-                    {
-                        dataMatched = dataMatched && true;
-                    }
-                    else
-                    {
-                        dataMatched = false;
-                    }
-
-                    #endregion
-
-                    if (dataMatched)
-                    {
-                        dt_row = dt.NewRow();
-
-                        dt_row[header_DONo] = doCode;
-                        dt_row[header_DONoString] = doCode.ToString("D6");
-                        dt_row[header_PONo] = row[dalSPP.PONo];
-                        dt_row[header_POCode] = row[dalSPP.POCode];
-                        dt_row[header_PODate] = Convert.ToDateTime(row[dalSPP.PODate]).Date;
-                        dt_row[header_Customer] = row[dalSPP.ShortName];
-                        dt_row[header_CustomerCode] = row[dalSPP.CustomerTableCode];
-
-                        if(isDelivered && !string.IsNullOrEmpty(trfID))
+                        if (!isDelivered && cbInProgress.Checked)
                         {
-                            dt_row[header_DeliveredDate] = tool.GetTransferDate(trfID);
+                            dataMatched = dataMatched && true;
+                            dataType = DataType_InProgress;
                         }
-                        
-                        dt.Rows.Add(dt_row);
+                        else if (isDelivered && cbCompleted.Checked)
+                        {
+                            dataMatched = dataMatched && true;
+                            dataType = DataType_Delivered;
+                        }
+                        else
+                        {
+                            dataMatched = false;
+                        }
+
+                        if (isRemoved && cbRemoved.Checked)
+                        {
+                            dataMatched = true;
+                            dataType = DataType_Removed;
+                        }
+                        else if (isRemoved)
+                        {
+                            dataMatched = false;
+                        }
+
+                        #endregion
+
+                        #region Customer Filter
+
+                        string customer = cmbCustomer.Text;
+
+                        if (string.IsNullOrEmpty(customer) || customer == "ALL")
+                        {
+                            dataMatched = dataMatched && true;
+                        }
+                        else if (row[dalSPP.FullName].ToString() == customer)
+                        {
+                            dataMatched = dataMatched && true;
+                        }
+                        else
+                        {
+                            dataMatched = false;
+                        }
+
+                        #endregion
+
+                        if (dataMatched)
+                        {
+                            dt_row = dt.NewRow();
+
+                            dt_row[header_DataType] = dataType;
+                            dt_row[header_DONo] = doCode;
+                            dt_row[header_DONoString] = doCode.ToString("D6");
+                            dt_row[header_PONo] = row[dalSPP.PONo];
+                            dt_row[header_POCode] = row[dalSPP.POCode];
+                            dt_row[header_PODate] = Convert.ToDateTime(row[dalSPP.PODate]).Date;
+                            dt_row[header_Customer] = row[dalSPP.ShortName];
+                            dt_row[header_CustomerCode] = row[dalSPP.CustomerTableCode];
+
+                            if (isDelivered && !string.IsNullOrEmpty(trfID))
+                            {
+                                dt_row[header_DeliveredDate] = tool.GetTransferDate(trfID);
+                            }
+
+                            dt.Rows.Add(dt_row);
+                        }
                     }
+                    
 
                 }
 
@@ -567,10 +600,12 @@ namespace FactoryManagementSoftware.UI
                         int bag = deliveryQty / stdPacking;
 
                         int DOTableCode = int.TryParse(row[dalSPP.TableCode].ToString(), out DOTableCode) ? DOTableCode : -1;
-                        // int TrfTableCode = int.TryParse(row[dalSPP.TrfTableCode].ToString(), out TrfTableCode) ? TrfTableCode : -1;
+                        int POTableCode = int.TryParse(row[dalSPP.POTableCode].ToString(), out POTableCode) ? POTableCode : -1;
+                        int TrfTableCode = int.TryParse(row[dalSPP.TrfTableCode].ToString(), out TrfTableCode) ? TrfTableCode : -1;
 
+                        dt_Row[header_POTblCode] = POTableCode;
                         dt_Row[header_DOTblCode] = DOTableCode;
-                        //dt_Row[header_TrfTableCode] = TrfTableCode;
+                        dt_Row[header_TrfTableCode] = TrfTableCode;
 
                         if (deliveryQty > 0)
                         {
@@ -612,10 +647,23 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 rowIndex = dgv.CurrentRow.Index;
-                if(!DOSelectingMode)
-                btnEdit.Visible = true;
+                string dataType = dgv.Rows[rowIndex].Cells[header_DataType].Value.ToString();
 
-                btnRemove.Visible = true;
+                if (!DOSelectingMode)
+                {
+                    if (dataType == DataType_InProgress)
+                        btnEdit.Visible = true;
+                    else
+                        btnEdit.Visible = false;
+                }
+                
+
+               
+
+                if (dataType == DataType_InProgress)
+                    btnRemove.Visible = true;
+                else
+                    btnRemove.Visible = false;
             }
 
 
@@ -636,17 +684,20 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void RemoveDO(int DONo)
+        private void RemoveDO(int DONo, string customer)
         {
             uSpp.IsRemoved = true;
             uSpp.DO_no = DONo;
 
-            uSpp.Updated_Date = DateTime.Now;
-            uSpp.Updated_By = MainDashboard.USER_ID;
+            int userID = MainDashboard.USER_ID;
+            DateTime dateNow = DateTime.Now;
+            uSpp.Updated_Date = dateNow;
+            uSpp.Updated_By = userID;
 
             if (dalSPP.DORemove(uSpp))
             {
                 MessageBox.Show("DO Removed!");
+                tool.historyRecord(text.DO_Removed, text.GetDONumberAndCustomer(DONo, customer), dateNow, userID, dalSPP.DOTableName, DONo);
             }
             else
             {
@@ -735,12 +786,13 @@ namespace FactoryManagementSoftware.UI
                 if (rowIndex >= 0)
                 {
                     int DONo = Convert.ToInt32(dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString());
+                    string Customer = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
 
                     DialogResult dialogResult = MessageBox.Show("Are you sure you want to REMOVE DO: " + DONo.ToString("D6") + " ?", "Message",
                                                               MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        RemoveDO(DONo);
+                        RemoveDO(DONo, Customer);
 
                         LoadDOList();
                     }
@@ -784,7 +836,32 @@ namespace FactoryManagementSoftware.UI
                     string code = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
                     ShowDOItem(code);
 
-                    my_menu.Items.Add(text_CompleteDO).Name = text_CompleteDO;
+                    string dataType = dgv.Rows[rowIndex].Cells[header_DataType].Value.ToString();
+
+                    string showingText = "";
+
+                    bool ableToChangeDONo = false;
+                    if(dataType == DataType_Removed)
+                    {
+                        showingText = text_UndoRemove;
+                    }
+                    else if (dataType == DataType_Delivered)
+                    {
+                        showingText = text_InCompleteDO;
+                        ableToChangeDONo = true;
+                    }
+                    else if (dataType == DataType_InProgress)
+                    {
+                        showingText = text_CompleteDO;
+                        ableToChangeDONo = true;
+                    }
+
+                    my_menu.Items.Add(showingText).Name = showingText;
+
+                    if(ableToChangeDONo)
+                    {
+                        my_menu.Items.Add(text_ChangeDONumber).Name = text_ChangeDONumber;
+                    }
 
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
@@ -817,7 +894,21 @@ namespace FactoryManagementSoftware.UI
                     {
                         CompleteDO(rowIndex);
                     }
-
+                    else if (ClickedItem.Equals(text_InCompleteDO))
+                    {
+                        IncompleteDO(rowIndex);
+                        //MessageBox.Show("incomplete do");
+                    }
+                    else if (ClickedItem.Equals(text_UndoRemove))
+                    {
+                        DOUndoRemove(rowIndex);
+                        //MessageBox.Show("undo remove");
+                    }
+                    else if (ClickedItem.Equals(text_ChangeDONumber))
+                    {
+                        ChangeDONumber(rowIndex);
+                        //MessageBox.Show("Change D/O Number");
+                    }
                 }
 
 
@@ -882,9 +973,256 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("transfer success");
 
                 LoadDOList();
+                tool.historyRecord(text.DO_Delivered, text.GetDONumberAndCustomer(Convert.ToInt32(doCode), customerShortName), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(doCode));
             }
         }
 
+        private int GetPODeliveredQty(DataTable dt_PO, string poTableCode)
+        {
+            int deliveredQty = 0;
+
+            foreach(DataRow row in dt_PO.Rows)
+            {
+                if(poTableCode == row[dalSPP.TableCode].ToString())
+                {
+                    deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
+                }
+            }
+
+            return deliveredQty;
+        }
+
+        private void IncompleteDO(int rowIndex)
+        {
+            bool success = true;
+            DataTable dt_Item = (DataTable)dgvItemList.DataSource;
+            DataGridView dgv = dgvDOList;
+
+            string doCode = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
+            string poNoString = dgv.Rows[rowIndex].Cells[header_PONo].Value.ToString();
+            string customerShortName = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
+            string customerCode = dgv.Rows[rowIndex].Cells[header_CustomerCode].Value.ToString();
+
+            //get po data from DB by po no string
+            DataTable dt_POData = dalSPP.POSelect(poNoString);
+            DateTime updatedDate = DateTime.Now;
+            int updatedBy = MainDashboard.USER_ID;
+
+            foreach (DataRow row in dt_Item.Rows)
+            {
+                string doTableCode = row[header_DOTblCode].ToString();
+                string poTableCode = row[header_POTblCode].ToString();
+                string trfTableCode = row[header_TrfTableCode].ToString();
+                string PcsQty = row[header_DeliveryPCS].ToString();
+
+                string itemCode = row[header_ItemCode].ToString();
+                string BagQty = row[header_DeliveryBAG].ToString();
+
+                if (!string.IsNullOrEmpty(itemCode))
+                {
+                    uSpp.Updated_Date = updatedDate;
+                    uSpp.Updated_By = updatedBy;
+
+                    #region  update isDelivered to false to DB by do table code
+
+                    uSpp.Table_Code = Convert.ToInt32(doTableCode);
+                    uSpp.IsDelivered = false;
+                    uSpp.Trf_tbl_code = Convert.ToInt32(trfTableCode);
+
+                    success = dalSPP.DODelivered(uSpp);
+
+                    if (!success)
+                    {
+                        MessageBox.Show("Failed to update D/O\nTransfer ID: " + trfTableCode);
+                    }
+                    #endregion
+
+                    #region update delivered qty to DB by po table code
+
+                    //get delivered qty by po table code
+                    int deliveredQty = GetPODeliveredQty(dt_POData, poTableCode);
+
+                    //dedute delivered qty by to delivery qty
+                    int toDeliveryPcs = int.TryParse(PcsQty, out toDeliveryPcs) ? toDeliveryPcs : 0;
+
+                    deliveredQty -= toDeliveryPcs;
+                    uSpp.Table_Code = Convert.ToInt32(poTableCode);
+                    uSpp.Delivered_qty = deliveredQty;
+              
+
+                    success = dalSPP.PODeliveredDataUpdate(uSpp);
+
+                    if (!success)
+                    {
+                        MessageBox.Show("Failed to update delivered qty!");
+
+                    }
+
+                    #endregion
+
+                    tool.UndoTransferRecord(Convert.ToInt32(trfTableCode));
+
+                }
+
+
+            }
+
+            //message
+            if (success)
+            {
+                MessageBox.Show("D/O: " + Convert.ToInt32(doCode).ToString("D6") + " Incomplete Successful!");
+                dgv.Rows[rowIndex].Cells[header_DataType].Value = DataType_InProgress;
+            }
+          
+
+            //change row color
+            ColorDONoByStatus();
+
+            //record history
+            tool.historyRecord(text.DO_Incomplete, text.GetDONumberAndCustomer(Convert.ToInt32(doCode), customerShortName), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(doCode));
+
+
+            //LoadDOList();
+        }
+
+        private void DOUndoRemove(int rowIndex)
+        {
+            bool success = true;
+            DataTable dt_Item = (DataTable)dgvItemList.DataSource;
+            DataGridView dgv = dgvDOList;
+
+            string doNo = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
+            string poNoString = dgv.Rows[rowIndex].Cells[header_PONo].Value.ToString();
+            string customerShortName = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
+            string customerCode = dgv.Rows[rowIndex].Cells[header_CustomerCode].Value.ToString();
+
+            string newDONo = doNo;
+            if(tool.IfDONoExist(doNo))
+            {
+                newDONo = tool.GetNewDONo().ToString();
+            }
+
+
+            DateTime updatedDate = DateTime.Now;
+            int updatedBy = MainDashboard.USER_ID;
+
+
+            foreach (DataRow row in dt_Item.Rows)
+            {
+                string doTableCode = row[header_DOTblCode].ToString();
+                string poTableCode = row[header_POTblCode].ToString();
+                string trfTableCode = row[header_TrfTableCode].ToString();
+                string PcsQty = row[header_DeliveryPCS].ToString();
+
+                string itemCode = row[header_ItemCode].ToString();
+                string BagQty = row[header_DeliveryBAG].ToString();
+
+                if (!string.IsNullOrEmpty(itemCode))
+                {
+                    uSpp.Updated_Date = updatedDate;
+                    uSpp.Updated_By = updatedBy;
+
+                    #region  update isRemoved to false and DONo to DB by do table code
+
+                    uSpp.Table_Code = Convert.ToInt32(doTableCode);
+                    uSpp.IsRemoved = false;
+                    uSpp.DO_no = Convert.ToInt32(newDONo);
+
+                    success = dalSPP.DOIsRemovedAndDoNoUpdate(uSpp);
+
+                    if (!success)
+                    {
+                        MessageBox.Show("Failed to update D/O's number or isRemoved status!");
+                    }
+                    #endregion
+                }
+
+
+            }
+
+            //message
+            if(success)
+            {
+                MessageBox.Show("D/O: " + Convert.ToInt32(newDONo).ToString("D6") + " remove undo successful!");
+                dgv.Rows[rowIndex].Cells[header_DataType].Value = DataType_InProgress;
+            }
+
+            //change row color
+            ColorDONoByStatus();
+
+            //record history
+            tool.historyRecord(text.DO_UndoRemove, text.GetDONumberAndCustomer(Convert.ToInt32(newDONo), customerShortName), updatedDate, updatedBy, dalSPP.DOTableName, Convert.ToInt32(newDONo));
+        }
+
+        private void ChangeDONumber(int rowIndex)
+        {
+            bool success = true;
+            DataTable dt_Item = (DataTable)dgvItemList.DataSource;
+            DataGridView dgv = dgvDOList;
+
+            string doNo = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
+            string poNoString = dgv.Rows[rowIndex].Cells[header_PONo].Value.ToString();
+            string customerShortName = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
+            string customerCode = dgv.Rows[rowIndex].Cells[header_CustomerCode].Value.ToString();
+
+            frmDONumberChange frm = new frmDONumberChange(doNo)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+
+            frm.ShowDialog();
+
+            string newDONo = frmDONumberChange.NewDONumber;
+           
+            if(!string.IsNullOrEmpty(newDONo) && newDONo != "")
+            {
+                DateTime updatedDate = DateTime.Now;
+                int updatedBy = MainDashboard.USER_ID;
+
+                foreach (DataRow row in dt_Item.Rows)
+                {
+                    string doTableCode = row[header_DOTblCode].ToString();
+                    string itemCode = row[header_ItemCode].ToString();
+
+                    if (!string.IsNullOrEmpty(itemCode))
+                    {
+                        uSpp.Updated_Date = updatedDate;
+                        uSpp.Updated_By = updatedBy;
+
+                        #region  update new DONo to DB by do table code
+
+                        uSpp.Table_Code = Convert.ToInt32(doTableCode);
+                        uSpp.IsRemoved = false;
+                        uSpp.DO_no = Convert.ToInt32(newDONo);
+
+                        success = dalSPP.DOIsRemovedAndDoNoUpdate(uSpp);
+
+                        if (!success)
+                        {
+                            MessageBox.Show("Failed to update new D/O's number!");
+                        }
+                        #endregion
+                    }
+
+
+                }
+
+                //message
+                if (success)
+                {
+                    MessageBox.Show("D/O: " + Convert.ToInt32(newDONo).ToString("D6") + " D/O number change successful!");
+                    dgv.Rows[rowIndex].Cells[header_DataType].Value = DataType_InProgress;
+                }
+
+                LoadDOList();
+                
+                //record history
+                tool.historyRecord(text.DO_ChangeDONumber, text.ChangeDONumber(Convert.ToInt32(newDONo), customerShortName, doNo, newDONo), updatedDate, updatedBy, dalSPP.DOTableName, Convert.ToInt32(newDONo));
+            }
+
+           
+        }
         #endregion
 
         #region export to excel
@@ -1017,17 +1355,17 @@ namespace FactoryManagementSoftware.UI
 
             #region LOGO
 
-            string tempPath = Path.GetTempFileName();
-            Resources.safety_logo.Save(tempPath + "safety-logo.png");
-            string filePath = tempPath + "safety-logo.png";
-            //var filePath = @"D:\CodeBase\FactoryManagementSoftware\FactoryManagementSoftware\FactoryManagementSoftware\Resources\safety-logo.png";
-            xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 10, 20, 88f, 49f);
+            //string tempPath = Path.GetTempFileName();
+            //Resources.safety_logo.Save(tempPath + "safety-logo.png");
+            //string filePath = tempPath + "safety-logo.png";
+            ////var filePath = @"D:\CodeBase\FactoryManagementSoftware\FactoryManagementSoftware\FactoryManagementSoftware\Resources\safety-logo.png";
+            //xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 10, 20, 88f, 49f);
 
             #endregion
 
             DOFormat = xlWorkSheet.get_Range(companyName_CN).Cells;
             DOFormat.Merge();
-            DOFormat.Value = text.Company_Name_CN;
+            //DOFormat.Value = text.Company_Name_CN;
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignBottom;
             DOFormat.Font.Size = 22;
@@ -1051,7 +1389,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
             DOFormat = xlWorkSheet.get_Range(companyName_EN).Cells;
             DOFormat.Merge();
-            DOFormat.Value = text.Company_Name_EN;
+            //DOFormat.Value = text.Company_Name_EN;
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
             DOFormat.Font.Size = 20;
@@ -1060,7 +1398,7 @@ namespace FactoryManagementSoftware.UI
 
             DOFormat = xlWorkSheet.get_Range(company_Registration).Cells;
             DOFormat.Merge();
-            DOFormat.Value = text.Company_RegistrationNo;
+           // DOFormat.Value = text.Company_RegistrationNo;
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
             DOFormat.Font.Size = 10.5;
@@ -1069,7 +1407,7 @@ namespace FactoryManagementSoftware.UI
 
             DOFormat = xlWorkSheet.get_Range(company_AddressAndContact).Cells;
             DOFormat.Merge();
-            DOFormat.Value = text.Company_AddressAndContact;
+            //DOFormat.Value = text.Company_AddressAndContact;
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
             DOFormat.Font.Size = 8;
@@ -1624,8 +1962,10 @@ namespace FactoryManagementSoftware.UI
 
                                                 descriptionRow = remarkColStart + (rowOffset + rowNo).ToString() + remarkColEnd + (rowOffset + rowNo).ToString();
                                                 InsertToSheet(xlWorkSheet, descriptionRow, remark);
+
+
                                             }
-                                                
+
                                         }
                                     }
 
@@ -1651,7 +1991,9 @@ namespace FactoryManagementSoftware.UI
                                     InsertToSheet(xlWorkSheet, state, shippingState);
                                     InsertToSheet(xlWorkSheet, contact, Contact);
 
-                            
+
+                                    tool.historyRecord(text.DO_Exported, text.GetDOExportDetail(openFile, printFile, printPreview), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(DONo));
+
                                     pageNo = 1;
                                     rowNo = 0;
                                    
@@ -1674,6 +2016,7 @@ namespace FactoryManagementSoftware.UI
                             // Open the newly saved excel file
                             if (File.Exists(sfd.FileName))
                             {
+
                                 if (openFile)
                                 {
                                     Excel.Application excel = new Excel.Application();
@@ -1693,6 +2036,7 @@ namespace FactoryManagementSoftware.UI
                                     xlWorkBook.PrintOut(Preview: printPreview, Collate: true);
                                     //xlWorkBook.PrintOut(Type.Missing, Type.Missing, Type.Missing, printPreview, Type.Missing, Type.Missing, true, Type.Missing);
                                 }
+
                             }
 
                             xlexcel.DisplayAlerts = true;
@@ -1755,5 +2099,70 @@ namespace FactoryManagementSoftware.UI
         }
 
         #endregion
+
+        private void dgvDOList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            DataGridView dgv = dgvDOList;
+
+            if (rowIndex >= 0 && dgv.SelectedRows.Count > 0)
+            {
+                string tblName = dalSPP.DOTableName;
+                string code = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
+
+                frmActionLog frm = new frmActionLog(tblName, code)
+                {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+
+
+                frm.ShowDialog();
+            }
+
+        }
+
+        private void ColorDONoByStatus()
+        {
+            DataGridView dgv = dgvDOList;
+            dgv.SuspendLayout();
+
+            for (int i = 0; i < dgv.Rows.Count; i++)
+            {
+                for (int j = 0; j < dgv.Columns.Count; j++)
+                {
+                    if (dgv.Columns[j].Name == header_DataType)
+                    {
+                        if (dgv.Rows[i].Cells[j].Value.ToString() == DataType_Delivered)
+                        {
+                            dgv.Rows[i].Cells[header_DONoString].Style.ForeColor = Color.Green;
+                        }
+                        else if (dgv.Rows[i].Cells[j].Value.ToString() == DataType_Removed)
+                        {
+                            dgv.Rows[i].Cells[header_DONoString].Style.ForeColor = Color.Red;
+
+                        }
+                        else
+                        {
+                            dgv.Rows[i].Cells[header_DONoString].Style.ForeColor = Color.Black;
+
+                        }
+                    }
+                }
+            }
+
+            dgv.ResumeLayout();
+
+            dgv.ClearSelection();
+        }
+
+        private void dgvDOList_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            ColorDONoByStatus();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadDOList();
+        }
     }
 }

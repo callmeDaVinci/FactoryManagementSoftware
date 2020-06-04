@@ -119,7 +119,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_POTblCode = "P/O TBL CODE";
         readonly string header_POCode = "P/O CODE";
         readonly string header_PONoString = "P/O NO";
-        readonly string header_PODate = "P/O DATE";
+        readonly string header_PODate = "P/O RECEIVED DATE";
         readonly string header_CustomerCode = "CUSTOMER CODE";
         readonly string header_Customer = "CUSTOMER";
         readonly string header_Progress = "PROGRESS";
@@ -151,6 +151,7 @@ namespace FactoryManagementSoftware.UI
         private DataTable dt_POList;
         private DataTable dt_DOItemList_1;
         private DataTable dt_DOEditList;
+        private DataTable dt_DOItemOriginalList;
 
         private bool addingDOMode = false;
         private bool ableToNextStep = false;
@@ -1000,11 +1001,13 @@ namespace FactoryManagementSoftware.UI
 
                     dt_Row = dt_DOItemList.NewRow();
 
-                    if(deliveredQty != deliveryQty)
+                    if(deliveredQty != deliveryQty || deliveryQty == 0)
                     {
-                        if (callFromDOPage || EditMode)
+                        if (EditMode)
                         {
+                            //string test 
                             dt_Row[header_POTblCode] = row[dalSPP.POTableCode];
+                            //dt_Row[header_POTblCode] = row[dalSPP.TableCode];
                         }
                         else
                         {
@@ -1617,28 +1620,6 @@ namespace FactoryManagementSoftware.UI
             #endregion
         }
 
-        private int GetNewDONo()
-        {
-            int DoNo = 1;
-
-            DataTable dt = dalSPP.DOSelect();
-            dt.DefaultView.Sort = dalSPP.DONo + " DESC";
-            dt = dt.DefaultView.ToTable();
-
-            foreach(DataRow row in dt.Rows)
-            {
-                int number = int.TryParse(row[dalSPP.DONo].ToString(), out number) ? number : 0;
-
-                DoNo = number + 1;
-
-                return DoNo;
-            }
-
-            return DoNo;
-        }
-
-        
-
         private void POToDO()
         {
             TotalToDeliveryBag = 0;
@@ -1647,7 +1628,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt_DO = NewDOTable();
             DataRow dt_Row;
 
-            int doNo = GetNewDONo();
+            int doNo = tool.GetNewDONo();
 
             foreach (DataRow row in dt.Rows)
             {
@@ -1734,6 +1715,12 @@ namespace FactoryManagementSoftware.UI
 
             dgvDOList.ClearSelection();
             dgvItemList.ClearSelection();
+
+            if(EditMode)
+            {
+                dt_DOItemOriginalList = dt_DOItemList_1.Copy();
+
+            }
         }
 
         private void CombineDOItemList(DataTable dt_DOMainList)
@@ -2771,9 +2758,13 @@ namespace FactoryManagementSoftware.UI
             DateTime updatedDate = DateTime.Now;
             int userID = MainDashboard.USER_ID;
 
-            foreach(DataRow row in dt.Rows)
+            string dataInsertType = "";
+            string customer = "";
+            int DONo = -1;
+
+            foreach (DataRow row in dt.Rows)
             {
-                int DONo = int.TryParse(row[header_DONo].ToString(), out DONo) ? DONo : -1;
+                DONo = int.TryParse(row[header_DONo].ToString(), out DONo) ? DONo : -1;
 
                 if(DONo != -1)
                 {
@@ -2787,21 +2778,67 @@ namespace FactoryManagementSoftware.UI
 
                     string dataMode = row[header_DataMode].ToString();
 
-                   
+
+                    customer = row[header_Customer].ToString();
+
+                    //string poCode = row[header_PONoString].ToString();
 
                     if(dataMode == text_ToAdd)
                     {
+                        dataInsertType = text_ToAdd;
                         success = dalSPP.InsertDO(uSpp);
 
-                        if(success)
-                        {
-                            //update po and item table
-                        }
+                        //if(success)
+                        //{
+                           
+                        //}
                     }
                     else if (dataMode == text_ToUpdate)
                     {
+                        dataInsertType = text_ToUpdate;
                         uSpp.Table_Code = Convert.ToInt32(row[header_DOTblCode]);
                         success = dalSPP.DOUpdate(uSpp);
+
+                        foreach(DataRow compareRow in dt_DOItemOriginalList.Rows)
+                        {
+                            string compareDataMode = compareRow[header_DataMode].ToString();
+
+                            if (compareDataMode == text_ToUpdate || compareDataMode == text_ToEdit)
+                            {
+                                int compareDOTblCode = Convert.ToInt32(compareRow[header_DOTblCode]);
+                                int comparePOTblCode = Convert.ToInt32(compareRow[header_POTblCode]);
+
+                                bool rowMatched = compareDOTblCode == uSpp.Table_Code;
+                                rowMatched &= comparePOTblCode == uSpp.PO_tbl_code;
+
+                                if (rowMatched)
+                                {
+                                    int compareDeliveryQty = Convert.ToInt32(compareRow[header_DeliveryPCS]);
+
+                                    if (compareDeliveryQty != uSpp.DO_to_delivery_qty)
+                                    {
+                                        string size = compareRow[header_Size].ToString();
+                                        string type = compareRow[header_Type].ToString();
+                                        string unit = compareRow[header_Unit].ToString();
+                                        string oldData = compareRow[header_DeliveryQTY].ToString();
+                                        string newData = row[header_DeliveryQTY].ToString();
+                                        
+                                        //data changed
+                                        string detail = text.GetDOEditDetail(DONo, customer, size+" "+unit, type, text.DataType_ToDelivery, oldData, newData);
+                                        tool.historyRecord(text.DO_Edited, detail, updatedDate, userID, dalSPP.DOTableName, DONo);
+                                    }
+
+                                   
+                                }
+                            }
+                               
+                        }
+
+                        if (success)
+                        {
+                            //tool.historyRecord(text.DO_Edited, text.GetDOAddOrEditDetail(DONo, customer), updatedDate, userID, dalSPP.DOTableName, DONo);
+                        }
+
                     }
                    
 
@@ -2810,6 +2847,11 @@ namespace FactoryManagementSoftware.UI
                         MessageBox.Show("DO insert failed!");
                     }
                 }
+            }
+
+            if(dataInsertType == text_ToAdd && success)
+            {
+                tool.historyRecord(text.DO_Added, text.GetDONumberAndCustomer(DONo, customer), updatedDate, userID, dalSPP.DOTableName, DONo);
             }
 
             return success;

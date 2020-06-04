@@ -70,14 +70,13 @@ namespace FactoryManagementSoftware.Module
 
         #endregion
 
-        #region Transfer/Order/Report/Excel/PMMA Edit/forecast
+        #region History Action
         public string Transfer { get; } = "Transfer";
         public string TransferUndo { get; } = "TransferUndo";
         public string TransferUndoBySystem { get; } = "TransferUndoBySystem";
         public string TransferRedo { get; } = "TransferRedo";
         public string Undo { get; } = "Undo";
         public string Passed { get; } = "Passed";
-        
 
         public string AddOrder { get; } = "AddOrder";
         public string OrderRequest { get; } = "OrderRequest";
@@ -99,6 +98,18 @@ namespace FactoryManagementSoftware.Module
 
         public string Excel { get; } = "Excel";
         public string PMMAEdit { get; } = "PMMA Edit";
+
+        public string DO_Added { get; } = "D/O ADDED";
+        public string DO_Edited { get; } = "D/O EDITED";
+        public string DO_Removed { get; } = "D/O REMOVED";
+        public string DO_Delivered { get; } = "D/O DELIVERED";
+        public string DO_Exported { get; } = "D/O EXPORTED";
+        public string DO_Incomplete { get; } = "D/O INCOMPLETE";
+        public string DO_UndoRemove { get; } = "D/O UNDO REMOVE";
+        public string DO_ChangeDONumber { get; } = "D/O NUMBER CHANGE";
+
+        public string DataType_ToDelivery { get; } = "To Delivery";
+
         #endregion
 
         #region Planning 
@@ -263,6 +274,48 @@ namespace FactoryManagementSoftware.Module
 
         public string Success { get; } = "Success";
         public string Failed { get; } = "Access Denied";
+
+        public string GetDONumberAndCustomer(int DONo, string customer)
+        {
+            return "DO NO. :"+DONo.ToString("D6") + "( "+customer+")";
+        }
+
+        public string ChangeDONumber(int DONo, string customer, string oldData, string newData)
+        {
+            return "DO NO. :" + DONo.ToString("D6") + "( " + customer + ") " + " change D/O number from " + oldData + " to " + newData;
+        }
+
+        public string GetDOEditDetail(int DONo, string customer, string size, string type, string dataType, string oldData, string newData)
+        {
+            return "DO NO. :" + DONo.ToString("D6") + "( " + customer + ") " + size+" "+type +" "+dataType+" amend from "+oldData+" to "+newData;
+        }
+
+        public string GetDOExportDetail(bool openFile, bool printFile, bool printPreview)
+        {
+
+            string detail = "";
+
+            if(openFile)
+            {
+                detail = "Open File; ";
+            }
+
+            if (printFile)
+            {
+                if(printPreview)
+                {
+                    detail += "Print File(with print preview);";
+                }
+                else
+                {
+                    detail += "Print File;";
+                }
+                
+            }
+
+            return detail;
+        }
+
 
         public string getTransferDetailString(int ID, float qty, string unit, string itemCode, string from, string to)
         {

@@ -547,9 +547,9 @@
             this.lblPODate.Location = new System.Drawing.Point(177, 0);
             this.lblPODate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblPODate.Name = "lblPODate";
-            this.lblPODate.Size = new System.Drawing.Size(47, 25);
+            this.lblPODate.Size = new System.Drawing.Size(61, 25);
             this.lblPODate.TabIndex = 170;
-            this.lblPODate.Text = "P/O DATE*";
+            this.lblPODate.Text = "P/O RECEIVED DATE*";
             // 
             // dtpPODate
             // 

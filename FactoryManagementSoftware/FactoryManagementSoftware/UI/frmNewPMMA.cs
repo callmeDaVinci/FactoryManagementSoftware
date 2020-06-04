@@ -620,6 +620,32 @@ namespace FactoryManagementSoftware.UI
             return InQty;
         }
 
+        private float getMatOutQty(string matCode, DataTable dt)
+        {
+            float OutQty = 0;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row[dalTrfHist.TrfResult].ToString().Equals("Passed"))
+                {
+                    string trfFrom = row[dalTrfHist.TrfFrom].ToString();
+                    string trfTo = row[dalTrfHist.TrfTo].ToString();
+                    string item = row[dalTrfHist.TrfItemCode].ToString();
+                    //from PMMA to factory: IN
+                    if (matCode == item && tool.getFactoryID(trfFrom) != -1)
+                    {
+                        if (float.TryParse(row[dalTrfHist.TrfQty].ToString(), out float i))
+                        {
+                            OutQty += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                        }
+
+                    }
+                }
+            }
+
+            return OutQty;
+
+        }
         private float getMatWastage(string matCode, DataTable dt)
         {
             float wastage = 0;
@@ -725,6 +751,8 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt_MatInFromPMMAHist = dalTrfHist.rangeMaterialInFromPMMASearch(from, to);
 
+            DataTable dt_MatOutToPMMAHist = dalTrfHist.rangeMaterialOutToPMMASearch(from, to);
+
             dt_PMMA = dalPMMA.SearchByNewDate(month, year);
             DataTable dt_PMMALastMonth = dalPMMA.SearchByNewDate(lastMonth, lastYear);
 
@@ -747,11 +775,17 @@ namespace FactoryManagementSoftware.UI
                         adjustQty = MatData[dalPMMA.Adjust] == DBNull.Value ? 0 : (float)Math.Round(Convert.ToSingle(MatData[dalPMMA.Adjust]), 2);
                         note = MatData[dalPMMA.Note] == DBNull.Value ? "" : MatData[dalPMMA.Note].ToString();
                     }
-                    
+
+                    float outToPMMAQty = getMatOutQty(matCode, dt_MatOutToPMMAHist);
+                    Out += outToPMMAQty;
 
                     float inQty = getMatInQty(matCode, dt_MatInFromPMMAHist);
                     float wastage = getMatWastage(matCode, dt_Item);
                     float balance = (float)Math.Round(openStock + inQty - Out + adjustQty, 2);
+
+                  
+                    //check transfer record if transfered to PMMA within current period
+
                     row_StockSouce = dt_MatStock.NewRow();
 
                     row_StockSouce[text.Header_Index] = index;
