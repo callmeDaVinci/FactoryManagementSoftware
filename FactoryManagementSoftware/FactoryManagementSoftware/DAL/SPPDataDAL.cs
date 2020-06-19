@@ -571,7 +571,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = @"SELECT * FROM tbl_spp_po INNER JOIN tbl_spp_customer ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code ORDER BY po_code ASC";
+                String sql = @"SELECT * FROM tbl_spp_po INNER JOIN tbl_spp_customer ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code ORDER BY po_date ASC";
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
@@ -640,6 +640,48 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
+        public DataTable POSelectWithCustCode(string custTblCode)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_spp_po WHERE customer_tbl_code=@custTblCode ORDER BY updated_date DESC";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@custTblCode", custTblCode);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable POSelectWithSizeAndType()
         {
             //static methodd to connect database
@@ -766,6 +808,49 @@ namespace FactoryManagementSoftware.DAL
                 conn.Close();
             }
             return dt;
+        }
+
+        public DataTable DOSelect(string doNo)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_spp_do 
+                             WHERE do_no = @doNo
+                             ORDER BY do_no DESC";
+                
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@doNo", doNo);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+
         }
 
         public DataTable DOSelectWithPO()
@@ -2413,7 +2498,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool DOIsRemovedAndDoNoUpdate(SPPDataBLL u)
+        public bool DORemovedStatusAndDoNoUpdate(SPPDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2434,6 +2519,57 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@DO_no", u.DO_no);
                 cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
                 cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool DONoChange(SPPDataBLL u, string oldDoNo)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_do 
+                            SET "
+                            + DONo + "=@DO_no,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE do_no=@oldDoNo";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@oldDoNo", oldDoNo);
+
+                cmd.Parameters.AddWithValue("@DO_no", u.DO_no);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
 

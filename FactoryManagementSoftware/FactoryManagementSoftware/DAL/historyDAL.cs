@@ -168,7 +168,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool update(historyBLL u)
+        public bool ChangeDataID(historyBLL u, string oldDataID)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -177,15 +177,15 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"UPDATE tbl_history 
                             SET "
-                           + HistoryDate + "=@history_date,"
-                           + HistoryDetail + "=@history_detail"+
-                           " WHERE history_id=@history_id";
+                           + HistoryDataID + "=@data_id" +
+                           " WHERE data_id=@oldDataID AND page_name =@page_name";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@history_date", u.history_date);
-                cmd.Parameters.AddWithValue("@history_id", 8607);
-                cmd.Parameters.AddWithValue("@history_detail", "***SAVE DATE FOR FORECAST REPORT OUT START DATE***");
+                cmd.Parameters.AddWithValue("@oldDataID", oldDataID);
+                cmd.Parameters.AddWithValue("@data_id", u.data_id);
+                cmd.Parameters.AddWithValue("@page_name", u.page_name);
+           
 
                 conn.Open();
 
@@ -215,6 +215,54 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+
+        //public bool update(historyBLL u)
+        //{
+        //    bool isSuccess = false;
+        //    SqlConnection conn = new SqlConnection(myconnstrng);
+
+        //    try
+        //    {
+        //        String sql = @"UPDATE tbl_history 
+        //                    SET "
+        //                   + HistoryDate + "=@history_date,"
+        //                   + HistoryDetail + "=@history_detail"+
+        //                   " WHERE history_id=@history_id";
+
+        //        SqlCommand cmd = new SqlCommand(sql, conn);
+
+        //        cmd.Parameters.AddWithValue("@history_date", u.history_date);
+        //        cmd.Parameters.AddWithValue("@history_id", 8607);
+        //        cmd.Parameters.AddWithValue("@history_detail", "***SAVE DATE FOR FORECAST REPORT OUT START DATE***");
+
+        //        conn.Open();
+
+        //        int rows = cmd.ExecuteNonQuery();
+
+        //        //if the query is executed successfully then the rows' value = 0
+        //        if (rows > 0)
+        //        {
+        //            //query successful
+        //            isSuccess = true;
+        //        }
+        //        else
+        //        {
+        //            //Query falled
+        //            isSuccess = false;
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Module.Tool tool = new Module.Tool();
+        //        tool.saveToText(ex);
+        //    }
+        //    finally
+        //    {
+        //        conn.Close();
+        //    }
+        //    return isSuccess;
+        //}
 
         #endregion
 

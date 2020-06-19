@@ -25,10 +25,12 @@ namespace FactoryManagementSoftware.UI
         }
 
         private DataTable dt_Delivered;
-        
+        static public bool transferred = false;
+
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            transferred = false;
             Close();
         }
 
@@ -37,6 +39,11 @@ namespace FactoryManagementSoftware.UI
             frmInOutEdit frm = new frmInOutEdit(dt_Delivered, dtpDate.Value.Date);
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//Item Edit
+
+            if(frmInOutEdit.TrfSuccess)
+            {
+                transferred = true;
+            }
 
             Close();
         }

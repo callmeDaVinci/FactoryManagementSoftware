@@ -296,6 +296,29 @@ namespace FactoryManagementSoftware.Module
             }
         }
 
+        public bool IfPONoExist(string poNO)
+        {
+            SPPDataDAL dalSPP = new SPPDataDAL();
+            DataTable dt_PO = dalSPP.POSelect();
+
+            foreach (DataRow row in dt_PO.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if (!isRemoved)
+                {
+                    string pONoFromDB = row[dalSPP.PONo].ToString();
+
+                    if (poNO == pONoFromDB)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public bool IfDONoExist(string doNO)
         {
             SPPDataDAL dalSPP = new SPPDataDAL();
@@ -318,6 +341,61 @@ namespace FactoryManagementSoftware.Module
 
             return false;
 
+        }
+
+        public bool IfDONoExistInRemovedDO(string doNO)
+        {
+            SPPDataDAL dalSPP = new SPPDataDAL();
+            DataTable dt_DO = dalSPP.DOSelect();
+
+            foreach (DataRow row in dt_DO.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if(isRemoved)
+                {
+                    string DONoFromDB = row[dalSPP.DONo].ToString();
+
+                    if (doNO == DONoFromDB)
+                    {
+                        return true;
+                    }
+
+                }
+               
+            }
+
+            return false;
+
+        }
+
+        public int GetNewRemovedDONo()
+        {
+            int DoNo = -1;
+            SPPDataDAL dalSPP = new SPPDataDAL();
+
+            DataTable dt = dalSPP.DOSelect();
+            dt.DefaultView.Sort = dalSPP.DONo + " ASC";
+            dt = dt.DefaultView.ToTable();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                int number = int.TryParse(row[dalSPP.DONo].ToString(), out number) ? number : 0;
+
+                if(number < 0)
+                {
+                    DoNo = number - 1;
+
+                    if (!IfDONoExist(DoNo.ToString()))
+                        return DoNo;
+                }
+                else
+                {
+                    return DoNo;
+                }
+            }
+
+            return DoNo;
         }
 
         public int GetNewDONo()
@@ -5333,18 +5411,23 @@ namespace FactoryManagementSoftware.Module
             bool result = false;
             Text text = new Text();
             DataTable dtJoin = dalJoin.loadChildList(itemCode);
+            string itemCat = getItemCat(itemCode);
 
-            if (dtJoin.Rows.Count > 0)
+            if(itemCat == text.Cat_Part)
             {
-                foreach(DataRow row in dtJoin.Rows)
+                if (dtJoin.Rows.Count > 0)
                 {
-                    string childCat = getItemCat(row[dalJoin.JoinChild].ToString());
-                    if (childCat == text.Cat_Part || childCat == text.Cat_SubMat)
+                    foreach (DataRow row in dtJoin.Rows)
                     {
-                        return true;
+                        string childCat = getItemCat(row[dalJoin.JoinChild].ToString());
+                        if (childCat == text.Cat_Part || childCat == text.Cat_SubMat)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
+           
 
             return result;
         }

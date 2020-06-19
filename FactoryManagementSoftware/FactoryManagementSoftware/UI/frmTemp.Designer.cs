@@ -28,276 +28,177 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel29 = new System.Windows.Forms.TableLayoutPanel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.lblColorUsage = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.lblColorMat = new System.Windows.Forms.Label();
-            this.lblCavity = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.lblCustomer = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.lblPartNameHeader = new System.Windows.Forms.Label();
-            this.lblRawMat = new System.Windows.Forms.Label();
-            this.lblPartName = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.lblRW = new System.Windows.Forms.Label();
-            this.lblPartCode = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.lblPW = new System.Windows.Forms.Label();
-            this.lblPartCodeHeader = new System.Windows.Forms.Label();
-            this.tableLayoutPanel29.SuspendLayout();
+            this.btnEqualTee = new System.Windows.Forms.Button();
+            this.btnEqualElbow = new System.Windows.Forms.Button();
+            this.btnEqualSocket = new System.Windows.Forms.Button();
+            this.btn32MM = new System.Windows.Forms.Button();
+            this.btn25MM = new System.Windows.Forms.Button();
+            this.btn50MM = new System.Windows.Forms.Button();
+            this.btn20MM = new System.Windows.Forms.Button();
+            this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel12.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel29
+            // btnEqualTee
             // 
-            this.tableLayoutPanel29.ColumnCount = 5;
-            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel29.Controls.Add(this.lblColorUsage, 4, 4);
-            this.tableLayoutPanel29.Controls.Add(this.label12, 3, 4);
-            this.tableLayoutPanel29.Controls.Add(this.lblColorMat, 1, 4);
-            this.tableLayoutPanel29.Controls.Add(this.lblCavity, 4, 3);
-            this.tableLayoutPanel29.Controls.Add(this.label7, 3, 0);
-            this.tableLayoutPanel29.Controls.Add(this.label15, 3, 3);
-            this.tableLayoutPanel29.Controls.Add(this.lblCustomer, 4, 0);
-            this.tableLayoutPanel29.Controls.Add(this.label11, 0, 4);
-            this.tableLayoutPanel29.Controls.Add(this.lblPartNameHeader, 0, 1);
-            this.tableLayoutPanel29.Controls.Add(this.lblRawMat, 1, 3);
-            this.tableLayoutPanel29.Controls.Add(this.lblPartName, 1, 1);
-            this.tableLayoutPanel29.Controls.Add(this.label10, 0, 3);
-            this.tableLayoutPanel29.Controls.Add(this.label9, 3, 1);
-            this.tableLayoutPanel29.Controls.Add(this.lblRW, 4, 2);
-            this.tableLayoutPanel29.Controls.Add(this.lblPartCode, 1, 2);
-            this.tableLayoutPanel29.Controls.Add(this.label8, 3, 2);
-            this.tableLayoutPanel29.Controls.Add(this.lblPW, 4, 1);
-            this.tableLayoutPanel29.Controls.Add(this.lblPartCodeHeader, 0, 2);
-            this.tableLayoutPanel29.Controls.Add(this.label6, 0, 0);
-            this.tableLayoutPanel29.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tableLayoutPanel29.Location = new System.Drawing.Point(232, 169);
-            this.tableLayoutPanel29.Name = "tableLayoutPanel29";
-            this.tableLayoutPanel29.RowCount = 5;
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel29.Size = new System.Drawing.Size(296, 144);
-            this.tableLayoutPanel29.TabIndex = 280;
+            this.btnEqualTee.BackColor = System.Drawing.Color.White;
+            this.btnEqualTee.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnEqualTee.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnEqualTee.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEqualTee.ForeColor = System.Drawing.Color.Black;
+            this.btnEqualTee.Image = global::FactoryManagementSoftware.Properties.Resources.tee_64px;
+            this.btnEqualTee.Location = new System.Drawing.Point(540, 140);
+            this.btnEqualTee.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.btnEqualTee.Name = "btnEqualTee";
+            this.btnEqualTee.Size = new System.Drawing.Size(85, 74);
+            this.btnEqualTee.TabIndex = 164;
+            this.btnEqualTee.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnEqualTee.UseVisualStyleBackColor = false;
             // 
-            // label6
+            // btnEqualElbow
             // 
-            this.label6.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.label6.Location = new System.Drawing.Point(3, 8);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(47, 13);
-            this.label6.TabIndex = 259;
-            this.label6.Text = "PLAN ID";
+            this.btnEqualElbow.BackColor = System.Drawing.Color.White;
+            this.btnEqualElbow.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnEqualElbow.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnEqualElbow.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEqualElbow.ForeColor = System.Drawing.Color.Black;
+            this.btnEqualElbow.Image = global::FactoryManagementSoftware.Properties.Resources.elbow_64px;
+            this.btnEqualElbow.Location = new System.Drawing.Point(447, 140);
+            this.btnEqualElbow.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.btnEqualElbow.Name = "btnEqualElbow";
+            this.btnEqualElbow.Size = new System.Drawing.Size(85, 74);
+            this.btnEqualElbow.TabIndex = 163;
+            this.btnEqualElbow.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnEqualElbow.UseVisualStyleBackColor = false;
             // 
-            // lblColorUsage
+            // btnEqualSocket
             // 
-            this.lblColorUsage.AutoSize = true;
-            this.lblColorUsage.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.lblColorUsage.Location = new System.Drawing.Point(270, 128);
-            this.lblColorUsage.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.lblColorUsage.Name = "lblColorUsage";
-            this.lblColorUsage.Size = new System.Drawing.Size(19, 22);
-            this.lblColorUsage.TabIndex = 278;
-            this.lblColorUsage.Text = "111";
+            this.btnEqualSocket.BackColor = System.Drawing.Color.White;
+            this.btnEqualSocket.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnEqualSocket.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnEqualSocket.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnEqualSocket.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEqualSocket.ForeColor = System.Drawing.Color.Black;
+            this.btnEqualSocket.Image = global::FactoryManagementSoftware.Properties.Resources.socket_64px;
+            this.btnEqualSocket.Location = new System.Drawing.Point(7, 22);
+            this.btnEqualSocket.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.btnEqualSocket.Name = "btnEqualSocket";
+            this.btnEqualSocket.Size = new System.Drawing.Size(60, 47);
+            this.btnEqualSocket.TabIndex = 162;
+            this.btnEqualSocket.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnEqualSocket.UseVisualStyleBackColor = false;
             // 
-            // label12
+            // btn32MM
             // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.label12.Location = new System.Drawing.Point(170, 128);
-            this.label12.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(51, 13);
-            this.label12.TabIndex = 264;
-            this.label12.Text = "USAGE%";
+            this.btn32MM.BackColor = System.Drawing.Color.White;
+            this.btn32MM.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btn32MM.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn32MM.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn32MM.ForeColor = System.Drawing.Color.Black;
+            this.btn32MM.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btn32MM.Location = new System.Drawing.Point(7, 81);
+            this.btn32MM.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.btn32MM.Name = "btn32MM";
+            this.btn32MM.Size = new System.Drawing.Size(59, 47);
+            this.btn32MM.TabIndex = 168;
+            this.btn32MM.Text = "32 MM";
+            this.btn32MM.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btn32MM.UseVisualStyleBackColor = false;
             // 
-            // lblColorMat
+            // btn25MM
             // 
-            this.lblColorMat.AutoSize = true;
-            this.lblColorMat.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.lblColorMat.Location = new System.Drawing.Point(93, 128);
-            this.lblColorMat.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.lblColorMat.Name = "lblColorMat";
-            this.lblColorMat.Size = new System.Drawing.Size(25, 13);
-            this.lblColorMat.TabIndex = 252;
-            this.lblColorMat.Text = "111";
+            this.btn25MM.BackColor = System.Drawing.Color.White;
+            this.btn25MM.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btn25MM.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn25MM.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn25MM.ForeColor = System.Drawing.Color.Black;
+            this.btn25MM.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btn25MM.Location = new System.Drawing.Point(74, 22);
+            this.btn25MM.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.btn25MM.Name = "btn25MM";
+            this.btn25MM.Size = new System.Drawing.Size(59, 47);
+            this.btn25MM.TabIndex = 167;
+            this.btn25MM.Text = "25 MM";
+            this.btn25MM.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btn25MM.UseVisualStyleBackColor = false;
             // 
-            // lblCavity
+            // btn50MM
             // 
-            this.lblCavity.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblCavity.AutoSize = true;
-            this.lblCavity.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.lblCavity.Location = new System.Drawing.Point(270, 92);
-            this.lblCavity.Name = "lblCavity";
-            this.lblCavity.Size = new System.Drawing.Size(19, 26);
-            this.lblCavity.TabIndex = 276;
-            this.lblCavity.Text = "111";
+            this.btn50MM.BackColor = System.Drawing.Color.White;
+            this.btn50MM.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btn50MM.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn50MM.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn50MM.ForeColor = System.Drawing.Color.Black;
+            this.btn50MM.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btn50MM.Location = new System.Drawing.Point(74, 81);
+            this.btn50MM.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.btn50MM.Name = "btn50MM";
+            this.btn50MM.Size = new System.Drawing.Size(59, 47);
+            this.btn50MM.TabIndex = 166;
+            this.btn50MM.Text = "50 MM";
+            this.btn50MM.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btn50MM.UseVisualStyleBackColor = false;
             // 
-            // label7
+            // btn20MM
             // 
-            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.label7.Location = new System.Drawing.Point(170, 8);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(64, 13);
-            this.label7.TabIndex = 170;
-            this.label7.Text = "CUSTOMER";
+            this.btn20MM.BackColor = System.Drawing.Color.White;
+            this.btn20MM.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btn20MM.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn20MM.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn20MM.ForeColor = System.Drawing.Color.Black;
+            this.btn20MM.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btn20MM.Location = new System.Drawing.Point(7, 22);
+            this.btn20MM.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.btn20MM.Name = "btn20MM";
+            this.btn20MM.Size = new System.Drawing.Size(59, 47);
+            this.btn20MM.TabIndex = 165;
+            this.btn20MM.Text = "20 MM";
+            this.btn20MM.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btn20MM.UseVisualStyleBackColor = false;
             // 
-            // label15
+            // tableLayoutPanel12
             // 
-            this.label15.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.label15.Location = new System.Drawing.Point(170, 98);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(40, 13);
-            this.label15.TabIndex = 265;
-            this.label15.Text = "CAVITY";
+            this.tableLayoutPanel12.ColumnCount = 2;
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel12.Controls.Add(this.groupBox2, 1, 0);
+            this.tableLayoutPanel12.Controls.Add(this.groupBox1, 0, 0);
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(688, 240);
+            this.tableLayoutPanel12.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.tableLayoutPanel12.Name = "tableLayoutPanel12";
+            this.tableLayoutPanel12.RowCount = 1;
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(322, 199);
+            this.tableLayoutPanel12.TabIndex = 206;
             // 
-            // lblCustomer
+            // groupBox1
             // 
-            this.lblCustomer.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblCustomer.AutoSize = true;
-            this.lblCustomer.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.lblCustomer.Location = new System.Drawing.Point(270, 2);
-            this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(19, 26);
-            this.lblCustomer.TabIndex = 247;
-            this.lblCustomer.Text = "111";
+            this.groupBox1.Controls.Add(this.btnEqualSocket);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(155, 193);
+            this.groupBox1.TabIndex = 207;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "TYPE";
             // 
-            // label11
+            // groupBox2
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.label11.Location = new System.Drawing.Point(3, 128);
-            this.label11.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(71, 13);
-            this.label11.TabIndex = 176;
-            this.label11.Text = "COLOR MAT.";
-            // 
-            // lblPartNameHeader
-            // 
-            this.lblPartNameHeader.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblPartNameHeader.AutoSize = true;
-            this.lblPartNameHeader.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.lblPartNameHeader.Location = new System.Drawing.Point(3, 38);
-            this.lblPartNameHeader.Name = "lblPartNameHeader";
-            this.lblPartNameHeader.Size = new System.Drawing.Size(65, 13);
-            this.lblPartNameHeader.TabIndex = 171;
-            this.lblPartNameHeader.Text = "PART NAME";
-            // 
-            // lblRawMat
-            // 
-            this.lblRawMat.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblRawMat.AutoSize = true;
-            this.lblRawMat.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.lblRawMat.Location = new System.Drawing.Point(93, 98);
-            this.lblRawMat.Name = "lblRawMat";
-            this.lblRawMat.Size = new System.Drawing.Size(25, 13);
-            this.lblRawMat.TabIndex = 251;
-            this.lblRawMat.Text = "111";
-            // 
-            // lblPartName
-            // 
-            this.lblPartName.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblPartName.AutoSize = true;
-            this.lblPartName.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.lblPartName.Location = new System.Drawing.Point(93, 38);
-            this.lblPartName.Name = "lblPartName";
-            this.lblPartName.Size = new System.Drawing.Size(25, 13);
-            this.lblPartName.TabIndex = 248;
-            this.lblPartName.Text = "111";
-            // 
-            // label10
-            // 
-            this.label10.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.label10.Location = new System.Drawing.Point(3, 98);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(58, 13);
-            this.label10.TabIndex = 175;
-            this.label10.Text = "RAW MAT.";
-            // 
-            // label9
-            // 
-            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.label9.Location = new System.Drawing.Point(170, 38);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(76, 13);
-            this.label9.TabIndex = 173;
-            this.label9.Text = "PW / SHOT(G)";
-            // 
-            // lblRW
-            // 
-            this.lblRW.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblRW.AutoSize = true;
-            this.lblRW.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.lblRW.Location = new System.Drawing.Point(270, 62);
-            this.lblRW.Name = "lblRW";
-            this.lblRW.Size = new System.Drawing.Size(19, 26);
-            this.lblRW.TabIndex = 277;
-            this.lblRW.Text = "111";
-            // 
-            // lblPartCode
-            // 
-            this.lblPartCode.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblPartCode.AutoSize = true;
-            this.lblPartCode.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.lblPartCode.Location = new System.Drawing.Point(93, 68);
-            this.lblPartCode.Name = "lblPartCode";
-            this.lblPartCode.Size = new System.Drawing.Size(25, 13);
-            this.lblPartCode.TabIndex = 249;
-            this.lblPartCode.Text = "111";
-            // 
-            // label8
-            // 
-            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.label8.Location = new System.Drawing.Point(170, 68);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(77, 13);
-            this.label8.TabIndex = 263;
-            this.label8.Text = "RW / SHOT(G)";
-            // 
-            // lblPW
-            // 
-            this.lblPW.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblPW.AutoSize = true;
-            this.lblPW.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.lblPW.Location = new System.Drawing.Point(270, 32);
-            this.lblPW.Name = "lblPW";
-            this.lblPW.Size = new System.Drawing.Size(19, 26);
-            this.lblPW.TabIndex = 250;
-            this.lblPW.Text = "111";
-            // 
-            // lblPartCodeHeader
-            // 
-            this.lblPartCodeHeader.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblPartCodeHeader.AutoSize = true;
-            this.lblPartCodeHeader.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.lblPartCodeHeader.Location = new System.Drawing.Point(3, 68);
-            this.lblPartCodeHeader.Name = "lblPartCodeHeader";
-            this.lblPartCodeHeader.Size = new System.Drawing.Size(64, 13);
-            this.lblPartCodeHeader.TabIndex = 172;
-            this.lblPartCodeHeader.Text = "PART CODE";
+            this.groupBox2.Controls.Add(this.btn20MM);
+            this.groupBox2.Controls.Add(this.btn25MM);
+            this.groupBox2.Controls.Add(this.btn32MM);
+            this.groupBox2.Controls.Add(this.btn50MM);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(164, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(155, 193);
+            this.groupBox2.TabIndex = 208;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "SIZE";
             // 
             // frmTemp
             // 
@@ -306,37 +207,30 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1348, 721);
-            this.Controls.Add(this.tableLayoutPanel29);
+            this.Controls.Add(this.tableLayoutPanel12);
+            this.Controls.Add(this.btnEqualTee);
+            this.Controls.Add(this.btnEqualElbow);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "frmTemp";
             this.Text = "frmTemp";
-            this.tableLayoutPanel29.ResumeLayout(false);
-            this.tableLayoutPanel29.PerformLayout();
+            this.tableLayoutPanel12.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel29;
-        private System.Windows.Forms.Label lblColorUsage;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label lblColorMat;
-        private System.Windows.Forms.Label lblCavity;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label lblCustomer;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label lblPartNameHeader;
-        private System.Windows.Forms.Label lblRawMat;
-        private System.Windows.Forms.Label lblPartName;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label lblRW;
-        private System.Windows.Forms.Label lblPartCode;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label lblPW;
-        private System.Windows.Forms.Label lblPartCodeHeader;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnEqualTee;
+        private System.Windows.Forms.Button btnEqualElbow;
+        private System.Windows.Forms.Button btnEqualSocket;
+        private System.Windows.Forms.Button btn32MM;
+        private System.Windows.Forms.Button btn25MM;
+        private System.Windows.Forms.Button btn50MM;
+        private System.Windows.Forms.Button btn20MM;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

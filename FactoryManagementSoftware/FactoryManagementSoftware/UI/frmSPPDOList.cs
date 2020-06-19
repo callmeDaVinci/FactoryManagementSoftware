@@ -42,6 +42,9 @@ namespace FactoryManagementSoftware.UI
         userDAL dalUser = new userDAL();
         SPPDataDAL dalSPP = new SPPDataDAL();
         SPPDataBLL uSpp = new SPPDataBLL();
+        historyDAL dalHistory = new historyDAL();
+        historyBLL uHistory = new historyBLL();
+
 
         Tool tool = new Tool();
         Text text = new Text();
@@ -92,7 +95,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_Balance = "BAL No";
         readonly string header_StdPacking = "StdPacking";
         readonly string header_BalanceString = "BAL.";
-        readonly string header_TrfTableCode = "TRANSFER CODE";
+        readonly string header_TrfTableCode = "TRANSFER ID";
         readonly string headerIndex = "#";
         readonly string headerPlanID = "PLAN ID";
         readonly string headerType = "TYPE";
@@ -229,6 +232,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_PODate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_Customer].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_DONo].Visible = false;
+                dgv.Columns[header_DataType].Visible = false;
                 dgv.Columns[header_POCode].Visible = false;
                 dgv.Columns[header_CustomerCode].Visible = false;
             }
@@ -237,6 +241,8 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_DeliveryPCS].Visible = false;
                 dgv.Columns[header_DeliveryBAG].Visible = false;
                 dgv.Columns[header_StdPacking].Visible = false;
+                dgv.Columns[header_POTblCode].Visible = false;
+                dgv.Columns[header_DOTblCode].Visible = false;
 
                 dgv.Columns[header_DeliveryQTY].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
 
@@ -451,26 +457,25 @@ namespace FactoryManagementSoftware.UI
             btnRemove.Visible = false;
             dgvItemList.DataSource = null;
 
+            //dt_DOList = dalSPP.DOSelect();
             dt_DOList = dalSPP.DOWithInfoSelect();
 
             DataTable dt = NewDOTable();
             DataRow dt_row;
 
-            int preDOCode = -1;
+            int preDOCode = -999999;
 
-            foreach (DataRow row in dt_DOList.Rows)
+             foreach (DataRow row in dt_DOList.Rows)
             {
-                int doCode = int.TryParse(row[dalSPP.DONo].ToString(), out doCode) ? doCode : -1;
+                int doCode = int.TryParse(row[dalSPP.DONo].ToString(), out doCode) ? doCode : -999999;
 
-                if ((preDOCode == -1 || preDOCode != doCode) && row[dalSPP.DONo] != DBNull.Value)
+                if ((preDOCode == -999999 || preDOCode != doCode) && row[dalSPP.DONo] != DBNull.Value)
                 {
-                    
-
                     int deliveryQty = int.TryParse(row[dalSPP.ToDeliveryQty].ToString(), out deliveryQty) ? deliveryQty : 0;
 
                     if(deliveryQty > 0)
                     {
-                        preDOCode = doCode;
+                        
                         bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
                         bool isDelivered = bool.TryParse(row[dalSPP.IsDelivered].ToString(), out isDelivered) ? isDelivered : false;
                         string trfID = row[dalSPP.TrfTableCode].ToString();
@@ -527,6 +532,7 @@ namespace FactoryManagementSoftware.UI
 
                         if (dataMatched)
                         {
+                            preDOCode = doCode;
                             dt_row = dt.NewRow();
 
                             dt_row[header_DataType] = dataType;
@@ -574,7 +580,9 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in dt.Rows)
             {
-                if (doCode == row[dalSPP.DONo].ToString() && row[dalSPP.DONo] != DBNull.Value)
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ?isRemoved : false;
+
+                if (doCode == row[dalSPP.DONo].ToString() && row[dalSPP.DONo] != DBNull.Value && !isRemoved)
                 {
                     int deliveryQty = row[dalSPP.ToDeliveryQty] == DBNull.Value ? 0 : Convert.ToInt32(row[dalSPP.ToDeliveryQty].ToString());
 
@@ -605,7 +613,12 @@ namespace FactoryManagementSoftware.UI
 
                         dt_Row[header_POTblCode] = POTableCode;
                         dt_Row[header_DOTblCode] = DOTableCode;
-                        dt_Row[header_TrfTableCode] = TrfTableCode;
+
+                        if(TrfTableCode != -1)
+                        {
+                            dt_Row[header_TrfTableCode] = TrfTableCode;
+                        }
+                        
 
                         if (deliveryQty > 0)
                         {
@@ -968,7 +981,131 @@ namespace FactoryManagementSoftware.UI
             };
             frm.ShowDialog();//Item Edit
 
-            if (frmInOutEdit.TrfSuccess)
+            if (frmDeliveryDate.transferred)
+            {
+                MessageBox.Show("Transfer success!");
+
+                LoadDOList();
+                tool.historyRecord(text.DO_Delivered, text.GetDONumberAndCustomer(Convert.ToInt32(doCode), customerShortName), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(doCode));
+            }
+            else
+            {
+                MessageBox.Show("Transfer cancelled!");
+            }
+        }
+
+        private bool UpdateDOandPO(DataTable dt_DO, DataTable dt_PO, string trfItemCode, int trfID, string trfQty)
+        {
+            bool success = false;
+            //DateTime updatedDate = DateTime.Now;
+            //int userID = MainDashboard.USER_ID;
+
+            //uSpp.Updated_Date = updatedDate;
+            //uSpp.Updated_By = userID;
+
+            //if (!string.IsNullOrEmpty(trfItemCode) && dt_DO.Rows.Count > 0)
+            //{
+            //    //GET D/O TABLE CODE BY ITEM CODE SEARCHING
+            //    foreach (DataRow row in dt_DOItem.Rows)
+            //    {
+            //        //GET TRANSFER QTY
+            //        string itemCode = row[header_ItemCode].ToString();
+            //        string pcsQty = row[header_DeliveryPCS].ToString();
+
+            //        if (trfItemCode == itemCode && pcsQty == trfQty)
+            //        {
+            //            string DOTableCode = row[header_DOTblCode].ToString();
+
+            //            //update D/O
+            //            uData.Table_Code = Convert.ToInt32(DOTableCode);
+            //            uData.IsDelivered = true;
+            //            uData.Trf_tbl_code = trfID;
+
+            //            success = dalData.DODelivered(uData);
+
+            //            if (!success)
+            //            {
+            //                MessageBox.Show("Failed to update D/O\nTransfer ID: " + trfID);
+            //                return success;
+            //            }
+
+            //            //SEARCHING AT D/O DATABASE TABLE
+            //            foreach (DataRow rowDODatabase in dt_DO.Rows)
+            //            {
+            //                string DB_DOTableCode = rowDODatabase[dalData.TableCode].ToString();
+
+            //                if (DB_DOTableCode == DOTableCode)
+            //                {
+            //                    //GET P/O TABLE CODE
+            //                    string POTableCode = rowDODatabase[dalData.POTableCode].ToString();
+
+            //                    //get P/O delivered qty
+            //                    foreach (DataRow rowPODatabase in dt_PO.Rows)
+            //                    {
+            //                        string DB_POTableCode = rowPODatabase[dalData.TableCode].ToString();
+
+            //                        if (POTableCode == DB_POTableCode)
+            //                        {
+            //                            int deliveredQty = int.TryParse(rowPODatabase[dalData.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
+
+            //                            deliveredQty += int.TryParse(trfQty, out int i) ? i : 0;
+
+            //                            //update P/O
+
+            //                            uData.Table_Code = Convert.ToInt32(DB_POTableCode);
+            //                            uData.Delivered_qty = deliveredQty;
+
+            //                            success = dalData.PODeliveredDataUpdate(uData);
+
+            //                            if (!success)
+            //                            {
+            //                                MessageBox.Show("Failed to update P/O\nP/O Table Code: " + DB_POTableCode);
+
+            //                            }
+
+            //                            return success;
+            //                        }
+            //                    }
+
+            //                }
+            //            }
+
+            //        }
+            //    }
+            //}
+
+
+            return success;
+        }
+
+        private void CompleteDOWithoutTransfer(int rowIndex)
+        {
+            DataTable dt_Item = (DataTable)dgvItemList.DataSource;
+            DataGridView dgv = dgvDOList;
+
+            string doCode = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
+            string customerShortName = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
+            string customerCode = dgv.Rows[rowIndex].Cells[header_CustomerCode].Value.ToString();
+
+            DataTable dt_DODataBase = dalSPP.DOSelect();
+            DataTable dt_PODataBase = dalSPP.POSelect();
+
+            bool result = true;
+            foreach (DataRow row in dt_Item.Rows)
+            {
+                string doTableCode = row[header_DOTblCode].ToString();
+                string itemCode = row[header_ItemCode].ToString();
+                string PcsQty = row[header_DeliveryPCS].ToString();
+                string BagQty = row[header_DeliveryBAG].ToString();
+
+               if( !UpdateDOandPO(dt_DODataBase, dt_PODataBase, itemCode,-1, PcsQty))
+                {
+                    result = false;
+                    MessageBox.Show("Failed to transfer!");
+                }
+            }
+
+            if (result)
             {
                 MessageBox.Show("transfer success");
 
@@ -1088,13 +1225,15 @@ namespace FactoryManagementSoftware.UI
         private void DOUndoRemove(int rowIndex)
         {
             bool success = true;
-            DataTable dt_Item = (DataTable)dgvItemList.DataSource;
+            
             DataGridView dgv = dgvDOList;
 
             string doNo = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
             string poNoString = dgv.Rows[rowIndex].Cells[header_PONo].Value.ToString();
             string customerShortName = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
             string customerCode = dgv.Rows[rowIndex].Cells[header_CustomerCode].Value.ToString();
+
+            DataTable dt_Item = (DataTable)dgvItemList.DataSource;
 
             string newDONo = doNo;
             if(tool.IfDONoExist(doNo))
@@ -1128,7 +1267,7 @@ namespace FactoryManagementSoftware.UI
                     uSpp.IsRemoved = false;
                     uSpp.DO_no = Convert.ToInt32(newDONo);
 
-                    success = dalSPP.DOIsRemovedAndDoNoUpdate(uSpp);
+                    success = dalSPP.DORemovedStatusAndDoNoUpdate(uSpp);
 
                     if (!success)
                     {
@@ -1159,70 +1298,93 @@ namespace FactoryManagementSoftware.UI
             bool success = true;
             DataTable dt_Item = (DataTable)dgvItemList.DataSource;
             DataGridView dgv = dgvDOList;
+            DateTime updatedDate = DateTime.Now;
+            int updatedBy = MainDashboard.USER_ID;
 
-            string doNo = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
-            string poNoString = dgv.Rows[rowIndex].Cells[header_PONo].Value.ToString();
+            uSpp.Updated_Date = updatedDate;
+            uSpp.Updated_By = updatedBy;
+
+            string oldDONo = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
             string customerShortName = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
-            string customerCode = dgv.Rows[rowIndex].Cells[header_CustomerCode].Value.ToString();
 
-            frmDONumberChange frm = new frmDONumberChange(doNo)
+            frmDONumberChange frm = new frmDONumberChange(oldDONo)
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
 
-
             frm.ShowDialog();
 
             string newDONo = frmDONumberChange.NewDONumber;
-           
-            if(!string.IsNullOrEmpty(newDONo) && newDONo != "")
+
+            if(frmDONumberChange.numberSelected)
             {
-                DateTime updatedDate = DateTime.Now;
-                int updatedBy = MainDashboard.USER_ID;
+                #region Update Removed D/O
 
-                foreach (DataRow row in dt_Item.Rows)
+                //To-Do: 
+                //check if removed do have same newDONo
+                if (tool.IfDONoExistInRemovedDO(newDONo))
                 {
-                    string doTableCode = row[header_DOTblCode].ToString();
-                    string itemCode = row[header_ItemCode].ToString();
+                    //if have, generate new do no for removed do
+                    int newRemovedDONo = tool.GetNewRemovedDONo();
 
-                    if (!string.IsNullOrEmpty(itemCode))
+                    //change removed do old no to new do no in do table
+                    uSpp.DO_no = Convert.ToInt32(newRemovedDONo);
+                    success = dalSPP.DONoChange(uSpp, newDONo);
+
+                    if (!success)
                     {
-                        uSpp.Updated_Date = updatedDate;
-                        uSpp.Updated_By = updatedBy;
-
-                        #region  update new DONo to DB by do table code
-
-                        uSpp.Table_Code = Convert.ToInt32(doTableCode);
-                        uSpp.IsRemoved = false;
-                        uSpp.DO_no = Convert.ToInt32(newDONo);
-
-                        success = dalSPP.DOIsRemovedAndDoNoUpdate(uSpp);
-
-                        if (!success)
-                        {
-                            MessageBox.Show("Failed to update new D/O's number!");
-                        }
-                        #endregion
+                        MessageBox.Show("Failed to update new Removed D/O's number!");
                     }
 
+                    //change removed do old no to new do no in history table
+                    uHistory.page_name = dalSPP.DOTableName;
+                    uHistory.data_id = newRemovedDONo;
 
+                    success = dalHistory.ChangeDataID(uHistory, newDONo);
+
+                    //removed d/o change number
+                    tool.historyRecord(text.DO_ChangeDONumber, text.ChangeDONumber(Convert.ToInt32(newRemovedDONo), "", newDONo, newRemovedDONo.ToString()), updatedDate, updatedBy, dalSPP.DOTableName, Convert.ToInt32(newRemovedDONo));
                 }
 
-                //message
-                if (success)
+                #endregion
+
+                #region change to new D/O no.
+
+                if (!string.IsNullOrEmpty(newDONo) && newDONo != "")
                 {
-                    MessageBox.Show("D/O: " + Convert.ToInt32(newDONo).ToString("D6") + " D/O number change successful!");
-                    dgv.Rows[rowIndex].Cells[header_DataType].Value = DataType_InProgress;
+                    uSpp.DO_no = Convert.ToInt32(newDONo);
+
+                    success = dalSPP.DONoChange(uSpp, oldDONo);
+
+                    if (!success)
+                    {
+                        MessageBox.Show("Failed to update new D/O's number!");
+                    }
+
+                    LoadDOList();
+
+                    //record history
+                    tool.historyRecord(text.DO_ChangeDONumber, text.ChangeDONumber(Convert.ToInt32(newDONo), customerShortName, oldDONo, newDONo), updatedDate, updatedBy, dalSPP.DOTableName, Convert.ToInt32(newDONo));
+                }
+                else
+                {
+                    MessageBox.Show("Error! New DO No is null or invalid data.");
                 }
 
-                LoadDOList();
-                
-                //record history
-                tool.historyRecord(text.DO_ChangeDONumber, text.ChangeDONumber(Convert.ToInt32(newDONo), customerShortName, doNo, newDONo), updatedDate, updatedBy, dalSPP.DOTableName, Convert.ToInt32(newDONo));
-            }
+                #endregion
 
-           
+                #region  change old data id to new data id in history record
+
+                uHistory.page_name = dalSPP.DOTableName;
+                uHistory.data_id = Convert.ToInt32(newDONo);
+
+                success = dalHistory.ChangeDataID(uHistory, oldDONo);
+
+                #endregion
+            }
         }
+
+
         #endregion
 
         #region export to excel
@@ -1278,32 +1440,34 @@ namespace FactoryManagementSoftware.UI
 
             string sheetWidth = "a1:x1";
             string letterHeadArea = "a1:a16";
-            string DOInfo = "a10:a15";
-            string Divider = "a17:a17";
-            string tableHeader = "a18:a19";
-            string itemList = "a20:a36";
+            string pageString = "v1:v1";
+            string pageNo = "w1:x1";
+
+            string DOInfo = "a11:a16";
+            string Divider = "a18:a18";
+            string tableHeader = "a19:a20";
+            string itemList = "a21:a36";
             string signingArea = "a37:a44";
             string wholeSheetArea = "a1:x44";
-            string littleSpace_1 = "a9:x9";
-            string littleSpace_2 = "a16:x16";
+            string littleSpace_1 = "a10:x10";
+            string littleSpace_2 = "a17:x17";
             string companyName_CN = "F1:S2";
             string companyName_EN = "F3:S4";
             string company_Registration = "F5:S5";
             string company_AddressAndContact = "F6:S8";
-            string DONoArea = "u12:x12";
-            string PONoArea = "u13:x13";
-            string DODateArea = "u14:x14";
-            string CustFullNameArea = "c10:M10";
-            string AddressArea_1 = "c11:M11";
-            string AddressArea_2 = "c12:M12";
-            string postalAndCity = "c13:M13";
-            string state = "c14:M14";
-            string contact = "c15:M15";
-            string pageString = "v1:v1";
-            string pageNo = "w1:x1";
+            string DONoArea = "u13:x13";
+            string PONoArea = "u14:x14";
+            string DODateArea = "u15:x15";
+            string CustFullNameArea = "c11:M11";
+            string AddressArea_1 = "c12:M12";
+            string AddressArea_2 = "c13:M13";
+            string postalAndCity = "c14:M14";
+            string state = "c15:M15";
+            string contact = "c16:M16";
+           
             #endregion
 
-            int itemRowOffset = 19;
+            int itemRowOffset = 20;
             int maxRow = 16;
             int itemFontSize = 11;
             string descriptionColStart = "b";
@@ -1329,7 +1493,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.RowHeight = 18.5;
 
             DOFormat = xlWorkSheet.get_Range(littleSpace_1).Cells;
-            DOFormat.RowHeight = 4.2;
+            DOFormat.RowHeight = 8;
 
             DOFormat = xlWorkSheet.get_Range(littleSpace_2).Cells;
             DOFormat.RowHeight = 4.2;
@@ -1413,7 +1577,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Size = 8;
             DOFormat.Font.Name = text.Font_Type_TimesNewRoman;
 
-            DOFormat = xlWorkSheet.get_Range("o9:x11").Cells;
+            DOFormat = xlWorkSheet.get_Range("o10:x12").Cells;
             DOFormat.Merge();
             DOFormat.Value = "DELIVERY ORDER";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
@@ -1422,7 +1586,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Arial Black";
             DOFormat.Font.Bold = true;
 
-            DOFormat = xlWorkSheet.get_Range("o12:s12").Cells;
+            DOFormat = xlWorkSheet.get_Range("o13:s13").Cells;
             DOFormat.Merge();
             DOFormat.Value = "No.";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
@@ -1431,7 +1595,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
             DOFormat.Font.Bold = true;
 
-            DOFormat = xlWorkSheet.get_Range("o13:s13").Cells;
+            DOFormat = xlWorkSheet.get_Range("o14:s14").Cells;
             DOFormat.Merge();
             DOFormat.Value = "Your Order No.";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
@@ -1440,7 +1604,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
             DOFormat.Font.Bold = true;
 
-            DOFormat = xlWorkSheet.get_Range("o14:s14").Cells;
+            DOFormat = xlWorkSheet.get_Range("o15:s15").Cells;
             DOFormat.Merge();
             DOFormat.Value = "Date";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
@@ -1448,13 +1612,6 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Size = 12;
             DOFormat.Font.Name = "Cambria";
             DOFormat.Font.Bold = true;
-
-            DOFormat = xlWorkSheet.get_Range("t12:t12").Cells;
-            DOFormat.Value = ":";
-            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
-            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
-            DOFormat.Font.Size = 12;
-            DOFormat.Font.Name = "Cambria";
 
             DOFormat = xlWorkSheet.get_Range("t13:t13").Cells;
             DOFormat.Value = ":";
@@ -1464,6 +1621,13 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
 
             DOFormat = xlWorkSheet.get_Range("t14:t14").Cells;
+            DOFormat.Value = ":";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 12;
+            DOFormat.Font.Name = "Cambria";
+
+            DOFormat = xlWorkSheet.get_Range("t15:t15").Cells;
             DOFormat.Value = ":";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
@@ -1501,7 +1665,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
 
 
-            DOFormat = xlWorkSheet.get_Range("a10:b10").Cells;
+            DOFormat = xlWorkSheet.get_Range("a11:b11").Cells;
             DOFormat.Merge();
             DOFormat.Value = "M/S:";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
@@ -1510,7 +1674,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
             DOFormat.Font.Italic = true;
 
-            DOFormat = xlWorkSheet.get_Range("a15:b15").Cells;
+            DOFormat = xlWorkSheet.get_Range("a16:b16").Cells;
             DOFormat.Merge();
             DOFormat.Value = "TEL:";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
@@ -1562,19 +1726,20 @@ namespace FactoryManagementSoftware.UI
             DOFormat = xlWorkSheet.get_Range(contact).Cells;
             DOFormat.Merge();
             //DOFormat.Value = "03-87259657";
+            DOFormat.NumberFormat = "@";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
             DOFormat.Font.Size = 11;
             DOFormat.Font.Name = "Cambria";
 
             Color color = Color.Black;
-            DOFormat = xlWorkSheet.get_Range("a17:w17").Cells;
+            DOFormat = xlWorkSheet.get_Range("a18:w18").Cells;
             DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = color;
             DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = color;
             DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = color;
             DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = color;
 
-            DOFormat = xlWorkSheet.get_Range("b18:l19").Cells;
+            DOFormat = xlWorkSheet.get_Range("b19:l20").Cells;
             DOFormat.Merge();
             DOFormat.Value = "DESCRIPTION";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
@@ -1583,7 +1748,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
             DOFormat.Font.Bold = true;
 
-            DOFormat = xlWorkSheet.get_Range("n18:q19").Cells;
+            DOFormat = xlWorkSheet.get_Range("n19:q20").Cells;
             DOFormat.Merge();
             DOFormat.Value = "QUANTITY";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
@@ -1592,7 +1757,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
             DOFormat.Font.Bold = true;
 
-            DOFormat = xlWorkSheet.get_Range("r18:w19").Cells;
+            DOFormat = xlWorkSheet.get_Range("r19:w20").Cells;
             DOFormat.Merge();
             DOFormat.Value = "REMARK";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
@@ -1601,7 +1766,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
             DOFormat.Font.Bold = true;
 
-            DOFormat = xlWorkSheet.get_Range("a19:w19").Cells;
+            DOFormat = xlWorkSheet.get_Range("a20:w20").Cells;
             DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = color;
 
            
@@ -1726,7 +1891,6 @@ namespace FactoryManagementSoftware.UI
             //get return data
             if(frmExportSetting.settingApplied)
             {
-                
                 DateTime DODate = frmExportSetting.DODate;
                 bool openFile = frmExportSetting.openFileAfterExport;
                 bool printFile = frmExportSetting.printFileAfterExport;
@@ -1785,9 +1949,9 @@ namespace FactoryManagementSoftware.UI
 
                             int sheetNo = 0;
                             int pageNo = 1;
-                            int maxRow = 16;
+                            int maxRow = 15;
                             int rowNo = 0;
-                            int rowOffset = 19;
+                            int rowOffset = 20;
 
                             Worksheet xlWorkSheet = xlWorkBook.ActiveSheet as Worksheet;
                             //xlWorkSheet.PageSetup.PrintArea
@@ -1824,9 +1988,9 @@ namespace FactoryManagementSoftware.UI
 
 
                                     
-                                    string DONoArea = "u12:x12";
-                                    string PONoArea = "u13:x13";
-                                    string DODateArea = "u14:x14";
+                                    string DONoArea = "u13:x13";
+                                    string PONoArea = "u14:x14";
+                                    string DODateArea = "u15:x15";
                                     string pageNoArea = "w1:x1";
 
                                     InsertToSheet(xlWorkSheet, pageNoArea, pageNo+"/"+pageNo);
@@ -1856,12 +2020,12 @@ namespace FactoryManagementSoftware.UI
                                     string remarkColStart = "t";
                                     string remarkColEnd = ":w";
 
-                                    string CustFullNameArea = "c10:M10";
-                                    string AddressArea_1 = "c11:M11";
-                                    string AddressArea_2 = "c12:M12";
-                                    string postalAndCity = "c13:M13";
-                                    string state = "c14:M14";
-                                    string contact = "c15:M15";
+                                    string CustFullNameArea = "c11:M11";
+                                    string AddressArea_1 = "c12:M12";
+                                    string AddressArea_2 = "c13:M13";
+                                    string postalAndCity = "c14:M14";
+                                    string state = "c15:M15";
+                                    string contact = "c16:M16";
 
                                     foreach (DataRow row2 in dt_PO.Rows)
                                     {

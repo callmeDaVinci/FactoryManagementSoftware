@@ -473,7 +473,10 @@ namespace FactoryManagementSoftware.UI
                                 //check if parent
                                 string sheetID = dgvRow.Cells[header_SheetID].Value.ToString();
 
-                                foreach(DataRow rowPR in dt_ProductionRecord.Rows)
+                                itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
+                                transferData = dalTrf.codeSearch(itemCode);
+
+                                foreach (DataRow rowPR in dt_ProductionRecord.Rows)
                                 {
                                     if(sheetID == rowPR[dalProRecord.SheetID].ToString())
                                     {
@@ -1125,7 +1128,9 @@ namespace FactoryManagementSoftware.UI
             {
                 if(planID == row[dalPlan.planID].ToString())
                 {
-                    UpdatedDate = Convert.ToDateTime(row[dalPlan.planUpdatedDate].ToString());
+                    //UpdatedDate = Convert.ToDateTime();
+                    UpdatedDate = DateTime.TryParse(row[dalPlan.planUpdatedDate].ToString(), out UpdatedDate) ? UpdatedDate : DateTime.MaxValue;
+
                     return UpdatedDate;
                 }
             }

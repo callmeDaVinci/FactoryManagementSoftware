@@ -251,6 +251,66 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable SPPUniqueSelectWithoutAssembledItem()
+        {
+            //static method to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+
+            string commonPart = new Text().Cat_CommonPart;
+            string assembled = new Text().Cat_Assembled;
+
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT tbl_spp_category.category_name as CATEGORY , 
+                            tbl_spp_type.type_name as TYPE , 
+                            tbl_spp_size.size_numerator as SIZE , 
+                            tbl_spp_size.size_unit as UNIT ,
+                            tbl_item.item_code as CODE , 
+                            tbl_item.item_qty as QUANTITY,
+                            tbl_spp_stdpacking.qty_per_bag as STD_PACKING,
+                            tbl_item.to_delivery_qty as TO_DELIVERY_QTY
+                            FROM tbl_item
+                            INNER JOIN tbl_spp_category 
+                            ON (tbl_item.category_tbl_code = tbl_spp_category.tbl_code AND tbl_spp_category.category_name != @commonPart AND tbl_spp_category.category_name != @assembled)
+                            INNER JOIN tbl_spp_type
+                            ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                            INNER JOIN tbl_spp_size
+                            ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code 
+                            FULL JOIN tbl_spp_stdpacking
+                            ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                            ORDER BY tbl_spp_type.type_name ASC, tbl_spp_size.size_numerator ASC,  tbl_spp_category.category_name ASC";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@commonPart", commonPart);
+                cmd.Parameters.AddWithValue("@assembled", assembled);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+
+        }
+
         public DataTable SPPNonReadyGoodsSelect()
         {
             //static method to connect database

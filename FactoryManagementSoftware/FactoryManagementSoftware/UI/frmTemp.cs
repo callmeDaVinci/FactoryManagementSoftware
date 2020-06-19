@@ -21,5 +21,10 @@ namespace FactoryManagementSoftware.UI
         {
 
         }
+
+        private void lblType_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

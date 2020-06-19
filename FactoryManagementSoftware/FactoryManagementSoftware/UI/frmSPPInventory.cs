@@ -186,7 +186,7 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadUniquePart()
         {
-            DataTable dt = dalItem.SPPUniqueSelect();
+            DataTable dt = dalItem.SPPUniqueSelectWithoutAssembledItem();
             dt.Columns.Add("STOCK");
             dt.Columns.Add("DELIVERY QTY");
             dt.Columns.Add("PCS/BAG");

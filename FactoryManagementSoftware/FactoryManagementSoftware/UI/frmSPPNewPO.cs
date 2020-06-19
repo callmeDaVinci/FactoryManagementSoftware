@@ -82,7 +82,7 @@ namespace FactoryManagementSoftware.UI
         private readonly string text_UpdateItem = "UPDATE ITEM";
 
         private string EditingPOCode;
-
+        private string POBeginingNo = "";
         static public bool poEdited = false;
         static public bool poRemoved = false;
         private bool poEditing = false;
@@ -271,7 +271,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable lacationTable = dt.DefaultView.ToTable(true, columnName);
 
-            //lacationTable.DefaultView.Sort = columnName+" ASC";
+            lacationTable.DefaultView.Sort = columnName+" ASC";
             cmb.DataSource = lacationTable;
             cmb.DisplayMember = columnName;
 
@@ -286,7 +286,7 @@ namespace FactoryManagementSoftware.UI
             {
                 cmbCustomer.SelectedIndex = -1;
                 loadLocationData(dt_CustomerList, cmbCustomer, dalData.FullName);
-
+                cmbCustomer.SelectedIndex = -1;
             }
             else
             {
@@ -294,6 +294,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             ShowShippingInfo();
+           
             loaded = true;
         }
 
@@ -305,6 +306,89 @@ namespace FactoryManagementSoftware.UI
             txtState.Clear();
             txtCountry.Text = "MALAYSIA";
             txtPostalCode.Clear();
+        }
+
+        private void GetHabitPONumber(string custTblCode)
+        {
+            //get po data with same customer table code
+            DataTable dt = dalData.POSelectWithCustCode(custTblCode);
+
+            string beginningNumber = "", PONumber_1 = "", PONumber_2 = "", PONumber_3 = "", previousPONO = "Initial";
+            int NumberOfPoToCompare = 3;
+
+            //get latest not removed po code
+            foreach(DataRow row in dt.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalData.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if(!isRemoved)
+                {
+                    string poNumber = row[dalData.PONo].ToString();
+
+                    if(previousPONO != poNumber || previousPONO == "Initial")
+                    {
+                        previousPONO = poNumber;
+
+                        if (NumberOfPoToCompare == 3)
+                        {
+                            PONumber_1 = poNumber;
+                            NumberOfPoToCompare--;
+                        }
+                        else if (NumberOfPoToCompare == 2)
+                        {
+                            PONumber_2 = poNumber;
+                            NumberOfPoToCompare--;
+                        }
+                        else if (NumberOfPoToCompare == 1)
+                        {
+                            PONumber_3 = poNumber;
+                            NumberOfPoToCompare--;
+                            break;
+                        }
+
+                    }
+                  
+                }
+            }
+
+            //compare string
+            if(PONumber_1 != "" && PONumber_2 != "" && PONumber_3 != "")
+            {
+                for(int index = 0; index < PONumber_1.Length; index ++)
+                {
+                    bool ableToCompare = index < PONumber_1.Length;
+                    ableToCompare &= index < PONumber_2.Length;
+                    ableToCompare &= index < PONumber_3.Length;
+
+                    if (ableToCompare)
+                    {
+                        bool charMatched = PONumber_1[index].ToString() == PONumber_2[index].ToString();
+                        charMatched &= PONumber_2[index].ToString() == PONumber_3[index].ToString();
+
+                        if (charMatched)
+                        {
+                            beginningNumber += PONumber_1[index].ToString();
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                
+            }
+            
+            if(!string.IsNullOrEmpty(beginningNumber))
+            {
+                POBeginingNo = beginningNumber;
+                txtPONo.Text = beginningNumber;
+                txtPONo.ForeColor = SystemColors.GrayText;
+            }
+            else
+            {
+                POBeginingNo = "";
+                txtPONo.Text = "";
+            }
         }
 
         private void ShowDataToField(string customerName)
@@ -335,6 +419,9 @@ namespace FactoryManagementSoftware.UI
                         txtCountry.Text = country;
                         txtPostalCode.Text = postalCode;
 
+                        //LOAD HABIT P/O NUMBER
+                        string custTblCode = row[dalData.TableCode].ToString();
+                        GetHabitPONumber(custTblCode);
                         break;
                     }
                 }
@@ -361,7 +448,9 @@ namespace FactoryManagementSoftware.UI
         private void cmbCustomer_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(loaded)
-            ShowDataToField(cmbCustomer.Text);
+            {
+                ShowDataToField(cmbCustomer.Text);
+            }
         }
 
         private void ClearError()
@@ -544,6 +633,26 @@ namespace FactoryManagementSoftware.UI
             {
                 result = false;
                 errorProvider9.SetError(lblPONo, "PO NO Required");
+            }
+            else
+            {
+                //check if number exist in db
+                if(tool.IfPONoExist(txtPONo.Text))
+                {
+                    lblAvailableResult.Visible = true;
+                    result = false;
+                    errorProvider9.SetError(lblPONo, "PO NO is USED!");
+                }
+                else
+                {
+                    lblAvailableResult.Visible = false;
+                }
+
+                if(txtPONo.Text == POBeginingNo)
+                {
+                    result = false;
+                    errorProvider9.SetError(lblPONo, "PO NO invalid!");
+                }
             }
 
             return result;
@@ -1047,6 +1156,32 @@ namespace FactoryManagementSoftware.UI
 
             //    }
             //}
+        }
+
+        private void txtPONo_TextChanged(object sender, EventArgs e)
+        {
+            lblAvailableResult.Visible = false;
+            if (txtPONo.Text.Length == 0)
+            {
+                POBeginingNo = "";
+            }
+
+        }
+
+        private void txtPONo_Enter(object sender, EventArgs e)
+        {
+            if (txtPONo.Text == POBeginingNo)
+            {
+                txtPONo.ForeColor = SystemColors.WindowText;
+            }
+        }
+
+        private void txtPONo_Leave(object sender, EventArgs e)
+        {
+            if (txtPONo.Text == POBeginingNo)
+            {
+                txtPONo.ForeColor = SystemColors.GrayText;
+            }
         }
     }
 }

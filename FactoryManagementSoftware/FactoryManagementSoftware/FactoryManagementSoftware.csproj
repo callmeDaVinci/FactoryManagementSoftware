@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>\\SAFETY06-MURUGA\StockAssistant\%28INSTALLATION%29\FOR ADMIN\</PublishUrl>
+    <PublishUrl>\\SAFETY06-MURUGA\StockAssistant\%28INSTALLATION%29\FOR USER\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>187</ApplicationRevision>
+    <ApplicationRevision>198</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -1103,6 +1103,8 @@
     <None Include="Resources\elbow.64px.ico" />
     <None Include="Resources\tee.64px.ico" />
     <None Include="Resources\safety-logo.png" />
+    <None Include="Resources\icons8-construction-64.png" />
+    <None Include="Resources\icons8-construction-100.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

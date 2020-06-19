@@ -55,6 +55,7 @@ namespace FactoryManagementSoftware.UI
             //dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
             dgv.Columns[header_Detail].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgv.Columns[header_Action].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             //dgv.Columns[header_PONo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             //dgv.Columns[header_PODate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             //dgv.Columns[header_Customer].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;

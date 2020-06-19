@@ -95,5 +95,45 @@ namespace FactoryManagementSoftware.UI
 
             frm.ShowDialog();
         }
+
+        private void WorkInProgressMessage()
+        {
+            MessageBox.Show("work in progress...");
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            WorkInProgressMessage();
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            WorkInProgressMessage();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            WorkInProgressMessage();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            WorkInProgressMessage();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            WorkInProgressMessage();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            WorkInProgressMessage();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            WorkInProgressMessage();
+        }
     }
 }

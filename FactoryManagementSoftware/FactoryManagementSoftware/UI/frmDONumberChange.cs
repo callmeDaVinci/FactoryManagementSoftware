@@ -28,10 +28,13 @@ namespace FactoryManagementSoftware.UI
         }
 
         Tool tool = new Tool();
+
         private readonly string text_Available = "Number is Available !";
         private readonly string text_Used = "Number is Used !";
 
         static public string NewDONumber = "";
+        static public bool numberSelected = false;
+
         private void frmDONumberChange_Load(object sender, EventArgs e)
         {
 
@@ -116,8 +119,13 @@ namespace FactoryManagementSoftware.UI
                 if (CheckIfNumberAvailable())
                 {
                     NewDONumber = txtNewDONo.Text;
+                    numberSelected = true;
                     Close();
                 }
+            }
+            else
+            {
+                numberSelected = false;
             }
 
            

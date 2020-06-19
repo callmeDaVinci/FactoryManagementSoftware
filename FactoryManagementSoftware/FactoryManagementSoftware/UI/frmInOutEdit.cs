@@ -607,7 +607,7 @@ namespace FactoryManagementSoftware.UI
                 dt.Rows.Add(text.Unit_Piece);
                 dt.Rows.Add(text.Unit_Meter);
 
-                if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass && cmbTrfFromCategory.Text == text.Assembly)
+                if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass )
                 {
                     dt.Rows.Add(text.Unit_Bag);
                     lblStdPacking.Visible = true;
@@ -806,12 +806,12 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
                             dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
                             dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
-                            dgv.Rows[n].Cells[FromCatColumnName].Value = "Factory";
+                            dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
                             dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
-                            dgv.Rows[n].Cells[ToCatColumnName].Value = "Production";
+                            dgv.Rows[n].Cells[ToCatColumnName].Value = text.Production;
                             dgv.Rows[n].Cells[ToColumnName].Value = "";
                             dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
-                            dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
+                            dgv.Rows[n].Cells[UnitColumnName].Value = text.Unit_Piece;
                             dgv.Rows[n].Cells[NoteColumnName].Value = note+"Sub Part out";
 
                             if (childItemCode.Equals("V76KM4000 0.360"))
@@ -821,7 +821,7 @@ namespace FactoryManagementSoftware.UI
                             }
 
                             facStockDAL dalFacStock = new facStockDAL();
-                            float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
+                            float facStock = dalFacStock.getQty(childItemCode,tool.getFactoryID(factoryName).ToString());
 
                             float transferQty = 0;
                             if (callFromProductionRecord)
@@ -1598,17 +1598,19 @@ namespace FactoryManagementSoftware.UI
             errorProvider3.Clear();
             loadLocationCategoryData();
             lblStdPacking.Visible = false;
-            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) &&  cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass && cmbTrfFromCategory.Text == text.Assembly)
+            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) &&  cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
             {
                 unitDataSource();
                 cmbTrfQtyUnit.Text = text.Unit_Bag;
             }
+           
+
             //else if (ifGotChild())
             //{
 
             //    cmbTrfQtyUnit.Text = text.Unit_Set;
             //}
-            
+
             else
             {
                 //cmbTrfQtyUnit.Text = text.Unit_Piece;
@@ -1756,15 +1758,19 @@ namespace FactoryManagementSoftware.UI
             string unit = cmbTrfQtyUnit.Text;
             string trfQty = txtTrfQty.Text;
             string note = "";
+
             if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
             {
-                int qtyPerBag = int.TryParse(lblStdPacking.Text.Replace(string_QtyPerBag, string.Empty), out qtyPerBag) ? qtyPerBag : 0;
-                int totalBags = int.TryParse(txtTrfQty.Text, out totalBags) ? totalBags : 0;
+                if(unit == text.Unit_Bag)
+                {
+                    int qtyPerBag = int.TryParse(lblStdPacking.Text.Replace(string_QtyPerBag, string.Empty), out qtyPerBag) ? qtyPerBag : 0;
+                    int totalBags = int.TryParse(txtTrfQty.Text, out totalBags) ? totalBags : 0;
 
-                trfQty = (totalBags * qtyPerBag).ToString();
-                unit = text.Unit_Set;
+                    trfQty = (totalBags * qtyPerBag).ToString();
+                    unit = text.Unit_Set;
+                    note += "[ " + totalBags + " Bag(s) ]";
+                }
 
-                note +=  "[ " + totalBags + " Bag(s) ]";
             }
 
             dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
