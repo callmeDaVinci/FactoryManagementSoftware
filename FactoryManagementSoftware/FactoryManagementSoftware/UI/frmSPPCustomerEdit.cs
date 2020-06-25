@@ -46,6 +46,7 @@ namespace FactoryManagementSoftware.UI
         private void frmSPPCustomerEdit_Load(object sender, EventArgs e)
         {
             LoadCustomer();
+            txtShortName.Clear();
         }
 
         private void DgvUIEdit(DataGridView dgv)
@@ -123,6 +124,7 @@ namespace FactoryManagementSoftware.UI
             errorProvider5.Clear();
             errorProvider6.Clear();
             errorProvider7.Clear();
+            errorProvider8.Clear();
         }
 
         private bool Validation()
@@ -170,9 +172,96 @@ namespace FactoryManagementSoftware.UI
                 result = false;
                 errorProvider7.SetError(lblEmail, "Customer Email Required");
             }
+            string EditMode = btnEdit.Text;
 
+            if (EditMode == "ADD")
+            {
+                result = !IfNameExist();
+            }
+            else if(EditMode == "EDIT")
+            {
+                int id = Convert.ToInt32(dgvCustomer.Rows[dgvCustomer.CurrentCell.RowIndex].Cells[header_ID].Value.ToString());
+                result = !IfNameExist(id.ToString());
+            }
+                
             return result;
 
+        }
+
+        private bool IfNameExist()
+        {
+            bool result = false;
+            errorProvider1.Clear();
+            errorProvider8.Clear();
+            dt_Customer = dalData.CustomerSelect();
+            string fullName = txtName.Text.ToUpper();
+            string shortName = txtShortName.Text.ToUpper();
+
+            foreach(DataRow row in dt_Customer.Rows)
+            {
+                string DB_FullName = row[dalData.FullName] == null ? string.Empty : row[dalData.FullName].ToString();
+                string DB_ShortName = row[dalData.ShortName] == null ? string.Empty : row[dalData.ShortName].ToString();
+
+                if(fullName == DB_FullName)
+                {
+                    errorProvider1.SetError(lblName, "full name used!");
+                    result = true;
+                }
+
+                if (shortName == DB_ShortName)
+                {
+                    errorProvider8.SetError(lblShortName, "short name used!");
+                    result = true;
+                }
+
+                if(result)
+                {
+                    return true;
+                }
+            }
+
+           
+            return result;
+        }
+
+        private bool IfNameExist(string customerID)
+        {
+            bool result = false;
+
+            dt_Customer = dalData.CustomerSelect();
+            string fullName = txtName.Text;
+            string shortName = txtShortName.Text;
+
+            foreach (DataRow row in dt_Customer.Rows)
+            {
+                int id = int.TryParse(row[dalData.TableCode].ToString(), out id) ? id : -1;
+
+                if(id != -1 && id.ToString() != customerID)
+                {
+                    string DB_FullName = row[dalData.FullName] == null ? string.Empty : row[dalData.FullName].ToString();
+                    string DB_ShortName = row[dalData.ShortName] == null ? string.Empty : row[dalData.ShortName].ToString();
+
+                    if (fullName == DB_FullName)
+                    {
+                        errorProvider1.SetError(lblName, "full name used!");
+                        result = true;
+                    }
+
+                    if (shortName == DB_ShortName)
+                    {
+                        errorProvider8.SetError(lblName, "short name used!");
+                        result = true;
+                    }
+
+                    if (result)
+                    {
+                        return true;
+                    }
+                }
+                
+            }
+
+            return result;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -188,7 +277,8 @@ namespace FactoryManagementSoftware.UI
                     if (dialogResult == DialogResult.Yes)
                     {
                         uData.Full_Name = txtName.Text.ToUpper();
-                        uData.Short_Name = uData.Full_Name.Split(' ').First().ToUpper();
+                        //uData.Short_Name = uData.Full_Name.Split(' ').First().ToUpper();
+                        uData.Short_Name = txtShortName.Text.ToUpper();
                         uData.Registration_No = txtRegistrationNo.Text.ToUpper();
                         uData.Address_1 = txtAddress1.Text.ToUpper();
                         uData.Address_2 = txtAddress2.Text.ToUpper();
@@ -226,7 +316,8 @@ namespace FactoryManagementSoftware.UI
                     {
                         uData.Table_Code = tableID;
                         uData.Full_Name = txtName.Text.ToUpper();
-                        uData.Short_Name = uData.Full_Name.Split(' ').First().ToUpper();
+                        //uData.Short_Name = uData.Full_Name.Split(' ').First().ToUpper();
+                        uData.Short_Name = txtShortName.Text.ToUpper();
                         uData.Registration_No = txtRegistrationNo.Text.ToUpper();
                         uData.Address_1 = txtAddress1.Text.ToUpper();
                         uData.Address_2 = txtAddress2.Text.ToUpper();
@@ -263,6 +354,7 @@ namespace FactoryManagementSoftware.UI
         private void ClearField()
         {
             txtName.Clear();
+            txtShortName.Clear();
             txtRegistrationNo.Clear();
             txtAddress1.Clear();
             txtAddress2.Clear();
@@ -288,6 +380,7 @@ namespace FactoryManagementSoftware.UI
                 if(id == selectedID)
                 {
                     string name = row[dalData.FullName] == null ? string.Empty : row[dalData.FullName].ToString();
+                    string shortName = row[dalData.ShortName] == null ? string.Empty : row[dalData.ShortName].ToString();
                     string registrationNO = row[dalData.RegistrationNo] == null ? string.Empty : row[dalData.RegistrationNo].ToString();
                     string address1 = row[dalData.Address1] == null ? string.Empty : row[dalData.Address1].ToString();
                     string address2 =  row[dalData.Address2] == null ? string.Empty : row[dalData.Address2].ToString();
@@ -302,6 +395,7 @@ namespace FactoryManagementSoftware.UI
                     string website =  row[dalData.Website] == null ? string.Empty : row[dalData.Website].ToString();
 
                     txtName.Text = name;
+                    txtShortName.Text = shortName;
                     txtRegistrationNo.Text = registrationNO;
                     txtAddress1.Text = address1;
                     txtAddress2.Text = address2;
@@ -443,6 +537,35 @@ namespace FactoryManagementSoftware.UI
         private void btnBack_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void txtName_TextChanged(object sender, EventArgs e)
+        {
+            ClearError();
+
+            if(!string.IsNullOrEmpty(txtName.Text))
+            {
+                txtShortName.Text = txtName.Text.Split(' ').First().ToUpper();
+
+                string EditMode = btnEdit.Text;
+
+                if (EditMode == "ADD")
+                {
+                    IfNameExist();
+                }
+            }
+            
+
+        }
+
+        private void txtShortName_TextChanged(object sender, EventArgs e)
+        {
+            string EditMode = btnEdit.Text;
+
+            if (EditMode == "ADD")
+            {
+                IfNameExist();
+            }
         }
     }
 

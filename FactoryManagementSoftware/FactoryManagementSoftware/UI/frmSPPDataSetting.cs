@@ -382,6 +382,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (selectedDataList == text_StdPackingList)
                     {
+                        uData.Max_Lvl = Convert.ToInt16(txtMaxLevel.Text);
                         uData.Qty_Per_Packet = Convert.ToInt16(txtQtyPerPacket.Text);
                         uData.Qty_Per_Bag = Convert.ToInt16(txtQtyPerBag.Text);
                         uData.Item_code = cmbCode.Text;
@@ -482,6 +483,24 @@ namespace FactoryManagementSoftware.UI
                             ClearDataField();
                         }
                     }
+                    else if (selectedDataList == text_StdPackingList)
+                    {
+                        uData.Max_Lvl = Convert.ToInt16(txtMaxLevel.Text);
+                        uData.Qty_Per_Packet = Convert.ToInt16(txtQtyPerPacket.Text);
+                        uData.Qty_Per_Bag = Convert.ToInt16(txtQtyPerBag.Text);
+                        uData.Item_code = cmbCode.Text;
+
+                        if (!dalData.StdPackingUpdate(uData))
+                        {
+                            MessageBox.Show("Failed to update standard packing data to DB.");
+                        }
+                        else
+                        {
+                            LoadData();
+                            ClearDataField();
+                            ClearError();
+                        }
+                    }
                 }
 
             }
@@ -494,6 +513,12 @@ namespace FactoryManagementSoftware.UI
             txtDenominator.Text = "1";
             txtName.Clear();
             cbIsCommon.Checked = false;
+            cmbName.SelectedIndex = -1;
+            cmbCode.SelectedIndex = -1;
+            txtQtyPerPacket.Clear();
+            txtQtyPerBag.Clear();
+            txtMaxLevel.Clear();
+
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -585,6 +610,17 @@ namespace FactoryManagementSoftware.UI
                 else if (selectedDataList == text_CategoryDataList)
                 {
                     txtName.Text = dgv.Rows[rowIndex].Cells[dalData.CategoryName].Value.ToString();
+                }
+                else if (selectedDataList == text_StdPackingList)
+                {
+                    string itemCode = dgv.Rows[rowIndex].Cells[dalData.ItemCode].Value.ToString();
+                    cmbName.Text = tool.getItemName(itemCode);
+                    cmbCode.Text = itemCode;
+
+                    txtQtyPerPacket.Text = dgv.Rows[rowIndex].Cells[dalData.QtyPerPacket].Value.ToString();
+                    txtQtyPerBag.Text = dgv.Rows[rowIndex].Cells[dalData.QtyPerBag].Value.ToString();
+                    txtMaxLevel.Text = dgv.Rows[rowIndex].Cells[dalData.MaxLevel].Value.ToString();
+
                 }
             }
             else

@@ -271,6 +271,7 @@ namespace FactoryManagementSoftware.DAL
                             tbl_item.item_code as CODE , 
                             tbl_item.item_qty as QUANTITY,
                             tbl_spp_stdpacking.qty_per_bag as STD_PACKING,
+                            tbl_spp_stdpacking.max_level as MAX_LEVEL,
                             tbl_item.to_delivery_qty as TO_DELIVERY_QTY
                             FROM tbl_item
                             INNER JOIN tbl_spp_category 

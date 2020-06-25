@@ -36,6 +36,7 @@ namespace FactoryManagementSoftware.DAL
         //Std Packing table
         public string QtyPerBag { get; } = "qty_per_bag";
         public string QtyPerPacket { get; } = "qty_per_packet";
+        public string MaxLevel { get; } = "max_level";
 
         //ton table
         public string TonNumber { get; } = "ton_number";
@@ -339,7 +340,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = @"SELECT * FROM tbl_spp_stdpacking";
+                String sql = @"SELECT * FROM tbl_spp_stdpacking ORDER BY item_code ASC";
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
@@ -1307,6 +1308,7 @@ namespace FactoryManagementSoftware.DAL
                             (" + ItemCode + ","
                             + QtyPerPacket + ","
                              + QtyPerBag + ","
+                               + MaxLevel + ","
                             + UpdatedDate + ","
                             + UpdatedBy + ") VALUES" +
                             "(@Item_code," +
@@ -1320,6 +1322,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
                 cmd.Parameters.AddWithValue("@Qty_Per_Packet", u.Qty_Per_Packet);
                 cmd.Parameters.AddWithValue("@Qty_Per_Bag", u.Qty_Per_Bag);
+                cmd.Parameters.AddWithValue("@Max_Lvl", u.Max_Lvl);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
 
@@ -1526,6 +1529,120 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertOrUpdatePO(SPPDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_po 
+                            SET "
+                           + POCode + "=@PO_code,"
+                           + CustomerTableCode + "=@Customer_tbl_code,"
+                           + PONo + "=@PO_no,"
+                           + ItemCode + "=@Item_code,"
+                           + POQty + "=@PO_qty,"
+                           + DefaultShippingAddress + "=@DefaultShippingAddress,"
+                           + Address1 + "=@Address_1,"
+                           + Address2 + "=@Address_2,"
+                           + AddressCity + "=@Address_City,"
+                           + AddressState + "=@Address_State,"
+                           + AddressPostalCode + "=@Address_Postal_Code,"
+                           + AddressCountry + "=@Address_Country,"
+                           + PONote + "=@PO_note,"
+                           + PODate + "=@PO_date,"
+                           + UpdatedDate + "=@updated_date,"
+                           + UpdatedBy + "=@updated_by" +
+                           " WHERE tbl_code=@Table_Code " +
+                            "IF @@ROWCOUNT = 0 " +
+                            "INSERT INTO tbl_spp_po(" 
+                            + POCode + ", "
+                            + CustomerTableCode + ","
+                            + PONo + ","
+                            + ItemCode + ","
+                            + POQty + ","
+                            + DeliveredQty + ","
+                            + Address1 + ","
+                            + Address2 + ","
+                            + AddressCity + ","
+                            + AddressState + ","
+                            + AddressPostalCode + ","
+                            + AddressCountry + ","
+                            + DefaultShippingAddress + ","
+                             + PONote + ","
+                            + PODate + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@PO_code," +
+                            "@Customer_tbl_code," +
+                            "@PO_no," +
+                            "@Item_code," +
+                            "@PO_qty," +
+                            "@Delivered_qty," +
+                            "@Address_1," +
+                            "@Address_2," +
+                            "@Address_City," +
+                            "@Address_State," +
+                            "@Address_Postal_Code," +
+                            "@Address_Country," +
+                            "@DefaultShippingAddress," +
+                             "@PO_note," +
+                            "@PO_date," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
+                cmd.Parameters.AddWithValue("@PO_no", u.PO_no);
+                cmd.Parameters.AddWithValue("@PO_note", u.PO_note);
+                cmd.Parameters.AddWithValue("@PO_date", u.PO_date);
+                cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);
+                cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+                cmd.Parameters.AddWithValue("@PO_qty", u.PO_qty);
+                cmd.Parameters.AddWithValue("@DefaultShippingAddress", u.DefaultShippingAddress);
+                cmd.Parameters.AddWithValue("@Address_1", u.Address_1);
+                cmd.Parameters.AddWithValue("@Address_2", u.Address_2);
+                cmd.Parameters.AddWithValue("@Address_City", u.Address_City);
+                cmd.Parameters.AddWithValue("@Address_State", u.Address_State);
+                cmd.Parameters.AddWithValue("@Address_Postal_Code", u.Address_Postal_Code);
+                cmd.Parameters.AddWithValue("@Address_Country", u.Address_Country);
+
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
             }
             finally
             {
@@ -1944,6 +2061,7 @@ namespace FactoryManagementSoftware.DAL
                             SET "
                             + QtyPerPacket + "=@Qty_Per_Packet,"
                             + QtyPerBag + "=@Qty_Per_Bag,"
+                            + MaxLevel + "=@Max_Lvl,"
                              + IsRemoved + "=@IsRemoved,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
@@ -1953,6 +2071,7 @@ namespace FactoryManagementSoftware.DAL
 
                 cmd.Parameters.AddWithValue("@Qty_Per_Packet", u.Qty_Per_Packet);
                 cmd.Parameters.AddWithValue("@Qty_Per_Bag", u.Qty_Per_Bag);
+                cmd.Parameters.AddWithValue("@Max_Lvl", u.Max_Lvl);
                 cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
                 cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
@@ -2258,19 +2377,16 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = @"UPDATE tbl_spp_po 
-                            SET "
-                            + IsRemoved + "=@IsRemoved,"
-                            + UpdatedDate + "=@updated_date,"
-                            + UpdatedBy + "=@updated_by" +
-                            " WHERE tbl_code=@Table_Code";
+                //String sql = "DELETE FROM tbl_spp_po WHERE po_code =@PO_code";
+
+                String sql = @"DELETE FROM tbl_spp_po "
+                           +" WHERE tbl_code=@Table_Code";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-
-                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
-                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
-                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                //cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                //cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                //cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
                 cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
 
                 conn.Open();

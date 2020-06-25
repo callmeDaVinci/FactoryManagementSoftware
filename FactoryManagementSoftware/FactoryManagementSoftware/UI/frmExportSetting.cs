@@ -19,6 +19,9 @@ namespace FactoryManagementSoftware.UI
 
         static public bool settingApplied = false;
         static public DateTime DODate;
+
+        static public bool allInOne = false;
+
         static public bool openFileAfterExport = false;
         static public bool printFileAfterExport = false;
         static public bool printPreview = false;
@@ -37,8 +40,17 @@ namespace FactoryManagementSoftware.UI
         private void btnFilterApply_Click(object sender, EventArgs e)
         {
             DODate = dtpDODate.Value;
-            
-            if(cbOpenFile.Checked)
+
+            if (cbSeparate.Checked)
+            {
+                allInOne = false;
+            }
+            else
+            {
+                allInOne = true;
+            }
+
+            if (cbOpenFile.Checked)
             {
                 openFileAfterExport = true;
             }
@@ -86,6 +98,30 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 cbPrintPreview.Checked = false;
+            }
+        }
+
+        private void cbSeparate_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbSeparate.Checked)
+            {
+                cbAllInOne.Checked = false;
+            }
+            else
+            {
+                cbAllInOne.Checked = true;
+            }
+        }
+
+        private void cbAllInOne_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbAllInOne.Checked)
+            {
+                cbSeparate.Checked = false;
+            }
+            else
+            {
+                cbSeparate.Checked = true;
             }
         }
     }

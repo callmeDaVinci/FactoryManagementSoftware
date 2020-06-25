@@ -34,6 +34,8 @@
             this.tlpDataSetting = new System.Windows.Forms.TableLayoutPanel();
             this.tlpDataEdit = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.txtMaxLevel = new System.Windows.Forms.TextBox();
+            this.lblMaxLvl = new System.Windows.Forms.Label();
             this.cmbCode = new System.Windows.Forms.ComboBox();
             this.cmbName = new System.Windows.Forms.ComboBox();
             this.txtQtyPerBag = new System.Windows.Forms.TextBox();
@@ -160,6 +162,8 @@
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.txtMaxLevel);
+            this.groupBox5.Controls.Add(this.lblMaxLvl);
             this.groupBox5.Controls.Add(this.cmbCode);
             this.groupBox5.Controls.Add(this.cmbName);
             this.groupBox5.Controls.Add(this.txtQtyPerBag);
@@ -176,16 +180,38 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "STANDARD PACKING";
             // 
+            // txtMaxLevel
+            // 
+            this.txtMaxLevel.BackColor = System.Drawing.SystemColors.Info;
+            this.txtMaxLevel.Location = new System.Drawing.Point(363, 46);
+            this.txtMaxLevel.Name = "txtMaxLevel";
+            this.txtMaxLevel.Size = new System.Drawing.Size(67, 25);
+            this.txtMaxLevel.TabIndex = 189;
+            this.txtMaxLevel.Text = "0";
+            this.txtMaxLevel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtMaxLevel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress_1);
+            // 
+            // lblMaxLvl
+            // 
+            this.lblMaxLvl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblMaxLvl.AutoSize = true;
+            this.lblMaxLvl.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMaxLvl.Location = new System.Drawing.Point(359, 29);
+            this.lblMaxLvl.Name = "lblMaxLvl";
+            this.lblMaxLvl.Size = new System.Drawing.Size(65, 19);
+            this.lblMaxLvl.TabIndex = 188;
+            this.lblMaxLvl.Text = "MAX LVL";
+            // 
             // cmbCode
             // 
             this.cmbCode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCode.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbCode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbCode.ForeColor = System.Drawing.SystemColors.InfoText;
             this.cmbCode.FormattingEnabled = true;
-            this.cmbCode.Location = new System.Drawing.Point(22, 108);
+            this.cmbCode.Location = new System.Drawing.Point(26, 108);
             this.cmbCode.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbCode.Name = "cmbCode";
-            this.cmbCode.Size = new System.Drawing.Size(269, 31);
+            this.cmbCode.Size = new System.Drawing.Size(225, 25);
             this.cmbCode.TabIndex = 178;
             this.cmbCode.SelectedIndexChanged += new System.EventHandler(this.cmbCode_SelectedIndexChanged);
             // 
@@ -193,22 +219,22 @@
             // 
             this.cmbName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbName.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbName.ForeColor = System.Drawing.SystemColors.InfoText;
             this.cmbName.FormattingEnabled = true;
-            this.cmbName.Location = new System.Drawing.Point(22, 46);
+            this.cmbName.Location = new System.Drawing.Point(26, 48);
             this.cmbName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbName.Name = "cmbName";
-            this.cmbName.Size = new System.Drawing.Size(269, 31);
+            this.cmbName.Size = new System.Drawing.Size(225, 25);
             this.cmbName.TabIndex = 177;
             this.cmbName.SelectedIndexChanged += new System.EventHandler(this.cmbName_SelectedIndexChanged);
             // 
             // txtQtyPerBag
             // 
             this.txtQtyPerBag.BackColor = System.Drawing.SystemColors.Info;
-            this.txtQtyPerBag.Location = new System.Drawing.Point(309, 108);
+            this.txtQtyPerBag.Location = new System.Drawing.Point(263, 108);
             this.txtQtyPerBag.Name = "txtQtyPerBag";
-            this.txtQtyPerBag.Size = new System.Drawing.Size(98, 25);
+            this.txtQtyPerBag.Size = new System.Drawing.Size(82, 25);
             this.txtQtyPerBag.TabIndex = 187;
             this.txtQtyPerBag.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtQtyPerBag.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
@@ -219,7 +245,7 @@
             this.lblQtyBag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblQtyBag.AutoSize = true;
             this.lblQtyBag.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblQtyBag.Location = new System.Drawing.Point(305, 86);
+            this.lblQtyBag.Location = new System.Drawing.Point(259, 88);
             this.lblQtyBag.Name = "lblQtyBag";
             this.lblQtyBag.Size = new System.Drawing.Size(66, 19);
             this.lblQtyBag.TabIndex = 186;
@@ -229,9 +255,9 @@
             // txtQtyPerPacket
             // 
             this.txtQtyPerPacket.BackColor = System.Drawing.SystemColors.Info;
-            this.txtQtyPerPacket.Location = new System.Drawing.Point(309, 46);
+            this.txtQtyPerPacket.Location = new System.Drawing.Point(263, 46);
             this.txtQtyPerPacket.Name = "txtQtyPerPacket";
-            this.txtQtyPerPacket.Size = new System.Drawing.Size(98, 25);
+            this.txtQtyPerPacket.Size = new System.Drawing.Size(82, 25);
             this.txtQtyPerPacket.TabIndex = 179;
             this.txtQtyPerPacket.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtQtyPerPacket.TextChanged += new System.EventHandler(this.txtQtyPerPacket_TextChanged);
@@ -242,7 +268,7 @@
             this.lblQtyPacket.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblQtyPacket.AutoSize = true;
             this.lblQtyPacket.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblQtyPacket.Location = new System.Drawing.Point(305, 24);
+            this.lblQtyPacket.Location = new System.Drawing.Point(259, 29);
             this.lblQtyPacket.Name = "lblQtyPacket";
             this.lblQtyPacket.Size = new System.Drawing.Size(86, 19);
             this.lblQtyPacket.TabIndex = 178;
@@ -949,5 +975,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox cmbName;
         private System.Windows.Forms.ComboBox cmbCode;
+        private System.Windows.Forms.TextBox txtMaxLevel;
+        private System.Windows.Forms.Label lblMaxLvl;
     }
 }

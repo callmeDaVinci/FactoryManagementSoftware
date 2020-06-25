@@ -777,22 +777,22 @@ namespace FactoryManagementSoftware.UI
                             {
                                 if (dalItem.checkIfAssembly(parentItemCode) && dalItem.checkIfProduction(parentItemCode))
                                 {
-                                    n = dgv.Rows.Add();
-                                    index++;
+                                    //n = dgv.Rows.Add();
+                                    //index++;
 
-                                    dgv.Rows[n].Cells[IndexColumnName].Value = index;
-                                    dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
-                                    dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
-                                    dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
-                                    dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
-                                    dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
-                                    dgv.Rows[n].Cells[FromCatColumnName].Value = "Production";
-                                    dgv.Rows[n].Cells[FromColumnName].Value = "";
-                                    dgv.Rows[n].Cells[ToCatColumnName].Value = "Factory";
-                                    dgv.Rows[n].Cells[ToColumnName].Value = factoryName;
-                                    dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
-                                    dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
-                                    dgv.Rows[n].Cells[NoteColumnName].Value = note+"Sub Part in";
+                                    //dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                                    //dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
+                                    //dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
+                                    //dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
+                                    //dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
+                                    //dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
+                                    //dgv.Rows[n].Cells[FromCatColumnName].Value = "Production";
+                                    //dgv.Rows[n].Cells[FromColumnName].Value = "";
+                                    //dgv.Rows[n].Cells[ToCatColumnName].Value = "Factory";
+                                    //dgv.Rows[n].Cells[ToColumnName].Value = factoryName;
+                                    //dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
+                                    //dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
+                                    //dgv.Rows[n].Cells[NoteColumnName].Value = note+"Sub Part in";
                                 }
 
                             }
@@ -897,41 +897,41 @@ namespace FactoryManagementSoftware.UI
                             {
                                 if (dalItem.checkIfAssembly(parentItemCode) && dalItem.checkIfProduction(parentItemCode))
                                 {
-                                    n = dgv.Rows.Add();
-                                    index++;
+                                    //n = dgv.Rows.Add();
+                                    //index++;
 
-                                    dgv.Rows[n].Cells[IndexColumnName].Value = index;
-                                    dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
-                                    dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
-                                    dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
-                                    dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
-                                    dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
-                                    dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
-                                    dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
-                                    dgv.Rows[n].Cells[ToCatColumnName].Value = text.Other;
-                                    dgv.Rows[n].Cells[ToColumnName].Value = "";
-                                    dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
-                                    dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
-                                    dgv.Rows[n].Cells[NoteColumnName].Value = note + "Sub Part Out";
+                                    //dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                                    //dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
+                                    //dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
+                                    //dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
+                                    //dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
+                                    //dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
+                                    //dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
+                                    //dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
+                                    //dgv.Rows[n].Cells[ToCatColumnName].Value = text.Other;
+                                    //dgv.Rows[n].Cells[ToColumnName].Value = "";
+                                    //dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
+                                    //dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
+                                    //dgv.Rows[n].Cells[NoteColumnName].Value = note + "Sub Part Out";
 
-                                    facStockDAL dalFacStock = new facStockDAL();
-                                    float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
+                                    //facStockDAL dalFacStock = new facStockDAL();
+                                    //float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
 
-                                    float transferQty = 0;
-                                    if (callFromProductionRecord)
-                                    {
-                                        transferQty = qty;
-                                    }
-                                    else
-                                    {
-                                        transferQty = Convert.ToSingle(txtTrfQty.Text);
-                                    }
+                                    //float transferQty = 0;
+                                    //if (callFromProductionRecord)
+                                    //{
+                                    //    transferQty = qty;
+                                    //}
+                                    //else
+                                    //{
+                                    //    transferQty = Convert.ToSingle(txtTrfQty.Text);
+                                    //}
 
-                                    if (facStock - transferQty < 0)
-                                    {
-                                        dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                                        dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
-                                    }
+                                    //if (facStock - transferQty < 0)
+                                    //{
+                                    //    dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                                    //    dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
+                                    //}
                                 }
 
                             }
@@ -1920,6 +1920,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Rows[n].Cells[NameColumnName].Value = itemName;
 
                 bool fromFac = false, toFac = false;
+
                 if(tool.IfFactoryExists(from))
                 {
                     fromFac = true;

@@ -60,6 +60,7 @@ namespace FactoryManagementSoftware.UI
         readonly string text_CancelSelectingMode = "CANCEL";
         readonly string text_RemoveDO = "REMOVE D/O";
         readonly string text_Excel = "EXCEL";
+        readonly string text_DOItemList = "D/O ITEM LIST";
 
         readonly string header_POCode = "P/O CODE";
         readonly string header_PONo = "P/O NO";
@@ -419,7 +420,7 @@ namespace FactoryManagementSoftware.UI
                 btnExcel.Text = text_SelectDO;
             }
 
-            dgvDOList.ClearSelection();
+            //dgvDOList.ClearSelection();
         }
         #endregion
 
@@ -447,7 +448,7 @@ namespace FactoryManagementSoftware.UI
             ShowOrHideFilter();
             LoadDOList();
             //int id =  dalTrfHist.GetLastInsertedID();
-
+           
             //MessageBox.Show(id.ToString());
         }
 
@@ -558,11 +559,11 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-
+            
             dgvDOList.DataSource = dt;
             DgvUIEdit(dgvDOList);
             dgvDOList.ClearSelection();
-
+            lblSubList.Text = text_DOItemList;
         }
 
         private void ShowDOItem(string doCode)
@@ -577,6 +578,7 @@ namespace FactoryManagementSoftware.UI
             DataRow dt_Row;
             int index = 1;
             string preType = null;
+            int totalBag = 0;
 
             foreach (DataRow row in dt.Rows)
             {
@@ -622,6 +624,7 @@ namespace FactoryManagementSoftware.UI
 
                         if (deliveryQty > 0)
                         {
+                            totalBag += bag;
                             dt_Row[header_Index] = index;
                             dt_Row[header_Size] = row[dalSPP.SizeNumerator];
                             dt_Row[header_Unit] = row[dalSPP.SizeUnit].ToString().ToUpper();
@@ -640,6 +643,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+            lblSubList.Text = text_DOItemList + " (Total Bags: " + totalBag + ")";
             //dt_POItemList = AddSpaceToList(dt_POItemList);
             dgvItemList.DataSource = dt_DOItemList;
             DgvUIEdit(dgvItemList);
@@ -1391,11 +1395,46 @@ namespace FactoryManagementSoftware.UI
 
         private string setFileName()
         {
-            string fileName = "SBB_Delivery_Order_" + DateTime.Now.ToString("dd-MM-yy_HHmmss") + ".xls";
+            int count = 0;
+            string firstDONumber = "DO", lastDONumber = DateTime.Now.ToShortDateString();
 
-            //DateTime currentDate = DateTime.Now;
-            //fileName = "StockReport(" + cmbCustomer.Text + ")_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
-            return fileName;
+            DataGridView dgv = dgvDOList;
+            DataTable dt_DOList = (DataTable)dgv.DataSource;
+
+            if (dt_DOList.Columns.Contains(header_Selected))
+            {
+                firstDONumber = "";
+                lastDONumber = "";
+                foreach (DataRow row in dt_DOList.Rows)
+                {
+                    bool selected = bool.TryParse(row[header_Selected].ToString(), out selected) ? selected : false;
+
+                    if (selected)
+                    {
+                        string DONoString = row[header_DONoString].ToString();
+
+                        if (count == 0)
+                        {
+                            firstDONumber = DONoString;
+                        }
+                        else
+                        {
+                            lastDONumber = DONoString;
+                        }
+
+                        count++;
+                    }
+                }
+            }
+
+           
+
+            if(lastDONumber != "")
+            {
+                lastDONumber = "_" + lastDONumber;
+            }
+
+            return firstDONumber + lastDONumber + ".xls";
         }
 
         private void btnExcel_Click(object sender, EventArgs e)
@@ -1879,6 +1918,703 @@ namespace FactoryManagementSoftware.UI
             DataInsertArea.Value = value;
         }
 
+        private void AllInOneExcel()
+        {
+            DateTime DODate = frmExportSetting.DODate;
+            bool openFile = frmExportSetting.openFileAfterExport;
+            bool printFile = frmExportSetting.printFileAfterExport;
+            bool printPreview = frmExportSetting.printPreview;
+            string DODate_String = DODate.ToString("dd/MM/yyyy");
+
+            #region export excel
+            DataGridView dgv = dgvDOList;
+
+            DataTable dt_DOList = (DataTable)dgv.DataSource;
+
+            if (dgv.DataSource == null)
+            {
+                MessageBox.Show("No data found!");
+            }
+            else if (dt_DOList.Columns.Contains(header_Selected))
+            {
+                try
+                {
+                    dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                    SaveFileDialog sfd = new SaveFileDialog();
+
+                    string path = @"D:\StockAssistant\Document\SBB DO Report";
+                    Directory.CreateDirectory(path);
+                    sfd.InitialDirectory = path;
+
+                    sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                    sfd.FileName = setFileName();
+
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        frmLoading.ShowLoadingScreen();
+                        tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+
+                        // Copy DataGridView results to clipboard
+                        copyAlltoClipboard();
+                        Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                        object misValue = Missing.Value;
+
+                        Excel.Application xlexcel = new Excel.Application
+                        {
+                            PrintCommunication = false,
+                            ScreenUpdating = false,
+                            DisplayAlerts = false // Without this you will get two confirm overwrite prompts
+                        };
+
+                        Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+
+
+                        xlexcel.StandardFont = "Calibri";
+                        xlexcel.StandardFontSize = 12;
+
+                        xlexcel.Calculation = XlCalculation.xlCalculationManual;
+                        xlexcel.PrintCommunication = false;
+
+                        int sheetNo = 0;
+                        int pageNo = 1;
+                        int maxRow = 15;
+                        int rowNo = 0;
+                        int rowOffset = 20;
+
+                        Worksheet xlWorkSheet = xlWorkBook.ActiveSheet as Worksheet;
+                        //xlWorkSheet.PageSetup.PrintArea
+                        DataTable dt_PO = dalSPP.DOWithInfoSelect();
+                        dt_PO.DefaultView.Sort = dalSPP.TypeName + " ASC," + dalSPP.SizeNumerator + " ASC";
+                        dt_PO = dt_PO.DefaultView.ToTable();
+
+                        foreach (DataRow row in dt_DOList.Rows)
+                        {
+                            
+
+                            bool selected = bool.TryParse(row[header_Selected].ToString(), out selected) ? selected : false;
+
+                            if (selected)
+                            {
+                                string deliveredDate = row[header_DeliveredDate].ToString();
+
+                                DODate = DateTime.TryParse(deliveredDate, out DateTime test) ? test : frmExportSetting.DODate; 
+                                if (sheetNo > 0)
+                                {
+                                    xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
+
+                                }
+
+                                sheetNo++;
+
+                                string customerName = row[header_Customer].ToString();
+                                string POTableCode = row[header_POCode].ToString();
+                                string PONo = row[header_PONo].ToString();
+                                string DONo = row[header_DONo].ToString();
+                                string DONoString = row[header_DONoString].ToString();
+
+                                xlWorkSheet.Name = customerName + "_" + DONoString;
+
+                                ExcelPageSetup(xlWorkSheet);
+
+                                xlexcel.PrintCommunication = true;
+                                xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+
+                                InitialDOFormat(xlWorkSheet);
+
+
+
+                                string DONoArea = "u13:x13";
+                                string PONoArea = "u14:x14";
+                                string DODateArea = "u15:x15";
+                                string pageNoArea = "w1:x1";
+
+                                InsertToSheet(xlWorkSheet, pageNoArea, pageNo + "/" + pageNo);
+                                InsertToSheet(xlWorkSheet, DONoArea, DONoString);
+                                InsertToSheet(xlWorkSheet, PONoArea, PONo);
+                                InsertToSheet(xlWorkSheet, DODateArea, DODate.ToOADate());
+
+                                string custFullName = null;
+                                string shippingAddress_1 = null;
+                                string shippingAddress_2 = null;
+                                string shippingPostalCode = null;
+                                string shippingCity = null;
+                                string shippingState = null;
+                                string Contact = null;
+
+                                //string itemList = "a20:a36";
+
+                                string descriptionRowStart = "b";
+                                string descriptionRowEnd = ":l";
+
+                                string qtyColStart = "n";
+                                string qtyColEnd = ":o";
+
+                                string pcsColStart = "p";
+                                string pcsColEnd = ":p";
+
+                                string remarkColStart = "t";
+                                string remarkColEnd = ":w";
+
+                                string CustFullNameArea = "c11:M11";
+                                string AddressArea_1 = "c12:M12";
+                                string AddressArea_2 = "c13:M13";
+                                string postalAndCity = "c14:M14";
+                                string state = "c15:M15";
+                                string contact = "c16:M16";
+
+                                foreach (DataRow row2 in dt_PO.Rows)
+                                {
+                                    if (DONo == row2[dalSPP.DONo].ToString() && row2[dalSPP.DONo] != DBNull.Value)
+                                    {
+                                        int deliveryQty = row2[dalSPP.ToDeliveryQty] == DBNull.Value ? 0 : Convert.ToInt32(row2[dalSPP.ToDeliveryQty].ToString());
+
+                                        custFullName = row2[dalSPP.FullName].ToString();
+                                        shippingAddress_1 = row2[dalSPP.Address1].ToString();
+                                        shippingAddress_2 = row2[dalSPP.Address2].ToString();
+                                        shippingPostalCode = row2[dalSPP.AddressPostalCode].ToString();
+                                        shippingCity = row2[dalSPP.AddressCity].ToString();
+                                        shippingState = row2[dalSPP.AddressState].ToString();
+                                        Contact = row2[dalSPP.Phone1].ToString();
+
+                                        if (deliveryQty > 0)
+                                        {
+                                            string type = row2[dalSPP.TypeName].ToString();
+                                            int stdPacking = int.TryParse(row2[dalSPP.QtyPerBag].ToString(), out stdPacking) ? stdPacking : 0;
+                                            int bag = deliveryQty / stdPacking;
+                                            string size = row2[dalSPP.SizeNumerator].ToString();
+                                            string unit = row2[dalSPP.SizeUnit].ToString().ToUpper();
+                                            string itemCode = row2[dalSPP.ItemCode].ToString();
+                                            string remark = bag + " BAG(S)";
+
+                                            //check current row vs max row
+                                            if (rowNo + 1 > maxRow)
+                                            {
+                                                rowNo = 1;
+                                                pageNo++;
+                                                //create new sheet
+                                                xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
+
+                                                if (pageNo > 1)
+                                                    xlWorkSheet.Name = customerName + "_" + DONoString + "_" + pageNo;
+
+                                                ExcelPageSetup(xlWorkSheet);
+                                                InitialDOFormat(xlWorkSheet);
+                                                InsertToSheet(xlWorkSheet, DONoArea, DONoString);
+                                                InsertToSheet(xlWorkSheet, PONoArea, PONo);
+                                                InsertToSheet(xlWorkSheet, pageNoArea, pageNo + "/" + pageNo);
+
+                                                InsertToSheet(xlWorkSheet, DODateArea, DODate.ToOADate());
+                                                Worksheet previousSheet = (Worksheet)xlWorkBook.Worksheets[customerName + "_" + DONoString];
+
+                                                InsertToSheet(previousSheet, pageNoArea, 1 + "/" + pageNo);
+                                                InsertToSheet(previousSheet, CustFullNameArea, custFullName);
+                                                InsertToSheet(previousSheet, AddressArea_1, shippingAddress_1);
+                                                InsertToSheet(previousSheet, AddressArea_2, shippingAddress_2);
+                                                InsertToSheet(previousSheet, postalAndCity, shippingPostalCode + " " + shippingCity);
+                                                InsertToSheet(previousSheet, state, shippingState);
+                                                InsertToSheet(previousSheet, contact, Contact);
+
+                                                //change total page number in previous sheet(s)
+                                                for (int i = 2; i < pageNo; i++)
+                                                {
+                                                    previousSheet = (Worksheet)xlWorkBook.Worksheets[customerName + "_" + DONoString + "_" + i];
+
+                                                    InsertToSheet(previousSheet, pageNoArea, i + "/" + pageNo);
+                                                    InsertToSheet(previousSheet, CustFullNameArea, custFullName);
+                                                    InsertToSheet(previousSheet, AddressArea_1, shippingAddress_1);
+                                                    InsertToSheet(previousSheet, AddressArea_2, shippingAddress_2);
+                                                    InsertToSheet(previousSheet, postalAndCity, shippingPostalCode + " " + shippingCity);
+                                                    InsertToSheet(previousSheet, state, shippingState);
+                                                    InsertToSheet(previousSheet, contact, Contact);
+
+                                                }
+
+                                                sheetNo++;
+
+                                            }
+                                            else
+                                            {
+                                                rowNo++;
+                                            }
+                                            //insert data
+                                            string descriptionRow = descriptionRowStart + (rowOffset + rowNo).ToString() + descriptionRowEnd + (rowOffset + rowNo).ToString();
+
+                                            string type_ShortName = text.EqualElbow_Short;
+
+                                            if (type == text.Type_EqualSocket)
+                                            {
+                                                type_ShortName = text.EqualSocket_Short;
+                                            }
+                                            else if (type == text.Type_EqualTee)
+                                            {
+                                                type_ShortName = text.EqualTee_Short;
+                                            }
+
+                                            string newItemCode = text.SPP_BrandName + type_ShortName + size;
+                                            InsertToSheet(xlWorkSheet, descriptionRow, newItemCode + "     " + size + " " + unit + " " + type);
+
+                                            descriptionRow = qtyColStart + (rowOffset + rowNo).ToString() + qtyColEnd + (rowOffset + rowNo).ToString();
+                                            InsertToSheet(xlWorkSheet, descriptionRow, deliveryQty);
+
+                                            descriptionRow = pcsColStart + (rowOffset + rowNo).ToString() + pcsColEnd + (rowOffset + rowNo).ToString();
+                                            InsertToSheet(xlWorkSheet, descriptionRow, "PCS");
+
+                                            descriptionRow = remarkColStart + (rowOffset + rowNo).ToString() + remarkColEnd + (rowOffset + rowNo).ToString();
+                                            InsertToSheet(xlWorkSheet, descriptionRow, remark);
+
+
+                                        }
+
+                                    }
+                                }
+
+
+
+                                if (string.IsNullOrEmpty(shippingAddress_1))
+                                {
+                                    AddressArea_2 = "c11:M11";
+                                    postalAndCity = "c12:M12";
+                                    state = "c13:M13";
+                                }
+
+                                if (string.IsNullOrEmpty(shippingAddress_2))
+                                {
+                                    postalAndCity = "c12:M12";
+                                    state = "c13:M13";
+                                }
+
+                                InsertToSheet(xlWorkSheet, CustFullNameArea, custFullName);
+                                InsertToSheet(xlWorkSheet, AddressArea_1, shippingAddress_1);
+                                InsertToSheet(xlWorkSheet, AddressArea_2, shippingAddress_2);
+                                InsertToSheet(xlWorkSheet, postalAndCity, shippingPostalCode + " " + shippingCity);
+                                InsertToSheet(xlWorkSheet, state, shippingState);
+                                InsertToSheet(xlWorkSheet, contact, Contact);
+
+
+                                tool.historyRecord(text.DO_Exported, text.GetDOExportDetail(openFile, printFile, printPreview), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(DONo));
+
+                                pageNo = 1;
+                                rowNo = 0;
+
+
+                            }
+                        }
+
+                        if (sheetNo > 0)
+                        {
+                            xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
+                           misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                        }
+
+                        // Clear Clipboard and DataGridView selection
+                        Clipboard.Clear();
+                        dgv.ClearSelection();
+
+                        frmLoading.CloseForm();
+
+                        // Open the newly saved excel file
+                        if (File.Exists(sfd.FileName))
+                        {
+
+                            if (openFile)
+                            {
+                                Excel.Application excel = new Excel.Application();
+                                excel.Visible = true;
+                                excel.DisplayAlerts = false;
+                                Workbook wb = excel.Workbooks.Open(sfd.FileName, ReadOnly: false, Notify: false);
+                                excel.DisplayAlerts = true;
+
+                                //System.Diagnostics.Process.Start(sfd.FileName);
+                            }
+                            else
+                            {
+                                MessageBox.Show("D/O export successful!");
+                            }
+
+                            if (printFile)
+                            {
+                                xlexcel.Visible = printPreview;
+                                xlWorkBook.PrintOut(Preview: printPreview, Collate: true);
+                                //xlWorkBook.PrintOut(Type.Missing, Type.Missing, Type.Missing, printPreview, Type.Missing, Type.Missing, true, Type.Missing);
+                            }
+
+                        }
+
+                        xlexcel.DisplayAlerts = true;
+
+                        xlWorkBook.Close(true, misValue, misValue);
+                        xlexcel.Quit();
+
+                        releaseObject(xlWorkSheet);
+
+                        releaseObject(xlWorkBook);
+                        releaseObject(xlexcel);
+                    }
+
+                    Cursor = Cursors.Arrow; // change cursor to normal type
+
+                }
+                catch (Exception ex)
+                {
+                    frmLoading.CloseForm();
+                    tool.saveToTextAndMessageToUser(ex);
+                }
+                finally
+                {
+                    Cursor = Cursors.Arrow; // change cursor to normal type
+                }
+            }
+            #endregion
+        }
+
+        private void SeparateExcel()
+        {
+            DateTime DODate = frmExportSetting.DODate;
+            bool openFile = frmExportSetting.openFileAfterExport;
+            bool printFile = frmExportSetting.printFileAfterExport;
+            bool printPreview = frmExportSetting.printPreview;
+            string DODate_String = DODate.ToString("dd/MM/yyyy");
+
+            #region export excel
+            DataGridView dgv = dgvDOList;
+
+            DataTable dt_DOList = (DataTable)dgv.DataSource;
+
+            if (dgv.DataSource == null)
+            {
+                MessageBox.Show("No data found!");
+            }
+            else if (dt_DOList.Columns.Contains(header_Selected))
+            {
+                try
+                {
+                    dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                    DataTable dt_PO = dalSPP.DOWithInfoSelect();
+                    dt_PO.DefaultView.Sort = dalSPP.TypeName + " ASC," + dalSPP.SizeNumerator + " ASC";
+                    dt_PO = dt_PO.DefaultView.ToTable();
+                    string path = @"D:\StockAssistant\Document\SBB DO Report";
+                    Directory.CreateDirectory(path);
+
+                    foreach (DataRow row in dt_DOList.Rows)
+                    {
+                        bool selected = bool.TryParse(row[header_Selected].ToString(), out selected) ? selected : false;
+
+                        if (selected)
+                        {
+                            string deliveredDate = row[header_DeliveredDate].ToString();
+
+                            DODate = DateTime.TryParse(deliveredDate, out DateTime test) ? test : frmExportSetting.DODate;
+
+                            SaveFileDialog sfd = new SaveFileDialog();
+                            sfd.InitialDirectory = path;
+
+                            string customerName = row[header_Customer].ToString();
+                            string POTableCode = row[header_POCode].ToString();
+                            string PONo = row[header_PONo].ToString();
+                            string DONo = row[header_DONo].ToString();
+                            string DONoString = row[header_DONoString].ToString();
+
+
+                            sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                            sfd.FileName = DONoString + ".xls";
+
+                            if (sfd.ShowDialog() == DialogResult.OK)
+                            {
+                                frmLoading.ShowLoadingScreen();
+                                tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+
+                                // Copy DataGridView results to clipboard
+                                copyAlltoClipboard();
+                                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                                object misValue = Missing.Value;
+
+                                Excel.Application xlexcel = new Excel.Application
+                                {
+                                    PrintCommunication = false,
+                                    ScreenUpdating = false,
+                                    DisplayAlerts = false // Without this you will get two confirm overwrite prompts
+                                };
+
+                                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+
+
+                                xlexcel.StandardFont = "Calibri";
+                                xlexcel.StandardFontSize = 12;
+
+                                xlexcel.Calculation = XlCalculation.xlCalculationManual;
+                                xlexcel.PrintCommunication = false;
+
+                                int sheetNo = 0;
+                                int pageNo = 1;
+                                int maxRow = 15;
+                                int rowNo = 0;
+                                int rowOffset = 20;
+
+                                Worksheet xlWorkSheet = xlWorkBook.ActiveSheet as Worksheet;
+                                //xlWorkSheet.PageSetup.PrintArea
+
+                                if (sheetNo > 0)
+                                {
+                                    xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
+
+                                }
+
+                                sheetNo++;
+
+
+                                xlWorkSheet.Name = customerName + "_" + DONoString;
+
+                                ExcelPageSetup(xlWorkSheet);
+
+                                xlexcel.PrintCommunication = true;
+                                xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+
+                                InitialDOFormat(xlWorkSheet);
+
+
+
+                                string DONoArea = "u13:x13";
+                                string PONoArea = "u14:x14";
+                                string DODateArea = "u15:x15";
+                                string pageNoArea = "w1:x1";
+
+                                InsertToSheet(xlWorkSheet, pageNoArea, pageNo + "/" + pageNo);
+                                InsertToSheet(xlWorkSheet, DONoArea, DONoString);
+                                InsertToSheet(xlWorkSheet, PONoArea, PONo);
+                                InsertToSheet(xlWorkSheet, DODateArea, DODate.ToOADate());
+
+                                string custFullName = null;
+                                string shippingAddress_1 = null;
+                                string shippingAddress_2 = null;
+                                string shippingPostalCode = null;
+                                string shippingCity = null;
+                                string shippingState = null;
+                                string Contact = null;
+
+                                //string itemList = "a20:a36";
+
+                                string descriptionRowStart = "b";
+                                string descriptionRowEnd = ":l";
+
+                                string qtyColStart = "n";
+                                string qtyColEnd = ":o";
+
+                                string pcsColStart = "p";
+                                string pcsColEnd = ":p";
+
+                                string remarkColStart = "t";
+                                string remarkColEnd = ":w";
+
+                                string CustFullNameArea = "c11:M11";
+                                string AddressArea_1 = "c12:M12";
+                                string AddressArea_2 = "c13:M13";
+                                string postalAndCity = "c14:M14";
+                                string state = "c15:M15";
+                                string contact = "c16:M16";
+
+                                foreach (DataRow row2 in dt_PO.Rows)
+                                {
+                                    if (DONo == row2[dalSPP.DONo].ToString() && row2[dalSPP.DONo] != DBNull.Value)
+                                    {
+                                        int deliveryQty = row2[dalSPP.ToDeliveryQty] == DBNull.Value ? 0 : Convert.ToInt32(row2[dalSPP.ToDeliveryQty].ToString());
+
+                                        custFullName = row2[dalSPP.FullName].ToString();
+                                        shippingAddress_1 = row2[dalSPP.Address1].ToString();
+                                        shippingAddress_2 = row2[dalSPP.Address2].ToString();
+                                        shippingPostalCode = row2[dalSPP.AddressPostalCode].ToString();
+                                        shippingCity = row2[dalSPP.AddressCity].ToString();
+                                        shippingState = row2[dalSPP.AddressState].ToString();
+                                        Contact = row2[dalSPP.Phone1].ToString();
+
+                                        if (deliveryQty > 0)
+                                        {
+                                            string type = row2[dalSPP.TypeName].ToString();
+                                            int stdPacking = int.TryParse(row2[dalSPP.QtyPerBag].ToString(), out stdPacking) ? stdPacking : 0;
+                                            int bag = deliveryQty / stdPacking;
+                                            string size = row2[dalSPP.SizeNumerator].ToString();
+                                            string unit = row2[dalSPP.SizeUnit].ToString().ToUpper();
+                                            string itemCode = row2[dalSPP.ItemCode].ToString();
+                                            string remark = bag + " BAG(S)";
+
+                                            //check current row vs max row
+                                            if (rowNo + 1 > maxRow)
+                                            {
+                                                rowNo = 1;
+                                                pageNo++;
+                                                //create new sheet
+                                                xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
+
+                                                if (pageNo > 1)
+                                                    xlWorkSheet.Name = customerName + "_" + DONoString + "_" + pageNo;
+
+                                                ExcelPageSetup(xlWorkSheet);
+                                                InitialDOFormat(xlWorkSheet);
+                                                InsertToSheet(xlWorkSheet, DONoArea, DONoString);
+                                                InsertToSheet(xlWorkSheet, PONoArea, PONo);
+                                                InsertToSheet(xlWorkSheet, pageNoArea, pageNo + "/" + pageNo);
+
+                                                InsertToSheet(xlWorkSheet, DODateArea, DODate.ToOADate());
+                                                Worksheet previousSheet = (Worksheet)xlWorkBook.Worksheets[customerName + "_" + DONoString];
+
+                                                InsertToSheet(previousSheet, pageNoArea, 1 + "/" + pageNo);
+                                                InsertToSheet(previousSheet, CustFullNameArea, custFullName);
+                                                InsertToSheet(previousSheet, AddressArea_1, shippingAddress_1);
+                                                InsertToSheet(previousSheet, AddressArea_2, shippingAddress_2);
+                                                InsertToSheet(previousSheet, postalAndCity, shippingPostalCode + " " + shippingCity);
+                                                InsertToSheet(previousSheet, state, shippingState);
+                                                InsertToSheet(previousSheet, contact, Contact);
+
+                                                //change total page number in previous sheet(s)
+                                                for (int i = 2; i < pageNo; i++)
+                                                {
+                                                    previousSheet = (Worksheet)xlWorkBook.Worksheets[customerName + "_" + DONoString + "_" + i];
+
+                                                    InsertToSheet(previousSheet, pageNoArea, i + "/" + pageNo);
+                                                    InsertToSheet(previousSheet, CustFullNameArea, custFullName);
+                                                    InsertToSheet(previousSheet, AddressArea_1, shippingAddress_1);
+                                                    InsertToSheet(previousSheet, AddressArea_2, shippingAddress_2);
+                                                    InsertToSheet(previousSheet, postalAndCity, shippingPostalCode + " " + shippingCity);
+                                                    InsertToSheet(previousSheet, state, shippingState);
+                                                    InsertToSheet(previousSheet, contact, Contact);
+
+                                                }
+
+                                                sheetNo++;
+
+                                            }
+                                            else
+                                            {
+                                                rowNo++;
+                                            }
+                                            //insert data
+                                            string descriptionRow = descriptionRowStart + (rowOffset + rowNo).ToString() + descriptionRowEnd + (rowOffset + rowNo).ToString();
+
+                                            string type_ShortName = text.EqualElbow_Short;
+
+                                            if (type == text.Type_EqualSocket)
+                                            {
+                                                type_ShortName = text.EqualSocket_Short;
+                                            }
+                                            else if (type == text.Type_EqualTee)
+                                            {
+                                                type_ShortName = text.EqualTee_Short;
+                                            }
+
+                                            string newItemCode = text.SPP_BrandName + type_ShortName + size;
+                                            InsertToSheet(xlWorkSheet, descriptionRow, newItemCode + "     " + size + " " + unit + " " + type);
+
+                                            descriptionRow = qtyColStart + (rowOffset + rowNo).ToString() + qtyColEnd + (rowOffset + rowNo).ToString();
+                                            InsertToSheet(xlWorkSheet, descriptionRow, deliveryQty);
+
+                                            descriptionRow = pcsColStart + (rowOffset + rowNo).ToString() + pcsColEnd + (rowOffset + rowNo).ToString();
+                                            InsertToSheet(xlWorkSheet, descriptionRow, "PCS");
+
+                                            descriptionRow = remarkColStart + (rowOffset + rowNo).ToString() + remarkColEnd + (rowOffset + rowNo).ToString();
+                                            InsertToSheet(xlWorkSheet, descriptionRow, remark);
+
+
+                                        }
+
+                                    }
+                                }
+
+                                if (string.IsNullOrEmpty(shippingAddress_1))
+                                {
+                                    AddressArea_2 = "c11:M11";
+                                    postalAndCity = "c12:M12";
+                                    state = "c13:M13";
+                                }
+
+                                if (string.IsNullOrEmpty(shippingAddress_2))
+                                {
+                                    postalAndCity = "c12:M12";
+                                    state = "c13:M13";
+                                }
+
+                                InsertToSheet(xlWorkSheet, CustFullNameArea, custFullName);
+                                InsertToSheet(xlWorkSheet, AddressArea_1, shippingAddress_1);
+                                InsertToSheet(xlWorkSheet, AddressArea_2, shippingAddress_2);
+                                InsertToSheet(xlWorkSheet, postalAndCity, shippingPostalCode + " " + shippingCity);
+                                InsertToSheet(xlWorkSheet, state, shippingState);
+                                InsertToSheet(xlWorkSheet, contact, Contact);
+
+
+                                tool.historyRecord(text.DO_Exported, text.GetDOExportDetail(openFile, printFile, printPreview), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(DONo));
+
+                                pageNo = 1;
+                                rowNo = 0;
+
+                                if (sheetNo > 0)
+                                {
+                                    xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
+                                   misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                                }
+
+                                // Clear Clipboard and DataGridView selection
+                                Clipboard.Clear();
+                                dgv.ClearSelection();
+
+                                frmLoading.CloseForm();
+
+                                // Open the newly saved excel file
+                                if (File.Exists(sfd.FileName))
+                                {
+
+                                    if (openFile)
+                                    {
+                                        Excel.Application excel = new Excel.Application();
+                                        excel.Visible = true;
+                                        excel.DisplayAlerts = false;
+                                        Workbook wb = excel.Workbooks.Open(sfd.FileName,ReadOnly: false, Notify: false);
+                                        excel.DisplayAlerts = true;
+                                        //System.Diagnostics.Process.Start(sfd.FileName);
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("D/O export successful!");
+                                    }
+
+                                    if (printFile)
+                                    {
+                                        xlexcel.Visible = printPreview;
+                                        xlWorkBook.PrintOut(Preview: printPreview, Collate: true);
+                                        //xlWorkBook.PrintOut(Type.Missing, Type.Missing, Type.Missing, printPreview, Type.Missing, Type.Missing, true, Type.Missing);
+                                    }
+
+                                }
+
+                                xlexcel.DisplayAlerts = true;
+
+                                xlWorkBook.Close(true, misValue, misValue);
+                                xlexcel.Quit();
+
+                                releaseObject(xlWorkSheet);
+
+                                releaseObject(xlWorkBook);
+                                releaseObject(xlexcel);
+                            }
+
+                        }
+                    }
+
+                   
+
+                    Cursor = Cursors.Arrow; // change cursor to normal type
+
+                }
+                catch (Exception ex)
+                {
+                    frmLoading.CloseForm();
+                    tool.saveToTextAndMessageToUser(ex);
+                }
+                finally
+                {
+                    Cursor = Cursors.Arrow; // change cursor to normal type
+                }
+            }
+            #endregion
+        }
+
         private void ExportToExcel()
         {
             //show export setting
@@ -1891,343 +2627,18 @@ namespace FactoryManagementSoftware.UI
             //get return data
             if(frmExportSetting.settingApplied)
             {
-                DateTime DODate = frmExportSetting.DODate;
-                bool openFile = frmExportSetting.openFileAfterExport;
-                bool printFile = frmExportSetting.printFileAfterExport;
-                bool printPreview = frmExportSetting.printPreview;
+               
+                bool allInOne = frmExportSetting.allInOne;
 
-                string DODate_String = DODate.ToString("dd/MM/yyyy");
-
-                #region export excel
-                DataGridView dgv = dgvDOList;
-
-                DataTable dt_DOList = (DataTable)dgv.DataSource;
-
-                if (dgv.DataSource == null)
+                if(allInOne)
                 {
-                    MessageBox.Show("No data found!");
+                    AllInOneExcel();
                 }
-                else if (dt_DOList.Columns.Contains(header_Selected))
+                else
                 {
-                    try
-                    {
-                        dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                        SaveFileDialog sfd = new SaveFileDialog();
-
-                        string path = @"D:\StockAssistant\Document\SBB DO Report";
-                        Directory.CreateDirectory(path);
-                        sfd.InitialDirectory = path;
-
-                        sfd.Filter = "Excel Documents (*.xls)|*.xls";
-                        sfd.FileName = setFileName();
-
-                        if (sfd.ShowDialog() == DialogResult.OK)
-                        {
-                            frmLoading.ShowLoadingScreen();
-                            tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
-
-                            // Copy DataGridView results to clipboard
-                            copyAlltoClipboard();
-                            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                            object misValue = Missing.Value;
-
-                            Excel.Application xlexcel = new Excel.Application
-                            {
-                                PrintCommunication = false,
-                                ScreenUpdating = false,
-                                DisplayAlerts = false // Without this you will get two confirm overwrite prompts
-                            };
-
-                            Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
-
-                           
-                            xlexcel.StandardFont = "Calibri";
-                            xlexcel.StandardFontSize = 12;
-                            
-                            xlexcel.Calculation = XlCalculation.xlCalculationManual;
-                            xlexcel.PrintCommunication = false;
-
-                            int sheetNo = 0;
-                            int pageNo = 1;
-                            int maxRow = 15;
-                            int rowNo = 0;
-                            int rowOffset = 20;
-
-                            Worksheet xlWorkSheet = xlWorkBook.ActiveSheet as Worksheet;
-                            //xlWorkSheet.PageSetup.PrintArea
-                            DataTable dt_PO = dalSPP.DOWithInfoSelect();
-
-                            foreach (DataRow row in dt_DOList.Rows)
-                            {
-                                bool selected = bool.TryParse(row[header_Selected].ToString(), out selected) ? selected : false;
-
-                                if(selected)
-                                {
-                                    if (sheetNo > 0)
-                                    {
-                                        xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
-                                       
-                                    }
-
-                                    sheetNo++;
-
-                                    string customerName = row[header_Customer].ToString();
-                                    string POTableCode = row[header_POCode].ToString();
-                                    string PONo = row[header_PONo].ToString();
-                                    string DONo = row[header_DONo].ToString();
-                                    string DONoString = row[header_DONoString].ToString();
-
-                                    xlWorkSheet.Name = customerName + "_" + DONoString;
-
-                                    ExcelPageSetup(xlWorkSheet);
-
-                                    xlexcel.PrintCommunication = true;
-                                    xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
-
-                                    InitialDOFormat(xlWorkSheet);
-
-
-                                    
-                                    string DONoArea = "u13:x13";
-                                    string PONoArea = "u14:x14";
-                                    string DODateArea = "u15:x15";
-                                    string pageNoArea = "w1:x1";
-
-                                    InsertToSheet(xlWorkSheet, pageNoArea, pageNo+"/"+pageNo);
-                                    InsertToSheet(xlWorkSheet, DONoArea, DONoString);
-                                    InsertToSheet(xlWorkSheet, PONoArea, PONo);
-                                    InsertToSheet(xlWorkSheet, DODateArea, DODate.ToOADate());
-
-                                    string custFullName = null;
-                                    string shippingAddress_1 = null;
-                                    string shippingAddress_2 = null;
-                                    string shippingPostalCode = null;
-                                    string shippingCity = null;
-                                    string shippingState = null;
-                                    string Contact = null;
-
-                                    //string itemList = "a20:a36";
-
-                                    string descriptionRowStart = "b";
-                                    string descriptionRowEnd = ":l";
-
-                                    string qtyColStart = "n";
-                                    string qtyColEnd = ":o";
-
-                                    string pcsColStart = "p";
-                                    string pcsColEnd = ":p";
-
-                                    string remarkColStart = "t";
-                                    string remarkColEnd = ":w";
-
-                                    string CustFullNameArea = "c11:M11";
-                                    string AddressArea_1 = "c12:M12";
-                                    string AddressArea_2 = "c13:M13";
-                                    string postalAndCity = "c14:M14";
-                                    string state = "c15:M15";
-                                    string contact = "c16:M16";
-
-                                    foreach (DataRow row2 in dt_PO.Rows)
-                                    {
-                                        if (DONo == row2[dalSPP.DONo].ToString() && row2[dalSPP.DONo] != DBNull.Value)
-                                        {
-                                            int deliveryQty = row2[dalSPP.ToDeliveryQty] == DBNull.Value ? 0 : Convert.ToInt32(row2[dalSPP.ToDeliveryQty].ToString());
-
-                                            custFullName = row2[dalSPP.FullName].ToString();
-                                            shippingAddress_1 = row2[dalSPP.Address1].ToString();
-                                            shippingAddress_2 = row2[dalSPP.Address2].ToString();
-                                            shippingPostalCode = row2[dalSPP.AddressPostalCode].ToString();
-                                            shippingCity = row2[dalSPP.AddressCity].ToString();
-                                            shippingState = row2[dalSPP.AddressState].ToString();
-                                            Contact = row2[dalSPP.Phone1].ToString();
-
-                                            if (deliveryQty > 0)
-                                            {
-                                                string type = row2[dalSPP.TypeName].ToString();
-                                                int stdPacking = int.TryParse(row2[dalSPP.QtyPerBag].ToString(), out stdPacking) ? stdPacking : 0;
-                                                int bag = deliveryQty / stdPacking;
-                                                string size = row2[dalSPP.SizeNumerator].ToString();
-                                                string unit = row2[dalSPP.SizeUnit].ToString().ToUpper();
-                                                string itemCode = row2[dalSPP.ItemCode].ToString();
-                                                string remark = bag + " BAG(S)";
-
-                                                //check current row vs max row
-                                                if(rowNo + 1 > maxRow)
-                                                {
-                                                    rowNo = 1;
-                                                    pageNo++;
-                                                    //create new sheet
-                                                    xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
-
-                                                    if(pageNo > 1)
-                                                    xlWorkSheet.Name = customerName + "_" + DONoString + "_" + pageNo;
-
-                                                    ExcelPageSetup(xlWorkSheet);
-                                                    InitialDOFormat(xlWorkSheet);
-                                                    InsertToSheet(xlWorkSheet, DONoArea, DONoString);
-                                                    InsertToSheet(xlWorkSheet, PONoArea, PONo);
-                                                    InsertToSheet(xlWorkSheet, pageNoArea, pageNo + "/" + pageNo);
-
-                                                    InsertToSheet(xlWorkSheet, DODateArea, DODate.ToOADate());
-                                                    Worksheet previousSheet = (Worksheet)xlWorkBook.Worksheets[customerName + "_" + DONoString];
-
-                                                    InsertToSheet(previousSheet, pageNoArea, 1 + "/" + pageNo);
-                                                    InsertToSheet(previousSheet, CustFullNameArea, custFullName);
-                                                    InsertToSheet(previousSheet, AddressArea_1, shippingAddress_1);
-                                                    InsertToSheet(previousSheet, AddressArea_2, shippingAddress_2);
-                                                    InsertToSheet(previousSheet, postalAndCity, shippingPostalCode + " " + shippingCity);
-                                                    InsertToSheet(previousSheet, state, shippingState);
-                                                    InsertToSheet(previousSheet, contact, Contact);
-
-                                                    //change total page number in previous sheet(s)
-                                                    for (int i = 2; i < pageNo; i++)
-                                                    {
-                                                        previousSheet = (Worksheet)xlWorkBook.Worksheets[customerName + "_" + DONoString + "_" + i];
-
-                                                        InsertToSheet(previousSheet, pageNoArea, i + "/" + pageNo);
-                                                        InsertToSheet(previousSheet, CustFullNameArea, custFullName);
-                                                        InsertToSheet(previousSheet, AddressArea_1, shippingAddress_1);
-                                                        InsertToSheet(previousSheet, AddressArea_2, shippingAddress_2);
-                                                        InsertToSheet(previousSheet, postalAndCity, shippingPostalCode + " " + shippingCity);
-                                                        InsertToSheet(previousSheet, state, shippingState);
-                                                        InsertToSheet(previousSheet, contact, Contact);
-
-                                                    }
-                                                    
-                                                    sheetNo++;
-
-                                                }
-                                                else
-                                                {
-                                                    rowNo++;
-                                                }
-                                                //insert data
-                                                string descriptionRow = descriptionRowStart + (rowOffset + rowNo).ToString() + descriptionRowEnd + (rowOffset + rowNo).ToString();
-
-                                                string type_ShortName = text.EqualElbow_Short;
-
-                                                if(type == text.Type_EqualSocket)
-                                                {
-                                                    type_ShortName = text.EqualSocket_Short;
-                                                }
-                                                else if(type == text.Type_EqualTee)
-                                                {
-                                                    type_ShortName = text.EqualTee_Short;
-                                                }
-
-                                                string newItemCode = text.SPP_BrandName + type_ShortName + size;
-                                                InsertToSheet(xlWorkSheet, descriptionRow, newItemCode + "     "+size+" "+unit+" "+type);
-
-                                                descriptionRow = qtyColStart + (rowOffset + rowNo).ToString() + qtyColEnd + (rowOffset + rowNo).ToString();
-                                                InsertToSheet(xlWorkSheet, descriptionRow, deliveryQty);
-
-                                                descriptionRow = pcsColStart + (rowOffset + rowNo).ToString() + pcsColEnd + (rowOffset + rowNo).ToString();
-                                                InsertToSheet(xlWorkSheet, descriptionRow, "PCS");
-
-                                                descriptionRow = remarkColStart + (rowOffset + rowNo).ToString() + remarkColEnd + (rowOffset + rowNo).ToString();
-                                                InsertToSheet(xlWorkSheet, descriptionRow, remark);
-
-
-                                            }
-
-                                        }
-                                    }
-
-                                    
-
-                                    if(string.IsNullOrEmpty(shippingAddress_1))
-                                    {
-                                        AddressArea_2 = "c11:M11";
-                                        postalAndCity = "c12:M12";
-                                        state = "c13:M13";
-                                    }
-
-                                    if (string.IsNullOrEmpty(shippingAddress_2))
-                                    {
-                                        postalAndCity = "c12:M12";
-                                        state = "c13:M13";
-                                    }
-
-                                    InsertToSheet(xlWorkSheet, CustFullNameArea, custFullName);
-                                    InsertToSheet(xlWorkSheet, AddressArea_1, shippingAddress_1);
-                                    InsertToSheet(xlWorkSheet, AddressArea_2, shippingAddress_2);
-                                    InsertToSheet(xlWorkSheet, postalAndCity, shippingPostalCode+" "+ shippingCity);
-                                    InsertToSheet(xlWorkSheet, state, shippingState);
-                                    InsertToSheet(xlWorkSheet, contact, Contact);
-
-
-                                    tool.historyRecord(text.DO_Exported, text.GetDOExportDetail(openFile, printFile, printPreview), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(DONo));
-
-                                    pageNo = 1;
-                                    rowNo = 0;
-                                   
-
-                                }
-                            }
-
-                            if(sheetNo > 0)
-                            {
-                                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
-                               misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                            }
-
-                            // Clear Clipboard and DataGridView selection
-                            Clipboard.Clear();
-                            dgv.ClearSelection();
-
-                            frmLoading.CloseForm();
-
-                            // Open the newly saved excel file
-                            if (File.Exists(sfd.FileName))
-                            {
-
-                                if (openFile)
-                                {
-                                    Excel.Application excel = new Excel.Application();
-                                    excel.Visible = true;
-                                    Workbook wb = excel.Workbooks.Open(sfd.FileName);
-
-                                    //System.Diagnostics.Process.Start(sfd.FileName);
-                                }
-                                else
-                                {
-                                    MessageBox.Show("D/O export successful!");
-                                }
-
-                                if (printFile)
-                                {
-                                    xlexcel.Visible = printPreview;
-                                    xlWorkBook.PrintOut(Preview: printPreview, Collate: true);
-                                    //xlWorkBook.PrintOut(Type.Missing, Type.Missing, Type.Missing, printPreview, Type.Missing, Type.Missing, true, Type.Missing);
-                                }
-
-                            }
-
-                            xlexcel.DisplayAlerts = true;
-
-                            xlWorkBook.Close(true, misValue, misValue);
-                            xlexcel.Quit();
-
-                            releaseObject(xlWorkSheet);
-
-                            releaseObject(xlWorkBook);
-                            releaseObject(xlexcel);
-                        }
-
-                        Cursor = Cursors.Arrow; // change cursor to normal type
-
-                    }
-                    catch (Exception ex)
-                    {
-                        frmLoading.CloseForm();
-                        tool.saveToTextAndMessageToUser(ex);
-                    }
-                    finally
-                    {
-                        Cursor = Cursors.Arrow; // change cursor to normal type
-                    }
+                    SeparateExcel();
                 }
-                #endregion
+               
             }
 
             DOListUI();

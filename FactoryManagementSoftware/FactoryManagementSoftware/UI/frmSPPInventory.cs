@@ -202,10 +202,9 @@ namespace FactoryManagementSoftware.UI
                 int qtyPerBag = int.TryParse(dt.Rows[i]["STD_PACKING"].ToString(), out qtyPerBag)? qtyPerBag : 0;
                 int stockQty = int.TryParse(dt.Rows[i]["QUANTITY"].ToString(), out stockQty) ? stockQty : 0;
                 int toDeliveryQty = int.TryParse(dt.Rows[i]["TO_DELIVERY_QTY"].ToString(), out toDeliveryQty) ? toDeliveryQty : 0;
+                int maxStockLevel = int.TryParse(dt.Rows[i]["MAX_LEVEL"].ToString(), out maxStockLevel) ? maxStockLevel : 0;
 
                 dt.Rows[i]["STOCK"] = stockQty;
-
-                
 
                 if (qtyPerBag > 0)
                 {
@@ -218,28 +217,28 @@ namespace FactoryManagementSoftware.UI
                     
                     dt.Rows[i]["TOTAL BAG(S)"] = bagQty;
 
-                    int maxStockLevel = 0;
+                    //int maxStockLevel = 0;
 
-                    if(currentSize == "20")
-                    {
-                        maxStockLevel = text.StockLevel_20;
-                    }
-                    else if (currentSize == "25")
-                    {
-                        maxStockLevel = text.StockLevel_25;
-                    }
-                    else if (currentSize == "32")
-                    {
-                        maxStockLevel = text.StockLevel_32;
-                    }
-                    else if (currentSize == "50")
-                    {
-                        maxStockLevel = text.StockLevel_50;
-                    }
-                    else if (currentSize == "63")
-                    {
-                        maxStockLevel = text.StockLevel_63;
-                    }
+                    //if(currentSize == "20")
+                    //{
+                    //    maxStockLevel = text.StockLevel_20;
+                    //}
+                    //else if (currentSize == "25")
+                    //{
+                    //    maxStockLevel = text.StockLevel_25;
+                    //}
+                    //else if (currentSize == "32")
+                    //{
+                    //    maxStockLevel = text.StockLevel_32;
+                    //}
+                    //else if (currentSize == "50")
+                    //{
+                    //    maxStockLevel = text.StockLevel_50;
+                    //}
+                    //else if (currentSize == "63")
+                    //{
+                    //    maxStockLevel = text.StockLevel_63;
+                    //}
 
                     dt.Rows[i]["MAX STOCK LEVEL"] = maxStockLevel;
                 }
@@ -259,6 +258,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Remove("QUANTITY");
             dt.Columns.Remove("STD_PACKING");
             dt.Columns.Remove("TO_DELIVERY_QTY");
+            dt.Columns.Remove("MAX_LEVEL");
             dgvUnique.DataSource = dt;
          
             dgvUnique.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
@@ -381,30 +381,30 @@ namespace FactoryManagementSoftware.UI
             {
                 int bagQty = int.TryParse(dgv.Rows[rowIndex].Cells["TOTAL BAG(S)"].Value.ToString(), out bagQty) ? bagQty : -1;
                 int size = int.TryParse(dgv.Rows[rowIndex].Cells["SIZE"].Value.ToString(), out size) ? size : 0;
-                int stockLevel = 0;
+                int stockLevel = int.TryParse(dgv.Rows[rowIndex].Cells["MAX STOCK LEVEL"].Value.ToString(), out stockLevel) ? stockLevel : 0;
 
-                if(bagQty != -1)
+                if (bagQty != -1)
                 {
-                    if (size == 20)
-                    {
-                        stockLevel = text.StockLevel_20;
-                    }
-                    else if (size == 25)
-                    {
-                        stockLevel = text.StockLevel_25;
-                    }
-                    else if (size == 32)
-                    {
-                        stockLevel = text.StockLevel_32;
-                    }
-                    else if (size == 50)
-                    {
-                        stockLevel = text.StockLevel_50;
-                    }
-                    else if (size == 63)
-                    {
-                        stockLevel = text.StockLevel_63;
-                    }
+                    //if (size == 20)
+                    //{
+                    //    stockLevel = text.StockLevel_20;
+                    //}
+                    //else if (size == 25)
+                    //{
+                    //    stockLevel = text.StockLevel_25;
+                    //}
+                    //else if (size == 32)
+                    //{
+                    //    stockLevel = text.StockLevel_32;
+                    //}
+                    //else if (size == 50)
+                    //{
+                    //    stockLevel = text.StockLevel_50;
+                    //}
+                    //else if (size == 63)
+                    //{
+                    //    stockLevel = text.StockLevel_63;
+                    //}
 
                     if (bagQty >= stockLevel)
                     {

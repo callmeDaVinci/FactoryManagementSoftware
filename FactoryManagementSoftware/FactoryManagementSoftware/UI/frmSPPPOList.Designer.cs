@@ -247,6 +247,7 @@
             this.btnExcel.TabIndex = 157;
             this.btnExcel.Text = "EXCEL";
             this.btnExcel.UseVisualStyleBackColor = false;
+            this.btnExcel.Visible = false;
             this.btnExcel.Click += new System.EventHandler(this.BtnExcel_Click);
             // 
             // tlpList
@@ -364,6 +365,7 @@
             this.dgvDOList.DataSourceChanged += new System.EventHandler(this.dgvDOList_DataSourceChanged);
             this.dgvDOList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOList_CellClick);
             this.dgvDOList.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvDOList_DataBindingComplete);
+            this.dgvDOList.SelectionChanged += new System.EventHandler(this.dgvDOList_SelectionChanged);
             // 
             // tableLayoutPanel3
             // 

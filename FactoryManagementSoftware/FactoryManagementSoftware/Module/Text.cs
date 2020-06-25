@@ -108,6 +108,13 @@ namespace FactoryManagementSoftware.Module
         public string DO_UndoRemove { get; } = "D/O UNDO REMOVE";
         public string DO_ChangeDONumber { get; } = "D/O NUMBER CHANGE";
 
+        public string PO_Added { get; } = "P/O ADDED";
+        public string PO_Edited { get; } = "P/O EDITED";
+        public string PO_Removed { get; } = "P/O REMOVED";
+
+       // public string PO_Delivered { get; } = "D/O DELIVERED";
+        //public string PO_Exported { get; } = "D/O EXPORTED";
+
         public string DataType_ToDelivery { get; } = "To Delivery";
 
         #endregion
@@ -274,6 +281,11 @@ namespace FactoryManagementSoftware.Module
 
         public string Success { get; } = "Success";
         public string Failed { get; } = "Access Denied";
+
+        public string GetPONumberAndCustomer(string PONo, string customer)
+        {
+            return "PO NO. :" + PONo + "( " + customer + ")";
+        }
 
         public string GetDONumberAndCustomer(int DONo, string customer)
         {

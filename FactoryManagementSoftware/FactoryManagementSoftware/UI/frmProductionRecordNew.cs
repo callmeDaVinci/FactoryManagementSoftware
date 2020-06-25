@@ -523,6 +523,27 @@ namespace FactoryManagementSoftware.UI
                 {
                     if (previousDate == Convert.ToDateTime(dgvRow.Cells[header_ProductionDate].Value.ToString()))
                     {
+                        //check if parent
+                        string sheetID = dgvRow.Cells[header_SheetID].Value.ToString();
+
+                        itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
+                        transferData = dalTrf.codeSearch(itemCode);
+
+                        foreach (DataRow rowPR in dt_ProductionRecord.Rows)
+                        {
+                            if (sheetID == rowPR[dalProRecord.SheetID].ToString())
+                            {
+                                string parentCode = rowPR[dalProRecord.ParentCode].ToString();
+
+                                if (!string.IsNullOrEmpty(parentCode))
+                                {
+                                    itemCode = parentCode;
+                                    transferData = dalTrf.codeSearch(itemCode);
+                                }
+                                break;
+                            }
+                        }
+
                         int trfQty_ = tool.TotalProductionStockInInOneDay(transferData, itemCode, previousDate, planID, dgvRow.Cells[header_Shift].Value.ToString());
 
                         if (trfQty_ == -1)
@@ -1830,6 +1851,31 @@ namespace FactoryManagementSoftware.UI
 
                             dt.Rows.Add(dt_Row);
                         }
+                        else if (!string.IsNullOrEmpty(packingCode))
+                        {
+                            dt_Row = dt.NewRow();
+                            dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                            dt_Row[header_ItemCode] = packingCode;
+                            dt_Row[header_Cat] = tool.getItemCat(packingCode);
+
+                            dt_Row[header_From] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+                            dt_Row[header_To] = text.Production;
+
+                            dt_Row[header_Qty] = boxQty* maxQty;
+                            dt_Row[header_PlanID] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
+
+                            if (cbMorning.Checked)
+                            {
+                                dt_Row[header_Shift] = "M";
+                            }
+                            else if (cbNight.Checked)
+                            {
+                                dt_Row[header_Shift] = "N";
+                            }
+
+
+                            dt.Rows.Add(dt_Row);
+                        }
 
                     }
                 }
@@ -1880,20 +1926,107 @@ namespace FactoryManagementSoftware.UI
                     //get itemCode
                     //get join qty
                     //get stock in qty
-                    string StockInItemCode;
+                    string StockInItemCode = lblPartCode.Text;
 
                     if (!string.IsNullOrEmpty(cmbParentList.Text))
                     {
+                        if (totalStockIn > 0)
+                        {
+                            dt_Row = dt.NewRow();
+                            dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                            dt_Row[header_ItemCode] = StockInItemCode;
+                            dt_Row[header_Cat] = text.Cat_Part;
+
+                            dt_Row[header_From] = text.Production;
+                            dt_Row[header_To] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+
+                            dt_Row[header_Qty] = totalStockIn;
+                            dt_Row[header_PlanID] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
+
+                            if (cbMorning.Checked)
+                            {
+                                dt_Row[header_Shift] = "M";
+                            }
+                            else if (cbNight.Checked)
+                            {
+                                dt_Row[header_Shift] = "N";
+                            }
+
+                            dt.Rows.Add(dt_Row);
+                        }
+
+                        if (directStockIn > 0)
+                        {
+                            dt_Row = dt.NewRow();
+                            dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                            dt_Row[header_ItemCode] = StockInItemCode;
+                            dt_Row[header_Cat] = text.Cat_Part;
+
+                            dt_Row[header_From] = text.Production;
+                            dt_Row[header_To] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+
+                            dt_Row[header_Qty] = directStockIn;
+                            dt_Row[header_PlanID] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
+
+                            if (planStatus == text.planning_status_completed)
+                            {
+                                if (cbMorning.Checked)
+                                {
+                                    dt_Row[header_Shift] = "MB";
+                                }
+                                else if (cbNight.Checked)
+                                {
+                                    dt_Row[header_Shift] = "NB";
+                                }
+                            }
+                            else
+                            {
+                                if (cbMorning.Checked)
+                                {
+                                    dt_Row[header_Shift] = "M";
+                                }
+                                else if (cbNight.Checked)
+                                {
+                                    dt_Row[header_Shift] = "N";
+                                }
+                            }
+
+
+                            dt.Rows.Add(dt_Row);
+                        }
+
+                        if (directStockOut > 0)
+                        {
+                            dt_Row = dt.NewRow();
+                            dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                            dt_Row[header_ItemCode] = StockInItemCode;
+                            dt_Row[header_Cat] = text.Cat_Part;
+
+                            dt_Row[header_From] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+                            dt_Row[header_To] = text.Other;
+
+                            dt_Row[header_Qty] = directStockOut;
+                            dt_Row[header_PlanID] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
+
+                            if (cbMorning.Checked)
+                            {
+                                dt_Row[header_Shift] = "MBO";
+                            }
+                            else if (cbNight.Checked)
+                            {
+                                dt_Row[header_Shift] = "NBO";
+                            }
+
+                            dt.Rows.Add(dt_Row);
+                        }
+
                         StockInItemCode = cmbParentList.Text;
 
                         float joinQty = tool.getJoinQty(StockInItemCode, lblPartCode.Text);
 
                         totalStockIn = totalStockIn / (int)joinQty;
                     }
-                    else
-                    {
-                        StockInItemCode = lblPartCode.Text;
-                    }
+                    
 
                     if(totalStockIn > 0)
                     {
@@ -1994,9 +2127,12 @@ namespace FactoryManagementSoftware.UI
                 frm.WindowState = FormWindowState.Normal;
                 frm.ShowDialog();//Item Edit
 
-                if (frmInOutEdit.TrfSuccess)
-                    ResetInputField();
+                if (!frmInOutEdit.TrfSuccess)
+                {
+                    MessageBox.Show("Transfer failed or cancelled!");
+                }
 
+                ResetInputField();
                 #endregion
             }
         }
@@ -3239,6 +3375,7 @@ namespace FactoryManagementSoftware.UI
                     if (dalProRecord.RemoveSheetData(uProRecord))
                     {
                         MessageBox.Show("Item removed!");
+                        UndoPreviousRecordIfExist();
                         tool.historyRecord(text.RemoveDailyJobSheet, "Sheet ID: " + sheetID + "(" + lblPartCode.Text + ")", updateTime, userID);
                         dt_ProductionRecord = dalProRecord.Select();
                         LoadDailyRecord();

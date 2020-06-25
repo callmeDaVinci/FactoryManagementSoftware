@@ -35,6 +35,7 @@ namespace FactoryManagementSoftware.BLL
         //stdPacking table
         public int Qty_Per_Bag { get; set; }
         public int Qty_Per_Packet { get; set; }
+        public int Max_Lvl { get; set; }
 
         //size table
         public int Size_Numerator { get; set; }

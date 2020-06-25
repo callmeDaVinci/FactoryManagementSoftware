@@ -65,6 +65,7 @@ namespace FactoryManagementSoftware.UI
         DataTable dt_TypeList;
         DataTable dt_SizeList;
         DataTable dt_ReadyGoods;
+        DataTable dt_OriginalToEditList;
 
         private bool loaded = false;
         private bool ConvertFromPcs = false;
@@ -75,8 +76,16 @@ namespace FactoryManagementSoftware.UI
         private readonly string header_Size = "SIZE";
         private readonly string header_Unit = "UNIT";
         private readonly string header_Type = "TYPE";
+        private readonly string header_TblCode = "TBL CODE";
+        private readonly string header_DataMode = "DATA MODE";
         private readonly string header_OrderQty = "ORDER QTY(PCS)";
         private readonly string header_Note = "NOTE";
+        private readonly string text_New = "NEW";
+        private readonly string text_ToRemove = "TO REMOVE";
+        private readonly string text_ToEdit = "TO EDIT";
+        private readonly string text_ToUpdate = "TO UPDATE";
+        private readonly string text_Remove = "REMOVE";
+        private readonly string text_UndoRemove = "UNDO REMOVE";
         private readonly string text_Update = "UPDATE";
         private readonly string text_AddItem = "ADD ITEM";
         private readonly string text_UpdateItem = "UPDATE ITEM";
@@ -96,6 +105,8 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = new DataTable();
 
             dt.Columns.Add(header_Index, typeof(int));
+            dt.Columns.Add(header_TblCode, typeof(string));
+            dt.Columns.Add(header_DataMode, typeof(string));
             dt.Columns.Add(header_Size, typeof(int));
             dt.Columns.Add(header_Unit, typeof(string));
            
@@ -150,6 +161,8 @@ namespace FactoryManagementSoftware.UI
 
                     DataRow dt_Row = dt_OrderList.NewRow();
 
+                    dt_Row[header_TblCode] = row[dalData.TableCode];
+                    dt_Row[header_DataMode] = text_ToEdit;
                     dt_Row[header_Size] = row[dalData.SizeNumerator];
                     dt_Row[header_Unit] = row[dalData.SizeUnit].ToString().ToUpper();
                     dt_Row[header_Code] = row[dalData.ItemCode];
@@ -166,6 +179,12 @@ namespace FactoryManagementSoftware.UI
             AddIndexToOrderTable();
 
             dgvPOItemList.DataSource = dt_OrderList;
+
+            if(poEditing)
+            {
+                dt_OriginalToEditList = dt_OrderList.Copy();
+            }
+
             DgvUIEdit(dgvPOItemList);
             dgvPOItemList.ClearSelection();
         }
@@ -194,18 +213,45 @@ namespace FactoryManagementSoftware.UI
 
             if (rowIndex >= 0)
             {
-                DialogResult dialogResult = MessageBox.Show("Confirm to remove this item from order list?", "Message",
+                string dataMode = dgv.Rows[rowIndex].Cells[header_DataMode].Value.ToString();
+
+                DialogResult dialogResult;
+
+                if (dataMode == text_ToRemove)
+                {
+                    dialogResult = MessageBox.Show("Confirm to undo remove this item from order list?", "Message",
                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                }
+                else
+                {
+                    dialogResult = MessageBox.Show("Confirm to remove this item from order list?", "Message",
+                                                         MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                }
+                
                 if (dialogResult == DialogResult.Yes)
                 {
                     btnAddItem.Text = text_AddItem;
                     btnEdit.Visible = false;
-                    dt_OrderList.Rows.RemoveAt(rowIndex);
+                    //dt_OrderList.Rows.RemoveAt(rowIndex);
 
-                    AddIndexToOrderTable();
-                    dgv.DataSource = dt_OrderList;
+                    
 
-                    DgvUIEdit(dgv);
+                    if(dataMode == text_ToRemove)
+                    {
+                        dgv.Rows[rowIndex].Cells[header_DataMode].Value = dgv.Rows[rowIndex].Cells[header_TblCode].Value.ToString();
+                        dgv.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Black;
+                    }
+                    else if(!string.IsNullOrEmpty(dataMode))
+                    {
+                        dgv.Rows[rowIndex].Cells[header_DataMode].Value = text_ToRemove;
+                        dgv.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Gray;
+                    }
+                    
+
+                    //AddIndexToOrderTable();
+                    // dgv.DataSource = dt_OrderList;
+
+                    //DgvUIEdit(dgv);
                     dgv.ClearSelection();
                     btnRemoveItem.Visible = false;
                 }
@@ -492,6 +538,22 @@ namespace FactoryManagementSoftware.UI
         {
             btnEdit.Visible = true;
             btnRemoveItem.Visible = true;
+
+            DataGridView dgv = dgvPOItemList;
+            btnRemoveItem.Text = text_Remove;
+            if (dgv.SelectedRows.Count > 0)
+            {
+                int rowIndex = dgv.CurrentCell.RowIndex;
+                string dataMode = dgv.Rows[rowIndex].Cells[header_DataMode].Value.ToString();
+
+                if(dataMode == text_ToRemove)
+                {
+                    btnRemoveItem.Text = text_UndoRemove;
+
+                }
+                
+            }
+    
         }
 
         
@@ -634,7 +696,7 @@ namespace FactoryManagementSoftware.UI
                 result = false;
                 errorProvider9.SetError(lblPONo, "PO NO Required");
             }
-            else
+            else if(!poEditing)
             {
                 //check if number exist in db
                 if(tool.IfPONoExist(txtPONo.Text))
@@ -698,6 +760,8 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+      
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if(Validation())
@@ -705,15 +769,22 @@ namespace FactoryManagementSoftware.UI
                 //get customer table code
                 int customer_tbl_code = 0;
                 string customerFullName = cmbCustomer.Text;
+                string shortName = "";
+                string PONo = txtPONo.Text;
+                int po_code = 0;
 
+                DateTime updatedDate = DateTime.Now;
+                int userID = MainDashboard.USER_ID;
                 foreach (DataRow row in dt_CustomerList.Rows)
                 {
                     if (row[dalData.FullName].ToString() == customerFullName)
                     {
                         customer_tbl_code = Convert.ToInt32(row[dalData.TableCode].ToString());
+                        shortName = row[dalData.ShortName].ToString();
                         break;
                     }
                 }
+
 
                 uData.PO_date = dtpPODate.Value;
                 uData.Customer_tbl_code = customer_tbl_code;
@@ -733,20 +804,24 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 uData.IsRemoved = false;
-                uData.Updated_Date = DateTime.Now;
-                uData.Updated_By = MainDashboard.USER_ID;
+                uData.Updated_Date = updatedDate;
+                uData.Updated_By = userID;
 
                 if (poEditing)
                 {
                     uData.PO_code = Convert.ToInt32(EditingPOCode);
-                    dalData.PODelete(uData);
+                    po_code = Convert.ToInt32(EditingPOCode);
+                    //dalData.PODelete(uData);
+                    //remove old one
+
+
                 }
                 else
                 {
                     //get po code
                     DataTable dt = dalData.POSelect();
 
-                    int po_code = 0;
+                    
                     if (dt.Rows.Count <= 0)
                     {
                         po_code = 1;
@@ -766,25 +841,46 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 bool failedToInsert = false;
+
                 foreach (DataRow row in dt_OrderList.Rows)
                 {
                     string itemCode = row[header_Code].ToString();
+                    uData.IsRemoved = false;
 
-                    if(!string.IsNullOrEmpty(itemCode))
+                    if (!string.IsNullOrEmpty(itemCode))
                     {
                         int po_qty = Convert.ToInt32(row[header_OrderQty]);
                         string note = row[header_Note].ToString();
+                        string dataMode = row[header_DataMode].ToString();
+                        string tblCode = row[header_TblCode].ToString();
 
                         uData.Item_code = itemCode;
                         uData.PO_qty = po_qty;
                         uData.PO_note = note;
-
-                        if (!dalData.InsertPO(uData))
+                        
+                        if(dataMode == text_New)
                         {
+                            if (!dalData.InsertPO(uData))
+                            {
 
-                            MessageBox.Show("Unable to insert/update " + itemCode + " PO data!");
-                            failedToInsert = true;
+                                MessageBox.Show("Unable to insert/update " + itemCode + " PO data!");
+                                failedToInsert = true;
+                            }
+
                         }
+                        else if(dataMode == text_ToRemove)
+                        {
+                            uData.IsRemoved = true;
+                            uData.Table_Code = Convert.ToInt32(tblCode);
+
+                            if (!dalData.PORemove(uData))
+                            {
+
+                                MessageBox.Show("Unable to remove " + itemCode + " PO data!");
+                                failedToInsert = true;
+                            }
+                        }
+
                     }
                     
                 }
@@ -796,6 +892,18 @@ namespace FactoryManagementSoftware.UI
                     if(poEditing)
                     {
                         poEdited = true;
+                        tool.historyRecord(text.PO_Edited, text.GetPONumberAndCustomer(PONo, shortName), updatedDate, userID, dalData.POTableName, po_code);
+                    }
+                    else
+                    {
+                        historyDAL dalHistory = new historyDAL();
+                        historyBLL uHistory = new historyBLL();
+
+                        uHistory.page_name = dalData.POTableName;
+                        uHistory.data_id = -1;
+
+                        dalHistory.ChangeDataID(uHistory, po_code.ToString());
+                        tool.historyRecord(text.PO_Added, text.GetPONumberAndCustomer(PONo, shortName), updatedDate, userID, dalData.POTableName, po_code);
                     }
                     
                     Close();
@@ -833,6 +941,20 @@ namespace FactoryManagementSoftware.UI
                 {
                     poRemoved = true;
                     MessageBox.Show("PO removed!");
+                    string customerFullName = cmbCustomer.Text;
+                    string shortName = "";
+                    string PONo = txtPONo.Text;
+
+                    foreach (DataRow row in dt_CustomerList.Rows)
+                    {
+                        if (row[dalData.FullName].ToString() == customerFullName)
+                        {
+                            shortName = row[dalData.ShortName].ToString();
+                            break;
+                        }
+                    }
+
+                    tool.historyRecord(text.PO_Removed, text.GetPONumberAndCustomer(PONo, shortName), DateTime.Now, MainDashboard.USER_ID, dalData.POTableName, uData.PO_code);
                 }
                     
                
@@ -1007,6 +1129,8 @@ namespace FactoryManagementSoftware.UI
             {
                 DataRow dt_Row = dt_OrderList.NewRow();
 
+                dt_Row[header_TblCode] = text_New;
+                dt_Row[header_DataMode] = text_New;
                 dt_Row[header_Size] = cmbSize.Text;
                 dt_Row[header_Unit] = "MM";
                 dt_Row[header_Code] = lblCode.Text;
@@ -1182,6 +1306,20 @@ namespace FactoryManagementSoftware.UI
             {
                 txtPONo.ForeColor = SystemColors.GrayText;
             }
+        }
+
+        private void lblAddFive_Click(object sender, EventArgs e)
+        {
+            int targetBags = int.TryParse(txtBag.Text, out targetBags) ? targetBags : 0;
+
+            txtBag.Text = (targetBags + 5).ToString();
+        }
+
+        private void lblAddOne_Click(object sender, EventArgs e)
+        {
+            int targetBags = int.TryParse(txtBag.Text, out targetBags) ? targetBags : 0;
+
+            txtBag.Text = (targetBags + 1).ToString();
         }
     }
 }

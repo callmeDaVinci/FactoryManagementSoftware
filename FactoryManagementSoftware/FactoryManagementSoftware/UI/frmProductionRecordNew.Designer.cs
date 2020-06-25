@@ -576,7 +576,7 @@
             this.lblOut.Location = new System.Drawing.Point(3, 4);
             this.lblOut.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.lblOut.Name = "lblOut";
-            this.lblOut.Size = new System.Drawing.Size(31, 15);
+            this.lblOut.Size = new System.Drawing.Size(30, 15);
             this.lblOut.TabIndex = 297;
             this.lblOut.Text = "OUT";
             this.lblOut.Click += new System.EventHandler(this.lblOut_Click);
@@ -1382,7 +1382,7 @@
             this.label7.Font = new System.Drawing.Font("Segoe UI", 6.5F);
             this.label7.Location = new System.Drawing.Point(166, 8);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(64, 13);
+            this.label7.Size = new System.Drawing.Size(65, 13);
             this.label7.TabIndex = 170;
             this.label7.Text = "CUSTOMER";
             this.label7.Visible = false;
@@ -1405,7 +1405,7 @@
             this.label15.Font = new System.Drawing.Font("Segoe UI", 6.5F);
             this.label15.Location = new System.Drawing.Point(166, 98);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(40, 13);
+            this.label15.Size = new System.Drawing.Size(41, 13);
             this.label15.TabIndex = 265;
             this.label15.Text = "CAVITY";
             // 
@@ -1438,7 +1438,7 @@
             this.label11.Location = new System.Drawing.Point(3, 128);
             this.label11.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(71, 13);
+            this.label11.Size = new System.Drawing.Size(72, 13);
             this.label11.TabIndex = 176;
             this.label11.Text = "COLOR MAT.";
             // 
@@ -1449,7 +1449,7 @@
             this.lblPartNameHeader.Font = new System.Drawing.Font("Segoe UI", 6.5F);
             this.lblPartNameHeader.Location = new System.Drawing.Point(3, 38);
             this.lblPartNameHeader.Name = "lblPartNameHeader";
-            this.lblPartNameHeader.Size = new System.Drawing.Size(65, 13);
+            this.lblPartNameHeader.Size = new System.Drawing.Size(66, 13);
             this.lblPartNameHeader.TabIndex = 171;
             this.lblPartNameHeader.Text = "PART NAME";
             // 
@@ -1471,7 +1471,7 @@
             this.label10.Font = new System.Drawing.Font("Segoe UI", 6.5F);
             this.label10.Location = new System.Drawing.Point(3, 98);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(58, 13);
+            this.label10.Size = new System.Drawing.Size(59, 13);
             this.label10.TabIndex = 175;
             this.label10.Text = "RAW MAT.";
             // 
@@ -1526,7 +1526,7 @@
             this.label8.Font = new System.Drawing.Font("Segoe UI", 6.5F);
             this.label8.Location = new System.Drawing.Point(166, 68);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(77, 13);
+            this.label8.Size = new System.Drawing.Size(78, 13);
             this.label8.TabIndex = 263;
             this.label8.Text = "RW / SHOT(G)";
             // 
@@ -1537,7 +1537,7 @@
             this.label9.Font = new System.Drawing.Font("Segoe UI", 6.5F);
             this.label9.Location = new System.Drawing.Point(166, 38);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(76, 13);
+            this.label9.Size = new System.Drawing.Size(77, 13);
             this.label9.TabIndex = 173;
             this.label9.Text = "PW / SHOT(G)";
             // 
@@ -1559,7 +1559,7 @@
             this.lblPartCodeHeader.Font = new System.Drawing.Font("Segoe UI", 6.5F);
             this.lblPartCodeHeader.Location = new System.Drawing.Point(3, 68);
             this.lblPartCodeHeader.Name = "lblPartCodeHeader";
-            this.lblPartCodeHeader.Size = new System.Drawing.Size(64, 13);
+            this.lblPartCodeHeader.Size = new System.Drawing.Size(65, 13);
             this.lblPartCodeHeader.TabIndex = 172;
             this.lblPartCodeHeader.Text = "PART CODE";
             // 
@@ -1945,9 +1945,9 @@
             this.lblPlanUpdatedDate.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lblPlanUpdatedDate.AutoSize = true;
             this.lblPlanUpdatedDate.Font = new System.Drawing.Font("Segoe UI", 6.5F);
-            this.lblPlanUpdatedDate.Location = new System.Drawing.Point(165, 6);
+            this.lblPlanUpdatedDate.Location = new System.Drawing.Point(164, 6);
             this.lblPlanUpdatedDate.Name = "lblPlanUpdatedDate";
-            this.lblPlanUpdatedDate.Size = new System.Drawing.Size(51, 26);
+            this.lblPlanUpdatedDate.Size = new System.Drawing.Size(52, 26);
             this.lblPlanUpdatedDate.TabIndex = 263;
             this.lblPlanUpdatedDate.Text = "CUSTOMER";
             // 
@@ -1975,7 +1975,7 @@
             this.label25.Font = new System.Drawing.Font("Segoe UI", 6.5F);
             this.label25.Location = new System.Drawing.Point(222, 6);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(54, 26);
+            this.label25.Size = new System.Drawing.Size(55, 26);
             this.label25.TabIndex = 262;
             this.label25.Text = "STATUS UPDATED";
             // 
