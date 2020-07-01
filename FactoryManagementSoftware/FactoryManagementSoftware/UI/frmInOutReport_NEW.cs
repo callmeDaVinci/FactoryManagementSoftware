@@ -509,8 +509,10 @@ namespace FactoryManagementSoftware.UI
                 DataTable dt = NewInOutTable();
                 DataTable dt_ItemList;
                 DataTable dt_TrfHist;
+
                 dt_Fac = dalFac.Select();
                 dt_PMMADate = dalPMMADate.Select();
+
                 string inOutType = cmbInOutType.Text;
                 string dateType = cmbDateType.Text;
                 string itemType = cmbItemType.Text;
@@ -769,11 +771,7 @@ namespace FactoryManagementSoftware.UI
 
                             trfQty = Math.Round(trfQty, 2);
 
-                            if(trfQty == 3360)
-                            {
-                                float test = 0;
-                            }
-
+                           
                             DateTime trfDate = DateTime.TryParse(trfRow[dalTrfHist.TrfDate].ToString(), out trfDate) ? trfDate : DateTime.MaxValue;
                             //bool matched = false;
 

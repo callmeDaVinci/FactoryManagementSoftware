@@ -476,20 +476,20 @@ namespace FactoryManagementSoftware.UI
                                 itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
                                 transferData = dalTrf.codeSearch(itemCode);
 
-                                foreach (DataRow rowPR in dt_ProductionRecord.Rows)
-                                {
-                                    if(sheetID == rowPR[dalProRecord.SheetID].ToString())
-                                    {
-                                        string parentCode = rowPR[dalProRecord.ParentCode].ToString();
+                                //foreach (DataRow rowPR in dt_ProductionRecord.Rows)
+                                //{
+                                //    if(sheetID == rowPR[dalProRecord.SheetID].ToString())
+                                //    {
+                                //        string parentCode = rowPR[dalProRecord.ParentCode].ToString();
 
-                                        if(!string.IsNullOrEmpty(parentCode))
-                                        {
-                                            itemCode = parentCode;
-                                            transferData = dalTrf.codeSearch(itemCode);
-                                        }
-                                        break;
-                                    }
-                                }
+                                //        if(!string.IsNullOrEmpty(parentCode))
+                                //        {
+                                //            itemCode = parentCode;
+                                //            transferData = dalTrf.codeSearch(itemCode);
+                                //        }
+                                //        break;
+                                //    }
+                                //}
 
                                 int trfQty = tool.TotalProductionStockInInOneDay(transferData, itemCode, previousDate, planID, dgvRow.Cells[header_Shift].Value.ToString());
                                
@@ -529,20 +529,20 @@ namespace FactoryManagementSoftware.UI
                         itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
                         transferData = dalTrf.codeSearch(itemCode);
 
-                        foreach (DataRow rowPR in dt_ProductionRecord.Rows)
-                        {
-                            if (sheetID == rowPR[dalProRecord.SheetID].ToString())
-                            {
-                                string parentCode = rowPR[dalProRecord.ParentCode].ToString();
+                        //foreach (DataRow rowPR in dt_ProductionRecord.Rows)
+                        //{
+                        //    if (sheetID == rowPR[dalProRecord.SheetID].ToString())
+                        //    {
+                        //        string parentCode = rowPR[dalProRecord.ParentCode].ToString();
 
-                                if (!string.IsNullOrEmpty(parentCode))
-                                {
-                                    itemCode = parentCode;
-                                    transferData = dalTrf.codeSearch(itemCode);
-                                }
-                                break;
-                            }
-                        }
+                        //        if (!string.IsNullOrEmpty(parentCode))
+                        //        {
+                        //            itemCode = parentCode;
+                        //            transferData = dalTrf.codeSearch(itemCode);
+                        //        }
+                        //        break;
+                        //    }
+                        //}
 
                         int trfQty_ = tool.TotalProductionStockInInOneDay(transferData, itemCode, previousDate, planID, dgvRow.Cells[header_Shift].Value.ToString());
 
@@ -1923,6 +1923,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (!string.IsNullOrEmpty(lblPartCode.Text))
                 {
+                    string ProductionOrAssembly = text.Production;
                     //get itemCode
                     //get join qty
                     //get stock in qty
@@ -2021,7 +2022,7 @@ namespace FactoryManagementSoftware.UI
                         }
 
                         StockInItemCode = cmbParentList.Text;
-
+                        ProductionOrAssembly = text.Assembly;
                         float joinQty = tool.getJoinQty(StockInItemCode, lblPartCode.Text);
 
                         totalStockIn = totalStockIn / (int)joinQty;
@@ -2035,7 +2036,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[header_ItemCode] = StockInItemCode;
                         dt_Row[header_Cat] = text.Cat_Part;
 
-                        dt_Row[header_From] = text.Production;
+                        dt_Row[header_From] = ProductionOrAssembly;
                         dt_Row[header_To] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
 
                         dt_Row[header_Qty] = totalStockIn;
@@ -2061,7 +2062,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[header_ItemCode] = StockInItemCode;
                         dt_Row[header_Cat] = text.Cat_Part;
 
-                        dt_Row[header_From] = text.Production;
+                        dt_Row[header_From] = ProductionOrAssembly;
                         dt_Row[header_To] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
 
                         dt_Row[header_Qty] = directStockIn;

@@ -19,6 +19,7 @@ namespace FactoryManagementSoftware.DAL
         public string Wastage { get; } = "pmma_wastage";
         public string Adjust { get; } = "pmma_adjust";
         public string Note { get; } = "pmma_note";
+        public string DirectOut { get; } = "pmma_direct_out";
 
         public string PMMAFrom { get; } = "pmma_from";
         public string PMMATo { get; } = "pmma_to";
@@ -320,6 +321,102 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region update
+
+        public void MatDirectOut(pmmaBLL u)
+        {
+
+            //select data check if exist
+            DataTable dt = Select(u);
+
+            if (dt.Rows.Count > 0)
+            {
+                float adjustQty = 0;
+                float outQty = u.pmma_adjust;
+                string note = "";
+                if (outQty < 0)
+                {
+                    outQty *= -1;
+                }
+
+
+                //get old data
+                foreach (DataRow row in dt.Rows)
+                {
+                    adjustQty = float.TryParse(row[Adjust].ToString(), out adjustQty) ? adjustQty : 0;
+                    note = row[Note].ToString();
+                }
+
+                adjustQty -= outQty;
+                note += "Direct out " + outQty;
+
+                //updata adjust & note
+                // uPMMA.pmma_openning_stock = openStock;
+                //uPMMA.pmma_in = inQty;
+                //uPMMA.pmma_out = Out;
+                //uPMMA.pmma_wastage = wastage;
+                u.pmma_adjust = adjustQty;
+                u.pmma_note = note;
+                //uPMMA.pmma_bal_stock = balance;
+
+                UpdateAdjustAndNote(u);
+            }
+
+        }
+
+        public bool UpdateAdjustAndNote(pmmaBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_pmma SET "
+                            + Adjust + "=@pmma_adjust,"
+                            + Note + "=@pmma_note,"
+                            + UpdatedDate + "=@pmma_updated_date,"
+                            + UpdatedBy + "=@pmma_updated_by" +
+                            " WHERE pmma_item_code=@pmma_item_code " +
+                            "AND pmma_month=@pmma_month AND pmma_year=@pmma_year";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@pmma_item_code", u.pmma_item_code);
+            
+                cmd.Parameters.AddWithValue("@pmma_adjust", u.pmma_adjust);
+                cmd.Parameters.AddWithValue("@pmma_note", u.pmma_note);
+               
+                cmd.Parameters.AddWithValue("@pmma_month", u.pmma_month);
+                cmd.Parameters.AddWithValue("@pmma_year", u.pmma_year);
+
+                cmd.Parameters.AddWithValue("@pmma_updated_date", u.pmma_updated_date);
+                cmd.Parameters.AddWithValue("@pmma_updated_by", u.pmma_updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
 
         public bool NewUpdate(pmmaBLL u)
         {

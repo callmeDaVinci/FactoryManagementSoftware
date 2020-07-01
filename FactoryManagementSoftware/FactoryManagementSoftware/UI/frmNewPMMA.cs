@@ -12,6 +12,7 @@ using System.IO;
 using System.ComponentModel;
 using System.Threading;
 using System.Globalization;
+using Font = System.Drawing.Font;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -158,7 +159,8 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_OpeningStock, typeof(float));
 
             dt.Columns.Add(text.Header_In_KG_Piece, typeof(float));
-            dt.Columns.Add(text.Header_Out_KG_Piece, typeof(float));
+            dt.Columns.Add(text.Header_Used_KG_Piece, typeof(float));
+            dt.Columns.Add(text.Header_DirectOut_KG_Piece, typeof(float));
             dt.Columns.Add(text.Header_Wastage, typeof(float));
             dt.Columns.Add(text.Header_Adjust, typeof(float));
             dt.Columns.Add(text.Header_Note, typeof(string));
@@ -191,20 +193,27 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvStockUIEdit(DataGridView dgv)
         {
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+            //dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
+
             dgv.Columns[text.Header_Index].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
            
             dgv.Columns[text.Header_MatName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[text.Header_MatCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[text.Header_OpeningStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[text.Header_In_KG_Piece].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[text.Header_Out_KG_Piece].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[text.Header_Used_KG_Piece].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[text.Header_DirectOut_KG_Piece].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[text.Header_Wastage].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[text.Header_Adjust].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[text.Header_BalStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
             dgv.Columns[text.Header_OpeningStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[text.Header_In_KG_Piece].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[text.Header_Out_KG_Piece].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns[text.Header_Used_KG_Piece].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns[text.Header_DirectOut_KG_Piece].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
             dgv.Columns[text.Header_Wastage].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[text.Header_Adjust].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -777,11 +786,11 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     float outToPMMAQty = getMatOutQty(matCode, dt_MatOutToPMMAHist);
-                    Out += outToPMMAQty;
+                    //Out += outToPMMAQty;
 
                     float inQty = getMatInQty(matCode, dt_MatInFromPMMAHist);
                     float wastage = getMatWastage(matCode, dt_Item);
-                    float balance = (float)Math.Round(openStock + inQty - Out + adjustQty, 2);
+                    float balance = (float)Math.Round(openStock + inQty - Out - outToPMMAQty + adjustQty, 2);
 
                   
                     //check transfer record if transfered to PMMA within current period
@@ -793,7 +802,8 @@ namespace FactoryManagementSoftware.UI
                     row_StockSouce[text.Header_MatName] = matName;
                     row_StockSouce[text.Header_OpeningStock] = openStock;
                     row_StockSouce[text.Header_In_KG_Piece] = inQty;
-                    row_StockSouce[text.Header_Out_KG_Piece] = Out;
+                    row_StockSouce[text.Header_Used_KG_Piece] = Out;
+                    row_StockSouce[text.Header_DirectOut_KG_Piece] = outToPMMAQty;
                     row_StockSouce[text.Header_Wastage] = wastage;
                     row_StockSouce[text.Header_Adjust] = adjustQty;
                     row_StockSouce[text.Header_Note] = note;
@@ -1227,7 +1237,7 @@ namespace FactoryManagementSoftware.UI
 
                 string open = dgv.Rows[editedCellRow].Cells[text.Header_OpeningStock].Value.ToString();
                 string StockIn = dgv.Rows[editedCellRow].Cells[text.Header_In_KG_Piece].Value.ToString();
-                string StockOut = dgv.Rows[editedCellRow].Cells[text.Header_Out_KG_Piece].Value.ToString();
+                string StockOut = dgv.Rows[editedCellRow].Cells[text.Header_Used_KG_Piece].Value.ToString();
                
                 string balance = dgv.Rows[editedCellRow].Cells[text.Header_BalStock].Value.ToString();
                 

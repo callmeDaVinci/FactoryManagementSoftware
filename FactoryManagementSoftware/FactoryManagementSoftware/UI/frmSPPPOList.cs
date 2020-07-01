@@ -537,6 +537,182 @@ namespace FactoryManagementSoftware.UI
             return DONo;
         }
 
+        public Tuple<int, int> GetPendingPOQty()
+        {
+            int pendingPOQty = 0;
+            int pendingCustQty = 0;
+
+            DataTable dt = NewPOTable();
+            DataTable dt_DOList = dalSPP.DOWithInfoSelect();
+
+            DataRow dt_row;
+
+            int poCode = -1;
+            int prePOCode = -1;
+            int orderQty = 0;
+            int deliveredQty = 0;
+            int CustTblCode = -1;
+            int progress = -1;
+            bool dataMatched = true;
+            string PONo = null, ShortName = null, FullName = null;
+            string customer = null;
+
+            DateTime PODate = DateTime.MaxValue;
+
+            foreach (DataRow row in dt_POList.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if (!isRemoved)
+                {
+                    poCode = int.TryParse(row[dalSPP.POCode].ToString(), out poCode) ? poCode : -1;
+
+                    if (prePOCode == -1)
+                    {
+                        prePOCode = poCode;
+                        orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
+                        deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
+
+                        PONo = row[dalSPP.PONo].ToString();
+
+                        PODate = Convert.ToDateTime(row[dalSPP.PODate]).Date;
+
+                        ShortName = row[dalSPP.ShortName].ToString();
+                        FullName = row[dalSPP.FullName].ToString();
+
+                        CustTblCode = int.TryParse(row[dalSPP.CustomerTableCode].ToString(), out CustTblCode) ? CustTblCode : -1;
+                    }
+                    else if (prePOCode == poCode)
+                    {
+                        int temp = 0;
+                        orderQty += int.TryParse(row[dalSPP.POQty].ToString(), out temp) ? temp : 0;
+                        deliveredQty += int.TryParse(row[dalSPP.DeliveredQty].ToString(), out temp) ? temp : 0;
+                    }
+                    else if (prePOCode != poCode)
+                    {
+                        progress = Convert.ToInt32((float)deliveredQty / orderQty * 100);
+                        dataMatched = true;
+
+                        #region PO TYPE
+
+                        if (progress < 100 && cbInProgressPO.Checked)
+                        {
+                            dataMatched = dataMatched && true;
+                        }
+                        else if (progress >= 100 && cbCompletedPO.Checked)
+                        {
+                            dataMatched = dataMatched && true;
+                        }
+                        else
+                        {
+                            dataMatched = false;
+                        }
+
+                        #endregion
+
+                        #region Customer Filter
+
+                        customer = cmbCustomer.Text;
+                        //string sppCustomer = row[dalSPP.FullName].ToString();
+                        if (string.IsNullOrEmpty(customer) || customer == "ALL")
+                        {
+                            dataMatched &= true;
+                        }
+                        else if (FullName == customer)
+                        {
+                            dataMatched &= true;
+                        }
+                        else
+                        {
+                            dataMatched = false;
+                        }
+
+                        #endregion
+
+                        if (dataMatched)
+                        {
+                            dt_row = dt.NewRow();
+
+                            dt_row[header_POCode] = prePOCode;
+                            dt_row[header_PONoString] = PONo;
+                            dt_row[header_PODate] = PODate;
+                            dt_row[header_Customer] = ShortName;
+                            dt_row[header_CustomerCode] = CustTblCode;
+                            dt_row[header_Progress] = progress + "%";
+                            dt_row[header_DONoString] = GetDONo(dt_DOList, PONo);
+                            dt.Rows.Add(dt_row);
+                        }
+
+                        prePOCode = poCode;
+                        orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
+                        deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
+
+                        PONo = row[dalSPP.PONo].ToString();
+
+                        PODate = Convert.ToDateTime(row[dalSPP.PODate]).Date;
+
+                        ShortName = row[dalSPP.ShortName].ToString();
+                        FullName = row[dalSPP.FullName].ToString();
+                        CustTblCode = int.TryParse(row[dalSPP.CustomerTableCode].ToString(), out CustTblCode) ? CustTblCode : -1;
+                    }
+                }
+
+            }
+
+            progress = Convert.ToInt32((float)deliveredQty / orderQty * 100);
+            dataMatched = true;
+
+            #region PO TYPE
+
+            if (progress < 100)
+            {
+                dataMatched = dataMatched && true;
+            }
+            else
+            {
+                dataMatched = false;
+            }
+
+            #endregion
+
+            if (dataMatched)
+            {
+                dt_row = dt.NewRow();
+
+                dt_row[header_POCode] = prePOCode;
+                dt_row[header_PONoString] = PONo;
+                dt_row[header_PODate] = PODate;
+                dt_row[header_Customer] = ShortName;
+                dt_row[header_CustomerCode] = CustTblCode;
+                dt_row[header_Progress] = progress + "%";
+                dt_row[header_DONoString] = GetDONo(dt_DOList, PONo);
+                dt.Rows.Add(dt_row);
+            }
+
+            string previousCustCode = "";
+
+            dt.DefaultView.Sort = header_CustomerCode+" ASC";
+            dt = dt.DefaultView.ToTable();
+
+            foreach(DataRow row in dt.Rows)
+            {
+                pendingPOQty++;
+                string custCode = row[header_CustomerCode].ToString();
+                if (previousCustCode == "")
+                {
+                    previousCustCode = custCode;
+                    pendingCustQty++;
+                }
+                else if(previousCustCode != custCode)
+                {
+                    previousCustCode = custCode;
+                    pendingCustQty++;
+                }
+            }
+
+            return Tuple.Create(pendingPOQty, pendingCustQty);
+        }
+
         private void LoadPOList()
         {
             btnEdit.Visible = false;

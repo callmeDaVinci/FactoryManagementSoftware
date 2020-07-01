@@ -438,9 +438,11 @@ namespace FactoryManagementSoftware.UI
 
             locationTable.Rows.InsertAt(dr, 0);
 
+            locationTable.DefaultView.Sort = dalSPP.FullName + " ASC";
+
+
             cmbCustomer.DataSource = locationTable;
             cmbCustomer.DisplayMember = dalSPP.FullName;
-
         }
 
         private void frmSPPDOList_Load(object sender, EventArgs e)
@@ -2738,6 +2740,11 @@ namespace FactoryManagementSoftware.UI
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             LoadDOList();
+        }
+
+        private void frmSPPDOList_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            frmSPP.Reload();
         }
     }
 }

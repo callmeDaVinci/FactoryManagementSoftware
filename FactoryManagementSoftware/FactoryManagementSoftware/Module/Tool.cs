@@ -105,6 +105,37 @@ namespace FactoryManagementSoftware.Module
         public readonly string Header_MaterialUsedWithWastage = "MAT. USED WITH WASTAGE";
         public readonly string Header_TotalMaterialUsed_KG_Piece = "TOTAL MAT. USED(KG/PIECE)";
 
+        readonly string header_POTblCode = "P/O TBL CODE";
+        readonly string header_POCode = "P/O CODE";
+        readonly string header_PONoString = "P/O NO";
+        readonly string header_PODate = "P/O RECEIVED DATE";
+        readonly string header_CustomerCode = "CUSTOMER CODE";
+        readonly string header_Customer = "CUSTOMER";
+        readonly string header_Progress = "PROGRESS";
+        readonly string header_Selected = "SELECTED";
+        readonly string header_DataMode = "DATA MODE";
+        readonly string header_DONoString = "D/O NO";
+
+     
+        readonly string header_PONo = "P/O NO";
+       
+        readonly string header_DeliveredDate = "DELIVERED";
+       
+
+        readonly string header_Index = "#";
+        readonly string header_Size = "SIZE";
+        readonly string header_Unit = "UNIT";
+        readonly string header_Type = "TYPE";
+        readonly string header_ItemCode = "ITEM CODE";
+        readonly string header_OrderQty = "ORDER QTY";
+        readonly string header_DeliveredQty = "DELIVERED QTY";
+        readonly string header_Note = "NOTE";
+        readonly string header_StockCheck = "STOCK CHECK";
+        readonly string header_DONo = "D/O #";
+       
+        readonly string header_DataType = "DATA TYPE";
+
+
         readonly string typeSingle = "SINGLE";
         readonly string typeParent = "PARENT";
         readonly string typeChild = "CHILD";
@@ -121,6 +152,46 @@ namespace FactoryManagementSoftware.Module
         #endregion
 
         #region UI design
+
+        private DataTable NewDOTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(header_DataType, typeof(string));
+            dt.Columns.Add(header_DONo, typeof(int));
+            dt.Columns.Add(header_DONoString, typeof(string));
+            dt.Columns.Add(header_PODate, typeof(DateTime));
+            dt.Columns.Add(header_POCode, typeof(int));
+            dt.Columns.Add(header_PONo, typeof(string));
+
+            dt.Columns.Add(header_Customer, typeof(string));
+            dt.Columns.Add(header_CustomerCode, typeof(int));
+            dt.Columns.Add(header_DeliveredDate, typeof(DateTime));
+
+          
+            return dt;
+        }
+
+        private DataTable NewPOTable()
+        {
+            DataTable dt = new DataTable();
+
+
+            dt.Columns.Add(header_PODate, typeof(DateTime));
+
+            dt.Columns.Add(header_POCode, typeof(int));
+            dt.Columns.Add(header_PONoString, typeof(string));
+
+
+
+            dt.Columns.Add(header_Customer, typeof(string));
+            dt.Columns.Add(header_CustomerCode, typeof(int));
+            dt.Columns.Add(header_Progress, typeof(string));
+
+            dt.Columns.Add(header_DONoString, typeof(string));
+
+            return dt;
+        }
 
         private DataTable NewOrderAlertDataTable()
         {
@@ -1138,6 +1209,280 @@ namespace FactoryManagementSoftware.Module
             return forecast;
         }
 
+        public int getNextMonth(int currentMonth)
+        {
+            int nextMonth = 0;
+            if (currentMonth == 12)
+            {
+                nextMonth = 1;
+            }
+            else
+            {
+                nextMonth = currentMonth + 1;
+            }
+            return nextMonth;
+        }
+
+
+        public Tuple<int, int> GetPendingPOQty(DataTable dt_DOList)
+        {
+            int pendingPOQty = 0;
+            int pendingCustQty = 0;
+
+            SPPDataDAL dalSPP = new SPPDataDAL();
+
+            DataTable dt = NewPOTable();
+
+            DataTable dt_POList = dalSPP.POSelect();
+            DataRow dt_row;
+
+            int poCode = -1;
+            int prePOCode = -1;
+            int orderQty = 0;
+            int deliveredQty = 0;
+            int CustTblCode = -1;
+            int progress = -1;
+            bool dataMatched = true;
+            string PONo = null, ShortName = null, FullName = null;
+            string customer = null;
+
+            DateTime PODate = DateTime.MaxValue;
+
+            foreach (DataRow row in dt_POList.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if (!isRemoved)
+                {
+                    poCode = int.TryParse(row[dalSPP.POCode].ToString(), out poCode) ? poCode : -1;
+
+                    int toDeliver = int.TryParse(row[dalSPP.POQty].ToString(), out toDeliver) ? toDeliver : 0;
+                    int delivered = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out delivered) ? delivered : 0;
+
+
+                    if (prePOCode == -1)
+                    {
+                        prePOCode = poCode;
+                        orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
+                        deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
+
+                        PONo = row[dalSPP.PONo].ToString();
+
+                        PODate = Convert.ToDateTime(row[dalSPP.PODate]).Date;
+
+                        ShortName = row[dalSPP.ShortName].ToString();
+                        FullName = row[dalSPP.FullName].ToString();
+
+                        CustTblCode = int.TryParse(row[dalSPP.CustomerTableCode].ToString(), out CustTblCode) ? CustTblCode : -1;
+                    }
+                    else if (prePOCode == poCode)
+                    {
+                        int temp = 0;
+                        orderQty += int.TryParse(row[dalSPP.POQty].ToString(), out temp) ? temp : 0;
+                        deliveredQty += int.TryParse(row[dalSPP.DeliveredQty].ToString(), out temp) ? temp : 0;
+                    }
+                    else if (prePOCode != poCode)
+                    {
+                        progress = Convert.ToInt32((float)deliveredQty / orderQty * 100);
+                        dataMatched = true;
+
+                        #region PO TYPE
+
+                        if (progress < 100 )
+                        {
+                            dataMatched = dataMatched && true;
+                        }
+                        else
+                        {
+                            dataMatched = false;
+                        }
+
+                        #endregion
+
+                        if (dataMatched)
+                        {
+                            dt_row = dt.NewRow();
+
+                            dt_row[header_POCode] = prePOCode;
+                            dt_row[header_PONoString] = PONo;
+                            dt_row[header_PODate] = PODate;
+                            dt_row[header_Customer] = ShortName;
+                            dt_row[header_CustomerCode] = CustTblCode;
+                            dt_row[header_Progress] = progress + "%";
+                            dt_row[header_DONoString] = "";
+                            dt.Rows.Add(dt_row);
+                        }
+
+                        prePOCode = poCode;
+                        orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
+                        deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
+
+                        PONo = row[dalSPP.PONo].ToString();
+
+                        PODate = Convert.ToDateTime(row[dalSPP.PODate]).Date;
+
+                        ShortName = row[dalSPP.ShortName].ToString();
+                        FullName = row[dalSPP.FullName].ToString();
+                        CustTblCode = int.TryParse(row[dalSPP.CustomerTableCode].ToString(), out CustTblCode) ? CustTblCode : -1;
+                    }
+                }
+
+            }
+
+            progress = Convert.ToInt32((float)deliveredQty / orderQty * 100);
+            dataMatched = true;
+
+            #region PO TYPE
+
+            if (progress < 100)
+            {
+                dataMatched = dataMatched && true;
+            }
+            else
+            {
+                dataMatched = false;
+            }
+
+            #endregion
+
+            if (dataMatched)
+            {
+                dt_row = dt.NewRow();
+
+                dt_row[header_POCode] = prePOCode;
+                dt_row[header_PONoString] = PONo;
+                dt_row[header_PODate] = PODate;
+                dt_row[header_Customer] = ShortName;
+                dt_row[header_CustomerCode] = CustTblCode;
+                dt_row[header_Progress] = progress + "%";
+                dt_row[header_DONoString] = "";
+                dt.Rows.Add(dt_row);
+            }
+
+            string previousCustCode = "";
+
+            dt.DefaultView.Sort = header_CustomerCode + " ASC";
+            dt = dt.DefaultView.ToTable();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                pendingPOQty++;
+                string custCode = row[header_CustomerCode].ToString();
+                if (previousCustCode == "")
+                {
+                    previousCustCode = custCode;
+                    pendingCustQty++;
+                }
+                else if (previousCustCode != custCode)
+                {
+                    previousCustCode = custCode;
+                    pendingCustQty++;
+                }
+            }
+
+            return Tuple.Create(pendingPOQty, pendingCustQty);
+        }
+
+        public Tuple<int, int, int> GetPendingDOQty(DataTable dt_DOList)
+        {
+            int pendingDOQty = 0;
+            int pendingCustQty = 0;
+            int totalBag = 0;
+            SPPDataDAL dalSPP = new SPPDataDAL();
+
+            DataTable dt = NewDOTable();
+            DataRow dt_row;
+
+            int preDOCode = -999999;
+
+            foreach (DataRow row in dt_DOList.Rows)
+            {
+                int doCode = int.TryParse(row[dalSPP.DONo].ToString(), out doCode) ? doCode : -999999;
+
+                int deliveryQty = int.TryParse(row[dalSPP.ToDeliveryQty].ToString(), out deliveryQty) ? deliveryQty : 0;
+
+                int stdPacking = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out stdPacking) ? stdPacking : 0;
+
+                int bag = deliveryQty / stdPacking;
+
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+                bool isDelivered = bool.TryParse(row[dalSPP.IsDelivered].ToString(), out isDelivered) ? isDelivered : false;
+
+                if (deliveryQty > 0 && !isRemoved && !isDelivered)
+                {
+                    totalBag += bag;
+                }
+
+                if ((preDOCode == -999999 || preDOCode != doCode) && row[dalSPP.DONo] != DBNull.Value)
+                {
+
+                    if (deliveryQty > 0)
+                    {
+                        
+                        string trfID = row[dalSPP.TrfTableCode].ToString();
+
+                        bool dataMatched = true;
+ 
+                        #region DO TYPE
+
+                        if (!isDelivered )
+                        {
+                            dataMatched = dataMatched && true;
+                        }
+                        else
+                        {
+                            dataMatched = false;
+                        }
+                        
+                        if (isRemoved)
+                        {
+                            dataMatched = false;
+                        }
+
+                        #endregion
+
+                        if (dataMatched)
+                        {
+                            preDOCode = doCode;
+                            dt_row = dt.NewRow();
+
+                            dt_row[header_CustomerCode] = row[dalSPP.CustomerTableCode];
+
+                            dt.Rows.Add(dt_row);
+                            
+                        }
+                    }
+
+
+                }
+
+            }
+
+
+            string previousCustCode = "";
+
+            dt.DefaultView.Sort = header_CustomerCode + " ASC";
+            dt = dt.DefaultView.ToTable();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                pendingDOQty++;
+                string custCode = row[header_CustomerCode].ToString();
+                if (previousCustCode == "")
+                {
+                    previousCustCode = custCode;
+                    pendingCustQty++;
+                }
+                else if (previousCustCode != custCode)
+                {
+                    previousCustCode = custCode;
+                    pendingCustQty++;
+                }
+            }
+
+            return Tuple.Create(pendingDOQty, pendingCustQty, totalBag);
+        }
+
         public Tuple<int, int> GetPreviousBalanceClearRecord(DataTable dt_Trf, string itemCode, DateTime day, string planID, string shift, bool isBalanceIn)
         {
             dt_Trf.DefaultView.Sort = dalTrfHist.TrfDate + " DESC";
@@ -2066,6 +2411,25 @@ namespace FactoryManagementSoftware.Module
                 }
             }
             return WastageAllowed;
+        }
+
+        public string getItemName(DataTable dt, string ItemCode)
+        {
+            string ItemName = "";
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[dalItem.ItemCode].ToString().Equals(ItemCode))
+                    {
+                        ItemName = row["item_name"].ToString();
+
+                        return ItemName;
+                    }
+                }
+            }
+            return ItemName;
         }
 
         public string getItemNameFromDataTable(DataTable dt, string ItemCode)

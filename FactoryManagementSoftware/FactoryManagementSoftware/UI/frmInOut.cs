@@ -385,29 +385,38 @@ namespace FactoryManagementSoftware.UI
 
         private void loadStockList(string itemCode)
         {
-            DataTable dt = dalStock.Select(itemCode);
-
-            dgvFactoryStock.Rows.Clear();
-
-            if(dt.Rows.Count > 0)
+            if(formLoaded)
             {
-                foreach (DataRow stock in dt.Rows)
+                DataTable dt = dalStock.Select(itemCode);
+
+                dgvFactoryStock.Rows.Clear();
+
+                if (dt.Rows.Count > 0)
                 {
-                    int n = dgvFactoryStock.Rows.Add();
-                    dgvFactoryStock.Rows[n].Cells["fac_name"].Value = stock["fac_name"].ToString();
-                    dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = Convert.ToSingle(stock["stock_qty"]).ToString("0.00");
+                    foreach (DataRow stock in dt.Rows)
+                    {
+                        int n = dgvFactoryStock.Rows.Add();
+                        dgvFactoryStock.Rows[n].Cells["fac_name"].Value = stock["fac_name"].ToString();
+                        dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = Convert.ToSingle(stock["stock_qty"]).ToString("0.00");
+
+                    }
 
                 }
-                
+                else
+                {
+                    int n = dgvFactoryStock.Rows.Add();
+                    dgvFactoryStock.Rows[n].Cells["fac_name"].Value = "null";
+                    dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = "null";
+
+                }
+                listPaint(dgvFactoryStock);
             }
             else
             {
-                int n = dgvFactoryStock.Rows.Add();
-                dgvFactoryStock.Rows[n].Cells["fac_name"].Value = "null";
-                dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = "null";
-
+                dgvFactoryStock.Rows.Clear();
+                dgvFactoryStock.Refresh();
             }
-            listPaint(dgvFactoryStock);
+           
         }
 
         private void calTotalStock(string itemCode)
@@ -835,7 +844,7 @@ namespace FactoryManagementSoftware.UI
         private void dgvItem_SelectionChanged(object sender, EventArgs e)
         {
            
-            if (formLoaded)
+            if (formLoaded && dgvItem.SelectedRows.Count > 0)
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 DataGridView dgv = dgvItem;
@@ -880,6 +889,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 Cursor = Cursors.Arrow; // change cursor to normal type 
             }
+           
         }
 
         private void dgvTrf_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -1929,6 +1939,7 @@ namespace FactoryManagementSoftware.UI
         private void timer1_Tick(object sender, EventArgs e)
         {
             timer1.Stop();
+            formLoaded = false;
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             if (string.IsNullOrEmpty(txtSearch.Text)  || txtSearch.Text == "Search")
             {
@@ -1941,6 +1952,9 @@ namespace FactoryManagementSoftware.UI
 
             loadItemList();
             loadTransferList();
+
+
+            formLoaded = true;
             Cursor = Cursors.Arrow; // change cursor to normal type
 
         }

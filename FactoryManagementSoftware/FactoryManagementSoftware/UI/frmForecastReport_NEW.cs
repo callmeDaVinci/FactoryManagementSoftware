@@ -1872,17 +1872,13 @@ namespace FactoryManagementSoftware.UI
             string monthString = cmbForecastFrom.Text;
 
             int month = DateTime.ParseExact(monthString, "MMMM", CultureInfo.CurrentCulture).Month;
-            int year;
+            int year = DateTime.Now.Year;
 
-            if (month > DateTime.Now.Month)
-            {
-                year = DateTime.Now.Year - 1;
-            }
-            else
-            {
-                year = DateTime.Now.Year;
-            }
-
+            //if (month > DateTime.Now.Month)
+            //{
+            //    year = DateTime.Now.Year - 1;
+            //}
+          
             month += forecastNum - 1;
 
             if (month > 12)

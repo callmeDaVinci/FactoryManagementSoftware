@@ -502,79 +502,79 @@ namespace FactoryManagementSoftware.UI
 
         private void loadLocationCategoryData()
         {
-            DataTable dtlocationCat = daltrfCat.Select();
-
-            DataTable fromCatTable = dtlocationCat.DefaultView.ToTable(true, "trf_cat_name");
-            //fromCatTable.DefaultView.Sort = "trf_cat_name ASC";
-            cmbTrfFromCategory.DataSource = fromCatTable;
-            cmbTrfFromCategory.DisplayMember = "trf_cat_name";
-
-            string itemCode = cmbTrfItemCode.Text;
-
-            DataTable dt_Item = dalItem.codeSearch(itemCode);
-
-            bool assembly = dalItem.checkIfAssembly(itemCode, dt_Item);
-            bool production = dalItem.checkIfProduction(itemCode, dt_Item);
-
-            if (!string.IsNullOrEmpty(itemCode))
+            if(!cbFreeze.Checked)
             {
-                if (tool.ifGotChild(itemCode))
-                {
-                    if (itemCode.Substring(0, 3) == text.Inspection_Pass)
-                    {
-                        //cmbTrfFromCategory.Text = text.Inspection;
-                        cmbTrfFromCategory.Text = text.Assembly;
+                DataTable dtlocationCat = daltrfCat.Select();
 
-                    }
-                    else if(assembly && !production)
+                DataTable fromCatTable = dtlocationCat.DefaultView.ToTable(true, "trf_cat_name");
+                //fromCatTable.DefaultView.Sort = "trf_cat_name ASC";
+                cmbTrfFromCategory.DataSource = fromCatTable;
+                cmbTrfFromCategory.DisplayMember = "trf_cat_name";
+
+                string itemCode = cmbTrfItemCode.Text;
+
+                DataTable dt_Item = dalItem.codeSearch(itemCode);
+
+                bool assembly = dalItem.checkIfAssembly(itemCode, dt_Item);
+                bool production = dalItem.checkIfProduction(itemCode, dt_Item);
+
+                if (!string.IsNullOrEmpty(itemCode))
+                {
+                    if (tool.ifGotChild(itemCode))
                     {
-                        cmbTrfFromCategory.Text = text.Assembly;
+                        if (itemCode.Substring(0, 3) == text.Inspection_Pass)
+                        {
+                            //cmbTrfFromCategory.Text = text.Inspection;
+                            cmbTrfFromCategory.Text = text.Assembly;
+
+                        }
+                        else if (assembly && !production)
+                        {
+                            cmbTrfFromCategory.Text = text.Assembly;
+                        }
+                        else
+                        {
+                            cmbTrfFromCategory.Text = text.Production;
+                        }
                     }
-                    else
+                    else if (dalItem.getCatName(itemCode).Equals(text.Cat_Part))
                     {
                         cmbTrfFromCategory.Text = text.Production;
                     }
+                    else
+                    {
+                        cmbTrfFromCategory.Text = text.Factory;
+                    }
                 }
-                else if(dalItem.getCatName(itemCode).Equals(text.Cat_Part))
+
+
+                DataTable toCatTable = dtlocationCat.DefaultView.ToTable(true, "trf_cat_name");
+                //toCatTable.DefaultView.Sort = "trf_cat_name ASC";
+                cmbTrfToCategory.DataSource = toCatTable;
+                cmbTrfToCategory.DisplayMember = "trf_cat_name";
+
+                if (cmbTrfFromCategory.Text.Equals(text.Assembly))
                 {
-                    cmbTrfFromCategory.Text = text.Production;
+                    cmbTrfToCategory.SelectedIndex = 0;
+
+                    if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+                    {
+                        cmbTrfTo.Text = text.Factory_Store;
+                        //cmbTrfTo.SelectedIndex = 5;
+                    }
+
+                    else
+                    {
+                        cmbTrfTo.Text = text.Factory_9;
+                    }
                 }
-                else
+                else if (cmbTrfFromCategory.Text.Equals(text.Inspection))
                 {
-                    cmbTrfFromCategory.Text = text.Factory;
-                }
-            }
-            
-
-            DataTable toCatTable = dtlocationCat.DefaultView.ToTable(true, "trf_cat_name");
-            //toCatTable.DefaultView.Sort = "trf_cat_name ASC";
-            cmbTrfToCategory.DataSource = toCatTable;
-            cmbTrfToCategory.DisplayMember = "trf_cat_name";
-
-            if (cmbTrfFromCategory.Text.Equals(text.Assembly))
-            {
-                cmbTrfToCategory.SelectedIndex = 0;
-
-                if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
-                {
+                    cmbTrfToCategory.Text = text.Factory;
                     cmbTrfTo.Text = text.Factory_Store;
-                    //cmbTrfTo.SelectedIndex = 5;
-                }
-              
-                else
-                {
-                    cmbTrfTo.Text = text.Factory_9;
+                    cmbTrfQtyUnit.Text = text.Unit_Piece;
                 }
             }
-            else if(cmbTrfFromCategory.Text.Equals(text.Inspection))
-            {
-                cmbTrfToCategory.Text = text.Factory;
-                cmbTrfTo.Text = text.Factory_Store;
-                cmbTrfQtyUnit.Text = text.Unit_Piece;
-            }
-
-            //#############################################################################################################################################
-            //cmbTrfFromCategory.Text = "Other";
         }
 
         private void loadLocationData(DataTable dt, ComboBox cmb, string columnName)
@@ -840,6 +840,126 @@ namespace FactoryManagementSoftware.UI
                             }
                         }
                       
+                    }
+                }
+            }
+
+            return success;
+        }
+
+        private bool productionChildStockOut(string factoryName, string parentItemCode, float qty, int indexNo, string note,string outTo)
+        {
+            bool success = true;
+            int n;
+            string childItemCode;
+            DataTable dtJoin = dalJoin.loadChildList(parentItemCode);
+
+            if (dtJoin.Rows.Count > 0)
+            {
+                foreach (DataRow Join in dtJoin.Rows)
+                {
+                    float childQty = 0;
+
+                    float joinQty = float.TryParse(Join["join_qty"].ToString(), out float i) ? Convert.ToSingle(Join["join_qty"].ToString()) : 1;
+                    int joinMax = int.TryParse(Join[dalJoin.JoinMax].ToString(), out int j) ? Convert.ToInt32(Join[dalJoin.JoinMax].ToString()) : 1;
+                    int JoinMin = int.TryParse(Join[dalJoin.JoinMin].ToString(), out int k) ? Convert.ToInt32(Join[dalJoin.JoinMin].ToString()) : 1;
+
+                    joinMax = joinMax <= 0 ? 1 : joinMax;
+                    JoinMin = JoinMin <= 0 ? 1 : JoinMin;
+
+                    int ParentQty = Convert.ToInt32(qty);
+
+                    int fullQty = ParentQty / joinMax;
+
+                    int notFullQty = ParentQty % joinMax;
+
+                    childQty = fullQty * joinQty;
+
+                    if (notFullQty >= JoinMin)
+                    {
+                        childQty += joinQty;
+
+                    }
+                    //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
+                    childItemCode = Join["join_child_code"].ToString();
+                    DataTable dtItem = dalItem.codeSearch(childItemCode);
+                    //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
+
+                    if (dtItem.Rows.Count > 0)
+                    {
+                        DataGridView dgv = dgvTransfer;
+
+                        string childItemCat = dtItem.Rows[0][dalItem.ItemCat].ToString();
+
+                        if (!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging))
+                        {
+                            if (dalItem.checkIfAssembly(childItemCode) && dalItem.checkIfProduction(childItemCode))
+                            {
+                                if (dalItem.checkIfAssembly(parentItemCode) && dalItem.checkIfProduction(parentItemCode))
+                                {
+                                    //n = dgv.Rows.Add();
+                                    //index++;
+
+                                    //dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                                    //dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
+                                    //dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
+                                    //dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
+                                    //dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
+                                    //dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
+                                    //dgv.Rows[n].Cells[FromCatColumnName].Value = "Production";
+                                    //dgv.Rows[n].Cells[FromColumnName].Value = "";
+                                    //dgv.Rows[n].Cells[ToCatColumnName].Value = "Factory";
+                                    //dgv.Rows[n].Cells[ToColumnName].Value = factoryName;
+                                    //dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
+                                    //dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
+                                    //dgv.Rows[n].Cells[NoteColumnName].Value = note+"Sub Part in";
+                                }
+
+                            }
+
+                            n = dgv.Rows.Add();
+                            index++;
+
+                            dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                            dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
+                            dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
+                            dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
+                            dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
+                            dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
+                            dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
+                            dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
+                            dgv.Rows[n].Cells[ToCatColumnName].Value = outTo;
+                            dgv.Rows[n].Cells[ToColumnName].Value = "";
+                            dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
+                            dgv.Rows[n].Cells[UnitColumnName].Value = text.Unit_Piece;
+                            dgv.Rows[n].Cells[NoteColumnName].Value = note + "Sub Part out";
+
+                            if (childItemCode.Equals("V76KM4000 0.360"))
+                            {
+                                //dgv.Rows[n].Cells[QtyColumnName].Value = childQty * 0.36;
+                                dgv.Rows[n].Cells[UnitColumnName].Value = "meter";
+                            }
+
+                            facStockDAL dalFacStock = new facStockDAL();
+                            float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
+
+                            float transferQty = 0;
+                            if (callFromProductionRecord)
+                            {
+                                transferQty = qty;
+                            }
+                            else
+                            {
+                                transferQty = Convert.ToSingle(txtTrfQty.Text);
+                            }
+
+                            if (facStock - transferQty < 0)
+                            {
+                                dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                                dgv.Rows[n].Cells[NoteColumnName].Value = note + "AFTER BAL=" + (facStock - transferQty);
+                            }
+                        }
+
                     }
                 }
             }
@@ -1227,7 +1347,112 @@ namespace FactoryManagementSoftware.UI
 
             return success;
         }
-    
+
+        private bool childStockOut(string factoryName, string parentItemCode, float qty, int indexNo, string note)
+        {
+            bool success = true;
+
+            string childItemCode;
+
+            if (parentItemCode.Substring(0, 3) == text.Inspection_Pass && cmbTrfFromCategory.Text.Equals(text.Assembly))
+            {
+                DataTable dtSPP = dalJoin.loadChildList(parentItemCode);
+
+                foreach (DataRow row in dtSPP.Rows)
+                {
+                    //string text = row["join_child_code"].ToString().Substring(0, 2);
+                    if (row["join_child_code"].ToString().Substring(0, 2) == "CF")
+                        parentItemCode = row["join_child_code"].ToString();
+                }
+            }
+
+            DataTable dtJoin = dalJoin.loadChildList(parentItemCode);
+            if (dtJoin.Rows.Count > 0)
+            {
+                foreach (DataRow Join in dtJoin.Rows)
+                {
+                    float childQty = qty;
+
+                    float joinQty = float.TryParse(Join["join_qty"].ToString(), out float i) ? Convert.ToSingle(Join["join_qty"].ToString()) : 1;
+                    int joinMax = int.TryParse(Join[dalJoin.JoinMax].ToString(), out int j) ? Convert.ToInt32(Join[dalJoin.JoinMax].ToString()) : 1;
+                    int JoinMin = int.TryParse(Join[dalJoin.JoinMin].ToString(), out int k) ? Convert.ToInt32(Join[dalJoin.JoinMin].ToString()) : 1;
+
+                    joinMax = joinMax <= 0 ? 1 : joinMax;
+                    JoinMin = JoinMin <= 0 ? 1 : JoinMin;
+
+                    int ParentQty = Convert.ToInt32(qty);
+
+                    int fullQty = ParentQty / joinMax;
+
+                    int notFullQty = ParentQty % joinMax;
+
+                    childQty = fullQty * joinQty;
+
+                    if (notFullQty >= JoinMin)
+                    {
+                        childQty += joinQty;
+                    }
+
+                    //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
+
+                    childItemCode = Join["join_child_code"].ToString();
+                    DataTable dtItem = dalItem.codeSearch(childItemCode);
+                    if (dtItem.Rows.Count > 0)
+                    {
+                        DataGridView dgv = dgvTransfer;
+                        int n = dgv.Rows.Add();
+                        index++;
+                        dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                        dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
+                        dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
+                        dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
+                        dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
+                        dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
+
+                        if (isInpectionItem)
+                        {
+                            dgv.Rows[n].Cells[ToCatColumnName].Value = text.Inspection;
+                        }
+                        else
+                        {
+                            dgv.Rows[n].Cells[ToCatColumnName].Value = text.Assembly;
+                            dgv.Rows[n].Cells[NoteColumnName].Value = text.Assembly + dalItem.getCatName(childItemCode);
+                        }
+                        dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
+                        dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
+
+                        dgv.Rows[n].Cells[ToColumnName].Value = "";
+                        dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
+                        dgv.Rows[n].Cells[UnitColumnName].Value = text.Unit_Piece;
+
+
+                        if (childItemCode.Equals("V76KM4000 0.360"))
+                        {
+                            //dgv.Rows[n].Cells[QtyColumnName].Value = childQty * 0.36;
+                            dgv.Rows[n].Cells[UnitColumnName].Value = text.Unit_Meter;
+                        }
+
+                        facStockDAL dalFacStock = new facStockDAL();
+                        float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
+                        float transferQty = childQty;
+
+                        if (facStock - transferQty < 0)
+                        {
+                            dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                            dgv.Rows[n].Cells[NoteColumnName].Value = note + "AFTER BAL=" + (facStock - transferQty);
+                        }
+                        else
+                        {
+                            dgv.Rows[n].Cells[NoteColumnName].Value = note;
+                        }
+                    }
+                }
+            }
+
+            return success;
+        }
+
+
         private int TransferAction()
         {
             string result = "Passed";
@@ -1384,7 +1609,28 @@ namespace FactoryManagementSoftware.UI
                         {
                             result = "Failed";
                         }
+                        else
+                        {
+                            //string matCode = cmbTrfItemCode.Text;
+                            //string directToCustomer = to;
+
+                            //if (tool.IfMaterialExists(matCode) && directToCustomer == tool.getCustName(1))
+                            //{
+                            //    //update pmma data
+                            //    pmmaBLL uPMMA = new pmmaBLL();
+
+                            //    uPMMA.pmma_item_code = matCode;
+                            //    uPMMA.pmma_adjust = qty;
+                            //    uPMMA.pmma_month = dtpTrfDate.Value.Month.ToString();
+                            //    uPMMA.pmma_year = dtpTrfDate.Value.Year.ToString();
+                            //    uPMMA.pmma_updated_date = DateTime.Now;
+                            //    uPMMA.pmma_updated_by = MainDashboard.USER_ID;
+
+                            //    new pmmaDAL().MatDirectOut(uPMMA);
+                            //}
+                        }
                         TrfID = TransferRecord(result);
+
                     }
                 }
                 else if (toCat.Equals("Factory"))
@@ -1598,26 +1844,21 @@ namespace FactoryManagementSoftware.UI
             errorProvider3.Clear();
             loadLocationCategoryData();
             lblStdPacking.Visible = false;
-            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) &&  cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+
+            if(!cbFreeze.Checked)
             {
-                unitDataSource();
-                cmbTrfQtyUnit.Text = text.Unit_Bag;
+                if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+                {
+                    unitDataSource();
+                    cmbTrfQtyUnit.Text = text.Unit_Bag;
+                }
+                else
+                {
+                    //cmbTrfQtyUnit.Text = text.Unit_Piece;
+                    cmbTrfQtyUnit.SelectedIndex = -1;
+
+                }
             }
-           
-
-            //else if (ifGotChild())
-            //{
-
-            //    cmbTrfQtyUnit.Text = text.Unit_Set;
-            //}
-
-            else
-            {
-                //cmbTrfQtyUnit.Text = text.Unit_Piece;
-                cmbTrfQtyUnit.SelectedIndex = -1;
-
-            }
-
         }
 
         private void cmbTrfFromCategory_SelectedIndexChanged(object sender, EventArgs e)
@@ -1793,6 +2034,7 @@ namespace FactoryManagementSoftware.UI
                 float facStock = dalFacStock.getQty(cmbTrfItemCode.Text, tool.getFactoryID(cmbTrfFrom.Text).ToString());
                 float transferQty = Convert.ToSingle(txtTrfQty.Text);
                 string factoryName = "";
+
                 if (string.IsNullOrEmpty(cmbTrfTo.Text))
                 {
                     factoryName = cmbTrfToCategory.Text;
@@ -1816,6 +2058,8 @@ namespace FactoryManagementSoftware.UI
 
                 if (cmbTrfToCategory.Text.Equals("Customer"))
                 {
+                    
+
                     //dgv.Rows[n].Cells[NoteColumnName].Value += DeliveryAutoOut(cmbTrfFrom.Text, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text));
                 }
             }
@@ -1982,10 +2226,20 @@ namespace FactoryManagementSoftware.UI
                     if (shift == "MBO" || shift == "NBO")
                     {
                         productionChildStockIn(from, itemCode, Convert.ToSingle(proQty), -1, note);
+
                     }
                     else
                     {
-                        productionChildStockOut(to, itemCode, Convert.ToSingle(proQty), -1, note);
+                        if(from == text.Assembly)
+                        {
+                            productionChildStockOut(to, itemCode, Convert.ToSingle(proQty), -1, note, from);
+                        }
+                        else if(from == text.Production)
+                        {
+                            productionChildStockOut(to, itemCode, Convert.ToSingle(proQty), -1, note, from);
+                        }
+
+                        
                     }
                         
                 }
@@ -2165,9 +2419,12 @@ namespace FactoryManagementSoftware.UI
                     dgvEdit = false;
 
                     txtTrfQty.Clear();
-                    cmbTrfFrom.SelectedIndex = -1;
-                    cmbTrfTo.SelectedIndex = -1;
 
+                    if(!cbFreeze.Checked)
+                    {
+                        cmbTrfFrom.SelectedIndex = -1;
+                        cmbTrfTo.SelectedIndex = -1;
+                    }
                 }
 
                 changeButton();

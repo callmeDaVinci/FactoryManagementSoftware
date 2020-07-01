@@ -813,8 +813,6 @@ namespace FactoryManagementSoftware.UI
                     po_code = Convert.ToInt32(EditingPOCode);
                     //dalData.PODelete(uData);
                     //remove old one
-
-
                 }
                 else
                 {
