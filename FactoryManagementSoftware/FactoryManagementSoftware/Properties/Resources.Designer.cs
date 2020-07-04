@@ -63,6 +63,37 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _6e5fbc11a536baef961a6a09436e5ad3 {
+            get {
+                object obj = ResourceManager.GetObject("6e5fbc11a536baef961a6a09436e5ad3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap back_gradient_textured_background_wallpaper_use_designs_text_image_layout_black_gradient_textured_background_147902753 {
+            get {
+                object obj = ResourceManager.GetObject("back-gradient-textured-background-wallpaper-use-designs-text-image-layout-black-g" +
+                        "radient-textured-background-147902753", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap blackPlastic {
+            get {
+                object obj = ResourceManager.GetObject("blackPlastic", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap elbow_64px {
             get {
                 object obj = ResourceManager.GetObject("elbow.64px", resourceCulture);
@@ -516,6 +547,36 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap icons8_windows_10_961 {
             get {
                 object obj = ResourceManager.GetObject("icons8-windows-10-961", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap O7zaOF {
+            get {
+                object obj = ResourceManager.GetObject("O7zaOF", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Picture1 {
+            get {
+                object obj = ResourceManager.GetObject("Picture1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Picture11 {
+            get {
+                object obj = ResourceManager.GetObject("Picture11", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

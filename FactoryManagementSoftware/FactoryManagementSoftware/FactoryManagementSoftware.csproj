@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>\\SAFETY06-MURUGA\StockAssistant\%28INSTALLATION%29\FOR USER\</PublishUrl>
+    <PublishUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>211</ApplicationRevision>
+    <ApplicationRevision>214</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -78,6 +78,9 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="Guna.UI">
+      <HintPath>..\packages\Guna.UI.WinForms_v1.0.0.9\.net 3.5\Guna.UI.dll</HintPath>
+    </Reference>
     <Reference Include="itextsharp">
       <HintPath>..\..\..\..\Download\itextsharp\itextsharp.dll</HintPath>
     </Reference>
@@ -1105,6 +1108,12 @@
     <None Include="Resources\safety-logo.png" />
     <None Include="Resources\icons8-construction-64.png" />
     <None Include="Resources\icons8-construction-100.png" />
+    <None Include="Resources\blackPlastic.jpg" />
+    <None Include="Resources\O7zaOF.gif" />
+    <None Include="Resources\6e5fbc11a536baef961a6a09436e5ad3.jpg" />
+    <None Include="Resources\back-gradient-textured-background-wallpaper-use-designs-text-image-layout-black-gradient-textured-background-147902753.jpg" />
+    <None Include="Resources\Picture1.png" />
+    <None Include="Resources\Picture11.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

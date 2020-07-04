@@ -167,6 +167,7 @@ namespace FactoryManagementSoftware.UI
 
         static public DataTable dt_MatChecklist;
         private DataTable dt_DOItem;
+        private DataTable dt_Fac;
         static public DataTable dt_ProductionRecord;
 
         private DateTime delivered_date;
@@ -685,7 +686,9 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_result = stockResult;
             utrfHist.trf_hist_from_order = 0;
 
-            if(stockResult == "Failed")
+            utrfHist.balance = GetTotalBalAfterTransfer(dalStock.Select(itemCode), dt_Fac, itemCode, qty, locationFrom, locationTo);
+
+            if (stockResult == "Failed")
             {
                 utrfHist.trf_hist_note = failedNote;
             }
@@ -1495,6 +1498,7 @@ namespace FactoryManagementSoftware.UI
                             result = "Failed";
                         }
                     }
+
                     TrfID = TransferRecord(result);
                 }
 
@@ -1755,6 +1759,8 @@ namespace FactoryManagementSoftware.UI
             try
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                dt_Fac = dalFac.Select();
 
                 DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message",
                                                             MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -2800,6 +2806,30 @@ namespace FactoryManagementSoftware.UI
             {
                 tool.saveToTextAndMessageToUser(ex);
             }
+        }
+
+        private float GetTotalBalAfterTransfer(DataTable dtStock,DataTable dt_Fac, string itemCode, float trfQty, string trfFrom, string trfTo)
+        {
+            float afterTotalQty = 0;
+
+            foreach (DataRow stock in dtStock.Rows)
+            {
+                float stockQty = float.TryParse(stock["stock_qty"].ToString(), out stockQty) ? stockQty : 0;
+ 
+                afterTotalQty += stockQty;
+            }
+            
+            //if(tool.IfFactoryExists(dt_Fac,trfFrom))
+            //{
+            //    afterTotalQty -= trfQty;
+            //}
+
+            //if (tool.IfFactoryExists(dt_Fac, trfTo))
+            //{
+            //    afterTotalQty += trfQty;
+            //}
+
+            return afterTotalQty;
         }
 
         private void label8_Click(object sender, EventArgs e)

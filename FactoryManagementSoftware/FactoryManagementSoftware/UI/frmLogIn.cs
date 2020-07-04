@@ -16,6 +16,12 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
         }
 
+        public frmLogIn(string userName)
+        {
+            InitializeComponent();
+            gtxtUsername.Text = userName;
+        }
+
         userDAL dalUser = new userDAL();
 
         Text text = new Text();
@@ -30,15 +36,15 @@ namespace FactoryManagementSoftware.UI
         {
             bool result = true;
 
-            if(string.IsNullOrEmpty(textBox1.Text))
+            if(string.IsNullOrEmpty(gtxtUsername.Text))
             {
-                errorProvider1.SetError(textBox1, "Username required");
+                errorProvider1.SetError(gtxtUsername, "Username required");
                 result = false;
             }
 
-            if (string.IsNullOrEmpty(textBox2.Text))
+            if (string.IsNullOrEmpty(gtxtPassword.Text))
             {
-                errorProvider2.SetError(textBox2, "Password required");
+                errorProvider2.SetError(gtxtPassword, "Password required");
                 result = false;
             }
 
@@ -46,10 +52,13 @@ namespace FactoryManagementSoftware.UI
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            string username = textBox1.Text;
-            string password = textBox2.Text;
-            
-            if (validation())
+            string username = gtxtUsername.Text;
+            string password = gtxtPassword.Text;
+
+            //string username = textBox1.Text;
+            //string password = textBox2.Text;
+
+            if (validation())//validation()
             {
                
                 int userID = dalUser.userLogin(username, password);
@@ -82,7 +91,7 @@ namespace FactoryManagementSoftware.UI
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            if(!string.IsNullOrEmpty(textBox1.Text))
+            if(!string.IsNullOrEmpty(gtxtUsername.Text))
             {
                 errorProvider1.Clear();
             }
@@ -90,7 +99,7 @@ namespace FactoryManagementSoftware.UI
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(textBox2.Text))
+            if (!string.IsNullOrEmpty(gtxtPassword.Text))
             {
                 errorProvider2.Clear();
             }
@@ -115,6 +124,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmLogIn_Load(object sender, EventArgs e)
         {
+            lblDate.Text = DateTime.Now.ToShortDateString();
             //checking whether database exist or not
             if (!CheckDatabaseExist())
             {
@@ -122,6 +132,7 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("Database not exist");
                 //GenerateDatabase();
             }
+            
         }
 
         private bool CheckDatabaseExist()
@@ -200,6 +211,21 @@ namespace FactoryManagementSoftware.UI
             {
                 button1_Click(sender, e);
             }
+        }
+
+        private void gunaButton1_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void gunaPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void frmLogIn_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
     

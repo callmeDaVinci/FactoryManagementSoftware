@@ -32,11 +32,14 @@ namespace FactoryManagementSoftware.DAL
         public string TrfUpdatedBy { get; } = "trf_hist_updated_by";
         public string TrfFromOrder { get; } = "trf_hist_from_order";
 
+        public string Balance { get; } = "balance";
+
         #endregion
 
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
         //Tool tool = new Tool();
         #region Select Data from Database
+
         public DataTable Select()
         {
             //static methodd to connect database
@@ -58,6 +61,58 @@ namespace FactoryManagementSoftware.DAL
                                 tbl_trf_hist.trf_hist_note,
                                 tbl_trf_hist.trf_hist_added_by,
                                 tbl_trf_hist.trf_result
+                                FROM tbl_trf_hist INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+            dt.DefaultView.Sort = "trf_hist_id DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
+        }
+
+        public DataTable SelectWithBalance()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT  tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result, balance
                                 FROM tbl_trf_hist INNER JOIN tbl_item 
                                 ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code";
 
@@ -189,7 +244,8 @@ namespace FactoryManagementSoftware.DAL
                             trf_hist_added_date, 
                             trf_hist_added_by, 
                             trf_result, 
-                            trf_hist_from_order) 
+                            trf_hist_from_order,
+                            balance) 
                             VALUES 
                             (@trf_hist_item_code, 
                             @trf_hist_from, 
@@ -201,7 +257,8 @@ namespace FactoryManagementSoftware.DAL
                             @trf_hist_added_date, 
                             @trf_hist_added_by, 
                             @trf_result, 
-                            @trf_hist_from_order)";
+                            @trf_hist_from_order,
+                            @balance)";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -216,7 +273,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@trf_hist_added_by", u.trf_hist_added_by);
                 cmd.Parameters.AddWithValue("@trf_result", u.trf_result);
                 cmd.Parameters.AddWithValue("@trf_hist_from_order", u.trf_hist_from_order);
-
+                cmd.Parameters.AddWithValue("@balance", u.balance);
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();
@@ -266,7 +323,7 @@ namespace FactoryManagementSoftware.DAL
                             trf_hist_added_date, 
                             trf_hist_added_by, 
                             trf_result, 
-                            trf_hist_from_order) 
+                            trf_hist_from_order,balance) 
                             VALUES 
                             (@trf_hist_item_code, 
                             @trf_hist_from, 
@@ -278,7 +335,7 @@ namespace FactoryManagementSoftware.DAL
                             @trf_hist_added_date, 
                             @trf_hist_added_by, 
                             @trf_result, 
-                            @trf_hist_from_order)
+                            @trf_hist_from_order,@balance)
                             SELECT SCOPE_IDENTITY();";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -294,6 +351,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@trf_hist_added_by", u.trf_hist_added_by);
                 cmd.Parameters.AddWithValue("@trf_result", u.trf_result);
                 cmd.Parameters.AddWithValue("@trf_hist_from_order", u.trf_hist_from_order);
+                cmd.Parameters.AddWithValue("@balance", u.balance);
 
                 conn.Open();
 
@@ -496,7 +554,7 @@ namespace FactoryManagementSoftware.DAL
                                 tbl_trf_hist.trf_hist_unit,
                                 tbl_trf_hist.trf_hist_note,
                                 tbl_trf_hist.trf_hist_added_by,
-                                tbl_trf_hist.trf_result
+                                tbl_trf_hist.trf_result, tbl_trf_hist.balance
                                 FROM tbl_trf_hist  
                                 INNER JOIN tbl_item 
                                 ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
@@ -585,7 +643,7 @@ namespace FactoryManagementSoftware.DAL
                                 tbl_trf_hist.trf_hist_unit,
                                 tbl_trf_hist.trf_hist_note,
                                 tbl_trf_hist.trf_hist_added_by,
-                                tbl_trf_hist.trf_result
+                                tbl_trf_hist.trf_result, tbl_trf_hist.balance
                                 FROM tbl_trf_hist INNER JOIN tbl_item 
                                 ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
                                 WHERE tbl_item.item_code LIKE '%" + keywords + "%' " +
@@ -689,7 +747,7 @@ namespace FactoryManagementSoftware.DAL
                                 tbl_trf_hist.trf_hist_unit,
                                 tbl_trf_hist.trf_hist_note,
                                 tbl_trf_hist.trf_hist_added_by,
-                                tbl_trf_hist.trf_result
+                                tbl_trf_hist.trf_result,tbl_trf_hist.balance
                                 FROM tbl_trf_hist INNER JOIN tbl_item 
                                 ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
                                 WHERE tbl_item.item_code =@keywords" +
@@ -1760,6 +1818,7 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
         public DataTable MaterialOutSearch(string start, string end)
         {
             //static methodd to connect database
@@ -2699,7 +2758,7 @@ namespace FactoryManagementSoftware.DAL
                                 tbl_trf_hist.trf_hist_unit,
                                 tbl_trf_hist.trf_hist_note,
                                 tbl_trf_hist.trf_hist_added_by,
-                                tbl_trf_hist.trf_result
+                                tbl_trf_hist.trf_result,tbl_trf_hist.balance
                                 FROM tbl_trf_hist INNER JOIN tbl_item 
                                 ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
                                 WHERE tbl_item.item_cat=@category";
@@ -2753,7 +2812,7 @@ namespace FactoryManagementSoftware.DAL
                                 tbl_trf_hist.trf_hist_unit,
                                 tbl_trf_hist.trf_hist_note,
                                 tbl_trf_hist.trf_hist_added_by,
-                                tbl_trf_hist.trf_result
+                                tbl_trf_hist.trf_result,tbl_trf_hist.balance
                                 FROM tbl_trf_hist INNER JOIN tbl_item 
                                 ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
                                 WHERE tbl_item.item_cat=@category

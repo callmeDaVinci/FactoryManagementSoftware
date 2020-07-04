@@ -26,5 +26,10 @@ namespace FactoryManagementSoftware.UI
         {
 
         }
+
+        private void gunaTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

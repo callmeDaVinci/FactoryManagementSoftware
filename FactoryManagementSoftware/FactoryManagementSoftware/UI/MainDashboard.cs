@@ -288,7 +288,11 @@ namespace FactoryManagementSoftware.UI
         private void MainDashboard_FormClosed(object sender, FormClosedEventArgs e)
         {
             tool.historyRecord(text.LogOut, text.Success, DateTime.Now, USER_ID);
-            Application.Exit();
+
+
+            // Application.Exit();
+            frmLogIn frm = new frmLogIn(dalUser.getUsername(USER_ID));
+            frm.Show();
         }
 
         private void orderToolStripMenuItem1_Click(object sender, EventArgs e)

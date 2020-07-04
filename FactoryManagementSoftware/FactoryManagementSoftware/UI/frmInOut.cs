@@ -644,6 +644,15 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvTrfUIEdit(DataGridView dgv)
         {
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            //dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
+
+
+            //dgv.Columns[header_ItemCode].DefaultCellStyle.ForeColor = Color.Gray;
+            dgv.Columns[daltrfHist.TrfAddedDate].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+
             dgv.Columns[daltrfHist.TrfID].HeaderText = "ID";
             dgv.Columns[daltrfHist.TrfAddedDate].HeaderText = "Added_Date";
             dgv.Columns[daltrfHist.TrfDate].HeaderText = "Trf_Date";

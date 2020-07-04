@@ -40,8 +40,8 @@ namespace FactoryManagementSoftware.UI
         readonly string headerUnit = "UNIT";
         readonly string headerNote = "NOTE";
         readonly string headerResult = "RESULT";
+        readonly string headerBalance = "BALANCE";
 
-    
         public frmTransferHistory()
         {
             InitializeComponent();
@@ -70,7 +70,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerUnit, typeof(string));
             dt.Columns.Add(headerNote, typeof(string));
             dt.Columns.Add(headerResult, typeof(string));
-
+            dt.Columns.Add(headerBalance, typeof(float));
             return dt;
         }
 
@@ -203,7 +203,7 @@ namespace FactoryManagementSoftware.UI
 
             if(keyword == null)
             {
-                dt_TrfHist = dalTrfHist.Select();
+                dt_TrfHist = dalTrfHist.SelectWithBalance();
             }
             else
             {
@@ -317,7 +317,7 @@ namespace FactoryManagementSoftware.UI
                         row_TrfData[headerUnit] = row[dalTrfHist.TrfUnit];
                         row_TrfData[headerNote] = row[dalTrfHist.TrfNote];
                         row_TrfData[headerResult] = row[dalTrfHist.TrfResult];
-
+                        row_TrfData[headerBalance] = row[dalTrfHist.Balance];
                         dt_TrfData.Rows.Add(row_TrfData);
 
                         periodWanted = false;

@@ -23,5 +23,6 @@ namespace FactoryManagementSoftware.BLL
         public int trf_hist_updated_by { get; set; }
         public int trf_hist_from_order { get; set; }
 
+        public float balance { get; set; }
     }
 }
