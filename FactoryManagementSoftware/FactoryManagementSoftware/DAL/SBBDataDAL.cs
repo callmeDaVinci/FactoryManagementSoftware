@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace FactoryManagementSoftware.DAL
 {
-    class SPPDataDAL
+    class SBBDataDAL
     {
         #region data string name getter
         //common table
@@ -14,6 +14,8 @@ namespace FactoryManagementSoftware.DAL
         public string UpdatedDate { get; } = "updated_date";
         public string UpdatedBy { get; } = "updated_by";
         public string IsRemoved { get; } = "isRemoved";
+        public string Freeze { get; } = "freeze";
+        public string PriorityLevel { get; } = "priority_level";
 
         //item table
         public string ItemCode { get; } = "item_code";
@@ -952,7 +954,7 @@ namespace FactoryManagementSoftware.DAL
 
         #region Insert Data in Database
 
-        public bool InsertSize(SPPDataBLL u)
+        public bool InsertSize(SBBDataBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1008,7 +1010,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool InsertType(SPPDataBLL u)
+        public bool InsertType(SBBDataBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1061,7 +1063,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool InsertCategory(SPPDataBLL u)
+        public bool InsertCategory(SBBDataBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1111,7 +1113,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool InsertItem(SPPDataBLL u)
+        public bool InsertItem(SBBDataBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1197,7 +1199,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool InsertColor(SPPDataBLL u)
+        public bool InsertColor(SBBDataBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1247,7 +1249,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool InsertTon(SPPDataBLL u)
+        public bool InsertTon(SBBDataBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1297,7 +1299,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool InsertStdPacking(SPPDataBLL u)
+        public bool InsertStdPacking(SBBDataBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1355,7 +1357,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool InsertCustomer(SPPDataBLL u)
+        public bool InsertCustomer(SBBDataBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1445,7 +1447,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool InsertPO(SPPDataBLL u)
+        public bool InsertPO(SBBDataBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1537,7 +1539,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool InsertOrUpdatePO(SPPDataBLL u)
+        public bool InsertOrUpdatePO(SBBDataBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1651,7 +1653,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool InsertDO(SPPDataBLL u)
+        public bool InsertDO(SBBDataBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1713,7 +1715,7 @@ namespace FactoryManagementSoftware.DAL
 
         #region Update data in Database
 
-        public bool SizeUpdate(SPPDataBLL u)
+        public bool SizeUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -1768,7 +1770,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool TypeUpdate(SPPDataBLL u)
+        public bool TypeUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -1821,7 +1823,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool CategoryUpdate(SPPDataBLL u)
+        public bool CategoryUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -1872,7 +1874,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool ItemUpdate(SPPDataBLL u)
+        public bool ItemUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -1947,7 +1949,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool ColorUpdate(SPPDataBLL u)
+        public bool ColorUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -1998,7 +2000,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool TonUpdate(SPPDataBLL u)
+        public bool TonUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2049,7 +2051,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool StdPackingUpdate(SPPDataBLL u)
+        public bool StdPackingUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2104,7 +2106,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool SPPItemUpdate(SPPDataBLL u)
+        public bool SPPItemUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2164,7 +2166,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool CustomerUpdate(SPPDataBLL u)
+        public bool CustomerUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2242,7 +2244,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool CustomerRemove(SPPDataBLL u)
+        public bool CustomerRemove(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2292,7 +2294,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool POUpdate(SPPDataBLL u)
+        public bool POUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2369,7 +2371,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool PORemove(SPPDataBLL u)
+        public bool PORemove(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2416,7 +2418,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool POToDeliveryDataUpdate(SPPDataBLL u)
+        public bool POToDeliveryDataUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2467,7 +2469,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool PODeliveredDataUpdate(SPPDataBLL u)
+        public bool PODeliveredDataUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2518,7 +2520,211 @@ namespace FactoryManagementSoftware.DAL
 
         }
 
-        public bool PODelete(SPPDataBLL u)
+        public bool SetPOPriorityUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_po 
+                            SET "
+                            + PriorityLevel + "=@priority_level,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE po_code=@PO_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@priority_level", u.priority_level);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+
+        }
+
+        public bool SetItemPriorityUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_po 
+                            SET "
+                            + PriorityLevel + "=@priority_level,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@priority_level", u.priority_level);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+
+        }
+
+        public bool SetCustomerPriorityUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_po 
+                            SET "
+                            + PriorityLevel + "=@priority_level,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE customer_tbl_code=@Customer_tbl_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@priority_level", u.priority_level);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+
+        }
+
+        public bool POFreezeUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_po 
+                            SET "
+                            + Freeze + "=@Freeze,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE po_code=@PO_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@Freeze", u.Freeze);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+
+        }
+
+        public bool PODelete(SBBDataBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -2557,7 +2763,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool DOUpdate(SPPDataBLL u)
+        public bool DOUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2614,7 +2820,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool DORemovedStatusAndDoNoUpdate(SPPDataBLL u)
+        public bool DORemovedStatusAndDoNoUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2666,7 +2872,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool DONoChange(SPPDataBLL u, string oldDoNo)
+        public bool DONoChange(SBBDataBLL u, string oldDoNo)
         {
             bool isSuccess = false;
 
@@ -2717,7 +2923,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool DODelivered(SPPDataBLL u)
+        public bool DODelivered(SBBDataBLL u)
         {
             bool isSuccess = false;
 
@@ -2769,7 +2975,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool DORemove(SPPDataBLL u)
+        public bool DORemove(SBBDataBLL u)
         {
             bool isSuccess = false;
 

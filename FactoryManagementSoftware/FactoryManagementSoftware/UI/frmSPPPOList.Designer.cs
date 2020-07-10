@@ -465,6 +465,7 @@
             this.dgvPOList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPOList_CellClick);
             this.dgvPOList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPOList_CellContentClick);
             this.dgvPOList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPOList_CellDoubleClick);
+            this.dgvPOList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvPOList_CellFormatting);
             this.dgvPOList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvPOList_CellMouseDown);
             this.dgvPOList.SelectionChanged += new System.EventHandler(this.dgvPOList_SelectionChanged);
             // 

@@ -64,7 +64,7 @@ namespace FactoryManagementSoftware.UI
         facDAL dalFac = new facDAL();
         pmmaDateDAL dalPMMADate = new pmmaDateDAL();
         userDAL dalUser = new userDAL();
-        SPPDataDAL dalSPP = new SPPDataDAL();
+        SBBDataDAL dalSPP = new SBBDataDAL();
 
         Tool tool = new Tool();
         Text text = new Text();
@@ -745,8 +745,6 @@ namespace FactoryManagementSoftware.UI
 
                         if (itemType == "SPP")
                         {
-                            
-
                             foreach (DataRow row in dt_SppCustomer.Rows)
                             {
                                 string fullName = row[dalSPP.FullName].ToString();
@@ -761,12 +759,10 @@ namespace FactoryManagementSoftware.UI
                             }
                         }
 
-                        if (trfItemCode == itemCode &&  tool.IfFactoryExists(trfFrom) && !tool.IfFactoryExists(trfTo) && listedCustomer)
+                        if (trfItemCode == itemCode && (listedCustomer || itemType != "SPP" || inOutType != inOutType_InOut || inOutType != inOutType_Out)) //tool.IfFactoryExists(trfFrom) && !tool.IfFactoryExists(trfTo)
                         {
                             itemFound = true;
                             
-
-
                             double trfQty = double.TryParse(trfRow[dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : 0;
 
                             trfQty = Math.Round(trfQty, 2);
@@ -833,7 +829,14 @@ namespace FactoryManagementSoftware.UI
                                         preYear = year;
                                     }
 
+                                    int bagQty = 0;
 
+                                    if (qtyPerBag != 0)
+                                    {
+                                        bagQty = (int)singleInQty / qtyPerBag;
+                                        row_Out[trfDate.ToString("dd/MM yy")] = singleInQty + " ( " + bagQty + " BAGS)";
+                                    }
+                                    else
                                     row_In[trfDate.ToString("dd/MM yy")] = singleInQty;
                                 }
 
@@ -852,6 +855,14 @@ namespace FactoryManagementSoftware.UI
                                         preYear = year;
                                     }
 
+                                    int bagQty = 0;
+
+                                    if (qtyPerBag != 0)
+                                    {
+                                        bagQty = (int)singleInQty / qtyPerBag;
+                                        row_In[month + "/" + year] = singleInQty + " ( " + bagQty + " BAGS)";
+                                    }
+                                    else
                                     row_In[month + "/" + year] = singleInQty;
                                 }
 
@@ -868,6 +879,14 @@ namespace FactoryManagementSoftware.UI
                                         preYear = year;
                                     }
 
+                                    int bagQty = 0;
+
+                                    if (qtyPerBag != 0)
+                                    {
+                                        bagQty = (int)singleInQty / qtyPerBag;
+                                        row_In[year.ToString()] = singleInQty + " ( " + bagQty + " BAGS)";
+                                    }
+                                    else
                                     row_In[year.ToString()] = singleInQty;
                                 }
 
@@ -1448,7 +1467,7 @@ namespace FactoryManagementSoftware.UI
             bool fromFactory = tool.IfFactoryExists(dt_Fac, trfFrom);
             bool toFactory = tool.IfFactoryExists(dt_Fac, trfTo);
 
-            if (!fromFactory && toFactory)
+            if (!fromFactory && toFactory && (trfFrom == text.Assembly || trfFrom == text.Production))
             {
                 return true;
             }

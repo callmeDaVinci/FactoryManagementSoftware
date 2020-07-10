@@ -29,8 +29,8 @@ namespace FactoryManagementSoftware.UI
         facDAL dalFac = new facDAL();
         pmmaDateDAL dalPMMADate = new pmmaDateDAL();
         userDAL dalUser = new userDAL();
-        SPPDataDAL dalSPP = new SPPDataDAL();
-        SPPDataBLL uSpp = new SPPDataBLL();
+        SBBDataDAL dalSPP = new SBBDataDAL();
+        SBBDataBLL uSpp = new SBBDataBLL();
         historyDAL dalHistory = new historyDAL();
         historyBLL uHistory = new historyBLL();
         planningDAL dalPlan = new planningDAL();
@@ -58,6 +58,7 @@ namespace FactoryManagementSoftware.UI
         readonly string Type_Part = "PART";
 
         private bool Loaded = false;
+
         public void LoadTypeCMB(ComboBox cmb)
         {
 
@@ -696,9 +697,17 @@ namespace FactoryManagementSoftware.UI
             WorkInProgressMessage();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void OpenDeliveryPlanning(object sender, EventArgs e)
         {
-            WorkInProgressMessage();
+            frmSBBDeliveryPlanning frm = new frmSBBDeliveryPlanning
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Cursor = Cursors.WaitCursor;
+           
+            frm.ShowDialog();
+
+            Cursor = Cursors.Arrow;
         }
 
         private void button5_Click(object sender, EventArgs e)

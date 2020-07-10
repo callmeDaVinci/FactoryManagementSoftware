@@ -369,7 +369,7 @@ namespace FactoryManagementSoftware.Module
 
         public bool IfPONoExist(string poNO)
         {
-            SPPDataDAL dalSPP = new SPPDataDAL();
+            SBBDataDAL dalSPP = new SBBDataDAL();
             DataTable dt_PO = dalSPP.POSelect();
 
             foreach (DataRow row in dt_PO.Rows)
@@ -392,7 +392,7 @@ namespace FactoryManagementSoftware.Module
 
         public bool IfDONoExist(string doNO)
         {
-            SPPDataDAL dalSPP = new SPPDataDAL();
+            SBBDataDAL dalSPP = new SBBDataDAL();
             DataTable dt_DO = dalSPP.DOSelect();
 
             foreach(DataRow row in dt_DO.Rows)
@@ -416,7 +416,7 @@ namespace FactoryManagementSoftware.Module
 
         public bool IfDONoExistInRemovedDO(string doNO)
         {
-            SPPDataDAL dalSPP = new SPPDataDAL();
+            SBBDataDAL dalSPP = new SBBDataDAL();
             DataTable dt_DO = dalSPP.DOSelect();
 
             foreach (DataRow row in dt_DO.Rows)
@@ -443,7 +443,7 @@ namespace FactoryManagementSoftware.Module
         public int GetNewRemovedDONo()
         {
             int DoNo = -1;
-            SPPDataDAL dalSPP = new SPPDataDAL();
+            SBBDataDAL dalSPP = new SBBDataDAL();
 
             DataTable dt = dalSPP.DOSelect();
             dt.DefaultView.Sort = dalSPP.DONo + " ASC";
@@ -472,7 +472,7 @@ namespace FactoryManagementSoftware.Module
         public int GetNewDONo()
         {
             int DoNo = 1;
-            SPPDataDAL dalSPP = new SPPDataDAL();
+            SBBDataDAL dalSPP = new SBBDataDAL();
 
             DataTable dt = dalSPP.DOSelect();
             dt.DefaultView.Sort = dalSPP.DONo + " DESC";
@@ -1005,7 +1005,7 @@ namespace FactoryManagementSoftware.Module
         {
             bool result = false;
 
-            SPPDataDAL dalSPP = new SPPDataDAL();
+            SBBDataDAL dalSPP = new SBBDataDAL();
 
             DataTable dt = dalSPP.CustomerSelect();
 
@@ -1229,7 +1229,7 @@ namespace FactoryManagementSoftware.Module
             int pendingPOQty = 0;
             int pendingCustQty = 0;
 
-            SPPDataDAL dalSPP = new SPPDataDAL();
+            SBBDataDAL dalSPP = new SBBDataDAL();
 
             DataTable dt = NewPOTable();
 
@@ -1283,7 +1283,7 @@ namespace FactoryManagementSoftware.Module
                     }
                     else if (prePOCode != poCode)
                     {
-                        progress = Convert.ToInt32((float)deliveredQty / orderQty * 100);
+                        progress = (int)((float)deliveredQty / orderQty * 100);
                         dataMatched = true;
 
                         #region PO TYPE
@@ -1329,7 +1329,7 @@ namespace FactoryManagementSoftware.Module
 
             }
 
-            progress = Convert.ToInt32((float)deliveredQty / orderQty * 100);
+            progress = (int)((float)deliveredQty / orderQty * 100);
             dataMatched = true;
 
             #region PO TYPE
@@ -1388,7 +1388,7 @@ namespace FactoryManagementSoftware.Module
             int pendingDOQty = 0;
             int pendingCustQty = 0;
             int totalBag = 0;
-            SPPDataDAL dalSPP = new SPPDataDAL();
+            SBBDataDAL dalSPP = new SBBDataDAL();
 
             DataTable dt = NewDOTable();
             DataRow dt_row;

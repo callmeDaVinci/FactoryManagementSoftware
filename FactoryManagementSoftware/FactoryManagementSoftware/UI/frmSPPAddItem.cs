@@ -63,7 +63,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        SPPDataDAL dalData = new SPPDataDAL();
+        SBBDataDAL dalData = new SBBDataDAL();
         itemDAL dalItem = new itemDAL();
         Tool tool = new Tool();
         Text text = new Text();

@@ -99,8 +99,8 @@ namespace FactoryManagementSoftware.UI
         Tool tool = new Tool();
         Text text = new Text();
 
-        SPPDataDAL dalData = new SPPDataDAL();
-        SPPDataBLL uData = new SPPDataBLL();
+        SBBDataDAL dalData = new SBBDataDAL();
+        SBBDataBLL uData = new SBBDataBLL();
 
         #endregion
 

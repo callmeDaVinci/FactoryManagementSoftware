@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FactoryManagementSoftware.BLL
 {
-    class SPPDataBLL
+    class SBBDataBLL
     {
         //common
         public int Table_Code { get; set; }
@@ -88,7 +88,7 @@ namespace FactoryManagementSoftware.BLL
         public DateTime Updated_Date { get; set; }
         public int Updated_By { get; set; }
         public bool IsRemoved { get; set; }
-
-        
+        public bool Freeze { get; set; }
+        public int priority_level { get; set; }
     }
 }

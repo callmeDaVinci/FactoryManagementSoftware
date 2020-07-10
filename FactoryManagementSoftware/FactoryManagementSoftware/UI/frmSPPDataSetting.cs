@@ -24,8 +24,8 @@ namespace FactoryManagementSoftware.UI
             InitializeData();
         }
 
-        SPPDataDAL dalData = new SPPDataDAL();
-        SPPDataBLL uData = new SPPDataBLL();
+        SBBDataDAL dalData = new SBBDataDAL();
+        SBBDataBLL uData = new SBBDataBLL();
 
         itemDAL dalItem = new itemDAL();
 

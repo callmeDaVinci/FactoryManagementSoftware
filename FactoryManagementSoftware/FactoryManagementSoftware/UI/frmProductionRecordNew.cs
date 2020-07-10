@@ -1055,8 +1055,6 @@ namespace FactoryManagementSoftware.UI
 
                 LoadParentList(itemCode);
 
-               
-
                 int macID = Convert.ToInt32(dgvItemList.Rows[selectedItem].Cells[header_Machine].Value.ToString());
 
 
@@ -1132,6 +1130,10 @@ namespace FactoryManagementSoftware.UI
 
                 }
 
+
+                
+                txtOut.Text ="0";
+                txtIn.Text = "0";
 
                 //get balance of last shift
                 txtBalanceOfLastShift.Text = GetLatestBalanceLeft(dalProRecord.Select(), planID).ToString();

@@ -40,8 +40,8 @@ namespace FactoryManagementSoftware.UI
         facDAL dalFac = new facDAL();
         pmmaDateDAL dalPMMADate = new pmmaDateDAL();
         userDAL dalUser = new userDAL();
-        SPPDataDAL dalSPP = new SPPDataDAL();
-        SPPDataBLL uSpp = new SPPDataBLL();
+        SBBDataDAL dalSPP = new SBBDataDAL();
+        SBBDataBLL uSpp = new SBBDataBLL();
         historyDAL dalHistory = new historyDAL();
         historyBLL uHistory = new historyBLL();
 

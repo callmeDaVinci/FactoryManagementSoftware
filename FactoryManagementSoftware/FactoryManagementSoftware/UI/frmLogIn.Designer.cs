@@ -36,14 +36,14 @@
             this.gbtnLogin = new Guna.UI.WinForms.GunaGradientButton();
             this.gtxtUsername = new Guna.UI.WinForms.GunaTextBox();
             this.gtxtPassword = new Guna.UI.WinForms.GunaTextBox();
-            this.gunaPictureBox1 = new Guna.UI.WinForms.GunaPictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.gunaPanel1 = new Guna.UI.WinForms.GunaPanel();
             this.lblDate = new System.Windows.Forms.Label();
+            this.gunaPictureBox1 = new Guna.UI.WinForms.GunaPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gunaPictureBox1)).BeginInit();
             this.gunaPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gunaPictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // errorProvider1
@@ -116,7 +116,7 @@
             this.gtxtUsername.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.gtxtUsername.FocusedForeColor = System.Drawing.SystemColors.ControlText;
             this.gtxtUsername.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gtxtUsername.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.gtxtUsername.ForeColor = System.Drawing.Color.White;
             this.gtxtUsername.Location = new System.Drawing.Point(299, 160);
             this.gtxtUsername.Name = "gtxtUsername";
             this.gtxtUsername.PasswordChar = '\0';
@@ -138,7 +138,7 @@
             this.gtxtPassword.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.gtxtPassword.FocusedForeColor = System.Drawing.SystemColors.ControlText;
             this.gtxtPassword.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gtxtPassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.gtxtPassword.ForeColor = System.Drawing.Color.White;
             this.gtxtPassword.Location = new System.Drawing.Point(299, 241);
             this.gtxtPassword.Name = "gtxtPassword";
             this.gtxtPassword.PasswordChar = '*';
@@ -148,18 +148,6 @@
             this.gtxtPassword.TabIndex = 7;
             this.gtxtPassword.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             this.gtxtPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox2_KeyDown);
-            // 
-            // gunaPictureBox1
-            // 
-            this.gunaPictureBox1.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.Picture11;
-            this.gunaPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.gunaPictureBox1.BaseColor = System.Drawing.Color.White;
-            this.gunaPictureBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.gunaPictureBox1.Location = new System.Drawing.Point(0, 423);
-            this.gunaPictureBox1.Name = "gunaPictureBox1";
-            this.gunaPictureBox1.Size = new System.Drawing.Size(846, 106);
-            this.gunaPictureBox1.TabIndex = 9;
-            this.gunaPictureBox1.TabStop = false;
             // 
             // label3
             // 
@@ -202,6 +190,18 @@
             this.lblDate.Text = "Username";
             this.lblDate.Visible = false;
             // 
+            // gunaPictureBox1
+            // 
+            this.gunaPictureBox1.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.Picture12;
+            this.gunaPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.gunaPictureBox1.BaseColor = System.Drawing.Color.White;
+            this.gunaPictureBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.gunaPictureBox1.Location = new System.Drawing.Point(0, 423);
+            this.gunaPictureBox1.Name = "gunaPictureBox1";
+            this.gunaPictureBox1.Size = new System.Drawing.Size(846, 106);
+            this.gunaPictureBox1.TabIndex = 9;
+            this.gunaPictureBox1.TabStop = false;
+            // 
             // frmLogIn
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -221,9 +221,9 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmLogIn_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gunaPictureBox1)).EndInit();
             this.gunaPanel1.ResumeLayout(false);
             this.gunaPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gunaPictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

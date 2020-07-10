@@ -26,8 +26,8 @@ namespace FactoryManagementSoftware.UI
             dt_Customer = dalData.CustomerSelect();
         }
 
-        SPPDataDAL dalData = new SPPDataDAL();
-        SPPDataBLL uData = new SPPDataBLL();
+        SBBDataDAL dalData = new SBBDataDAL();
+        SBBDataBLL uData = new SBBDataBLL();
 
         itemDAL dalItem = new itemDAL();
         Tool tool = new Tool();

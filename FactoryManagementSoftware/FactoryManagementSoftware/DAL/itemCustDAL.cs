@@ -300,6 +300,59 @@ namespace FactoryManagementSoftware.DAL
             return dt;
 
         }
+
+        public DataTable SPPCustSearchWithTypeAndSize(string keywords)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM 
+                                ((tbl_item_cust 
+                                INNER JOIN tbl_cust 
+                                ON tbl_cust.cust_name=@keywords 
+                                AND tbl_item_cust.cust_id = tbl_cust.cust_id) 
+                                INNER JOIN tbl_item 
+                                ON tbl_item_cust.item_code = tbl_item.item_code) 
+                                INNER JOIN tbl_spp_type
+                                ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                                INNER JOIN tbl_spp_size
+                                ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code
+                                FULL JOIN tbl_spp_stdpacking
+                                ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                                ORDER BY tbl_item.item_name ASC";
+
+                
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@keywords", keywords);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+
+        }
+
+       
         public DataTable custSearch(string keywords)
         {
             //static methodd to connect database

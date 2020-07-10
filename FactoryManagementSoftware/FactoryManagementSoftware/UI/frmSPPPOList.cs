@@ -77,8 +77,8 @@ namespace FactoryManagementSoftware.UI
         facDAL dalFac = new facDAL();
         pmmaDateDAL dalPMMADate = new pmmaDateDAL();
         userDAL dalUser = new userDAL();
-        SPPDataDAL dalSPP = new SPPDataDAL();
-        SPPDataBLL uSpp = new SPPDataBLL();
+        SBBDataDAL dalSPP = new SBBDataDAL();
+        SBBDataBLL uSpp = new SBBDataBLL();
         historyDAL dalHistory = new historyDAL();
         historyBLL uHistory = new historyBLL();
 
@@ -102,6 +102,8 @@ namespace FactoryManagementSoftware.UI
         readonly string text_CombineConfirm = "COMBINE CONFIRM";
 
         readonly string text_FullyDelivered = "Fully Delivered";
+        readonly string text_Freeze = "Freeze";
+        readonly string text_Unfreeze = "Unfreeze";
         readonly string text_UndoDelivered = "Undo Delivered";
         readonly string text_EditDelivered = "Edit Delivered Qty";
         readonly string text_StopEdit = "Stop Edit";
@@ -127,6 +129,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_Progress = "PROGRESS";
         readonly string header_Selected = "SELECTED";
         readonly string header_DataMode = "DATA MODE";
+        readonly string header_Freeze = "Freeze";
 
         readonly string header_Index = "#";
         readonly string header_Size = "SIZE";
@@ -196,7 +199,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
-
+            dt.Columns.Add(header_Freeze, typeof(bool));
             dt.Columns.Add(header_PODate, typeof(DateTime));
 
             dt.Columns.Add(header_POCode, typeof(int));
@@ -297,6 +300,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_Progress].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_POCode].Visible = false;
                 dgv.Columns[header_CustomerCode].Visible = false;
+                dgv.Columns[header_Freeze].Visible = false;
             }
             else if (dgv == dgvDOList)
             {
@@ -562,6 +566,7 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow row in dt_POList.Rows)
             {
                 bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+                
 
                 if (!isRemoved)
                 {
@@ -732,7 +737,7 @@ namespace FactoryManagementSoftware.UI
             bool dataMatched = true;
             string PONo = null, ShortName = null, FullName = null;
             string customer = null;
-
+            bool isFreeze = false;
             DateTime PODate = DateTime.MaxValue;
 
             foreach (DataRow row in dt_POList.Rows)
@@ -748,6 +753,7 @@ namespace FactoryManagementSoftware.UI
                         prePOCode = poCode;
                         orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
                         deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
+                        isFreeze = bool.TryParse(row[dalSPP.Freeze].ToString(), out isFreeze) ? isFreeze : false;
 
                         PONo = row[dalSPP.PONo].ToString();
 
@@ -766,7 +772,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (prePOCode != poCode)
                     {
-                        progress = Convert.ToInt32((float)deliveredQty / orderQty * 100);
+                        progress = (int)((float)deliveredQty / orderQty * 100);
                         dataMatched = true;
 
                         #region PO TYPE
@@ -809,6 +815,9 @@ namespace FactoryManagementSoftware.UI
                         {
                             dt_row = dt.NewRow();
 
+                            //int test =(int)((float)deliveredQty / orderQty * 100);
+
+                            dt_row[header_Freeze] = isFreeze;
                             dt_row[header_POCode] = prePOCode;
                             dt_row[header_PONoString] = PONo;
                             dt_row[header_PODate] = PODate;
@@ -822,7 +831,7 @@ namespace FactoryManagementSoftware.UI
                         prePOCode = poCode;
                         orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
                         deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
-
+                        isFreeze = bool.TryParse(row[dalSPP.Freeze].ToString(), out isFreeze) ? isFreeze : false;
                         PONo = row[dalSPP.PONo].ToString();
 
                         PODate = Convert.ToDateTime(row[dalSPP.PODate]).Date;
@@ -835,7 +844,7 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            progress = Convert.ToInt32((float)deliveredQty / orderQty * 100);
+            progress = (int)((float)deliveredQty / orderQty * 100);
             dataMatched = true;
 
             #region PO TYPE
@@ -878,6 +887,7 @@ namespace FactoryManagementSoftware.UI
             {
                 dt_row = dt.NewRow();
 
+                dt_row[header_Freeze] = isFreeze;
                 dt_row[header_POCode] = prePOCode;
                 dt_row[header_PONoString] = PONo;
                 dt_row[header_PODate] = PODate;
@@ -3567,6 +3577,14 @@ namespace FactoryManagementSoftware.UI
                     {
                         UndoDelivered();
                     }
+                    else if (ClickedItem.Equals(text_Freeze))
+                    {
+                        FreezePO(true, rowIndex);
+                    }
+                    else if (ClickedItem.Equals(text_Unfreeze))
+                    {
+                        FreezePO(false, rowIndex);
+                    }
                 }
 
 
@@ -3577,6 +3595,52 @@ namespace FactoryManagementSoftware.UI
             {
                 tool.saveToTextAndMessageToUser(ex);
             }
+        }
+
+        private void FreezePO(bool toFreeze, int rowIndex)
+        {
+            DataGridView dgv = dgvPOList;
+
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            int poCode = int.TryParse(dgv.Rows[rowIndex].Cells[header_POCode].Value.ToString(), out poCode)? poCode : -1;
+
+            if(poCode > 0)
+            {
+                uSpp.PO_code = poCode;
+                uSpp.Freeze = toFreeze;
+                uSpp.Updated_Date = DateTime.Now;
+                uSpp.Updated_By = MainDashboard.USER_ID;
+
+                if (!dalSPP.POFreezeUpdate(uSpp))
+                {
+                    MessageBox.Show("Failed to freeze/unfreeze po!");
+
+                }
+                else
+                {
+                    
+                    dgv.Rows[rowIndex].Cells[header_Freeze].Value = toFreeze;
+
+                    if (toFreeze)
+                    {
+                        //MessageBox.Show("PO freeze successfully!");
+                        dgv.Rows[rowIndex].Cells[header_Customer].Style.ForeColor = Color.FromArgb(52, 160, 225);
+                    }
+                    else
+                    {
+                       // MessageBox.Show("PO unfreeze successfully!");
+                        dgv.Rows[rowIndex].Cells[header_Customer].Style.ForeColor = Color.Black;
+                    }
+                    dgv.ClearSelection();
+                }
+            }
+            else
+            {
+                MessageBox.Show("po code invalid");
+            }
+           
+           
         }
 
         private void UndoDelivered()
@@ -3771,35 +3835,44 @@ namespace FactoryManagementSoftware.UI
                 {
                     ContextMenuStrip my_menu = new ContextMenuStrip();
 
-
-                    dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    // Can leave these here - doesn't hurt
-                    dgv.Rows[e.RowIndex].Selected = true;
                     dgv.Focus();
-                    int rowIndex = dgv.CurrentCell.RowIndex;
 
-                    if (dgv.Rows[rowIndex].Cells[header_PONoString].Value != DBNull.Value)
+                    if (dgv.SelectedRows.Count > 0)
                     {
-                        btnEdit.Visible = true;
-                        string code = dgv.Rows[rowIndex].Cells[header_POCode].Value.ToString();
-                        ShowPOItem(code);
+                        //int colIndex = dgv.CurrentCell.ColumnIndex;
+                        dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
 
-                        string progress = dgv.Rows[rowIndex].Cells[header_Progress].Value.ToString();
+                        // Can leave these here - doesn't hurt
+                        dgv.Rows[e.RowIndex].Selected = true;
+                        
+                        int rowIndex = dgv.CurrentCell.RowIndex;
 
-                        if (progress == text_100Percentage)
+                        if (dgv.Rows[rowIndex].Cells[header_PONoString].Value != DBNull.Value)
                         {
-                            //my_menu.Items.Add(text_UndoDelivered).Name = text_UndoDelivered;
+                            btnEdit.Visible = true;
+                            string code = dgv.Rows[rowIndex].Cells[header_POCode].Value.ToString();
+                            ShowPOItem(code);
+
+                            string progress = dgv.Rows[rowIndex].Cells[header_Progress].Value.ToString();
+
+                            if (progress == text_100Percentage)
+                            {
+                                //my_menu.Items.Add(text_UndoDelivered).Name = text_UndoDelivered;
+                            }
+                            else
+                            {
+                                my_menu.Items.Add(text_FullyDelivered).Name = text_FullyDelivered;
+                                my_menu.Items.Add(text_Freeze).Name = text_Freeze;
+                                my_menu.Items.Add(text_Unfreeze).Name = text_Unfreeze;
+                            }
+
+
+                            my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                            my_menu.ItemClicked += new ToolStripItemClickedEventHandler(POList_ItemClicked);
                         }
-                        else
-                        {
-                            my_menu.Items.Add(text_FullyDelivered).Name = text_FullyDelivered;
-                        }
-
-
-                        my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
-
-                        my_menu.ItemClicked += new ToolStripItemClickedEventHandler(POList_ItemClicked);
                     }
+                   
 
                 }
 
@@ -3826,6 +3899,31 @@ namespace FactoryManagementSoftware.UI
                 {
                     dgvItemList.ClearSelection();
                     HighlightSelectedDOItem(dgv.Rows[dgv.CurrentCell.RowIndex].Cells[header_DONoString].Value.ToString());
+                }
+            }
+
+        }
+
+        private void dgvPOList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (POMode)
+            {
+                DataGridView dgv = dgvPOList;
+                int rowIndex = e.RowIndex;
+                int colIndex = e.ColumnIndex;
+
+                if (dgv.Columns[colIndex].Name == header_Customer)
+                {
+                    bool isFreeze = bool.TryParse(dgv.Rows[rowIndex].Cells[header_Freeze].Value.ToString(), out isFreeze) ? isFreeze : false;
+
+                    if (isFreeze)
+                    {
+                        dgv.Rows[rowIndex].Cells[header_Customer].Style.ForeColor = Color.FromArgb(52, 160, 225);
+                    }
+                    else
+                    {
+                        dgv.Rows[rowIndex].Cells[header_Customer].Style.ForeColor = Color.Black;
+                    }
                 }
             }
 
