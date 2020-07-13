@@ -2304,7 +2304,6 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"UPDATE tbl_spp_po 
                             SET "
-                            + POCode + "=@PO_code,"
                             + CustomerTableCode + "=@Customer_tbl_code,"
                             + PONo + "=@PO_no,"
                             + ItemCode + "=@Item_code,"
@@ -2324,7 +2323,6 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
                 cmd.Parameters.AddWithValue("@PO_no", u.PO_no);
                 cmd.Parameters.AddWithValue("@PO_note", u.PO_note);
                 cmd.Parameters.AddWithValue("@PO_date", u.PO_date);
@@ -2436,7 +2434,6 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
 
-                cmd.Parameters.AddWithValue("@Delivered_qty", u.Delivered_qty);
                 cmd.Parameters.AddWithValue("@To_delivery_qty", u.To_delivery_qty);
                 cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);

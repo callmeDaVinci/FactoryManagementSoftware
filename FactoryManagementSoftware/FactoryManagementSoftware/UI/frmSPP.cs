@@ -703,11 +703,9 @@ namespace FactoryManagementSoftware.UI
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
-            Cursor = Cursors.WaitCursor;
            
             frm.ShowDialog();
 
-            Cursor = Cursors.Arrow;
         }
 
         private void button5_Click(object sender, EventArgs e)

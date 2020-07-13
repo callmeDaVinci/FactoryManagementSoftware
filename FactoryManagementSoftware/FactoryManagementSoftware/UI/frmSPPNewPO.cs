@@ -699,7 +699,7 @@ namespace FactoryManagementSoftware.UI
             else if(!poEditing)
             {
                 //check if number exist in db
-                if(tool.IfPONoExist(txtPONo.Text))
+                if(tool.IfPONoExist(txtPONo.Text, cmbCustomer.Text))
                 {
                     lblAvailableResult.Visible = true;
                     result = false;
@@ -775,6 +775,7 @@ namespace FactoryManagementSoftware.UI
 
                 DateTime updatedDate = DateTime.Now;
                 int userID = MainDashboard.USER_ID;
+
                 foreach (DataRow row in dt_CustomerList.Rows)
                 {
                     if (row[dalData.FullName].ToString() == customerFullName)
@@ -784,6 +785,8 @@ namespace FactoryManagementSoftware.UI
                         break;
                     }
                 }
+
+              
 
 
                 uData.PO_date = dtpPODate.Value;
@@ -819,7 +822,6 @@ namespace FactoryManagementSoftware.UI
                     //get po code
                     DataTable dt = dalData.POSelect();
 
-                    
                     if (dt.Rows.Count <= 0)
                     {
                         po_code = 1;
@@ -834,8 +836,6 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     uData.PO_code = po_code;
-
-                   
                 }
 
                 bool failedToInsert = false;
@@ -855,8 +855,11 @@ namespace FactoryManagementSoftware.UI
                         uData.Item_code = itemCode;
                         uData.PO_qty = po_qty;
                         uData.PO_note = note;
-                        
-                        if(dataMode == text_New)
+
+                    
+
+
+                        if (dataMode == text_New)
                         {
                             if (!dalData.InsertPO(uData))
                             {
@@ -875,6 +878,16 @@ namespace FactoryManagementSoftware.UI
                             {
 
                                 MessageBox.Show("Unable to remove " + itemCode + " PO data!");
+                                failedToInsert = true;
+                            }
+                        }
+                        else if (dataMode == text_ToEdit)
+                        {
+                            uData.Table_Code = Convert.ToInt32(tblCode);
+                            if (!dalData.POUpdate(uData))
+                            {
+
+                                MessageBox.Show("Unable to update " + itemCode + " PO data!");
                                 failedToInsert = true;
                             }
                         }

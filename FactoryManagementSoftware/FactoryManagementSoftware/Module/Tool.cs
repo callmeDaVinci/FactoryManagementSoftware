@@ -367,7 +367,7 @@ namespace FactoryManagementSoftware.Module
             }
         }
 
-        public bool IfPONoExist(string poNO)
+        public bool IfPONoExist(string poNO, string custFullName)
         {
             SBBDataDAL dalSPP = new SBBDataDAL();
             DataTable dt_PO = dalSPP.POSelect();
@@ -379,8 +379,9 @@ namespace FactoryManagementSoftware.Module
                 if (!isRemoved)
                 {
                     string pONoFromDB = row[dalSPP.PONo].ToString();
+                    string custFullNameFromDB = row[dalSPP.FullName].ToString();
 
-                    if (poNO == pONoFromDB)
+                    if (poNO == pONoFromDB && custFullName == custFullNameFromDB)
                     {
                         return true;
                     }

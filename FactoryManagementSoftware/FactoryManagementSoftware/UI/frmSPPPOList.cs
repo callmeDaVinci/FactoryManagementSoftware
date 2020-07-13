@@ -510,7 +510,7 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
-        private string GetDONo(DataTable dt_DO, string poNo)
+        private string GetDONo(DataTable dt_DO, string poNo, string custFullName)
         {
             string DONo = "";
 
@@ -519,9 +519,10 @@ namespace FactoryManagementSoftware.UI
             {
                 string currentDO = row[dalSPP.DONo].ToString();
                 string PONo = row[dalSPP.PONo].ToString();
+                string custFullName_DB = row[dalSPP.FullName].ToString();
                 bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
 
-                if (poNo == PONo && !isRemoved)
+                if (poNo == PONo && !isRemoved && custFullName == custFullName_DB)
                 {
                     if (preDoNo == null || preDoNo != currentDO)
                     {
@@ -644,7 +645,7 @@ namespace FactoryManagementSoftware.UI
                             dt_row[header_Customer] = ShortName;
                             dt_row[header_CustomerCode] = CustTblCode;
                             dt_row[header_Progress] = progress + "%";
-                            dt_row[header_DONoString] = GetDONo(dt_DOList, PONo);
+                            dt_row[header_DONoString] = GetDONo(dt_DOList, PONo, FullName);
                             dt.Rows.Add(dt_row);
                         }
 
@@ -690,7 +691,7 @@ namespace FactoryManagementSoftware.UI
                 dt_row[header_Customer] = ShortName;
                 dt_row[header_CustomerCode] = CustTblCode;
                 dt_row[header_Progress] = progress + "%";
-                dt_row[header_DONoString] = GetDONo(dt_DOList, PONo);
+                dt_row[header_DONoString] = GetDONo(dt_DOList, PONo, FullName);
                 dt.Rows.Add(dt_row);
             }
 
@@ -824,7 +825,7 @@ namespace FactoryManagementSoftware.UI
                             dt_row[header_Customer] = ShortName;
                             dt_row[header_CustomerCode] = CustTblCode;
                             dt_row[header_Progress] = progress + "%";
-                            dt_row[header_DONoString] = GetDONo(dt_DOList, PONo);
+                            dt_row[header_DONoString] = GetDONo(dt_DOList, PONo, FullName);
                             dt.Rows.Add(dt_row);
                         }
 
@@ -894,7 +895,7 @@ namespace FactoryManagementSoftware.UI
                 dt_row[header_Customer] = ShortName;
                 dt_row[header_CustomerCode] = CustTblCode;
                 dt_row[header_Progress] = progress + "%";
-                dt_row[header_DONoString] = GetDONo(dt_DOList, PONo);
+                dt_row[header_DONoString] = GetDONo(dt_DOList, PONo, FullName);
                 dt.Rows.Add(dt_row);
             }
 

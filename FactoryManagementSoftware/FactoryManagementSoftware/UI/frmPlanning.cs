@@ -570,6 +570,79 @@ namespace FactoryManagementSoftware.UI
             return deliveredOut;
         }
 
+        private int CalculateEstimateOrder(string _ItemCode)
+        {
+            DataTable dt_trfToCustomer = dalTrfHist.ItemToAllCustomerSearch(_ItemCode);
+
+            int estimateOrder = 0;
+
+            int preMonth = 0, preYear = 0, dividedQty = 0;
+            double singleOutQty = 0, totalTrfOutQty = 0;
+
+            int monthNow = DateTime.Now.Month;
+            int yearNow = DateTime.Now.Year;
+
+            foreach (DataRow row in dt_trfToCustomer.Rows)
+            {
+                string trfResult = row[dalTrfHist.TrfResult].ToString();
+                string itemCode = row[dalTrfHist.TrfItemCode].ToString();
+
+                if (trfResult == "Passed" && _ItemCode == itemCode)
+                {
+                    double trfQty = double.TryParse(row[dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : 0;
+                    DateTime trfDate = DateTime.TryParse(row[dalTrfHist.TrfDate].ToString(), out trfDate) ? trfDate : DateTime.MaxValue;
+
+                    int month = 0;
+                    int year = 0;
+
+                    if (trfDate == DateTime.MaxValue)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        month = trfDate.Month;
+                        year = trfDate.Year;
+
+                        if (month != monthNow || year != yearNow)
+                        {
+                            totalTrfOutQty += trfQty;
+
+                        }
+
+                        if (preMonth != 0 && preYear != 0 && preMonth == month && preYear == year)
+                        {
+                            singleOutQty += trfQty;
+                        }
+                        else
+                        {
+                            singleOutQty = trfQty;
+                            preMonth = month;
+                            preYear = year;
+
+                            if (month != monthNow || year != yearNow)
+                            {
+                                dividedQty++;
+                            }
+
+                        }
+
+                    }
+                }
+            }
+
+            if (totalTrfOutQty == 0 || dividedQty == 0)
+            {
+                estimateOrder = 0;
+            }
+            else
+            {
+                estimateOrder = (int)Math.Round(totalTrfOutQty / dividedQty / 100, 0) * 100; // round up to nearest 100
+            }
+
+            return estimateOrder;
+        }
+
         private void AddDataToForecastTable()
         {
             DataTable dt_Forecast = NewForecastTable();
@@ -579,6 +652,7 @@ namespace FactoryManagementSoftware.UI
             int month, year;
             string itemCode = cmbPartCode.Text;
 
+            
             if (!string.IsNullOrEmpty(itemCode))
             {
                 float readyStock = dalItem.getStockQty(itemCode);
@@ -595,19 +669,39 @@ namespace FactoryManagementSoftware.UI
                 string monthName;
                 monthName = new DateTime(year, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
 
-                float forecast1 = GetForecastQty(dt_ItemForecast, itemCode, 1);
-                float forecast2 = GetForecastQty(dt_ItemForecast, itemCode, 2);
-                float forecast3 = GetForecastQty(dt_ItemForecast, itemCode, 3);
-
-                forecast1 = forecast1 == -1 ? 0 : forecast1;
-                forecast2 = forecast2 == -1 ? 0 : forecast2;
-                forecast3 = forecast3 == -1 ? 0 : forecast3;
+                
 
                 string customer = tool.getCustomerName(itemCode);
                 DataTable dt_TrfHist = dalTrfHist.rangeItemToCustomerSearch(customer);
                 DataTable dt_PMMADate = dalPmmaDate.Select();
 
                 float deliveredOut = GetMaxOut(itemCode, customer, 0, dt_TrfHist, dt_PMMADate);
+
+                float forecast1, forecast2, forecast3;
+
+                if (customer != "PMMA")
+                {
+                    forecast1 = CalculateEstimateOrder(itemCode);
+                    forecast2 = forecast1;
+                    forecast3 = forecast1;
+                }
+                else
+                {
+                    forecast1 = GetForecastQty(dt_ItemForecast, itemCode, 1);
+                    forecast2 = GetForecastQty(dt_ItemForecast, itemCode, 2);
+                    forecast3 = GetForecastQty(dt_ItemForecast, itemCode, 3);
+                }
+               
+
+                forecast1 = forecast1 == -1 ? 0 : forecast1;
+                forecast2 = forecast2 == -1 ? 0 : forecast2;
+
+                forecast3 = forecast3 == -1 ? 0 : forecast3;
+
+                if (deliveredOut > forecast1)
+                {
+                    deliveredOut = 0;
+                }
 
                 float balance1 = readyStock - forecast1 + deliveredOut;
                 float balance2 = balance1 - forecast2;

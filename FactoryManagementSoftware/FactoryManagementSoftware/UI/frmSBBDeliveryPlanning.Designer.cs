@@ -35,6 +35,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnFillALL = new System.Windows.Forms.Button();
+            this.btnUpdate = new System.Windows.Forms.Button();
+            this.lblAssemblyNeeded = new System.Windows.Forms.Label();
+            this.lblProductionAlert = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvList)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -79,7 +83,7 @@
             // 
             this.cmbEditUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbEditUnit.FormattingEnabled = true;
-            this.cmbEditUnit.Location = new System.Drawing.Point(316, 49);
+            this.cmbEditUnit.Location = new System.Drawing.Point(14, 42);
             this.cmbEditUnit.Name = "cmbEditUnit";
             this.cmbEditUnit.Size = new System.Drawing.Size(184, 20);
             this.cmbEditUnit.TabIndex = 180;
@@ -89,12 +93,13 @@
             // 
             this.cbMergePO.AutoSize = true;
             this.cbMergePO.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbMergePO.Location = new System.Drawing.Point(16, 46);
+            this.cbMergePO.Location = new System.Drawing.Point(223, 39);
             this.cbMergePO.Name = "cbMergePO";
             this.cbMergePO.Size = new System.Drawing.Size(252, 23);
             this.cbMergePO.TabIndex = 182;
             this.cbMergePO.Text = "MERGE PO WITH SAME CUSTOMER";
             this.cbMergePO.UseVisualStyleBackColor = true;
+            this.cbMergePO.Visible = false;
             // 
             // label1
             // 
@@ -110,7 +115,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(312, 27);
+            this.label2.Location = new System.Drawing.Point(10, 20);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 19);
             this.label2.TabIndex = 184;
@@ -124,12 +129,75 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.cbMergePO);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(21, 22);
+            this.groupBox1.Location = new System.Drawing.Point(21, 15);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1303, 80);
+            this.groupBox1.Size = new System.Drawing.Size(1303, 78);
             this.groupBox1.TabIndex = 185;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "SETTING";
+            // 
+            // btnFillALL
+            // 
+            this.btnFillALL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFillALL.BackColor = System.Drawing.Color.White;
+            this.btnFillALL.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFillALL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFillALL.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFillALL.ForeColor = System.Drawing.Color.Black;
+            this.btnFillALL.Location = new System.Drawing.Point(1200, 102);
+            this.btnFillALL.Margin = new System.Windows.Forms.Padding(4, 1, 4, 5);
+            this.btnFillALL.Name = "btnFillALL";
+            this.btnFillALL.Size = new System.Drawing.Size(124, 32);
+            this.btnFillALL.TabIndex = 186;
+            this.btnFillALL.Text = "FILL ALL";
+            this.btnFillALL.UseVisualStyleBackColor = false;
+            this.btnFillALL.Click += new System.EventHandler(this.btnFillALL_Click);
+            // 
+            // btnUpdate
+            // 
+            this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(160)))), ((int)(((byte)(225)))));
+            this.btnUpdate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdate.ForeColor = System.Drawing.Color.White;
+            this.btnUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnUpdate.Location = new System.Drawing.Point(1071, 102);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(1);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(124, 32);
+            this.btnUpdate.TabIndex = 187;
+            this.btnUpdate.Text = "UPDATE";
+            this.btnUpdate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnUpdate.UseVisualStyleBackColor = false;
+            this.btnUpdate.Visible = false;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            // 
+            // lblAssemblyNeeded
+            // 
+            this.lblAssemblyNeeded.AutoSize = true;
+            this.lblAssemblyNeeded.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAssemblyNeeded.ForeColor = System.Drawing.Color.Red;
+            this.lblAssemblyNeeded.Location = new System.Drawing.Point(103, 115);
+            this.lblAssemblyNeeded.Name = "lblAssemblyNeeded";
+            this.lblAssemblyNeeded.Size = new System.Drawing.Size(145, 19);
+            this.lblAssemblyNeeded.TabIndex = 188;
+            this.lblAssemblyNeeded.Text = "ASSEMBLY NEEDED !!!";
+            this.lblAssemblyNeeded.Visible = false;
+            // 
+            // lblProductionAlert
+            // 
+            this.lblProductionAlert.AutoSize = true;
+            this.lblProductionAlert.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblProductionAlert.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProductionAlert.ForeColor = System.Drawing.Color.Red;
+            this.lblProductionAlert.Location = new System.Drawing.Point(280, 115);
+            this.lblProductionAlert.Name = "lblProductionAlert";
+            this.lblProductionAlert.Size = new System.Drawing.Size(168, 19);
+            this.lblProductionAlert.TabIndex = 189;
+            this.lblProductionAlert.Text = "PRODUCTION NEEDED !!!";
+            this.lblProductionAlert.Visible = false;
+            this.lblProductionAlert.Click += new System.EventHandler(this.lblProductionAlert_Click);
             // 
             // frmSBBDeliveryPlanning
             // 
@@ -137,6 +205,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1348, 721);
+            this.Controls.Add(this.lblProductionAlert);
+            this.Controls.Add(this.lblAssemblyNeeded);
+            this.Controls.Add(this.btnUpdate);
+            this.Controls.Add(this.btnFillALL);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dgvList);
@@ -144,6 +216,7 @@
             this.Name = "frmSBBDeliveryPlanning";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmSBBDeliveryPlanning";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSBBDeliveryPlanning_FormClosing);
             this.Load += new System.EventHandler(this.frmSBBDeliveryPlanning_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvList)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -161,5 +234,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btnFillALL;
+        private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Label lblAssemblyNeeded;
+        private System.Windows.Forms.Label lblProductionAlert;
     }
 }
