@@ -746,7 +746,7 @@ namespace FactoryManagementSoftware.UI
 
                 dt.Rows.Add(dt_Row);
 
-                frmSPPPOList frm = new frmSPPPOList(dt)
+                frmSPPPOList frm = new frmSPPPOList(dt, true)
                 {
                     StartPosition = FormStartPosition.CenterScreen
                 };

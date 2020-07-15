@@ -694,17 +694,17 @@ namespace FactoryManagementSoftware.UI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            WorkInProgressMessage();
-        }
-
-        private void OpenDeliveryPlanning(object sender, EventArgs e)
-        {
             frmSBBDeliveryPlanning frm = new frmSBBDeliveryPlanning
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
-           
+
             frm.ShowDialog();
+        }
+
+        private void OpenDeliveryPlanning(object sender, EventArgs e)
+        {
+            WorkInProgressMessage();
 
         }
 
@@ -757,7 +757,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (status == text.planning_status_running)
                 {
-                    dgv.Rows[row].Cells[header_ProductionString].Style.ForeColor = Color.FromArgb(52, 139, 209);
+                    dgv.Rows[row].Cells[header_ProductionString].Style.ForeColor = Color.FromArgb(0, 184, 148);
                 }
                 else
                 {

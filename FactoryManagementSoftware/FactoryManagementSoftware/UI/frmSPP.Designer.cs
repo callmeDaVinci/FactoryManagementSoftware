@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.button4 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
@@ -50,7 +50,6 @@
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.button10 = new System.Windows.Forms.Button();
             this.btnLOAD = new System.Windows.Forms.Button();
             this.cbInPcsUnit = new System.Windows.Forms.CheckBox();
@@ -179,6 +178,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(225, 202);
             this.button2.TabIndex = 145;
+            this.button2.Text = "PO VS STOCK";
             this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.button2.UseVisualStyleBackColor = false;
@@ -392,7 +392,6 @@
             this.btnDeliveryPlanning.Name = "btnDeliveryPlanning";
             this.btnDeliveryPlanning.Size = new System.Drawing.Size(225, 204);
             this.btnDeliveryPlanning.TabIndex = 146;
-            this.btnDeliveryPlanning.Text = "DELIVERY PLANNING";
             this.btnDeliveryPlanning.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDeliveryPlanning.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnDeliveryPlanning.UseVisualStyleBackColor = false;
@@ -450,7 +449,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.button10);
             this.groupBox1.Controls.Add(this.btnLOAD);
             this.groupBox1.Controls.Add(this.cbInPcsUnit);
@@ -465,18 +463,6 @@
             this.groupBox1.TabIndex = 177;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "STOCK ESTIMATE";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.label3.Location = new System.Drawing.Point(718, 58);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(179, 12);
-            this.label3.TabIndex = 183;
-            this.label3.Text = "BLUE COLOR: PRODUCTION RUNNING";
             // 
             // button10
             // 
@@ -562,14 +548,14 @@
             this.dgvStockAlert.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvStockAlert.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStockAlert.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStockAlert.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStockAlert.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvStockAlert.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvStockAlert.Location = new System.Drawing.Point(6, 71);
             this.dgvStockAlert.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
@@ -908,6 +894,5 @@
         private System.Windows.Forms.ComboBox cmbType;
         private System.Windows.Forms.Button btnLOAD;
         private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Label label3;
     }
 }

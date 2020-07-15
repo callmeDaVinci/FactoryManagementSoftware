@@ -48,7 +48,7 @@ namespace FactoryManagementSoftware.UI
             callFromDOPage = true;
         }
 
-        public frmSPPPOList(DataTable dt)
+        public frmSPPPOList(DataTable dt, bool toEdit)
         {
             InitializeComponent();
 
@@ -58,14 +58,28 @@ namespace FactoryManagementSoftware.UI
 
 
             btnFilter.Text = text_HideFilter;
+
             dt_POList = dalSPP.POSelect();
+
             LoadCustomerList();
 
-            EditMode = true;
+            EditMode = toEdit;
 
-            AddingDOStep2();
+            if(toEdit)
+            {
+                AddingDOStep2();
+                POToDO(dt);
+            }
+            else
+            {
+                callFromPlanner = true;
+                dt_PlannerPO = dt;
 
-            POToDO(dt);
+                //AddingDOStep1();
+                //POToDOFromPlanner(dt);
+                //EditMode = true;
+            }
+           
 
         }
 
@@ -159,6 +173,7 @@ namespace FactoryManagementSoftware.UI
         private DataTable dt_DOItemList_1;
         private DataTable dt_DOEditList;
         private DataTable dt_DOItemOriginalList;
+        private DataTable dt_PlannerPO;
 
         private bool addingDOMode = false;
         private bool ableToNextStep = false;
@@ -170,6 +185,7 @@ namespace FactoryManagementSoftware.UI
         private bool EditMode = false;
         private bool DeliveredQtyEditMode = false;
         private bool callFromDOPage = false;
+        private bool callFromPlanner = false;
 
         private int selectedDO = 0;
         private int oldData = 0;
@@ -452,6 +468,7 @@ namespace FactoryManagementSoftware.UI
             {
                 ShowPOListUI();
                 LoadPOList();
+
             }
             else
             {
@@ -461,9 +478,25 @@ namespace FactoryManagementSoftware.UI
 
             lblSubList.Text = text_POItemList;
 
-            if (POMode && callFromDOPage)
+            if (POMode && (callFromDOPage || callFromPlanner))
             {
+                if(callFromPlanner)
+                {
+                    DataTable dt = (DataTable)dgvPOList.DataSource;
+
+                    if (!dt.Columns.Contains(header_Selected))
+                    {
+                        DataColumn dc = new DataColumn(header_Selected, typeof(bool));
+
+                        dt.Columns.Add(dc);
+                        btnAddDO.Enabled = false;
+                        btnAddDO.Text = text_SelectPO;
+                    }
+                }
+
                 AddingDOStep1();
+                AddingDOStep2();
+                POToDO();
             }
         }
 
@@ -1351,9 +1384,28 @@ namespace FactoryManagementSoftware.UI
 
             if (dt.Columns.Contains(header_Selected))
             {
+                if(callFromPlanner)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string poNo = row[header_PONoString].ToString();
+
+                        foreach (DataRow rowPlanner in dt_PlannerPO.Rows)
+                        {
+                            if (poNo == rowPlanner[header_PONoString].ToString())
+                            {
+                                row[header_Selected] = true;
+                            }
+                        }
+
+
+                    }
+                }
+
                 foreach (DataRow row in dt.Rows)
                 {
                     bool selected = bool.TryParse(row[header_Selected].ToString(), out selected) ? selected : false;
+                    string poNo = row[header_PONoString].ToString();
 
                     if (selected)
                     {
@@ -1874,6 +1926,69 @@ namespace FactoryManagementSoftware.UI
 
             dgvItemList.ClearSelection();
             #endregion
+        }
+
+
+
+        private void POToDOFromPlanner(DataTable dt) 
+        {
+            TotalToDeliveryBag = 0;
+            //DataTable dt = (DataTable)dgvPOList.DataSource;
+
+            DataTable dt_DO = NewDOTable();
+            DataRow dt_Row;
+
+            int doNo = tool.GetNewDONo();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                bool selected = false;
+
+                if (dt.Columns.Contains(header_Selected))
+                {
+                    selected = bool.TryParse(row[header_Selected].ToString(), out selected) ? selected : false;
+                }
+
+                if (selected)
+                {
+                    dt_Row = dt_DO.NewRow();
+
+                    dt_Row[header_DONo] = doNo;
+                    dt_Row[header_DONoString] = doNo.ToString("D6") + "-NEW";
+                    dt_Row[header_PONoString] = row[header_PONoString];
+                    dt_Row[header_POCode] = row[header_POCode];
+                    dt_Row[header_PODate] = row[header_PODate];
+                    dt_Row[header_Customer] = row[header_Customer];
+                    dt_Row[header_CustomerCode] = row[header_CustomerCode];
+                    dt_Row[header_StockCheck] = text_AvailableStock;
+                    dt_Row[header_CombinedCode] = DBNull.Value;
+                    dt_DO.Rows.Add(dt_Row);
+                    doNo++;
+                }
+            }
+
+            if (IfCustomerDuplicated(dt_DO.Copy()))
+            {
+                btnAddNewPO.Visible = true;
+            }
+            else
+            {
+                btnAddNewPO.Visible = false;
+            }
+
+
+            CombineDOItemList(dt_DO);
+            DOItemStockChecking(dt_DO);
+
+            dgvItemList.DataSource = dt_DOItemList_1;
+            ///DgvUIEdit(dgvItemList);
+            dgvItemList.ClearSelection();
+
+
+
+            dgvDOList.DataSource = dt_DO;
+            //DgvUIEdit(dgvDOList);
+            //dgvDOList.ClearSelection();
         }
 
         private void POToDO()
@@ -2494,7 +2609,10 @@ namespace FactoryManagementSoftware.UI
             dgvPOList.ClearSelection();
 
             ShowPOListUI();
+
+           
         }
+
 
         private void AddingDOStep2()
         {
