@@ -83,6 +83,42 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        public frmSPPPOList(DataTable dt,DataTable dt_Item, bool toEdit)
+        {
+            InitializeComponent();
+
+            tool.DoubleBuffered(dgvPOList, true);
+            tool.DoubleBuffered(dgvDOList, true);
+            tool.DoubleBuffered(dgvItemList, true);
+
+
+            btnFilter.Text = text_HideFilter;
+
+            dt_POList = dalSPP.POSelect();
+
+            LoadCustomerList();
+
+            EditMode = toEdit;
+
+            if (toEdit)
+            {
+                AddingDOStep2();
+                POToDO(dt);
+            }
+            else
+            {
+                callFromPlanner = true;
+                dt_PlannerPO = dt;
+                dt_PlannerPOItem = dt_Item;
+
+                //AddingDOStep1();
+                //POToDOFromPlanner(dt);
+                //EditMode = true;
+            }
+
+
+        }
+
         #region variable/object declare
 
         itemDAL dalItem = new itemDAL();
@@ -168,13 +204,14 @@ namespace FactoryManagementSoftware.UI
         readonly string header_Balance = "BAL No";
         readonly string header_StdPacking = "StdPacking";
         readonly string header_BalanceString = "BAL.";
+        readonly string header_ToDeliveryPCSQty = "TO DELIVERY PCS QTY";
 
         private DataTable dt_POList;
         private DataTable dt_DOItemList_1;
         private DataTable dt_DOEditList;
         private DataTable dt_DOItemOriginalList;
         private DataTable dt_PlannerPO;
-
+        private DataTable dt_PlannerPOItem;
         private bool addingDOMode = false;
         private bool ableToNextStep = false;
         private bool addingDOStep1 = false;
@@ -480,6 +517,9 @@ namespace FactoryManagementSoftware.UI
 
             if (POMode && (callFromDOPage || callFromPlanner))
             {
+                frmLoading.ShowLoadingScreen();
+                Cursor = Cursors.WaitCursor;
+
                 if(callFromPlanner)
                 {
                     DataTable dt = (DataTable)dgvPOList.DataSource;
@@ -497,6 +537,10 @@ namespace FactoryManagementSoftware.UI
                 AddingDOStep1();
                 AddingDOStep2();
                 POToDO();
+                Cursor = Cursors.Arrow;
+                frmLoading.CloseForm();
+                BringToFront();
+                Activate();
             }
         }
 
@@ -1238,8 +1282,6 @@ namespace FactoryManagementSoftware.UI
                     DONo_DB = row[dalSPP.DONo].ToString();
                 }
 
-
-
                 if (poCode == row[dalSPP.POCode].ToString() && !isRemoved && DONo_DB == DONo.ToString())
                 {
                     string type = row[dalSPP.TypeName].ToString();
@@ -1265,6 +1307,27 @@ namespace FactoryManagementSoftware.UI
                     {
                         deliveryQty = int.TryParse(row[dalSPP.DOToDeliveryQty].ToString(), out deliveryQty) ? deliveryQty : 0;
                     }
+                    else if(callFromPlanner)
+                    {
+                        deliveryQty = 0;
+
+                        string poTblCode = row[dalSPP.TableCode].ToString();
+
+                        //loop po item list from "PO VS Stock"
+                        foreach (DataRow itemRow in dt_PlannerPOItem.Rows)
+                        {
+                            //search item by po table code
+                            if(poTblCode == itemRow[header_POTblCode].ToString())
+                            {
+                                //get to delivery qty in pcs
+                                int itemToDeliveryPcs = int.TryParse(itemRow[header_ToDeliveryPCSQty].ToString(), out itemToDeliveryPcs) ? itemToDeliveryPcs : 0;
+                                deliveryQty = itemToDeliveryPcs;
+                                break;
+                            }
+
+                        }
+
+                    }
 
                     int qtyPerBag = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
 
@@ -1283,7 +1346,18 @@ namespace FactoryManagementSoftware.UI
                         else
                         {
                             dt_Row[header_POTblCode] = row[dalSPP.TableCode];
-                            deliveryQty -= deliveredQty;
+
+                            if (callFromPlanner)
+                            {
+                                //deliveryQty = 0;
+
+                            }
+                            else
+                            {
+                                
+                                deliveryQty -= deliveredQty;
+                            }
+                           
                         }
 
 
@@ -1314,7 +1388,6 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[header_StdPacking] = qtyPerBag;
                         dt_DOItemList.Rows.Add(dt_Row);
                     }
-
 
                     TotalToDeliveryBag += deliveryBag;
                 }
@@ -2049,6 +2122,11 @@ namespace FactoryManagementSoftware.UI
 
             dgvDOList.DataSource = dt_DO;
             DgvUIEdit(dgvDOList);
+
+            if(callFromPlanner)
+            {
+                btnBackToPOList.Visible = false;
+            }
             //dgvDOList.ClearSelection();
         }
 
@@ -2099,6 +2177,7 @@ namespace FactoryManagementSoftware.UI
             dt_DOItemList_1 = NewDOItemTable();
 
             DataTable dt_DBSource;
+
             if (EditMode)
             {
                 dt_DBSource = dalSPP.DOWithInfoSelect();
@@ -2123,7 +2202,6 @@ namespace FactoryManagementSoftware.UI
                     string customerName = row[header_Customer].ToString();
 
                     //get all "to add" data
-
                     dt_DOItemList_1.Merge(GetDOItem(dt_DBSource, poCode, DONo, customerName));
                 }
             }
@@ -3250,7 +3328,13 @@ namespace FactoryManagementSoftware.UI
                         {
                             if (previousDONo == -1 || previousDONo != DONo)
                             {
-                                tool.historyRecord(text.DO_Added, text.GetDONumberAndCustomer(DONo, customer), updatedDate, userID, dalSPP.DOTableName, DONo);
+                                string actionString = text.DO_Added;
+
+                                if(callFromPlanner)
+                                {
+                                    actionString = text.DO_AddedFromPlanner;
+                                }
+                                tool.historyRecord(actionString, text.GetDONumberAndCustomer(DONo, customer), updatedDate, userID, dalSPP.DOTableName, DONo);
                                 previousDONo = DONo;
                             }
 
@@ -3342,7 +3426,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     MessageBox.Show(message);
 
-                    if (callFromDOPage || EditMode)
+                    if (callFromDOPage || EditMode || callFromPlanner)
                     {
                         Close();
                     }

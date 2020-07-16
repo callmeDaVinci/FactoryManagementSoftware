@@ -107,6 +107,7 @@ namespace FactoryManagementSoftware.Module
         public string DO_Incomplete { get; } = "D/O INCOMPLETE";
         public string DO_UndoRemove { get; } = "D/O UNDO REMOVE";
         public string DO_ChangeDONumber { get; } = "D/O NUMBER CHANGE";
+        public string DO_AddedFromPlanner { get; } = "D/O ADDED FROM PLANNER";
 
         public string PO_Added { get; } = "P/O ADDED";
         public string PO_Edited { get; } = "P/O EDITED";

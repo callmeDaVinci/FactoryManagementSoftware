@@ -71,7 +71,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_PriorityPODate = "PRIORITY PO DATE_";
         readonly string header_PriorityCustCode = "PRIORITY CUST CODE_";
 
-        readonly string header_POTblCode = "PO TBL CODE";
+        readonly string header_POTblCode = "P/O TBL CODE";
         readonly string header_ToDeliveryPCSQty = "TO DELIVERY PCS QTY";
         readonly string header_ItemCode = "CODE";
         readonly string header_ItemName = "NAME";
@@ -166,6 +166,16 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_CustomerCode, typeof(int));
             dt.Columns.Add(header_DONoString, typeof(string));
 
+            return dt;
+        }
+
+        private DataTable NewPOItemTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(header_POTblCode, typeof(int));
+            dt.Columns.Add(header_ToDeliveryPCSQty, typeof(int));
+           
             return dt;
         }
 
@@ -452,6 +462,7 @@ namespace FactoryManagementSoftware.UI
                 Cursor = Cursors.WaitCursor;
                 frmLoading.ShowLoadingScreen();
 
+                dt_ToUpdate = null;
                 toAssemblyProductQty = 0;
                 btnUpdate.Visible = false;
                 dataChanged = false;
@@ -1592,6 +1603,8 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.WaitCursor;
             DataGridView dgv = dgvList;
 
+            lblFillSettingReset.Visible = true;
+
             string fillStatus = btnFillALL.Text;
 
             if(fillStatus == text_FillBySystem)
@@ -1629,10 +1642,21 @@ namespace FactoryManagementSoftware.UI
                     c.Selected = false;
                 }
 
-                AutoFill(dgv);
+                if (cbFillALL.Checked)
+                {
+                    AutoFillInAll(dgv);
+                }
+                else
+                {
+                    AutoFill(dgv);
+                }
+                
 
                 DeselectedAllColumn(dgv);
                 btnFillALL.Text = text_FillBySystem;
+
+                lblFillSettingReset.Visible = false;
+
             }
             
             UpdateBalAfterDelivery();
@@ -1828,8 +1852,6 @@ namespace FactoryManagementSoftware.UI
 
                 if(colName.Contains(header_Priority))
                 {
-                   
-                    
                     string priorityLevel = colName.Replace(header_Priority, "");
 
                     bool selected = bool.TryParse(dgv.Rows[0].Cells[header_ColSelected + priorityLevel].Value.ToString(), out selected) ? selected : false;
@@ -1918,27 +1940,33 @@ namespace FactoryManagementSoftware.UI
 
         private void OpenDO(DataGridView dgv)
         {
-            DataTable dt = GetPOData(dgv);
+            var POData = GetPOData(dgv);
 
+            DataTable dt = POData.Item1;
+            DataTable dt_POItem = POData.Item2;
+         
             if(dt.Rows.Count > 0)
             {
-                frmSPPPOList frm = new frmSPPPOList(dt, false)
+                frmSPPPOList frm = new frmSPPPOList(dt, dt_POItem, false)
                 {
                     StartPosition = FormStartPosition.CenterScreen
                 };
 
                 frm.ShowDialog();
+
+
             }
             else
             {
                 MessageBox.Show("Valid delivery data not found!\n\n>To delivery qty cannot be 0\n>Check if D/O have been opened");
             }
-           
         }
 
-        private DataTable GetPOData(DataGridView dgv)
+
+        private Tuple<DataTable, DataTable> GetPOData(DataGridView dgv)
         {
             DataTable dt = NewPOTable();
+            DataTable dty_POItem = NewPOItemTable();
 
             DataTable dt_Source = (DataTable) dgv.DataSource;
 
@@ -1959,6 +1987,7 @@ namespace FactoryManagementSoftware.UI
                         int toDeliveryQtyInPcs = int.TryParse(dt_Source.Rows[row - 1][header_PriorityToDeliveryPlanningInPCS + level].ToString(), out toDeliveryQtyInPcs) ? toDeliveryQtyInPcs : -1;
                         int DOToDeliveryQty = int.TryParse(dt_Source.Rows[row - 1][header_PriorityToDeliveryQty + level].ToString(), out DOToDeliveryQty) ? DOToDeliveryQty : -1;
                         //&& toDeliveryQtyInPcs != DOToDeliveryQty
+
                         if (toDeliveryQty > 0 )
                         {
                             DataRow newRow = dt.NewRow();
@@ -1970,56 +1999,112 @@ namespace FactoryManagementSoftware.UI
                             newRow[header_CustomerCode] = dt_Source.Rows[row - 1][header_PriorityCustCode + level];
 
                             dt.Rows.Add(newRow);
+
+                            DataRow newItemRow = dty_POItem.NewRow();
+
+                            newItemRow[header_POTblCode] = dt_Source.Rows[row - 1][header_PriorityTblCode + level];
+                            newItemRow[header_ToDeliveryPCSQty] = toDeliveryQtyInPcs;
+
+                            dty_POItem.Rows.Add(newItemRow);
+
                         }
                     }
                 }
             }
 
-            return dt;
+            return Tuple.Create(dt, dty_POItem);
         }
 
         private void btnOpenDO_Click(object sender, EventArgs e)
         {
+            if(dataChanged)
+            {
+                MessageBox.Show("Please save the data before process to D/O open.");
+            }
+            else
+            {
+                DataGridView dgv = dgvList;
+
+                string buttonStatus = btnOpenDO.Text;
+
+                if (buttonStatus == text_AddDO)
+                {
+                    btnOpenDO.Text = text_SelectCol;
+                    btnOpenDO.Enabled = false;
+
+                    dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+
+                    foreach (DataGridViewColumn c in dgv.Columns)
+                    {
+                        c.SortMode = DataGridViewColumnSortMode.NotSortable;
+                        c.Selected = false;
+                    }
+
+                    //dgv.columnsor
+                    dgv.SelectionMode = DataGridViewSelectionMode.FullColumnSelect;
+                }
+                else if (buttonStatus == text_OpenDO)
+                {
+
+                    dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
+                    dgv.EnableHeadersVisualStyles = true;
+
+                    foreach (DataGridViewColumn c in dgv.Columns)
+                    {
+                        c.SortMode = DataGridViewColumnSortMode.Automatic;
+                        c.Selected = false;
+                    }
+
+                    //open do
+                    OpenDO(dgv);
+
+                    DeselectedAllColumn(dgv);
+                    btnOpenDO.Text = text_AddDO;
+
+                    LoadPOList();
+                }
+
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            }
+          
+        }
+
+        private void cbFillALL_CheckedChanged(object sender, EventArgs e)
+        {
+            if(btnFillALL.Text == text_SelectCol && cbFillALL.Checked)
+            {
+                btnFillALL.Text = text_FillIn;
+                btnFillALL.Enabled = true;
+            }
+
+            if (btnFillALL.Text == text_FillIn && !cbFillALL.Checked)
+            {
+                btnFillALL.Text = text_SelectCol;
+                btnFillALL.Enabled = false;
+            }
+
+            
+        }
+
+        private void lblFillSettingReset_Click(object sender, EventArgs e)
+        {
             DataGridView dgv = dgvList;
 
-            string buttonStatus = btnOpenDO.Text;
+            dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgv.EnableHeadersVisualStyles = true;
 
-            if (buttonStatus == text_AddDO)
+            foreach (DataGridViewColumn c in dgv.Columns)
             {
-                btnOpenDO.Text = text_SelectCol;
-                btnOpenDO.Enabled = false;
-
-                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-
-                foreach (DataGridViewColumn c in dgv.Columns)
-                {
-                    c.SortMode = DataGridViewColumnSortMode.NotSortable;
-                    c.Selected = false;
-                }
-
-                //dgv.columnsor
-                dgv.SelectionMode = DataGridViewSelectionMode.FullColumnSelect;
-            }
-            else if (buttonStatus == text_OpenDO)
-            {
-
-                dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
-                dgv.EnableHeadersVisualStyles = true;
-
-                foreach (DataGridViewColumn c in dgv.Columns)
-                {
-                    c.SortMode = DataGridViewColumnSortMode.Automatic;
-                    c.Selected = false;
-                }
-
-                //open do
-                OpenDO(dgv);
-
-                DeselectedAllColumn(dgv);
-                btnOpenDO.Text = text_AddDO;
+                c.SortMode = DataGridViewColumnSortMode.Automatic;
+                c.Selected = false;
             }
 
-            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            cbFillALL.Checked = false;
+
+            btnFillALL.Enabled = true;
+
+            DeselectedAllColumn(dgv);
+            btnFillALL.Text = text_FillBySystem;
         }
     }
 }
