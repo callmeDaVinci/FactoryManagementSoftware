@@ -1552,7 +1552,13 @@ namespace FactoryManagementSoftware.UI
 
             if (dalOrd.Update(uOrd))
             {
-                dalItem.orderSubtract(itemCode, pending); //subtract order qty
+                float pendingQty = float.TryParse(pending, out pendingQty) ? pendingQty : 0;
+
+                if(pendingQty > 0)
+                {
+                    dalItem.orderSubtract(itemCode, pending); //subtract order qty
+                }
+                
 
                 dalOrderAction.orderClose(orderID, note);
             }

@@ -2413,6 +2413,7 @@ namespace FactoryManagementSoftware.UI
                                 string postalAndCity = "c14:M14";
                                 string state = "c15:M15";
                                 string contact = "c16:M16";
+                                int totalBag = 0;
 
                                 foreach (DataRow row2 in dt_PO.Rows)
                                 {
@@ -2437,6 +2438,8 @@ namespace FactoryManagementSoftware.UI
                                             string unit = row2[dalSPP.SizeUnit].ToString().ToUpper();
                                             string itemCode = row2[dalSPP.ItemCode].ToString();
                                             string remark = bag + " BAG(S)";
+
+                                            totalBag += bag;
 
                                             //check current row vs max row
                                             if (rowNo + 1 > maxRow)
@@ -2514,7 +2517,7 @@ namespace FactoryManagementSoftware.UI
                                             descriptionRow = remarkColStart + (rowOffset + rowNo).ToString() + remarkColEnd + (rowOffset + rowNo).ToString();
                                             InsertToSheet(xlWorkSheet, descriptionRow, remark);
 
-
+                                            
                                         }
 
                                     }
@@ -2532,6 +2535,9 @@ namespace FactoryManagementSoftware.UI
                                     postalAndCity = "c12:M12";
                                     state = "c13:M13";
                                 }
+
+                                string lastRow = remarkColStart + (36).ToString() + remarkColEnd + (36).ToString();
+                                InsertToSheet(xlWorkSheet, lastRow, "TOTAL " + totalBag + " BAG(S)");
 
                                 InsertToSheet(xlWorkSheet, CustFullNameArea, custFullName);
                                 InsertToSheet(xlWorkSheet, AddressArea_1, shippingAddress_1);

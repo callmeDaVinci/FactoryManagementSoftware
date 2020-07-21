@@ -1161,15 +1161,21 @@ namespace FactoryManagementSoftware.DAL
 
         public bool orderSubtract(string itemCode, string ordQty)
         {
+            bool success = false;
             itemBLL uItem = new itemBLL();
             float number = Convert.ToSingle(ordQty);
-            uItem.item_code = itemCode;
-            uItem.item_updtd_date = DateTime.Now;
-            uItem.item_updtd_by = MainDashboard.USER_ID;
-            uItem.item_ord = getOrderQty(itemCode) - number;
 
-            //Updating data into database
-            bool success = ordUpdate(uItem);
+            if(number > 0)
+            {
+                uItem.item_code = itemCode;
+                uItem.item_updtd_date = DateTime.Now;
+                uItem.item_updtd_by = MainDashboard.USER_ID;
+                uItem.item_ord = getOrderQty(itemCode) - number;
+
+                //Updating data into database
+                success = ordUpdate(uItem);
+            }
+           
 
             return success;
 

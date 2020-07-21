@@ -699,6 +699,17 @@ namespace FactoryManagementSoftware.UI
                     string itemName = itemRow[dalItem.ItemName].ToString();
                     string itemMaterial = itemRow[dalItem.ItemMaterial].ToString();
                     string itemStock = itemRow[dalItem.ItemStock].ToString();
+
+                    if(qtyPerBag > 0)
+                    {
+                        int stockInPcs = int.TryParse(itemStock, out stockInPcs) ? stockInPcs : 0;
+
+                        if(stockInPcs > 0)
+                        {
+                            itemStock += " ( " +stockInPcs/qtyPerBag+" BAGS)";
+                        }
+                    }
+
                     DateTime lastDelivered = DateTime.MaxValue;
 
                     int preDay = 0;
@@ -1014,6 +1025,7 @@ namespace FactoryManagementSoftware.UI
                             row_In[header_ItemCode] = itemCode;
                             row_In[header_ItemName] = itemName;
                             row_In[header_Total] = totalTrfInQty;
+                            row_In[header_Stock] = itemStock;
                             dt.Rows.Add(row_In);
                             index++;
                         }
@@ -1071,11 +1083,13 @@ namespace FactoryManagementSoftware.UI
                             row_In[header_ItemCode] = itemCode;
                             row_In[header_ItemName] = itemName;
                             row_In[header_Total] = totalTrfInQty;
+                            row_In[header_Stock] = itemStock;
 
                             row_Out[header_Index] = index;
                             row_Out[header_ItemCode] = itemCode;
                             row_Out[header_ItemName] = itemName;
                             row_Out[header_Total] = totalTrfOutQty;
+                            row_Out[header_Stock] = itemStock;
 
                             row_In[header_Type] = inOutType_In;
                             row_Out[header_Type] = inOutType_Out;
