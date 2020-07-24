@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpInventory = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnBack = new System.Windows.Forms.Button();
@@ -41,10 +41,12 @@
             this.tlptest = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblShortName = new System.Windows.Forms.Label();
+            this.txtShortName = new System.Windows.Forms.TextBox();
             this.lblName = new System.Windows.Forms.Label();
-            this.lblRegistrationNo = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtRegistrationNo = new System.Windows.Forms.TextBox();
+            this.lblRegistrationNo = new System.Windows.Forms.Label();
             this.btnRemove = new System.Windows.Forms.Button();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -71,10 +73,14 @@
             this.lblWebsite = new System.Windows.Forms.Label();
             this.lblEmail = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblEditRoute = new System.Windows.Forms.Label();
+            this.lblRoute = new System.Windows.Forms.Label();
             this.lblPostalCode = new System.Windows.Forms.Label();
             this.lblCountry = new System.Windows.Forms.Label();
             this.txtPostalCode = new System.Windows.Forms.TextBox();
             this.txtCountry = new System.Windows.Forms.TextBox();
+            this.cmbRoute = new System.Windows.Forms.ComboBox();
             this.dgvCustomer = new System.Windows.Forms.DataGridView();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
@@ -83,8 +89,6 @@
             this.errorProvider5 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider6 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider7 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.txtShortName = new System.Windows.Forms.TextBox();
-            this.lblShortName = new System.Windows.Forms.Label();
             this.errorProvider8 = new System.Windows.Forms.ErrorProvider(this.components);
             this.tlpInventory.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -99,6 +103,7 @@
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
+            this.tableLayoutPanel12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
@@ -297,6 +302,27 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(774, 61);
             this.tableLayoutPanel1.TabIndex = 195;
             // 
+            // lblShortName
+            // 
+            this.lblShortName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblShortName.AutoSize = true;
+            this.lblShortName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblShortName.Location = new System.Drawing.Point(465, 6);
+            this.lblShortName.Name = "lblShortName";
+            this.lblShortName.Size = new System.Drawing.Size(94, 19);
+            this.lblShortName.TabIndex = 172;
+            this.lblShortName.Text = "SHORT NAME";
+            // 
+            // txtShortName
+            // 
+            this.txtShortName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtShortName.Location = new System.Drawing.Point(465, 28);
+            this.txtShortName.Name = "txtShortName";
+            this.txtShortName.Size = new System.Drawing.Size(144, 30);
+            this.txtShortName.TabIndex = 172;
+            this.txtShortName.TextChanged += new System.EventHandler(this.txtShortName_TextChanged);
+            // 
             // lblName
             // 
             this.lblName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -307,17 +333,6 @@
             this.lblName.Size = new System.Drawing.Size(54, 19);
             this.lblName.TabIndex = 0;
             this.lblName.Text = "NAME*";
-            // 
-            // lblRegistrationNo
-            // 
-            this.lblRegistrationNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblRegistrationNo.AutoSize = true;
-            this.lblRegistrationNo.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRegistrationNo.Location = new System.Drawing.Point(625, 6);
-            this.lblRegistrationNo.Name = "lblRegistrationNo";
-            this.lblRegistrationNo.Size = new System.Drawing.Size(125, 19);
-            this.lblRegistrationNo.TabIndex = 2;
-            this.lblRegistrationNo.Text = "REGISTRATION NO";
             // 
             // txtName
             // 
@@ -337,6 +352,17 @@
             this.txtRegistrationNo.Name = "txtRegistrationNo";
             this.txtRegistrationNo.Size = new System.Drawing.Size(146, 30);
             this.txtRegistrationNo.TabIndex = 3;
+            // 
+            // lblRegistrationNo
+            // 
+            this.lblRegistrationNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblRegistrationNo.AutoSize = true;
+            this.lblRegistrationNo.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRegistrationNo.Location = new System.Drawing.Point(625, 6);
+            this.lblRegistrationNo.Name = "lblRegistrationNo";
+            this.lblRegistrationNo.Size = new System.Drawing.Size(125, 19);
+            this.lblRegistrationNo.TabIndex = 2;
+            this.lblRegistrationNo.Text = "REGISTRATION NO";
             // 
             // btnRemove
             // 
@@ -653,14 +679,18 @@
             // 
             // tableLayoutPanel6
             // 
-            this.tableLayoutPanel6.ColumnCount = 3;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.ColumnCount = 5;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel12, 2, 0);
             this.tableLayoutPanel6.Controls.Add(this.lblPostalCode, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.lblCountry, 2, 0);
+            this.tableLayoutPanel6.Controls.Add(this.lblCountry, 4, 0);
             this.tableLayoutPanel6.Controls.Add(this.txtPostalCode, 0, 1);
-            this.tableLayoutPanel6.Controls.Add(this.txtCountry, 2, 1);
+            this.tableLayoutPanel6.Controls.Add(this.txtCountry, 4, 1);
+            this.tableLayoutPanel6.Controls.Add(this.cmbRoute, 2, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 246);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
@@ -669,6 +699,46 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(774, 61);
             this.tableLayoutPanel6.TabIndex = 198;
+            // 
+            // tableLayoutPanel12
+            // 
+            this.tableLayoutPanel12.ColumnCount = 2;
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 59F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel12.Controls.Add(this.lblEditRoute, 1, 0);
+            this.tableLayoutPanel12.Controls.Add(this.lblRoute, 0, 0);
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(198, 0);
+            this.tableLayoutPanel12.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel12.Name = "tableLayoutPanel12";
+            this.tableLayoutPanel12.RowCount = 1;
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(188, 25);
+            this.tableLayoutPanel12.TabIndex = 202;
+            // 
+            // lblEditRoute
+            // 
+            this.lblEditRoute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblEditRoute.AutoSize = true;
+            this.lblEditRoute.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblEditRoute.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEditRoute.ForeColor = System.Drawing.Color.Blue;
+            this.lblEditRoute.Location = new System.Drawing.Point(101, 6);
+            this.lblEditRoute.Name = "lblEditRoute";
+            this.lblEditRoute.Size = new System.Drawing.Size(84, 19);
+            this.lblEditRoute.TabIndex = 173;
+            this.lblEditRoute.Text = "EDIT ROUTE";
+            this.lblEditRoute.Visible = false;
+            // 
+            // lblRoute
+            // 
+            this.lblRoute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblRoute.AutoSize = true;
+            this.lblRoute.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRoute.Location = new System.Drawing.Point(3, 6);
+            this.lblRoute.Name = "lblRoute";
+            this.lblRoute.Size = new System.Drawing.Size(52, 19);
+            this.lblRoute.TabIndex = 172;
+            this.lblRoute.Text = "ROUTE";
             // 
             // lblPostalCode
             // 
@@ -686,7 +756,7 @@
             this.lblCountry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCountry.AutoSize = true;
             this.lblCountry.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCountry.Location = new System.Drawing.Point(395, 6);
+            this.lblCountry.Location = new System.Drawing.Point(399, 6);
             this.lblCountry.Name = "lblCountry";
             this.lblCountry.Size = new System.Drawing.Size(78, 19);
             this.lblCountry.TabIndex = 14;
@@ -698,18 +768,29 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPostalCode.Location = new System.Drawing.Point(3, 28);
             this.txtPostalCode.Name = "txtPostalCode";
-            this.txtPostalCode.Size = new System.Drawing.Size(376, 30);
+            this.txtPostalCode.Size = new System.Drawing.Size(182, 30);
             this.txtPostalCode.TabIndex = 13;
             // 
             // txtCountry
             // 
             this.txtCountry.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCountry.Location = new System.Drawing.Point(395, 28);
+            this.txtCountry.Location = new System.Drawing.Point(399, 28);
             this.txtCountry.Name = "txtCountry";
-            this.txtCountry.Size = new System.Drawing.Size(376, 30);
+            this.txtCountry.Size = new System.Drawing.Size(372, 30);
             this.txtCountry.TabIndex = 15;
             this.txtCountry.Text = "MALAYSIA";
+            // 
+            // cmbRoute
+            // 
+            this.cmbRoute.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbRoute.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRoute.FormattingEnabled = true;
+            this.cmbRoute.Location = new System.Drawing.Point(201, 28);
+            this.cmbRoute.Name = "cmbRoute";
+            this.cmbRoute.Size = new System.Drawing.Size(182, 31);
+            this.cmbRoute.TabIndex = 16;
+            this.cmbRoute.SelectedIndexChanged += new System.EventHandler(this.cmbRoute_SelectedIndexChanged);
             // 
             // dgvCustomer
             // 
@@ -722,14 +803,14 @@
             this.dgvCustomer.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvCustomer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCustomer.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCustomer.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCustomer.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvCustomer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCustomer.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvCustomer.Location = new System.Drawing.Point(3, 1);
@@ -772,27 +853,6 @@
             // 
             this.errorProvider7.ContainerControl = this;
             // 
-            // txtShortName
-            // 
-            this.txtShortName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtShortName.Location = new System.Drawing.Point(465, 28);
-            this.txtShortName.Name = "txtShortName";
-            this.txtShortName.Size = new System.Drawing.Size(144, 30);
-            this.txtShortName.TabIndex = 172;
-            this.txtShortName.TextChanged += new System.EventHandler(this.txtShortName_TextChanged);
-            // 
-            // lblShortName
-            // 
-            this.lblShortName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblShortName.AutoSize = true;
-            this.lblShortName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShortName.Location = new System.Drawing.Point(465, 6);
-            this.lblShortName.Name = "lblShortName";
-            this.lblShortName.Size = new System.Drawing.Size(94, 19);
-            this.lblShortName.TabIndex = 172;
-            this.lblShortName.Text = "SHORT NAME";
-            // 
             // errorProvider8
             // 
             this.errorProvider8.ContainerControl = this;
@@ -830,6 +890,8 @@
             this.tableLayoutPanel7.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
+            this.tableLayoutPanel12.ResumeLayout(false);
+            this.tableLayoutPanel12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
@@ -901,5 +963,9 @@
         private System.Windows.Forms.Label lblShortName;
         private System.Windows.Forms.TextBox txtShortName;
         private System.Windows.Forms.ErrorProvider errorProvider8;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
+        private System.Windows.Forms.Label lblEditRoute;
+        private System.Windows.Forms.Label lblRoute;
+        private System.Windows.Forms.ComboBox cmbRoute;
     }
 }

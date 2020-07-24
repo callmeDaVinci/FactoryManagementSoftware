@@ -315,10 +315,10 @@ namespace FactoryManagementSoftware.UI
 
         private void loadLocationData(DataTable dt, ComboBox cmb, string columnName)
         {
-            DataTable lacationTable = dt.DefaultView.ToTable(true, columnName);
+            DataTable locationTable = dt.DefaultView.ToTable(true, columnName);
 
-            lacationTable.DefaultView.Sort = columnName+" ASC";
-            cmb.DataSource = lacationTable;
+            locationTable.DefaultView.Sort = columnName+" ASC";
+            cmb.DataSource = locationTable;
             cmb.DisplayMember = columnName;
 
         }
@@ -786,9 +786,6 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-              
-
-
                 uData.PO_date = dtpPODate.Value;
                 uData.Customer_tbl_code = customer_tbl_code;
                 uData.PO_no = txtPONo.Text;
@@ -824,7 +821,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (dt.Rows.Count <= 0)
                     {
-                        po_code = 1;
+                        po_code = -1;
                     }
                     else
                     {
@@ -838,89 +835,91 @@ namespace FactoryManagementSoftware.UI
                     uData.PO_code = po_code;
                 }
 
-                bool failedToInsert = false;
-
-                foreach (DataRow row in dt_OrderList.Rows)
+                if(po_code != -1)
                 {
-                    string itemCode = row[header_Code].ToString();
-                    uData.IsRemoved = false;
+                    bool failedToInsert = false;
 
-                    if (!string.IsNullOrEmpty(itemCode))
+                    foreach (DataRow row in dt_OrderList.Rows)
                     {
-                        int po_qty = Convert.ToInt32(row[header_OrderQty]);
-                        string note = row[header_Note].ToString();
-                        string dataMode = row[header_DataMode].ToString();
-                        string tblCode = row[header_TblCode].ToString();
+                        string itemCode = row[header_Code].ToString();
+                        uData.IsRemoved = false;
 
-                        uData.Item_code = itemCode;
-                        uData.PO_qty = po_qty;
-                        uData.PO_note = note;
-
-                    
-
-
-                        if (dataMode == text_New)
+                        if (!string.IsNullOrEmpty(itemCode))
                         {
-                            if (!dalData.InsertPO(uData))
-                            {
+                            int po_qty = Convert.ToInt32(row[header_OrderQty]);
+                            string note = row[header_Note].ToString();
+                            string dataMode = row[header_DataMode].ToString();
+                            string tblCode = row[header_TblCode].ToString();
 
-                                MessageBox.Show("Unable to insert/update " + itemCode + " PO data!");
-                                failedToInsert = true;
+                            uData.Item_code = itemCode;
+                            uData.PO_qty = po_qty;
+                            uData.PO_note = note;
+
+                            if (dataMode == text_New)
+                            {
+                                if (!dalData.InsertPO(uData))
+                                {
+                                    MessageBox.Show("Unable to insert/update " + itemCode + " PO data!");
+                                    failedToInsert = true;
+                                }
+
+                            }
+                            else if (dataMode == text_ToRemove)
+                            {
+                                uData.IsRemoved = true;
+                                uData.Table_Code = Convert.ToInt32(tblCode);
+
+                                if (!dalData.PORemove(uData))
+                                {
+
+                                    MessageBox.Show("Unable to remove " + itemCode + " PO data!");
+                                    failedToInsert = true;
+                                }
+                            }
+                            else if (dataMode == text_ToEdit)
+                            {
+                                uData.Table_Code = Convert.ToInt32(tblCode);
+                                if (!dalData.POUpdate(uData))
+                                {
+
+                                    MessageBox.Show("Unable to update " + itemCode + " PO data!");
+                                    failedToInsert = true;
+                                }
                             }
 
-                        }
-                        else if(dataMode == text_ToRemove)
-                        {
-                            uData.IsRemoved = true;
-                            uData.Table_Code = Convert.ToInt32(tblCode);
-
-                            if (!dalData.PORemove(uData))
-                            {
-
-                                MessageBox.Show("Unable to remove " + itemCode + " PO data!");
-                                failedToInsert = true;
-                            }
-                        }
-                        else if (dataMode == text_ToEdit)
-                        {
-                            uData.Table_Code = Convert.ToInt32(tblCode);
-                            if (!dalData.POUpdate(uData))
-                            {
-
-                                MessageBox.Show("Unable to update " + itemCode + " PO data!");
-                                failedToInsert = true;
-                            }
                         }
 
                     }
-                    
-                }
 
-                if (!failedToInsert)
+                    if (!failedToInsert)
+                    {
+                        MessageBox.Show("PO inserted/updated!");
+
+                        if (poEditing)
+                        {
+                            poEdited = true;
+                            tool.historyRecord(text.PO_Edited, text.GetPONumberAndCustomer(PONo, shortName), updatedDate, userID, dalData.POTableName, po_code);
+                        }
+                        else
+                        {
+                            historyDAL dalHistory = new historyDAL();
+                            historyBLL uHistory = new historyBLL();
+
+                            uHistory.page_name = dalData.POTableName;
+                            uHistory.data_id = -1;
+
+                            dalHistory.ChangeDataID(uHistory, po_code.ToString());
+                            tool.historyRecord(text.PO_Added, text.GetPONumberAndCustomer(PONo, shortName), updatedDate, userID, dalData.POTableName, po_code);
+                        }
+
+                        Close();
+
+                    }
+                }
+                else
                 {
-                    MessageBox.Show("PO inserted/updated!");
-
-                    if(poEditing)
-                    {
-                        poEdited = true;
-                        tool.historyRecord(text.PO_Edited, text.GetPONumberAndCustomer(PONo, shortName), updatedDate, userID, dalData.POTableName, po_code);
-                    }
-                    else
-                    {
-                        historyDAL dalHistory = new historyDAL();
-                        historyBLL uHistory = new historyBLL();
-
-                        uHistory.page_name = dalData.POTableName;
-                        uHistory.data_id = -1;
-
-                        dalHistory.ChangeDataID(uHistory, po_code.ToString());
-                        tool.historyRecord(text.PO_Added, text.GetPONumberAndCustomer(PONo, shortName), updatedDate, userID, dalData.POTableName, po_code);
-                    }
-                    
-                    Close();
-
+                    MessageBox.Show("P/O code error(-1), please try again.");
                 }
-
             }
         }
 

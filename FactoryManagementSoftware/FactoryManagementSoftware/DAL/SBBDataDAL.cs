@@ -17,6 +17,16 @@ namespace FactoryManagementSoftware.DAL
         public string Freeze { get; } = "freeze";
         public string PriorityLevel { get; } = "priority_level";
 
+        //delivery table
+        public string TripNo { get; } = "trip_no";
+        public string RouteTblCode { get; } = "route_tbl_code";
+        public string DeliveryDate { get; } = "delivery_date";
+        public string DeliveryStatus { get; } = "delivery_status";
+        public string DeliverPcs { get; } = "deliver_pcs";
+
+        //route table
+        public string RouteName { get; } = "route_name";
+     
         //item table
         public string ItemCode { get; } = "item_code";
         public string ItemName { get; } = "item_name";
@@ -140,6 +150,82 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable RouteSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_route";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable RouteWithoutRemovedDataSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_route WHERE isRemoved IS NULL OR isRemoved = @false ";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
         public DataTable SizeForReadyGoodsSelect()
         {
             //static methodd to connect database
@@ -950,6 +1036,97 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
+        public DataTable DeliverySelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_delivery";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable DeliveryWithInfoSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_delivery 
+                             INNER JOIN tbl_spp_po
+                             ON tbl_delivery.po_tbl_code = tbl_spp_po.tbl_code 
+                             INNER JOIN tbl_route
+                             ON tbl_delivery.route_tbl_code = tbl_route.tbl_code 
+                             INNER JOIN tbl_spp_customer 
+                             ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                             INNER JOIN tbl_item
+                             ON tbl_spp_po.item_code = tbl_item.item_code
+                             INNER JOIN tbl_spp_size
+                             ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code
+                             INNER JOIN tbl_spp_type
+                             ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                             FULL JOIN tbl_spp_stdpacking
+                             ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                             ORDER BY tbl_delivery.isRemoved ASC, tbl_delivery.isDelivered ASC, tbl_delivery.trip_no ASC, tbl_spp_po.po_date ASC, tbl_spp_po.po_code ASC";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         #endregion
 
         #region Insert Data in Database
@@ -1379,6 +1556,7 @@ namespace FactoryManagementSoftware.DAL
                             + Phone2 + ","
                             + Email + ","
                             + Website + ","
+                            + RouteTblCode + ","
                             + UpdatedDate + ","
                             + UpdatedBy + ") VALUES" +
                             "(@Full_Name," +
@@ -1395,6 +1573,7 @@ namespace FactoryManagementSoftware.DAL
                             "@Phone_2," +
                             "@Email," +
                             "@Website," +
+                            "@route_tbl_code," +
                             "@Updated_Date," +
                             "@Updated_By)";
 
@@ -1414,7 +1593,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Phone_2", u.Phone_2);
                 cmd.Parameters.AddWithValue("@Email", u.Email);
                 cmd.Parameters.AddWithValue("@Website", u.Website);
-
+                cmd.Parameters.AddWithValue("@route_tbl_code", u.route_tbl_code);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
 
@@ -1711,6 +1890,117 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+
+        public bool InsertDelivery(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_delivery 
+                            (" + RouteTblCode + ","
+                            + POTableCode + ","
+                            + DeliveryStatus + ","
+                            + DeliverPcs + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@route_tbl_code," +
+                            "@PO_tbl_code," +
+                            "@delviery_status," +
+                             "@deliver_pcs," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@route_tbl_code", u.route_tbl_code);
+                cmd.Parameters.AddWithValue("@PO_tbl_code", u.PO_tbl_code);
+                cmd.Parameters.AddWithValue("@delviery_status", u.delivery_status);
+                cmd.Parameters.AddWithValue("@deliver_pcs", u.deliver_pcs);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertRoute(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_route 
+                            (" + RouteName + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@route_name," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@route_name", u.route_name);
+              
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         #endregion
 
         #region Update data in Database
@@ -2190,6 +2480,7 @@ namespace FactoryManagementSoftware.DAL
                             + Phone2 + "=@Phone_2,"
                             + Email + "=@Email,"
                             + Website + "=@Website,"
+                            + RouteTblCode + "=@route_tbl_code,"
                             + IsRemoved + "=@IsRemoved,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
@@ -2211,7 +2502,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Phone_2", u.Phone_2);
                 cmd.Parameters.AddWithValue("@Email", u.Email);
                 cmd.Parameters.AddWithValue("@Website", u.Website);
-
+                cmd.Parameters.AddWithValue("@route_tbl_code", u.route_tbl_code);
                 cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
                 cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
@@ -3021,6 +3312,322 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+
+        public bool DeliveryUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_delivery
+
+                            SET "
+                            + TripNo + "=@trip_no,"
+                            + RouteTblCode + "=@route_tbl_code,"
+                            + POTableCode + "=@PO_tbl_code,"
+                            + DeliveryDate + "=@delivery_date,"
+                            + DeliveryStatus + "=@delviery_status,"
+                            + DeliverPcs + "=@deliver_pcs,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@trip_no", u.trip_no);
+                cmd.Parameters.AddWithValue("@route_tbl_code", u.route_tbl_code);
+                cmd.Parameters.AddWithValue("@PO_tbl_code", u.PO_tbl_code);
+                cmd.Parameters.AddWithValue("@delivery_date", u.delivery_date);
+                cmd.Parameters.AddWithValue("@delviery_status", u.delivery_status);
+                cmd.Parameters.AddWithValue("@deliver_pcs", u.deliver_pcs);
+
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool RouteUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_route
+
+                            SET "
+                            + RouteName + "=@route_name,"
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@route_name", u.route_name);
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool RouteRemove(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_route
+                            SET "
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool DeliveryCancel(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_delivery
+                            SET "
+                            + IsRemoved + "=@IsRemoved,"
+                            + DeliveryStatus + "=@delivery_status,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@delivery_status", u.delivery_status);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool DeliveryStatusUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_delivery
+                            SET "
+                            + DeliveryStatus + "=@delivery_status,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@delivery_status", u.delivery_status);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool DeliveryisDeliveredUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_delivery
+                            SET "
+                            + IsDelivered + "=@IsDelivered,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@IsDelivered", u.IsDelivered);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         #endregion
 
     }

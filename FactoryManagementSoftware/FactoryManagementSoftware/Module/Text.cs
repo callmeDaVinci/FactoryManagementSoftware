@@ -281,6 +281,18 @@ namespace FactoryManagementSoftware.Module
         public int StockLevel_63 { get; } = 0;
         #endregion
 
+        #region Delivery Status
+
+        public string Delivery_Processing { get; } = "PROCESSING";
+        public string Delivery_DOPending { get; } = "D/O PENDING";
+        public string Delivery_DOOpened { get; } = "D/O OPENED";
+        public string Delivery_ToDeliver { get; } = "TO DELIVER";
+        public string Delivery_Delayed { get; } = "DELAYED";
+        public string Delivery_Cancelled { get; } = "CANCELLED";
+        public string Delivery_Delivered { get; } = "DELIVERED";
+
+        #endregion
+
         #endregion
 
 

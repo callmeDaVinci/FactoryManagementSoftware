@@ -41,12 +41,32 @@ namespace FactoryManagementSoftware.UI
 
         private readonly string header_ID = "ID";
         private readonly string header_Name = "NAME";
+
+        private readonly string text_Route = "ROUTE";
         private bool showRemoved = false;
+
+        private bool Loaded = false;
 
         private void frmSPPCustomerEdit_Load(object sender, EventArgs e)
         {
             LoadCustomer();
+            CMBLoadRoute(cmbRoute);
             txtShortName.Clear();
+            Loaded = true;
+        }
+
+        private void CMBLoadRoute(ComboBox cmb)
+        {
+            DataTable RouteTable = dalData.RouteWithoutRemovedDataSelect();
+
+            RouteTable.DefaultView.Sort = dalData.RouteName + " ASC";
+
+            RouteTable = RouteTable.DefaultView.ToTable();
+
+            cmb.DataSource = RouteTable;
+            cmb.ValueMember = dalData.TableCode;
+            cmb.DisplayMember = dalData.RouteName;
+            cmb.SelectedIndex = -1;
         }
 
         private void DgvUIEdit(DataGridView dgv)
@@ -294,6 +314,21 @@ namespace FactoryManagementSoftware.UI
                         uData.Updated_Date = DateTime.Now;
                         uData.Updated_By = MainDashboard.USER_ID;
 
+                        DataTable dt = (DataTable)cmbRoute.DataSource;
+
+                        int index = cmbRoute.SelectedIndex;
+                        int tableCode = int.TryParse(dt.Rows[index][dalData.TableCode].ToString(), out tableCode)? tableCode : -1;
+
+                        if(tableCode > 0)
+                        {
+                            uData.route_tbl_code = tableCode;
+
+                        }
+                        else
+                        {
+                            uData.route_tbl_code = 0;
+                        }
+
                         if (dalData.InsertCustomer(uData))
                         {
                             MessageBox.Show("New Customer Inserted!");
@@ -334,6 +369,21 @@ namespace FactoryManagementSoftware.UI
                         uData.Updated_Date = DateTime.Now;
                         uData.Updated_By = MainDashboard.USER_ID;
 
+                        DataTable dt = (DataTable)cmbRoute.DataSource;
+
+                        int index = cmbRoute.SelectedIndex;
+                        int tableCode = int.TryParse(dt.Rows[index][dalData.TableCode].ToString(), out tableCode) ? tableCode : -1;
+
+                        if (tableCode > 0)
+                        {
+                            uData.route_tbl_code = tableCode;
+
+                        }
+                        else
+                        {
+                            uData.route_tbl_code = 0;
+                        }
+
                         if (dalData.CustomerUpdate(uData))
                         {
                             MessageBox.Show("Customer data Updated!");
@@ -367,6 +417,8 @@ namespace FactoryManagementSoftware.UI
             txtFax.Clear();
             txtEmail.Clear();
             txtWebsite.Clear();
+            cmbRoute.SelectedIndex = -1;
+
         }
 
         private void ShowDataToField(int selectedID)
@@ -394,6 +446,22 @@ namespace FactoryManagementSoftware.UI
                     string email =  row[dalData.Email] == null ? string.Empty : row[dalData.Email].ToString();
                     string website =  row[dalData.Website] == null ? string.Empty : row[dalData.Website].ToString();
 
+                    string routeTableCode = row[dalData.RouteTblCode] == null ? string.Empty : row[dalData.RouteTblCode].ToString();
+
+                    DataTable dt = dalData.RouteWithoutRemovedDataSelect();
+
+                    string routeName = "";
+
+                    foreach(DataRow routeRow in dt.Rows)
+                    {
+                        if(routeTableCode == routeRow[dalData.TableCode].ToString())
+                        {
+                            routeName = routeRow[dalData.RouteName].ToString();
+                            break;
+                        }
+                    }
+
+                    cmbRoute.Text = routeName;
                     txtName.Text = name;
                     txtShortName.Text = shortName;
                     txtRegistrationNo.Text = registrationNO;
@@ -566,6 +634,21 @@ namespace FactoryManagementSoftware.UI
             {
                 IfNameExist();
             }
+        }
+
+        private void cmbRoute_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //if(Loaded)
+            //{
+            //    DataTable dt = (DataTable)cmbRoute.DataSource;
+
+            //    int index = cmbRoute.SelectedIndex;
+
+            //    string name = dt.Rows[index][dalData.RouteName].ToString();
+            //    string tableCode = dt.Rows[index][dalData.TableCode].ToString();
+            //    MessageBox.Show("("+tableCode+")"+name);
+            //}
+           
         }
     }
 

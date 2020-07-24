@@ -704,7 +704,12 @@ namespace FactoryManagementSoftware.UI
 
         private void OpenDeliveryPlanning(object sender, EventArgs e)
         {
-            WorkInProgressMessage();
+            frmDeliverySchedule frm = new frmDeliverySchedule
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            frm.ShowDialog();
 
         }
 

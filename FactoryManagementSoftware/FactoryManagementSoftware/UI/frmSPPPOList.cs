@@ -351,7 +351,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_PODate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_Customer].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_Progress].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgv.Columns[header_POCode].Visible = false;
+                //dgv.Columns[header_POCode].Visible = false;
                 dgv.Columns[header_CustomerCode].Visible = false;
                 dgv.Columns[header_Freeze].Visible = false;
             }
@@ -1160,6 +1160,7 @@ namespace FactoryManagementSoftware.UI
             int index = 1;
             int totalBag = 0;
             string preType = null;
+
             foreach (DataRow row in dt.Rows)
             {
                 if (poCode == row[dalSPP.POCode].ToString())

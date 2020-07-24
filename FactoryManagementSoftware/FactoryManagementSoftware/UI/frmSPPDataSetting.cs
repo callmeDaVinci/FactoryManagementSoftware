@@ -35,11 +35,16 @@ namespace FactoryManagementSoftware.UI
         private readonly string text_Add = "ADD";
         private readonly string text_Edit = "UPDATE";
 
+        private readonly string text_Type = "TYPE";
+        private readonly string text_Category = "CATEGORY";
+        private readonly string text_Route = "ROUTE";
+
         private readonly string text_ItemDataList = "SPP ITEM";
         private readonly string text_StdPackingList = "STANDARD PACKING LIST";
         private readonly string text_SizeDataList = "SIZE";
         private readonly string text_TypeDataList = "TYPE";
         private readonly string text_CategoryDataList = "CATEGORY";
+        private readonly string text_RouteDataList = "ROUTE";
 
         private bool loaded = false;
         private bool DataEdit = false;
@@ -55,6 +60,7 @@ namespace FactoryManagementSoftware.UI
             dt_DataList.Rows.Add("3",text_TypeDataList);
             dt_DataList.Rows.Add("4",text_CategoryDataList);
             dt_DataList.Rows.Add("5", text_StdPackingList);
+            dt_DataList.Rows.Add("6", text_RouteDataList);
 
             cmbDataList.DataSource = dt_DataList;
             cmbDataList.DisplayMember = "DATA LIST";
@@ -123,6 +129,7 @@ namespace FactoryManagementSoftware.UI
                 tlpDataEdit.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
                 tlpDataEdit.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
 
+                gbNameOnly.Text = text_Type;
                 cbIsCommon.Visible = true;
             }
             else if (selectedDataList == text_CategoryDataList)
@@ -131,6 +138,8 @@ namespace FactoryManagementSoftware.UI
                 tlpDataEdit.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 339f);
                 tlpDataEdit.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
                 tlpDataEdit.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
+
+                gbNameOnly.Text = text_Category;
 
                 cbIsCommon.Visible = false;
             }
@@ -146,7 +155,16 @@ namespace FactoryManagementSoftware.UI
 
                 cbIsCommon.Visible = false;
             }
+            else if (selectedDataList == text_RouteDataList)
+            {
+                tlpDataEdit.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpDataEdit.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 339f);
+                tlpDataEdit.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpDataEdit.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
 
+                gbNameOnly.Text = text_Route;
+                cbIsCommon.Visible = false;
+            }
             dgvData.ResumeLayout();
         }
 
@@ -216,6 +234,10 @@ namespace FactoryManagementSoftware.UI
             else if (selectedDataList == text_StdPackingList)
             {
                 dt = dalData.StdPackingSelect();
+            }
+            else if (selectedDataList == text_RouteDataList)
+            {
+                dt = dalData.RouteSelect();
             }
 
             dgv.DataSource = dt;
@@ -398,6 +420,21 @@ namespace FactoryManagementSoftware.UI
                             ClearError();
                         }
                     }
+                    else if (selectedDataList == text_RouteDataList)
+                    {
+                        uData.route_name = txtName.Text.ToUpper();
+
+                        if (!dalData.InsertRoute(uData))
+                        {
+                            MessageBox.Show("Failed to insert route data to DB.");
+                        }
+                        else
+                        {
+                            LoadData();
+                            ClearDataField();
+                            ClearError();
+                        }
+                    }
                 }
                
             }
@@ -499,6 +536,20 @@ namespace FactoryManagementSoftware.UI
                             LoadData();
                             ClearDataField();
                             ClearError();
+                        }
+                    }
+                    else if (selectedDataList == text_RouteDataList)
+                    {
+                        uData.route_name = txtName.Text.ToUpper();
+
+                        if (!dalData.RouteUpdate(uData))
+                        {
+                            MessageBox.Show("Failed to update route data to DB.");
+                        }
+                        else
+                        {
+                            LoadData();
+                            ClearDataField();
                         }
                     }
                 }
@@ -621,6 +672,10 @@ namespace FactoryManagementSoftware.UI
                     txtQtyPerBag.Text = dgv.Rows[rowIndex].Cells[dalData.QtyPerBag].Value.ToString();
                     txtMaxLevel.Text = dgv.Rows[rowIndex].Cells[dalData.MaxLevel].Value.ToString();
 
+                }
+                else if (selectedDataList == text_RouteDataList)
+                {
+                    txtName.Text = dgv.Rows[rowIndex].Cells[dalData.RouteName].Value.ToString();
                 }
             }
             else

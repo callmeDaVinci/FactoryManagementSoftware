@@ -1779,6 +1779,110 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void NewTrip(DataGridView dgv)
+        {
+            //dgv.SuspendLayout();
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            uSpp.Updated_Date = DateTime.Now;
+            uSpp.Updated_By = MainDashboard.USER_ID;
+
+            bool result = false;
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int pcsPerBag = int.TryParse(dt.Rows[i][header_QtyPerBag].ToString(), out pcsPerBag) ? pcsPerBag : -1;
+
+                if (pcsPerBag != -1)
+                {
+                    int priorityLvl = 1;
+
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        string colName = dgv.Columns[j].Name;
+
+                        string searchingColumns = header_Priority + priorityLvl.ToString();
+
+                        bool colSelected = false;
+
+                        if (colName == searchingColumns)
+                            colSelected = dgv.Rows[i].Cells[j].Selected;
+
+                        if (colName == searchingColumns && colSelected)
+                        {
+                            string POTblCode = dt.Rows[i - 1][header_PriorityTblCode + priorityLvl.ToString()].ToString();
+
+                            ////get order, delivered, pcs
+                            //int orderQty = int.TryParse(dt.Rows[i - 1][header_PriorityOrder + priorityLvl].ToString(), out orderQty) ? orderQty : 0;
+                            //int deliveredQty = int.TryParse(dt.Rows[i - 1][header_PriorityDelivered + priorityLvl.ToString()].ToString(), out deliveredQty) ? deliveredQty : 0;
+
+                            //calculate still need
+                            int toDeliveredQty = int.TryParse(dt.Rows[i][searchingColumns].ToString(), out toDeliveredQty) ? toDeliveredQty : 0;
+
+                            if (toDeliveredQty > 0)
+                            {
+                                toDeliveredQty = cmbEditUnit.Text == text_Bag ? toDeliveredQty * pcsPerBag : toDeliveredQty;
+
+                                //get customer id
+                                //get route tbl code
+                                string CustTblCode = dt.Rows[i - 1][header_PriorityCustCode + priorityLvl.ToString()].ToString();
+
+                                DataTable dt_Cust = dalSPP.CustomerWithoutRemovedDataSelect();
+
+                                int routeTblCode = 0;
+
+                                foreach (DataRow custRow in dt_Cust.Rows)
+                                {
+                                    if (CustTblCode == custRow[dalSPP.TableCode].ToString())
+                                    {
+                                        routeTblCode = int.TryParse(custRow[dalSPP.RouteTblCode].ToString(), out routeTblCode)? routeTblCode : 0;
+                                        break;
+                                    }
+                                }
+
+
+                                uSpp.route_tbl_code = routeTblCode;
+                                uSpp.PO_tbl_code = Convert.ToInt32(POTblCode);
+                                uSpp.delivery_status = text.Delivery_Processing;
+                                uSpp.deliver_pcs = toDeliveredQty;
+
+                                if(!dalSPP.InsertDelivery(uSpp))
+                                {
+                                    MessageBox.Show("Failed to insert new trip data to database!");
+                                    break;
+                                }
+                                else
+                                {
+                                    result = true;
+                                }
+                               
+
+                            }
+
+
+
+                        }
+
+                        if (colName == searchingColumns)
+                            priorityLvl++;
+
+
+                    }
+
+
+                }
+
+
+
+            }
+
+         
+            if(result)
+            {
+                MessageBox.Show("New trip added!");
+            }
+        }
+
         private void Reset(DataGridView dgv)
         {
             dgv.SuspendLayout();
@@ -2640,7 +2744,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (ClickedItem.Equals(text_NewTrip))
                     {
-                        MessageBox.Show("Have a nice day!");
+                        NewTrip(dgv);
                     }
                 }
 

@@ -26,6 +26,16 @@ namespace FactoryManagementSoftware.BLL
         public int Type_tbl_code { get; set; }
         public int Category_tbl_code { get; set; }
 
+        //route table
+        public string route_name { get; set; }
+
+        //delivery table
+        public int route_tbl_code { get; set; }
+        public int trip_no { get; set; }
+        public DateTime delivery_date{ get; set; }
+        public string delivery_status { get; set; }
+        public int deliver_pcs { get; set; }
+
         //color table
         public string Color_name { get; set; }
 

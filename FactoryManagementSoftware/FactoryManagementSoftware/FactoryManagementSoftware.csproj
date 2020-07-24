@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>225</ApplicationRevision>
+    <ApplicationRevision>226</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -239,6 +239,12 @@
     </Compile>
     <Compile Include="UI\frmDeliveryDate.Designer.cs">
       <DependentUpon>frmDeliveryDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmDeliverySchedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDeliverySchedule.Designer.cs">
+      <DependentUpon>frmDeliverySchedule.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmDialog.cs">
       <SubType>Form</SubType>
@@ -596,6 +602,12 @@
     <Compile Include="UI\frmProPackaging.Designer.cs">
       <DependentUpon>frmProPackaging.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmRouteEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmRouteEdit.Designer.cs">
+      <DependentUpon>frmRouteEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmSBBDeliveryPlanning.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -760,6 +772,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDeliveryDate.resx">
       <DependentUpon>frmDeliveryDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDeliverySchedule.resx">
+      <DependentUpon>frmDeliverySchedule.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDialog.resx">
       <DependentUpon>frmDialog.cs</DependentUpon>
@@ -947,6 +962,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmProPackaging.resx">
       <DependentUpon>frmProPackaging.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmRouteEdit.resx">
+      <DependentUpon>frmRouteEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBDeliveryPlanning.resx">
       <DependentUpon>frmSBBDeliveryPlanning.cs</DependentUpon>
