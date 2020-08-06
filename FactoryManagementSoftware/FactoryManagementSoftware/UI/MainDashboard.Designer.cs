@@ -58,6 +58,7 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.sBBDeliveredReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -229,7 +230,8 @@
             this.deliveryReportToolStripMenuItem,
             this.forecastReportToolStripMenuItem,
             this.materialUsedReportToolStripMenuItem,
-            this.productionReportToolStripMenuItem});
+            this.productionReportToolStripMenuItem,
+            this.sBBDeliveredReportToolStripMenuItem});
             this.reportToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
             this.reportToolStripMenuItem.Size = new System.Drawing.Size(82, 27);
@@ -299,6 +301,13 @@
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
+            // sBBDeliveredReportToolStripMenuItem
+            // 
+            this.sBBDeliveredReportToolStripMenuItem.Name = "sBBDeliveredReportToolStripMenuItem";
+            this.sBBDeliveredReportToolStripMenuItem.Size = new System.Drawing.Size(247, 28);
+            this.sBBDeliveredReportToolStripMenuItem.Text = "SBB Delivered Report";
+            this.sBBDeliveredReportToolStripMenuItem.Click += new System.EventHandler(this.sBBDeliveredReportToolStripMenuItem_Click);
+            // 
             // MainDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -358,6 +367,7 @@
         private System.Windows.Forms.ToolStripMenuItem dAILYToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem productionReportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sPPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sBBDeliveredReportToolStripMenuItem;
     }
 }
 

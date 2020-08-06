@@ -41,6 +41,7 @@ namespace FactoryManagementSoftware.UI
         readonly string headerNote = "NOTE";
         readonly string headerResult = "RESULT";
         readonly string headerBalance = "BALANCE";
+        readonly string headerBag = "BAG";
 
         public frmTransferHistory()
         {
@@ -71,6 +72,9 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerNote, typeof(string));
             dt.Columns.Add(headerResult, typeof(string));
             dt.Columns.Add(headerBalance, typeof(float));
+
+            dt.Columns.Add(headerBag, typeof(int));
+
             return dt;
         }
 
@@ -193,6 +197,46 @@ namespace FactoryManagementSoftware.UI
             {
                 cmbTrfTo.DataSource = null;
             }
+        }
+
+        private int GetTotalBag(string note)
+        {
+            int totalBag = 0;
+
+            bool dotFound = false;
+            bool readyToGet = false;
+
+            string text = "";
+            for(int i = 0; i < note.Length; i++)
+            {
+                if(note[i].ToString() == ":")
+                {
+                    dotFound = true;
+                }
+
+                if(dotFound && note[i].ToString() == " ")
+                {
+                    if(!readyToGet)
+                    {
+                        readyToGet = true;
+                    }
+                    else
+                    {
+                        readyToGet = false;
+                        break;
+                    }
+                }
+
+                if(readyToGet && int.TryParse(note[i].ToString(), out int x))
+                {
+                    text += note[i].ToString();
+                }
+
+            }
+
+            totalBag = int.TryParse(text, out totalBag) ? totalBag : 0;
+
+            return totalBag;
         }
 
         private void filterData()
@@ -318,7 +362,11 @@ namespace FactoryManagementSoftware.UI
                         row_TrfData[headerNote] = row[dalTrfHist.TrfNote];
                         row_TrfData[headerResult] = row[dalTrfHist.TrfResult];
                         row_TrfData[headerBalance] = row[dalTrfHist.Balance];
+
+                        row_TrfData[headerBag] = GetTotalBag(row[dalTrfHist.TrfNote].ToString());
+
                         dt_TrfData.Rows.Add(row_TrfData);
+
 
                         periodWanted = false;
                         fromWanted = false;

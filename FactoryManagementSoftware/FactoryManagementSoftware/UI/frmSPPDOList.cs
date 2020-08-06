@@ -561,7 +561,10 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            
+
+            dt.DefaultView.Sort = header_DONo + " DESC";
+            dt = dt.DefaultView.ToTable();
+
             dgvDOList.DataSource = dt;
             DgvUIEdit(dgvDOList);
             dgvDOList.ClearSelection();
@@ -980,11 +983,11 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-
             frmDeliveryDate frm = new frmDeliveryDate(dt)
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
+
             frm.ShowDialog();//Item Edit
 
             if (frmDeliveryDate.transferred)

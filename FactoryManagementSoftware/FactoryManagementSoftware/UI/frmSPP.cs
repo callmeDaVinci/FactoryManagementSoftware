@@ -762,7 +762,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (status == text.planning_status_running)
                 {
-                    dgv.Rows[row].Cells[header_ProductionString].Style.ForeColor = Color.FromArgb(0, 184, 148);
+                    dgv.Rows[row].Cells[header_ProductionString].Style.ForeColor = Color.FromArgb(52, 139, 209);
                 }
                 else
                 {

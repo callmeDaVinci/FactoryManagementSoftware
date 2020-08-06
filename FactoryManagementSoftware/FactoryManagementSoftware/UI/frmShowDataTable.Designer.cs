@@ -63,6 +63,7 @@
             this.dgvList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvList.Size = new System.Drawing.Size(350, 386);
             this.dgvList.TabIndex = 180;
+            this.dgvList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvList_CellFormatting);
             // 
             // frmShowDataTable
             // 

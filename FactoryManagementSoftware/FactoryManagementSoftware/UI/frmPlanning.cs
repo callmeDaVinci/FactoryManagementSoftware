@@ -1005,7 +1005,7 @@ namespace FactoryManagementSoftware.UI
                     cmbColorMatCode.SelectedIndex = -1;
 
                  
-                    if (dalItem.checkIfAssembly(cmbPartCode.Text) && !dalItem.checkIfProduction(cmbPartCode.Text) && tool.ifGotChild(cmbPartCode.Text))
+                    if (dalItem.checkIfAssembly(cmbPartCode.Text) && !dalItem.checkIfProduction(cmbPartCode.Text) && tool.ifGotChildExcludePackaging(cmbPartCode.Text))
                     {
                         MessageBox.Show(cmbPartCode.Text + " " + cmbPartName.Text + " is a assembly part!");
                     }

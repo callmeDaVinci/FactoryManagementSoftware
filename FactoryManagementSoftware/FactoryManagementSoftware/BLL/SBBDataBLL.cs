@@ -32,9 +32,11 @@ namespace FactoryManagementSoftware.BLL
         //delivery table
         public int route_tbl_code { get; set; }
         public int trip_no { get; set; }
-        public DateTime delivery_date{ get; set; }
+        public DateTime? delivery_date{ get; set; }
         public string delivery_status { get; set; }
         public int deliver_pcs { get; set; }
+        public int DO_tbl_code { get; set; }
+        public int planning_no { get; set; }
 
         //color table
         public string Color_name { get; set; }

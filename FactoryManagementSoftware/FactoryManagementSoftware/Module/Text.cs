@@ -290,6 +290,7 @@ namespace FactoryManagementSoftware.Module
         public string Delivery_Delayed { get; } = "DELAYED";
         public string Delivery_Cancelled { get; } = "CANCELLED";
         public string Delivery_Delivered { get; } = "DELIVERED";
+        public string Delivery_Removed { get; } = "REMOVED";
 
         #endregion
 

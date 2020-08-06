@@ -5771,6 +5771,33 @@ namespace FactoryManagementSoftware.Module
             return result;
         }
 
+        public bool ifGotChildExcludePackaging(string itemCode)
+        {
+            bool result = false;
+            Text text = new Text();
+            DataTable dtJoin = dalJoin.loadChildList(itemCode);
+            string itemCat = getItemCat(itemCode);
+
+            if (itemCat == text.Cat_Part)
+            {
+                if (dtJoin.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dtJoin.Rows)
+                    {
+                        string childCat = getItemCat(row[dalJoin.JoinChild].ToString());
+                        if (childCat == text.Cat_Part || childCat == text.Cat_SubMat)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+
+            return result;
+        }
+
+
         public bool ifGotChild(string itemCode)
         {
             bool result = false;
@@ -5785,7 +5812,7 @@ namespace FactoryManagementSoftware.Module
                     foreach (DataRow row in dtJoin.Rows)
                     {
                         string childCat = getItemCat(row[dalJoin.JoinChild].ToString());
-                        if (childCat == text.Cat_Part || childCat == text.Cat_SubMat)
+                        if (true ) //childCat == text.Cat_Part || childCat == text.Cat_SubMat
                         {
                             return true;
                         }
@@ -5796,6 +5823,7 @@ namespace FactoryManagementSoftware.Module
 
             return result;
         }
+
 
         public bool ifGotParent(string itemCode)
         {

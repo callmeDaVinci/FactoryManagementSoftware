@@ -894,7 +894,7 @@ namespace FactoryManagementSoftware.UI
 
                         string childItemCat = dtItem.Rows[0][dalItem.ItemCat].ToString();
 
-                        if (!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging))
+                        if (true)//!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging)
                         {
                             if (dalItem.checkIfAssembly(childItemCode) && dalItem.checkIfProduction(childItemCode))
                             {
@@ -949,7 +949,7 @@ namespace FactoryManagementSoftware.UI
                             float transferQty = 0;
                             if (callFromProductionRecord)
                             {
-                                transferQty = qty;
+                                transferQty = childQty;
                             }
                             else
                             {
@@ -1466,7 +1466,7 @@ namespace FactoryManagementSoftware.UI
             {
                 if (fromCat.Equals("Production") && toCat.Equals("Factory"))
                 {
-                    if(tool.ifGotChild(itemCode))
+                    if(tool.ifGotChildExcludePackaging(itemCode))
                     {
                         if(dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
                         {

@@ -29,6 +29,7 @@ namespace FactoryManagementSoftware.UI
         static public bool DailyJobSheetFormOpen = false;
         static public bool ProductionReportFormOpen = false;
         static public bool SPPFormOpen = false;
+        static public bool SBBDeliveredFormOpen = false;
 
         static public int USER_ID = -1;
 
@@ -616,6 +617,28 @@ namespace FactoryManagementSoftware.UI
         private void toolTip_Popup(object sender, PopupEventArgs e)
         {
 
+        }
+
+        private void sBBDeliveredReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!SBBDeliveredFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmSBBDeliveredReport frm = new frmSBBDeliveredReport();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                SBBDeliveredFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmSBBDeliveredReport>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmSBBDeliveredReport>().First().BringToFront();
+                }
+            }
         }
     }
 }

@@ -57,7 +57,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_BalAfterDeliveryInPcs = "BAL. AFTER DELIVERY IN PCS";
        
 
-        readonly string header_Priority = "PRIORITY_";
+        readonly string header_Priority = "P/O_";
         readonly string header_PriorityDelivered = "PRIORITY DELIVERED_";
         readonly string header_PriorityOrder = "PRIORITY ORDER_";
         readonly string header_PriorityTblCode = "PRIORITY TABLE CODE_";
@@ -88,6 +88,7 @@ namespace FactoryManagementSoftware.UI
         readonly string text_OpenDO = "OPEN D/O";
         readonly string text_AddDO = "ADD D/O";
 
+        readonly string text_Selected = " SELECTED";
         
         readonly string text_Unit = "UNIT";
         readonly string text_ProductSortBy = "PRODUCT SORT BY";
@@ -99,7 +100,7 @@ namespace FactoryManagementSoftware.UI
         readonly string text_Type = "TYPE";
         readonly string text_Customer = "CUSTOMER";
         readonly string text_ReceivedDate = "RECEIVED DATE";
-        readonly string text_PriorityLvl = "PRIORITY LEVEL";
+       // readonly string text_PriorityLvl = "PRIORITY LEVEL";
 
         readonly string text_AssemblyNeeded = "ASSEMBLY NEEDED !!!";
         
@@ -330,6 +331,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[header_StockBag].Visible = false;
             dgv.Columns[header_QtyPerBag].Visible = false;
             dgv.Columns[header_BalAfterDeliveryInPcs].Visible = false;
+            dgv.Columns[header_BalAfterDelivery].Frozen = true;
 
             dgv.Columns[header_Code].DefaultCellStyle.ForeColor = Color.Gray;
             dgv.Columns[header_Code].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
@@ -444,7 +446,7 @@ namespace FactoryManagementSoftware.UI
 
             dt.Rows.Add(text_ReceivedDate);
             dt.Rows.Add(text_Customer);
-            dt.Rows.Add(text_PriorityLvl);
+            //dt.Rows.Add(text_PriorityLvl);
 
             cmb.DataSource = dt;
             cmb.DisplayMember = text_POSortBy;
@@ -762,12 +764,6 @@ namespace FactoryManagementSoftware.UI
                                         if (!isDORemoved && !isDODelivered && DO_POTblCode == poTblCode)
                                         {
                                             //get to delivery qty
-
-                                            //if(poTblCode == "681")
-                                            //{
-                                            //    string testt = rowDO[dalSPP.ToDeliveryQty].ToString();
-                                            //}
-
                                             DO_ToDeliveryQty += int.TryParse(rowDO[dalSPP.ToDeliveryQty].ToString(), out DO_ToDeliveryQty) ? DO_ToDeliveryQty : 0;
 
                                         }
@@ -818,7 +814,7 @@ namespace FactoryManagementSoftware.UI
 
                 AdjustDGVRowAlignment(dgvList);//150ms
 
-                AdjustToDeliveryForeColor();//905ms
+                AdjustToDeliveryBackColor();//905ms
 
                 UpdateBalAfterDelivery();//441ms
 
@@ -838,7 +834,7 @@ namespace FactoryManagementSoftware.UI
           
         }
 
-        private void AdjustToDeliveryForeColor()
+        private void AdjustToDeliveryBackColor()
         {
             DataGridView dgv = dgvList;
 
@@ -1204,8 +1200,10 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = (DataTable)dgvList.DataSource;
 
             int rowIndex = 0;
+            int TotalAssemblyNeededInBags = 0;
+            int TotalAssemblyNeededInPcs = 0;
 
-            foreach(DataRow row in dt.Rows)
+            foreach (DataRow row in dt.Rows)
             {
                 int pcsPerBag = int.TryParse(row[header_QtyPerBag].ToString(), out pcsPerBag) ? pcsPerBag : 0;
                 int stockInPcs = int.TryParse(row[header_StockPcs].ToString(), out stockInPcs) ? stockInPcs :0;
@@ -1234,9 +1232,12 @@ namespace FactoryManagementSoftware.UI
 
                     int balInPcs = stockInPcs - TotalToDeliveryQty * divideBy;
 
-                    dt.Rows[rowIndex][header_BalAfterDelivery] = balInPcs / pcsPerBag + " BAGS";
+                    int balAfterDelivery = balInPcs / pcsPerBag;
+
+                    dt.Rows[rowIndex][header_BalAfterDelivery] = balAfterDelivery + " BAGS";
                     dt.Rows[rowIndex][header_BalAfterDeliveryInPcs] = balInPcs;
 
+                    int test = balInPcs / pcsPerBag;
 
                     if (balInPcs < 0)
                     {
@@ -1246,8 +1247,8 @@ namespace FactoryManagementSoftware.UI
                         }
 
                         dgvList.Rows[rowIndex].Cells[header_BalAfterDelivery].Style.ForeColor = Color.Red;
-
-
+                        TotalAssemblyNeededInBags += balInPcs / pcsPerBag;
+                        TotalAssemblyNeededInPcs += balInPcs;
                     }
                     else
                     {
@@ -1268,6 +1269,7 @@ namespace FactoryManagementSoftware.UI
            
 
             CheckIfAssemblyNeeded(dt);
+            lblAssemblyNeeded.Text += " (" + TotalAssemblyNeededInBags + " bags / " + TotalAssemblyNeededInPcs + " pcs)";
         }
 
         private void UpdateBalAfterDelivery(int row)
@@ -1278,8 +1280,10 @@ namespace FactoryManagementSoftware.UI
             int stockInPcs = int.TryParse(dt.Rows[row][header_StockPcs].ToString(), out stockInPcs) ? stockInPcs : 0;
 
             int TotalToDeliveryQty = 0;
+            int TotalAssemblyNeededInBags = 0;
+            int TotalAssemblyNeededInPcs = 0;
 
-            foreach(DataColumn col in dt.Columns)
+            foreach (DataColumn col in dt.Columns)
             {
                 string colName = col.ColumnName;
                 int toDelivery = int.TryParse(dt.Rows[row][colName].ToString(), out toDelivery) ? toDelivery : -1;
@@ -1313,8 +1317,9 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 dgvList.Rows[row].Cells[header_BalAfterDelivery].Style.ForeColor = Color.Red;
+                TotalAssemblyNeededInBags += balInPcs / pcsPerBag;
+                TotalAssemblyNeededInPcs += balInPcs;
 
-                
             }
             else
             {
@@ -1328,6 +1333,8 @@ namespace FactoryManagementSoftware.UI
             }
 
             CheckIfAssemblyNeeded(dt);
+
+            lblAssemblyNeeded.Text += " (" + TotalAssemblyNeededInBags+" bags / "+ TotalAssemblyNeededInPcs + " pcs)";
         }
 
         private void dgvList_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -1347,8 +1354,8 @@ namespace FactoryManagementSoftware.UI
                     btnUpdate.Visible = true;
 
                     //update balance
-                    UpdateBalAfterDelivery(rowIndex);
-
+                    UpdateBalAfterDelivery();
+                    //UpdateBalAfterDelivery(rowIndex);
                     //get priority level
                     string colName = dgv.Columns[colIndex].Name;
 
@@ -1779,6 +1786,64 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void CalculateTotalBag(DataGridView dgv)
+        {
+    
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            int totalBag = 0;
+            int totalPcs = 0;
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int pcsPerBag = int.TryParse(dt.Rows[i][header_QtyPerBag].ToString(), out pcsPerBag) ? pcsPerBag : -1;
+
+                if (pcsPerBag != -1)
+                {
+                    int priorityLvl = 1;
+
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        string colName = dgv.Columns[j].Name;
+
+                        string searchingColumns = header_Priority + priorityLvl.ToString();
+
+                        bool colSelected = false;
+
+                        if (colName == searchingColumns)
+                            colSelected = dgv.Rows[i].Cells[j].Selected;
+
+                        if (colName == searchingColumns && colSelected)
+                        {
+                            int toDeliverQty = int.TryParse(dt.Rows[i][searchingColumns].ToString(), out toDeliverQty) ? toDeliverQty : 0;
+
+                            if (toDeliverQty > 0)
+                            {
+                                totalBag += cmbEditUnit.Text != text_Bag ? toDeliverQty / pcsPerBag : toDeliverQty;
+                                totalPcs += cmbEditUnit.Text != text_Bag ? toDeliverQty : toDeliverQty * pcsPerBag;
+
+                            }
+
+
+
+                        }
+
+                        if (colName == searchingColumns)
+                            priorityLvl++;
+
+
+                    }
+
+
+                }
+
+
+
+            }
+
+            lblTotalBag.Text = totalBag + " BAG(s) / " + totalPcs +" PCS "+ text_Selected;
+
+        }
+
         private void NewTrip(DataGridView dgv)
         {
             //dgv.SuspendLayout();
@@ -1883,6 +1948,123 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void NewTripTest(DataGridView dgv)
+        {
+            //dgv.SuspendLayout();
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            uSpp.Updated_Date = DateTime.Now;
+            uSpp.Updated_By = MainDashboard.USER_ID;
+
+            DataTable dt_Trip = dalSPP.DeliveryOWithoutRemovedDataSelect();
+
+            DataView dv = dt_Trip.DefaultView;
+            dv.Sort = dalSPP.PlanningNo + " desc";
+            DataTable sortedDT = dv.ToTable();
+
+            int newPlanningNo = 1;
+
+            if(sortedDT.Rows.Count > 0)
+            newPlanningNo = int.TryParse(sortedDT.Rows[0][dalSPP.PlanningNo].ToString(), out newPlanningNo)? newPlanningNo + 1 : 1;
+
+            bool result = false;
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int pcsPerBag = int.TryParse(dt.Rows[i][header_QtyPerBag].ToString(), out pcsPerBag) ? pcsPerBag : -1;
+
+                if (pcsPerBag != -1)
+                {
+                    int priorityLvl = 1;
+
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        string colName = dgv.Columns[j].Name;
+
+                        string searchingColumns = header_Priority + priorityLvl.ToString();
+
+                        bool colSelected = false;
+
+                        if (colName == searchingColumns)
+                            colSelected = dgv.Rows[i].Cells[j].Selected;
+
+                        if (colName == searchingColumns && colSelected)
+                        {
+                            string POTblCode = dt.Rows[i - 1][header_PriorityTblCode + priorityLvl.ToString()].ToString();
+
+                            ////get order, delivered, pcs
+                            //int orderQty = int.TryParse(dt.Rows[i - 1][header_PriorityOrder + priorityLvl].ToString(), out orderQty) ? orderQty : 0;
+                            //int deliveredQty = int.TryParse(dt.Rows[i - 1][header_PriorityDelivered + priorityLvl.ToString()].ToString(), out deliveredQty) ? deliveredQty : 0;
+
+                            //calculate still need
+                            int toDeliveredQty = int.TryParse(dt.Rows[i][searchingColumns].ToString(), out toDeliveredQty) ? toDeliveredQty : 0;
+
+                            if (toDeliveredQty > 0)
+                            {
+                                toDeliveredQty = cmbEditUnit.Text == text_Bag ? toDeliveredQty * pcsPerBag : toDeliveredQty;
+
+                                //get customer id
+                                //get route tbl code
+                                string CustTblCode = dt.Rows[i - 1][header_PriorityCustCode + priorityLvl.ToString()].ToString();
+
+                                DataTable dt_Cust = dalSPP.CustomerWithoutRemovedDataSelect();
+
+                                int routeTblCode = 0;
+
+                                foreach (DataRow custRow in dt_Cust.Rows)
+                                {
+                                    if (CustTblCode == custRow[dalSPP.TableCode].ToString())
+                                    {
+                                        routeTblCode = int.TryParse(custRow[dalSPP.RouteTblCode].ToString(), out routeTblCode) ? routeTblCode : 0;
+                                        break;
+                                    }
+                                }
+
+
+                                uSpp.route_tbl_code = routeTblCode;
+                                uSpp.planning_no = newPlanningNo;
+
+                                uSpp.PO_tbl_code = Convert.ToInt32(POTblCode);
+                                uSpp.delivery_status = text.Delivery_Processing;
+                                uSpp.deliver_pcs = toDeliveredQty;
+
+                                if (!dalSPP.InsertDelivery(uSpp))
+                                {
+                                    MessageBox.Show("Failed to insert new trip data to database!");
+                                    break;
+                                }
+                                else
+                                {
+                                    result = true;
+                                }
+
+
+                            }
+
+
+
+                        }
+
+                        if (colName == searchingColumns)
+                            priorityLvl++;
+
+
+                    }
+
+
+                }
+
+
+
+            }
+
+
+            if (result)
+            {
+                MessageBox.Show("New trip added!");
+            }
+        }
+
         private void Reset(DataGridView dgv)
         {
             dgv.SuspendLayout();
@@ -1936,10 +2118,28 @@ namespace FactoryManagementSoftware.UI
 
                                 string deliveryStatus = text_DeliveryStatus_ToOpen;
 
+                               // dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(253, 203, 110);
+
+                                //change delivery status color
+                                if (DOToDeliveryQtyInPcs != "0")
+                                {
+                                    if (DOToDeliveryQtyInPcs == stillNeed.ToString())
+                                    {
+                                        deliveryStatus = text_DeliveryStatus_Opened;
+                                        dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(0, 184, 148);
+                                    }
+                                    else
+                                    {
+                                        deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
+                                        dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(52, 160, 225);
+                                    }
+                                }
+                                else
+                                {
+                                    dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(253, 203, 110);
+                                }
+
                                 dgv.Rows[i - 1].Cells[header_PriorityToDeliveryStatus + priorityLvl].Value = deliveryStatus;
-
-                                dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(253, 203, 110);
-
 
                             }
 
@@ -2011,9 +2211,25 @@ namespace FactoryManagementSoftware.UI
 
                                 string deliveryStatus = text_DeliveryStatus_ToOpen;
 
-                                dgv.Rows[i - 1].Cells[header_PriorityToDeliveryStatus + priorityLvl].Value = deliveryStatus;
+                                if (DOToDeliveryQtyInPcs != "0")
+                                {
+                                    if (DOToDeliveryQtyInPcs == stillNeed.ToString())
+                                    {
+                                        deliveryStatus = text_DeliveryStatus_Opened;
+                                        dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(0, 184, 148);
+                                    }
+                                    else
+                                    {
+                                        deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
+                                        dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(52, 160, 225);
+                                    }
+                                }
+                                else
+                                {
+                                    dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(253, 203, 110);
+                                }
 
-                                dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(253, 203, 110);
+                                dgv.Rows[i - 1].Cells[header_PriorityToDeliveryStatus + priorityLvl].Value = deliveryStatus;
 
 
                             }
@@ -2165,8 +2381,6 @@ namespace FactoryManagementSoftware.UI
             if(dt_Mat != null)
             {
 
-
-
                 dt_Mat.DefaultView.Sort = header_BalAfter + " ASC";
                 dt_Mat = dt_Mat.DefaultView.ToTable();
 
@@ -2288,8 +2502,9 @@ namespace FactoryManagementSoftware.UI
                 dgv.Rows[row].Cells[col].Selected = true;
             }
 
-            
-            
+            //CalculateTotalBag(dgv);
+
+
             string fillStatus = btnFillALL.Text;
 
             int colIndex = e.ColumnIndex;
@@ -2566,6 +2781,8 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.SelectionMode = DataGridViewSelectionMode.FullColumnSelect;
                 dgv.Columns[col].Selected = true;
+
+                CalculateTotalBag(dgv);
             }
         }
 
@@ -2675,7 +2892,6 @@ namespace FactoryManagementSoftware.UI
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 DataGridView dgv = dgvList;
 
-
                 //handle the row selection on right click
                 if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
                 {
@@ -2744,8 +2960,10 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (ClickedItem.Equals(text_NewTrip))
                     {
-                        NewTrip(dgv);
+                        NewTripTest(dgv);
                     }
+
+                    CalculateTotalBag(dgv);
                 }
 
 
@@ -2757,5 +2975,30 @@ namespace FactoryManagementSoftware.UI
                 tool.saveToTextAndMessageToUser(ex);
             }
         }
+
+        private void dgvList_CellContentClick_2(object sender, DataGridViewCellEventArgs e)
+        {
+           // MessageBox.Show("Cell selected");
+        }
+
+        private void dgvList_SelectionChanged(object sender, EventArgs e)
+        {
+            //MessageBox.Show("Cell selected");
+        }
+
+        private void dgvList_MultiSelectChanged(object sender, EventArgs e)
+        {
+            //MessageBox.Show("Cell selected");
+        }
+
+        private void dgvList_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            //MessageBox.Show("Cell selected");
+        }
+
+        private void dgvList_MouseClick(object sender, MouseEventArgs e)
+        {
+            CalculateTotalBag(dgvList);
+;        }
     }
 }

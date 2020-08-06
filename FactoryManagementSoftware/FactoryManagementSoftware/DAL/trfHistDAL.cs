@@ -1737,7 +1737,6 @@ namespace FactoryManagementSoftware.DAL
 
                     cmd.Parameters.AddWithValue("@start", start);
                     cmd.Parameters.AddWithValue("@end", end);
-                    cmd.Parameters.AddWithValue("@customer", customer);
                     cmd.Parameters.AddWithValue("@OTHER", "OTHER");
 
                     //for executing command

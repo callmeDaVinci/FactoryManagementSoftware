@@ -397,13 +397,17 @@ namespace FactoryManagementSoftware.UI
             if(ifRepeat(itemCode))
             {
                 dtStock_row[headerRepeat] = 1;
+
+                if (cbShowDuplicateData.Checked)
+                    dt_Stock.Rows.Add(dtStock_row);
             }
             else
             {
                 dtStock_row[headerRepeat] = 0;
+                dt_Stock.Rows.Add(dtStock_row);
             }
         
-            dt_Stock.Rows.Add(dtStock_row);
+           
         }
 
         private bool LoadPartStockData()
@@ -1451,6 +1455,11 @@ namespace FactoryManagementSoftware.UI
         public void StartForm()
         {
             System.Windows.Forms.Application.Run(new frmLoading());
+        }
+
+        private void cbShowDuplicateData_CheckedChanged(object sender, EventArgs e)
+        {
+            dgvNewStock.DataSource = null;
         }
 
         private void dgvNewStock_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

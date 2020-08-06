@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpDeliveryList = new System.Windows.Forms.TableLayoutPanel();
             this.gbFilter = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cmbStatus = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnFilter = new System.Windows.Forms.Button();
@@ -43,9 +45,8 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvMainList = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTotalBagSelected = new System.Windows.Forms.Label();
             this.btnAddNewDO = new System.Windows.Forms.Button();
-            this.cmbStatus = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.tlpDeliveryList.SuspendLayout();
             this.gbFilter.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -92,6 +93,25 @@
             this.gbFilter.TabStop = false;
             this.gbFilter.Text = "FILTER";
             // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(15, 32);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(54, 19);
+            this.label9.TabIndex = 175;
+            this.label9.Text = "STATUS";
+            // 
+            // cmbStatus
+            // 
+            this.cmbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbStatus.FormattingEnabled = true;
+            this.cmbStatus.Location = new System.Drawing.Point(19, 54);
+            this.cmbStatus.Name = "cmbStatus";
+            this.cmbStatus.Size = new System.Drawing.Size(200, 25);
+            this.cmbStatus.TabIndex = 0;
+            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 3;
@@ -125,6 +145,7 @@
             this.btnRefresh.Size = new System.Drawing.Size(36, 36);
             this.btnRefresh.TabIndex = 173;
             this.btnRefresh.UseVisualStyleBackColor = false;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnFilter
             // 
@@ -218,14 +239,14 @@
             this.dgvSubList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvSubList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSubList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSubList.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSubList.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvSubList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSubList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvSubList.Location = new System.Drawing.Point(3, 1);
@@ -263,14 +284,14 @@
             this.dgvMainList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvMainList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMainList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMainList.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMainList.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvMainList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMainList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvMainList.Location = new System.Drawing.Point(3, 1);
@@ -282,16 +303,23 @@
             this.dgvMainList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMainList.Size = new System.Drawing.Size(905, 457);
             this.dgvMainList.TabIndex = 174;
+            this.dgvMainList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMainList_CellEndEdit);
+            this.dgvMainList.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvMainList_CellMouseClick);
+            this.dgvMainList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvMainList_CellMouseDown);
+            this.dgvMainList.CurrentCellChanged += new System.EventHandler(this.dgvMainList_CurrentCellChanged);
             this.dgvMainList.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvMainList_DataBindingComplete);
+            this.dgvMainList.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvMainList_EditingControlShowing);
+            this.dgvMainList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvMainList_MouseClick);
             // 
             // tableLayoutPanel4
             // 
-            this.tableLayoutPanel4.ColumnCount = 3;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tableLayoutPanel4.ColumnCount = 4;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Controls.Add(this.btnAddNewDO, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lblTotalBagSelected, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnAddNewDO, 1, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 179);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -299,6 +327,16 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(1320, 44);
             this.tableLayoutPanel4.TabIndex = 167;
+            // 
+            // lblTotalBagSelected
+            // 
+            this.lblTotalBagSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTotalBagSelected.AutoSize = true;
+            this.lblTotalBagSelected.Location = new System.Drawing.Point(3, 25);
+            this.lblTotalBagSelected.Name = "lblTotalBagSelected";
+            this.lblTotalBagSelected.Size = new System.Drawing.Size(127, 19);
+            this.lblTotalBagSelected.TabIndex = 176;
+            this.lblTotalBagSelected.Text = "0 BAG(s) SELECTED";
             // 
             // btnAddNewDO
             // 
@@ -308,32 +346,13 @@
             this.btnAddNewDO.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddNewDO.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddNewDO.ForeColor = System.Drawing.Color.Black;
-            this.btnAddNewDO.Location = new System.Drawing.Point(788, 7);
+            this.btnAddNewDO.Location = new System.Drawing.Point(787, 7);
             this.btnAddNewDO.Margin = new System.Windows.Forms.Padding(4, 1, 5, 5);
             this.btnAddNewDO.Name = "btnAddNewDO";
             this.btnAddNewDO.Size = new System.Drawing.Size(124, 32);
             this.btnAddNewDO.TabIndex = 167;
             this.btnAddNewDO.Text = "ADD TRIP";
             this.btnAddNewDO.UseVisualStyleBackColor = false;
-            // 
-            // cmbStatus
-            // 
-            this.cmbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbStatus.FormattingEnabled = true;
-            this.cmbStatus.Location = new System.Drawing.Point(19, 54);
-            this.cmbStatus.Name = "cmbStatus";
-            this.cmbStatus.Size = new System.Drawing.Size(200, 25);
-            this.cmbStatus.TabIndex = 0;
-            // 
-            // label9
-            // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(15, 32);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(54, 19);
-            this.label9.TabIndex = 175;
-            this.label9.Text = "STATUS";
             // 
             // frmDeliverySchedule
             // 
@@ -356,6 +375,7 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMainList)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -378,5 +398,6 @@
         private System.Windows.Forms.Button btnAddNewDO;
         private System.Windows.Forms.ComboBox cmbStatus;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblTotalBagSelected;
     }
 }

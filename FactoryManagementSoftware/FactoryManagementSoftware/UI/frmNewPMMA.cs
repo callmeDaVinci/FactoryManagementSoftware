@@ -1575,7 +1575,7 @@ namespace FactoryManagementSoftware.UI
 
                                         range.Font.Color = ColorTranslator.ToOle(dgv.Rows[i].Cells[j].InheritedStyle.ForeColor);
 
-                                        if (j == 3 || j == 9)
+                                        if (j == 3 || j == 10)
                                         {
                                             //range.Cells.Font.Bold = true;
                                             //range.Font.Size = 14;
