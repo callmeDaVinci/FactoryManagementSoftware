@@ -64,6 +64,7 @@ namespace FactoryManagementSoftware.UI
         private readonly string header_CustID = "CUST ID";
         private readonly string header_CustShortName = "CUSTOMER";
 
+        private readonly string header_TotalBag = "TOTAL BAGS";
         private readonly string header_TotalPcs = "TOTAL PCS";
         private readonly string header_TotalString = "TOTAL";
 
@@ -91,6 +92,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_CustShortName, typeof(string));
 
             dt.Columns.Add(header_TotalPcs, typeof(int));
+            dt.Columns.Add(header_TotalBag, typeof(int));
             dt.Columns.Add(header_TotalString, typeof(string));
 
             string dateType = cmbDateType.Text;
@@ -557,6 +559,7 @@ namespace FactoryManagementSoftware.UI
                     newRow[header_ItemSize_Numerator] = numerator;
                     newRow[header_ItemSize_Denominator] = denominator;
                     newRow[header_SizeUnit] = sizeUnit;
+                    newRow[header_ItemType] = typeName;
                     newRow[header_ItemString] = sizeString + " " + typeName;
 
                     newRow[header_StdPacking] = qtyPerBag;
@@ -591,9 +594,16 @@ namespace FactoryManagementSoftware.UI
 
                                         int deliveredBag = deliveredPcs / qtyPerBag;
 
+                                        string bagString = " BAGS (";
+
+                                        if(deliveredBag <= 1)
+                                        {
+                                            bagString = " BAG (";
+                                        }
+
                                         newRow[dateHeaderName + header_DeliveredPcs] = deliveredPcs;
                                         newRow[dateHeaderName + header_DeliveredBag] = deliveredBag;
-                                        newRow[dateHeaderName] = deliveredBag + " BAGS ("+deliveredPcs+")";
+                                        newRow[dateHeaderName] = deliveredBag + bagString + deliveredPcs+")";
 
                                         DOFound = true;
                                         custFound = true;
@@ -612,7 +622,7 @@ namespace FactoryManagementSoftware.UI
                                     newRow[header_ItemSize_Denominator] = denominator;
                                     newRow[header_SizeUnit] = sizeUnit;
                                     newRow[header_ItemString] = sizeString + " " + typeName;
-
+                                    newRow[header_ItemType] = typeName;
                                     newRow[header_StdPacking] = qtyPerBag;
 
                                     newRow[header_CustID] = custID;
@@ -622,9 +632,16 @@ namespace FactoryManagementSoftware.UI
 
                                     int deliveredBag = deliveredPcs / qtyPerBag;
 
+                                    string bagString = " Bags (";
+
+                                    if (deliveredBag <= 1)
+                                    {
+                                        bagString = " Bag (";
+                                    }
+
                                     newRow[dateHeaderName + header_DeliveredPcs] = deliveredPcs;
                                     newRow[dateHeaderName + header_DeliveredBag] = deliveredBag;
-                                    newRow[dateHeaderName] = deliveredBag + " BAGS (" + deliveredPcs + ")";
+                                    newRow[dateHeaderName] = deliveredBag + bagString + deliveredPcs + ")";
 
                                     dt_DeliveredReport.Rows.Add(newRow);
                                     DOFound = true;
@@ -640,9 +657,16 @@ namespace FactoryManagementSoftware.UI
 
                                 int deliveredBag = deliveredPcs / qtyPerBag;
 
+                                string bagString = " Bags (";
+
+                                if (deliveredBag <= 1)
+                                {
+                                    bagString = " Bag (";
+                                }
+
                                 newRow[dateHeaderName + header_DeliveredPcs] = deliveredPcs;
                                 newRow[dateHeaderName + header_DeliveredBag] = deliveredBag;
-                                newRow[dateHeaderName] = deliveredBag + " BAGS (" + deliveredPcs + ")";
+                                newRow[dateHeaderName] = deliveredBag + bagString + deliveredPcs + ")";
 
                                 dt_DeliveredReport.Rows.Add(newRow);
                                 DOFound = true;
@@ -689,8 +713,24 @@ namespace FactoryManagementSoftware.UI
 
                 }
 
+                if(cbMergeItem.Checked)
+                {
+                    dt_DeliveredReport = MergeSameItem(dt_DeliveredReport);
+                }
+                else if(cbMergeCustomer.Checked)
+                {
+                    dt_DeliveredReport = MergeSameCustomer(dt_DeliveredReport);
+                }
+                else
+                {
+                    dt_DeliveredReport = CalculateRowTotal(dt_DeliveredReport);
+                }
+
+
                 ReallocateIndex(dt_DeliveredReport);
 
+                AddDividerEmptyRow(dt_DeliveredReport);
+                dt_DeliveredReport = AddDividerEmptyRow(dt_DeliveredReport);
                 dgv.DataSource = dt_DeliveredReport;
                 DgvUIEdit(dgv);
 
@@ -701,6 +741,291 @@ namespace FactoryManagementSoftware.UI
                 dgv.ClearSelection();
                 frmLoading.CloseForm();
             }
+        }
+
+
+        private DataTable CalculateRowTotal(DataTable dt)
+        {
+            DataTable dt_SubTotalCalculate = dt.Copy();
+
+            for (int i = 0; i < dt_SubTotalCalculate.Rows.Count; i++)
+            {
+                int rowTotalBag = 0;
+                int rowTotalPcs = 0;
+
+                for (int j = 0; j < dt_SubTotalCalculate.Columns.Count; j++)
+                {
+                    string colHeaderName = dt_SubTotalCalculate.Columns[j].ColumnName;
+
+                    int newDeliveredBag = 0;
+                    int newOeliveredPcs = 0;
+
+                    if (colHeaderName.Contains(header_DeliveredPcs))
+                    {
+                        string DateColHeaderName = dt_SubTotalCalculate.Columns[j - 1].ColumnName;
+
+                        newOeliveredPcs = int.TryParse(dt_SubTotalCalculate.Rows[i][DateColHeaderName + header_DeliveredPcs].ToString(), out newOeliveredPcs) ? newOeliveredPcs : 0;
+
+                        newDeliveredBag = int.TryParse(dt_SubTotalCalculate.Rows[i][DateColHeaderName + header_DeliveredBag].ToString(), out newDeliveredBag) ? newDeliveredBag : 0;
+
+                        rowTotalBag += newDeliveredBag;
+                        rowTotalPcs += newOeliveredPcs;
+                    }
+                }
+
+                dt_SubTotalCalculate.Rows[i][header_TotalPcs] = rowTotalPcs;
+                dt_SubTotalCalculate.Rows[i][header_TotalBag] = rowTotalBag;
+                dt_SubTotalCalculate.Rows[i][header_TotalString] = rowTotalBag + " Bags (" + rowTotalPcs + ")";
+            }
+
+            dt_SubTotalCalculate.AcceptChanges();
+
+            return dt_SubTotalCalculate;
+        }
+
+        private DataTable MergeSameItem(DataTable dt)
+        {
+            DataTable dt_Merge = dt.Copy();
+
+            string header_Removed = "REMOVED";
+
+            dt_Merge.Columns.Add(header_Removed, typeof(string));
+
+            string preItemCode = null;
+
+            int totalCustomer = 1;
+
+            for (int i = 0; i < dt_Merge.Rows.Count; i++)
+            {
+                string itemCode = dt_Merge.Rows[i][header_ItemCode].ToString();
+                int qtyPerBag = int.TryParse(dt_Merge.Rows[i][header_StdPacking].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+
+                int rowTotalBag = 0;
+                int rowTotalPcs = 0;
+
+                if (preItemCode == null || preItemCode != itemCode)
+                {
+                    preItemCode = itemCode;
+                    totalCustomer = 1;
+                }
+                else if(preItemCode == itemCode && i > 0)
+                {
+                    dt_Merge.Rows[i][header_CustShortName] = ++totalCustomer;
+                    for (int j = 0; j < dt_Merge.Columns.Count; j++)
+                    {
+                        string colHeaderName = dt_Merge.Columns[j].ColumnName;
+
+                        int newDeliveredBag = 0;
+                        int newOeliveredPcs = 0;
+
+                        if (colHeaderName.Contains(header_DeliveredPcs))
+                        {
+                            string DateColHeaderName = dt_Merge.Columns[j - 1].ColumnName;
+
+                            int oldDeliveredPcs = int.TryParse(dt_Merge.Rows[i - 1][DateColHeaderName + header_DeliveredPcs].ToString(), out oldDeliveredPcs) ? oldDeliveredPcs : 0;
+
+                            newOeliveredPcs = int.TryParse(dt_Merge.Rows[i][DateColHeaderName + header_DeliveredPcs].ToString(), out newOeliveredPcs) ? newOeliveredPcs : 0;
+
+                            newOeliveredPcs += oldDeliveredPcs;
+
+                            int oldDeliveredBag = int.TryParse(dt_Merge.Rows[i - 1][DateColHeaderName + header_DeliveredBag].ToString(), out oldDeliveredBag) ? oldDeliveredBag : 0;
+
+                            newDeliveredBag = int.TryParse(dt_Merge.Rows[i][DateColHeaderName + header_DeliveredBag].ToString(), out newDeliveredBag) ? newDeliveredBag : 0;
+
+                            newDeliveredBag += oldDeliveredBag;
+
+                            string bagString = " Bags (";
+
+                            if (newDeliveredBag <= 1)
+                            {
+                                bagString = " Bag (";
+                            }
+
+                            dt_Merge.Rows[i][DateColHeaderName + header_DeliveredPcs] = newOeliveredPcs;
+                            dt_Merge.Rows[i][DateColHeaderName + header_DeliveredBag] = newDeliveredBag;
+
+                            if (newDeliveredBag != 0)
+                                dt_Merge.Rows[i][DateColHeaderName] = newDeliveredBag + bagString + newOeliveredPcs + ")";
+
+                            dt_Merge.Rows[i - 1][header_Removed] = 1.ToString();
+
+
+                        }
+
+                        rowTotalBag += newDeliveredBag;
+                        rowTotalPcs += newOeliveredPcs;
+
+                        dt_Merge.Rows[i][header_TotalPcs] = rowTotalPcs;
+                        dt_Merge.Rows[i][header_TotalBag] = rowTotalBag;
+                        dt_Merge.Rows[i][header_TotalString] = rowTotalBag + " Bags (" + rowTotalPcs + ")";
+                    }
+
+                }
+                
+            }
+
+            dt_Merge.AcceptChanges();
+            foreach (DataRow row in dt_Merge.Rows)
+            {
+                string removed = row[header_Removed].ToString();
+
+                if(removed == "1")
+                row.Delete();
+            }
+
+            dt_Merge.Columns.Remove(header_Removed);
+            dt_Merge.AcceptChanges();
+
+            return dt_Merge;
+        }
+
+        private DataTable MergeSameCustomer(DataTable dt)
+        {
+            DataTable dt_Merge = dt.Copy();
+
+            string header_Removed = "REMOVED";
+
+            dt_Merge.Columns.Add(header_Removed, typeof(string));
+
+            string preCustID = null;
+
+            int totalItem = 1;
+
+            for (int i = 0; i < dt_Merge.Rows.Count; i++)
+            {
+                string custID = dt_Merge.Rows[i][header_CustID].ToString();
+                int qtyPerBag = int.TryParse(dt_Merge.Rows[i][header_StdPacking].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+
+                int rowTotalBag = 0;
+                int rowTotalPcs = 0;
+
+                if (preCustID == null || preCustID != custID)
+                {
+                    preCustID = custID;
+                    totalItem = 1;
+                }
+                else if (preCustID == custID && i > 0)
+                {
+                    dt_Merge.Rows[i][header_ItemString] = ++totalItem;
+
+                    for (int j = 0; j < dt_Merge.Columns.Count; j++)
+                    {
+                        string colHeaderName = dt_Merge.Columns[j].ColumnName;
+
+                        int newDeliveredBag = 0;
+                        int newOeliveredPcs = 0;
+
+                        if (colHeaderName.Contains(header_DeliveredPcs))
+                        {
+                            string DateColHeaderName = dt_Merge.Columns[j - 1].ColumnName;
+
+                            int oldDeliveredPcs = int.TryParse(dt_Merge.Rows[i - 1][DateColHeaderName + header_DeliveredPcs].ToString(), out oldDeliveredPcs) ? oldDeliveredPcs : 0;
+
+                            newOeliveredPcs = int.TryParse(dt_Merge.Rows[i][DateColHeaderName + header_DeliveredPcs].ToString(), out newOeliveredPcs) ? newOeliveredPcs : 0;
+
+                            newOeliveredPcs += oldDeliveredPcs;
+
+                            int oldDeliveredBag = int.TryParse(dt_Merge.Rows[i - 1][DateColHeaderName + header_DeliveredBag].ToString(), out oldDeliveredBag) ? oldDeliveredBag : 0;
+
+                            newDeliveredBag = int.TryParse(dt_Merge.Rows[i][DateColHeaderName + header_DeliveredBag].ToString(), out newDeliveredBag) ? newDeliveredBag : 0;
+
+                            newDeliveredBag += oldDeliveredBag;
+
+                            string bagString = " Bags (";
+
+                            if (newDeliveredBag <= 1)
+                            {
+                                bagString = " Bag (";
+                            }
+
+                            dt_Merge.Rows[i][DateColHeaderName + header_DeliveredPcs] = newOeliveredPcs;
+                            dt_Merge.Rows[i][DateColHeaderName + header_DeliveredBag] = newDeliveredBag;
+
+                            if(newDeliveredBag != 0)
+                            dt_Merge.Rows[i][DateColHeaderName] = newDeliveredBag + bagString + newOeliveredPcs + ")";
+
+                            dt_Merge.Rows[i - 1][header_Removed] = 1.ToString();
+
+
+                        }
+
+                        rowTotalBag += newDeliveredBag;
+                        rowTotalPcs += newOeliveredPcs;
+
+                        dt_Merge.Rows[i][header_TotalPcs] = rowTotalPcs;
+                        dt_Merge.Rows[i][header_TotalBag] = rowTotalBag;
+                        dt_Merge.Rows[i][header_TotalString] = rowTotalBag + " Bags (" + rowTotalPcs + ")";
+
+                    }
+                }
+
+            }
+
+            dt_Merge.AcceptChanges();
+
+            dt_Merge.DefaultView.Sort = header_TotalBag + " DESC";
+            dt_Merge = dt_Merge.DefaultView.ToTable();
+            dt_Merge.AcceptChanges();
+            foreach (DataRow row in dt_Merge.Rows)
+            {
+                string removed = row[header_Removed].ToString();
+
+                if (removed == "1")
+                    row.Delete();
+            }
+
+            dt_Merge.Columns.Remove(header_Removed);
+            dt_Merge.AcceptChanges();
+
+            return dt_Merge;
+        }
+
+        private DataTable AddDividerEmptyRow(DataTable dt)
+        {
+            DataTable dt_Divider = dt.Copy();
+
+            string sortingHeaderName = null;
+
+            if(cbSortByCustomer.Checked)
+            {
+                sortingHeaderName = header_CustID;
+            }
+            else if(cbSortBySize.Checked)
+            {
+                sortingHeaderName = header_ItemSize_Numerator;
+            }
+            else if(cbSortByType.Checked)
+            {
+                sortingHeaderName = header_ItemType;
+            }
+
+            if(sortingHeaderName != null)
+            {
+                string preData = null;
+
+                for(int i = 0; i < dt_Divider.Rows.Count; i++)
+                {
+                    string sortingData = dt_Divider.Rows[i][sortingHeaderName].ToString();
+
+                    if(preData == null)
+                    {
+                        preData = sortingData;
+                    }
+                    else if(preData != sortingData)
+                    {
+                        dt_Divider.Rows.InsertAt(dt_Divider.NewRow(), i);
+                        preData = sortingData;
+                    }
+                }
+
+                dt_Divider.AcceptChanges();
+            }
+            else
+            {
+                MessageBox.Show("Divider Error!");
+            }
+
+            return dt_Divider;
         }
 
         private void ReallocateIndex(DataTable dt)
@@ -754,6 +1079,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[header_CustID].Visible = false;
 
             dgv.Columns[header_TotalPcs].Visible = false;
+            dgv.Columns[header_TotalBag].Visible = false;
 
             DataTable dt = (DataTable)dgv.DataSource;
 
@@ -771,8 +1097,26 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            dgv.Columns[header_ItemString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgv.Columns[header_CustShortName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            if(cbMergeItem.Checked)
+            {
+                dgv.Columns[header_CustShortName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
+            else
+            {
+                dgv.Columns[header_CustShortName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+
+            if (cbMergeCustomer.Checked)
+            {
+                dgv.Columns[header_ItemString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
+            else
+            {
+                dgv.Columns[header_ItemString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
+
+            
+            
             //dgv.Columns[header_Code].DefaultCellStyle.ForeColor = Color.Gray;
             //dgv.Columns[header_Code].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
@@ -910,6 +1254,40 @@ namespace FactoryManagementSoftware.UI
             {
                 cbSortBySize.Checked = true;
             }
+        }
+
+        private void cbMergeCustomer_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbMergeCustomer.Checked)
+            {
+                cbSortByCustomer.Checked = true;
+                cbMergeItem.Checked = false;
+            }
+        }
+
+        private void cbMergeItem_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbMergeItem.Checked)
+            {
+                cbSortByCustomer.Checked = false;
+                cbMergeCustomer.Checked = false;
+            }
+            
+
+
+        }
+
+        private void cbSortByCustomer_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbSortByCustomer.Checked)
+            {
+                cbMergeItem.Checked = false;
+            }
+        }
+
+        private void dgvList_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
+            e.Column.FillWeight = 10;
         }
     }
 }

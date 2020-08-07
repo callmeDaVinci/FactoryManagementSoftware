@@ -29,15 +29,19 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpReport = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblDateType = new System.Windows.Forms.Label();
+            this.cmbDateType = new System.Windows.Forms.ComboBox();
             this.btnReload = new System.Windows.Forms.Button();
             this.btnExcel = new System.Windows.Forms.Button();
             this.btnFilter = new System.Windows.Forms.Button();
             this.dgvList = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTotalBag = new System.Windows.Forms.Label();
             this.lblReportTitle = new System.Windows.Forms.Label();
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -46,6 +50,9 @@
             this.lblYearTo = new System.Windows.Forms.Label();
             this.cmbYearTo = new System.Windows.Forms.ComboBox();
             this.gbItemType = new System.Windows.Forms.GroupBox();
+            this.cbSortByCustomer = new System.Windows.Forms.CheckBox();
+            this.cbSortBySize = new System.Windows.Forms.CheckBox();
+            this.cbSortByType = new System.Windows.Forms.CheckBox();
             this.gbDatePeriod = new System.Windows.Forms.GroupBox();
             this.dtpDateTo = new System.Windows.Forms.DateTimePicker();
             this.dtpDateFrom = new System.Windows.Forms.DateTimePicker();
@@ -57,18 +64,14 @@
             this.lblYearFrom = new System.Windows.Forms.Label();
             this.cmbYearFrom = new System.Windows.Forms.ComboBox();
             this.btnFilterApply = new System.Windows.Forms.Button();
-            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblDateType = new System.Windows.Forms.Label();
-            this.cmbDateType = new System.Windows.Forms.ComboBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.lblTotalBag = new System.Windows.Forms.Label();
-            this.cbSortByType = new System.Windows.Forms.CheckBox();
-            this.cbSortBySize = new System.Windows.Forms.CheckBox();
-            this.cbSortByCustomer = new System.Windows.Forms.CheckBox();
+            this.cbMergeItem = new System.Windows.Forms.CheckBox();
+            this.cbMergeCustomer = new System.Windows.Forms.CheckBox();
             this.tlpReport.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvList)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
             this.gbFilter.SuspendLayout();
@@ -76,7 +79,6 @@
             this.gbItemType.SuspendLayout();
             this.gbDatePeriod.SuspendLayout();
             this.gbMonthYear.SuspendLayout();
-            this.tableLayoutPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -119,6 +121,48 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1342, 63);
             this.tableLayoutPanel2.TabIndex = 160;
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 1;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.Controls.Add(this.lblDateType, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.cmbDateType, 0, 1);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 2;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.10526F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.89474F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(194, 57);
+            this.tableLayoutPanel6.TabIndex = 168;
+            // 
+            // lblDateType
+            // 
+            this.lblDateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblDateType.AutoSize = true;
+            this.lblDateType.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateType.Location = new System.Drawing.Point(4, 4);
+            this.lblDateType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDateType.Name = "lblDateType";
+            this.lblDateType.Size = new System.Drawing.Size(91, 19);
+            this.lblDateType.TabIndex = 167;
+            this.lblDateType.Text = "REPORT TYPE";
+            // 
+            // cmbDateType
+            // 
+            this.cmbDateType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbDateType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbDateType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmbDateType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDateType.FormattingEnabled = true;
+            this.cmbDateType.Location = new System.Drawing.Point(4, 25);
+            this.cmbDateType.Margin = new System.Windows.Forms.Padding(4, 2, 4, 4);
+            this.cmbDateType.Name = "cmbDateType";
+            this.cmbDateType.Size = new System.Drawing.Size(186, 25);
+            this.cmbDateType.TabIndex = 166;
+            this.cmbDateType.SelectedIndexChanged += new System.EventHandler(this.cmbDateType_SelectedIndexChanged);
             // 
             // btnReload
             // 
@@ -179,24 +223,24 @@
             this.dgvList.AllowUserToOrderColumns = true;
             this.dgvList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvList.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvList.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvList.GridColor = System.Drawing.Color.WhiteSmoke;
             this.dgvList.Location = new System.Drawing.Point(4, 260);
@@ -209,6 +253,7 @@
             this.dgvList.Size = new System.Drawing.Size(1340, 460);
             this.dgvList.TabIndex = 152;
             this.dgvList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellClick);
+            this.dgvList.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgvList_ColumnAdded);
             this.dgvList.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvList_ColumnHeaderMouseClick);
             this.dgvList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvList_MouseClick);
             // 
@@ -228,6 +273,17 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(1342, 35);
             this.tableLayoutPanel4.TabIndex = 162;
+            // 
+            // lblTotalBag
+            // 
+            this.lblTotalBag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTotalBag.AutoSize = true;
+            this.lblTotalBag.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalBag.Location = new System.Drawing.Point(144, 16);
+            this.lblTotalBag.Name = "lblTotalBag";
+            this.lblTotalBag.Size = new System.Drawing.Size(180, 19);
+            this.lblTotalBag.TabIndex = 194;
+            this.lblTotalBag.Text = "0 BAG(s) / 0 PCS  SELECTED";
             // 
             // lblReportTitle
             // 
@@ -318,15 +374,55 @@
             // 
             // gbItemType
             // 
+            this.gbItemType.Controls.Add(this.cbMergeCustomer);
+            this.gbItemType.Controls.Add(this.cbMergeItem);
             this.gbItemType.Controls.Add(this.cbSortByCustomer);
             this.gbItemType.Controls.Add(this.cbSortBySize);
             this.gbItemType.Controls.Add(this.cbSortByType);
             this.gbItemType.Location = new System.Drawing.Point(726, 24);
             this.gbItemType.Name = "gbItemType";
-            this.gbItemType.Size = new System.Drawing.Size(229, 115);
+            this.gbItemType.Size = new System.Drawing.Size(306, 115);
             this.gbItemType.TabIndex = 166;
             this.gbItemType.TabStop = false;
             this.gbItemType.Text = "SORTING";
+            // 
+            // cbSortByCustomer
+            // 
+            this.cbSortByCustomer.AutoSize = true;
+            this.cbSortByCustomer.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSortByCustomer.Location = new System.Drawing.Point(18, 81);
+            this.cbSortByCustomer.Name = "cbSortByCustomer";
+            this.cbSortByCustomer.Size = new System.Drawing.Size(103, 21);
+            this.cbSortByCustomer.TabIndex = 2;
+            this.cbSortByCustomer.Text = "By Customer";
+            this.cbSortByCustomer.UseVisualStyleBackColor = true;
+            this.cbSortByCustomer.CheckedChanged += new System.EventHandler(this.cbSortByCustomer_CheckedChanged);
+            // 
+            // cbSortBySize
+            // 
+            this.cbSortBySize.AutoSize = true;
+            this.cbSortBySize.Checked = true;
+            this.cbSortBySize.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSortBySize.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSortBySize.Location = new System.Drawing.Point(18, 29);
+            this.cbSortBySize.Name = "cbSortBySize";
+            this.cbSortBySize.Size = new System.Drawing.Size(70, 21);
+            this.cbSortBySize.TabIndex = 1;
+            this.cbSortBySize.Text = "By Size";
+            this.cbSortBySize.UseVisualStyleBackColor = true;
+            this.cbSortBySize.CheckedChanged += new System.EventHandler(this.cbSortBySize_CheckedChanged);
+            // 
+            // cbSortByType
+            // 
+            this.cbSortByType.AutoSize = true;
+            this.cbSortByType.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSortByType.Location = new System.Drawing.Point(18, 54);
+            this.cbSortByType.Name = "cbSortByType";
+            this.cbSortByType.Size = new System.Drawing.Size(74, 21);
+            this.cbSortByType.TabIndex = 0;
+            this.cbSortByType.Text = "By Type";
+            this.cbSortByType.UseVisualStyleBackColor = true;
+            this.cbSortByType.CheckedChanged += new System.EventHandler(this.cbSortByType_CheckedChanged);
             // 
             // gbDatePeriod
             // 
@@ -444,7 +540,7 @@
             this.btnFilterApply.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFilterApply.ForeColor = System.Drawing.Color.White;
-            this.btnFilterApply.Location = new System.Drawing.Point(962, 95);
+            this.btnFilterApply.Location = new System.Drawing.Point(1039, 95);
             this.btnFilterApply.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.Size = new System.Drawing.Size(124, 36);
@@ -452,48 +548,6 @@
             this.btnFilterApply.Text = "APPLY";
             this.btnFilterApply.UseVisualStyleBackColor = false;
             this.btnFilterApply.Click += new System.EventHandler(this.btnFilterApply_Click);
-            // 
-            // tableLayoutPanel6
-            // 
-            this.tableLayoutPanel6.ColumnCount = 1;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Controls.Add(this.lblDateType, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.cmbDateType, 0, 1);
-            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 2;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.10526F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.89474F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(194, 57);
-            this.tableLayoutPanel6.TabIndex = 168;
-            // 
-            // lblDateType
-            // 
-            this.lblDateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblDateType.AutoSize = true;
-            this.lblDateType.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateType.Location = new System.Drawing.Point(4, 4);
-            this.lblDateType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblDateType.Name = "lblDateType";
-            this.lblDateType.Size = new System.Drawing.Size(91, 19);
-            this.lblDateType.TabIndex = 167;
-            this.lblDateType.Text = "REPORT TYPE";
-            // 
-            // cmbDateType
-            // 
-            this.cmbDateType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbDateType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cmbDateType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbDateType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbDateType.FormattingEnabled = true;
-            this.cmbDateType.Location = new System.Drawing.Point(4, 25);
-            this.cmbDateType.Margin = new System.Windows.Forms.Padding(4, 2, 4, 4);
-            this.cmbDateType.Name = "cmbDateType";
-            this.cmbDateType.Size = new System.Drawing.Size(186, 25);
-            this.cmbDateType.TabIndex = 166;
-            this.cmbDateType.SelectedIndexChanged += new System.EventHandler(this.cmbDateType_SelectedIndexChanged);
             // 
             // errorProvider1
             // 
@@ -507,50 +561,31 @@
             // 
             this.errorProvider3.ContainerControl = this;
             // 
-            // lblTotalBag
+            // cbMergeItem
             // 
-            this.lblTotalBag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTotalBag.AutoSize = true;
-            this.lblTotalBag.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalBag.Location = new System.Drawing.Point(144, 16);
-            this.lblTotalBag.Name = "lblTotalBag";
-            this.lblTotalBag.Size = new System.Drawing.Size(180, 19);
-            this.lblTotalBag.TabIndex = 194;
-            this.lblTotalBag.Text = "0 BAG(s) / 0 PCS  SELECTED";
+            this.cbMergeItem.AutoSize = true;
+            this.cbMergeItem.Checked = true;
+            this.cbMergeItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbMergeItem.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbMergeItem.Location = new System.Drawing.Point(131, 29);
+            this.cbMergeItem.Name = "cbMergeItem";
+            this.cbMergeItem.Size = new System.Drawing.Size(134, 21);
+            this.cbMergeItem.TabIndex = 3;
+            this.cbMergeItem.Text = "Merge Same Item";
+            this.cbMergeItem.UseVisualStyleBackColor = true;
+            this.cbMergeItem.CheckedChanged += new System.EventHandler(this.cbMergeItem_CheckedChanged);
             // 
-            // cbSortByType
+            // cbMergeCustomer
             // 
-            this.cbSortByType.AutoSize = true;
-            this.cbSortByType.Location = new System.Drawing.Point(132, 34);
-            this.cbSortByType.Name = "cbSortByType";
-            this.cbSortByType.Size = new System.Drawing.Size(81, 23);
-            this.cbSortByType.TabIndex = 0;
-            this.cbSortByType.Text = "BY TYPE";
-            this.cbSortByType.UseVisualStyleBackColor = true;
-            this.cbSortByType.CheckedChanged += new System.EventHandler(this.cbSortByType_CheckedChanged);
-            // 
-            // cbSortBySize
-            // 
-            this.cbSortBySize.AutoSize = true;
-            this.cbSortBySize.Checked = true;
-            this.cbSortBySize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbSortBySize.Location = new System.Drawing.Point(6, 34);
-            this.cbSortBySize.Name = "cbSortBySize";
-            this.cbSortBySize.Size = new System.Drawing.Size(77, 23);
-            this.cbSortBySize.TabIndex = 1;
-            this.cbSortBySize.Text = "BY SIZE";
-            this.cbSortBySize.UseVisualStyleBackColor = true;
-            this.cbSortBySize.CheckedChanged += new System.EventHandler(this.cbSortBySize_CheckedChanged);
-            // 
-            // cbSortByCustomer
-            // 
-            this.cbSortByCustomer.AutoSize = true;
-            this.cbSortByCustomer.Location = new System.Drawing.Point(6, 79);
-            this.cbSortByCustomer.Name = "cbSortByCustomer";
-            this.cbSortByCustomer.Size = new System.Drawing.Size(122, 23);
-            this.cbSortByCustomer.TabIndex = 2;
-            this.cbSortByCustomer.Text = "BY CUSTOMER";
-            this.cbSortByCustomer.UseVisualStyleBackColor = true;
+            this.cbMergeCustomer.AutoSize = true;
+            this.cbMergeCustomer.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbMergeCustomer.Location = new System.Drawing.Point(131, 56);
+            this.cbMergeCustomer.Name = "cbMergeCustomer";
+            this.cbMergeCustomer.Size = new System.Drawing.Size(165, 21);
+            this.cbMergeCustomer.TabIndex = 4;
+            this.cbMergeCustomer.Text = "Merge Same Customer";
+            this.cbMergeCustomer.UseVisualStyleBackColor = true;
+            this.cbMergeCustomer.CheckedChanged += new System.EventHandler(this.cbMergeCustomer_CheckedChanged);
             // 
             // frmSBBDeliveredReport
             // 
@@ -566,6 +601,8 @@
             this.Load += new System.EventHandler(this.frmSBBDeliveredReport_Load);
             this.tlpReport.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel6.ResumeLayout(false);
+            this.tableLayoutPanel6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvList)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
@@ -578,8 +615,6 @@
             this.gbDatePeriod.PerformLayout();
             this.gbMonthYear.ResumeLayout(false);
             this.gbMonthYear.PerformLayout();
-            this.tableLayoutPanel6.ResumeLayout(false);
-            this.tableLayoutPanel6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).EndInit();
@@ -625,5 +660,7 @@
         private System.Windows.Forms.CheckBox cbSortByCustomer;
         private System.Windows.Forms.CheckBox cbSortBySize;
         private System.Windows.Forms.CheckBox cbSortByType;
+        private System.Windows.Forms.CheckBox cbMergeCustomer;
+        private System.Windows.Forms.CheckBox cbMergeItem;
     }
 }
