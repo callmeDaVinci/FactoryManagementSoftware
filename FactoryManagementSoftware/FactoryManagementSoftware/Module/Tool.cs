@@ -5743,6 +5743,36 @@ namespace FactoryManagementSoftware.Module
             return result;
         }
 
+        public void AddIndexNumberToDGV(DataGridView dgv, string headerName)
+        {
+            if (dgv.Columns.Contains(headerName))
+            {
+                int index = 1;
+                foreach (DataGridViewRow row in dgv.Rows)
+                {
+                    row.Cells[headerName].Value = index++;
+                }
+            }
+
+        }
+
+        public Tuple<DataTable,bool> AddIndexNumber(DataTable dt, string headerName)
+        {
+            bool success = false;
+
+            if(dt.Columns.Contains(headerName))
+            {
+                success = true;
+                int index = 1;
+                foreach(DataRow row in dt.Rows)
+                {
+                    row[headerName] = index++;
+                }
+            }
+
+            return Tuple.Create(dt, success);
+        }
+
         public bool ifGotChild2(string itemCode, DataTable dt)
         {
             bool result = false;

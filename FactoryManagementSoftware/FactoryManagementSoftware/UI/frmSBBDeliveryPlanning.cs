@@ -221,6 +221,7 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
+       
         private void AdjustDGVRowAlignment(DataGridView dgv)
         {
             string preItem = "";
@@ -2999,6 +3000,54 @@ namespace FactoryManagementSoftware.UI
         private void dgvList_MouseClick(object sender, MouseEventArgs e)
         {
             CalculateTotalBag(dgvList);
-;        }
+        }
+
+        private DataTable GetToAssemblyList()
+        {
+            DataTable dt_Assembly = NewPlanningTable();
+
+           
+
+            DataTable dt = (DataTable)dgvList.DataSource;
+
+            int index = 1;
+            foreach(DataRow row in dt.Rows)
+            {
+                int BalAfterDelivery = int.TryParse(row[header_BalAfterDeliveryInPcs].ToString(), out BalAfterDelivery) ? BalAfterDelivery : 0;
+
+                if(BalAfterDelivery < 0)
+                {
+                    DataRow new_Row = dt_Assembly.NewRow();
+                    new_Row[header_Index] = index++;
+                    new_Row[header_Size] = row[header_Size];
+                    new_Row[header_Unit] = row[header_Unit];
+                    new_Row[header_SizeString] = row[header_SizeString];
+                    new_Row[header_Type] = row[header_Type];
+                    new_Row[header_Code] = row[header_Code];
+                    new_Row[header_QtyPerBag] = row[header_QtyPerBag];
+                    new_Row[header_StockPcs] = row[header_StockPcs];
+                    new_Row[header_StockBag] = row[header_StockBag];
+                    new_Row[header_StockString] = row[header_StockString];
+                    new_Row[header_BalAfterDelivery] = row[header_BalAfterDelivery];
+                    new_Row[header_BalAfterDeliveryInPcs] = row[header_BalAfterDeliveryInPcs];
+
+                    dt_Assembly.Rows.Add(new_Row);
+                }
+            }
+            
+
+            return dt_Assembly;
+        }
+
+        private void lblAssemblyNeeded_Click(object sender, EventArgs e)
+        {
+
+            frmSBBAssemblyPlanning frm = new frmSBBAssemblyPlanning(GetToAssemblyList())
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            frm.ShowDialog();
+        }
     }
 }

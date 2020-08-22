@@ -198,62 +198,49 @@ namespace FactoryManagementSoftware.UI
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                currentSize = dt.Rows[i]["SIZE"].ToString();
-                int qtyPerBag = int.TryParse(dt.Rows[i]["STD_PACKING"].ToString(), out qtyPerBag)? qtyPerBag : 0;
-                int stockQty = int.TryParse(dt.Rows[i]["QUANTITY"].ToString(), out stockQty) ? stockQty : 0;
-                int toDeliveryQty = int.TryParse(dt.Rows[i]["TO_DELIVERY_QTY"].ToString(), out toDeliveryQty) ? toDeliveryQty : 0;
-                int maxStockLevel = int.TryParse(dt.Rows[i]["MAX_LEVEL"].ToString(), out maxStockLevel) ? maxStockLevel : 0;
-
-                dt.Rows[i]["STOCK"] = stockQty;
-
-                if (qtyPerBag > 0)
+                if(string.IsNullOrEmpty(dt.Rows[i]["TYPE"].ToString()))
                 {
-                    dt.Rows[i]["DELIVERY QTY"] = toDeliveryQty;
-                    int bagQty = stockQty / qtyPerBag;
-
-                    //dt.Rows[i]["STOCK"] = stockQty + " ("+bagQty+" bags)";
-
-                    dt.Rows[i]["PCS/BAG"] = qtyPerBag+"/bag";
-                    
-                    dt.Rows[i]["TOTAL BAG(S)"] = bagQty;
-
-                    //int maxStockLevel = 0;
-
-                    //if(currentSize == "20")
-                    //{
-                    //    maxStockLevel = text.StockLevel_20;
-                    //}
-                    //else if (currentSize == "25")
-                    //{
-                    //    maxStockLevel = text.StockLevel_25;
-                    //}
-                    //else if (currentSize == "32")
-                    //{
-                    //    maxStockLevel = text.StockLevel_32;
-                    //}
-                    //else if (currentSize == "50")
-                    //{
-                    //    maxStockLevel = text.StockLevel_50;
-                    //}
-                    //else if (currentSize == "63")
-                    //{
-                    //    maxStockLevel = text.StockLevel_63;
-                    //}
-
-                    dt.Rows[i]["MAX STOCK LEVEL"] = maxStockLevel;
+                    dt.Rows[i].Delete();
                 }
-
-                if (preSize == "")
+                else
                 {
-                    preSize = currentSize;
+                    currentSize = dt.Rows[i]["SIZE"].ToString();
+                    int qtyPerBag = int.TryParse(dt.Rows[i]["STD_PACKING"].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+                    int stockQty = int.TryParse(dt.Rows[i]["QUANTITY"].ToString(), out stockQty) ? stockQty : 0;
+                    int toDeliveryQty = int.TryParse(dt.Rows[i]["TO_DELIVERY_QTY"].ToString(), out toDeliveryQty) ? toDeliveryQty : 0;
+                    int maxStockLevel = int.TryParse(dt.Rows[i]["MAX_LEVEL"].ToString(), out maxStockLevel) ? maxStockLevel : 0;
+
+                    dt.Rows[i]["STOCK"] = stockQty;
+
+                    if (qtyPerBag > 0)
+                    {
+                        dt.Rows[i]["DELIVERY QTY"] = toDeliveryQty;
+                        int bagQty = stockQty / qtyPerBag;
+
+                        //dt.Rows[i]["STOCK"] = stockQty + " ("+bagQty+" bags)";
+
+                        dt.Rows[i]["PCS/BAG"] = qtyPerBag + "/bag";
+
+                        dt.Rows[i]["TOTAL BAG(S)"] = bagQty;
+
+                        dt.Rows[i]["MAX STOCK LEVEL"] = maxStockLevel;
+                    }
+
+                    if (preSize == "")
+                    {
+                        preSize = currentSize;
+                    }
+                    else if (preSize != currentSize)
+                    {
+                        DataRow toInsert = dt.NewRow();
+                        dt.Rows.InsertAt(toInsert, i);
+                        preSize = currentSize;
+                    }
                 }
-                else if (preSize != currentSize)
-                {
-                    DataRow toInsert = dt.NewRow();
-                    dt.Rows.InsertAt(toInsert, i);
-                    preSize = currentSize;
-                }
+               
             }
+
+            dt.AcceptChanges();
             dt.Columns["STOCK"].ColumnName = "STOCK(PCS)";
             dt.Columns.Remove("QUANTITY");
             dt.Columns.Remove("STD_PACKING");

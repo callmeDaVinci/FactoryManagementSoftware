@@ -4132,5 +4132,10 @@ namespace FactoryManagementSoftware.UI
             }
 
         }
+
+        private void frmSPPPOList_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            frmSBB.Reload();
+        }
     }
 }

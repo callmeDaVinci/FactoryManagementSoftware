@@ -2027,6 +2027,11 @@ namespace FactoryManagementSoftware.UI
                         ProductionOrAssembly = text.Assembly;
                         float joinQty = tool.getJoinQty(StockInItemCode, lblPartCode.Text);
 
+                        if(joinQty <= 0)
+                        {
+                            joinQty = 1;
+                        }
+
                         totalStockIn = totalStockIn / (int)joinQty;
                     }
                     

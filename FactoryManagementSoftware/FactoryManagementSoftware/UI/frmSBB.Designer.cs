@@ -1,6 +1,6 @@
 ﻿namespace FactoryManagementSoftware.UI
 {
-    partial class frmSPP
+    partial class frmSBB
     {
         /// <summary>
         /// Required designer variable.

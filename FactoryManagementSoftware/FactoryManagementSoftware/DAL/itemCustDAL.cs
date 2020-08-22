@@ -321,7 +321,7 @@ namespace FactoryManagementSoftware.DAL
                                 ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
                                 INNER JOIN tbl_spp_size
                                 ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code
-                                FULL JOIN tbl_spp_stdpacking
+                                INNER JOIN tbl_spp_stdpacking
                                 ON tbl_item.item_code = tbl_spp_stdpacking.item_code
                                 ORDER BY tbl_item.item_name ASC";
 

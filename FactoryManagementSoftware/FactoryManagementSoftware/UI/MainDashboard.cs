@@ -592,7 +592,7 @@ namespace FactoryManagementSoftware.UI
             if (!SPPFormOpen)
             {
                 frmLoading.ShowLoadingScreen();
-                frmSPP frm = new frmSPP();
+                frmSBB frm = new frmSBB();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
@@ -602,9 +602,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (Application.OpenForms.OfType<frmSPP>().Count() == 1)
+                if (Application.OpenForms.OfType<frmSBB>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmSPP>().First().BringToFront();
+                    Application.OpenForms.OfType<frmSBB>().First().BringToFront();
                 }
             }
         }

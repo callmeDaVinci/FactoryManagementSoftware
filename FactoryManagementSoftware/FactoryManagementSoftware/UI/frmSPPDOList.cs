@@ -2540,7 +2540,7 @@ namespace FactoryManagementSoftware.UI
                                 }
 
                                 string lastRow = remarkColStart + (36).ToString() + remarkColEnd + (36).ToString();
-                                InsertToSheet(xlWorkSheet, lastRow, "TOTAL " + totalBag + " BAG(S)");
+                                InsertToSheet(xlWorkSheet, lastRow, "TOT. " + totalBag + " BAG(S)");
 
                                 InsertToSheet(xlWorkSheet, CustFullNameArea, custFullName);
                                 InsertToSheet(xlWorkSheet, AddressArea_1, shippingAddress_1);
@@ -2548,7 +2548,6 @@ namespace FactoryManagementSoftware.UI
                                 InsertToSheet(xlWorkSheet, postalAndCity, shippingPostalCode + " " + shippingCity);
                                 InsertToSheet(xlWorkSheet, state, shippingState);
                                 InsertToSheet(xlWorkSheet, contact, Contact);
-
 
                                 tool.historyRecord(text.DO_Exported, text.GetDOExportDetail(openFile, printFile, printPreview), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(DONo));
 
@@ -2753,7 +2752,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmSPPDOList_FormClosed(object sender, FormClosedEventArgs e)
         {
-            frmSPP.Reload();
+            frmSBB.Reload();
         }
     }
 }

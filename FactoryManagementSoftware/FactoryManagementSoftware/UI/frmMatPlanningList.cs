@@ -930,7 +930,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         string MatCode = row.Cells[headerMatCode].Value.ToString();
                         string Factory = row.Cells[headerFac].Value.ToString();
-                        float preparing = float.TryParse(row.Cells[headerPrepare].Value.ToString(), out float i) ? Convert.ToSingle(row.Cells[headerPrepare].Value) : 0;
+                        float preparing = float.TryParse(row.Cells[headerPrepare].Value.ToString(), out preparing) ? preparing : 0;
 
                         DataGridViewComboBoxCell ComboBoxCell = new DataGridViewComboBoxCell();
                         foreach (DataRow matStock in dt_MatStock.Rows)
@@ -963,6 +963,7 @@ namespace FactoryManagementSoftware.UI
                         }
                         else
                         {
+                           
                             row.Cells[headerFrom] = ComboBoxCell;
                         }
 
@@ -1329,7 +1330,7 @@ namespace FactoryManagementSoftware.UI
                             string item = cbCell.Items[x].ToString();
                             string facName = GetFacName(item);
 
-                            if(facName == locationName)
+                            if (facName == locationName)
                             {
                                 cbCell.Value = item;
                                 break;

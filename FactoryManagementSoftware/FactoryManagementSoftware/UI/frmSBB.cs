@@ -14,9 +14,9 @@ using System.Globalization;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmSPP : Form
+    public partial class frmSBB : Form
     {
-        public frmSPP()
+        public frmSBB()
         {
             InitializeComponent();
             tool.DoubleBuffered(dgvStockAlert, true);
@@ -40,7 +40,7 @@ namespace FactoryManagementSoftware.UI
         Tool tool = new Tool();
         Text text = new Text();
 
-        private static frmSPP _instance;
+        private static frmSBB _instance;
 
         readonly string header_Index = "#";
         readonly string header_Status = "STATUS";

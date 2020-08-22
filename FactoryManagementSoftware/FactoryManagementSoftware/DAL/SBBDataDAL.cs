@@ -1646,8 +1646,9 @@ namespace FactoryManagementSoftware.DAL
                             + UpdatedDate + ","
                             + UpdatedBy + ") VALUES" +
                             "(@Item_code," +
-                              "@Qty_Per_Packet," +
-                                "@Qty_Per_Bag," +
+                            "@Qty_Per_Packet," +
+                            "@Qty_Per_Bag," +
+                            "@Max_Lvl," +
                             "@Updated_Date," +
                             "@Updated_By)";
 

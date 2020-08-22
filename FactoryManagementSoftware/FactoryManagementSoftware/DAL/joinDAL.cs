@@ -108,7 +108,64 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-       
+        public DataTable SelectWithSBBInfo()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT tbl_join.join_parent_code as parent_code, 
+                tbl_item.item_name as parent_name ,
+                tbl_join.join_child_code as child_code ,
+                a.item_name as child_name ,join_qty, join_max, join_min, join_added_date, join_added_by,
+                join_updated_date,join_updated_by ,
+                tbl_item.item_quo_pw_pcs,
+                tbl_item.item_quo_rw_pcs,
+                tbl_item.item_part_weight,
+                tbl_item.item_runner_weight,
+                tbl_item.item_wastage_allowed,
+                tbl_spp_type.type_name,
+                tbl_spp_size.size_numerator,
+                tbl_spp_size.size_denominator,
+                tbl_spp_size.size_unit,
+                tbl_spp_stdpacking.qty_per_bag,
+                a.item_qty
+                FROM tbl_join 
+                JOIN tbl_item 
+                ON tbl_join.join_parent_code = tbl_item.item_code 
+                JOIN tbl_item a ON tbl_join.join_child_code = a.item_code
+                INNER JOIN tbl_spp_type
+                ON a.type_tbl_code = tbl_spp_type.tbl_code
+                INNER JOIN tbl_spp_size
+                ON a.size_tbl_code_1 = tbl_spp_size.tbl_code
+                FULL JOIN tbl_spp_stdpacking
+                ON a.item_code = tbl_spp_stdpacking.item_code";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable SelectwithChildInfo()
         {
             //static methodd to connect database

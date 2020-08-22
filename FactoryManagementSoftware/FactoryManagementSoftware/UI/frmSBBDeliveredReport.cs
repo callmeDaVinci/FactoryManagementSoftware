@@ -1081,7 +1081,10 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[header_TotalPcs].Visible = false;
             dgv.Columns[header_TotalBag].Visible = false;
 
+            dgv.Columns[header_TotalString].Frozen = true;
+
             DataTable dt = (DataTable)dgv.DataSource;
+
 
             for(int i = 0; i < dt.Columns.Count; i++)
             {
@@ -1282,6 +1285,10 @@ namespace FactoryManagementSoftware.UI
             if(cbSortByCustomer.Checked)
             {
                 cbMergeItem.Checked = false;
+            }
+            else if(cbMergeCustomer.Checked)
+            {
+                cbSortByCustomer.Checked = true;
             }
         }
 

@@ -404,11 +404,12 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (selectedDataList == text_StdPackingList)
                     {
-                        uData.Max_Lvl = Convert.ToInt16(txtMaxLevel.Text);
-                        uData.Qty_Per_Packet = Convert.ToInt16(txtQtyPerPacket.Text);
-                        uData.Qty_Per_Bag = Convert.ToInt16(txtQtyPerBag.Text);
+                        uData.Max_Lvl = int.TryParse(txtMaxLevel.Text, out int data) ? data : 0;
+                        uData.Qty_Per_Packet = int.TryParse(txtQtyPerPacket.Text, out data) ? data : 0;
+                        uData.Qty_Per_Bag = int.TryParse(txtQtyPerBag.Text, out data) ? data : 0;
                         uData.Item_code = cmbCode.Text;
 
+  
                         if (!dalData.InsertStdPacking(uData))
                         {
                             MessageBox.Show("Failed to insert standard packing data to DB.");

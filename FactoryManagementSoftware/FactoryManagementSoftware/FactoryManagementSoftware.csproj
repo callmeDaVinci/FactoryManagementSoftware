@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>236</ApplicationRevision>
+    <ApplicationRevision>239</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -360,6 +360,12 @@
     <Compile Include="UI\frmNewPMMA.Designer.cs">
       <DependentUpon>frmNewPMMA.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmNewSBBAddItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmNewSBBAddItem.Designer.cs">
+      <DependentUpon>frmNewSBBAddItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmOrderCancel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -608,6 +614,12 @@
     <Compile Include="UI\frmRouteEdit.Designer.cs">
       <DependentUpon>frmRouteEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmSBBAssemblyPlanning.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBAssemblyPlanning.Designer.cs">
+      <DependentUpon>frmSBBAssemblyPlanning.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmSBBDeliveryPlanning.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -626,11 +638,11 @@
     <Compile Include="UI\frmShowDataTable.Designer.cs">
       <DependentUpon>frmShowDataTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmSPP.cs">
+    <Compile Include="UI\frmSBB.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmSPP.Designer.cs">
-      <DependentUpon>frmSPP.cs</DependentUpon>
+    <Compile Include="UI\frmSBB.Designer.cs">
+      <DependentUpon>frmSBB.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmSPPAddItem.cs">
       <SubType>Form</SubType>
@@ -839,6 +851,9 @@
     <EmbeddedResource Include="UI\frmNewPMMA.resx">
       <DependentUpon>frmNewPMMA.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmNewSBBAddItem.resx">
+      <DependentUpon>frmNewSBBAddItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderCancel.resx">
       <DependentUpon>frmOrderCancel.cs</DependentUpon>
     </EmbeddedResource>
@@ -972,6 +987,9 @@
     <EmbeddedResource Include="UI\frmRouteEdit.resx">
       <DependentUpon>frmRouteEdit.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSBBAssemblyPlanning.resx">
+      <DependentUpon>frmSBBAssemblyPlanning.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBDeliveryPlanning.resx">
       <DependentUpon>frmSBBDeliveryPlanning.cs</DependentUpon>
     </EmbeddedResource>
@@ -981,8 +999,8 @@
     <EmbeddedResource Include="UI\frmShowDataTable.resx">
       <DependentUpon>frmShowDataTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmSPP.resx">
-      <DependentUpon>frmSPP.cs</DependentUpon>
+    <EmbeddedResource Include="UI\frmSBB.resx">
+      <DependentUpon>frmSBB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSPPAddItem.resx">
       <DependentUpon>frmSPPAddItem.cs</DependentUpon>
