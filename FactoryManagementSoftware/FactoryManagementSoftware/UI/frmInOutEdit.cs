@@ -47,6 +47,20 @@ namespace FactoryManagementSoftware.UI
             callFromDOlist = true;
         }
 
+        //CALL FROM mat list
+        public frmInOutEdit(DataTable dt, int test)
+        {
+            InitializeComponent();
+            //#############################################################################################################################################
+            //dtpTrfDate.Value = date;
+            dtpTrfDate.Value = DateTime.Today.AddDays(-1);
+            //dtpTrfDate.Value = DateTime.Today.AddDays(-30);
+            createDGV();
+
+            dt_MatDeliveryList = dt;
+            callFromMatlist = true;
+        }
+
         public frmInOutEdit(DataTable dt, bool _fromProductionRecord)
         {
             InitializeComponent();
@@ -161,12 +175,14 @@ namespace FactoryManagementSoftware.UI
         private bool dgvEdit = false;
         private bool callFromMatChecklist = false;
         private bool callFromDOlist = false;
+        private bool callFromMatlist = false;
         private bool callFromProductionRecord = false;
         private bool isInpectionItem = false;
         static public bool TrfSuccess = false;
 
         static public DataTable dt_MatChecklist;
         private DataTable dt_DOItem;
+        private DataTable dt_MatDeliveryList;
         private DataTable dt_Fac;
         static public DataTable dt_ProductionRecord;
 
@@ -449,6 +465,10 @@ namespace FactoryManagementSoftware.UI
             else if(callFromDOlist)
             {
                 addPartToDGV(dt_DOItem);
+            }
+            else if (callFromMatlist)
+            {
+                addMatPartToDGV(dt_MatDeliveryList);
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
@@ -2377,6 +2397,73 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[NoteColumnName].Value += " (AFTER BAL:" + (facStock - transferQty).ToString() + ")";
                     }
                 }
+            }
+            dgv.ClearSelection();
+        }
+
+        private void addMatPartToDGV(DataTable dt)
+        {
+            DataGridView dgv = dgvTransfer;
+            DataTable dt_ItemInfo = dalItem.Select();
+            int n;
+
+
+            string header_ItemName = "ITEM NAME";
+            string header_From = "FROM";
+            string header_To = "TO";
+            string header_DeliveryPcs = "DELIVERY (PCS)";
+            string header_PlanID = "PLAN ID";
+            string header_PlanItemType = "PLAN TYPE";
+            string header_DeliveredDate = "DELIVERED";
+
+            foreach (DataRow row in dt.Rows)
+            {
+                n = dgv.Rows.Add();
+                index = n + 1;
+                string itemCode = row[header_ItemCode].ToString();
+                string itemName = row[header_ItemName].ToString();
+                string itemCat = text.Cat_Part;
+                string from = row[header_From].ToString();
+                string to = row[header_To].ToString();
+                string pcsQty = row[header_DeliveryPcs].ToString();
+               // string bagQty = row[header_DeliveryBAG].ToString();
+                string unit = text.Unit_Piece;
+                string planID = row[header_PlanID].ToString();
+                string planItemType = row[header_PlanItemType].ToString();
+                DateTime deliveredDate = DateTime.TryParse(row[header_DeliveredDate].ToString(), out deliveredDate) ? deliveredDate : DateTime.MaxValue;
+
+                //string DOCode = row[header_DONo].ToString();
+
+
+                dgv.Rows[n].Cells[IndexColumnName].Value = index;
+
+                dgv.Rows[n].Cells[DateColumnName].Value = deliveredDate.ToShortDateString();
+                dgv.Rows[n].Cells[CatColumnName].Value = itemCat;
+                dgv.Rows[n].Cells[CodeColumnName].Value = itemCode;
+                dgv.Rows[n].Cells[NameColumnName].Value = itemName;
+                dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
+                dgv.Rows[n].Cells[FromColumnName].Value = from;
+
+                dgv.Rows[n].Cells[ToCatColumnName].Value = text.Factory;
+                dgv.Rows[n].Cells[ToColumnName].Value = to;
+                dgv.Rows[n].Cells[QtyColumnName].Value = pcsQty;
+
+                dgv.Rows[n].Cells[UnitColumnName].Value = unit;
+                dgv.Rows[n].Cells[NoteColumnName].Value = "[ " + planID + ": " + planItemType + "]";
+
+                //}if (cmbTrfFromCategory.Text.Equals("Factory"))
+                //{
+                //    facStockDAL dalFacStock = new facStockDAL();
+                //    float facStock = dalFacStock.getQty(itemCode, tool.getFactoryID(from).ToString());
+                //    float transferQty = Convert.ToSingle(pcsQty);
+
+                //    if (facStock - transferQty < 0 && from != to)
+                //    {
+                //        //#############################################################################################################################################
+                //        dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                //        dgv.Rows[n].Cells[NoteColumnName].Value += " (AFTER BAL:" + (facStock - transferQty).ToString() + ")";
+                //    }
+                
             }
             dgv.ClearSelection();
         }

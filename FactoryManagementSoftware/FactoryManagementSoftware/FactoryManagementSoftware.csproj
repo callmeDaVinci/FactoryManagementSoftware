@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>239</ApplicationRevision>
+    <ApplicationRevision>240</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -632,6 +632,12 @@
     <Compile Include="UI\frmSBBDeliveredReport.Designer.cs">
       <DependentUpon>frmSBBDeliveredReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmSBBMatPLan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBMatPLan.Designer.cs">
+      <DependentUpon>frmSBBMatPLan.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmShowDataTable.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -995,6 +1001,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBDeliveredReport.resx">
       <DependentUpon>frmSBBDeliveredReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSBBMatPLan.resx">
+      <DependentUpon>frmSBBMatPLan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmShowDataTable.resx">
       <DependentUpon>frmShowDataTable.cs</DependentUpon>

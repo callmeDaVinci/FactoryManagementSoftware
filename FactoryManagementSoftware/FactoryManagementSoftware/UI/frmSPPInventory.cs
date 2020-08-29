@@ -210,9 +210,11 @@ namespace FactoryManagementSoftware.UI
                     int toDeliveryQty = int.TryParse(dt.Rows[i]["TO_DELIVERY_QTY"].ToString(), out toDeliveryQty) ? toDeliveryQty : 0;
                     int maxStockLevel = int.TryParse(dt.Rows[i]["MAX_LEVEL"].ToString(), out maxStockLevel) ? maxStockLevel : 0;
 
+                    string category = dt.Rows[i]["CATEGORY"].ToString();
+
                     dt.Rows[i]["STOCK"] = stockQty;
 
-                    if (qtyPerBag > 0)
+                    if (qtyPerBag > 0 && category == text.Cat_ReadyGoods)
                     {
                         dt.Rows[i]["DELIVERY QTY"] = toDeliveryQty;
                         int bagQty = stockQty / qtyPerBag;
@@ -257,8 +259,11 @@ namespace FactoryManagementSoftware.UI
             dgvUnique.Columns["TOTAL BAG(S)"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvUnique.Columns["SIZE"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgvUnique.Columns["UNIT"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgvUnique.Columns["DELIVERY QTY"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgvUnique.Columns["DELIVERY QTY"].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+
+            //dgvUnique.Columns["DELIVERY QTY"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgvUnique.Columns["DELIVERY QTY"].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+
+            dgvUnique.Columns["DELIVERY QTY"].Visible = false;
 
             dgvUnique.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
 

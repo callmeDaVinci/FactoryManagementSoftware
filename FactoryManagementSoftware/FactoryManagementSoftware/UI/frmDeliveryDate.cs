@@ -14,8 +14,8 @@ namespace FactoryManagementSoftware.UI
     {
         public frmDeliveryDate()
         {
-            
             InitializeComponent();
+            dateEditOnly = true;
         }
 
         public frmDeliveryDate(DataTable dt)
@@ -25,6 +25,7 @@ namespace FactoryManagementSoftware.UI
             dt_Delivered = dt;
         }
 
+      
         public frmDeliveryDate(string DateType)
         {
 

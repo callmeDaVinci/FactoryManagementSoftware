@@ -29,8 +29,8 @@ namespace FactoryManagementSoftware.UI
             tool.DoubleBuffered(dgvMatList, true);
 
             tool.loadFactory(cmbSiteLocation);
-            //cmbSiteLocation.Text = text.Factory_Store;
-            cmbSiteLocation.SelectedIndex = -1;
+            cmbSiteLocation.Text = text.Factory_Store;
+            //cmbSiteLocation.SelectedIndex = -1;
 
             LoadItemListFromPlanner(dt);
             //dt_FromPlanner = dt;
@@ -79,6 +79,7 @@ namespace FactoryManagementSoftware.UI
 
         //readonly string header_OrigRequiredQty = "ORIG REQUIRED QTY";
 
+        readonly string header_TotalStock = "TOTAL STOCK";
         readonly string header_ParentCode = "PARENT CODE";
         readonly string header_RequiredQty = "REQUIRED QTY";
         readonly string header_RequiredBag = "REQUIRED BAG";
@@ -91,7 +92,13 @@ namespace FactoryManagementSoftware.UI
 
         readonly string headerType = "TYPE";
 
-        
+        readonly string unit_Bag = "BAG";
+        readonly string unit_BagBushGrip = "BAG(BUSH & GRIP)";
+        readonly string unit_Container = "CTR";
+        readonly string unit_ContainerBushGrip = "CTR(BUSH & GRIP)";
+        readonly string unit_HeaderName = "PACKAGING UNIT";
+
+
         readonly string headerMatCode = "MATERIAL";
         readonly string headerPlanID = "PLAN";
         readonly string headerFac = "FAC.";
@@ -171,16 +178,18 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_Type, typeof(string));
             dt.Columns.Add(header_Code, typeof(string));
             dt.Columns.Add(header_JoinQty, typeof(int));
-            dt.Columns.Add(header_QtyPerBag, typeof(int));
+            
 
+            dt.Columns.Add(header_TotalStock, typeof(int));
             dt.Columns.Add(header_SiteBalance, typeof(int));
 
             dt.Columns.Add(header_RequiredQty, typeof(int));
 
+            dt.Columns.Add(header_QtyPerBag, typeof(int));
             dt.Columns.Add(header_ToDeliverBag, typeof(int));
             dt.Columns.Add(header_ToDeliverPCS, typeof(int));
- 
 
+            dt.Columns.Add(unit_HeaderName, typeof(string));
             dt.Columns.Add(header_DeliverFrom, typeof(string));
 
             return dt;
@@ -229,6 +238,15 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_ParentCode].Visible = false;
                 dgv.Columns[header_JoinQty].Visible = false;
 
+                if(!cbStockInclude.Checked)
+                {
+                    dgv.Columns[header_SiteBalance].Visible = false;
+                }
+                else
+                {
+                    dgv.Columns[header_SiteBalance].Visible = true;
+                }
+
                 dgv.Columns[header_DeliverFrom].MinimumWidth = 150;
 
                 dgv.Columns[header_DeliverFrom].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
@@ -238,6 +256,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_ToDeliverBag].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
 
                 dgv.Columns[header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[header_TotalStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_ToDeliverPCS].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_ItemString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_QtyPerBag].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -411,15 +430,35 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+          
+
             foreach (DataGridViewRow row in dgv.Rows)
             {
+
                 int toDeliver = int.TryParse(row.Cells[header_ToDeliverBag].Value.ToString(), out toDeliver) ? toDeliver : 0;
+                int toDeliverPcs = int.TryParse(row.Cells[header_ToDeliverPCS].Value.ToString(), out toDeliverPcs) ? toDeliverPcs : 0;
 
                 if (toDeliver > 0)
                 {
+                    DataGridViewComboBoxCell ComboBoxCellUnit = new DataGridViewComboBoxCell();
+
+                    ComboBoxCellUnit.Items.Add(unit_Bag);
+                    ComboBoxCellUnit.Items.Add(unit_BagBushGrip);
+                    ComboBoxCellUnit.Items.Add(unit_Container);
+                    ComboBoxCellUnit.Items.Add(unit_ContainerBushGrip);
+                    
+                    ComboBoxCellUnit.DisplayStyle = DataGridViewComboBoxDisplayStyle.ComboBox;
+                    
+                    row.Cells[unit_HeaderName] = ComboBoxCellUnit;
+                    row.Cells[unit_HeaderName].Value = unit_Bag;
+
                     string MatCode = row.Cells[header_Code].Value.ToString();
 
                     DataGridViewComboBoxCell ComboBoxCell = new DataGridViewComboBoxCell();
+
+                    string locationFrom = "";
+                    string selectedLocation = "";
+
                     foreach (DataRow matStock in dt_MatStock.Rows)
                     {
                         string ItemCode = matStock[headerMatCode].ToString();
@@ -428,7 +467,16 @@ namespace FactoryManagementSoftware.UI
 
                         if (ItemCode == MatCode && FacName != Factory && Balance != "0")
                         {
-                            ComboBoxCell.Items.Add(FacName + " (BAL.: " + Balance + ")");
+                            locationFrom = FacName + " (BAL.: " + Balance + ")";
+                            ComboBoxCell.Items.Add(locationFrom);
+
+
+                            int BalInt = int.TryParse(Balance, out BalInt) ? BalInt : 0;
+
+                            if (BalInt >= toDeliverPcs)
+                            {
+                                selectedLocation = locationFrom;
+                            }
                         }
                     }
 
@@ -441,19 +489,33 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                       
-                        string test = ComboBoxCell.Items[0].ToString();
                         row.Cells[header_DeliverFrom] = ComboBoxCell;
-
                     }
 
-                  
+                    if (selectedLocation != "")
+                    {
+                        row.Cells[header_DeliverFrom].Value = selectedLocation;
+                        row.Cells[header_ToDeliverPCS].Style.ForeColor = Color.Black;
+                        row.Cells[header_ToDeliverBag].Style.ForeColor = Color.Black;
+                    }
+                    else
+                    {
+                        row.Cells[header_ToDeliverBag].Style.ForeColor = Color.Red;
+                        row.Cells[header_ToDeliverPCS].Style.ForeColor = Color.Red;
+                    }
+
+                }
+                else
+                {
+                    row.Cells[unit_HeaderName].Value = DBNull.Value;
+                    row.Cells[header_DeliverFrom].Value = DBNull.Value;
                 }
             }
         }
 
         private DataTable RemoveRowIfRequiredQtyEqualZero(DataTable dt)
         {
+            dt.AcceptChanges();
             foreach (DataRow row in dt.Rows)
             {
                 int requiredQty = int.TryParse(row[header_RequiredQty].ToString(), out requiredQty) ? requiredQty : 0;
@@ -461,6 +523,7 @@ namespace FactoryManagementSoftware.UI
                 if (requiredQty == 0)
                 {
                     row.Delete();
+
                 }
             }
 
@@ -624,7 +687,30 @@ namespace FactoryManagementSoftware.UI
                             {
                                 int oldRequiredQty = int.TryParse(rowMat[header_RequiredQty].ToString(), out oldRequiredQty) ? oldRequiredQty : 0;
 
-                                int siteBal = int.TryParse(rowMat[header_SiteBalance].ToString(), out siteBal) ? siteBal : 0;
+                                int siteBal = 0;
+                                int totalStock = 0;
+
+                                foreach (DataRow stock in dt_Fac.Rows)
+                                {
+                                    if (cmbSiteLocation.Text == stock["fac_name"].ToString() && childCode == stock[dalItem.ItemCode].ToString())
+                                    {
+                                        siteBal = int.TryParse(stock["stock_qty"].ToString(), out siteBal) ? siteBal : 0;
+                                    }
+
+                                    if (cmbSiteLocation.Text != stock["fac_name"].ToString() && childCode == stock[dalItem.ItemCode].ToString())
+                                    {
+                                        totalStock = int.TryParse(stock["stock_qty"].ToString(), out totalStock) ? totalStock : 0;
+                                    }
+                                }
+
+                                if (cbStockInclude.Checked)
+                                {
+                                    totalStock += siteBal;
+                                }
+                                else
+                                {
+                                    siteBal = 0;
+                                }
 
                                 int qtyperBag_2 = int.TryParse(rowMat[header_QtyPerBag].ToString(), out qtyperBag_2) ? qtyperBag_2 : 0;
 
@@ -642,6 +728,9 @@ namespace FactoryManagementSoftware.UI
                                     rowMat[header_RequiredQty] = child_StillNeed + oldRequiredQty;
 
                                     rowMat[header_ToDeliverBag] = bagToDeliver;
+
+                                    rowMat[header_SiteBalance] = siteBal;
+                                    rowMat[header_TotalStock] = totalStock;
 
                                     int pcsTodeliver = 0;
 
@@ -662,17 +751,28 @@ namespace FactoryManagementSoftware.UI
                         if (!itemFound)
                         {
                             int siteBal = 0;
+                            int totalStock = 0;
 
-                            if (cmbSiteLocation.SelectedIndex != -1)
+                            foreach (DataRow stock in dt_Fac.Rows)
                             {
-                                foreach (DataRow stock in dt_Fac.Rows)
+                                if (cmbSiteLocation.Text == stock["fac_name"].ToString() && childCode == stock[dalItem.ItemCode].ToString())
                                 {
-                                    if (cmbSiteLocation.Text == stock["fac_name"].ToString() && childCode == stock[dalItem.ItemCode].ToString())
-                                    {
-                                        siteBal = int.TryParse(stock["stock_qty"].ToString(), out siteBal) ? siteBal : 0;
-                                        break;
-                                    }
+                                    siteBal = int.TryParse(stock["stock_qty"].ToString(), out siteBal) ? siteBal : 0;
                                 }
+
+                                if (cmbSiteLocation.Text != stock["fac_name"].ToString() && childCode == stock[dalItem.ItemCode].ToString())
+                                {
+                                    totalStock = int.TryParse(stock["stock_qty"].ToString(), out totalStock) ? totalStock : 0;
+                                }
+                            }
+
+                            if (cbStockInclude.Checked)
+                            {
+                                totalStock += siteBal;
+                            }
+                            else
+                            {
+                                siteBal = 0;
                             }
 
                             DataRow new_Row = dt_Mat.NewRow();
@@ -700,6 +800,7 @@ namespace FactoryManagementSoftware.UI
                             new_Row[header_Unit] = sizeUnit;
                             new_Row[header_Type] = typeName;
                             new_Row[header_Code] = childCode;
+                            new_Row[header_TotalStock] = totalStock;
                             new_Row[header_JoinQty] = joinQty;
                             new_Row[header_QtyPerBag] = qtyPerBag;
                             new_Row[header_RequiredQty] = child_StillNeed;
@@ -750,6 +851,9 @@ namespace FactoryManagementSoftware.UI
             dgvMatList.SelectionMode = DataGridViewSelectionMode.CellSelect;
 
             AddComboBoxToDGVCell();
+
+            dgvMatList.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+
             dgvMatList.ClearSelection();
         }
 
@@ -834,7 +938,30 @@ namespace FactoryManagementSoftware.UI
                                 {
                                     int oldRequiredQty = int.TryParse(rowMat[header_RequiredQty].ToString(), out oldRequiredQty) ? oldRequiredQty : 0;
 
-                                    int siteBal = int.TryParse(rowMat[header_SiteBalance].ToString(), out siteBal) ? siteBal : 0;
+                                    int siteBal = 0;
+                                    int totalStock = 0;
+
+                                    foreach (DataRow stock in dt_Fac.Rows)
+                                    {
+                                        if (cmbSiteLocation.Text == stock["fac_name"].ToString() && childCode == stock[dalItem.ItemCode].ToString())
+                                        {
+                                            siteBal = int.TryParse(stock["stock_qty"].ToString(), out siteBal) ? siteBal : 0;
+                                        }
+
+                                        if (cmbSiteLocation.Text != stock["fac_name"].ToString() && childCode == stock[dalItem.ItemCode].ToString())
+                                        {
+                                            totalStock = int.TryParse(stock["stock_qty"].ToString(), out totalStock) ? totalStock : 0;
+                                        }
+                                    }
+
+                                    if (cbStockInclude.Checked)
+                                    {
+                                        totalStock += siteBal;
+                                    }
+                                    else
+                                    {
+                                        siteBal = 0;
+                                    }
 
                                     int qtyperBag_2 = int.TryParse(rowMat[header_QtyPerBag].ToString(), out qtyperBag_2) ? qtyperBag_2 : 0;
 
@@ -854,6 +981,9 @@ namespace FactoryManagementSoftware.UI
                                             rowMat[header_RequiredQty] = child_StillNeed + oldRequiredQty;
 
                                             rowMat[header_ToDeliverBag] = bagToDeliver;
+
+                                            rowMat[header_SiteBalance] = siteBal;
+                                            rowMat[header_TotalStock] = totalStock;
 
                                             int pcsTodeliver = 0;
 
@@ -876,17 +1006,28 @@ namespace FactoryManagementSoftware.UI
                             if (!itemFound)
                             {
                                 int siteBal = 0;
+                                int totalStock = 0;
 
-                                if (cmbSiteLocation.SelectedIndex != -1)
+                                foreach (DataRow stock in dt_Fac.Rows)
                                 {
-                                    foreach (DataRow stock in dt_Fac.Rows)
+                                    if (cmbSiteLocation.Text == stock["fac_name"].ToString() && childCode == stock[dalItem.ItemCode].ToString())
                                     {
-                                        if (cmbSiteLocation.Text == stock["fac_name"].ToString() && childCode == stock[dalItem.ItemCode].ToString())
-                                        {
-                                            siteBal = int.TryParse(stock["stock_qty"].ToString(), out siteBal) ? siteBal : 0;
-                                            break;
-                                        }
+                                        siteBal = int.TryParse(stock["stock_qty"].ToString(), out siteBal) ? siteBal : 0;
                                     }
+
+                                    if (cmbSiteLocation.Text != stock["fac_name"].ToString() && childCode == stock[dalItem.ItemCode].ToString())
+                                    {
+                                        totalStock = int.TryParse(stock["stock_qty"].ToString(), out totalStock) ? totalStock : 0;
+                                    }
+                                }
+
+                                if (cbStockInclude.Checked)
+                                {
+                                    totalStock += siteBal;
+                                }
+                                else
+                                {
+                                    siteBal = 0;
                                 }
 
                                 DataRow new_Row = dt_Mat.NewRow();
@@ -918,6 +1059,7 @@ namespace FactoryManagementSoftware.UI
                                 new_Row[header_QtyPerBag] = qtyPerBag;
                                 new_Row[header_RequiredQty] = child_StillNeed;
                                 new_Row[header_SiteBalance] = siteBal;
+                                new_Row[header_TotalStock] = totalStock;
                                 new_Row[header_ToDeliverBag] = bagToDeliver;
                                 new_Row[header_ToDeliverPCS] = pcsTodeliver;
                                 dt_Mat.Rows.Add(new_Row);
@@ -948,11 +1090,29 @@ namespace FactoryManagementSoftware.UI
                     {
                         int qtyPerBag = int.TryParse(row[header_QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
                         int bagToDeliver = int.TryParse(row[header_ToDeliverBag].ToString(), out bagToDeliver) ? bagToDeliver : 0;
+
                         int joinQty = int.TryParse(row[header_JoinQty].ToString(), out joinQty) ? joinQty : 1;
 
-                        int pcsToDeliver = qtyPerBag * bagToDeliver/joinQty;
+                        int pcsToDeliver = qtyPerBag * bagToDeliver / joinQty;
+                        int requiredQty = int.TryParse(row[header_RequiredQty].ToString(), out requiredQty) ? requiredQty : 0;
 
-                        int targetPcs = int.TryParse(dgvItemList.Rows[i].Cells[header_TargetPcs].Value.ToString(), out targetPcs) ? targetPcs : 0;
+                        if (pcsToDeliver < requiredQty && cbStockInclude.Checked)
+                        {
+                            int siteBal = int.TryParse(row[header_SiteBalance].ToString(), out siteBal) ? siteBal : 0;
+
+                            if (siteBal >= requiredQty)
+                            {
+                                pcsToDeliver = requiredQty / joinQty;
+                            }
+                            else
+                            {
+                                pcsToDeliver = (siteBal + qtyPerBag * bagToDeliver) / joinQty;
+                            }
+                        }
+
+
+
+                        //int targetPcs = int.TryParse(dgvItemList.Rows[i].Cells[header_TargetPcs].Value.ToString(), out targetPcs) ? targetPcs : 0;
 
                         dgvItemList.Rows[i].Cells[header_MaxAvailability].Value = pcsToDeliver;
  
@@ -984,8 +1144,24 @@ namespace FactoryManagementSoftware.UI
                         int bagToDeliver = int.TryParse(row[header_ToDeliverBag].ToString(), out bagToDeliver) ? bagToDeliver : 0;
 
                         int pcsToDeliver = qtyPerBag * bagToDeliver / joinQty;
+                        int requiredQty = int.TryParse(row[header_RequiredQty].ToString(), out requiredQty) ? requiredQty : 0;
 
-                        if(pcsToDeliver < maxQty)
+                        if (pcsToDeliver < requiredQty && cbStockInclude.Checked)
+                        {
+                            int siteBal = int.TryParse(row[header_SiteBalance].ToString(), out siteBal) ? siteBal : 0;
+                           
+                            if (siteBal >= requiredQty)
+                            {
+                                pcsToDeliver = requiredQty / joinQty;
+                            }
+                            else
+                            {
+                                pcsToDeliver = (siteBal + qtyPerBag * bagToDeliver) / joinQty;
+                            }
+                        }
+                      
+
+                        if (pcsToDeliver < maxQty)
                         {
                             maxQty = pcsToDeliver;
                             dgvItemList.Rows[i].Cells[header_MaxAvailability].Value = maxQty;
@@ -1001,6 +1177,7 @@ namespace FactoryManagementSoftware.UI
 
             //if(dt_FromPlanner != null)
             //LoadItemListFromPlanner(dt_FromPlanner);
+
             AddComboBoxToDGVCell();
             dgvItemList.ClearSelection();
             dgvMatList.ClearSelection();
@@ -1176,6 +1353,10 @@ namespace FactoryManagementSoftware.UI
             {
                 int toDeliver = int.TryParse(row[header_ToDeliverBag].ToString(), out toDeliver) ? toDeliver : 0;
                 string from = GetFacName(dt_Fac, row[header_DeliverFrom].ToString());
+                string toDeliverUnit = row[unit_HeaderName].ToString();
+
+                toDeliverUnit = toDeliverUnit.ToLower();
+
                 if (toDeliver > 0 && !string.IsNullOrEmpty(from))
                 {
                     string item = row[header_ItemString].ToString();
@@ -1190,20 +1371,30 @@ namespace FactoryManagementSoftware.UI
                         
                         if (preDeliverFrom == "")
                         {
-                            materialPrepareList += "From " + from + assemblySite;
-                            materialPrepareListForWhatsApp += "_From " + from +  assemblySite + "_";
+                            materialPrepareList += "From " + from + " To " + assemblySite;
+                            materialPrepareListForWhatsApp += "_From " + from + " To " + assemblySite + "_";
                         }
                         else
                         {
-                            materialPrepareList += "\n\n" + "From " + from + assemblySite;
-                            materialPrepareListForWhatsApp += "\n\n" + "_From " + from +  assemblySite + "_";
+                            materialPrepareList += "\n\n" + "From " + from + " To " + assemblySite;
+                            materialPrepareListForWhatsApp += "\n\n" + "_From " + from + " To " + assemblySite + "_";
                         }
 
                         preDeliverFrom = from;
 
                     }
-                    materialPrepareList += "\n" + item + "   " + toDeliver + " x" + stdPacking;
-                    materialPrepareListForWhatsApp += "\n" + item + "   *" + toDeliver + "* x" + stdPacking;
+
+                    if(cbWithStdPacking.Checked)
+                    {
+                        materialPrepareList += "\n" + item + "   " + toDeliver + " " + toDeliverUnit + " (x" + stdPacking + ")";
+                        materialPrepareListForWhatsApp += "\n" + item + "   *" + toDeliver + "* " + " " + toDeliverUnit + " (x" + stdPacking + ")";
+                    }
+                    else
+                    {
+                        materialPrepareList += "\n" + item + "   " + toDeliver + " " + toDeliverUnit ;
+                        materialPrepareListForWhatsApp += "\n" + item + "   *" + toDeliver + "* " + " " + toDeliverUnit ;
+                    }
+                    
                 }
             }
 
@@ -1403,6 +1594,71 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMatList_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbStockInclude_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadMatPartList();
+        }
+
+        private int GetBalanceFromLocationString(string str)
+        {
+            string bal = "";
+
+            bool startConvert = false;
+            for(int i = 0; i < str.Length; i++)
+            {
+                if(str[i].ToString() == "(")
+                {
+                    startConvert = true;
+                }
+
+                if(startConvert && int.TryParse(str[i].ToString(), out int x))
+                {
+                    bal += str[i].ToString();
+                }
+            }
+
+            int balInt = int.TryParse(bal, out balInt) ? balInt : 0;
+            return balInt;
+        }
+
+        private void dgvMatList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dgv = dgvMatList;
+
+            int row = e.RowIndex;
+            int col = e.ColumnIndex;
+
+            if(Loaded && dgv.Columns[col].Name == header_DeliverFrom)
+            {
+                // My combobox column is the second one so I hard coded a 1, flavor to taste
+               //DataGridViewComboBoxCell cb = (DataGridViewComboBoxCell)dgv.Rows[row].Cells[col];
+
+                int toDeliverPcs = int.TryParse(dgv.Rows[row].Cells[header_ToDeliverPCS].Value.ToString(), out toDeliverPcs) ? toDeliverPcs : 0;
+
+                //string cbValue = cb.Value.ToString();
+                string cbValue = dgv.CurrentCell.EditedFormattedValue.ToString();
+                //get balance
+                int bal = GetBalanceFromLocationString(cbValue);
+
+                if(bal < toDeliverPcs)
+                {
+                    dgv.Rows[row].Cells[header_ToDeliverPCS].Style.ForeColor = Color.Red;
+                    dgv.Rows[row].Cells[header_ToDeliverBag].Style.ForeColor = Color.Red;
+                }
+                else
+                {
+                    dgv.Rows[row].Cells[header_ToDeliverPCS].Style.ForeColor = Color.Black;
+                    dgv.Rows[row].Cells[header_ToDeliverBag].Style.ForeColor = Color.Black;
+                }
+            }
+            
         }
     }
 }
