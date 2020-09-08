@@ -351,7 +351,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_PODate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_Customer].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_Progress].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                //dgv.Columns[header_POCode].Visible = false;
+                dgv.Columns[header_POCode].Visible = false;
                 dgv.Columns[header_CustomerCode].Visible = false;
                 dgv.Columns[header_Freeze].Visible = false;
             }
@@ -4136,6 +4136,12 @@ namespace FactoryManagementSoftware.UI
         private void frmSPPPOList_FormClosed(object sender, FormClosedEventArgs e)
         {
             frmSBB.Reload();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadPOList();
+            lblSubList.Text = text_POItemList;
         }
     }
 }

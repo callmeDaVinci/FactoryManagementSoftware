@@ -26,7 +26,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>240</ApplicationRevision>
+    <ApplicationRevision>241</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -318,6 +318,12 @@
     <Compile Include="UI\frmMacScheduleAdjust.Designer.cs">
       <DependentUpon>frmMacScheduleAdjust.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmMasterList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMasterList.Designer.cs">
+      <DependentUpon>frmMasterList.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmMatAddOrEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -571,6 +577,12 @@
     </Compile>
     <Compile Include="UI\frmPlanningApply.Designer.cs">
       <DependentUpon>frmPlanningApply.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmPlanningType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmPlanningType.Designer.cs">
+      <DependentUpon>frmPlanningType.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmPMMA.cs">
       <SubType>Form</SubType>
@@ -836,6 +848,9 @@
     <EmbeddedResource Include="UI\frmMacScheduleAdjust.resx">
       <DependentUpon>frmMacScheduleAdjust.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmMasterList.resx">
+      <DependentUpon>frmMasterList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMatAddOrEdit.resx">
       <DependentUpon>frmMatAddOrEdit.cs</DependentUpon>
     </EmbeddedResource>
@@ -971,6 +986,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPlanningApply.resx">
       <DependentUpon>frmPlanningApply.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmPlanningType.resx">
+      <DependentUpon>frmPlanningType.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPMMA.resx">
       <DependentUpon>frmPMMA.cs</DependentUpon>
@@ -1187,6 +1205,38 @@
     <None Include="Resources\Picture1.png" />
     <None Include="Resources\Picture11.png" />
     <None Include="Resources\Picture12.png" />
+    <None Include="Resources\icons8-data-transfer-641.png" />
+    <None Include="Resources\icons8-planner-96.png" />
+    <None Include="Resources\icons8-warehouse-641.png" />
+    <None Include="Resources\icons8-task-planning-64.png" />
+    <None Include="Resources\icons8-fork-lift-64.png" />
+    <None Include="Resources\icons8-calendar-plus-64.png" />
+    <None Include="Resources\icons8-fork-lift-32.png" />
+    <None Include="Resources\icons8-fork-lift-50.png" />
+    <None Include="Resources\icons8-fork-lift-48.png" />
+    <None Include="Resources\icons8-in-transit-64.png" />
+    <None Include="Resources\icons8-deliver-food-64.png" />
+    <None Include="Resources\icons8-deliver-food-64 %281%29.png" />
+    <None Include="Resources\icons8-data-transfer-64 %281%29.png" />
+    <None Include="Resources\icons8-delivery-64 %281%29.png" />
+    <None Include="Resources\icons8-delivery-64 %282%29.png" />
+    <None Include="Resources\icons8-delivery-64 %283%29.png" />
+    <None Include="Resources\icons8-delivery-64 %284%29.png" />
+    <None Include="Resources\icons8-delivery-64 %285%29.png" />
+    <None Include="Resources\icons8-delivery-64 %286%29.png" />
+    <None Include="Resources\mover-truck.png" />
+    <None Include="Resources\delivery.png" />
+    <None Include="Resources\icons8-file-delivery-64.png" />
+    <None Include="Resources\icons8-container-truck-64.png" />
+    <None Include="Resources\MoldingMachine.png" />
+    <None Include="Resources\MoldingMachine1.png" />
+    <None Include="Resources\Picture13.png" />
+    <None Include="Resources\Picture2.png" />
+    <None Include="Resources\Picture3.png" />
+    <None Include="Resources\icons8-assembly-line-96.png" />
+    <None Include="Resources\icons8-assembly-line-96 %281%29.png" />
+    <None Include="Resources\Picture4.png" />
+    <None Include="Resources\icons8-task-64.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -423,7 +423,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (selectedDataList == text_RouteDataList)
                     {
-                        uData.route_name = txtName.Text.ToUpper();
+                        uData.Route_name = txtName.Text.ToUpper();
 
                         if (!dalData.InsertRoute(uData))
                         {
@@ -541,7 +541,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (selectedDataList == text_RouteDataList)
                     {
-                        uData.route_name = txtName.Text.ToUpper();
+                        uData.Route_name = txtName.Text.ToUpper();
 
                         if (!dalData.RouteUpdate(uData))
                         {

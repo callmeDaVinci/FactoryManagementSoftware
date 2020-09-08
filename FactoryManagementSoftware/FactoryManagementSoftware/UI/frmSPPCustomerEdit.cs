@@ -321,12 +321,12 @@ namespace FactoryManagementSoftware.UI
 
                         if(tableCode > 0)
                         {
-                            uData.route_tbl_code = tableCode;
+                            uData.Route_tbl_code = tableCode;
 
                         }
                         else
                         {
-                            uData.route_tbl_code = 0;
+                            uData.Route_tbl_code = 0;
                         }
 
                         if (dalData.InsertCustomer(uData))
@@ -376,12 +376,12 @@ namespace FactoryManagementSoftware.UI
 
                         if (tableCode > 0)
                         {
-                            uData.route_tbl_code = tableCode;
+                            uData.Route_tbl_code = tableCode;
 
                         }
                         else
                         {
-                            uData.route_tbl_code = 0;
+                            uData.Route_tbl_code = 0;
                         }
 
                         if (dalData.CustomerUpdate(uData))

@@ -592,15 +592,27 @@ namespace FactoryManagementSoftware.UI
 
         private void button9_Click(object sender, EventArgs e)
         {
-            //Control ctrl = (Control)sender;
-            //ctrl.BackColor = Color.Yellow;
-            frmSPPCalculation frm = new frmSPPCalculation
+
+            if (!MainDashboard.ProductionFormOpen)
             {
-                StartPosition = FormStartPosition.CenterScreen
-            };
-
-
-            frm.ShowDialog();
+                frmLoading.ShowLoadingScreen();
+                frmMachineSchedule frm = new frmMachineSchedule
+                {
+                    MdiParent = this.ParentForm,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                frm.Show();
+                MainDashboard.ProductionFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmMachineSchedule>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmMachineSchedule>().First().BringToFront();
+                }
+            }
         }
 
         private void OpenPOList(object sender, EventArgs e)
@@ -616,7 +628,8 @@ namespace FactoryManagementSoftware.UI
 
         private void button4_Click(object sender, EventArgs e)
         {
-            frmSPPNewPO frm = new frmSPPNewPO
+            //WorkInProgressMessage();
+            frmPlanningType frm = new frmPlanningType
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
@@ -689,7 +702,26 @@ namespace FactoryManagementSoftware.UI
 
         private void button8_Click(object sender, EventArgs e)
         {
-            WorkInProgressMessage();
+            if (!MainDashboard.DailyJobSheetFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmProductionRecordNew frm = new frmProductionRecordNew
+                {
+                    MdiParent = this.ParentForm,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                frm.Show();
+                MainDashboard.DailyJobSheetFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmProductionRecordNew>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmProductionRecordNew>().First().BringToFront();
+                }
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -715,7 +747,12 @@ namespace FactoryManagementSoftware.UI
 
         private void button5_Click(object sender, EventArgs e)
         {
-            WorkInProgressMessage();
+            frmSBBMatPLan frm = new frmSBBMatPLan
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            frm.ShowDialog();
         }
 
         private void label8_Click(object sender, EventArgs e)
@@ -861,6 +898,11 @@ namespace FactoryManagementSoftware.UI
         private void button10_Click_1(object sender, EventArgs e)
         {
             LoadStockAlert();
+        }
+
+        private void tableLayoutPanel14_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

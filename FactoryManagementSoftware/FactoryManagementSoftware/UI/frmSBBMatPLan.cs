@@ -257,7 +257,7 @@ namespace FactoryManagementSoftware.UI
             DataRow row = dt_ItemList.NewRow();
 
             row[header_PlanItemString] = " PLAN 2696";
-            row[header_Location] = " STORE";
+            row[header_Location] = "STORE";
             row[header_Date] = DateTime.Now.Date;
             dt_ItemList.Rows.Add(row);
 
@@ -285,7 +285,7 @@ namespace FactoryManagementSoftware.UI
             row = dt_ItemList.NewRow();
 
             row[header_PlanItemString] = " PLAN 2697 ";
-            row[header_Location] = " STORE ";
+            row[header_Location] = "STORE";
             row[header_Date] = DateTime.Now.Date;
             dt_ItemList.Rows.Add(row);
 
@@ -318,7 +318,7 @@ namespace FactoryManagementSoftware.UI
             row2[header_DeliveryBag] = 1;
             row2[header_StdPacking] = 600;
             row2[header_DeliveryPcs] = 600;
-            row2[header_From] = "NO. 11";
+            row2[header_From] = "No.11";
             row2[header_DeliveredDate] = DateTime.Now.Date;
 
             dt_DeliveryList.Rows.Add(row2);
@@ -332,7 +332,7 @@ namespace FactoryManagementSoftware.UI
             row2[header_DeliveryBag] = 2;
             row2[header_StdPacking] = 600;
             row2[header_DeliveryPcs] = 1200;
-            row2[header_From] = "NO. 11";
+            row2[header_From] = "No.11";
             
             dt_DeliveryList.Rows.Add(row2);
 
@@ -345,7 +345,7 @@ namespace FactoryManagementSoftware.UI
             row2[header_DeliveryBag] = 1;
             row2[header_StdPacking] = 300;
             row2[header_DeliveryPcs] = 300;
-            row2[header_From] = "NO. 11";
+            row2[header_From] = "No.11";
 
             dt_DeliveryList.Rows.Add(row2);
             #endregion
@@ -699,7 +699,7 @@ namespace FactoryManagementSoftware.UI
 
                     if(itemSelected && (itemIndex + 1) % 2 == 0)
                     {
-                        string locationFrom = dt_ItemList.Rows[itemIndex - 1][header_Location].ToString();
+                        string locationTo = dt_ItemList.Rows[itemIndex - 1][header_Location].ToString();
                         int itemMatTblCode = int.TryParse(row[header_MatTblCode].ToString(), out itemMatTblCode) ? itemMatTblCode : -1;
                         string itemCode = row[header_ItemCode].ToString().ToString();
                         string itemName = row[header_ItemName].ToString().ToString();
@@ -715,15 +715,15 @@ namespace FactoryManagementSoftware.UI
                             if (deliverySelected && deliveryMatTblCode == itemMatTblCode)
                             {
                                 int deliveryPcs = int.TryParse(deliveryRow[header_DeliveryPcs].ToString(), out deliveryPcs) ? deliveryPcs : 0;
-                                string locationTo = deliveryRow[header_From].ToString().ToString();
+                                string locationFrom = deliveryRow[header_From].ToString().ToString();
 
                                 DataRow newRow = dt.NewRow();
 
                                 newRow[header_ItemCode] = itemCode;
                                 newRow[header_ItemName] = itemName;
                                 newRow[header_From] = locationFrom;
-                                newRow[header_To] = locationTo;
-                                newRow[header_DeliveryPcs] = deliveryPcs;
+                                newRow[header_To] = locationTo; 
+                                 newRow[header_DeliveryPcs] = deliveryPcs;
 
                                 newRow[header_PlanID] = planID;
                                 newRow[header_PlanItemType] = planItemType;

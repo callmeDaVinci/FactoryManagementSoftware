@@ -568,7 +568,8 @@ namespace FactoryManagementSoftware.UI
 
                     foreach(DataRow row_DO in dt_DOList.Rows)
                     {
-                        if(row_DO[dalSPP.ItemCode].ToString() == itemCode)
+                        string trfResult = row_DO[dalTrfHist.TrfResult].ToString();
+                        if (trfResult == "Passed" && row_DO[dalSPP.ItemCode].ToString() == itemCode)
                         {
                             int custID = int.TryParse(row_DO[dalSPP.CustomerTableCode].ToString(), out custID) ? custID : -1;
                             string shortName = row_DO[dalSPP.ShortName].ToString();

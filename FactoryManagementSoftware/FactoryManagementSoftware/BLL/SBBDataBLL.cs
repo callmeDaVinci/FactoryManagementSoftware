@@ -27,16 +27,16 @@ namespace FactoryManagementSoftware.BLL
         public int Category_tbl_code { get; set; }
 
         //route table
-        public string route_name { get; set; }
+        public string Route_name { get; set; }
 
         //delivery table
-        public int route_tbl_code { get; set; }
-        public int trip_no { get; set; }
-        public DateTime? delivery_date{ get; set; }
-        public string delivery_status { get; set; }
-        public int deliver_pcs { get; set; }
+        public int Route_tbl_code { get; set; }
+        public int Trip_no { get; set; }
+        public DateTime? Delivery_date{ get; set; }
+        public string Delivery_status { get; set; }
+        public int Deliver_pcs { get; set; }
         public int DO_tbl_code { get; set; }
-        public int planning_no { get; set; }
+        public int Planning_no { get; set; }
 
         //color table
         public string Color_name { get; set; }
@@ -96,11 +96,35 @@ namespace FactoryManagementSoftware.BLL
         public DateTime DO_date { get; set; }
         public bool IsDelivered { get; set; }
 
+        //Plan
+        public int Location_area { get; set; }
+        public int Location_line { get; set; }
+        public DateTime Date_start { get; set; }
+        public DateTime Date_end { get; set; }
+        public int Target_qty { get; set; }
+        public int Max_qty { get; set; }
+        public string Plan_status { get; set; }
+        public string Plan_type { get; set; }
+        public string Plan_note { get; set; }
+
+        //Material Plan
+        public int Plan_code { get; set; }
+        public int Required_qty { get; set; }
+        public int Preparing_qty { get; set; }
+        public string Note { get; set; }
+        public bool IsCompleted { get; set; }
+
+        //Material Plan Prepare
+        public int Mat_plan_code { get; set; }
+        public int Std_packing { get; set; }
+        public int Delivery_bag { get; set; }
+        public int Location_from { get; set; }
+
         //common
         public DateTime Updated_Date { get; set; }
         public int Updated_By { get; set; }
         public bool IsRemoved { get; set; }
         public bool Freeze { get; set; }
-        public int priority_level { get; set; }
+        public int Priority_level { get; set; }
     }
 }

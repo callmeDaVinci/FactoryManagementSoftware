@@ -20,6 +20,8 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
             tool.DoubleBuffered(dgvItemList, true);
             tool.DoubleBuffered(dgvMatList, true);
+            tool.loadFactory(cmbSiteLocation);
+            cmbSiteLocation.Text = text.Factory_Store;
         }
 
         public frmSBBAssemblyPlanning(DataTable dt)
@@ -27,7 +29,7 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
             tool.DoubleBuffered(dgvItemList, true);
             tool.DoubleBuffered(dgvMatList, true);
-
+            callFromPOVSStock = true;
             tool.loadFactory(cmbSiteLocation);
             cmbSiteLocation.Text = text.Factory_Store;
             //cmbSiteLocation.SelectedIndex = -1;
@@ -73,6 +75,8 @@ namespace FactoryManagementSoftware.UI
         readonly string header_TargetBag = "TARGET (BAG)";
         readonly string header_TargetPcs = "TARGET (PCS)";
         readonly string header_MaxAvailability = "MAX (PCS)";
+        readonly string header_DateStart = "START";
+        readonly string header_DateEnd = "END";
         //readonly string header_OriMaxAvailability = "ORI MAX (PCS)";
 
         readonly string header_BalAfterDeliveryInPcs = "BAL. AFTER DELIVERY IN PCS";
@@ -119,9 +123,12 @@ namespace FactoryManagementSoftware.UI
         readonly string headerTransferred = "TRANSFERRED (KG/PIECE)";
 
         readonly string text_OutOfStock = "OUT OF STOCK";
+        readonly string text_Remove = "REMOVE";
+
         private bool Loaded = false;
         private bool ItemEditChanged = false;
-
+        private bool DateSelectMode = false;
+        private bool callFromPOVSStock = false;
         #endregion
 
         private DataTable NewMatStockTable()
@@ -163,6 +170,8 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_TargetPcs, typeof(int));
             dt.Columns.Add(header_MaxAvailability, typeof(int));
 
+            dt.Columns.Add(header_DateStart, typeof(DateTime));
+            dt.Columns.Add(header_DateEnd, typeof(DateTime));
             return dt;
         }
 
@@ -214,6 +223,10 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_StockBag].Visible = false;
                 dgv.Columns[header_StockString].Visible = false;
                 dgv.Columns[header_RequiredBag].Visible = false;
+                dgv.Columns[header_MaxAvailability].Visible = false;
+
+                dgv.Columns[header_DateStart].Visible = false;
+                dgv.Columns[header_DateEnd].Visible = false;
 
                 dgv.Columns[header_Type].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 
@@ -1173,12 +1186,19 @@ namespace FactoryManagementSoftware.UI
 
         private void frmSBBAssemblyPlanning_Load(object sender, EventArgs e)
         {
-            tlpMaterialList.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+            //tlpMaterialList.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+            tlpSetting.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 0f);
+            tlpSetting.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100f);
+
+            tlpList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0f);
+            tlpList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
 
             //if(dt_FromPlanner != null)
             //LoadItemListFromPlanner(dt_FromPlanner);
 
+            if(callFromPOVSStock)
             AddComboBoxToDGVCell();
+
             dgvItemList.ClearSelection();
             dgvMatList.ClearSelection();
             Loaded = true;
@@ -1190,6 +1210,111 @@ namespace FactoryManagementSoftware.UI
             {
                 //update site balance
                 LoadMatPartList();
+            }
+        }
+
+        private void dgvItemList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                DataGridView dgv = (DataGridView)sender;
+
+                //handle the row selection on right click
+                if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+                {
+                    ContextMenuStrip my_menu = new ContextMenuStrip();
+
+
+                    dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    // Can leave these here - doesn't hurt
+                    dgv.Rows[e.RowIndex].Selected = true;
+                    dgv.Focus();
+                    int rowIndex = dgv.CurrentCell.RowIndex;
+
+                    if (dgv == dgvItemList)
+                    {
+                        my_menu.Items.Add(text_Remove).Name = text_Remove;
+                    }
+                  
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(ItemList_ItemClicked);
+
+                }
+                else
+                {
+                    //btnEdit.Visible = false;
+                }
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
+        private void RemoveItem(int rowIndex)
+        {
+            DataTable dt = (DataTable)dgvItemList.DataSource;
+
+            dt.Rows[rowIndex].Delete();
+
+            dt.AcceptChanges();
+
+            int index = 1;
+            foreach(DataRow row in dt.Rows)
+            {
+                row[header_Index] = index++;
+            }
+
+            LoadMatPartList();
+        }
+
+        private void ItemList_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                DataGridView dgv = dgvItemList;
+
+                int rowIndex = dgv.CurrentCell.RowIndex;
+
+                if (rowIndex >= 0)
+                {
+                    string ClickedItem = e.ClickedItem.Name.ToString();
+
+                    if (ClickedItem.Equals(text_Remove))
+                    {
+                        RemoveItem(rowIndex);
+                    }
+
+                    //else if (ClickedItem.Equals(text_InCompleteDO))
+                    //{
+                    //    IncompleteDO(rowIndex);
+                    //    //MessageBox.Show("incomplete do");
+                    //}
+                    //else if (ClickedItem.Equals(text_UndoRemove))
+                    //{
+                    //    DOUndoRemove(rowIndex);
+                    //    //MessageBox.Show("undo remove");
+                    //}
+                    //else if (ClickedItem.Equals(text_ChangeDONumber))
+                    //{
+                    //    ChangeDONumber(rowIndex);
+                    //    //MessageBox.Show("Change D/O Number");
+                    //}
+                }
+
+
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
             }
         }
 
@@ -1502,18 +1627,26 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt_Item = (DataTable)dgvItemList.DataSource;
 
+            if (dt_Item == null )
+            {
+                dt_Item = NewItemTable();
+            }
 
             bool itemFound = false;
-            foreach(DataRow row in dt_Item.Rows)
+
+            
+
+            foreach (DataRow row in dt_Item.Rows)
             {
-                if(row[header_Code].ToString() == selectedItemCode)
+                if (row[header_Code].ToString() == selectedItemCode)
                 {
                     itemFound = true;
                     break;
                 }
             }
 
-            if(!itemFound)
+
+            if (!itemFound)
             {
                 foreach (DataRow row in dt_Product.Rows)
                 {
@@ -1576,20 +1709,37 @@ namespace FactoryManagementSoftware.UI
                     }
 
                 }
+                dgvItemList.DataSource = dt_Item;
+
+                DgvUIEdit(dgvItemList);
 
                 tool.AddIndexNumberToDGV(dgvItemList,header_Index);
+
+                
+
+                dgvItemList.ClearSelection();
             }
            else
             {
                 MessageBox.Show("Item already added!");
             }
 
+          
 
         }
 
         private void cbMaxAvailability_CheckedChanged(object sender, EventArgs e)
         {
             LoadMatPartList();
+
+            if(cbMaxAvailability.Checked)
+            {
+                dgvItemList.Columns[header_MaxAvailability].Visible = true;
+            }
+            else
+            {
+                dgvItemList.Columns[header_MaxAvailability].Visible = false;
+            }
         }
 
         private void dgvMatList_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -1659,6 +1809,221 @@ namespace FactoryManagementSoftware.UI
                 }
             }
             
+        }
+
+        private void DateSelectUIMode()
+        {
+            DataGridView dgv = dgvItemList;
+
+            dgv.Columns[header_TargetBag].Visible = false;
+            dgv.Columns[header_TargetPcs].Visible = false;
+            dgv.Columns[header_MaxAvailability].Visible = true;
+            dgv.Columns[header_DateStart].Visible = true;
+            dgv.Columns[header_DateEnd].Visible = true;
+
+            btnAdd.Visible = false;
+            cbMaxAvailability.Visible = false;
+
+            lblSubList.Text = "SCHEDULE LIST";
+            btnPreviousStep.Visible = true;
+            btnNextStep.Text = "CONFIRM";
+            btnNextStep.Enabled = false;
+            btnNextStep.BackColor = Color.FromArgb(0, 184, 148);
+
+            tlpSetting.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0f);
+            tlpSetting.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 100f);
+
+            tlpList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 0f);
+            tlpList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100f);
+
+        }
+
+        private void MaterialListUIMode()
+        {
+            DataGridView dgv = dgvItemList;
+
+            dgv.Columns[header_TargetBag].Visible = true;
+            dgv.Columns[header_TargetPcs].Visible = true;
+            
+            if(!cbMaxAvailability.Checked)
+            dgv.Columns[header_MaxAvailability].Visible = false;
+
+            dgv.Columns[header_DateStart].Visible = false;
+            dgv.Columns[header_DateEnd].Visible = false;
+
+            btnAdd.Visible = true;
+            cbMaxAvailability.Visible = true;
+
+            lblSubList.Text = "MATERIAL LIST";
+            btnPreviousStep.Visible = false;
+            btnNextStep.Text = "DATE SELECT  >";
+            btnNextStep.Enabled = true;
+            btnNextStep.BackColor = Color.FromArgb(253, 203, 110);
+
+           
+
+            tlpSetting.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 0f);
+            tlpSetting.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100f);
+
+            tlpList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0f);
+            tlpList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
+
+        }
+
+        private void btnNextStep_Click(object sender, EventArgs e)
+        {
+            DateSelectMode = true;
+            dgvItemList.ClearSelection();
+
+            CalculateTimeNeeded();
+            DateSelectUIMode();
+        }
+
+        private void btnPreviousStep_Click(object sender, EventArgs e)
+        {
+            DateSelectMode = false;
+            MaterialListUIMode();
+        }
+
+        private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void CalculateTimeNeeded()
+        {
+            DataGridView dgv = dgvItemList;
+            string timeNeededString = "INVALID DATA";
+
+            if (dgv.CurrentCell != null)
+            {
+                int rowIndex = dgv.CurrentCell.RowIndex;
+
+                int maxAvailability = int.TryParse(dgv.Rows[rowIndex].Cells[header_MaxAvailability].Value.ToString(), out maxAvailability) ? maxAvailability : -1;
+
+
+
+
+                int pcsPerManHour = int.TryParse(txtPcsPerManHour.Text, out pcsPerManHour) ? pcsPerManHour : 0;
+                int manpower = int.TryParse(txtManpower.Text, out manpower) ? manpower : 0;
+                int hourPerDay = int.TryParse(txtHoursPerDay.Text, out hourPerDay) ? hourPerDay : 0;
+
+                bool validData = pcsPerManHour > 0 && manpower > 0 && hourPerDay > 0;
+
+                int totalHourNeeded = 0;
+                int totalDayNeeded = 0;
+
+                int balanceHour = 0;
+
+                if (maxAvailability != -1)
+                {
+                    DateTime startDate = dtpStart.Value.Date;
+                    if (validData)
+                    {
+                        totalHourNeeded = maxAvailability / (pcsPerManHour * manpower);
+                        totalDayNeeded = totalHourNeeded / hourPerDay;
+
+                        balanceHour = totalHourNeeded - (totalDayNeeded * hourPerDay);
+
+
+                        timeNeededString = totalDayNeeded + " Day & " + balanceHour + " Hour(s)";
+                    }
+
+
+                    if (totalDayNeeded > 0)
+                    {
+                        totalDayNeeded--;
+                    }
+
+                    DateTime endDate = startDate.AddDays(totalDayNeeded);
+
+                    if (totalHourNeeded > hourPerDay)
+                    {
+                        endDate = endDate.AddDays(1);
+                    }
+
+                    if (cbSkipSunday.Checked)
+                    {
+                        int totalSunday = 0;
+                        while (startDate != endDate)
+                        {
+                            if (startDate.DayOfWeek == DayOfWeek.Sunday)
+                            {
+                                totalSunday++;
+                            }
+
+                            startDate = startDate.AddDays(1);
+                        }
+
+                        if (endDate.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            totalSunday++;
+                        }
+
+                        endDate = endDate.AddDays(totalSunday);
+
+                    }
+
+                    if (cbEstimate.Checked)
+                    {
+                        dtpEnd.Value = endDate;
+                    }
+                }
+            }
+           
+
+
+            lblTimeNeeded.Text = timeNeededString;
+        }
+
+        private void txtPcsPerManHour_TextChanged(object sender, EventArgs e)
+        {
+            CalculateTimeNeeded();
+        }
+
+        private void txtManpower_TextChanged(object sender, EventArgs e)
+        {
+            CalculateTimeNeeded();
+        }
+
+        private void txtHoursPerDay_TextChanged(object sender, EventArgs e)
+        {
+            int hourPerDay = int.TryParse(txtHoursPerDay.Text, out hourPerDay) ? hourPerDay : 0;
+
+            if(hourPerDay > 24)
+            {
+                txtHoursPerDay.Text = "24";
+            }
+            else
+            {
+                CalculateTimeNeeded();
+            }
+           
+        }
+
+        private void dtpStart_ValueChanged(object sender, EventArgs e)
+        {
+            CalculateTimeNeeded();
+        }
+
+        private void cbSkipSunday_CheckedChanged(object sender, EventArgs e)
+        {
+            CalculateTimeNeeded();
+        }
+
+        private void dgvItemList_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dgv = (DataGridView)sender;
+
+            int rowIndex = e.RowIndex;
+
+            if(rowIndex != -1 && DateSelectMode)
+            {
+                CalculateTimeNeeded();
+            }
         }
     }
 }

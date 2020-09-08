@@ -61,6 +61,7 @@ namespace FactoryManagementSoftware.UI
         readonly string text_RemoveDO = "REMOVE D/O";
         readonly string text_Excel = "EXCEL";
         readonly string text_DOItemList = "D/O ITEM LIST";
+        readonly string text_MasterList = "Master List";
 
         readonly string header_POCode = "P/O CODE";
         readonly string header_PONo = "P/O NO";
@@ -77,9 +78,10 @@ namespace FactoryManagementSoftware.UI
         readonly string header_Unit = "UNIT";
         readonly string header_Type = "TYPE";
         readonly string header_ItemCode = "ITEM CODE";
+        readonly string header_Item = "ITEM";
         readonly string header_OrderQty = "ORDER QTY";
         readonly string header_DeliveredQty = "DELIVERED QTY";
-        readonly string header_Note = "NOTE";
+        readonly string header_TotalDeliveryBag = "NOTE";
         readonly string header_StockCheck = "STOCK CHECK";
         readonly string header_DONo = "D/O #";
         readonly string header_DONoString = "D/O NO";
@@ -92,6 +94,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_StockString = "STOCK";
         readonly string header_DeliveryPCS = "DELIVERY PCS";
         readonly string header_DeliveryBAG = "DELIVERY BAG";
+        readonly string header_Remark = "REMARK";
         readonly string header_DeliveryQTY = "DELIVERY QTY";
         readonly string header_Balance = "BAL No";
         readonly string header_StdPacking = "StdPacking";
@@ -214,7 +217,23 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
+        private DataTable NewMasterTable()
+        {
+            DataTable dt = new DataTable();
 
+            dt.Columns.Add(header_DOTblCode, typeof(int));
+            dt.Columns.Add(header_DONo, typeof(int));
+            dt.Columns.Add(header_DONoString, typeof(string));
+            dt.Columns.Add(header_Index, typeof(int));
+            dt.Columns.Add(header_Type, typeof(string));
+            dt.Columns.Add(header_Size, typeof(string));
+            dt.Columns.Add(header_Unit, typeof(string));
+            dt.Columns.Add(header_ItemCode, typeof(string));
+            dt.Columns.Add(header_DeliveryPCS, typeof(int));
+            dt.Columns.Add(headerDeliverBag, typeof(int));
+            dt.Columns.Add(header_StdPacking, typeof(int));
+            return dt;
+        }
 
         #endregion
 
@@ -604,8 +623,6 @@ namespace FactoryManagementSoftware.UI
                         else if (preType != type)
                         {
                             preType = type;
-                            dt_Row = dt_DOItemList.NewRow();
-                            dt_DOItemList.Rows.Add(dt_Row);
                         }
 
                         dt_Row = dt_DOItemList.NewRow();
@@ -885,6 +902,8 @@ namespace FactoryManagementSoftware.UI
                         my_menu.Items.Add(text_ChangeDONumber).Name = text_ChangeDONumber;
                     }
 
+                    my_menu.Items.Add(text_MasterList).Name = text_MasterList;
+
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
                     my_menu.ItemClicked += new ToolStripItemClickedEventHandler(DOList_ItemClicked);
@@ -897,6 +916,230 @@ namespace FactoryManagementSoftware.UI
             {
                 tool.saveToTextAndMessageToUser(ex);
             }
+        }
+
+        private void GetMasterList()
+        {
+            DataGridView dgv = dgvDOList;
+
+            DataTable dt_DO = dalSPP.DOWithInfoSelect();
+
+            dt_DO.DefaultView.Sort = dalSPP.TypeName + " ASC," + dalSPP.SizeNumerator + " ASC";
+            dt_DO = dt_DO.DefaultView.ToTable();
+
+            DataTable dt_DOItemList = NewMasterTable();
+
+            DataRow dt_Row;
+            int index = 1;
+            string preType = null;
+            int totalBag = 0;
+
+            //DataTable dt = new DataTable();
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                if(row.Selected)
+                {
+                    string doCode = row.Cells[header_DONo].Value.ToString();
+                    int doNo = int.TryParse(doCode, out doNo) ? doNo : -1;
+
+                    foreach (DataRow row2 in dt_DO.Rows)
+                    {
+                        bool isRemoved = bool.TryParse(row2[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                        if (doCode == row2[dalSPP.DONo].ToString() && row2[dalSPP.DONo] != DBNull.Value && !isRemoved)
+                        {
+                            int deliveryQty = row2[dalSPP.ToDeliveryQty] == DBNull.Value ? 0 : Convert.ToInt32(row2[dalSPP.ToDeliveryQty].ToString());
+
+                            string type = row2[dalSPP.TypeName].ToString();
+
+                            if (!string.IsNullOrEmpty(type) && (deliveryQty > 0))
+                            {
+                                if (preType == null)
+                                {
+                                    preType = type;
+                                }
+                                else if (preType != type)
+                                {
+                                    preType = type;
+                                    dt_Row = dt_DOItemList.NewRow();
+                                    dt_DOItemList.Rows.Add(dt_Row);
+                                }
+
+                                dt_Row = dt_DOItemList.NewRow();
+
+                                int stdPacking = int.TryParse(row2[dalSPP.QtyPerBag].ToString(), out stdPacking) ? stdPacking : 0;
+
+                                int bag = deliveryQty / stdPacking;
+
+                                int DOTableCode = int.TryParse(row2[dalSPP.TableCode].ToString(), out DOTableCode) ? DOTableCode : -1;
+                                int POTableCode = int.TryParse(row2[dalSPP.POTableCode].ToString(), out POTableCode) ? POTableCode : -1;
+                                int TrfTableCode = int.TryParse(row2[dalSPP.TrfTableCode].ToString(), out TrfTableCode) ? TrfTableCode : -1;
+
+                                dt_Row[header_DOTblCode] = DOTableCode;
+                                dt_Row[header_DONo] = doNo;
+                                dt_Row[header_DONoString] = doNo.ToString("D6");
+
+                             
+
+                                if (deliveryQty > 0)
+                                {
+                                    totalBag += bag;
+                                    dt_Row[header_Index] = index;
+                                    dt_Row[header_Size] = row2[dalSPP.SizeNumerator];
+                                    dt_Row[header_Unit] = row2[dalSPP.SizeUnit].ToString().ToUpper();
+                                    dt_Row[header_Type] = type;
+                                    dt_Row[header_ItemCode] = row2[dalSPP.ItemCode];
+                                    dt_Row[header_StdPacking] = stdPacking;
+                                    dt_Row[header_DeliveryPCS] = deliveryQty;
+                                    dt_Row[headerDeliverBag] = bag;
+                                    dt_DOItemList.Rows.Add(dt_Row);
+                                    index++;
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            dt_DOItemList = FilterMasterList(dt_DOItemList);
+
+            if (dt_DOItemList.Rows.Count > 0)
+            {
+
+                frmMasterList frm = new frmMasterList(dt_DOItemList)
+                {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+
+                frm.ShowDialog();
+
+            }
+           
+        }
+
+        private DataTable FilterMasterList(DataTable dt_MasterList)
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(header_Item, typeof(string));
+            dt.Columns.Add(header_DeliveryQTY, typeof(int));
+            dt.Columns.Add(header_Remark, typeof(string));
+
+            dt_MasterList.DefaultView.Sort = header_Unit + " ASC,"  + header_Size + " ASC," + header_Type + " ASC";
+            dt_MasterList = dt_MasterList.DefaultView.ToTable();
+
+            string preType = "", preUnit = "", preSize = "";
+
+            int totalBag = 0, totalPCS = 0, subTotalPcs = 0, subTotalBag = 0, subTotalBalancePcs = 0;
+
+            DataRow newRow = null;
+
+            foreach(DataRow row in dt_MasterList.Rows)
+            {
+                string type = row[header_Type].ToString();
+                string unit = row[header_Unit].ToString();
+                string size = row[header_Size].ToString();
+
+                int deliveryPcs = int.TryParse(row[header_DeliveryPCS].ToString(), out deliveryPcs) ? deliveryPcs : 0;
+                int stdPacking = int.TryParse(row[header_StdPacking].ToString(), out stdPacking) ? stdPacking : -1;
+                int balancePcs = 0;
+
+                int deliveryBag = deliveryPcs / stdPacking;
+
+                if(deliveryBag < 0)
+                {
+                    deliveryBag = 0;
+                }
+
+                if(deliveryPcs % stdPacking != 0)
+                {
+                    balancePcs = deliveryPcs - deliveryBag * stdPacking;
+                }
+
+                bool sameItemWithPrevious = type == preType && unit == preUnit && size == preSize;
+
+                if(sameItemWithPrevious)
+                {
+                    totalBag += deliveryBag;
+                    subTotalPcs += deliveryPcs;
+                    subTotalBag += deliveryBag;
+                    subTotalBalancePcs += balancePcs;
+                    totalPCS += balancePcs;
+                    if (newRow != null)
+                    {
+                        newRow[header_DeliveryQTY] = subTotalPcs;
+
+                        string deliveryNote = subTotalBag + " BAG(S)";
+
+                        if(subTotalBalancePcs > 0)
+                        {
+                            deliveryNote += " + " + subTotalBalancePcs+ " PCS";
+                        }
+
+                        newRow[header_Remark] = deliveryNote;
+                    }
+                }
+                else
+                {
+                    preType = type;
+                    preUnit = unit;
+                    preSize = size;
+
+                    totalBag += deliveryBag;
+                    subTotalPcs = deliveryPcs;
+                    subTotalBag = deliveryBag;
+                    subTotalBalancePcs = balancePcs;
+                    totalPCS += balancePcs;
+                    if (newRow != null)
+                    {
+                        dt.Rows.Add(newRow);
+                    }
+
+                    newRow = dt.NewRow();
+
+                    string item = size + unit + " " + type;
+                    newRow[header_Item] = item;
+                    newRow[header_DeliveryQTY] = subTotalPcs;
+
+                    string deliveryNote = subTotalBag + " BAG(S)";
+
+                    if (subTotalBalancePcs > 0)
+                    {
+                        deliveryNote += " + " + subTotalBalancePcs + " PCS";
+                    }
+
+                    newRow[header_Remark] = deliveryNote;
+                }
+
+            }
+
+            if (newRow != null)
+            {
+                dt.Rows.Add(newRow);
+            }
+
+            if(dt.Rows.Count > 0)
+            {
+                dt.Rows.Add(dt.NewRow());
+            }
+
+            newRow = dt.NewRow();
+
+            string deliveryTotNote = "TOT. "+totalBag + " BAG(S)";
+
+            if (totalPCS > 0)
+            {
+                deliveryTotNote += " + " + totalPCS + " PCS";
+            }
+
+
+            newRow[header_Remark] = deliveryTotNote;
+            dt.Rows.Add(newRow);
+
+            return dt;
+
+
         }
 
         private void DOList_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -912,6 +1155,7 @@ namespace FactoryManagementSoftware.UI
                 if (rowIndex >= 0)
                 {
                     string ClickedItem = e.ClickedItem.Name.ToString();
+
                     if (ClickedItem.Equals(text_CompleteDO))
                     {
                         CompleteDO(rowIndex);
@@ -930,6 +1174,10 @@ namespace FactoryManagementSoftware.UI
                     {
                         ChangeDONumber(rowIndex);
                         //MessageBox.Show("Change D/O Number");
+                    }
+                    else if (ClickedItem.Equals(text_MasterList))
+                    {
+                        GetMasterList();
                     }
                 }
 
@@ -2155,7 +2403,7 @@ namespace FactoryManagementSoftware.UI
                                                 type_ShortName = text.EqualTee_Short;
                                             }
 
-                                            string newItemCode = text.SPP_BrandName + type_ShortName + size;
+                                            string newItemCode = text.SBB_BrandName + type_ShortName + size;
                                             InsertToSheet(xlWorkSheet, descriptionRow, newItemCode + "     " + size + " " + unit + " " + type);
 
                                             descriptionRow = qtyColStart + (rowOffset + rowNo).ToString() + qtyColEnd + (rowOffset + rowNo).ToString();
@@ -2508,7 +2756,7 @@ namespace FactoryManagementSoftware.UI
                                                 type_ShortName = text.EqualTee_Short;
                                             }
 
-                                            string newItemCode = text.SPP_BrandName + type_ShortName + size;
+                                            string newItemCode = text.SBB_BrandName + type_ShortName + size;
                                             InsertToSheet(xlWorkSheet, descriptionRow, newItemCode + "     " + size + " " + unit + " " + type);
 
                                             descriptionRow = qtyColStart + (rowOffset + rowNo).ToString() + qtyColEnd + (rowOffset + rowNo).ToString();

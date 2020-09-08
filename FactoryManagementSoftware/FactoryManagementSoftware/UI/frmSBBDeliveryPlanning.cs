@@ -1907,10 +1907,10 @@ namespace FactoryManagementSoftware.UI
                                 }
 
 
-                                uSpp.route_tbl_code = routeTblCode;
+                                uSpp.Route_tbl_code = routeTblCode;
                                 uSpp.PO_tbl_code = Convert.ToInt32(POTblCode);
-                                uSpp.delivery_status = text.Delivery_Processing;
-                                uSpp.deliver_pcs = toDeliveredQty;
+                                uSpp.Delivery_status = text.Delivery_Processing;
+                                uSpp.Deliver_pcs = toDeliveredQty;
 
                                 if(!dalSPP.InsertDelivery(uSpp))
                                 {
@@ -2022,12 +2022,12 @@ namespace FactoryManagementSoftware.UI
                                 }
 
 
-                                uSpp.route_tbl_code = routeTblCode;
-                                uSpp.planning_no = newPlanningNo;
+                                uSpp.Route_tbl_code = routeTblCode;
+                                uSpp.Planning_no = newPlanningNo;
 
                                 uSpp.PO_tbl_code = Convert.ToInt32(POTblCode);
-                                uSpp.delivery_status = text.Delivery_Processing;
-                                uSpp.deliver_pcs = toDeliveredQty;
+                                uSpp.Delivery_status = text.Delivery_Processing;
+                                uSpp.Deliver_pcs = toDeliveredQty;
 
                                 if (!dalSPP.InsertDelivery(uSpp))
                                 {

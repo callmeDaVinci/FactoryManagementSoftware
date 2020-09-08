@@ -249,10 +249,10 @@ namespace FactoryManagementSoftware.UI
                             int planningNo = int.TryParse(dt.Rows[i][header_PlanningNo].ToString(), out planningNo) ? planningNo : -1;
                             int poCode = int.TryParse(dt.Rows[i][header_POCode].ToString(), out poCode) ? poCode : -1;
 
-                            uSpp.planning_no = planningNo;
+                            uSpp.Planning_no = planningNo;
                             uSpp.PO_code = poCode;
-                            uSpp.trip_no = maxTripNo;
-                            uSpp.delivery_status = text.Delivery_DOPending;
+                            uSpp.Trip_no = maxTripNo;
+                            uSpp.Delivery_status = text.Delivery_DOPending;
 
                             if (!dalSPP.DeliveryTripNumberAndStatusUpdate(uSpp))
                             {
@@ -569,19 +569,19 @@ namespace FactoryManagementSoftware.UI
                         if (selectedDate == DateTimePicker.MinimumDateTime || selectedDate == null)
                         {
                             dgv.Rows[i].Cells[header_DeliveryDate].Value = "";
-                            uSpp.delivery_date = null;
+                            uSpp.Delivery_date = null;
                         }
                         else
                         {
                             dgv.Rows[i].Cells[header_DeliveryDate].Value = selectedDate.Date;
-                            uSpp.delivery_date = selectedDate.Date;
+                            uSpp.Delivery_date = selectedDate.Date;
                         }
 
                         //update
                         int planningNo = int.TryParse(dt.Rows[i][header_PlanningNo].ToString(), out planningNo) ? planningNo : -1;
                         int poCode = int.TryParse(dt.Rows[i][header_POCode].ToString(), out poCode) ? poCode : -1;
 
-                        uSpp.planning_no = planningNo;
+                        uSpp.Planning_no = planningNo;
                         uSpp.PO_code = poCode;
 
                         if(!dalSPP.DeliveryTripDateUpdate(uSpp))
@@ -905,9 +905,9 @@ namespace FactoryManagementSoftware.UI
                 int planningNo = int.TryParse(dgv.Rows[row].Cells[header_PlanningNo].Value.ToString(), out planningNo) ? planningNo : -1;
                 int poCode = int.TryParse(dgv.Rows[row].Cells[header_POCode].Value.ToString(), out poCode) ? poCode : -1;
 
-                uSpp.planning_no = planningNo;
+                uSpp.Planning_no = planningNo;
                 uSpp.PO_code = poCode;
-                uSpp.trip_no = tripData;
+                uSpp.Trip_no = tripData;
 
                 if (!dalSPP.DeliveryTripNumberUpdate(uSpp))
                 {

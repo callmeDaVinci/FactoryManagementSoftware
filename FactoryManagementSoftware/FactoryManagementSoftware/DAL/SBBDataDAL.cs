@@ -103,7 +103,31 @@ namespace FactoryManagementSoftware.DAL
         public string DODate { get; } = "do_date";
         public string IsDelivered { get; } = "isDelivered";
         public string TrfTableCode { get; } = "trf_tbl_code";
-        
+
+        //Plan table
+        public string LocationArea { get; } = "location_area";
+        public string LocationLine { get; } = "location_line";
+        public string DateStart { get; } = "date_start";
+        public string DateEnd { get; } = "date_end";
+        public string TargetQty { get; } = "target_qty";
+        public string MaxQty { get; } = "max_qty";
+        public string PlanStatus { get; } = "plan_status";
+        public string PlanType { get; } = "plan_type";
+        public string PlanNote { get; } = "plan_note";
+
+        //Material Plan table
+        public string PlanCode { get; } = "plan_code";
+        public string RequiredQty { get; } = "required_qty";
+        public string PreparingQty { get; } = "preparing_qty";
+        public string Note { get; } = "note";
+        public string IsCompleted { get; } = "isCompleted";
+
+        //Material Plan Prepare table
+        public string MatPlanCode { get; } = "mat_plan_code";
+        public string StdPacking { get; } = "std_packing";
+        public string DeliveryBag { get; } = "delivery_bag";
+        public string LocationFrom { get; } = "location_from";
+
         #endregion
 
         #region variable/class object declare
@@ -113,6 +137,120 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Select Data from Database
+
+        public DataTable PlanSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_sbb_plan";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable MatPlanSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_sbb_mat_plan";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable MatPreparePlanSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_sbb_mat_prepare";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
 
         public DataTable SizeSelect()
         {
@@ -1286,6 +1424,210 @@ namespace FactoryManagementSoftware.DAL
 
         #region Insert Data in Database
 
+        public bool InsertPlan(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_sbb_plan 
+                            (" + ItemCode + ","
+                            + LocationArea + ","
+                            + LocationLine + ","
+                            + DateStart + ","
+                            + DateEnd + ","
+                            + TargetQty + ","
+                            + MaxQty + ","
+                            + PlanStatus + ","
+                            + PlanType + ","
+                            + PlanNote + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@Item_code," +
+                            "@Location_area," +
+                            "@Location_line," +
+                            "@Date_start," +
+                            "@Date_end," +
+                            "@Target_qty," +
+                            "@Max_qty," +
+                            "@Plan_status," +
+                            "@Plan_type," +
+                            "@Plan_note," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+                cmd.Parameters.AddWithValue("@Location_area", u.Location_area);
+                cmd.Parameters.AddWithValue("@Location_line", u.Location_line);
+                cmd.Parameters.AddWithValue("@Date_start", u.Date_start);
+                cmd.Parameters.AddWithValue("@Date_end", u.Date_end);
+                cmd.Parameters.AddWithValue("@Target_qty", u.Target_qty);
+                cmd.Parameters.AddWithValue("@Max_qty", u.Max_qty);
+                cmd.Parameters.AddWithValue("@Plan_status", u.Plan_status);
+                cmd.Parameters.AddWithValue("@Plan_type", u.Plan_type);
+                cmd.Parameters.AddWithValue("@Plan_note", u.Plan_note);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertMatPlan(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_sbb_mat_plan 
+                            (" + PlanCode + ","
+                            + ItemCode + ","
+                            + RequiredQty + ","
+                            + DeliveredQty + ","
+                            + PreparingQty + ","
+                            + Note + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@Plan_code," +
+                            "@Item_code," +
+                            "@Required_qty," +
+                            "@Delivered_qty," +
+                            "@Preparing_qty," +
+                            "@Note," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Plan_code", u.Plan_code);
+                cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+                cmd.Parameters.AddWithValue("@Required_qty", u.Required_qty);
+                cmd.Parameters.AddWithValue("@Delivered_qty", u.Delivered_qty);
+                cmd.Parameters.AddWithValue("@Preparing_qty", u.Preparing_qty);
+                cmd.Parameters.AddWithValue("@Note", u.Note);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertMatPreparePlan(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_sbb_mat_prepare
+                            (" + MatPlanCode + ","
+                            + StdPacking + ","
+                            + DeliveryBag + ","
+                            + LocationFrom + ","
+                            + DeliveryDate + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@Mat_plan_code," +
+                            "@Std_packing," +
+                            "@Delivery_bag," +
+                            "@Location_from," +
+                            "@Delivery_date," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Mat_plan_code", u.Mat_plan_code);
+                cmd.Parameters.AddWithValue("@Std_packing", u.Std_packing);
+                cmd.Parameters.AddWithValue("@Delivery_bag", u.Delivery_bag);
+                cmd.Parameters.AddWithValue("@Location_from", u.Location_from);
+                cmd.Parameters.AddWithValue("@Delivery_date", u.Delivery_date);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         public bool InsertSize(SBBDataBLL u)
         {
             bool isSuccess = false;
@@ -1749,7 +2091,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Phone_2", u.Phone_2);
                 cmd.Parameters.AddWithValue("@Email", u.Email);
                 cmd.Parameters.AddWithValue("@Website", u.Website);
-                cmd.Parameters.AddWithValue("@route_tbl_code", u.route_tbl_code);
+                cmd.Parameters.AddWithValue("@route_tbl_code", u.Route_tbl_code);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
 
@@ -2076,11 +2418,11 @@ namespace FactoryManagementSoftware.DAL
 
 
                 cmd.Parameters.AddWithValue("@trip_no", 9999);
-                cmd.Parameters.AddWithValue("@route_tbl_code", u.route_tbl_code);
-                cmd.Parameters.AddWithValue("@planning_no", u.planning_no);
+                cmd.Parameters.AddWithValue("@route_tbl_code", u.Route_tbl_code);
+                cmd.Parameters.AddWithValue("@planning_no", u.Planning_no);
                 cmd.Parameters.AddWithValue("@PO_tbl_code", u.PO_tbl_code);
-                cmd.Parameters.AddWithValue("@delviery_status", u.delivery_status);
-                cmd.Parameters.AddWithValue("@deliver_pcs", u.deliver_pcs);
+                cmd.Parameters.AddWithValue("@delviery_status", u.Delivery_status);
+                cmd.Parameters.AddWithValue("@deliver_pcs", u.Deliver_pcs);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
 
@@ -2130,7 +2472,7 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
 
-                cmd.Parameters.AddWithValue("@route_name", u.route_name);
+                cmd.Parameters.AddWithValue("@route_name", u.Route_name);
               
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
@@ -2166,6 +2508,387 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Update data in Database
+
+        public bool PlanUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_sbb_plan
+                            SET "
+                            + LocationArea + "=@Location_area,"
+                            + LocationLine + "=@Location_line,"
+                            + DateStart + "=@Date_start,"
+                            + DateEnd + "=@Date_end,"
+                            + TargetQty + "=@Target_qty,"
+                            + MaxQty + "=@Max_qty,"
+                            + PlanStatus + "=@Plan_status,"
+                            + PlanType + "=@Plan_type,"
+                            + PlanNote + "=@Plan_note,"
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Location_area", u.Location_area);
+                cmd.Parameters.AddWithValue("@Location_line", u.Location_line);
+                cmd.Parameters.AddWithValue("@Date_start", u.Date_start);
+                cmd.Parameters.AddWithValue("@Date_end", u.Date_end);
+                cmd.Parameters.AddWithValue("@Target_qty", u.Target_qty);
+                cmd.Parameters.AddWithValue("@Max_qty", u.Max_qty);
+                cmd.Parameters.AddWithValue("@Plan_status", u.Plan_status);
+                cmd.Parameters.AddWithValue("@Plan_type", u.Plan_type);
+                cmd.Parameters.AddWithValue("@Plan_note", u.Plan_note);
+
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool PlanRemove(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_sbb_plan
+                            SET "
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool MatPlanUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_sbb_mat_plan
+                            SET "
+                            + RequiredQty + "=@Required_qty,"
+                            + DeliveredQty + "=@Delivered_qty,"
+                            + PreparingQty + "=@Preparing_qty,"
+                            + Note + "=@Note,"
+                            + IsCompleted + "=@IsCompleted,"
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Required_qty", u.Required_qty);
+                cmd.Parameters.AddWithValue("@Delivered_qty", u.Delivered_qty);
+                cmd.Parameters.AddWithValue("@Preparing_qty", u.Preparing_qty);
+                cmd.Parameters.AddWithValue("@Note", u.Note);
+
+                cmd.Parameters.AddWithValue("@IsCompleted", u.IsCompleted);
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool MatPlanRemove(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_sbb_mat_plan
+                            SET "
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool MatPlanComplete(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_sbb_mat_plan
+                            SET "
+                            + IsCompleted + "=@IsCompleted,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@IsCompleted", u.IsCompleted);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool MatPlanPrepareUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_sbb_mat_prepare
+                            SET "
+                            + StdPacking + "=@Std_packing,"
+                            + DeliveryBag + "=@Delivery_bag,"
+                            + LocationFrom + "=@Location_from,"
+                            + DeliveryDate + "=@Delivery_date,"
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Std_packing", u.Std_packing);
+                cmd.Parameters.AddWithValue("@Delivery_bag", u.Delivery_bag);
+                cmd.Parameters.AddWithValue("@Location_from", u.Location_from);
+                cmd.Parameters.AddWithValue("@Delivery_date", u.Delivery_date);
+
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool MatPlanPrepareRemove(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_sbb_mat_prepare
+                            SET "
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
 
         public bool SizeUpdate(SBBDataBLL u)
         {
@@ -2664,7 +3387,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Phone_2", u.Phone_2);
                 cmd.Parameters.AddWithValue("@Email", u.Email);
                 cmd.Parameters.AddWithValue("@Website", u.Website);
-                cmd.Parameters.AddWithValue("@route_tbl_code", u.route_tbl_code);
+                cmd.Parameters.AddWithValue("@route_tbl_code", u.Route_tbl_code);
                 cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
                 cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
@@ -2988,7 +3711,7 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
 
-                cmd.Parameters.AddWithValue("@priority_level", u.priority_level);
+                cmd.Parameters.AddWithValue("@priority_level", u.Priority_level);
                 cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
                 cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
@@ -3039,7 +3762,7 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
 
-                cmd.Parameters.AddWithValue("@priority_level", u.priority_level);
+                cmd.Parameters.AddWithValue("@priority_level", u.Priority_level);
                 cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
                 cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
@@ -3090,7 +3813,7 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
 
-                cmd.Parameters.AddWithValue("@priority_level", u.priority_level);
+                cmd.Parameters.AddWithValue("@priority_level", u.Priority_level);
                 cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
                 cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);
@@ -3498,12 +4221,12 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@trip_no", u.trip_no);
-                cmd.Parameters.AddWithValue("@route_tbl_code", u.route_tbl_code);
+                cmd.Parameters.AddWithValue("@trip_no", u.Trip_no);
+                cmd.Parameters.AddWithValue("@route_tbl_code", u.Route_tbl_code);
                 cmd.Parameters.AddWithValue("@PO_tbl_code", u.PO_tbl_code);
-                cmd.Parameters.AddWithValue("@delivery_date", u.delivery_date);
-                cmd.Parameters.AddWithValue("@delviery_status", u.delivery_status);
-                cmd.Parameters.AddWithValue("@deliver_pcs", u.deliver_pcs);
+                cmd.Parameters.AddWithValue("@delivery_date", u.Delivery_date);
+                cmd.Parameters.AddWithValue("@delviery_status", u.Delivery_status);
+                cmd.Parameters.AddWithValue("@deliver_pcs", u.Deliver_pcs);
 
                 cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
@@ -3560,9 +4283,9 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
 
-                cmd.Parameters.AddWithValue("@trip_no", u.trip_no);
-                cmd.Parameters.AddWithValue("@delivery_status", u.delivery_status);
-                cmd.Parameters.AddWithValue("@planning_no", u.planning_no);
+                cmd.Parameters.AddWithValue("@trip_no", u.Trip_no);
+                cmd.Parameters.AddWithValue("@delivery_status", u.Delivery_status);
+                cmd.Parameters.AddWithValue("@planning_no", u.Planning_no);
                 cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
 
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
@@ -3618,8 +4341,8 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
 
-                cmd.Parameters.AddWithValue("@trip_no", u.trip_no);
-                cmd.Parameters.AddWithValue("@planning_no", u.planning_no);
+                cmd.Parameters.AddWithValue("@trip_no", u.Trip_no);
+                cmd.Parameters.AddWithValue("@planning_no", u.Planning_no);
                 cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
 
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
@@ -3675,8 +4398,8 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
              
-                cmd.Parameters.AddWithValue("@delivery_date", u.delivery_date?? Convert.DBNull);
-                cmd.Parameters.AddWithValue("@planning_no", u.planning_no);
+                cmd.Parameters.AddWithValue("@delivery_date", u.Delivery_date?? Convert.DBNull);
+                cmd.Parameters.AddWithValue("@planning_no", u.Planning_no);
                 cmd.Parameters.AddWithValue("@PO_code", u.PO_code);
 
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
@@ -3729,7 +4452,7 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@route_name", u.route_name);
+                cmd.Parameters.AddWithValue("@route_name", u.Route_name);
                 cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
                 cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
@@ -3833,7 +4556,7 @@ namespace FactoryManagementSoftware.DAL
 
 
                 cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
-                cmd.Parameters.AddWithValue("@delivery_status", u.delivery_status);
+                cmd.Parameters.AddWithValue("@delivery_status", u.Delivery_status);
                 cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
                 cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
@@ -3882,7 +4605,7 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@delivery_status", u.delivery_status);
+                cmd.Parameters.AddWithValue("@delivery_status", u.Delivery_status);
                 cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
                 cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
