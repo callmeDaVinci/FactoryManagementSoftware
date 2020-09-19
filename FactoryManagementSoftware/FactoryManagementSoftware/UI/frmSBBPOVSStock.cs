@@ -14,9 +14,9 @@ using System.Globalization;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmSBBDeliveryPlanning : Form
+    public partial class frmSBBPOVSStock : Form
     {
-        public frmSBBDeliveryPlanning()
+        public frmSBBPOVSStock()
         {
             InitializeComponent();
             tool.DoubleBuffered(dgvList, true);

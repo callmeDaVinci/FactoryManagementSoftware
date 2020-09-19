@@ -121,6 +121,7 @@ namespace FactoryManagementSoftware.Module
         #endregion
 
         #region Planning 
+        public string planning_status_idle { get; } = "IDLE";//blue
         public string planning_status_pending { get; } = "PENDING";//blue
         public string planning_status_cancelled { get; } = "CANCELLED";//white
         public string planning_status_warning { get; } = "WARNING";//red

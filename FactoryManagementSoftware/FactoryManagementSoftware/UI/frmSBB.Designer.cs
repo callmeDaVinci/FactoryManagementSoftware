@@ -28,14 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.button13 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
+            this.button15 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnDeliveryPlanning = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.button12 = new System.Windows.Forms.Button();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
@@ -56,22 +66,12 @@
             this.label7 = new System.Windows.Forms.Label();
             this.lblPendingDO = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button10 = new System.Windows.Forms.Button();
             this.btnLOAD = new System.Windows.Forms.Button();
             this.cbInPcsUnit = new System.Windows.Forms.CheckBox();
             this.cbInBagUnit = new System.Windows.Forms.CheckBox();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.dgvStockAlert = new System.Windows.Forms.DataGridView();
-            this.button10 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button13 = new System.Windows.Forms.Button();
-            this.button14 = new System.Windows.Forms.Button();
-            this.button15 = new System.Windows.Forms.Button();
-            this.btnDeliveryPlanning = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -127,6 +127,47 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(403, 138);
             this.tableLayoutPanel2.TabIndex = 180;
             // 
+            // button8
+            // 
+            this.button8.BackColor = System.Drawing.Color.DimGray;
+            this.button8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button8.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.button8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button8.ForeColor = System.Drawing.Color.White;
+            this.button8.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_task_64;
+            this.button8.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.button8.Location = new System.Drawing.Point(1, 1);
+            this.button8.Margin = new System.Windows.Forms.Padding(1, 1, 1, 2);
+            this.button8.Name = "button8";
+            this.button8.Padding = new System.Windows.Forms.Padding(7, 0, 0, 0);
+            this.button8.Size = new System.Drawing.Size(239, 135);
+            this.button8.TabIndex = 152;
+            this.button8.Text = "DAILY JOB SHEET";
+            this.button8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button8.UseVisualStyleBackColor = false;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.DimGray;
+            this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_settings_64;
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.button1.Location = new System.Drawing.Point(243, 1);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 1, 2, 2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(158, 135);
+            this.button1.TabIndex = 157;
+            this.button1.Text = " DATA SETTING";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 2;
@@ -159,6 +200,65 @@
             this.tableLayoutPanel6.Size = new System.Drawing.Size(162, 207);
             this.tableLayoutPanel6.TabIndex = 159;
             // 
+            // button13
+            // 
+            this.button13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.button13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button13.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.button13.ForeColor = System.Drawing.Color.White;
+            this.button13.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_fork_lift_64;
+            this.button13.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.button13.Location = new System.Drawing.Point(2, 105);
+            this.button13.Margin = new System.Windows.Forms.Padding(2);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(158, 100);
+            this.button13.TabIndex = 151;
+            this.button13.Text = "  MAT. PLAN";
+            this.button13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button13.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button13.UseVisualStyleBackColor = false;
+            this.button13.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // button14
+            // 
+            this.button14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.button14.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button14.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.button14.ForeColor = System.Drawing.Color.White;
+            this.button14.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_calendar_plus_64;
+            this.button14.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.button14.Location = new System.Drawing.Point(2, 2);
+            this.button14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 1);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(158, 100);
+            this.button14.TabIndex = 147;
+            this.button14.Text = "  PLANNING";
+            this.button14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button14.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button14.UseVisualStyleBackColor = false;
+            this.button14.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button15
+            // 
+            this.button15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.button15.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button15.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.button15.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.button15.ForeColor = System.Drawing.Color.White;
+            this.button15.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_planner_96;
+            this.button15.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.button15.Location = new System.Drawing.Point(1, 2);
+            this.button15.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(239, 203);
+            this.button15.TabIndex = 158;
+            this.button15.Text = "  PRODUCTION SCHEDULE";
+            this.button15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button15.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button15.UseVisualStyleBackColor = false;
+            this.button15.Click += new System.EventHandler(this.button9_Click);
+            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
@@ -174,6 +274,46 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(403, 139);
             this.tableLayoutPanel1.TabIndex = 179;
+            // 
+            // btnDeliveryPlanning
+            // 
+            this.btnDeliveryPlanning.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(118)))), ((int)(((byte)(117)))));
+            this.btnDeliveryPlanning.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnDeliveryPlanning.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDeliveryPlanning.ForeColor = System.Drawing.Color.White;
+            this.btnDeliveryPlanning.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_truck_64;
+            this.btnDeliveryPlanning.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnDeliveryPlanning.Location = new System.Drawing.Point(1, 2);
+            this.btnDeliveryPlanning.Margin = new System.Windows.Forms.Padding(1, 2, 1, 3);
+            this.btnDeliveryPlanning.Name = "btnDeliveryPlanning";
+            this.btnDeliveryPlanning.Padding = new System.Windows.Forms.Padding(7, 0, 0, 0);
+            this.btnDeliveryPlanning.Size = new System.Drawing.Size(239, 134);
+            this.btnDeliveryPlanning.TabIndex = 146;
+            this.btnDeliveryPlanning.Text = "DELIVERY SCHEDULE";
+            this.btnDeliveryPlanning.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDeliveryPlanning.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnDeliveryPlanning.UseVisualStyleBackColor = false;
+            this.btnDeliveryPlanning.Click += new System.EventHandler(this.OpenDeliveryPlanning);
+            // 
+            // button7
+            // 
+            this.button7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(118)))), ((int)(((byte)(117)))));
+            this.button7.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button7.ForeColor = System.Drawing.Color.White;
+            this.button7.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_task_planning_64;
+            this.button7.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.button7.Location = new System.Drawing.Point(243, 2);
+            this.button7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 3);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(158, 134);
+            this.button7.TabIndex = 150;
+            this.button7.Text = " D/O LIST";
+            this.button7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button7.UseVisualStyleBackColor = false;
+            this.button7.Click += new System.EventHandler(this.OpenDOList);
             // 
             // tableLayoutPanel3
             // 
@@ -191,6 +331,25 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(403, 207);
             this.tableLayoutPanel3.TabIndex = 160;
             // 
+            // button12
+            // 
+            this.button12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.button12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button12.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.button12.ForeColor = System.Drawing.Color.White;
+            this.button12.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_tasklist_96;
+            this.button12.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.button12.Location = new System.Drawing.Point(1, 2);
+            this.button12.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(239, 203);
+            this.button12.TabIndex = 145;
+            this.button12.Text = "  PO VS STOCK";
+            this.button12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button12.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button12.UseVisualStyleBackColor = false;
+            this.button12.Click += new System.EventHandler(this.button2_Click);
+            // 
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.ColumnCount = 1;
@@ -206,6 +365,46 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(162, 207);
             this.tableLayoutPanel4.TabIndex = 159;
+            // 
+            // button11
+            // 
+            this.button11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.button11.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button11.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.button11.ForeColor = System.Drawing.Color.White;
+            this.button11.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_purchase_order_64;
+            this.button11.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.button11.Location = new System.Drawing.Point(2, 105);
+            this.button11.Margin = new System.Windows.Forms.Padding(2);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(158, 100);
+            this.button11.TabIndex = 149;
+            this.button11.Text = "  P/O LIST";
+            this.button11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button11.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button11.UseVisualStyleBackColor = false;
+            this.button11.Click += new System.EventHandler(this.OpenPOList);
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.button3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button3.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_warehouse_641;
+            this.button3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.button3.Location = new System.Drawing.Point(2, 2);
+            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 1);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(158, 100);
+            this.button3.TabIndex = 144;
+            this.button3.Text = " INVENTORY";
+            this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button1_Click);
             // 
             // tableLayoutPanel9
             // 
@@ -494,6 +693,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "STOCK ESTIMATE";
             // 
+            // button10
+            // 
+            this.button10.BackColor = System.Drawing.Color.Transparent;
+            this.button10.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_refresh_480;
+            this.button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button10.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button10.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button10.ForeColor = System.Drawing.Color.White;
+            this.button10.Location = new System.Drawing.Point(5, 34);
+            this.button10.Margin = new System.Windows.Forms.Padding(2);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(36, 36);
+            this.button10.TabIndex = 179;
+            this.button10.UseVisualStyleBackColor = false;
+            this.button10.Click += new System.EventHandler(this.button10_Click_1);
+            // 
             // btnLOAD
             // 
             this.btnLOAD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -562,14 +778,14 @@
             this.dgvStockAlert.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvStockAlert.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStockAlert.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStockAlert.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStockAlert.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvStockAlert.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvStockAlert.Location = new System.Drawing.Point(6, 71);
             this.dgvStockAlert.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
@@ -581,222 +797,6 @@
             this.dgvStockAlert.Size = new System.Drawing.Size(894, 393);
             this.dgvStockAlert.TabIndex = 178;
             this.dgvStockAlert.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvStockAlert_CellFormatting);
-            // 
-            // button10
-            // 
-            this.button10.BackColor = System.Drawing.Color.Transparent;
-            this.button10.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_refresh_480;
-            this.button10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button10.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button10.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button10.ForeColor = System.Drawing.Color.White;
-            this.button10.Location = new System.Drawing.Point(5, 34);
-            this.button10.Margin = new System.Windows.Forms.Padding(2);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(36, 36);
-            this.button10.TabIndex = 179;
-            this.button10.UseVisualStyleBackColor = false;
-            this.button10.Click += new System.EventHandler(this.button10_Click_1);
-            // 
-            // button8
-            // 
-            this.button8.BackColor = System.Drawing.Color.DimGray;
-            this.button8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button8.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.ForeColor = System.Drawing.Color.White;
-            this.button8.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_task_64;
-            this.button8.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.button8.Location = new System.Drawing.Point(1, 1);
-            this.button8.Margin = new System.Windows.Forms.Padding(1, 1, 1, 2);
-            this.button8.Name = "button8";
-            this.button8.Padding = new System.Windows.Forms.Padding(7, 0, 0, 0);
-            this.button8.Size = new System.Drawing.Size(239, 135);
-            this.button8.TabIndex = 152;
-            this.button8.Text = "DAILY JOB SHEET";
-            this.button8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button8.UseVisualStyleBackColor = false;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.DimGray;
-            this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_settings_64;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.button1.Location = new System.Drawing.Point(243, 1);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 1, 2, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(158, 135);
-            this.button1.TabIndex = 157;
-            this.button1.Text = " DATA SETTING";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // button13
-            // 
-            this.button13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
-            this.button13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button13.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.button13.ForeColor = System.Drawing.Color.White;
-            this.button13.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_fork_lift_64;
-            this.button13.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.button13.Location = new System.Drawing.Point(2, 106);
-            this.button13.Margin = new System.Windows.Forms.Padding(2, 3, 2, 2);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(158, 99);
-            this.button13.TabIndex = 151;
-            this.button13.Text = "  MAT. PLAN";
-            this.button13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button13.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button13.UseVisualStyleBackColor = false;
-            this.button13.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // button14
-            // 
-            this.button14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
-            this.button14.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button14.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.button14.ForeColor = System.Drawing.Color.White;
-            this.button14.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_calendar_plus_64;
-            this.button14.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.button14.Location = new System.Drawing.Point(2, 2);
-            this.button14.Margin = new System.Windows.Forms.Padding(2);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(158, 99);
-            this.button14.TabIndex = 147;
-            this.button14.Text = "  PLANNING";
-            this.button14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button14.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button14.UseVisualStyleBackColor = false;
-            this.button14.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button15
-            // 
-            this.button15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
-            this.button15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button15.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button15.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.button15.ForeColor = System.Drawing.Color.White;
-            this.button15.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_planner_96;
-            this.button15.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.button15.Location = new System.Drawing.Point(1, 2);
-            this.button15.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(239, 203);
-            this.button15.TabIndex = 158;
-            this.button15.Text = "  PRODUCTION SCHEDULE";
-            this.button15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button15.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button15.UseVisualStyleBackColor = false;
-            this.button15.Click += new System.EventHandler(this.button9_Click);
-            // 
-            // btnDeliveryPlanning
-            // 
-            this.btnDeliveryPlanning.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(118)))), ((int)(((byte)(117)))));
-            this.btnDeliveryPlanning.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnDeliveryPlanning.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDeliveryPlanning.ForeColor = System.Drawing.Color.White;
-            this.btnDeliveryPlanning.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_truck_64;
-            this.btnDeliveryPlanning.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btnDeliveryPlanning.Location = new System.Drawing.Point(1, 2);
-            this.btnDeliveryPlanning.Margin = new System.Windows.Forms.Padding(1, 2, 1, 3);
-            this.btnDeliveryPlanning.Name = "btnDeliveryPlanning";
-            this.btnDeliveryPlanning.Padding = new System.Windows.Forms.Padding(7, 0, 0, 0);
-            this.btnDeliveryPlanning.Size = new System.Drawing.Size(239, 134);
-            this.btnDeliveryPlanning.TabIndex = 146;
-            this.btnDeliveryPlanning.Text = "DELIVERY SCHEDULE";
-            this.btnDeliveryPlanning.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDeliveryPlanning.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnDeliveryPlanning.UseVisualStyleBackColor = false;
-            this.btnDeliveryPlanning.Click += new System.EventHandler(this.OpenDeliveryPlanning);
-            // 
-            // button7
-            // 
-            this.button7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(118)))), ((int)(((byte)(117)))));
-            this.button7.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.ForeColor = System.Drawing.Color.White;
-            this.button7.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_task_planning_64;
-            this.button7.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.button7.Location = new System.Drawing.Point(243, 2);
-            this.button7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 3);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(158, 134);
-            this.button7.TabIndex = 150;
-            this.button7.Text = " D/O LIST";
-            this.button7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button7.UseVisualStyleBackColor = false;
-            this.button7.Click += new System.EventHandler(this.OpenDOList);
-            // 
-            // button12
-            // 
-            this.button12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.button12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button12.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.button12.ForeColor = System.Drawing.Color.White;
-            this.button12.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_tasklist_96;
-            this.button12.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.button12.Location = new System.Drawing.Point(1, 2);
-            this.button12.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(239, 203);
-            this.button12.TabIndex = 145;
-            this.button12.Text = "  PO VS STOCK";
-            this.button12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button12.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button12.UseVisualStyleBackColor = false;
-            this.button12.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button11
-            // 
-            this.button11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.button11.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button11.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.button11.ForeColor = System.Drawing.Color.White;
-            this.button11.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_purchase_order_64;
-            this.button11.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.button11.Location = new System.Drawing.Point(2, 106);
-            this.button11.Margin = new System.Windows.Forms.Padding(2, 3, 2, 2);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(158, 99);
-            this.button11.TabIndex = 149;
-            this.button11.Text = "  P/O LIST";
-            this.button11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button11.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button11.UseVisualStyleBackColor = false;
-            this.button11.Click += new System.EventHandler(this.OpenPOList);
-            // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.button3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button3.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_warehouse_641;
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.button3.Location = new System.Drawing.Point(2, 2);
-            this.button3.Margin = new System.Windows.Forms.Padding(2);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(158, 99);
-            this.button3.TabIndex = 144;
-            this.button3.Text = " INVENTORY";
-            this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button1_Click);
             // 
             // frmSBB
             // 

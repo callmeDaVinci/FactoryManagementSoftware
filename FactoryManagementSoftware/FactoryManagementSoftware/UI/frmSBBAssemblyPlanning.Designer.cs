@@ -46,20 +46,17 @@
             this.cbWithStdPacking = new System.Windows.Forms.CheckBox();
             this.lblSubList = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.cmbMac = new System.Windows.Forms.ComboBox();
+            this.btnDateSelect = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblTimesNeeded = new System.Windows.Forms.Label();
             this.cbSkipSunday = new System.Windows.Forms.CheckBox();
-            this.lblTimeNeeded = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.cbEstimate = new System.Windows.Forms.CheckBox();
-            this.txtManpower = new System.Windows.Forms.TextBox();
-            this.dtpEnd = new System.Windows.Forms.DateTimePicker();
+            this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.dtpStart = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtHoursPerDay = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtPcsPerManHour = new System.Windows.Forms.TextBox();
+            this.dtpEnd = new System.Windows.Forms.DateTimePicker();
             this.dgvItemList = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lblMainList = new System.Windows.Forms.Label();
@@ -156,6 +153,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(244, 60);
             this.tableLayoutPanel3.TabIndex = 175;
             // 
@@ -166,6 +164,7 @@
             this.cmbSiteLocation.FormattingEnabled = true;
             this.cmbSiteLocation.Location = new System.Drawing.Point(3, 29);
             this.cmbSiteLocation.Name = "cmbSiteLocation";
+            this.cmbSiteLocation.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.cmbSiteLocation.Size = new System.Drawing.Size(238, 25);
             this.cmbSiteLocation.TabIndex = 176;
             this.cmbSiteLocation.SelectedIndexChanged += new System.EventHandler(this.cmbSiteLocation_SelectedIndexChanged);
@@ -273,27 +272,24 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 7;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 65F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 65F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 175F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 43F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.cbSkipSunday, 6, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblTimeNeeded, 3, 1);
-            this.tableLayoutPanel2.Controls.Add(this.cbEstimate, 6, 1);
-            this.tableLayoutPanel2.Controls.Add(this.txtManpower, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.dtpEnd, 5, 1);
-            this.tableLayoutPanel2.Controls.Add(this.label6, 4, 1);
-            this.tableLayoutPanel2.Controls.Add(this.dtpStart, 5, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label1, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label3, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.txtHoursPerDay, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label5, 4, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label4, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label7, 2, 1);
-            this.tableLayoutPanel2.Controls.Add(this.txtPcsPerManHour, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cmbMac, 5, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnDateSelect, 5, 1);
+            this.tableLayoutPanel2.Controls.Add(this.label3, 4, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblTimesNeeded, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.cbSkipSunday, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label7, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cbEstimate, 3, 1);
+            this.tableLayoutPanel2.Controls.Add(this.label5, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label6, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.dtpStart, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.dtpEnd, 2, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(444, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -303,166 +299,150 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(342, 63);
             this.tableLayoutPanel2.TabIndex = 193;
             // 
+            // cmbMac
+            // 
+            this.cmbMac.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbMac.FormattingEnabled = true;
+            this.cmbMac.Items.AddRange(new object[] {
+            "1",
+            "2"});
+            this.cmbMac.Location = new System.Drawing.Point(511, 3);
+            this.cmbMac.Name = "cmbMac";
+            this.cmbMac.Size = new System.Drawing.Size(154, 25);
+            this.cmbMac.TabIndex = 194;
+            this.cmbMac.Visible = false;
+            // 
+            // btnDateSelect
+            // 
+            this.btnDateSelect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnDateSelect.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDateSelect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnDateSelect.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnDateSelect.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDateSelect.ForeColor = System.Drawing.Color.White;
+            this.btnDateSelect.Location = new System.Drawing.Point(510, 32);
+            this.btnDateSelect.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDateSelect.Name = "btnDateSelect";
+            this.btnDateSelect.Size = new System.Drawing.Size(156, 29);
+            this.btnDateSelect.TabIndex = 194;
+            this.btnDateSelect.Text = "DATE SELECT";
+            this.btnDateSelect.UseVisualStyleBackColor = false;
+            this.btnDateSelect.Visible = false;
+            this.btnDateSelect.Click += new System.EventHandler(this.btnDateSelect_Click);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(468, 3);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 3, 2, 5);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(38, 19);
+            this.label3.TabIndex = 194;
+            this.label3.Text = "Mac.";
+            this.label3.Visible = false;
+            // 
+            // lblTimesNeeded
+            // 
+            this.lblTimesNeeded.AutoSize = true;
+            this.lblTimesNeeded.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblTimesNeeded.Location = new System.Drawing.Point(2, 32);
+            this.lblTimesNeeded.Margin = new System.Windows.Forms.Padding(2, 2, 2, 5);
+            this.lblTimesNeeded.Name = "lblTimesNeeded";
+            this.lblTimesNeeded.Size = new System.Drawing.Size(161, 23);
+            this.lblTimesNeeded.TabIndex = 194;
+            this.lblTimesNeeded.Text = "00 Day(s) && 00 Hr(s)";
+            // 
             // cbSkipSunday
             // 
             this.cbSkipSunday.AutoSize = true;
             this.cbSkipSunday.Checked = true;
             this.cbSkipSunday.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbSkipSunday.Location = new System.Drawing.Point(543, 3);
+            this.cbSkipSunday.Location = new System.Drawing.Point(348, 3);
             this.cbSkipSunday.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
             this.cbSkipSunday.Name = "cbSkipSunday";
-            this.cbSkipSunday.Size = new System.Drawing.Size(1, 23);
+            this.cbSkipSunday.Size = new System.Drawing.Size(105, 23);
             this.cbSkipSunday.TabIndex = 195;
             this.cbSkipSunday.Text = "Skip Sunday";
             this.cbSkipSunday.UseVisualStyleBackColor = true;
+            this.cbSkipSunday.Visible = false;
             this.cbSkipSunday.CheckedChanged += new System.EventHandler(this.cbSkipSunday_CheckedChanged);
             // 
-            // lblTimeNeeded
+            // label7
             // 
-            this.lblTimeNeeded.AutoSize = true;
-            this.lblTimeNeeded.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Italic);
-            this.lblTimeNeeded.Location = new System.Drawing.Point(252, 33);
-            this.lblTimeNeeded.Margin = new System.Windows.Forms.Padding(2, 3, 2, 5);
-            this.lblTimeNeeded.Name = "lblTimeNeeded";
-            this.lblTimeNeeded.Size = new System.Drawing.Size(0, 15);
-            this.lblTimeNeeded.TabIndex = 194;
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label7.AutoSize = true;
+            this.label7.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.Blue;
+            this.label7.Location = new System.Drawing.Point(2, 6);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 5);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(98, 19);
+            this.label7.TabIndex = 192;
+            this.label7.Text = "Times Needed:";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // cbEstimate
             // 
             this.cbEstimate.AutoSize = true;
             this.cbEstimate.Checked = true;
             this.cbEstimate.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbEstimate.Location = new System.Drawing.Point(543, 33);
+            this.cbEstimate.Location = new System.Drawing.Point(348, 33);
             this.cbEstimate.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
             this.cbEstimate.Name = "cbEstimate";
-            this.cbEstimate.Size = new System.Drawing.Size(1, 23);
+            this.cbEstimate.Size = new System.Drawing.Size(83, 23);
             this.cbEstimate.TabIndex = 191;
             this.cbEstimate.Text = "Estimate";
             this.cbEstimate.UseVisualStyleBackColor = true;
-            // 
-            // txtManpower
-            // 
-            this.txtManpower.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.txtManpower.BackColor = System.Drawing.SystemColors.Info;
-            this.txtManpower.Location = new System.Drawing.Point(5, 33);
-            this.txtManpower.Name = "txtManpower";
-            this.txtManpower.Size = new System.Drawing.Size(54, 25);
-            this.txtManpower.TabIndex = 181;
-            this.txtManpower.Text = "4";
-            this.txtManpower.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtManpower.TextChanged += new System.EventHandler(this.txtManpower_TextChanged);
-            this.txtManpower.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
-            // 
-            // dtpEnd
-            // 
-            this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEnd.Location = new System.Drawing.Point(423, 33);
-            this.dtpEnd.Name = "dtpEnd";
-            this.dtpEnd.Size = new System.Drawing.Size(114, 25);
-            this.dtpEnd.TabIndex = 188;
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(386, 33);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 3, 2, 5);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(32, 19);
-            this.label6.TabIndex = 190;
-            this.label6.Text = "End";
-            // 
-            // dtpStart
-            // 
-            this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpStart.Location = new System.Drawing.Point(423, 3);
-            this.dtpStart.Name = "dtpStart";
-            this.dtpStart.Size = new System.Drawing.Size(114, 25);
-            this.dtpStart.TabIndex = 186;
-            this.dtpStart.ValueChanged += new System.EventHandler(this.dtpStart_ValueChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(67, 3);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 5);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(94, 19);
-            this.label1.TabIndex = 183;
-            this.label1.Text = "pcs/man hour";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(67, 33);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 3, 2, 5);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 19);
-            this.label3.TabIndex = 184;
-            this.label3.Text = "manpower";
-            // 
-            // txtHoursPerDay
-            // 
-            this.txtHoursPerDay.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.txtHoursPerDay.BackColor = System.Drawing.SystemColors.Info;
-            this.txtHoursPerDay.Location = new System.Drawing.Point(190, 3);
-            this.txtHoursPerDay.Name = "txtHoursPerDay";
-            this.txtHoursPerDay.Size = new System.Drawing.Size(54, 25);
-            this.txtHoursPerDay.TabIndex = 182;
-            this.txtHoursPerDay.Text = "10";
-            this.txtHoursPerDay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtHoursPerDay.TextChanged += new System.EventHandler(this.txtHoursPerDay_TextChanged);
-            this.txtHoursPerDay.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
+            this.cbEstimate.Visible = false;
+            this.cbEstimate.CheckedChanged += new System.EventHandler(this.cbEstimate_CheckedChanged);
             // 
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(380, 3);
+            this.label5.Location = new System.Drawing.Point(185, 3);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 3, 2, 5);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(38, 19);
             this.label5.TabIndex = 189;
             this.label5.Text = "Start";
+            this.label5.Visible = false;
             // 
-            // label4
+            // label6
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(252, 3);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 5);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(71, 19);
-            this.label4.TabIndex = 185;
-            this.label4.Text = "hours/day";
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(191, 33);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 3, 2, 5);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(32, 19);
+            this.label6.TabIndex = 190;
+            this.label6.Text = "End";
+            this.label6.Visible = false;
             // 
-            // label7
+            // dtpStart
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.label7.Location = new System.Drawing.Point(187, 32);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 5);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(41, 24);
-            this.label7.TabIndex = 192;
-            this.label7.Text = "Time Needed:";
+            this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpStart.Location = new System.Drawing.Point(228, 3);
+            this.dtpStart.Name = "dtpStart";
+            this.dtpStart.Size = new System.Drawing.Size(114, 25);
+            this.dtpStart.TabIndex = 186;
+            this.dtpStart.Visible = false;
+            this.dtpStart.ValueChanged += new System.EventHandler(this.dtpStart_ValueChanged);
             // 
-            // txtPcsPerManHour
+            // dtpEnd
             // 
-            this.txtPcsPerManHour.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.txtPcsPerManHour.BackColor = System.Drawing.SystemColors.Info;
-            this.txtPcsPerManHour.Location = new System.Drawing.Point(5, 3);
-            this.txtPcsPerManHour.Name = "txtPcsPerManHour";
-            this.txtPcsPerManHour.Size = new System.Drawing.Size(54, 25);
-            this.txtPcsPerManHour.TabIndex = 180;
-            this.txtPcsPerManHour.Text = "100";
-            this.txtPcsPerManHour.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtPcsPerManHour.TextChanged += new System.EventHandler(this.txtPcsPerManHour_TextChanged);
-            this.txtPcsPerManHour.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
+            this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpEnd.Location = new System.Drawing.Point(228, 33);
+            this.dtpEnd.Name = "dtpEnd";
+            this.dtpEnd.Size = new System.Drawing.Size(114, 25);
+            this.dtpEnd.TabIndex = 188;
+            this.dtpEnd.Visible = false;
             // 
             // dgvItemList
             // 
@@ -495,10 +475,15 @@
             this.dgvItemList.Size = new System.Drawing.Size(524, 621);
             this.dgvItemList.TabIndex = 156;
             this.dgvItemList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItemList_CellClick);
+            this.dgvItemList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItemList_CellContentClick);
             this.dgvItemList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItemList_CellEndEdit);
             this.dgvItemList.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvItemList_CellMouseClick);
             this.dgvItemList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvItemList_CellMouseDown);
             this.dgvItemList.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvItemList_EditingControlShowing);
+            this.dgvItemList.DragDrop += new System.Windows.Forms.DragEventHandler(this.dgvItemList_DragDrop);
+            this.dgvItemList.DragOver += new System.Windows.Forms.DragEventHandler(this.dgvItemList_DragOver);
+            this.dgvItemList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvItemList_MouseDown);
+            this.dgvItemList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgvItemList_MouseMove);
             // 
             // tableLayoutPanel1
             // 
@@ -593,6 +578,7 @@
             // 
             // dgvSchedule
             // 
+            this.dgvSchedule.AllowDrop = true;
             this.dgvSchedule.AllowUserToAddRows = false;
             this.dgvSchedule.AllowUserToDeleteRows = false;
             this.dgvSchedule.AllowUserToResizeColumns = false;
@@ -631,6 +617,10 @@
             this.dgvSchedule.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvSchedule.Size = new System.Drawing.Size(389, 571);
             this.dgvSchedule.TabIndex = 156;
+            this.dgvSchedule.DragDrop += new System.Windows.Forms.DragEventHandler(this.dgvSchedule_DragDrop);
+            this.dgvSchedule.DragOver += new System.Windows.Forms.DragEventHandler(this.dgvSchedule_DragOver);
+            this.dgvSchedule.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvSchedule_MouseDown);
+            this.dgvSchedule.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgvSchedule_MouseMove);
             // 
             // dgvMatList
             // 
@@ -673,7 +663,7 @@
             this.dgvMatList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMatList.Size = new System.Drawing.Size(388, 571);
             this.dgvMatList.TabIndex = 155;
-            this.dgvMatList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMatList_CellEndEdit);
+            this.dgvMatList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItemList_CellContentClick);
             this.dgvMatList.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMatList_CellEnter);
             this.dgvMatList.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMatList_CellValueChanged);
             this.dgvMatList.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvMatList_DataBindingComplete);
@@ -791,23 +781,20 @@
         private System.Windows.Forms.Button btnNextStep;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Button btnPreviousStep;
-        private System.Windows.Forms.TextBox txtPcsPerManHour;
-        private System.Windows.Forms.TextBox txtManpower;
-        private System.Windows.Forms.TextBox txtHoursPerDay;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker dtpStart;
         private System.Windows.Forms.DateTimePicker dtpEnd;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.CheckBox cbEstimate;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Label lblTimeNeeded;
-        private System.Windows.Forms.CheckBox cbSkipSunday;
         private System.Windows.Forms.TableLayoutPanel tlpList;
         private System.Windows.Forms.DataGridView dgvSchedule;
+        private System.Windows.Forms.Label lblTimesNeeded;
+        private System.Windows.Forms.CheckBox cbSkipSunday;
+        private System.Windows.Forms.CheckBox cbEstimate;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cmbMac;
+        private System.Windows.Forms.Button btnDateSelect;
     }
 }

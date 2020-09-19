@@ -632,11 +632,11 @@
     <Compile Include="UI\frmSBBAssemblyPlanning.Designer.cs">
       <DependentUpon>frmSBBAssemblyPlanning.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmSBBDeliveryPlanning.cs">
+    <Compile Include="UI\frmSBBPOVSStock.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmSBBDeliveryPlanning.Designer.cs">
-      <DependentUpon>frmSBBDeliveryPlanning.cs</DependentUpon>
+    <Compile Include="UI\frmSBBPOVSStock.Designer.cs">
+      <DependentUpon>frmSBBPOVSStock.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmSBBDeliveredReport.cs">
       <SubType>Form</SubType>
@@ -745,6 +745,12 @@
     </Compile>
     <Compile Include="UI\frmTemp.Designer.cs">
       <DependentUpon>frmTemp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmTimeNeededSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmTimeNeededSetting.Designer.cs">
+      <DependentUpon>frmTimeNeededSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmTransferHistory.cs">
       <SubType>Form</SubType>
@@ -1014,8 +1020,8 @@
     <EmbeddedResource Include="UI\frmSBBAssemblyPlanning.resx">
       <DependentUpon>frmSBBAssemblyPlanning.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmSBBDeliveryPlanning.resx">
-      <DependentUpon>frmSBBDeliveryPlanning.cs</DependentUpon>
+    <EmbeddedResource Include="UI\frmSBBPOVSStock.resx">
+      <DependentUpon>frmSBBPOVSStock.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBDeliveredReport.resx">
       <DependentUpon>frmSBBDeliveredReport.cs</DependentUpon>
@@ -1070,6 +1076,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmTemp.resx">
       <DependentUpon>frmTemp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmTimeNeededSetting.resx">
+      <DependentUpon>frmTimeNeededSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmTransferHistory.resx">
       <DependentUpon>frmTransferHistory.cs</DependentUpon>

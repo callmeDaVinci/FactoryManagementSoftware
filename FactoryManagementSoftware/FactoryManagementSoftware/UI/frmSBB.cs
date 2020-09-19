@@ -132,7 +132,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[header_ItemCode].DefaultCellStyle.ForeColor = Color.Gray;
             dgv.Columns[header_ItemCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
-            dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             dgv.Columns[header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_Stock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -726,7 +726,7 @@ namespace FactoryManagementSoftware.UI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            frmSBBDeliveryPlanning frm = new frmSBBDeliveryPlanning
+            frmSBBPOVSStock frm = new frmSBBPOVSStock
             {
                 StartPosition = FormStartPosition.CenterScreen
             };

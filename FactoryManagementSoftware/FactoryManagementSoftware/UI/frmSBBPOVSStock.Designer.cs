@@ -1,6 +1,6 @@
 ﻿namespace FactoryManagementSoftware.UI
 {
-    partial class frmSBBDeliveryPlanning
+    partial class frmSBBPOVSStock
     {
         /// <summary>
         /// Required designer variable.
