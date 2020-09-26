@@ -1885,6 +1885,11 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
+            else if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+            {
+                cmbTrfQtyUnit.Text = text.Unit_Bag;
+                GetStdPacking();
+            }
         }
 
         private void cmbTrfFromCategory_SelectedIndexChanged(object sender, EventArgs e)

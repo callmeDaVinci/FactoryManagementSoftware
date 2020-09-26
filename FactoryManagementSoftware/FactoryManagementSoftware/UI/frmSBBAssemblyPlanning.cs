@@ -136,7 +136,9 @@ namespace FactoryManagementSoftware.UI
         readonly string text_Remove = "REMOVE";
         readonly string text_Added = "ADDED";
         readonly string text_ToAdd = "TO ADD";
-      
+        readonly string text_EditStartDate = "Edit Start Date";
+        readonly string text_RearrangeDate = "Auto Reschedule";
+
         private bool Loaded = false;
         private bool ItemEditChanged = false;
         private bool DateSelectMode = false;
@@ -352,6 +354,213 @@ namespace FactoryManagementSoftware.UI
             }
 
 
+        }
+
+        //private void DateAdjust()
+        //{
+
+        //}
+
+        //private void DateAdjust(int macID)
+        //{
+
+        //}
+
+        private bool DateInitial(int rowIndex, int maxAvailability)
+        {
+            bool dateInitial = false;
+            DataGridView dgv = dgvSchedule;
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            int macID_Target = int.TryParse(dt.Rows[rowIndex][header_Mac].ToString(), out macID_Target)? macID_Target : -1;
+
+            DateTime dateStart = DateTime.Today.Date;
+
+            if (rowIndex > 0 && macID_Target != -1)
+            {
+                //check if previous row under same machine
+                int macID_Previous = int.TryParse(dt.Rows[rowIndex - 1][header_Mac].ToString(), out macID_Previous) ? macID_Previous : -1;
+
+                if(macID_Previous == macID_Target)
+                {
+                    dateStart = DateTime.TryParse(dt.Rows[rowIndex - 1][header_EstimateEnd].ToString(), out dateStart) ? dateStart : DateTime.MaxValue;
+
+                    //check if same day
+                    if(!cbSameDay.Checked)
+                    {
+                        dateStart = dateStart.AddDays(1);
+
+                    }
+
+                    if (tool.checkIfSunday(dateStart) && cbSkipSunday.Checked)
+                    {
+                        dateStart = dateStart.AddDays(1);
+                    }
+                }
+            }
+
+            //estimate end date
+            DateTime dateEnd = EstimateDateEnd(dateStart, maxAvailability);
+
+            //insert
+
+            if(dateStart != DateTime.MaxValue)
+            {
+                dateInitial = true;
+
+                dt.Rows[rowIndex][header_DateStart] = dateStart;
+                dt.Rows[rowIndex][header_EstimateEnd] = dateEnd;
+
+                int itemListRowIndex = int.TryParse(dt.Rows[rowIndex][header_Index].ToString(), out itemListRowIndex) ? itemListRowIndex : -1;
+
+                itemListRowIndex--;
+
+                dgvItemList.Rows[itemListRowIndex].Cells[header_DateStart].Value = dateStart;
+                dgvItemList.Rows[itemListRowIndex].Cells[header_DateEnd].Value = dateEnd;
+                dgvItemList.Rows[itemListRowIndex].Cells[header_Mac].Value = macID_Target;
+
+
+                //update the rest row under same machine
+                UpdateScheduleAfterNewRowInserted(macID_Target, rowIndex);
+            }
+            
+
+            if (!dateInitial)
+            {
+                MessageBox.Show("FAILED TO INITIAL DATE!");
+            }
+
+            return dateInitial;
+        }
+
+        private void UpdateScheduleDate()
+        {
+            DataTable dt = (DataTable)dgvSchedule.DataSource;
+
+            int previousMacNo = -1;
+
+            foreach(DataRow row in dt.Rows)
+            {
+                int MacNo = int.TryParse(row[header_Mac].ToString(), out MacNo) ? MacNo : 0;
+
+                if(previousMacNo != MacNo)
+                {
+                    previousMacNo = MacNo;
+                    UpdateScheduleAfterNewRowInserted(MacNo);
+                }
+            }
+        }
+
+        private void UpdateScheduleAfterNewRowInserted(int macNo)
+        {
+            DataGridView dgv = dgvSchedule;
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            DateTime dateStart = DateTime.MaxValue;
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int macID_Next = int.TryParse(dt.Rows[i][header_Mac].ToString(), out macID_Next) ? macID_Next : -1;
+                int assemblyQty = int.TryParse(dt.Rows[i][header_Qty].ToString(), out assemblyQty) ? assemblyQty : -1;
+
+                if (macID_Next == macNo)
+                {
+                    string status = dt.Rows[i][header_Status].ToString();
+
+                    if(status == text.planning_status_pending || status == text_ToAdd)
+                    {
+                        if (dateStart == DateTime.MaxValue)
+                        {
+                            dateStart = DateTime.TryParse(dt.Rows[i][header_DateStart].ToString(), out dateStart) ? dateStart : DateTime.MinValue;
+
+                            DateTime dateEnd = EstimateDateEnd(dateStart, assemblyQty);
+
+                            dt.Rows[i][header_DateStart] = dateStart;
+                            dt.Rows[i][header_EstimateEnd] = dateEnd;
+
+                            dateStart = dateEnd;
+
+
+                        }
+                        else if (dateStart != DateTime.MinValue)
+                        {
+    
+                            //check if same day
+                            if (!cbSameDay.Checked)
+                            {
+                                dateStart = dateStart.AddDays(1);
+
+                            }
+
+                            if (tool.checkIfSunday(dateStart) && cbSkipSunday.Checked)
+                            {
+                                dateStart = dateStart.AddDays(1);
+                            }
+
+                            DateTime dateEnd = EstimateDateEnd(dateStart, assemblyQty);
+
+                            dt.Rows[i][header_DateStart] = dateStart;
+                            dt.Rows[i][header_EstimateEnd] = dateEnd;
+
+                            int itemListRowIndex = int.TryParse(dt.Rows[i][header_Index].ToString(), out itemListRowIndex) ? itemListRowIndex : -1;
+
+                            itemListRowIndex--;
+
+                            dgvItemList.Rows[itemListRowIndex].Cells[header_DateStart].Value = dateStart;
+                            dgvItemList.Rows[itemListRowIndex].Cells[header_DateEnd].Value = dateEnd;
+                            dgvItemList.Rows[itemListRowIndex].Cells[header_Mac].Value = macNo;
+
+                            dateStart = dateEnd;
+                        }
+                    }
+                   
+                 
+                }
+            }
+        }
+
+        private void UpdateScheduleAfterNewRowInserted(int macNo, int rowIndex)
+        {
+            DataGridView dgv = dgvSchedule;
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            DateTime dateStart = DateTime.TryParse(dt.Rows[rowIndex][header_EstimateEnd].ToString(), out dateStart) ? dateStart : DateTime.MaxValue;
+
+            for (int i = rowIndex + 1; i < dt.Rows.Count; i++)
+            {
+                int macID_Next = int.TryParse(dt.Rows[i][header_Mac].ToString(), out macID_Next) ? macID_Next : -1;
+
+                if(macID_Next == macNo)
+                {
+                    int assemblyQty = int.TryParse(dt.Rows[i][header_Qty].ToString(), out assemblyQty) ? assemblyQty : -1;
+
+                    //check if same day
+                    if (!cbSameDay.Checked)
+                    {
+                        dateStart = dateStart.AddDays(1);
+
+                    }
+
+                    if (tool.checkIfSunday(dateStart) && cbSkipSunday.Checked)
+                    {
+                        dateStart = dateStart.AddDays(1);
+                    }
+
+                    DateTime dateEnd = EstimateDateEnd(dateStart, assemblyQty);
+
+                    dt.Rows[i][header_DateStart] = dateStart;
+                    dt.Rows[i][header_EstimateEnd] = dateEnd;
+
+                    int itemListRowIndex = int.TryParse(dt.Rows[i][header_Index].ToString(), out itemListRowIndex) ? itemListRowIndex : -1;
+
+                    itemListRowIndex--;
+
+                    dgvItemList.Rows[itemListRowIndex].Cells[header_DateStart].Value = dateStart;
+                    dgvItemList.Rows[itemListRowIndex].Cells[header_DateEnd].Value = dateEnd;
+                    dgvItemList.Rows[itemListRowIndex].Cells[header_Mac].Value = macNo;
+
+                }
+            }
         }
 
         private void LoadItemListFromPlanner(DataTable dt)
@@ -1972,9 +2181,7 @@ namespace FactoryManagementSoftware.UI
             dgvItemList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvItemList.ClearSelection();
             dgvItemList.CurrentCell = null;
-            cmbMac.SelectedIndex = -1;
             IfDateClash();
-            CalculateTimeNeeded();
             DateSelectUIMode();
             LoadSchedule();
 
@@ -2036,7 +2243,7 @@ namespace FactoryManagementSoftware.UI
         private void CalculateTimeNeeded()
         {
             DataGridView dgv = dgvItemList;
-            string timeNeededString = "Please Select a Plan";
+            string timeNeededString = "Please Select a Valid Plan";
 
             if (dgv.CurrentCell != null)
             {
@@ -2057,7 +2264,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (maxAvailability != -1)
                 {
-                    DateTime startDate = dtpStart.Value.Date;
+                    
                     if (validData)
                     {
                         totalHourNeeded = maxAvailability / (pcsPerManHour * manpower);
@@ -2068,50 +2275,129 @@ namespace FactoryManagementSoftware.UI
 
                         timeNeededString = totalDayNeeded + " Day & " + balanceHour + " Hour(s)";
                     }
+                }
 
+            }
 
-                    if (totalDayNeeded > 0)
+            lblTimesNeeded.Text = timeNeededString;
+        }
+
+        private void CalculateTimeNeeded(int rowIndex)
+        {
+            DataGridView dgv = dgvItemList;
+            string timeNeededString = "Please Select a Valid Plan";
+
+            if (rowIndex >= 0 && rowIndex < dgv.RowCount)
+            {
+                int maxAvailability = int.TryParse(dgv.Rows[rowIndex].Cells[header_MaxAvailability].Value.ToString(), out maxAvailability) ? maxAvailability : -1;
+
+                int pcsPerManHour = int.TryParse(pcsPerManHourString, out pcsPerManHour) ? pcsPerManHour : 0;
+                int manpower = int.TryParse(manpowerString, out manpower) ? manpower : 0;
+                int hourPerDay = int.TryParse(hoursPerDayString, out hourPerDay) ? hourPerDay : 0;
+
+                bool validData = pcsPerManHour > 0 && manpower > 0 && hourPerDay > 0;
+
+                int totalHourNeeded = 0;
+                int totalDayNeeded = 0;
+
+                int balanceHour = 0;
+
+                if (maxAvailability != -1)
+                {
+
+                    if (validData)
                     {
-                        totalDayNeeded--;
+                        totalHourNeeded = maxAvailability / (pcsPerManHour * manpower);
+                        totalDayNeeded = totalHourNeeded / hourPerDay;
+
+                        balanceHour = totalHourNeeded - (totalDayNeeded * hourPerDay);
+
+
+                        timeNeededString = totalDayNeeded + " Day & " + balanceHour + " Hour(s)";
                     }
+                }
 
-                    DateTime endDate = startDate.AddDays(totalDayNeeded);
+            }
 
-                    if (totalHourNeeded > hourPerDay)
+            lblTimesNeeded.Text = timeNeededString;
+        }
+
+        private DateTime EstimateDateEnd(DateTime startDate, int maxAvailability)
+        {
+            DataGridView dgv = dgvItemList;
+            DateTime endDate = new DateTime();
+
+            if (dgv.CurrentCell != null)
+            {
+                int rowIndex = dgv.CurrentCell.RowIndex;
+
+                int pcsPerManHour = int.TryParse(pcsPerManHourString, out pcsPerManHour) ? pcsPerManHour : 0;
+                int manpower = int.TryParse(manpowerString, out manpower) ? manpower : 0;
+                int hourPerDay = int.TryParse(hoursPerDayString, out hourPerDay) ? hourPerDay : 0;
+
+                bool validData = pcsPerManHour > 0 && manpower > 0 && hourPerDay > 0;
+
+                int totalHourNeeded = 0;
+                int totalDayNeeded = 0;
+
+                int balanceHour = 0;
+
+                if (maxAvailability != -1)
+                {
+                    if (validData)
                     {
-                        endDate = endDate.AddDays(1);
+                        totalHourNeeded = maxAvailability / (pcsPerManHour * manpower);
+                        totalDayNeeded = totalHourNeeded / hourPerDay;
+
+                        balanceHour = totalHourNeeded - (totalDayNeeded * hourPerDay);
+
+
+                        //timeNeededString = totalDayNeeded + " Day & " + balanceHour + " Hour(s)";
                     }
+                }
 
-                    if (cbSkipSunday.Checked)
+                if (totalDayNeeded > 0)
+                {
+                    totalDayNeeded--;
+                }
+
+                endDate = startDate.AddDays(totalDayNeeded);
+
+                if (balanceHour > 0)
+                {
+                    endDate = endDate.AddDays(1);
+                }
+
+                if (cbSkipSunday.Checked)
+                {
+                    int totalSunday = 0;
+
+                    while (startDate != endDate)
                     {
-                        int totalSunday = 0;
-                        while (startDate != endDate)
-                        {
-                            if (startDate.DayOfWeek == DayOfWeek.Sunday)
-                            {
-                                totalSunday++;
-                            }
-
-                            startDate = startDate.AddDays(1);
-                        }
-
-                        if (endDate.DayOfWeek == DayOfWeek.Sunday)
+                        if (startDate.DayOfWeek == DayOfWeek.Sunday)
                         {
                             totalSunday++;
                         }
 
-                        endDate = endDate.AddDays(totalSunday);
-
+                        startDate = startDate.AddDays(1);
                     }
 
-                    if (cbEstimate.Checked)
+                    if (endDate.DayOfWeek == DayOfWeek.Sunday)
                     {
-                        dtpEnd.Value = endDate;
+                        totalSunday++;
                     }
+
+                    endDate = endDate.AddDays(totalSunday);
+
                 }
+
+                //if (cbEstimate.Checked)
+                //{
+                //    dtpEnd.Value = endDate;
+                //}
             }
 
-            lblTimesNeeded.Text = timeNeededString;
+            return endDate;
         }
 
         private void txtPcsPerManHour_TextChanged(object sender, EventArgs e)
@@ -2146,7 +2432,7 @@ namespace FactoryManagementSoftware.UI
 
         private void cbSkipSunday_CheckedChanged(object sender, EventArgs e)
         {
-            CalculateTimeNeeded();
+            UpdateScheduleDate();
         }
 
         private void dgvItemList_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -2157,12 +2443,12 @@ namespace FactoryManagementSoftware.UI
 
             if(rowIndex != -1 && DateSelectMode)
             {
-                DateTime selectedDateStart = DateTime.TryParse(dgv.Rows[rowIndex].Cells[header_DateStart].Value.ToString(), out selectedDateStart) ? selectedDateStart : DateTime.Today.Date;
+                //DateTime selectedDateStart = DateTime.TryParse(dgv.Rows[rowIndex].Cells[header_DateStart].Value.ToString(), out selectedDateStart) ? selectedDateStart : DateTime.Today.Date;
 
-                dtpStart.Value = selectedDateStart;
+                //dtpStart.Value = selectedDateStart;
 
-                string macID = dgv.Rows[rowIndex].Cells[header_Mac].Value.ToString();
-                cmbMac.Text = macID;
+                //string macID = dgv.Rows[rowIndex].Cells[header_Mac].Value.ToString();
+                //cmbMac.Text = macID;
 
                 CalculateTimeNeeded();
             }
@@ -2190,46 +2476,38 @@ namespace FactoryManagementSoftware.UI
 
         private void btnDateSelect_Click(object sender, EventArgs e)
         {
-            bool ifDataValid = false;
+            //bool ifDataValid = false;
 
-            if (dgvItemList.CurrentCell != null)
-            {
-                int rowIndex = dgvItemList.CurrentCell.RowIndex;
+            //if (dgvItemList.CurrentCell != null)
+            //{
+            //    int rowIndex = dgvItemList.CurrentCell.RowIndex;
 
-                ifDataValid = dgvItemList.Rows[rowIndex].Selected;
+            //    ifDataValid = dgvItemList.Rows[rowIndex].Selected;
 
-                DateTime dateStart = dtpStart.Value;
-                DateTime dateEnd = dtpEnd.Value;
-                string lineNo = cmbMac.Text;
+            //    DateTime dateStart = dtpStart.Value;
+            //    DateTime dateEnd = dtpEnd.Value;
+            //    string lineNo = cmbMac.Text;
 
-                ifDataValid &= cmbMac.SelectedIndex != -1;
-                ifDataValid &= dateStart != null;
-                ifDataValid &= dateEnd != null;
+            //    ifDataValid &= cmbMac.SelectedIndex != -1;
+            //    ifDataValid &= dateStart != null;
+            //    ifDataValid &= dateEnd != null;
 
-                if(ifDataValid)
-                {
-                    dgvItemList.Rows[rowIndex].Cells[headerStart].Value = dateStart.Date;
-                    dgvItemList.Rows[rowIndex].Cells[headerEnd].Value = dateEnd.Date;
-                    dgvItemList.Rows[rowIndex].Cells[header_Mac].Value = lineNo;
-                }
-            }
+            //    if(ifDataValid)
+            //    {
+            //        dgvItemList.Rows[rowIndex].Cells[headerStart].Value = dateStart.Date;
+            //        dgvItemList.Rows[rowIndex].Cells[headerEnd].Value = dateEnd.Date;
+            //        dgvItemList.Rows[rowIndex].Cells[header_Mac].Value = lineNo;
+            //    }
+            //}
 
-            if(!ifDataValid)
-            {
-                MessageBox.Show("Invalid Date");
-            }
-            else
-            {
-                IfDateClash();
-            }
-        }
-
-        private void cbEstimate_CheckedChanged(object sender, EventArgs e)
-        {
-            if(cbEstimate.Checked)
-            {
-                CalculateTimeNeeded();
-            }
+            //if(!ifDataValid)
+            //{
+            //    MessageBox.Show("Invalid Date");
+            //}
+            //else
+            //{
+            //    IfDateClash();
+            //}
         }
 
         private bool IfDateClash()
@@ -2325,7 +2603,7 @@ namespace FactoryManagementSoftware.UI
         private Rectangle dragBoxFromMouseDown;
         private int rowIndexFromMouseDown;
         private int rowIndexOfItemUnderMouseToDrop;
-        private bool dragFromItemList = false;
+        //private bool dragFromItemList = false;
         private bool dragFromSchedule = false;
 
         // private bool dragFromItemList = false;
@@ -2374,13 +2652,14 @@ namespace FactoryManagementSoftware.UI
         {
             DataGridView dgv = (DataGridView)sender;
             dragFromSchedule = false;
-            dragFromItemList = true;
+            //dragFromItemList = true;
 
             // Get the index of the item the mouse is below.
             rowIndexFromMouseDown = dgv.HitTest(e.X, e.Y).RowIndex;
 
             if (rowIndexFromMouseDown != -1)
             {
+                CalculateTimeNeeded(rowIndexFromMouseDown);
                 // Remember the point where the mouse down occurred. 
                 // The DragSize indicates the size that the mouse can move 
                 // before a drag event should be started.                
@@ -2666,7 +2945,7 @@ namespace FactoryManagementSoftware.UI
                             RowMove(rowIndexFromMouseDown, rowIndexOfItemUnderMouseToDrop);
                             
                         }
-                        else
+                        else if (first_MacID != second_MacID)
                         {
                             DialogResult dialogResult = MessageBox.Show("Confirm to change machine from "+first_MacID+" to "+second_MacID+"?", "Message",
                                                               MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -2687,7 +2966,7 @@ namespace FactoryManagementSoftware.UI
                             RowMoveToLast(dt_Schedule, rowIndexFromMouseDown);
                             
                         }
-                        else
+                        else if(first_MacID != second_MacID)
                         {
                             DialogResult dialogResult = MessageBox.Show("Confirm to change machine from " + first_MacID + " to " + second_MacID + "?", "Message",
                                                               MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -2708,7 +2987,7 @@ namespace FactoryManagementSoftware.UI
                             RowMoveToFirst(dt_Schedule, rowIndexFromMouseDown);
                             
                         }
-                        else
+                        else if(first_MacID != second_MacID)
                         {
                             DialogResult dialogResult = MessageBox.Show("Confirm to change machine from " + first_MacID + " to " + second_MacID + "?", "Message",
                                                               MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -2749,13 +3028,40 @@ namespace FactoryManagementSoftware.UI
             dgvItemList.ClearSelection();
             DataGridView dgv = (DataGridView)sender;
             dragFromSchedule = true;
-            dragFromItemList = false;
+            //dragFromItemList = false;
 
             // Get the index of the item the mouse is below.
             rowIndexFromMouseDown = dgv.HitTest(e.X, e.Y).RowIndex;
+            int colIndex = dgv.HitTest(e.X, e.Y).ColumnIndex;
 
-            if (rowIndexFromMouseDown != -1)
+            if (e.Button == MouseButtons.Right && rowIndexFromMouseDown >= 0)
             {
+                ContextMenuStrip my_menu = new ContextMenuStrip();
+
+
+                dgv.CurrentCell = dgv.Rows[rowIndexFromMouseDown].Cells[colIndex];
+                // Can leave these here - doesn't hurt
+                dgv.Rows[rowIndexFromMouseDown].Selected = true;
+                dgv.Focus();
+
+                string macStatus = dgv.Rows[rowIndexFromMouseDown].Cells[header_Status].Value.ToString();
+
+                if (macStatus == text.planning_status_pending || macStatus == text_ToAdd)
+                {
+                    my_menu.Items.Add(text_EditStartDate).Name = text_EditStartDate;
+                    my_menu.Items.Add(text_RearrangeDate).Name = text_RearrangeDate;
+                }
+
+                my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                my_menu.ItemClicked += new ToolStripItemClickedEventHandler(Schedule_ItemClicked);
+
+            }
+
+            else if (rowIndexFromMouseDown != -1)
+            {
+                int itemListRowIndex = int.TryParse(dgv.Rows[rowIndexFromMouseDown].Cells[header_Index].Value.ToString(), out itemListRowIndex) ? itemListRowIndex : -1;
+                CalculateTimeNeeded(itemListRowIndex - 1);
                 // Remember the point where the mouse down occurred. 
                 // The DragSize indicates the size that the mouse can move 
                 // before a drag event should be started.                
@@ -2767,15 +3073,66 @@ namespace FactoryManagementSoftware.UI
                                                                e.Y - (dragSize.Height / 2)),
                                     dragSize);
             }
+
             else
+            {
                 // Reset the rectangle if the mouse is not over an item in the ListBox.
                 dragBoxFromMouseDown = Rectangle.Empty;
+            }
+                
 
+           
         }
 
-        #endregion
+        private void Schedule_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-       
+                DataGridView dgv = dgvSchedule;
+
+                int rowIndex = dgv.CurrentCell.RowIndex;
+
+                if (rowIndex >= 0)
+                {
+                    string ClickedItem = e.ClickedItem.Name.ToString();
+
+                    //if (ClickedItem.Equals(text_CompleteDO))
+                    //{
+                    //    CompleteDO(rowIndex);
+                    //}
+                    //else if (ClickedItem.Equals(text_InCompleteDO))
+                    //{
+                    //    IncompleteDO(rowIndex);
+                    //    //MessageBox.Show("incomplete do");
+                    //}
+                    //else if (ClickedItem.Equals(text_UndoRemove))
+                    //{
+                    //    DOUndoRemove(rowIndex);
+                    //    //MessageBox.Show("undo remove");
+                    //}
+                    //else if (ClickedItem.Equals(text_ChangeDONumber))
+                    //{
+                    //    ChangeDONumber(rowIndex);
+                    //    //MessageBox.Show("Change D/O Number");
+                    //}
+                    //else if (ClickedItem.Equals(text_MasterList))
+                    //{
+                    //    GetMasterList();
+                    //}
+                }
+
+
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
         private void GreyItemRow(int rowIndex)
         {
             dgvItemList.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Gainsboro;
@@ -2786,22 +3143,27 @@ namespace FactoryManagementSoftware.UI
         {
             scheduleRowIndex = int.TryParse(dgvSchedule.Rows[scheduleRowIndex].Cells[header_Index].Value.ToString(), out scheduleRowIndex) ? scheduleRowIndex : -1;
 
-            if(scheduleRowIndex != -1)
+            if (scheduleRowIndex != -1)
             {
-                for(int i = 0; i < dgvItemList.RowCount; i++)
+                for (int i = 0; i < dgvItemList.RowCount; i++)
                 {
                     int itemIndex = int.TryParse(dgvItemList.Rows[i].Cells[header_Index].Value.ToString(), out itemIndex) ? itemIndex : -1;
 
-                    if(itemIndex == scheduleRowIndex)
+                    if (itemIndex == scheduleRowIndex)
                     {
                         dgvItemList.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
                         dgvItemList.Rows[i].Cells[header_AddedStatus].Value = text_ToAdd;
+
+                        dgvItemList.Rows[i].Cells[header_DateStart].Value = DBNull.Value;
+                        dgvItemList.Rows[i].Cells[header_DateEnd].Value = DBNull.Value;
+                        dgvItemList.Rows[i].Cells[header_Mac].Value = DBNull.Value;
+
                         return;
                     }
                 }
-                
+
             }
-            
+
         }
 
         private void RowDataTransfer(int sourceRowIndex, int RowIndexToDrop)
@@ -2814,7 +3176,7 @@ namespace FactoryManagementSoftware.UI
 
             string macID = dt_Schedule.Rows[RowIndexToDrop][header_Mac].ToString();
 
-            if(macStatus == text.planning_status_running || macStatus == text.planning_status_pending || macStatus == text_ToAdd)
+            if (macStatus == text.planning_status_running || macStatus == text.planning_status_pending || macStatus == text_ToAdd)
             {
                 RowIndexToDrop++;
             }
@@ -2845,10 +3207,12 @@ namespace FactoryManagementSoftware.UI
             {
                 dt_Schedule.Rows.Add(newRow);
                 dgv.Rows[dt_Schedule.Rows.Count - 1].Selected = true;
+
+                DateInitial(dt_Schedule.Rows.Count - 1, maxAvailability);
             }
             else
             {
-                if(macStatus == text.planning_status_idle)
+                if (macStatus == text.planning_status_idle)
                 {
                     //remove idle row
                     DataRow selected_Row = dt_Schedule.Rows[RowIndexToDrop];
@@ -2857,6 +3221,7 @@ namespace FactoryManagementSoftware.UI
 
                 dt_Schedule.Rows.InsertAt(newRow, RowIndexToDrop);
                 dgv.Rows[RowIndexToDrop].Selected = true;
+                DateInitial(RowIndexToDrop, maxAvailability);
             }
 
             #region date calculate
@@ -2923,7 +3288,7 @@ namespace FactoryManagementSoftware.UI
 
         private void RowMove(int row_1, int row_2)
         {
-            if(row_1 != row_2)
+            if (row_1 != row_2)
             {
                 DataTable dt = (DataTable)dgvSchedule.DataSource;
                 DataRow selected_Row = dt.Rows[row_1];
@@ -2946,20 +3311,40 @@ namespace FactoryManagementSoftware.UI
                     machineNoChanged = true;
                 }
 
+                int rowCount = dt.Rows.Count;
+
+                if (row_2 > rowCount)
+                {
+                    row_2 = rowCount;
+                }
+
                 dt.Rows.InsertAt(newRow, row_2); // index 2
 
-                dgvSchedule.Rows[row_2].Selected = true;
+                dt.AcceptChanges();
 
+               
+
+                UpdateScheduleAfterNewRowInserted(int.TryParse(dgvSchedule.Rows[row_2].Cells[header_Mac].Value.ToString(), out int newMachineNo) ? newMachineNo : -1);
                 if (machineNoChanged)
                 {
                     IfMachineIdle(oldMachineNo);
+                    UpdateScheduleAfterNewRowInserted(oldMachineNo);
                     if (target_Row[header_Status].ToString() == text.planning_status_idle)
                     {
                         dt.Rows.Remove(target_Row);
                     }
                 }
+
+                rowCount = dt.Rows.Count;
+
+                if (row_2 > rowCount)
+                {
+                    row_2 = rowCount;
+                }
+
+                dgvSchedule.Rows[row_2].Selected = true;
             }
-           
+
         }
 
         private void RowMoveToLast(DataTable dt, int row)
@@ -2968,9 +3353,9 @@ namespace FactoryManagementSoftware.UI
             DataRow target_Row = dt.Rows[dt.Rows.Count - 1];
 
             DataRow newRow = dt.NewRow();
-        
+
             newRow.ItemArray = selectedRow.ItemArray; // copying data
-          
+
             dt.Rows.Remove(selectedRow);
             bool machineNoChanged = false;
 
@@ -2986,22 +3371,26 @@ namespace FactoryManagementSoftware.UI
 
             dt.Rows.Add(newRow);
 
-            dgvSchedule.Rows[dgvSchedule.Rows.Count - 1].Selected = true;
+            
+
+            UpdateScheduleAfterNewRowInserted(int.TryParse(dgvSchedule.Rows[dgvSchedule.Rows.Count - 1].Cells[header_Mac].Value.ToString(), out int newMachineNo) ? newMachineNo : -1);
 
             if (machineNoChanged)
             {
                 IfMachineIdle(oldMachineNo);
+                UpdateScheduleAfterNewRowInserted(oldMachineNo);
+
                 if (target_Row[header_Status].ToString() == text.planning_status_idle)
                 {
                     dt.Rows.Remove(target_Row);
                 }
             }
-                
+            dgvSchedule.Rows[dgvSchedule.Rows.Count - 1].Selected = true;
         }
 
         private void RowMoveToFirst(DataTable dt, int row)
         {
-            DataRow selectedRow = dt.Rows[row]; 
+            DataRow selectedRow = dt.Rows[row];
             DataRow target_Row = dt.Rows[0];
             DataRow newRow = dt.NewRow();
 
@@ -3021,18 +3410,29 @@ namespace FactoryManagementSoftware.UI
 
             dt.Rows.InsertAt(newRow, 0);
 
-            dgvSchedule.Rows[0].Selected = true;
+            
+
+            UpdateScheduleAfterNewRowInserted(int.TryParse(dgvSchedule.Rows[0].Cells[header_Mac].Value.ToString(), out int newMachineNo) ? newMachineNo : -1);
 
             if (machineNoChanged)
             {
                 IfMachineIdle(oldMachineNo);
 
-                if(target_Row[header_Status].ToString() == text.planning_status_idle)
+                UpdateScheduleAfterNewRowInserted(oldMachineNo);
+
+                if (target_Row[header_Status].ToString() == text.planning_status_idle)
                 {
                     dt.Rows.Remove(target_Row);
                 }
             }
-                
+            dgvSchedule.Rows[0].Selected = true;
+        }
+
+        #endregion
+
+        private void cbSameDay_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateScheduleDate();
         }
     }
 }
