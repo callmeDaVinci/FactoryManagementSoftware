@@ -623,7 +623,7 @@ namespace FactoryManagementSoftware.UI
             };
 
 
-            frm.ShowDialog();
+            frm.Show();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -677,7 +677,7 @@ namespace FactoryManagementSoftware.UI
             };
 
 
-            frm.ShowDialog();
+            frm.Show();
         }
 
         private void WorkInProgressMessage()
@@ -731,7 +731,7 @@ namespace FactoryManagementSoftware.UI
                 StartPosition = FormStartPosition.CenterScreen
             };
 
-            frm.ShowDialog();
+            frm.Show();
         }
 
         private void OpenDeliveryPlanning(object sender, EventArgs e)
