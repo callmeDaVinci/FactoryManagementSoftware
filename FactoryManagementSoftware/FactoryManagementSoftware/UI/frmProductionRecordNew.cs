@@ -97,6 +97,8 @@ namespace FactoryManagementSoftware.UI
         readonly static public string header_PackagingQty = "TOTAL QTY";
         readonly static public string header_PackagingMax = "QTY/BOX";
 
+        readonly private string text_RemoveRecord = "Remove from this list.";
+        readonly private string text_ChangePlanID = "Change Plan";
         readonly private string string_CheckBy= "CHECK BY: ";
         readonly private string string_CheckDate = "DATE: ";
 
@@ -438,7 +440,7 @@ namespace FactoryManagementSoftware.UI
                 string itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
                 string planID = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
                 
-                DataTable transferData = dalTrf.codeSearch(itemCode);
+                DataTable transferData = dalTrf.codeLikeSearch(itemCode);
 
                 foreach (DataRow row in dt.Rows)
                 {
@@ -474,7 +476,7 @@ namespace FactoryManagementSoftware.UI
                                 string sheetID = dgvRow.Cells[header_SheetID].Value.ToString();
 
                                 itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
-                                transferData = dalTrf.codeSearch(itemCode);
+                                transferData = dalTrf.codeLikeSearch(itemCode);
 
                                 //foreach (DataRow rowPR in dt_ProductionRecord.Rows)
                                 //{
@@ -527,7 +529,7 @@ namespace FactoryManagementSoftware.UI
                         string sheetID = dgvRow.Cells[header_SheetID].Value.ToString();
 
                         itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
-                        transferData = dalTrf.codeSearch(itemCode);
+                        transferData = dalTrf.codeLikeSearch(itemCode);
 
                         //foreach (DataRow rowPR in dt_ProductionRecord.Rows)
                         //{
@@ -590,7 +592,7 @@ namespace FactoryManagementSoftware.UI
                     itemCode = parentCode;
                 }
 
-                DataTable transferData = dalTrf.codeSearch(itemCode);
+                DataTable transferData = dalTrf.codeLikeSearch(itemCode);
 
                 DateTime proDate = dtpProDate.Value;
 
@@ -679,6 +681,11 @@ namespace FactoryManagementSoftware.UI
             {
                 string status = row[dalTrf.TrfResult].ToString();
 
+                if(row[dalTrf.TrfID].ToString() == "49020")
+                {
+                    float test = 0;
+                }
+
                 if (status == "Passed")
                 {
                     DateTime trfDate = Convert.ToDateTime(row[dalTrf.TrfDate].ToString());
@@ -690,6 +697,7 @@ namespace FactoryManagementSoftware.UI
                     bool startCopy = false;
                     bool IDCopied = false;
                     bool ShiftCopied = false;
+                    bool StopIDCopy = false;
 
                     for (int i = 0; i < productionInfo.Length; i++)
                     {
@@ -704,12 +712,13 @@ namespace FactoryManagementSoftware.UI
                         else if (ShiftCopied && productionInfo[i].ToString() == "]")
                         {
                             startCopy = false;
+                            StopIDCopy = true;
                         }
 
                         if (startCopy)
                         {
 
-                            if (char.IsDigit(productionInfo[i]))
+                            if (char.IsDigit(productionInfo[i]) && !StopIDCopy)
                             {
                                 IDCopied = true;
                                 _planID += productionInfo[i];
@@ -1896,7 +1905,7 @@ namespace FactoryManagementSoftware.UI
 
                     totalStockIn += packingMaxQty * fullBoxQty;
 
-                    if (!string.IsNullOrEmpty(cmbPackingCode.Text) && itemType == "CTN" && fullBoxQty > 0)
+                    if (!string.IsNullOrEmpty(cmbPackingCode.Text) && itemType != "CTR" && fullBoxQty > 0)
                     {
                         dt_Row = dt.NewRow();
                         dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
@@ -3286,7 +3295,8 @@ namespace FactoryManagementSoftware.UI
 
                 try
                 {
-                    my_menu.Items.Add("Remove from this list.").Name = "Remove from this list.";
+                    my_menu.Items.Add(text_RemoveRecord).Name = text_RemoveRecord;
+                    my_menu.Items.Add(text_ChangePlanID).Name = text_ChangePlanID;
 
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
                     contextMenuStrip1 = my_menu;
@@ -3314,9 +3324,11 @@ namespace FactoryManagementSoftware.UI
             string itemClicked = e.ClickedItem.Name.ToString();
             int rowIndex = dgv.CurrentCell.RowIndex;
             int planID = Convert.ToInt32(dgv.Rows[rowIndex].Cells[header_PlanID].Value);
+            string itemCode = dgv.Rows[rowIndex].Cells[header_PartCode].Value.ToString();
             string itemName = dgv.Rows[rowIndex].Cells[header_PartName].Value.ToString();
             contextMenuStrip1.Hide();
-            if (itemClicked.Equals("Remove from this list."))
+
+            if (itemClicked.Equals(text_RemoveRecord))
             {
                 if (MessageBox.Show("Are you sure you want to remove (PLAN ID: "+planID+") "+itemName+" from this list?", "Message",
                                                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -3348,9 +3360,31 @@ namespace FactoryManagementSoftware.UI
                 }
 
             }
-         
+
+            else if(itemClicked.Equals(text_ChangePlanID))
+            {
+                ChangePlanID(planID, itemCode);
+            }
+
             Cursor = Cursors.Arrow; // change cursor to normal type
             dgv.ResumeLayout();
+        }
+
+        private void ChangePlanID(int planID, string itemCode)
+        {
+            //open machine schedule page
+
+            frmMachineSchedule frm = new frmMachineSchedule(text.DailyAction_ChangePlan, planID, itemCode)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+
+            frm.ShowDialog();
+            loaded = false;
+            LoadItemListData();
+            dgvItemList.ClearSelection();
+            loaded = true;
         }
 
         private void dgvDailyRecord_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

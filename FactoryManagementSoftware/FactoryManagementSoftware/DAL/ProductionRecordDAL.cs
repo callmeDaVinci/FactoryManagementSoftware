@@ -913,6 +913,57 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool ChangePlanID(ProductionRecordBLL u)
+        {
+            bool isSuccess = false;
+            u.active = true;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_production_record 
+                            SET "
+                            + PlanID + "=@new_plan_id,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE plan_id=@old_plan_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@new_plan_id", u.new_plan_id);
+                cmd.Parameters.AddWithValue("@old_plan_id", u.old_plan_id);
+            
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+               
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         #endregion
 
         #region Delete data in Database

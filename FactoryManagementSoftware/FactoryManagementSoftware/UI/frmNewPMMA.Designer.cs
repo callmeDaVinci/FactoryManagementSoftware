@@ -52,6 +52,7 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.cbFastMode = new System.Windows.Forms.CheckBox();
+            this.btnLockData = new System.Windows.Forms.Button();
             this.gbPMMA.SuspendLayout();
             this.tlpPMMA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMatStock)).BeginInit();
@@ -208,6 +209,7 @@
             this.gbPMMA.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbPMMA.Controls.Add(this.btnLockData);
             this.gbPMMA.Controls.Add(this.cbEditMode);
             this.gbPMMA.Controls.Add(this.tlpPMMA);
             this.gbPMMA.Controls.Add(this.label1);
@@ -228,6 +230,7 @@
             this.gbPMMA.TabIndex = 133;
             this.gbPMMA.TabStop = false;
             this.gbPMMA.Text = "ZERO COST MATERIAL STOCK LIST";
+            this.gbPMMA.Enter += new System.EventHandler(this.gbPMMA_Enter);
             // 
             // cbEditMode
             // 
@@ -273,7 +276,7 @@
             this.dgvMatStock.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMatStock.Cursor = System.Windows.Forms.Cursors.Hand;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
@@ -281,7 +284,7 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvMatStock.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvMatStock.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvMatStock.GridColor = System.Drawing.Color.White;
+            this.dgvMatStock.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvMatStock.Location = new System.Drawing.Point(4, 1);
             this.dgvMatStock.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.dgvMatStock.Name = "dgvMatStock";
@@ -396,6 +399,22 @@
             this.cbFastMode.UseVisualStyleBackColor = true;
             this.cbFastMode.Visible = false;
             // 
+            // btnLockData
+            // 
+            this.btnLockData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLockData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(203)))), ((int)(((byte)(110)))));
+            this.btnLockData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLockData.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLockData.ForeColor = System.Drawing.Color.Black;
+            this.btnLockData.Location = new System.Drawing.Point(1398, 58);
+            this.btnLockData.Margin = new System.Windows.Forms.Padding(5, 2, 2, 2);
+            this.btnLockData.Name = "btnLockData";
+            this.btnLockData.Size = new System.Drawing.Size(124, 36);
+            this.btnLockData.TabIndex = 137;
+            this.btnLockData.Text = "LOCK DATA";
+            this.btnLockData.UseVisualStyleBackColor = false;
+            this.btnLockData.Click += new System.EventHandler(this.btnLockData_Click);
+            // 
             // frmNewPMMA
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -450,5 +469,6 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.ComponentModel.BackgroundWorker bgWorker;
         private System.Windows.Forms.CheckBox cbFastMode;
+        private System.Windows.Forms.Button btnLockData;
     }
 }

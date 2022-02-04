@@ -13,9 +13,9 @@ using FactoryManagementSoftware.Module;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmSBBMatPLan : Form
+    public partial class frmSBBMatPlan : Form
     {
-        public frmSBBMatPLan()
+        public frmSBBMatPlan()
         {
             InitializeComponent();
 

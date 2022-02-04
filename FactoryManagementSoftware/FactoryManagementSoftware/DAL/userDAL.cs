@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using FactoryManagementSoftware.Module;
 
 namespace FactoryManagementSoftware.DAL
 {
@@ -217,6 +218,9 @@ namespace FactoryManagementSoftware.DAL
 
         public DataTable userSearch(string username, string password)
         {
+            Text text = new Text();
+
+            //SqlConnection conn = new SqlConnection(text.DB_JunPC);
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             DataTable dt = new DataTable();

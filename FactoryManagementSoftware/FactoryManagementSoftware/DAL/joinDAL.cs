@@ -17,13 +17,14 @@ namespace FactoryManagementSoftware.DAL
         public string JoinParent { get; } = "join_parent_code";
         public string JoinChild { get; } = "join_child_code";
 
-        public string ParentCode { get; } = "parent_code";
+        public string ParentCode { get; } = "parent_code"; 
         public string ChildCode { get; } = "child_code";
         public string ChildName { get; } = "child_name";
+        public string ChildCat{ get; } = "child_cat";
         public string JoinQty { get; } = "join_qty";
         public string JoinMax { get; } = "join_max";
         public string JoinMin { get; } = "join_min";
-
+        
         public string JoinAddedDate { get; } = "join_added_date";
         public string JoinAddedBy { get; } = "join_added_by";
 
@@ -88,6 +89,61 @@ namespace FactoryManagementSoftware.DAL
 
                 //for executing command
                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SelectWithChildCat()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+
+                //sql query to get data from database
+
+                String sql = @"SELECT tbl_join.join_parent_code as parent_code, 
+                tbl_item.item_name as parent_name ,
+                tbl_join.join_child_code as child_code ,
+                a.item_name as child_name , a.item_material as item_material , a.item_recycle as item_recycle , a.item_mb as item_mb , a.item_cat as child_cat,
+                join_qty, join_max, join_min, join_added_date, join_added_by,
+                join_updated_date,join_updated_by ,a.item_pro_pw_shot,a.item_pro_rw_shot,a.item_capacity,a.raw_ratio,a.recycle_ratio,a.item_mb_rate,
+                a.item_part_weight,a.item_runner_weight,a.item_wastage_allowed,a.item_qty,a.type_tbl_code,a.category_tbl_code
+                FROM tbl_join 
+                JOIN tbl_item 
+                ON tbl_join.join_parent_code = tbl_item.item_code 
+                JOIN tbl_item a ON tbl_join.join_child_code = a.item_code";
+
+                //String sql = @"SELECT tbl_join.join_parent_code as parent_code, 
+                //tbl_item.item_name as parent_name ,
+                //tbl_join.join_child_code as child_code ,
+                //a.item_name as child_name ,join_qty, join_max, join_min, join_added_date, join_added_by,
+                //join_updated_date,join_updated_by ,tbl_item.item_quo_pw_pcs,tbl_item.item_quo_rw_pcs,tbl_item.item_part_weight,tbl_item.item_runner_weight,tbl_item.item_wastage_allowed,a.item_qty
+                //FROM tbl_join 
+                //JOIN tbl_item 
+                //ON tbl_join.join_parent_code = tbl_item.item_code 
+                //JOIN tbl_item a ON tbl_join.join_child_code = a.item_code";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
@@ -191,7 +247,7 @@ namespace FactoryManagementSoftware.DAL
                 a.item_qty as child_qty ,
                 a.item_assembly as child_assembly ,
                 a.item_production as child_production ,
-                join_qty 
+                join_qty,join_max,join_min 
                 FROM tbl_join 
                 JOIN tbl_item 
                 ON tbl_join.join_parent_code = tbl_item.item_code 

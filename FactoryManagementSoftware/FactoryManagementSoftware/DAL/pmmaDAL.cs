@@ -20,6 +20,7 @@ namespace FactoryManagementSoftware.DAL
         public string Adjust { get; } = "pmma_adjust";
         public string Note { get; } = "pmma_note";
         public string DirectOut { get; } = "pmma_direct_out";
+        public string DataLock { get; } = "pmma_locked";
 
         public string PMMAFrom { get; } = "pmma_from";
         public string PMMATo { get; } = "pmma_to";
@@ -171,7 +172,7 @@ namespace FactoryManagementSoftware.DAL
             if (dt.Rows.Count > 0)
             {
                 //update data
-                isSuccess = NewUpdate(u);
+                isSuccess = Update(u);
             }
             else
             {
@@ -418,7 +419,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool NewUpdate(pmmaBLL u)
+        public bool Update(pmmaBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -485,171 +486,58 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        //public bool update(pmmaBLL u)
-        //{
-        //    bool isSuccess = false;
-        //    SqlConnection conn = new SqlConnection(myconnstrng);
-        //    string month = u.pmma_date.Month.ToString();
-        //    string year = u.pmma_date.Year.ToString();
-            
-        //    try
-        //    {
-        //        String sql = @"UPDATE tbl_pmma SET "
-        //                    + OpenStock + "=@pmma_openning_stock,"
-        //                     + BalStock + "=@pmma_bal_stock,"
-        //                      + Wastage + "=@pmma_percentage,"
-        //                       + Adjust + "=@pmma_adjust,"
-        //                        + Note + "=@pmma_note,"
-        //                    + UpdatedDate + "=@pmma_updated_by,"
-        //                    + UpdatedBy + "=@pmma_updated_by" +
-        //                    " WHERE pmma_item_code=@pmma_item_code " +
-        //                    "AND MONTH(pmma_date)=@month AND YEAR(pmma_date)=@year";
+        public bool UpdateLockStatus(pmmaBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            string month = u.pmma_date.Month.ToString();
+            string year = u.pmma_date.Year.ToString();
 
-        //        SqlCommand cmd = new SqlCommand(sql, conn);
+            try
+            {
+                String sql = @"UPDATE tbl_pmma SET "
+                            + DataLock + "=@pmma_lock,"
+                            + UpdatedDate + "=@pmma_updated_date,"
+                            + UpdatedBy + "=@pmma_updated_by" +
+                            " WHERE pmma_item_code=@pmma_item_code " +
+                            "AND pmma_month=@pmma_month AND pmma_year=@pmma_year";
 
-        //        cmd.Parameters.AddWithValue("@pmma_item_code", u.pmma_item_code);
-        //        cmd.Parameters.AddWithValue("@pmma_openning_stock", u.pmma_openning_stock);
-        //        cmd.Parameters.AddWithValue("@pmma_bal_stock", u.pmma_bal_stock);
-        //        cmd.Parameters.AddWithValue("@pmma_adjust", u.pmma_adjust);
-        //        cmd.Parameters.AddWithValue("@pmma_note", u.pmma_note);
-        //        cmd.Parameters.AddWithValue("@pmma_percentage", u.pmma_wastage);
-        //        cmd.Parameters.AddWithValue("@month", month);
-        //        cmd.Parameters.AddWithValue("@year", year);
-        //        cmd.Parameters.AddWithValue("@pmma_updated_date", u.pmma_updated_date);
-        //        cmd.Parameters.AddWithValue("@pmma_updated_by", u.pmma_updated_by);
+                SqlCommand cmd = new SqlCommand(sql, conn);
 
-        //        conn.Open();
+                cmd.Parameters.AddWithValue("@pmma_item_code", u.pmma_item_code);
+                cmd.Parameters.AddWithValue("@pmma_lock", u.pmma_lock);
+                cmd.Parameters.AddWithValue("@pmma_month", u.pmma_month);
+                cmd.Parameters.AddWithValue("@pmma_year", u.pmma_year);
+                cmd.Parameters.AddWithValue("@pmma_updated_date", u.pmma_updated_date);
+                cmd.Parameters.AddWithValue("@pmma_updated_by", u.pmma_updated_by);
 
-        //        int rows = cmd.ExecuteNonQuery();
+                conn.Open();
 
-        //        //if the query is executed successfully then the rows' value = 0
-        //        if (rows > 0)
-        //        {
-        //            //query successful
-        //            isSuccess = true;
-        //        }
-        //        else
-        //        {
-        //            //Query falled
-        //            isSuccess = false;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
-        //    }
-        //    finally
-        //    {
-        //        conn.Close();
-        //    }
-        //    return isSuccess;
-        //}
+                int rows = cmd.ExecuteNonQuery();
 
-        //public bool updateMonthAndYear(pmmaBLL u)
-        //{
-        //    bool isSuccess = false;
-        //    SqlConnection conn = new SqlConnection(myconnstrng);
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
 
-        //    try
-        //    {
-        //        u.pmma_date = new DateTime(Convert.ToInt32(u.pmma_year), Convert.ToInt32(u.pmma_month), 1);
-
-        //        String sql = @"UPDATE tbl_pmma SET "
-        //                    + Month + "=@pmma_month,"
-        //                     + Year + "=@pmma_year,"
-        //                    + UpdatedDate + "=@pmma_updated_by,"
-        //                    + UpdatedBy + "=@pmma_updated_by" +
-        //                    " WHERE tbl_pmma.pmma_item_code = @pmma_item_code AND MONTH(tbl_pmma.pmma_date) = @pmma_month AND YEAR(tbl_pmma.pmma_date) = @pmma_year";
-
-        //        SqlCommand cmd = new SqlCommand(sql, conn);
-
-        //        cmd.Parameters.AddWithValue("@pmma_item_code", u.pmma_item_code);
-        //        cmd.Parameters.AddWithValue("@pmma_month", u.pmma_month);
-        //        cmd.Parameters.AddWithValue("@pmma_year", u.pmma_year);
-        //        cmd.Parameters.AddWithValue("@pmma_updated_date", u.pmma_updated_date);
-        //        cmd.Parameters.AddWithValue("@pmma_updated_by", u.pmma_updated_by);
-
-        //        conn.Open();
-
-        //        int rows = cmd.ExecuteNonQuery();
-
-        //        //if the query is executed successfully then the rows' value = 0
-        //        if (rows > 0)
-        //        {
-        //            //query successful
-        //            isSuccess = true;
-        //        }
-        //        else
-        //        {
-        //            //Query falled
-        //            isSuccess = false;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
-        //    }
-        //    finally
-        //    {
-        //        conn.Close();
-        //    }
-        //    return isSuccess;
-        //}
-
-        //public bool updateAdjustedBal(pmmaBLL u)
-        //{
-        //    bool isSuccess = false;
-        //    SqlConnection conn = new SqlConnection(myconnstrng);
-
-        //    try
-        //    {
-        //        String sql = @"UPDATE tbl_pmma SET "
-        //                    + Adjust + "=@pmma_adjust,"
-        //                     + Note + "=@pmma_note,"
-        //                      + BalStock + "=@pmma_bal_stock,"
-        //                    + UpdatedDate + "=@pmma_updated_by,"
-        //                    + UpdatedBy + "=@pmma_updated_by" +
-        //                    " WHERE tbl_pmma.pmma_item_code = @pmma_item_code AND tbl_pmma.pmma_month = @pmma_month AND tbl_pmma.pmma_year = @pmma_year";
-
-        //        SqlCommand cmd = new SqlCommand(sql, conn);
-
-        //        cmd.Parameters.AddWithValue("@pmma_item_code", u.pmma_item_code);
-
-        //        cmd.Parameters.AddWithValue("@pmma_adjust", u.pmma_adjust);
-        //        cmd.Parameters.AddWithValue("@pmma_note", u.pmma_note);
-        //        cmd.Parameters.AddWithValue("@pmma_bal_stock", u.pmma_bal_stock);
-
-        //        cmd.Parameters.AddWithValue("@pmma_month", u.pmma_month);
-        //        cmd.Parameters.AddWithValue("@pmma_year", u.pmma_year);
-        //        cmd.Parameters.AddWithValue("@pmma_updated_date", u.pmma_updated_date);
-        //        cmd.Parameters.AddWithValue("@pmma_updated_by", u.pmma_updated_by);
-
-        //        conn.Open();
-
-        //        int rows = cmd.ExecuteNonQuery();
-
-        //        //if the query is executed successfully then the rows' value = 0
-        //        if (rows > 0)
-        //        {
-        //            //query successful
-        //            isSuccess = true;
-        //        }
-        //        else
-        //        {
-        //            //Query falled
-        //            isSuccess = false;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
-        //    }
-        //    finally
-        //    {
-        //        conn.Close();
-        //    }
-        //    return isSuccess;
-        //}
         #endregion
 
         #region delete
@@ -698,38 +586,6 @@ namespace FactoryManagementSoftware.DAL
 
         #region Search Data from Database
 
-        public DataTable TestSearch(pmmaBLL u)
-        {
-            SqlConnection conn = new SqlConnection(myconnstrng);
-
-            DataTable dt = new DataTable();
-            try
-            {
-                String sql = @"SELECT * FROM tbl_pmma INNER JOIN tbl_item 
-                                ON tbl_pmma.pmma_item_code = tbl_item.item_code 
-                                AND tbl_pmma.pmma_item_code = @itemCode AND MONTH(tbl_pmma.pmma_date) = @month AND YEAR(tbl_pmma.pmma_date) = @year";
-
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
-                cmd.Parameters.AddWithValue("@itemCode", u.pmma_item_code);
-                cmd.Parameters.AddWithValue("@month", u.pmma_month);
-                cmd.Parameters.AddWithValue("@year", u.pmma_year);
-
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                conn.Open();
-                adapter.Fill(dt);
-            }
-            catch (Exception ex)
-            {
-                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
-            }
-            finally
-            {
-                conn.Close();
-            }
-            return dt;
-        }
-
         public DataTable Search(string itemCode, string month, string year)
         {
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -762,39 +618,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable SearchByOldDate(string month, string year)
-        {
-            SqlConnection conn = new SqlConnection(myconnstrng);
-
-            DataTable dt = new DataTable();
-            try
-            {
-                String sql = @"SELECT * FROM tbl_pmma INNER JOIN tbl_item 
-                                ON tbl_pmma.pmma_item_code = tbl_item.item_code 
-                                AND MONTH(tbl_pmma.pmma_date) = @month AND YEAR(tbl_pmma.pmma_date) = @year";
-
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
-                cmd.Parameters.AddWithValue("@itemCode", itemCode);
-                cmd.Parameters.AddWithValue("@month", month);
-                cmd.Parameters.AddWithValue("@year", year);
-
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                conn.Open();
-                adapter.Fill(dt);
-            }
-            catch (Exception ex)
-            {
-                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
-            }
-            finally
-            {
-                conn.Close();
-            }
-            return dt;
-        }
-
-        public DataTable SearchByNewDate(string month, string year)
+        public DataTable SearchByDate(string month, string year)
         {
             SqlConnection conn = new SqlConnection(myconnstrng);
 
@@ -807,7 +631,6 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@itemCode", itemCode);
                 cmd.Parameters.AddWithValue("@month", month);
                 cmd.Parameters.AddWithValue("@year", year);
 

@@ -47,8 +47,8 @@ namespace FactoryManagementSoftware.UI
         facDAL dalFac = new facDAL();
         pmmaDateDAL dalPMMADate = new pmmaDateDAL();
         userDAL dalUser = new userDAL();
-        SBBDataDAL dalSPP = new SBBDataDAL();
-        SBBDataBLL uSpp = new SBBDataBLL();
+        SBBDataDAL dalSBB = new SBBDataDAL();
+        SBBDataBLL uSBB = new SBBDataBLL();
         historyDAL dalHistory = new historyDAL();
         historyBLL uHistory = new historyBLL();
         planningDAL dalPlan = new planningDAL();
@@ -112,7 +112,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_PlanID = "PLAN ID";
         readonly string header_Qty = "QTY";
         readonly string header_AddedStatus = "ADDED STATUS";
-
+        readonly string header_ScheTblCode = "SCHEDULE TBL CODE";
         readonly string headerMatCode = "MATERIAL";
         readonly string headerPlanID = "PLAN";
         readonly string headerFac = "FAC.";
@@ -136,6 +136,8 @@ namespace FactoryManagementSoftware.UI
         readonly string text_Remove = "REMOVE";
         readonly string text_Added = "ADDED";
         readonly string text_ToAdd = "TO ADD";
+        readonly string text_ToUpdate = "TO Update";
+        readonly string text_ToRemove = "TO Remove";
         readonly string text_EditStartDate = "Edit Start Date";
         readonly string text_RearrangeDate = "Auto Reschedule";
 
@@ -231,12 +233,13 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
+            dt.Columns.Add(header_ScheTblCode, typeof(int));
             dt.Columns.Add(header_Index, typeof(int));
             dt.Columns.Add(header_Mac, typeof(int));
             dt.Columns.Add(header_PlanID, typeof(string));
             dt.Columns.Add(header_Status, typeof(string));
             dt.Columns.Add(header_ItemString, typeof(string));
-           
+            dt.Columns.Add(header_Code, typeof(string));
 
             dt.Columns.Add(header_DateStart, typeof(DateTime));
             dt.Columns.Add(header_EstimateEnd, typeof(DateTime));
@@ -939,11 +942,11 @@ namespace FactoryManagementSoftware.UI
 
                         preChildCode = childCode;
 
-                        int qtyPerBag = int.TryParse(rowJoin[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
-                        int numerator = int.TryParse(rowJoin[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
-                        int denominator = int.TryParse(rowJoin[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
-                        string sizeUnit = rowJoin[dalSPP.SizeUnit].ToString().ToUpper();
-                        string typeName = rowJoin[dalSPP.TypeName].ToString();
+                        int qtyPerBag = int.TryParse(rowJoin[dalSBB.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+                        int numerator = int.TryParse(rowJoin[dalSBB.SizeNumerator].ToString(), out numerator) ? numerator : 1;
+                        int denominator = int.TryParse(rowJoin[dalSBB.SizeDenominator].ToString(), out denominator) ? denominator : 1;
+                        string sizeUnit = rowJoin[dalSBB.SizeUnit].ToString().ToUpper();
+                        string typeName = rowJoin[dalSBB.TypeName].ToString();
 
                         string sizeString = "";
                         int size = 1;
@@ -1190,11 +1193,11 @@ namespace FactoryManagementSoftware.UI
 
                             preChildCode = childCode;
 
-                            int qtyPerBag = int.TryParse(rowJoin[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
-                            int numerator = int.TryParse(rowJoin[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
-                            int denominator = int.TryParse(rowJoin[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
-                            string sizeUnit = rowJoin[dalSPP.SizeUnit].ToString().ToUpper();
-                            string typeName = rowJoin[dalSPP.TypeName].ToString();
+                            int qtyPerBag = int.TryParse(rowJoin[dalSBB.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+                            int numerator = int.TryParse(rowJoin[dalSBB.SizeNumerator].ToString(), out numerator) ? numerator : 1;
+                            int denominator = int.TryParse(rowJoin[dalSBB.SizeDenominator].ToString(), out denominator) ? denominator : 1;
+                            string sizeUnit = rowJoin[dalSBB.SizeUnit].ToString().ToUpper();
+                            string typeName = rowJoin[dalSBB.TypeName].ToString();
 
                             string sizeString = "";
                             int size = 1;
@@ -1700,7 +1703,7 @@ namespace FactoryManagementSoftware.UI
             int colIndex = e.ColumnIndex;
             int targetBag = int.TryParse(dgv.Rows[rowIndex].Cells[colIndex].Value.ToString(), out targetBag) ? targetBag : -1;
 
-            if (rowIndex > -1 && targetBag != -1 && targetBag != oldTargetBag)
+            if (rowIndex > -1 && targetBag != -1 && targetBag != oldTargetBag && dgv.Columns[colIndex].Name.Contains(header_TargetBag))
             {
                 oldTargetBag = 0;
                 ItemEditChanged = true;
@@ -1764,7 +1767,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = (DataTable)dgvMatList.DataSource;
             DataTable dt_MaterialList = dt.Copy();
-            DataTable dt_Fac = dalFac.Select();
+            DataTable dt_Fac = dalFac.SelectDESC();
 
             dt_MaterialList.DefaultView.Sort = header_DeliverFrom + " ASC";
             dt_MaterialList = dt_MaterialList.DefaultView.ToTable();
@@ -1953,19 +1956,19 @@ namespace FactoryManagementSoftware.UI
                 foreach (DataRow row in dt_Product.Rows)
                 {
 
-                    string itemCode = row[dalSPP.ItemCode].ToString();
+                    string itemCode = row[dalSBB.ItemCode].ToString();
 
                     if (itemCode == selectedItemCode)
                     {
                         int readyStock = int.TryParse(row[dalItem.ItemStock].ToString(), out readyStock) ? readyStock : 0;
-                        int qtyPerPacket = int.TryParse(row[dalSPP.QtyPerPacket].ToString(), out qtyPerPacket) ? qtyPerPacket : 0;
-                        int qtyPerBag = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
-                        int maxLevel = int.TryParse(row[dalSPP.MaxLevel].ToString(), out maxLevel) ? maxLevel : 0;
-                        int numerator = int.TryParse(row[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
-                        int denominator = int.TryParse(row[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
-                        string sizeUnit = row[dalSPP.SizeUnit].ToString().ToUpper();
+                        int qtyPerPacket = int.TryParse(row[dalSBB.QtyPerPacket].ToString(), out qtyPerPacket) ? qtyPerPacket : 0;
+                        int qtyPerBag = int.TryParse(row[dalSBB.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+                        int maxLevel = int.TryParse(row[dalSBB.MaxLevel].ToString(), out maxLevel) ? maxLevel : 0;
+                        int numerator = int.TryParse(row[dalSBB.SizeNumerator].ToString(), out numerator) ? numerator : 1;
+                        int denominator = int.TryParse(row[dalSBB.SizeDenominator].ToString(), out denominator) ? denominator : 1;
+                        string sizeUnit = row[dalSBB.SizeUnit].ToString().ToUpper();
 
-                        string typeName = row[dalSPP.TypeName].ToString();
+                        string typeName = row[dalSBB.TypeName].ToString();
 
                         int pcsStock = readyStock;
                         int bagStock = pcsStock / qtyPerBag;
@@ -2136,9 +2139,123 @@ namespace FactoryManagementSoftware.UI
             tlpSetting.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0f);
             tlpSetting.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 100f);
 
+
             tlpList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 0f);
             tlpList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100f);
 
+        }
+
+        private void SaveSchedule()
+        {
+            DialogResult dialogResult;
+
+            if (DataValidation())
+            {
+                dialogResult = MessageBox.Show("Confirm to save new schedule?", "Message",
+                                                          MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+
+                if(dialogResult == DialogResult.Yes)
+                {
+                    //String sql = @"INSERT INTO tbl_sbb_plan 
+                    //        (" + ItemCode + ","
+                    //        + LocationArea + ","
+                    //        + LocationLine + ","
+                    //        + DateStart + ","
+                    //        + DateEnd + ","
+                    //        + TargetQty + ","
+                    //        + MaxQty + ","
+                    //        + PlanStatus + ","
+                    //        + PlanType + ","
+                    //        + PlanNote + ","
+                    //        + UpdatedDate + ","
+                    //        + UpdatedBy + ") VALUES" +
+                    //        "(@Item_code," +
+                    //        "@Location_area," +
+                    //        "@Location_line," +
+                    //        "@Date_start," +
+                    //        "@Date_end," +
+                    //        "@Target_qty," +
+                    //        "@Max_qty," +
+                    //        "@Plan_status," +
+                    //        "@Plan_type," +
+                    //        "@Plan_note," +
+                    //        "@Updated_Date," +
+                    //        "@Updated_By)";
+
+                    //SqlCommand cmd = new SqlCommand(sql, conn);
+
+                    //cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+                    //cmd.Parameters.AddWithValue("@Location_area", u.Location_area);
+                    //cmd.Parameters.AddWithValue("@Location_line", u.Location_line);
+                    //cmd.Parameters.AddWithValue("@Date_start", u.Date_start);
+                    //cmd.Parameters.AddWithValue("@Date_end", u.Date_end);
+                    //cmd.Parameters.AddWithValue("@Target_qty", u.Target_qty);
+                    //cmd.Parameters.AddWithValue("@Max_qty", u.Max_qty);
+                    //cmd.Parameters.AddWithValue("@Plan_status", u.Plan_status);
+                    //cmd.Parameters.AddWithValue("@Plan_type", u.Plan_type);
+                    //cmd.Parameters.AddWithValue("@Plan_note", u.Plan_note);
+                    //cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                    //cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+                    //location ??? remove, record machine only, machine data link with location
+
+                    //loop schedule list
+                    DataTable dt = (DataTable)dgvSchedule.DataSource;
+
+                    foreach(DataRow row in dt.Rows)
+                    {
+                        string dataStatus = row[header_Status].ToString();
+
+                        
+
+                        dt.Columns.Add(header_Index, typeof(int));
+                        dt.Columns.Add(header_Mac, typeof(int));
+                        dt.Columns.Add(header_PlanID, typeof(string));
+                        dt.Columns.Add(header_Status, typeof(string));
+                        dt.Columns.Add(header_ItemString, typeof(string));
+
+
+                        dt.Columns.Add(header_DateStart, typeof(DateTime));
+                        dt.Columns.Add(header_EstimateEnd, typeof(DateTime));
+
+                        dt.Columns.Add(header_Qty, typeof(int));
+
+                        dt.Columns.Add(header_PcsPerManHour, typeof(int));
+                        dt.Columns.Add(header_Manpower, typeof(int));
+                        dt.Columns.Add(header_HoursPerDay, typeof(int));
+
+                        string scheTblCode = row[header_ScheTblCode].ToString();
+                        string itemCode = row[header_Code].ToString();
+
+                        if (dataStatus == text_ToAdd)
+                        {
+                           
+                        }
+                        else if(dataStatus == text_ToUpdate)
+                        {
+
+                        }
+                        else if(dataStatus == text_ToRemove)
+                        {
+
+                        }
+                    }
+                    //get to ADD data
+                    //get to Update data
+                    //get to Remove data
+
+                }
+            }
+           
+        }
+
+
+        private bool DataValidation()
+        {
+            bool result = true;
+
+            return result;
         }
 
         private void MaterialListUIMode()
@@ -3329,8 +3446,16 @@ namespace FactoryManagementSoftware.UI
                 {
                     IfMachineIdle(oldMachineNo);
                     UpdateScheduleAfterNewRowInserted(oldMachineNo);
+
                     if (target_Row[header_Status].ToString() == text.planning_status_idle)
                     {
+                        int indexToRemove =  dt.Rows.IndexOf(target_Row);
+
+                        if(indexToRemove < row_2 && row_2 > 0)
+                        {
+                            row_2--;
+                        }
+
                         dt.Rows.Remove(target_Row);
                     }
                 }

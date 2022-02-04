@@ -1,6 +1,6 @@
 ﻿namespace FactoryManagementSoftware.UI
 {
-    partial class frmSPPDOList
+    partial class frmFinex
     {
         /// <summary>
         /// Required designer variable.
@@ -55,8 +55,8 @@
             this.lblSubList = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnExcel = new System.Windows.Forms.Button();
-            this.btnAddNewDO = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
+            this.btnAddNewDO = new System.Windows.Forms.Button();
             this.lblMainList = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tlpPOList.SuspendLayout();
@@ -74,8 +74,8 @@
             // 
             // tlpPOList
             // 
-            this.tlpPOList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.tlpPOList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tlpPOList.ColumnCount = 1;
             this.tlpPOList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -344,6 +344,7 @@
             this.dgvDOList.Size = new System.Drawing.Size(637, 401);
             this.dgvDOList.TabIndex = 156;
             this.dgvDOList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOList_CellClick);
+            this.dgvDOList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOList_CellContentClick);
             this.dgvDOList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOList_CellDoubleClick);
             this.dgvDOList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvDOList_CellMouseDown);
             this.dgvDOList.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvDOList_DataBindingComplete);
@@ -440,8 +441,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 133F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 133F));
             this.tableLayoutPanel1.Controls.Add(this.btnExcel, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnAddNewDO, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnEdit, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.btnEdit, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.btnAddNewDO, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(199, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -467,23 +468,6 @@
             this.btnExcel.UseVisualStyleBackColor = false;
             this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
             // 
-            // btnAddNewDO
-            // 
-            this.btnAddNewDO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddNewDO.BackColor = System.Drawing.Color.White;
-            this.btnAddNewDO.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddNewDO.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddNewDO.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddNewDO.ForeColor = System.Drawing.Color.Black;
-            this.btnAddNewDO.Location = new System.Drawing.Point(191, 1);
-            this.btnAddNewDO.Margin = new System.Windows.Forms.Padding(4, 1, 4, 5);
-            this.btnAddNewDO.Name = "btnAddNewDO";
-            this.btnAddNewDO.Size = new System.Drawing.Size(124, 32);
-            this.btnAddNewDO.TabIndex = 167;
-            this.btnAddNewDO.Text = "+ NEW D/O";
-            this.btnAddNewDO.UseVisualStyleBackColor = false;
-            this.btnAddNewDO.Click += new System.EventHandler(this.btnAddNewDO_Click);
-            // 
             // btnEdit
             // 
             this.btnEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -492,7 +476,7 @@
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEdit.ForeColor = System.Drawing.Color.Black;
-            this.btnEdit.Location = new System.Drawing.Point(58, 1);
+            this.btnEdit.Location = new System.Drawing.Point(191, 1);
             this.btnEdit.Margin = new System.Windows.Forms.Padding(4, 1, 4, 5);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(124, 32);
@@ -501,6 +485,25 @@
             this.btnEdit.UseVisualStyleBackColor = false;
             this.btnEdit.Visible = false;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // btnAddNewDO
+            // 
+            this.btnAddNewDO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddNewDO.BackColor = System.Drawing.Color.White;
+            this.btnAddNewDO.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddNewDO.Enabled = false;
+            this.btnAddNewDO.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddNewDO.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddNewDO.ForeColor = System.Drawing.Color.Black;
+            this.btnAddNewDO.Location = new System.Drawing.Point(58, 1);
+            this.btnAddNewDO.Margin = new System.Windows.Forms.Padding(4, 1, 4, 5);
+            this.btnAddNewDO.Name = "btnAddNewDO";
+            this.btnAddNewDO.Size = new System.Drawing.Size(124, 32);
+            this.btnAddNewDO.TabIndex = 167;
+            this.btnAddNewDO.Text = "+ NEW D/O";
+            this.btnAddNewDO.UseVisualStyleBackColor = false;
+            this.btnAddNewDO.Visible = false;
+            this.btnAddNewDO.Click += new System.EventHandler(this.btnAddNewDO_Click);
             // 
             // lblMainList
             // 
@@ -520,7 +523,7 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // frmSPPDOList
+            // frmSBBDOList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -529,7 +532,7 @@
             this.Controls.Add(this.tlpPOList);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.Name = "frmSPPDOList";
+            this.Name = "frmSBBDOList";
             this.Text = "DELIVERY ORDER LIST";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmSPPDOList_FormClosed);
             this.Load += new System.EventHandler(this.frmSPPDOList_Load);

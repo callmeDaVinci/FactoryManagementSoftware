@@ -14,14 +14,21 @@ namespace FactoryManagementSoftware.DAL
     {   
         #region data string name getter
         public string ItemMaterial { get; } = "item_material";
+        public string ItemRecycleMat { get; } = "item_recycle";
         public string ItemName { get; } = "item_name";
         public string ItemCode { get; } = "item_code";
         public string ItemColor { get; } = "item_color";
+        public string ItemRawRatio { get; } = "raw_ratio";
+        public string ItemRecycleRatio { get; } = "recycle_ratio";
+        public string ItemUnit { get; } = "item_unit";
+        public string ItemUnitToPCSRate { get; } = "unit_to_pcs_rate";
 
         public string ItemQuoTon { get; } = "item_quo_ton";
         public string ItemBestTon { get; } = "item_best_ton";
         public string ItemProTon { get; } = "item_mc";
         public string ItemMBRate { get; } = "item_mb_rate";
+        public string ColorFollowRaw { get; } = "raw_color";
+        public string ColorFollowRecycle { get; } = "recycle_color";
 
         public string ItemMBatch { get; } = "item_mb";
 
@@ -279,7 +286,7 @@ namespace FactoryManagementSoftware.DAL
                             INNER JOIN tbl_spp_type
                             ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
                             INNER JOIN tbl_spp_size
-                            ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code 
+                            ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code  OR tbl_item.size_tbl_code_2 = tbl_spp_size.tbl_code
                             FULL JOIN tbl_spp_stdpacking
                             ON tbl_item.item_code = tbl_spp_stdpacking.item_code
                             ORDER BY tbl_spp_type.type_name ASC, tbl_spp_size.size_numerator ASC,  tbl_spp_category.category_name ASC";
@@ -380,20 +387,22 @@ namespace FactoryManagementSoftware.DAL
             {
                 //sql query to get data from database
                 String sql = @"SELECT 
-                            tbl_spp_type.type_name as TYPE , 
+                            tbl_spp_type.type_name as TYPE ,
+                            tbl_spp_size.tbl_code,
                             tbl_spp_size.size_numerator as SIZE , 
                             tbl_spp_size.size_unit as UNIT ,
                             tbl_item.item_code as CODE , 
                             tbl_item.item_name as NAME ,
                             tbl_item.item_qty as QUANTITY,
-                            tbl_spp_stdpacking.qty_per_bag as STD_PACKING
+                            tbl_spp_stdpacking.qty_per_bag as STD_PACKING,
+                            tbl_spp_stdpacking.qty_per_packet as QTY_PACKET
                             FROM tbl_item
                             INNER JOIN tbl_spp_category 
                             ON (tbl_item.category_tbl_code = tbl_spp_category.tbl_code AND tbl_spp_category.category_name = @readyGoods)
                             INNER JOIN tbl_spp_type
                             ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
                             INNER JOIN tbl_spp_size
-                            ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code 
+                            ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code OR tbl_item.size_tbl_code_2 = tbl_spp_size.tbl_code 
                             INNER JOIN tbl_spp_stdpacking
                             ON tbl_item.item_code = tbl_spp_stdpacking.item_code
                             ORDER BY tbl_spp_type.type_name ASC, tbl_spp_size.size_numerator ASC,  tbl_spp_category.category_name ASC";
@@ -532,6 +541,7 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Insert Data in Database
+
         public bool Insert(itemBLL u)
         {
             bool isSuccess = false;
@@ -719,6 +729,82 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+
+        public bool SBBItemInsert(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_item 
+                            (" + ItemCat + ","
+                            + ItemCode + ","
+                            + ItemName + ","
+                            + TypeTblCode + ","
+                            + CategoryTblCode + ","
+                            + ItemSize1 + ","
+                            + ItemSize2 + ","
+                            + ItemAddDate + ","
+                            + ItemAddBy + ","
+                            + ItemAssemblyCheck + ","
+                            + ItemProductionCheck + ") VALUES" +
+                            "(@item_cat," +
+                            "@item_code," +
+                            "@item_name," +
+                            "@Type_tbl_code," +
+                            "@Category_tbl_code," +
+                            "@Size_tbl_code_1," +
+                            "@Size_tbl_code_2," +
+                            "@item_added_date," +
+                            "@item_added_by," +
+                            "@item_assembly," +
+                            "@item_production)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_name", u.item_name);
+
+                cmd.Parameters.AddWithValue("@Type_tbl_code", u.Type_tbl_code);
+                cmd.Parameters.AddWithValue("@Category_tbl_code", u.Category_tbl_code);
+
+                cmd.Parameters.AddWithValue("@Size_tbl_code_1", u.Size_tbl_code_1);
+                cmd.Parameters.AddWithValue("@Size_tbl_code_2", u.Size_tbl_code_2);
+
+                cmd.Parameters.AddWithValue("@item_added_date", u.item_added_date);
+                cmd.Parameters.AddWithValue("@item_added_by", u.item_added_by);
+                cmd.Parameters.AddWithValue("@item_assembly", u.item_assembly);
+                cmd.Parameters.AddWithValue("@item_production", u.item_production);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         #endregion
 
         #region Update data in Database
@@ -821,6 +907,8 @@ namespace FactoryManagementSoftware.DAL
                             + ItemUpdateDate + "=@item_updtd_date,"
                             + ItemUpdateBy + "=@item_updtd_by,"
                             + ItemAssemblyCheck + "=@item_assembly,"
+                            + ItemUnit + "=@item_unit,"
+                            + ItemUnitToPCSRate + "=@unit_to_pcs_rate,"
                             + ItemProductionCheck + "=@item_production" +
                             " WHERE item_code=@item_code";
 
@@ -851,6 +939,120 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
                 cmd.Parameters.AddWithValue("@item_assembly", u.item_assembly);
                 cmd.Parameters.AddWithValue("@item_production", u.item_production);
+                cmd.Parameters.AddWithValue("@item_unit", u.item_unit);
+                cmd.Parameters.AddWithValue("@unit_to_pcs_rate", u.unit_to_pcs_rate);
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool SBBItemUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemName + "=@item_name,"
+                            + TypeTblCode + "=@Type_tbl_code,"
+                            + CategoryTblCode + "=@Category_tbl_code,"
+                            + ItemSize1 + "=@Size_tbl_code_1,"
+                            + ItemSize2 + "=@Size_tbl_code_2,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by,"
+                            + ItemAssemblyCheck + "=@item_assembly,"
+                            + ItemProductionCheck + "=@item_production" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_name", u.item_name);
+                cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
+
+                cmd.Parameters.AddWithValue("@Type_tbl_code", u.Type_tbl_code);
+                cmd.Parameters.AddWithValue("@Category_tbl_code", u.Category_tbl_code);
+
+                cmd.Parameters.AddWithValue("@Size_tbl_code_1", u.Size_tbl_code_1);
+                cmd.Parameters.AddWithValue("@Size_tbl_code_2", u.Size_tbl_code_2);
+
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+
+                cmd.Parameters.AddWithValue("@item_assembly", u.item_assembly);
+                cmd.Parameters.AddWithValue("@item_production", u.item_production);
+              
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+        public bool ItemNameUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemName + "=@item_name,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_name", u.item_name);
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+     
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();
@@ -963,6 +1165,72 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
                 cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
                
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool ItemMatUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemMaterial + "=@item_material,"
+                            + ItemRawRatio + "=@item_raw_ratio,"
+                            + ItemRecycleMat + "=@item_recycle,"
+                            + ItemRecycleRatio + "=@item_recycle_ratio,"
+                            + ItemMBatch + "=@item_mb,"
+                            + ItemMBRate + "=@item_mb_rate,"
+                            + ColorFollowRaw + "=@raw_color,"
+                            + ColorFollowRecycle + "=@recycle_color,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by" +
+                            " WHERE item_code=@item_code";
+
+                
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_material", u.item_material);
+                cmd.Parameters.AddWithValue("@item_raw_ratio", u.item_raw_ratio);
+                cmd.Parameters.AddWithValue("@item_recycle", u.item_recycle);
+                cmd.Parameters.AddWithValue("@item_recycle_ratio", u.item_recycle_ratio);
+
+                cmd.Parameters.AddWithValue("@item_mb", u.item_mb);
+                cmd.Parameters.AddWithValue("@item_mb_rate", u.item_mb_rate);
+                cmd.Parameters.AddWithValue("@raw_color", u.raw_color);
+                cmd.Parameters.AddWithValue("@recycle_color", u.recycle_color);
+
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();
@@ -1785,6 +2053,70 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable InOutCatSBBItemSearch(string keywords)
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            DataTable dt = new DataTable();
+            try
+            {
+                string category = new Text().Cat_Part;
+
+                //sql query to get data from database
+                String sql = "SELECT item_cat,item_code, item_name,item_ord,item_qty FROM tbl_item WHERE (item_code LIKE '%" + keywords + "%'OR item_name LIKE '%" + keywords + "%') AND item_cat = @category AND category_tbl_code IS NOT NULL";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@category", category);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable InOutCatSBBItemSearch()
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            DataTable dt = new DataTable();
+            try
+            {
+                string category = new Text().Cat_Part;
+
+                //sql query to get data from database
+                String sql = "SELECT item_cat,item_code, item_name,item_ord,item_qty FROM tbl_item WHERE item_cat = @category AND category_tbl_code IS NOT NULL";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@category", category);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable itemMaterialSearch(string material)
         {
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1866,6 +2198,83 @@ namespace FactoryManagementSoftware.DAL
                 //fill data in our database
                 adapter.Fill(dt);
 
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SBBPartSearch()
+        {
+            //static methodd to connect database
+
+            Text text = new Text();
+            string keywords = text.Cat_Part;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_item WHERE item_cat=@category AND category_tbl_code IS NOT NULL";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@category", keywords);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SBBPartSearch(string keywords)
+        {
+            //static methodd to connect database
+
+            Text text = new Text();
+            string category = text.Cat_Part;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_item WHERE item_cat=@category AND (item_code LIKE '%" + keywords + "%'OR item_name LIKE '%" + keywords + "%') AND category_tbl_code IS NOT NULL";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@category", category);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+                
 
             }
             catch (Exception ex)
@@ -1999,7 +2408,7 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
-
+      
         public DataTable nameSearch(string keywords)
         {
             //static methodd to connect database

@@ -18,6 +18,14 @@ namespace FactoryManagementSoftware.UI
             dateEditOnly = true;
         }
 
+        public frmDeliveryDate(DateTime oldDeliveredDate)
+        {
+            InitializeComponent();
+            dateEditOnly = true;
+            dtpDate.Value = oldDeliveredDate;
+
+        }
+
         public frmDeliveryDate(DataTable dt)
         {
             InitializeComponent();
@@ -51,9 +59,14 @@ namespace FactoryManagementSoftware.UI
         {
             if(dateEditOnly)
             {
-                selectedDate = dtpDate.Value;
+                DialogResult dialogResult = MessageBox.Show("Confirm to set delivered date to: "+ dtpDate.Value.ToString("yyyy/MM/dd")+" ?", "Message",
+                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    selectedDate = dtpDate.Value;
+                }
 
-                if(dateClear)
+                if (dateClear)
                 {
                     selectedDate = DateTimePicker.MinimumDateTime;
                 }
@@ -64,11 +77,8 @@ namespace FactoryManagementSoftware.UI
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.ShowDialog();//Item Edit
 
-                if (frmInOutEdit.TrfSuccess)
-                {
-                    transferred = true;
-                    
-                }
+                transferred = frmInOutEdit.TrfSuccess;
+                
             }
 
             Close();
@@ -94,6 +104,11 @@ namespace FactoryManagementSoftware.UI
                 dtpDate.CustomFormat = "ddMMMMyy";
                 dateClear = false;
             }
+        }
+
+        private void frmDeliveryDate_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

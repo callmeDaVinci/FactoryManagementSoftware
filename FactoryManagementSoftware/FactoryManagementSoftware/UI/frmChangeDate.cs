@@ -24,9 +24,23 @@ namespace FactoryManagementSoftware.UI
         private bool includeSunday = false;
 
         private int proDayRequired = 0;
+
+        private bool fromSBBDeliveredPage = false;
+
         public frmChangeDate()
         {
             InitializeComponent();
+        }
+
+        public frmChangeDate(DateTime from, DateTime to)
+        {
+            InitializeComponent();
+            fromSBBDeliveredPage = true;
+            start = from;
+            end = to;
+
+            dtpStartDate.Value = start;
+            dtpEstimateEndDate.Value = end;
         }
 
         public frmChangeDate(DateTime from , DateTime to , int day, bool sunday)
@@ -50,14 +64,36 @@ namespace FactoryManagementSoftware.UI
 
         private void dtpStartDate_ValueChanged(object sender, EventArgs e)
         {
-            dtpEstimateEndDate.Value = tool.EstimateEndDate(dtpStartDate.Value.Date, proDayRequired, includeSunday);
+            if(fromSBBDeliveredPage)
+            {
+                int day = dtpStartDate.Value.Day;
+
+               
+                if(day == 23)
+                    dtpEstimateEndDate.Value = new DateTime(dtpStartDate.Value.Year, dtpStartDate.Value.AddMonths(1).Month, 22);
+                else
+                    dtpEstimateEndDate.Value = new DateTime(dtpStartDate.Value.Year, dtpStartDate.Value.Month, DateTime.DaysInMonth(dtpStartDate.Value.Year, dtpStartDate.Value.Month));
+
+            }
+            else
+            {
+                dtpEstimateEndDate.Value = tool.EstimateEndDate(dtpStartDate.Value.Date, proDayRequired, includeSunday);
+            }
         }
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
             start = dtpStartDate.Value.Date;
             end = dtpEstimateEndDate.Value.Date;
+
             dateSaved = true;
+
+            if(fromSBBDeliveredPage)
+            {
+                frmSBB.MonthlyDateStart = start;
+                frmSBB.MonthlyDateEnd = end;
+            }
+
             Close();
         }
     }

@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</PublishUrl>
+    <PublishUrl>D:\Users\Jun\Desktop\Remote Update\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -24,9 +24,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
+    <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>241</ApplicationRevision>
+    <ApplicationRevision>394</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -52,10 +53,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>0F00F4B4AEF95CE251A19F48CA540716077AC86C</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>F5F1163ED9C851E79B45A40B6EF590AE48650BC1</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>FactoryManagementSoftware_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>FactoryManagementSoftware_3_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -64,7 +65,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Image\safety_SYA_icon.ico</ApplicationIcon>
+    <ApplicationIcon>Picture2 %281%29.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
@@ -84,6 +85,9 @@
     <Reference Include="itextsharp">
       <HintPath>..\..\..\..\Download\itextsharp\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1400.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
@@ -99,8 +103,23 @@
     <Reference Include="Microsoft.SqlServer.Types, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ReportViewer.2015.12.0.2.2403\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
+    <Reference Include="Spire.License, Version=1.3.8.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
+      <HintPath>..\packages\FreeSpire.PDF.7.2.0\lib\net40\Spire.License.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Pdf, Version=7.2.6.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\FreeSpire.PDF.7.2.0\lib\net40\Spire.Pdf.dll</HintPath>
+    </Reference>
     <Reference Include="SplashScreen, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SplashScreen.Winforms.1.0.0\lib\SplashScreen.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Compression.Base, Version=19.2460.0.49, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Compression.Base.19.2.0.49\lib\net46\Syncfusion.Compression.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Licensing, Version=19.2460.0.49, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Licensing.19.2.0.49\lib\net46\Syncfusion.Licensing.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.XlsIO.Base, Version=19.2460.0.49, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.XlsIO.WinForms.19.2.0.49\lib\net46\Syncfusion.XlsIO.Base.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -110,6 +129,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -184,8 +204,45 @@
     <Compile Include="DAL\userDAL.cs" />
     <Compile Include="DAL\Utilities.cs" />
     <Compile Include="Module\Text.cs" />
+    <Compile Include="Module\ExcelTool.cs" />
     <Compile Include="Module\Tool.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="UI\frmSBBSalesReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBSalesReport.Designer.cs">
+      <DependentUpon>frmSBBSalesReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FinexWill.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FinexWill.Designer.cs">
+      <DependentUpon>FinexWill.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FinexDataUpload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FinexDataUpload.Designer.cs">
+      <DependentUpon>FinexDataUpload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmFinex.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmFinex.Designer.cs">
+      <DependentUpon>frmFinex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSBBMouldEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBMouldEdit.Designer.cs">
+      <DependentUpon>frmSBBMouldEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSBBMould.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBMould.Designer.cs">
+      <DependentUpon>frmSBBMould.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -299,6 +356,30 @@
     </Compile>
     <Compile Include="UI\frmMachineData.Designer.cs">
       <DependentUpon>frmMachineData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSBBMaterialUsedReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBMaterialUsedReport.Designer.cs">
+      <DependentUpon>frmSBBMaterialUsedReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSBBProductionPlanningNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBProductionPlanningNew.Designer.cs">
+      <DependentUpon>frmSBBProductionPlanningNew.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSBBProductionPlanning.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBProductionPlanning.Designer.cs">
+      <DependentUpon>frmSBBProductionPlanning.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSBBProductionSchedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBProductionSchedule.Designer.cs">
+      <DependentUpon>frmSBBProductionSchedule.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmMachineSchedule.cs">
       <SubType>Form</SubType>
@@ -554,6 +635,12 @@
     <Compile Include="UI\frmOrderReceive.Designer.cs">
       <DependentUpon>frmOrderReceive.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmNewPlanning.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmNewPlanning.Designer.cs">
+      <DependentUpon>frmNewPlanning.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmPlanning.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -644,11 +731,17 @@
     <Compile Include="UI\frmSBBDeliveredReport.Designer.cs">
       <DependentUpon>frmSBBDeliveredReport.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmSBBMatPLan.cs">
+    <Compile Include="UI\frmSBBMatPlan.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmSBBMatPLan.Designer.cs">
-      <DependentUpon>frmSBBMatPLan.cs</DependentUpon>
+    <Compile Include="UI\frmSBBMatPlan.Designer.cs">
+      <DependentUpon>frmSBBMatPlan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSBBPrice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBPrice.Designer.cs">
+      <DependentUpon>frmSBBPrice.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmShowDataTable.cs">
       <SubType>Form</SubType>
@@ -674,6 +767,12 @@
     <Compile Include="UI\frmSPPCalculation.Designer.cs">
       <DependentUpon>frmSPPCalculation.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmSBBShippingData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBShippingData.Designer.cs">
+      <DependentUpon>frmSBBShippingData.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmSPPCustomerEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -686,11 +785,11 @@
     <Compile Include="UI\frmSPPDataSetting.Designer.cs">
       <DependentUpon>frmSPPDataSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmSPPDOList.cs">
+    <Compile Include="UI\frmSBBDOList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmSPPDOList.Designer.cs">
-      <DependentUpon>frmSPPDOList.cs</DependentUpon>
+    <Compile Include="UI\frmSBBDOList.Designer.cs">
+      <DependentUpon>frmSBBDOList.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmSPPInventory.cs">
       <SubType>Form</SubType>
@@ -704,17 +803,17 @@
     <Compile Include="UI\frmSPPItemEdit.Designer.cs">
       <DependentUpon>frmSPPItemEdit.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmSPPNewPO.cs">
+    <Compile Include="UI\frmSBBNewPO.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmSPPNewPO.Designer.cs">
-      <DependentUpon>frmSPPNewPO.cs</DependentUpon>
+    <Compile Include="UI\frmSBBNewPO.Designer.cs">
+      <DependentUpon>frmSBBNewPO.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmSPPPOList.cs">
+    <Compile Include="UI\frmSBBPOList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmSPPPOList.Designer.cs">
-      <DependentUpon>frmSPPPOList.cs</DependentUpon>
+    <Compile Include="UI\frmSBBPOList.Designer.cs">
+      <DependentUpon>frmSBBPOList.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmStockReport.cs">
       <SubType>Form</SubType>
@@ -776,6 +875,12 @@
     <Compile Include="UI\frmUserEdit.Designer.cs">
       <DependentUpon>frmUserEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmVerification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmVerification.Designer.cs">
+      <DependentUpon>frmVerification.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MainDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -788,6 +893,24 @@
     <Compile Include="UI\NewInOutReport.Designer.cs">
       <DependentUpon>NewInOutReport.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\frmSBBSalesReport.resx">
+      <DependentUpon>frmSBBSalesReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FinexWill.resx">
+      <DependentUpon>FinexWill.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FinexDataUpload.resx">
+      <DependentUpon>FinexDataUpload.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmFinex.resx">
+      <DependentUpon>frmFinex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSBBMouldEdit.resx">
+      <DependentUpon>frmSBBMouldEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSBBMould.resx">
+      <DependentUpon>frmSBBMould.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -844,6 +967,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMachineData.resx">
       <DependentUpon>frmMachineData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSBBMaterialUsedReport.resx">
+      <DependentUpon>frmSBBMaterialUsedReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSBBProductionPlanningNew.resx">
+      <DependentUpon>frmSBBProductionPlanningNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSBBProductionPlanning.resx">
+      <DependentUpon>frmSBBProductionPlanning.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSBBProductionSchedule.resx">
+      <DependentUpon>frmSBBProductionSchedule.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMachineSchedule.resx">
       <DependentUpon>frmMachineSchedule.cs</DependentUpon>
@@ -981,6 +1116,9 @@
     <EmbeddedResource Include="UI\frmOrderReceive.resx">
       <DependentUpon>frmOrderReceive.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmNewPlanning.resx">
+      <DependentUpon>frmNewPlanning.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPlanning.resx">
       <DependentUpon>frmPlanning.cs</DependentUpon>
     </EmbeddedResource>
@@ -1026,8 +1164,11 @@
     <EmbeddedResource Include="UI\frmSBBDeliveredReport.resx">
       <DependentUpon>frmSBBDeliveredReport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmSBBMatPLan.resx">
-      <DependentUpon>frmSBBMatPLan.cs</DependentUpon>
+    <EmbeddedResource Include="UI\frmSBBMatPlan.resx">
+      <DependentUpon>frmSBBMatPlan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSBBPrice.resx">
+      <DependentUpon>frmSBBPrice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmShowDataTable.resx">
       <DependentUpon>frmShowDataTable.cs</DependentUpon>
@@ -1041,14 +1182,17 @@
     <EmbeddedResource Include="UI\frmSPPCalculation.resx">
       <DependentUpon>frmSPPCalculation.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSBBShippingData.resx">
+      <DependentUpon>frmSBBShippingData.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSPPCustomerEdit.resx">
       <DependentUpon>frmSPPCustomerEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSPPDataSetting.resx">
       <DependentUpon>frmSPPDataSetting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmSPPDOList.resx">
-      <DependentUpon>frmSPPDOList.cs</DependentUpon>
+    <EmbeddedResource Include="UI\frmSBBDOList.resx">
+      <DependentUpon>frmSBBDOList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSPPInventory.resx">
       <DependentUpon>frmSPPInventory.cs</DependentUpon>
@@ -1056,11 +1200,11 @@
     <EmbeddedResource Include="UI\frmSPPItemEdit.resx">
       <DependentUpon>frmSPPItemEdit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmSPPNewPO.resx">
-      <DependentUpon>frmSPPNewPO.cs</DependentUpon>
+    <EmbeddedResource Include="UI\frmSBBNewPO.resx">
+      <DependentUpon>frmSBBNewPO.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmSPPPOList.resx">
-      <DependentUpon>frmSPPPOList.cs</DependentUpon>
+    <EmbeddedResource Include="UI\frmSBBPOList.resx">
+      <DependentUpon>frmSBBPOList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockReport.resx">
       <DependentUpon>frmStockReport.cs</DependentUpon>
@@ -1092,6 +1236,9 @@
     <EmbeddedResource Include="UI\frmUserEdit.resx">
       <DependentUpon>frmUserEdit.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmVerification.resx">
+      <DependentUpon>frmVerification.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\MainDashboard.resx">
       <DependentUpon>MainDashboard.cs</DependentUpon>
     </EmbeddedResource>
@@ -1099,6 +1246,8 @@
       <DependentUpon>NewInOutReport.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="FactoryManagementSoftware_1_TemporaryKey.pfx" />
+    <None Include="FactoryManagementSoftware_2_TemporaryKey.pfx" />
+    <None Include="FactoryManagementSoftware_3_TemporaryKey.pfx" />
     <None Include="FactoryManagementSoftware_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -1163,6 +1312,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ee4dce1061f3f616224767ad58cb2fc751b8d2dc.ico" />
     <Content Include="Image\icons8-back-to-64.png" />
     <Content Include="Image\icons8_available_updates_96_deQ_icon.ico" />
     <None Include="Image\safety-logo.png" />
@@ -1246,6 +1396,16 @@
     <None Include="Resources\icons8-assembly-line-96 %281%29.png" />
     <None Include="Resources\Picture4.png" />
     <None Include="Resources\icons8-task-64.png" />
+    <None Include="Resources\safetylogoblack.bmp" />
+    <None Include="Resources\safetyblacklogo.png" />
+    <None Include="Resources\WillCoverImage.png" />
+    <Content Include="Picture1.ico" />
+    <Content Include="Picture2 %281%29.ico" />
+    <Content Include="Picture2.ico" />
+    <None Include="Resources\icons8-full-screen-64.png" />
+    <None Include="Resources\icons8-exit-full-screen-64.png" />
+    <None Include="Resources\icons8-toggle-full-screen-50.png" />
+    <Content Include="Safety logo final.ico" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1281,6 +1441,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

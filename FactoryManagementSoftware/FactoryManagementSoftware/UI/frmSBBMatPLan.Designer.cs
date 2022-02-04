@@ -1,6 +1,6 @@
 ﻿namespace FactoryManagementSoftware.UI
 {
-    partial class frmSBBMatPLan
+    partial class frmSBBMatPlan
     {
         /// <summary>
         /// Required designer variable.

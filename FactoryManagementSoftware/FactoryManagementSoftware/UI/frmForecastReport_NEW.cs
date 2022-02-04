@@ -83,6 +83,16 @@ namespace FactoryManagementSoftware.UI
         string headerBal1 = "BAL";
         string headerBal2 = "BAL";
 
+        readonly string headerQuoTon = "QUO TON";
+        readonly string headerProTon = "PRO TON";
+        readonly string headerCavity = "CAVITY";
+        readonly string headerQuoCT = "QUO CT";
+        readonly string headerProCT = "PRO CT";
+        readonly string headerPWPerShot = "PW/SHOT";
+        readonly string headerRWPerShot = "RW/SHOT";
+        readonly string headerTotalOut = "TOTAL OUT/2021";
+        readonly string headerMonthlyOut = "MONTHLY OUT";
+
         readonly Color AssemblyColor = Color.Blue;
         readonly Color ProductionColor = Color.Green;
         readonly Color ProductionAndAssemblyColor = Color.Purple;
@@ -163,12 +173,27 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerPartCode, typeof(string));
             dt.Columns.Add(headerColorMat, typeof(string));
             dt.Columns.Add(headerPartWeight, typeof(string));
+
+            if(cbIncludeProInfo.Checked)
+            {
+                dt.Columns.Add(headerQuoTon, typeof(string));
+                dt.Columns.Add(headerProTon, typeof(string));
+                dt.Columns.Add(headerCavity, typeof(string));
+                dt.Columns.Add(headerQuoCT, typeof(string));
+                dt.Columns.Add(headerProCT, typeof(string));
+                dt.Columns.Add(headerPWPerShot, typeof(string));
+                dt.Columns.Add(headerRWPerShot, typeof(string));
+                dt.Columns.Add(headerTotalOut, typeof(string));
+                dt.Columns.Add(headerMonthlyOut, typeof(string));
+            }
+
             //dt.Columns.Add(headerPlannedQty, typeof(float));
             dt.Columns.Add(headerProduced, typeof(float));
             dt.Columns.Add(headerToProduce, typeof(float));
            
             dt.Columns.Add(headerReadyStock, typeof(float));
             dt.Columns.Add(headerEstimate, typeof(float));
+
 
             string monthFrom = cmbForecastFrom.Text;
 
@@ -845,7 +870,7 @@ namespace FactoryManagementSoftware.UI
 
                             if (month != monthNow || year != yearNow)
                             {
-                                dividedQty++;
+                                dividedQty ++;
                             }
                             
                         }
@@ -897,6 +922,30 @@ namespace FactoryManagementSoftware.UI
             return Tuple.Create(toProduce, produced);
         }
 
+        private DataTable RemoveTerminatedItem(DataTable dt)
+        {
+            //"(TERMINATED)"
+            DataTable dt_NEW = dt.Copy();
+
+            dt_NEW.AcceptChanges();
+            foreach (DataRow row in dt_NEW.Rows)
+            {
+                // If this row is offensive then
+                string itemName = row[dalItem.ItemName].ToString();
+
+                if(itemName.Contains(text.Cat_Terminated))
+                if(itemName.Contains(text.Cat_Terminated))
+                    {
+                    row.Delete();
+
+                }
+            }
+            dt_NEW.AcceptChanges();
+
+            return dt_NEW;
+
+        }
+
         private void LoadForecastData()
         {
 
@@ -926,9 +975,14 @@ namespace FactoryManagementSoftware.UI
             if (!string.IsNullOrEmpty(customer))
             {
                 DataTable dt_Data = NewForecastReportTable();
+
                 DataRow dt_Row;
 
                 DataTable dt = dalItemCust.custSearch(customer);
+
+                //filter out terminated item
+                if(!cbIncludeTerminated.Checked)
+                dt = RemoveTerminatedItem( dt);
 
                 DataTable dt_ItemForecast = dalItemForecast.Select(tool.getCustID(customer).ToString());
 
@@ -951,6 +1005,7 @@ namespace FactoryManagementSoftware.UI
 
                 #region load single part
                 //normal speed
+
                 foreach (DataRow row in dt.Rows)
                 {
                     uData.part_code = row[dalItem.ItemCode].ToString();
@@ -1248,6 +1303,34 @@ namespace FactoryManagementSoftware.UI
                     dt_Data = ItemSearch(dt_Data);
 
                     dt_OrginalData = Sorting(dt_Data);
+
+                    if (cbIncludeProInfo.Checked)
+                    {
+                        foreach(DataRow row in dt_OrginalData.Rows)
+                        {
+                            string itemCode = row[headerPartCode].ToString();
+
+                            foreach (DataRow itemRow in dt_Item.Rows)
+                            {
+                                if(itemCode.Equals(itemRow[dalItem.ItemCode].ToString()))
+                                {
+                                    row[headerQuoTon] = itemRow[dalItem.ItemQuoTon].ToString();
+                                    row[headerProTon] = itemRow[dalItem.ItemProTon].ToString();
+                                    row[headerCavity] = itemRow[dalItem.ItemCavity].ToString();
+                                    row[headerQuoCT] = itemRow[dalItem.ItemQuoCT].ToString();
+                                    row[headerProCT] = itemRow[dalItem.ItemProCTTo].ToString();
+                                    row[headerPWPerShot] = itemRow[dalItem.ItemProPWShot].ToString();
+                                    row[headerRWPerShot] = itemRow[dalItem.ItemProRWShot].ToString();
+
+                                    break;
+
+                                    //row[headerTotalOut] = uData.color_mat;
+                                    //row[headerMonthlyOut] = uData.color_mat;
+                                }
+                            }
+                        }
+                    }
+
                     //Sorting:fast speed
                     dgvForecastReport.DataSource = dt_OrginalData;
 
@@ -1260,6 +1343,8 @@ namespace FactoryManagementSoftware.UI
                     dgvForecastReport.Columns.Remove(headerBackColor);
                     dgvForecastReport.Columns.Remove(headerBalType);
                     dgvForecastReport.Columns.Remove(headerForecastType);
+
+                   
 
                     DgvForecastReportUIEdit(dgvForecastReport);
                     dgvForecastReport.ClearSelection();
@@ -2094,14 +2179,16 @@ namespace FactoryManagementSoftware.UI
 
         private void getStartandEndDate()
         {
+            int year = DateTime.Now.Year;
+
+
             if (loaded && cmbForecastFrom.SelectedIndex != -1 && cmbCustomer.SelectedIndex != -1)
             {
                 string monthString = cmbForecastFrom.Text;
 
                 int month = DateTime.ParseExact(monthString, "MMMM", CultureInfo.CurrentCulture).Month;
-                int year;
+               
 
-                year = DateTime.Now.Year;
 
                 //if (month > DateTime.Now.Month)
                 //{

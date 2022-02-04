@@ -433,7 +433,7 @@ namespace FactoryManagementSoftware.UI
                 string itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
                 string planID = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
                 
-                DataTable transferData = dalTrf.codeSearch(itemCode);
+                DataTable transferData = dalTrf.codeLikeSearch(itemCode);
 
                 foreach (DataRow row in dt.Rows)
                 {
@@ -477,7 +477,7 @@ namespace FactoryManagementSoftware.UI
                                         if(!string.IsNullOrEmpty(parentCode))
                                         {
                                             itemCode = parentCode;
-                                            transferData = dalTrf.codeSearch(itemCode);
+                                            transferData = dalTrf.codeLikeSearch(itemCode);
                                         }
                                         break;
                                     }

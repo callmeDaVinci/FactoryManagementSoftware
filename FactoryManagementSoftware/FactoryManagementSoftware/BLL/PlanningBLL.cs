@@ -35,6 +35,7 @@ namespace FactoryManagementSoftware.BLL
         public string color_material_qty { get; set; }
 
         public string production_purpose { get; set; }
+        public string production_Old_target_qty { get; set; }
         public string production_target_qty { get; set; }
         public string production_able_produce_qty { get; set; }
         public string production_day { get; set; }

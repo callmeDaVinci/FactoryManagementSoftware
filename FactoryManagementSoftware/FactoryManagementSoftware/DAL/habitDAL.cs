@@ -361,7 +361,7 @@ namespace FactoryManagementSoftware.DAL
             if (!success)
             {
                 MessageBox.Show("Failed to insert habit data!");
-                tool.historyRecord(text.System, "Failed to insert habit data! (habitDAL : 319)", date, MainDashboard.USER_ID);
+                tool.historyRecord(text.System, "Failed to insert habit data! (habitDAL : 364)", date, MainDashboard.USER_ID);
             }
             else
             {

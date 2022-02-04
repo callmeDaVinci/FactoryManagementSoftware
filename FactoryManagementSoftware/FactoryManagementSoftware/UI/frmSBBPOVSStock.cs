@@ -52,6 +52,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_StockPcs = "STOCK (PCS)";
         readonly string header_StockBag = "STOCK (BAG)";
         readonly string header_StockString = "STOCK";
+        readonly string header_QtyPerPkt = "QTY PER PKT";
         readonly string header_QtyPerBag = "QTY PER BAG";
         readonly string header_BalAfterDelivery = "BAL. AFTER DELIVERY";
         readonly string header_BalAfterDeliveryInPcs = "BAL. AFTER DELIVERY IN PCS";
@@ -76,6 +77,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_ItemCode = "CODE";
         readonly string header_ItemName = "NAME";
         readonly string header_BalAfter = "BAL. AFTER";
+        readonly string header_Stock = "STOCK";
 
         readonly string text_FillBySystem = "FILL BY SYSTEM";
         readonly string text_SelectCol = "SELECT COLUMN";
@@ -88,7 +90,7 @@ namespace FactoryManagementSoftware.UI
         readonly string text_NewTrip = "New Trip";
 
         readonly string text_OpenDO = "OPEN D/O";
-        readonly string text_AddDO = "ADD D/O";
+        readonly string text_AddDO = "Add D/O";
 
         readonly string text_Selected = " SELECTED";
         
@@ -96,8 +98,9 @@ namespace FactoryManagementSoftware.UI
         readonly string text_ProductSortBy = "PRODUCT SORT BY";
         readonly string text_POSortBy = "P/O SORT BY";
 
-        readonly string text_Bag = "BAG";
-        readonly string text_Pcs = "PCS";
+        readonly string text_Bag = "BAGs";
+        readonly string text_Pkt = "PKTs";
+        readonly string text_Pcs = "PCs";
         readonly string text_Size = "SIZE";
         readonly string text_Type = "TYPE";
         readonly string text_Customer = "CUSTOMER";
@@ -109,7 +112,7 @@ namespace FactoryManagementSoftware.UI
         readonly string text_DeliveryStatus_ToOpen = "TO OPEN";
         readonly string text_DeliveryStatus_Opened = "OPENED";
         readonly string text_DeliveryStatus_OpenedWithDiff = "OPENED WITH DIFF";
-
+        readonly string text_DeliveryStatus_ToDeliveryMoreThanOrder = "TO DELIVERY MORE THAN ORDER";
 
         readonly string header_POCode = "P/O CODE";
         readonly string header_PONo = "P/O NO";
@@ -134,6 +137,7 @@ namespace FactoryManagementSoftware.UI
 
         private bool Loaded = false;
         private bool dataChanged = false;
+        private bool stopAfterBalUpdate = false;
         private int oldToDeliveryQty = 0;
 
         private int toAssemblyProductQty = 0;
@@ -197,8 +201,10 @@ namespace FactoryManagementSoftware.UI
 
             dt.Columns.Add(header_ItemCode, typeof(string));
             dt.Columns.Add(header_ItemName, typeof(string));
+            
+            dt.Columns.Add(header_Stock, typeof(int));
             dt.Columns.Add(header_BalAfter, typeof(int));
-        
+
             return dt;
         }
 
@@ -217,18 +223,46 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_StockPcs, typeof(int));
             dt.Columns.Add(header_StockBag, typeof(int));
             dt.Columns.Add(header_StockString, typeof(string));
+            dt.Columns.Add(header_QtyPerPkt, typeof(int));
             dt.Columns.Add(header_QtyPerBag, typeof(int));
             dt.Columns.Add(header_BalAfterDelivery, typeof(string));
             dt.Columns.Add(header_BalAfterDeliveryInPcs, typeof(int));
             return dt;
         }
 
-       
+
+        private const int WM_SETREDRAW = 0x000B;
+
+        public static void Suspend(Control control)
+        {
+            Message msgSuspendUpdate = Message.Create(control.Handle, WM_SETREDRAW, IntPtr.Zero,
+                IntPtr.Zero);
+
+            NativeWindow window = NativeWindow.FromHandle(control.Handle);
+            window.DefWndProc(ref msgSuspendUpdate);
+        }
+
+        public static void Resume(Control control)
+        {
+            // Create a C "true" boolean as an IntPtr
+            IntPtr wparam = new IntPtr(1);
+            Message msgResumeUpdate = Message.Create(control.Handle, WM_SETREDRAW, wparam,
+                IntPtr.Zero);
+
+            NativeWindow window = NativeWindow.FromHandle(control.Handle);
+            window.DefWndProc(ref msgResumeUpdate);
+
+            control.Invalidate();
+        }
+
         private void AdjustDGVRowAlignment(DataGridView dgv)
         {
             string preItem = "";
 
-            if(dgv.RowCount > 1)
+   
+            dgv.SuspendLayout();
+
+            if (dgv.RowCount > 1)
             {
                 dgv.Rows[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomCenter;
                 dgv.Rows[0].DefaultCellStyle.ForeColor = Color.FromArgb(64, 64, 64);
@@ -238,29 +272,39 @@ namespace FactoryManagementSoftware.UI
                 dgv.Rows[1].DefaultCellStyle.ForeColor = Color.FromArgb(64, 64, 64);
                 dgv.Rows[1].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
 
+                dgv.Rows[1].Frozen = true;
             }
 
-            for(int i = 4; i < dgv.RowCount; i += 3)
+            Font style_Italic_7 = new Font("Segoe UI", 7F, FontStyle.Italic);
+            Font style_Italic_6 = new Font("Segoe UI", 6F, FontStyle.Italic);
+            Font style_Regular_8 = new Font("Segoe UI", 8F, FontStyle.Regular);
+            Font style_Bold_10 = new Font("Segoe UI", 10F, FontStyle.Bold);
+            Font style_Regular_10 = new Font("Segoe UI", 10F, FontStyle.Regular);
+
+            #region datagridview looping
+
+            for (int i = 4; i < dgv.RowCount; i += 3)
             {
-                //int test = (i + 1) % 3;
-
-                
-
-                if ((i + 2) % 3 == 0 )
+                if ((i + 2) % 3 == 0)
                 {
                     dgv.Rows[i - 2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.BottomCenter;
+                    dgv.Rows[i - 2].InheritedStyle.Alignment = DataGridViewContentAlignment.BottomCenter;
                     dgv.Rows[i - 2].DefaultCellStyle.ForeColor = Color.FromArgb(64, 64, 64);
-                    dgv.Rows[i - 2].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+
+                    dgv.Rows[i - 2].Cells[header_BalAfterDelivery].Style.Font = style_Italic_6;
+
+                    //dgv.Rows[i - 2].InheritedStyle.Font = style_Italic;
+                    dgv.Rows[i - 2].DefaultCellStyle.Font = style_Italic_7;
                     dgv.Rows[i - 2].Cells[header_Type].InheritedStyle.Alignment = DataGridViewContentAlignment.BottomLeft;
                     dgv.Rows[i - 2].Cells[header_StockString].InheritedStyle.Alignment = DataGridViewContentAlignment.BottomRight;
 
                     DataGridViewRow row = dgv.Rows[i];
                     row.MinimumHeight = 2;
-                    dgv.Rows[i].Height = 2;
-
+                    dgv.Rows[i].Height = 2;//adjust
+                    //dgv.Rows[i].Visible = false;
                     string currentItem;
 
-                    if (cmbProductSortBy.Text == text_Size)
+                    if (cmbProductSortBy.Text == text_Size)//144ms
                     {
                         currentItem = dgv.Rows[i - 1].Cells[header_SizeString].Value.ToString();
                     }
@@ -270,33 +314,44 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     dgv.Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
+                    //dgv.Rows[i].InheritedStyle.BackColor = Color.LightGray;
 
                     if (preItem == "")
                     {
                         preItem = currentItem;
-                        
+
                     }
-                    else if(preItem != currentItem)
+                    else if (preItem != currentItem)
                     {
                         preItem = currentItem;
                         dgv.Rows[i - 3].DefaultCellStyle.BackColor = Color.Black;
-                        //dgv.Rows[i - 3].Height = 40;
+                        //dgv.Rows[i - 3].InheritedStyle.BackColor = Color.Black;
+                        ////dgv.Rows[i - 3].Height = 40;
                     }
-                  
 
-                    dgv.Rows[i - 1].DefaultCellStyle.ForeColor = Color.Black;
-                    dgv.Rows[i - 1].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
-                    dgv.Rows[i - 1].Cells[header_BalAfterDelivery].InheritedStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+                    //dgv.Rows[i - 1].DefaultCellStyle.ForeColor = Color.Black;
+                    //dgv.Rows[i - 1].DefaultCellStyle.Font = style_Regular_8;
+
+                    dgv.Rows[i - 1].InheritedStyle.ForeColor = Color.Black;
+                    dgv.Rows[i - 1].InheritedStyle.Font = style_Regular_8;
+
+                    dgv.Rows[i - 1].Cells[header_BalAfterDelivery].Style.Font = style_Regular_10;//142ms
+                    
+                     
 
                     dgv.Rows[i - 1].Cells[header_Type].InheritedStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                     dgv.Rows[i - 1].Cells[header_StockString].InheritedStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                     dgv.Rows[i - 1].Cells[header_BalAfterDelivery].InheritedStyle.Alignment = DataGridViewContentAlignment.TopCenter;
+                    //dgv.Rows[i - 1].Cells[header_BalAfterDelivery].Style.ForeColor = Color.Red;
 
-                }
+                }//576ms//558ms//567ms//419ms//422ms//145ms
+              
+
             }
+            #endregion
+            dgv.ResumeLayout();
 
-           
         }
 
         private void DgvUIEdit(DataGridView dgv, int priorityColNum)
@@ -305,28 +360,54 @@ namespace FactoryManagementSoftware.UI
             dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
-
+            dgv.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgv.Columns[colName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+           // dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
             dgv.Columns[header_Code].Visible = false;
             dgv.Columns[header_Size].Visible = false;
             dgv.Columns[header_Unit].Visible = false;
             dgv.Columns[header_StockPcs].Visible = false;
             dgv.Columns[header_StockBag].Visible = false;
             dgv.Columns[header_QtyPerBag].Visible = false;
+            dgv.Columns[header_QtyPerPkt].Visible = false;
             dgv.Columns[header_BalAfterDeliveryInPcs].Visible = false;
             dgv.Columns[header_BalAfterDelivery].Frozen = true;
 
             dgv.Columns[header_Code].DefaultCellStyle.ForeColor = Color.Gray;
             dgv.Columns[header_Code].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
-            dgv.Columns[header_Type].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            //dgv.Columns[header_Index].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            //dgv.Columns[header_Type].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            //dgv.Columns[header_StockString].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 
-            dgv.Columns[header_BalAfterDelivery].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            dgv.Rows[0].Height = 70;
+
+            dgv.Columns[header_Index].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dgv.Columns[header_Index].Width = 30;
+
+            dgv.Columns[header_StockString].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dgv.Columns[header_StockString].Width = 150;
+
+            dgv.Columns[header_Type].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dgv.Columns[header_Type].Width = 135;
+
+            dgv.Columns[header_BalAfterDelivery].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dgv.Columns[header_BalAfterDelivery].Width = 170;
+            dgv.Columns[header_BalAfterDelivery].DefaultCellStyle.BackColor = Color.WhiteSmoke;
+           // dgv.Columns[header_BalAfterDelivery].DefaultCellStyle.ForeColor = Color.White;
+
+            //dgv.Columns[header_StockString].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            //dgv.Columns[header_BalAfterDelivery].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            //dgv.Columns[header_BalAfterDelivery].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+
+            //dgv.Columns[header_BalAfterDelivery].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
 
             dgv.Columns[header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_Type].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgv.Columns[header_StockString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns[header_StockString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_SizeString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[header_BalAfterDelivery].DefaultCellStyle.Alignment = DataGridViewContentAlignment.TopCenter;
+            
 
             for (int i = 1; i <= priorityColNum; i++)
             {
@@ -344,8 +425,9 @@ namespace FactoryManagementSoftware.UI
                 string colCustCodeName = header_PriorityCustCode + i;
                 string colPODateName = header_PriorityPODate + i;
 
-                dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgv.Columns[colName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+                //dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;//adjust
+                //dgv.Columns[colName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;//adjust
+                //dgv.Columns[header_Index].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 
                 dgv.Columns[colDeliveredName].Visible = false;
                 dgv.Columns[colOrderName].Visible = false;
@@ -359,6 +441,10 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[colSelectedName].Visible = false;
                 dgv.Columns[colCustCodeName].Visible = false;
                 dgv.Columns[colPODateName].Visible = false;
+
+                dgv.Rows[0].Cells[colName].Style.WrapMode = DataGridViewTriState.True;
+                dgv.Rows[1].Cells[colName].Style.WrapMode = DataGridViewTriState.True;
+
 
             }
         }
@@ -418,6 +504,7 @@ namespace FactoryManagementSoftware.UI
 
             cmb.DataSource = dt;
             cmb.DisplayMember = text_ProductSortBy;
+            cmb.SelectedIndex = 1;
         }
 
         private void LoadPOSortByCMB(ComboBox cmb)
@@ -425,9 +512,9 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = new DataTable();
             dt.Columns.Add(text_POSortBy);
+            dt.Rows.Add(text_Customer);
 
             dt.Rows.Add(text_ReceivedDate);
-            dt.Rows.Add(text_Customer);
             //dt.Rows.Add(text_PriorityLvl);
 
             cmb.DataSource = dt;
@@ -485,7 +572,9 @@ namespace FactoryManagementSoftware.UI
                 dt_Product = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);
 
 
-                dt_Product.DefaultView.Sort = dalSPP.SizeNumerator + " ASC";
+               // dt_Product.DefaultView.Sort = dalSPP.SizeNumerator + " ASC" ;
+                dt_Product.DefaultView.Sort = dalSPP.SizeNumerator + " ASC," + dalSPP.SizeWeight + "1 ASC";
+                
                 dt_Product = dt_Product.DefaultView.ToTable();
 
                 if (cmbProductSortBy.Text == text_Type)
@@ -500,7 +589,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (cmbPOSortBy.Text == text_ReceivedDate)
                 {
-                    dt_POList.DefaultView.Sort = dalSPP.PODate + " ASC," + dalSPP.POCode + " ASC," + dalSPP.CustomerTableCode + " ASC," + dalSPP.PriorityLevel + " ASC";
+                    dt_POList.DefaultView.Sort = dalSPP.PODate + " ASC," + dalSPP.POCode + " ASC," + dalSPP.CustTblCode + " ASC," + dalSPP.PriorityLevel + " ASC";
                 }
                 else if (cmbPOSortBy.Text == text_Customer)
                 {
@@ -535,7 +624,7 @@ namespace FactoryManagementSoftware.UI
 
                     int pcsStock = readyStock;
                     int bagStock = pcsStock / qtyPerBag;
-
+                    int balStock = pcsStock % qtyPerBag;
 
                     string sizeString = "";
                     int size = 1;
@@ -555,15 +644,18 @@ namespace FactoryManagementSoftware.UI
                     DataRow planning_row = dt_Planning.NewRow();
 
                     string stockString = pcsStock + " PCS";
-
+                    string stdPackingString = qtyPerPacket + "/PKT, " + qtyPerBag + "/BAG";
                     planning_row[header_Type] = itemCode;
                     planning_row[header_StockString] = stockString;
-
+                    planning_row[header_BalAfterDelivery] = stdPackingString;
+                    planning_row[header_QtyPerPkt] = qtyPerPacket;
                     dt_Planning.Rows.Add(planning_row);
 
 
                     //stockString = bagStock + " BAGS (" + pcsStock + ")";
                     stockString = bagStock + " BAGS";
+
+                  
 
                     planning_row = dt_Planning.NewRow();
 
@@ -577,10 +669,17 @@ namespace FactoryManagementSoftware.UI
                     planning_row[header_Code] = itemCode;
                     planning_row[header_StockPcs] = pcsStock;
                     planning_row[header_StockBag] = bagStock;
-                    planning_row[header_StockString] = stockString;
                     planning_row[header_QtyPerBag] = qtyPerBag;
+                    planning_row[header_QtyPerPkt] = qtyPerPacket;
                     planning_row[header_BalAfterDelivery] = stockString;
                     planning_row[header_BalAfterDeliveryInPcs] = pcsStock;
+
+                    if (balStock > 0)
+                    {
+                        string nl = Environment.NewLine;
+                        stockString += nl + " + " + balStock + " PCS";
+                    }
+                    planning_row[header_StockString] = stockString;
 
                     dt_Planning.Rows.Add(planning_row);
                     index++;
@@ -614,30 +713,23 @@ namespace FactoryManagementSoftware.UI
                 {
                     bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
                     bool isFreeze = bool.TryParse(row[dalSPP.Freeze].ToString(), out isFreeze) ? isFreeze : false;
+                    bool custOwnDO = bool.TryParse(row[dalSPP.CustOwnDO].ToString(), out custOwnDO) ? custOwnDO : false;
+
 
                     int deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
                     int orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
                     int toDeliveryQty = int.TryParse(row[dalSPP.ToDeliveryQty].ToString(), out toDeliveryQty) ? toDeliveryQty : 0;
                     string poTblCode = row[dalSPP.TableCode].ToString();
 
-                    int poCustTblCode = int.TryParse(row[dalSPP.CustomerTableCode].ToString(), out poCustTblCode) ? poCustTblCode : 0;
-
-                    //PODate = DateTime.TryParse(row[dalSPP.PODate].ToString(), out PODate) ? PODate : 0;
-
-                    //if(poTblCode == "727")
-                    // {
-                    //     float test = 0;
-                    // }
+                    int poCustTblCode = int.TryParse(row[dalSPP.CustTblCode].ToString(), out poCustTblCode) ? poCustTblCode : 0;
+                    bool usingBillingAddress = bool.TryParse(row[dalSPP.ShippingSameAsBilling].ToString(), out usingBillingAddress) ? usingBillingAddress : false;
+                    bool gotBalanceOrder = false;
 
                     if (!isRemoved && !isFreeze && deliveredQty < orderQty)
                     {
                         int poCode = int.TryParse(row[dalSPP.POCode].ToString(), out poCode) ? poCode : -1;
                         string poItemCode = row[dalSPP.ItemCode].ToString();
-
-                        //if (poCode.ToString() == "122")
-                        //{
-                        //    float trest = 0;
-                        //}
+                        
 
                         if (prePOCode != poCode)
                         {
@@ -774,15 +866,83 @@ namespace FactoryManagementSoftware.UI
                                     dt_Planning.Rows[i - 1][colToDeliveryQtyName] = DO_ToDeliveryQty;
 
                                     //string POData = " " + ShortName + " (" + PONo + "): " + DO_ToDeliveryQty / divideBy + "/" + planningDelivered / divideBy + "/" + planningOrder / divideBy + " ";
+                                    string POData = "";
 
-                                    string POData = " " + DO_ToDeliveryQty / divideBy + "/" + planningDelivered / divideBy + "/" + planningOrder / divideBy + " ";
 
+                                    if ((orderQty - deliveredQty) % divideBy > 0)
+                                    {
+                                        POData += "★ ";//★⍟☆⋆✪✫❂🌟#%★
+                                        gotBalanceOrder = true;
+                                    }
+
+                                    POData += " " + DO_ToDeliveryQty / divideBy + "/" + planningDelivered / divideBy + "/" + planningOrder / divideBy + " ";
+
+                                    if ((orderQty - deliveredQty) % divideBy > 0)
+                                    {
+                                        POData += "★";//★⍟☆⋆✪✫❂🌟#%★
+
+                                    }
                                     dt_Planning.Rows[i - 1][colName] = POData;
 
-                                    dt_Planning.Rows[0][colName] = " " + ShortName + " (" + PONo + ") ";
-                                    dt_Planning.Rows[0][colCustIDName] = poCustTblCode;
-                                    dt_Planning.Rows[1][colName] = " "+PODate.ToShortDateString()+" ";
+                                    string nl = Environment.NewLine;
 
+
+                                    string POInfo = "";
+
+
+                                    if (custOwnDO)
+                                    {
+                                        if(gotBalanceOrder)
+                                        {
+                                            POInfo = " " + ShortName + nl + nl + "★✪ (" + PONo + ") " + nl + " " + PODate.ToShortDateString() + " ";
+
+                                        }
+                                        else
+                                        {
+                                            POInfo = " " + ShortName + nl + nl + " ✪ (" + PONo + ") " + nl + " " + PODate.ToShortDateString() + " ";
+
+                                        }
+                                    }
+                                    else if (gotBalanceOrder)
+                                    {
+                                        POInfo = " " + ShortName + nl + nl + "★ (" + PONo + ") " + nl + " " + PODate.ToShortDateString() + " ";
+
+                                    }
+                                    else
+                                    {
+                                        POInfo = " " + ShortName + nl + nl + " (" + PONo + ") " + nl + " " + PODate.ToShortDateString() + " ";
+                                    }
+
+                                    dt_Planning.Rows[0][colName] = POInfo;
+                                    dt_Planning.Rows[0][colCustIDName] = poCustTblCode;
+                                   
+                                    ShortName = row[dalSPP.ShortName].ToString();
+
+
+                                    // string POShippingInfo = " " + PODate.ToShortDateString() + " ";
+                                    string POShippingInfo = "";
+
+                                    string ShippingShortName = row[dalSPP.ShippingShortName].ToString();
+                                    string ShippingState = row[dalSPP.AddressState].ToString().ToUpper();
+                                    string ShippingTransporter = row[dalSPP.ShippingTransporter].ToString();
+
+                                    
+                                    POShippingInfo += nl ;
+
+                                    if (ShippingShortName != ShortName && !usingBillingAddress)
+                                        POShippingInfo +=  " " + ShippingShortName;
+                                    else
+                                        POShippingInfo +=  nl;
+
+
+
+                                    if (ShippingState != "SELANGOR" && ShippingState != "KL" && ShippingState != "KUALA LUMPUR" )
+                                    {
+                                        POShippingInfo += " (" + ShippingState + ")";
+                                    }
+
+                                    POShippingInfo += " " + nl + ShippingTransporter + " ";
+                                    dt_Planning.Rows[1][colName] = POShippingInfo;
                                 }
                                 else
                                 {
@@ -800,32 +960,39 @@ namespace FactoryManagementSoftware.UI
 
                 #endregion
 
-                dgvList.SuspendLayout();
+                dgvList.SuspendLayout();//148ms
 
-               
+                dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                dgvList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+                dgvList.ColumnHeadersVisible = false;
 
                 dgvList.DataSource = dt_Planning;
 
-                DgvUIEdit(dgvList, colNum);
+               
 
-                AdjustDGVRowAlignment(dgvList);//150ms
+                DgvUIEdit(dgvList, colNum);//3245MS//3534ms//2631ms//27ms
 
-                AdjustToDeliveryBackColor();//905ms
+                AdjustDGVRowAlignment(dgvList);//1858MS//1834ms//136ms/1116ms
 
-                UpdateBalAfterDelivery();//441ms
+                AdjustToDeliveryBackColor();//33790ms//8880ms//9645ms//571ms//9758ms
 
-                dgvList.ResumeLayout();//115ms
+                UpdateBalAfterDelivery();//22786ms//21407ms//20ms//1210ms//6025ms
 
-                dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;//327ms
+                dgvList.ResumeLayout();//115ms//326ms//1210ms//325ms//1478
 
-                dgvList.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+                dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;//327ms//1ms
+
+                dgvList.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);//169ms
+
+                dgvList.ColumnHeadersVisible = true;
+               
 
                 dgvList.ClearSelection();
 
                 //298ms
                 Cursor = Cursors.Arrow;
 
-                frmLoading.CloseForm();
+                frmLoading.CloseForm();//1122ms//986ms
             }
           
         }
@@ -833,34 +1000,42 @@ namespace FactoryManagementSoftware.UI
         private void AdjustToDeliveryBackColor()
         {
             DataGridView dgv = dgvList;
+            Font bold_12 = new Font("Segoe UI", 12F, FontStyle.Bold);
+            Color color_ToOpen = Color.FromArgb(253, 203, 110);//yellow
+            Color color_Opened = Color.FromArgb(0, 184, 148);//green
+            Color color_OpenedWithDiff = Color.FromArgb(52, 160, 225);//blue
+            Color color_ToDeliveryMoreThanOrder = Color.FromArgb(255, 118, 117);//red
 
             for (int i = 2; i < dgv.RowCount; i++)
             {
-                for (int j = 0; j < dgv.ColumnCount; j++)
+                for (int j = 5; j < dgv.ColumnCount; j++)
                 {
                     int rowIndex = i;
                     int colIndex = j;
 
+                    
                     string cellValue = dgv.Rows[rowIndex].Cells[colIndex].Value.ToString();
                     string colName = dgv.Columns[colIndex].Name;
 
                     if (colName.Contains(header_Priority) && int.TryParse(cellValue, out int x))
                     {
-                        dgv.Rows[i].Cells[j].Style.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+                        dgv.Rows[i].Cells[j].Style.Font = bold_12;
+                        //dgv.Rows[i].Cells[j].InheritedStyle.Font = bold_12;
+                       
                     }
 
                     // change to delivery qty fore color
                     if (cellValue == text_DeliveryStatus_ToOpen)
                     {
-                        dgv.Rows[rowIndex + 1].Cells[colIndex - 1].Style.BackColor = Color.FromArgb(253, 203, 110);
+                        dgv.Rows[rowIndex + 1].Cells[colIndex - 1].Style.BackColor = color_ToOpen;
                     }
                     else if (cellValue == text_DeliveryStatus_Opened)
                     {
-                        dgv.Rows[rowIndex + 1].Cells[colIndex - 1].Style.BackColor = Color.FromArgb(0, 184, 148);
+                        dgv.Rows[rowIndex + 1].Cells[colIndex - 1].Style.BackColor = color_Opened;
                     }
                     else if (cellValue == text_DeliveryStatus_OpenedWithDiff)
                     {
-                        dgv.Rows[rowIndex + 1].Cells[colIndex - 1].Style.BackColor = Color.FromArgb(52, 160, 225);
+                        dgv.Rows[rowIndex + 1].Cells[colIndex - 1].Style.BackColor = color_OpenedWithDiff;
                     }
                 }
             }
@@ -870,7 +1045,6 @@ namespace FactoryManagementSoftware.UI
 
         private void frmSBBDeliveryPlanning_Load(object sender, EventArgs e)
         {
-
             LoadPOList();
 
             Loaded = true;
@@ -914,6 +1088,17 @@ namespace FactoryManagementSoftware.UI
 
                             if(!string.IsNullOrEmpty(PONo))
                             {
+                                string POData = "";
+                                bool gotBal = false;
+
+                                if ((orderQty - deliveredQty) % pcsPerBag > 0)
+                                {
+                                    POData += "★ ";//★⍟☆⋆✪✫❂🌟#%★
+                                    gotBal = true;
+                                }
+
+                                
+
                                 if (cmbEditUnit.Text == text_Bag)
                                 {
                                     //pcs switch to bag
@@ -928,7 +1113,19 @@ namespace FactoryManagementSoftware.UI
                                     //planToDeliveryQty *= pcsPerBag;
                                 }
 
-                                string POData = " " + ShortName + " (" + PONo + "): " + DOToDeliveryQtyInPcs + "/" + deliveredQty + "/" + orderQty + " ";
+                                //string POData = " " + DOToDeliveryQtyInPcs + "/" + deliveredQty + "/" + orderQty + " ";
+
+                                POData += " " + DOToDeliveryQtyInPcs + "/" + deliveredQty + "/" + orderQty + " ";
+
+                                if (gotBal)
+                                {
+                                    POData += "★";//★⍟☆⋆✪✫❂🌟#%★
+                                }
+
+
+
+
+                                //string POData = " " + ShortName + " (" + PONo + "): " + DOToDeliveryQtyInPcs + "/" + deliveredQty + "/" + orderQty + " ";
 
                                 dt.Rows[i - 1][searchingColumns] = POData;
                                 dt.Rows[i][searchingColumns] = planToDeliveryQty;
@@ -951,6 +1148,7 @@ namespace FactoryManagementSoftware.UI
             if(Loaded)
             {
                 SwitchUnit();
+                UpdateBalAfterDelivery();
             }
         }
 
@@ -1046,10 +1244,16 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in dt_Product.Rows)
             {
-                string parentCode = GetChildCode(dtJoin, row[header_ItemCode].ToString());
+                string itemCode = row[header_ItemCode].ToString();
+
+                string parentCode = itemCode;
+
+                if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C")
+                {
+                    parentCode = GetChildCode(dtJoin, row[header_ItemCode].ToString());
+                }
 
                 int stillNeed = int.TryParse(row[header_BalAfter].ToString(), out stillNeed) ? stillNeed : 0;
-             
 
                 stillNeed = stillNeed > 0 ? 0 : stillNeed * -1;
              
@@ -1101,7 +1305,7 @@ namespace FactoryManagementSoftware.UI
                             alert_row[header_ItemCode] = childCode;
                             alert_row[header_ItemName] = childName;
                             alert_row[header_BalAfter] = bal;
-
+                            alert_row[header_Stock] = readyStock;
                             dt_MatPart.Rows.Add(alert_row);
                             index++;
                         }
@@ -1167,7 +1371,10 @@ namespace FactoryManagementSoftware.UI
             bool assemblyNeeded = false;
             foreach(DataRow row in dt.Rows)
             {
-                string balString = row[header_BalAfterDelivery].ToString().Replace(" BAGS", "");
+                string balString = row[header_BalAfterDeliveryInPcs].ToString();
+                //string balString = row[header_BalAfterDelivery].ToString().Replace(" BAGS", "");
+
+
                 int bal = int.TryParse(balString, out bal) ? bal : 0;
 
                 if(bal < 0)
@@ -1210,31 +1417,54 @@ namespace FactoryManagementSoftware.UI
                     foreach (DataColumn col in dt.Columns)
                     {
                         string colName = col.ColumnName;
-                        int toDelivery = int.TryParse(dt.Rows[rowIndex][colName].ToString(), out toDelivery) ? toDelivery : -1;
+                        int toDelivery = int.TryParse(dt.Rows[rowIndex - 1][colName].ToString(), out toDelivery) ? toDelivery : -1;
+                        
+                        //if (colName.Contains(header_Priority) && toDelivery >= 0)
+                        //{
+                        //    TotalToDeliveryQty += toDelivery;
+                        //}
 
-                        if (colName.Contains(header_Priority) && toDelivery >= 0)
+                        if (colName.Contains(header_PriorityToDeliveryPlanningInPCS) && toDelivery >= 0)
                         {
                             TotalToDeliveryQty += toDelivery;
                         }
+
                     }
 
                     int divideBy = pcsPerBag;
+                    
 
                     if (cmbEditUnit.Text == text_Pcs)
                     {
                         divideBy = 1;
                     }
 
-                    int balInPcs = stockInPcs - TotalToDeliveryQty * divideBy;
+                    int bal_Pcs = stockInPcs - TotalToDeliveryQty * 1;
 
-                    int balAfterDelivery = balInPcs / pcsPerBag;
+                    int balAfterDelivery = bal_Pcs / pcsPerBag;
 
                     dt.Rows[rowIndex][header_BalAfterDelivery] = balAfterDelivery + " BAGS";
-                    dt.Rows[rowIndex][header_BalAfterDeliveryInPcs] = balInPcs;
 
-                    int test = balInPcs / pcsPerBag;
+                    int balPcsAfterDelivery = bal_Pcs % pcsPerBag;
 
-                    if (balInPcs < 0)
+                    if(balPcsAfterDelivery != 0)
+                    {
+                        dt.Rows[rowIndex][header_BalAfterDelivery] = balAfterDelivery + " BAGS + "+ balPcsAfterDelivery+" PCS";
+
+                    }
+
+                    dt.Rows[rowIndex][header_BalAfterDeliveryInPcs] = bal_Pcs;
+
+                    int test = bal_Pcs / pcsPerBag;
+
+                    if (stockInPcs < 0)
+                    {
+                        dgvList.Rows[rowIndex].Cells[header_Stock].Style.ForeColor = Color.Red;
+                        dgvList.Rows[rowIndex - 1].Cells[header_Stock].Style.ForeColor = Color.Red;
+
+                    }
+                   
+                    if (bal_Pcs < 0)
                     {
                         if (dgvList.Rows[rowIndex].Cells[header_BalAfterDelivery].InheritedStyle.ForeColor == Color.Black)
                         {
@@ -1242,8 +1472,8 @@ namespace FactoryManagementSoftware.UI
                         }
 
                         dgvList.Rows[rowIndex].Cells[header_BalAfterDelivery].Style.ForeColor = Color.Red;
-                        TotalAssemblyNeededInBags += balInPcs / pcsPerBag;
-                        TotalAssemblyNeededInPcs += balInPcs;
+                        TotalAssemblyNeededInBags += bal_Pcs / pcsPerBag;
+                        TotalAssemblyNeededInPcs += bal_Pcs;
                     }
                     else
                     {
@@ -1301,6 +1531,14 @@ namespace FactoryManagementSoftware.UI
             dt.Rows[row][header_BalAfterDelivery] = balInPcs/pcsPerBag + " BAGS";
             dt.Rows[row][header_BalAfterDeliveryInPcs] = balInPcs;
 
+            int balInPcsBalance = balInPcs % pcsPerBag;
+
+            if(balInPcsBalance != 0)
+            {
+                dt.Rows[row][header_BalAfterDelivery] = balInPcs / pcsPerBag + " BAGS + "+balInPcsBalance+" PCS";
+
+            }
+
 
             if (balInPcs < 0)
             {
@@ -1342,15 +1580,11 @@ namespace FactoryManagementSoftware.UI
             if(rowIndex - 1 >= 0)
             {
                 string cellValue = dgv.Rows[rowIndex].Cells[colIndex].Value.ToString();
-
-                if(int.TryParse(cellValue, out int x))
+                
+                if(int.TryParse(cellValue, out int x) && x != oldToDeliveryQty)
                 {
-                    dataChanged = true;
-                    btnUpdate.Visible = true;
+                    
 
-                    //update balance
-                    UpdateBalAfterDelivery();
-                    //UpdateBalAfterDelivery(rowIndex);
                     //get priority level
                     string colName = dgv.Columns[colIndex].Name;
 
@@ -1365,48 +1599,69 @@ namespace FactoryManagementSoftware.UI
                     int pcsPerBag = int.TryParse(dgv.Rows[rowIndex].Cells[header_QtyPerBag].Value.ToString(), out pcsPerBag) ? pcsPerBag : 1;
 
                     int newToDeliveryQty = int.TryParse(cellValue, out newToDeliveryQty) ? newToDeliveryQty : 0;
+                    int orderQty = int.TryParse(dgv.Rows[rowIndex - 1].Cells[header_PriorityOrder + priorityLvl].Value.ToString(), out orderQty) ? orderQty : 0;
+                    int deliveredQty = int.TryParse(dgv.Rows[rowIndex - 1].Cells[header_PriorityDelivered + priorityLvl].Value.ToString(), out deliveredQty) ? deliveredQty : 0;
 
+                    int toDeliveryQty = newToDeliveryQty * pcsPerBag;
 
-                    
-                    if (cmbEditUnit.Text == text_Bag)
+                    if(cmbEditUnit.Text == text_Pcs)
                     {
-                        newToDeliveryQty *= pcsPerBag;
+                        toDeliveryQty = newToDeliveryQty;
                     }
 
-                    dgv.Rows[rowIndex - 1].Cells[header_PriorityToDeliveryPlanningInPCS + priorityLvl].Value = newToDeliveryQty;
-
-                    //change delivery status color
-                    if (int.TryParse(DOToDeliveryQtyInPcs, out int i))
+                    if (toDeliveryQty + deliveredQty <= orderQty)
                     {
-                        AddToUpdateData(POTblCode, newToDeliveryQty);
+                        dataChanged = true;
+                        btnUpdate.Visible = true;
+                        //update balance
+                        UpdateBalAfterDelivery();
 
-                        if (DOToDeliveryQtyInPcs != "0")
+                        if (cmbEditUnit.Text == text_Bag)
                         {
-                            if (DOToDeliveryQtyInPcs == newToDeliveryQty.ToString())
+                            newToDeliveryQty *= pcsPerBag;
+                        }
+
+                        dgv.Rows[rowIndex - 1].Cells[header_PriorityToDeliveryPlanningInPCS + priorityLvl].Value = newToDeliveryQty;
+
+                        //change delivery status color
+                        if (int.TryParse(DOToDeliveryQtyInPcs, out int i))
+                        {
+                            AddToUpdateData(POTblCode, newToDeliveryQty);
+
+                            if (DOToDeliveryQtyInPcs != "0")
                             {
-                                deliveryStatus = text_DeliveryStatus_Opened;
-                                dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(0, 184, 148);
+                                if (DOToDeliveryQtyInPcs == newToDeliveryQty.ToString())
+                                {
+                                    deliveryStatus = text_DeliveryStatus_Opened;
+                                    dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(0, 184, 148);
+                                }
+                                else
+                                {
+                                    deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
+                                    dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(52, 160, 225);
+                                }
                             }
                             else
                             {
-                                deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
-                                dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(52, 160, 225);
-                                //dgv.Rows[rowIndex].Cells[colIndex].Style.ForeColor = Color.White;
+
+                                dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(253, 203, 110);
+
                             }
                         }
                         else
                         {
-                            dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(253, 203, 110);
-
+                            dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.White;
                         }
+
+                        dgv.Rows[rowIndex - 1].Cells[header_PriorityToDeliveryStatus + priorityLvl].Value = deliveryStatus;
+                        //MessageBox.Show("Different");
                     }
                     else
                     {
-                        dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.White;
+                        MessageBox.Show("Delivery + delivered quantity cannot more than ordered quantity.","        WARNING",  MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        dgv.Rows[rowIndex].Cells[colIndex].Value = oldToDeliveryQty;
                     }
 
-                    dgv.Rows[rowIndex - 1].Cells[header_PriorityToDeliveryStatus + priorityLvl].Value = deliveryStatus;
-                    //MessageBox.Show("Different");
                 }
             }
            
@@ -1630,6 +1885,8 @@ namespace FactoryManagementSoftware.UI
                                 
                                 AddToUpdateData(POTblCode, stillNeed);
 
+                                int stillNeedInPcs = stillNeed;
+
                                 stillNeed = cmbEditUnit.Text == text_Bag ? stillNeed / pcsPerBag : stillNeed;
 
                                 dt.Rows[i][searchingColumns] = stillNeed;
@@ -1639,12 +1896,14 @@ namespace FactoryManagementSoftware.UI
                                 //get DO to delivery qty
                                 string DOToDeliveryQtyInPcs = dgv.Rows[i - 1].Cells[header_PriorityToDeliveryQty + priorityLvl].Value.ToString();
 
+                                dgv.Rows[i - 1].Cells[header_PriorityToDeliveryPlanningInPCS + priorityLvl].Value = stillNeedInPcs;
+
                                 string deliveryStatus = text_DeliveryStatus_ToOpen;
 
                                 //change delivery status color
                                 if (DOToDeliveryQtyInPcs != "0")
                                 {
-                                    if (DOToDeliveryQtyInPcs == stillNeed.ToString())
+                                    if (DOToDeliveryQtyInPcs == stillNeedInPcs.ToString())
                                     {
                                         deliveryStatus = text_DeliveryStatus_Opened;
                                         dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(0, 184, 148);
@@ -1724,6 +1983,8 @@ namespace FactoryManagementSoftware.UI
 
                                 AddToUpdateData(POTblCode, stillNeed);
 
+                                int stillNeedInPcs = stillNeed;
+
                                 stillNeed = cmbEditUnit.Text == text_Bag ? stillNeed / pcsPerBag : stillNeed;
 
                                 dt.Rows[i][searchingColumns] = stillNeed;
@@ -1733,12 +1994,14 @@ namespace FactoryManagementSoftware.UI
                                 //get DO to delivery qty
                                 string DOToDeliveryQtyInPcs = dgv.Rows[i - 1].Cells[header_PriorityToDeliveryQty + priorityLvl].Value.ToString();
 
+                                dgv.Rows[i - 1].Cells[header_PriorityToDeliveryPlanningInPCS + priorityLvl].Value = stillNeedInPcs;
+
                                 string deliveryStatus = text_DeliveryStatus_ToOpen;
 
                                 //change delivery status color
                                 if (DOToDeliveryQtyInPcs != "0")
                                 {
-                                    if (DOToDeliveryQtyInPcs == stillNeed.ToString())
+                                    if (DOToDeliveryQtyInPcs == stillNeedInPcs.ToString())
                                     {
                                         deliveryStatus = text_DeliveryStatus_Opened;
                                         dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(0, 184, 148);
@@ -1842,6 +2105,8 @@ namespace FactoryManagementSoftware.UI
 
                                     AddToUpdateData(POTblCode, stillNeed);
 
+                                    int stillNeedInPcs = stillNeed;
+
                                     stillNeed = cmbEditUnit.Text == text_Bag ? stillNeed / pcsPerBag : stillNeed;
 
                                     dt.Rows[i][searchingColumns] = stillNeed;
@@ -1853,10 +2118,13 @@ namespace FactoryManagementSoftware.UI
 
                                     string deliveryStatus = text_DeliveryStatus_ToOpen;
 
+                                    dgv.Rows[i - 1].Cells[header_PriorityToDeliveryPlanningInPCS + priorityLvl].Value = stillNeedInPcs;
+
+
                                     //change delivery status color
                                     if (DOToDeliveryQtyInPcs != "0")
                                     {
-                                        if (DOToDeliveryQtyInPcs == stillNeed.ToString())
+                                        if (DOToDeliveryQtyInPcs == stillNeedInPcs.ToString())
                                         {
                                             deliveryStatus = text_DeliveryStatus_Opened;
                                             dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(0, 184, 148);
@@ -1958,6 +2226,7 @@ namespace FactoryManagementSoftware.UI
                                     stillNeed = cmbEditUnit.Text == text_Bag ? stillNeed / pcsPerBag : stillNeed;
 
                                     dt.Rows[i][searchingColumns] = 0;
+                                    dgv.Rows[i - 1].Cells[header_PriorityToDeliveryPlanningInPCS + priorityLvl].Value = 0;
 
                                     stillNeed = cmbEditUnit.Text == text_Bag ? stillNeed * pcsPerBag : stillNeed;
 
@@ -1968,16 +2237,19 @@ namespace FactoryManagementSoftware.UI
 
                                     if (DOToDeliveryQtyInPcs != "0")
                                     {
-                                        if (DOToDeliveryQtyInPcs == stillNeed.ToString())
-                                        {
-                                            deliveryStatus = text_DeliveryStatus_Opened;
-                                            dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(0, 184, 148);
-                                        }
-                                        else
-                                        {
-                                            deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
-                                            dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(52, 160, 225);
-                                        }
+                                        deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
+                                        dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(52, 160, 225);
+
+                                        //if (DOToDeliveryQtyInPcs == stillNeed.ToString())
+                                        //{
+                                        //    deliveryStatus = text_DeliveryStatus_Opened;
+                                        //    dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(0, 184, 148);
+                                        //}
+                                        //else
+                                        //{
+                                        //    deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
+                                        //    dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(52, 160, 225);
+                                        //}
                                     }
                                     else
                                     {
@@ -2018,7 +2290,9 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = (DataTable)dgv.DataSource;
 
             int totalBag = 0;
+            int totalPkts = 0;
             int totalPcs = 0;
+            int totalBalPcs = 0;
 
             int totalCellSelected = 0;
             int totalColSelected = 0;
@@ -2028,6 +2302,7 @@ namespace FactoryManagementSoftware.UI
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 int pcsPerBag = int.TryParse(dt.Rows[i][header_QtyPerBag].ToString(), out pcsPerBag) ? pcsPerBag : -1;
+                int pcsPerPacket = int.TryParse(dt.Rows[i][header_QtyPerPkt].ToString(), out pcsPerPacket) ? pcsPerPacket : -1;
 
                 if (pcsPerBag != -1)
                 {
@@ -2048,23 +2323,40 @@ namespace FactoryManagementSoftware.UI
                         if (colName == searchingColumns && cellSelected)
                         {
 
-                            
-
                             int toDeliverQty = int.TryParse(dt.Rows[i][searchingColumns].ToString(), out toDeliverQty) ? toDeliverQty : -1;
 
-                            
-                            if(toDeliverQty > -1)
+
+                            if (toDeliverQty > -1)
                             {
                                 totalCellSelected++;
                             }
 
-                            if (toDeliverQty > 0)
+                            int toDeliverPcs = int.TryParse(dt.Rows[i - 1][header_PriorityToDeliveryPlanningInPCS + priorityLvl.ToString()].ToString(), out toDeliverPcs) ? toDeliverPcs : 0;
+
+                            if (toDeliverQty > 0 || toDeliverPcs > 0)
                             {
-                                
 
                                 totalBag += cmbEditUnit.Text != text_Bag ? toDeliverQty / pcsPerBag : toDeliverQty;
-                                totalPcs += cmbEditUnit.Text != text_Bag ? toDeliverQty : toDeliverQty * pcsPerBag;
+                                totalPcs += toDeliverPcs;
+                               // totalPcs += cmbEditUnit.Text != text_Bag ? toDeliverQty : toDeliverQty * pcsPerBag;
 
+
+                                //dgv.Rows[i - 1].Cells[header_PriorityToDeliveryPlanningInPCS + priorityLvl].Value = stillNeedInPcs;
+                                //int toDeliverPcs = cmbEditUnit.Text != text_Bag ? toDeliverQty : toDeliverQty * pcsPerBag;
+
+                                if (pcsPerPacket > 0)
+                                {
+                                    //int planningPcs = int.TryParse(dt.Rows[i-1][header_PriorityToDeliveryPlanningInPCS + priorityLvl.ToString()].ToString(), out planningPcs) ? planningPcs : 0;
+                                    //totalPkts += planningPcs % pcsPerBag / pcsPerPacket;
+                                    totalPkts += toDeliverPcs % pcsPerBag / pcsPerPacket;
+                                    totalBalPcs += toDeliverPcs % pcsPerPacket;
+
+                                }
+                                else
+                                {
+                                    totalBalPcs += toDeliverPcs % pcsPerBag;
+
+                                }
                             }
 
 
@@ -2116,8 +2408,35 @@ namespace FactoryManagementSoftware.UI
 
             totalSelected_Text = " (" + totalSelected + " " + selectedType + ")";
 
-            lblTotalBag.Text = totalBag + " BAG(s) / " + totalPcs +" PCS "+ text_Selected + totalSelected_Text;
+            if(totalPkts > 0)
+            {
+                if(totalBalPcs > 0)
+                {
+                    lblTotalBag.Text = totalBag + " BAG(s) + " + totalPkts + " PKT(s) + " + totalBalPcs + " PCS(s) " + "or " + totalPcs + " PCS " + text_Selected + totalSelected_Text;
 
+                }
+                else
+                {
+                    lblTotalBag.Text = totalBag + " BAG(s) + " + totalPkts + " PKT(s) " + "or " + totalPcs + " PCS " + text_Selected + totalSelected_Text;
+
+                }
+
+            }
+            else
+            {
+                if (totalBalPcs > 0)
+                {
+                    lblTotalBag.Text = totalBag + " BAG(s) + " + totalBalPcs + " PCS(s) " + "or " + totalPcs + " PCS " + text_Selected + totalSelected_Text;
+
+                }
+                else
+                {
+                    lblTotalBag.Text = totalBag + " BAG(s) or " + totalPcs + " PCS " + text_Selected + totalSelected_Text;
+
+
+                }
+            }
+            
         }
 
         private void NewTrip(DataGridView dgv)
@@ -2343,6 +2662,7 @@ namespace FactoryManagementSoftware.UI
 
         private void Reset(DataGridView dgv)
         {
+            stopAfterBalUpdate = true;
             dgv.SuspendLayout();
             DataTable dt = (DataTable)dgv.DataSource;
 
@@ -2394,21 +2714,27 @@ namespace FactoryManagementSoftware.UI
 
                                 string deliveryStatus = text_DeliveryStatus_ToOpen;
 
-                               // dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(253, 203, 110);
+                                dgv.Rows[i - 1].Cells[header_PriorityToDeliveryPlanningInPCS + priorityLvl].Value = 0;
+
+
+                                // dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(253, 203, 110);
 
                                 //change delivery status color
                                 if (DOToDeliveryQtyInPcs != "0")
                                 {
-                                    if (DOToDeliveryQtyInPcs == stillNeed.ToString())
-                                    {
-                                        deliveryStatus = text_DeliveryStatus_Opened;
-                                        dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(0, 184, 148);
-                                    }
-                                    else
-                                    {
-                                        deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
-                                        dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(52, 160, 225);
-                                    }
+                                    deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
+                                    dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(52, 160, 225);
+
+                                    //if (DOToDeliveryQtyInPcs == stillNeed.ToString())
+                                    //{
+                                    //    deliveryStatus = text_DeliveryStatus_Opened;
+                                    //    dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(0, 184, 148);
+                                    //}
+                                    //else
+                                    //{
+                                    //    deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
+                                    //    dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(52, 160, 225);
+                                    //}
                                 }
                                 else
                                 {
@@ -2437,10 +2763,12 @@ namespace FactoryManagementSoftware.UI
             {
                 UpdateBalAfterDelivery();
             }
+            stopAfterBalUpdate = false;
         }
 
         private void ResetAll(DataGridView dgv)
         {
+            stopAfterBalUpdate = true;
             dgv.SuspendLayout();
             DataTable dt = (DataTable)dgv.DataSource;
 
@@ -2479,6 +2807,7 @@ namespace FactoryManagementSoftware.UI
                                 stillNeed = cmbEditUnit.Text == text_Bag ? stillNeed / pcsPerBag : stillNeed;
 
                                 dt.Rows[i][searchingColumns] = 0;
+                                dgv.Rows[i - 1].Cells[header_PriorityToDeliveryPlanningInPCS + priorityLvl].Value = 0;
 
                                 stillNeed = cmbEditUnit.Text == text_Bag ? stillNeed * pcsPerBag : stillNeed;
 
@@ -2489,16 +2818,19 @@ namespace FactoryManagementSoftware.UI
 
                                 if (DOToDeliveryQtyInPcs != "0")
                                 {
-                                    if (DOToDeliveryQtyInPcs == stillNeed.ToString())
-                                    {
-                                        deliveryStatus = text_DeliveryStatus_Opened;
-                                        dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(0, 184, 148);
-                                    }
-                                    else
-                                    {
-                                        deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
-                                        dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(52, 160, 225);
-                                    }
+                                    deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
+                                    dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(52, 160, 225);
+
+                                    //if (DOToDeliveryQtyInPcs == stillNeed.ToString())
+                                    //{
+                                    //    deliveryStatus = text_DeliveryStatus_Opened;
+                                    //    dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(0, 184, 148);
+                                    //}
+                                    //else
+                                    //{
+                                    //    deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
+                                    //    dgv.Rows[i].Cells[searchingColumns].Style.BackColor = Color.FromArgb(52, 160, 225);
+                                    //}
                                 }
                                 else
                                 {
@@ -2528,10 +2860,12 @@ namespace FactoryManagementSoftware.UI
             {
                 UpdateBalAfterDelivery();
             }
+            stopAfterBalUpdate = false;
         }
 
         private void btnFillALL_Click(object sender, EventArgs e)
         {
+            stopAfterBalUpdate = true;
             Cursor = Cursors.WaitCursor;
             DataGridView dgv = dgvList;
 
@@ -2592,44 +2926,62 @@ namespace FactoryManagementSoftware.UI
             }
             
             UpdateBalAfterDelivery();
-
+            stopAfterBalUpdate = false;
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
 
             dgv.ResumeLayout();
             Cursor = Cursors.Arrow;
         }
 
+        private bool dataUpdate()
+        {
+            bool updated = false;
+
+            DialogResult dialogResult = MessageBox.Show("Confirm to save/update ?", "Message",
+                                                         MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                bool dataUpdated = true;
+
+                if (dt_ToUpdate != null)
+                {
+                    uSpp.Updated_By = MainDashboard.USER_ID;
+                    uSpp.Updated_Date = DateTime.Now;
+
+                    foreach (DataRow row in dt_ToUpdate.Rows)
+                    {
+                        uSpp.Table_Code = int.TryParse(row[header_POTblCode].ToString(), out int i) ? i : 0;
+                        uSpp.To_delivery_qty = int.TryParse(row[header_ToDeliveryPCSQty].ToString(), out i) ? i : 0;
+
+                        dataUpdated = dalSPP.POToDeliveryDataUpdate(uSpp);
+                        if (!dataUpdated)
+                        {
+                            MessageBox.Show("Failed to update to delivery qty.\nPO Table Code: " + uSpp.Table_Code + "\nTo Delivery Qty: " + uSpp.To_delivery_qty);
+                        }
+                    }
+
+                    if (dataUpdated)
+                    {
+                        MessageBox.Show("Data updated!");
+
+                        updated = true;
+                    }
+
+                    dataChanged = false;
+                    btnUpdate.Visible = false;
+                }
+            }
+
+            return updated;
+
+        }
+
+           
+
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            bool dataUpdated = true;
-
-            if(dt_ToUpdate != null)
-            { 
-                uSpp.Updated_By = MainDashboard.USER_ID;
-                uSpp.Updated_Date = DateTime.Now;
-
-                foreach (DataRow row in dt_ToUpdate.Rows)
-                {
-                    uSpp.Table_Code = int.TryParse(row[header_POTblCode].ToString(), out int i) ? i : 0;
-                    uSpp.To_delivery_qty = int.TryParse(row[header_ToDeliveryPCSQty].ToString(), out  i) ? i : 0;
-
-                    dataUpdated = dalSPP.POToDeliveryDataUpdate(uSpp);
-                    if (!dataUpdated)
-                    {
-                        MessageBox.Show("Failed to update to delivery qty.\nPO Table Code: "+ uSpp.Table_Code +"\nTo Delivery Qty: "+ uSpp.To_delivery_qty);
-                    }
-                }
-             
-                if(dataUpdated)
-                {
-                    MessageBox.Show("All changed data updated!");
-                }
-
-                dataChanged = false;
-                btnUpdate.Visible = false;
-            }
-          
-            
+            dataUpdate();   
         }
 
         private void frmSBBDeliveryPlanning_FormClosing(object sender, FormClosingEventArgs e)
@@ -2776,6 +3128,9 @@ namespace FactoryManagementSoftware.UI
                 int row = e.RowIndex;
                 dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
                 dgv.Rows[row].Cells[col].Selected = true;
+                //string poNumber = dgv.Columns[col].HeaderText.Replace("P/O_", "");
+
+                //dgv.Rows[0].Cells[header_ColSelected + poNumber].Value = 1;
             }
 
             //CalculateTotalBag(dgv);
@@ -2881,26 +3236,41 @@ namespace FactoryManagementSoftware.UI
 
         private void OpenDO(DataGridView dgv)
         {
-            var POData = GetPOData(dgv);
+            bool OktoNextStep = true;
 
-            DataTable dt = POData.Item1;
-            DataTable dt_POItem = POData.Item2;
-         
-            if(dt.Rows.Count > 0)
+            if(btnUpdate.Visible)
             {
-                frmSPPPOList frm = new frmSPPPOList(dt, dt_POItem, false)
+                OktoNextStep = dataUpdate();
+            }
+
+            if(OktoNextStep)
+            {
+                var POData = GetPOData(dgv);
+
+                DataTable dt = POData.Item1;
+                DataTable dt_POItem = POData.Item2;
+
+                if (dt.Rows.Count > 0)
                 {
-                    StartPosition = FormStartPosition.CenterScreen
-                };
+                    frmSBBPOList frm = new frmSBBPOList(dt, dt_POItem, false)
+                    {
+                        StartPosition = FormStartPosition.CenterScreen
+                    };
 
-                frm.ShowDialog();
+                    frm.ShowDialog();
 
+                    if(frmSBBPOList.DOOpened)
+                    {
+                        LoadPOList();
+                    }
 
+                }
+                else
+                {
+                    MessageBox.Show("Valid delivery data not found!\n\n>To delivery qty cannot be 0\n>Check if D/O have been opened");
+                }
             }
-            else
-            {
-                MessageBox.Show("Valid delivery data not found!\n\n>To delivery qty cannot be 0\n>Check if D/O have been opened");
-            }
+           
         }
 
 
@@ -2913,25 +3283,32 @@ namespace FactoryManagementSoftware.UI
 
             for(int col = 0; col < dt_Source.Columns.Count; col++)
             {
-                bool colSelected = bool.TryParse(dt_Source.Rows[0][col].ToString(), out colSelected) ? colSelected : false;
+                bool colSelected = dgv.Columns[col].Selected;
 
-                if(colSelected)
+                if (colSelected)
                 {
                     string colName = dt_Source.Columns[col].ColumnName;
 
-                    string level = colName.Replace(header_ColSelected, "");
+                    string level = colName.Replace(header_Priority, "");
 
+                    DataRow newRow =null;
 
-                    for(int row = 1; row < dt_Source.Rows.Count; row++)
+                    for (int row = 1; row < dt_Source.Rows.Count; row++)
                     {
-                        int toDeliveryQty = int.TryParse(dt_Source.Rows[row][header_Priority + level].ToString(), out toDeliveryQty) ? toDeliveryQty : -1;
-                        int toDeliveryQtyInPcs = int.TryParse(dt_Source.Rows[row - 1][header_PriorityToDeliveryPlanningInPCS + level].ToString(), out toDeliveryQtyInPcs) ? toDeliveryQtyInPcs : -1;
-                        int DOToDeliveryQty = int.TryParse(dt_Source.Rows[row - 1][header_PriorityToDeliveryQty + level].ToString(), out DOToDeliveryQty) ? DOToDeliveryQty : -1;
-                        //&& toDeliveryQtyInPcs != DOToDeliveryQty
+                        int toDeliveryBag = int.TryParse(dt_Source.Rows[row][header_Priority + level].ToString(), out toDeliveryBag) ? toDeliveryBag : -1;
+                        int toDeliveryQty = int.TryParse(dt_Source.Rows[row - 1][header_PriorityToDeliveryPlanningInPCS + level].ToString(), out toDeliveryQty) ? toDeliveryQty : -1;
 
-                        if (toDeliveryQty > 0 )
+                        int DOToDeliveryQty = int.TryParse(dt_Source.Rows[row - 1][header_PriorityToDeliveryQty + level].ToString(), out DOToDeliveryQty) ? DOToDeliveryQty : -1;
+                        int orderQty = int.TryParse(dt_Source.Rows[row - 1][header_PriorityOrder + level].ToString(), out orderQty) ? orderQty : -1;
+
+                        //&& toDeliveryQtyInPcs != DOToDeliveryQty
+                        int toAddQty = toDeliveryQty - DOToDeliveryQty;
+
+                        if (toAddQty > 0 )
                         {
-                            DataRow newRow = dt.NewRow();
+                            newRow = dt.NewRow();
+
+                            //string ponostring = dt_Source.Rows[row - 1][header_PriorityPONo + level].ToString();
 
                             newRow[header_PONoString] = dt_Source.Rows[row - 1][header_PriorityPONo + level];
                             newRow[header_POCode] = dt_Source.Rows[row - 1][header_PriorityPOCode + level];
@@ -2939,16 +3316,21 @@ namespace FactoryManagementSoftware.UI
                             newRow[header_Customer] = dt_Source.Rows[row - 1][header_PriorityCustShortName + level];
                             newRow[header_CustomerCode] = dt_Source.Rows[row - 1][header_PriorityCustCode + level];
 
-                            dt.Rows.Add(newRow);
+                            //dt.Rows.Add(newRow);
 
                             DataRow newItemRow = dty_POItem.NewRow();
 
                             newItemRow[header_POTblCode] = dt_Source.Rows[row - 1][header_PriorityTblCode + level];
-                            newItemRow[header_ToDeliveryPCSQty] = toDeliveryQtyInPcs;
+                            newItemRow[header_ToDeliveryPCSQty] = toAddQty;
 
                             dty_POItem.Rows.Add(newItemRow);
 
                         }
+                    }
+
+                    if(newRow != null)
+                    {
+                        dt.Rows.Add(newRow);
                     }
                 }
             }
@@ -3055,6 +3437,10 @@ namespace FactoryManagementSoftware.UI
                 DataGridView dgv = dgvList;
                 int col = e.ColumnIndex;
 
+                //dgv.CurrentCell = dgv.Rows[1].Cells[col];
+
+                dgv.Rows[1].Cells[col].Selected = true;
+
                 dgv.SelectionMode = DataGridViewSelectionMode.FullColumnSelect;
                 dgv.Columns[col].Selected = true;
 
@@ -3124,6 +3510,23 @@ namespace FactoryManagementSoftware.UI
             return false;
         }
 
+        private int CheckTotalSelectedColumn(DataGridView dgv)
+        {
+            int selectedColumn = 0;
+
+            for (int col = 0; col < dgv.Columns.Count; col++)
+            {
+                if (dgv.Columns[col].Selected)
+                {
+                    selectedColumn++;
+                }
+
+
+            }
+
+            return selectedColumn;
+        }
+
         private bool CheckIfValidCellSelected()
         {
             DataGridView dgv = dgvList;
@@ -3168,6 +3571,7 @@ namespace FactoryManagementSoftware.UI
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 DataGridView dgv = dgvList;
 
+                
                 //handle the row selection on right click
                 if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
                 {
@@ -3177,10 +3581,14 @@ namespace FactoryManagementSoftware.UI
                     if(!CheckIfWithinSelectedCell(e.RowIndex, e.ColumnIndex))
                     {
                         dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
                         //Can leave these here -doesn't hurt
                         dgv.Rows[e.RowIndex].Selected = true;
                     }
-                  
+
+                    if(CheckTotalSelectedColumn(dgv) == 1)
+                    dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
                     dgv.Focus();
 
                     my_menu.Items.Add(text_Reset).Name = text_Reset;
@@ -3189,8 +3597,15 @@ namespace FactoryManagementSoftware.UI
                     my_menu.Items.Add(text_FillIn).Name = text_FillIn;
                     my_menu.Items.Add(text_FillAll).Name = text_FillAll;
                     my_menu.Items.Add(text_FillAllByCustomer).Name = text_FillAllByCustomer;
+
+                    if(dgv.SelectionMode != DataGridViewSelectionMode.CellSelect)
+                    {
+                        my_menu.Items.Add(text_AddDO).Name = text_AddDO;
+                    }
+                   
+
                     //my_menu.Items.Add(text_NewTrip).Name = text_NewTrip;
-                    
+
 
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
@@ -3218,8 +3633,8 @@ namespace FactoryManagementSoftware.UI
                 int colIndex = dgv.CurrentCell.ColumnIndex;
 
                 string ClickedItem = e.ClickedItem.Name.ToString();
-
-                if (rowIndex >= 0 && (ClickedItem.Equals(text_ResetAll) || ClickedItem.Equals(text_ResetAllByCustomer)  || ClickedItem.Equals(text_FillAll) || ClickedItem.Equals(text_FillAllByCustomer) || CheckIfValidCellSelected()))
+                stopAfterBalUpdate = true;
+                if (rowIndex >= 0 && (ClickedItem.Equals(text_AddDO) || ClickedItem.Equals(text_ResetAll) || ClickedItem.Equals(text_ResetAllByCustomer)  || ClickedItem.Equals(text_FillAll) || ClickedItem.Equals(text_FillAllByCustomer) || CheckIfValidCellSelected()))
                 {
                    
                     if (ClickedItem.Equals(text_Reset))
@@ -3250,10 +3665,14 @@ namespace FactoryManagementSoftware.UI
                     {
                         NewTripTest(dgv);
                     }
+                    else if (ClickedItem.Equals(text_AddDO))
+                    {
+                        OpenDO(dgv);
+                    }
 
                     CalculateTotalBag(dgv);
                 }
-
+                stopAfterBalUpdate = false;
 
 
                 Cursor = Cursors.Arrow; // change cursor to normal type
@@ -3335,6 +3754,17 @@ namespace FactoryManagementSoftware.UI
             };
 
             frm.ShowDialog();
+        }
+
+        private void dgvList_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
+            e.Column.FillWeight = 10;
+        }
+
+        private void dgvList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if(!stopAfterBalUpdate)
+            UpdateBalAfterDelivery();
         }
     }
 }

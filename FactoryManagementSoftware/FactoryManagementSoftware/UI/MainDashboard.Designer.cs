@@ -41,6 +41,7 @@
             this.categoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.historyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mouldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dAILYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.productionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,11 +55,11 @@
             this.forecastReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.materialUsedReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.productionReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sBBDeliveredReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.sBBDeliveredReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -84,6 +85,7 @@
             this.menuStrip.Size = new System.Drawing.Size(1348, 31);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "MenuStrip";
+            this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip_ItemClicked);
             // 
             // adminToolStripMenuItem
             // 
@@ -96,7 +98,8 @@
             this.custToolStripMenuItem,
             this.categoryToolStripMenuItem,
             this.historyToolStripMenuItem,
-            this.dataToolStripMenuItem});
+            this.dataToolStripMenuItem,
+            this.mouldToolStripMenuItem});
             this.adminToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.adminToolStripMenuItem.Name = "adminToolStripMenuItem";
             this.adminToolStripMenuItem.Size = new System.Drawing.Size(78, 27);
@@ -166,6 +169,13 @@
             this.dataToolStripMenuItem.Size = new System.Drawing.Size(160, 28);
             this.dataToolStripMenuItem.Text = "Data";
             this.dataToolStripMenuItem.Click += new System.EventHandler(this.dataToolStripMenuItem_Click);
+            // 
+            // mouldToolStripMenuItem
+            // 
+            this.mouldToolStripMenuItem.Name = "mouldToolStripMenuItem";
+            this.mouldToolStripMenuItem.Size = new System.Drawing.Size(160, 28);
+            this.mouldToolStripMenuItem.Text = "Mould";
+            this.mouldToolStripMenuItem.Click += new System.EventHandler(this.mouldToolStripMenuItem_Click);
             // 
             // dAILYToolStripMenuItem
             // 
@@ -274,6 +284,13 @@
             this.productionReportToolStripMenuItem.Text = "Production Report";
             this.productionReportToolStripMenuItem.Click += new System.EventHandler(this.productionReportToolStripMenuItem_Click);
             // 
+            // sBBDeliveredReportToolStripMenuItem
+            // 
+            this.sBBDeliveredReportToolStripMenuItem.Name = "sBBDeliveredReportToolStripMenuItem";
+            this.sBBDeliveredReportToolStripMenuItem.Size = new System.Drawing.Size(247, 28);
+            this.sBBDeliveredReportToolStripMenuItem.Text = "SBB Delivered Report";
+            this.sBBDeliveredReportToolStripMenuItem.Click += new System.EventHandler(this.sBBDeliveredReportToolStripMenuItem_Click);
+            // 
             // statusStrip
             // 
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -301,13 +318,6 @@
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
-            // sBBDeliveredReportToolStripMenuItem
-            // 
-            this.sBBDeliveredReportToolStripMenuItem.Name = "sBBDeliveredReportToolStripMenuItem";
-            this.sBBDeliveredReportToolStripMenuItem.Size = new System.Drawing.Size(247, 28);
-            this.sBBDeliveredReportToolStripMenuItem.Text = "SBB Delivered Report";
-            this.sBBDeliveredReportToolStripMenuItem.Click += new System.EventHandler(this.sBBDeliveredReportToolStripMenuItem_Click);
-            // 
             // MainDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -323,7 +333,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainDashboard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "STOCK ASSISTANT";
+            this.Text = "SAFETY PLASTICS";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainDashboard_FormClosed);
             this.Load += new System.EventHandler(this.MainDashboard_Load);
@@ -368,6 +378,7 @@
         private System.Windows.Forms.ToolStripMenuItem productionReportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sPPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sBBDeliveredReportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mouldToolStripMenuItem;
     }
 }
 

@@ -107,6 +107,8 @@
             this.dgvList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellClick);
             this.dgvList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellEndEdit);
             this.dgvList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvList_CellMouseDown);
+            this.dgvList.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellValueChanged);
+            this.dgvList.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgvList_ColumnAdded);
             this.dgvList.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgvList_ColumnDisplayIndexChanged);
             this.dgvList.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvList_ColumnHeaderMouseClick);
             this.dgvList.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvList_EditingControlShowing);
@@ -354,13 +356,13 @@
             // 
             this.lblTotalBag.AutoSize = true;
             this.lblTotalBag.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalBag.Location = new System.Drawing.Point(538, 111);
+            this.lblTotalBag.Location = new System.Drawing.Point(539, 106);
             this.lblTotalBag.Name = "lblTotalBag";
             this.lblTotalBag.Size = new System.Drawing.Size(221, 23);
             this.lblTotalBag.TabIndex = 193;
             this.lblTotalBag.Text = "0 BAG(s) / 0 PCS  SELECTED";
             // 
-            // frmSBBDeliveryPlanning
+            // frmSBBPOVSStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -376,7 +378,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dgvList);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "frmSBBDeliveryPlanning";
+            this.Name = "frmSBBPOVSStock";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "P/O VS STOCK";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

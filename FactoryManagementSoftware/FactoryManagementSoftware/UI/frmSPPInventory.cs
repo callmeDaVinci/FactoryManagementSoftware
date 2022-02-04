@@ -43,6 +43,10 @@ namespace FactoryManagementSoftware.UI
         private readonly string textShowAllSize = "show all size";
         private readonly string textShowAllCommonPart = "show all type of common part";
         private readonly string textShowAllUniquePart = "show all type of unique part";
+        private readonly string header_Size_1 = "SIZE_1";
+        private readonly string header_Size_2 = "SIZE_2";
+        private readonly string header_Unit_1 = "UNIT_1";
+        private readonly string header_Unit_2 = "UNIT_2";
 
         //private DataTable dt_spp;
 

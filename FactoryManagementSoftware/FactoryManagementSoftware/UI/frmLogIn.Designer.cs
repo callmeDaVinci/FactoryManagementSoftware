@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLogIn));
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.label1 = new System.Windows.Forms.Label();
@@ -40,6 +41,7 @@
             this.gunaPanel1 = new Guna.UI.WinForms.GunaPanel();
             this.lblDate = new System.Windows.Forms.Label();
             this.gunaPictureBox1 = new Guna.UI.WinForms.GunaPictureBox();
+            this.lblVersion = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.gunaPanel1.SuspendLayout();
@@ -152,17 +154,18 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(293, 49);
             this.label3.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(209, 35);
+            this.label3.Size = new System.Drawing.Size(221, 29);
             this.label3.TabIndex = 10;
             this.label3.Text = "Welcome Back :)";
             // 
             // gunaPanel1
             // 
+            this.gunaPanel1.Controls.Add(this.lblVersion);
             this.gunaPanel1.Controls.Add(this.lblDate);
             this.gunaPanel1.Controls.Add(this.label3);
             this.gunaPanel1.Controls.Add(this.gunaPictureBox1);
@@ -181,11 +184,11 @@
             // lblDate
             // 
             this.lblDate.AutoSize = true;
-            this.lblDate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(176)))), ((int)(((byte)(242)))));
             this.lblDate.Location = new System.Drawing.Point(295, 84);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(75, 20);
+            this.lblDate.Size = new System.Drawing.Size(77, 18);
             this.lblDate.TabIndex = 11;
             this.lblDate.Text = "Username";
             this.lblDate.Visible = false;
@@ -202,20 +205,34 @@
             this.gunaPictureBox1.TabIndex = 9;
             this.gunaPictureBox1.TabStop = false;
             // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(176)))), ((int)(((byte)(242)))));
+            this.lblVersion.Location = new System.Drawing.Point(12, 502);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.lblVersion.Size = new System.Drawing.Size(77, 18);
+            this.lblVersion.TabIndex = 12;
+            this.lblVersion.Text = "Username";
+            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // frmLogIn
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(24)))), ((int)(((byte)(74)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(846, 529);
             this.Controls.Add(this.gunaPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmLogIn";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Management System";
+            this.Text = "Safety Plastics";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmLogIn_FormClosed);
             this.Load += new System.EventHandler(this.frmLogIn_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmLogIn_KeyDown);
@@ -240,5 +257,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblDate;
+        private System.Windows.Forms.Label lblVersion;
     }
 }

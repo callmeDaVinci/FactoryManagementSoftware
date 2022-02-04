@@ -362,7 +362,7 @@ namespace FactoryManagementSoftware.UI
         {
             string factoryName = "";
 
-            DataTable dt = dalFac.Select();
+            DataTable dt = dalFac.SelectDESC();
 
             if (dt.Rows.Count > 0)
             {

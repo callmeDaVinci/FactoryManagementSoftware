@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace FactoryManagementSoftware.BLL
 {
-    class SBBDataBLL
+    public class SBBDataBLL
     {
         //common
         public int Table_Code { get; set; }
 
         //item table
         public string Item_code { get; set; }
+        public string Item_tbl_code { get; set; }
         public string Item_name { get; set; }
         public int Color_tbl_code { get; set; }
         public int Ton_tbl_code { get; set; }
@@ -26,6 +27,23 @@ namespace FactoryManagementSoftware.BLL
         public int Type_tbl_code { get; set; }
         public int Category_tbl_code { get; set; }
 
+        //mould table
+        public string Mould_tbl_code { get; set; }
+        public string Mould_code { get; set; }
+        public string Mould_name { get; set; }
+        public int Mould_ton { get; set; }
+        public float Mould_width { get; set; }
+        public float Mould_height { get; set; }
+        public float Mould_length { get; set; }
+        public DateTime Mould_startdate { get; set; }
+        public float Mould_cycletime { get; set; }
+        public float Mould_pwpershot { get; set; }
+        public float Mould_rwpershot { get; set; }
+        public int Mould_Total_cavity { get; set; }
+        public int Mould_item_cavity { get; set; }
+        public string Group_code { get; set; }
+
+
         //route table
         public string Route_name { get; set; }
 
@@ -37,6 +55,7 @@ namespace FactoryManagementSoftware.BLL
         public int Deliver_pcs { get; set; }
         public int DO_tbl_code { get; set; }
         public int Planning_no { get; set; }
+        public bool Cust_Own_DO { get; set; }
 
         //color table
         public string Color_name { get; set; }
@@ -45,6 +64,7 @@ namespace FactoryManagementSoftware.BLL
         public int Ton_number { get; set; }
 
         //stdPacking table
+        public int Qty_Per_Container { get; set; }
         public int Qty_Per_Bag { get; set; }
         public int Qty_Per_Packet { get; set; }
         public int Max_Lvl { get; set; }
@@ -53,6 +73,7 @@ namespace FactoryManagementSoftware.BLL
         public int Size_Numerator { get; set; }
         public int Size_Denominator { get; set; }
         public string Size_Unit { get; set; }
+        public float Size_Weight { get; set; }
 
         //type table
         public string Type_Name { get; set; }
@@ -67,6 +88,8 @@ namespace FactoryManagementSoftware.BLL
         public string Registration_No { get; set; }
         public string Address_1 { get; set; }
         public string Address_2 { get; set; }
+        public string Address_3 { get; set; }
+
         public string Address_City { get; set; }
         public string Address_State { get; set; }
         public string Address_Postal_Code { get; set; }
@@ -77,6 +100,11 @@ namespace FactoryManagementSoftware.BLL
         public string Email { get; set; }
         public string Website { get; set; }
 
+        //public bool ShippingSameAsBilling { get; set; }
+        public string Shipping_Full_Name { get; set; }
+        public string Shipping_Short_Name { get; set; }
+        public string Shipping_Transporter { get; set; }
+
         //po table
         public int PO_code { get; set; }
         public string PO_no { get; set; }
@@ -84,9 +112,10 @@ namespace FactoryManagementSoftware.BLL
         public int Customer_tbl_code { get; set; }
         public int PO_qty { get; set; }
         public int Delivered_qty { get; set; }
-        public bool DefaultShippingAddress { get; set; }
+        public bool UseBillingAddress { get; set; }
         public string PO_note { get; set; }
         public int To_delivery_qty { get; set; }
+        public string remark_in_do { get; set; }
 
         //do table
         public int DO_no { get; set; }
@@ -106,6 +135,13 @@ namespace FactoryManagementSoftware.BLL
         public string Plan_status { get; set; }
         public string Plan_type { get; set; }
         public string Plan_note { get; set; }
+        public int Production_ct_sec { get; set; }
+        public int Production_cavity { get; set; }
+        public float Production_PW_shot { get; set; }
+        public float Production_RW_shot { get; set; }
+        public int Production_Hours_PerDay { get; set; }
+        public int Production_TargetQty_Adjusted_BySystem { get; set; }
+        public int Item_Stock { get; set; }
 
         //Material Plan
         public int Plan_code { get; set; }
@@ -126,5 +162,14 @@ namespace FactoryManagementSoftware.BLL
         public bool IsRemoved { get; set; }
         public bool Freeze { get; set; }
         public int Priority_level { get; set; }
+
+        //price
+        public decimal Default_price { get; set; }
+        public decimal Default_discount { get; set; }
+    
+        //customer price
+        public decimal Unit_price { get; set; }
+        public decimal Discount_rate { get; set; }
+        public decimal Sub_total { get; set; }
     }
 }

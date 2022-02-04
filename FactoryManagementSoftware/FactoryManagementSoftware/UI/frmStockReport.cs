@@ -12,6 +12,7 @@ using DataTable = System.Data.DataTable;
 using FactoryManagementSoftware.Properties;
 using System.ComponentModel;
 using System.Threading;
+using System.Configuration;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -115,7 +116,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerCode, typeof(string));
 
             //add factory columns
-            DataTable dt_Fac = dalFac.Select();
+            DataTable dt_Fac = dalFac.SelectASC();
 
             string facName = string.Empty;
 
@@ -124,7 +125,22 @@ namespace FactoryManagementSoftware.UI
                 foreach (DataRow stock in dt_Fac.Rows)
                 {
                     facName = stock["fac_name"].ToString();
-                    dt.Columns.Add(facName, typeof(float));
+
+                    if(facName == text.Factory_Semenyih)
+                    {
+                        string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+
+                        if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)
+                        {
+                            dt.Columns.Add(facName, typeof(float));
+                        }
+                    }
+                   else
+                    {
+                        dt.Columns.Add(facName, typeof(float));
+                    }
+
+                    
                 }
             }
 
@@ -232,6 +248,12 @@ namespace FactoryManagementSoftware.UI
                     {
                         float readyStock = Convert.ToSingle(item["item_qty"]);
 
+                        readyStock = (float)Math.Round(readyStock * 100f) / 100f;
+
+                        //float f = 10.123456F;
+                        //float fc = (float)Math.Round(f * 100f) / 100f;
+                        //MessageBox.Show(fc.ToString());
+
                         dt_StockData = tool.getStockDataTableFromDataTable(dt_AllStockData, itemCode);
 
                         addRowtoDataTable(dt_StockData, item["item_code"].ToString(), item["item_name"].ToString(), readyStock);
@@ -242,15 +264,7 @@ namespace FactoryManagementSoftware.UI
 
             dt_PublicItemInfo = dalItem.Select();
             dgvNewStock.DataSource = null;
-            //DataTable sortedDt = dt.DefaultView.ToTable();
-            //DataTable testDt = dt_Stock.ToTable(headerCode);
-
-            //DataView dv = new DataView(dt_Stock);
-
-            //DataTable dtTest = dv.ToTable(true, headerCode,headerName);
-
-            //string abc = dt.Rows[0]["column name"].ToString();
-
+         
             DataTable dt_StockRemovedFlag;
 
             if (dt_Stock.Rows.Count > 0)
@@ -348,25 +362,37 @@ namespace FactoryManagementSoftware.UI
         {          
             DataRow dtStock_row;
 
+            if(itemCode == "POM M90-44" || itemCode == "ACETAL POM M90-44")
+            {
+                float test = 0;
+            }
+
             dtStock_row = dt_Stock.NewRow();
             dtStock_row[headerIndex] = public_IndexNO + public_SubIndexNO/10 + public_SecondSubIndexNO/100;
             dtStock_row[headerName] = itemName;
             dtStock_row[headerCode] = itemCode;
             dtStock_row[headerTotal] = stockQty;
+            string factoryName = "";
 
             if (dt_StockData.Rows.Count > 0)
             {
                 foreach (DataRow stock in dt_StockData.Rows)
                 {
-                    string factoryName = stock[tool.headerFacName].ToString();
+                     factoryName = stock[tool.headerFacName].ToString();
 
-                    float qty = Convert.ToSingle(stock[tool.headerReadyStock]);
+                    if(factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)//MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC
+                    {
+                        float qty = Convert.ToSingle(stock[tool.headerReadyStock]);
+                        qty = (float)Math.Round(qty * 100f) / 100f;
 
-                    dtStock_row[factoryName] = qty;
-                    dtStock_row[headerUnit] = stock[tool.headerUnit].ToString();
+                        dtStock_row[factoryName] = qty;
+                        dtStock_row[headerUnit] = stock[tool.headerUnit].ToString();
+                    }
+                   
                 }
             }
 
+            factoryName = "";
             if (ifGotChild(itemCode))
             {
                 DataRow dt_Row = tool.getDataRowFromDataTable(dt_PublicItemInfo, itemCode);
@@ -394,14 +420,14 @@ namespace FactoryManagementSoftware.UI
             }
 
             //check if repeat
-            if(ifRepeat(itemCode))
+            if(ifRepeat(itemCode) && (factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC))
             {
                 dtStock_row[headerRepeat] = 1;
 
                 if (cbShowDuplicateData.Checked)
                     dt_Stock.Rows.Add(dtStock_row);
             }
-            else
+            else if(factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)
             {
                 dtStock_row[headerRepeat] = 0;
                 dt_Stock.Rows.Add(dtStock_row);
@@ -409,6 +435,7 @@ namespace FactoryManagementSoftware.UI
         
            
         }
+
 
         private bool LoadPartStockData()
         {
@@ -454,7 +481,7 @@ namespace FactoryManagementSoftware.UI
                     if (assembly == 0 && production == 0) //!dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode)
                     {
                         float readyStock = Convert.ToSingle(item["item_qty"]);
-                       
+                        readyStock = (float)Math.Round(readyStock * 100f) / 100f;
                         dt_StockData =  tool.getStockDataTableFromDataTable(dt_AllStockData, itemCode);
 
                         addRowtoDataTable(dt_StockData, item["item_code"].ToString(), item["item_name"].ToString(), readyStock);
@@ -485,6 +512,7 @@ namespace FactoryManagementSoftware.UI
 
                         //add parent item
                         float readyStock = Convert.ToSingle(item["item_qty"]);
+                        readyStock = (float)Math.Round(readyStock * 100f) / 100f;
 
                         dt_StockData = tool.getStockDataTableFromDataTable(dt_AllStockData, itemCode);
 
@@ -506,6 +534,7 @@ namespace FactoryManagementSoftware.UI
 
                                     string childName = itemInfoRow[dalItem.ItemName].ToString();
                                     float childStockQty = Convert.ToSingle(itemInfoRow[dalItem.ItemStock]);
+                                    childStockQty = (float)Math.Round(childStockQty * 100f) / 100f;
 
                                     DataTable dt_ChildStockData = tool.getStockDataTableFromDataTable(dt_AllStockData, childCode);
 
@@ -529,6 +558,7 @@ namespace FactoryManagementSoftware.UI
 
                                                     string subChildName = itemInfoRow2[dalItem.ItemName].ToString();
                                                     float subChildStockQty = Convert.ToSingle(itemInfoRow2[dalItem.ItemStock]);
+                                                    subChildStockQty = (float)Math.Round(subChildStockQty * 100f) / 100f;
 
                                                     DataTable dt_SubChildStockData = tool.getStockDataTableFromDataTable(dt_AllStockData, subChildCode);
 
@@ -612,7 +642,7 @@ namespace FactoryManagementSoftware.UI
                 dt_TrfHist = dalTrfHist.rangeTrfSearch(startDate, endDate);
             }
 
-            DataTable dt_Fac = dalFac.Select();
+            DataTable dt_Fac = dalFac.SelectDESC();
 
             foreach (DataRow row in dt.Rows)
             {
@@ -692,7 +722,9 @@ namespace FactoryManagementSoftware.UI
                             if (row2[dalTrfHist.TrfResult].ToString().Equals("Passed"))
                             {
                                 float trfQty = row2[dalTrfHist.TrfQty] == null ? 0 : Convert.ToSingle(row2[dalTrfHist.TrfQty].ToString());
-                                float oldQty = row[to] == null ? 0 : Convert.ToSingle(row[to].ToString());
+
+                                float oldQty = float.TryParse(row[to].ToString(), out float i) ? i : 0;//row[to] == null ? 0 : Convert.ToSingle(row[to].ToString());
+
                                 float newQty = oldQty - trfQty;
 
                                 row[to] = newQty;
@@ -1423,31 +1455,49 @@ namespace FactoryManagementSoftware.UI
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            try
+            if (Validation())
             {
-                if (Validation())
+                frmLoading.ShowLoadingScreen();
+                lblUpdatedTime.Text = DateTime.Now.ToLongTimeString();
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
                 {
-                    frmLoading.ShowLoadingScreen();
-                    lblUpdatedTime.Text = DateTime.Now.ToLongTimeString();
-                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
-                    if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
-                    {
-                        LoadPartStockData();                     
-                    }
-                    else if (cmbType.Text.Equals(CMBMaterialHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
-                    {
-                        newLoadMaterialStockData();
-                    }
-
-                    Cursor = Cursors.Arrow; // change cursor to normal type
+                    LoadPartStockData();
                 }
+                else if (cmbType.Text.Equals(CMBMaterialHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
+                {
+                    newLoadMaterialStockData();
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+
+            }
+            //try
+            //{
+            //    if (Validation())
+            //    {
+            //        frmLoading.ShowLoadingScreen();
+            //        lblUpdatedTime.Text = DateTime.Now.ToLongTimeString();
+            //        Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            //        if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
+            //        {
+            //            LoadPartStockData();                     
+            //        }
+            //        else if (cmbType.Text.Equals(CMBMaterialHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
+            //        {
+            //            newLoadMaterialStockData();
+            //        }
+
+            //        Cursor = Cursors.Arrow; // change cursor to normal type
+            //    }
                
-            }
-            catch (Exception ex)
-            {
-                tool.saveToTextAndMessageToUser(ex);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    tool.saveToTextAndMessageToUser(ex);
+            //}
 
             frmLoading.CloseForm();
         }

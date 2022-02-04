@@ -6,6 +6,9 @@ namespace FactoryManagementSoftware.BLL
     {
         public int sheet_id { get; set; }
         public int plan_id { get; set; }
+        public int new_plan_id { get; set; }
+        public int old_plan_id { get; set; }
+
         public DateTime production_date { get; set; }
         public string shift { get; set; }
         public string production_lot_no { get; set; }

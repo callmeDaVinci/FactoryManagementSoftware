@@ -1,6 +1,7 @@
 ﻿using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -15,6 +16,7 @@ namespace FactoryManagementSoftware.UI
         static public bool catFormOpen = false;
         static public bool ordFormOpen = false;
         static public bool dataFormOpen = false;
+        static public bool MouldFormOpen = false;
         static public bool itemCustFormOpen = false;
         static public bool forecastInputFormOpen = false;
         static public bool forecastReportInputFormOpen = false;
@@ -38,18 +40,21 @@ namespace FactoryManagementSoftware.UI
         static public readonly int ACTION_LVL_THREE = 3;
         static public readonly int ACTION_LVL_FOUR = 4;
         static public readonly int ACTION_LVL_FIVE = 5;
-
+        static public string myconnstrng;
         userDAL dalUser = new userDAL();
         Text text = new Text();
         Tool tool = new Tool();
+        
 
         public MainDashboard(int userID)
         {
+
             InitializeComponent();
             USER_ID = userID;
 
             int userPermission = dalUser.getPermissionLevel(USER_ID);
             sPPToolStripMenuItem.Visible = true;
+
             if (userPermission >= ACTION_LVL_FOUR)
             {
                 sPPToolStripMenuItem.Visible = true;
@@ -75,6 +80,21 @@ namespace FactoryManagementSoftware.UI
                 orderToolStripMenuItem1.Visible = true;
                 productionToolStripMenuItem.Visible = false;
             }
+
+
+            myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+
+
+            if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
+            {
+                //Semenyih
+                pMMAToolStripMenuItem.Visible = false;
+                forecastToolStripMenuItem.Visible = false;
+                productionToolStripMenuItem.Visible = false;
+                dAILYToolStripMenuItem.Visible = false;
+                orderToolStripMenuItem1.Visible = false;
+            }
+
         }
 
 
@@ -346,22 +366,49 @@ namespace FactoryManagementSoftware.UI
 
         private void materialUsedReportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!MaterialUsedReportFormOpen)
+            if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
             {
-                frmMaterialUsedReport_NEW frm = new frmMaterialUsedReport_NEW();
-                frm.MdiParent = this;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
-                frm.Show();
-                MaterialUsedReportFormOpen = true;
+                //Semenyih
+                if (!MaterialUsedReportFormOpen)
+                {
+                    frmMaterialUsedReport frm = new frmMaterialUsedReport();
+                    frm.MdiParent = this;
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Maximized;
+                    frm.Show();
+                    MaterialUsedReportFormOpen = true;
+                }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmMaterialUsedReport>().Count() == 1)
+                    {
+                        Application.OpenForms.OfType<frmMaterialUsedReport>().First().BringToFront();
+                    }
+                }
             }
             else
             {
-                if (Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().Count() == 1)
+                //OUG
+                if (!MaterialUsedReportFormOpen)
                 {
-                    Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().First().BringToFront();
+                    frmMaterialUsedReport_NEW frm = new frmMaterialUsedReport_NEW();
+                    frm.MdiParent = this;
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Maximized;
+                    frm.Show();
+                    MaterialUsedReportFormOpen = true;
                 }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().Count() == 1)
+                    {
+                        Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().First().BringToFront();
+                    }
+                }
+
             }
+
+           
         }
 
         private void stockReportToolStripMenuItem_Click(object sender, EventArgs e)
@@ -410,7 +457,52 @@ namespace FactoryManagementSoftware.UI
 
         private void MainDashboard_Load(object sender, EventArgs e)
         {
-            
+            if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)//|| myconnstrng == text.DB_JunPC
+            {
+                //Semenyih
+                if (!SPPFormOpen)
+                {
+                    frmLoading.ShowLoadingScreen();
+                    frmSBB frm = new frmSBB();
+                    frm.MdiParent = this;
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Maximized;
+                    frm.Show();
+                    SPPFormOpen = true;
+                    frmLoading.CloseForm();
+                }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmSBB>().Count() == 1)
+                    {
+                        Application.OpenForms.OfType<frmSBB>().First().BringToFront();
+                    }
+                }
+            }
+            else
+            {
+                //OUG
+                if (!inOutFormOpen)
+                {
+                    frmLoading.ShowLoadingScreen();
+                    frmInOut frm = new frmInOut();
+                    frm.MdiParent = this;
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Maximized;
+                    frm.Show();
+                    inOutFormOpen = true;
+                    frmLoading.CloseForm();
+                }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmInOut>().Count() == 1)
+                    {
+                        Application.OpenForms.OfType<frmInOut>().First().BringToFront();
+                    }
+                }
+            }
+
+
         }
 
         private void userToolStripMenuItem_Click(object sender, EventArgs e)
@@ -607,6 +699,22 @@ namespace FactoryManagementSoftware.UI
                     Application.OpenForms.OfType<frmSBB>().First().BringToFront();
                 }
             }
+
+            //if (Application.OpenForms.OfType<frmSBB>().Count() == 1)
+            //{
+            //    Application.OpenForms.OfType<frmSBB>().First().BringToFront();
+            //}
+            //else
+            //{
+            //    frmLoading.ShowLoadingScreen();
+            //    frmSBB frm = new frmSBB();
+            //    frm.MdiParent = this;
+            //    frm.StartPosition = FormStartPosition.CenterScreen;
+            //    frm.WindowState = FormWindowState.Maximized;
+            //    frm.Show();
+            //    SPPFormOpen = true;
+            //    frmLoading.CloseForm();
+            //}
         }
 
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
@@ -637,6 +745,31 @@ namespace FactoryManagementSoftware.UI
                 if (Application.OpenForms.OfType<frmSBBDeliveredReport>().Count() == 1)
                 {
                     Application.OpenForms.OfType<frmSBBDeliveredReport>().First().BringToFront();
+                }
+            }
+        }
+
+        private void menuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void mouldToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!MouldFormOpen)
+            {
+                frmSBBMould frm = new frmSBBMould();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                MouldFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmSBBMould>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmSBBMould>().First().BringToFront();
                 }
             }
         }

@@ -39,16 +39,16 @@
             // lblEndDate
             // 
             this.lblEndDate.AutoSize = true;
-            this.lblEndDate.Location = new System.Drawing.Point(279, 39);
+            this.lblEndDate.Location = new System.Drawing.Point(28, 97);
             this.lblEndDate.Name = "lblEndDate";
-            this.lblEndDate.Size = new System.Drawing.Size(136, 19);
+            this.lblEndDate.Size = new System.Drawing.Size(72, 19);
             this.lblEndDate.TabIndex = 125;
-            this.lblEndDate.Text = "ESTIMATE END DATE";
+            this.lblEndDate.Text = "END DATE";
             // 
             // lblStartDate
             // 
             this.lblStartDate.AutoSize = true;
-            this.lblStartDate.Location = new System.Drawing.Point(32, 37);
+            this.lblStartDate.Location = new System.Drawing.Point(19, 37);
             this.lblStartDate.Name = "lblStartDate";
             this.lblStartDate.Size = new System.Drawing.Size(81, 19);
             this.lblStartDate.TabIndex = 124;
@@ -59,7 +59,7 @@
             this.dtpEstimateEndDate.CalendarFont = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpEstimateEndDate.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpEstimateEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEstimateEndDate.Location = new System.Drawing.Point(283, 59);
+            this.dtpEstimateEndDate.Location = new System.Drawing.Point(106, 97);
             this.dtpEstimateEndDate.Name = "dtpEstimateEndDate";
             this.dtpEstimateEndDate.Size = new System.Drawing.Size(216, 30);
             this.dtpEstimateEndDate.TabIndex = 123;
@@ -70,7 +70,7 @@
             this.dtpStartDate.CalendarForeColor = System.Drawing.Color.Black;
             this.dtpStartDate.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpStartDate.Location = new System.Drawing.Point(36, 59);
+            this.dtpStartDate.Location = new System.Drawing.Point(106, 37);
             this.dtpStartDate.Name = "dtpStartDate";
             this.dtpStartDate.Size = new System.Drawing.Size(216, 30);
             this.dtpStartDate.TabIndex = 122;
@@ -83,10 +83,10 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(283, 151);
+            this.button1.Location = new System.Drawing.Point(23, 239);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(95, 37);
+            this.button1.Size = new System.Drawing.Size(299, 37);
             this.button1.TabIndex = 127;
             this.button1.Text = "CANCEL";
             this.button1.UseVisualStyleBackColor = false;
@@ -99,10 +99,10 @@
             this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCheck.ForeColor = System.Drawing.Color.White;
-            this.btnCheck.Location = new System.Drawing.Point(404, 151);
+            this.btnCheck.Location = new System.Drawing.Point(23, 198);
             this.btnCheck.Margin = new System.Windows.Forms.Padding(2);
             this.btnCheck.Name = "btnCheck";
-            this.btnCheck.Size = new System.Drawing.Size(95, 37);
+            this.btnCheck.Size = new System.Drawing.Size(299, 37);
             this.btnCheck.TabIndex = 126;
             this.btnCheck.Text = "APPLY";
             this.btnCheck.UseVisualStyleBackColor = false;
@@ -113,7 +113,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(528, 212);
+            this.ClientSize = new System.Drawing.Size(343, 294);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnCheck);
             this.Controls.Add(this.lblEndDate);
@@ -122,7 +122,7 @@
             this.Controls.Add(this.dtpStartDate);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "frmChangeDate";
-            this.Text = "frmChangeDate";
+            this.Text = "DATE SETTING";
             this.ResumeLayout(false);
             this.PerformLayout();
 

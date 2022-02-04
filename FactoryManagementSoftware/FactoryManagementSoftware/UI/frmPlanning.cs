@@ -54,7 +54,7 @@ namespace FactoryManagementSoftware.UI
         
         readonly string OtherPurpose = "FOR OTHER PURPOSE";
 
-        static public bool planEditing = false;
+        static public bool planEditMode = false;
     
         private bool ableToCalculateQty = true;
         private bool ableToLoadData = false;
@@ -127,6 +127,13 @@ namespace FactoryManagementSoftware.UI
                     index++;
                 }
             }
+        }
+
+        private void EditModeActivate(bool Activate, string planID)
+        {
+            //load data
+            //lock name & code
+
         }
 
         private void InitialData()
@@ -2884,6 +2891,11 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
+        }
+
+        private void txtAbleToProduceQty_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

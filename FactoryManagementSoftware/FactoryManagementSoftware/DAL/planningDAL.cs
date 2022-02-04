@@ -267,6 +267,76 @@ namespace FactoryManagementSoftware.DAL
 
         #region Update data in Database
 
+        public bool TargetQtyUpdate(PlanningBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+
+                String sql = @"UPDATE tbl_plan
+                            SET "
+                           + planNote + "=@plan_note,"
+                           + materialBagQty + "=@material_bag_qty,"
+                           + materialRecycleUse + "=@material_recycle_use,"
+                           + colorMaterialQty + "=@color_material_qty,"
+                           + targetQty + "=@production_target_qty,"
+                           + ableQty + "=@production_able_produce_qty,"
+                           + productionDay + "=@production_day,"
+                           + productionHour + "=@production_hour,"
+                           + productionHourPerDay + "=@production_hour_per_day,"
+                           + planUpdatedDate + "=@plan_updated_date,"
+                           + planUpdatedby + "=@plan_updated_by" +
+                           " WHERE plan_id=@plan_id";
+
+                //String sql = @"UPDATE tbl_plan SET
+                //                plan_produced=@plan_produced
+                //                WHERE plan_id=@plan_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
+                cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
+                cmd.Parameters.AddWithValue("@material_bag_qty", u.material_bag_qty);
+                cmd.Parameters.AddWithValue("@material_recycle_use", u.material_recycle_use);
+                cmd.Parameters.AddWithValue("@color_material_qty", u.color_material_qty);
+                cmd.Parameters.AddWithValue("@production_target_qty", u.production_target_qty);
+                cmd.Parameters.AddWithValue("@production_able_produce_qty", u.production_able_produce_qty);
+                cmd.Parameters.AddWithValue("@production_day", u.production_day);
+                cmd.Parameters.AddWithValue("@production_hour", u.production_hour);
+                cmd.Parameters.AddWithValue("@production_hour_per_day", u.production_hour_per_day);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+
+        }
+
         public bool TotalProducedUpdate(PlanningBLL u)
         {
             bool isSuccess = false;

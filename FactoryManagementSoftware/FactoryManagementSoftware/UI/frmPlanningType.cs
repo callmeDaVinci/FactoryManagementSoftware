@@ -24,7 +24,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnMoldingMachine_Click(object sender, EventArgs e)
         {
-            frmPlanning frm = new frmPlanning
+            frmSBBProductionPlanning frm = new frmSBBProductionPlanning
             {
                 StartPosition = FormStartPosition.CenterScreen
             };

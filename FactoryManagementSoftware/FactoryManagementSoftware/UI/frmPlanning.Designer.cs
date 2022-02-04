@@ -1227,6 +1227,7 @@
             this.txtAbleToProduceQty.Size = new System.Drawing.Size(358, 38);
             this.txtAbleToProduceQty.TabIndex = 111;
             this.txtAbleToProduceQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtAbleToProduceQty.TextChanged += new System.EventHandler(this.txtAbleToProduceQty_TextChanged);
             this.txtAbleToProduceQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAbleToProduceQty_KeyPress);
             // 
             // label27

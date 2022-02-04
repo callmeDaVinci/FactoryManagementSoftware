@@ -30,6 +30,7 @@ namespace FactoryManagementSoftware.UI
         ProductionRecordDAL dalProRecord = new ProductionRecordDAL();
         Tool tool = new Tool();
         Text text = new Text();
+        ExcelTool excelTool = new ExcelTool();
 
         private string textMoreFilters = "MORE FILTERS ...";
         private string textHideFilters = "HIDE FILTERS";
@@ -51,6 +52,7 @@ namespace FactoryManagementSoftware.UI
         private readonly string header_ProDateFrom = "PRO. DATE FROM";
         private readonly string header_ProDateTo = "PRO. DATE TO";
         private readonly string header_PartName = "NAME";
+        private readonly string header_PartCode = "CODE";
         private readonly string header_Mac = "MAC.";
         private readonly string header_Fac = "FAC.";
         private readonly string header_PlanID = "PLAN ID";
@@ -108,6 +110,7 @@ namespace FactoryManagementSoftware.UI
             
             dt.Columns.Add(header_PlanID, typeof(int));
             dt.Columns.Add(header_PartName, typeof(string));
+            dt.Columns.Add(header_PartCode, typeof(string));
 
             if (!cbShowOnlyOneRowForEachPlan.Checked)
             {
@@ -541,6 +544,7 @@ namespace FactoryManagementSoftware.UI
                    
                     dt_Row[header_PlanID] = planID;
                     dt_Row[header_PartName] = itemName;
+                    dt_Row[header_PartCode] = itemCode;
                     dt_Row[header_StockIn] = totalStockIn;
 
                     if (cbShowRawMat.Checked)
@@ -806,6 +810,15 @@ namespace FactoryManagementSoftware.UI
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+
+
+            dgvProductionRecord.SelectAll();
+            excelTool.ExportToExcel(text.Report_Type_Production, (DataTable) dgvProductionRecord.DataSource, dgvProductionRecord.GetClipboardContent());
+
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
 
         }
     }

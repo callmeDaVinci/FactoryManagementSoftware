@@ -7,20 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.BLL;
+using FactoryManagementSoftware.Module;
+
 
 namespace FactoryManagementSoftware.UI
 {
     public partial class BaseForm : Form
     {
+        Tool tool = new Tool();
+        Text text = new Text();
+
         public BaseForm()
         {
             InitializeComponent();
-            StartPosition = FormStartPosition.CenterScreen;
-            AutoSize = false;
-            Size = new Size(1600, 900);
-            WindowState = FormWindowState.Maximized;
-            Font = new Font("Segoe UI", 8, FontStyle.Regular);
-            BackColor = Color.White;
         }
+
+
     }
 }

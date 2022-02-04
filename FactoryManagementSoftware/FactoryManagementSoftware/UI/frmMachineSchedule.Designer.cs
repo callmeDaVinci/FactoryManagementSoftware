@@ -181,7 +181,7 @@
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.Size = new System.Drawing.Size(120, 47);
             this.btnFilterApply.TabIndex = 114;
-            this.btnFilterApply.Text = "APPLY";
+            this.btnFilterApply.Text = "SEARCH";
             this.btnFilterApply.UseVisualStyleBackColor = false;
             this.btnFilterApply.Click += new System.EventHandler(this.btnCheck_Click);
             // 

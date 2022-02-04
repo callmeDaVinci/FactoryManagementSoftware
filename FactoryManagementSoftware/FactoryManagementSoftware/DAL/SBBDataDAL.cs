@@ -3,6 +3,7 @@ using FactoryManagementSoftware.BLL;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.DAL
 {
@@ -16,6 +17,22 @@ namespace FactoryManagementSoftware.DAL
         public string IsRemoved { get; } = "isRemoved";
         public string Freeze { get; } = "freeze";
         public string PriorityLevel { get; } = "priority_level";
+
+        //mould table
+        public string MouldTblCode { get; } = "mould_tbl_code";
+        public string MouldCode { get; } = "mould_code";
+        public string MouldName { get; } = "mould_name";
+        public string MouldTon { get; } = "mould_ton";
+        public string MouldWidth { get; } = "mould_width";
+        public string MouldHeight { get; } = "mould_height";
+        public string MouldLength { get; } = "mould_length";
+        public string MouldDateStart { get; } = "mould_date_start";
+        public string GroupCode { get; } = "group_code";
+        public string MouldCycleTime { get; } = "mould_cycle_time";
+        public string PWPerShot { get; } = "pw_per_shot";
+        public string RWPerShot { get; } = "rw_per_shot";
+        public string MouldItemCavity { get; } = "item_cavity";
+        public string MouldTotalCavity { get; } = "mould_cavity";
 
         //delivery table
         public string TripNo { get; } = "trip_no";
@@ -31,6 +48,7 @@ namespace FactoryManagementSoftware.DAL
      
         //item table
         public string ItemCode { get; } = "item_code";
+        public string ItemTblCode { get; } = "item_tbl_code";
         public string ItemName { get; } = "item_name";
         public string ColorTblCode { get; } = "color_tbl_code";
         public string TonTblCode { get; } = "ton_tbl_code";
@@ -48,6 +66,7 @@ namespace FactoryManagementSoftware.DAL
         public string ColorName { get; } = "color_name";
 
         //Std Packing table
+        public string QtyPerContainer { get; } = "qty_per_container";
         public string QtyPerBag { get; } = "qty_per_bag";
         public string QtyPerPacket { get; } = "qty_per_packet";
         public string MaxLevel { get; } = "max_level";
@@ -59,6 +78,7 @@ namespace FactoryManagementSoftware.DAL
         public string SizeNumerator { get; } = "size_numerator";
         public string SizeDenominator { get; } = "size_denominator";
         public string SizeUnit { get; } = "size_unit";
+        public string SizeWeight { get; } = "size_weight";
 
         //type table
         public string TypeName { get; } = "type_name";
@@ -83,17 +103,25 @@ namespace FactoryManagementSoftware.DAL
         public string Email { get; } = "email";
         public string Website { get; } = "website";
 
+        public string Address3 { get; } = "address_3";
+        public string ShippingSameAsBilling { get; } = "ShippingSameAsBilling";
+        public string ShippingFullName { get; } = "shipping_fullname";
+        public string ShippingShortName { get; } = "shipping_shortname";
+        public string ShippingTransporter { get; } = "shipping_transporter";
+
         //PO table
         public string POTableName { get; } = "tbl_spp_po";
         public string POCode { get; } = "po_code";
         public string PONo { get; } = "po_no";
         public string PODate { get; } = "po_date";
-        public string CustomerTableCode { get; } = "customer_tbl_code";
+        public string CustTblCode { get; } = "customer_tbl_code";
         public string POQty { get; } = "po_qty";
         public string DeliveredQty { get; } = "delivered_qty";
         public string DefaultShippingAddress { get; } = "defaultShippingAddress";
         public string PONote { get; } = "po_note";
         public string ToDeliveryQty { get; } = "to_delivery_qty";
+        public string CustOwnDO { get; } = "cust_own_do";
+        public string RemarkInDO { get; } = "remark_in_do";
 
         //DO table
         public string DOTableName { get; } = "tbl_spp_do";
@@ -128,6 +156,13 @@ namespace FactoryManagementSoftware.DAL
         public string DeliveryBag { get; } = "delivery_bag";
         public string LocationFrom { get; } = "location_from";
 
+        //Price
+        public string DefaultPrice { get; } = "default_price";
+        public string UnitPrice { get; } = "unit_price";
+        public string DefaultDiscount { get; } = "default_discount";
+        public string DiscountRate { get; } = "discount_rate";
+        public string SubTotal { get; } = "sub_total";
+
         #endregion
 
         #region variable/class object declare
@@ -137,6 +172,82 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Select Data from Database
+
+        public DataTable DiscountSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_sbb_discount";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable PriceSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_sbb_price";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
 
         public DataTable PlanSelect()
         {
@@ -148,6 +259,168 @@ namespace FactoryManagementSoftware.DAL
             {
                 //sql query to get data from database
                 String sql = @"SELECT * FROM tbl_sbb_plan";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable MouldSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_sbb_mould";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable MouldWithoudRemovedDataSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_sbb_mould WHERE isRemoved IS NULL OR isRemoved = @false";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@false", false);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable MouldKeyWordsSelect(string KeyWords)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_sbb_mould WHERE mould_name =@keywords";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@keywords", KeyWords);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable MouldWithLinkedItemSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_sbb_mould
+                             LEFT JOIN tbl_sbb_mould_item
+                             ON tbl_sbb_mould_item.mould_code = tbl_sbb_mould.mould_code 
+                             ORDER BY tbl_sbb_mould.mould_code ASC";
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
@@ -569,7 +842,8 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = @"SELECT * FROM tbl_spp_stdpacking ORDER BY item_code ASC";
+                String sql = @"SELECT * FROM tbl_spp_stdpacking WHERE item_code <> '' AND item_code IS NOT NULL ORDER BY item_code ASC";
+
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
@@ -609,7 +883,7 @@ namespace FactoryManagementSoftware.DAL
                 //sql query to get data from database
                 //String sql = @"SELECT * FROM tbl_spp_item";
 
-                String sql = @"SELECT category_tbl_code, type_tbl_code, size_tbl_code_1, item_code, item_name, isRemoved  FROM tbl_item where category_tbl_code is not null";
+                String sql = @"SELECT category_tbl_code, type_tbl_code, size_tbl_code_1, size_tbl_code_2, type_tbl_code, item_code, item_name, isRemoved  FROM tbl_item where category_tbl_code is not null";
 
                 //ORDER BY category_tbl_code ASC, type_tbl_code ASC,size_tbl_code_1 ASC, item_code, ASC 
 
@@ -926,13 +1200,29 @@ namespace FactoryManagementSoftware.DAL
                                ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
                                INNER JOIN tbl_item
                                ON tbl_spp_po.item_code = tbl_item.item_code
-                               INNER JOIN tbl_spp_size
-                               ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code
+                               LEFT JOIN tbl_spp_size SIZE1
+                               ON tbl_item.size_tbl_code_1 = SIZE1.tbl_code
+                               LEFT JOIN tbl_spp_size SIZE2
+                               ON tbl_item.size_tbl_code_2 = SIZE2.tbl_code
                                INNER JOIN tbl_spp_type
                                ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
-                               FULL JOIN tbl_spp_stdpacking
+                               LEFT JOIN tbl_spp_stdpacking
                                ON tbl_item.item_code = tbl_spp_stdpacking.item_code
                                ORDER BY tbl_spp_po.po_code ASC, tbl_spp_po.item_code ASC";
+
+                //INNER JOIN tbl_spp_customer
+                //              ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code
+                //               INNER JOIN tbl_item
+                //               ON tbl_spp_po.item_code = tbl_item.item_code
+                //               LEFT JOIN tbl_spp_size SIZE1
+                //               ON tbl_item.size_tbl_code_1 = SIZE1.tbl_code
+                //               LEFT JOIN tbl_spp_size SIZE2
+                //               ON tbl_item.size_tbl_code_2 = SIZE2.tbl_code
+                //               INNER JOIN tbl_spp_type
+                //               ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                //               LEFT JOIN tbl_spp_stdpacking
+                //               ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                //               ORDER BY tbl_spp_po.po_code ASC, tbl_spp_po.item_code ASC";
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
@@ -962,6 +1252,70 @@ namespace FactoryManagementSoftware.DAL
 
         }
 
+        public DataTable SBBPagePOSelectWithSizeAndType()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT
+                               tbl_spp_po.isRemoved,
+                               tbl_spp_po.po_code,
+                               tbl_spp_po.po_qty,
+                               tbl_spp_po.delivered_qty,
+                               tbl_spp_po.po_no,
+                               tbl_spp_po.po_date,
+                               tbl_spp_po.customer_tbl_code,
+                               tbl_spp_stdpacking.qty_per_bag,
+                               tbl_spp_stdpacking.qty_per_packet,
+                               tbl_spp_customer.short_name,
+                               tbl_spp_customer.full_name
+                               FROM tbl_spp_po 
+                               INNER JOIN tbl_spp_customer 
+                               ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                               INNER JOIN tbl_item
+                               ON tbl_spp_po.item_code = tbl_item.item_code
+                               LEFT JOIN tbl_spp_size SIZE1
+                               ON tbl_item.size_tbl_code_1 = SIZE1.tbl_code
+                               LEFT JOIN tbl_spp_size SIZE2
+                               ON tbl_item.size_tbl_code_2 = SIZE2.tbl_code
+                               INNER JOIN tbl_spp_type
+                               ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                               LEFT JOIN tbl_spp_stdpacking
+                               ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                               ORDER BY tbl_spp_po.po_code ASC, tbl_spp_po.item_code ASC";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+
+
+        }
         public DataTable POWithoutRemovedDataSelect()
         {
             //static methodd to connect database
@@ -973,6 +1327,130 @@ namespace FactoryManagementSoftware.DAL
                 //sql query to get data from database
                 String sql = @"SELECT * FROM tbl_spp_po WHERE isRemoved IS NULL OR isRemoved = @false ";
 
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable PendingPOSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                //String sql = @"SELECT * FROM tbl_spp_po INNER JOIN tbl_item 
+                //               ON tbl_spp_po.item_code = tbl_item.item_code 
+                //                WHERE (tbl_spp_po.isRemoved IS NULL OR tbl_spp_po.isRemoved = @false) AND tbl_spp_po.po_qty > tbl_spp_po.delivered_qty 
+                //                ORDER BY tbl_spp_po.item_code ASC";
+
+                String sql = @"SELECT * FROM tbl_spp_po 
+                               INNER JOIN tbl_spp_customer 
+                               ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                               INNER JOIN tbl_item
+                               ON tbl_spp_po.item_code = tbl_item.item_code
+                               LEFT JOIN tbl_spp_size SIZE1
+                               ON tbl_item.size_tbl_code_1 = SIZE1.tbl_code
+                               LEFT JOIN tbl_spp_size SIZE2
+                               ON tbl_item.size_tbl_code_2 = SIZE2.tbl_code
+                               INNER JOIN tbl_spp_type
+                               ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                               LEFT JOIN tbl_spp_stdpacking
+                               ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                               WHERE (tbl_spp_po.isRemoved IS NULL OR tbl_spp_po.isRemoved = @false) AND tbl_spp_po.po_qty > tbl_spp_po.delivered_qty 
+                               ORDER BY tbl_spp_po.item_code ASC";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SBBPagePendingPOSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                //String sql = @"SELECT * FROM tbl_spp_po INNER JOIN tbl_item 
+                //               ON tbl_spp_po.item_code = tbl_item.item_code 
+                //                WHERE (tbl_spp_po.isRemoved IS NULL OR tbl_spp_po.isRemoved = @false) AND tbl_spp_po.po_qty > tbl_spp_po.delivered_qty 
+                //                ORDER BY tbl_spp_po.item_code ASC";
+
+                String sql = @"SELECT 
+                               tbl_item.item_code,
+                               tbl_item.item_name,
+                               tbl_item.item_qty,
+                               tbl_spp_po.po_qty,
+                               tbl_spp_po.delivered_qty,
+                               tbl_spp_stdpacking.qty_per_bag
+                               FROM tbl_spp_po 
+                               INNER JOIN tbl_spp_customer 
+                               ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                               INNER JOIN tbl_item
+                               ON tbl_spp_po.item_code = tbl_item.item_code
+                               LEFT JOIN tbl_spp_size SIZE1
+                               ON tbl_item.size_tbl_code_1 = SIZE1.tbl_code
+                               LEFT JOIN tbl_spp_size SIZE2
+                               ON tbl_item.size_tbl_code_2 = SIZE2.tbl_code
+                               INNER JOIN tbl_spp_type
+                               ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                               LEFT JOIN tbl_spp_stdpacking
+                               ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                               WHERE tbl_spp_po.po_qty > tbl_spp_po.delivered_qty 
+                               ORDER BY tbl_spp_po.item_code ASC";
+
+                //(tbl_spp_po.isRemoved IS NOT NULL OR tbl_spp_po.isRemoved = @false) AND 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
                 //for executing command
@@ -1142,13 +1620,16 @@ namespace FactoryManagementSoftware.DAL
                              ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
                              INNER JOIN tbl_item
                              ON tbl_spp_po.item_code = tbl_item.item_code
-                             INNER JOIN tbl_spp_size
-                             ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code
+                             LEFT JOIN tbl_spp_size size1
+                                ON tbl_item.size_tbl_code_1 = size1.tbl_code
+                             LEFT JOIN tbl_spp_size size2
+                                ON tbl_item.size_tbl_code_2 = size2.tbl_code
                              INNER JOIN tbl_spp_type
                              ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
                              FULL JOIN tbl_spp_stdpacking
                              ON tbl_item.item_code = tbl_spp_stdpacking.item_code
                              ORDER BY tbl_spp_do.do_no ASC";
+
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
@@ -1178,7 +1659,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable DOWithTrfInfoSelect()
+        public DataTable SBBPageDOWithInfoSelect()
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -1187,7 +1668,155 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = @"SELECT * FROM tbl_spp_do 
+                String sql = @"SELECT 
+                             tbl_spp_do.do_no,
+                             tbl_spp_do.to_delivery_qty,
+                             tbl_spp_do.isRemoved,
+                             tbl_spp_do.isDelivered,
+                             tbl_spp_do.trf_tbl_code,
+                             tbl_spp_stdpacking.qty_per_bag,
+                             tbl_spp_po.customer_tbl_code
+                             FROM tbl_spp_do 
+                             INNER JOIN tbl_spp_po
+                             ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
+                             INNER JOIN tbl_spp_customer 
+                             ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                             INNER JOIN tbl_item
+                             ON tbl_spp_po.item_code = tbl_item.item_code
+                             LEFT JOIN tbl_spp_size size1
+                                ON tbl_item.size_tbl_code_1 = size1.tbl_code
+                             LEFT JOIN tbl_spp_size size2
+                                ON tbl_item.size_tbl_code_2 = size2.tbl_code
+                             INNER JOIN tbl_spp_type
+                             ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                             FULL JOIN tbl_spp_stdpacking
+                             ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                             WHERE tbl_spp_do.do_no >= 0
+                             ORDER BY tbl_spp_do.do_no ASC";
+
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+        public DataTable SBBPageDOWithTrfInfoSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                
+                //sql query to get data from database
+                String sql = @"SELECT 
+                             tbl_spp_do.do_no,
+                             tbl_spp_do.isRemoved,
+                             tbl_spp_do.isDelivered,
+                             tbl_spp_do.to_delivery_qty,
+                             tbl_spp_do.trf_tbl_code,
+                             tbl_trf_hist.trf_hist_trf_date,
+                             tbl_trf_hist.trf_hist_qty,
+                             tbl_trf_hist.trf_result,
+                             tbl_spp_po.customer_tbl_code,
+                             tbl_spp_customer.short_name,
+                             tbl_spp_stdpacking.qty_per_packet,
+                             tbl_spp_stdpacking.qty_per_bag
+                             FROM tbl_spp_do 
+                             INNER JOIN tbl_trf_hist
+                             ON tbl_spp_do.trf_tbl_code = tbl_trf_hist.trf_hist_id
+                             INNER JOIN tbl_spp_po
+                             ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
+                             INNER JOIN tbl_spp_customer 
+                             ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                             INNER JOIN tbl_item
+                             ON tbl_spp_po.item_code = tbl_item.item_code
+                             INNER JOIN tbl_spp_size
+                             ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code
+                             INNER JOIN tbl_spp_type
+                             ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                             FULL JOIN tbl_spp_stdpacking
+                             ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                             ORDER BY tbl_spp_do.do_no ASC";
+
+              
+                //tbl_spp_do.tbl_code IS NOT NULL AND 
+                //   INNER JOIN tbl_trf_hist
+                //ON tbl_spp_do.trf_tbl_code = tbl_trf_hist.trf_hist_id
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SBBPageOWithTrfInfoSelect(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT  
+                             tbl_spp_do.do_no,
+                             tbl_spp_do.isRemoved,
+                             tbl_spp_do.isDelivered,
+                             tbl_spp_do.to_delivery_qty,
+                             tbl_spp_do.trf_tbl_code,
+                             tbl_trf_hist.trf_hist_trf_date,
+                             tbl_trf_hist.trf_hist_qty,
+                             tbl_trf_hist.trf_result,
+                             tbl_spp_po.customer_tbl_code,
+                             tbl_spp_customer.short_name,
+                             tbl_spp_stdpacking.qty_per_packet,
+                             tbl_spp_stdpacking.qty_per_bag
+                             FROM tbl_spp_do 
                              INNER JOIN tbl_spp_po
                              ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
                              INNER JOIN tbl_trf_hist
@@ -1202,13 +1831,19 @@ namespace FactoryManagementSoftware.DAL
                              ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
                              FULL JOIN tbl_spp_stdpacking
                              ON tbl_item.item_code = tbl_spp_stdpacking.item_code
-                             ORDER BY tbl_spp_do.do_no ASC";
+                             WHERE (tbl_trf_hist.trf_hist_trf_date 
+                             BETWEEN @start 
+                             AND @end OR (tbl_spp_do.isDelivered IS NULL OR tbl_spp_do.isDelivered = @false)) AND tbl_spp_do.do_no > 0
+                             ORDER BY tbl_item.item_code ASC,tbl_spp_customer.tbl_code ASC,  tbl_trf_hist.trf_hist_trf_date ASC";
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@false", false);
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
@@ -1291,6 +1926,7 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
         public DataTable DeliverySelect()
         {
             //static methodd to connect database
@@ -1420,9 +2056,345 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable ShippingDataSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_sbb_cust_shipping ORDER BY address_state ASC, shipping_fullname ASC";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable ShippingDataSelectWithCustCode(string custTblCode)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_sbb_cust_shipping WHERE customer_tbl_code=@custTblCode ORDER BY address_state ASC, shipping_fullname ASC";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@custTblCode", custTblCode);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         #endregion
 
         #region Insert Data in Database
+
+        public bool InsertMould(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_sbb_mould 
+                            (" + MouldCode + ","
+                            + MouldName + ","
+                            + MouldTon + ","
+                            + MouldWidth + ","
+                            + MouldHeight + ","
+                            + MouldLength + ","
+                            + MouldDateStart + ","
+                            + MouldTotalCavity + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@Mould_code," +
+                            "@Mould_name," +
+                            "@Mould_ton," +
+                            "@Mould_width," +
+                            "@Mould_height," +
+                            "@Mould_length," +
+                            "@Mould_startdate," +
+                            "@Mould_Total_cavity," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Mould_code", u.Mould_code);
+                cmd.Parameters.AddWithValue("@Mould_name", u.Mould_name);
+                cmd.Parameters.AddWithValue("@Mould_ton", u.Mould_ton);
+                cmd.Parameters.AddWithValue("@Mould_width", u.Mould_width);
+                cmd.Parameters.AddWithValue("@Mould_height", u.Mould_height);
+                cmd.Parameters.AddWithValue("@Mould_length", u.Mould_length);
+                cmd.Parameters.AddWithValue("@Mould_startdate", u.Mould_startdate);
+                cmd.Parameters.AddWithValue("@Mould_Total_cavity", u.Mould_Total_cavity);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertMouldItemGroup(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_sbb_mould_item 
+                            (" + GroupCode + ","
+                            + MouldTblCode + ","
+                            + ItemCode + ","
+                            + MouldCycleTime + ","
+                            + PWPerShot + ","
+                            + RWPerShot + ","
+                            + MouldItemCavity + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@Group_code," +
+                            "@Mould_tbl_code," +
+                            "@Item_code," +
+                            "@Mould_cycletime," +
+                            "@Mould_pwpershot," +
+                            "@Mould_rwpershot," +
+                            "@Mould_item_cavity," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Group_code", u.Group_code);
+                cmd.Parameters.AddWithValue("@Mould_tbl_code", u.Mould_tbl_code);
+                cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+                cmd.Parameters.AddWithValue("@Mould_cycletime", u.Mould_cycletime);
+                cmd.Parameters.AddWithValue("@Mould_pwpershot", u.Mould_pwpershot);
+                cmd.Parameters.AddWithValue("@Mould_rwpershot", u.Mould_rwpershot);
+                cmd.Parameters.AddWithValue("@Mould_item_cavity", u.Mould_item_cavity);
+
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertPrice(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_sbb_price 
+                            (" + ItemTblCode + ","
+                            + DefaultPrice + ","
+                            + DefaultDiscount + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@Item_tbl_code," +
+                            "@Default_price," +
+                            "@Default_discount," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Item_tbl_code", u.Item_tbl_code);
+                cmd.Parameters.AddWithValue("@Default_price", u.Default_price);
+                cmd.Parameters.AddWithValue("@Default_discount", u.Default_discount);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertDiscount(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_sbb_discount
+                            (" + ItemTblCode + ","
+                            + CustTblCode + ","
+                            + UnitPrice + ","
+                            + DiscountRate + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@Item_tbl_code," +
+                            "@Customer_tbl_code," +
+                            "@Unit_price," +
+                            "@Discount_rate," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Item_tbl_code", u.Item_tbl_code);
+                cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);
+                cmd.Parameters.AddWithValue("@Unit_price", u.Unit_price);
+                cmd.Parameters.AddWithValue("@Discount_rate", u.Discount_rate);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
 
         public bool InsertPlan(SBBDataBLL u)
         {
@@ -2032,6 +3004,65 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool InsertStdPackingBagContainer(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_spp_stdpacking 
+                            (" + ItemCode + ","
+                            + QtyPerPacket + ","
+                            + QtyPerBag + ","
+                             + QtyPerContainer + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@Item_code," +
+                            "@Qty_Per_Packet," +
+                            "@qty_per_bag," +
+                            "@qty_per_container," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+                cmd.Parameters.AddWithValue("@qty_per_container", u.Qty_Per_Container);
+                cmd.Parameters.AddWithValue("@qty_per_bag", u.Qty_Per_Bag);
+                cmd.Parameters.AddWithValue("@Qty_Per_Packet", u.Qty_Per_Packet);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         public bool InsertCustomer(SBBDataBLL u)
         {
             bool isSuccess = false;
@@ -2045,6 +3076,7 @@ namespace FactoryManagementSoftware.DAL
                             + RegistrationNo + ","
                             + Address1 + ","
                             + Address2 + ","
+                            + Address3 + ","
                             + AddressCity + ","
                             + AddressState + ","
                             + AddressPostalCode + ","
@@ -2062,6 +3094,7 @@ namespace FactoryManagementSoftware.DAL
                             "@Registration_No," +
                             "@Address_1," +
                             "@Address_2," +
+                            "@Address_3," +
                             "@Address_City," +
                             "@Address_State," +
                             "@Address_Postal_Code," +
@@ -2082,6 +3115,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Registration_No", u.Registration_No);
                 cmd.Parameters.AddWithValue("@Address_1", u.Address_1);
                 cmd.Parameters.AddWithValue("@Address_2", u.Address_2);
+                cmd.Parameters.AddWithValue("@Address_3", u.Address_3);
                 cmd.Parameters.AddWithValue("@Address_City", u.Address_City);
                 cmd.Parameters.AddWithValue("@Address_State", u.Address_State);
                 cmd.Parameters.AddWithValue("@Address_Postal_Code", u.Address_Postal_Code);
@@ -2124,6 +3158,92 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool InsertCustomerShippingData(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_sbb_cust_shipping 
+                            (" + CustTblCode + ","
+                            + ShippingFullName + ","
+                            + ShippingShortName + ","
+                            + Address1 + ","
+                            + Address2 + ","
+                            + Address3 + ","
+                            + AddressCity + ","
+                            + AddressState + ","
+                            + AddressPostalCode + ","
+                            + AddressCountry + ","
+                            + Phone1 + ","
+                            + RouteTblCode + ","
+                            + ShippingTransporter + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@Customer_tbl_code," +
+                            "@Shipping_Full_Name," +
+                            "@Shipping_Short_Name," +
+                            "@Address_1," +
+                            "@Address_2," +
+                            "@Address_3," +
+                            "@Address_City," +
+                            "@Address_State," +
+                            "@Address_Postal_Code," +
+                            "@Address_Country," +
+                            "@Phone_1," +
+                            "@route_tbl_code," +
+                            "@Shipping_Transporter," +
+                            "@Updated_Date," +
+                            "@Updated_By)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);
+                cmd.Parameters.AddWithValue("@Shipping_Full_Name", u.Shipping_Full_Name);
+                cmd.Parameters.AddWithValue("@Shipping_Short_Name", u.Shipping_Short_Name);
+                cmd.Parameters.AddWithValue("@Address_1", u.Address_1);
+                cmd.Parameters.AddWithValue("@Address_2", u.Address_2);
+                cmd.Parameters.AddWithValue("@Address_3", u.Address_3);
+                cmd.Parameters.AddWithValue("@Address_City", u.Address_City);
+                cmd.Parameters.AddWithValue("@Address_State", u.Address_State);
+                cmd.Parameters.AddWithValue("@Address_Postal_Code", u.Address_Postal_Code);
+                cmd.Parameters.AddWithValue("@Address_Country", u.Address_Country);
+                cmd.Parameters.AddWithValue("@Phone_1", u.Phone_1);
+                cmd.Parameters.AddWithValue("@route_tbl_code", u.Route_tbl_code);
+                cmd.Parameters.AddWithValue("@Shipping_Transporter", u.Shipping_Transporter);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         public bool InsertPO(SBBDataBLL u)
         {
             bool isSuccess = false;
@@ -2133,13 +3253,17 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"INSERT INTO tbl_spp_po 
                             (" + POCode + ","
-                            + CustomerTableCode + ","
+                            + CustTblCode + ","
                             + PONo + ","
                             + ItemCode + ","
                             + POQty + ","
                             + DeliveredQty + ","
+                            + ShippingFullName + ","
+                            + ShippingShortName + ","
+                            + ShippingTransporter + ","
                             + Address1 + ","
                             + Address2 + ","
+                            + Address3 + ","
                             + AddressCity + ","
                             + AddressState + ","
                             + AddressPostalCode + ","
@@ -2147,6 +3271,12 @@ namespace FactoryManagementSoftware.DAL
                             + DefaultShippingAddress + ","
                              + PONote + ","
                             + PODate + ","
+                            + UnitPrice + ","
+                            + DiscountRate + ","
+                            + SubTotal + ","
+                            + Phone1 + ","
+                            + CustOwnDO + ","
+                            + RemarkInDO + ","
                             + UpdatedDate + ","
                             + UpdatedBy + ") VALUES" +
                             "(@PO_code," +
@@ -2155,15 +3285,25 @@ namespace FactoryManagementSoftware.DAL
                             "@Item_code," +
                             "@PO_qty," +
                             "@Delivered_qty," +
+                            "@Shipping_Full_Name," +
+                            "@Shipping_Short_Name," +
+                            "@Shipping_Transporter," +
                             "@Address_1," +
                             "@Address_2," +
+                            "@Address_3," +
                             "@Address_City," +
                             "@Address_State," +
                             "@Address_Postal_Code," +
                             "@Address_Country," +
-                            "@DefaultShippingAddress," +
+                            "@UseBillingAddress," +
                              "@PO_note," +
                             "@PO_date," +
+                              "@Unit_price," +
+                             "@Discount_rate," +
+                            "@Sub_total," +
+                            "@Phone_1," +
+                            "@Cust_Own_DO," +
+                            "@remark_in_do," +
                             "@Updated_Date," +
                             "@Updated_By)";
 
@@ -2177,13 +3317,26 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
                 cmd.Parameters.AddWithValue("@PO_qty", u.PO_qty);
                 cmd.Parameters.AddWithValue("@Delivered_qty", u.Delivered_qty);
-                cmd.Parameters.AddWithValue("@DefaultShippingAddress", u.DefaultShippingAddress);
+                cmd.Parameters.AddWithValue("@UseBillingAddress", u.UseBillingAddress);
                 cmd.Parameters.AddWithValue("@Address_1", u.Address_1);
                 cmd.Parameters.AddWithValue("@Address_2", u.Address_2);
+                cmd.Parameters.AddWithValue("@Address_3", u.Address_3);
                 cmd.Parameters.AddWithValue("@Address_City", u.Address_City);
                 cmd.Parameters.AddWithValue("@Address_State", u.Address_State);
                 cmd.Parameters.AddWithValue("@Address_Postal_Code", u.Address_Postal_Code);
                 cmd.Parameters.AddWithValue("@Address_Country", u.Address_Country);
+                cmd.Parameters.AddWithValue("@remark_in_do", u.remark_in_do);
+
+                cmd.Parameters.AddWithValue("@Shipping_Full_Name", u.Shipping_Full_Name);
+                cmd.Parameters.AddWithValue("@Shipping_Short_Name", u.Shipping_Short_Name);
+                cmd.Parameters.AddWithValue("@Shipping_Transporter", u.Shipping_Transporter);
+
+
+                cmd.Parameters.AddWithValue("@Unit_price", u.Unit_price);
+                cmd.Parameters.AddWithValue("@Discount_rate", u.Discount_rate);
+                cmd.Parameters.AddWithValue("@Sub_total", u.Sub_total);
+                cmd.Parameters.AddWithValue("@Phone_1", u.Phone_1);
+                cmd.Parameters.AddWithValue("@Cust_Own_DO", u.Cust_Own_DO);
 
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
@@ -2226,7 +3379,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"UPDATE tbl_spp_po 
                             SET "
                            + POCode + "=@PO_code,"
-                           + CustomerTableCode + "=@Customer_tbl_code,"
+                           + CustTblCode + "=@Customer_tbl_code,"
                            + PONo + "=@PO_no,"
                            + ItemCode + "=@Item_code,"
                            + POQty + "=@PO_qty,"
@@ -2245,7 +3398,7 @@ namespace FactoryManagementSoftware.DAL
                             "IF @@ROWCOUNT = 0 " +
                             "INSERT INTO tbl_spp_po(" 
                             + POCode + ", "
-                            + CustomerTableCode + ","
+                            + CustTblCode + ","
                             + PONo + ","
                             + ItemCode + ","
                             + POQty + ","
@@ -2289,7 +3442,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);
                 cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
                 cmd.Parameters.AddWithValue("@PO_qty", u.PO_qty);
-                cmd.Parameters.AddWithValue("@DefaultShippingAddress", u.DefaultShippingAddress);
+                cmd.Parameters.AddWithValue("@DefaultShippingAddress", u.UseBillingAddress);
                 cmd.Parameters.AddWithValue("@Address_1", u.Address_1);
                 cmd.Parameters.AddWithValue("@Address_2", u.Address_2);
                 cmd.Parameters.AddWithValue("@Address_City", u.Address_City);
@@ -2508,6 +3661,244 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Update data in Database
+
+        public bool MouldUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_sbb_mould
+                            SET "
+                            + MouldCode + "=@Mould_code,"
+                            + MouldName + "=@Mould_name,"
+                            + MouldTon + "=@Mould_ton,"
+                            + MouldWidth + "=@Mould_width,"
+                            + MouldHeight + "=@Mould_height,"
+                            + MouldLength + "=@Mould_length,"
+                            + MouldDateStart + "=@Mould_startdate,"
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Mould_code", u.Mould_code);
+                cmd.Parameters.AddWithValue("@Mould_name", u.Mould_name);
+                cmd.Parameters.AddWithValue("@Mould_ton", u.Mould_ton);
+                cmd.Parameters.AddWithValue("@Mould_width", u.Mould_width);
+                cmd.Parameters.AddWithValue("@Mould_height", u.Mould_height);
+                cmd.Parameters.AddWithValue("@Mould_length", u.Mould_length);
+                cmd.Parameters.AddWithValue("@Mould_startdate", u.Mould_startdate);
+
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool MouldItemGroupUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_sbb_mould_item
+                            SET "
+                            + GroupCode + "=@Group_code,"
+                            + MouldTblCode + "=@Mould_tbl_code,"
+                            + ItemCode + "=@Item_code,"
+                            + MouldCycleTime + "=@Mould_cycletime,"
+                            + PWPerShot + "=@Mould_pwpershot,"
+                            + RWPerShot + "=@Mould_rwpershot,"
+                            + MouldItemCavity + "=@Mould_item_cavity,"
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Group_code", u.Group_code);
+                cmd.Parameters.AddWithValue("@Mould_tbl_code", u.Mould_tbl_code);
+                cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+                cmd.Parameters.AddWithValue("@Mould_cycletime", u.Mould_cycletime);
+                cmd.Parameters.AddWithValue("@Mould_pwpershot", u.Mould_pwpershot);
+                cmd.Parameters.AddWithValue("@Mould_rwpershot", u.Mould_rwpershot);
+                cmd.Parameters.AddWithValue("@Mould_item_cavity", u.Mould_item_cavity);
+
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool PriceUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_sbb_price
+                            SET "
+                            + ItemTblCode + "=@Item_tbl_code,"
+                            + DefaultPrice + "=@Default_price,"
+                            + DefaultDiscount + "=@Default_discount,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Item_tbl_code", u.Item_tbl_code);
+                cmd.Parameters.AddWithValue("@Default_price", u.Default_price);
+                cmd.Parameters.AddWithValue("@Default_discount", u.Default_discount);
+            
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool DiscountUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_sbb_discount
+                            SET "
+                            + ItemTblCode + "=@Item_tbl_code,"
+                            + CustTblCode + "=@Customer_tbl_code,"
+                            + UnitPrice + "=@Unit_price,"
+                            + DiscountRate + "=@Discount_rate,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Item_tbl_code", u.Item_tbl_code);
+                cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);
+                cmd.Parameters.AddWithValue("@Unit_price", u.Unit_price);
+                cmd.Parameters.AddWithValue("@Discount_rate", u.Discount_rate);
+
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
 
         public bool PlanUpdate(SBBDataBLL u)
         {
@@ -3226,6 +4617,61 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool StdPackingBagContainerUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_spp_stdpacking 
+                            SET "
+                            + QtyPerContainer + "=@qty_per_container,"
+                            + QtyPerPacket + "=@Qty_Per_Packet,"
+                            + QtyPerBag + "=@qty_per_bag,"
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@qty_per_container", u.Qty_Per_Container);
+                cmd.Parameters.AddWithValue("@Qty_Per_Packet", u.Qty_Per_Packet);
+                cmd.Parameters.AddWithValue("@qty_per_bag", u.Qty_Per_Bag);
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         public bool StdPackingUpdate(SBBDataBLL u)
         {
             bool isSuccess = false;
@@ -3356,6 +4802,7 @@ namespace FactoryManagementSoftware.DAL
                             + RegistrationNo + "=@Registration_No,"
                             + Address1 + "=@Address_1,"
                             + Address2 + "=@Address_2,"
+                            + Address3 + "=@Address_3,"
                             + AddressCity + "=@Address_City,"
                             + AddressState + "=@Address_State,"
                             + AddressPostalCode + "=@Address_Postal_Code,"
@@ -3378,6 +4825,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Registration_No", u.Registration_No);
                 cmd.Parameters.AddWithValue("@Address_1", u.Address_1);
                 cmd.Parameters.AddWithValue("@Address_2", u.Address_2);
+                cmd.Parameters.AddWithValue("@Address_3", u.Address_3);
                 cmd.Parameters.AddWithValue("@Address_City", u.Address_City);
                 cmd.Parameters.AddWithValue("@Address_State", u.Address_State);
                 cmd.Parameters.AddWithValue("@Address_Postal_Code", u.Address_Postal_Code);
@@ -3420,6 +4868,134 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool ShippingDataUpdate(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_sbb_cust_shipping
+                            SET "
+                            + CustTblCode + "=@Customer_tbl_code,"
+                            + ShippingFullName + "=@Shipping_Full_Name,"
+                            + ShippingShortName + "=@Shipping_Short_Name,"
+                            + Address1 + "=@Address_1,"
+                            + Address2 + "=@Address_2,"
+                            + Address3 + "=@Address_3,"
+                            + AddressCity + "=@Address_City,"
+                            + AddressState + "=@Address_State,"
+                            + AddressPostalCode + "=@Address_Postal_Code,"
+                            + AddressCountry + "=@Address_Country,"
+                            + Phone1 + "=@Phone_1,"
+                            + RouteTblCode + "=@route_tbl_code,"
+                            + ShippingTransporter + "=@Shipping_Transporter,"
+                            + IsRemoved + "=@IsRemoved,"
+                            + CustOwnDO + "=@Cust_Own_DO,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);
+                cmd.Parameters.AddWithValue("@Shipping_Full_Name", u.Shipping_Full_Name);
+                cmd.Parameters.AddWithValue("@Shipping_Short_Name", u.Shipping_Short_Name);
+                cmd.Parameters.AddWithValue("@Address_1", u.Address_1);
+                cmd.Parameters.AddWithValue("@Address_2", u.Address_2);
+                cmd.Parameters.AddWithValue("@Address_3", u.Address_3);
+                cmd.Parameters.AddWithValue("@Address_City", u.Address_City);
+                cmd.Parameters.AddWithValue("@Address_State", u.Address_State);
+                cmd.Parameters.AddWithValue("@Address_Postal_Code", u.Address_Postal_Code);
+                cmd.Parameters.AddWithValue("@Address_Country", u.Address_Country);
+                cmd.Parameters.AddWithValue("@Phone_1", u.Phone_1);
+                cmd.Parameters.AddWithValue("@route_tbl_code", u.Route_tbl_code);
+                cmd.Parameters.AddWithValue("@Shipping_Transporter", u.Shipping_Transporter);
+                cmd.Parameters.AddWithValue("@Cust_Own_DO", u.Cust_Own_DO);
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+
+        public bool ShippingRemove(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE  tbl_sbb_cust_shipping 
+                            SET "
+                            + IsRemoved + "=@IsRemoved,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@Table_Code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         public bool CustomerRemove(SBBDataBLL u)
         {
             bool isSuccess = false;
@@ -3480,19 +5056,29 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"UPDATE tbl_spp_po 
                             SET "
-                            + CustomerTableCode + "=@Customer_tbl_code,"
+                            + CustTblCode + "=@Customer_tbl_code,"
                             + PONo + "=@PO_no,"
                             + ItemCode + "=@Item_code,"
                             + POQty + "=@PO_qty,"
                             + DefaultShippingAddress + "=@DefaultShippingAddress,"
+                            + ShippingFullName + "=@Shipping_Full_Name,"
+                            + ShippingShortName + "=@Shipping_Short_Name,"
+                            + ShippingTransporter + "=@Shipping_Transporter,"
                             + Address1 + "=@Address_1,"
                             + Address2 + "=@Address_2,"
+                            + Address3 + "=@Address_3,"
                             + AddressCity + "=@Address_City,"
                             + AddressState + "=@Address_State,"
                             + AddressPostalCode + "=@Address_Postal_Code,"
                             + AddressCountry + "=@Address_Country,"
                             + PONote + "=@PO_note,"
                             + PODate + "=@PO_date,"
+                             + UnitPrice + "=@Unit_price,"
+                            + DiscountRate + "=@Discount_rate,"
+                            + SubTotal + "=@Sub_total,"
+                            + Phone1 + "=@Phone_1,"
+                            + CustOwnDO + "=@Cust_Own_DO,"
+                            + RemarkInDO + "=@remark_in_do,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
                             " WHERE tbl_code=@Table_Code";
@@ -3505,13 +5091,24 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Customer_tbl_code", u.Customer_tbl_code);
                 cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
                 cmd.Parameters.AddWithValue("@PO_qty", u.PO_qty);
-                cmd.Parameters.AddWithValue("@DefaultShippingAddress", u.DefaultShippingAddress);
+                cmd.Parameters.AddWithValue("@DefaultShippingAddress", u.UseBillingAddress);
                 cmd.Parameters.AddWithValue("@Address_1", u.Address_1);
                 cmd.Parameters.AddWithValue("@Address_2", u.Address_2);
+                cmd.Parameters.AddWithValue("@Address_3", u.Address_3);
+                cmd.Parameters.AddWithValue("@Shipping_Full_Name", u.Shipping_Full_Name);
+                cmd.Parameters.AddWithValue("@Shipping_Short_Name", u.Shipping_Short_Name);
+                cmd.Parameters.AddWithValue("@Shipping_Transporter", u.Shipping_Transporter);
                 cmd.Parameters.AddWithValue("@Address_City", u.Address_City);
                 cmd.Parameters.AddWithValue("@Address_State", u.Address_State);
                 cmd.Parameters.AddWithValue("@Address_Postal_Code", u.Address_Postal_Code);
                 cmd.Parameters.AddWithValue("@Address_Country", u.Address_Country);
+
+                cmd.Parameters.AddWithValue("@Unit_price", u.Unit_price);
+                cmd.Parameters.AddWithValue("@Discount_rate", u.Discount_rate);
+                cmd.Parameters.AddWithValue("@Sub_total", u.Sub_total);
+                cmd.Parameters.AddWithValue("@Phone_1", u.Phone_1);
+                cmd.Parameters.AddWithValue("@Cust_Own_DO", u.Cust_Own_DO);
+                cmd.Parameters.AddWithValue("@remark_in_do", u.remark_in_do);
 
                 cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
@@ -4687,6 +6284,50 @@ namespace FactoryManagementSoftware.DAL
         }
 
         #endregion
+
+        public bool SaveMouldData(SBBDataBLL u)
+        {
+            bool result = false;
+            bool dataExist = false;
+
+            DataTable dt_Mould = MouldSelect();
+
+            if(dt_Mould != null && dt_Mould.Rows.Count > 0)
+            {
+                foreach(DataRow row in dt_Mould.Rows)
+                {
+                    if(u.Mould_code == row[MouldCode].ToString())
+                    {
+                        dataExist = true;
+                        u.Table_Code = int.TryParse(row[TableCode].ToString(), out int x) ? x : -1;
+                    }
+                }
+            }
+            
+            if(!dataExist)
+            {
+                //insert
+                result = InsertMould(u);
+            }
+            else
+            {
+                //update
+                if(u.Table_Code > 0)
+                    result = MouldUpdate(u);
+
+                else
+                {
+                    MessageBox.Show("Failed to save mould data!\nTable code= -1");
+                }
+            }
+
+            if(!result)
+            {
+                MessageBox.Show("Failed to save mould data!\nresult = false");
+
+            }
+            return result;
+        }
 
     }
 }

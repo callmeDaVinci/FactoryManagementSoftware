@@ -50,8 +50,8 @@ namespace FactoryManagementSoftware.UI
         readonly string headerCode = "CODE";
         readonly string headerName = "NAME";
         readonly string headerMB = "MB";
-        readonly string headerMBRate = "MB RATE";
-        readonly string headerSubMatRate = "RATE";
+        private string headerMBRate = "MB RATE";
+        private string headerSubMatRate = "RATE";
         readonly string headerWeight = "WEIGHT";
         readonly string headerWastage = "WASTAGE RATE";
         readonly string headerReadyStock = "READY STOCK";
@@ -239,6 +239,22 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
+        public DataTable NewCartonForeacastTable()
+        {
+            DataTable dt = new DataTable();
+
+
+            dt.Columns.Add("#", typeof(int));
+            dt.Columns.Add(headerMat, typeof(string));
+            dt.Columns.Add(headerCode, typeof(string));
+            dt.Columns.Add(headerName, typeof(string));
+            dt.Columns.Add(headerStillNeed, typeof(float));
+            dt.Columns.Add(headerSubMatRate, typeof(string));
+            dt.Columns.Add(headerSubMatUsed, typeof(float));
+            dt.Columns.Add(headerTotal, typeof(float));
+
+            return dt;
+        }
         #endregion
 
 
@@ -788,6 +804,86 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerTotal].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
         }
 
+        private void loadCartonUsedData(DataTable dtCarton)
+        {
+            dgvMaterialUsedForecast.DataSource = null;
+
+            DataTable dt = NewCartonForeacastTable();
+            DataRow dt_row;
+
+            DataTable dt_itemInfo = dalItem.Select();
+
+            int index = 1;
+            float stillNeed = 0, bal1, bal2, bal3, bal4;
+            string itemCode;
+
+            foreach (DataRow row in dtCarton.Rows)
+            {
+                bal1 = Convert.ToSingle(row[headerBalanceOne]);
+                bal2 = Convert.ToSingle(row[headerBalanceTwo]);
+                bal3 = Convert.ToSingle(row[headerBalanceThree]);
+                bal4 = Convert.ToSingle(row[headerBalanceFour]);
+
+                dt_row = dt.NewRow();
+                dt_row[headerIndex] = index;
+                dt_row[headerMat] = MaterialCode;
+                dt_row[headerCode] = row[headerCode];
+                dt_row[headerName] = row[headerName];
+
+                if (cmbForecast.SelectedIndex == 0)
+                {
+                    stillNeed = Convert.ToSingle(row[headerBalanceOne]);
+                }
+                else if (cmbForecast.SelectedIndex == 1)
+                {
+                    stillNeed = Convert.ToSingle(row[headerBalanceTwo]);
+                }
+                else if (cmbForecast.SelectedIndex == 2)
+                {
+                    stillNeed = Convert.ToSingle(row[headerBalanceThree]);
+                }
+                else if (cmbForecast.SelectedIndex == 3)
+                {
+                    stillNeed = Convert.ToSingle(row[headerBalanceFour]);
+                }
+
+                if (stillNeed >= 0)
+                {
+                    stillNeed = 0;
+                }
+
+                stillNeed *= -1;
+                dt_row[headerStillNeed] = stillNeed;
+
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ///get join qty data
+                float joinQty = float.TryParse(row[headerMBRate].ToString(), out joinQty) ? joinQty : 1;
+                float joinMax = float.TryParse(row[headerMB].ToString(), out joinMax) ? joinMax : 1;
+
+
+                dt_row[headerSubMatRate] = joinQty + "/" + joinMax;
+                dt_row[headerSubMatUsed] = Math.Round(stillNeed * Convert.ToSingle(joinQty / joinMax), 2);
+
+                dt.Rows.Add(dt_row);
+                index++;
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                float totalSubMatUsed = 0;
+                foreach (DataRow row in dt.Rows)
+                {
+                    totalSubMatUsed += Convert.ToSingle(row[headerSubMatUsed]);
+                }
+
+                dt.Rows[dt.Rows.Count - 1][headerTotal] = Math.Round(totalSubMatUsed, 2);
+
+                dgvMaterialUsedForecast.DataSource = dt;
+                dgvSubMatUsedForecastUIEdit(dgvMaterialUsedForecast);
+                dgvMaterialUsedForecast.ClearSelection();
+            }
+        }
+
         private void loadSubMatUsedData(DataTable dtSubMat)
         {
             dgvMaterialUsedForecast.DataSource = null;
@@ -800,6 +896,7 @@ namespace FactoryManagementSoftware.UI
             int index = 1;
             float stillNeed = 0, bal1, bal2, bal3, bal4;
             string itemCode;
+
             foreach (DataRow row in dtSubMat.Rows)
             {
                 if (row[headerMat].ToString().Equals(MaterialCode))
@@ -1042,6 +1139,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
+            Text text = new Text();
             frmLoading.ShowLoadingScreen();
             DataTable dt_itemInfo = dalItem.Select();
             string type = tool.getCatNameFromDataTable(dt_itemInfo, MaterialCode);
@@ -1082,6 +1180,10 @@ namespace FactoryManagementSoftware.UI
                     loadSubMatUsedData(tool.insertSubMaterialUsedData(tool.getCustName(1), MaterialCode));
 
                 }
+            }
+            else if (type.Equals(text.Cat_Carton))
+            {
+                loadCartonUsedData(tool.GetCartonBalanceData(tool.getCustName(1), MaterialCode));
             }
             frmLoading.CloseForm();
         }

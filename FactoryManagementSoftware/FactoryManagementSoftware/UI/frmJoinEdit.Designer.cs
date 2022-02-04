@@ -65,6 +65,10 @@
             this.txtTestParentQty = new System.Windows.Forms.TextBox();
             this.errorProvider7 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider8 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.btnSetAllSBBItem = new System.Windows.Forms.Button();
+            this.cbFollowPacketQty = new System.Windows.Forms.CheckBox();
+            this.cbFollowBagQty = new System.Windows.Forms.CheckBox();
+            this.cbRemoveItem = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -456,12 +460,66 @@
             // 
             this.errorProvider8.ContainerControl = this;
             // 
+            // btnSetAllSBBItem
+            // 
+            this.btnSetAllSBBItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(203)))), ((int)(((byte)(110)))));
+            this.btnSetAllSBBItem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnSetAllSBBItem.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSetAllSBBItem.ForeColor = System.Drawing.Color.Black;
+            this.btnSetAllSBBItem.Location = new System.Drawing.Point(15, 591);
+            this.btnSetAllSBBItem.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSetAllSBBItem.Name = "btnSetAllSBBItem";
+            this.btnSetAllSBBItem.Size = new System.Drawing.Size(250, 50);
+            this.btnSetAllSBBItem.TabIndex = 81;
+            this.btnSetAllSBBItem.Text = "SBB ITEM UPDATE";
+            this.btnSetAllSBBItem.UseVisualStyleBackColor = false;
+            this.btnSetAllSBBItem.Click += new System.EventHandler(this.btnSetAllSBBItem_Click);
+            // 
+            // cbFollowPacketQty
+            // 
+            this.cbFollowPacketQty.AutoSize = true;
+            this.cbFollowPacketQty.Checked = true;
+            this.cbFollowPacketQty.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbFollowPacketQty.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbFollowPacketQty.Location = new System.Drawing.Point(15, 567);
+            this.cbFollowPacketQty.Name = "cbFollowPacketQty";
+            this.cbFollowPacketQty.Size = new System.Drawing.Size(100, 23);
+            this.cbFollowPacketQty.TabIndex = 82;
+            this.cbFollowPacketQty.Text = "Packet QTY";
+            this.cbFollowPacketQty.UseVisualStyleBackColor = true;
+            // 
+            // cbFollowBagQty
+            // 
+            this.cbFollowBagQty.AutoSize = true;
+            this.cbFollowBagQty.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbFollowBagQty.Location = new System.Drawing.Point(121, 567);
+            this.cbFollowBagQty.Name = "cbFollowBagQty";
+            this.cbFollowBagQty.Size = new System.Drawing.Size(83, 23);
+            this.cbFollowBagQty.TabIndex = 83;
+            this.cbFollowBagQty.Text = "Bag QTY";
+            this.cbFollowBagQty.UseVisualStyleBackColor = true;
+            // 
+            // cbRemoveItem
+            // 
+            this.cbRemoveItem.AutoSize = true;
+            this.cbRemoveItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbRemoveItem.Location = new System.Drawing.Point(270, 618);
+            this.cbRemoveItem.Name = "cbRemoveItem";
+            this.cbRemoveItem.Size = new System.Drawing.Size(86, 23);
+            this.cbRemoveItem.TabIndex = 84;
+            this.cbRemoveItem.Text = "REMOVE";
+            this.cbRemoveItem.UseVisualStyleBackColor = true;
+            // 
             // frmJoinEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(917, 667);
+            this.Controls.Add(this.cbRemoveItem);
+            this.Controls.Add(this.cbFollowBagQty);
+            this.Controls.Add(this.cbFollowPacketQty);
+            this.Controls.Add(this.btnSetAllSBBItem);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -494,6 +552,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider8)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -535,5 +594,9 @@
         private System.Windows.Forms.TextBox txtParentCode;
         private System.Windows.Forms.ErrorProvider errorProvider7;
         private System.Windows.Forms.ErrorProvider errorProvider8;
+        private System.Windows.Forms.Button btnSetAllSBBItem;
+        private System.Windows.Forms.CheckBox cbFollowBagQty;
+        private System.Windows.Forms.CheckBox cbFollowPacketQty;
+        private System.Windows.Forms.CheckBox cbRemoveItem;
     }
 }

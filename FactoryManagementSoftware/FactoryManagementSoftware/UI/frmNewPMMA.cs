@@ -44,6 +44,8 @@ namespace FactoryManagementSoftware.UI
 
         private readonly string GroupBoxStockList = "ZERO COST MATERIAL STOCK LIST";
         private readonly string GroupBoxMatUsedList = "ZERO COST MATERIAL USED LIST";
+        private readonly string text_LockData = "LOCK DATA";
+        private readonly string text_Unlock = "UNLOCK";
 
         private string oldAdjustQty = null;
         private string oldNote = null;
@@ -198,6 +200,18 @@ namespace FactoryManagementSoftware.UI
             //dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
 
+            if(btnLockData.Text == text_LockData)
+            {
+                dgv.DefaultCellStyle.BackColor = Color.White;
+            }
+            else
+            {
+                dgv.DefaultCellStyle.BackColor = Color.Gainsboro;
+
+            }
+
+            dgv.Columns[text.Header_DirectOut_KG_Piece].Visible = false;
+
             dgv.Columns[text.Header_Index].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
            
             dgv.Columns[text.Header_MatName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -205,7 +219,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_OpeningStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[text.Header_In_KG_Piece].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[text.Header_Used_KG_Piece].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[text.Header_DirectOut_KG_Piece].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            //dgv.Columns[text.Header_DirectOut_KG_Piece].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[text.Header_Wastage].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[text.Header_Adjust].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[text.Header_BalStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -213,11 +227,12 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_OpeningStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[text.Header_In_KG_Piece].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[text.Header_Used_KG_Piece].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[text.Header_DirectOut_KG_Piece].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            //dgv.Columns[text.Header_DirectOut_KG_Piece].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
             dgv.Columns[text.Header_Wastage].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[text.Header_Adjust].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[text.Header_BalStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
 
         }
 
@@ -264,6 +279,8 @@ namespace FactoryManagementSoftware.UI
 
         private void switchToMatUsedReport()
         {
+            btnLockData.Visible = false;
+
             btnSwitchToStockCheck.ForeColor = Color.Black;
             btnSwitchToMatUsed.ForeColor = Color.FromArgb(52, 139, 209);
 
@@ -278,6 +295,7 @@ namespace FactoryManagementSoftware.UI
         private void switchToStockList()
         {
             btnSwitchToMatUsed.ForeColor = Color.Black;
+            btnLockData.Visible = true;
             btnSwitchToStockCheck.ForeColor = Color.FromArgb(52, 139, 209);
 
             tlpPMMA.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
@@ -401,11 +419,7 @@ namespace FactoryManagementSoftware.UI
                                 if (ifPMMAItem(parentCode, dt_JoinforChecking, dt_PMMAItem))
                                 {
 
-                                    if(matCode == "V44K61000")
-                                    {
-                                        float TEST = 0;
-                                    }
-
+                                
                                     string parentName = joinRow["parent_name"].ToString();
 
                                     //Get delivered out data
@@ -697,6 +711,28 @@ namespace FactoryManagementSoftware.UI
             return openStock;
         }
 
+        private float getOpenStock(string matCode, DataTable dt)
+        {
+            float openStock = -1;
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    string itemCode = row[dalPMMA.itemCode].ToString();
+                    if (matCode == itemCode && float.TryParse(row[dalPMMA.OpenStock].ToString(), out float i))
+                    {
+                        openStock = Convert.ToSingle(row[dalPMMA.BalStock]);
+
+                    }
+
+                }
+
+            }
+
+            return openStock;
+        }
+
         private DataRow getPMMADataRow(string matCode, string month, string year, DataTable dt)
         {
             if (dt.Rows.Count > 0)
@@ -725,7 +761,7 @@ namespace FactoryManagementSoftware.UI
             dt_MatStock = NewStockTable();
             DataRow row_StockSouce;
 
-            //get mat in history)
+            //get mat in history
             string from = dtpFrom.Value.ToString("yyyy/MM/dd");
             string to = dtpTo.Value.ToString("yyyy/MM/dd");
             string PMMA = tool.getCustName(1);
@@ -762,108 +798,156 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt_MatOutToPMMAHist = dalTrfHist.rangeMaterialOutToPMMASearch(from, to);
 
-            dt_PMMA = dalPMMA.SearchByNewDate(month, year);
-            DataTable dt_PMMALastMonth = dalPMMA.SearchByNewDate(lastMonth, lastYear);
+            dt_PMMA = dalPMMA.SearchByDate(month, year);
+            DataTable dt_PMMALastMonth = dalPMMA.SearchByDate(lastMonth, lastYear);
 
-            foreach (DataRow row in dt_MatUsed.Rows)
+            bool dataLocked = false;
+
+            if(dt_PMMA != null && dt_PMMA.Rows.Count > 0)
             {
-                float Out = row[text.Header_TotalMaterialUsed_KG_Piece] == DBNull.Value ? -1 : (float)Math.Round(Convert.ToDouble(row[text.Header_TotalMaterialUsed_KG_Piece]), 2);
-
-                if (Out != -1)
+                dataLocked = true;
+                foreach (DataRow row in dt_PMMA.Rows)
                 {
-                    string matCode = row[text.Header_MatCode].ToString();
-                    float adjustQty = 0;
-                    string note = "";
-                    DataRow MatData = getPMMADataRow(matCode, month, year, dt_PMMA);
+                    bool isLocked = bool.TryParse(row[dalPMMA.DataLock].ToString(), out isLocked) ? isLocked : false;
 
-                    string matName = row[text.Header_MatName].ToString();
-                    float openStock = getOpenStockFromLastMonthBal(matCode, dt_PMMALastMonth);
+                    dataLocked &= isLocked;
+                }
+            }
 
-                    if(MatData != null)
-                    {
-                        adjustQty = MatData[dalPMMA.Adjust] == DBNull.Value ? 0 : (float)Math.Round(Convert.ToSingle(MatData[dalPMMA.Adjust]), 2);
-                        note = MatData[dalPMMA.Note] == DBNull.Value ? "" : MatData[dalPMMA.Note].ToString();
-                    }
-
-                    float outToPMMAQty = getMatOutQty(matCode, dt_MatOutToPMMAHist);
-                    //Out += outToPMMAQty;
-
-                    float inQty = getMatInQty(matCode, dt_MatInFromPMMAHist);
-                    float wastage = getMatWastage(matCode, dt_Item);
-                    float balance = (float)Math.Round(openStock + inQty - Out - outToPMMAQty + adjustQty, 2);
-
-                  
-                    //check transfer record if transfered to PMMA within current period
-
+            StockDataLocked(dataLocked);
+            if (dataLocked)
+            {
+                
+                DataTable dt_Item = dalItem.Select();
+                foreach (DataRow row in dt_PMMA.Rows)
+                {
                     row_StockSouce = dt_MatStock.NewRow();
 
+                    string itemCode = row[dalPMMA.itemCode].ToString();
+
+                  
                     row_StockSouce[text.Header_Index] = index;
-                    row_StockSouce[text.Header_MatCode] = matCode;
-                    row_StockSouce[text.Header_MatName] = matName;
-                    row_StockSouce[text.Header_OpeningStock] = openStock;
-                    row_StockSouce[text.Header_In_KG_Piece] = inQty;
-                    row_StockSouce[text.Header_Used_KG_Piece] = Out;
-                    row_StockSouce[text.Header_DirectOut_KG_Piece] = outToPMMAQty;
-                    row_StockSouce[text.Header_Wastage] = wastage;
-                    row_StockSouce[text.Header_Adjust] = adjustQty;
-                    row_StockSouce[text.Header_Note] = note;
-                    row_StockSouce[text.Header_BalStock] = balance;
+                    row_StockSouce[text.Header_MatCode] = itemCode;
+                    row_StockSouce[text.Header_MatName] = tool.getItemNameFromDataTable(dt_Item, itemCode);
+
+                    row_StockSouce[text.Header_OpeningStock] = float.TryParse(row[dalPMMA.OpenStock].ToString(), out float x) ? x : 0;
+                    row_StockSouce[text.Header_In_KG_Piece] = float.TryParse(row[dalPMMA.PMMAIn].ToString(), out x) ? x : 0;
+                    row_StockSouce[text.Header_Used_KG_Piece] = float.TryParse(row[dalPMMA.PMMAOut].ToString(), out x) ? x : 0;
+
+                    row_StockSouce[text.Header_Wastage] = float.TryParse(row[dalPMMA.Wastage].ToString(), out x) ? x : 0;
+                    row_StockSouce[text.Header_Adjust] = float.TryParse(row[dalPMMA.Adjust].ToString(), out x) ? x : 0;
+                    row_StockSouce[text.Header_Note] = row[dalPMMA.Note].ToString();
+                    row_StockSouce[text.Header_BalStock] = float.TryParse(row[dalPMMA.BalStock].ToString(), out x) ? x : 0;
 
                     dt_MatStock.Rows.Add(row_StockSouce);
 
                     index++;
 
-                    if (Convert.ToInt32(month) == DateTime.Now.Month || Convert.ToInt32(year) > DateTime.Now.Year)
-                    {
-                        uItem.item_code = matCode;
-                        uItem.item_last_pmma_qty = 0;
-                        uItem.item_pmma_qty = balance;
-                        uItem.item_updtd_date = DateTime.Now;
-                        uItem.item_updtd_by = MainDashboard.USER_ID;
-
-                        bool itemPMMMAQtyUpdateSuccess = dalItem.UpdatePMMAQty(uItem);
-
-                        if (!itemPMMMAQtyUpdateSuccess)
-                        {
-                            MessageBox.Show("Failed to updated item pmma qty(@item dal)");
-                        }
-                    }
-
-
-                    //update/insert to database
-                    uPMMA.pmma_item_code = matCode;
-                    uPMMA.pmma_openning_stock = openStock;
-                    uPMMA.pmma_in = inQty;
-                    uPMMA.pmma_out = Out;
-                    uPMMA.pmma_wastage = wastage;
-                    uPMMA.pmma_adjust = adjustQty;
-                    uPMMA.pmma_note = note;
-                    uPMMA.pmma_bal_stock = balance;
-                    uPMMA.pmma_month = month;
-                    uPMMA.pmma_year = year;
-                    uPMMA.pmma_added_date = DateTime.Now;
-                    uPMMA.pmma_added_by = MainDashboard.USER_ID;
-                    uPMMA.pmma_updated_date = uPMMA.pmma_added_date;
-                    uPMMA.pmma_updated_by = uPMMA.pmma_added_by;
-
-                    if (!dalPMMA.InsertOrUpdate(uPMMA))
-                    {
-                        MessageBox.Show("Failed to insert/update data for selected month!");
-                    }
-                    else
-                    {
-                        //insert/update next month open stock
-                        uPMMA.pmma_openning_stock = balance;
-                        uPMMA.pmma_month = nextMonth;
-                        uPMMA.pmma_year = nextYear;
-
-                        if (!dalPMMA.InsertOrUpdateNextMonthOpenStock(uPMMA))
-                        {
-                            MessageBox.Show("Failed to insert/update open stock for next month!");
-                        }
-                    }
                 }
-               
+            }
+            else
+            {
+                foreach (DataRow row in dt_MatUsed.Rows)
+                {
+                    float Out = row[text.Header_TotalMaterialUsed_KG_Piece] == DBNull.Value ? -1 : (float)Math.Round(Convert.ToDouble(row[text.Header_TotalMaterialUsed_KG_Piece]), 2);
+
+                    if (Out != -1)
+                    {
+                        string matCode = row[text.Header_MatCode].ToString();
+                        float adjustQty = 0;
+                        string note = "";
+                        DataRow MatData = getPMMADataRow(matCode, month, year, dt_PMMA);
+
+                        string matName = row[text.Header_MatName].ToString();
+                        float openStock = getOpenStockFromLastMonthBal(matCode, dt_PMMALastMonth);
+
+                        if (MatData != null)
+                        {
+                            adjustQty = MatData[dalPMMA.Adjust] == DBNull.Value ? 0 : (float)Math.Round(Convert.ToSingle(MatData[dalPMMA.Adjust]), 2);
+                            note = MatData[dalPMMA.Note] == DBNull.Value ? "" : MatData[dalPMMA.Note].ToString();
+                        }
+
+                        float outToPMMAQty = getMatOutQty(matCode, dt_MatOutToPMMAHist);
+                        //Out += outToPMMAQty;
+
+                        float inQty = getMatInQty(matCode, dt_MatInFromPMMAHist);
+                        float wastage = getMatWastage(matCode, dt_Item);
+                        float balance = (float)Math.Round(openStock + inQty - Out - outToPMMAQty + adjustQty, 2);
+
+
+                        //check transfer record if transfered to PMMA within current period
+
+                        row_StockSouce = dt_MatStock.NewRow();
+
+                        row_StockSouce[text.Header_Index] = index;
+                        row_StockSouce[text.Header_MatCode] = matCode;
+                        row_StockSouce[text.Header_MatName] = matName;
+                        row_StockSouce[text.Header_OpeningStock] = openStock;
+                        row_StockSouce[text.Header_In_KG_Piece] = inQty;
+                        row_StockSouce[text.Header_Used_KG_Piece] = Out;
+                        row_StockSouce[text.Header_DirectOut_KG_Piece] = outToPMMAQty;
+                        row_StockSouce[text.Header_Wastage] = wastage;
+                        row_StockSouce[text.Header_Adjust] = adjustQty;
+                        row_StockSouce[text.Header_Note] = note;
+                        row_StockSouce[text.Header_BalStock] = balance;
+
+                        dt_MatStock.Rows.Add(row_StockSouce);
+
+                        index++;
+
+                        if (Convert.ToInt32(month) == DateTime.Now.Month || Convert.ToInt32(year) > DateTime.Now.Year)
+                        {
+                            uItem.item_code = matCode;
+                            uItem.item_last_pmma_qty = 0;
+                            uItem.item_pmma_qty = balance;
+                            uItem.item_updtd_date = DateTime.Now;
+                            uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                            bool itemPMMMAQtyUpdateSuccess = dalItem.UpdatePMMAQty(uItem);
+
+                            if (!itemPMMMAQtyUpdateSuccess)
+                            {
+                                MessageBox.Show("Failed to updated item pmma qty(@item dal)");
+                            }
+                        }
+
+
+                        //update/insert to database
+                        uPMMA.pmma_item_code = matCode;
+                        uPMMA.pmma_openning_stock = openStock;
+                        uPMMA.pmma_in = inQty;
+                        uPMMA.pmma_out = Out;
+                        uPMMA.pmma_wastage = wastage;
+                        uPMMA.pmma_adjust = adjustQty;
+                        uPMMA.pmma_note = note;
+                        uPMMA.pmma_bal_stock = balance;
+ 
+                        uPMMA.pmma_month = month;
+                        uPMMA.pmma_year = year;
+                        uPMMA.pmma_added_date = DateTime.Now;
+                        uPMMA.pmma_added_by = MainDashboard.USER_ID;
+                        uPMMA.pmma_updated_date = uPMMA.pmma_added_date;
+                        uPMMA.pmma_updated_by = uPMMA.pmma_added_by;
+
+                        if (!dalPMMA.InsertOrUpdate(uPMMA))
+                        {
+                            MessageBox.Show("Failed to insert/update data for selected month!");
+                        }
+                        else
+                        {
+                            //insert/update next month open stock
+                            uPMMA.pmma_openning_stock = balance;
+                            uPMMA.pmma_month = nextMonth;
+                            uPMMA.pmma_year = nextYear;
+
+                            if (!dalPMMA.InsertOrUpdateNextMonthOpenStock(uPMMA))
+                            {
+                                MessageBox.Show("Failed to insert/update open stock for next month!");
+                            }
+                        }
+                    }
+
+                }
             }
 
             if (dt_MatStock.Rows.Count > 0)
@@ -972,34 +1056,62 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void StockDataLocked(bool isTrue)
+        {
+            if(isTrue)
+            {
+                btnLockData.Text = text_Unlock;
+
+                cbEditMode.Checked = false;
+                cbEditMode.Visible = false;
+
+                dgvMatStock.DefaultCellStyle.BackColor = Color.Gainsboro;
+
+                if(dgvMatStock.DataSource != null && dgvMatStock.Columns.Contains(text.Header_Adjust) && dgvMatStock.Columns.Contains(text.Header_Note))
+                {
+                    dgvMatStock.Columns[text.Header_Adjust].DefaultCellStyle.BackColor = Color.Gainsboro;
+                    dgvMatStock.Columns[text.Header_Note].DefaultCellStyle.BackColor = Color.Gainsboro;
+                }
+                
+            }
+            else
+            {
+                btnLockData.Text = text_LockData;
+
+                cbEditMode.Visible = true;
+                dgvMatStock.DefaultCellStyle.BackColor = Color.White;
+
+                if (dgvMatStock.DataSource != null && dgvMatStock.Columns.Contains(text.Header_Adjust) && dgvMatStock.Columns.Contains(text.Header_Note))
+                {
+                    dgvMatStock.Columns[text.Header_Adjust].DefaultCellStyle.BackColor = Color.White;
+                    dgvMatStock.Columns[text.Header_Note].DefaultCellStyle.BackColor = Color.White;
+                }
+
+               
+            }
+        }
+
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            //Thread t = null;
-            //bool aborted = false;
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            frmLoading.ShowLoadingScreen();
+            editModeAvailable = false;
+            cbEditMode.Checked = false;
+            editModeAvailable = true;
+
+            editedCellRow = -1;
+
+            LoadMatUsedData();
+
+            if (!checkMatUsedOnly)
+            {
+                LoadMatStockData();
+            }
 
             try
             {
-                //t = new Thread(new ThreadStart(StartForm));
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
-                frmLoading.ShowLoadingScreen();
-                editModeAvailable = false;
-                cbEditMode.Checked = false;
-                editModeAvailable = true;
-
-                editedCellRow = -1;
-
-                LoadMatUsedData();
-
-                if (!checkMatUsedOnly)
-                {
-                    LoadMatStockData();
-                }
-            }
-            catch (ThreadAbortException)
-            {
-                // ignore it
-                //aborted = true;
+                
             }
             catch (Exception ex)
             {
@@ -1007,8 +1119,6 @@ namespace FactoryManagementSoftware.UI
             }
             finally
             {
-                //if (!aborted)
-                //    t.Abort();
                 frmLoading.CloseForm();
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
@@ -1164,9 +1274,16 @@ namespace FactoryManagementSoftware.UI
                     {
                         dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-                        dgv.Columns[text.Header_Adjust].DefaultCellStyle.BackColor = Color.Gainsboro;
+                        Color adjustColumnColor = Color.White;
+
+                        if (btnLockData.Text == text_Unlock)
+                        {
+                            adjustColumnColor = Color.Gainsboro;
+                        }
+                      
+                        dgv.Columns[text.Header_Adjust].DefaultCellStyle.BackColor = adjustColumnColor;
                         //dgv.Columns[text.Header_Wastage].DefaultCellStyle.BackColor = Color.Gainsboro;
-                        dgv.Columns[text.Header_Note].DefaultCellStyle.BackColor = Color.Gainsboro;
+                        dgv.Columns[text.Header_Note].DefaultCellStyle.BackColor = adjustColumnColor;
                     }
                 }
             }
@@ -2080,6 +2197,97 @@ namespace FactoryManagementSoftware.UI
         private void frmNewPMMA_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainDashboard.PMMAFormOpen = false;
+        }
+
+        private void gbPMMA_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void UpdateStockDataLockStatus(bool toLock)
+        {
+            DataTable dt = (DataTable)dgvMatStock.DataSource;
+
+            uPMMA.pmma_updated_date = DateTime.Now;
+            uPMMA.pmma_updated_by = MainDashboard.USER_ID;
+            uPMMA.pmma_month = cmbStockMonth.Text;
+            uPMMA.pmma_year = cmbStockYear.Text;
+            uPMMA.pmma_lock = toLock;
+
+            bool Success = true;
+
+            if (dt!= null && dt.Rows.Count > 0)
+            {
+                foreach(DataRow row in dt.Rows)
+                {
+                    uPMMA.pmma_item_code = row[text.Header_MatCode].ToString();
+
+                   if(!dalPMMA.UpdateLockStatus(uPMMA))
+                   {
+                        MessageBox.Show("Update Failed!\nItem: " + uPMMA.pmma_item_code);
+                        Success = false;
+                        break;
+
+                   }
+                }
+            }
+            else
+            {
+                MessageBox.Show("No data found!");
+                Success = false;
+            }
+
+            if(Success)
+            {
+                MessageBox.Show("Data Updated!");
+
+                if(toLock)
+                {
+                    tool.historyRecord("PMMA Stock Report Data Locked!", "Month: " + cmbStockMonth.Text + ", Year: " + cmbStockYear.Text, uPMMA.pmma_added_date, uPMMA.pmma_added_by);
+
+                }
+                else
+                {
+                    tool.historyRecord("PMMA Stock Report Data Unlock!", "Month: " + cmbStockMonth.Text + ", Year: " + cmbStockYear.Text, uPMMA.pmma_added_date, uPMMA.pmma_added_by);
+
+                }
+            }
+
+        }
+
+        private void btnLockData_Click(object sender, EventArgs e)
+        {
+            string lockStatus = btnLockData.Text;
+
+            if(lockStatus == text_Unlock)
+            {
+                //key in password
+                frmVerification frm = new frmVerification(text.PW_UnlockPmmaStock)
+                {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+
+
+                frm.ShowDialog();
+
+                if(frmVerification.PASSWORD_MATCHED)
+                {
+                    //unlock data
+                    StockDataLocked(false);
+                    UpdateStockDataLockStatus(false);
+                }
+            }
+            else if(lockStatus == text_LockData)
+            {
+                DialogResult dialogResult = MessageBox.Show("Confirm to lock data?", "Message",
+                                                          MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    StockDataLocked(true);
+                    UpdateStockDataLockStatus(true);
+                }
+            }
         }
     }
 }

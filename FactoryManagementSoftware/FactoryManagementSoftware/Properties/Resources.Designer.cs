@@ -424,6 +424,16 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_exit_full_screen_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-exit-full-screen-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_file_delivery_64 {
             get {
                 object obj = ResourceManager.GetObject("icons8-file-delivery-64", resourceCulture);
@@ -467,6 +477,16 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap icons8_fork_lift_64 {
             get {
                 object obj = ResourceManager.GetObject("icons8-fork-lift-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_full_screen_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-full-screen-64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -704,6 +724,16 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_toggle_full_screen_50 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-toggle-full-screen-50", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_truck_64 {
             get {
                 object obj = ResourceManager.GetObject("icons8-truck-64", resourceCulture);
@@ -924,6 +954,16 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap safetyblacklogo {
+            get {
+                object obj = ResourceManager.GetObject("safetyblacklogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap socket {
             get {
                 object obj = ResourceManager.GetObject("socket", resourceCulture);
@@ -957,6 +997,16 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap tee_64px {
             get {
                 object obj = ResourceManager.GetObject("tee.64px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WillCoverImage {
+            get {
+                object obj = ResourceManager.GetObject("WillCoverImage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -40,6 +40,45 @@ namespace FactoryManagementSoftware.DAL
         //Tool tool = new Tool();
         #region Select Data from Database
 
+        public DataTable SelectAll()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+            dt.DefaultView.Sort = "trf_hist_id DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
+        }
+
         public DataTable Select()
         {
             //static methodd to connect database
@@ -392,8 +431,95 @@ namespace FactoryManagementSoftware.DAL
                 String sql = "UPDATE tbl_trf_hist SET trf_result=@trf_result, trf_hist_updated_date=@trf_hist_updated_date, trf_hist_updated_by=@trf_hist_updated_by WHERE trf_hist_id=@trf_hist_id";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
+               
                 cmd.Parameters.AddWithValue("@trf_hist_id", u.trf_hist_id);
                 cmd.Parameters.AddWithValue("@trf_result", u.trf_result);
+                cmd.Parameters.AddWithValue("@trf_hist_updated_date", u.trf_hist_updated_date);
+                cmd.Parameters.AddWithValue("@trf_hist_updated_by", u.trf_hist_updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Tool tool = new Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool NoteUpdate(trfHistBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "UPDATE tbl_trf_hist SET trf_hist_note=@trf_hist_note, trf_hist_updated_date=@trf_hist_updated_date, trf_hist_updated_by=@trf_hist_updated_by WHERE trf_hist_id=@trf_hist_id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@trf_hist_id", u.trf_hist_id);
+                cmd.Parameters.AddWithValue("@trf_hist_note", u.trf_hist_note);
+                cmd.Parameters.AddWithValue("@trf_hist_updated_date", u.trf_hist_updated_date);
+                cmd.Parameters.AddWithValue("@trf_hist_updated_by", u.trf_hist_updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Tool tool = new Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool DeliveredDateUpdate(trfHistBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "UPDATE tbl_trf_hist SET trf_hist_trf_date=@trf_hist_trf_date, trf_hist_updated_date=@trf_hist_updated_date, trf_hist_updated_by=@trf_hist_updated_by WHERE trf_hist_id=@trf_hist_id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@trf_hist_id", u.trf_hist_id);
+                cmd.Parameters.AddWithValue("@trf_hist_trf_date", u.trf_hist_trf_date);
                 cmd.Parameters.AddWithValue("@trf_hist_updated_date", u.trf_hist_updated_date);
                 cmd.Parameters.AddWithValue("@trf_hist_updated_by", u.trf_hist_updated_by);
 
@@ -492,7 +618,7 @@ namespace FactoryManagementSoftware.DAL
             {
                 //sql query to get data from database
                 String sql = @"SELECT * FROM tbl_trf_hist 
-                            WHERE trf_hist_id = @trfID ";
+                            WHERE trf_hist_id = @trfID";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -509,16 +635,16 @@ namespace FactoryManagementSoftware.DAL
 
                 itemDAL dalItem = new itemDAL();
                 dt.AcceptChanges();
-                foreach (DataRow row in dt.Rows)
-                {
-                    string itemCode = row["trf_hist_item_code"].ToString();
+                //foreach (DataRow row in dt.Rows)
+                //{
+                //    string itemCode = row["trf_hist_item_code"].ToString();
 
-                    if (!dalItem.getCatName(itemCode).Equals("Part"))
-                    {
-                        row.Delete();
-                    }
-                }
-                dt.AcceptChanges();
+                //    if (!dalItem.getCatName(itemCode).Equals("Part"))
+                //    {
+                //        row.Delete();
+                //    }
+                //}
+                //dt.AcceptChanges();
             }
             catch (Exception ex)
             {
@@ -623,7 +749,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable codeSearch(string keywords)
+        public DataTable codeLikeSearch(string keywords)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -651,6 +777,61 @@ namespace FactoryManagementSoftware.DAL
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable codeSearch(string keywords)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT  tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result, tbl_trf_hist.balance
+                                FROM tbl_trf_hist INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE tbl_item.item_code  = @keywords 
+                                ORDER BY tbl_trf_hist.trf_hist_trf_date DESC";
+
+     
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@keywords", keywords);
+
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open
@@ -704,6 +885,60 @@ namespace FactoryManagementSoftware.DAL
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
+                cmd.Parameters.AddWithValue("@fromPast", fromPast * -1);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable codeRangeSearchOrderByTrfDate(string keywords, int fromPast)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT  tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result,tbl_trf_hist.balance
+                                FROM tbl_trf_hist INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE tbl_item.item_code =@keywords" +
+                                " AND tbl_trf_hist.trf_hist_trf_date >= DATEADD(day, @fromPast, GetDate()) " +
+                                "ORDER BY tbl_trf_hist.trf_hist_trf_date DESC";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@keywords", keywords);
                 cmd.Parameters.AddWithValue("@fromPast", fromPast * -1);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
@@ -796,6 +1031,62 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@month", month);
                 cmd.Parameters.AddWithValue("@itemCode", itemCode);
                 cmd.Parameters.AddWithValue("@customer", customer);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SBBPageRangeUsageSearch(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            string Production = "Production";
+            string Assembly = "Assembly";
+
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT  
+                            tbl_trf_hist.trf_result,
+                            tbl_trf_hist.trf_hist_item_code,
+                            tbl_trf_hist.trf_hist_qty,
+                            tbl_trf_hist.trf_hist_from,
+                            tbl_trf_hist.trf_hist_to
+                            FROM tbl_trf_hist 
+                            WHERE trf_hist_trf_date 
+                            BETWEEN @start 
+                            AND @end 
+                            AND ((trf_hist_from=@Production OR trf_hist_to=@Production) OR
+                            trf_hist_to=@Assembly)
+                            ORDER BY trf_hist_item_code ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@Production", Production);
+                cmd.Parameters.AddWithValue("@Assembly", Assembly);
 
                 //for executing command
                 //getting data from database
@@ -2241,58 +2532,6 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
-        //public DataTable rangeTrfSearch(string start, string end)
-        //{
-        //    //static methodd to connect database
-        //    SqlConnection conn = new SqlConnection(myconnstrng);
-        //    //to hold the data from database
-        //    DataTable dt = new DataTable();
-
-        //    String sql = null;
-        //    try
-        //    {
-        //        //sql query to get data from database
-        //        sql = @"SELECT * FROM tbl_trf_hist 
-        //                    INNER JOIN tbl_item 
-        //                    ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
-        //                    WHERE 
-        //                    tbl_trf_hist.trf_hist_trf_date 
-        //                    BETWEEN @start AND @end 
-        //                    ORDER BY tbl_item.item_name ASC";
-
-
-        //        SqlCommand cmd = new SqlCommand(sql, conn);
-
-        //        cmd.Parameters.AddWithValue("@start", start);
-        //        cmd.Parameters.AddWithValue("@end", end);
-
-
-        //        //for executing command
-        //        //getting data from database
-        //        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-        //        //database connection open
-        //        conn.Open();
-        //        //fill data in our database
-        //        adapter.Fill(dt);
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Module.Tool tool = new Module.Tool();
-        //        tool.saveToText(ex);
-        //    }
-        //    finally
-        //    {
-        //        //closing connection
-        //        conn.Close();
-        //    }
-
-        //    //dt.DefaultView.Sort = "trf_hist_added_date DESC";
-        //    //DataTable sortedDt = dt.DefaultView.ToTable();
-
-        //    return dt;
-        //}
 
         public DataTable rangePartTrfSearch(string start, string end)
         {

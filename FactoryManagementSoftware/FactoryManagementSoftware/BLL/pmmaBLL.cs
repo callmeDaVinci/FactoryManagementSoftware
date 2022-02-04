@@ -28,5 +28,8 @@ namespace FactoryManagementSoftware.BLL
         public int pmma_added_by { get; set; }
         public DateTime pmma_updated_date { get; set; }
         public int pmma_updated_by { get; set; }
+
+        public bool pmma_lock { get; set; }
+
     }
 }

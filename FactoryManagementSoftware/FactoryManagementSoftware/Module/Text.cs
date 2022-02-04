@@ -21,7 +21,19 @@ namespace FactoryManagementSoftware.Module
 
         public string System { get; } = "System";
 
+        //password
+        public string PW_UnlockPmmaStock { get; } = "038989";
+        public string PW_UnlockSBBSalesReport { get; } = "Safplas038989!";
+
+
+
         #region Admin
+        public string Terminated { get; } = "Terminated";
+        public string Activate { get; } = "Activate";
+
+        public string TransferHistory { get; } = "Transfer History";
+
+
         public string LogIn { get; } = "LogIn";
         public string LogOut { get; } = "LogOut";
 
@@ -56,11 +68,16 @@ namespace FactoryManagementSoftware.Module
 
         public string Company_Name_CN { get; } = "安全塑膠有限公司";
         public string Company_Name_EN { get; } = "SAFETY PLASTICS SDN. BHD.";
-        public string Company_RegistrationNo { get; } = "(No.Syarikat:188981-U)";
-        public string Company_AddressAndContact { get; } = @"No: 2, Jalan 10/152, Taman Perindustrian O.U.G, Batu 6,
-            Jalan Puchong, 58200 Kuala Lumpur.
-            Tel: 03 - 77855278, 03 - 77820399 Fax: 03 - 77820399
-            Email: safety_plasic @yahoo.com";
+        public string Company_RegistrationNo { get; } = "No. Syarikat: 198901011676 (188981-U)";
+
+        public string Company_Head_AddressAndContact { get; } =
+ @"No. 2, Jalan 10/152, Taman Perindustrian O.U.G, Batu 6,Jalan Puchong, 58200 Kuala Lumpur.
+(Tel) 03 - 7785 5278, 03 - 7782 0399 (Fax) 03 - 7782 0399 (Email) safety_plastic@yahoo.com";
+
+        public string Company_Semenyih_AddressAndContact { get; } =
+ @"No.17, PT 2507, Jalan Hi-Tech 2, Kawasan Perindustrian Hi-Tech, Jalan Sungai Lalang, 43500 Semenyih, Selangor.
+(Tel) 016 - 282 8195 (Email) safetyplastics.my@gmail.com";
+
         #endregion
 
         #region Font Type
@@ -120,6 +137,24 @@ namespace FactoryManagementSoftware.Module
 
         #endregion
 
+        #region SBB ITEM TYPE
+
+        public string SBB_TYPE_EQUAL { get; } = "EQUAL";
+        public string SBB_TYPE_MTA { get; } = "MTA";
+        public string SBB_TYPE_FTA { get; } = "FTA";
+        public string SBB_TYPE_ENDCAP { get; } = "END CAP";
+        public string SBB_TYPE_REDUCING { get; } = "REDUCING";
+        public string SBB_TYPE_MALE { get; } = "MALE";
+        public string SBB_TYPE_FEMALE { get; } = "FEMALE";
+
+        #endregion
+
+        #region Report Type
+
+        public string Report_Type_Production { get; } = "ProductionReport";
+
+        #endregion
+
         #region Planning 
         public string planning_status_idle { get; } = "IDLE";//blue
         public string planning_status_pending { get; } = "PENDING";//blue
@@ -132,6 +167,8 @@ namespace FactoryManagementSoftware.Module
 
         //PLANNING ACTION HISTORY////////////////////////////////////////////////////////////////////////////
         public string plan_Added { get; } = "PLAN ADD";
+        public string plan_Target_Qty_Change { get; } = "PLAN TARGET QTY CHANGE";
+
         public string plan_schedule_change { get; } = "PLAN SCHEDULE CHANGE";
         public string plan_status_change { get; } = "PLAN STATUS CHANGE";
         public string plan_family_with_change { get; } = "PLAN FAMILY CHANGE";
@@ -158,7 +195,8 @@ namespace FactoryManagementSoftware.Module
         public string Factory_40 { get; } = "No.40";
         
         public string Factory_Store { get; } = "STORE";
-
+        public string Factory_Semenyih { get; } = "Semenyih";
+        public string Factory_Bina { get; } = "BINA";
 
 
         public string Other { get; } = "Other";
@@ -167,6 +205,17 @@ namespace FactoryManagementSoftware.Module
         public string Assembly { get; } = "Assembly";
         public string Inspection { get; } = "Inspection";
         public string Inspection_Pass { get; } = "(OK";
+
+        #endregion
+
+        #region Database String
+         //<add name = "connstrng" connectionString="SERVER=DESKTOP-MFUKGH2;DATABASE=Factory;USER ID=stock;PASSWORD=stock"/>
+
+        public string DB_Semenyih { get; } = "SERVER=DESKTOP-MFUKGH2;DATABASE=Factory;USER ID=stock;PASSWORD=stock";
+        public string DB_OUG { get; } = "SERVER=192.168.0.149;DATABASE=Factory;USER ID=stock;PASSWORD=stock";
+        public string DB_JunPC { get; } = @"Data Source=.\SQLEXPRESS01;Initial Catalog=Factory;Integrated Security=True";
+
+
 
         #endregion
 
@@ -180,10 +229,12 @@ namespace FactoryManagementSoftware.Module
         public string Unit_g { get; } = "g";
         public string Unit_Set { get; } = "set";
         public string Unit_Piece { get; } = "piece";
+        //public string Unit_PCS { get; } = "pcs";
         public string Unit_Meter { get; } = "meter";
         public string Unit_Bag{ get; } = "bag";
         public string Unit_Millimetre { get; } = "mm";
         public string Unit_Inch { get; } = "in";
+        public string Unit_Roll { get; } = "roll";
         #endregion
 
         #region Item Category
@@ -197,6 +248,9 @@ namespace FactoryManagementSoftware.Module
         public string Cat_SubMat { get; } = "Sub Material";
         public string Cat_Mould { get; } = "Mould";
         public string Cat_Packaging { get; } = "Packaging";
+
+        public string Cat_Terminated { get; } = "(TERMINATED)";
+
 
         #endregion
 
@@ -248,6 +302,21 @@ namespace FactoryManagementSoftware.Module
         public string EqualSocket_Short { get; } = "ES";
         public string EqualTee_Short { get; } = "ET";
 
+        public string ReducingSocket_Short { get; } = "RS";
+        public string ReducingElbow_Short { get; } = "RE";
+        public string ReducingTee_Short { get; } = "RT";
+
+        public string MTA_Short { get; } = "MTA";
+        public string FTA_Short { get; } = "FTA";
+
+        public string MaleElbow_Short { get; } = "ME";
+        public string MaleTee_Short { get; } = "MT";
+
+        public string FemaleElbow_Short { get; } = "FE";
+        public string FemaleTee_Short { get; } = "FT";
+
+        public string EndCap_Short { get; } = "ENDC";
+
         #endregion
 
         #region SPP/SBB CATEGORY
@@ -265,7 +334,22 @@ namespace FactoryManagementSoftware.Module
         public string Type_Grip { get; } = "GRIP";
         public string Type_Oring { get; } = "O RING";
         public string Type_Cap { get; } = "CAP";
-        public string Type_Reducing { get; } = "REDUCING";
+
+        public string Type_ReducingSocket { get; } = "REDUCING SOCKET";
+        public string Type_ReducingElbow { get; } = "REDUCING ELBOW";
+        public string Type_ReducingTee { get; } = "REDUCING TEE";
+
+        public string Type_MTA { get; } = "MTA";
+        public string Type_FTA { get; } = "FTA";
+
+        public string Type_MaleElbow { get; } = "MALE ELBOW";
+        public string Type_MaleTee { get; } = "MALE TEE";
+
+        public string Type_FemaleElbow { get; } = "FEMALE ELBOW";
+        public string Type_FemaleTee { get; } = "FEMALE TEE";
+
+        public string Type_EndCap { get; } = "END CAP";
+
         #endregion
 
         #region Message
@@ -294,6 +378,28 @@ namespace FactoryManagementSoftware.Module
         public string Delivery_Removed { get; } = "REMOVED";
 
         #endregion
+
+        public string DO_CustOwnDO { get; } = "*USE CUSTOMER OWN D/O";
+
+
+        public string DailyAction_ChangePlan { get; } = "CHANGE PLAN";
+
+        #endregion
+
+        #region CSV File Name
+
+        //string path = @"G:\Other computers\Semenyih666\Server\(SOFTWARE SYSTEM)\(CSV)\";
+
+        public string CSV_SemenyihServer_Path { get; } = @"\\DESKTOP-MFUKGH2\Server\(SOFTWARE SYSTEM)\(CSV)\";
+
+        public string CSV_Jun_GoogleDrive_SemenyihServer_Path { get; } = @"G:\Other computers\Semenyih666\Server\(SOFTWARE SYSTEM)\(CSV)\";
+
+        public string CSV_dalItemCust_SPPCustSearchWithTypeAndSize { get; } = "dalItemCust_SPPCustSearchWithTypeAndSize.db";
+        public string CSV_dalItem_Select { get; } = "dalItem_Select.db";
+        public string CSV_dalSBB_DOWithTrfInfoSelect_StartEnd { get; } = "dalSBB_DOWithTrfInfoSelect_StartEnd.db";
+        //public string CSV_dalSBB_DOWithTrfInfoSelect_StartEnd { get; } = "dalSBB_DOWithTrfInfoSelect_StartEnd.csv";
+
+
 
         #endregion
 
@@ -367,6 +473,15 @@ namespace FactoryManagementSoftware.Module
         public string getNewPlanningDetail(PlanningBLL u)
         {
             string detail = u.part_name +"( "+u.part_code+") :"+u.production_target_qty+" Target QTY run at machine "+u.machine_id;
+
+            return detail;
+        }
+
+        public string getPlanningTargetQtyChangeDetail(PlanningBLL u)
+        {
+            //string detail = u.part_name + "( " + u.part_code + ") :" + u.production_Old_target_qty + " Target QTY run at machine " + u.machine_id;
+
+            string detail = "[Plan's Target Qty Changed : "+ u.plan_id + "]" + u.production_Old_target_qty + " -> " + u.production_target_qty;
 
             return detail;
         }

@@ -103,7 +103,7 @@ namespace FactoryManagementSoftware.UI
                 cmbSubFrom.SelectedIndex = -1;
             }
 
-            DataTable dt = dalFac.Select();
+            DataTable dt = dalFac.SelectDESC();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "fac_name");
             cmbTo.DataSource = distinctTable;
             cmbTo.DisplayMember = "fac_name";
@@ -218,6 +218,20 @@ namespace FactoryManagementSoftware.UI
 
         #region database proccessing
 
+        public float GetTotalBalAfterTransfer(DataTable dtStock)
+        {
+            float afterTotalQty = 0;
+
+            foreach (DataRow stock in dtStock.Rows)
+            {
+                float stockQty = float.TryParse(stock["stock_qty"].ToString(), out stockQty) ? stockQty : 0;
+
+                afterTotalQty += stockQty;
+            }
+
+            return afterTotalQty;
+
+        }
         private int transferRecord(string stockResult)
         {
             string locationFrom;
@@ -244,6 +258,9 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_hist_added_by = MainDashboard.USER_ID;
             utrfHist.trf_result = stockResult;
             utrfHist.trf_hist_from_order = 1;
+
+
+            utrfHist.balance = GetTotalBalAfterTransfer(dalStock.Select(txtItemCode.Text));
 
             //Inserting Data into Database
             bool success = daltrfHist.Insert(utrfHist);
@@ -282,6 +299,7 @@ namespace FactoryManagementSoftware.UI
             uStock.stock_unit = Unit;
             uStock.stock_updtd_date = DateTime.Now;
             uStock.stock_updtd_by = MainDashboard.USER_ID;
+
 
             if (IfExists(txtItemCode.Text, cmbTo.Text))
             {

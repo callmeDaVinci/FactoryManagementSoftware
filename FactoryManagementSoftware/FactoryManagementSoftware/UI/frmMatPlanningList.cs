@@ -1027,6 +1027,7 @@ namespace FactoryManagementSoftware.UI
 
             CheckifRunning(dgvMatListByMat);
 
+            if(dgvMatListByMat.Columns[headerStatus] != null)
             dgvMatListByMat.Columns[headerStatus].Visible = false;
 
             dgvMatListByMat.ClearSelection();

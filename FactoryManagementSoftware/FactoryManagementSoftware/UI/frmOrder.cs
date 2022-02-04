@@ -509,12 +509,67 @@ namespace FactoryManagementSoftware.UI
             lblUpdatedTime.Text = DateTime.Now.ToString();
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
-        
+
+        private int GetPONoFromActionRecord(string orderID, DataTable dt_OrderAction)
+        {
+            int PoNo = -1;
+            int actionID = 0;
+            bool orderFound = false;
+
+            foreach (DataRow row in dt_OrderAction.Rows)
+            {
+                if(orderID == row["ord_id"].ToString())
+                {
+                    orderFound = true;
+
+                    string action = row["action"].ToString();
+                    string actionDetail = row["action_detail"].ToString();
+                    string to = row["action_to"].ToString();
+
+                    if(action == "EDIT" && actionDetail == "P/O NO")
+                    {
+                        if (PoNo != -1)
+                        {
+                            int NewactionID = int.TryParse(row["order_action_id"].ToString(), out int i) ? i : 0;
+
+                            if(NewactionID > actionID)
+                            {
+                                actionID = NewactionID;
+
+                                PoNo = int.TryParse(to, out i) ? i : -1;
+                            }
+                        }
+                        else
+                        {
+                            actionID = int.TryParse(row["order_action_id"].ToString(), out int i) ? i : actionID;
+                            PoNo = int.TryParse(to, out i) ? i : -1;
+
+
+                        }
+                    }
+                  
+
+                }
+                else if(orderFound)
+                {
+                    return PoNo;
+                }
+
+            }
+
+            return PoNo;
+
+        }
+
         private void loadOrderRecord()
         {
             DataTable dtOrder = NewOrderRecordTable();
             DataRow dtOrder_row;
             DataTable dt_itemInfo = dalItem.Select();
+
+            DataTable dt_OrderAction = dalOrderAction.Select();
+            dt_OrderAction.DefaultView.Sort = "ord_id DESC";
+            dt_OrderAction = dt_OrderAction.DefaultView.ToTable();
 
             string keywords = txtOrdSearch.Text;
 
@@ -552,7 +607,16 @@ namespace FactoryManagementSoftware.UI
                             dtOrder_row = dtOrder.NewRow();
 
                             string itemCode = ord["ord_item_code"].ToString();
-                            dtOrder_row[headerID] = ord["ord_id"].ToString();
+                            string ordID = ord["ord_id"].ToString();
+                            int ordPONo = ord["ord_po_no"] == DBNull.Value ? -1 : Convert.ToInt32(ord["ord_po_no"].ToString());
+
+
+                            //if(ordPONo <= 0)
+                            //{
+                            //    ordPONo = GetPONoFromActionRecord(ordID, dt_OrderAction);
+                            //}
+
+                            dtOrder_row[headerID] = ordID;
                             //lblDebug.Text = "before date assign";
 
                             DateTime requiredDate = DateTime.ParseExact(Convert.ToDateTime(ord["ord_required_date"]).ToString("dd/MM/yyyy"), "dd/MM/yyyy", null);
@@ -563,7 +627,7 @@ namespace FactoryManagementSoftware.UI
                             dtOrder_row[headerCat] = tool.getCatNameFromDataTable(dt_itemInfo, itemCode);
                             dtOrder_row[headerCode] = itemCode;
                             dtOrder_row[headerName] = ord["item_name"].ToString();
-                            dtOrder_row[headerPONO] = ord["ord_po_no"] == DBNull.Value ? -1 : Convert.ToInt32(ord["ord_po_no"].ToString());
+                            dtOrder_row[headerPONO] = ordPONo;
                             dtOrder_row[headerOrdered] = ord["ord_qty"].ToString();
                             dtOrder_row[headerPending] = ord["ord_pending"].ToString();
                             dtOrder_row[headerReceived] = ord["ord_received"].ToString();
@@ -888,13 +952,23 @@ namespace FactoryManagementSoftware.UI
             //DataTable dtMat = insertMaterialUsedData();
             DataTable dtMat;
             DataTable dt_OrderAllData = dalOrd.Select();
+
             if (cbZeroCost.Checked)
             {
                 dtMat = tool.InsertZeroCostMaterialUsedData(tool.getCustName(1));
             }
             else
             {
-                dtMat = tool.insertMaterialUsedData(tool.getCustName(1));
+                if(cmbType.Text.Equals(text.Cat_Carton))
+                {
+                    dtMat = tool.GetCartonBalanceData(tool.getCustName(1));
+                }
+                else
+                {
+                    dtMat = tool.insertMaterialUsedData(tool.getCustName(1));
+
+                }
+
             }
             
 
@@ -940,7 +1014,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (material != null)
                 {
-                    if(material.Equals("Sub Material"))
+                    if(material.Equals(text.Cat_SubMat))
                     {
                         
                         #region add Sub Material to datatable
@@ -1033,6 +1107,102 @@ namespace FactoryManagementSoftware.UI
                                 }
                             }
                                
+                        }
+
+                        #endregion
+                    }
+                    else if (material.Equals(text.Cat_Carton))
+                    {
+
+                        #region add Sub Material to datatable
+
+                        itemType = text.Cat_Carton;
+
+                        if (typeCheck.Equals("All") || typeCheck.Equals(itemType))
+                        {
+                            if (cbZeroCost.Checked)
+                            {
+                                float mat_Zero_Stock = tool.getPMMAQtyFromDataTable(dt_itemInfo, itemCode);
+                                mat_Ready_Stock = tool.getStockQtyFromDataTable(dt_itemInfo, itemCode);
+
+                                //bal1 = mat_Ready_Stock - bal1;
+
+                                if (bal1 > 0)
+                                {
+                                    bal1 = 0;
+                                }
+
+                                bal1 = mat_Zero_Stock + bal1;
+
+                                if (bal2 > 0)
+                                {
+                                    bal2 = 0;
+                                }
+
+                                bal2 = mat_Zero_Stock + bal2;
+
+                                if (bal3 > 0)
+                                {
+                                    bal3 = 0;
+                                }
+
+                                bal3 = mat_Zero_Stock + bal3;
+
+                                if (bal4 > 0)
+                                {
+                                    bal4 = 0;
+                                }
+
+                                bal4 = mat_Zero_Stock + bal4;
+
+
+                                mat_Ready_Stock = mat_Zero_Stock;
+                            }
+                            else
+                            {
+                                mat_Ready_Stock = tool.getStockQtyFromDataTable(dt_itemInfo, itemCode);
+                            }
+
+                            if (mat_Ready_Stock != -1)
+                            {
+                                var rows = dtAlert.Select(string.Format("CODE ='{0}'", itemCode.Replace(@"'", "''"), headerCode));
+                                if (rows.Length == 0)
+                                {
+                                    dtAlert_row = dtAlert.NewRow();
+
+                                    dtAlert_row[headerIndex] = index;
+                                    dtAlert_row[headerType] = itemType;
+                                    dtAlert_row[headerCode] = itemCode;
+                                    dtAlert_row[headerName] = tool.getItemNameFromDataTable(dt_itemInfo, itemCode);
+                                    dtAlert_row[headerReadyStock] = Math.Round(mat_Ready_Stock, 2);
+                                    dtAlert_row[headerBalanceOne] = Math.Round(bal1, 2);
+                                    dtAlert_row[headerBalanceTwo] = Math.Round(bal2, 2);
+                                    dtAlert_row[headerBalanceThree] = Math.Round(bal3, 2);
+                                    dtAlert_row[headerBalanceFour] = Math.Round(bal4, 2);
+
+                                    if (cbZeroCost.Checked)
+                                    {
+                                        dtAlert_row[headerPendingOrder] = tool.GetZeroCostPendingOrder(dt_OrderAllData, itemCode);
+                                    }
+                                    else
+                                    {
+                                        //dtAlert_row[headerPendingOrder] = tool.getOrderQtyFromDataTable(dt_itemInfo, itemCode);
+                                        dtAlert_row[headerPendingOrder] = tool.GetPurchasePendingOrder(dt_OrderAllData, itemCode);
+                                    }
+
+
+                                    dtAlert.Rows.Add(dtAlert_row);
+                                    index++;
+                                }
+                                else
+                                {
+                                    rows[0][headerBalanceOne] = Math.Round(Convert.ToSingle(rows[0][headerBalanceOne]) + bal1, 2);
+                                    rows[0][headerBalanceTwo] = Math.Round(Convert.ToSingle(rows[0][headerBalanceTwo]) + bal2, 2);
+                                    rows[0][headerBalanceThree] = Math.Round(Convert.ToSingle(rows[0][headerBalanceThree]) + bal3, 2);
+                                    rows[0][headerBalanceFour] = Math.Round(Convert.ToSingle(rows[0][headerBalanceFour]) + bal4, 2);
+                                }
+                            }
+
                         }
 
                         #endregion
@@ -1531,6 +1701,7 @@ namespace FactoryManagementSoftware.UI
             float received = Convert.ToSingle(dgvOrder.Rows[rowIndex].Cells[headerReceived].Value);
             string pending = dgvOrder.Rows[rowIndex].Cells[headerPending].Value.ToString();
             string type = dgvOrder.Rows[rowIndex].Cells[headerType].Value == DBNull.Value ? "PURCHASE" : dgvOrder.Rows[rowIndex].Cells[headerType].Value.ToString();
+            int po_no = dgvOrder.Rows[rowIndex].Cells[headerPONO].Value == DBNull.Value ? -1 : Convert.ToInt32(dgvOrder.Rows[rowIndex].Cells[headerPONO].Value.ToString());
 
             frmOrderComplete frm = new frmOrderComplete();
             frm.StartPosition = FormStartPosition.CenterScreen;
@@ -1541,6 +1712,7 @@ namespace FactoryManagementSoftware.UI
             uOrd.ord_required_date = date;
             uOrd.ord_qty = Convert.ToSingle(qty);
             uOrd.ord_pending = 0;
+            uOrd.ord_po_no = po_no;
             uOrd.ord_received = received;
             uOrd.ord_updated_date = DateTime.Now;
             uOrd.ord_updated_by = MainDashboard.USER_ID;

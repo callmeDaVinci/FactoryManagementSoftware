@@ -122,6 +122,15 @@ namespace FactoryManagementSoftware.UI
                 tlpDataEdit.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
                 tlpDataEdit.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
             }
+            else if (selectedDataList == text_ItemDataList)
+            {
+                tlpDataEdit.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpDataEdit.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpDataEdit.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 700f);
+                tlpDataEdit.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
+                tool.loadSPPItemNameDataToComboBox(comboBox1);
+                cmbName.SelectedIndex = -1;
+            }
             else if (selectedDataList == text_TypeDataList)
             {
                 tlpDataEdit.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
@@ -239,6 +248,8 @@ namespace FactoryManagementSoftware.UI
             {
                 dt = dalData.RouteSelect();
             }
+
+            //remove empty item
 
             dgv.DataSource = dt;
             dgv.ClearSelection();
@@ -558,6 +569,7 @@ namespace FactoryManagementSoftware.UI
             }
 
         }
+
         private void ClearDataField()
         {
             txtDataCode.Clear();
@@ -621,6 +633,7 @@ namespace FactoryManagementSoftware.UI
             ClearDataField();
             ClearError();
         }
+
         private void dgvData_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             int rowIndex = dgvData.CurrentRow.Index;
@@ -751,6 +764,23 @@ namespace FactoryManagementSoftware.UI
         private void txtQtyPerPacket_TextChanged(object sender, EventArgs e)
         {
             ClearError();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string keywords = cmbName.Text;
+
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                DataTable dt = dalItem.nameSearch(keywords);
+                comboBox2.DataSource = dt;
+                comboBox2.DisplayMember = "item_code";
+                comboBox2.ValueMember = "item_code";
+            }
+            else
+            {
+                comboBox2.DataSource = null;
+            }
         }
     }
 }

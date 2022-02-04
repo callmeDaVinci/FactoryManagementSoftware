@@ -296,6 +296,9 @@ namespace FactoryManagementSoftware.UI
                 u.item_production = 0;
             }
 
+            u.item_unit = txtUnit.Text;
+            u.unit_to_pcs_rate = float.TryParse(txtPCSRate.Text, out float PcsRate) ? PcsRate : 1;
+
             u.item_updtd_date = DateTime.Now;
             u.item_updtd_by = MainDashboard.USER_ID;
             //Updating data into database

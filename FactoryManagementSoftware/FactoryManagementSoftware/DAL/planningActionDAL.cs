@@ -546,6 +546,48 @@ namespace FactoryManagementSoftware.DAL
             return success;
         }
 
+        //production plan Target Qty Change
+        public bool planningTargetQtyChange(PlanningBLL u)
+        {
+            bool success = dalPlanning.TargetQtyUpdate(u);
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to update target qty!");
+                tool.historyRecord(text.System, "Failed to update target qty!", DateTime.Now, MainDashboard.USER_ID);
+            }
+            else
+            {
+                tool.historyRecord(text.plan_Target_Qty_Change, text.getPlanningTargetQtyChangeDetail(u), DateTime.Now, MainDashboard.USER_ID);
+
+                //get the last record from tbl_planning
+                DataTable lastRecord = dalPlanning.lastRecordSelect();
+
+                foreach (DataRow row in lastRecord.Rows)
+                {
+                    uPlanningAction.planning_id = Convert.ToInt32(row[dalPlanning.planID]);
+                    uPlanningAction.added_date = Convert.ToDateTime(row[dalPlanning.planAddedDate]);
+                    uPlanningAction.added_by = Convert.ToInt32(row[dalPlanning.planAddedBy]); 
+                    uPlanningAction.action = text.plan_Target_Qty_Change;
+                    uPlanningAction.action_detail = text.getPlanningTargetQtyChangeDetail(u);
+                    uPlanningAction.action_from = "";
+                    uPlanningAction.action_to = "";
+                    uPlanningAction.note = row[dalPlanning.planNote].ToString() + " [Cavity: " + row[dalPlanning.planCavity].ToString() + "; PW(shot): " + row[dalPlanning.planPW].ToString() + " ;RW(shot): " + row[dalPlanning.planRW].ToString() + "]";
+
+                    bool actionSaveSuccess = Insert(uPlanningAction);
+
+                    if (!actionSaveSuccess)
+                    {
+                        MessageBox.Show("Failed to save planning action data (planningActionDAL_planningTargetQtyChange)");
+                        tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningTargetQtyChange)", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+
+            }
+
+            return success;
+        }
+
         #endregion
 
     }

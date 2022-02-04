@@ -523,7 +523,7 @@ namespace FactoryManagementSoftware.UI
 
                 DataTable dt_SalesReport;
 
-                dt_Fac = dalFac.Select();
+                dt_Fac = dalFac.SelectDESC();
                 dt_PMMADate = dalPMMADate.Select();
 
                 string inOutType = cmbInOutType.Text;

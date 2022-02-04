@@ -35,7 +35,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             tool.DoubleBuffered(dgvSchedule, true);
-            FilterHideOrShow(filterHide);
+            HideFilter(filterHide);
         }
 
         public frmMachineSchedule(bool _fromDailyJobRecord)
@@ -53,7 +53,37 @@ namespace FactoryManagementSoftware.UI
             btnExcel.Width = 180;
             tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 300);
             tool.DoubleBuffered(dgvSchedule, true);
-            FilterHideOrShow(filterHide);
+            HideFilter(filterHide);
+        }
+
+        public frmMachineSchedule(string action, int data_1, string data_2)
+        {
+
+            InitializeComponent();
+            InitializeData();
+
+            btnPlan.Hide();
+            //btnExcel.Hide();
+            btnMatList.Hide();
+
+            btnExcel.Text = action;
+            btnExcel.Width = 180;
+            tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 300);
+            tool.DoubleBuffered(dgvSchedule, true);
+            HideFilter(false);
+            buttionAction = action;
+
+            if(action == text.DailyAction_ChangePlan)
+            {
+                ITEM_CODE = data_2;
+                PLAN_ID = data_1;
+
+                cbCompleted.Checked = true;
+                cbCancelled.Checked = true;
+                cbPlanningID.Checked = true;
+                cbItem.Checked = false;
+            }
+
         }
 
         #region Variable/ object setting
@@ -73,6 +103,9 @@ namespace FactoryManagementSoftware.UI
 
         habitDAL dalHabit = new habitDAL();
 
+        private int PLAN_ID = -1;
+        private string ITEM_CODE = "";
+        private string buttionAction = "";
         int userPermission = -1;
         readonly string headerID = "PLAN";
         readonly string headerStartDate = "START";
@@ -113,7 +146,7 @@ namespace FactoryManagementSoftware.UI
 
         #region UI Setting
 
-        private void FilterHideOrShow(bool hide)
+        private void HideFilter(bool hide)
         {
             if(hide)
             {
@@ -577,7 +610,10 @@ namespace FactoryManagementSoftware.UI
         private void btnPlan_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            frmPlanning frm = new frmPlanning();
+
+            frmNewPlanning frm = new frmNewPlanning();
+
+            // frmPlanning frm = new frmPlanning();
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();
             loadScheduleData();
@@ -624,6 +660,53 @@ namespace FactoryManagementSoftware.UI
                 if(success)
                 MessageBox.Show("Item(s) added!");
                 Close();
+            }
+
+            else if (buttionAction == text.DailyAction_ChangePlan && MessageBox.Show("Confirm to change plan ID?", "Message",
+                                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+
+            {
+
+                foreach (DataGridViewRow row in dgvSchedule.SelectedRows)
+                {
+                    string planID = row.Cells[headerID].Value.ToString();
+                    string itemCode = row.Cells[headerPartCode].Value.ToString();
+
+                    int planID_INT = -1;
+
+                    if (!string.IsNullOrEmpty(planID) && int.TryParse(planID, out planID_INT))
+                    {
+                       if(planID_INT != -1 && itemCode == ITEM_CODE)
+                        {
+                            ProductionRecordDAL dalProRecord = new ProductionRecordDAL();
+                            ProductionRecordBLL uProRecord = new ProductionRecordBLL();
+
+                            uProRecord.new_plan_id = planID_INT;
+                            uProRecord.old_plan_id = PLAN_ID;
+                            uProRecord.updated_date = DateTime.Now;
+                            uProRecord.updated_by = MainDashboard.USER_ID;
+
+                            if(dalProRecord.ChangePlanID(uProRecord))
+                            {
+                                //change transfer record plan id remark
+
+
+                                ChangeTransferRecordProductionPlanIDRemark(PLAN_ID.ToString(), planID_INT.ToString());
+
+                                MessageBox.Show("Plan ID Changed!");
+
+                                Close();
+                            }
+
+                        }
+                       else if(itemCode != ITEM_CODE)
+                        {
+                            MessageBox.Show("Item not match!");
+                        }
+                    }
+                }
+
+                
             }
             else
             {
@@ -802,6 +885,93 @@ namespace FactoryManagementSoftware.UI
                 }
             }
             
+        }
+
+        private void ChangeTransferRecordProductionPlanIDRemark(string planID, string newPlanID)
+        {
+            trfHistBLL uTrfHist = new trfHistBLL();
+            uTrfHist.trf_hist_updated_by = MainDashboard.USER_ID;
+            uTrfHist.trf_hist_updated_date = DateTime.Now;
+
+            trfHistDAL dalTrf = new trfHistDAL();
+
+            DataTable dt_Trf = dalTrf.SelectAll();
+            dt_Trf.DefaultView.Sort = dalTrf.TrfDate + " DESC";
+            dt_Trf = dt_Trf.DefaultView.ToTable();
+
+            int trfTableCode = -1;
+
+            foreach (DataRow row in dt_Trf.Rows)
+            {
+                DateTime trfDate = Convert.ToDateTime(row[dalTrf.TrfDate].ToString());
+
+                string productionInfo = row[dalTrf.TrfNote].ToString();
+
+                string _planIDFound = "";
+                string balanceClearType = "";
+                bool startCopy = false;
+                bool IDCopied = false;
+                bool ShiftCopied = false;
+                bool StopIDCopy = false;
+
+                for (int i = 0; i < productionInfo.Length; i++)
+                {
+                    if (productionInfo[i].ToString() == "P")
+                    {
+                        startCopy = true;
+                    }
+                    else if (ShiftCopied && (productionInfo[i].ToString() == "O" || productionInfo[i].ToString() == "B"))
+                    {
+                        startCopy = true;
+                    }
+                    else if (ShiftCopied && productionInfo[i].ToString() == "]")
+                    {
+                        startCopy = false;
+                        StopIDCopy = true;
+                    }
+
+                    if (startCopy)
+                    {
+
+                        if (char.IsDigit(productionInfo[i]) && !StopIDCopy)
+                        {
+                            IDCopied = true;
+                            _planIDFound += productionInfo[i];
+                        }
+                        else if (IDCopied && i + 1 < productionInfo.Length)
+                        {
+                            IDCopied = false;
+                            ShiftCopied = true;
+                            startCopy = false;
+                        }
+                        else if (ShiftCopied)
+                        {
+                            balanceClearType += productionInfo[i];
+                        }
+
+                    }
+                }
+
+                if (planID == _planIDFound)
+                {
+                    trfTableCode = int.TryParse(row[dalTrf.TrfID].ToString(), out trfTableCode) ? trfTableCode : -1;
+
+                    if (trfTableCode != -1)
+                    {
+                        uTrfHist.trf_hist_note = productionInfo.Replace(planID, newPlanID);
+                        uTrfHist.trf_hist_id = trfTableCode;
+
+                        if (!dalTrf.NoteUpdate(uTrfHist))
+                        {
+                            MessageBox.Show("Failed to update note!\nTable Code: "+ trfTableCode);
+                        }
+                    }
+
+
+                }
+
+            }
+
         }
 
         private void copyAlltoClipboard()
@@ -1621,7 +1791,7 @@ namespace FactoryManagementSoftware.UI
                 filterHide = true;
             }
 
-            FilterHideOrShow(filterHide);
+            HideFilter(filterHide);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace FactoryManagementSoftware
         joinBLL uJoin = new joinBLL();
 
         Tool tool = new Tool();
-
+        Text text = new Text();
         #endregion
 
         #region variable declare
@@ -368,15 +368,29 @@ namespace FactoryManagementSoftware
             
             if (formLoaded)
             {
-                if(cmbCat.Text.Equals("Part"))
+                txtUnit.Text = text.Unit_Piece;
+
+                if (cmbCat.Text.Equals("Part"))
                 {
                     AddPartListColumns(dgvItemList);
                     LoadPartList(dgvItemList);
+
+                    txtUnit.Text = text.Unit_Piece;
                 }
                 else
                 {
                     AddMaterialListColumns(dgvItemList);
                     LoadMaterialList(dgvItemList);
+
+                    if (cmbCat.Text.Equals(text.Cat_Packaging))
+                    {
+                        txtUnit.Text = text.Unit_Piece;
+                    }
+                    else
+                    {
+                        txtUnit.Text = text.Unit_KG;
+
+                    }
                 }
             }
             dgvItemList.ClearSelection();
@@ -653,6 +667,9 @@ namespace FactoryManagementSoftware
             u.item_pro_cooling = 0;
             u.item_wastage_allowed = 0.05f;
 
+            u.item_unit = txtUnit.Text;
+            u.unit_to_pcs_rate = float.TryParse(txtPCSRate.Text, out float PcsRate) ? PcsRate : 1;
+
             if (cbAssembly.Checked)
             {
                 u.item_assembly = 1;
@@ -792,6 +809,7 @@ namespace FactoryManagementSoftware
             }
 
             bool success = dalMaterial.Update(uMaterial);
+
             if (success == true)
             {
                 //data updated successfully

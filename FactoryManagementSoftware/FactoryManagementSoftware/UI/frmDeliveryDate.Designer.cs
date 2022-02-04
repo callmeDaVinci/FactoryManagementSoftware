@@ -73,7 +73,7 @@
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.Size = new System.Drawing.Size(189, 36);
             this.btnFilterApply.TabIndex = 173;
-            this.btnFilterApply.Text = "CONFIRM";
+            this.btnFilterApply.Text = "APPLY";
             this.btnFilterApply.UseVisualStyleBackColor = false;
             this.btnFilterApply.Click += new System.EventHandler(this.btnFilterApply_Click);
             // 
@@ -119,6 +119,7 @@
             this.Name = "frmDeliveryDate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Delivered Date";
+            this.Load += new System.EventHandler(this.frmDeliveryDate_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -151,6 +151,7 @@
             this.cbAllInOne.TabIndex = 177;
             this.cbAllInOne.Text = "ALL IN ONE";
             this.cbAllInOne.UseVisualStyleBackColor = true;
+            this.cbAllInOne.Visible = false;
             this.cbAllInOne.CheckedChanged += new System.EventHandler(this.cbAllInOne_CheckedChanged);
             // 
             // cbSeparate
@@ -158,6 +159,7 @@
             this.cbSeparate.AutoSize = true;
             this.cbSeparate.Checked = true;
             this.cbSeparate.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSeparate.Enabled = false;
             this.cbSeparate.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbSeparate.Location = new System.Drawing.Point(44, 91);
             this.cbSeparate.Name = "cbSeparate";

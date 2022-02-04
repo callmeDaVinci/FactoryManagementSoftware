@@ -145,12 +145,25 @@ namespace FactoryManagementSoftware.UI
             errorProvider6.Clear();
             errorProvider7.Clear();
             errorProvider8.Clear();
+            errorProvider9.Clear();
         }
 
         private bool Validation()
         {
             bool result = true;
 
+            string EditMode = btnEdit.Text;
+
+            if (EditMode == "ADD")
+            {
+                result = !IfNameExist();
+            }
+            else if (EditMode == "EDIT")
+            {
+                int id = Convert.ToInt32(dgvCustomer.Rows[dgvCustomer.CurrentCell.RowIndex].Cells[header_ID].Value.ToString());
+                result = !IfNameExist(id.ToString());
+
+            }
             if (string.IsNullOrEmpty(txtName.Text))
             {
                 result = false;
@@ -160,7 +173,7 @@ namespace FactoryManagementSoftware.UI
             if (string.IsNullOrEmpty(txtAddress1.Text))
             {
                 result = false;
-                errorProvider2.SetError(lblAddress, "Customer Address Required");
+                errorProvider2.SetError(lblAddress1, "Customer Address Required");
             }
 
             if (string.IsNullOrEmpty(txtCity.Text))
@@ -192,17 +205,14 @@ namespace FactoryManagementSoftware.UI
                 result = false;
                 errorProvider7.SetError(lblEmail, "Customer Email Required");
             }
-            string EditMode = btnEdit.Text;
 
-            if (EditMode == "ADD")
+            if (string.IsNullOrEmpty(cmbRoute.Text))
             {
-                result = !IfNameExist();
+                result = false;
+                errorProvider9.SetError(lblRoute, "Route Required");
             }
-            else if(EditMode == "EDIT")
-            {
-                int id = Convert.ToInt32(dgvCustomer.Rows[dgvCustomer.CurrentCell.RowIndex].Cells[header_ID].Value.ToString());
-                result = !IfNameExist(id.ToString());
-            }
+
+          
                 
             return result;
 
@@ -302,6 +312,7 @@ namespace FactoryManagementSoftware.UI
                         uData.Registration_No = txtRegistrationNo.Text.ToUpper();
                         uData.Address_1 = txtAddress1.Text.ToUpper();
                         uData.Address_2 = txtAddress2.Text.ToUpper();
+                        uData.Address_3 = txtAddress3.Text.ToUpper();
                         uData.Address_City = txtCity.Text.ToUpper();
                         uData.Address_State = txtState.Text.ToUpper();
                         uData.Address_Country = txtCountry.Text.ToUpper();
@@ -317,6 +328,8 @@ namespace FactoryManagementSoftware.UI
                         DataTable dt = (DataTable)cmbRoute.DataSource;
 
                         int index = cmbRoute.SelectedIndex;
+
+                        
                         int tableCode = int.TryParse(dt.Rows[index][dalData.TableCode].ToString(), out tableCode)? tableCode : -1;
 
                         if(tableCode > 0)
@@ -356,6 +369,7 @@ namespace FactoryManagementSoftware.UI
                         uData.Registration_No = txtRegistrationNo.Text.ToUpper();
                         uData.Address_1 = txtAddress1.Text.ToUpper();
                         uData.Address_2 = txtAddress2.Text.ToUpper();
+                        uData.Address_3 = txtAddress3.Text.ToUpper();
                         uData.Address_City = txtCity.Text.ToUpper();
                         uData.Address_State = txtState.Text.ToUpper();
                         uData.Address_Country = txtCountry.Text.ToUpper();
@@ -408,6 +422,8 @@ namespace FactoryManagementSoftware.UI
             txtRegistrationNo.Clear();
             txtAddress1.Clear();
             txtAddress2.Clear();
+            txtAddress3.Clear();
+            txtShortName.Clear();
             txtCity.Clear();
             txtState.Clear();
             txtCountry.Text = "MALAYSIA";
@@ -436,6 +452,7 @@ namespace FactoryManagementSoftware.UI
                     string registrationNO = row[dalData.RegistrationNo] == null ? string.Empty : row[dalData.RegistrationNo].ToString();
                     string address1 = row[dalData.Address1] == null ? string.Empty : row[dalData.Address1].ToString();
                     string address2 =  row[dalData.Address2] == null ? string.Empty : row[dalData.Address2].ToString();
+                    string address3 =  row[dalData.Address3] == null ? string.Empty : row[dalData.Address3].ToString();
                     string city =  row[dalData.AddressCity] == null ? string.Empty : row[dalData.AddressCity].ToString();
                     string state =  row[dalData.AddressState] == null ? string.Empty : row[dalData.AddressState].ToString();
                     string country =  row[dalData.AddressCountry] == null ? string.Empty : row[dalData.AddressCountry].ToString();
@@ -467,6 +484,7 @@ namespace FactoryManagementSoftware.UI
                     txtRegistrationNo.Text = registrationNO;
                     txtAddress1.Text = address1;
                     txtAddress2.Text = address2;
+                    txtAddress3.Text = address3;
                     txtCity.Text = city;
                     txtState.Text = state;
                     txtCountry.Text = country;
@@ -613,7 +631,31 @@ namespace FactoryManagementSoftware.UI
 
             if(!string.IsNullOrEmpty(txtName.Text))
             {
-                txtShortName.Text = txtName.Text.Split(' ').First().ToUpper();
+                string shortName = txtName.Text.Split(' ').First().ToUpper(); 
+
+                int stringWidth = (int)txtName.CreateGraphics().MeasureString(shortName, txtName.Font).Width;
+
+                if(stringWidth > 140)
+                {
+                    string newShortName = "";
+
+                    int newStringWidth = (int)txtName.CreateGraphics().MeasureString(newShortName, txtName.Font).Width;
+
+                    int i = 0;
+
+                    while(newStringWidth < 130 && i < shortName.Length)
+                    {
+                        newShortName += shortName[i].ToString();
+
+                        i++;
+
+                        newStringWidth = (int)txtName.CreateGraphics().MeasureString(newShortName, txtName.Font).Width;
+                    }
+
+                    shortName = newShortName;
+                }
+
+                txtShortName.Text = shortName;
 
                 string EditMode = btnEdit.Text;
 
@@ -621,6 +663,10 @@ namespace FactoryManagementSoftware.UI
                 {
                     IfNameExist();
                 }
+            }
+            else
+            {
+                txtShortName.Text = "";
             }
             
 
@@ -638,6 +684,7 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbRoute_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ClearError();
             //if(Loaded)
             //{
             //    DataTable dt = (DataTable)cmbRoute.DataSource;
@@ -648,7 +695,92 @@ namespace FactoryManagementSoftware.UI
             //    string tableCode = dt.Rows[index][dalData.TableCode].ToString();
             //    MessageBox.Show("("+tableCode+")"+name);
             //}
-           
+
+        }
+
+        private void txtAddress1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            int stringWidth = (int)txtAddress1.CreateGraphics().MeasureString(txtAddress1.Text, txtAddress1.Font).Width;
+
+            if (char.IsNumber(e.KeyChar) || char.IsLetter(e.KeyChar) || char.IsDigit(e.KeyChar))
+            {
+                stringWidth += (int)txtAddress1.CreateGraphics().MeasureString(e.KeyChar.ToString(), txtAddress1.Font).Width;
+            }
+
+            int maxWidth = 320;
+
+            if (stringWidth > maxWidth && (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtAddress2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            int stringWidth = (int)txtAddress2.CreateGraphics().MeasureString(txtAddress2.Text, txtAddress2.Font).Width;
+
+            if (char.IsNumber(e.KeyChar) || char.IsLetter(e.KeyChar) || char.IsDigit(e.KeyChar))
+            {
+                stringWidth += (int)txtAddress2.CreateGraphics().MeasureString(e.KeyChar.ToString(), txtAddress2.Font).Width;
+            }
+
+            int maxWidth = 320;
+
+            if (stringWidth > maxWidth && (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtaddress3_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            int stringWidth = (int)txtAddress3.CreateGraphics().MeasureString(txtAddress3.Text, txtAddress3.Font).Width;
+
+            if (char.IsNumber(e.KeyChar) || char.IsLetter(e.KeyChar) || char.IsDigit(e.KeyChar))
+            {
+                stringWidth += (int)txtAddress3.CreateGraphics().MeasureString(e.KeyChar.ToString(), txtAddress3.Font).Width;
+            }
+
+            int maxWidth = 320;
+
+            if (stringWidth > maxWidth && (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            int stringWidth = (int)txtName.CreateGraphics().MeasureString(txtName.Text, txtName.Font).Width;
+
+            if (char.IsNumber(e.KeyChar) || char.IsLetter(e.KeyChar) || char.IsDigit(e.KeyChar))
+            {
+                stringWidth += (int)txtName.CreateGraphics().MeasureString(e.KeyChar.ToString(), txtName.Font).Width;
+            }
+
+            int maxWidth = 420;
+
+            if (stringWidth > maxWidth && (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtShortName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            int stringWidth = (int)txtShortName.CreateGraphics().MeasureString(txtShortName.Text, txtShortName.Font).Width;
+
+            if (char.IsNumber(e.KeyChar) || char.IsLetter(e.KeyChar) || char.IsDigit(e.KeyChar))
+            {
+                stringWidth += (int)txtShortName.CreateGraphics().MeasureString(e.KeyChar.ToString(), txtShortName.Font).Width;
+            }
+
+            int maxWidth = 140;
+
+            if (stringWidth > maxWidth && (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
         }
     }
 

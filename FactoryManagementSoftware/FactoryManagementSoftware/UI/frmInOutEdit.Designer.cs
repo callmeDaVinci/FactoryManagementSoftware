@@ -87,6 +87,7 @@
             this.cbFreeze = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbFromBina = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStdPacking = new System.Windows.Forms.Label();
@@ -453,7 +454,7 @@
             this.lblLocationToError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLocationToError.AutoSize = true;
             this.lblLocationToError.ForeColor = System.Drawing.Color.Red;
-            this.lblLocationToError.Location = new System.Drawing.Point(30, 7);
+            this.lblLocationToError.Location = new System.Drawing.Point(31, 7);
             this.lblLocationToError.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.lblLocationToError.Name = "lblLocationToError";
             this.lblLocationToError.Size = new System.Drawing.Size(18, 20);
@@ -480,7 +481,7 @@
             this.lblUnitError.Location = new System.Drawing.Point(255, 7);
             this.lblUnitError.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.lblUnitError.Name = "lblUnitError";
-            this.lblUnitError.Size = new System.Drawing.Size(18, 20);
+            this.lblUnitError.Size = new System.Drawing.Size(14, 20);
             this.lblUnitError.TabIndex = 80;
             this.lblUnitError.Text = "*";
             // 
@@ -639,7 +640,7 @@
             this.btnIN.Location = new System.Drawing.Point(2, 2);
             this.btnIN.Margin = new System.Windows.Forms.Padding(2, 2, 5, 2);
             this.btnIN.Name = "btnIN";
-            this.btnIN.Size = new System.Drawing.Size(117, 50);
+            this.btnIN.Size = new System.Drawing.Size(102, 50);
             this.btnIN.TabIndex = 108;
             this.btnIN.Text = "IN";
             this.btnIN.UseVisualStyleBackColor = false;
@@ -653,10 +654,10 @@
             this.btnOUT.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOUT.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOUT.ForeColor = System.Drawing.Color.Black;
-            this.btnOUT.Location = new System.Drawing.Point(129, 2);
+            this.btnOUT.Location = new System.Drawing.Point(114, 2);
             this.btnOUT.Margin = new System.Windows.Forms.Padding(5, 2, 5, 2);
             this.btnOUT.Name = "btnOUT";
-            this.btnOUT.Size = new System.Drawing.Size(119, 50);
+            this.btnOUT.Size = new System.Drawing.Size(103, 50);
             this.btnOUT.TabIndex = 109;
             this.btnOUT.Text = "OUT";
             this.btnOUT.UseVisualStyleBackColor = false;
@@ -670,10 +671,10 @@
             this.btnSwitch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSwitch.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSwitch.ForeColor = System.Drawing.Color.Black;
-            this.btnSwitch.Location = new System.Drawing.Point(258, 2);
+            this.btnSwitch.Location = new System.Drawing.Point(227, 2);
             this.btnSwitch.Margin = new System.Windows.Forms.Padding(5, 2, 2, 2);
             this.btnSwitch.Name = "btnSwitch";
-            this.btnSwitch.Size = new System.Drawing.Size(166, 50);
+            this.btnSwitch.Size = new System.Drawing.Size(197, 50);
             this.btnSwitch.TabIndex = 110;
             this.btnSwitch.Text = "SWITCH";
             this.btnSwitch.UseVisualStyleBackColor = false;
@@ -770,7 +771,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.18033F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.81967F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 172F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 203F));
             this.tableLayoutPanel5.Controls.Add(this.btnIN, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnOUT, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSwitch, 2, 0);
@@ -828,9 +829,11 @@
             // 
             // tableLayoutPanel8
             // 
-            this.tableLayoutPanel8.ColumnCount = 2;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel8.ColumnCount = 3;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
+            this.tableLayoutPanel8.Controls.Add(this.cbFromBina, 2, 0);
             this.tableLayoutPanel8.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel8.Controls.Add(this.lblLocationToError, 1, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -841,6 +844,17 @@
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel8.Size = new System.Drawing.Size(426, 27);
             this.tableLayoutPanel8.TabIndex = 118;
+            // 
+            // cbFromBina
+            // 
+            this.cbFromBina.AutoSize = true;
+            this.cbFromBina.Location = new System.Drawing.Point(308, 3);
+            this.cbFromBina.Name = "cbFromBina";
+            this.cbFromBina.Size = new System.Drawing.Size(112, 21);
+            this.cbFromBina.TabIndex = 124;
+            this.cbFromBina.Text = "FROM BINA";
+            this.cbFromBina.UseVisualStyleBackColor = true;
+            this.cbFromBina.Visible = false;
             // 
             // tableLayoutPanel9
             // 
@@ -865,8 +879,8 @@
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 65F));
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 106F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 17F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 154F));
             this.tableLayoutPanel10.Controls.Add(this.lblStdPacking, 4, 0);
             this.tableLayoutPanel10.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblQuantityError, 1, 0);
@@ -992,6 +1006,7 @@
             this.Name = "frmInOutEdit";
             this.Text = " ";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmInOutEdit_FormClosed);
             this.Load += new System.EventHandler(this.frmInOutEdit_Load);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.frmInOutEdit_MouseClick);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
@@ -1092,5 +1107,6 @@
         private System.Windows.Forms.Label lblPartCodeReset;
         private System.Windows.Forms.Label lblStdPacking;
         private System.Windows.Forms.CheckBox cbFreeze;
+        private System.Windows.Forms.CheckBox cbFromBina;
     }
 }

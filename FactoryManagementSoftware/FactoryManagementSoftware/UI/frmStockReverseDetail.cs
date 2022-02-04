@@ -29,7 +29,7 @@ namespace FactoryManagementSoftware.UI
         public frmStockReverseDetail(DataTable dt, string itemCode, float readyStock, string startDate, string endDate)
         {
             InitializeComponent();
-            dt_Fac = dalFac.Select();
+            dt_Fac = dalFac.SelectDESC();
             dgvTrfHist.DataSource = dt;
 
             lblReadyStock.Text = readyStock.ToString();
