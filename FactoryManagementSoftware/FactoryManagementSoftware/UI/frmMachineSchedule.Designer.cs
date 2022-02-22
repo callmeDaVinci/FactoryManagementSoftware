@@ -110,14 +110,14 @@
             this.dgvSchedule.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSchedule.GridColor = System.Drawing.Color.Black;
-            this.dgvSchedule.Location = new System.Drawing.Point(3, 305);
+            this.dgvSchedule.Location = new System.Drawing.Point(3, 314);
             this.dgvSchedule.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.dgvSchedule.Name = "dgvSchedule";
             this.dgvSchedule.ReadOnly = true;
             this.dgvSchedule.RowHeadersVisible = false;
             this.dgvSchedule.RowTemplate.Height = 40;
             this.dgvSchedule.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSchedule.Size = new System.Drawing.Size(1528, 494);
+            this.dgvSchedule.Size = new System.Drawing.Size(1553, 514);
             this.dgvSchedule.TabIndex = 109;
             this.dgvSchedule.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSchedule_CellDoubleClick);
             this.dgvSchedule.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvSchedule_CellFormatting);
@@ -127,7 +127,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 14);
+            this.label1.Location = new System.Drawing.Point(4, 15);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(249, 20);
@@ -142,7 +142,7 @@
             this.btnExcel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnExcel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExcel.ForeColor = System.Drawing.Color.White;
-            this.btnExcel.Location = new System.Drawing.Point(1435, 1);
+            this.btnExcel.Location = new System.Drawing.Point(1460, 1);
             this.btnExcel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnExcel.Name = "btnExcel";
             this.btnExcel.Size = new System.Drawing.Size(90, 36);
@@ -159,7 +159,7 @@
             this.btnPlan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPlan.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPlan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(160)))), ((int)(((byte)(225)))));
-            this.btnPlan.Location = new System.Drawing.Point(1235, 1);
+            this.btnPlan.Location = new System.Drawing.Point(1260, 1);
             this.btnPlan.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnPlan.Name = "btnPlan";
             this.btnPlan.Size = new System.Drawing.Size(90, 36);
@@ -176,7 +176,7 @@
             this.btnFilterApply.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFilterApply.ForeColor = System.Drawing.Color.White;
-            this.btnFilterApply.Location = new System.Drawing.Point(1405, 1);
+            this.btnFilterApply.Location = new System.Drawing.Point(1430, 1);
             this.btnFilterApply.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.Size = new System.Drawing.Size(120, 47);
@@ -189,9 +189,9 @@
             // 
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 51);
+            this.groupBox1.Location = new System.Drawing.Point(3, 52);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1528, 154);
+            this.groupBox1.Size = new System.Drawing.Size(1553, 159);
             this.groupBox1.TabIndex = 113;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "FILTER";
@@ -213,16 +213,16 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1522, 128);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1547, 133);
             this.tableLayoutPanel1.TabIndex = 115;
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.tableLayoutPanel6);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(1220, 3);
+            this.groupBox2.Location = new System.Drawing.Point(1240, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(299, 122);
+            this.groupBox2.Size = new System.Drawing.Size(304, 127);
             this.groupBox2.TabIndex = 115;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "SEARCH";
@@ -239,7 +239,7 @@
             this.tableLayoutPanel6.RowCount = 2;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 48.19277F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 51.80723F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(293, 96);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(298, 101);
             this.tableLayoutPanel6.TabIndex = 116;
             // 
             // txtSearch
@@ -248,9 +248,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(20)))), ((int)(((byte)(31)))));
-            this.txtSearch.Location = new System.Drawing.Point(3, 49);
+            this.txtSearch.Location = new System.Drawing.Point(3, 51);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(287, 25);
+            this.txtSearch.Size = new System.Drawing.Size(292, 25);
             this.txtSearch.TabIndex = 86;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             this.txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSearch_KeyPress);
@@ -267,7 +267,7 @@
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(287, 40);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(292, 42);
             this.tableLayoutPanel5.TabIndex = 115;
             // 
             // cbPlanningID
@@ -275,7 +275,7 @@
             this.cbPlanningID.AutoSize = true;
             this.cbPlanningID.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbPlanningID.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbPlanningID.Location = new System.Drawing.Point(146, 3);
+            this.cbPlanningID.Location = new System.Drawing.Point(149, 3);
             this.cbPlanningID.Name = "cbPlanningID";
             this.cbPlanningID.Size = new System.Drawing.Size(118, 21);
             this.cbPlanningID.TabIndex = 117;
@@ -302,9 +302,9 @@
             // 
             this.groupBox3.Controls.Add(this.tableLayoutPanel4);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(934, 3);
+            this.groupBox3.Location = new System.Drawing.Point(949, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(280, 122);
+            this.groupBox3.Size = new System.Drawing.Size(285, 127);
             this.groupBox3.TabIndex = 115;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "LOCATION";
@@ -324,7 +324,7 @@
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 37F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 63F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(274, 96);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(279, 101);
             this.tableLayoutPanel4.TabIndex = 115;
             // 
             // cmbMachine
@@ -336,10 +336,10 @@
             this.cmbMachine.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbMachine.ForeColor = System.Drawing.SystemColors.InfoText;
             this.cmbMachine.FormattingEnabled = true;
-            this.cmbMachine.Location = new System.Drawing.Point(140, 39);
+            this.cmbMachine.Location = new System.Drawing.Point(142, 41);
             this.cmbMachine.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbMachine.Name = "cmbMachine";
-            this.cmbMachine.Size = new System.Drawing.Size(131, 25);
+            this.cmbMachine.Size = new System.Drawing.Size(134, 25);
             this.cmbMachine.TabIndex = 57;
             this.cmbMachine.SelectedIndexChanged += new System.EventHandler(this.cmbMachine_SelectedIndexChanged);
             // 
@@ -351,10 +351,10 @@
             this.cmbFactory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFactory.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbFactory.FormattingEnabled = true;
-            this.cmbFactory.Location = new System.Drawing.Point(3, 39);
+            this.cmbFactory.Location = new System.Drawing.Point(3, 41);
             this.cmbFactory.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbFactory.Name = "cmbFactory";
-            this.cmbFactory.Size = new System.Drawing.Size(131, 25);
+            this.cmbFactory.Size = new System.Drawing.Size(133, 25);
             this.cmbFactory.TabIndex = 72;
             this.cmbFactory.SelectedIndexChanged += new System.EventHandler(this.cmbFactory_SelectedIndexChanged);
             // 
@@ -364,7 +364,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(3, 18);
+            this.label4.Location = new System.Drawing.Point(3, 20);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(64, 17);
             this.label4.TabIndex = 115;
@@ -375,7 +375,7 @@
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(140, 18);
+            this.label5.Location = new System.Drawing.Point(142, 20);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(64, 17);
             this.label5.TabIndex = 116;
@@ -385,9 +385,9 @@
             // 
             this.groupBox4.Controls.Add(this.tableLayoutPanel3);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(528, 3);
+            this.groupBox4.Location = new System.Drawing.Point(536, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(400, 122);
+            this.groupBox4.Size = new System.Drawing.Size(407, 127);
             this.groupBox4.TabIndex = 116;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "PERIOD";
@@ -407,14 +407,14 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 37F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 63F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(394, 96);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(401, 101);
             this.tableLayoutPanel3.TabIndex = 115;
             // 
             // dtpTo
             // 
             this.dtpTo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpTo.Location = new System.Drawing.Point(200, 38);
+            this.dtpTo.Location = new System.Drawing.Point(203, 40);
             this.dtpTo.Name = "dtpTo";
             this.dtpTo.Size = new System.Drawing.Size(160, 27);
             this.dtpTo.TabIndex = 1;
@@ -425,7 +425,7 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(200, 18);
+            this.label3.Location = new System.Drawing.Point(203, 20);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(24, 17);
             this.label3.TabIndex = 117;
@@ -435,7 +435,7 @@
             // 
             this.dtpFrom.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFrom.Location = new System.Drawing.Point(3, 38);
+            this.dtpFrom.Location = new System.Drawing.Point(3, 40);
             this.dtpFrom.Name = "dtpFrom";
             this.dtpFrom.Size = new System.Drawing.Size(160, 27);
             this.dtpFrom.TabIndex = 0;
@@ -446,7 +446,7 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(3, 18);
+            this.label2.Location = new System.Drawing.Point(3, 20);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 17);
             this.label2.TabIndex = 116;
@@ -458,7 +458,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(3, 3);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(519, 122);
+            this.groupBox5.Size = new System.Drawing.Size(527, 127);
             this.groupBox5.TabIndex = 117;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "STATUS";
@@ -481,7 +481,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(513, 96);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(521, 101);
             this.tableLayoutPanel2.TabIndex = 115;
             // 
             // cbCompleted
@@ -489,7 +489,7 @@
             this.cbCompleted.AutoSize = true;
             this.cbCompleted.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbCompleted.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbCompleted.Location = new System.Drawing.Point(3, 51);
+            this.cbCompleted.Location = new System.Drawing.Point(3, 53);
             this.cbCompleted.Name = "cbCompleted";
             this.cbCompleted.Size = new System.Drawing.Size(102, 21);
             this.cbCompleted.TabIndex = 97;
@@ -501,7 +501,7 @@
             this.cbCancelled.AutoSize = true;
             this.cbCancelled.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbCancelled.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbCancelled.Location = new System.Drawing.Point(174, 51);
+            this.cbCancelled.Location = new System.Drawing.Point(176, 53);
             this.cbCancelled.Name = "cbCancelled";
             this.cbCancelled.Size = new System.Drawing.Size(102, 21);
             this.cbCancelled.TabIndex = 98;
@@ -529,7 +529,7 @@
             this.cbRunning.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbRunning.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbRunning.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbRunning.Location = new System.Drawing.Point(174, 3);
+            this.cbRunning.Location = new System.Drawing.Point(176, 3);
             this.cbRunning.Name = "cbRunning";
             this.cbRunning.Size = new System.Drawing.Size(86, 21);
             this.cbRunning.TabIndex = 95;
@@ -544,7 +544,7 @@
             this.cbWarning.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbWarning.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbWarning.ForeColor = System.Drawing.Color.Black;
-            this.cbWarning.Location = new System.Drawing.Point(345, 3);
+            this.cbWarning.Location = new System.Drawing.Point(349, 3);
             this.cbWarning.Name = "cbWarning";
             this.cbWarning.Size = new System.Drawing.Size(86, 21);
             this.cbWarning.TabIndex = 96;
@@ -581,7 +581,7 @@
             this.tlpButton.Name = "tlpButton";
             this.tlpButton.RowCount = 1;
             this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpButton.Size = new System.Drawing.Size(1528, 42);
+            this.tlpButton.Size = new System.Drawing.Size(1553, 43);
             this.tlpButton.TabIndex = 115;
             // 
             // btnFilter
@@ -608,7 +608,7 @@
             this.btnMatList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMatList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMatList.ForeColor = System.Drawing.Color.Black;
-            this.btnMatList.Location = new System.Drawing.Point(1335, 1);
+            this.btnMatList.Location = new System.Drawing.Point(1360, 1);
             this.btnMatList.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnMatList.Name = "btnMatList";
             this.btnMatList.Size = new System.Drawing.Size(90, 36);
@@ -625,11 +625,11 @@
             this.tableLayoutPanel8.Controls.Add(this.btnFilterApply, 1, 0);
             this.tableLayoutPanel8.Controls.Add(this.lblResetAll, 0, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 211);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 217);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 1;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(1528, 50);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(1553, 52);
             this.tableLayoutPanel8.TabIndex = 116;
             // 
             // tlpMainSchedule
@@ -644,7 +644,7 @@
             this.tlpMainSchedule.Controls.Add(this.dgvSchedule, 0, 4);
             this.tlpMainSchedule.Controls.Add(this.groupBox1, 0, 1);
             this.tlpMainSchedule.Controls.Add(this.tableLayoutPanel8, 0, 2);
-            this.tlpMainSchedule.Location = new System.Drawing.Point(21, 12);
+            this.tlpMainSchedule.Location = new System.Drawing.Point(12, 12);
             this.tlpMainSchedule.Name = "tlpMainSchedule";
             this.tlpMainSchedule.RowCount = 5;
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6F));
@@ -652,7 +652,7 @@
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7F));
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 62F));
-            this.tlpMainSchedule.Size = new System.Drawing.Size(1534, 800);
+            this.tlpMainSchedule.Size = new System.Drawing.Size(1559, 829);
             this.tlpMainSchedule.TabIndex = 117;
             // 
             // tableLayoutPanel10
@@ -665,11 +665,11 @@
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1300F));
             this.tableLayoutPanel10.Controls.Add(this.btnRefresh, 1, 0);
             this.tableLayoutPanel10.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 267);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 275);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(1528, 34);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(1553, 35);
             this.tableLayoutPanel10.TabIndex = 119;
             // 
             // btnRefresh
@@ -682,7 +682,7 @@
             this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefresh.ForeColor = System.Drawing.Color.White;
-            this.btnRefresh.Location = new System.Drawing.Point(259, 2);
+            this.btnRefresh.Location = new System.Drawing.Point(259, 3);
             this.btnRefresh.Margin = new System.Windows.Forms.Padding(2);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(30, 30);

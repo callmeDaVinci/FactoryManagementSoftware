@@ -488,7 +488,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmSPP_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MainDashboard.SPPFormOpen = false;
+            MainDashboard.SBBFormOpen = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -3621,33 +3621,12 @@ namespace FactoryManagementSoftware.UI
 
         private void button8_Click(object sender, EventArgs e)
         {
-            frmSBBPrice frm = new frmSBBPrice
-            {
-                StartPosition = FormStartPosition.CenterScreen
-            };
-
-            frm.ShowDialog();
-
-            //if (!MainDashboard.DailyJobSheetFormOpen)
+            //frmSBBPrice frm = new frmSBBPrice
             //{
-            //    frmLoading.ShowLoadingScreen();
-            //    frmProductionRecordNew frm = new frmProductionRecordNew
-            //    {
-            //        MdiParent = this.ParentForm,
-            //        StartPosition = FormStartPosition.CenterScreen,
-            //        WindowState = FormWindowState.Maximized
-            //    };
-            //    frm.Show();
-            //    MainDashboard.DailyJobSheetFormOpen = true;
-            //    frmLoading.CloseForm();
-            //}
-            //else
-            //{
-            //    if (Application.OpenForms.OfType<frmProductionRecordNew>().Count() == 1)
-            //    {
-            //        Application.OpenForms.OfType<frmProductionRecordNew>().First().BringToFront();
-            //    }
-            //}
+            //    StartPosition = FormStartPosition.CenterScreen
+            //};
+
+            //frm.ShowDialog();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -4480,6 +4459,17 @@ namespace FactoryManagementSoftware.UI
                 btnMonthlyDateSetting.Text = MonthlyDate_Safety;
                 InitialMonthlyDate();
             }
+        }
+
+        private void btnCustomer_Click(object sender, EventArgs e)
+        {
+            frmSPPCustomerEdit frm = new frmSPPCustomerEdit
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+
+            frm.ShowDialog();
         }
     }
 }

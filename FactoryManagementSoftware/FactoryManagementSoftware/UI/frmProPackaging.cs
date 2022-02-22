@@ -361,5 +361,15 @@ namespace FactoryManagementSoftware.UI
                 RowEdit(dgv, row);
             }
         }
+
+        private void lblTotalBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtTotalBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -14,17 +14,23 @@ namespace FactoryManagementSoftware.UI
     {
         public frmOrderComplete()
         {
+            frmOrder.orderCompleted = false;
+
             InitializeComponent();
         }
 
         private void btnOrder_Click(object sender, EventArgs e)
         {
             frmOrder.note = txtNote.Text;
+            frmOrder.orderCompleted = true;
+
             Close();
         }
 
-        private void btnReset_Click(object sender, EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
+            frmOrder.orderCompleted = true;
+
             Close();
         }
     }

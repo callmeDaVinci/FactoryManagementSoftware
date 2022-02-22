@@ -23,6 +23,7 @@ namespace FactoryManagementSoftware.Module
 
         //password
         public string PW_UnlockPmmaStock { get; } = "038989";
+        public string PW_UnlockSBBCustomerDiscount { get; } = "038989";
         public string PW_UnlockSBBSalesReport { get; } = "Safplas038989!";
 
 

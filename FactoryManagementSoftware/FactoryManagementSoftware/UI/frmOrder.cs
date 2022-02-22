@@ -42,6 +42,7 @@ namespace FactoryManagementSoftware.UI
         static public bool receivedReturn = false;
         static public bool orderApproved = false;
         static public bool zeroCost = false;
+        static public bool orderCompleted = false;
         private int userPermission = -1;
 
         readonly string status_Received = "RECEIVED";
@@ -608,13 +609,15 @@ namespace FactoryManagementSoftware.UI
 
                             string itemCode = ord["ord_item_code"].ToString();
                             string ordID = ord["ord_id"].ToString();
+                            string ordStatus = ord["ord_status"].ToString();
+
                             int ordPONo = ord["ord_po_no"] == DBNull.Value ? -1 : Convert.ToInt32(ord["ord_po_no"].ToString());
 
 
-                            //if(ordPONo <= 0)
-                            //{
-                            //    ordPONo = GetPONoFromActionRecord(ordID, dt_OrderAction);
-                            //}
+                            if (ordPONo <= 0 && (ordStatus == status_Received || ordStatus == status_Pending))
+                            {
+                                ordPONo = GetPONoFromActionRecord(ordID, dt_OrderAction);
+                            }
 
                             dtOrder_row[headerID] = ordID;
                             //lblDebug.Text = "before date assign";
@@ -632,7 +635,7 @@ namespace FactoryManagementSoftware.UI
                             dtOrder_row[headerPending] = ord["ord_pending"].ToString();
                             dtOrder_row[headerReceived] = ord["ord_received"].ToString();
                             dtOrder_row[headerUnit] = ord["ord_unit"].ToString();
-                            dtOrder_row[headerStatus] = ord["ord_status"].ToString();
+                            dtOrder_row[headerStatus] = ordStatus;
 
                             dtOrder.Rows.Add(dtOrder_row);
                         }
@@ -1707,35 +1710,39 @@ namespace FactoryManagementSoftware.UI
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();
 
-            uOrd.ord_id = orderID;
-            DateTime date = requiredDate;
-            uOrd.ord_required_date = date;
-            uOrd.ord_qty = Convert.ToSingle(qty);
-            uOrd.ord_pending = 0;
-            uOrd.ord_po_no = po_no;
-            uOrd.ord_received = received;
-            uOrd.ord_updated_date = DateTime.Now;
-            uOrd.ord_updated_by = MainDashboard.USER_ID;
-            uOrd.ord_item_code = itemCode;
-            uOrd.ord_note = note;
-            uOrd.ord_unit = unit;
-            uOrd.ord_status = status_Received;
-            uOrd.ord_type = type;
-
-            if (dalOrd.Update(uOrd))
+            if(orderCompleted)
             {
-                float pendingQty = float.TryParse(pending, out pendingQty) ? pendingQty : 0;
+                uOrd.ord_id = orderID;
+                DateTime date = requiredDate;
+                uOrd.ord_required_date = date;
+                uOrd.ord_qty = Convert.ToSingle(qty);
+                uOrd.ord_pending = 0;
+                uOrd.ord_po_no = po_no;
+                uOrd.ord_received = received;
+                uOrd.ord_updated_date = DateTime.Now;
+                uOrd.ord_updated_by = MainDashboard.USER_ID;
+                uOrd.ord_item_code = itemCode;
+                uOrd.ord_note = note;
+                uOrd.ord_unit = unit;
+                uOrd.ord_status = status_Received;
+                uOrd.ord_type = type;
 
-                if(pendingQty > 0)
+                if (dalOrd.Update(uOrd))
                 {
-                    dalItem.orderSubtract(itemCode, pending); //subtract order qty
-                }
-                
+                    float pendingQty = float.TryParse(pending, out pendingQty) ? pendingQty : 0;
 
-                dalOrderAction.orderClose(orderID, note);
+                    if (pendingQty > 0)
+                    {
+                        dalItem.orderSubtract(itemCode, pending); //subtract order qty
+                    }
+
+
+                    dalOrderAction.orderClose(orderID, note);
+                }
+
+                refreshOrderRecord(orderID);
             }
-            
-            refreshOrderRecord(orderID);
+         
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 

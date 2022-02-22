@@ -1106,41 +1106,43 @@ namespace FactoryManagementSoftware.UI
                        
                 }
 
+                GetPackagingDataForNewSheet(itemCode);
+
+                #region OLD GET PACKAGING DATA
                 //get packaging data
-                foreach (DataRow row in dt_JoinInfo.Rows)
-                {
-                    string parentCode = row[dalJoin.JoinParent].ToString();
+                //foreach (DataRow row in dt_JoinInfo.Rows)
+                //{
+                //    string parentCode = row[dalJoin.JoinParent].ToString();
 
-                    if(parentCode == itemCode)
-                    {
-                        string childCode = row[dalJoin.JoinChild].ToString();
+                //    if(parentCode == itemCode)
+                //    {
+                //        string childCode = row[dalJoin.JoinChild].ToString();
 
-                        foreach(DataRow rowItem in dt_ItemInfo.Rows)
-                        {
-                            if (rowItem[dalItem.ItemCode].ToString().Equals(childCode))
-                            {
-                                string cat = rowItem[dalItem.ItemCat].ToString();
+                //        foreach(DataRow rowItem in dt_ItemInfo.Rows)
+                //        {
+                //            if (rowItem[dalItem.ItemCode].ToString().Equals(childCode))
+                //            {
+                //                string cat = rowItem[dalItem.ItemCat].ToString();
 
-                                if(cat.Equals(text.Cat_Carton) || cat.Equals(text.Cat_Packaging))
-                                {
-                                    string packagingName = rowItem[dalItem.ItemName].ToString();
-                                    string packagingCode= rowItem[dalItem.ItemCode].ToString();
-                                    string packagingQty = row[dalJoin.JoinMax].ToString();
+                //                if(cat.Equals(text.Cat_Carton) || cat.Equals(text.Cat_Packaging))
+                //                {
+                //                    string packagingName = rowItem[dalItem.ItemName].ToString();
+                //                    string packagingCode= rowItem[dalItem.ItemCode].ToString();
+                //                    string packagingQty = row[dalJoin.JoinMax].ToString();
 
-                                    txtPackingMaxQty.Text = packagingQty;
-                                    cmbPackingName.Text = packagingName;
-                                    cmbPackingCode.Text = packagingCode;
+                //                    txtPackingMaxQty.Text = packagingQty;
+                //                    cmbPackingName.Text = packagingName;
+                //                    cmbPackingCode.Text = packagingCode;
 
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                //                    break;
+                //                }
+                //            }
+                //        }
+                //    }
 
-                }
+                //}
+                #endregion
 
-
-                
                 txtOut.Text ="0";
                 txtIn.Text = "0";
 
@@ -1149,6 +1151,105 @@ namespace FactoryManagementSoftware.UI
             }
 
             sheetLoaded = true;
+
+        }
+
+        private void GetPackagingDataForNewSheet(string itemCode)
+        {
+            DataTable dt = NewPackagingTable();
+
+            //get packaging data
+            foreach (DataRow row in dt_JoinInfo.Rows)
+            {
+                string parentCode = row[dalJoin.JoinParent].ToString();
+
+                if (parentCode == itemCode)
+                {
+                    string childCode = row[dalJoin.JoinChild].ToString();
+
+                    foreach (DataRow rowItem in dt_ItemInfo.Rows)
+                    {
+                        if (rowItem[dalItem.ItemCode].ToString().Equals(childCode))
+                        {
+                            string cat = rowItem[dalItem.ItemCat].ToString();
+                            string packagingCode = rowItem[dalItem.ItemCode].ToString();
+                            string packagingName = rowItem[dalItem.ItemName].ToString();
+                            string packagingQty = row[dalJoin.JoinMax].ToString();
+
+                            //ADD DATA TO PACKAGING TABLE
+                            DataRow dt_Row = dt.NewRow();
+
+                            int TotalBox = 0;
+
+                            dt_Row[header_PackagingCode] = packagingCode;
+                            dt_Row[header_PackagingName] = tool.getItemName(packagingCode);
+                            dt_Row[header_PackagingMax] = packagingQty;
+                            dt_Row[header_PackagingQty] = TotalBox;
+
+                            dt.Rows.Add(dt_Row);
+
+                            if ((cat.Equals(text.Cat_Carton) && (packagingCode.Contains("CTN") || packagingCode.Contains("CTR"))) || cat.Equals(text.Cat_Packaging))
+                            {
+                                txtPackingMaxQty.Text = packagingQty;
+                                cmbPackingName.Text = packagingName;
+                                cmbPackingCode.Text = packagingCode;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            dt_MultiPackaging = dt.Copy();
+
+            if (dt_MultiPackaging.Rows.Count > 0)
+            {
+                string name = dt_MultiPackaging.Rows[0][header_PackagingName].ToString();
+                string code = dt_MultiPackaging.Rows[0][header_PartCode].ToString();
+
+                int rowCount = dt_MultiPackaging.Rows.Count;
+
+                if (rowCount >= 2)
+                {
+                    lblClear.Visible = false;
+                    LoadPackingToCMB(string_MultiPackaging);
+                    txtPackingMaxQty.Text = "MULTI";
+
+                    int totalStockIn = 0;
+                    int totalFullBox = 0;
+
+                    foreach (DataRow row in dt_MultiPackaging.Rows)
+                    {
+                        int boxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingQty].ToString());
+                        int maxQty = Convert.ToInt32(row[frmProPackaging.header_PackagingMax].ToString());
+
+                        totalFullBox += boxQty;
+
+                        totalStockIn += boxQty * maxQty;
+                    }
+
+
+                    txtFullBox.Text = totalFullBox.ToString();
+
+                }
+
+                else if (rowCount == 1)
+                {
+                    lblClear.Visible = true;
+                    loadPackingData();
+
+                    cmbPackingName.Text = name;
+                    cmbPackingCode.Text = code;
+
+                    foreach (DataRow row in dt_MultiPackaging.Rows)
+                    {
+                        txtPackingMaxQty.Text = row[header_PackagingMax].ToString();
+                        txtFullBox.Text = row[header_PackagingQty].ToString();
+                    }
+
+
+                }
+            }
 
         }
 
@@ -1295,6 +1396,7 @@ namespace FactoryManagementSoftware.UI
                         txtTotalProduce.Text = row[dalProRecord.TotalProduced].ToString();
                         cmbParentList.Text = row[dalProRecord.ParentCode].ToString();
                         txtNote.Text = row[dalProRecord.Note].ToString();
+
                         //cmbPackingName.Text = tool.getItemName(row[dalProRecord.PackagingCode].ToString());
                         //cmbPackingCode.Text = row[dalProRecord.PackagingCode].ToString();
                         //txtPackingMaxQty.Text = row[dalProRecord.PackagingQty].ToString();
@@ -2676,6 +2778,7 @@ namespace FactoryManagementSoftware.UI
                 DateTime proDate = DateTime.Today.AddDays(-1);
 
                 dtpProDate.Value = tool.SubtractDayIfSunday(proDate);
+
                 dt_MultiPackaging = null;
                 sheetLoaded = false;
 
@@ -3425,6 +3528,8 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
+                dailyRecordLoaded = true;
+
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
@@ -3642,13 +3747,17 @@ namespace FactoryManagementSoftware.UI
             else if (rowCount == 1)
             {
                 lblClear.Visible = true;
-                //loadPackingData();
+                loadPackingData();
+
+                string fullboxQty = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingQty].ToString();
+                string pcsPerBox = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingMax].ToString();
+                string packingCode = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingCode].ToString();
 
                 cmbPackingName.Text = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingName].ToString();
-                cmbPackingCode.Text = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingCode].ToString();
-
-                txtPackingMaxQty.Text = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingMax].ToString();
-                txtFullBox.Text = dt_MultiPackaging.Rows[0][frmProPackaging.header_PackagingQty].ToString();
+                tool.loadItemCodeDataToComboBox(cmbPackingCode, cmbPackingName.Text);
+                cmbPackingCode.Text = packingCode;
+                txtFullBox.Text = fullboxQty;
+                txtPackingMaxQty.Text = pcsPerBox;
             }
         }
 

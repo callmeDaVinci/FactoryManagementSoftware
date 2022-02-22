@@ -15,12 +15,15 @@ namespace FactoryManagementSoftware.UI
         public frmVerification()
         {
             InitializeComponent();
+            PASSWORD_MATCHED = false;
+
         }
 
         public frmVerification(string text)
         {
             InitializeComponent();
             PASSWORD = text;
+            PASSWORD_MATCHED = false;
         }
 
         private string PASSWORD = "";
@@ -33,7 +36,8 @@ namespace FactoryManagementSoftware.UI
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            if(txtPassword.Text == PASSWORD)
+            PASSWORD_MATCHED = false;
+            if (txtPassword.Text == PASSWORD)
             {
                 lblWarning.Visible = false;
                 PASSWORD_MATCHED = true;
@@ -43,6 +47,19 @@ namespace FactoryManagementSoftware.UI
             {
                 lblWarning.Visible = true;
                 lblWarning.Text = "WRONG PASSWORD!";
+            }
+        }
+
+        private void txtPassword_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnCheck_Click(sender, e);
             }
         }
     }

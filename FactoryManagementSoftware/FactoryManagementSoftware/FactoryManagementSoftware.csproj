@@ -27,7 +27,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>394</ApplicationRevision>
+    <ApplicationRevision>395</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -207,6 +207,18 @@
     <Compile Include="Module\ExcelTool.cs" />
     <Compile Include="Module\Tool.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="UI\frmOUGPOList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmOUGPOList.Designer.cs">
+      <DependentUpon>frmOUGPOList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmOUGNewPO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmOUGNewPO.Designer.cs">
+      <DependentUpon>frmOUGNewPO.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmSBBSalesReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -773,6 +785,12 @@
     <Compile Include="UI\frmSBBShippingData.Designer.cs">
       <DependentUpon>frmSBBShippingData.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmOUGCustomerEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmOUGCustomerEdit.Designer.cs">
+      <DependentUpon>frmOUGCustomerEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmSPPCustomerEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -893,6 +911,12 @@
     <Compile Include="UI\NewInOutReport.Designer.cs">
       <DependentUpon>NewInOutReport.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\frmOUGPOList.resx">
+      <DependentUpon>frmOUGPOList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmOUGNewPO.resx">
+      <DependentUpon>frmOUGNewPO.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBSalesReport.resx">
       <DependentUpon>frmSBBSalesReport.cs</DependentUpon>
     </EmbeddedResource>
@@ -1184,6 +1208,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBShippingData.resx">
       <DependentUpon>frmSBBShippingData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmOUGCustomerEdit.resx">
+      <DependentUpon>frmOUGCustomerEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSPPCustomerEdit.resx">
       <DependentUpon>frmSPPCustomerEdit.cs</DependentUpon>

@@ -30,8 +30,10 @@ namespace FactoryManagementSoftware.UI
         static public bool ProductionFormOpen = false;
         static public bool DailyJobSheetFormOpen = false;
         static public bool ProductionReportFormOpen = false;
-        static public bool SPPFormOpen = false;
+        static public bool SBBFormOpen = false;
         static public bool SBBDeliveredFormOpen = false;
+        static public bool OUGPOFormOpen = false;
+
 
         static public int USER_ID = -1;
 
@@ -54,6 +56,7 @@ namespace FactoryManagementSoftware.UI
 
             int userPermission = dalUser.getPermissionLevel(USER_ID);
             sPPToolStripMenuItem.Visible = true;
+            pOToolStripMenuItem.Visible = false;
 
             if (userPermission >= ACTION_LVL_FOUR)
             {
@@ -460,7 +463,7 @@ namespace FactoryManagementSoftware.UI
             if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)//|| myconnstrng == text.DB_JunPC
             {
                 //Semenyih
-                if (!SPPFormOpen)
+                if (!SBBFormOpen)
                 {
                     frmLoading.ShowLoadingScreen();
                     frmSBB frm = new frmSBB();
@@ -468,7 +471,7 @@ namespace FactoryManagementSoftware.UI
                     frm.StartPosition = FormStartPosition.CenterScreen;
                     frm.WindowState = FormWindowState.Maximized;
                     frm.Show();
-                    SPPFormOpen = true;
+                    SBBFormOpen = true;
                     frmLoading.CloseForm();
                 }
                 else
@@ -681,7 +684,7 @@ namespace FactoryManagementSoftware.UI
 
         private void sPPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!SPPFormOpen)
+            if (!SBBFormOpen)
             {
                 frmLoading.ShowLoadingScreen();
                 frmSBB frm = new frmSBB();
@@ -689,7 +692,7 @@ namespace FactoryManagementSoftware.UI
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
                 frm.Show();
-                SPPFormOpen = true;
+                SBBFormOpen = true;
                 frmLoading.CloseForm();
             }
             else
@@ -770,6 +773,28 @@ namespace FactoryManagementSoftware.UI
                 if (Application.OpenForms.OfType<frmSBBMould>().Count() == 1)
                 {
                     Application.OpenForms.OfType<frmSBBMould>().First().BringToFront();
+                }
+            }
+        }
+
+        private void pOToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!OUGPOFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmOUGPOList frm = new frmOUGPOList();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                OUGPOFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmOUGPOList>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmOUGPOList>().First().BringToFront();
                 }
             }
         }

@@ -17,9 +17,9 @@ using System.Reflection;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmSPPCustomerEdit : Form
+    public partial class frmOUGCustomerEdit : Form
     {
-        public frmSPPCustomerEdit()
+        public frmOUGCustomerEdit()
         {
             InitializeComponent();
             tool.DoubleBuffered(dgvCustomer, true);
@@ -452,9 +452,7 @@ namespace FactoryManagementSoftware.UI
                     string registrationNO = row[dalData.RegistrationNo] == null ? string.Empty : row[dalData.RegistrationNo].ToString();
                     string address1 = row[dalData.Address1] == null ? string.Empty : row[dalData.Address1].ToString();
                     string address2 =  row[dalData.Address2] == null ? string.Empty : row[dalData.Address2].ToString();
-
                     string address3 =  row[dalData.Address3] == null ? string.Empty : row[dalData.Address3].ToString();
-
                     string city =  row[dalData.AddressCity] == null ? string.Empty : row[dalData.AddressCity].ToString();
                     string state =  row[dalData.AddressState] == null ? string.Empty : row[dalData.AddressState].ToString();
                     string country =  row[dalData.AddressCountry] == null ? string.Empty : row[dalData.AddressCountry].ToString();
@@ -783,31 +781,6 @@ namespace FactoryManagementSoftware.UI
             {
                 e.Handled = true;
             }
-        }
-
-        private void lblDiscountRate_Click(object sender, EventArgs e)
-        {
-
-            //password
-            frmVerification frm = new frmVerification(text.PW_UnlockSBBCustomerDiscount)
-            {
-                StartPosition = FormStartPosition.CenterScreen
-            };
-
-
-            frm.ShowDialog();
-
-            if (frmVerification.PASSWORD_MATCHED)
-            {
-                frmSBBPrice frm2 = new frmSBBPrice
-                {
-                    StartPosition = FormStartPosition.CenterScreen
-                };
-
-                frm2.ShowDialog();
-            }
-
-          
         }
     }
 
