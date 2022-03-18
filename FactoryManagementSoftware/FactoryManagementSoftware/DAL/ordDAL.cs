@@ -230,6 +230,53 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool POUpdate(ordBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_ord SET 
+                                ord_updated_date=@ord_updated_date,
+                                ord_po_no=@ord_po_no,
+                                ord_updated_by=@ord_updated_by
+                                WHERE ord_id=@ord_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@ord_id", u.ord_id);
+                cmd.Parameters.AddWithValue("@ord_updated_date", u.ord_updated_date);
+                cmd.Parameters.AddWithValue("@ord_updated_by", u.ord_updated_by);
+                cmd.Parameters.AddWithValue("@ord_po_no", u.ord_po_no);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         public bool receivedUpdate(ordBLL u)
         {
             bool isSuccess = false;

@@ -39,9 +39,9 @@
             this.gtxtPassword = new Guna.UI.WinForms.GunaTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.gunaPanel1 = new Guna.UI.WinForms.GunaPanel();
+            this.lblVersion = new System.Windows.Forms.Label();
             this.lblDate = new System.Windows.Forms.Label();
             this.gunaPictureBox1 = new Guna.UI.WinForms.GunaPictureBox();
-            this.lblVersion = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.gunaPanel1.SuspendLayout();
@@ -181,6 +181,19 @@
             this.gunaPanel1.TabIndex = 9;
             this.gunaPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.gunaPanel1_Paint);
             // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(176)))), ((int)(((byte)(242)))));
+            this.lblVersion.Location = new System.Drawing.Point(12, 502);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.lblVersion.Size = new System.Drawing.Size(56, 18);
+            this.lblVersion.TabIndex = 12;
+            this.lblVersion.Text = "version";
+            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // lblDate
             // 
             this.lblDate.AutoSize = true;
@@ -204,19 +217,6 @@
             this.gunaPictureBox1.Size = new System.Drawing.Size(846, 106);
             this.gunaPictureBox1.TabIndex = 9;
             this.gunaPictureBox1.TabStop = false;
-            // 
-            // lblVersion
-            // 
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(176)))), ((int)(((byte)(242)))));
-            this.lblVersion.Location = new System.Drawing.Point(12, 502);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.lblVersion.Size = new System.Drawing.Size(77, 18);
-            this.lblVersion.TabIndex = 12;
-            this.lblVersion.Text = "Username";
-            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // frmLogIn
             // 

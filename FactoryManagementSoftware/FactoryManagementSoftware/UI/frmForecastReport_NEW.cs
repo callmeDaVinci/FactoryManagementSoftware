@@ -1299,6 +1299,8 @@ namespace FactoryManagementSoftware.UI
                     //check repeated data: normal-slow speed
                     dt_Data = CalRepeatedData(dt_Data);
 
+                    //dt_Data = CalRepeatedData(dt_Data);
+
                     //item search:fast speed
                     dt_Data = ItemSearch(dt_Data);
 
@@ -1668,6 +1670,11 @@ namespace FactoryManagementSoftware.UI
                 string firstParentColor = dt.Rows[i][headerParentColor].ToString();
                 string type = dt.Rows[i][headerType].ToString();
 
+                if (firstItem.Equals("C84KXQ000"))
+                {
+                    float test = 0;
+                }
+
                 if (!(type.Equals(typeSingle) || type.Equals(typeParent)))
                 {
                     dt.Rows[i][headerForecastType] = forecastType_Needed;
@@ -1689,6 +1696,11 @@ namespace FactoryManagementSoftware.UI
                             double nextNeededQty2 = double.TryParse(dt.Rows[j][headerForecast2].ToString(), out nextNeededQty2) ? nextNeededQty2 : 0;
                             double nextNeededQty3 = double.TryParse(dt.Rows[j][headerForecast3].ToString(), out nextNeededQty3) ? nextNeededQty3 : 0;
 
+
+                            nextNeededQty1 = nextNeededQty1 > 0 ? nextNeededQty1 : 0;
+                            nextNeededQty2 = nextNeededQty2 > 0 ? nextNeededQty2 : 0;
+                            nextNeededQty3 = nextNeededQty3 > 0 ? nextNeededQty3 : 0;
+
                             dt.Rows[j][headerBal1] = DBNull.Value;
                             dt.Rows[j][headerBal2] = DBNull.Value;
 
@@ -1707,6 +1719,16 @@ namespace FactoryManagementSoftware.UI
 
                     if (colorChange)
                     {
+                        if(totalNeeded1 < 0)
+                        {
+                            totalNeeded1 = 0;
+                        }
+
+                        if (totalNeeded2 < 0)
+                        {
+                            totalNeeded2 = 0;
+                        }
+
                         dt.Rows[i][headerBal1] = firstBal1 - totalNeeded1;
                         dt.Rows[i][headerBal2] = firstBal2 - totalNeeded1 - totalNeeded2;
 
@@ -1799,9 +1821,11 @@ namespace FactoryManagementSoftware.UI
                         uChildData.cavity = uChildData.cavity == 0 ? 1 : uChildData.cavity;
                         uChildData.ready_stock = row_Item[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row_Item[dalItem.ItemStock]);
 
+
                         if (uParentData.bal1 >= 0)
                         {
                             uChildData.forecast1 = 0;
+                            //uChildData.forecast1 = uParentData.outStd;
                         }
                         else
                         {
@@ -1868,8 +1892,6 @@ namespace FactoryManagementSoftware.UI
 
                             
                         }
-
-                        
 
                         uChildData.forecast1 = uChildData.forecast1 < 0 ? uChildData.forecast1 * -1 : uChildData.forecast1;
                         uChildData.forecast2 = uChildData.forecast2 < 0 ? uChildData.forecast2 * -1 : uChildData.forecast2;

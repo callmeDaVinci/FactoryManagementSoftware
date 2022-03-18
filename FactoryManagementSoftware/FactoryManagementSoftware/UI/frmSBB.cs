@@ -3614,7 +3614,7 @@ namespace FactoryManagementSoftware.UI
             WorkInProgressMessage();
         }
 
-        private void button12_Click(object sender, EventArgs e)
+        private void WorkInProgress_Click(object sender, EventArgs e)
         {
             WorkInProgressMessage();
         }
@@ -3856,12 +3856,12 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_ActualStock].Visible = true;
                 dgv.Columns[header_StockDiff].Visible = true;
 
-                dgv.Columns[header_StdPacking_Bag].Visible = true;
-                dgv.Columns[header_StdPacking_Ctn].Visible = true;
-                //dgv.Columns[header_StdPacking_String].Visible = true;
-                dgv.Columns[header_ActualStock_PCS].Visible = true;
-                dgv.Columns[header_ActualStock_BAG].Visible = true;
-                dgv.Columns[header_ActualStock_CTN].Visible = true;
+                dgv.Columns[header_StdPacking_Bag].Visible = false;
+                dgv.Columns[header_StdPacking_Ctn].Visible = false;
+                dgv.Columns[header_StdPacking_String].Visible = false;
+                dgv.Columns[header_ActualStock_PCS].Visible = false;
+                dgv.Columns[header_ActualStock_BAG].Visible = false;
+                dgv.Columns[header_ActualStock_CTN].Visible = false;
 
                 //DataTable dt = (DataTable)dgv.DataSource;
 

@@ -2360,6 +2360,10 @@ namespace FactoryManagementSoftware.UI
                 float transferQty = Convert.ToSingle(txtTrfQty.Text);
                 string factoryName = "";
 
+                facStock = (float)Math.Round(facStock, 2);
+
+                float balanceQty = facStock - transferQty;
+
                 if (string.IsNullOrEmpty(cmbTrfTo.Text))
                 {
                     factoryName = cmbTrfToCategory.Text;

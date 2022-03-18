@@ -1106,41 +1106,41 @@ namespace FactoryManagementSoftware.UI
                        
                 }
 
-                GetPackagingDataForNewSheet(itemCode);
+                //GetPackagingDataForNewSheet(itemCode);
 
                 #region OLD GET PACKAGING DATA
                 //get packaging data
-                //foreach (DataRow row in dt_JoinInfo.Rows)
-                //{
-                //    string parentCode = row[dalJoin.JoinParent].ToString();
+                foreach (DataRow row in dt_JoinInfo.Rows)
+                {
+                    string parentCode = row[dalJoin.JoinParent].ToString();
 
-                //    if(parentCode == itemCode)
-                //    {
-                //        string childCode = row[dalJoin.JoinChild].ToString();
+                    if (parentCode == itemCode)
+                    {
+                        string childCode = row[dalJoin.JoinChild].ToString();
 
-                //        foreach(DataRow rowItem in dt_ItemInfo.Rows)
-                //        {
-                //            if (rowItem[dalItem.ItemCode].ToString().Equals(childCode))
-                //            {
-                //                string cat = rowItem[dalItem.ItemCat].ToString();
+                        foreach (DataRow rowItem in dt_ItemInfo.Rows)
+                        {
+                            if (rowItem[dalItem.ItemCode].ToString().Equals(childCode))
+                            {
+                                string cat = rowItem[dalItem.ItemCat].ToString();
 
-                //                if(cat.Equals(text.Cat_Carton) || cat.Equals(text.Cat_Packaging))
-                //                {
-                //                    string packagingName = rowItem[dalItem.ItemName].ToString();
-                //                    string packagingCode= rowItem[dalItem.ItemCode].ToString();
-                //                    string packagingQty = row[dalJoin.JoinMax].ToString();
+                                if (cat.Equals(text.Cat_Carton) || cat.Equals(text.Cat_Packaging))
+                                {
+                                    string packagingName = rowItem[dalItem.ItemName].ToString();
+                                    string packagingCode = rowItem[dalItem.ItemCode].ToString();
+                                    string packagingQty = row[dalJoin.JoinMax].ToString();
 
-                //                    txtPackingMaxQty.Text = packagingQty;
-                //                    cmbPackingName.Text = packagingName;
-                //                    cmbPackingCode.Text = packagingCode;
+                                    txtPackingMaxQty.Text = packagingQty;
+                                    cmbPackingName.Text = packagingName;
+                                    cmbPackingCode.Text = packagingCode;
 
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
-                //}
+                }
                 #endregion
 
                 txtOut.Text ="0";
@@ -1174,7 +1174,8 @@ namespace FactoryManagementSoftware.UI
                             string cat = rowItem[dalItem.ItemCat].ToString();
                             string packagingCode = rowItem[dalItem.ItemCode].ToString();
                             string packagingName = rowItem[dalItem.ItemName].ToString();
-                            string packagingQty = row[dalJoin.JoinMax].ToString();
+                            string packagingQty = int.TryParse(row[dalJoin.JoinMax].ToString(), out int i) ? i.ToString() : "1" ;
+
 
                             //ADD DATA TO PACKAGING TABLE
                             DataRow dt_Row = dt.NewRow();
@@ -3013,6 +3014,7 @@ namespace FactoryManagementSoftware.UI
         private void txtFullBox_TextChanged(object sender, EventArgs e)
         {
             errorProvider8.Clear();
+
             CalculateTotalProduce();
 
             if(cmbPackingName.Text != string_MultiPackaging)

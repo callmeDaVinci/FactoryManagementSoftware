@@ -18,12 +18,17 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
 
-            string GetVersion = ApplicationDeployment.IsNetworkDeployed ? $"Version: {ApplicationDeployment.CurrentDeployment.CurrentVersion}" : $"Version: {Application.ProductVersion}";
-
-            lblVersion.Text = GetVersion;
+           
 
         }
 
+
+        private void ShowSystemVersion()
+        {
+            string GetVersion = ApplicationDeployment.IsNetworkDeployed ? $"Version: {ApplicationDeployment.CurrentDeployment.CurrentVersion}" : $"Version: {Application.ProductVersion}";
+
+            lblVersion.Text = GetVersion;
+        }
 
         public frmLogIn(string userName)
         {
@@ -214,7 +219,9 @@ namespace FactoryManagementSoftware.UI
             {
                 //SBBPageDataPreLoad();
             }
-                
+
+            ShowSystemVersion();
+
         }
 
         private bool CheckDatabaseExist()

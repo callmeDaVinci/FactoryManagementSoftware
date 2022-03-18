@@ -44,6 +44,7 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow row in dt.Rows)
             {
                 string itemCode = row["CODE"].ToString();
+                string itemType = row["TYPE"].ToString();
 
                 bool itemFound = false;
 
@@ -65,7 +66,14 @@ namespace FactoryManagementSoftware.UI
 
                 if(!itemFound)
                 {
+                    
                     row[header_Size_1] = sizeTableCode;
+
+                    if(itemType.Equals(text.Type_PolyNipple))
+                    {
+                        row[header_Size_2] = sizeTableCode;
+                    }
+
                     dt_NewGoodsList.ImportRow(row);
 
                 }
@@ -1502,36 +1510,73 @@ namespace FactoryManagementSoftware.UI
             string itemStock = "";
             string stdPacking = "";
 
+
             if (!string.IsNullOrEmpty(itemType) && !string.IsNullOrEmpty(size_Tbl_Code_1))
             {
                 foreach (DataRow row in dt_ReadyGoods.Rows)
                 {
                     bool dataMatched = true;
 
+                    string sizeDB_1 = row[header_Size_1].ToString();
+                    string sizeDB_2 = row[header_Size_2].ToString();
+
                     string typeDB = row["TYPE"].ToString(); 
+
                     if (row["TYPE"].ToString()!= itemType)
                     {
 
                         dataMatched = false;
 
                     }
-
-                    if (row[header_Size_1].ToString() == "" || (row[header_Size_1].ToString() != size_Tbl_Code_1 && row[header_Size_1].ToString() != size_Tbl_Code_2))
+                    else
                     {
-
-                        dataMatched = false;
-
+                        float test = 0;
                     }
 
-                    if(size_Tbl_Code_2 != "")
-                    {
-                        if (row[header_Size_2].ToString() == "" || (row[header_Size_2].ToString() != size_Tbl_Code_1 && row[header_Size_2].ToString() != size_Tbl_Code_2))
-                        {
 
+                    if(size_Tbl_Code_2 == "")
+                    {
+                        if(sizeDB_2 != "" || size_Tbl_Code_1 != sizeDB_1)
+                        {
+                            dataMatched = false;
+                        }
+                    }
+                    else 
+                    {
+                        if (sizeDB_2 == "")
+                        {
                             dataMatched = false;
 
                         }
+                        else if(size_Tbl_Code_1 != sizeDB_1 || size_Tbl_Code_2 != sizeDB_2)
+                        {
+                            if(size_Tbl_Code_1 != sizeDB_2 || size_Tbl_Code_2 != sizeDB_1)
+                            {
+                                dataMatched = false;
+
+                            }
+                        }
+                        
                     }
+                    
+
+                    //if (sizeDB_1 == "" || (sizeDB_1 != size_Tbl_Code_1 && sizeDB_1 != size_Tbl_Code_2))
+                    //{
+
+                    //    dataMatched = false;
+
+                    //}
+
+                   
+                    //if(size_Tbl_Code_2 != "")
+                    //{
+                    //    if (sizeDB_2 == "" || (sizeDB_2 != size_Tbl_Code_1 && sizeDB_2 != size_Tbl_Code_2))
+                    //    {
+
+                    //        dataMatched = false;
+
+                    //    }
+                    //}
                   
 
                     if (dataMatched)
@@ -1840,7 +1885,16 @@ namespace FactoryManagementSoftware.UI
 
                         if(discountRate > 0)
                         {
-                            discountRate++;
+                            if(cbZeroPointOne.Checked)
+                            {
+                                discountRate += (decimal) 0.1;
+
+                            }
+                            else
+                            {
+                                discountRate++;
+
+                            }
 
                             decimal amount = (1 - discountRate / 100) * unitPrice;
 
@@ -1881,7 +1935,16 @@ namespace FactoryManagementSoftware.UI
 
                         if (discountRate > 0)
                         {
-                            discountRate--;
+                            if (cbZeroPointOne.Checked)
+                            {
+                                discountRate -= (decimal)0.1;
+
+                            }
+                            else
+                            {
+                                discountRate--;
+
+                            }
 
                             decimal amount = (1 - discountRate / 100) * unitPrice;
 

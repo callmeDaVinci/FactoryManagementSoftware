@@ -617,6 +617,18 @@ namespace FactoryManagementSoftware.UI
                             if (ordPONo <= 0 && (ordStatus == status_Received || ordStatus == status_Pending))
                             {
                                 ordPONo = GetPONoFromActionRecord(ordID, dt_OrderAction);
+
+                                //update PO NO to DB
+                                uOrd.ord_id = int.TryParse(ordID, out int i) ? i : -1 ;
+                                uOrd.ord_po_no = ordPONo;
+                                uOrd.ord_updated_date = DateTime.Now;
+                                uOrd.ord_updated_by = MainDashboard.USER_ID;
+
+                                if (!dalOrd.POUpdate(uOrd))
+                                {
+                                    MessageBox.Show("Failed to update PO No to Order!");
+
+                                }
                             }
 
                             dtOrder_row[headerID] = ordID;

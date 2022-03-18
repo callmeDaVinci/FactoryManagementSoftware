@@ -4,6 +4,8 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Windows.Forms;
+using FactoryManagementSoftware.BLL;
+using FactoryManagementSoftware.DAL;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -458,8 +460,92 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void tempFunction()
+        {
+            string itemCode = "PP 93098 PT10";
+            string itemName = "PP 93098 PT10";
+            string itemPart = text.Cat_Pigment;
+
+            if (!tool.IfProductsExists(itemCode))
+            {
+                //Add data
+                itemBLL u = new itemBLL();
+                itemDAL dalItem = new itemDAL();
+
+                u.item_cat = itemPart;
+                u.item_code = itemCode;
+                u.item_name = itemName;
+
+                u.item_material = "";
+                u.item_mb = "";
+                u.item_color ="";
+
+                u.item_quo_ton = 0;
+                u.item_best_ton = 0;
+                u.item_pro_ton = 0;
+
+                u.item_quo_ct = 0;
+                u.item_pro_ct_from = 0;
+                u.item_pro_ct_to = 0;
+                u.item_capacity = 0;
+
+                u.item_quo_pw_pcs =0;
+                u.item_quo_rw_pcs = 0;
+                u.item_pro_pw_pcs = 0;
+                u.item_pro_rw_pcs =0;
+
+                u.item_pro_pw_shot = 0;
+                u.item_pro_rw_shot =0;
+                u.item_pro_cooling = 0;
+                u.item_wastage_allowed = 0.05f;
+
+                u.item_unit = text.Unit_KG;
+                u.unit_to_pcs_rate = 1;
+
+                u.item_assembly = 0;
+                u.item_production = 0;
+
+                u.item_added_date = DateTime.Now;
+                u.item_added_by = USER_ID;
+
+                //Inserting Data into Database
+                bool success = dalItem.NewInsert(u);
+
+                //If the data is successfully inserted then the value of success will be true else false
+                if (!success)
+                {
+                    MessageBox.Show("Failed to add new item");
+                }
+                else if(itemPart != text.Cat_Part)
+                {
+                    materialBLL uMaterial = new materialBLL();
+                    materialDAL dalMaterial = new materialDAL();
+
+                    //Add data
+                    uMaterial.material_cat = itemPart;
+                    uMaterial.material_code = itemCode;
+                    uMaterial.material_name = itemName;
+                    uMaterial.material_zero_cost = 0;
+                   
+                    if (!dalMaterial.Insert(uMaterial))
+                    {
+                        //Failed to insert data
+                        dalMaterial.Delete(uMaterial);
+
+                        MessageBox.Show("Failed to add new material");
+                    }
+                  
+                }
+            }
+          
+           
+        }
+
         private void MainDashboard_Load(object sender, EventArgs e)
         {
+            tempFunction();
+
+
             if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)//|| myconnstrng == text.DB_JunPC
             {
                 //Semenyih
@@ -484,6 +570,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
+                
                 //OUG
                 if (!inOutFormOpen)
                 {

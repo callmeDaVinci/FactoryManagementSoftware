@@ -37,6 +37,7 @@ namespace FactoryManagementSoftware.UI
         historyDAL dalHistory = new historyDAL();
         historyBLL uHistory = new historyBLL();
         planningDAL dalPlan = new planningDAL();
+        facStockDAL dalStock = new facStockDAL();
 
         joinDAL dalJoin = new joinDAL();
 
@@ -134,6 +135,9 @@ namespace FactoryManagementSoftware.UI
         private DataTable dt_Item;
         private DataTable dt_Mat;
         private DataTable dt_ToUpdate;
+
+        DataTable dt_AllStockData;
+        DataTable dt_JoinInfo;
 
         private bool Loaded = false;
         private bool dataChanged = false;
@@ -383,7 +387,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Rows[0].Height = 70;
 
             dgv.Columns[header_Index].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            dgv.Columns[header_Index].Width = 30;
+            dgv.Columns[header_Index].Width = 35;
 
             dgv.Columns[header_StockString].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             dgv.Columns[header_StockString].Width = 150;
@@ -534,10 +538,12 @@ namespace FactoryManagementSoftware.UI
             cbFillALL.Checked = false;
             cbFillALL.Text = text_FillAll;
 
+         
         }
 
         private void LoadPOList()
         {
+
             DialogResult dialogResult;
 
             if (dataChanged)
@@ -586,6 +592,9 @@ namespace FactoryManagementSoftware.UI
                 dt_Item = dalItem.Select();
                 dt_POList = dalSPP.POSelect();
                 dt_DOList = dalSPP.DOWithInfoSelect();
+
+                dt_AllStockData = dalStock.Select();
+                dt_JoinInfo = dalJoin.SelectAll();
 
                 if (cmbPOSortBy.Text == text_ReceivedDate)
                 {
@@ -3551,16 +3560,16 @@ namespace FactoryManagementSoftware.UI
                             }
                         }
 
-
                     }
-
 
                 }
 
             }
 
 
+            if(dgv.CurrentCell.ColumnIndex > 11)
             MessageBox.Show("Please select a valid cell!");
+
             return false;
         }
 
@@ -3591,25 +3600,163 @@ namespace FactoryManagementSoftware.UI
 
                     dgv.Focus();
 
-                    my_menu.Items.Add(text_Reset).Name = text_Reset;
-                    my_menu.Items.Add(text_ResetAll).Name = text_ResetAll;
-                    my_menu.Items.Add(text_ResetAllByCustomer).Name = text_ResetAllByCustomer;
-                    my_menu.Items.Add(text_FillIn).Name = text_FillIn;
-                    my_menu.Items.Add(text_FillAll).Name = text_FillAll;
-                    my_menu.Items.Add(text_FillAllByCustomer).Name = text_FillAllByCustomer;
+                    
+                    string headerName = dgv.Columns[e.ColumnIndex].Name;
+                    int colIndex = e.ColumnIndex;
+                    bool validCelltoShowMenu = false;
 
-                    if(dgv.SelectionMode != DataGridViewSelectionMode.CellSelect)
+                    if (colIndex <= 11)
                     {
-                        my_menu.Items.Add(text_AddDO).Name = text_AddDO;
-                    }
-                   
+                        //get itemCode
+                        string itemCode_1 = dgv.Rows[e.RowIndex].Cells[header_Code].Value.ToString();
+                        string itemCode_2 = "";
 
+                        string itemCode = itemCode_1;
+                        //string stdPacking = dgv.Rows[e.RowIndex].Cells[header_QtyPerBag].Value.ToString();
+                        int stdPacking = int.TryParse(dgv.Rows[e.RowIndex].Cells[header_QtyPerBag].Value.ToString(), out int i) ? i : 0;
+
+                        int nextRowIndex = e.RowIndex + 1;
+
+                        if(nextRowIndex > 0)
+                        {
+                            itemCode_2 = dgv.Rows[nextRowIndex].Cells[header_Code].Value.ToString();
+                        }
+
+                        if(string.IsNullOrEmpty(itemCode_1))
+                        {
+                            itemCode = itemCode_2;
+                            stdPacking = int.TryParse(dgv.Rows[nextRowIndex].Cells[header_QtyPerBag].Value.ToString(), out  i) ? i : 0;
+                        }
+
+                        if (string.IsNullOrEmpty(itemCode_1) && string.IsNullOrEmpty(itemCode_2))
+                        {
+
+                        }
+                        else
+                        {
+                            validCelltoShowMenu = true;
+
+
+                           
+
+                            //search joint group and find Body itemCode
+                            DataTable dt = tool.getJoinDataTableFromDataTable(dt_JoinInfo, itemCode);
+                            string headerParentCode = "PARENT CODE";
+                            string headerChildCode = "CHILD CODE";
+                            string headerJoinQty = "JOIN QTY";
+                            string headerJoinMax = "JOIN MAX";
+                            string headerJoinMin = "JOIN MIN";
+
+                            int joinMax = 0;
+                            int joinMin = 0;
+                            int joinQty = 0;
+
+                            string bodyCode = "";
+
+                            foreach(DataRow row in dt.Rows)
+                            {
+                                string ParentCode = row[headerParentCode].ToString();
+                                string ChildCode = row[headerChildCode].ToString();
+
+                                if(ParentCode.Equals(itemCode))
+                                {
+                                    foreach(DataRow itemRow in dt_Item.Rows)
+                                    {
+                                        string searching_Code = itemRow[dalItem.ItemCode].ToString();
+                                        string itemCategory = itemRow[dalItem.CategoryTblCode].ToString();
+
+                                        if(searching_Code.Equals(ChildCode) && itemCategory.Equals("2"))
+                                        {
+                                            bodyCode = ChildCode;
+
+                                            joinMax = int.TryParse(row[headerJoinMax].ToString(), out  i) ? i : 0;
+                                            joinMin = int.TryParse(row[headerJoinMin].ToString(), out  i) ? i : 0;
+                                            joinQty = int.TryParse(row[headerJoinQty].ToString(), out  i) ? i : 0;
+
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if(!string.IsNullOrEmpty(bodyCode))
+                                {
+                                    break;
+                                }
+                            }
+
+                            int SemenyihBodyStock = 0;
+                            int BinaBodyStock = 0;
+
+                            //get body item stock qty: Semenyih & Bina
+                            foreach(DataRow row in dt_AllStockData.Rows)
+                            {
+                                string StockLocation = row["fac_name"].ToString();
+                                string stockItem = row["item_code"].ToString();
+
+                                if(stockItem.Equals(bodyCode))
+                                {
+                                    if(StockLocation.Equals(text.Factory_Semenyih))
+                                    {
+                                        SemenyihBodyStock = int.TryParse(row["stock_qty"].ToString(), out i) ? i : 0;
+                                    }
+                                    else if(StockLocation.Equals(text.Factory_Bina))
+                                    {
+                                        BinaBodyStock = int.TryParse(row["stock_qty"].ToString(), out i) ? i : 0;
+                                    }
+
+                                    break;
+                                }
+
+
+                            }
+
+                            //get total possible bag qty: body stock / (std qty/bag) / joint qty
+
+                            //show data: Semenyih & Bina
+
+                            string bodyStockString = "BODY STOCK (" + bodyCode +")";
+                            my_menu.Items.Add(bodyStockString).Name = bodyStockString;
+
+                            string divideLine = "========================";
+                            my_menu.Items.Add(divideLine).Name = divideLine;
+
+                            int SemenyihBodyStock_Bag = stdPacking > 0? SemenyihBodyStock/stdPacking : 0;
+                            int BinaBodyStock_Bag = stdPacking > 0 ? BinaBodyStock / stdPacking : 0;
+
+                            string SemenyihStockString = "SEMENYIH: " + SemenyihBodyStock + " ( " + SemenyihBodyStock_Bag + " Bags)";
+                            string BinaStockString     = "BINA         : " + BinaBodyStock + " ( " + BinaBodyStock_Bag + " Bags)";
+
+                            my_menu.Items.Add(SemenyihStockString).Name = SemenyihStockString;
+                            my_menu.Items.Add(BinaStockString).Name = BinaStockString;
+                        }
+
+                    }
+                    else
+                    {
+                        validCelltoShowMenu = true;
+
+                        my_menu.Items.Add(text_Reset).Name = text_Reset;
+                        my_menu.Items.Add(text_ResetAll).Name = text_ResetAll;
+                        my_menu.Items.Add(text_ResetAllByCustomer).Name = text_ResetAllByCustomer;
+                        my_menu.Items.Add(text_FillIn).Name = text_FillIn;
+                        my_menu.Items.Add(text_FillAll).Name = text_FillAll;
+                        my_menu.Items.Add(text_FillAllByCustomer).Name = text_FillAllByCustomer;
+
+                        if (dgv.SelectionMode != DataGridViewSelectionMode.CellSelect)
+                        {
+                            my_menu.Items.Add(text_AddDO).Name = text_AddDO;
+                        }
+                    }
+                
                     //my_menu.Items.Add(text_NewTrip).Name = text_NewTrip;
 
+                    if(validCelltoShowMenu)
+                    {
+                        my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
-                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
-
-                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(DOList_ItemClicked);
+                        my_menu.ItemClicked += new ToolStripItemClickedEventHandler(DOList_ItemClicked);
+                    }
+                    
 
                 }
 

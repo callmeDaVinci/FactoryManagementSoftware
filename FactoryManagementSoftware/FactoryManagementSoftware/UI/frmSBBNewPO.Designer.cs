@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpPOList = new System.Windows.Forms.TableLayoutPanel();
             this.btnRemove = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -51,6 +51,7 @@
             this.lblTotalPrice = new System.Windows.Forms.Label();
             this.cbTotalPrice = new System.Windows.Forms.CheckBox();
             this.btnAddDiscountRate = new System.Windows.Forms.Button();
+            this.cbZeroPointOne = new System.Windows.Forms.CheckBox();
             this.dgvPOItemList = new System.Windows.Forms.DataGridView();
             this.tlpDataInput = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
@@ -401,21 +402,23 @@
             // 
             // tableLayoutPanel24
             // 
-            this.tableLayoutPanel24.ColumnCount = 7;
+            this.tableLayoutPanel24.ColumnCount = 8;
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 71F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 49F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 49F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 49F));
+            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 239F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 151F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel24.Controls.Add(this.btnResetDiscountRate, 2, 0);
             this.tableLayoutPanel24.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel24.Controls.Add(this.btnMinusDiscountRate, 3, 0);
-            this.tableLayoutPanel24.Controls.Add(this.btnTotalPrice, 5, 0);
-            this.tableLayoutPanel24.Controls.Add(this.lblTotalPrice, 4, 0);
-            this.tableLayoutPanel24.Controls.Add(this.cbTotalPrice, 6, 0);
+            this.tableLayoutPanel24.Controls.Add(this.btnTotalPrice, 6, 0);
+            this.tableLayoutPanel24.Controls.Add(this.lblTotalPrice, 5, 0);
+            this.tableLayoutPanel24.Controls.Add(this.cbTotalPrice, 7, 0);
             this.tableLayoutPanel24.Controls.Add(this.btnAddDiscountRate, 1, 0);
+            this.tableLayoutPanel24.Controls.Add(this.cbZeroPointOne, 4, 0);
             this.tableLayoutPanel24.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel24.Location = new System.Drawing.Point(3, 469);
             this.tableLayoutPanel24.Name = "tableLayoutPanel24";
@@ -530,6 +533,16 @@
             this.btnAddDiscountRate.UseVisualStyleBackColor = false;
             this.btnAddDiscountRate.Click += new System.EventHandler(this.btnAddDiscountRate_Click);
             // 
+            // cbZeroPointOne
+            // 
+            this.cbZeroPointOne.AutoSize = true;
+            this.cbZeroPointOne.Location = new System.Drawing.Point(221, 3);
+            this.cbZeroPointOne.Name = "cbZeroPointOne";
+            this.cbZeroPointOne.Size = new System.Drawing.Size(54, 27);
+            this.cbZeroPointOne.TabIndex = 224;
+            this.cbZeroPointOne.Text = "0.1";
+            this.cbZeroPointOne.UseVisualStyleBackColor = true;
+            // 
             // dgvPOItemList
             // 
             this.dgvPOItemList.AllowUserToAddRows = false;
@@ -539,24 +552,24 @@
             this.dgvPOItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvPOItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgvPOItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvPOItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPOItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvPOItemList.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPOItemList.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvPOItemList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvPOItemList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvPOItemList.Location = new System.Drawing.Point(3, 1);
@@ -2013,5 +2026,6 @@
         private System.Windows.Forms.TextBox txtShowInDO;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel26;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.CheckBox cbZeroPointOne;
     }
 }

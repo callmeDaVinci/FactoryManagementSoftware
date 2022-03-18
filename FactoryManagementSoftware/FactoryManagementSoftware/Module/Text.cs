@@ -351,6 +351,11 @@ namespace FactoryManagementSoftware.Module
 
         public string Type_EndCap { get; } = "END CAP";
 
+        public string Type_PolyNipple { get; } = "POLY NIPPLE";
+
+        public string Type_PolyReducingBush { get; } = "POLY R.Bush";
+
+
         #endregion
 
         #region Message
