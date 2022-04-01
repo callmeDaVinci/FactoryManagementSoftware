@@ -130,11 +130,10 @@ namespace FactoryManagementSoftware.UI
             cmbMonthFrom.DataSource = CultureInfo.InvariantCulture.DateTimeFormat
                                                      .MonthNames.Take(12).ToList();
 
-            
-
             cmbYearFrom.DataSource = Enumerable.Range(2019, DateTime.Now.Year - 2019 + 2).ToList();
 
-            cmbMonthFrom.Text = DateTime.Now.Month.ToString();
+            cmbMonthFrom.Text = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
+            //cmbMonthFrom.Text = DateTime.Now.Month.ToString();
             cmbYearFrom.Text = DateTime.Now.Year.ToString();
 
             cmbYearTo.Text = DateTime.Now.AddMonths(forecastMonthQty - 1).Year.ToString();
@@ -289,6 +288,35 @@ namespace FactoryManagementSoftware.UI
             return year;
         }
 
+        private DataTable RemoveTerminatedItem(DataTable dt)
+        {
+            //"(TERMINATED)"
+            DataTable dt_NEW = dt.Copy();
+
+            dt_NEW.AcceptChanges();
+
+            if(!cbShowTerminatedItem.Checked)
+            {
+                foreach (DataRow row in dt_NEW.Rows)
+                {
+                    // If this row is offensive then
+                    string itemName = row[dalItem.ItemName].ToString();
+
+                    if (itemName.Contains(text.Cat_Terminated))
+                        if (itemName.Contains(text.Cat_Terminated))
+                        {
+                            row.Delete();
+
+                        }
+                }
+                dt_NEW.AcceptChanges();
+            }
+         
+
+            return dt_NEW;
+
+        }
+
         private void loadForecastList()
         {
             Cursor = Cursors.WaitCursor;
@@ -318,7 +346,9 @@ namespace FactoryManagementSoftware.UI
 
                 dt = dt.DefaultView.ToTable();
 
-                foreach(DataRow row in dt.Rows)
+                dt = RemoveTerminatedItem(dt);
+
+                foreach (DataRow row in dt.Rows)
                 {
                     string itemName = row[dalItem.ItemName].ToString();
                     string itemCode = row[dalItem.ItemCode].ToString();
@@ -440,12 +470,15 @@ namespace FactoryManagementSoftware.UI
                 cmbPartName.DataSource = null;
                 cmbPartCode.DataSource = null;
 
+                dt = RemoveTerminatedItem(dt);
+
                 cmbPartName.DisplayMember = "item_name";
                 cmbPartName.ValueMember = "item_name";
                 cmbPartName.DataSource = tool.RemoveDuplicates(dt.Copy(),"item_name");
 
                 cmbPartName.SelectedIndex = -1;
 
+                
                 ableLoadCodeData = true;
 
                 foreach (DataRow row in dt.Rows)

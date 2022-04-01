@@ -2890,7 +2890,6 @@ namespace FactoryManagementSoftware.Module
                 {
                     if (row[dalJoin.JoinParent].ToString().Equals(itemCode))
                     {
-                       
                         dtJoin_row = dt_Join.NewRow();
                         dtJoin_row[headerIndex] = index;
                         dtJoin_row[headerParentCode] = row[dalJoin.JoinParent].ToString();

@@ -579,8 +579,9 @@ namespace FactoryManagementSoftware.UI
 
 
                // dt_Product.DefaultView.Sort = dalSPP.SizeNumerator + " ASC" ;
-                dt_Product.DefaultView.Sort = dalSPP.SizeNumerator + " ASC," + dalSPP.SizeWeight + "1 ASC";
-                
+                dt_Product.DefaultView.Sort = dalSPP.SizeWeight + " ASC," + dalSPP.SizeWeight + "1 ASC";
+                //dt_Product.DefaultView.Sort = dalSPP.SizeNumerator + " ASC," + dalSPP.SizeWeight + "1 ASC";
+
                 dt_Product = dt_Product.DefaultView.ToTable();
 
                 if (cmbProductSortBy.Text == text_Type)
