@@ -98,7 +98,7 @@ namespace FactoryManagementSoftware.UI
         readonly static public string header_PackagingMax = "QTY/BOX";
 
         readonly private string text_RemoveRecord = "Remove from this list.";
-        readonly private string text_ChangePlanID = "Change Plan";
+        readonly private string text_ChangePlanID = "Change Plan To";
         readonly private string string_CheckBy= "CHECK BY: ";
         readonly private string string_CheckDate = "DATE: ";
 

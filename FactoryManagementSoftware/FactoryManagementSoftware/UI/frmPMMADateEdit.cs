@@ -90,6 +90,8 @@ namespace FactoryManagementSoftware.UI
         {
             DateTime date = new DateTime(year, month, 1);
 
+            bool recordFound = false;
+
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow row in dt.Rows)
@@ -97,6 +99,27 @@ namespace FactoryManagementSoftware.UI
                     if (row[dalPmmaDate.dateYear].ToString() == year.ToString() && row[dalPmmaDate.dateMonth].ToString() == month.ToString())
                     {
                         date = Convert.ToDateTime(row[dalPmmaDate.dateStart]);
+
+                        recordFound = true;
+                        break;
+                    }
+                }
+
+                if(!recordFound)
+                {
+                    //find last year December date
+
+                    int lastYear = year - 1;
+                    
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        if (row[dalPmmaDate.dateYear].ToString() == lastYear.ToString() && row[dalPmmaDate.dateMonth].ToString() == 12.ToString())
+                        {
+                            date = Convert.ToDateTime(row[dalPmmaDate.dateEnd]).AddDays(1);
+
+                            recordFound = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -349,11 +372,16 @@ namespace FactoryManagementSoftware.UI
         private void dtpJanStart_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+
+           
         }
 
         private void dtpJanEnd_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+
+            DateTime NextStartDate = dtpJanEnd.Value.AddDays(1);
+            dtpFebStart.Value = NextStartDate;
         }
 
         private void dtpFebStart_ValueChanged(object sender, EventArgs e)
@@ -364,16 +392,23 @@ namespace FactoryManagementSoftware.UI
         private void dtpFebEnd_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+            DateTime NextStartDate = dtpFebEnd.Value.AddDays(1);
+            dtpMarStart.Value = NextStartDate;
         }
 
         private void dtpMarStart_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+
+
         }
 
         private void dtpMarEnd_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+
+            DateTime NextStartDate = dtpMarEnd.Value.AddDays(1);
+            dtpAprStart.Value = NextStartDate;
         }
 
         private void dtpAprStart_ValueChanged(object sender, EventArgs e)
@@ -384,6 +419,9 @@ namespace FactoryManagementSoftware.UI
         private void dtpAprEnd_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+
+            DateTime NextStartDate = dtpAprEnd.Value.AddDays(1);
+            dtpMayStart.Value = NextStartDate;
         }
 
         private void dtpMayStart_ValueChanged(object sender, EventArgs e)
@@ -394,6 +432,9 @@ namespace FactoryManagementSoftware.UI
         private void dtpMayEnd_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+
+            DateTime NextStartDate = dtpMayEnd.Value.AddDays(1);
+            dtpJunStart.Value = NextStartDate;
         }
 
         private void dtpJunStart_ValueChanged(object sender, EventArgs e)
@@ -404,6 +445,9 @@ namespace FactoryManagementSoftware.UI
         private void dtpJunEnd_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+
+            DateTime NextStartDate = dtpJunEnd.Value.AddDays(1);
+            dtpJulStart.Value = NextStartDate;
         }
 
         private void dtpJulStart_ValueChanged(object sender, EventArgs e)
@@ -414,6 +458,9 @@ namespace FactoryManagementSoftware.UI
         private void dtpJulEnd_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+
+            DateTime NextStartDate = dtpJulEnd.Value.AddDays(1);
+            dtpAugStart.Value = NextStartDate;
         }
 
         private void dtpAugStart_ValueChanged(object sender, EventArgs e)
@@ -424,6 +471,9 @@ namespace FactoryManagementSoftware.UI
         private void dtpAugEnd_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+
+            DateTime NextStartDate = dtpAugEnd.Value.AddDays(1);
+            dtpSepStart.Value = NextStartDate;
         }
 
         private void dtpSepStart_ValueChanged(object sender, EventArgs e)
@@ -434,6 +484,9 @@ namespace FactoryManagementSoftware.UI
         private void dtpSepEnd_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+
+            DateTime NextStartDate = dtpSepEnd.Value.AddDays(1);
+            dtpOctStart.Value = NextStartDate;
         }
 
         private void dtpOctStart_ValueChanged(object sender, EventArgs e)
@@ -444,6 +497,9 @@ namespace FactoryManagementSoftware.UI
         private void dtpOctEnd_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+
+            DateTime NextStartDate = dtpOctEnd.Value.AddDays(1);
+            dtpNovStart.Value = NextStartDate;
         }
 
         private void dtpNovStart_ValueChanged(object sender, EventArgs e)
@@ -454,6 +510,9 @@ namespace FactoryManagementSoftware.UI
         private void dtpNovEnd_ValueChanged(object sender, EventArgs e)
         {
             Edited = true;
+
+            DateTime NextStartDate = dtpNovEnd.Value.AddDays(1);
+            dtpDecStart.Value = NextStartDate;
         }
 
         private void dtpDecStart_ValueChanged(object sender, EventArgs e)
@@ -513,5 +572,9 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
+        private void frmPMMADateEdit_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

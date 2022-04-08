@@ -689,7 +689,7 @@ namespace FactoryManagementSoftware.UI
             string dbItemCode = null, dbItemName = null;
             DataRow row_Delivered;
 
-            DataTable dt_Cust = dalCust.Select();
+            DataTable dt_Cust = dalCust.FullSelect();
 
             row_Delivered = dt_DeliveredData.NewRow();
 
@@ -742,7 +742,7 @@ namespace FactoryManagementSoftware.UI
             string dbItemCode = null, dbItemName = null;
             DataRow row_Delivered;
 
-            DataTable dt_Cust = dalCust.Select();
+            DataTable dt_Cust = dalCust.FullSelect();
 
             row_Delivered = dt_DeliveredData.NewRow();
 
@@ -824,7 +824,7 @@ namespace FactoryManagementSoftware.UI
 
             DataRow row_Delivered;
 
-            DataTable dt_Cust = dalCust.Select();
+            DataTable dt_Cust = dalCust.FullSelect();
 
             row_Delivered = dt_DeliveredData.NewRow();
 

@@ -27,6 +27,7 @@ namespace FactoryManagementSoftware.BLL
         public float forecast1 { get; set; }
         public float forecast2 { get; set; }
         public float forecast3 { get; set; }
+        public float forecast4 { get; set; }
         public int toProduce { get; set; }
         public int Produced { get; set; }
     }

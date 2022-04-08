@@ -32,8 +32,6 @@
             this.txtCustSearch = new System.Windows.Forms.TextBox();
             this.lblSearch = new System.Windows.Forms.Label();
             this.dgvCust = new System.Windows.Forms.DataGridView();
-            this.dgvcCustID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvcCustName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnInsert = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -42,6 +40,8 @@
             this.txtCustID = new System.Windows.Forms.TextBox();
             this.lblCustID = new System.Windows.Forms.Label();
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.cmbMain = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCust)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.SuspendLayout();
@@ -70,9 +70,6 @@
             this.dgvCust.AllowUserToAddRows = false;
             this.dgvCust.AllowUserToDeleteRows = false;
             this.dgvCust.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCust.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgvcCustID,
-            this.dgvcCustName});
             this.dgvCust.Location = new System.Drawing.Point(645, 120);
             this.dgvCust.Margin = new System.Windows.Forms.Padding(2);
             this.dgvCust.Name = "dgvCust";
@@ -82,21 +79,6 @@
             this.dgvCust.Size = new System.Drawing.Size(872, 514);
             this.dgvCust.TabIndex = 27;
             this.dgvCust.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvCust_CellMouseDoubleClick);
-            // 
-            // dgvcCustID
-            // 
-            this.dgvcCustID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.dgvcCustID.HeaderText = "ID";
-            this.dgvcCustID.Name = "dgvcCustID";
-            this.dgvcCustID.ReadOnly = true;
-            this.dgvcCustID.Width = 56;
-            // 
-            // dgvcCustName
-            // 
-            this.dgvcCustName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgvcCustName.HeaderText = "Customer Name";
-            this.dgvcCustName.Name = "dgvcCustName";
-            this.dgvcCustName.ReadOnly = true;
             // 
             // btnReset
             // 
@@ -113,7 +95,7 @@
             // btnInsert
             // 
             this.btnInsert.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnInsert.Location = new System.Drawing.Point(320, 586);
+            this.btnInsert.Location = new System.Drawing.Point(351, 586);
             this.btnInsert.Margin = new System.Windows.Forms.Padding(2);
             this.btnInsert.Name = "btnInsert";
             this.btnInsert.Size = new System.Drawing.Size(111, 48);
@@ -177,11 +159,31 @@
             // 
             this.errorProvider2.ContainerControl = this;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(132, 229);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(69, 32);
+            this.label1.TabIndex = 30;
+            this.label1.Text = "Main";
+            // 
+            // cmbMain
+            // 
+            this.cmbMain.FormattingEnabled = true;
+            this.cmbMain.Location = new System.Drawing.Point(210, 230);
+            this.cmbMain.Name = "cmbMain";
+            this.cmbMain.Size = new System.Drawing.Size(367, 31);
+            this.cmbMain.TabIndex = 31;
+            // 
             // frmCust
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1582, 703);
+            this.Controls.Add(this.cmbMain);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.txtCustSearch);
             this.Controls.Add(this.lblSearch);
             this.Controls.Add(this.dgvCust);
@@ -217,8 +219,8 @@
         private System.Windows.Forms.Label lblCustName;
         private System.Windows.Forms.TextBox txtCustID;
         private System.Windows.Forms.Label lblCustID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvcCustID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvcCustName;
         private System.Windows.Forms.ErrorProvider errorProvider2;
+        private System.Windows.Forms.ComboBox cmbMain;
+        private System.Windows.Forms.Label label1;
     }
 }

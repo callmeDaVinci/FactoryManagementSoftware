@@ -12,7 +12,7 @@ namespace FactoryManagementSoftware.DAL
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
         #region Select Data from Database
-        public DataTable Select()
+        public DataTable FullSelect()
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -45,6 +45,41 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
+        public DataTable Select()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT cust_id,cust_name,cust_main FROM tbl_cust";
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         #endregion
 
         #region Insert Data in Database
@@ -55,12 +90,13 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_cust (cust_name, cust_added_date, cust_added_by) VALUES (@cust_name, @cust_added_date, @cust_added_by)";
+                String sql = "INSERT INTO tbl_cust (cust_name, cust_added_date, cust_added_by,cust_main) VALUES (@cust_name, @cust_added_date, @cust_added_by,@cust_main)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@cust_name", u.cust_name);
                 cmd.Parameters.AddWithValue("@cust_added_date", u.cust_added_date);
                 cmd.Parameters.AddWithValue("@cust_added_by", u.cust_added_by);
+                cmd.Parameters.AddWithValue("@cust_added_by", u.cust_main);
 
                 conn.Open();
 
@@ -100,13 +136,14 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "UPDATE tbl_cust SET cust_name=@cust_name, cust_updtd_date=@cust_updtd_date, cust_updtd_by=@cust_updtd_by WHERE cust_id=@cust_id";
+                String sql = "UPDATE tbl_cust SET cust_name=@cust_name, cust_updtd_date=@cust_updtd_date, cust_updtd_by=@cust_updtd_by,cust_main=@cust_main WHERE cust_id=@cust_id";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@cust_id", u.cust_id);
                 cmd.Parameters.AddWithValue("@cust_name", u.cust_name);
                 cmd.Parameters.AddWithValue("@cust_updtd_date", u.cust_updtd_date);
                 cmd.Parameters.AddWithValue("@cust_updtd_by", u.cust_updtd_by);
+                cmd.Parameters.AddWithValue("@cust_main", u.cust_main);
 
                 conn.Open();
 

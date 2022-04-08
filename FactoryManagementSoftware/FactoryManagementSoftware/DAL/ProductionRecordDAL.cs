@@ -141,6 +141,55 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable SelectWithItemInfoSortByItem()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_production_record 
+                                INNER JOIN tbl_plan 
+                                ON tbl_plan.plan_id = tbl_production_record.plan_id
+                                INNER JOIN tbl_item
+                                ON tbl_plan.part_code = tbl_item.item_code
+                                WHERE tbl_production_record.active = @active
+                                ORDER BY tbl_plan.part_code ASC";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@active", 1);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+
+
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable ProductionRecordSelect(ProductionRecordBLL u)
         {
             //static methodd to connect database

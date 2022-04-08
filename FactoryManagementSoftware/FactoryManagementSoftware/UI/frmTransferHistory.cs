@@ -191,7 +191,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (cmbTrfFromCategory.Text.Equals("Customer"))
             {
-                DataTable dt = dalCust.Select();
+                DataTable dt = dalCust.FullSelect();
                 loadLocationData(dt, cmbTrfFrom, "cust_name");
                 //cmbTrfFrom.Text = tool.getCustomerName(cmbTrfItemCode.Text);
             }
@@ -219,7 +219,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (cmbTrfToCategory.Text.Equals("Customer"))
             {
-                DataTable dt = dalCust.Select();
+                DataTable dt = dalCust.FullSelect();
                 loadLocationData(dt, cmbTrfTo, "cust_name");
 
                // cmbTrfTo.Text = tool.getCustomerName(cmbTrfItemCode.Text);

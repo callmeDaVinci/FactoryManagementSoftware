@@ -44,7 +44,7 @@ namespace FactoryManagementSoftware.UI
 
         private void loadCustomerList()
         {
-            DataTable dt = dalCust.Select();
+            DataTable dt = dalCust.FullSelect();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
             distinctTable.DefaultView.Sort = "cust_name ASC";
             cmbCust.DataSource = distinctTable;

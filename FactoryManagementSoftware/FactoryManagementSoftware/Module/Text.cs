@@ -388,7 +388,7 @@ namespace FactoryManagementSoftware.Module
         public string DO_CustOwnDO { get; } = "*USE CUSTOMER OWN D/O";
 
 
-        public string DailyAction_ChangePlan { get; } = "CHANGE PLAN";
+        public string DailyAction_ChangePlan { get; } = "CHANGE PLAN TO";
 
         #endregion
 

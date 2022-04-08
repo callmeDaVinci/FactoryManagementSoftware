@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
@@ -57,6 +58,7 @@ namespace FactoryManagementSoftware.Module
         readonly string headerOutStd = "OUTSTD";
         string headerBal1 = "BAL";
         string headerBal2 = "BAL";
+        string headerBal3 = "BAL";
 
         readonly string headerMat = "MATERIAL";
         public readonly string headerCode = "CODE";
@@ -72,6 +74,10 @@ namespace FactoryManagementSoftware.Module
         readonly string headerOutTwo = "OUT 2";
         readonly string headerOutThree = "OUT 3";
         readonly string headerOutFour = "OUT 4";
+
+        readonly string balType_Total = "TOTAL";
+        readonly string balType_Repeated = "REPEATED";
+        readonly string balType_Unique = "UNIQUE";
 
         readonly string headerForecastOne = "Forecast 1";
         readonly string headerForecastTwo = "Forecast 2";
@@ -144,7 +150,6 @@ namespace FactoryManagementSoftware.Module
         readonly string forecastType_Needed = "NEEDED";
 
 
-        readonly string balType_Total = "TOTAL";
         DataTable dt_Join = new DataTable();
         DataTable dt_Item = new DataTable();
 
@@ -1087,7 +1092,7 @@ namespace FactoryManagementSoftware.Module
 
         public void loadCustomerToComboBox(ComboBox cmb)
         {
-            DataTable dt = dalCust.Select();
+            DataTable dt = dalCust.FullSelect();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
             distinctTable.DefaultView.Sort = "cust_name ASC";
             cmb.DataSource = distinctTable;
@@ -1095,9 +1100,37 @@ namespace FactoryManagementSoftware.Module
             cmb.SelectedIndex = -1;
         }
 
+        public void loadMainCustomerToComboBox(ComboBox cmb)
+        {
+            DataTable dt = dalCust.FullSelect();
+          
+
+            foreach (DataRow row in dt.Rows)
+            {
+                bool mainCustomer = bool.TryParse(row["cust_main"].ToString(), out bool i) ? i : false;
+
+                if (!mainCustomer || row["cust_name"].ToString().Equals("OTHER"))
+                {
+                    row.Delete();
+                }
+            }
+
+            dt.AcceptChanges();
+
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
+            distinctTable.DefaultView.Sort = "cust_name ASC";
+
+            distinctTable.AcceptChanges();
+
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "cust_name";
+            cmb.Text = getCustName(1);
+            //cmb.SelectedIndex = -1;
+        }
+
         public void loadCustomerWithoutOtherToComboBox(ComboBox cmb)
         {
-            DataTable dt = dalCust.Select();
+            DataTable dt = dalCust.FullSelect();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
             distinctTable.DefaultView.Sort = "cust_name ASC";
 
@@ -1171,7 +1204,7 @@ namespace FactoryManagementSoftware.Module
 
         public void LoadCustomerAndAllToComboBox(ComboBox cmb)
         {
-            DataTable dt = dalCust.Select();
+            DataTable dt = dalCust.FullSelect();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
             distinctTable.Rows.Add("All");
             distinctTable.DefaultView.Sort = "cust_name ASC";
@@ -1204,7 +1237,7 @@ namespace FactoryManagementSoftware.Module
         {
             bool result = false;
 
-            DataTable dt = dalCust.Select();
+            DataTable dt = dalCust.FullSelect();
            
             foreach(DataRow row in dt.Rows)
             {
@@ -3454,7 +3487,6 @@ namespace FactoryManagementSoftware.Module
 
         public float GetForecastQty(DataTable dt_ItemForecast, string itemCode, int forecastNum)
         {
-            
             int month = DateTime.Now.Month;
             int year = DateTime.Now.Year;
 
@@ -3470,6 +3502,23 @@ namespace FactoryManagementSoftware.Module
             return getItemForecast(dt_ItemForecast, itemCode, year, month);
 
         }
+
+        public float GetForecastQty(DataTable dt_ItemForecast, string itemCode, int forecastNum,string monthString)
+        {
+            int month = DateTime.ParseExact(monthString, "MMMM", CultureInfo.CurrentCulture).Month;
+            int year = DateTime.Now.Year;
+
+            month += forecastNum - 1;
+
+            if (month > 12)
+            {
+                month -= 12;
+                year++;
+
+            }
+            return getItemForecast(dt_ItemForecast, itemCode, year, month);
+        }
+
 
         public DataTable insertMaterialUsedData(string customer)
         {
@@ -6405,6 +6454,256 @@ namespace FactoryManagementSoftware.Module
             return dtMat;
         }
 
+        private DataTable SummaryCalRepeatedData(DataTable dt)
+        {
+            double totalNeeded1 = 0;
+            double totalNeeded2 = 0;
+            double totalNeeded3 = 0;
+
+            bool colorChange = false;
+            int colorOrder = 0;
+
+            for (int i = 0; i < dt.Rows.Count - 1; i++)
+            {
+                totalNeeded1 = 0;
+                totalNeeded2 = 0;
+                totalNeeded3 = 0;
+                string rowReference = "(" + dt.Rows[i][headerIndex].ToString() + ")";
+                int repeatedCount = 1;
+
+                string firstItem = dt.Rows[i][headerPartCode].ToString();
+                double firstBal1 = double.TryParse(dt.Rows[i][headerBal1].ToString(), out firstBal1) ? firstBal1 : -0.001;
+                double firstBal2 = double.TryParse(dt.Rows[i][headerBal2].ToString(), out firstBal2) ? firstBal2 : -0.001;
+                string firstParentColor = dt.Rows[i][headerParentColor].ToString();
+
+                string type = dt.Rows[i][headerType].ToString();
+
+                if (firstItem.Equals("C84KXQ000"))
+                {
+                    float test = 0;
+                }
+
+                if (!(type.Equals(typeSingle) || type.Equals(typeParent)))
+                {
+                    dt.Rows[i][headerForecastType] = forecastType_Needed;
+                }
+                else
+                {
+                    dt.Rows[i][headerForecastType] = forecastType_Forecast;
+                }
+
+                if (!string.IsNullOrEmpty(firstItem) && firstBal1 != -0.001)
+                {
+                    for (int j = i + 1; j < dt.Rows.Count; j++)
+                    {
+                        string nextItem = dt.Rows[j][headerPartCode].ToString();
+
+                        if (firstItem.Equals(nextItem))
+                        {
+                            repeatedCount++;
+
+                            rowReference += " (" + dt.Rows[j][headerIndex].ToString() + ")";
+
+                            double nextNeededQty1 = double.TryParse(dt.Rows[j][headerForecast1].ToString(), out nextNeededQty1) ? nextNeededQty1 : 0;
+                            double nextNeededQty2 = double.TryParse(dt.Rows[j][headerForecast2].ToString(), out nextNeededQty2) ? nextNeededQty2 : 0;
+                            double nextNeededQty3 = double.TryParse(dt.Rows[j][headerForecast3].ToString(), out nextNeededQty3) ? nextNeededQty3 : 0;
+
+
+                            nextNeededQty1 = nextNeededQty1 > 0 ? nextNeededQty1 : 0;
+                            nextNeededQty2 = nextNeededQty2 > 0 ? nextNeededQty2 : 0;
+                            nextNeededQty3 = nextNeededQty3 > 0 ? nextNeededQty3 : 0;
+
+                            dt.Rows[j][headerBal1] = DBNull.Value;
+                            dt.Rows[j][headerBal2] = DBNull.Value;
+
+                            totalNeeded1 += nextNeededQty1;
+                            totalNeeded2 += nextNeededQty2;
+                            totalNeeded3 += nextNeededQty3;
+
+                            //dt.Rows[i][headerBackColor] = (ColorSet)colorOrder;
+                            //dt.Rows[j][headerBackColor] = (ColorSet)colorOrder;
+                            dt.Rows[j][headerBalType] = balType_Repeated;
+                            colorChange = true;
+                        }
+                    }
+
+
+
+                    if (colorChange)
+                    {
+                        if (totalNeeded1 < 0)
+                        {
+                            totalNeeded1 = 0;
+                        }
+
+                        if (totalNeeded2 < 0)
+                        {
+                            totalNeeded2 = 0;
+                        }
+
+                        dt.Rows[i][headerBal1] = firstBal1 - totalNeeded1;
+                        dt.Rows[i][headerBal2] = firstBal2 - totalNeeded1 - totalNeeded2;
+
+                        dt.Rows[i][headerBalType] = balType_Total;
+                        dt.Rows[i][headerRowReference] = rowReference;
+                        colorOrder++;
+
+                        //if (colorOrder > Enum.GetValues(typeof(ColorSet)).Cast<int>().Max())
+                        //{
+                        //    colorOrder = 0;
+
+                        //}
+                        colorChange = false;
+                    }
+
+
+
+                }
+            }
+
+            dt = RepeatedRowReferenceRemark(dt);
+
+            return ChildBalChecking(dt);
+
+
+        }
+
+        private DataTable RepeatedRowReferenceRemark(DataTable dt)
+        {
+            for (int i = 0; i < dt.Rows.Count - 1; i++)
+            {
+                string firstItem = dt.Rows[i][headerPartCode].ToString();
+                double firstBal1 = double.TryParse(dt.Rows[i][headerBal1].ToString(), out firstBal1) ? firstBal1 : -0.001;
+                double firstBal2 = double.TryParse(dt.Rows[i][headerBal2].ToString(), out firstBal2) ? firstBal2 : -0.001;
+                string rowReference = dt.Rows[i][headerRowReference].ToString();
+
+                if (!string.IsNullOrEmpty(firstItem) && firstBal1 != -0.001)
+                {
+                    for (int j = i + 1; j < dt.Rows.Count; j++)
+                    {
+                        string nextItem = dt.Rows[j][headerPartCode].ToString();
+
+                        if (firstItem.Equals(nextItem))
+                        {
+                            dt.Rows[j][headerRowReference] = rowReference;
+                        }
+                    }
+                }
+            }
+
+            return dt;
+
+
+        }
+
+        private DataTable ChildBalChecking(DataTable dt)
+        {
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                double forecast1 = double.TryParse(dt.Rows[i][headerForecast1].ToString(), out forecast1) ? forecast1 : 0;
+                double forecast2 = double.TryParse(dt.Rows[i][headerForecast2].ToString(), out forecast2) ? forecast2 : 0;
+                double forecast3 = double.TryParse(dt.Rows[i][headerForecast3].ToString(), out forecast3) ? forecast3 : 0;
+
+                if (forecast1 < 0)
+                {
+                    dt.Rows[i][headerForecast1] = 0;
+                }
+
+                if (forecast2 < 0)
+                {
+                    dt.Rows[i][headerForecast2] = 0;
+                }
+
+                if (forecast3 < 0)
+                {
+                    dt.Rows[i][headerForecast3] = 0;
+                }
+
+                double totalNeeded1 = 0;
+                double totalNeeded2 = 0;
+
+                string itemCode = dt.Rows[i][headerPartCode].ToString();
+                string itemType = dt.Rows[i][headerType].ToString();
+                string balType = dt.Rows[i][headerBalType].ToString();
+                string ForecastType = dt.Rows[i][headerForecastType].ToString();
+                double itemStock = double.TryParse(dt.Rows[i][headerReadyStock].ToString(), out itemStock) ? itemStock : 0;
+
+                //if(ForecastType.Equals(forecastType_Forecast))
+                //{
+                //    totalNeeded1 = double.TryParse(dt.Rows[i][headerOutStd].ToString(), out double d) ? d : 0;
+                //    totalNeeded2 = double.TryParse(dt.Rows[i][headerForecast2].ToString(), out d) ? d : 0;
+                //}
+
+                //loop and find "TOTAL"  and not parent item
+                if (itemType != typeParent && !ForecastType.Equals(forecastType_Forecast) && balType.Equals(balType_Total))
+                {
+                    bool itemBalToChange = false;
+
+                    //load Joint Data Table and find Parent(s)
+                    foreach (DataRow row in dt_Join.Rows)
+                    {
+                        string childCode = row[dalJoin.JoinChild].ToString();
+
+                        if (childCode.Equals(itemCode))
+                        {
+                            string parentCode = row[dalJoin.JoinParent].ToString();
+
+                            float joinQty = float.TryParse(row[dalJoin.JoinQty].ToString(), out float f) ? f : 1;
+
+                            for (int j = 0; j < dt.Rows.Count; j++)
+                            {
+                                string seachingItemCode = dt.Rows[j][headerPartCode].ToString();
+                                string seachingbalType = dt.Rows[j][headerBalType].ToString();
+                                string seachingItemType = dt.Rows[j][headerType].ToString();
+
+
+                                //Find Parent Item With "Total"
+                                if (seachingItemCode.Equals(parentCode) && (seachingItemType.Equals(typeParent) || (seachingbalType.Equals(balType_Total) && seachingItemType.Equals(typeChild))))
+                                {
+                                    double nextNeededQty1 = double.TryParse(dt.Rows[j][headerBal1].ToString(), out nextNeededQty1) ? nextNeededQty1 : 0;
+                                    double nextNeededQty2 = double.TryParse(dt.Rows[j][headerBal2].ToString(), out nextNeededQty2) ? nextNeededQty2 : 0;
+
+                                    //Sum Up balance, and calculate total needed for Child (if balance>=0, needed for child =0; if balance <0, needed for child = bal*-1)
+                                    totalNeeded1 += nextNeededQty1 < 0 ? nextNeededQty1 * -1 * joinQty : 0;
+                                    totalNeeded2 += nextNeededQty2 < 0 ? nextNeededQty2 * -1 * joinQty : 0;
+
+                                    itemBalToChange = true;
+                                    break;
+                                }
+
+                            }
+
+
+                        }
+                    }
+
+                    if (itemBalToChange)
+                    {
+                        if (totalNeeded1 % 1 > 0)
+                        {
+                            totalNeeded1 = (float)Math.Round(totalNeeded1 * 100f) / 100f;
+                        }
+
+                        if (totalNeeded2 % 1 > 0)
+                        {
+                            totalNeeded2 = (float)Math.Round(totalNeeded2 * 100f) / 100f;
+
+                        }
+                        dt.Rows[i][headerBal1] = itemStock - totalNeeded1;
+                        dt.Rows[i][headerBal2] = itemStock - totalNeeded2;
+                    }
+
+                }
+
+
+
+
+            }
+
+            return dt;
+        }
+
         private DataTable CalRepeatedData(DataTable dt)
         {
             double totalNeeded1 = 0;
@@ -6584,7 +6883,213 @@ namespace FactoryManagementSoftware.Module
 
             }
 
+        }
 
+        private void SummaryLoadChild(DataTable dt_Item, DataTable dt_Join, DataTable dt_Data, dataTrfBLL uParentData, float subIndex)
+        {
+            Text text = new Text();
+
+            DataRow dt_Row;
+
+            dataTrfBLL uChildData = new dataTrfBLL();
+
+            double index = uParentData.index + subIndex;
+
+            foreach (DataRow row in dt_Join.Rows)
+            {
+                string parentCode = row[dalJoin.JoinParent].ToString();
+
+                if (parentCode.Equals(uParentData.part_code))
+                {
+                    string childCode = row[dalJoin.JoinChild].ToString();
+
+
+                    DataRow row_Item = getDataRowFromDataTable(dt_Item, childCode);
+
+                    bool itemMatch = row_Item[dalItem.ItemCat].ToString().Equals(text.Cat_Part);
+
+                    itemMatch = row_Item[dalItem.ItemCat].ToString().Equals(text.Cat_Part) || row_Item[dalItem.ItemCat].ToString().Equals(text.Cat_SubMat);
+
+                    if (itemMatch)
+                    {
+                        float joinQty = float.TryParse(row[dalJoin.JoinQty].ToString(), out float i) ? Convert.ToSingle(row[dalJoin.JoinQty].ToString()) : 1;
+
+                        dt_Row = dt_Data.NewRow();
+
+                        uChildData.part_code = row_Item[dalItem.ItemCode].ToString();
+
+                        uChildData.index = index;
+                        uChildData.part_name = row_Item[dalItem.ItemName].ToString();
+                        uChildData.color_mat = row_Item[dalItem.ItemMBatch].ToString();
+                        uChildData.color = row_Item[dalItem.ItemColor].ToString();
+                        uChildData.raw_mat = row_Item[dalItem.ItemMaterial].ToString();
+                        uChildData.pw_per_shot = row_Item[dalItem.ItemProPWShot] == DBNull.Value ? 0 : Convert.ToSingle(row_Item[dalItem.ItemProPWShot]);
+                        uChildData.rw_per_shot = row_Item[dalItem.ItemProRWShot] == DBNull.Value ? 0 : Convert.ToSingle(row_Item[dalItem.ItemProRWShot]);
+                        uChildData.cavity = row_Item[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row_Item[dalItem.ItemCavity]);
+                        uChildData.cavity = uChildData.cavity == 0 ? 1 : uChildData.cavity;
+                        uChildData.ready_stock = row_Item[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row_Item[dalItem.ItemStock]);
+
+                        float stock = uChildData.ready_stock;
+
+                        if (stock % 1 > 0)
+                        {
+                            stock = (float)Math.Round(stock * 100f) / 100f;
+
+                            uChildData.ready_stock = stock;
+                        }
+
+
+                        if (uParentData.bal1 >= 0)
+                        {
+                            uChildData.forecast1 = 0;
+                        }
+                        else
+                        {
+                            uChildData.forecast1 = uParentData.bal1 * -1 * joinQty;
+                        }
+
+                        if (uParentData.bal2 >= 0)
+                        {
+                            uChildData.forecast2 = 0;
+
+                            if (uParentData.forecast3 <= -1)
+                            {
+                                if (uParentData.bal2 - uParentData.estimate < 0)
+                                {
+                                    uChildData.forecast3 = (uParentData.bal2 - uParentData.estimate) * joinQty;
+                                }
+                                else
+                                {
+                                    uChildData.forecast3 = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (uParentData.bal2 - uParentData.forecast3 < 0)
+                                {
+                                    uChildData.forecast3 = (uParentData.bal2 - uParentData.forecast3) * joinQty;
+                                }
+                                else
+                                {
+                                    uChildData.forecast3 = 0;
+                                }
+                            }
+
+
+                        }
+                        else
+                        {
+                            if (uParentData.bal1 < 0)
+                            {
+                                if (uParentData.forecast2 <= -1)
+                                {
+                                    uChildData.forecast2 = uParentData.estimate * joinQty;
+                                }
+                                else
+                                {
+                                    uChildData.forecast2 = uParentData.forecast2 * joinQty;
+                                }
+
+                            }
+                            else
+                            {
+                                uChildData.forecast2 = uParentData.bal2 * -1 * joinQty;
+                            }
+
+                            if (uParentData.forecast3 <= -1)
+                            {
+                                uChildData.forecast3 = uParentData.estimate * joinQty;
+                            }
+                            else
+                            {
+                                uChildData.forecast3 = uParentData.forecast3 * joinQty;
+                            }
+
+
+                        }
+
+                        uChildData.forecast1 = uChildData.forecast1 < 0 ? uChildData.forecast1 * -1 : uChildData.forecast1;
+                        uChildData.forecast2 = uChildData.forecast2 < 0 ? uChildData.forecast2 * -1 : uChildData.forecast2;
+                        uChildData.forecast3 = uChildData.forecast3 < 0 ? uChildData.forecast3 * -1 : uChildData.forecast3;
+
+                        uChildData.bal1 = uChildData.ready_stock - uChildData.forecast1;
+
+                        uChildData.bal2 = uChildData.bal1 - uChildData.forecast2;
+
+                        if (!uChildData.color.Equals(uChildData.color_mat) && !string.IsNullOrEmpty(uChildData.color_mat))
+                        {
+                            uChildData.color_mat += " (" + uParentData.color + ")";
+                        }
+
+                        dt_Row = dt_Data.NewRow();
+
+                        //var result = GetProduceQty(uChildData.part_code, dt_MacSchedule);
+                        //uChildData.toProduce = result.Item1;
+                        //uChildData.Produced = result.Item2;
+
+                        //if (uChildData.toProduce > 0)
+                        //{
+                        //    dt_Row[headerToProduce] = uChildData.toProduce;
+                        //}
+
+                        //if (uChildData.Produced > 0)
+                        //{
+                        //    dt_Row[headerProduced] = uChildData.Produced;
+                        //}
+
+                        dt_Row[headerIndex] = uChildData.index;
+                        dt_Row[headerType] = typeChild;
+                        dt_Row[headerRawMat] = uChildData.raw_mat;
+                        dt_Row[headerBalType] = balType_Unique;
+                        dt_Row[headerItemType] = row_Item[dalItem.ItemCat].ToString();
+                        dt_Row[headerPartCode] = uChildData.part_code;
+                        dt_Row[headerPartName] = uChildData.part_name;
+                        dt_Row[headerColorMat] = uChildData.color_mat;
+                        dt_Row[headerPartWeight] = uChildData.pw_per_shot / uChildData.cavity + " (" + (uChildData.rw_per_shot / uChildData.cavity) + ")";
+
+
+
+                        dt_Row[headerReadyStock] = uChildData.ready_stock;
+
+                        dt_Row[headerForecast1] = uChildData.forecast1 % 1 > 0 ? (float)Math.Round(uChildData.forecast1 * 100f) / 100f : uChildData.forecast1;
+                        dt_Row[headerForecast2] = uChildData.forecast2 % 1 > 0 ? (float)Math.Round(uChildData.forecast2 * 100f) / 100f : uChildData.forecast2;
+                        dt_Row[headerForecast3] = uChildData.forecast3 % 1 > 0 ? (float)Math.Round(uChildData.forecast3 * 100f) / 100f : uChildData.forecast3;
+
+                        dt_Row[headerBal1] = uChildData.bal1;
+                        dt_Row[headerBal2] = uChildData.bal2;
+
+                        int assembly = row_Item[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row_Item[dalItem.ItemAssemblyCheck]);
+                        int production = row_Item[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row_Item[dalItem.ItemProductionCheck]);
+
+                        bool gotChild = ifGotNotPackagingChild(uChildData.part_code, dt_Join, dt_Item);
+
+                        if (assembly == 1 && production == 0 && gotChild)
+                        {
+                            dt_Row[headerParentColor] = AssemblyMarking;
+                        }
+                        else if (assembly == 0 && production == 1 && gotChild)
+                        {
+                            dt_Row[headerParentColor] = ProductionMarking;
+                        }
+                        else if (assembly == 1 && production == 1 && gotChild)
+                        {
+                            dt_Row[headerParentColor] = ProductionAndAssemblyMarking;
+                        }
+
+                        dt_Data.Rows.Add(dt_Row);
+
+                        index += subIndex;
+
+                        //check if got child part also
+                        if (gotChild)
+                        {
+                            SummaryLoadChild(dt_Item,dt_Join,dt_Data, uChildData, subIndex / 10);
+                        }
+                    }
+
+                }
+
+            }
         }
 
         private float GetDeliveredQtyByMonth(string itemCode, string customer, int month,int year, DataTable dt_TrfHist, DataTable dt_PMMADate)
@@ -8768,15 +9273,891 @@ namespace FactoryManagementSoftware.Module
             return Tuple.Create(dt, success);
         }
 
+        readonly string headerRowReference = "REPEATED ROW";
+        readonly string headerItemType = "ITEM TYPE";
+        readonly string AssemblyMarking = "Blue";
+        readonly string InspectionMarking = "Peru";
+        readonly string ProductionMarking = "Green";
+        readonly string ProductionAndAssemblyMarking = "Purple";
+        readonly string headerToDo = "TO DO";
+
+
+        private DataTable NewForecastReportTable()
+        {
+            headerForecast1 = "FCST/ NEEDED";
+            headerForecast2 = "FCST/ NEEDED";
+            headerForecast3 = "FCST/ NEEDED";
+
+            headerBal1 = "BAL";
+            headerBal2 = "BAL";
+            headerBal3 = "BAL";
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(headerParentColor, typeof(string));
+            dt.Columns.Add(headerBackColor, typeof(string));
+            dt.Columns.Add(headerForecastType, typeof(string));
+            dt.Columns.Add(headerBalType, typeof(string));
+            dt.Columns.Add(headerType, typeof(string));
+            dt.Columns.Add(headerRowReference, typeof(string));
+            dt.Columns.Add(headerItemType, typeof(string));
+            dt.Columns.Add(headerIndex, typeof(float));
+            dt.Columns.Add(headerRawMat, typeof(string));
+            dt.Columns.Add(headerPartName, typeof(string));
+            dt.Columns.Add(headerPartCode, typeof(string));
+            dt.Columns.Add(headerColorMat, typeof(string));
+            dt.Columns.Add(headerPartWeight, typeof(string));
+
+            //dt.Columns.Add(headerPlannedQty, typeof(float));
+            //dt.Columns.Add(headerProduced, typeof(float));
+            //dt.Columns.Add(headerToProduce, typeof(float));
+
+            dt.Columns.Add(headerReadyStock, typeof(float));
+            dt.Columns.Add(headerEstimate, typeof(float));
+
+            string monthFrom = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
+
+            int monthINT = DateTime.ParseExact(monthFrom, "MMMM", CultureInfo.CurrentCulture).Month;
+
+            for (int i = 1; i <= 3; i++)
+            {
+                if (i == 1)
+                {
+                    headerForecast1 = GetAbbreviatedFromFullName(monthFrom).ToUpper() + " " + headerForecast1;
+                    headerBal1 = GetAbbreviatedFromFullName(monthFrom).ToUpper() + " " + headerBal1;
+                }
+
+                else if (i == 2)
+                {
+                    headerForecast2 = GetAbbreviatedFromFullName(monthFrom).ToUpper() + " " + headerForecast2;
+                    headerBal2 = GetAbbreviatedFromFullName(monthFrom).ToUpper() + " " + headerBal2;
+                }
+
+                else if (i == 3)
+                {
+                    headerForecast3 = GetAbbreviatedFromFullName(monthFrom).ToUpper() + " " + headerForecast3;
+                    headerBal3 = GetAbbreviatedFromFullName(monthFrom).ToUpper() + " " + headerBal3;
+
+                }
+
+                monthINT++;
+
+                if (monthINT > 12)
+                {
+                    monthINT -= 12;
+
+                }
+
+                monthFrom = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(monthINT);
+
+            }
+
+            dt.Columns.Add(headerForecast1, typeof(float));
+            dt.Columns.Add(headerOut, typeof(float));
+            dt.Columns.Add(headerOutStd, typeof(float));
+            dt.Columns.Add(headerBal1, typeof(float));
+            dt.Columns.Add(headerForecast2, typeof(float));
+            dt.Columns.Add(headerBal2, typeof(float));
+            dt.Columns.Add(headerForecast3, typeof(float));
+            return dt;
+        }
+
+        private DataTable RemoveTerminatedItem(DataTable dt)
+        {
+            Text text = new Text();
+
+            //"(TERMINATED)"
+            DataTable dt_NEW = dt.Copy();
+
+            dt_NEW.AcceptChanges();
+            foreach (DataRow row in dt_NEW.Rows)
+            {
+                // If this row is offensive then
+                string itemName = row[dalItem.ItemName].ToString();
+
+                if (itemName.Contains(text.Cat_Terminated))
+                {
+                    row.Delete();
+                }
+
+            }
+            dt_NEW.AcceptChanges();
+
+            return dt_NEW;
+
+        }
+
+        private float GetMaxOut(string itemCode, string customer, int pastMonthQty, DataTable dt_TrfHist, DataTable dt_PMMADate,DateTime start, DateTime end)
+        {
+            float MaxOut = 0, tmp = 0;
+            bool includeCurrentMonth = false;
+
+            if (customer.Equals("PMMA"))
+            {
+                if (pastMonthQty <= 0)
+                {
+                    foreach (DataRow row in dt_TrfHist.Rows)
+                    {
+                        string item = row[dalTrfHist.TrfItemCode].ToString();
+                        if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                        {
+                            DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+                            //string cust = row[dalTrfHist.TrfTo].ToString();
+
+
+                            if (trfDate >= start && trfDate <= end)
+                            {
+                                MaxOut += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    int currentMonth = DateTime.Now.Month;
+                    int currentYear = DateTime.Now.Year;
+
+                    if (DateTime.Today > GetPMMAEndDate(currentMonth, currentYear))
+                    {
+                        includeCurrentMonth = true;
+                    }
+
+                    for (int i = 0; i < pastMonthQty; i++)
+                    {
+                        tmp = 0;
+
+                        if (!(i == 0 && includeCurrentMonth))
+                        {
+                            if (currentMonth == 1)
+                            {
+                                currentMonth = 12;
+                                currentYear--;
+                            }
+                            else
+                            {
+                                currentMonth--;
+                            }
+
+                        }
+
+                        start = GetPMMAStartDate(currentMonth, currentYear, dt_PMMADate);
+                        end = GetPMMAEndDate(currentMonth, currentYear, dt_PMMADate);
+
+                        //dtpOutFrom.Value = new DateTime(year, month, 1);
+                        //dtpOutTo.Value = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+
+                        foreach (DataRow row in dt_TrfHist.Rows)
+                        {
+                            string item = row[dalTrfHist.TrfItemCode].ToString();
+                            if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                            {
+                                DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+
+                                if (trfDate >= start && trfDate <= end)
+                                {
+                                    tmp += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                                }
+                            }
+                        }
+
+                        //get maxout
+                        if (MaxOut < tmp)
+                        {
+                            MaxOut = tmp;
+                        }
+
+
+                    }
+                }
+            }
+            else
+            {
+                if (pastMonthQty <= 0)
+                {
+
+                    foreach (DataRow row in dt_TrfHist.Rows)
+                    {
+                        string item = row[dalTrfHist.TrfItemCode].ToString();
+                        if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                        {
+                            DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+
+                            if (trfDate >= start && trfDate <= end)
+                            {
+                                MaxOut += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    int currentMonth = DateTime.Now.Month;
+                    int currentYear = DateTime.Now.Year;
+
+                    for (int i = 0; i < pastMonthQty; i++)
+                    {
+                        tmp = 0;
+
+                        if (currentMonth == 1)
+                        {
+                            currentMonth = 12;
+                            currentYear--;
+                        }
+                        else
+                        {
+                            currentMonth--;
+                        }
+
+                        start = new DateTime(currentYear, currentMonth, 1);
+                        end = new DateTime(currentYear, currentMonth, DateTime.DaysInMonth(currentYear, currentMonth));
+
+                        foreach (DataRow row in dt_TrfHist.Rows)
+                        {
+                            string item = row[dalTrfHist.TrfItemCode].ToString();
+                            if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                            {
+                                DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+
+                                if (trfDate >= start && trfDate <= end)
+                                {
+                                    tmp += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                                }
+                            }
+                        }
+
+                        //get maxout
+                        if (MaxOut < tmp)
+                        {
+                            MaxOut = tmp;
+                        }
+                    }
+                }
+            }
+
+
+
+            return MaxOut;
+        }
+
+        readonly string ToDoType_ToAssembly = "(2) TO ASSEMBLY";
+        readonly string ToDoType_ToProduce = "(1) TO PRODUCE";
+        readonly string ToDoType_ToOrder = "(3) TO ORDER";
+
+        public DataTable LoadSummaryList(DataTable dt)
+        {
+            DataTable dt_Copy = dt.Copy();
+            Text text = new Text();
+
+            dt_Copy.Columns.Add(headerToDo, typeof(string)).SetOrdinal(0);
+            dt_Copy.Columns.Add(headerBal3, typeof(float));
+
+            #region SUM Repeated row Total Needed
+
+            for (int i = 0; i < dt_Copy.Rows.Count - 1; i++)
+            {
+                string balType = dt_Copy.Rows[i][headerBalType].ToString();
+                decimal ThirdMonthNeeded = decimal.TryParse(dt_Copy.Rows[i][headerForecast3].ToString(), out decimal d) ? d : 0;
+                decimal bal_2 = decimal.TryParse(dt_Copy.Rows[i][headerBal2].ToString(), out d) ? d : 0;
+
+                if (balType.Equals(balType_Total))
+                {
+                    string TotalItemCode = dt_Copy.Rows[i][headerPartCode].ToString();
+                    decimal SecondMonthNeeded = decimal.TryParse(dt_Copy.Rows[i][headerForecast2].ToString(), out d) ? d : 0;
+                    decimal FirstMonthNeeded = decimal.TryParse(dt_Copy.Rows[i][headerForecast1].ToString(), out d) ? d : 0;
+
+
+                    for (int j = i + 1; j < dt_Copy.Rows.Count; j++)
+                    {
+                        string SeachingCode = dt_Copy.Rows[j][headerPartCode].ToString();
+
+                        if (SeachingCode == TotalItemCode)
+                        {
+                            ThirdMonthNeeded += decimal.TryParse(dt_Copy.Rows[j][headerForecast3].ToString(), out d) ? d : 0;
+                            SecondMonthNeeded += decimal.TryParse(dt_Copy.Rows[j][headerForecast2].ToString(), out d) ? d : 0;
+                            FirstMonthNeeded += decimal.TryParse(dt_Copy.Rows[j][headerForecast1].ToString(), out d) ? d : 0;
+                        }
+                    }
+
+                    dt_Copy.Rows[i][headerForecast3] = (float)ThirdMonthNeeded;
+                    dt_Copy.Rows[i][headerForecast2] = (float)SecondMonthNeeded;
+                    dt_Copy.Rows[i][headerForecast1] = (float)FirstMonthNeeded;
+
+
+                }
+
+                dt_Copy.Rows[i][headerBal3] = (float)(bal_2 - ThirdMonthNeeded);
+            }
+
+            #endregion
+
+            #region Filter Row
+
+            if (dt_Copy.Rows.Count > 0)
+            {
+                List<DataRow> rowsToDelete = new List<DataRow>();
+                foreach (DataRow row in dt_Copy.Rows)
+                {
+
+                    bool ToRemoveMatched = false;
+
+                    string itemCode = row["PART CODE"].ToString();
+
+                    string balType = row[headerBalType].ToString();
+                    string itemType = row[headerItemType].ToString();
+                    string ParentOrChild = row[headerType].ToString();
+                    string RawMaterial = row[headerRawMat].ToString();
+                    decimal bal_1 = decimal.TryParse(row[headerBal1].ToString(), out decimal d) ? d : 0;
+                    decimal bal_2 = decimal.TryParse(row[headerBal2].ToString(), out d) ? d : 0;
+                    decimal bal_3 = decimal.TryParse(row[headerBal3].ToString(), out d) ? d : 0;
+
+                    string ToDOType = "";
+
+                    if (balType != balType_Unique && balType != balType_Total)
+                    {
+                        ToRemoveMatched = true;
+                    }
+
+                    if (!string.IsNullOrEmpty(RawMaterial))
+                    {
+                        ToDOType = ToDoType_ToProduce;
+                    }
+                    else if (ParentOrChild.Equals(typeParent) || itemType.Equals(text.Cat_Part))
+                    {
+                        ToDOType = ToDoType_ToAssembly;
+                    }
+                    else if (itemType.Equals(text.Cat_SubMat))
+                    {
+                        ToDOType = ToDoType_ToOrder;
+                    }
+
+
+
+                    if (ToRemoveMatched)
+                    {
+                        // dt_Copy.Rows[i].Delete();
+                        rowsToDelete.Add(row);
+                    }
+                    else
+                        row[headerToDo] = ToDOType;
+
+
+                }
+
+                #region Old For Loop
+                //for (int i = 0; i <= dt_Copy.Rows.Count - 1; i++)
+                //{
+
+                //    bool ToRemoveMatched = false;
+
+                //    string itemCode = dt_Copy.Rows[i]["PART CODE"].ToString();
+
+                //    if(itemCode == "V0KPBW100")
+                //    {
+                //        float checkpoint = 1;
+                //    }
+
+                //    string balType = dt_Copy.Rows[i][headerBalType].ToString();
+                //    string itemType = dt_Copy.Rows[i][headerItemType].ToString();
+                //    string ParentOrChild = dt_Copy.Rows[i][headerType].ToString();
+                //    string RawMaterial = dt_Copy.Rows[i][headerRawMat].ToString();
+                //    decimal bal_1 = decimal.TryParse(dt_Copy.Rows[i][headerBal1].ToString(), out decimal d) ? d : 0;
+                //    decimal bal_2 = decimal.TryParse(dt_Copy.Rows[i][headerBal2].ToString(), out d) ? d : 0;
+                //    decimal bal_3 = decimal.TryParse(dt_Copy.Rows[i][headerBal3].ToString(), out d) ? d : 0;
+
+                //    string ToDOType = "";
+
+                //    if (balType != balType_Unique && balType != balType_Total)
+                //    {
+                //        ToRemoveMatched = true;
+                //    }
+
+                //    if (!string.IsNullOrEmpty(RawMaterial))
+                //    {
+                //        ToDOType = ToDoType_ToProduce;
+                //    }
+                //    else if (ParentOrChild.Equals(typeParent) || itemType.Equals(text.Cat_Part))
+                //    {
+                //        ToDOType = ToDoType_ToAssembly;
+                //    }
+                //    else if (itemType.Equals(text.Cat_SubMat))
+                //    {
+                //        ToDOType = ToDoType_ToOrder;
+                //    }
+
+
+
+                //    if (ToRemoveMatched)
+                //    {
+                //       // dt_Copy.Rows[i].Delete();
+
+                //    }
+                //    else
+                //        dt_Copy.Rows[i][headerToDo] = ToDOType;
+
+
+                //}
+                #endregion
+
+                foreach (DataRow row in rowsToDelete)
+                {
+                    row.Delete();
+                }
+                dt_Copy.AcceptChanges();
+            }
+
+            #endregion
+
+            #region Sorting
+
+            dt_Copy.DefaultView.Sort = headerToDo + " ASC, " + headerBal3 + " ASC, " + headerBal2 + " ASC, " + headerBal1 + " ASC";
+
+            dt_Copy = dt_Copy.DefaultView.ToTable();
+
+            #endregion
+
+            return dt_Copy;
+        }
+
+        public DataTable GetForecastSummary(int CustID)
+        {
+            #region pre Setting
+
+            string customer = getCustName(CustID);
+
+            DataTable dt_Data = NewForecastReportTable();
+
+            #endregion
+
+            //check if the keywords has value or not
+            if (!string.IsNullOrEmpty(customer))
+            {
+                #region Loading DB
+
+                DataRow dt_Row;
+
+                DataTable dt = dalItemCust.custSearch(customer);
+
+                DataTable dt_ItemForecast = dalItemForecast.Select(CustID.ToString());
+
+                DateTime dtpOutFrom = new DateTime();
+                DateTime dtpOutTo = new DateTime();
+
+                int year = DateTime.Now.Year;
+
+                string monthString = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
+
+                int month = DateTime.ParseExact(monthString, "MMMM", CultureInfo.CurrentCulture).Month;
+
+                if (CustID == 1)
+                {
+                    DateTime outTo = GetPMMAEndDate(month, year);
+
+                    if (DateTime.Today > outTo)
+                    {
+                        month++;
+
+                        if (month > 12)
+                        {
+                            month -= 12;
+                            year++;
+                        }
+
+                        monthString = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
+                    }
+                    else
+                    {
+                        dtpOutFrom = GetPMMAStartDate(month, year);
+                        dtpOutTo = outTo;
+                    }
+
+                }
+                else
+                {
+                    dtpOutFrom= new DateTime(year, month, 1);
+                    dtpOutTo= new DateTime(year, month, DateTime.DaysInMonth(year, month));
+                }
+
+                string from = dtpOutFrom.ToString("yyyy/MM/dd");
+                string to = dtpOutTo.ToString("yyyy/MM/dd");
+               
+                DataTable dt_TrfHist = dalTrfHist.rangeItemToCustomerTransferDataOnlySearch(customer, from, to);
+
+                DataTable dt_PMMADate = dalPmmaDate.Select();
+
+                DataTable dt_Join = dalJoin.SelectAll();
+
+                DataTable dt_Item = dalItem.Select();
+
+                int index = 1;
+
+                dt.DefaultView.Sort = "item_name ASC";
+
+
+                dt = dt.DefaultView.ToTable();
+
+                #endregion
+
+                #region Load Single Item
+
+                dt.AcceptChanges();
+                foreach (DataRow row in dt.Rows)
+                {
+                    uData.part_code = row[dalItem.ItemCode].ToString();
+
+                    int assembly = row[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemAssemblyCheck]);
+                    int production = row[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemProductionCheck]);
+
+                    bool gotNotPackagingChild = ifGotNotPackagingChild(uData.part_code, dt_Join, dt_Item);
+
+                    #region load single part
+
+                    if (!gotNotPackagingChild)
+                    {
+                        uData.index = index;
+                        uData.part_name = row[dalItem.ItemName].ToString();
+                        uData.color_mat = row[dalItem.ItemMBatch].ToString();
+                        uData.color = row[dalItem.ItemColor].ToString();
+                        uData.raw_mat = row[dalItem.ItemMaterial].ToString();
+                        uData.pw_per_shot = row[dalItem.ItemProPWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProPWShot]);
+                        uData.rw_per_shot = row[dalItem.ItemProRWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProRWShot]);
+                        uData.cavity = row[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row[dalItem.ItemCavity]);
+                        uData.cavity = uData.cavity == 0 ? 1 : uData.cavity;
+                        uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
+
+                        //var result = GetProduceQty(uData.part_code, dt_MacSchedule);
+
+                        //uData.toProduce = result.Item1;
+                        //uData.Produced = result.Item2;
+
+                        uData.forecast1 = GetForecastQty(dt_ItemForecast, uData.part_code, 1, monthString);
+                        uData.forecast2 = GetForecastQty(dt_ItemForecast, uData.part_code, 2, monthString);
+                        uData.forecast3 = GetForecastQty(dt_ItemForecast, uData.part_code, 3, monthString);
+                        uData.forecast4 = GetForecastQty(dt_ItemForecast, uData.part_code, 4, monthString);
+
+                        uData.deliveredOut = GetMaxOut(uData.part_code, customer, 0, dt_TrfHist, dt_PMMADate,dtpOutFrom,dtpOutTo);
+
+                        uData.outStd = uData.forecast1 - uData.deliveredOut;
+
+                        if (!customer.Equals("PMMA"))
+                        {
+                            uData.outStd = uData.estimate - uData.deliveredOut;
+
+                        }
+                        if (uData.forecast1 == -1)
+                        {
+                            if (customer.Equals("PMMA"))
+                            {
+                                uData.outStd = 0;
+                            }
+                            else
+                            {
+                                uData.outStd = uData.estimate - uData.deliveredOut;
+                            }
+                        }
+                        else if (uData.forecast1 > -1)
+                        {
+                            uData.outStd = uData.forecast1 - uData.deliveredOut;
+                        }
+
+                        uData.bal1 = uData.ready_stock;
+
+                        if (uData.outStd >= 0)
+                        {
+                            uData.bal1 = uData.ready_stock - uData.outStd;
+                        }
+
+                        uData.bal2 = uData.bal1 - uData.forecast2;
+
+                        if (uData.forecast2 == -1)
+                        {
+                            if (customer.Equals("PMMA"))
+                            {
+                                uData.bal2 = uData.bal1;
+                            }
+                            else
+                            {
+                                uData.bal2 = uData.bal1 - uData.estimate;
+                            }
+                        }
+                        else if (uData.forecast2 > -1)
+                        {
+                            uData.bal2 = uData.bal1 - uData.forecast2;
+                        }
+
+
+                        if (!uData.color.Equals(uData.color_mat) && !string.IsNullOrEmpty(uData.color_mat))
+                        {
+                            uData.color_mat += " (" + uData.color + ")";
+                        }
+
+                        dt_Row = dt_Data.NewRow();
+
+                        //if (uData.toProduce > 0)
+                        //{
+                        //    dt_Row[headerToProduce] = uData.toProduce;
+                        //}
+
+                        //if (uData.Produced > 0)
+                        //{
+                        //    dt_Row[headerProduced] = uData.Produced;
+                        //}
+
+                        dt_Row[headerIndex] = uData.index;
+                        dt_Row[headerType] = typeSingle;
+                        dt_Row[headerBalType] = balType_Unique;
+                        dt_Row[headerItemType] = row[dalItem.ItemCat].ToString();
+                        dt_Row[headerRawMat] = uData.raw_mat;
+                        dt_Row[headerPartCode] = uData.part_code;
+                        dt_Row[headerPartName] = uData.part_name;
+                        dt_Row[headerColorMat] = uData.color_mat;
+                        dt_Row[headerPartWeight] = uData.pw_per_shot / uData.cavity + " (" + (uData.rw_per_shot / uData.cavity) + ")";
+                        dt_Row[headerReadyStock] = uData.ready_stock;
+                        dt_Row[headerEstimate] = uData.estimate;
+                        dt_Row[headerOut] = uData.deliveredOut;
+                        dt_Row[headerOutStd] = uData.outStd;
+
+                        dt_Row[headerBal1] = uData.bal1;
+                        dt_Row[headerBal2] = uData.bal2;
+
+                        dt_Row[headerForecast1] = uData.forecast1;
+                        dt_Row[headerForecast2] = uData.forecast2;
+                        dt_Row[headerForecast3] = uData.forecast3;
+
+                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && uData.forecast4 <= 0))
+                        {
+                            dt_Data.Rows.Add(dt_Row);
+                            index++;
+
+                            row.Delete();
+                        }
+
+                    }
+
+                    #endregion
+                }
+                dt.AcceptChanges();
+
+                #endregion
+
+                #region Load Group Item
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    uData.part_code = row[dalItem.ItemCode].ToString();
+
+                    int assembly = row[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemAssemblyCheck]);
+                    int production = row[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemProductionCheck]);
+
+                    bool gotNotPackagingChild = ifGotNotPackagingChild(uData.part_code, dt_Join, dt_Item);
+
+
+                    #region load assembly part
+
+                    if (gotNotPackagingChild)
+                    {
+                        uData.index = index;
+                        uData.part_name = row[dalItem.ItemName].ToString();
+                        uData.color_mat = row[dalItem.ItemMBatch].ToString();
+                        uData.color = row[dalItem.ItemColor].ToString();
+                        uData.raw_mat = row[dalItem.ItemMaterial].ToString();
+                        uData.pw_per_shot = row[dalItem.ItemProPWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProPWShot]);
+                        uData.rw_per_shot = row[dalItem.ItemProRWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProRWShot]);
+                        uData.cavity = row[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row[dalItem.ItemCavity]);
+                        uData.cavity = uData.cavity == 0 ? 1 : uData.cavity;
+                        uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
+
+                        //var result = GetProduceQty(uData.part_code, dt_MacSchedule);
+                        //uData.toProduce = result.Item1;
+                        //uData.Produced = result.Item2;
+
+                        uData.forecast1 = GetForecastQty(dt_ItemForecast, uData.part_code, 1,monthString);
+                        uData.forecast2 = GetForecastQty(dt_ItemForecast, uData.part_code, 2, monthString);
+                        uData.forecast3 = GetForecastQty(dt_ItemForecast, uData.part_code, 3, monthString);
+                        uData.forecast4 = GetForecastQty(dt_ItemForecast, uData.part_code, 4, monthString);
+
+                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && uData.forecast4 <= 0))
+                        {
+                            dt_Row = dt_Data.NewRow();
+                            dt_Data.Rows.Add(dt_Row);
+                        }
+
+
+                        uData.deliveredOut = GetMaxOut(uData.part_code, customer, 0, dt_TrfHist, dt_PMMADate,dtpOutFrom,dtpOutTo);
+
+                        uData.outStd = uData.forecast1 - uData.deliveredOut;
+
+                        #region Balance Calculation
+
+                        if (!customer.Equals("PMMA"))
+                        {
+                            uData.outStd = uData.estimate - uData.deliveredOut;
+                        }
+
+                        if (uData.forecast1 == -1)
+                        {
+                            if (customer.Equals("PMMA"))
+                            {
+                                uData.outStd = 0;
+                            }
+                            else
+                            {
+                                uData.outStd = uData.estimate - uData.deliveredOut;
+                            }
+                        }
+                        else if (uData.forecast1 > -1)
+                        {
+                            uData.outStd = uData.forecast1 - uData.deliveredOut;
+                        }
+
+                        uData.bal1 = uData.ready_stock;
+
+                        if (uData.outStd >= 0)
+                        {
+                            uData.bal1 = uData.ready_stock - uData.outStd;
+                        }
+
+                        uData.bal2 = uData.bal1 - uData.forecast2;
+
+                        if (uData.forecast2 == -1)
+                        {
+                            if (customer.Equals("PMMA"))
+                            {
+                                uData.bal2 = uData.bal1;
+                            }
+                            else
+                            {
+                                uData.bal2 = uData.bal1 - uData.estimate;
+                            }
+                        }
+                        else if (uData.forecast2 > -1)
+                        {
+                            uData.bal2 = uData.bal1 - uData.forecast2;
+                        }
+
+                        #endregion 
+
+                        if (!uData.color.Equals(uData.color_mat) && !string.IsNullOrEmpty(uData.color_mat))
+                        {
+                            uData.color_mat += " (" + uData.color + ")";
+                        }
+
+                        dt_Row = dt_Data.NewRow();
+
+                        //if (uData.toProduce > 0)
+                        //{
+                        //    dt_Row[headerToProduce] = uData.toProduce;
+                        //}
+
+                        //if (uData.Produced > 0)
+                        //{
+                        //    dt_Row[headerProduced] = uData.Produced;
+                        //}
+
+                        dt_Row[headerIndex] = uData.index;
+                        dt_Row[headerItemType] = row[dalItem.ItemCat].ToString();
+                        dt_Row[headerType] = typeParent;
+                        dt_Row[headerBalType] = balType_Unique;
+                        dt_Row[headerRawMat] = uData.raw_mat;
+                        dt_Row[headerPartCode] = uData.part_code;
+                        dt_Row[headerPartName] = uData.part_name;
+                        dt_Row[headerColorMat] = uData.color_mat;
+                        dt_Row[headerPartWeight] = uData.pw_per_shot / uData.cavity + " (" + (uData.rw_per_shot / uData.cavity) + ")";
+                        dt_Row[headerReadyStock] = uData.ready_stock;
+                        dt_Row[headerEstimate] = uData.estimate;
+                        dt_Row[headerOut] = uData.deliveredOut;
+                        dt_Row[headerOutStd] = uData.outStd;
+
+                        dt_Row[headerBal1] = uData.bal1;
+                        dt_Row[headerBal2] = uData.bal2;
+
+                        dt_Row[headerForecast1] = uData.forecast1;
+                        dt_Row[headerForecast2] = uData.forecast2;
+                        dt_Row[headerForecast3] = uData.forecast3;
+
+                        if (assembly == 1 && production == 0)
+                        {
+                            dt_Row[headerParentColor] = AssemblyMarking;
+                        }
+                        else if (assembly == 0 && production == 1)
+                        {
+                            dt_Row[headerParentColor] = ProductionMarking;
+                        }
+                        else if (assembly == 1 && production == 1)
+                        {
+                            dt_Row[headerParentColor] = ProductionAndAssemblyMarking;
+                        }
+
+
+                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0))
+                        {
+                            dt_Data.Rows.Add(dt_Row);
+                            index++;
+
+                            //load child
+                            SummaryLoadChild(dt_Item, dt_Join, dt_Data, uData, 0.1f);
+                        }
+                    }
+
+                    #endregion
+
+                }
+
+                #endregion
+            }
+
+            if (dt_Data.Rows.Count > 0)
+            {
+                dt_Data = SummaryCalRepeatedData(dt_Data);
+            }
+            
+            return LoadSummaryList(dt_Data);
+
+        }
+
         public bool ifGotChild2(string itemCode, DataTable dt)
         {
             bool result = false;
+            Text text = new Text();
 
             foreach (DataRow join in dt.Rows)
             {
+                string childCode = join[dalJoin.JoinChild].ToString();
+
                 if (join[dalJoin.JoinParent].ToString().Equals(itemCode))
                 {
+                    string childCat = getItemCat(childCode);
+
+                    if(childCat != text.Cat_Packaging && childCat != text.Cat_Carton)
                     return true;
+                }
+            }
+            return result;
+        }
+
+
+        public bool ifGotNotPackagingChild(string itemCode, DataTable dt_Join,DataTable dt_Item)
+        {
+            bool result = false;
+            Text text = new Text();
+
+            foreach (DataRow join in dt_Join.Rows)
+            {
+                if (join[dalJoin.JoinParent].ToString().Equals(itemCode))
+                {
+                    string childCode = join[dalJoin.JoinChild].ToString();
+
+                    string childCat = "";
+
+                    foreach (DataRow row in dt_Item.Rows)
+                    {
+                        if (row[dalItem.ItemCode].ToString().Equals(childCode))
+                        {
+                            childCat = row["item_cat"].ToString();
+                            break;
+                        }
+                    }
+
+                    if (childCat != text.Cat_Packaging && childCat != text.Cat_Carton)
+                        return true;
                 }
             }
             return result;

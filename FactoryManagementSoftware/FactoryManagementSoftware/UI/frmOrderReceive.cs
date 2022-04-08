@@ -432,7 +432,7 @@ namespace FactoryManagementSoftware.UI
             //errorProvider4.Clear();
             if (cmbFrom.Text.Equals("Customer"))
             {
-                DataTable dt = dalCust.Select();
+                DataTable dt = dalCust.FullSelect();
                 loadLocationData(dt, cmbSubFrom, "cust_name");
 
             }

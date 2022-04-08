@@ -75,6 +75,8 @@ namespace FactoryManagementSoftware.UI
 
             if(action == text.DailyAction_ChangePlan)
             {
+                ChangePlanToAction = true;
+
                 ITEM_CODE = data_2;
                 PLAN_ID = data_1;
 
@@ -141,6 +143,7 @@ namespace FactoryManagementSoftware.UI
         private bool ableLoadData = true;
         private bool filterHide = true;
         private bool fromDailyRecord = false;
+        private bool ChangePlanToAction = false;
 
         #endregion
 
@@ -393,7 +396,24 @@ namespace FactoryManagementSoftware.UI
         {
             #region Search Filtering
             DataTable dt;
+
+
             string Keywords = txtSearch.Text;
+
+            if(ChangePlanToAction)
+            {
+                txtSearch.Text = ITEM_CODE;
+
+                Keywords = ITEM_CODE;
+
+                cbItem.Checked = true;
+                cbPlanningID.Checked = false;
+                cbPending.Checked = true;
+                cbCancelled.Checked = true;
+                cbCompleted.Checked = true;
+                cbWarning.Checked = false;
+                cbRunning.Checked = true;
+            }
 
             if (!string.IsNullOrEmpty(Keywords))
             {
@@ -666,7 +686,6 @@ namespace FactoryManagementSoftware.UI
                                                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
 
             {
-
                 foreach (DataGridViewRow row in dgvSchedule.SelectedRows)
                 {
                     string planID = row.Cells[headerID].Value.ToString();
@@ -676,7 +695,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (!string.IsNullOrEmpty(planID) && int.TryParse(planID, out planID_INT))
                     {
-                       if(planID_INT != -1 && itemCode == ITEM_CODE)
+                       if(planID_INT != -1 && itemCode == ITEM_CODE && planID_INT != PLAN_ID)
                         {
                             ProductionRecordDAL dalProRecord = new ProductionRecordDAL();
                             ProductionRecordBLL uProRecord = new ProductionRecordBLL();
@@ -689,8 +708,6 @@ namespace FactoryManagementSoftware.UI
                             if(dalProRecord.ChangePlanID(uProRecord))
                             {
                                 //change transfer record plan id remark
-
-
                                 ChangeTransferRecordProductionPlanIDRemark(PLAN_ID.ToString(), planID_INT.ToString());
 
                                 MessageBox.Show("Plan ID Changed!");
@@ -699,13 +716,16 @@ namespace FactoryManagementSoftware.UI
                             }
 
                         }
-                       else if(itemCode != ITEM_CODE)
+                       else if(planID_INT == PLAN_ID)
+                       {
+                            MessageBox.Show("Cannot select plan with same ID !");
+                        }
+                        else if(itemCode != ITEM_CODE)
                         {
                             MessageBox.Show("Item not match!");
                         }
                     }
                 }
-
                 
             }
             else
