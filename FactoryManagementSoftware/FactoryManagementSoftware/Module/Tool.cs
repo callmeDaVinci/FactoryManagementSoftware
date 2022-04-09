@@ -54,11 +54,13 @@ namespace FactoryManagementSoftware.Module
         string headerForecast1 = "FCST/ NEEDED";
         string headerForecast2 = "FCST/ NEEDED";
         string headerForecast3 = "FCST/ NEEDED";
+        string headerForecast4 = "FCST/ NEEDED";
         readonly string headerOut = "OUT";
         readonly string headerOutStd = "OUTSTD";
         string headerBal1 = "BAL";
         string headerBal2 = "BAL";
         string headerBal3 = "BAL";
+        string headerBal4 = "BAL";
 
         readonly string headerMat = "MATERIAL";
         public readonly string headerCode = "CODE";
@@ -6459,6 +6461,7 @@ namespace FactoryManagementSoftware.Module
             double totalNeeded1 = 0;
             double totalNeeded2 = 0;
             double totalNeeded3 = 0;
+            double totalNeeded4 = 0;
 
             bool colorChange = false;
             int colorOrder = 0;
@@ -6468,12 +6471,17 @@ namespace FactoryManagementSoftware.Module
                 totalNeeded1 = 0;
                 totalNeeded2 = 0;
                 totalNeeded3 = 0;
+                totalNeeded4 = 0;
+
                 string rowReference = "(" + dt.Rows[i][headerIndex].ToString() + ")";
                 int repeatedCount = 1;
 
                 string firstItem = dt.Rows[i][headerPartCode].ToString();
                 double firstBal1 = double.TryParse(dt.Rows[i][headerBal1].ToString(), out firstBal1) ? firstBal1 : -0.001;
                 double firstBal2 = double.TryParse(dt.Rows[i][headerBal2].ToString(), out firstBal2) ? firstBal2 : -0.001;
+                double firstBal3 = double.TryParse(dt.Rows[i][headerBal3].ToString(), out firstBal3) ? firstBal3 : -0.001;
+                double firstBal4 = double.TryParse(dt.Rows[i][headerBal4].ToString(), out firstBal4) ? firstBal4 : -0.001;
+
                 string firstParentColor = dt.Rows[i][headerParentColor].ToString();
 
                 string type = dt.Rows[i][headerType].ToString();
@@ -6507,18 +6515,23 @@ namespace FactoryManagementSoftware.Module
                             double nextNeededQty1 = double.TryParse(dt.Rows[j][headerForecast1].ToString(), out nextNeededQty1) ? nextNeededQty1 : 0;
                             double nextNeededQty2 = double.TryParse(dt.Rows[j][headerForecast2].ToString(), out nextNeededQty2) ? nextNeededQty2 : 0;
                             double nextNeededQty3 = double.TryParse(dt.Rows[j][headerForecast3].ToString(), out nextNeededQty3) ? nextNeededQty3 : 0;
+                            double nextNeededQty4 = double.TryParse(dt.Rows[j][headerForecast4].ToString(), out nextNeededQty4) ? nextNeededQty4 : 0;
 
 
                             nextNeededQty1 = nextNeededQty1 > 0 ? nextNeededQty1 : 0;
                             nextNeededQty2 = nextNeededQty2 > 0 ? nextNeededQty2 : 0;
                             nextNeededQty3 = nextNeededQty3 > 0 ? nextNeededQty3 : 0;
+                            nextNeededQty4 = nextNeededQty4 > 0 ? nextNeededQty4 : 0;
 
                             dt.Rows[j][headerBal1] = DBNull.Value;
                             dt.Rows[j][headerBal2] = DBNull.Value;
+                            dt.Rows[j][headerBal3] = DBNull.Value;
+                            dt.Rows[j][headerBal4] = DBNull.Value;
 
                             totalNeeded1 += nextNeededQty1;
                             totalNeeded2 += nextNeededQty2;
                             totalNeeded3 += nextNeededQty3;
+                            totalNeeded4 += nextNeededQty4;
 
                             //dt.Rows[i][headerBackColor] = (ColorSet)colorOrder;
                             //dt.Rows[j][headerBackColor] = (ColorSet)colorOrder;
@@ -6541,8 +6554,19 @@ namespace FactoryManagementSoftware.Module
                             totalNeeded2 = 0;
                         }
 
+                        if (totalNeeded3 < 0)
+                        {
+                            totalNeeded3 = 0;
+                        }
+
+                        if (totalNeeded4 < 0)
+                        {
+                            totalNeeded4 = 0;
+                        }
                         dt.Rows[i][headerBal1] = firstBal1 - totalNeeded1;
                         dt.Rows[i][headerBal2] = firstBal2 - totalNeeded1 - totalNeeded2;
+                        dt.Rows[i][headerBal3] = firstBal3 - totalNeeded1 - totalNeeded2 - totalNeeded3;
+                        dt.Rows[i][headerBal4] = firstBal4 - totalNeeded1 - totalNeeded2 - totalNeeded3 - totalNeeded4;
 
                         dt.Rows[i][headerBalType] = balType_Total;
                         dt.Rows[i][headerRowReference] = rowReference;
@@ -6575,6 +6599,9 @@ namespace FactoryManagementSoftware.Module
                 string firstItem = dt.Rows[i][headerPartCode].ToString();
                 double firstBal1 = double.TryParse(dt.Rows[i][headerBal1].ToString(), out firstBal1) ? firstBal1 : -0.001;
                 double firstBal2 = double.TryParse(dt.Rows[i][headerBal2].ToString(), out firstBal2) ? firstBal2 : -0.001;
+                double firstBal3 = double.TryParse(dt.Rows[i][headerBal3].ToString(), out firstBal3) ? firstBal3 : -0.001;
+                double firstBal4 = double.TryParse(dt.Rows[i][headerBal4].ToString(), out firstBal4) ? firstBal4 : -0.001;
+
                 string rowReference = dt.Rows[i][headerRowReference].ToString();
 
                 if (!string.IsNullOrEmpty(firstItem) && firstBal1 != -0.001)
@@ -6604,6 +6631,7 @@ namespace FactoryManagementSoftware.Module
                 double forecast1 = double.TryParse(dt.Rows[i][headerForecast1].ToString(), out forecast1) ? forecast1 : 0;
                 double forecast2 = double.TryParse(dt.Rows[i][headerForecast2].ToString(), out forecast2) ? forecast2 : 0;
                 double forecast3 = double.TryParse(dt.Rows[i][headerForecast3].ToString(), out forecast3) ? forecast3 : 0;
+                double forecast4 = double.TryParse(dt.Rows[i][headerForecast4].ToString(), out forecast4) ? forecast4 : 0;
 
                 if (forecast1 < 0)
                 {
@@ -6620,20 +6648,21 @@ namespace FactoryManagementSoftware.Module
                     dt.Rows[i][headerForecast3] = 0;
                 }
 
+                if (forecast4 < 0)
+                {
+                    dt.Rows[i][headerForecast4] = 0;
+                }
+
                 double totalNeeded1 = 0;
                 double totalNeeded2 = 0;
+                double totalNeeded3 = 0;
+                double totalNeeded4 = 0;
 
                 string itemCode = dt.Rows[i][headerPartCode].ToString();
                 string itemType = dt.Rows[i][headerType].ToString();
                 string balType = dt.Rows[i][headerBalType].ToString();
                 string ForecastType = dt.Rows[i][headerForecastType].ToString();
                 double itemStock = double.TryParse(dt.Rows[i][headerReadyStock].ToString(), out itemStock) ? itemStock : 0;
-
-                //if(ForecastType.Equals(forecastType_Forecast))
-                //{
-                //    totalNeeded1 = double.TryParse(dt.Rows[i][headerOutStd].ToString(), out double d) ? d : 0;
-                //    totalNeeded2 = double.TryParse(dt.Rows[i][headerForecast2].ToString(), out d) ? d : 0;
-                //}
 
                 //loop and find "TOTAL"  and not parent item
                 if (itemType != typeParent && !ForecastType.Equals(forecastType_Forecast) && balType.Equals(balType_Total))
@@ -6663,10 +6692,14 @@ namespace FactoryManagementSoftware.Module
                                 {
                                     double nextNeededQty1 = double.TryParse(dt.Rows[j][headerBal1].ToString(), out nextNeededQty1) ? nextNeededQty1 : 0;
                                     double nextNeededQty2 = double.TryParse(dt.Rows[j][headerBal2].ToString(), out nextNeededQty2) ? nextNeededQty2 : 0;
+                                    double nextNeededQty3 = double.TryParse(dt.Rows[j][headerBal3].ToString(), out nextNeededQty3) ? nextNeededQty3 : 0;
+                                    double nextNeededQty4 = double.TryParse(dt.Rows[j][headerBal4].ToString(), out nextNeededQty4) ? nextNeededQty4 : 0;
 
                                     //Sum Up balance, and calculate total needed for Child (if balance>=0, needed for child =0; if balance <0, needed for child = bal*-1)
                                     totalNeeded1 += nextNeededQty1 < 0 ? nextNeededQty1 * -1 * joinQty : 0;
                                     totalNeeded2 += nextNeededQty2 < 0 ? nextNeededQty2 * -1 * joinQty : 0;
+                                    totalNeeded3 += nextNeededQty3 < 0 ? nextNeededQty3 * -1 * joinQty : 0;
+                                    totalNeeded4 += nextNeededQty4 < 0 ? nextNeededQty4 * -1 * joinQty : 0;
 
                                     itemBalToChange = true;
                                     break;
@@ -6690,8 +6723,23 @@ namespace FactoryManagementSoftware.Module
                             totalNeeded2 = (float)Math.Round(totalNeeded2 * 100f) / 100f;
 
                         }
+
+                        if (totalNeeded3 % 1 > 0)
+                        {
+                            totalNeeded3 = (float)Math.Round(totalNeeded3 * 100f) / 100f;
+
+                        }
+
+                        if (totalNeeded4 % 1 > 0)
+                        {
+                            totalNeeded4 = (float)Math.Round(totalNeeded4 * 100f) / 100f;
+
+                        }
+
                         dt.Rows[i][headerBal1] = itemStock - totalNeeded1;
                         dt.Rows[i][headerBal2] = itemStock - totalNeeded2;
+                        dt.Rows[i][headerBal3] = itemStock - totalNeeded3;
+                        dt.Rows[i][headerBal4] = itemStock - totalNeeded4;
                     }
 
                 }
@@ -6928,6 +6976,7 @@ namespace FactoryManagementSoftware.Module
                         uChildData.cavity = row_Item[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row_Item[dalItem.ItemCavity]);
                         uChildData.cavity = uChildData.cavity == 0 ? 1 : uChildData.cavity;
                         uChildData.ready_stock = row_Item[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row_Item[dalItem.ItemStock]);
+                        uParentData.estimate = 0;
 
                         float stock = uChildData.ready_stock;
 
@@ -7008,13 +7057,79 @@ namespace FactoryManagementSoftware.Module
 
                         }
 
+                        if (uParentData.bal3 >= 0)
+                        {
+                            uChildData.forecast3 = 0;
+
+                            if (uParentData.forecast4 <= -1)
+                            {
+                                if (uParentData.bal3 - uParentData.estimate < 0)
+                                {
+                                    uChildData.forecast4 = (uParentData.bal3 - uParentData.estimate) * joinQty;
+                                }
+                                else
+                                {
+                                    uChildData.forecast4 = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (uParentData.bal3 - uParentData.forecast4 < 0)
+                                {
+                                    uChildData.forecast4 = (uParentData.bal3 - uParentData.forecast4) * joinQty;
+                                }
+                                else
+                                {
+                                    uChildData.forecast4 = 0;
+                                }
+                            }
+
+
+                        }
+                        else
+                        {
+                            if (uParentData.bal2 < 0)
+                            {
+                                if (uParentData.forecast3 <= -1)
+                                {
+                                    uChildData.forecast3 = uParentData.estimate * joinQty;
+                                }
+                                else
+                                {
+                                    uChildData.forecast3 = uParentData.forecast3 * joinQty;
+                                }
+
+                            }
+                            else
+                            {
+                                uChildData.forecast3 = uParentData.bal3 * -1 * joinQty;
+                            }
+
+                            if (uParentData.forecast4 <= -1)
+                            {
+                                uChildData.forecast4 = uParentData.estimate * joinQty;
+                            }
+                            else
+                            {
+                                uChildData.forecast4 = uParentData.forecast4 * joinQty;
+                            }
+
+
+                        }
+
                         uChildData.forecast1 = uChildData.forecast1 < 0 ? uChildData.forecast1 * -1 : uChildData.forecast1;
                         uChildData.forecast2 = uChildData.forecast2 < 0 ? uChildData.forecast2 * -1 : uChildData.forecast2;
                         uChildData.forecast3 = uChildData.forecast3 < 0 ? uChildData.forecast3 * -1 : uChildData.forecast3;
+                        uChildData.forecast4 = uChildData.forecast4 < 0 ? uChildData.forecast4 * -1 : uChildData.forecast4;
 
                         uChildData.bal1 = uChildData.ready_stock - uChildData.forecast1;
 
                         uChildData.bal2 = uChildData.bal1 - uChildData.forecast2;
+
+                        uChildData.bal3 = uChildData.bal2 - uChildData.forecast3;
+
+                        uChildData.bal4 = uChildData.bal3 - uChildData.forecast4;
+
 
                         if (!uChildData.color.Equals(uChildData.color_mat) && !string.IsNullOrEmpty(uChildData.color_mat))
                         {
@@ -7022,20 +7137,6 @@ namespace FactoryManagementSoftware.Module
                         }
 
                         dt_Row = dt_Data.NewRow();
-
-                        //var result = GetProduceQty(uChildData.part_code, dt_MacSchedule);
-                        //uChildData.toProduce = result.Item1;
-                        //uChildData.Produced = result.Item2;
-
-                        //if (uChildData.toProduce > 0)
-                        //{
-                        //    dt_Row[headerToProduce] = uChildData.toProduce;
-                        //}
-
-                        //if (uChildData.Produced > 0)
-                        //{
-                        //    dt_Row[headerProduced] = uChildData.Produced;
-                        //}
 
                         dt_Row[headerIndex] = uChildData.index;
                         dt_Row[headerType] = typeChild;
@@ -7054,9 +7155,12 @@ namespace FactoryManagementSoftware.Module
                         dt_Row[headerForecast1] = uChildData.forecast1 % 1 > 0 ? (float)Math.Round(uChildData.forecast1 * 100f) / 100f : uChildData.forecast1;
                         dt_Row[headerForecast2] = uChildData.forecast2 % 1 > 0 ? (float)Math.Round(uChildData.forecast2 * 100f) / 100f : uChildData.forecast2;
                         dt_Row[headerForecast3] = uChildData.forecast3 % 1 > 0 ? (float)Math.Round(uChildData.forecast3 * 100f) / 100f : uChildData.forecast3;
+                        dt_Row[headerForecast4] = uChildData.forecast4 % 1 > 0 ? (float)Math.Round(uChildData.forecast4 * 100f) / 100f : uChildData.forecast4;
 
                         dt_Row[headerBal1] = uChildData.bal1;
                         dt_Row[headerBal2] = uChildData.bal2;
+                        dt_Row[headerBal3] = uChildData.bal3;
+                        dt_Row[headerBal4] = uChildData.bal4;
 
                         int assembly = row_Item[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row_Item[dalItem.ItemAssemblyCheck]);
                         int production = row_Item[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row_Item[dalItem.ItemProductionCheck]);
@@ -9287,10 +9391,12 @@ namespace FactoryManagementSoftware.Module
             headerForecast1 = "FCST/ NEEDED";
             headerForecast2 = "FCST/ NEEDED";
             headerForecast3 = "FCST/ NEEDED";
+            headerForecast4 = "FCST/ NEEDED";
 
             headerBal1 = "BAL";
             headerBal2 = "BAL";
             headerBal3 = "BAL";
+            headerBal4 = "BAL";
             DataTable dt = new DataTable();
 
             dt.Columns.Add(headerParentColor, typeof(string));
@@ -9318,7 +9424,7 @@ namespace FactoryManagementSoftware.Module
 
             int monthINT = DateTime.ParseExact(monthFrom, "MMMM", CultureInfo.CurrentCulture).Month;
 
-            for (int i = 1; i <= 3; i++)
+            for (int i = 1; i <= 4; i++)
             {
                 if (i == 1)
                 {
@@ -9338,7 +9444,12 @@ namespace FactoryManagementSoftware.Module
                     headerBal3 = GetAbbreviatedFromFullName(monthFrom).ToUpper() + " " + headerBal3;
 
                 }
+                else if (i == 4)
+                {
+                    headerForecast4 = GetAbbreviatedFromFullName(monthFrom).ToUpper() + " " + headerForecast4;
+                    headerBal4 = GetAbbreviatedFromFullName(monthFrom).ToUpper() + " " + headerBal4;
 
+                }
                 monthINT++;
 
                 if (monthINT > 12)
@@ -9358,6 +9469,10 @@ namespace FactoryManagementSoftware.Module
             dt.Columns.Add(headerForecast2, typeof(float));
             dt.Columns.Add(headerBal2, typeof(float));
             dt.Columns.Add(headerForecast3, typeof(float));
+            dt.Columns.Add(headerBal3, typeof(float));
+            dt.Columns.Add(headerForecast4, typeof(float));
+            dt.Columns.Add(headerBal4, typeof(float));
+
             return dt;
         }
 
@@ -9548,7 +9663,9 @@ namespace FactoryManagementSoftware.Module
             Text text = new Text();
 
             dt_Copy.Columns.Add(headerToDo, typeof(string)).SetOrdinal(0);
-            dt_Copy.Columns.Add(headerBal3, typeof(float));
+            //dt_Copy.Columns.Add(headerBal3, typeof(float));
+            //dt_Copy.Columns.Add(headerForecast4, typeof(float));
+            //dt_Copy.Columns.Add(headerBal4, typeof(float));
 
             #region SUM Repeated row Total Needed
 
@@ -9556,6 +9673,7 @@ namespace FactoryManagementSoftware.Module
             {
                 string balType = dt_Copy.Rows[i][headerBalType].ToString();
                 decimal ThirdMonthNeeded = decimal.TryParse(dt_Copy.Rows[i][headerForecast3].ToString(), out decimal d) ? d : 0;
+                decimal FouthMonthNeeded = decimal.TryParse(dt_Copy.Rows[i][headerForecast4].ToString(), out  d) ? d : 0;
                 decimal bal_2 = decimal.TryParse(dt_Copy.Rows[i][headerBal2].ToString(), out d) ? d : 0;
 
                 if (balType.Equals(balType_Total))
@@ -9571,12 +9689,14 @@ namespace FactoryManagementSoftware.Module
 
                         if (SeachingCode == TotalItemCode)
                         {
+                            FouthMonthNeeded += decimal.TryParse(dt_Copy.Rows[j][headerForecast4].ToString(), out d) ? d : 0;
                             ThirdMonthNeeded += decimal.TryParse(dt_Copy.Rows[j][headerForecast3].ToString(), out d) ? d : 0;
                             SecondMonthNeeded += decimal.TryParse(dt_Copy.Rows[j][headerForecast2].ToString(), out d) ? d : 0;
                             FirstMonthNeeded += decimal.TryParse(dt_Copy.Rows[j][headerForecast1].ToString(), out d) ? d : 0;
                         }
                     }
 
+                    dt_Copy.Rows[i][headerForecast4] = (float)FouthMonthNeeded;
                     dt_Copy.Rows[i][headerForecast3] = (float)ThirdMonthNeeded;
                     dt_Copy.Rows[i][headerForecast2] = (float)SecondMonthNeeded;
                     dt_Copy.Rows[i][headerForecast1] = (float)FirstMonthNeeded;
@@ -9585,6 +9705,7 @@ namespace FactoryManagementSoftware.Module
                 }
 
                 dt_Copy.Rows[i][headerBal3] = (float)(bal_2 - ThirdMonthNeeded);
+                dt_Copy.Rows[i][headerBal4] = (float)(bal_2 - ThirdMonthNeeded - FouthMonthNeeded);
             }
 
             #endregion
@@ -9608,6 +9729,7 @@ namespace FactoryManagementSoftware.Module
                     decimal bal_1 = decimal.TryParse(row[headerBal1].ToString(), out decimal d) ? d : 0;
                     decimal bal_2 = decimal.TryParse(row[headerBal2].ToString(), out d) ? d : 0;
                     decimal bal_3 = decimal.TryParse(row[headerBal3].ToString(), out d) ? d : 0;
+                    decimal bal_4 = decimal.TryParse(row[headerBal4].ToString(), out d) ? d : 0;
 
                     string ToDOType = "";
 
@@ -9708,7 +9830,7 @@ namespace FactoryManagementSoftware.Module
 
             #region Sorting
 
-            dt_Copy.DefaultView.Sort = headerToDo + " ASC, " + headerBal3 + " ASC, " + headerBal2 + " ASC, " + headerBal1 + " ASC";
+            dt_Copy.DefaultView.Sort = headerToDo + " ASC, " + headerBal4 + " ASC, "+ headerBal3 + " ASC, " + headerBal2 + " ASC, " + headerBal1 + " ASC";
 
             dt_Copy = dt_Copy.DefaultView.ToTable();
 
@@ -9833,6 +9955,8 @@ namespace FactoryManagementSoftware.Module
                         uData.forecast3 = GetForecastQty(dt_ItemForecast, uData.part_code, 3, monthString);
                         uData.forecast4 = GetForecastQty(dt_ItemForecast, uData.part_code, 4, monthString);
 
+                        uData.estimate = 0;
+
                         uData.deliveredOut = GetMaxOut(uData.part_code, customer, 0, dt_TrfHist, dt_PMMADate,dtpOutFrom,dtpOutTo);
 
                         uData.outStd = uData.forecast1 - uData.deliveredOut;
@@ -9853,6 +9977,7 @@ namespace FactoryManagementSoftware.Module
                                 uData.outStd = uData.estimate - uData.deliveredOut;
                             }
                         }
+
                         else if (uData.forecast1 > -1)
                         {
                             uData.outStd = uData.forecast1 - uData.deliveredOut;
@@ -9882,6 +10007,44 @@ namespace FactoryManagementSoftware.Module
                         {
                             uData.bal2 = uData.bal1 - uData.forecast2;
                         }
+
+
+                        uData.bal3 = uData.bal2 - uData.forecast3;
+
+                        if (uData.forecast3 == -1)
+                        {
+                            if (customer.Equals("PMMA"))
+                            {
+                                uData.bal3 = uData.bal2;
+                            }
+                            else
+                            {
+                                uData.bal3 = uData.bal2 - uData.estimate;
+                            }
+                        }
+                        else if (uData.forecast3 > -1)
+                        {
+                            uData.bal3 = uData.bal2 - uData.forecast3;
+                        }
+
+                        uData.bal4 = uData.bal3 - uData.forecast4;
+
+                        if (uData.forecast4 == -1)
+                        {
+                            if (customer.Equals("PMMA"))
+                            {
+                                uData.bal4 = uData.bal3;
+                            }
+                            else
+                            {
+                                uData.bal4 = uData.bal3 - uData.estimate;
+                            }
+                        }
+                        else if (uData.forecast4 > -1)
+                        {
+                            uData.bal4 = uData.bal3 - uData.forecast4;
+                        }
+
 
 
                         if (!uData.color.Equals(uData.color_mat) && !string.IsNullOrEmpty(uData.color_mat))
@@ -9917,10 +10080,15 @@ namespace FactoryManagementSoftware.Module
 
                         dt_Row[headerBal1] = uData.bal1;
                         dt_Row[headerBal2] = uData.bal2;
+                        dt_Row[headerBal3] = uData.bal3;
+                        dt_Row[headerBal4] = uData.bal4;
+
+                        //uData.forecast4 = uData.forecast4 < 0 ? 0 : uData.forecast4;
 
                         dt_Row[headerForecast1] = uData.forecast1;
                         dt_Row[headerForecast2] = uData.forecast2;
                         dt_Row[headerForecast3] = uData.forecast3;
+                        dt_Row[headerForecast4] = uData.forecast4;
 
                         if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && uData.forecast4 <= 0))
                         {
@@ -9968,7 +10136,7 @@ namespace FactoryManagementSoftware.Module
                         //var result = GetProduceQty(uData.part_code, dt_MacSchedule);
                         //uData.toProduce = result.Item1;
                         //uData.Produced = result.Item2;
-
+                        uData.estimate = 0;
                         uData.forecast1 = GetForecastQty(dt_ItemForecast, uData.part_code, 1,monthString);
                         uData.forecast2 = GetForecastQty(dt_ItemForecast, uData.part_code, 2, monthString);
                         uData.forecast3 = GetForecastQty(dt_ItemForecast, uData.part_code, 3, monthString);
@@ -10033,6 +10201,42 @@ namespace FactoryManagementSoftware.Module
                             uData.bal2 = uData.bal1 - uData.forecast2;
                         }
 
+                        uData.bal3 = uData.bal2 - uData.forecast3;
+
+                        if (uData.forecast3 == -1)
+                        {
+                            if (customer.Equals("PMMA"))
+                            {
+                                uData.bal3 = uData.bal2;
+                            }
+                            else
+                            {
+                                uData.bal3 = uData.bal2 - uData.estimate;
+                            }
+                        }
+                        else if (uData.forecast3 > -1)
+                        {
+                            uData.bal3 = uData.bal2 - uData.forecast3;
+                        }
+
+                        uData.bal4 = uData.bal3 - uData.forecast4;
+
+                        if (uData.forecast4 == -1)
+                        {
+                            if (customer.Equals("PMMA"))
+                            {
+                                uData.bal4 = uData.bal3;
+                            }
+                            else
+                            {
+                                uData.bal4 = uData.bal3 - uData.estimate;
+                            }
+                        }
+                        else if (uData.forecast4 > -1)
+                        {
+                            uData.bal4 = uData.bal3 - uData.forecast4;
+                        }
+
                         #endregion 
 
                         if (!uData.color.Equals(uData.color_mat) && !string.IsNullOrEmpty(uData.color_mat))
@@ -10068,10 +10272,16 @@ namespace FactoryManagementSoftware.Module
 
                         dt_Row[headerBal1] = uData.bal1;
                         dt_Row[headerBal2] = uData.bal2;
+                        dt_Row[headerBal3] = uData.bal3;
+                        dt_Row[headerBal4] = uData.bal4;
+
+                        //uData.forecast4 = uData.forecast4 < 0 ? 0 : uData.forecast4;
+
 
                         dt_Row[headerForecast1] = uData.forecast1;
                         dt_Row[headerForecast2] = uData.forecast2;
                         dt_Row[headerForecast3] = uData.forecast3;
+                        dt_Row[headerForecast4] = uData.forecast4;
 
                         if (assembly == 1 && production == 0)
                         {

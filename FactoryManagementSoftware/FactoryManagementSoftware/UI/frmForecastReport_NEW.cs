@@ -91,11 +91,14 @@ namespace FactoryManagementSoftware.UI
         string headerForecast1 = "FCST/ NEEDED";
         string headerForecast2 = "FCST/ NEEDED";
         string headerForecast3 = "FCST/ NEEDED";
+        string headerForecast4 = "FCST/ NEEDED";
+
         readonly string headerOut = "OUT";
         readonly string headerOutStd = "OUTSTD";
         string headerBal1 = "BAL";
         string headerBal2 = "BAL";
         string headerBal3 = "BAL";
+        string headerBal4 = "BAL";
 
         readonly string headerQuoTon = "QUO TON";
         readonly string headerProTon = "PRO TON";
@@ -185,7 +188,8 @@ namespace FactoryManagementSoftware.UI
             headerForecast1 = "FCST/ NEEDED";
             headerForecast2 = "FCST/ NEEDED";
             headerForecast3 = "FCST/ NEEDED";
-          
+            headerForecast4 = "FCST/ NEEDED";
+
             headerBal1 = "BAL";
             headerBal2 = "BAL";
             headerBal3 = "BAL";
@@ -231,7 +235,7 @@ namespace FactoryManagementSoftware.UI
             string monthName = string.IsNullOrEmpty(monthFrom) || cmbForecastFrom.SelectedIndex == -1 ? CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month) : monthFrom;
             int monthINT = DateTime.ParseExact(monthName, "MMMM", CultureInfo.CurrentCulture).Month;
 
-            for (int i = 1; i <= 3; i++)
+            for (int i = 1; i <= 4; i++)
             {
                 if(i == 1)
                 {
@@ -251,7 +255,12 @@ namespace FactoryManagementSoftware.UI
                     headerBal3 = tool.GetAbbreviatedFromFullName(monthName).ToUpper() + " " + headerBal3;
 
                 }
+                else if (i == 4)
+                {
+                    headerForecast4 = tool.GetAbbreviatedFromFullName(monthName).ToUpper() + " " + headerForecast4;
+                    headerBal4 = tool.GetAbbreviatedFromFullName(monthName).ToUpper() + " " + headerBal4;
 
+                }
                 monthINT++;
 
                 if(monthINT > 12)
@@ -390,6 +399,22 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[headerBal3].HeaderCell.Style.BackColor = Color.LightYellow;
                 dgv.Columns[headerBal3].DefaultCellStyle.BackColor = Color.LightYellow;
                 dgv.Columns[headerBal3].HeaderCell.Style.ForeColor = Color.Red;
+
+                if (dgv.Columns.Contains(headerBal4))
+                {
+                    dgv.Columns[headerBal4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                    dgv.Columns[headerBal4].HeaderCell.Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+                    dgv.Columns[headerBal4].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+
+                    dgv.Columns[headerBal4].HeaderCell.Style.BackColor = Color.LightYellow;
+                    dgv.Columns[headerBal4].DefaultCellStyle.BackColor = Color.LightYellow;
+                    dgv.Columns[headerBal4].HeaderCell.Style.ForeColor = Color.Red;
+
+                    if (dgv.Columns.Contains(headerForecast4))
+                        dgv.Columns[headerForecast4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                }
             }
          
 
@@ -566,11 +591,20 @@ namespace FactoryManagementSoftware.UI
                 dgv.Rows[i].Cells[headerBal2].Style.BackColor = Color.LightYellow;
                 dgv.Rows[i].Cells[headerBal3].Style.BackColor = Color.LightYellow;
 
+                if(dgv.Columns.Contains(headerBal4))
+                dgv.Rows[i].Cells[headerBal4].Style.BackColor = Color.LightYellow;
+
                 if (type.Equals(typeChild))
                 {
                     dgv.Rows[i].Cells[headerForecast1].Style.Font = _NeededFont;
                     dgv.Rows[i].Cells[headerForecast2].Style.Font = _NeededFont;
                     dgv.Rows[i].Cells[headerForecast3].Style.Font = _NeededFont;
+
+                    if (dgv.Columns.Contains(headerForecast4))
+                    {
+                        dgv.Rows[i].Cells[headerForecast4].Style.Font = _NeededFont;
+
+                    }
                 }
 
                 if (balType.Equals(balType_Total))
@@ -581,6 +615,12 @@ namespace FactoryManagementSoftware.UI
                     if (dgv.Columns.Contains(headerBal3))
                     {
                         dgv.Rows[i].Cells[headerBal3].Style.Font = _BalFont;
+                    }
+
+                    if (dgv.Columns.Contains(headerBal4))
+                    {
+                        dgv.Rows[i].Cells[headerBal4].Style.Font = _BalFont;
+
                     }
 
                 }
@@ -639,6 +679,19 @@ namespace FactoryManagementSoftware.UI
             else if (dgv.Columns[col].Name == headerBal3)
             {
                 float bal = dgv.Rows[row].Cells[headerBal3].Value == DBNull.Value ? 0 : Convert.ToSingle(dgv.Rows[row].Cells[headerBal3].Value);
+
+                if (bal < alertLevel)
+                {
+                    dgv.Rows[row].Cells[col].Style.ForeColor = Color.Red;
+                }
+                else
+                {
+                    dgv.Rows[row].Cells[col].Style.ForeColor = Color.Black;
+                }
+            }
+            else if (dgv.Columns[col].Name == headerBal4)
+            {
+                float bal = dgv.Rows[row].Cells[headerBal4].Value == DBNull.Value ? 0 : Convert.ToSingle(dgv.Rows[row].Cells[headerBal4].Value);
 
                 if (bal < alertLevel)
                 {
@@ -4465,6 +4518,7 @@ namespace FactoryManagementSoftware.UI
 
 
                                 //Range FirstRow = (Range)xlWorkSheet.Application.Rows[1, Type.Missing];
+
                                 Range FirstRow = xlWorkSheet.get_Range("a1:p1").Cells;
                                 FirstRow.WrapText = true;
                                 FirstRow.Font.Size = 6;
