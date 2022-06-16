@@ -1323,26 +1323,28 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = (DataTable)dgv.DataSource;
 
-            foreach(DataRow row in dt.Rows)
+
+            foreach (DataRow row in dt.Rows)
             {
                 int rowIndex = dt.Rows.IndexOf(row);
 
                 string PlanStatus = row[headerStatus].ToString();
 
-                Color ColorSet = GetColorSetFromPlanStatus(PlanStatus,dgv);
+                Color ColorSet = GetColorSetFromPlanStatus(PlanStatus, dgv);
 
                 dgv.Rows[rowIndex].Cells[headerStatus].Style.BackColor = ColorSet;
                 dgv.Rows[rowIndex].Cells[headerStatus].Style.ForeColor = Color.Black;
 
                 if (PlanStatus == "")
                 {
-                    dgv.Rows[rowIndex].Height = 12;
+                   // dgv.Rows[rowIndex].Height = 12;
                     dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(64, 64, 64);
                 }
                 else
                 {
-                    dgv.Rows[rowIndex].Height = 50;
+                   // dgv.Rows[rowIndex].Height = 50;
                 }
+
 
                 if (!PlanStatus.Equals(text.planning_status_cancelled) && !PlanStatus.Equals(text.planning_status_completed) && PlanStatus != "")
                 {

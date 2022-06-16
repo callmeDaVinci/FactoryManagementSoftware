@@ -1826,6 +1826,7 @@ namespace FactoryManagementSoftware.UI
 
                 bool itemCatMatched = matCat == text.Cat_RawMat || matCat == text.Cat_MB || matCat == text.Cat_Pigment || matCat == text.Cat_SubMat;
 
+
                 if (itemCatMatched)
                 {
                     if (previousMatCode == null)
@@ -1889,9 +1890,11 @@ namespace FactoryManagementSoftware.UI
                                         float reference_Value = DeliveredToCustomerQty(custName, parentCode, dt_JoinforChecking, dt_PartTrfHist);
 
                                         #region get weight data
+
                                         float partWeight = 0;
                                         float runnerWeight = 0;
 
+                                        
                                         if (cbZeroCostOnly.Checked)
                                         {
                                             partWeight = float.TryParse(joinRow[dalItem.ItemQuoPWPcs].ToString(), out partWeight) ? partWeight : 0;
@@ -1901,9 +1904,27 @@ namespace FactoryManagementSoftware.UI
                                         {
                                             partWeight = float.TryParse(joinRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
                                             runnerWeight = float.TryParse(joinRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
+
+                                            if(partWeight == 0)
+                                            {
+                                                float cavity = float.TryParse(joinRow[dalItem.ItemCavity].ToString(), out cavity) ? cavity : 1;
+
+                                                if(cavity ==0)
+                                                {
+                                                    cavity = 1;
+                                                }
+
+                                                float partWeight_Shot = float.TryParse(joinRow[dalItem.ItemProPWShot].ToString(), out partWeight_Shot) ? partWeight_Shot : 0;
+
+                                                float runnerWeight_Shot = float.TryParse(joinRow[dalItem.ItemProRWShot].ToString(), out runnerWeight_Shot) ? runnerWeight_Shot : 0;
+
+                                                partWeight = partWeight_Shot / cavity;
+                                                runnerWeight = runnerWeight_Shot / cavity;
+                                            }
                                         }
 
                                         float itemWeight = partWeight + runnerWeight;
+
                                         #endregion
 
                                         float wastage = Convert.ToSingle(matRow[dalItem.ItemWastage]); // tool.getItemWastageAllowedFromDataTable(dt_Item, matCode);
@@ -1985,6 +2006,10 @@ namespace FactoryManagementSoftware.UI
                                 {
                                     string itemCode = partRow[dalItem.ItemCode].ToString();
 
+                                    if(itemCode == "R 100 241 392 47" )
+                                    {
+                                        float TEST = 0;
+                                    }
 
                                     if (ifCustomerItem(itemCode, dt_JoinforChecking, dt_CustItem))
                                     {
@@ -2008,7 +2033,24 @@ namespace FactoryManagementSoftware.UI
                                         else
                                         {
                                             partWeight = float.TryParse(partRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
-                                            runnerWeight = float.TryParse(partRow[dalItem.ItemProRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
+                                            runnerWeight = float.TryParse(partRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
+
+                                            if (partWeight == 0)
+                                            {
+                                                float cavity = float.TryParse(partRow[dalItem.ItemCavity].ToString(), out cavity) ? cavity : 1;
+
+                                                if (cavity == 0)
+                                                {
+                                                    cavity = 1;
+                                                }
+
+                                                float partWeight_Shot = float.TryParse(partRow[dalItem.ItemProPWShot].ToString(), out partWeight_Shot) ? partWeight_Shot : 0;
+
+                                                float runnerWeight_Shot = float.TryParse(partRow[dalItem.ItemProRWShot].ToString(), out runnerWeight_Shot) ? runnerWeight_Shot : 0;
+
+                                                partWeight = partWeight_Shot / cavity;
+                                                runnerWeight = runnerWeight_Shot / cavity;
+                                            }
                                         }
 
                                         float itemWeight = partWeight + runnerWeight;

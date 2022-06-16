@@ -723,7 +723,7 @@ namespace FactoryManagementSoftware.UI
                 if (!DailyJobSheetFormOpen)
                 {
                     frmLoading.ShowLoadingScreen();
-                    frmProductionRecordNew frm = new frmProductionRecordNew();
+                    frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
                     frm.MdiParent = this;
                     frm.StartPosition = FormStartPosition.CenterScreen;
                     frm.WindowState = FormWindowState.Maximized;
@@ -733,9 +733,9 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    if (Application.OpenForms.OfType<frmProductionRecordNew>().Count() == 1)
+                    if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
                     {
-                        Application.OpenForms.OfType<frmProductionRecordNew>().First().BringToFront();
+                        Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
                     }
                 }
             }

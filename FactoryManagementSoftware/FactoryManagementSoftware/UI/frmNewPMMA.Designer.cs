@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnSwitchToStockCheck = new System.Windows.Forms.Button();
             this.btnSwitchToMatUsed = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,6 +43,7 @@
             this.lblChangeDate = new System.Windows.Forms.Label();
             this.btnCheck = new System.Windows.Forms.Button();
             this.gbPMMA = new System.Windows.Forms.GroupBox();
+            this.btnLockData = new System.Windows.Forms.Button();
             this.cbEditMode = new System.Windows.Forms.CheckBox();
             this.tlpPMMA = new System.Windows.Forms.TableLayoutPanel();
             this.dgvMatStock = new System.Windows.Forms.DataGridView();
@@ -52,7 +53,7 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.cbFastMode = new System.Windows.Forms.CheckBox();
-            this.btnLockData = new System.Windows.Forms.Button();
+            this.cbInOutUpdate = new System.Windows.Forms.CheckBox();
             this.gbPMMA.SuspendLayout();
             this.tlpPMMA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMatStock)).BeginInit();
@@ -163,6 +164,7 @@
             this.dtpTo.Name = "dtpTo";
             this.dtpTo.Size = new System.Drawing.Size(139, 30);
             this.dtpTo.TabIndex = 129;
+            this.dtpTo.ValueChanged += new System.EventHandler(this.dtpTo_ValueChanged);
             // 
             // label4
             // 
@@ -198,7 +200,7 @@
             this.btnCheck.Location = new System.Drawing.Point(602, 58);
             this.btnCheck.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.btnCheck.Name = "btnCheck";
-            this.btnCheck.Size = new System.Drawing.Size(124, 36);
+            this.btnCheck.Size = new System.Drawing.Size(167, 36);
             this.btnCheck.TabIndex = 131;
             this.btnCheck.Text = "CHECK";
             this.btnCheck.UseVisualStyleBackColor = false;
@@ -209,6 +211,7 @@
             this.gbPMMA.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbPMMA.Controls.Add(this.cbInOutUpdate);
             this.gbPMMA.Controls.Add(this.btnLockData);
             this.gbPMMA.Controls.Add(this.cbEditMode);
             this.gbPMMA.Controls.Add(this.tlpPMMA);
@@ -232,15 +235,32 @@
             this.gbPMMA.Text = "ZERO COST MATERIAL STOCK LIST";
             this.gbPMMA.Enter += new System.EventHandler(this.gbPMMA_Enter);
             // 
+            // btnLockData
+            // 
+            this.btnLockData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLockData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(203)))), ((int)(((byte)(110)))));
+            this.btnLockData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLockData.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLockData.ForeColor = System.Drawing.Color.Black;
+            this.btnLockData.Location = new System.Drawing.Point(1398, 58);
+            this.btnLockData.Margin = new System.Windows.Forms.Padding(5, 2, 2, 2);
+            this.btnLockData.Name = "btnLockData";
+            this.btnLockData.Size = new System.Drawing.Size(124, 36);
+            this.btnLockData.TabIndex = 137;
+            this.btnLockData.Text = "LOCK DATA";
+            this.btnLockData.UseVisualStyleBackColor = false;
+            this.btnLockData.Click += new System.EventHandler(this.btnLockData_Click);
+            // 
             // cbEditMode
             // 
             this.cbEditMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbEditMode.AutoSize = true;
             this.cbEditMode.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbEditMode.Location = new System.Drawing.Point(1405, 20);
+            this.cbEditMode.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.cbEditMode.Location = new System.Drawing.Point(1398, 35);
             this.cbEditMode.Margin = new System.Windows.Forms.Padding(4);
             this.cbEditMode.Name = "cbEditMode";
-            this.cbEditMode.Size = new System.Drawing.Size(121, 27);
+            this.cbEditMode.Size = new System.Drawing.Size(79, 17);
             this.cbEditMode.TabIndex = 136;
             this.cbEditMode.Text = "EDIT MODE";
             this.cbEditMode.UseVisualStyleBackColor = true;
@@ -275,14 +295,14 @@
             this.dgvMatStock.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgvMatStock.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMatStock.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMatStock.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMatStock.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgvMatStock.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMatStock.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvMatStock.Location = new System.Drawing.Point(4, 1);
@@ -311,14 +331,14 @@
             this.dgvMatUsed.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgvMatUsed.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMatUsed.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMatUsed.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMatUsed.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvMatUsed.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMatUsed.GridColor = System.Drawing.Color.White;
             this.dgvMatUsed.Location = new System.Drawing.Point(756, 1);
@@ -399,21 +419,21 @@
             this.cbFastMode.UseVisualStyleBackColor = true;
             this.cbFastMode.Visible = false;
             // 
-            // btnLockData
+            // cbInOutUpdate
             // 
-            this.btnLockData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLockData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(203)))), ((int)(((byte)(110)))));
-            this.btnLockData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLockData.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLockData.ForeColor = System.Drawing.Color.Black;
-            this.btnLockData.Location = new System.Drawing.Point(1398, 58);
-            this.btnLockData.Margin = new System.Windows.Forms.Padding(5, 2, 2, 2);
-            this.btnLockData.Name = "btnLockData";
-            this.btnLockData.Size = new System.Drawing.Size(124, 36);
-            this.btnLockData.TabIndex = 137;
-            this.btnLockData.Text = "LOCK DATA";
-            this.btnLockData.UseVisualStyleBackColor = false;
-            this.btnLockData.Click += new System.EventHandler(this.btnLockData_Click);
+            this.cbInOutUpdate.AutoSize = true;
+            this.cbInOutUpdate.Checked = true;
+            this.cbInOutUpdate.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbInOutUpdate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbInOutUpdate.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.cbInOutUpdate.Location = new System.Drawing.Point(602, 36);
+            this.cbInOutUpdate.Margin = new System.Windows.Forms.Padding(4);
+            this.cbInOutUpdate.Name = "cbInOutUpdate";
+            this.cbInOutUpdate.Size = new System.Drawing.Size(124, 17);
+            this.cbInOutUpdate.TabIndex = 138;
+            this.cbInOutUpdate.Text = "IN/OUT DATA UPDATE";
+            this.cbInOutUpdate.UseVisualStyleBackColor = true;
+            this.cbInOutUpdate.CheckedChanged += new System.EventHandler(this.cbInOutUpdate_CheckedChanged);
             // 
             // frmNewPMMA
             // 
@@ -470,5 +490,6 @@
         private System.ComponentModel.BackgroundWorker bgWorker;
         private System.Windows.Forms.CheckBox cbFastMode;
         private System.Windows.Forms.Button btnLockData;
+        private System.Windows.Forms.CheckBox cbInOutUpdate;
     }
 }

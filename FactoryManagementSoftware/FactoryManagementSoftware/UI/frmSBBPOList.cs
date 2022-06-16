@@ -596,13 +596,16 @@ namespace FactoryManagementSoftware.UI
 
             DataTable locationTable = dt.DefaultView.ToTable(true, dalSPP.FullName);
 
+            locationTable.DefaultView.Sort = dalSPP.FullName + " ASC";
+            locationTable = locationTable.DefaultView.ToTable();
+
             DataRow dr;
             dr = locationTable.NewRow();
             dr[dalSPP.FullName] = "ALL";
 
             locationTable.Rows.InsertAt(dr, 0);
 
-            locationTable.DefaultView.Sort = dalSPP.FullName + " ASC";
+           
 
             cmbCustomer.DataSource = locationTable;
             cmbCustomer.DisplayMember = dalSPP.FullName;

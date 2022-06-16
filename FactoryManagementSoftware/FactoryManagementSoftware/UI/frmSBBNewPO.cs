@@ -614,7 +614,7 @@ namespace FactoryManagementSoftware.UI
 
                     bool sizeFilter = true;
 
-                    if ((itemType.Contains(text.SBB_TYPE_EQUAL) || itemType.Contains(text.SBB_TYPE_ENDCAP) || itemType.Contains(text.SBB_TYPE_REDUCING)) && numerator < 20)
+                    if ((itemType.Contains(text.SBB_TYPE_EQUAL) || itemType.Contains(text.SBB_TYPE_ENDCAP) || itemType.Contains(text.SBB_TYPE_ENDCAP) || itemType.Contains(text.SBB_TYPE_REDUCING)) && numerator < 20)
                     {
                         sizeFilter = false;
                     }
@@ -660,7 +660,7 @@ namespace FactoryManagementSoftware.UI
                 cmbSize_1.DisplayMember = header_SizeString;
 
 
-                if(!itemType.Contains(text.SBB_TYPE_EQUAL) && !itemType.Contains(text.SBB_TYPE_ENDCAP))
+                if(!itemType.Contains(text.SBB_TYPE_EQUAL) && !itemType.Contains(text.SBB_TYPE_ENDCAP) && !itemType.Contains(text.SBB_TYPE_POLYORING))
                 {
                     cmbSize_2.Enabled = true;
                     DataTable dt_Size2 = dt_CMB.Copy();

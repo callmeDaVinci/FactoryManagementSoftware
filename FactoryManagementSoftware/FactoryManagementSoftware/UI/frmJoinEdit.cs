@@ -28,13 +28,34 @@ namespace FactoryManagementSoftware.UI
 
             cmbChildCat.Text = dalItem.getCatName(u.join_child_code);
             cmbChildName.Text = tool.getItemName(u.join_child_code);
+            LoadChidCodeCMB();
             cmbChildCode.Text = u.join_child_code;
 
             txtChildQty.Text = u.join_qty.ToString();
             txtMax.Text = u.join_max.ToString();
             txtMin.Text = u.join_min.ToString();
 
+            if (!string.IsNullOrEmpty(u.join_parent_code))
+            {
+                cmbParentCat.Enabled = false;
+                cmbParentName.Enabled = false;
+                cmbParentCode.Enabled = false;
+            }
+
+            if (!string.IsNullOrEmpty(u.join_child_code))
+            {
+                cmbChildCat.Enabled = false;
+                cmbChildName.Enabled = false;
+                cmbChildCode.Enabled = false;
+
+                cmbChildName.DropDownStyle = ComboBoxStyle.DropDownList;
+            }
+
+            cbMainCarton.Checked = u.join_main_carton;
+
             updateTestName();
+
+
         }
 
         itemCatDAL dALItemCat = new itemCatDAL();
@@ -85,7 +106,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmJoinEdit_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private string GetChildCode(DataTable dt, string parentCode)
@@ -299,6 +320,26 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private void LoadChidCodeCMB()
+        {
+            errorProvider5.Clear();
+            string keywords = cmbChildName.Text;
+
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                DataTable dt = dalItem.nameSearch(keywords);
+                cmbChildCode.DataSource = dt;
+                cmbChildCode.DisplayMember = "item_code";
+                cmbChildCode.ValueMember = "item_code";
+            }
+            else
+            {
+                cmbChildCode.DataSource = null;
+            }
+
+            updateTestName();
+        }
+
         private void cmbChildName_SelectedIndexChanged(object sender, EventArgs e)
         {
             errorProvider5.Clear();
@@ -468,20 +509,21 @@ namespace FactoryManagementSoftware.UI
                     frmJoin.editedParentCode = uJoin.join_parent_code;
                     frmJoin.editedChildCode = uJoin.join_child_code;
 
+                    uJoin.join_max = Convert.ToInt32(txtMax.Text);
+                    uJoin.join_min = Convert.ToInt32(txtMin.Text);
+
                     if (cmbChildCat.Text.Equals("Carton"))
                     {
-                        uJoin.join_max = Convert.ToInt32(txtMax.Text);
-                        uJoin.join_min = Convert.ToInt32(txtMin.Text);
                         uJoin.join_qty = Convert.ToInt32(txtChildQty.Text);
                     }
                     else
                     {
-                        uJoin.join_max = Convert.ToInt32(txtMax.Text);
-                        uJoin.join_min = Convert.ToInt32(txtMin.Text);
                         uJoin.join_qty = Convert.ToSingle(txtChildQty.Text);
                     }
 
-                    
+
+                    uJoin.join_main_carton = cbMainCarton.Checked;
+                    uJoin.join_stock_out = cbStockOut.Checked;
 
                     DataTable dt_existCheck = dalJoin.existCheck(uJoin.join_parent_code, uJoin.join_child_code);
 
@@ -503,7 +545,7 @@ namespace FactoryManagementSoftware.UI
                         }
                         else
                         {
-                            //Failed to insert data
+                            //Failed to update data
                             MessageBox.Show("Failed to update join");
                         }
                     }
@@ -642,6 +684,21 @@ namespace FactoryManagementSoftware.UI
         {
             if(SBBValidation())
             UpdateSBBItemPackaging();
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbChildName_DropDown(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbChildName_DropDownClosed(object sender, EventArgs e)
+        {
+            this.BeginInvoke(new Action(() => { cmbChildName.Select(0, 0); }));
         }
     }
 }

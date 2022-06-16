@@ -176,6 +176,7 @@ namespace FactoryManagementSoftware.UI
                         uCust.cust_name = txtCustName.Text;
                         uCust.cust_added_date = DateTime.Now;
                         uCust.cust_added_by = MainDashboard.USER_ID;
+
                         uCust.cust_main = int.TryParse(cmbMain.Text, out int i) ? i : 0;
 
                         //Inserting Data into Database

@@ -618,6 +618,9 @@ namespace FactoryManagementSoftware.UI
                         row_dtMat[headerStock] = remainingStock;
 
                         TransferPending = planToUse - remainingStock;
+
+                        TransferPending = (float)Math.Round(TransferPending * 100f) / 100f;
+
                         //TransferPending = stillNeed - remainingStock;
                         row_dtMat[headerTransferPending] = TransferPending < 0 ? 0 : TransferPending;
 

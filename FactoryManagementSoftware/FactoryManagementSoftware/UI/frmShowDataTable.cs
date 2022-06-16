@@ -72,11 +72,31 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadPartProductionInfo(DataTable itemList)
         {
-            itemList.Columns.Add(header_ToProduce, typeof(int));
-            itemList.Columns.Add(header_AutoAdjusted, typeof(int));
-            itemList.Columns.Add(header_Cavity, typeof(int));
-            itemList.Columns.Add(header_CT_SEC, typeof(int));
-            itemList.Columns.Add(header_ProDaysNeeded, typeof(float));
+            if(!itemList.Columns.Contains(header_ToProduce))
+            {
+                itemList.Columns.Add(header_ToProduce, typeof(int));
+            }
+
+            if (!itemList.Columns.Contains(header_AutoAdjusted))
+            {
+                itemList.Columns.Add(header_AutoAdjusted, typeof(int));
+            }
+
+            if (!itemList.Columns.Contains(header_Cavity))
+            {
+                itemList.Columns.Add(header_Cavity, typeof(int));
+            }
+
+            if (!itemList.Columns.Contains(header_CT_SEC))
+            {
+                itemList.Columns.Add(header_CT_SEC, typeof(int));
+            }
+
+            if (!itemList.Columns.Contains(header_ProDaysNeeded))
+            {
+                itemList.Columns.Add(header_ProDaysNeeded, typeof(float));
+            }
+
 
             DataTable dt = dalItem.SBBPartSearch();
 
@@ -86,7 +106,7 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow itemRow in itemList.Rows)
                 {
-                    string itemCode = itemRow[header_ItemCode].ToString();
+                    string itemCode = itemRow[header_ItemCode].ToString(); 
 
                     if(!string.IsNullOrEmpty(itemCode))
                     {

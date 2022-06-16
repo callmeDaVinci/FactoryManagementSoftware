@@ -24,7 +24,9 @@ namespace FactoryManagementSoftware.DAL
         public string JoinQty { get; } = "join_qty";
         public string JoinMax { get; } = "join_max";
         public string JoinMin { get; } = "join_min";
-        
+        public string JoinMainCarton { get; } = "join_main_carton";
+        public string JoinStockOut { get; } = "join_stock_out";
+
         public string JoinAddedDate { get; } = "join_added_date";
         public string JoinAddedBy { get; } = "join_added_by";
 
@@ -81,7 +83,7 @@ namespace FactoryManagementSoftware.DAL
                 tbl_item.item_name as parent_name ,
                 tbl_join.join_child_code as child_code ,
                 a.item_name as child_name ,join_qty, join_max, join_min, join_added_date, join_added_by,
-                join_updated_date,join_updated_by ,tbl_item.item_quo_pw_pcs,tbl_item.item_quo_rw_pcs,tbl_item.item_part_weight,tbl_item.item_runner_weight,tbl_item.item_wastage_allowed,a.item_qty
+                join_updated_date,join_updated_by ,tbl_item.item_capacity, tbl_item.item_pro_pw_shot, tbl_item.item_pro_rw_shot,  tbl_item.item_quo_pw_pcs,tbl_item.item_quo_rw_pcs,tbl_item.item_part_weight,tbl_item.item_runner_weight,tbl_item.item_wastage_allowed,a.item_qty
                 FROM tbl_join 
                 JOIN tbl_item 
                 ON tbl_join.join_parent_code = tbl_item.item_code 
@@ -381,7 +383,7 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-                String sql = "INSERT INTO tbl_join (join_parent_code, join_child_code, join_qty,join_max,join_min,join_added_date, join_added_by) VALUES ( @join_parent_code, @join_child_code, @join_qty, @join_max, @join_min, @join_added_date, @join_added_by)";
+                String sql = "INSERT INTO tbl_join (join_parent_code, join_child_code, join_qty,join_max,join_min,join_main_carton,join_stock_out,join_added_date, join_added_by) VALUES ( @join_parent_code, @join_child_code, @join_qty, @join_max, @join_min,@join_main_carton, @join_stock_out, @join_added_date, @join_added_by)";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@join_parent_code", u.join_parent_code);
@@ -389,6 +391,8 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@join_qty", u.join_qty);
                 cmd.Parameters.AddWithValue("@join_max", u.join_max);
                 cmd.Parameters.AddWithValue("@join_min", u.join_min);
+                cmd.Parameters.AddWithValue("@join_main_carton", u.join_main_carton);
+                cmd.Parameters.AddWithValue("@join_stock_out", u.join_stock_out);
                 cmd.Parameters.AddWithValue("@join_added_date", u.join_added_date);
                 cmd.Parameters.AddWithValue("@join_added_by", u.join_added_by);
 
@@ -485,6 +489,8 @@ namespace FactoryManagementSoftware.DAL
                             + JoinQty + "=@join_qty,"
                             + JoinMax + "=@join_max,"
                             + JoinMin + "=@join_min,"
+                            + JoinMainCarton + "=@join_main_carton,"
+                            + JoinStockOut + "=@join_stock_out,"
                             + JoinUpdatedDate + "=@join_updated_date,"
                             + JoinUpdatedBy + "=@join_updated_by" +
                             " WHERE join_parent_code=@join_parent_code AND join_child_code=@join_child_code";
@@ -496,6 +502,8 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@join_qty", u.join_qty);
                 cmd.Parameters.AddWithValue("@join_max", u.join_max);
                 cmd.Parameters.AddWithValue("@join_min", u.join_min);
+                cmd.Parameters.AddWithValue("@join_main_carton", u.join_main_carton);
+                cmd.Parameters.AddWithValue("@join_stock_out", u.join_stock_out);
                 cmd.Parameters.AddWithValue("@join_updated_date", u.join_updated_date);
                 cmd.Parameters.AddWithValue("@join_updated_by", u.join_updated_by);
 
@@ -627,6 +635,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"SELECT tbl_join.join_parent_code as parent_code, 
                 tbl_item.item_name as parent_name ,
                 tbl_join.join_child_code as child_code ,
+                tbl_join.join_main_carton, tbl_join.join_stock_out,
                 a.item_name as child_name ,join_qty, join_max, join_min, join_added_date, join_added_by,
                 join_updated_date,join_updated_by 
                 FROM tbl_join 

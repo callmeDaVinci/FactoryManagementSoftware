@@ -39,6 +39,7 @@ namespace FactoryManagementSoftware.UI
         Text text = new Text();
         private DataTable dt_Product;
 
+
         readonly string header_Index = "#";
         readonly string header_Size = "SIZE INT";
         readonly string header_Unit = "UNIT";
@@ -57,6 +58,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_OldDiscount = "Old DISCOUNT(%)";
 
         readonly string header_Amount = "AMOUNTS(RM)";
+
 
         private string oldCellValue = "";
         private string preSelectedCustomer = "";
@@ -335,6 +337,8 @@ namespace FactoryManagementSoftware.UI
                 dataChanged = false;
                 cmbCustomer.SelectedIndex = -1;
                 btnSetAll.Visible = true;
+                lblDiscountRate.Visible = true;
+
                 txtSetAll.Clear();
                 txtSetAll.Visible = true;
 
@@ -383,6 +387,8 @@ namespace FactoryManagementSoftware.UI
                 DataGridView dgv = dgvItemList;
 
                 btnSetAll.Visible = false;
+                lblDiscountRate.Visible = false;
+
                 txtSetAll.Visible = false;
                 btnCustomerDiscount.ForeColor = Color.Black;
                 btnItemPrice.ForeColor = Color.FromArgb(52, 139, 209);
@@ -547,11 +553,11 @@ namespace FactoryManagementSoftware.UI
                     DialogResult dialogResult = MessageBox.Show("You have unsaved changes for " + preSelectedCustomer + ".\n Do you want to save your changes?", "Message",
                                                                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    if (dialogResult != DialogResult.Yes)
+                    if (dialogResult == DialogResult.Yes)
                     {
                         DataTable dt_customerList = (DataTable)cmbCustomer.DataSource;
 
-                        string custFullName = cmbCustomer.Text;
+                        string custFullName = preSelectedCustomer;
 
                         int custTblCode = -1;
 
@@ -568,7 +574,7 @@ namespace FactoryManagementSoftware.UI
                         {
                             if(SaveCustomerPriceData(custTblCode))
                             {
-                                DataSaved();
+                                
                                 MessageBox.Show("Data saved!");
                             }
                         }
@@ -577,6 +583,8 @@ namespace FactoryManagementSoftware.UI
                             MessageBox.Show("Failed to get customer table code!");
                         }
                     }
+
+                    DataSaved();
                 }
 
                 if (cmbCustomer.SelectedIndex != -1)
@@ -934,6 +942,7 @@ namespace FactoryManagementSoftware.UI
 
         private void DataSaved()
         {
+            txtSetAll.Clear();
             dataChanged = false;
             btnSave.Visible = false;
         }
@@ -1196,7 +1205,7 @@ namespace FactoryManagementSoftware.UI
         {
             string discount = txtSetAll.Text;
 
-            if(cmbCustomer.SelectedIndex != 1 && decimal.TryParse(discount, out decimal i))
+            if(cmbCustomer.SelectedIndex != -1 && decimal.TryParse(discount, out decimal i))
             {
                 DataTable dt = (DataTable)dgvItemList.DataSource;
 

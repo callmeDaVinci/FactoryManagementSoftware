@@ -15,6 +15,10 @@ namespace FactoryManagementSoftware.BLL
         public int join_max { get; set; }
         public int join_min { get; set; }
 
+        public bool join_main_carton { get; set; }
+        public bool join_stock_out { get; set; }
+
+
         public DateTime join_added_date { get; set; }
         public int join_added_by { get; set; }
 

@@ -96,7 +96,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@cust_name", u.cust_name);
                 cmd.Parameters.AddWithValue("@cust_added_date", u.cust_added_date);
                 cmd.Parameters.AddWithValue("@cust_added_by", u.cust_added_by);
-                cmd.Parameters.AddWithValue("@cust_added_by", u.cust_main);
+                cmd.Parameters.AddWithValue("@cust_main", u.cust_main);
 
                 conn.Open();
 

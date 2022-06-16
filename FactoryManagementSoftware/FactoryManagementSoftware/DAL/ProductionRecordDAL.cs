@@ -30,8 +30,9 @@ namespace FactoryManagementSoftware.DAL
         public string PackagingQty { get; } = "packaging_qty";
         public string PackagingCode { get; } = "packaging_code";
         public string PackagingMax { get; } = "packaging_max";
+        public string PackagingStockOut { get; } = "packaging_stock_out";
 
-       
+
         public string ParentQty { get; } = "parent_qty";
 
         public string ProTime { get; } = "time";

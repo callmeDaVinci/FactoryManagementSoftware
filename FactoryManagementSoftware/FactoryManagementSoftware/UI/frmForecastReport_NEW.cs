@@ -2820,8 +2820,6 @@ namespace FactoryManagementSoftware.UI
                 //check repeated data: normal-slow speed
                 dt_Data = CalRepeatedData(dt_Data);//6582
 
-                //dt_Data = CalRepeatedData(dt_Data);
-
                 //item search:fast speed
                 dt_Data = ItemSearch(dt_Data);
 
@@ -3619,7 +3617,7 @@ namespace FactoryManagementSoftware.UI
                         }
                     }
                 }
-            }
+            } 
 
             if (dt_Copy.Rows.Count > 0)
             {
@@ -3687,11 +3685,6 @@ namespace FactoryManagementSoftware.UI
                 string firstParentColor = dt.Rows[i][headerParentColor].ToString();
 
                 string type = dt.Rows[i][headerType].ToString();
-
-                if (firstItem.Equals("C84KXQ000"))
-                {
-                    float test = 0;
-                }
 
                 if (!(type.Equals(typeSingle) || type.Equals(typeParent)))
                 {
@@ -3811,19 +3804,6 @@ namespace FactoryManagementSoftware.UI
                 string ForecastType = dt.Rows[i][headerForecastType].ToString();
                 double itemStock = double.TryParse(dt.Rows[i][headerReadyStock].ToString(), out itemStock) ? itemStock : 0;
 
-
-                if(itemCode.Equals("C84KXQ100"))
-                {
-                    float s = 0;
-
-                }
-
-                //if(ForecastType.Equals(forecastType_Forecast))
-                //{
-                //    totalNeeded1 = double.TryParse(dt.Rows[i][headerOutStd].ToString(), out double d) ? d : 0;
-                //    totalNeeded2 = double.TryParse(dt.Rows[i][headerForecast2].ToString(), out d) ? d : 0;
-                //}
-
                 //loop and find "TOTAL"  and not parent item
                 if (itemType != typeParent &&  !ForecastType.Equals(forecastType_Forecast) && balType.Equals(balType_Total))
                 {
@@ -3879,6 +3859,9 @@ namespace FactoryManagementSoftware.UI
                             totalNeeded2 = (float)Math.Round(totalNeeded2 * 100f) / 100f;
 
                         }
+
+                     
+
                         dt.Rows[i][headerBal1] = itemStock - totalNeeded1;
                         dt.Rows[i][headerBal2] = itemStock - totalNeeded2;
                     }

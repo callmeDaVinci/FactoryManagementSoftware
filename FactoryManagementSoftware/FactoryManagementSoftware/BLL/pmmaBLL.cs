@@ -13,6 +13,7 @@ namespace FactoryManagementSoftware.BLL
         public float pmma_openning_stock { get; set; }
         public float pmma_in { get; set; } = 0;
         public float pmma_out { get; set; } = 0;
+        public float pmma_direct_out { get; set; }
         public float pmma_bal_stock { get; set; }
         public float pmma_wastage { get; set; }
         public float pmma_adjust { get; set; } = 0;

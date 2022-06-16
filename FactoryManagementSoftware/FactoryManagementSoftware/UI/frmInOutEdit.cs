@@ -307,60 +307,95 @@ namespace FactoryManagementSoftware.UI
 
             if (string.IsNullOrEmpty(cmbTrfItemCat.Text))
             {
-                result = false;
                 errorProvider1.SetError(lblCategoryError, "Item Category Required");
+                return false;
             }
 
             if (string.IsNullOrEmpty(cmbTrfItemName.Text))
             {
-                result = false;
                 errorProvider2.SetError(lblNameError, "Item Name Required");
+                return false;
             }
 
             if (string.IsNullOrEmpty(cmbTrfItemCode.Text))
             {
-                result = false;
                 errorProvider3.SetError(lblCodeError, "Item Code Required");
+                return false;
             }   
 
             if (string.IsNullOrEmpty(cmbTrfFromCategory.Text))
             {
-                result = false;
                 errorProvider4.SetError(lblLocationFromError, "Item From Location Required");
+                return false;
             }
             else if (cmbTrfFromCategory.Text.Equals(text.Factory) || cmbTrfFromCategory.Text.Equals(text.Customer))
             {
                 if (string.IsNullOrEmpty(cmbTrfFrom.Text))
                 {
-                    result = false;
                     errorProvider5.SetError(lblLocationFromError, "Item From Location Required");
+                    return false;
+
                 }
             }
 
             if (string.IsNullOrEmpty(cmbTrfToCategory.Text))
             {
-                result = false;
                 errorProvider5.SetError(lblLocationToError, "Item To Location Required");
+                return false;
             }
             else if(cmbTrfToCategory.Text.Equals(text.Factory) || cmbTrfToCategory.Text.Equals(text.Customer))
             {
                 if (string.IsNullOrEmpty(cmbTrfTo.Text))
                 {
-                    result = false;
                     errorProvider5.SetError(lblLocationToError, "Item To Location Required");
+                    return false;
+
+                }
+                else if(cmbTrfToCategory.Text.Equals(text.Customer))
+                {
+                    //check if item and customer match?
+                    string Customer = cmbTrfTo.Text;
+                    string itemCode = cmbTrfItemCode.Text;
+
+                    itemCustDAL dalItemCust = new itemCustDAL();
+                    DataTable dt = dalItemCust.Select();
+
+                    bool CustomerAndItemMatched = false;
+
+                    foreach(DataRow row in dt.Rows)
+                    {
+                        if(row["cust_name"].ToString().Equals(Customer) && row["item_code"].ToString().Equals(itemCode))
+                        {
+                            CustomerAndItemMatched = true;
+                            break;
+                        }
+                    }
+
+                    if(!CustomerAndItemMatched)
+                    {
+                        DialogResult dialogResult = MessageBox.Show("The product does not match with the selected customer, are you sure you want to add this transfer data?", "Message",
+                                                              MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (dialogResult == DialogResult.No)
+                        {
+                            errorProvider5.SetError(lblLocationToError, "The product does not match with the selected customer");
+                            return false;
+                        }
+                    }
+
                 }
             }
 
             if (string.IsNullOrEmpty(txtTrfQty.Text))
             {
-                result = false;
                 errorProvider6.SetError(lblQuantityError, "Item Transfer Qty Required");
+                return false;
             }
 
             if (string.IsNullOrEmpty(cmbTrfQtyUnit.Text))
             {
-                result = false;
                 errorProvider7.SetError(lblUnitError, "Item Qty Unit Required");
+                return false;
+
             }
 
             return result;

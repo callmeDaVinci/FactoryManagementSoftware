@@ -185,6 +185,7 @@ namespace FactoryManagementSoftware.DAL
                             (" + itemCode + ","
                                 + OpenStock + ","
                                 + Adjust + ","
+                                + DirectOut + ","
                                 + Note + ","
                                 + BalStock + ","
                                 + Month + ","
@@ -194,6 +195,7 @@ namespace FactoryManagementSoftware.DAL
                                 "(@pmma_item_code," +
                                 "@pmma_openning_stock," +
                                  "@pmma_adjust," +
+                                "@pmma_direct_out," +
                                 "@pmma_note," +
                                  "@pmma_bal_stock," +
                                 "@pmma_month," +
@@ -207,6 +209,7 @@ namespace FactoryManagementSoftware.DAL
                     cmd.Parameters.AddWithValue("@pmma_openning_stock", u.pmma_openning_stock);
 
                     cmd.Parameters.AddWithValue("@pmma_adjust", u.pmma_adjust);
+                    cmd.Parameters.AddWithValue("@pmma_direct_out", u.pmma_direct_out);
                     cmd.Parameters.AddWithValue("@pmma_note", u.pmma_note);
                     cmd.Parameters.AddWithValue("@pmma_bal_stock", u.pmma_bal_stock);
 
@@ -432,6 +435,7 @@ namespace FactoryManagementSoftware.DAL
                             + OpenStock + "=@pmma_openning_stock,"
                             + PMMAIn + "=@pmma_in,"
                             + PMMAOut + "=@pmma_out,"
+                            + DirectOut + "=@pmma_direct_out,"
                             + Wastage + "=@pmma_wastage,"
                             + Adjust + "=@pmma_adjust,"
                             + Note + "=@pmma_note,"
@@ -447,6 +451,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@pmma_openning_stock", u.pmma_openning_stock);
                 cmd.Parameters.AddWithValue("@pmma_in", u.pmma_in);
                 cmd.Parameters.AddWithValue("@pmma_out", u.pmma_out);
+                cmd.Parameters.AddWithValue("@pmma_direct_out", u.pmma_direct_out);
                 cmd.Parameters.AddWithValue("@pmma_wastage", u.pmma_wastage);
 
                 cmd.Parameters.AddWithValue("@pmma_adjust", u.pmma_adjust);

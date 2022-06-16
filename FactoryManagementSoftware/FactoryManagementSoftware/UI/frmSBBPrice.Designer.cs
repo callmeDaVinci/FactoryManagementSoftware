@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnItemPrice = new System.Windows.Forms.Button();
             this.btnCustomerDiscount = new System.Windows.Forms.Button();
             this.dgvItemList = new System.Windows.Forms.DataGridView();
@@ -39,6 +39,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnSetAll = new System.Windows.Forms.Button();
             this.txtSetAll = new System.Windows.Forms.TextBox();
+            this.lblDiscountRate = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItemList)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,24 +89,24 @@
             this.dgvItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItemList.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItemList.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvItemList.GridColor = System.Drawing.Color.Silver;
             this.dgvItemList.Location = new System.Drawing.Point(8, 91);
             this.dgvItemList.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
@@ -165,7 +166,7 @@
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnSave.Location = new System.Drawing.Point(1217, 58);
+            this.btnSave.Location = new System.Drawing.Point(1214, 26);
             this.btnSave.Margin = new System.Windows.Forms.Padding(1);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(124, 32);
@@ -185,12 +186,12 @@
             this.btnSetAll.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSetAll.ForeColor = System.Drawing.Color.White;
             this.btnSetAll.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnSetAll.Location = new System.Drawing.Point(1050, 57);
+            this.btnSetAll.Location = new System.Drawing.Point(876, 26);
             this.btnSetAll.Margin = new System.Windows.Forms.Padding(1);
             this.btnSetAll.Name = "btnSetAll";
-            this.btnSetAll.Size = new System.Drawing.Size(124, 32);
+            this.btnSetAll.Size = new System.Drawing.Size(156, 32);
             this.btnSetAll.TabIndex = 189;
-            this.btnSetAll.Text = "SET ALL";
+            this.btnSetAll.Text = "UPDATE ALL ITEM";
             this.btnSetAll.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnSetAll.UseVisualStyleBackColor = false;
             this.btnSetAll.Visible = false;
@@ -199,12 +200,24 @@
             // txtSetAll
             // 
             this.txtSetAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSetAll.Location = new System.Drawing.Point(913, 57);
+            this.txtSetAll.Location = new System.Drawing.Point(739, 26);
             this.txtSetAll.Name = "txtSetAll";
             this.txtSetAll.Size = new System.Drawing.Size(133, 25);
             this.txtSetAll.TabIndex = 190;
             this.txtSetAll.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtSetAll.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSetAll_KeyPress);
+            // 
+            // lblDiscountRate
+            // 
+            this.lblDiscountRate.AutoSize = true;
+            this.lblDiscountRate.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblDiscountRate.Location = new System.Drawing.Point(737, 11);
+            this.lblDiscountRate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblDiscountRate.Name = "lblDiscountRate";
+            this.lblDiscountRate.Size = new System.Drawing.Size(88, 12);
+            this.lblDiscountRate.TabIndex = 191;
+            this.lblDiscountRate.Text = "DISCOUNT RATE %";
+            this.lblDiscountRate.Visible = false;
             // 
             // frmSBBPrice
             // 
@@ -212,6 +225,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1348, 721);
+            this.Controls.Add(this.lblDiscountRate);
             this.Controls.Add(this.txtSetAll);
             this.Controls.Add(this.btnSetAll);
             this.Controls.Add(this.btnSave);
@@ -244,5 +258,6 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnSetAll;
         private System.Windows.Forms.TextBox txtSetAll;
+        private System.Windows.Forms.Label lblDiscountRate;
     }
 }

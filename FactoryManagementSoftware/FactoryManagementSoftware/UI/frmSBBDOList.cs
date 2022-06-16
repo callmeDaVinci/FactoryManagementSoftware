@@ -529,14 +529,15 @@ namespace FactoryManagementSoftware.UI
 
             DataTable locationTable = dt.DefaultView.ToTable(true, dalSPP.FullName);
 
+            locationTable.DefaultView.Sort = dalSPP.FullName + " ASC";
+            locationTable = locationTable.DefaultView.ToTable();
+
+
             DataRow dr;
             dr = locationTable.NewRow();
             dr[dalSPP.FullName] = "ALL";
 
             locationTable.Rows.InsertAt(dr, 0);
-
-            locationTable.DefaultView.Sort = dalSPP.FullName + " ASC";
-
 
             cmbCustomer.DataSource = locationTable;
             cmbCustomer.DisplayMember = dalSPP.FullName;
@@ -547,6 +548,10 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.WaitCursor;
 
             ShowOrHideFilter();
+
+            cmbCustomer.Text = "ALL";
+
+            
             LoadDOList();//825
             FormLoaded = true;
 
@@ -565,7 +570,9 @@ namespace FactoryManagementSoftware.UI
             btnRemove.Visible = false;
             dgvItemList.DataSource = null;
             ShowingDO = "";
+
             //dt_DOList = dalSPP.DOSelect();
+
             dt_DOList = dalSPP.DOWithInfoSelect();
 
             DataTable dt = NewDOTable();
@@ -4462,7 +4469,10 @@ namespace FactoryManagementSoftware.UI
             {
                 type_ShortName = text.EndCap_Short;
             }
-
+            else if (type == text.Type_PolyORing)
+            {
+                type_ShortName = text.PolyORing_Short;
+            }
 
             return type_ShortName;
         }
@@ -4709,6 +4719,12 @@ namespace FactoryManagementSoftware.UI
                                         string type = row2[dalSPP.TypeName].ToString();
                                         int stdPacking = int.TryParse(row2[dalSPP.QtyPerBag].ToString(), out stdPacking) ? stdPacking : 0;
                                         int bag = deliveryQty / stdPacking;
+
+                                        if(type == text.Type_PolyORing)
+                                        {
+                                            bag = 0;
+                                        }
+
                                         string size = row2[dalSPP.SizeNumerator].ToString();
                                         string unit = row2[dalSPP.SizeUnit].ToString().ToUpper();
                                         string itemCode = row2[dalSPP.ItemCode].ToString();
@@ -5017,8 +5033,11 @@ namespace FactoryManagementSoftware.UI
                                         RowToInsert = pcsUnitColStart + (itemRowOffset + rowNo).ToString() + pcsUnitColEnd + (itemRowOffset + rowNo).ToString();
                                         InsertToSheet(xlWorkSheet, RowToInsert, "PCS");
 
-                                        RowToInsert = remarkColStart + (itemRowOffset + rowNo).ToString() + remarkColEnd + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, remark);
+                                        if(type != text.Type_PolyORing)
+                                        {
+                                            RowToInsert = remarkColStart + (itemRowOffset + rowNo).ToString() + remarkColEnd + (itemRowOffset + rowNo).ToString();
+                                            InsertToSheet(xlWorkSheet, RowToInsert, remark);
+                                        }
 
                                         if (PONo == Text_MultiPOCode)
                                         {
@@ -5049,7 +5068,7 @@ namespace FactoryManagementSoftware.UI
                                 InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalBag + " BAG(S) + " + totalBalPcs + " PCS");
 
                             }
-                            else
+                            else if(totalBag > 0)
                             {
                                 InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalBag + " BAG(S)");
 

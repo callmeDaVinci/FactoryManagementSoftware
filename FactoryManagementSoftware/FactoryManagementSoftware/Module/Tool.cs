@@ -3580,7 +3580,7 @@ namespace FactoryManagementSoftware.Module
                     //counter++;
                     itemCode = item[dalItem.ItemCode].ToString();
 
-                    if(itemCode == "V02K81000")
+                    if(itemCode == "C84KXQ100")
                     {
                         float test = 0;
                     }
@@ -3598,8 +3598,15 @@ namespace FactoryManagementSoftware.Module
                     forecast_3 = forecast_3 <= -1 ? 0 : forecast_3;
                     forecast_4 = forecast_4 <= -1 ? 0 : forecast_4;
 
-                    itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
-                    itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
+                    itemPartWeight = item["item_quo_pw_pcs"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_quo_pw_pcs"].ToString());
+                    itemRunnerWeight = item["item_quo_rw_pcs"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_quo_rw_pcs"].ToString());
+
+                    if (itemPartWeight == 0)
+                        itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
+
+                    if (itemRunnerWeight == 0)
+                        itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
+
                     wastageAllowed = item["item_wastage_allowed"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_wastage_allowed"].ToString());
 
                     #region cal out data
@@ -3689,7 +3696,10 @@ namespace FactoryManagementSoftware.Module
                             dtMat_row[headerName] = getItemNameFromDataTable(dt_ItemInfo,itemCode);
                             dtMat_row[headerMB] = MB;
                             dtMat_row[headerMBRate] = mbRate;
-                            dtMat_row[headerWeight] = itemPartWeight + itemRunnerWeight;
+
+                            float totalWeight = itemPartWeight + itemRunnerWeight;
+                            dtMat_row[headerWeight] = totalWeight;
+
                             dtMat_row[headerWastage] = wastageAllowed;
                             dtMat_row[headerReadyStock] = readyStock;
                             dtMat_row[headerBalanceZero] = readyStock;
@@ -3807,7 +3817,17 @@ namespace FactoryManagementSoftware.Module
                                             dtMat_row[headerName] = getItemNameFromDataTable(dt_ItemInfo, Join["child_code"].ToString());
                                             dtMat_row[headerMB] = child_MB;
                                             dtMat_row[headerMBRate] = child_mbRate;
-                                            dtMat_row[headerWeight] = Convert.ToSingle(Join["child_part_weight"].ToString()) + Convert.ToSingle(Join["child_runner_weight"].ToString());
+
+                                            float TotalWeight = Convert.ToSingle(Join["child_quo_part_weight"].ToString()) + Convert.ToSingle(Join["child_quo_runner_weight"].ToString());
+
+                                            if (TotalWeight == 0)
+                                            {
+                                                TotalWeight = Convert.ToSingle(Join["child_part_weight"].ToString()) + Convert.ToSingle(Join["child_runner_weight"].ToString());
+                                            }
+
+                                            dtMat_row[headerWeight] = TotalWeight;
+
+                                           
                                             dtMat_row[headerWastage] = Join["child_wastage_allowed"].ToString();
                                             dtMat_row[headerReadyStock] = child_ReadyStock;
                                             dtMat_row[headerBalanceZero] = child_ReadyStock;
@@ -3911,7 +3931,16 @@ namespace FactoryManagementSoftware.Module
                                                         dtMat_row[headerName] = getItemNameFromDataTable(dt_ItemInfo, Join2["child_code"].ToString());
                                                         dtMat_row[headerMB] = child_child_MB;
                                                         dtMat_row[headerMBRate] = child_child_mbRate;
-                                                        dtMat_row[headerWeight] = Convert.ToSingle(Join2["child_part_weight"].ToString()) + Convert.ToSingle(Join2["child_runner_weight"].ToString());
+
+                                                        float TotalWeight = Convert.ToSingle(Join2["child_quo_part_weight"].ToString()) + Convert.ToSingle(Join2["child_quo_runner_weight"].ToString());
+
+                                                        if (TotalWeight == 0)
+                                                        {
+                                                            TotalWeight = Convert.ToSingle(Join2["child_part_weight"].ToString()) + Convert.ToSingle(Join2["child_runner_weight"].ToString());
+                                                        }
+
+                                                        dtMat_row[headerWeight] = TotalWeight;
+
                                                         dtMat_row[headerWastage] = Join2["child_wastage_allowed"].ToString();
                                                         dtMat_row[headerReadyStock] = child_child_ReadyStock;
                                                         dtMat_row[headerBalanceZero] = child_child_ReadyStock;
@@ -3946,7 +3975,17 @@ namespace FactoryManagementSoftware.Module
                                         dtMat_row[headerName] = getItemNameFromDataTable(dt_ItemInfo, Join["child_code"].ToString());
                                         dtMat_row[headerMB] = child_MB;
                                         dtMat_row[headerMBRate] = child_mbRate;
-                                        dtMat_row[headerWeight] = Convert.ToSingle(Join["child_part_weight"].ToString()) + Convert.ToSingle(Join["child_runner_weight"].ToString());
+
+                                        float TotalWeight = Convert.ToSingle(Join["child_quo_part_weight"].ToString()) + Convert.ToSingle(Join["child_quo_runner_weight"].ToString());
+
+                                        if (TotalWeight == 0)
+                                        {
+                                            TotalWeight = Convert.ToSingle(Join["child_part_weight"].ToString()) + Convert.ToSingle(Join["child_runner_weight"].ToString());
+                                        }
+
+                                        dtMat_row[headerWeight] = TotalWeight;
+             
+
                                         dtMat_row[headerWastage] = Join["child_wastage_allowed"].ToString();
                                         dtMat_row[headerReadyStock] = child_ReadyStock;
                                         dtMat_row[headerBalanceZero] = child_ReadyStock;
@@ -4148,7 +4187,17 @@ namespace FactoryManagementSoftware.Module
                                             dtMat_row[headerName] = getItemNameFromDataTable(dt_ItemInfo, Join["child_code"].ToString());
                                             dtMat_row[headerMB] = child_MB;
                                             dtMat_row[headerMBRate] = child_mbRate;
-                                            dtMat_row[headerWeight] = Convert.ToSingle(Join["child_part_weight"].ToString()) + Convert.ToSingle(Join["child_runner_weight"].ToString());
+
+                                            float TotalWeight = Convert.ToSingle(Join["child_quo_part_weight"].ToString()) + Convert.ToSingle(Join["child_quo_runner_weight"].ToString());
+
+                                            if (TotalWeight == 0)
+                                            {
+                                                TotalWeight = Convert.ToSingle(Join["child_part_weight"].ToString()) + Convert.ToSingle(Join["child_runner_weight"].ToString());
+                                            }
+
+                                            dtMat_row[headerWeight] = TotalWeight;
+
+
                                             dtMat_row[headerWastage] = Join["child_wastage_allowed"].ToString();
                                             dtMat_row[headerReadyStock] = child_ReadyStock;
                                             dtMat_row[headerBalanceZero] = child_ReadyStock;
@@ -4257,7 +4306,16 @@ namespace FactoryManagementSoftware.Module
                                                         dtMat_row[headerName] = getItemNameFromDataTable(dt_ItemInfo, Join2["child_code"].ToString());
                                                         dtMat_row[headerMB] = child_child_MB;
                                                         dtMat_row[headerMBRate] = child_child_mbRate;
-                                                        dtMat_row[headerWeight] = Convert.ToSingle(Join2["child_part_weight"].ToString()) + Convert.ToSingle(Join2["child_runner_weight"].ToString());
+
+                                                        float TotalWeight = Convert.ToSingle(Join2["child_quo_part_weight"].ToString()) + Convert.ToSingle(Join2["child_quo_runner_weight"].ToString());
+
+                                                        if (TotalWeight == 0)
+                                                        {
+                                                            TotalWeight = Convert.ToSingle(Join2["child_part_weight"].ToString()) + Convert.ToSingle(Join2["child_runner_weight"].ToString());
+                                                        }
+
+                                                        dtMat_row[headerWeight] = TotalWeight;
+
                                                         dtMat_row[headerWastage] = Join2["child_wastage_allowed"].ToString();
                                                         dtMat_row[headerReadyStock] = child_child_ReadyStock;
                                                         dtMat_row[headerBalanceZero] = child_child_ReadyStock;
@@ -4292,7 +4350,16 @@ namespace FactoryManagementSoftware.Module
                                         dtMat_row[headerName] = getItemNameFromDataTable(dt_ItemInfo, Join["child_code"].ToString());
                                         dtMat_row[headerMB] = child_MB;
                                         dtMat_row[headerMBRate] = child_mbRate;
-                                        dtMat_row[headerWeight] = Convert.ToSingle(Join["child_part_weight"].ToString()) + Convert.ToSingle(Join["child_runner_weight"].ToString());
+
+                                        float TotalWeight = Convert.ToSingle(Join["child_quo_part_weight"].ToString()) + Convert.ToSingle(Join["child_quo_runner_weight"].ToString());
+
+                                        if (TotalWeight == 0)
+                                        {
+                                            TotalWeight = Convert.ToSingle(Join["child_part_weight"].ToString()) + Convert.ToSingle(Join["child_runner_weight"].ToString());
+                                        }
+
+                                        dtMat_row[headerWeight] = TotalWeight;
+
                                         dtMat_row[headerWastage] = Join["child_wastage_allowed"].ToString();
                                         dtMat_row[headerReadyStock] = child_ReadyStock;
                                         dtMat_row[headerBalanceZero] = child_ReadyStock;
@@ -4334,7 +4401,9 @@ namespace FactoryManagementSoftware.Module
                             dtMat_row[headerName] = getItemNameFromDataTable(dt_ItemInfo, itemCode);
                             dtMat_row[headerMB] = MB;
                             dtMat_row[headerMBRate] = mbRate;
-                            dtMat_row[headerWeight] = itemPartWeight + itemRunnerWeight;
+
+                            float totalWeight = itemPartWeight + itemRunnerWeight;
+                            dtMat_row[headerWeight] = totalWeight;
                             dtMat_row[headerWastage] = wastageAllowed;
                             dtMat_row[headerReadyStock] = readyStock;
                             dtMat_row[headerBalanceZero] = readyStock;
@@ -4448,8 +4517,15 @@ namespace FactoryManagementSoftware.Module
                     forecast_3 = forecast_3 <= -1 ? 0 : forecast_3;
                     forecast_4 = forecast_4 <= -1 ? 0 : forecast_4;
 
+                    itemPartWeight = item["item_quo_pw_pcs"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_quo_pw_pcs"].ToString());
+                    itemRunnerWeight = item["item_quo_rw_pcs"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_quo_rw_pcs"].ToString());
+
+                    if(itemPartWeight == 0)
                     itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
+
+                    if(itemRunnerWeight == 0)
                     itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
+
                     wastageAllowed = item["item_wastage_allowed"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_wastage_allowed"].ToString());
 
                     #region cal out data
@@ -4804,7 +4880,16 @@ namespace FactoryManagementSoftware.Module
                                                 dtMat_row[headerName] = getItemNameFromDataTable(dt_ItemInfo, Join2["child_code"].ToString());
                                                 dtMat_row[headerMB] = child_child_MB;
                                                 dtMat_row[headerMBRate] = child_child_mbRate;
-                                                dtMat_row[headerWeight] = Convert.ToSingle(Join2["child_part_weight"].ToString()) + Convert.ToSingle(Join2["child_runner_weight"].ToString());
+
+                                                float TotalWeight = Convert.ToSingle(Join2["child_quo_part_weight"].ToString()) + Convert.ToSingle(Join2["child_quo_runner_weight"].ToString());
+
+                                                if(TotalWeight == 0)
+                                                {
+                                                    TotalWeight = Convert.ToSingle(Join2["child_part_weight"].ToString()) + Convert.ToSingle(Join2["child_runner_weight"].ToString());
+                                                }
+
+                                                dtMat_row[headerWeight] = TotalWeight;
+
                                                 dtMat_row[headerWastage] = Join2["child_wastage_allowed"].ToString();
                                                 dtMat_row[headerReadyStock] = child_child_ReadyStock;
                                                 dtMat_row[headerBalanceZero] = child_child_ReadyStock;
@@ -5013,7 +5098,16 @@ namespace FactoryManagementSoftware.Module
                                     dtMat_row[headerName] = getItemNameFromDataTable(dt_ItemInfo, Join["child_code"].ToString());
                                     dtMat_row[headerMB] = child_MB;
                                     dtMat_row[headerMBRate] = child_mbRate;
-                                    dtMat_row[headerWeight] = Convert.ToSingle(Join["child_part_weight"].ToString()) + Convert.ToSingle(Join["child_runner_weight"].ToString());
+
+                                    float TotalWeight = Convert.ToSingle(Join["child_quo_part_weight"].ToString()) + Convert.ToSingle(Join["child_quo_runner_weight"].ToString());
+
+                                    if (TotalWeight == 0)
+                                    {
+                                        TotalWeight = Convert.ToSingle(Join["child_part_weight"].ToString()) + Convert.ToSingle(Join["child_runner_weight"].ToString());
+                                    }
+
+                                    dtMat_row[headerWeight] = TotalWeight;
+
                                     dtMat_row[headerWastage] = Join["child_wastage_allowed"].ToString();
                                     dtMat_row[headerReadyStock] = child_ReadyStock;
                                     dtMat_row[headerBalanceZero] = child_ReadyStock;
@@ -5178,8 +5272,15 @@ namespace FactoryManagementSoftware.Module
                     forecast_3 = forecast_3 <= -1 ? 0 : forecast_3;
                     forecast_4 = forecast_4 <= -1 ? 0 : forecast_4;
 
-                    itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
-                    itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
+                    itemPartWeight = item["item_quo_pw_pcs"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_quo_pw_pcs"].ToString());
+                    itemRunnerWeight = item["item_quo_rw_pcs"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_quo_rw_pcs"].ToString());
+
+                    if (itemPartWeight == 0)
+                        itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
+
+                    if (itemRunnerWeight == 0)
+                        itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
+
                     wastageAllowed = item["item_wastage_allowed"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_wastage_allowed"].ToString());
 
                     #region cal out data
@@ -5852,8 +5953,15 @@ namespace FactoryManagementSoftware.Module
                     forecast_3 = forecast_3 <= -1 ? 0 : forecast_3;
                     forecast_4 = forecast_4 <= -1 ? 0 : forecast_4;
 
-                    itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
-                    itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
+                    itemPartWeight = item["item_quo_pw_pcs"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_quo_pw_pcs"].ToString());
+                    itemRunnerWeight = item["item_quo_rw_pcs"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_quo_rw_pcs"].ToString());
+
+                    if (itemPartWeight == 0)
+                        itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
+
+                    if (itemRunnerWeight == 0)
+                        itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
+
                     wastageAllowed = item["item_wastage_allowed"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_wastage_allowed"].ToString());
 
                     #region cal out data
@@ -8022,7 +8130,16 @@ namespace FactoryManagementSoftware.Module
                                         dtMat_row[headerName] = getItemNameFromDataTable(dt_ItemInfo, Join["child_code"].ToString());
                                         dtMat_row[headerMB] = child_MB;
                                         dtMat_row[headerMBRate] = child_mbRate;
-                                        dtMat_row[headerWeight] = Convert.ToSingle(Join["child_quo_part_weight"].ToString()) + Convert.ToSingle(Join["child_quo_runner_weight"].ToString());
+
+                                        float TotalWeight = Convert.ToSingle(Join["child_quo_part_weight"].ToString()) + Convert.ToSingle(Join["child_quo_runner_weight"].ToString());
+
+                                        if (TotalWeight == 0)
+                                        {
+                                            TotalWeight = Convert.ToSingle(Join["child_part_weight"].ToString()) + Convert.ToSingle(Join["child_runner_weight"].ToString());
+                                        }
+
+                                        dtMat_row[headerWeight] = TotalWeight;
+
                                         dtMat_row[headerWastage] = Join["child_wastage_allowed"].ToString();
                                         dtMat_row[headerReadyStock] = child_ReadyStock;
                                         dtMat_row[headerBalanceZero] = child_ReadyStock;
@@ -8242,8 +8359,15 @@ namespace FactoryManagementSoftware.Module
                     //forecast_3 = item["forecast_three"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_three"]);
                     //forecast_4 = item["forecast_four"] == DBNull.Value ? 0 : Convert.ToInt32(item["forecast_four"]);
 
-                    itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
-                    itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
+                    itemPartWeight = item["item_quo_pw_pcs"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_quo_pw_pcs"].ToString());
+                    itemRunnerWeight = item["item_quo_rw_pcs"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_quo_rw_pcs"].ToString());
+
+                    if (itemPartWeight == 0)
+                        itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
+
+                    if (itemRunnerWeight == 0)
+                        itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
+
                     wastageAllowed = item["item_wastage_allowed"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_wastage_allowed"].ToString());
 
                     #region cal out data
@@ -8708,8 +8832,16 @@ namespace FactoryManagementSoftware.Module
                     forecast_2 = GetForecastQty(dt_ItemForecast, itemCode, 2);
                     forecast_3 = GetForecastQty(dt_ItemForecast, itemCode, 3);
                     forecast_4 = GetForecastQty(dt_ItemForecast, itemCode, 4);
-                    itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
-                    itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
+
+                    itemPartWeight = item["item_quo_pw_pcs"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_quo_pw_pcs"].ToString());
+                    itemRunnerWeight = item["item_quo_rw_pcs"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_quo_rw_pcs"].ToString());
+
+                    if (itemPartWeight == 0)
+                        itemPartWeight = item["item_part_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_part_weight"].ToString());
+
+                    if (itemRunnerWeight == 0)
+                        itemRunnerWeight = item["item_runner_weight"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_runner_weight"].ToString());
+
                     wastageAllowed = item["item_wastage_allowed"] == DBNull.Value ? 0 : Convert.ToSingle(item["item_wastage_allowed"].ToString());
 
                     #region cal out data
@@ -9027,7 +9159,7 @@ namespace FactoryManagementSoftware.Module
 
         public string GetAlphabet(int index)
         {
-            const string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string letters = "ABCDEFGHIJKLMNPQRSTUVWXYZ";
 
             var value = "";
 

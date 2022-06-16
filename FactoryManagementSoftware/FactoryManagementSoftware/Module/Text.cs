@@ -22,7 +22,7 @@ namespace FactoryManagementSoftware.Module
         public string System { get; } = "System";
 
         //password
-        public string PW_UnlockPmmaStock { get; } = "038989";
+        public string PW_UnlockPmmaStock { get; } = "038989!";
         public string PW_UnlockSBBCustomerDiscount { get; } = "038989";
         public string PW_UnlockSBBSalesReport { get; } = "Safplas038989!";
 
@@ -144,6 +144,7 @@ namespace FactoryManagementSoftware.Module
         public string SBB_TYPE_MTA { get; } = "MTA";
         public string SBB_TYPE_FTA { get; } = "FTA";
         public string SBB_TYPE_ENDCAP { get; } = "END CAP";
+        public string SBB_TYPE_POLYORING { get; } = "POLY O RING";
         public string SBB_TYPE_REDUCING { get; } = "REDUCING";
         public string SBB_TYPE_MALE { get; } = "MALE";
         public string SBB_TYPE_FEMALE { get; } = "FEMALE";
@@ -318,6 +319,8 @@ namespace FactoryManagementSoftware.Module
 
         public string EndCap_Short { get; } = "ENDC";
 
+        public string PolyORing_Short { get; } = "OR";
+
         #endregion
 
         #region SPP/SBB CATEGORY
@@ -354,6 +357,9 @@ namespace FactoryManagementSoftware.Module
         public string Type_PolyNipple { get; } = "POLY NIPPLE";
 
         public string Type_PolyReducingBush { get; } = "POLY R.Bush";
+
+        public string Type_PolyORing { get; } = "POLY O RING";
+
 
 
         #endregion
