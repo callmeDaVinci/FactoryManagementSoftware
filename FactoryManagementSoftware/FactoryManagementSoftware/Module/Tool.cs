@@ -913,6 +913,28 @@ namespace FactoryManagementSoftware.Module
             cmb.SelectedIndex = -1;
         }
 
+        public void loadItemCategoryDataToComboBox(ComboBox cmb,string catToShow)
+        {
+            DataTable dtItemCat = dalItemCat.Select();
+            DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
+            distinctTable.DefaultView.Sort = "item_cat_name ASC";
+
+            distinctTable.AcceptChanges();
+            foreach (DataRow row in distinctTable.Rows)
+            {
+                if (row["item_cat_name"].ToString().Equals("Mould"))
+                {
+                    row.Delete();
+                }
+            }
+            distinctTable.AcceptChanges();
+
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "item_cat_name";
+            cmb.Text = catToShow;
+
+        }
+
         public void loadFactory(ComboBox cmb)
         {
             DataTable dt = dalFac.SelectDESC();
@@ -10545,8 +10567,29 @@ namespace FactoryManagementSoftware.Module
             return result;
         }
 
+        public bool ifGotChildIncludedPackaging(string itemCode)
+        {
+            bool result = false;
+            Text text = new Text();
+            DataTable dtJoin = dalJoin.loadChildList(itemCode);
+            string itemCat = getItemCat(itemCode);
 
-      
+            if (itemCat == text.Cat_Part)
+            {
+                if (dtJoin.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dtJoin.Rows)
+                    {
+                        string childCat = getItemCat(row[dalJoin.JoinChild].ToString());
+                        return true;
+                    }
+                }
+            }
+
+
+            return result;
+        }
+
 
         public bool ifGotChild(string itemCode)
         {

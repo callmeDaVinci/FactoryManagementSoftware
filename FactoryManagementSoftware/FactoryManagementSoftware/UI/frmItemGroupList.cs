@@ -53,6 +53,7 @@ namespace FactoryManagementSoftware
 
         private string _ITEMCODE = null;
         private string _ITEMNAME = null;
+        private ContextMenuStrip my_menu;
 
         private DataTable NewItemGroupTable()
         {
@@ -192,7 +193,7 @@ namespace FactoryManagementSoftware
             //handle the row selection on right click
             if (e.Button == MouseButtons.Right && e.RowIndex > -1)
             {
-                ContextMenuStrip my_menu = new ContextMenuStrip();
+                my_menu = new ContextMenuStrip();
                 dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 // Can leave these here - doesn't hurt
                 dgv.Rows[e.RowIndex].Selected = true;
@@ -205,6 +206,7 @@ namespace FactoryManagementSoftware
                     my_menu.Items.Add(text_RemoveItem).Name = text_RemoveItem;
 
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
                     my_menu.ItemClicked += new ToolStripItemClickedEventHandler(dgvItemGroup_ItemClicked);
 
                 }
@@ -219,7 +221,7 @@ namespace FactoryManagementSoftware
 
         private void dgvItemGroup_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-
+            my_menu.Hide();
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
             DataGridView dgv = dgvItemGroup;
@@ -251,6 +253,7 @@ namespace FactoryManagementSoftware
 
             else if (itemClicked.Equals(text_RemoveItem))
             {
+
                 if (MessageBox.Show("Are you sure you want to remove " + childName +" from this Item Group? ", "Message",
                                                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {

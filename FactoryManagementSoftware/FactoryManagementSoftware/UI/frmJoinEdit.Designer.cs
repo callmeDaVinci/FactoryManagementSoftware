@@ -53,6 +53,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbStockOut = new System.Windows.Forms.CheckBox();
             this.cbMainCarton = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -81,7 +82,6 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbStockOut = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -409,6 +409,20 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(349, 35);
             this.tableLayoutPanel3.TabIndex = 87;
+            // 
+            // cbStockOut
+            // 
+            this.cbStockOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbStockOut.AutoSize = true;
+            this.cbStockOut.Checked = true;
+            this.cbStockOut.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbStockOut.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbStockOut.Location = new System.Drawing.Point(223, 13);
+            this.cbStockOut.Name = "cbStockOut";
+            this.cbStockOut.Size = new System.Drawing.Size(123, 19);
+            this.cbStockOut.TabIndex = 89;
+            this.cbStockOut.Text = "AUTO STOCK OUT";
+            this.cbStockOut.UseVisualStyleBackColor = true;
             // 
             // cbMainCarton
             // 
@@ -786,20 +800,6 @@
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel8.Size = new System.Drawing.Size(735, 597);
             this.tableLayoutPanel8.TabIndex = 86;
-            // 
-            // cbStockOut
-            // 
-            this.cbStockOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbStockOut.AutoSize = true;
-            this.cbStockOut.Checked = true;
-            this.cbStockOut.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbStockOut.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbStockOut.Location = new System.Drawing.Point(223, 13);
-            this.cbStockOut.Name = "cbStockOut";
-            this.cbStockOut.Size = new System.Drawing.Size(123, 19);
-            this.cbStockOut.TabIndex = 89;
-            this.cbStockOut.Text = "AUTO STOCK OUT";
-            this.cbStockOut.UseVisualStyleBackColor = true;
             // 
             // frmJoinEdit
             // 

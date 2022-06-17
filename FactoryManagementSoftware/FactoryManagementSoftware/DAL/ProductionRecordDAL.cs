@@ -585,12 +585,14 @@ namespace FactoryManagementSoftware.DAL
                             + PackagingCode + ","
                             + PackagingQty + ","
                             + PackagingMax + ","
+                            + PackagingStockOut + ","
                             + UpdatedDate + ","
                             + UpdatedBy + ") VALUES" +
                             "(@sheet_id," +
                             "@packaging_code," +
                             "@packaging_qty," +
                              "@packaging_max," +
+                             "@packaging_stock_out," +
                             "@updated_date," +
                             "@updated_by)";
 
@@ -600,6 +602,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
                 cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
                 cmd.Parameters.AddWithValue("@packaging_max", u.packaging_max);
+                cmd.Parameters.AddWithValue("@packaging_stock_out", u.packaging_stock_out);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
 

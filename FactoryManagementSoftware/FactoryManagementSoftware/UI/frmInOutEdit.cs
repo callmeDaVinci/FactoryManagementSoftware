@@ -1032,6 +1032,7 @@ namespace FactoryManagementSoftware.UI
                     float joinQty = float.TryParse(Join["join_qty"].ToString(), out float i) ? Convert.ToSingle(Join["join_qty"].ToString()) : 1;
                     int joinMax = int.TryParse(Join[dalJoin.JoinMax].ToString(), out int j) ? Convert.ToInt32(Join[dalJoin.JoinMax].ToString()) : 1;
                     int JoinMin = int.TryParse(Join[dalJoin.JoinMin].ToString(), out int k) ? Convert.ToInt32(Join[dalJoin.JoinMin].ToString()) : 1;
+                    bool MainCarton = bool.TryParse(Join[dalJoin.JoinMainCarton].ToString(), out MainCarton) ? MainCarton : false;
 
                     joinMax = joinMax <= 0 ? 1 : joinMax;
                     JoinMin = JoinMin <= 0 ? 1 : JoinMin;
@@ -1060,28 +1061,28 @@ namespace FactoryManagementSoftware.UI
 
                         string childItemCat = dtItem.Rows[0][dalItem.ItemCat].ToString();
 
-                        if (true)//!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging)
+                        if (!MainCarton)//!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging)
                         {
                             if (dalItem.checkIfAssembly(childItemCode) && dalItem.checkIfProduction(childItemCode))
                             {
                                 if (dalItem.checkIfAssembly(parentItemCode) && dalItem.checkIfProduction(parentItemCode))
                                 {
-                                    //n = dgv.Rows.Add();
-                                    //index++;
+                                    n = dgv.Rows.Add();
+                                    index++;
 
-                                    //dgv.Rows[n].Cells[IndexColumnName].Value = index;
-                                    //dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
-                                    //dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
-                                    //dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
-                                    //dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
-                                    //dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
-                                    //dgv.Rows[n].Cells[FromCatColumnName].Value = "Production";
-                                    //dgv.Rows[n].Cells[FromColumnName].Value = "";
-                                    //dgv.Rows[n].Cells[ToCatColumnName].Value = "Factory";
-                                    //dgv.Rows[n].Cells[ToColumnName].Value = factoryName;
-                                    //dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
-                                    //dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
-                                    //dgv.Rows[n].Cells[NoteColumnName].Value = note+"Sub Part in";
+                                    dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                                    dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
+                                    dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
+                                    dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
+                                    dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
+                                    dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
+                                    dgv.Rows[n].Cells[FromCatColumnName].Value = "Production";
+                                    dgv.Rows[n].Cells[FromColumnName].Value = "";
+                                    dgv.Rows[n].Cells[ToCatColumnName].Value = "Factory";
+                                    dgv.Rows[n].Cells[ToColumnName].Value = factoryName;
+                                    dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
+                                    dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
+                                    dgv.Rows[n].Cells[NoteColumnName].Value = note + "Sub Part in";
                                 }
 
                             }
@@ -2586,7 +2587,7 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Rows[n].Cells[NoteColumnName].Value = note;
 
-                if (tool.ifGotChild(itemCode))
+                if (tool.ifGotChildIncludedPackaging(itemCode))
                 {
                     if (shift == "MBO" || shift == "NBO")
                     {
@@ -2595,14 +2596,14 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        if(from == text.Assembly)
+                        if(from == text.Assembly || from == text.Production)
                         {
                             productionChildStockOut(to, itemCode, Convert.ToSingle(proQty), -1, note, from);
                         }
-                        else if(from == text.Production)
-                        {
-                            productionChildStockOut(to, itemCode, Convert.ToSingle(proQty), -1, note, from);
-                        }
+                        //else if(from == text.Production)
+                        //{
+                        //    productionChildStockOut(to, itemCode, Convert.ToSingle(proQty), -1, note, from);
+                        //}
 
                         
                     }
