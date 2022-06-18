@@ -1390,7 +1390,7 @@ namespace FactoryManagementSoftware.UI
 
             string AlertMessage = "";
 
-            if (dt_Carton.Rows.Count > 0)
+            if (dt_Carton != null &&  dt_Carton.Rows.Count > 0)
             {
                 int totalStockIn = 0;
                 int totalFullBox = 0;
@@ -3461,7 +3461,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmProductionRecord_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MainDashboard.DailyJobSheetFormOpen = false;
+            MainDashboard.NewDailyJobSheetFormOpen = false;
         }
 
         private void ShowDailyRecordUI()
@@ -5083,11 +5083,25 @@ namespace FactoryManagementSoftware.UI
 
             frm.ShowDialog();
 
+            dt_JoinInfo = dalJoin.SelectAll();
+
+            if (dt_Carton == null || dt_Carton.Rows.Count <= 0)
+            {
+                LoadCartonSetting();
+
+            }
+
+
         }
 
         private void label20_Click(object sender, EventArgs e)
         {
             int sheetID = int.TryParse(txtSheetID.Text, out sheetID) ? sheetID : -1;
+
+            if(dt_Carton == null || dt_Carton.Rows.Count <=0)
+            {
+                dt_Carton = NewCartonTable();
+            }
 
             frmCartonSetting frm = new frmCartonSetting(dt_Carton)
             {
@@ -5153,8 +5167,6 @@ namespace FactoryManagementSoftware.UI
             {
                 AlertMessage = "Carton data not found!\nPlease add a main carton to this item at:\n1. Item Group Edit";
             }
-
-           
 
             if(!string.IsNullOrEmpty(AlertMessage))
             MessageBox.Show(AlertMessage, "Carton Alert",

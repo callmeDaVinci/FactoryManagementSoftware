@@ -1923,6 +1923,7 @@ namespace FactoryManagementSoftware.UI
         private void frmProductionRecord_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainDashboard.DailyJobSheetFormOpen = false;
+            MainDashboard.NewDailyJobSheetFormOpen = false;
         }
 
         private void txtTotalStockIn_TextChanged(object sender, EventArgs e)

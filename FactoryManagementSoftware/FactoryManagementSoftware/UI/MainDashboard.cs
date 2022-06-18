@@ -31,6 +31,7 @@ namespace FactoryManagementSoftware.UI
         static public bool PMMAFormOpen = false;
         static public bool ProductionFormOpen = false;
         static public bool DailyJobSheetFormOpen = false;
+        static public bool NewDailyJobSheetFormOpen = false;
         static public bool ProductionReportFormOpen = false;
         static public bool SBBFormOpen = false;
         static public bool SBBDeliveredFormOpen = false;
@@ -718,27 +719,27 @@ namespace FactoryManagementSoftware.UI
 
         private void dAILYToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (true)
-            {
-                if (!DailyJobSheetFormOpen)
-                {
-                    frmLoading.ShowLoadingScreen();
-                    frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
-                    frm.MdiParent = this;
-                    frm.StartPosition = FormStartPosition.CenterScreen;
-                    frm.WindowState = FormWindowState.Maximized;
-                    frm.Show();
-                    DailyJobSheetFormOpen = true;
-                    frmLoading.CloseForm();
-                }
-                else
-                {
-                    if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
-                    {
-                        Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
-                    }
-                }
-            }
+            //if (true)
+            //{
+            //    if (!DailyJobSheetFormOpen)
+            //    {
+            //        frmLoading.ShowLoadingScreen();
+            //        frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
+            //        frm.MdiParent = this;
+            //        frm.StartPosition = FormStartPosition.CenterScreen;
+            //        frm.WindowState = FormWindowState.Maximized;
+            //        frm.Show();
+            //        DailyJobSheetFormOpen = true;
+            //        frmLoading.CloseForm();
+            //    }
+            //    else
+            //    {
+            //        if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
+            //        {
+            //            Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
+            //        }
+            //    }
+            //}
                 
         }
 
@@ -882,6 +883,50 @@ namespace FactoryManagementSoftware.UI
                 if (Application.OpenForms.OfType<frmOUGPOList>().Count() == 1)
                 {
                     Application.OpenForms.OfType<frmOUGPOList>().First().BringToFront();
+                }
+            }
+        }
+
+        private void nEWToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!DailyJobSheetFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                NewDailyJobSheetFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
+                }
+            }
+        }
+
+        private void oLDVERSIONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!DailyJobSheetFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmProductionRecordNew frm = new frmProductionRecordNew();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                DailyJobSheetFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmProductionRecordNew>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmProductionRecordNew>().First().BringToFront();
                 }
             }
         }

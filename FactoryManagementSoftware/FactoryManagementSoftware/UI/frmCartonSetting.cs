@@ -35,7 +35,10 @@ namespace FactoryManagementSoftware
 
             dgvCarton.DataSource = dt;
 
-            dgvCartonEdit(dgvCarton);
+            if(dt != null && dt.Rows.Count > 0)
+            {
+                dgvCartonEdit(dgvCarton);
+            }
 
             LoadCMBData();
 
@@ -239,6 +242,8 @@ namespace FactoryManagementSoftware
                 newRow[header_PackagingStockOut] = true;
 
                 dt.Rows.Add(newRow);
+
+                dgvCartonEdit(dgvCarton);
 
             }
             else

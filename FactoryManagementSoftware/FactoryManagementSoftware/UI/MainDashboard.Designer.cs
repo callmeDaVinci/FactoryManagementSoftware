@@ -56,11 +56,13 @@
             this.materialUsedReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.productionReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sBBDeliveredReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.pOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nEWToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oLDVERSIONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -181,6 +183,9 @@
             // 
             // dAILYToolStripMenuItem
             // 
+            this.dAILYToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.nEWToolStripMenuItem,
+            this.oLDVERSIONToolStripMenuItem});
             this.dAILYToolStripMenuItem.Name = "dAILYToolStripMenuItem";
             this.dAILYToolStripMenuItem.Size = new System.Drawing.Size(66, 27);
             this.dAILYToolStripMenuItem.Text = "DAILY";
@@ -293,6 +298,13 @@
             this.sBBDeliveredReportToolStripMenuItem.Text = "SBB Delivered Report";
             this.sBBDeliveredReportToolStripMenuItem.Click += new System.EventHandler(this.sBBDeliveredReportToolStripMenuItem_Click);
             // 
+            // pOToolStripMenuItem
+            // 
+            this.pOToolStripMenuItem.Name = "pOToolStripMenuItem";
+            this.pOToolStripMenuItem.Size = new System.Drawing.Size(45, 27);
+            this.pOToolStripMenuItem.Text = "PO";
+            this.pOToolStripMenuItem.Click += new System.EventHandler(this.pOToolStripMenuItem_Click);
+            // 
             // statusStrip
             // 
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -320,12 +332,19 @@
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
-            // pOToolStripMenuItem
+            // nEWToolStripMenuItem
             // 
-            this.pOToolStripMenuItem.Name = "pOToolStripMenuItem";
-            this.pOToolStripMenuItem.Size = new System.Drawing.Size(45, 27);
-            this.pOToolStripMenuItem.Text = "PO";
-            this.pOToolStripMenuItem.Click += new System.EventHandler(this.pOToolStripMenuItem_Click);
+            this.nEWToolStripMenuItem.Name = "nEWToolStripMenuItem";
+            this.nEWToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
+            this.nEWToolStripMenuItem.Text = "*NEW VERSION";
+            this.nEWToolStripMenuItem.Click += new System.EventHandler(this.nEWToolStripMenuItem_Click);
+            // 
+            // oLDVERSIONToolStripMenuItem
+            // 
+            this.oLDVERSIONToolStripMenuItem.Name = "oLDVERSIONToolStripMenuItem";
+            this.oLDVERSIONToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
+            this.oLDVERSIONToolStripMenuItem.Text = "OLD VERSION";
+            this.oLDVERSIONToolStripMenuItem.Click += new System.EventHandler(this.oLDVERSIONToolStripMenuItem_Click);
             // 
             // MainDashboard
             // 
@@ -389,6 +408,8 @@
         private System.Windows.Forms.ToolStripMenuItem sBBDeliveredReportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mouldToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pOToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nEWToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem oLDVERSIONToolStripMenuItem;
     }
 }
 
