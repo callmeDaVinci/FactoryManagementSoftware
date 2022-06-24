@@ -102,6 +102,7 @@ namespace FactoryManagementSoftware.UI
         itemDAL dalItem = new itemDAL();
         Tool tool = new Tool();
         Text text = new Text();
+        ProductionRecordDAL dalProRecord = new ProductionRecordDAL();
 
         habitDAL dalHabit = new habitDAL();
 
@@ -122,7 +123,7 @@ namespace FactoryManagementSoftware.UI
         readonly string headerProductionPurpose = "PRODUCTION FOR";
         readonly string headerTargetQty = "TARGET QTY";
         readonly string headerAbleProduceQty = "ABLE PRODUCE";
-        //readonly string headerProducedQty = "PRODUCED QTY";
+        readonly string headerProducedQty = "PRODUCED QTY";
 
         readonly string headerMaterial = "MATERIAL";
         readonly string headerMaterialBag = "BAG";
@@ -189,7 +190,7 @@ namespace FactoryManagementSoftware.UI
             
             dt.Columns.Add(headerTargetQty, typeof(int));
             dt.Columns.Add(headerAbleProduceQty, typeof(int));
-            //dt.Columns.Add(headerProducedQty, typeof(int));
+            dt.Columns.Add(headerProducedQty, typeof(int));
 
             dt.Columns.Add(headerMaterial, typeof(string));
             dt.Columns.Add(headerMaterialBag, typeof(int));
@@ -255,6 +256,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerMachine].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerTargetQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerAbleProduceQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerProducedQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerStatus].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerRecycle].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerMaterialBag].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -292,7 +294,7 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[headerTargetQty].DefaultCellStyle.ForeColor = importantColor;
             dgv.Columns[headerAbleProduceQty].DefaultCellStyle.ForeColor = normalColor;
-            //dgv.Columns[headerProducedQty].DefaultCellStyle.ForeColor = Color.White;
+            dgv.Columns[headerProducedQty].DefaultCellStyle.ForeColor = importantColor;
 
 
             dgv.Columns[headerMaterial].DefaultCellStyle.ForeColor = normalColor;
@@ -396,7 +398,7 @@ namespace FactoryManagementSoftware.UI
         {
             #region Search Filtering
             DataTable dt;
-
+            DateTime startEarliest = DateTime.MinValue, endLatest = DateTime.MinValue;
 
             string Keywords = txtSearch.Text;
 
@@ -442,6 +444,7 @@ namespace FactoryManagementSoftware.UI
             DataRow row_Schedule;
             bool match = true;
             string previousLocation = null;
+
             foreach (DataRow row in dt.Rows)
             {
                 match = true;
@@ -525,7 +528,26 @@ namespace FactoryManagementSoftware.UI
 
                 if (match)
                 {
-                    if(previousLocation == null)
+
+                    if(startEarliest == DateTime.MinValue)
+                    {
+                        startEarliest = start;
+                    }
+                    else if(start < startEarliest)
+                    {
+                        startEarliest = start;
+                    }
+
+                    if (endLatest == DateTime.MinValue)
+                    {
+                        endLatest = end;
+                    }
+                    else if (endLatest < end)
+                    {
+                        endLatest = end;
+                    }
+
+                    if (previousLocation == null)
                     {
                         previousLocation = row[dalMac.MacLocation].ToString();
                     }
@@ -553,7 +575,9 @@ namespace FactoryManagementSoftware.UI
 
                     row_Schedule[headerTargetQty] = row[dalPlanning.targetQty];
                     row_Schedule[headerAbleProduceQty] = row[dalPlanning.ableQty];
-                    //row_Schedule[headerProducedQty] = 0;
+
+                    if(row[dalPlanning.planProduced].ToString() != "0")
+                    row_Schedule[headerProducedQty] = row[dalPlanning.planProduced];
 
                     row_Schedule[headerMaterial] = row[dalPlanning.materialCode];
                     row_Schedule[headerMaterialBag] = row[dalPlanning.materialBagQty];
@@ -573,8 +597,19 @@ namespace FactoryManagementSoftware.UI
 
             dgvSchedule.DataSource = null;
            
+
             if (dt_Schedule.Rows.Count > 0)
             {
+                if(startEarliest != DateTime.MinValue)
+                {
+                    dtpFrom.Value = startEarliest;
+                }
+
+                if (endLatest != DateTime.MinValue)
+                {
+                    dtpTo.Value = endLatest;
+                }
+
                 dgvSchedule.DataSource = dt_Schedule;
                 dgvScheduleUIEdit(dgvSchedule);
                 ListCellFormatting(dgvSchedule);
@@ -1121,9 +1156,6 @@ namespace FactoryManagementSoftware.UI
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
-
-
-            
             try
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -2021,5 +2053,6 @@ namespace FactoryManagementSoftware.UI
 
             HideFilter(filterHide);
         }
+
     }
 }

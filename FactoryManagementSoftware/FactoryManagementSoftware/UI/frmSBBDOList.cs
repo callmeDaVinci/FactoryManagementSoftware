@@ -4627,7 +4627,10 @@ namespace FactoryManagementSoftware.UI
                                 }
                                 
                             }
-
+                            else
+                            {
+                                InsertToSheet(xlWorkSheet, areaPONoData, "REFER BELOW");
+                            }
                             
 
                             InsertToSheet(xlWorkSheet, areaDateData, DODate.ToOADate());
@@ -4888,7 +4891,10 @@ namespace FactoryManagementSoftware.UI
                                                 }
 
                                             }
-
+                                            else
+                                            {
+                                                InsertToSheet(xlWorkSheet, areaPONoData, "REFER BELOW");
+                                            }
 
                                             InsertToSheet(xlWorkSheet, areaPageData, pageNo + " of " + pageNo);
 

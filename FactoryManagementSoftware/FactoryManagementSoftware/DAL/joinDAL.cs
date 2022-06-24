@@ -669,6 +669,54 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable OldSearch(string keywords)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                //String sql = "SELECT * FROM tbl_join WHERE join_parent_code LIKE '%" + keywords + "%' OR join_child_code LIKE '%" + keywords + "%'";
+
+                //sql query to get data from database
+                String sql = @"SELECT tbl_join.join_parent_code as parent_code, 
+                tbl_item.item_name as parent_name ,
+                tbl_join.join_child_code as child_code ,
+                a.item_name as child_name ,join_qty, join_max, join_min, join_added_date, join_added_by,
+                join_updated_date,join_updated_by 
+                FROM tbl_join 
+                JOIN tbl_item 
+                ON tbl_join.join_parent_code = tbl_item.item_code 
+                JOIN tbl_item a ON tbl_join.join_child_code = a.item_code
+                WHERE tbl_join.join_parent_code LIKE '%" + keywords + "%' OR tbl_join.join_child_code LIKE '%" + keywords + "%'" +
+                "OR tbl_item.item_name LIKE '%" + keywords + "%' OR a.item_name LIKE '%" + keywords + "%' ORDER BY tbl_join.join_parent_code";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable parentSearch(string keywords)
         {
             //static methodd to connect database

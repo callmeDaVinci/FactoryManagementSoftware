@@ -36,6 +36,7 @@ namespace FactoryManagementSoftware.UI
         static public bool SBBFormOpen = false;
         static public bool SBBDeliveredFormOpen = false;
         static public bool OUGPOFormOpen = false;
+        static public bool NewItemListFormOpen = false;
 
 
         static public int USER_ID = -1;
@@ -927,6 +928,28 @@ namespace FactoryManagementSoftware.UI
                 if (Application.OpenForms.OfType<frmProductionRecordNew>().Count() == 1)
                 {
                     Application.OpenForms.OfType<frmProductionRecordNew>().First().BringToFront();
+                }
+            }
+        }
+
+        private void newItemListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!NewItemListFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmItemMasterList frm = new frmItemMasterList();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                NewItemListFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmItemMasterList>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmItemMasterList>().First().BringToFront();
                 }
             }
         }
