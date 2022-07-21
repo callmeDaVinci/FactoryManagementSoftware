@@ -41,7 +41,7 @@ namespace FactoryManagementSoftware.UI
             QuotationDataUIChanged(false);
             ShowSBBSetting(false);
             ShowProductionSetting(false);
-            ShowCustomerButton(false);
+           // ShowCustomerButton(false);
             ShowGroupEditButton(false);
 
             tool.loadCustomerToComboBox(cmbCust);
@@ -1099,12 +1099,12 @@ namespace FactoryManagementSoftware.UI
         {
             if (show)
             {
-                tlpButton.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 100f);
+                tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 100f);
 
             }
             else
             {
-                tlpButton.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
 
             }
         }
@@ -1397,7 +1397,7 @@ namespace FactoryManagementSoftware.UI
 
         private void cbAssembly_CheckedChanged(object sender, EventArgs e)
         {
-            //ShowGroupEditButton(cbAssembly.Checked);
+            ShowGroupEditButton(cbAssembly.Checked);
         }
 
         private void unitDataSource()
