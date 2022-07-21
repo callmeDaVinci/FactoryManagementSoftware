@@ -30,7 +30,7 @@ namespace FactoryManagementSoftware.UI
 
         private void loadData()
         {
-            DataTable dt = dalFac.Select();
+            DataTable dt = dalFac.SelectDESC();
             dgvFac.Rows.Clear();
             foreach (DataRow item in dt.Rows)
             {

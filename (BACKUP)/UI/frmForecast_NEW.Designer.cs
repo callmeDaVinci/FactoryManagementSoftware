@@ -69,6 +69,7 @@
             this.tlpForecast = new System.Windows.Forms.TableLayoutPanel();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.cbShowTerminatedItem = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecast)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -84,7 +85,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(570, 35);
+            this.label1.Location = new System.Drawing.Point(630, 35);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(103, 19);
@@ -96,7 +97,7 @@
             this.cmbMonthFrom.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbMonthFrom.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbMonthFrom.FormattingEnabled = true;
-            this.cmbMonthFrom.Location = new System.Drawing.Point(574, 58);
+            this.cmbMonthFrom.Location = new System.Drawing.Point(634, 58);
             this.cmbMonthFrom.Margin = new System.Windows.Forms.Padding(4);
             this.cmbMonthFrom.Name = "cmbMonthFrom";
             this.cmbMonthFrom.Size = new System.Drawing.Size(156, 25);
@@ -123,7 +124,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(419, 35);
+            this.label2.Location = new System.Drawing.Point(479, 35);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 19);
@@ -136,7 +137,7 @@
             this.lblYearFromReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblYearFromReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblYearFromReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblYearFromReset.Location = new System.Drawing.Point(502, 35);
+            this.lblYearFromReset.Location = new System.Drawing.Point(562, 35);
             this.lblYearFromReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblYearFromReset.Name = "lblYearFromReset";
             this.lblYearFromReset.Size = new System.Drawing.Size(49, 19);
@@ -149,7 +150,7 @@
             this.cmbYearFrom.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbYearFrom.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbYearFrom.FormattingEnabled = true;
-            this.cmbYearFrom.Location = new System.Drawing.Point(423, 58);
+            this.cmbYearFrom.Location = new System.Drawing.Point(483, 58);
             this.cmbYearFrom.Margin = new System.Windows.Forms.Padding(4);
             this.cmbYearFrom.Name = "cmbYearFrom";
             this.cmbYearFrom.Size = new System.Drawing.Size(128, 25);
@@ -160,6 +161,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.cbShowTerminatedItem);
             this.groupBox1.Controls.Add(this.lblMonthToReset);
             this.groupBox1.Controls.Add(this.cmbMonthTo);
             this.groupBox1.Controls.Add(this.label4);
@@ -194,7 +196,7 @@
             this.lblMonthToReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblMonthToReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMonthToReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblMonthToReset.Location = new System.Drawing.Point(1007, 35);
+            this.lblMonthToReset.Location = new System.Drawing.Point(1067, 35);
             this.lblMonthToReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMonthToReset.Name = "lblMonthToReset";
             this.lblMonthToReset.Size = new System.Drawing.Size(49, 19);
@@ -207,7 +209,7 @@
             this.cmbMonthTo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbMonthTo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbMonthTo.FormattingEnabled = true;
-            this.cmbMonthTo.Location = new System.Drawing.Point(900, 58);
+            this.cmbMonthTo.Location = new System.Drawing.Point(960, 58);
             this.cmbMonthTo.Margin = new System.Windows.Forms.Padding(4);
             this.cmbMonthTo.Name = "cmbMonthTo";
             this.cmbMonthTo.Size = new System.Drawing.Size(156, 25);
@@ -218,7 +220,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(896, 35);
+            this.label4.Location = new System.Drawing.Point(956, 35);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 19);
@@ -230,7 +232,7 @@
             this.cmbYearTo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbYearTo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbYearTo.FormattingEnabled = true;
-            this.cmbYearTo.Location = new System.Drawing.Point(755, 58);
+            this.cmbYearTo.Location = new System.Drawing.Point(815, 58);
             this.cmbYearTo.Margin = new System.Windows.Forms.Padding(4);
             this.cmbYearTo.Name = "cmbYearTo";
             this.cmbYearTo.Size = new System.Drawing.Size(128, 25);
@@ -243,7 +245,7 @@
             this.lblYearToReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblYearToReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblYearToReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblYearToReset.Location = new System.Drawing.Point(834, 35);
+            this.lblYearToReset.Location = new System.Drawing.Point(894, 35);
             this.lblYearToReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblYearToReset.Name = "lblYearToReset";
             this.lblYearToReset.Size = new System.Drawing.Size(49, 19);
@@ -255,7 +257,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(751, 35);
+            this.label11.Location = new System.Drawing.Point(811, 35);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(62, 19);
@@ -283,10 +285,10 @@
             this.cmbPartCode.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cmbPartCode.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbPartCode.FormattingEnabled = true;
-            this.cmbPartCode.Location = new System.Drawing.Point(211, 58);
+            this.cmbPartCode.Location = new System.Drawing.Point(256, 58);
             this.cmbPartCode.Margin = new System.Windows.Forms.Padding(4);
             this.cmbPartCode.Name = "cmbPartCode";
-            this.cmbPartCode.Size = new System.Drawing.Size(192, 25);
+            this.cmbPartCode.Size = new System.Drawing.Size(204, 25);
             this.cmbPartCode.TabIndex = 147;
             this.cmbPartCode.SelectedIndexChanged += new System.EventHandler(this.cmbPartCode_SelectedIndexChanged);
             // 
@@ -296,7 +298,7 @@
             this.lblPartCodeReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblPartCodeReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPartCodeReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblPartCodeReset.Location = new System.Drawing.Point(354, 35);
+            this.lblPartCodeReset.Location = new System.Drawing.Point(411, 35);
             this.lblPartCodeReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPartCodeReset.Name = "lblPartCodeReset";
             this.lblPartCodeReset.Size = new System.Drawing.Size(49, 19);
@@ -308,7 +310,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(214, 35);
+            this.label7.Location = new System.Drawing.Point(259, 35);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(80, 19);
@@ -323,7 +325,7 @@
             this.cmbPartName.Location = new System.Drawing.Point(12, 58);
             this.cmbPartName.Margin = new System.Windows.Forms.Padding(4);
             this.cmbPartName.Name = "cmbPartName";
-            this.cmbPartName.Size = new System.Drawing.Size(191, 25);
+            this.cmbPartName.Size = new System.Drawing.Size(236, 25);
             this.cmbPartName.TabIndex = 144;
             this.cmbPartName.SelectedIndexChanged += new System.EventHandler(this.cmbPartName_SelectedIndexChanged);
             // 
@@ -333,7 +335,7 @@
             this.lblPartNameReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblPartNameReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPartNameReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblPartNameReset.Location = new System.Drawing.Point(157, 35);
+            this.lblPartNameReset.Location = new System.Drawing.Point(199, 35);
             this.lblPartNameReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPartNameReset.Name = "lblPartNameReset";
             this.lblPartNameReset.Size = new System.Drawing.Size(49, 19);
@@ -358,7 +360,7 @@
             this.lblMonthFromReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblMonthFromReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMonthFromReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblMonthFromReset.Location = new System.Drawing.Point(681, 35);
+            this.lblMonthFromReset.Location = new System.Drawing.Point(741, 35);
             this.lblMonthFromReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMonthFromReset.Name = "lblMonthFromReset";
             this.lblMonthFromReset.Size = new System.Drawing.Size(49, 19);
@@ -645,6 +647,18 @@
             // 
             this.errorProvider2.ContainerControl = this;
             // 
+            // cbShowTerminatedItem
+            // 
+            this.cbShowTerminatedItem.AutoSize = true;
+            this.cbShowTerminatedItem.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbShowTerminatedItem.Location = new System.Drawing.Point(1144, 58);
+            this.cbShowTerminatedItem.Margin = new System.Windows.Forms.Padding(4);
+            this.cbShowTerminatedItem.Name = "cbShowTerminatedItem";
+            this.cbShowTerminatedItem.Size = new System.Drawing.Size(168, 23);
+            this.cbShowTerminatedItem.TabIndex = 164;
+            this.cbShowTerminatedItem.Text = "Show Terminated Item";
+            this.cbShowTerminatedItem.UseVisualStyleBackColor = true;
+            // 
             // frmForecast_NEW
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -716,5 +730,6 @@
         private System.Windows.Forms.CheckBox cbEditMode;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ErrorProvider errorProvider2;
+        private System.Windows.Forms.CheckBox cbShowTerminatedItem;
     }
 }

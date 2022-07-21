@@ -31,7 +31,7 @@ namespace FactoryManagementSoftware.UI
             frmLoading.CloseForm();
         }
 
-        SPPDataDAL dalData = new SPPDataDAL();
+        SBBDataDAL dalData = new SBBDataDAL();
         itemDAL dalItem = new itemDAL();
         Tool tool = new Tool();
         Text text = new Text();
@@ -43,6 +43,10 @@ namespace FactoryManagementSoftware.UI
         private readonly string textShowAllSize = "show all size";
         private readonly string textShowAllCommonPart = "show all type of common part";
         private readonly string textShowAllUniquePart = "show all type of unique part";
+        private readonly string header_Size_1 = "SIZE_1";
+        private readonly string header_Size_2 = "SIZE_2";
+        private readonly string header_Unit_1 = "UNIT_1";
+        private readonly string header_Unit_2 = "UNIT_2";
 
         //private DataTable dt_spp;
 
@@ -186,7 +190,7 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadUniquePart()
         {
-            DataTable dt = dalItem.SPPUniqueSelect();
+            DataTable dt = dalItem.SPPUniqueSelectWithoutAssembledItem();
             dt.Columns.Add("STOCK");
             dt.Columns.Add("DELIVERY QTY");
             dt.Columns.Add("PCS/BAG");
@@ -198,67 +202,56 @@ namespace FactoryManagementSoftware.UI
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                currentSize = dt.Rows[i]["SIZE"].ToString();
-                int qtyPerBag = int.TryParse(dt.Rows[i]["STD_PACKING"].ToString(), out qtyPerBag)? qtyPerBag : 0;
-                int stockQty = int.TryParse(dt.Rows[i]["QUANTITY"].ToString(), out stockQty) ? stockQty : 0;
-                int toDeliveryQty = int.TryParse(dt.Rows[i]["TO_DELIVERY_QTY"].ToString(), out toDeliveryQty) ? toDeliveryQty : 0;
-
-                dt.Rows[i]["STOCK"] = stockQty;
-
-                
-
-                if (qtyPerBag > 0)
+                if(string.IsNullOrEmpty(dt.Rows[i]["TYPE"].ToString()))
                 {
-                    dt.Rows[i]["DELIVERY QTY"] = toDeliveryQty;
-                    int bagQty = stockQty / qtyPerBag;
-
-                    //dt.Rows[i]["STOCK"] = stockQty + " ("+bagQty+" bags)";
-
-                    dt.Rows[i]["PCS/BAG"] = qtyPerBag+"/bag";
-                    
-                    dt.Rows[i]["TOTAL BAG(S)"] = bagQty;
-
-                    int maxStockLevel = 0;
-
-                    if(currentSize == "20")
-                    {
-                        maxStockLevel = text.StockLevel_20;
-                    }
-                    else if (currentSize == "25")
-                    {
-                        maxStockLevel = text.StockLevel_25;
-                    }
-                    else if (currentSize == "32")
-                    {
-                        maxStockLevel = text.StockLevel_32;
-                    }
-                    else if (currentSize == "50")
-                    {
-                        maxStockLevel = text.StockLevel_50;
-                    }
-                    else if (currentSize == "63")
-                    {
-                        maxStockLevel = text.StockLevel_63;
-                    }
-
-                    dt.Rows[i]["MAX STOCK LEVEL"] = maxStockLevel;
+                    dt.Rows[i].Delete();
                 }
-
-                if (preSize == "")
+                else
                 {
-                    preSize = currentSize;
+                    currentSize = dt.Rows[i]["SIZE"].ToString();
+                    int qtyPerBag = int.TryParse(dt.Rows[i]["STD_PACKING"].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+                    int stockQty = int.TryParse(dt.Rows[i]["QUANTITY"].ToString(), out stockQty) ? stockQty : 0;
+                    int toDeliveryQty = int.TryParse(dt.Rows[i]["TO_DELIVERY_QTY"].ToString(), out toDeliveryQty) ? toDeliveryQty : 0;
+                    int maxStockLevel = int.TryParse(dt.Rows[i]["MAX_LEVEL"].ToString(), out maxStockLevel) ? maxStockLevel : 0;
+
+                    string category = dt.Rows[i]["CATEGORY"].ToString();
+
+                    dt.Rows[i]["STOCK"] = stockQty;
+
+                    if (qtyPerBag > 0 && category == text.Cat_ReadyGoods)
+                    {
+                        dt.Rows[i]["DELIVERY QTY"] = toDeliveryQty;
+                        int bagQty = stockQty / qtyPerBag;
+
+                        //dt.Rows[i]["STOCK"] = stockQty + " ("+bagQty+" bags)";
+
+                        dt.Rows[i]["PCS/BAG"] = qtyPerBag + "/bag";
+
+                        dt.Rows[i]["TOTAL BAG(S)"] = bagQty;
+
+                        dt.Rows[i]["MAX STOCK LEVEL"] = maxStockLevel;
+                    }
+
+                    if (preSize == "")
+                    {
+                        preSize = currentSize;
+                    }
+                    else if (preSize != currentSize)
+                    {
+                        DataRow toInsert = dt.NewRow();
+                        dt.Rows.InsertAt(toInsert, i);
+                        preSize = currentSize;
+                    }
                 }
-                else if (preSize != currentSize)
-                {
-                    DataRow toInsert = dt.NewRow();
-                    dt.Rows.InsertAt(toInsert, i);
-                    preSize = currentSize;
-                }
+               
             }
+
+            dt.AcceptChanges();
             dt.Columns["STOCK"].ColumnName = "STOCK(PCS)";
             dt.Columns.Remove("QUANTITY");
             dt.Columns.Remove("STD_PACKING");
             dt.Columns.Remove("TO_DELIVERY_QTY");
+            dt.Columns.Remove("MAX_LEVEL");
             dgvUnique.DataSource = dt;
          
             dgvUnique.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
@@ -270,8 +263,11 @@ namespace FactoryManagementSoftware.UI
             dgvUnique.Columns["TOTAL BAG(S)"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvUnique.Columns["SIZE"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgvUnique.Columns["UNIT"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgvUnique.Columns["DELIVERY QTY"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgvUnique.Columns["DELIVERY QTY"].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+
+            //dgvUnique.Columns["DELIVERY QTY"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgvUnique.Columns["DELIVERY QTY"].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+
+            dgvUnique.Columns["DELIVERY QTY"].Visible = false;
 
             dgvUnique.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
 
@@ -381,30 +377,30 @@ namespace FactoryManagementSoftware.UI
             {
                 int bagQty = int.TryParse(dgv.Rows[rowIndex].Cells["TOTAL BAG(S)"].Value.ToString(), out bagQty) ? bagQty : -1;
                 int size = int.TryParse(dgv.Rows[rowIndex].Cells["SIZE"].Value.ToString(), out size) ? size : 0;
-                int stockLevel = 0;
+                int stockLevel = int.TryParse(dgv.Rows[rowIndex].Cells["MAX STOCK LEVEL"].Value.ToString(), out stockLevel) ? stockLevel : 0;
 
-                if(bagQty != -1)
+                if (bagQty != -1)
                 {
-                    if (size == 20)
-                    {
-                        stockLevel = text.StockLevel_20;
-                    }
-                    else if (size == 25)
-                    {
-                        stockLevel = text.StockLevel_25;
-                    }
-                    else if (size == 32)
-                    {
-                        stockLevel = text.StockLevel_32;
-                    }
-                    else if (size == 50)
-                    {
-                        stockLevel = text.StockLevel_50;
-                    }
-                    else if (size == 63)
-                    {
-                        stockLevel = text.StockLevel_63;
-                    }
+                    //if (size == 20)
+                    //{
+                    //    stockLevel = text.StockLevel_20;
+                    //}
+                    //else if (size == 25)
+                    //{
+                    //    stockLevel = text.StockLevel_25;
+                    //}
+                    //else if (size == 32)
+                    //{
+                    //    stockLevel = text.StockLevel_32;
+                    //}
+                    //else if (size == 50)
+                    //{
+                    //    stockLevel = text.StockLevel_50;
+                    //}
+                    //else if (size == 63)
+                    //{
+                    //    stockLevel = text.StockLevel_63;
+                    //}
 
                     if (bagQty >= stockLevel)
                     {

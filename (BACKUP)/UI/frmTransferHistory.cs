@@ -24,6 +24,8 @@ namespace FactoryManagementSoftware.UI
         itemCatDAL dalItemCat = new itemCatDAL();
         joinDAL dalJoin = new joinDAL();
         itemDAL dalItem = new itemDAL();
+        planningDAL dalPlan = new planningDAL();
+        PlanningBLL uPlan = new PlanningBLL();
 
         DataTable dt_TrfHist;
         DataTable dt_TrfData;
@@ -40,8 +42,12 @@ namespace FactoryManagementSoftware.UI
         readonly string headerUnit = "UNIT";
         readonly string headerNote = "NOTE";
         readonly string headerResult = "RESULT";
+        readonly string headerBalance = "BALANCE";
+        readonly string headerPlanID = "PLAN ID";
+        readonly string headerPlan = "PLAN";
 
-    
+        readonly string headerBag = "BAG";
+
         public frmTransferHistory()
         {
             InitializeComponent();
@@ -51,8 +57,30 @@ namespace FactoryManagementSoftware.UI
             loadItemCategoryData(cmbTrfItemCat);
 
             loadLocationCategoryData();
-
+            dtpStartDate.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
+
+        public frmTransferHistory(string itemCode)
+        {
+            InitializeComponent();
+            dt_Item = dalItem.Select();
+
+            tool.DoubleBuffered(dgvTrf, true);
+            loadItemCategoryData(cmbTrfItemCat);
+
+            loadLocationCategoryData();
+
+            txtSearch.Text = itemCode;
+
+
+            dtpStartDate.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+            autoLoad = true;
+
+           
+        }
+
+        bool autoLoad = false;
 
         public DataTable NewTrfHistTable()
         {
@@ -70,6 +98,11 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerUnit, typeof(string));
             dt.Columns.Add(headerNote, typeof(string));
             dt.Columns.Add(headerResult, typeof(string));
+            dt.Columns.Add(headerBalance, typeof(float));
+            dt.Columns.Add(headerPlanID, typeof(string));
+            dt.Columns.Add(headerPlan, typeof(string));
+
+            //dt.Columns.Add(headerBag, typeof(int));
 
             return dt;
         }
@@ -89,6 +122,9 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerUnit].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerNote].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerResult].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerPlan].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+            dgv.Columns[headerPlanID].Visible = false;
 
             dgv.Columns[headerQty].DefaultCellStyle.Format = "0.##";
         }
@@ -131,7 +167,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmTransferHistory_Load(object sender, EventArgs e)
         {
-
+           
         }
 
         private void loadLocationData(DataTable dt, ComboBox cmb, string columnName)
@@ -149,13 +185,13 @@ namespace FactoryManagementSoftware.UI
             lblTotalQty.Text = "";
             if (cmbTrfFromCategory.Text.Equals("Factory"))
             {
-                DataTable dt = dalFac.Select();
+                DataTable dt = dalFac.SelectDESC();
                 loadLocationData(dt, cmbTrfFrom, "fac_name");
 
             }
             else if (cmbTrfFromCategory.Text.Equals("Customer"))
             {
-                DataTable dt = dalCust.Select();
+                DataTable dt = dalCust.FullSelect();
                 loadLocationData(dt, cmbTrfFrom, "cust_name");
                 //cmbTrfFrom.Text = tool.getCustomerName(cmbTrfItemCode.Text);
             }
@@ -177,13 +213,13 @@ namespace FactoryManagementSoftware.UI
             lblTotalQty.Text = "";
             if (cmbTrfToCategory.Text.Equals("Factory"))
             {
-                DataTable dt = dalFac.Select();
+                DataTable dt = dalFac.SelectDESC();
                 loadLocationData(dt, cmbTrfTo, "fac_name");
 
             }
             else if (cmbTrfToCategory.Text.Equals("Customer"))
             {
-                DataTable dt = dalCust.Select();
+                DataTable dt = dalCust.FullSelect();
                 loadLocationData(dt, cmbTrfTo, "cust_name");
 
                // cmbTrfTo.Text = tool.getCustomerName(cmbTrfItemCode.Text);
@@ -195,6 +231,109 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private string getBetween(string strSource, string strStart, string strEnd1, string strEnd2)
+        {
+
+          
+
+            if (strSource.Contains(strStart) && (strSource.Contains(strEnd1) || strSource.Contains(strEnd2)))
+            {
+                int Start, End;
+                Start = strSource.IndexOf(strStart, 0) + strStart.Length;
+                End = strSource.IndexOf(strEnd1, Start);
+
+                if(End <= -1)
+                {
+                    End = strSource.IndexOf(strEnd2, Start);
+
+                    if (End <= -1)
+                    {
+                        return "Failed to get Plan ID";
+                    }
+                }
+
+               
+
+                return strSource.Substring(Start, End - Start);
+            }
+
+            return "";
+        }
+
+        private string GetPlanID(string note)
+        {
+            note = note.ToUpper();
+
+            string planID = "";
+
+            if(note.Contains("PLAN"))
+                planID = getBetween(note, "PLAN ", "(", "]");
+
+
+            return planID;
+            
+        }
+
+        private int GetTotalBag(string note)
+        {
+            int totalBag = 0;
+
+            bool dotFound = false;
+            bool readyToGet = false;
+
+            string text = "";
+            for(int i = 0; i < note.Length; i++)
+            {
+                if(note[i].ToString() == ":")
+                {
+                    dotFound = true;
+                }
+
+                if(dotFound && note[i].ToString() == " ")
+                {
+                    if(!readyToGet)
+                    {
+                        readyToGet = true;
+                    }
+                    else
+                    {
+                        readyToGet = false;
+                        break;
+                    }
+                }
+
+                if(readyToGet && int.TryParse(note[i].ToString(), out int x))
+                {
+                    text += note[i].ToString();
+                }
+
+            }
+
+            totalBag = int.TryParse(text, out totalBag) ? totalBag : 0;
+
+            return totalBag;
+        }
+
+        private string GetPlanItem(string PlanID)
+        {
+            string planItem = "";
+
+            DataTable dt_plan = dalPlan.idSearch(PlanID);
+
+            foreach (DataRow row in dt_plan.Rows)
+            {
+                string itemCode = row[dalPlan.partCode].ToString();
+                string itemName = tool.getItemName(itemCode);
+
+                planItem = itemCode + "_" + itemName;
+                break;
+
+            }
+
+            return planItem;
+
+        }
+
         private void filterData()
         {
             dgvTrf.DataSource = null;
@@ -203,7 +342,7 @@ namespace FactoryManagementSoftware.UI
 
             if(keyword == null)
             {
-                dt_TrfHist = dalTrfHist.Select();
+                dt_TrfHist = dalTrfHist.SelectWithBalance();
             }
             else
             {
@@ -317,8 +456,16 @@ namespace FactoryManagementSoftware.UI
                         row_TrfData[headerUnit] = row[dalTrfHist.TrfUnit];
                         row_TrfData[headerNote] = row[dalTrfHist.TrfNote];
                         row_TrfData[headerResult] = row[dalTrfHist.TrfResult];
+                        row_TrfData[headerBalance] = row[dalTrfHist.Balance];
+
+                        string PlanID = GetPlanID(row[dalTrfHist.TrfNote].ToString());
+                        row_TrfData[headerPlanID] = PlanID;
+
+                        if(!string.IsNullOrEmpty(PlanID))
+                        row_TrfData[headerPlan] = GetPlanItem(PlanID);
 
                         dt_TrfData.Rows.Add(row_TrfData);
+
 
                         periodWanted = false;
                         fromWanted = false;
@@ -354,7 +501,7 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void btnCheck_Click(object sender, EventArgs e)
+        private void LoadHistory()
         {
             try
             {
@@ -370,7 +517,13 @@ namespace FactoryManagementSoftware.UI
             {
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
-            
+        }
+
+        private void btnCheck_Click(object sender, EventArgs e)
+        {
+
+            LoadHistory();
+
         }
 
         private void cbTransferType_CheckedChanged(object sender, EventArgs e)
@@ -481,7 +634,7 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
 
-                    if (itemCode.Substring(1, 2) == text.Inspection_Pass)
+                    if (itemCode.Substring(0, 3) == text.Inspection_Pass)
                     {
                         dgv.Rows[n].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
@@ -565,6 +718,14 @@ namespace FactoryManagementSoftware.UI
         {
             cmbTrfToCategory.SelectedIndex = -1;
             cmbTrfTo.SelectedIndex = -1;
+        }
+
+        private void frmTransferHistory_Shown(object sender, EventArgs e)
+        {
+            if(autoLoad)
+            {
+                LoadHistory();
+            }
         }
     }
 }

@@ -17,9 +17,19 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
         }
 
-      
+        private void tableLayoutPanel29_Paint(object sender, PaintEventArgs e)
+        {
 
+        }
 
-       
+        private void lblType_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void gunaTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -36,8 +36,8 @@ namespace FactoryManagementSoftware.UI
         itemDAL dalItem = new itemDAL();
         itemBLL uItem = new itemBLL();
 
-        SPPDataDAL dalData = new SPPDataDAL();
-        SPPDataBLL uData = new SPPDataBLL();
+        SBBDataDAL dalData = new SBBDataDAL();
+        SBBDataBLL uData = new SBBDataBLL();
 
         DataTable dt_Size;
         DataTable dt_Type;

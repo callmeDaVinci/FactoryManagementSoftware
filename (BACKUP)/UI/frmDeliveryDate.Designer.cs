@@ -28,22 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblCustomer = new System.Windows.Forms.Label();
+            this.lblDateType = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnFilterApply = new System.Windows.Forms.Button();
             this.dtpDate = new System.Windows.Forms.DateTimePicker();
+            this.lblClear = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // lblCustomer
+            // lblDateType
             // 
-            this.lblCustomer.AutoSize = true;
-            this.lblCustomer.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustomer.Location = new System.Drawing.Point(37, 32);
-            this.lblCustomer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(109, 12);
-            this.lblCustomer.TabIndex = 174;
-            this.lblCustomer.Text = "SELECT DELVERED DATE";
+            this.lblDateType.AutoSize = true;
+            this.lblDateType.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateType.Location = new System.Drawing.Point(37, 32);
+            this.lblDateType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDateType.Name = "lblDateType";
+            this.lblDateType.Size = new System.Drawing.Size(109, 12);
+            this.lblDateType.TabIndex = 174;
+            this.lblDateType.Text = "SELECT DELVERED DATE";
             // 
             // btnCancel
             // 
@@ -72,7 +73,7 @@
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.Size = new System.Drawing.Size(189, 36);
             this.btnFilterApply.TabIndex = 173;
-            this.btnFilterApply.Text = "CONFIRM";
+            this.btnFilterApply.Text = "APPLY";
             this.btnFilterApply.UseVisualStyleBackColor = false;
             this.btnFilterApply.Click += new System.EventHandler(this.btnFilterApply_Click);
             // 
@@ -86,6 +87,20 @@
             this.dtpDate.Name = "dtpDate";
             this.dtpDate.Size = new System.Drawing.Size(189, 25);
             this.dtpDate.TabIndex = 176;
+            this.dtpDate.ValueChanged += new System.EventHandler(this.dtpDate_ValueChanged);
+            // 
+            // lblClear
+            // 
+            this.lblClear.AutoSize = true;
+            this.lblClear.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblClear.ForeColor = System.Drawing.Color.Blue;
+            this.lblClear.Location = new System.Drawing.Point(37, 75);
+            this.lblClear.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblClear.Name = "lblClear";
+            this.lblClear.Size = new System.Drawing.Size(33, 12);
+            this.lblClear.TabIndex = 177;
+            this.lblClear.Text = "CLEAR";
+            this.lblClear.Click += new System.EventHandler(this.lblClear_Click);
             // 
             // frmDeliveryDate
             // 
@@ -93,8 +108,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(265, 251);
+            this.Controls.Add(this.lblClear);
             this.Controls.Add(this.dtpDate);
-            this.Controls.Add(this.lblCustomer);
+            this.Controls.Add(this.lblDateType);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnFilterApply);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -103,6 +119,7 @@
             this.Name = "frmDeliveryDate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Delivered Date";
+            this.Load += new System.EventHandler(this.frmDeliveryDate_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -110,9 +127,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblCustomer;
+        private System.Windows.Forms.Label lblDateType;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnFilterApply;
         private System.Windows.Forms.DateTimePicker dtpDate;
+        private System.Windows.Forms.Label lblClear;
     }
 }

@@ -9,9 +9,9 @@ using FactoryManagementSoftware.Module;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmProductionRecordNew : Form
+    public partial class frmProductionRecord : Form
     {
-        public frmProductionRecordNew()
+        public frmProductionRecord()
         {
             InitializeComponent();
             AutoScroll = true;
@@ -433,7 +433,7 @@ namespace FactoryManagementSoftware.UI
                 string itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
                 string planID = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
                 
-                DataTable transferData = dalTrf.codeSearch(itemCode);
+                DataTable transferData = dalTrf.codeLikeSearch(itemCode);
 
                 foreach (DataRow row in dt.Rows)
                 {
@@ -477,7 +477,7 @@ namespace FactoryManagementSoftware.UI
                                         if(!string.IsNullOrEmpty(parentCode))
                                         {
                                             itemCode = parentCode;
-                                            transferData = dalTrf.codeSearch(itemCode);
+                                            transferData = dalTrf.codeLikeSearch(itemCode);
                                         }
                                         break;
                                     }
@@ -1553,7 +1553,9 @@ namespace FactoryManagementSoftware.UI
 
                         totalStockIn += packingMaxQty * fullBoxQty;
 
-                        if (!string.IsNullOrEmpty(cmbPackingCode.Text))
+                        string itemType = cmbPackingCode.Text.Substring(0, 3);
+
+                        if (!string.IsNullOrEmpty(cmbPackingCode.Text) && itemType == "CTN")
                         {
                             dt_Row = dt.NewRow();
                             dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
@@ -1921,6 +1923,7 @@ namespace FactoryManagementSoftware.UI
         private void frmProductionRecord_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainDashboard.DailyJobSheetFormOpen = false;
+            MainDashboard.NewDailyJobSheetFormOpen = false;
         }
 
         private void txtTotalStockIn_TextChanged(object sender, EventArgs e)

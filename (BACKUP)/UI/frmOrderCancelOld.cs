@@ -53,7 +53,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmReceiveCancel_Load(object sender, EventArgs e)
         {
-            DataTable dt = dalFac.Select();
+            DataTable dt = dalFac.SelectDESC();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "fac_name");
             distinctTable.DefaultView.Sort = "fac_name ASC";
             cmbFrom.DataSource = distinctTable;

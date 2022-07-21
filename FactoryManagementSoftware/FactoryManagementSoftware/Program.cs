@@ -26,7 +26,7 @@ namespace FactoryManagementSoftware
            
            //Application.Run(new frmItemEdit_NEW());
 
-           Application.Run(new frmItemMasterList());
+           //Application.Run(new frmItemMasterList());
 
           Application.Run(new MainDashboard(1));
 

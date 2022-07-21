@@ -112,5 +112,10 @@ namespace FactoryManagementSoftware.UI
         {
 
         }
+
+        private void dgvUserHistory_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

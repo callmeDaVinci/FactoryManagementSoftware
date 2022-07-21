@@ -362,7 +362,7 @@ namespace FactoryManagementSoftware.UI
         {
             string factoryName = "";
 
-            DataTable dt = dalFac.Select();
+            DataTable dt = dalFac.SelectDESC();
 
             if (dt.Rows.Count > 0)
             {
@@ -1822,7 +1822,7 @@ namespace FactoryManagementSoftware.UI
                     uItem.item_code = itemCode;
                     uItem.item_quo_ton = Convert.ToInt32(row[headerQuoTon]);
                     uItem.item_pro_ton = Convert.ToInt32(row[headerProTon]);
-                    uItem.item_capacity = Convert.ToInt32(row[headerCavity]);
+                    uItem.item_cavity = Convert.ToInt32(row[headerCavity]);
                     uItem.item_pro_ct_to = Convert.ToInt32(row[headerCycleTime]);
                     uItem.item_pro_pw_shot = Convert.ToInt32(row[headerPWPerShot]);
                     uItem.item_pro_rw_shot = Convert.ToInt32(row[headerRWPerShot]);

@@ -25,7 +25,7 @@ namespace FactoryManagementSoftware
         joinBLL uJoin = new joinBLL();
 
         Tool tool = new Tool();
-
+        Text text = new Text();
         #endregion
 
         #region variable declare
@@ -271,7 +271,7 @@ namespace FactoryManagementSoftware
                     uItem.item_quo_ct = tool.Int_TryParse(item[dalItem.ItemQuoCT].ToString());
                     uItem.item_pro_ct_from = tool.Int_TryParse(item[dalItem.ItemProCTFrom].ToString());
                     uItem.item_pro_ct_to = tool.Int_TryParse(item[dalItem.ItemProCTTo].ToString());
-                    uItem.item_capacity = tool.Int_TryParse(item[dalItem.ItemCavity].ToString());
+                    uItem.item_cavity = tool.Int_TryParse(item[dalItem.ItemCavity].ToString());
 
                     uItem.item_quo_pw_pcs = tool.Float_TryParse(item[dalItem.ItemQuoPWPcs].ToString());
                     uItem.item_quo_rw_pcs = tool.Float_TryParse(item[dalItem.ItemQuoRWPcs].ToString());
@@ -368,15 +368,29 @@ namespace FactoryManagementSoftware
             
             if (formLoaded)
             {
-                if(cmbCat.Text.Equals("Part"))
+                txtUnit.Text = text.Unit_Piece;
+
+                if (cmbCat.Text.Equals("Part"))
                 {
                     AddPartListColumns(dgvItemList);
                     LoadPartList(dgvItemList);
+
+                    txtUnit.Text = text.Unit_Piece;
                 }
                 else
                 {
                     AddMaterialListColumns(dgvItemList);
                     LoadMaterialList(dgvItemList);
+
+                    if (cmbCat.Text.Equals(text.Cat_Packaging))
+                    {
+                        txtUnit.Text = text.Unit_Piece;
+                    }
+                    else
+                    {
+                        txtUnit.Text = text.Unit_KG;
+
+                    }
                 }
             }
             dgvItemList.ClearSelection();
@@ -641,7 +655,7 @@ namespace FactoryManagementSoftware
             u.item_quo_ct = 0;
             u.item_pro_ct_from = 0;
             u.item_pro_ct_to = 0;
-            u.item_capacity = tool.Int_TryParse(txtCapacity.Text);
+            u.item_cavity = tool.Int_TryParse(txtCapacity.Text);
 
             u.item_quo_pw_pcs = tool.Float_TryParse(txtQuoPWpcs.Text);
             u.item_quo_rw_pcs = tool.Float_TryParse(txtQuoRWpcs.Text);
@@ -652,6 +666,9 @@ namespace FactoryManagementSoftware
             u.item_pro_rw_shot = tool.Float_TryParse(txtRWshot.Text);
             u.item_pro_cooling = 0;
             u.item_wastage_allowed = 0.05f;
+
+            u.item_unit = txtUnit.Text;
+            u.unit_to_pcs_rate = float.TryParse(txtPCSRate.Text, out float PcsRate) ? PcsRate : 1;
 
             if (cbAssembly.Checked)
             {
@@ -723,7 +740,7 @@ namespace FactoryManagementSoftware
             u.item_quo_ct = 0;
             u.item_pro_ct_from = 0;
             u.item_pro_ct_to = 0;
-            u.item_capacity = tool.Int_TryParse(txtCapacity.Text);
+            u.item_cavity = tool.Int_TryParse(txtCapacity.Text);
 
             u.item_quo_pw_pcs = tool.Float_TryParse(txtQuoPWpcs.Text); 
             u.item_quo_rw_pcs = tool.Float_TryParse(txtQuoRWpcs.Text);
@@ -792,6 +809,7 @@ namespace FactoryManagementSoftware
             }
 
             bool success = dalMaterial.Update(uMaterial);
+
             if (success == true)
             {
                 //data updated successfully

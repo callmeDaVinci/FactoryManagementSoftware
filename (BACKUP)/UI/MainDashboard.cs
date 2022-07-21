@@ -1,8 +1,11 @@
 ﻿using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Windows.Forms;
+using FactoryManagementSoftware.BLL;
+using FactoryManagementSoftware.DAL;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -15,6 +18,7 @@ namespace FactoryManagementSoftware.UI
         static public bool catFormOpen = false;
         static public bool ordFormOpen = false;
         static public bool dataFormOpen = false;
+        static public bool MouldFormOpen = false;
         static public bool itemCustFormOpen = false;
         static public bool forecastInputFormOpen = false;
         static public bool forecastReportInputFormOpen = false;
@@ -27,8 +31,13 @@ namespace FactoryManagementSoftware.UI
         static public bool PMMAFormOpen = false;
         static public bool ProductionFormOpen = false;
         static public bool DailyJobSheetFormOpen = false;
+        static public bool NewDailyJobSheetFormOpen = false;
         static public bool ProductionReportFormOpen = false;
-        static public bool SPPFormOpen = false;
+        static public bool SBBFormOpen = false;
+        static public bool SBBDeliveredFormOpen = false;
+        static public bool OUGPOFormOpen = false;
+        static public bool NewItemListFormOpen = false;
+
 
         static public int USER_ID = -1;
 
@@ -37,18 +46,22 @@ namespace FactoryManagementSoftware.UI
         static public readonly int ACTION_LVL_THREE = 3;
         static public readonly int ACTION_LVL_FOUR = 4;
         static public readonly int ACTION_LVL_FIVE = 5;
-
+        static public string myconnstrng;
         userDAL dalUser = new userDAL();
         Text text = new Text();
         Tool tool = new Tool();
+        
 
         public MainDashboard(int userID)
         {
+
             InitializeComponent();
             USER_ID = userID;
 
             int userPermission = dalUser.getPermissionLevel(USER_ID);
             sPPToolStripMenuItem.Visible = true;
+            pOToolStripMenuItem.Visible = false;
+
             if (userPermission >= ACTION_LVL_FOUR)
             {
                 sPPToolStripMenuItem.Visible = true;
@@ -74,6 +87,21 @@ namespace FactoryManagementSoftware.UI
                 orderToolStripMenuItem1.Visible = true;
                 productionToolStripMenuItem.Visible = false;
             }
+
+
+            myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+
+
+            if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
+            {
+                //Semenyih
+                pMMAToolStripMenuItem.Visible = false;
+                forecastToolStripMenuItem.Visible = false;
+                productionToolStripMenuItem.Visible = false;
+                dAILYToolStripMenuItem.Visible = false;
+                orderToolStripMenuItem1.Visible = false;
+            }
+
         }
 
 
@@ -288,7 +316,11 @@ namespace FactoryManagementSoftware.UI
         private void MainDashboard_FormClosed(object sender, FormClosedEventArgs e)
         {
             tool.historyRecord(text.LogOut, text.Success, DateTime.Now, USER_ID);
-            Application.Exit();
+
+
+            // Application.Exit();
+            frmLogIn frm = new frmLogIn(dalUser.getUsername(USER_ID));
+            frm.Show();
         }
 
         private void orderToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -341,22 +373,49 @@ namespace FactoryManagementSoftware.UI
 
         private void materialUsedReportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!MaterialUsedReportFormOpen)
+            if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
             {
-                frmMaterialUsedReport_NEW frm = new frmMaterialUsedReport_NEW();
-                frm.MdiParent = this;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
-                frm.Show();
-                MaterialUsedReportFormOpen = true;
+                //Semenyih
+                if (!MaterialUsedReportFormOpen)
+                {
+                    frmMaterialUsedReport frm = new frmMaterialUsedReport();
+                    frm.MdiParent = this;
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Maximized;
+                    frm.Show();
+                    MaterialUsedReportFormOpen = true;
+                }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmMaterialUsedReport>().Count() == 1)
+                    {
+                        Application.OpenForms.OfType<frmMaterialUsedReport>().First().BringToFront();
+                    }
+                }
             }
             else
             {
-                if (Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().Count() == 1)
+                //OUG
+                if (!MaterialUsedReportFormOpen)
                 {
-                    Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().First().BringToFront();
+                    frmMaterialUsedReport_NEW frm = new frmMaterialUsedReport_NEW();
+                    frm.MdiParent = this;
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Maximized;
+                    frm.Show();
+                    MaterialUsedReportFormOpen = true;
                 }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().Count() == 1)
+                    {
+                        Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().First().BringToFront();
+                    }
+                }
+
             }
+
+           
         }
 
         private void stockReportToolStripMenuItem_Click(object sender, EventArgs e)
@@ -403,9 +462,139 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void tempFunction()
+        {
+            string itemCode = "PP 93098 PT10";
+            string itemName = "PP 93098 PT10";
+            string itemPart = text.Cat_Pigment;
+
+            if (!tool.IfProductsExists(itemCode))
+            {
+                //Add data
+                itemBLL u = new itemBLL();
+                itemDAL dalItem = new itemDAL();
+
+                u.item_cat = itemPart;
+                u.item_code = itemCode;
+                u.item_name = itemName;
+
+                u.item_material = "";
+                u.item_mb = "";
+                u.item_color ="";
+
+                u.item_quo_ton = 0;
+                u.item_best_ton = 0;
+                u.item_pro_ton = 0;
+
+                u.item_quo_ct = 0;
+                u.item_pro_ct_from = 0;
+                u.item_pro_ct_to = 0;
+                u.item_cavity = 0;
+
+                u.item_quo_pw_pcs =0;
+                u.item_quo_rw_pcs = 0;
+                u.item_pro_pw_pcs = 0;
+                u.item_pro_rw_pcs =0;
+
+                u.item_pro_pw_shot = 0;
+                u.item_pro_rw_shot =0;
+                u.item_pro_cooling = 0;
+                u.item_wastage_allowed = 0.05f;
+
+                u.item_unit = text.Unit_KG;
+                u.unit_to_pcs_rate = 1;
+
+                u.item_assembly = 0;
+                u.item_production = 0;
+
+                u.item_added_date = DateTime.Now;
+                u.item_added_by = USER_ID;
+
+                //Inserting Data into Database
+                bool success = dalItem.NewInsert(u);
+
+                //If the data is successfully inserted then the value of success will be true else false
+                if (!success)
+                {
+                    MessageBox.Show("Failed to add new item");
+                }
+                else if(itemPart != text.Cat_Part)
+                {
+                    materialBLL uMaterial = new materialBLL();
+                    materialDAL dalMaterial = new materialDAL();
+
+                    //Add data
+                    uMaterial.material_cat = itemPart;
+                    uMaterial.material_code = itemCode;
+                    uMaterial.material_name = itemName;
+                    uMaterial.material_zero_cost = 0;
+                   
+                    if (!dalMaterial.Insert(uMaterial))
+                    {
+                        //Failed to insert data
+                        dalMaterial.Delete(uMaterial);
+
+                        MessageBox.Show("Failed to add new material");
+                    }
+                  
+                }
+            }
+          
+           
+        }
+
         private void MainDashboard_Load(object sender, EventArgs e)
         {
-            
+            tempFunction();
+
+
+            if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)//|| myconnstrng == text.DB_JunPC
+            {
+                //Semenyih
+                if (!SBBFormOpen)
+                {
+                    frmLoading.ShowLoadingScreen();
+                    frmSBB frm = new frmSBB();
+                    frm.MdiParent = this;
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Maximized;
+                    frm.Show();
+                    SBBFormOpen = true;
+                    frmLoading.CloseForm();
+                }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmSBB>().Count() == 1)
+                    {
+                        Application.OpenForms.OfType<frmSBB>().First().BringToFront();
+                    }
+                }
+            }
+            else
+            {
+                
+                //OUG
+                if (!inOutFormOpen)
+                {
+                    frmLoading.ShowLoadingScreen();
+                    frmInOut frm = new frmInOut();
+                    frm.MdiParent = this;
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Maximized;
+                    frm.Show();
+                    inOutFormOpen = true;
+                    frmLoading.CloseForm();
+                }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmInOut>().Count() == 1)
+                    {
+                        Application.OpenForms.OfType<frmInOut>().First().BringToFront();
+                    }
+                }
+            }
+
+
         }
 
         private void userToolStripMenuItem_Click(object sender, EventArgs e)
@@ -531,28 +720,46 @@ namespace FactoryManagementSoftware.UI
 
         private void dAILYToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (true)
+            frmLoading.ShowLoadingScreen();
+            if (!DailyJobSheetFormOpen)
             {
-                if (!DailyJobSheetFormOpen)
+                
+                frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                DailyJobSheetFormOpen = true;
+               
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
                 {
-                    frmLoading.ShowLoadingScreen();
-                    frmProductionRecordNew frm = new frmProductionRecordNew();
-                    frm.MdiParent = this;
-                    frm.StartPosition = FormStartPosition.CenterScreen;
-                    frm.WindowState = FormWindowState.Maximized;
-                    frm.Show();
-                    DailyJobSheetFormOpen = true;
-                    frmLoading.CloseForm();
-                }
-                else
-                {
-                    if (Application.OpenForms.OfType<frmProductionRecordNew>().Count() == 1)
-                    {
-                        Application.OpenForms.OfType<frmProductionRecordNew>().First().BringToFront();
-                    }
+                    Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
                 }
             }
-                
+
+            frmLoading.CloseForm();
+            //if (!DailyJobSheetFormOpen)
+            //{
+            //    frmLoading.ShowLoadingScreen();
+            //    frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
+            //    frm.MdiParent = this;
+            //    frm.StartPosition = FormStartPosition.CenterScreen;
+            //    frm.WindowState = FormWindowState.Maximized;
+            //    frm.Show();
+            //    NewDailyJobSheetFormOpen = true;
+            //    frmLoading.CloseForm();
+            //}
+            //else
+            //{
+            //    if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
+            //    {
+            //        Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
+            //    }
+            //}
+
         }
 
         private void reportToolStripMenuItem_Click(object sender, EventArgs e)
@@ -584,24 +791,40 @@ namespace FactoryManagementSoftware.UI
 
         private void sPPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!SPPFormOpen)
+            if (!SBBFormOpen)
             {
                 frmLoading.ShowLoadingScreen();
-                frmSPP frm = new frmSPP();
+                frmSBB frm = new frmSBB();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
                 frm.Show();
-                SPPFormOpen = true;
+                SBBFormOpen = true;
                 frmLoading.CloseForm();
             }
             else
             {
-                if (Application.OpenForms.OfType<frmSPP>().Count() == 1)
+                if (Application.OpenForms.OfType<frmSBB>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmSPP>().First().BringToFront();
+                    Application.OpenForms.OfType<frmSBB>().First().BringToFront();
                 }
             }
+
+            //if (Application.OpenForms.OfType<frmSBB>().Count() == 1)
+            //{
+            //    Application.OpenForms.OfType<frmSBB>().First().BringToFront();
+            //}
+            //else
+            //{
+            //    frmLoading.ShowLoadingScreen();
+            //    frmSBB frm = new frmSBB();
+            //    frm.MdiParent = this;
+            //    frm.StartPosition = FormStartPosition.CenterScreen;
+            //    frm.WindowState = FormWindowState.Maximized;
+            //    frm.Show();
+            //    SPPFormOpen = true;
+            //    frmLoading.CloseForm();
+            //}
         }
 
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
@@ -612,6 +835,141 @@ namespace FactoryManagementSoftware.UI
         private void toolTip_Popup(object sender, PopupEventArgs e)
         {
 
+        }
+
+        private void sBBDeliveredReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!SBBDeliveredFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmSBBDeliveredReport frm = new frmSBBDeliveredReport();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                SBBDeliveredFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmSBBDeliveredReport>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmSBBDeliveredReport>().First().BringToFront();
+                }
+            }
+        }
+
+        private void menuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void mouldToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!MouldFormOpen)
+            {
+                frmSBBMould frm = new frmSBBMould();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                MouldFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmSBBMould>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmSBBMould>().First().BringToFront();
+                }
+            }
+        }
+
+        private void pOToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!OUGPOFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmOUGPOList frm = new frmOUGPOList();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                OUGPOFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmOUGPOList>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmOUGPOList>().First().BringToFront();
+                }
+            }
+        }
+
+        private void nEWToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!DailyJobSheetFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                NewDailyJobSheetFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
+                }
+            }
+        }
+
+        private void oLDVERSIONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!DailyJobSheetFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmProductionRecordNew frm = new frmProductionRecordNew();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                DailyJobSheetFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmProductionRecordNew>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmProductionRecordNew>().First().BringToFront();
+                }
+            }
+        }
+
+        private void newItemListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!NewItemListFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmItemMasterList frm = new frmItemMasterList();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                NewItemListFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmItemMasterList>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmItemMasterList>().First().BringToFront();
+                }
+            }
         }
     }
 }

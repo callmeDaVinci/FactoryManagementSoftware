@@ -605,7 +605,7 @@ namespace FactoryManagementSoftware.UI
             string Type = cmbType.Text;
             string subType = cmbType.Text;
             int typeNO = 2;
-            dt = dalTrfHist.codeSearch(itemCode);
+            dt = dalTrfHist.codeLikeSearch(itemCode);
 
             //check sub type and create datagridview
             if(subType.Equals(cmbItemSubTypeIn))

@@ -1477,7 +1477,7 @@ namespace FactoryManagementSoftware.UI
 
         private void loadCustomerList()
         {
-            DataTable dt = dalCust.Select();
+            DataTable dt = dalCust.FullSelect();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
             distinctTable.Rows.Add("All");
             distinctTable.DefaultView.Sort = "cust_name ASC";

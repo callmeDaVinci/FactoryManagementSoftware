@@ -48,32 +48,10 @@ namespace FactoryManagementSoftware.UI
         private void LoadHistoryList(DataTable dt)
         {
             DataGridView dgv = dgvHistory;
-            //dgv.Rows.Clear();
-
-            //foreach (DataRow user in dt.Rows)
-            //{
-            //    //int n = dgv.Rows.Add();
-            //    //dgv.Rows[n].Cells[dalHistory.HistoryID].Value = user[dalHistory.HistoryID].ToString();
-            //    //dgv.Rows[n].Cells[dalHistory.HistoryDate].Value = user[dalHistory.HistoryDate].ToString();
-            //    //dgv.Rows[n].Cells[dalHistory.HistoryBy].Value = dalUser.getUsername(Convert.ToInt32(user[dalHistory.HistoryBy]));
-            //    //dgv.Rows[n].Cells[dalHistory.HistoryAction].Value = user[dalHistory.HistoryAction].ToString();
-            //    //dgv.Rows[n].Cells[dalHistory.HistoryDetail].Value = user[dalHistory.HistoryDetail].ToString();
-            //}
-
-           
-
+          
             dgv.DataSource = dt;
             dgvUIEdit(dgv);
             tool.listPaint(dgv);
-
-            //foreach (DataGridViewRow row in dgv.Rows)
-            //{
-            //    //currQty += row.Cells["qty"].Value;
-            //    ////More code here
-            //    //int n = row.Index;
-            //    //int userID = Convert.ToInt32(dgv.Rows[row.Index].Cells[dalHistory.HistoryBy].Value.ToString());
-            //    //dgv.Rows[row.Index].Cells[dalHistory.HistoryAction].Value += "[" + dalUser.getUsername(userID) + "]";
-            //}
 
             dataUpdatedTime();
         }

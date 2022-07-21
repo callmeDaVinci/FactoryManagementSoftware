@@ -127,7 +127,6 @@
             this.dgvProductionRecord.GridColor = System.Drawing.Color.WhiteSmoke;
             this.dgvProductionRecord.Location = new System.Drawing.Point(3, 1);
             this.dgvProductionRecord.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.dgvProductionRecord.MultiSelect = false;
             this.dgvProductionRecord.Name = "dgvProductionRecord";
             this.dgvProductionRecord.ReadOnly = true;
             this.dgvProductionRecord.RowHeadersVisible = false;

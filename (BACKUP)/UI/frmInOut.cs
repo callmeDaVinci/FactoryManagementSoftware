@@ -20,8 +20,8 @@ namespace FactoryManagementSoftware.UI
             try
             {
                 InitializeComponent();
-                dt_Fac = dalFac.Select();
-                dt_Cust = dalCust.Select();
+                dt_Fac = dalFac.SelectDESC();
+                dt_Cust = dalCust.FullSelect();
                 addDataToTrfHistDateCMB();
                 userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
 
@@ -33,6 +33,8 @@ namespace FactoryManagementSoftware.UI
                 {
                     btnTransfer.Hide();
                 }
+
+                dt_Plan = dalPlan.Select();
             }
             catch (Exception ex)
             {
@@ -55,9 +57,11 @@ namespace FactoryManagementSoftware.UI
         readonly string pastMonth = "30";
         readonly string pastYear = "365";
         readonly string All = "ALL";
-
+     
         DataTable dt_Fac;
         DataTable dt_Cust;
+        DataTable dtJoin;
+        DataTable dt_Plan;
 
         private DateTime updatedTime;
 
@@ -71,9 +75,11 @@ namespace FactoryManagementSoftware.UI
 
         #region create class object (database)
 
+
         facDAL dalFac = new facDAL();
 
         itemDAL dalItem = new itemDAL();
+        itemBLL uItem = new itemBLL();
 
         custDAL dalCust = new custDAL();
 
@@ -88,6 +94,9 @@ namespace FactoryManagementSoftware.UI
 
         userDAL dalUser = new userDAL();
 
+        planningDAL dalPlan = new planningDAL();
+
+        PlanningBLL uPlan = new PlanningBLL();
         childTrfHistDAL dalChildTrf = new childTrfHistDAL();
         childTrfHistBLL uChildTrfHist = new childTrfHistBLL();
 
@@ -146,7 +155,7 @@ namespace FactoryManagementSoftware.UI
             cmb.Items.Add(pastYear);
             cmb.Items.Add(All);
 
-            cmb.SelectedIndex = 0;
+            cmb.SelectedIndex = 2;
         }
 
         private void loadItemCategoryData()
@@ -158,7 +167,20 @@ namespace FactoryManagementSoftware.UI
             distinctTable.DefaultView.Sort = "item_cat_name ASC";
             cmbSearchCat.DataSource = distinctTable;
             cmbSearchCat.DisplayMember = "item_cat_name";
-            cmbSearchCat.SelectedIndex = 0;
+
+           
+            //cmbSearchCat.SelectedIndex = 1;
+
+            if (MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)
+            {
+                //Semenyih
+                cmbSearchCat.Text = text.Cat_Part;
+            }
+            else
+            {
+                cmbSearchCat.SelectedIndex = 0;
+            }
+
         }
 
         private void resetSaveData()
@@ -230,8 +252,9 @@ namespace FactoryManagementSoftware.UI
             try
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                dt_Fac = dalFac.Select();
-                dt_Cust = dalCust.Select();
+                dt_Fac = dalFac.SelectDESC();
+                dt_Cust = dalCust.FullSelect();
+                dtJoin = dalJoin.SelectwithChildInfo();
                 loadItemCategoryData();
                 itemListLoaded = false;
                 loadItemList();
@@ -384,29 +407,38 @@ namespace FactoryManagementSoftware.UI
 
         private void loadStockList(string itemCode)
         {
-            DataTable dt = dalStock.Select(itemCode);
-
-            dgvFactoryStock.Rows.Clear();
-
-            if(dt.Rows.Count > 0)
+            if(formLoaded)
             {
-                foreach (DataRow stock in dt.Rows)
+                DataTable dt = dalStock.Select(itemCode);
+
+                dgvFactoryStock.Rows.Clear();
+
+                if (dt.Rows.Count > 0)
                 {
-                    int n = dgvFactoryStock.Rows.Add();
-                    dgvFactoryStock.Rows[n].Cells["fac_name"].Value = stock["fac_name"].ToString();
-                    dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = Convert.ToSingle(stock["stock_qty"]).ToString("0.00");
+                    foreach (DataRow stock in dt.Rows)
+                    {
+                        int n = dgvFactoryStock.Rows.Add();
+                        dgvFactoryStock.Rows[n].Cells["fac_name"].Value = stock["fac_name"].ToString();
+                        dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = Convert.ToSingle(stock["stock_qty"]).ToString("0.00");
+
+                    }
 
                 }
-                
+                else
+                {
+                    int n = dgvFactoryStock.Rows.Add();
+                    dgvFactoryStock.Rows[n].Cells["fac_name"].Value = "null";
+                    dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = "null";
+
+                }
+                listPaint(dgvFactoryStock);
             }
             else
             {
-                int n = dgvFactoryStock.Rows.Add();
-                dgvFactoryStock.Rows[n].Cells["fac_name"].Value = "null";
-                dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = "null";
-
+                dgvFactoryStock.Rows.Clear();
+                dgvFactoryStock.Refresh();
             }
-            listPaint(dgvFactoryStock);
+           
         }
 
         private void calTotalStock(string itemCode)
@@ -454,7 +486,15 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    dtItem = dalItem.InOutCatItemSearch(keywords, cmbSearchCat.Text);
+                    if (MainDashboard.myconnstrng == text.DB_Semenyih && cmbSearchCat.Text == text.Cat_Part)
+                    {
+                        dtItem = dalItem.InOutCatSBBItemSearch(keywords);
+                    }
+                    else
+                    {
+                        dtItem = dalItem.InOutCatItemSearch(keywords, cmbSearchCat.Text);
+
+                    }
                 } 
             }
             else
@@ -466,7 +506,14 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    dtItem = dalItem.catInOutSearch(cmbSearchCat.Text);
+                    if (MainDashboard.myconnstrng == text.DB_Semenyih && cmbSearchCat.Text == text.Cat_Part)
+                    {
+                        dtItem = dalItem.InOutCatSBBItemSearch();
+                    }
+                    else
+                    {
+                        dtItem = dalItem.catInOutSearch(cmbSearchCat.Text);
+                    }
                 }
 
             }
@@ -497,7 +544,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    dt = daltrfHist.codeSearch(itemCode);
+                    dt = daltrfHist.codeLikeSearch(itemCode);
                 }
 
             }
@@ -556,6 +603,76 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private string getBetween(string strSource, string strStart, string strEnd1, string strEnd2)
+        {
+
+
+
+            if (strSource.Contains(strStart) && (strSource.Contains(strEnd1) || strSource.Contains(strEnd2)))
+            {
+                int Start, End;
+                Start = strSource.IndexOf(strStart, 0) + strStart.Length;
+                End = strSource.IndexOf(strEnd1, Start);
+
+                if (End <= -1)
+                {
+                    End = strSource.IndexOf(strEnd2, Start);
+
+                    if (End <= -1)
+                    {
+                        return "Failed to get Plan ID";
+                    }
+                }
+
+
+
+                return strSource.Substring(Start, End - Start);
+            }
+
+            return "";
+        }
+
+        private string GetPlanID(string note)
+        {
+            note = note.ToUpper();
+
+            string planID = "";
+
+            if (note.Contains("PLAN"))
+                planID = getBetween(note, "PLAN ", "(", "]");
+
+
+            return planID;
+
+        }
+
+        private string GetPlanItem(string PlanID)
+        {
+            string planItem = "";
+
+
+            foreach (DataRow row in dt_Plan.Rows)
+            {
+                if(PlanID == row[dalPlan.planID].ToString())
+                {
+                    string itemCode = row[dalPlan.partCode].ToString();
+                    string itemName = tool.getItemName(itemCode);
+
+                    if(itemName != itemCode)
+                    planItem = itemCode + "_" + itemName;
+                    else
+                    {
+                        planItem = itemName;
+
+                    }
+                    break;
+                }
+            }
+
+            return planItem;
+
+        }
+
         private void loadTransferList()
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -605,6 +722,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             dgvTrf.DataSource = null;
+
             if (dt.Rows.Count > 0)
             {
                 dgvTrf.DataSource = dt;
@@ -612,6 +730,32 @@ namespace FactoryManagementSoftware.UI
                 dgvTrf.ClearSelection();
             }
             //itemListLoaded = true;
+        }
+
+
+        private void LoadPlanItem()
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            DataTable dt = (DataTable)dgvTrf.DataSource;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                //get note
+                string note = row[daltrfHist.TrfNote].ToString();
+                string itemName = row[daltrfHist.TrfItemName].ToString();
+                string itemCode = row[daltrfHist.TrfItemCode].ToString();
+
+                string PlanID = GetPlanID(note);
+
+                string PlanItem = GetPlanItem(PlanID);
+
+                if (!string.IsNullOrEmpty(PlanID) && !PlanItem.Contains(itemCode) && !PlanItem.Contains(itemName))
+                    row[daltrfHist.TrfNote] = note + " : " + PlanItem;
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+
         }
 
         private void dgvItemUIEdit(DataGridView dgv)
@@ -634,6 +778,11 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvTrfUIEdit(DataGridView dgv)
         {
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+            //dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
+
             dgv.Columns[daltrfHist.TrfID].HeaderText = "ID";
             dgv.Columns[daltrfHist.TrfAddedDate].HeaderText = "Added_Date";
             dgv.Columns[daltrfHist.TrfDate].HeaderText = "Trf_Date";
@@ -657,13 +806,16 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[daltrfHist.TrfTo].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfQty].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfUnit].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfNote].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[daltrfHist.TrfNote].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfAddedBy].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfResult].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
             dgv.Columns[daltrfHist.TrfQty].DefaultCellStyle.Format = "0.##";
             dgv.Columns[daltrfHist.TrfAddedBy].Visible = false;
             //dgv.Columns[daltrfHist.TrfResult].Visible = false;
+
+            //dgv.Columns[header_ItemCode].DefaultCellStyle.ForeColor = Color.Gray;
+            
         }
         #endregion
 
@@ -750,14 +902,29 @@ namespace FactoryManagementSoftware.UI
 
         private bool ifGotChild(string itemCode)
         {
-            bool result = false;
             DataTable dtJoin = dalJoin.loadChildList(itemCode);
-            if (dtJoin.Rows.Count > 0)
-            {
-                result = true;
-            }
 
-            return result;
+            if(tool.getItemCat(itemCode) == text.Cat_Part)
+            {
+                if (dtJoin.Rows.Count > 0)
+                {
+                    foreach(DataRow row in dtJoin.Rows)
+                    {
+                        string ChildCode = row[dalJoin.JoinChild].ToString();
+
+                        string ChildCat = tool.getItemCat(ChildCode);
+
+                        if (ChildCat == text.Cat_Part || ChildCat == text.Cat_SubMat)
+                        {
+                            return true;
+                        }
+                    }
+
+                }
+            }
+           
+
+            return false;
         }
 
         #endregion
@@ -830,7 +997,7 @@ namespace FactoryManagementSoftware.UI
         private void dgvItem_SelectionChanged(object sender, EventArgs e)
         {
            
-            if (formLoaded)
+            if (formLoaded && dgvItem.SelectedRows.Count > 0)
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 DataGridView dgv = dgvItem;
@@ -875,6 +1042,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 Cursor = Cursors.Arrow; // change cursor to normal type 
             }
+           
         }
 
         private void dgvTrf_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -1658,11 +1826,12 @@ namespace FactoryManagementSoftware.UI
             int col = e.ColumnIndex;
             string itemCode = null;
 
+
             if (dgv.Columns[col].Name == daltrfHist.TrfItemCode)
             {
                 itemCode = dgv.Rows[row].Cells[daltrfHist.TrfItemCode].Value.ToString();
 
-                if (ifGotChild(itemCode))
+                if (tool.ifGotChild(itemCode,dtJoin))
                 {
                     if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                     {
@@ -1682,7 +1851,7 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[row].Cells[daltrfHist.TrfItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
 
-                    if (itemCode.Substring(1, 2) == text.Inspection_Pass)
+                    if (itemCode.Substring(0, 3) == text.Inspection_Pass)
                     {
                         dgv.Rows[row].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
@@ -1740,6 +1909,15 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+            string colName = dgv.Columns[col].Name;
+            //if (colName == daltrfHist.TrfItemCode || colName == daltrfHist.TrfAddedDate || colName == daltrfHist.TrfDate || colName == daltrfHist.TrfID || colName == daltrfHist.TrfResult || colName == daltrfHist.TrfNote)
+            //{
+
+
+            //}
+
+            //dgv.Rows[row].Cells[col].Style.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+
             dgv.ResumeLayout();
         }
 
@@ -1775,10 +1953,15 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
 
-                    if(itemCode.Substring(1, 2) == text.Inspection_Pass)
+                    if(itemCode.Length > 3)
                     {
-                        dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        string test = itemCode.Substring(0, 3);
+                        if (itemCode.Substring(0, 3) == text.Inspection_Pass)
+                        {
+                            dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        }
                     }
+                    
                 }
             }
 
@@ -1919,6 +2102,7 @@ namespace FactoryManagementSoftware.UI
         private void timer1_Tick(object sender, EventArgs e)
         {
             timer1.Stop();
+            formLoaded = false;
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             if (string.IsNullOrEmpty(txtSearch.Text)  || txtSearch.Text == "Search")
             {
@@ -1931,6 +2115,9 @@ namespace FactoryManagementSoftware.UI
 
             loadItemList();
             loadTransferList();
+
+
+            formLoaded = true;
             Cursor = Cursors.Arrow; // change cursor to normal type
 
         }
@@ -1951,6 +2138,242 @@ namespace FactoryManagementSoftware.UI
                 txtSearch.Text = "Search";
                 txtSearch.ForeColor = SystemColors.GrayText;
             }
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void JumpToSelectedTrfIDRow()
+        {
+            int searchingID = int.TryParse(txtJumpID.Text, out searchingID) ? searchingID : -1;
+
+            if (searchingID > 0)
+            {
+                bool IDFound = false;
+                DataTable dt = (DataTable)dgvTrf.DataSource;
+
+
+                foreach (DataGridViewRow row in dgvTrf.Rows)
+                {
+                    string listID = row.Cells[daltrfHist.TrfID].Value.ToString();
+
+                    if (listID == searchingID.ToString())
+                    {
+                        //dgvTrf.FirstDisplayedScrollingRowIndex = dgvTrf.SelectedRows[i].Index;
+
+                        int rowIndex = row.Index;
+                        dgvTrf.CurrentCell = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfID];
+
+                        IDFound = true;
+                    }
+                }
+
+
+                if (!IDFound)
+                {
+                    MessageBox.Show("ID not found!");
+                }
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            JumpToSelectedTrfIDRow();
+
+        }
+
+        private void txtJumpID_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
+            {
+                JumpToSelectedTrfIDRow();
+            }
+        }
+
+        private void txtJumpID_Enter(object sender, EventArgs e)
+        {
+            if (txtJumpID.Text == "transfer id")
+            {
+                txtJumpID.Text = "";
+                txtJumpID.ForeColor = SystemColors.WindowText;
+            }
+        }
+
+        private void txtJumpID_Leave(object sender, EventArgs e)
+        {
+            if (txtJumpID.Text.Length == 0)
+            {
+                txtJumpID.Text = "transfer id";
+                txtJumpID.ForeColor = SystemColors.GrayText;
+            }
+        }
+
+        private void dgvItem_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                DataGridView dgv = dgvItem;
+
+                //handle the row selection on right click
+                if (e.Button == MouseButtons.Right && userPermission >= MainDashboard.ACTION_LVL_TWO)
+                {
+                    ContextMenuStrip my_menu = new ContextMenuStrip();
+
+                    dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    // Can leave these here - doesn't hurt
+                    dgv.Rows[e.RowIndex].Selected = true;
+                    dgv.Focus();
+                    int rowIndex = dgv.CurrentCell.RowIndex;
+
+                    string itemCode = dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
+                    string itemName = dgv.Rows[rowIndex].Cells[dalItem.ItemName].Value.ToString();
+
+                    if (itemName.Contains(text.Terminated) || itemName.Contains(text.Terminated.ToUpper()))
+                    {
+                        my_menu.Items.Add(text.Activate).Name = text.Activate;
+                    }
+                    else
+                    {
+                        my_menu.Items.Add(text.Terminated).Name = text.Terminated;
+                    }
+
+                    my_menu.Items.Add(text.TransferHistory).Name = text.TransferHistory;
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(Item_my_menu_ItemClicked);
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
+        private bool ItemTermination(string itemCode, string itemName)
+        {
+            bool result = false;
+            uItem.item_code = itemCode;
+            uItem.item_name = "("+text.Terminated.ToUpper()+")"+itemName;
+
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = MainDashboard.USER_ID;
+
+            result = dalItem.ItemNameUpdate(uItem);
+            if (!result)
+            {
+                MessageBox.Show("Failed to terminated item");
+            }
+
+            return result;
+        }
+
+        private bool ItemActivation(string itemCode, string itemName)
+        {
+            bool result = false;
+
+            if (itemName.Contains("(" + text.Terminated.ToUpper() + ")"))
+            {
+                itemName = itemName.Replace("(" + text.Terminated.ToUpper() + ")", "");
+
+                uItem.item_code = itemCode;
+                uItem.item_name = itemName;
+
+                uItem.item_updtd_date = DateTime.Now;
+                uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                result = dalItem.ItemNameUpdate(uItem);
+
+                if (!result)
+                {
+                    MessageBox.Show("Failed to activate item");
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Not terminated item!");
+            }
+
+            return result;
+        }
+
+        private void Item_my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                                             //MessageBox.Show(e.ClickedItem.Name.ToString());
+
+                DataGridView dgv = dgvItem;
+
+                int rowIndex = dgvItem.CurrentCell.RowIndex;
+                
+                string itemCode = dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
+                string itemName = dgv.Rows[rowIndex].Cells[dalItem.ItemName].Value.ToString();
+
+                string clickedItem = e.ClickedItem.Name.ToString();
+
+                if (dgv.SelectedRows.Count >= 0 && rowIndex >= 0)
+                {
+                    if (clickedItem.Equals(text.Terminated))
+                    {
+                        if(ItemTermination(itemCode, itemName))
+                        {
+                            dgv.Rows[rowIndex].Cells[dalItem.ItemName].Value = "(" + text.Terminated.ToUpper() + ")" + itemName;
+                        }
+                    }
+                    else if (clickedItem.Equals(text.Activate))
+                    {
+                        if (ItemActivation(itemCode, itemName))
+                        {
+                            dgv.Rows[rowIndex].Cells[dalItem.ItemName].Value = itemName.Replace("(" + text.Terminated.ToUpper() + ")", "");
+                        }
+                    }
+                    else if (clickedItem.Equals(text.TransferHistory))
+                    {
+                        frmTransferHistory frm = new frmTransferHistory(itemCode)
+                        {
+                            StartPosition = FormStartPosition.CenterScreen
+                        };
+
+                        frm.Show();
+                    }
+
+                }
+
+                //listPaintAndKeepSelected(dgvItem);
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
+        private void cbPlanDetail_CheckedChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            frmLoading.ShowLoadingScreen();
+
+            LoadPlanItem();
+
+            frmLoading.CloseForm();
+
         }
     }
 }

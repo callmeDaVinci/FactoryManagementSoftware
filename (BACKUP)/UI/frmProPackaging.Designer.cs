@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvPackaging = new System.Windows.Forms.DataGridView();
             this.btnAddItem = new System.Windows.Forms.Button();
             this.btnDone = new System.Windows.Forms.Button();
@@ -62,26 +62,26 @@
             this.dgvPackaging.AllowUserToOrderColumns = true;
             this.dgvPackaging.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvPackaging.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPackaging.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPackaging.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvPackaging.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPackaging.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvPackaging.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPackaging.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvPackaging.GridColor = System.Drawing.Color.WhiteSmoke;
-            this.dgvPackaging.Location = new System.Drawing.Point(13, 81);
+            this.dgvPackaging.Location = new System.Drawing.Point(13, 134);
             this.dgvPackaging.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.dgvPackaging.MultiSelect = false;
             this.dgvPackaging.Name = "dgvPackaging";
@@ -89,8 +89,9 @@
             this.dgvPackaging.RowHeadersVisible = false;
             this.dgvPackaging.RowTemplate.Height = 40;
             this.dgvPackaging.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPackaging.Size = new System.Drawing.Size(848, 315);
+            this.dgvPackaging.Size = new System.Drawing.Size(756, 253);
             this.dgvPackaging.TabIndex = 154;
+            this.dgvPackaging.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPackaging_CellDoubleClick);
             this.dgvPackaging.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvPackaging_CellMouseDown);
             // 
             // btnAddItem
@@ -100,7 +101,7 @@
             this.btnAddItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddItem.ForeColor = System.Drawing.Color.Black;
-            this.btnAddItem.Location = new System.Drawing.Point(736, 24);
+            this.btnAddItem.Location = new System.Drawing.Point(645, 71);
             this.btnAddItem.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnAddItem.Name = "btnAddItem";
             this.btnAddItem.Size = new System.Drawing.Size(125, 36);
@@ -115,7 +116,7 @@
             this.btnDone.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnDone.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDone.ForeColor = System.Drawing.Color.White;
-            this.btnDone.Location = new System.Drawing.Point(736, 400);
+            this.btnDone.Location = new System.Drawing.Point(644, 407);
             this.btnDone.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.btnDone.Name = "btnDone";
             this.btnDone.Size = new System.Drawing.Size(125, 36);
@@ -131,7 +132,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(604, 400);
+            this.button1.Location = new System.Drawing.Point(512, 407);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(125, 36);
@@ -145,20 +146,20 @@
             this.cmbPackingCode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbPackingCode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbPackingCode.FormattingEnabled = true;
-            this.cmbPackingCode.Location = new System.Drawing.Point(329, 38);
+            this.cmbPackingCode.Location = new System.Drawing.Point(61, 78);
             this.cmbPackingCode.Name = "cmbPackingCode";
-            this.cmbPackingCode.Size = new System.Drawing.Size(187, 25);
+            this.cmbPackingCode.Size = new System.Drawing.Size(283, 25);
             this.cmbPackingCode.TabIndex = 250;
             // 
             // lblPcs
             // 
             this.lblPcs.AutoSize = true;
             this.lblPcs.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPcs.Location = new System.Drawing.Point(12, 16);
+            this.lblPcs.Location = new System.Drawing.Point(414, 43);
             this.lblPcs.Name = "lblPcs";
-            this.lblPcs.Size = new System.Drawing.Size(65, 19);
+            this.lblPcs.Size = new System.Drawing.Size(74, 19);
             this.lblPcs.TabIndex = 249;
-            this.lblPcs.Text = "PCS/BOX";
+            this.lblPcs.Text = "QTY / BOX";
             // 
             // cmbPackingName
             // 
@@ -166,18 +167,18 @@
             this.cmbPackingName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbPackingName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbPackingName.FormattingEnabled = true;
-            this.cmbPackingName.Location = new System.Drawing.Point(96, 38);
+            this.cmbPackingName.Location = new System.Drawing.Point(61, 43);
             this.cmbPackingName.Name = "cmbPackingName";
-            this.cmbPackingName.Size = new System.Drawing.Size(227, 25);
+            this.cmbPackingName.Size = new System.Drawing.Size(283, 25);
             this.cmbPackingName.TabIndex = 248;
             this.cmbPackingName.SelectedIndexChanged += new System.EventHandler(this.cmbPackingName_SelectedIndexChanged);
             // 
             // txtPackagingMax
             // 
             this.txtPackagingMax.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPackagingMax.Location = new System.Drawing.Point(13, 38);
+            this.txtPackagingMax.Location = new System.Drawing.Point(494, 40);
             this.txtPackagingMax.Name = "txtPackagingMax";
-            this.txtPackagingMax.Size = new System.Drawing.Size(64, 25);
+            this.txtPackagingMax.Size = new System.Drawing.Size(123, 25);
             this.txtPackagingMax.TabIndex = 247;
             this.txtPackagingMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtPackagingMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPackingQty_KeyPress);
@@ -185,28 +186,30 @@
             // txtTotalBox
             // 
             this.txtTotalBox.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotalBox.Location = new System.Drawing.Point(542, 38);
+            this.txtTotalBox.Location = new System.Drawing.Point(494, 78);
             this.txtTotalBox.Name = "txtTotalBox";
-            this.txtTotalBox.Size = new System.Drawing.Size(89, 25);
+            this.txtTotalBox.Size = new System.Drawing.Size(123, 25);
             this.txtTotalBox.TabIndex = 251;
             this.txtTotalBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTotalBox.TextChanged += new System.EventHandler(this.txtTotalBox_TextChanged);
             this.txtTotalBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTotalBox_KeyPress);
             // 
             // lblTotalBox
             // 
             this.lblTotalBox.AutoSize = true;
             this.lblTotalBox.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalBox.Location = new System.Drawing.Point(538, 16);
+            this.lblTotalBox.Location = new System.Drawing.Point(412, 78);
             this.lblTotalBox.Name = "lblTotalBox";
             this.lblTotalBox.Size = new System.Drawing.Size(76, 19);
             this.lblTotalBox.TabIndex = 252;
             this.lblTotalBox.Text = "TOTAL QTY";
+            this.lblTotalBox.Click += new System.EventHandler(this.lblTotalBox_Click);
             // 
             // lblBoxName
             // 
             this.lblBoxName.AutoSize = true;
             this.lblBoxName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBoxName.Location = new System.Drawing.Point(92, 16);
+            this.lblBoxName.Location = new System.Drawing.Point(9, 46);
             this.lblBoxName.Name = "lblBoxName";
             this.lblBoxName.Size = new System.Drawing.Size(48, 19);
             this.lblBoxName.TabIndex = 253;
@@ -216,7 +219,7 @@
             // 
             this.lblBoxCode.AutoSize = true;
             this.lblBoxCode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBoxCode.Location = new System.Drawing.Point(329, 16);
+            this.lblBoxCode.Location = new System.Drawing.Point(12, 88);
             this.lblBoxCode.Name = "lblBoxCode";
             this.lblBoxCode.Size = new System.Drawing.Size(46, 19);
             this.lblBoxCode.TabIndex = 254;
@@ -249,7 +252,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(874, 451);
+            this.ClientSize = new System.Drawing.Size(782, 453);
             this.Controls.Add(this.lblBoxCode);
             this.Controls.Add(this.lblBoxName);
             this.Controls.Add(this.lblTotalBox);

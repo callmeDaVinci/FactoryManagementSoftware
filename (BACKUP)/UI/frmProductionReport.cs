@@ -30,6 +30,7 @@ namespace FactoryManagementSoftware.UI
         ProductionRecordDAL dalProRecord = new ProductionRecordDAL();
         Tool tool = new Tool();
         Text text = new Text();
+        ExcelTool excelTool = new ExcelTool();
 
         private string textMoreFilters = "MORE FILTERS ...";
         private string textHideFilters = "HIDE FILTERS";
@@ -51,12 +52,13 @@ namespace FactoryManagementSoftware.UI
         private readonly string header_ProDateFrom = "PRO. DATE FROM";
         private readonly string header_ProDateTo = "PRO. DATE TO";
         private readonly string header_PartName = "NAME";
+        private readonly string header_PartCode = "CODE";
         private readonly string header_Mac = "MAC.";
         private readonly string header_Fac = "FAC.";
         private readonly string header_PlanID = "PLAN ID";
         private readonly string header_SheetID = "SHEET ID";
         private readonly string header_Shift = "SHIFT";
-        private readonly string header_StockIn = "STOCK IN";
+        private readonly string header_Produced = "PRODUCED";
         private readonly string header_RawMat = "RAW MAT.";
         private readonly string header_ColorMat = "COLOR MAT.";
         private readonly string header_Data= "DATA";
@@ -108,6 +110,7 @@ namespace FactoryManagementSoftware.UI
             
             dt.Columns.Add(header_PlanID, typeof(int));
             dt.Columns.Add(header_PartName, typeof(string));
+            dt.Columns.Add(header_PartCode, typeof(string));
 
             if (!cbShowOnlyOneRowForEachPlan.Checked)
             {
@@ -115,7 +118,7 @@ namespace FactoryManagementSoftware.UI
                 dt.Columns.Add(header_Shift, typeof(string));
             }
 
-            dt.Columns.Add(header_StockIn, typeof(int));
+            dt.Columns.Add(header_Produced, typeof(int));
 
             if(cbShowRawMat.Checked)
             {
@@ -293,9 +296,10 @@ namespace FactoryManagementSoftware.UI
                                     dt_Row[header_Description] = row[dalItem.ItemMBatch].ToString();
                                     dt.Rows.Add(dt_Row);
 
+                                    double colorUsage = double.TryParse(row[dalItem.ItemMBRate].ToString(), out double d) ? d : 0;
                                     dt_Row = dt.NewRow();
                                     dt_Row[header_Data] = data_ColorUsage;
-                                    dt_Row[header_Description] = row[dalItem.ItemMBRate].ToString();
+                                    dt_Row[header_Description] = colorUsage.ToString("0.##");
                                     dt.Rows.Add(dt_Row);
 
                                     //dt_Row = dt.NewRow();
@@ -436,6 +440,8 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadProductionRecord()
         {
+            Cursor = Cursors.WaitCursor;
+
             recordLoaded = false;
 
             dgvMoreDetail.DataSource = null;
@@ -463,7 +469,7 @@ namespace FactoryManagementSoftware.UI
                 string itemCode = row[dalItem.ItemCode].ToString();
                 string itemName = row[dalItem.ItemName].ToString();
 
-                int totalStockIn = int.TryParse(row[dalProRecord.TotalProduced].ToString(), out totalStockIn) ? totalStockIn : 0;
+                int totalProduced = int.TryParse(row[dalProRecord.TotalProduced].ToString(), out totalProduced) ? totalProduced : 0;
 
                 string rawMat = row[dalItem.ItemMaterial].ToString();
                 string colorMat = row[dalItem.ItemMBatch].ToString();
@@ -541,7 +547,8 @@ namespace FactoryManagementSoftware.UI
                    
                     dt_Row[header_PlanID] = planID;
                     dt_Row[header_PartName] = itemName;
-                    dt_Row[header_StockIn] = totalStockIn;
+                    dt_Row[header_PartCode] = itemCode;
+                    dt_Row[header_Produced] = totalProduced;
 
                     if (cbShowRawMat.Checked)
                     {
@@ -578,15 +585,15 @@ namespace FactoryManagementSoftware.UI
 
                     if (previousPlanID == row[header_PlanID].ToString())
                     {
-                        totalStockIn += Convert.ToInt32(row[header_StockIn].ToString());
+                        totalStockIn += Convert.ToInt32(row[header_Produced].ToString());
 
                         dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][header_ProDateFrom] = proDate;
-                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][header_StockIn] = totalStockIn;
+                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][header_Produced] = totalStockIn;
                     }
                     else
                     {
                         previousPlanID = row[header_PlanID].ToString();
-                        totalStockIn = Convert.ToInt32(row[header_StockIn].ToString());
+                        totalStockIn = Convert.ToInt32(row[header_Produced].ToString());
 
                         dt_FilterDuplicatePlan.ImportRow(row);
                     }
@@ -633,6 +640,8 @@ namespace FactoryManagementSoftware.UI
             dgvProductionRecord.ClearSelection();
 
             recordLoaded = true;
+
+            Cursor = Cursors.Arrow;
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
@@ -806,6 +815,15 @@ namespace FactoryManagementSoftware.UI
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+
+
+            dgvProductionRecord.SelectAll();
+            excelTool.ExportToExcel(text.Report_Type_Production, (DataTable) dgvProductionRecord.DataSource, dgvProductionRecord.GetClipboardContent());
+
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
 
         }
     }

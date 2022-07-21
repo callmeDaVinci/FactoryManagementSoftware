@@ -28,13 +28,34 @@ namespace FactoryManagementSoftware.UI
 
             cmbChildCat.Text = dalItem.getCatName(u.join_child_code);
             cmbChildName.Text = tool.getItemName(u.join_child_code);
+            LoadChidCodeCMB();
             cmbChildCode.Text = u.join_child_code;
 
             txtChildQty.Text = u.join_qty.ToString();
             txtMax.Text = u.join_max.ToString();
             txtMin.Text = u.join_min.ToString();
 
+            if (!string.IsNullOrEmpty(u.join_parent_code))
+            {
+                cmbParentCat.Enabled = false;
+                cmbParentName.Enabled = false;
+                cmbParentCode.Enabled = false;
+            }
+
+            if (!string.IsNullOrEmpty(u.join_child_code))
+            {
+                cmbChildCat.Enabled = false;
+                cmbChildName.Enabled = false;
+                cmbChildCode.Enabled = false;
+
+                cmbChildName.DropDownStyle = ComboBoxStyle.DropDownList;
+            }
+
+            cbMainCarton.Checked = u.join_main_carton;
+
             updateTestName();
+
+
         }
 
         itemCatDAL dALItemCat = new itemCatDAL();
@@ -43,8 +64,11 @@ namespace FactoryManagementSoftware.UI
         joinDAL dalJoin = new joinDAL();
 
         itemDAL dalItem = new itemDAL();
-
+        itemCustDAL dalItemCust = new itemCustDAL();
         Tool tool = new Tool();
+        Text text = new Text();
+        SBBDataDAL dalSBB = new SBBDataDAL();
+
         private bool closeAfter = false;
         #region Load/Close
 
@@ -82,7 +106,124 @@ namespace FactoryManagementSoftware.UI
 
         private void frmJoinEdit_Load(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private string GetChildCode(DataTable dt, string parentCode)
+        {
+            foreach (DataRow row in dt.Rows)
+            {
+                if (parentCode == row[dalJoin.ParentCode].ToString())
+                {
+                    string childCode = row[dalJoin.ChildCode].ToString();
+
+                    if (childCode.Substring(0, 2) == "CF")
+                    {
+                        parentCode = childCode;
+
+                        break;
+                    }
+                }
+
+            }
+
+            return parentCode;
+        }
+
+        private void UpdateSBBItemPackaging()
+        {
+            bool success = true;
+            string itemCust = text.SPP_BrandName;
+            DataTable dt_Product = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);
+            //DataTable dt_Product = dalItemCust.SBBItemSelect(itemCust); 
+            // DataTable dt_Product = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);
+            DataTable dt_Item = dalItem.Select();
+            DataTable dt_Join = dalJoin.SelectWithChildCat();
+
+            uJoin.join_updated_date = DateTime.Now;
+            uJoin.join_updated_by = MainDashboard.USER_ID;
+            uJoin.join_added_date = DateTime.Now;
+            uJoin.join_added_by = MainDashboard.USER_ID;
+
+            foreach (DataRow row in dt_Product.Rows)
+            {
+                string itemCode = row[dalSBB.ItemCode].ToString();
+
+                if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C")
+                {
+                    itemCode = GetChildCode(dt_Join, itemCode);
+                }
+
+                int qtyPerPacket = int.TryParse(row[dalSBB.QtyPerPacket].ToString(), out qtyPerPacket) ? qtyPerPacket : 0;
+                int qtyPerBag = int.TryParse(row[dalSBB.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+
+                uJoin.join_parent_code = itemCode;
+
+                uJoin.join_child_code = cmbChildCode.Text;
+
+                if(cbFollowPacketQty.Checked)
+                {
+                    uJoin.join_max = qtyPerPacket;
+                    uJoin.join_min = qtyPerPacket;
+                }
+                else if(cbFollowBagQty.Checked)
+                {
+                    uJoin.join_max = qtyPerBag;
+                    uJoin.join_min = qtyPerBag;
+                }
+                else
+                {
+                    uJoin.join_max = Convert.ToInt32(txtMax.Text);
+                    uJoin.join_min = Convert.ToInt32(txtMin.Text);
+                }
+                
+                uJoin.join_qty = Convert.ToInt32(txtChildQty.Text);
+
+                DataTable dt_existCheck = dalJoin.existCheck(uJoin.join_parent_code, uJoin.join_child_code);
+
+                if (dt_existCheck.Rows.Count > 0)
+                {
+                    //update data
+                    if (cbRemoveItem.Checked)
+                    {
+                        success = dalJoin.Delete(uJoin);
+                    }
+                    else
+                    {
+                        success = dalJoin.UpdateWithMaxMin(uJoin);
+
+                    }
+                    
+                    if (!success)
+                    {
+                        MessageBox.Show("Failed to update join");
+
+
+                    }
+                }
+                else
+                {
+                    //insert new data
+                    if (!cbRemoveItem.Checked && uJoin.join_max!= 0 && uJoin.join_min != 0)
+                    {
+                        success = dalJoin.InsertWithMaxMin(uJoin);
+
+                        if (!success)
+                        {
+                            //Failed to insert data
+                            MessageBox.Show("Failed to add new join");
+                        }
+                    }
+
+                   
+                }
+            }
+
+            if (success)
+            {
+                MessageBox.Show("Updated successful!");
+            }
+
         }
 
         private void cmbParentCat_SelectedIndexChanged(object sender, EventArgs e)
@@ -177,6 +318,26 @@ namespace FactoryManagementSoftware.UI
 
             updateTestName();
 
+        }
+
+        private void LoadChidCodeCMB()
+        {
+            errorProvider5.Clear();
+            string keywords = cmbChildName.Text;
+
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                DataTable dt = dalItem.nameSearch(keywords);
+                cmbChildCode.DataSource = dt;
+                cmbChildCode.DisplayMember = "item_code";
+                cmbChildCode.ValueMember = "item_code";
+            }
+            else
+            {
+                cmbChildCode.DataSource = null;
+            }
+
+            updateTestName();
         }
 
         private void cmbChildName_SelectedIndexChanged(object sender, EventArgs e)
@@ -275,6 +436,40 @@ namespace FactoryManagementSoftware.UI
             return result;
         }
 
+        private bool SBBValidation()
+        {
+            bool result = true;
+
+            if (string.IsNullOrEmpty(cmbChildCat.Text))
+            {
+
+                errorProvider4.SetError(cmbChildCat, "Item Category Required");
+                result = false;
+            }
+
+            if (string.IsNullOrEmpty(cmbChildName.Text))
+            {
+
+                errorProvider5.SetError(cmbChildName, "Item name Required");
+                result = false;
+            }
+
+            if (string.IsNullOrEmpty(cmbChildCode.Text))
+            {
+
+                errorProvider6.SetError(cmbChildCode, "Item code Required");
+                result = false;
+            }
+
+         
+            if (string.IsNullOrEmpty(txtChildQty.Text))
+            {
+                errorProvider7.SetError(txtChildQty, "Join Qty Required");
+                result = false;
+            }
+
+            return result;
+        }
         private bool IfProductsExists(string parentCode, string childCode)
         {
             DataTable dt = dalJoin.existCheck(parentCode,childCode);
@@ -314,20 +509,21 @@ namespace FactoryManagementSoftware.UI
                     frmJoin.editedParentCode = uJoin.join_parent_code;
                     frmJoin.editedChildCode = uJoin.join_child_code;
 
+                    uJoin.join_max = Convert.ToInt32(txtMax.Text);
+                    uJoin.join_min = Convert.ToInt32(txtMin.Text);
+
                     if (cmbChildCat.Text.Equals("Carton"))
                     {
-                        uJoin.join_max = Convert.ToInt32(txtMax.Text);
-                        uJoin.join_min = Convert.ToInt32(txtMin.Text);
                         uJoin.join_qty = Convert.ToInt32(txtChildQty.Text);
                     }
                     else
                     {
-                        uJoin.join_max = Convert.ToInt32(txtMax.Text);
-                        uJoin.join_min = Convert.ToInt32(txtMin.Text);
                         uJoin.join_qty = Convert.ToSingle(txtChildQty.Text);
                     }
 
-                    
+
+                    uJoin.join_main_carton = cbMainCarton.Checked;
+                    uJoin.join_stock_out = cbStockOut.Checked;
 
                     DataTable dt_existCheck = dalJoin.existCheck(uJoin.join_parent_code, uJoin.join_child_code);
 
@@ -349,7 +545,7 @@ namespace FactoryManagementSoftware.UI
                         }
                         else
                         {
-                            //Failed to insert data
+                            //Failed to update data
                             MessageBox.Show("Failed to update join");
                         }
                     }
@@ -482,6 +678,27 @@ namespace FactoryManagementSoftware.UI
         private void lblItemCode_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnSetAllSBBItem_Click(object sender, EventArgs e)
+        {
+            if(SBBValidation())
+            UpdateSBBItemPackaging();
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbChildName_DropDown(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbChildName_DropDownClosed(object sender, EventArgs e)
+        {
+            this.BeginInvoke(new Action(() => { cmbChildName.Select(0, 0); }));
         }
     }
 }

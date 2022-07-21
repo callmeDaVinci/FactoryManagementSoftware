@@ -63,7 +63,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        SPPDataDAL dalData = new SPPDataDAL();
+        SBBDataDAL dalData = new SBBDataDAL();
         itemDAL dalItem = new itemDAL();
         Tool tool = new Tool();
         Text text = new Text();
@@ -380,6 +380,11 @@ namespace FactoryManagementSoftware.UI
         }
 
         private void lblType_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblCode_Click(object sender, EventArgs e)
         {
 
         }

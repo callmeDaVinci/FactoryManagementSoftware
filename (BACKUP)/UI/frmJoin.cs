@@ -99,7 +99,7 @@ namespace FactoryManagementSoftware.UI
             int index = 1;
             if (keywords != null)
             {
-                DataTable dt_joinData = dalJoin.Search(keywords);
+                DataTable dt_joinData = dalJoin.OldSearch(keywords);
 
                 foreach (DataRow row in dt_joinData.Rows)
                 {

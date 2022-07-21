@@ -82,6 +82,10 @@
             this.cbZeroCost = new System.Windows.Forms.CheckBox();
             this.txtMBRate = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.txtPCSRate = new System.Windows.Forms.TextBox();
+            this.lblPcsRate = new System.Windows.Forms.Label();
+            this.txtUnit = new System.Windows.Forms.TextBox();
+            this.lblUnit = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -630,12 +634,53 @@
             this.label3.TabIndex = 77;
             this.label3.Text = "MB RATE";
             // 
+            // txtPCSRate
+            // 
+            this.txtPCSRate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPCSRate.Location = new System.Drawing.Point(118, 601);
+            this.txtPCSRate.Name = "txtPCSRate";
+            this.txtPCSRate.Size = new System.Drawing.Size(81, 34);
+            this.txtPCSRate.TabIndex = 94;
+            // 
+            // lblPcsRate
+            // 
+            this.lblPcsRate.AutoSize = true;
+            this.lblPcsRate.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblPcsRate.Location = new System.Drawing.Point(114, 579);
+            this.lblPcsRate.Name = "lblPcsRate";
+            this.lblPcsRate.Size = new System.Drawing.Size(67, 19);
+            this.lblPcsRate.TabIndex = 93;
+            this.lblPcsRate.Text = "PCS RATE";
+            // 
+            // txtUnit
+            // 
+            this.txtUnit.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUnit.Location = new System.Drawing.Point(30, 601);
+            this.txtUnit.Name = "txtUnit";
+            this.txtUnit.Size = new System.Drawing.Size(82, 34);
+            this.txtUnit.TabIndex = 92;
+            this.txtUnit.Text = "PCS";
+            // 
+            // lblUnit
+            // 
+            this.lblUnit.AutoSize = true;
+            this.lblUnit.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblUnit.Location = new System.Drawing.Point(26, 579);
+            this.lblUnit.Name = "lblUnit";
+            this.lblUnit.Size = new System.Drawing.Size(40, 19);
+            this.lblUnit.TabIndex = 91;
+            this.lblUnit.Text = "UNIT";
+            // 
             // frmItemEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(861, 741);
+            this.Controls.Add(this.txtPCSRate);
+            this.Controls.Add(this.lblPcsRate);
+            this.Controls.Add(this.txtUnit);
+            this.Controls.Add(this.lblUnit);
             this.Controls.Add(this.txtMBRate);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cbZeroCost);
@@ -759,5 +804,9 @@
         private System.Windows.Forms.CheckBox cbZeroCost;
         private System.Windows.Forms.TextBox txtMBRate;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtPCSRate;
+        private System.Windows.Forms.Label lblPcsRate;
+        private System.Windows.Forms.TextBox txtUnit;
+        private System.Windows.Forms.Label lblUnit;
     }
 }

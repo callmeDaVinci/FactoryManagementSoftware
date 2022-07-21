@@ -31,7 +31,7 @@ namespace FactoryManagementSoftware.UI
         
         //private string loadingDot = ".";
 
-        private string loadingText = "LOADING ";
+        private string loadingText = "Loading... ";
 
         private void progressBar1_Click(object sender, System.EventArgs e)
         {
@@ -52,6 +52,9 @@ namespace FactoryManagementSoftware.UI
 
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
+
+            //Form.Activate();
+
         }
 
         static private void ShowForm()

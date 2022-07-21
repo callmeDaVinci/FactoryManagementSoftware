@@ -18,6 +18,7 @@ namespace FactoryManagementSoftware.UI
 
         #region Load or Reset Form
 
+
         private void frmCust_FormClosed(object sender, FormClosedEventArgs e)
         {
             MainDashboard.custFormOpen = false;
@@ -31,13 +32,28 @@ namespace FactoryManagementSoftware.UI
         private void loadData()
         {
             DataTable dt = dalCust.Select();
-            dgvCust.Rows.Clear();
-            foreach (DataRow item in dt.Rows)
-            {
-                int n = dgvCust.Rows.Add();
-                dgvCust.Rows[n].Cells["dgvcCustID"].Value = item["cust_id"].ToString();
-                dgvCust.Rows[n].Cells["dgvcCustName"].Value = item["cust_name"].ToString();
-            }
+            dgvCust.DataSource = null;
+
+            dgvCust.DataSource = dt;
+
+            //foreach (DataRow item in dt.Rows)
+            //{
+            //    int n = dgvCust.Rows.Add();
+            //    dgvCust.Rows[n].Cells["dgvcCustID"].Value = item["cust_id"].ToString();
+            //    dgvCust.Rows[n].Cells["dgvcCustName"].Value = item["cust_name"].ToString();
+            //}
+        }
+
+        private void loadMainDataToComboBox(ComboBox cmb)
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add("Main", typeof(string));
+            dt.Rows.Add("0");
+            dt.Rows.Add("1");
+            cmb.DataSource = dt;
+            cmb.DisplayMember = "Main";
+            cmb.SelectedIndex = 1;
         }
 
         private void resetForm()
@@ -46,6 +62,7 @@ namespace FactoryManagementSoftware.UI
             txtCustName.Clear();
             btnInsert.Text = "ADD";
             btnDelete.Hide();
+            loadMainDataToComboBox(cmbMain);
             loadData();
             this.ActiveControl = txtCustName;
         }
@@ -58,11 +75,17 @@ namespace FactoryManagementSoftware.UI
         {
             //get the index of particular row
             int rowIndex = e.RowIndex;
-            txtCustID.Text = dgvCust.Rows[rowIndex].Cells["dgvcCustID"].Value.ToString();
-            txtCustName.Text = dgvCust.Rows[rowIndex].Cells["dgvcCustName"].Value.ToString();
 
-            btnInsert.Text = "UPDATE";
-            btnDelete.Show();
+            if(rowIndex >= 0)
+            {
+                txtCustID.Text = dgvCust.Rows[rowIndex].Cells["cust_id"].Value.ToString();
+                txtCustName.Text = dgvCust.Rows[rowIndex].Cells["cust_name"].Value.ToString();
+                cmbMain.Text = bool.TryParse(dgvCust.Rows[rowIndex].Cells["cust_main"].Value.ToString(), out bool i) ? 1.ToString() : 0.ToString();
+
+                btnInsert.Text = "UPDATE";
+                btnDelete.Show();
+            }
+          
 
         }
 
@@ -127,8 +150,9 @@ namespace FactoryManagementSoftware.UI
                         //Update data
                         uCust.cust_id = Convert.ToInt32(txtCustID.Text);
                         uCust.cust_name = txtCustName.Text;
+                        uCust.cust_main = int.TryParse(cmbMain.Text, out int i) ? i : 0;
                         uCust.cust_updtd_date = DateTime.Now;
-                        uCust.cust_updtd_by = 0;
+                        uCust.cust_updtd_by = MainDashboard.USER_ID;
 
                         //Updating data into database
                         bool success = dalCust.Update(uCust);
@@ -151,7 +175,9 @@ namespace FactoryManagementSoftware.UI
                         //Add data
                         uCust.cust_name = txtCustName.Text;
                         uCust.cust_added_date = DateTime.Now;
-                        uCust.cust_added_by = 1;
+                        uCust.cust_added_by = MainDashboard.USER_ID;
+
+                        uCust.cust_main = int.TryParse(cmbMain.Text, out int i) ? i : 0;
 
                         //Inserting Data into Database
                         bool success = dalCust.Insert(uCust);

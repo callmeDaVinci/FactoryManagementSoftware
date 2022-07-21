@@ -47,6 +47,7 @@
             this.lblUpdatedTime = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.cbShowDuplicateData = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNewStock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
@@ -256,12 +257,27 @@
             // 
             this.errorProvider2.ContainerControl = this;
             // 
+            // cbShowDuplicateData
+            // 
+            this.cbShowDuplicateData.AutoSize = true;
+            this.cbShowDuplicateData.Checked = true;
+            this.cbShowDuplicateData.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbShowDuplicateData.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbShowDuplicateData.Location = new System.Drawing.Point(27, 96);
+            this.cbShowDuplicateData.Name = "cbShowDuplicateData";
+            this.cbShowDuplicateData.Size = new System.Drawing.Size(181, 23);
+            this.cbShowDuplicateData.TabIndex = 109;
+            this.cbShowDuplicateData.Text = "SHOW DUPLICATE ITEM";
+            this.cbShowDuplicateData.UseVisualStyleBackColor = true;
+            this.cbShowDuplicateData.CheckedChanged += new System.EventHandler(this.cbShowDuplicateData_CheckedChanged);
+            // 
             // frmStockReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.Controls.Add(this.cbShowDuplicateData);
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.lblUpdatedTime);
             this.Controls.Add(this.dtpEndDate);
@@ -313,5 +329,6 @@
         private System.Windows.Forms.Label lblUpdatedTime;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ErrorProvider errorProvider2;
+        private System.Windows.Forms.CheckBox cbShowDuplicateData;
     }
 }

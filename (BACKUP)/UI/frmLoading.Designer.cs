@@ -43,7 +43,7 @@
             this.progressBar1.Location = new System.Drawing.Point(3, 48);
             this.progressBar1.MarqueeAnimationSpeed = 25;
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(639, 27);
+            this.progressBar1.Size = new System.Drawing.Size(343, 27);
             this.progressBar1.Step = 5;
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 1;
@@ -59,15 +59,17 @@
             // 
             this.lblLoadingText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLoadingText.AutoSize = true;
-            this.lblLoadingText.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLoadingText.Location = new System.Drawing.Point(3, 22);
+            this.lblLoadingText.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLoadingText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblLoadingText.Location = new System.Drawing.Point(3, 26);
             this.lblLoadingText.Name = "lblLoadingText";
-            this.lblLoadingText.Size = new System.Drawing.Size(114, 23);
+            this.lblLoadingText.Size = new System.Drawing.Size(93, 19);
             this.lblLoadingText.TabIndex = 2;
-            this.lblLoadingText.Text = "LOADING (0s)";
+            this.lblLoadingText.Text = "Loading... (0s)";
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.White;
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.lblLoadingText, 0, 0);
@@ -78,7 +80,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(645, 90);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(349, 90);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // frmLoading
@@ -86,7 +88,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(645, 90);
+            this.ClientSize = new System.Drawing.Size(349, 90);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel1);
             this.DoubleBuffered = true;

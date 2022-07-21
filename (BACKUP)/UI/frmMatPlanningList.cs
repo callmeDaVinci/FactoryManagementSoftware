@@ -25,7 +25,7 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
             tool.DoubleBuffered(dgvMatListByMat, true);
-
+            ShowFilter(false);
             //loadSortingData();
 
             LoadMatListByMat();
@@ -42,6 +42,9 @@ namespace FactoryManagementSoftware.UI
         Tool tool = new Tool();
         Text text = new Text();
         joinBLL uJoin = new joinBLL();
+
+        readonly string Filter_ShowMore = "MORE FILTER";
+        readonly string Filter_HIDE = "HIDE FILTER";
 
         readonly string headerID = "PLAN";
         readonly string headerMatUse = "MAT. USE (KG/PIECE)";
@@ -92,6 +95,10 @@ namespace FactoryManagementSoftware.UI
         private DataTable dt_MatStock;
         private DataTable dt_MaterialPlan;
         private bool switchToByPlanPage = false;
+
+        private DataTable dt_ItemInfo;
+        private DataTable dt_MatPlan;
+        private DataTable dt_Stock;
 
         #endregion
 
@@ -184,8 +191,8 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMatListByMatUIEdit(DataGridView dgv)
         {
-            dgv.Columns[headerType].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[headerMatCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[headerType].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns[headerMatCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns[headerPlanID].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerFac].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerMac].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -210,8 +217,16 @@ namespace FactoryManagementSoftware.UI
             //dgv.Columns[headerTransferCheck].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             //dgv.Columns[headerTransferCheck].Visible = false;
-            dgv.Columns[headerFac].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgv.Columns[headerFac].DefaultCellStyle.Font = new Font("Segoe UI", 8, FontStyle.Bold);
+
             dgv.Columns[headerTransferPending].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+            dgv.Columns[headerType].DefaultCellStyle.Font = new Font("Segoe UI", 8, FontStyle.Italic);
+            dgv.Columns[headerItem].DefaultCellStyle.Font = new Font("Segoe UI", 8, FontStyle.Regular);
+            dgv.Columns[headerPlanID].DefaultCellStyle.Font = new Font("Segoe UI", 8, FontStyle.Regular);
+            dgv.Columns[headerStart].DefaultCellStyle.Font = new Font("Segoe UI", 8, FontStyle.Regular);
+            dgv.Columns[headerEnd].DefaultCellStyle.Font = new Font("Segoe UI", 8, FontStyle.Regular);
+            dgv.Columns[headerMatCode].DefaultCellStyle.Font = new Font("Segoe UI", 8, FontStyle.Regular);
 
             dgv.Columns[headerFrom].DefaultCellStyle.Font = new Font("Segoe UI", 8, FontStyle.Regular);
 
@@ -420,8 +435,47 @@ namespace FactoryManagementSoftware.UI
             #endregion
         }
 
+        private bool ItemCatCheck(string itemCat)
+        {
+            if(itemCat.Equals(text.Cat_Carton) && cbFilterCarton.Checked)
+            {
+                return true;
+            }
+            else if (itemCat.Equals(text.Cat_RawMat) && cbFilterRawMaterial.Checked)
+            {
+                return true;
+            }
+            else if (itemCat.Equals(text.Cat_MB) && cbFilterMasterBatch.Checked)
+            {
+                return true;
+            }
+            else if (itemCat.Equals(text.Cat_Pigment) && cbFilterPigment.Checked)
+            {
+                return true;
+            }
+            else if (itemCat.Equals(text.Cat_SubMat) && cbFilterSubMaterial.Checked)
+            {
+                return true;
+            }
+            else if (itemCat.Equals(text.Cat_Part) && cbFilterPart.Checked)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private void DatabaseRefresh()
+        {
+            dt_ItemInfo = dalItem.Select();
+            dt_MatPlan = dalMatPlan.Select();
+            dt_Stock = dalStock.Select();
+        }
+
         private void LoadMatListByMat()
         {
+            frmLoading.ShowLoadingScreen();
+
             lblUpdatedTime.Text = DateTime.Now.ToString();
 
             dgvMatListByMat.DataSource = null;
@@ -431,7 +485,15 @@ namespace FactoryManagementSoftware.UI
             #region variable
             DataTable dt_MAT = NewMatListByMatTable();
             DataRow row_dtMat;
-            DataTable dt_ItemInfo = dalItem.Select();
+
+
+            if(dt_ItemInfo == null || dt_MatPlan == null || dt_Stock == null)
+            {
+                DatabaseRefresh();
+            }
+            //DataTable dt_ItemInfo = dalItem.Select();
+            //DataTable dt_MatPlan = dalMatPlan.Select();
+            //DataTable dt_Stock = dalStock.Select();
 
             float stillNeed = 0;
             float remainingStock = 0;
@@ -443,15 +505,14 @@ namespace FactoryManagementSoftware.UI
             string matCode = null;
             string matFrom = null;
 
-            DataTable dt = dalMatPlan.Select();
-            DataTable dt_Stock = dalStock.Select();
-            dt_MaterialPlan = dt.Copy();
+            
+            dt_MaterialPlan = dt_MatPlan.Copy();
             //string sortBy = cmbSort.Text;
             #endregion
 
-            DataView dv = dt.DefaultView;
+            DataView dv = dt_MatPlan.DefaultView;
             dv.Sort = dalItem.ItemCat + " asc, " + "mat_code asc, " + dalMac.MacLocation + " asc, " + dalPlan.productionStartDate + " asc";
-            dt = dv.ToTable();
+            dt_MatPlan = dv.ToTable();
 
 
            
@@ -465,7 +526,8 @@ namespace FactoryManagementSoftware.UI
 
             string preFacName = null;
             string facName = null;
-            foreach (DataRow row in dt.Rows)
+
+            foreach (DataRow row in dt_MatPlan.Rows)
             {
                 bool active = Convert.ToBoolean(row[dalMatPlan.Active]);
                 string status = row[dalPlan.planStatus].ToString();
@@ -514,7 +576,7 @@ namespace FactoryManagementSoftware.UI
                             remainingStock = stockQty;
                         }
                     }   
-                    else
+                    else if(dt_MAT != null && dt_MAT.Rows.Count > 0)
                     {
                         row_dtMat = dt_MAT.NewRow();
                         dt_MAT.Rows.Add(row_dtMat);
@@ -525,48 +587,69 @@ namespace FactoryManagementSoftware.UI
                         TransferPending = 0;
                     }
 
-                    row_dtMat = dt_MAT.NewRow();
-                    row_dtMat[headerType] = tool.getItemCatFromDataTable(dt_ItemInfo, row[dalMatPlan.MatCode].ToString());
-                    row_dtMat[headerMatCode] = matCode;
-                    row_dtMat[headerStatus] = status;
-                    row_dtMat[headerPlanID] = row[dalMatPlan.PlanID];
-                    row_dtMat[headerFac] = facName;
-                    row_dtMat[headerMac] = row[dalPlan.machineID];
-                    row_dtMat[headerItem] = tool.getItemNameFromDataTable(dt_ItemInfo, partCode) + "(" + partCode + ")";
-                    row_dtMat[headerStart] = row[dalPlan.productionStartDate];
-                    row_dtMat[headerEnd] = row[dalPlan.productionEndDate];
+                    string itemCat = tool.getItemCatFromDataTable(dt_ItemInfo, row[dalMatPlan.MatCode].ToString());
 
-                    row_dtMat[headerPlanToUse] = planToUse;
-                    row_dtMat[headerTransferred] = transferred;
 
-                    stillNeed = planToUse - transferred < 0 ? 0 : planToUse - transferred;
+                    if(ItemCatCheck(itemCat))
+                    {
+                        row_dtMat = dt_MAT.NewRow();
+                        row_dtMat[headerType] = itemCat;
+                        row_dtMat[headerMatCode] = matCode;
+                        row_dtMat[headerStatus] = status;
+                        row_dtMat[headerPlanID] = row[dalMatPlan.PlanID];
+                        row_dtMat[headerFac] = facName;
+                        row_dtMat[headerMac] = row[dalPlan.machineID];
+                        row_dtMat[headerItem] = tool.getItemNameFromDataTable(dt_ItemInfo, partCode) + "(" + partCode + ")";
+                        row_dtMat[headerStart] = row[dalPlan.productionStartDate];
+                        row_dtMat[headerEnd] = row[dalPlan.productionEndDate];
 
-                    //stillNeed = Convert.ToSingle(stillNeed.ToString("0.##"));
+                        row_dtMat[headerPlanToUse] = planToUse;
+                        row_dtMat[headerTransferred] = transferred;
 
-                    //double test = stillNeed;
-                    row_dtMat[headerStillNeed] = stillNeed;
+                        stillNeed = planToUse - transferred < 0 ? 0 : planToUse - transferred;
 
-                    remainingStock = Convert.ToSingle(Math.Round(Convert.ToDouble(remainingStock), 2));
+                        //stillNeed = Convert.ToSingle(stillNeed.ToString("0.##"));
 
-                    row_dtMat[headerStock] = remainingStock;
+                        //double test = stillNeed;
+                        row_dtMat[headerStillNeed] = stillNeed;
 
-                    TransferPending = planToUse - remainingStock;
-                    //TransferPending = stillNeed - remainingStock;
-                    row_dtMat[headerTransferPending] = TransferPending < 0 ? 0 : TransferPending;
+                        remainingStock = Convert.ToSingle(Math.Round(Convert.ToDouble(remainingStock), 2));
 
-                    row_dtMat[headerPrepare] = prepareQty;
-                    row_dtMat[headerFrom] = matFrom;
-                    
+                        row_dtMat[headerStock] = remainingStock;
 
-                    dt_MAT.Rows.Add(row_dtMat);
+                        TransferPending = planToUse - remainingStock;
 
-                    remainingStock = remainingStock - planToUse < 0 ? 0 : remainingStock - planToUse;
+                        TransferPending = (float)Math.Round(TransferPending * 100f) / 100f;
+
+                        //TransferPending = stillNeed - remainingStock;
+                        row_dtMat[headerTransferPending] = TransferPending < 0 ? 0 : TransferPending;
+
+                        row_dtMat[headerPrepare] = prepareQty;
+
+                        if(prepareQty == 0)
+                        {
+                           // row_dtMat[headerFrom] = matFrom;
+
+                        }
+                        else
+                        {
+                            row_dtMat[headerFrom] = matFrom;
+
+                        }
+
+
+                        dt_MAT.Rows.Add(row_dtMat);
+
+                        remainingStock = remainingStock - planToUse < 0 ? 0 : remainingStock - planToUse;
+                    }
+                   
                 }
             }
 
             #endregion
 
             #region set dgv data source
+
             if (dt_MAT.Rows.Count > 0)
             {
                 dgvMatListByMat.DataSource = dt_MAT;
@@ -587,6 +670,10 @@ namespace FactoryManagementSoftware.UI
                 closeForm = true;
             }
             #endregion
+
+            ShowFilter(false);
+            frmLoading.CloseForm();
+
         }
 
         private void CheckifRunning(DataGridView dgv)
@@ -930,7 +1017,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         string MatCode = row.Cells[headerMatCode].Value.ToString();
                         string Factory = row.Cells[headerFac].Value.ToString();
-                        float preparing = float.TryParse(row.Cells[headerPrepare].Value.ToString(), out float i) ? Convert.ToSingle(row.Cells[headerPrepare].Value) : 0;
+                        float preparing = float.TryParse(row.Cells[headerPrepare].Value.ToString(), out preparing) ? preparing : 0;
 
                         DataGridViewComboBoxCell ComboBoxCell = new DataGridViewComboBoxCell();
                         foreach (DataRow matStock in dt_MatStock.Rows)
@@ -963,6 +1050,7 @@ namespace FactoryManagementSoftware.UI
                         }
                         else
                         {
+                           
                             row.Cells[headerFrom] = ComboBoxCell;
                         }
 
@@ -1015,6 +1103,12 @@ namespace FactoryManagementSoftware.UI
 
         private void frmMatPlanningList_Load(object sender, EventArgs e)
         {
+            matPrepare = false;
+
+            lblFilter.Text = Filter_ShowMore;
+
+            DatabaseRefresh();
+
             switchToByPlanPage = false;
             SwitchPage();
             loaded = true;
@@ -1026,6 +1120,7 @@ namespace FactoryManagementSoftware.UI
 
             CheckifRunning(dgvMatListByMat);
 
+            if(dgvMatListByMat.Columns[headerStatus] != null)
             dgvMatListByMat.Columns[headerStatus].Visible = false;
 
             dgvMatListByMat.ClearSelection();
@@ -1057,6 +1152,8 @@ namespace FactoryManagementSoftware.UI
                 else
                 {
                     dgv.Rows[row].Height = 60;
+                    //dgv.Rows[row].DefaultCellStyle.BackColor = Color.White;
+
                 }
             }
             
@@ -1329,7 +1426,7 @@ namespace FactoryManagementSoftware.UI
                             string item = cbCell.Items[x].ToString();
                             string facName = GetFacName(item);
 
-                            if(facName == locationName)
+                            if (facName == locationName)
                             {
                                 cbCell.Value = item;
                                 break;
@@ -1381,6 +1478,7 @@ namespace FactoryManagementSoftware.UI
 
             string matCode = dgv.Rows[row].Cells[headerMatCode].Value.ToString();
             refreshMatStock(matCode);
+
             foreach (DataGridViewRow MR in dgv.Rows)
             {
                 float i = 0;
@@ -1413,8 +1511,8 @@ namespace FactoryManagementSoftware.UI
 
                         if (matStockItemCode == matCode && matStockFac != runningLocation && unuse > 0)
                         {
-                            string itemAdd = matStockFac + " (AVAILABLE STOCK: " + unuse + ")";
-                            ComboBoxCell.Items.Add(matStockFac + " (AVAILABLE STOCK: " + unuse + ")");
+                            string itemAdd = matStockFac + " (AVAILABLE STOCK: " + unuse.ToString("0.00") + ")";
+                            ComboBoxCell.Items.Add(matStockFac + " (AVAILABLE STOCK: " + unuse.ToString("0.00") + ")");
                         }
 
                         ComboBoxCell.DisplayStyle = DataGridViewComboBoxDisplayStyle.ComboBox;
@@ -1572,21 +1670,51 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMatList_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            try
+
+            float TransferredQty = float.TryParse(dgvMatListByMat.Rows[e.RowIndex].Cells[headerTransferred].Value.ToString(), out float i)? i : 0;
+            float PreparingQty = float.TryParse(dgvMatListByMat.Rows[e.RowIndex].Cells[headerPrepare].Value.ToString(), out i) ? i : 0;
+
+
+            string editingHeader = dgvMatListByMat.Columns[e.ColumnIndex].Name;
+
+            bool OkToProcess = true;
+
+            if(PreparingQty == 0)
             {
-                Cursor = Cursors.WaitCursor;
-                //editingValue = null;
-                stockDataUpdate(e.RowIndex);
-                //BeginInvoke(new MethodInvoker(PopulateControl));
+                dgvMatListByMat.Rows[e.RowIndex].Cells[headerFrom].Value = null;
+
             }
-            catch (Exception ex)
+            else if (TransferredQty > 0 && editingHeader.Equals(headerPrepare))
             {
-                tool.saveToTextAndMessageToUser(ex);
+                OkToProcess = MessageBox.Show("Material delivery has already been carried out for this plan, are you sure you want to deliver more materials?", "Message",
+                                                          MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+
+                if(!OkToProcess)
+                {
+                    dgvMatListByMat.Rows[e.RowIndex].Cells[headerPrepare].Value = oldValue;
+                }
             }
-            finally
+
+            if(OkToProcess)
             {
-                Cursor = Cursors.Arrow;
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+
+                    //editingValue = null;
+                    stockDataUpdate(e.RowIndex);
+                    //BeginInvoke(new MethodInvoker(PopulateControl));
+                }
+                catch (Exception ex)
+                {
+                    tool.saveToTextAndMessageToUser(ex);
+                }
+                finally
+                {
+                    Cursor = Cursors.Arrow;
+                }
             }
+         
 
         }
 
@@ -1711,8 +1839,9 @@ namespace FactoryManagementSoftware.UI
             try
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                
-                if(switchToByPlanPage)
+                DatabaseRefresh();
+
+                if (switchToByPlanPage)
                 {
                     LoadMatListByPlan();
                 }
@@ -1785,14 +1914,21 @@ namespace FactoryManagementSoftware.UI
         {
             Cursor = Cursors.WaitCursor;
             tlpMaterialList.SuspendLayout();
+
             if (switchToByPlanPage)
             {
+                ShowFilter(false);
+                lblFilter.Visible = false;
+
                 btnByMat.ForeColor = Color.Black;
                 btnByPlan.ForeColor = Color.FromArgb(52, 139, 209);
 
-                tlpHeaderButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
+                btnCheckList.Visible = false;
+                btnPrepare.Visible = false;
+
                 tlpHeaderButton.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
-                tlpHeaderButton.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 150f);
+                tlpHeaderButton.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpHeaderButton.ColumnStyles[6] = new ColumnStyle(SizeType.Absolute, 150f);
 
                 tlpMaterialList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 0f);
                 tlpMaterialList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100f);
@@ -1801,12 +1937,18 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
+                ShowFilter(false);
+                lblFilter.Visible = true;
+
                 btnByPlan.ForeColor = Color.Black;
                 btnByMat.ForeColor = Color.FromArgb(52, 139, 209);
 
-                tlpHeaderButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 150f);
+                btnCheckList.Visible = true;
+                btnPrepare.Visible = true;
+
                 tlpHeaderButton.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 150f);
-                tlpHeaderButton.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpHeaderButton.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 150f);
+                tlpHeaderButton.ColumnStyles[6] = new ColumnStyle(SizeType.Absolute, 0f);
 
                 tlpMaterialList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
                 tlpMaterialList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0f);
@@ -2171,5 +2313,128 @@ namespace FactoryManagementSoftware.UI
                 dgvMatListByMat.ClearSelection();
             }
         }
+
+        private void ShowFilter(bool Show)
+        {
+            if(Show)
+            {
+                lblFilter.Text = Filter_HIDE;
+
+                tableLayoutPanel1.RowStyles[1] = new RowStyle(SizeType.Absolute, 100f);
+            }
+            else
+            {
+                lblFilter.Text = Filter_ShowMore;
+
+                tableLayoutPanel1.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+            }
+        }
+        private void lblFilter_Click(object sender, EventArgs e)
+        {
+            if(lblFilter.Text.Equals(Filter_ShowMore))
+            {
+                //show filter
+                ShowFilter(true);
+            }
+            else
+            {
+                //hide filter
+                ShowFilter(false);
+
+            }
+        }
+
+        private void cbFilterRawMaterial_CheckedChanged(object sender, EventArgs e)
+        {
+            ClearData();
+
+        }
+
+        private void cbFilterMasterBatch_CheckedChanged(object sender, EventArgs e)
+        {
+            ClearData();
+
+
+        }
+
+        private void cbFilterPigment_CheckedChanged(object sender, EventArgs e)
+        {
+            ClearData();
+
+
+        }
+
+        private void cbFilterSubMaterial_CheckedChanged(object sender, EventArgs e)
+        {
+            ClearData();
+
+
+        }
+
+        private void cbFilterPart_CheckedChanged(object sender, EventArgs e)
+        {
+            ClearData();
+
+
+        }
+
+        private void cbFilterCarton_CheckedChanged(object sender, EventArgs e)
+        {
+            ClearData();
+
+
+        }
+
+        private void cbFilterMasterBatch_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ClearData();
+
+
+        }
+
+        private void cbFilterRawMaterial_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ClearData();
+
+
+        }
+
+        private void cbFilterPigment_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ClearData();
+
+
+        }
+
+        private void cbFilterPart_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ClearData();
+
+        }
+
+        private void cbFilterSubMaterial_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ClearData();
+
+
+        }
+
+        private void cbFilterCarton_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ClearData();
+
+        }
+
+        private void btnFilterApply_Click(object sender, EventArgs e)
+        {
+            LoadMatListByMat();
+            
+        }
+
+        private void ClearData()
+        {
+            dgvMatListByMat.DataSource = null;
+        }
+
     }
 }

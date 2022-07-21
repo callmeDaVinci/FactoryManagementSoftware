@@ -15,6 +15,15 @@ namespace FactoryManagementSoftware.UI
         public frmDeliveryDate()
         {
             InitializeComponent();
+            dateEditOnly = true;
+        }
+
+        public frmDeliveryDate(DateTime oldDeliveredDate)
+        {
+            InitializeComponent();
+            dateEditOnly = true;
+            dtpDate.Value = oldDeliveredDate;
+
         }
 
         public frmDeliveryDate(DataTable dt)
@@ -24,21 +33,82 @@ namespace FactoryManagementSoftware.UI
             dt_Delivered = dt;
         }
 
+      
+        public frmDeliveryDate(string DateType)
+        {
+
+            InitializeComponent();
+            lblDateType.Text = DateType;
+            dateEditOnly = true;
+        }
+
         private DataTable dt_Delivered;
-        
+        static public bool transferred = false;
+        private bool dateEditOnly = false;
+        private bool dateClear = false;
+
+        static public DateTime selectedDate = DateTime.MaxValue;
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            transferred = false;
             Close();
         }
 
         private void btnFilterApply_Click(object sender, EventArgs e)
         {
-            frmInOutEdit frm = new frmInOutEdit(dt_Delivered, dtpDate.Value.Date);
-            frm.StartPosition = FormStartPosition.CenterScreen;
-            frm.ShowDialog();//Item Edit
+            if(dateEditOnly)
+            {
+                DialogResult dialogResult = MessageBox.Show("Confirm to set delivered date to: "+ dtpDate.Value.ToString("yyyy/MM/dd")+" ?", "Message",
+                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    selectedDate = dtpDate.Value;
+                }
+
+                if (dateClear)
+                {
+                    selectedDate = DateTimePicker.MinimumDateTime;
+                }
+            }
+            else
+            {
+                frmInOutEdit frm = new frmInOutEdit(dt_Delivered, dtpDate.Value.Date);
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.ShowDialog();//Item Edit
+
+                transferred = frmInOutEdit.TrfSuccess;
+                
+            }
 
             Close();
+        }
+
+        private void lblClear_Click(object sender, EventArgs e)
+        {
+            dtpDate.Value = DateTimePicker.MinimumDateTime;
+            dateClear = true;
+        }
+
+        private void dtpDate_ValueChanged(object sender, EventArgs e)
+        {
+            if (dtpDate.Value == DateTimePicker.MinimumDateTime)
+            {
+                dtpDate.Value = DateTime.Now; // This is required in order to show current month/year when user reopens the date popup.
+                dtpDate.Format = DateTimePickerFormat.Custom;
+                dtpDate.CustomFormat = " ";
+            }
+            else
+            {
+                dtpDate.Format = DateTimePickerFormat.Custom;
+                dtpDate.CustomFormat = "ddMMMMyy";
+                dateClear = false;
+            }
+        }
+
+        private void frmDeliveryDate_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
