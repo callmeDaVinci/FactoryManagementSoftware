@@ -25,8 +25,11 @@ namespace FactoryManagementSoftware.UI
             tool.DoubleBuffered(dgvStockAlert, true);
             _instance = this;
 
-            MonthlyDateStart = tool.GetSBBMonthlyStartDate();
-            MonthlyDateEnd = tool.GetSBBMonthlyEndDate();
+            //MonthlyDateStart = tool.GetSBBMonthlyStartDate();
+            //MonthlyDateEnd = tool.GetSBBMonthlyEndDate();
+
+            MonthlyDateStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            MonthlyDateEnd = MonthlyDateStart.AddMonths(1).AddDays(-1);
 
             InitialMonthlyDate();
         }
@@ -35,12 +38,15 @@ namespace FactoryManagementSoftware.UI
         {
             if(MonthlyDateStart == null)
             {
-                MonthlyDateStart = tool.GetSBBMonthlyStartDate();
+                //MonthlyDateStart = tool.GetSBBMonthlyStartDate();
+                MonthlyDateStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             }
 
             if (MonthlyDateEnd == null)
             {
-                MonthlyDateEnd = tool.GetSBBMonthlyEndDate();
+                //MonthlyDateEnd = tool.GetSBBMonthlyEndDate();
+                MonthlyDateEnd = MonthlyDateStart.AddMonths(1).AddDays(-1);
+
             }
 
             gbMonthlyDeliveredBag.Text = Text_GB_MonthlyDeliveredBags + " (" + MonthlyDateStart.ToString("dd/MM") + " - " + MonthlyDateEnd.ToString("dd/MM") + ")";
@@ -2361,7 +2367,7 @@ namespace FactoryManagementSoftware.UI
 
 
 
-            frmSPPDataSetting frm = new frmSPPDataSetting
+            frmSBBDataSetting frm = new frmSBBDataSetting
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
@@ -2885,15 +2891,15 @@ namespace FactoryManagementSoftware.UI
                 {
 
                     int newDeliveredBag = 0;
-                    int newOeliveredPcs = 0;
-                    int newOeliveredPkt = 0;
-                    int newOeliveredPcsBal = 0;
+                    int newDeliveredPcs = 0;
+                    int newDeliveredPkt = 0;
+                    int newDeliveredPcsBal = 0;
 
                     int oldDeliveredPcs = int.TryParse(dt_Merge.Rows[i - 1][header_TotalPcs].ToString(), out oldDeliveredPcs) ? oldDeliveredPcs : 0;
 
-                    newOeliveredPcs = int.TryParse(dt_Merge.Rows[i][header_TotalPcs].ToString(), out newOeliveredPcs) ? newOeliveredPcs : 0;
+                    newDeliveredPcs = int.TryParse(dt_Merge.Rows[i][header_TotalPcs].ToString(), out newDeliveredPcs) ? newDeliveredPcs : 0;
 
-                    newOeliveredPcs += oldDeliveredPcs;
+                    newDeliveredPcs += oldDeliveredPcs;
 
                     int oldDeliveredBag = int.TryParse(dt_Merge.Rows[i - 1][header_TotalBag].ToString(), out oldDeliveredBag) ? oldDeliveredBag : 0;
 
@@ -2903,18 +2909,18 @@ namespace FactoryManagementSoftware.UI
 
                     int oldDeliveredPkt = int.TryParse(dt_Merge.Rows[i - 1][header_TotalPkt].ToString(), out oldDeliveredPkt) ? oldDeliveredPkt : 0;
 
-                    newOeliveredPkt = int.TryParse(dt_Merge.Rows[i][header_TotalPkt].ToString(), out newOeliveredPkt) ? newOeliveredPkt : 0;
+                    newDeliveredPkt = int.TryParse(dt_Merge.Rows[i][header_TotalPkt].ToString(), out newDeliveredPkt) ? newDeliveredPkt : 0;
 
-                    newOeliveredPkt += oldDeliveredPkt;
+                    newDeliveredPkt += oldDeliveredPkt;
 
                     int oldDeliveredPcsBal = int.TryParse(dt_Merge.Rows[i - 1][header_TotalBalPcs].ToString(), out oldDeliveredPcsBal) ? oldDeliveredPcsBal : 0;
 
-                    newOeliveredPcsBal = int.TryParse(dt_Merge.Rows[i][header_TotalBalPcs].ToString(), out newOeliveredPcsBal) ? newOeliveredPcsBal : 0;
+                    newDeliveredPcsBal = int.TryParse(dt_Merge.Rows[i][header_TotalBalPcs].ToString(), out newDeliveredPcsBal) ? newDeliveredPcsBal : 0;
 
-                    newOeliveredPcsBal += oldDeliveredPcsBal;
+                    newDeliveredPcsBal += oldDeliveredPcsBal;
 
 
-                    dt_Merge.Rows[i][header_TotalPcs] = newOeliveredPcs;
+                    dt_Merge.Rows[i][header_TotalPcs] = newDeliveredPcs;
                     dt_Merge.Rows[i][header_TotalBag] = newDeliveredBag;
 
                     dt_Merge.Rows[i - 1][header_Removed] = 1.ToString();
@@ -3108,58 +3114,6 @@ namespace FactoryManagementSoftware.UI
             string start = MonthlyDateStart.ToString("yyyy/MM/dd");
             string end = MonthlyDateEnd.ToString("yyyy/MM/dd");
 
-            #region Load data from database
-
-           // DataTable dt_SPPCustSearchWithTypeAndSize, dt_Item, dt_DOWithTrfInfoSelect;
-
-            //string itemCust = text.SPP_BrandName;
-
-
-            //if (MainDashboard.myconnstrng == text.DB_Semenyih || cmbDataSource.Text.Contains(DataSource_LocalDB))
-            //{
-            //    dt_SPPCustSearchWithTypeAndSize = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);
-            //    dt_SPPCustSearchWithTypeAndSize.DefaultView.Sort = dalSBB.TypeName + " ASC," + dalSBB.SizeNumerator + " ASC," + dalSBB.SizeWeight + "1 ASC";
-            //    dt_SPPCustSearchWithTypeAndSize = dt_SPPCustSearchWithTypeAndSize.DefaultView.ToTable();
-
-            //    dt_Item = dalItem.Select();
-
-            //    dt_DOWithTrfInfoSelect = dalSBB.DOWithTrfInfoSelect(start, end);
-            //}
-            //else
-            //{
-            //    string path = text.CSV_Jun_GoogleDrive_SemenyihServer_Path;
-
-            //    string fileName = text.CSV_dalItemCust_SPPCustSearchWithTypeAndSize;
-            //    dt_SPPCustSearchWithTypeAndSize = CsvToDatatable(path + fileName, true);
-
-            //    //if(dt_Product == null || dt_Product.Rows.Count <= 0)
-            //    //{
-            //    //    dt_Product = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);
-                   
-            //    //}
-
-            //    dt_SPPCustSearchWithTypeAndSize.DefaultView.Sort = dalSBB.TypeName + " ASC," + dalSBB.SizeNumerator + " ASC," + dalSBB.SizeWeight + "1 ASC";
-            //    dt_SPPCustSearchWithTypeAndSize = dt_SPPCustSearchWithTypeAndSize.DefaultView.ToTable();
-
-            //    fileName = text.CSV_dalItem_Select;
-            //    dt_Item = CsvToDatatable(path + fileName, true);
-
-            //    //if (dt_Item == null || dt_Item.Rows.Count <= 0)
-            //    //{
-            //    //    dt_Item = dalItem.Select();
-            //    //}
-
-            //    fileName = text.CSV_dalSBB_DOWithTrfInfoSelect_StartEnd;
-            //    dt_DOWithTrfInfoSelect = CsvToDatatable(path + fileName, true);
-
-            //    //if (dt_DOList == null || dt_DOList.Rows.Count <= 0)
-            //    //{
-            //    //    dt_DOList = dalSBB.DOWithTrfInfoSelect(start, end);
-            //    //}
-            //}
-
-            #endregion
-            //97
             foreach (DataRow row_DO in dt_DOWithTrfInfoSelectedPeriod.Rows)
             {
                 string trfResult = row_DO[dalTrfHist.TrfResult].ToString();
@@ -3251,24 +3205,14 @@ namespace FactoryManagementSoftware.UI
 
         private void RefreshPage()
         {
-            //frmLoading.ShowLoadingScreen();
             NewInitialDBData();
-            //if (Loaded)
-            //{
-            //    NewInitialDBData();//2429->1548->1058
-            //}
-            //else
-            //{
-            //    GetPreLoadDataFromLoginPage();
-            //}
-
+         
             LoadPendingSummary();//923->283
 
             LoadStockAlert();//166
 
             LoadUsage();//1421->564
 
-            //frmLoading.CloseForm();
         }
 
         private DataTable LoadUsageItemList()

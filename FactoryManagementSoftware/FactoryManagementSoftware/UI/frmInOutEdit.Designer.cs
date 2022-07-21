@@ -122,10 +122,10 @@
             this.lblUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblUnit.AutoSize = true;
             this.lblUnit.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUnit.Location = new System.Drawing.Point(213, 8);
+            this.lblUnit.Location = new System.Drawing.Point(213, 14);
             this.lblUnit.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.lblUnit.Name = "lblUnit";
-            this.lblUnit.Size = new System.Drawing.Size(40, 19);
+            this.lblUnit.Size = new System.Drawing.Size(32, 13);
             this.lblUnit.TabIndex = 60;
             this.lblUnit.Text = "UNIT";
             // 
@@ -150,9 +150,9 @@
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(3, 8);
+            this.label4.Location = new System.Drawing.Point(3, 14);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 19);
+            this.label4.Size = new System.Drawing.Size(61, 13);
             this.label4.TabIndex = 56;
             this.label4.Text = "CATEGORY";
             // 
@@ -164,7 +164,7 @@
             this.cmbTrfFromCategory.Location = new System.Drawing.Point(3, 4);
             this.cmbTrfFromCategory.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbTrfFromCategory.Name = "cmbTrfFromCategory";
-            this.cmbTrfFromCategory.Size = new System.Drawing.Size(204, 31);
+            this.cmbTrfFromCategory.Size = new System.Drawing.Size(204, 27);
             this.cmbTrfFromCategory.TabIndex = 55;
             this.cmbTrfFromCategory.SelectedIndexChanged += new System.EventHandler(this.cmbTrfFromCategory_SelectedIndexChanged);
             // 
@@ -176,7 +176,7 @@
             this.cmbTrfFrom.Location = new System.Drawing.Point(213, 4);
             this.cmbTrfFrom.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbTrfFrom.Name = "cmbTrfFrom";
-            this.cmbTrfFrom.Size = new System.Drawing.Size(207, 31);
+            this.cmbTrfFrom.Size = new System.Drawing.Size(207, 27);
             this.cmbTrfFrom.TabIndex = 53;
             this.cmbTrfFrom.SelectedIndexChanged += new System.EventHandler(this.cmbTrfFrom_SelectedIndexChanged);
             // 
@@ -185,10 +185,10 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(3, 8);
+            this.label2.Location = new System.Drawing.Point(3, 14);
             this.label2.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(26, 19);
+            this.label2.Size = new System.Drawing.Size(21, 13);
             this.label2.TabIndex = 51;
             this.label2.Text = "TO";
             // 
@@ -198,7 +198,7 @@
             this.txtTrfQty.Location = new System.Drawing.Point(3, 4);
             this.txtTrfQty.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtTrfQty.Name = "txtTrfQty";
-            this.txtTrfQty.Size = new System.Drawing.Size(204, 30);
+            this.txtTrfQty.Size = new System.Drawing.Size(204, 26);
             this.txtTrfQty.TabIndex = 50;
             this.txtTrfQty.TextChanged += new System.EventHandler(this.txtTrfQty_TextChanged);
             this.txtTrfQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrfQty_KeyPress);
@@ -208,10 +208,10 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(3, 8);
+            this.label1.Location = new System.Drawing.Point(3, 14);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(75, 19);
+            this.label1.Size = new System.Drawing.Size(58, 13);
             this.label1.TabIndex = 49;
             this.label1.Text = "QUANTITY";
             // 
@@ -220,10 +220,10 @@
             this.lblItemCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblItemCategory.AutoSize = true;
             this.lblItemCategory.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemCategory.Location = new System.Drawing.Point(3, 8);
+            this.lblItemCategory.Location = new System.Drawing.Point(3, 14);
             this.lblItemCategory.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.lblItemCategory.Name = "lblItemCategory";
-            this.lblItemCategory.Size = new System.Drawing.Size(48, 19);
+            this.lblItemCategory.Size = new System.Drawing.Size(39, 13);
             this.lblItemCategory.TabIndex = 48;
             this.lblItemCategory.Text = "FROM";
             // 
@@ -237,7 +237,7 @@
             this.cmbTrfItemCat.Location = new System.Drawing.Point(3, 4);
             this.cmbTrfItemCat.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbTrfItemCat.Name = "cmbTrfItemCat";
-            this.cmbTrfItemCat.Size = new System.Drawing.Size(204, 31);
+            this.cmbTrfItemCat.Size = new System.Drawing.Size(204, 27);
             this.cmbTrfItemCat.TabIndex = 47;
             this.cmbTrfItemCat.SelectedIndexChanged += new System.EventHandler(this.cmbTrfItemCat_SelectedIndexChanged);
             // 
@@ -246,9 +246,9 @@
             this.lblItemName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblItemName.AutoSize = true;
             this.lblItemName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemName.Location = new System.Drawing.Point(3, 8);
+            this.lblItemName.Location = new System.Drawing.Point(3, 14);
             this.lblItemName.Name = "lblItemName";
-            this.lblItemName.Size = new System.Drawing.Size(48, 19);
+            this.lblItemName.Size = new System.Drawing.Size(38, 13);
             this.lblItemName.TabIndex = 44;
             this.lblItemName.Text = "NAME";
             // 
@@ -257,9 +257,9 @@
             this.lblItemCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblItemCode.AutoSize = true;
             this.lblItemCode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemCode.Location = new System.Drawing.Point(3, 8);
+            this.lblItemCode.Location = new System.Drawing.Point(3, 14);
             this.lblItemCode.Name = "lblItemCode";
-            this.lblItemCode.Size = new System.Drawing.Size(46, 19);
+            this.lblItemCode.Size = new System.Drawing.Size(37, 13);
             this.lblItemCode.TabIndex = 42;
             this.lblItemCode.Text = "CODE";
             // 
@@ -268,9 +268,9 @@
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(214, 8);
+            this.label7.Location = new System.Drawing.Point(233, 14);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(108, 19);
+            this.label7.Size = new System.Drawing.Size(89, 13);
             this.label7.TabIndex = 63;
             this.label7.Text = "TRANSFER DATE";
             this.label7.Click += new System.EventHandler(this.label7_Click);
@@ -283,7 +283,7 @@
             this.dtpTrfDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpTrfDate.Location = new System.Drawing.Point(213, 3);
             this.dtpTrfDate.Name = "dtpTrfDate";
-            this.dtpTrfDate.Size = new System.Drawing.Size(210, 30);
+            this.dtpTrfDate.Size = new System.Drawing.Size(210, 26);
             this.dtpTrfDate.TabIndex = 64;
             this.dtpTrfDate.ValueChanged += new System.EventHandler(this.dtpTrfDate_ValueChanged);
             // 
@@ -297,7 +297,7 @@
             this.cmbTrfItemName.Location = new System.Drawing.Point(3, 105);
             this.cmbTrfItemName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbTrfItemName.Name = "cmbTrfItemName";
-            this.cmbTrfItemName.Size = new System.Drawing.Size(426, 31);
+            this.cmbTrfItemName.Size = new System.Drawing.Size(426, 27);
             this.cmbTrfItemName.TabIndex = 65;
             this.cmbTrfItemName.SelectedIndexChanged += new System.EventHandler(this.cmbTrfItemName_SelectedIndexChanged);
             this.cmbTrfItemName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cmbTrfItemName_KeyPress);
@@ -312,7 +312,7 @@
             this.cmbTrfItemCode.Location = new System.Drawing.Point(3, 179);
             this.cmbTrfItemCode.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbTrfItemCode.Name = "cmbTrfItemCode";
-            this.cmbTrfItemCode.Size = new System.Drawing.Size(426, 31);
+            this.cmbTrfItemCode.Size = new System.Drawing.Size(426, 27);
             this.cmbTrfItemCode.TabIndex = 66;
             this.cmbTrfItemCode.SelectedIndexChanged += new System.EventHandler(this.cmbTrfItemCode_SelectedIndexChanged);
             // 
@@ -324,7 +324,7 @@
             this.cmbTrfToCategory.Location = new System.Drawing.Point(3, 4);
             this.cmbTrfToCategory.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbTrfToCategory.Name = "cmbTrfToCategory";
-            this.cmbTrfToCategory.Size = new System.Drawing.Size(204, 31);
+            this.cmbTrfToCategory.Size = new System.Drawing.Size(204, 27);
             this.cmbTrfToCategory.TabIndex = 68;
             this.cmbTrfToCategory.SelectedIndexChanged += new System.EventHandler(this.cmbTrfToCategory_SelectedIndexChanged);
             // 
@@ -337,7 +337,7 @@
             this.cmbTrfTo.Location = new System.Drawing.Point(213, 4);
             this.cmbTrfTo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbTrfTo.Name = "cmbTrfTo";
-            this.cmbTrfTo.Size = new System.Drawing.Size(210, 31);
+            this.cmbTrfTo.Size = new System.Drawing.Size(210, 27);
             this.cmbTrfTo.TabIndex = 67;
             this.cmbTrfTo.SelectedIndexChanged += new System.EventHandler(this.cmbTrfTo_SelectedIndexChanged);
             // 
@@ -350,7 +350,7 @@
             this.cmbTrfQtyUnit.Location = new System.Drawing.Point(213, 4);
             this.cmbTrfQtyUnit.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbTrfQtyUnit.Name = "cmbTrfQtyUnit";
-            this.cmbTrfQtyUnit.Size = new System.Drawing.Size(210, 31);
+            this.cmbTrfQtyUnit.Size = new System.Drawing.Size(210, 27);
             this.cmbTrfQtyUnit.TabIndex = 69;
             this.cmbTrfQtyUnit.SelectedIndexChanged += new System.EventHandler(this.cmbTrfQtyUnit_SelectedIndexChanged);
             // 
@@ -369,10 +369,10 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(3, 520);
+            this.label3.Location = new System.Drawing.Point(3, 526);
             this.label3.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 19);
+            this.label3.Size = new System.Drawing.Size(36, 13);
             this.label3.TabIndex = 70;
             this.label3.Text = "NOTE";
             // 
@@ -397,9 +397,9 @@
             this.lblCategoryError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCategoryError.AutoSize = true;
             this.lblCategoryError.ForeColor = System.Drawing.Color.Red;
-            this.lblCategoryError.Location = new System.Drawing.Point(88, 7);
+            this.lblCategoryError.Location = new System.Drawing.Point(88, 10);
             this.lblCategoryError.Name = "lblCategoryError";
-            this.lblCategoryError.Size = new System.Drawing.Size(18, 20);
+            this.lblCategoryError.Size = new System.Drawing.Size(16, 17);
             this.lblCategoryError.TabIndex = 73;
             this.lblCategoryError.Text = "*";
             // 
@@ -408,9 +408,9 @@
             this.lblTrfDateError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTrfDateError.AutoSize = true;
             this.lblTrfDateError.ForeColor = System.Drawing.Color.Red;
-            this.lblTrfDateError.Location = new System.Drawing.Point(328, 7);
+            this.lblTrfDateError.Location = new System.Drawing.Point(328, 10);
             this.lblTrfDateError.Name = "lblTrfDateError";
-            this.lblTrfDateError.Size = new System.Drawing.Size(14, 20);
+            this.lblTrfDateError.Size = new System.Drawing.Size(14, 17);
             this.lblTrfDateError.TabIndex = 74;
             this.lblTrfDateError.Text = "*";
             this.lblTrfDateError.Click += new System.EventHandler(this.label8_Click);
@@ -420,9 +420,9 @@
             this.lblNameError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblNameError.AutoSize = true;
             this.lblNameError.ForeColor = System.Drawing.Color.Red;
-            this.lblNameError.Location = new System.Drawing.Point(58, 7);
+            this.lblNameError.Location = new System.Drawing.Point(58, 10);
             this.lblNameError.Name = "lblNameError";
-            this.lblNameError.Size = new System.Drawing.Size(18, 20);
+            this.lblNameError.Size = new System.Drawing.Size(16, 17);
             this.lblNameError.TabIndex = 75;
             this.lblNameError.Text = "*";
             // 
@@ -431,9 +431,9 @@
             this.lblCodeError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCodeError.AutoSize = true;
             this.lblCodeError.ForeColor = System.Drawing.Color.Red;
-            this.lblCodeError.Location = new System.Drawing.Point(58, 7);
+            this.lblCodeError.Location = new System.Drawing.Point(58, 10);
             this.lblCodeError.Name = "lblCodeError";
-            this.lblCodeError.Size = new System.Drawing.Size(18, 20);
+            this.lblCodeError.Size = new System.Drawing.Size(16, 17);
             this.lblCodeError.TabIndex = 76;
             this.lblCodeError.Text = "*";
             // 
@@ -442,10 +442,10 @@
             this.lblLocationFromError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLocationFromError.AutoSize = true;
             this.lblLocationFromError.ForeColor = System.Drawing.Color.Red;
-            this.lblLocationFromError.Location = new System.Drawing.Point(52, 7);
+            this.lblLocationFromError.Location = new System.Drawing.Point(52, 10);
             this.lblLocationFromError.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.lblLocationFromError.Name = "lblLocationFromError";
-            this.lblLocationFromError.Size = new System.Drawing.Size(18, 20);
+            this.lblLocationFromError.Size = new System.Drawing.Size(16, 17);
             this.lblLocationFromError.TabIndex = 77;
             this.lblLocationFromError.Text = "*";
             // 
@@ -454,10 +454,10 @@
             this.lblLocationToError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLocationToError.AutoSize = true;
             this.lblLocationToError.ForeColor = System.Drawing.Color.Red;
-            this.lblLocationToError.Location = new System.Drawing.Point(31, 7);
+            this.lblLocationToError.Location = new System.Drawing.Point(31, 10);
             this.lblLocationToError.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.lblLocationToError.Name = "lblLocationToError";
-            this.lblLocationToError.Size = new System.Drawing.Size(18, 20);
+            this.lblLocationToError.Size = new System.Drawing.Size(16, 17);
             this.lblLocationToError.TabIndex = 78;
             this.lblLocationToError.Text = "*";
             // 
@@ -466,10 +466,10 @@
             this.lblQuantityError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblQuantityError.AutoSize = true;
             this.lblQuantityError.ForeColor = System.Drawing.Color.Red;
-            this.lblQuantityError.Location = new System.Drawing.Point(80, 7);
+            this.lblQuantityError.Location = new System.Drawing.Point(80, 10);
             this.lblQuantityError.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.lblQuantityError.Name = "lblQuantityError";
-            this.lblQuantityError.Size = new System.Drawing.Size(18, 20);
+            this.lblQuantityError.Size = new System.Drawing.Size(16, 17);
             this.lblQuantityError.TabIndex = 79;
             this.lblQuantityError.Text = "*";
             // 
@@ -478,10 +478,10 @@
             this.lblUnitError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblUnitError.AutoSize = true;
             this.lblUnitError.ForeColor = System.Drawing.Color.Red;
-            this.lblUnitError.Location = new System.Drawing.Point(255, 7);
+            this.lblUnitError.Location = new System.Drawing.Point(255, 10);
             this.lblUnitError.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.lblUnitError.Name = "lblUnitError";
-            this.lblUnitError.Size = new System.Drawing.Size(14, 20);
+            this.lblUnitError.Size = new System.Drawing.Size(14, 17);
             this.lblUnitError.TabIndex = 80;
             this.lblUnitError.Text = "*";
             // 
@@ -570,7 +570,7 @@
             this.label15.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.Location = new System.Drawing.Point(482, 13);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(101, 19);
+            this.label15.Size = new System.Drawing.Size(83, 13);
             this.label15.TabIndex = 103;
             this.label15.Text = "TRANSFER LIST";
             // 
@@ -598,7 +598,7 @@
             this.label16.ForeColor = System.Drawing.Color.Red;
             this.label16.Location = new System.Drawing.Point(636, 13);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(114, 19);
+            this.label16.Size = new System.Drawing.Size(93, 13);
             this.label16.TabIndex = 105;
             this.label16.Text = "RED: STOCK OUT";
             // 
@@ -609,7 +609,7 @@
             this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.label17.Location = new System.Drawing.Point(825, 13);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(117, 19);
+            this.label17.Size = new System.Drawing.Size(95, 13);
             this.label17.TabIndex = 106;
             this.label17.Text = "GREEN: STOCK IN";
             // 
@@ -657,7 +657,7 @@
             this.btnOUT.Location = new System.Drawing.Point(110, 2);
             this.btnOUT.Margin = new System.Windows.Forms.Padding(5, 2, 5, 2);
             this.btnOUT.Name = "btnOUT";
-            this.btnOUT.Size = new System.Drawing.Size(99, 50);
+            this.btnOUT.Size = new System.Drawing.Size(98, 50);
             this.btnOUT.TabIndex = 109;
             this.btnOUT.Text = "OUT";
             this.btnOUT.UseVisualStyleBackColor = false;
@@ -671,10 +671,10 @@
             this.btnSwitch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSwitch.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSwitch.ForeColor = System.Drawing.Color.Black;
-            this.btnSwitch.Location = new System.Drawing.Point(219, 2);
+            this.btnSwitch.Location = new System.Drawing.Point(218, 2);
             this.btnSwitch.Margin = new System.Windows.Forms.Padding(5, 2, 2, 2);
             this.btnSwitch.Name = "btnSwitch";
-            this.btnSwitch.Size = new System.Drawing.Size(205, 50);
+            this.btnSwitch.Size = new System.Drawing.Size(206, 50);
             this.btnSwitch.TabIndex = 110;
             this.btnSwitch.Text = "SWITCH";
             this.btnSwitch.UseVisualStyleBackColor = false;
@@ -709,10 +709,10 @@
             this.lblPartCodeReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblPartCodeReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPartCodeReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblPartCodeReset.Location = new System.Drawing.Point(370, 8);
+            this.lblPartCodeReset.Location = new System.Drawing.Point(382, 14);
             this.lblPartCodeReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPartCodeReset.Name = "lblPartCodeReset";
-            this.lblPartCodeReset.Size = new System.Drawing.Size(52, 19);
+            this.lblPartCodeReset.Size = new System.Drawing.Size(40, 13);
             this.lblPartCodeReset.TabIndex = 149;
             this.lblPartCodeReset.Text = "TODAY";
             this.lblPartCodeReset.Click += new System.EventHandler(this.lblPartCodeReset_Click);
@@ -771,7 +771,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.18033F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.81967F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 211F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 212F));
             this.tableLayoutPanel5.Controls.Add(this.btnIN, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnOUT, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSwitch, 2, 0);
@@ -806,7 +806,7 @@
             this.cbFreeze.AutoSize = true;
             this.cbFreeze.Location = new System.Drawing.Point(338, 3);
             this.cbFreeze.Name = "cbFreeze";
-            this.cbFreeze.Size = new System.Drawing.Size(85, 21);
+            this.cbFreeze.Size = new System.Drawing.Size(75, 21);
             this.cbFreeze.TabIndex = 78;
             this.cbFreeze.Text = "FREEZE";
             this.cbFreeze.UseVisualStyleBackColor = true;
@@ -850,7 +850,7 @@
             this.cbFromBina.AutoSize = true;
             this.cbFromBina.Location = new System.Drawing.Point(308, 3);
             this.cbFromBina.Name = "cbFromBina";
-            this.cbFromBina.Size = new System.Drawing.Size(112, 21);
+            this.cbFromBina.Size = new System.Drawing.Size(99, 21);
             this.cbFromBina.TabIndex = 124;
             this.cbFromBina.Text = "FROM BINA";
             this.cbFromBina.UseVisualStyleBackColor = true;
@@ -900,10 +900,10 @@
             this.lblStdPacking.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStdPacking.AutoSize = true;
             this.lblStdPacking.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStdPacking.Location = new System.Drawing.Point(375, 10);
+            this.lblStdPacking.Location = new System.Drawing.Point(384, 13);
             this.lblStdPacking.Margin = new System.Windows.Forms.Padding(3, 0, 3, 2);
             this.lblStdPacking.Name = "lblStdPacking";
-            this.lblStdPacking.Size = new System.Drawing.Size(48, 15);
+            this.lblStdPacking.Size = new System.Drawing.Size(39, 12);
             this.lblStdPacking.TabIndex = 124;
             this.lblStdPacking.Text = "xxx/bag";
             this.lblStdPacking.Visible = false;
@@ -986,7 +986,7 @@
             // 
             // frmInOutEdit
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1282, 721);

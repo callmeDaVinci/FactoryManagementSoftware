@@ -36,7 +36,7 @@ namespace FactoryManagementSoftware.BLL
         public float item_pro_rw_pcs { get; set; } = 0;//item_pro_rw_pcs
         public float item_pro_pw_shot { get; set; } = 0;
         public float item_pro_rw_shot { get; set; } = 0;
-        public int item_capacity { get; set; } = 0;
+        public int item_cavity { get; set; } = 0;
         public int item_pro_cooling { get; set; } = 0;
         public float item_wastage_allowed { get; set; } = 0;
         
@@ -54,6 +54,7 @@ namespace FactoryManagementSoftware.BLL
 
         public int item_assembly { get; set; }
         public int item_production { get; set; }
+        public int item_sbb { get; set; }
 
         public int Size_tbl_code_1 { get; set; }
         public int Size_tbl_code_2 { get; set; }

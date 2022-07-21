@@ -12,6 +12,7 @@ namespace FactoryManagementSoftware.DAL
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
         #region Select Data from Database
+
         public DataTable Select()
         {
             //static methodd to connect database

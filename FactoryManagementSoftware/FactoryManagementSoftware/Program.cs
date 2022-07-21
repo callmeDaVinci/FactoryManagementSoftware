@@ -23,12 +23,12 @@ namespace FactoryManagementSoftware
             Application.SetCompatibleTextRenderingDefault(false);
 
            //Application.Run(new frmSBBMould());
+           
+           //Application.Run(new frmItemEdit_NEW());
 
-           //Application.Run(new frmNewPlanning());
+           Application.Run(new frmItemMasterList());
 
-           //Application.Run(new frmProductionRecordNewV2());
-
-            Application.Run(new MainDashboard(1));
+          Application.Run(new MainDashboard(1));
 
            //Application.Run(new frmLogIn());
 

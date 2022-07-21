@@ -633,8 +633,8 @@ namespace FactoryManagementSoftware.UI
                     string typeName = row[dalSPP.TypeName].ToString();
 
                     int pcsStock = readyStock;
-                    int bagStock = pcsStock / qtyPerBag;
-                    int balStock = pcsStock % qtyPerBag;
+                    int bagStock = pcsStock / (qtyPerBag > 0 ? qtyPerBag : 1);
+                    int balStock = pcsStock % (qtyPerBag > 0 ? qtyPerBag : 1);
 
                     string sizeString = "";
                     int size = 1;

@@ -271,7 +271,7 @@ namespace FactoryManagementSoftware
                     uItem.item_quo_ct = tool.Int_TryParse(item[dalItem.ItemQuoCT].ToString());
                     uItem.item_pro_ct_from = tool.Int_TryParse(item[dalItem.ItemProCTFrom].ToString());
                     uItem.item_pro_ct_to = tool.Int_TryParse(item[dalItem.ItemProCTTo].ToString());
-                    uItem.item_capacity = tool.Int_TryParse(item[dalItem.ItemCavity].ToString());
+                    uItem.item_cavity = tool.Int_TryParse(item[dalItem.ItemCavity].ToString());
 
                     uItem.item_quo_pw_pcs = tool.Float_TryParse(item[dalItem.ItemQuoPWPcs].ToString());
                     uItem.item_quo_rw_pcs = tool.Float_TryParse(item[dalItem.ItemQuoRWPcs].ToString());
@@ -655,7 +655,7 @@ namespace FactoryManagementSoftware
             u.item_quo_ct = 0;
             u.item_pro_ct_from = 0;
             u.item_pro_ct_to = 0;
-            u.item_capacity = tool.Int_TryParse(txtCapacity.Text);
+            u.item_cavity = tool.Int_TryParse(txtCapacity.Text);
 
             u.item_quo_pw_pcs = tool.Float_TryParse(txtQuoPWpcs.Text);
             u.item_quo_rw_pcs = tool.Float_TryParse(txtQuoRWpcs.Text);
@@ -740,7 +740,7 @@ namespace FactoryManagementSoftware
             u.item_quo_ct = 0;
             u.item_pro_ct_from = 0;
             u.item_pro_ct_to = 0;
-            u.item_capacity = tool.Int_TryParse(txtCapacity.Text);
+            u.item_cavity = tool.Int_TryParse(txtCapacity.Text);
 
             u.item_quo_pw_pcs = tool.Float_TryParse(txtQuoPWpcs.Text); 
             u.item_quo_rw_pcs = tool.Float_TryParse(txtQuoRWpcs.Text);

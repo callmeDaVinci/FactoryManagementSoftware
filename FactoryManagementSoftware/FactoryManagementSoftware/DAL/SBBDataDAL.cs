@@ -1316,6 +1316,7 @@ namespace FactoryManagementSoftware.DAL
 
 
         }
+
         public DataTable POWithoutRemovedDataSelect()
         {
             //static methodd to connect database
@@ -1722,6 +1723,7 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
         public DataTable SBBPageDOWithTrfInfoSelect()
         {
             //static methodd to connect database
@@ -2954,12 +2956,14 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"INSERT INTO tbl_spp_stdpacking 
                             (" + ItemCode + ","
+                            + QtyPerContainer + ","
                             + QtyPerPacket + ","
                              + QtyPerBag + ","
                                + MaxLevel + ","
                             + UpdatedDate + ","
                             + UpdatedBy + ") VALUES" +
                             "(@Item_code," +
+                            "@Qty_Per_Container," +
                             "@Qty_Per_Packet," +
                             "@Qty_Per_Bag," +
                             "@Max_Lvl," +
@@ -2969,10 +2973,11 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+                cmd.Parameters.AddWithValue("@Qty_Per_Container", u.Qty_Per_Container);
                 cmd.Parameters.AddWithValue("@Qty_Per_Packet", u.Qty_Per_Packet);
                 cmd.Parameters.AddWithValue("@Qty_Per_Bag", u.Qty_Per_Bag);
                 cmd.Parameters.AddWithValue("@Max_Lvl", u.Max_Lvl);
-                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date); 
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
 
 
@@ -4682,6 +4687,7 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"UPDATE tbl_spp_stdpacking 
                             SET "
+                            + QtyPerContainer + "=@Qty_Per_Container,"
                             + QtyPerPacket + "=@Qty_Per_Packet,"
                             + QtyPerBag + "=@Qty_Per_Bag,"
                             + MaxLevel + "=@Max_Lvl,"
@@ -4692,6 +4698,7 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
+                cmd.Parameters.AddWithValue("@Qty_Per_Container", u.Qty_Per_Container);
                 cmd.Parameters.AddWithValue("@Qty_Per_Packet", u.Qty_Per_Packet);
                 cmd.Parameters.AddWithValue("@Qty_Per_Bag", u.Qty_Per_Bag);
                 cmd.Parameters.AddWithValue("@Max_Lvl", u.Max_Lvl);

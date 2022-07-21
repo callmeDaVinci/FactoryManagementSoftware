@@ -3187,7 +3187,7 @@ namespace FactoryManagementSoftware.UI
                     uItem.item_code = itemCode;
                     uItem.item_quo_ton = string.IsNullOrEmpty(txtQuoTon.Text)? 0 : Convert.ToInt32(txtQuoTon.Text);
                     uItem.item_pro_ton = string.IsNullOrEmpty(txtProTon.Text) ? 0 : Convert.ToInt32(txtProTon.Text);
-                    uItem.item_capacity = string.IsNullOrEmpty(txtCavity.Text) ? 0 : Convert.ToInt32(txtCavity.Text);
+                    uItem.item_cavity = string.IsNullOrEmpty(txtCavity.Text) ? 0 : Convert.ToInt32(txtCavity.Text);
                     uItem.item_quo_ct = string.IsNullOrEmpty(txtQuoCT.Text) ? 0 : Convert.ToInt32(txtQuoCT.Text);
                     uItem.item_pro_ct_to = string.IsNullOrEmpty(txtProCT.Text) ? 0 : Convert.ToInt32(txtProCT.Text);
                     uItem.item_pro_pw_shot = string.IsNullOrEmpty(txtPartWeight.Text) ? 0 : Convert.ToSingle(txtPartWeight.Text);

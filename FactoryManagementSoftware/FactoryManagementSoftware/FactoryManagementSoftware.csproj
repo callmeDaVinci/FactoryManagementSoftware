@@ -27,7 +27,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>421</ApplicationRevision>
+    <ApplicationRevision>425</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -203,9 +203,13 @@
     <Compile Include="DAL\trfHistDAL.cs" />
     <Compile Include="DAL\userDAL.cs" />
     <Compile Include="DAL\Utilities.cs" />
-    <Compile Include="UI\frmItemMasterList.cs">
+    <Compile Include="UI\frmItemEdit_NEW.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\frmItemEdit_NEW.Designer.cs">
+      <DependentUpon>frmItemEdit_NEW.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmItemMasterList.cs" />
     <Compile Include="UI\frmItemMasterList.Designer.cs">
       <DependentUpon>frmItemMasterList.cs</DependentUpon>
     </Compile>
@@ -821,11 +825,11 @@
     <Compile Include="UI\frmSPPCustomerEdit.Designer.cs">
       <DependentUpon>frmSPPCustomerEdit.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmSPPDataSetting.cs">
+    <Compile Include="UI\frmSBBDataSetting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmSPPDataSetting.Designer.cs">
-      <DependentUpon>frmSPPDataSetting.cs</DependentUpon>
+    <Compile Include="UI\frmSBBDataSetting.Designer.cs">
+      <DependentUpon>frmSBBDataSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmSBBDOList.cs">
       <SubType>Form</SubType>
@@ -935,6 +939,9 @@
     <Compile Include="UI\NewInOutReport.Designer.cs">
       <DependentUpon>NewInOutReport.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\frmItemEdit_NEW.resx">
+      <DependentUpon>frmItemEdit_NEW.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItemMasterList.resx">
       <DependentUpon>frmItemMasterList.cs</DependentUpon>
     </EmbeddedResource>
@@ -1251,8 +1258,8 @@
     <EmbeddedResource Include="UI\frmSPPCustomerEdit.resx">
       <DependentUpon>frmSPPCustomerEdit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmSPPDataSetting.resx">
-      <DependentUpon>frmSPPDataSetting.cs</DependentUpon>
+    <EmbeddedResource Include="UI\frmSBBDataSetting.resx">
+      <DependentUpon>frmSBBDataSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBDOList.resx">
       <DependentUpon>frmSBBDOList.cs</DependentUpon>

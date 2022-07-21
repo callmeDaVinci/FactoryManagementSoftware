@@ -64,7 +64,9 @@ namespace FactoryManagementSoftware.UI
         DataTable dt_Carton;
         DataTable dt_MultiParent;
         DataTable dt_Mac;
-       // DataTable dt_Trf;
+        // DataTable dt_Trf;
+
+        private DateTime OLD_PRO_DATE = DateTime.MaxValue;
 
         int userPermission = -1;
         readonly private string string_NewSheet = "NEW";
@@ -680,7 +682,20 @@ namespace FactoryManagementSoftware.UI
 
             DateTime proDate = dtpProDate.Value;
 
-            DataTable dt_Trf = dalTrf.rangeTrfSearch(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
+            DataTable dt_Trf;
+
+            if (OLD_PRO_DATE == DateTime.MaxValue)
+            {
+                dt_Trf = dalTrf.rangeTrfSearch(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
+
+            }
+            else
+            {
+                dt_Trf = dalTrf.rangeTrfSearch(OLD_PRO_DATE.ToString("yyyy/MM/dd"), OLD_PRO_DATE.ToString("yyyy/MM/dd"));
+
+            }
+
+           
 
             string shift = text.Shift_Morning;
 
@@ -781,7 +796,18 @@ namespace FactoryManagementSoftware.UI
 
             DateTime proDate = dtpProDate.Value;
 
-            DataTable dt_Trf = dalTrf.rangeTrfSearch(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
+            DataTable dt_Trf;
+
+            if (OLD_PRO_DATE == DateTime.MaxValue)
+            {
+                dt_Trf = dalTrf.rangeTrfSearch(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
+
+            }
+            else
+            {
+                dt_Trf = dalTrf.rangeTrfSearch(OLD_PRO_DATE.ToString("yyyy/MM/dd"), OLD_PRO_DATE.ToString("yyyy/MM/dd"));
+
+            }
 
             string shift = text.Shift_Morning;
 
@@ -1440,7 +1466,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                txtPackingMaxQty.Text = "";
+                //txtPackingMaxQty.Text = "";
                 cmbPackingName.SelectedIndex = -1;
                 cmbPackingCode.SelectedIndex = -1;
 
@@ -1624,139 +1650,6 @@ namespace FactoryManagementSoftware.UI
         private void LoadExistingSheetData()
         {
             sheetLoaded = false;
-            
-            int selectedItem = dgvItemList.CurrentCell.RowIndex;
-            int selectedDailyRecord = dgvRecordHistory.CurrentCell.RowIndex;
-            if (selectedItem <= -1)
-            {
-                MessageBox.Show("Please select a item before adding new sheet.");
-            }
-            else
-            {
-                string itemName = dgvItemList.Rows[selectedItem].Cells[header_PartName].Value.ToString();
-                string itemCode = dgvItemList.Rows[selectedItem].Cells[header_PartCode].Value.ToString();
-                string planID = dgvItemList.Rows[selectedItem].Cells[header_PlanID].Value.ToString();
-                string sheetID = dgvRecordHistory.Rows[selectedDailyRecord].Cells[header_SheetID].Value.ToString();
-                string shift = dgvRecordHistory.Rows[selectedDailyRecord].Cells[header_Shift].Value.ToString();
-
-                LoadParentList(itemCode);
-                uProRecord.sheet_id = Convert.ToInt32(sheetID);
-                DataTable dt_ProductionRecord = dalProRecord.ProductionRecordSelect(uProRecord);
-
-                lblPartName.Text = itemName;
-                lblPartCode.Text = itemCode;
-                txtPlanID.Text = planID;
-                txtSheetID.Text = sheetID;
-
-                if (shift == "MORNING")
-                {
-                    cbMorning.Checked = true;
-                }
-                else if(shift == "NIGHT")
-                {
-                    cbNight.Checked = true;
-                }
-
-                foreach (DataRow row in dt_ProductionRecord.Rows)
-                {
-                    if (row[dalProRecord.SheetID].ToString().Equals(sheetID))
-                    {
-                        float partWeight = float.TryParse(row[dalPlan.planPW].ToString(), out float i) ? Convert.ToSingle(row[dalPlan.planPW].ToString()) : -1;
-                        float runnerWeight = float.TryParse(row[dalPlan.planRW].ToString(), out float k) ? Convert.ToSingle(row[dalPlan.planRW].ToString()) : -1;
-
-                        lblPW.Text = partWeight.ToString("0.##");
-                        lblRW.Text = runnerWeight.ToString("0.##");
-
-                        lblCavity.Text = row[dalPlan.planCavity] == DBNull.Value ? "" : row[dalPlan.planCavity].ToString();
-                        lblRawMat.Text = row[dalPlan.materialCode] == DBNull.Value ? "" : row[dalPlan.materialCode].ToString();
-                        lblColorMat.Text = row[dalPlan.colorMaterialCode] == DBNull.Value ? "" : row[dalPlan.colorMaterialCode].ToString();
-
-                        
-                        float colorRate = row[dalPlan.colorMaterialUsage] == DBNull.Value ? 0 : Convert.ToSingle(row[dalPlan.colorMaterialUsage]);
-                        lblColorUsage.Text = colorRate.ToString("0.##");
-
-                        dtpProDate.Value = Convert.ToDateTime(row[dalProRecord.ProDate].ToString());
-
-                        int _ProLotNo = int.TryParse(row[dalProRecord.ProLotNo].ToString(), out _ProLotNo) ? _ProLotNo : -1;
-
-                        if(_ProLotNo != -1)
-                        {
-                            txtProLotNo.Text = SetAlphabetToProLotNo(macID, _ProLotNo);
-                        }
-                        else
-                        {
-                            txtProLotNo.Text = row[dalProRecord.ProLotNo].ToString();
-                        }
-                        
-                        txtRawMatLotNo.Text = row[dalProRecord.RawMatLotNo].ToString();
-                        txtColorMatLotNo.Text = row[dalProRecord.ColorMatLotNo].ToString();
-                        txtMeterStart.Text = row[dalProRecord.MeterStart].ToString();
-                        txtBalanceOfLastShift.Text = row[dalProRecord.LastShiftBalance].ToString();
-                        txtBalanceOfThisShift.Text = row[dalProRecord.CurrentShiftBalance].ToString();
-                        txtIn.Text = row[dalProRecord.directIn].ToString();
-                        txtOut.Text = row[dalProRecord.directOut].ToString();
-                        txtFullBox.Text = row[dalProRecord.FullBox].ToString();
-                        txtTotalProduce.Text = row[dalProRecord.TotalProduced].ToString();
-                        cmbParentList.Text = row[dalProRecord.ParentCode].ToString();
-                        txtNote.Text = row[dalProRecord.Note].ToString();
-
-                        //cmbPackingName.Text = tool.getItemName(row[dalProRecord.PackagingCode].ToString());
-                        //cmbPackingCode.Text = row[dalProRecord.PackagingCode].ToString();
-                        //txtPackingMaxQty.Text = row[dalProRecord.PackagingQty].ToString();
-
-                        //txtTotalReject.Text = row[dalProRecord.ProLotNo].ToString();
-                        // txtRejectPercentage.Text = row[dalProRecord.ProLotNo].ToString();
-                    }
-
-                }
-
-                LoadMeterReadingData(Convert.ToInt32(sheetID));
-                CalculateHourlyShot();
-
-                //get packaging data
-                LoadPackagingList(Convert.ToInt32(sheetID));
-
-                //foreach (DataRow row in dt_JoinInfo.Rows)
-                //{
-                //    string parentCode = row[dalJoin.JoinParent].ToString();
-
-                //    if (parentCode == itemCode)
-                //    {
-                //        string childCode = row[dalJoin.JoinChild].ToString();
-
-                //        foreach (DataRow rowItem in dt_ItemInfo.Rows)
-                //        {
-                //            if (rowItem[dalItem.ItemCode].ToString().Equals(childCode))
-                //            {
-                //                string cat = rowItem[dalItem.ItemCat].ToString();
-
-                //                if (cat.Equals(text.Cat_Carton) || cat.Equals(text.Cat_Packaging))
-                //                {
-                //                    string packagingName = rowItem[dalItem.ItemName].ToString();
-                //                    string packagingCode = rowItem[dalItem.ItemCode].ToString();
-                //                    string packagingQty = row[dalJoin.JoinMax].ToString();
-
-                //                    txtPackingMaxQty.Text = packagingQty;
-                //                    cmbPackingName.Text = packagingName;
-                //                    cmbPackingCode.Text = packagingCode;
-
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //    }
-
-                //}
-
-            }
-
-            sheetLoaded = true;
-
-        }
-
-        private void NewLoadExistingSheetData()
-        {
-            sheetLoaded = false;
 
             int selectedItem = dgvItemList.CurrentCell.RowIndex;
             int selectedDailyRecord = dgvRecordHistory.CurrentCell.RowIndex;
@@ -1810,6 +1703,8 @@ namespace FactoryManagementSoftware.UI
 
                         dtpProDate.Value = Convert.ToDateTime(row[dalProRecord.ProDate].ToString());
 
+                        OLD_PRO_DATE = dtpProDate.Value;
+
                         int _ProLotNo = int.TryParse(row[dalProRecord.ProLotNo].ToString(), out _ProLotNo) ? _ProLotNo : -1;
 
                         if (_ProLotNo != -1)
@@ -1832,6 +1727,7 @@ namespace FactoryManagementSoftware.UI
                         txtTotalProduce.Text = row[dalProRecord.TotalProduced].ToString();
                         cmbParentList.Text = row[dalProRecord.ParentCode].ToString();
                         txtNote.Text = row[dalProRecord.Note].ToString();
+                        txtPackingMaxQty.Text = row[dalProRecord.PackagingQty].ToString();
 
                         //cmbPackingName.Text = tool.getItemName(row[dalProRecord.PackagingCode].ToString());
                         //cmbPackingCode.Text = row[dalProRecord.PackagingCode].ToString();
@@ -1844,6 +1740,7 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 LoadMeterReadingData(Convert.ToInt32(sheetID));
+
                 CalculateHourlyShot();
 
                 //get packaging data
@@ -3577,6 +3474,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (dgvItemList.SelectedRows.Count > 0)
             {
+                OLD_PRO_DATE = DateTime.MaxValue;
                 dt_Mac = dalMac.Select();
 
                 DateTime proDate = DateTime.Today.AddDays(-1);
@@ -3777,14 +3675,14 @@ namespace FactoryManagementSoftware.UI
                                 dataSaved = true;
                                 addingNewSheet = false;
                                 AddNewSheetUI(true);
-                                NewLoadExistingSheetData();
+                                LoadExistingSheetData();
                             }
                         }
                         else
                         {
                             addingNewSheet = false;
                             AddNewSheetUI(true);
-                            NewLoadExistingSheetData();
+                            LoadExistingSheetData();
                         }
                     }
                 }
@@ -4614,7 +4512,7 @@ namespace FactoryManagementSoftware.UI
                         {
                             addingNewSheet = false;
                             AddNewSheetUI(true);
-                            NewLoadExistingSheetData();
+                            LoadExistingSheetData();
                         }
                     }
                 }

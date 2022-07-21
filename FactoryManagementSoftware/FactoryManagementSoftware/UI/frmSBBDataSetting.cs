@@ -16,9 +16,9 @@ using System.Linq;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmSPPDataSetting : Form
+    public partial class frmSBBDataSetting : Form
     {
-        public frmSPPDataSetting()
+        public frmSBBDataSetting()
         {
             InitializeComponent();
             InitializeData();

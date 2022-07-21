@@ -66,6 +66,7 @@ namespace FactoryManagementSoftware.DAL
 
         public string ItemAssemblyCheck { get; } = "item_assembly";
         public string ItemProductionCheck { get; } = "item_production";
+        public string ItemSBBCheck { get; } = "item_sbb";
 
         public string ItemSize1 { get; } = "size_tbl_code_1";
         public string ItemSize2 { get; } = "size_tbl_code_2";
@@ -688,7 +689,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_quo_ct", u.item_quo_ct);
                 cmd.Parameters.AddWithValue("@item_pro_ct_from", u.item_pro_ct_from);
                 cmd.Parameters.AddWithValue("@item_pro_ct_to", u.item_pro_ct_to);
-                cmd.Parameters.AddWithValue("@item_capacity", u.item_capacity);
+                cmd.Parameters.AddWithValue("@item_capacity", u.item_cavity);
                 cmd.Parameters.AddWithValue("@item_quo_pw_pcs", u.item_quo_pw_pcs);
                 cmd.Parameters.AddWithValue("@item_quo_rw_pcs", u.item_quo_rw_pcs);
                 cmd.Parameters.AddWithValue("@item_pro_pw_pcs", u.item_pro_pw_pcs);
@@ -701,6 +702,147 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_added_by", u.item_added_by);
                 cmd.Parameters.AddWithValue("@item_assembly", u.item_assembly);
                 cmd.Parameters.AddWithValue("@item_production", u.item_production);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool ItemMasterList_ItemAdd(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_item 
+                            (" + ItemCat + ","
+                            + ItemCode + ","
+                            + ItemName + ","
+                            + ItemUnit + ","
+                            + ItemMaterial + ","
+                            + ItemMBatch + ","
+                            + ItemMBRate + ","
+                            + ItemColor + ","
+                            + ItemQuoTon + ","
+                            + ItemBestTon + ","
+                            + ItemProTon + ","
+                            + ItemQuoCT + ","
+                            + ItemProCTFrom + ","
+                            + ItemProCTTo + ","
+                            + ItemCavity + ","
+                            + ItemQuoPWPcs + ","
+                            + ItemQuoRWPcs + ","
+                            + ItemProPWPcs + ","
+                            + ItemProRWPcs + ","
+                            + ItemProPWShot + ","
+                            + ItemProRWShot + ","
+                            + ItemProCooling + ","
+                            + ItemWastage + ","
+                            + ItemAddDate + ","
+                            + ItemAddBy + ","
+                            + ItemUnitToPCSRate + ","
+                            + ItemAssemblyCheck + ","
+                            + ItemProductionCheck + ","
+                            + ItemSBBCheck + ","
+                            + CategoryTblCode + ","
+                            + TypeTblCode + ","
+                            + ItemSize1 + ","
+                            + ItemSize2 + ") VALUES" +
+                            "(@item_cat," +
+                            "@item_code," +
+                            "@item_name," +
+                            "@item_unit," +
+                            "@item_material," +
+                            "@item_mb," +
+                            "@item_mb_rate," +
+                            "@item_color," +
+                            "@item_quo_ton," +
+                            "@item_best_ton," +
+                            "@item_pro_ton," +
+                            "@item_quo_ct," +
+                            "@item_pro_ct_from," +
+                            "@item_pro_ct_to," +
+                            "@item_capacity," +
+                            "@item_quo_pw_pcs," +
+                            "@item_quo_rw_pcs," +
+                            "@item_pro_pw_pcs," +
+                            "@item_pro_rw_pcs," +
+                            "@item_pro_pw_shot," +
+                            "@item_pro_rw_shot," +
+                            "@item_pro_cooling," +
+                            "@item_wastage_allowed," +
+                            "@item_added_date," +
+                            "@item_added_by," +
+                            "@unit_to_pcs_rate," +
+                            "@item_assembly," +
+                            "@item_production," +
+                            "@item_sbb," +
+                            "@Category_tbl_code," +
+                            "@Type_tbl_code," +
+                            "@Size_tbl_code_1," +
+                            "@Size_tbl_code_2)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_name", u.item_name);
+                cmd.Parameters.AddWithValue("@item_unit", u.item_unit);
+                cmd.Parameters.AddWithValue("@item_material", u.item_material);
+                cmd.Parameters.AddWithValue("@item_mb", u.item_mb);
+                cmd.Parameters.AddWithValue("@item_mb_rate", u.item_mb_rate);
+                cmd.Parameters.AddWithValue("@item_color", u.item_color);
+                cmd.Parameters.AddWithValue("@item_quo_ton", u.item_quo_ton);
+                cmd.Parameters.AddWithValue("@item_best_ton", u.item_best_ton);
+                cmd.Parameters.AddWithValue("@item_pro_ton", u.item_pro_ton);
+                cmd.Parameters.AddWithValue("@item_quo_ct", u.item_quo_ct);
+                cmd.Parameters.AddWithValue("@item_pro_ct_from", u.item_pro_ct_from);
+                cmd.Parameters.AddWithValue("@item_pro_ct_to", u.item_pro_ct_to);
+                cmd.Parameters.AddWithValue("@item_capacity", u.item_cavity);
+                cmd.Parameters.AddWithValue("@item_quo_pw_pcs", u.item_quo_pw_pcs);
+                cmd.Parameters.AddWithValue("@item_quo_rw_pcs", u.item_quo_rw_pcs);
+                cmd.Parameters.AddWithValue("@item_pro_pw_pcs", u.item_pro_pw_pcs);
+                cmd.Parameters.AddWithValue("@item_pro_rw_pcs", u.item_pro_rw_pcs);
+                cmd.Parameters.AddWithValue("@item_pro_pw_shot", u.item_pro_pw_shot);
+                cmd.Parameters.AddWithValue("@item_pro_rw_shot", u.item_pro_rw_shot);
+                cmd.Parameters.AddWithValue("@item_pro_cooling", u.item_pro_cooling);
+                cmd.Parameters.AddWithValue("@item_wastage_allowed", u.item_wastage_allowed);
+                cmd.Parameters.AddWithValue("@item_added_date", u.item_added_date);
+                cmd.Parameters.AddWithValue("@item_added_by", u.item_added_by);
+                cmd.Parameters.AddWithValue("@item_assembly", u.item_assembly);
+                cmd.Parameters.AddWithValue("@item_production", u.item_production);
+
+                cmd.Parameters.AddWithValue("@unit_to_pcs_rate", u.unit_to_pcs_rate);
+
+                cmd.Parameters.AddWithValue("@Type_tbl_code", u.Type_tbl_code);
+                cmd.Parameters.AddWithValue("@Category_tbl_code", u.Category_tbl_code);
+                cmd.Parameters.AddWithValue("@Size_tbl_code_1", u.Size_tbl_code_1);
+                cmd.Parameters.AddWithValue("@Size_tbl_code_2", u.Size_tbl_code_2);
+                cmd.Parameters.AddWithValue("@item_sbb", u.item_sbb);
 
                 conn.Open();
 
@@ -926,7 +1068,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_quo_ct", u.item_quo_ct);
                 cmd.Parameters.AddWithValue("@item_pro_ct_from", u.item_pro_ct_from);
                 cmd.Parameters.AddWithValue("@item_pro_ct_to", u.item_pro_ct_to);
-                cmd.Parameters.AddWithValue("@item_capacity", u.item_capacity);
+                cmd.Parameters.AddWithValue("@item_capacity", u.item_cavity);
                 cmd.Parameters.AddWithValue("@item_quo_pw_pcs", u.item_quo_pw_pcs);
                 cmd.Parameters.AddWithValue("@item_quo_rw_pcs", u.item_quo_rw_pcs);
                 cmd.Parameters.AddWithValue("@item_pro_pw_pcs", u.item_pro_pw_pcs);
@@ -941,6 +1083,114 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_production", u.item_production);
                 cmd.Parameters.AddWithValue("@item_unit", u.item_unit);
                 cmd.Parameters.AddWithValue("@unit_to_pcs_rate", u.unit_to_pcs_rate);
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool ItemMasterList_ItemUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemCat + "=@item_cat,"
+                            + ItemName + "=@item_name,"
+                            + ItemUnit + "=@item_unit,"
+                            + ItemMaterial + "=@item_material,"
+                            + ItemMBatch + "=@item_mb,"
+                            + ItemMBRate + "=@item_mb_rate,"
+                            + ItemColor + "=@item_color,"
+                            + ItemQuoTon + "=@item_quo_ton,"
+                            + ItemBestTon + "=@item_best_ton,"
+                            + ItemProTon + "=@item_pro_ton,"
+                            + ItemQuoCT + "=@item_quo_ct,"
+                            + ItemProCTFrom + "=@item_pro_ct_from,"
+                            + ItemProCTTo + "=@item_pro_ct_to,"
+                            + ItemCavity + "=@item_cavity,"
+                            + ItemQuoPWPcs + "=@item_quo_pw_pcs,"
+                            + ItemQuoRWPcs + "=@item_quo_rw_pcs,"
+                            + ItemProPWPcs + "=@item_pro_pw_pcs,"
+                            + ItemProRWPcs + "=@item_pro_rw_pcs,"
+                            + ItemProPWShot + "=@item_pro_pw_shot,"
+                            + ItemProRWShot + "=@item_pro_rw_shot,"
+                            + ItemProCooling + "=@item_pro_cooling,"
+                            + ItemWastage + "=@item_wastage_allowed,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by,"
+                            + ItemAssemblyCheck + "=@item_assembly,"
+                            + ItemSBBCheck + "=@item_sbb,"
+                            + CategoryTblCode + "=@Category_tbl_code,"
+                            + TypeTblCode + "=@Type_tbl_code,"
+                            + ItemSize1 + "=@Size_tbl_code_1,"
+                            + ItemSize2 + "=@Size_tbl_code_2,"
+                            + ItemUnitToPCSRate + "=@unit_to_pcs_rate,"
+                            + ItemProductionCheck + "=@item_production" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
+                cmd.Parameters.AddWithValue("@item_name", u.item_name);
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_unit", u.item_unit);
+                cmd.Parameters.AddWithValue("@item_material", u.item_material);
+                cmd.Parameters.AddWithValue("@item_mb", u.item_mb);
+                cmd.Parameters.AddWithValue("@item_mb_rate", u.item_mb_rate);
+                cmd.Parameters.AddWithValue("@item_color", u.item_color);
+                cmd.Parameters.AddWithValue("@item_quo_ton", u.item_quo_ton);
+                cmd.Parameters.AddWithValue("@item_best_ton", u.item_best_ton);
+                cmd.Parameters.AddWithValue("@item_pro_ton", u.item_pro_ton);
+                cmd.Parameters.AddWithValue("@item_quo_ct", u.item_quo_ct);
+                cmd.Parameters.AddWithValue("@item_pro_ct_from", u.item_pro_ct_from);
+                cmd.Parameters.AddWithValue("@item_pro_ct_to", u.item_pro_ct_to);
+                cmd.Parameters.AddWithValue("@item_cavity", u.item_cavity);
+                cmd.Parameters.AddWithValue("@item_quo_pw_pcs", u.item_quo_pw_pcs);
+                cmd.Parameters.AddWithValue("@item_quo_rw_pcs", u.item_quo_rw_pcs);
+                cmd.Parameters.AddWithValue("@item_pro_pw_pcs", u.item_pro_pw_pcs);
+                cmd.Parameters.AddWithValue("@item_pro_rw_pcs", u.item_pro_rw_pcs);
+                cmd.Parameters.AddWithValue("@item_pro_pw_shot", u.item_pro_pw_shot);
+                cmd.Parameters.AddWithValue("@item_pro_rw_shot", u.item_pro_rw_shot);
+                cmd.Parameters.AddWithValue("@item_pro_cooling", u.item_pro_cooling);
+                cmd.Parameters.AddWithValue("@item_wastage_allowed", u.item_wastage_allowed);
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+                cmd.Parameters.AddWithValue("@item_assembly", u.item_assembly);
+                cmd.Parameters.AddWithValue("@item_production", u.item_production);
+
+                cmd.Parameters.AddWithValue("@unit_to_pcs_rate", u.unit_to_pcs_rate);
+
+                cmd.Parameters.AddWithValue("@Type_tbl_code", u.Type_tbl_code);
+                cmd.Parameters.AddWithValue("@Category_tbl_code", u.Category_tbl_code);
+                cmd.Parameters.AddWithValue("@Size_tbl_code_1", u.Size_tbl_code_1);
+                cmd.Parameters.AddWithValue("@Size_tbl_code_2", u.Size_tbl_code_2);
+                cmd.Parameters.AddWithValue("@item_sbb", u.item_sbb);
+
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();
@@ -1157,7 +1407,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_pro_ton", u.item_pro_ton);
                 cmd.Parameters.AddWithValue("@item_quo_ct", u.item_quo_ct);
                 cmd.Parameters.AddWithValue("@item_pro_ct_to", u.item_pro_ct_to);
-                cmd.Parameters.AddWithValue("@item_capacity", u.item_capacity);
+                cmd.Parameters.AddWithValue("@item_capacity", u.item_cavity);
                
                 cmd.Parameters.AddWithValue("@item_pro_pw_shot", u.item_pro_pw_shot);
                 cmd.Parameters.AddWithValue("@item_pro_rw_shot", u.item_pro_rw_shot);
@@ -1716,9 +1966,9 @@ namespace FactoryManagementSoftware.DAL
                     tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Runner Weight(pro shot) : " + runnerWeight + " -->" + u.item_pro_rw_shot, DateTime.Now, MainDashboard.USER_ID);
                 }
 
-                if (!cavity.Equals(u.item_capacity.ToString()))
+                if (!cavity.Equals(u.item_cavity.ToString()))
                 {
-                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Cavity : " + cavity + " -->" + u.item_capacity, DateTime.Now, MainDashboard.USER_ID);
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Cavity : " + cavity + " -->" + u.item_cavity, DateTime.Now, MainDashboard.USER_ID);
                 }
 
                 if (!quoCT.Equals(u.item_quo_ct.ToString()))

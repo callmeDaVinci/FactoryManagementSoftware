@@ -373,7 +373,12 @@ namespace FactoryManagementSoftware.UI
         {
             string monthName = "";
 
-            int forecastCurrentMonthNum = DateTime.Parse("1." + DateTime.Now.Month + " 2008").Month;
+
+            // int forecastCurrentMonth = DateTime.Now.Month;
+            //string balanceOneName = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonth).ToUpper().ToString() + " BAL";
+
+
+            int forecastCurrentMonthNum = DateTime.Now.Month;
             monthName = new DateTimeFormatInfo().GetMonthName(forecastCurrentMonthNum).ToUpper().ToString();
 
             if (type == 2)

@@ -22,6 +22,7 @@ namespace FactoryManagementSoftware.Module
         public string System { get; } = "System";
 
         //password
+        public string PW_TopManagement { get; } = "Safplas19892020!";
         public string PW_UnlockPmmaStock { get; } = "038989!";
         public string PW_UnlockSBBCustomerDiscount { get; } = "038989";
         public string PW_UnlockSBBSalesReport { get; } = "Safplas038989!";
@@ -231,6 +232,7 @@ namespace FactoryManagementSoftware.Module
         public string Unit_g { get; } = "g";
         public string Unit_Set { get; } = "set";
         public string Unit_Piece { get; } = "piece";
+        public string Unit_Packet { get; } = "packet";
         //public string Unit_PCS { get; } = "pcs";
         public string Unit_Meter { get; } = "meter";
         public string Unit_Bag{ get; } = "bag";
@@ -260,6 +262,8 @@ namespace FactoryManagementSoftware.Module
         public string Header_Index { get; } = "#";
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
         public string Header_PartCode { get; } = "PART CODE";
+        public string Header_ItemCode { get; } = "ITEM CODE";
+        public string Header_ItemName { get; } = "ITEM NAME";
         public string Header_JoinQty { get; } = "JOIN QTY";
         public string Header_JoinMax { get; } = "JOIN MAX";
         public string Header_JoinMin { get; } = "JOIN MIN";
@@ -272,10 +276,11 @@ namespace FactoryManagementSoftware.Module
         public string Header_DirectOut_KG_Piece { get; } = "DIRECT OUT(KG/PIECE)";
         public string Header_BalStock { get; } = "BAL. STOCK";
         public string Header_Percentage { get; } = "%";
-        public string Header_Wastage { get; } = "WASTAGE";
         public string Header_Adjust { get; } = "ADJUST";
         public string Header_Remark { get; } = "REMARK";
         public string Header_Note { get; } = "NOTE";
+        public string Header_Category { get; } = "CATEGORY";
+        public string Header_Status { get; } = "STATUS";
         public string Header_Type { get; } = "TYPE";
         public string Header_MatType { get; } = "MAT. TYPE";
         public string Header_Mat { get; } = "MATERIAL";
@@ -293,6 +298,46 @@ namespace FactoryManagementSoftware.Module
         public string Header_MaterialUsedWithWastage { get; } = "MAT. USED AFTER WASTAGE";
         public string Header_TotalMaterialUsed_KG_Piece { get; } = "TOTAL MAT. USED(KG/PIECE)";
         public string Header_TotalMaterialUsed_KG { get; } = "TOTAL MAT. USED(KG)";
+
+        public string Header_QuoTon { get; } = "QUOTATION TON";
+        public string Header_BestTon { get; } = "BEST TON";
+        public string Header_ProTon { get; } = "MACHINE TON";
+        public string Header_ColorMaterial { get; } = "COLOR MATERIAL";
+        public string Header_ColorRate { get; } = "COLOR MATERIAL RATE";
+
+        public string Header_QuoCT { get; } = "QUOTATION CYCLE TIME";
+        public string Header_ProCT { get; } = "PRODUCTION CYCLE TIME";
+
+        public string Header_QuoPwPcs { get; } = "QUOTATION PART WEIGHT PER PCS (g)";
+        public string Header_QuoRwPcs { get; } = "QUOTATION RUNNER WEIGHT PER PCS (g)";
+
+        public string Header_ProPwPcs { get; } = "PART WEIGHT PER PCS (g)";
+        public string Header_ProRwPcs { get; } = "RUNNER WEIGHT PER PCS (g)";
+
+        public string Header_ProPwShot { get; } = "PART WEIGHT PER SHOT (g)";
+        public string Header_ProRwShot { get; } = "RUNNER WEIGHT PER SHOT (g)";
+
+        public string Header_Cavity { get; } = "CAVITY";
+        public string Header_Cooling { get; } = "COOLING TIME (s)";
+
+        public string Header_Wastage { get; } = "WASTAGE";
+        public string Header_WastageAllowed { get; } = "WASTAGE ALLOWED";
+
+        public string Header_AddedDate { get; } = "ADDED DATE";
+        public string Header_AddedBy { get; } = "ADDED BY";
+
+        public string Header_UpdatedDate { get; } = "UPDATED DATE";
+        public string Header_UpdatedBy { get; } = "UPDATED BY";
+
+
+
+
+
+        public string Header_Data { get; } = "DATA DB";
+        public string Header_DataName { get; } = "DATA";
+
+        public string Header_Description { get; } = "DESCRIPTION";
+
         #endregion
 
         #region SPP/SBB Info; Item Type

@@ -114,7 +114,7 @@ namespace FactoryManagementSoftware.UI
             u.item_quo_ct = 0;
             u.item_pro_ct_from = 0;
             u.item_pro_ct_to = 0;
-            u.item_capacity = 0;
+            u.item_cavity = 0;
 
             u.item_quo_pw_pcs = 0;
             u.item_quo_rw_pcs = 0;
@@ -168,7 +168,7 @@ namespace FactoryManagementSoftware.UI
             u.item_quo_ct = 0;
             u.item_pro_ct_from = 0;
             u.item_pro_ct_to = 0;
-            u.item_capacity = 0;
+            u.item_cavity = 0;
 
             u.item_quo_pw_pcs = 0;
             u.item_quo_rw_pcs = 0;
@@ -226,7 +226,7 @@ namespace FactoryManagementSoftware.UI
             u.item_quo_ct = 0;
             u.item_pro_ct_from = 0;
             u.item_pro_ct_to = 0;
-            u.item_capacity = 0;
+            u.item_cavity = 0;
 
             u.item_quo_pw_pcs = 0;
             u.item_quo_rw_pcs = 0;
@@ -283,7 +283,7 @@ namespace FactoryManagementSoftware.UI
             u.item_quo_ct = 0;
             u.item_pro_ct_from = 0;
             u.item_pro_ct_to = 0;
-            u.item_capacity = 0;
+            u.item_cavity = 0;
 
             u.item_quo_pw_pcs = 0;
             u.item_quo_rw_pcs = 0;

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSBB));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
@@ -298,7 +299,7 @@
             this.button8.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button8.ForeColor = System.Drawing.Color.White;
-            this.button8.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_task_64;
+            this.button8.Image = ((System.Drawing.Image)(resources.GetObject("button8.Image")));
             this.button8.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.button8.Location = new System.Drawing.Point(1, 1);
             this.button8.Margin = new System.Windows.Forms.Padding(1, 1, 1, 2);
@@ -350,7 +351,7 @@
             this.button13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button13.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.button13.ForeColor = System.Drawing.Color.White;
-            this.button13.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_fork_lift_64;
+            this.button13.Image = ((System.Drawing.Image)(resources.GetObject("button13.Image")));
             this.button13.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.button13.Location = new System.Drawing.Point(2, 105);
             this.button13.Margin = new System.Windows.Forms.Padding(2);
@@ -370,7 +371,7 @@
             this.button14.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button14.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.button14.ForeColor = System.Drawing.Color.White;
-            this.button14.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_calendar_plus_64;
+            this.button14.Image = ((System.Drawing.Image)(resources.GetObject("button14.Image")));
             this.button14.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.button14.Location = new System.Drawing.Point(2, 2);
             this.button14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 1);
@@ -390,7 +391,7 @@
             this.button15.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.button15.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.button15.ForeColor = System.Drawing.Color.White;
-            this.button15.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_planner_96;
+            this.button15.Image = ((System.Drawing.Image)(resources.GetObject("button15.Image")));
             this.button15.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.button15.Location = new System.Drawing.Point(1, 2);
             this.button15.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
@@ -425,7 +426,7 @@
             this.btnDeliveryPlanning.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnDeliveryPlanning.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDeliveryPlanning.ForeColor = System.Drawing.Color.White;
-            this.btnDeliveryPlanning.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_truck_64;
+            this.btnDeliveryPlanning.Image = ((System.Drawing.Image)(resources.GetObject("btnDeliveryPlanning.Image")));
             this.btnDeliveryPlanning.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.btnDeliveryPlanning.Location = new System.Drawing.Point(1, 2);
             this.btnDeliveryPlanning.Margin = new System.Windows.Forms.Padding(1, 2, 1, 3);
@@ -446,7 +447,7 @@
             this.button7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button7.ForeColor = System.Drawing.Color.White;
-            this.button7.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_task_planning_64;
+            this.button7.Image = ((System.Drawing.Image)(resources.GetObject("button7.Image")));
             this.button7.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.button7.Location = new System.Drawing.Point(221, 2);
             this.button7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 3);
@@ -481,7 +482,7 @@
             this.button12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button12.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.button12.ForeColor = System.Drawing.Color.White;
-            this.button12.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_tasklist_96;
+            this.button12.Image = ((System.Drawing.Image)(resources.GetObject("button12.Image")));
             this.button12.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.button12.Location = new System.Drawing.Point(1, 2);
             this.button12.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
@@ -517,7 +518,7 @@
             this.button11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button11.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.button11.ForeColor = System.Drawing.Color.White;
-            this.button11.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_purchase_order_64;
+            this.button11.Image = ((System.Drawing.Image)(resources.GetObject("button11.Image")));
             this.button11.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.button11.Location = new System.Drawing.Point(2, 105);
             this.button11.Margin = new System.Windows.Forms.Padding(2);
@@ -537,7 +538,7 @@
             this.button3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button3.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_warehouse_641;
+            this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
             this.button3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.button3.Location = new System.Drawing.Point(2, 2);
             this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 1);
@@ -964,7 +965,7 @@
             // 
             this.btnStockRefresh.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnStockRefresh.BackColor = System.Drawing.Color.Transparent;
-            this.btnStockRefresh.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_refresh_480;
+            this.btnStockRefresh.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStockRefresh.BackgroundImage")));
             this.btnStockRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnStockRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStockRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -1135,7 +1136,7 @@
             this.tlpMonthlyDeliveredBag.Location = new System.Drawing.Point(3, 21);
             this.tlpMonthlyDeliveredBag.Name = "tlpMonthlyDeliveredBag";
             this.tlpMonthlyDeliveredBag.RowCount = 1;
-            this.tlpMonthlyDeliveredBag.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 243F));
+            this.tlpMonthlyDeliveredBag.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 247F));
             this.tlpMonthlyDeliveredBag.Size = new System.Drawing.Size(474, 243);
             this.tlpMonthlyDeliveredBag.TabIndex = 182;
             this.tlpMonthlyDeliveredBag.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel17_Paint);
@@ -1152,7 +1153,7 @@
             this.tableLayoutPanel19.RowCount = 2;
             this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 44F));
             this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel19.Size = new System.Drawing.Size(168, 237);
+            this.tableLayoutPanel19.Size = new System.Drawing.Size(168, 241);
             this.tableLayoutPanel19.TabIndex = 183;
             // 
             // tableLayoutPanel20
@@ -1187,7 +1188,7 @@
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.Transparent;
-            this.button2.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_refresh_480;
+            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
             this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1264,7 +1265,7 @@
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel18.Size = new System.Drawing.Size(162, 187);
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(162, 191);
             this.tableLayoutPanel18.TabIndex = 182;
             // 
             // lblTopCustomer_Bal_10
@@ -1809,7 +1810,7 @@
             this.tlpDeliveredQtyAndDetail.RowCount = 2;
             this.tlpDeliveredQtyAndDetail.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 163F));
             this.tlpDeliveredQtyAndDetail.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpDeliveredQtyAndDetail.Size = new System.Drawing.Size(294, 237);
+            this.tlpDeliveredQtyAndDetail.Size = new System.Drawing.Size(294, 241);
             this.tlpDeliveredQtyAndDetail.TabIndex = 183;
             // 
             // tableLayoutPanel11
@@ -1823,7 +1824,7 @@
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
             this.tableLayoutPanel11.RowCount = 1;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 101F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(294, 74);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(294, 78);
             this.tableLayoutPanel11.TabIndex = 182;
             // 
             // lblDeliveredBalance
@@ -1932,7 +1933,7 @@
             // btnDeliveredFullScreen
             // 
             this.btnDeliveredFullScreen.BackColor = System.Drawing.Color.Transparent;
-            this.btnDeliveredFullScreen.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_toggle_full_screen_50;
+            this.btnDeliveredFullScreen.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDeliveredFullScreen.BackgroundImage")));
             this.btnDeliveredFullScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnDeliveredFullScreen.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDeliveredFullScreen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;

@@ -489,7 +489,7 @@ namespace FactoryManagementSoftware.UI
                 u.item_quo_ct = 0;
                 u.item_pro_ct_from = 0;
                 u.item_pro_ct_to = 0;
-                u.item_capacity = 0;
+                u.item_cavity = 0;
 
                 u.item_quo_pw_pcs =0;
                 u.item_quo_rw_pcs = 0;
@@ -720,28 +720,46 @@ namespace FactoryManagementSoftware.UI
 
         private void dAILYToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //if (true)
+            frmLoading.ShowLoadingScreen();
+            if (!DailyJobSheetFormOpen)
+            {
+                
+                frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                DailyJobSheetFormOpen = true;
+               
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
+                }
+            }
+
+            frmLoading.CloseForm();
+            //if (!DailyJobSheetFormOpen)
             //{
-            //    if (!DailyJobSheetFormOpen)
+            //    frmLoading.ShowLoadingScreen();
+            //    frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
+            //    frm.MdiParent = this;
+            //    frm.StartPosition = FormStartPosition.CenterScreen;
+            //    frm.WindowState = FormWindowState.Maximized;
+            //    frm.Show();
+            //    NewDailyJobSheetFormOpen = true;
+            //    frmLoading.CloseForm();
+            //}
+            //else
+            //{
+            //    if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
             //    {
-            //        frmLoading.ShowLoadingScreen();
-            //        frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
-            //        frm.MdiParent = this;
-            //        frm.StartPosition = FormStartPosition.CenterScreen;
-            //        frm.WindowState = FormWindowState.Maximized;
-            //        frm.Show();
-            //        DailyJobSheetFormOpen = true;
-            //        frmLoading.CloseForm();
-            //    }
-            //    else
-            //    {
-            //        if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
-            //        {
-            //            Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
-            //        }
+            //        Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
             //    }
             //}
-                
+
         }
 
         private void reportToolStripMenuItem_Click(object sender, EventArgs e)
