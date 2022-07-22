@@ -22,6 +22,7 @@ namespace FactoryManagementSoftware.DAL
         public string ItemRecycleRatio { get; } = "recycle_ratio";
         public string ItemUnit { get; } = "item_unit";
         public string ItemUnitToPCSRate { get; } = "unit_to_pcs_rate";
+        public string ItemisRemoved { get; } = "isRemoved";
 
         public string ItemQuoTon { get; } = "item_quo_ton";
         public string ItemBestTon { get; } = "item_best_ton";
