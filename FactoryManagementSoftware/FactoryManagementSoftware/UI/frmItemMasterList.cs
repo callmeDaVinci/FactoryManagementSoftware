@@ -21,16 +21,23 @@ namespace FactoryManagementSoftware.UI
         public frmItemMasterList()
         {
             InitializeComponent();
+
+            userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
         }
 
         #endregion
 
         #region Object & Variable Declare
 
+        private int userPermission = -1;
+
         Tool tool = new Tool();
         Text text = new Text();
 
         itemDAL dalItem = new itemDAL();
+        itemBLL uItem = new itemBLL();
+
+        userDAL dalUser = new userDAL();
 
         readonly string text_ShowFilter = "SHOW FILTER";
         readonly string text_HideFilter = "HIDE FILTER";
@@ -41,6 +48,8 @@ namespace FactoryManagementSoftware.UI
         readonly string MODE_PRODUCTION = "PRODUCTION RECORD";
         readonly string MODE_STOCK_LOCATION = "STOCK LOCATION";
         readonly string MODE_CUSTOMER = "CUSTOMER";
+
+        private string CURRENT_SELECTED_ITEMCODE = "";
 
         private DataTable DB_ITEM_LIST;
 
@@ -206,6 +215,53 @@ namespace FactoryManagementSoftware.UI
             dgvMoreInfo.DataSource = null;
             ShowSubListButton(false);
 
+            CURRENT_SELECTED_ITEMCODE = "";
+
+            Cursor = Cursors.Arrow;
+        }
+
+        private void RemoveTerminatedItem()
+        {
+            Cursor = Cursors.WaitCursor;
+
+            LoadDBItemList();
+
+            DataTable dt_Item = (DataTable)dgvItemList.DataSource;
+
+            int index = 1;
+
+            if(dt_Item != null)
+            {
+                dt_Item.AcceptChanges();
+                foreach (DataRow row in dt_Item.Rows)
+                {
+                    string itemName = row[text.Header_ItemName].ToString();
+
+                    bool TerminatedItem = itemName.ToUpper().Contains("TERMINATED");
+                    TerminatedItem |= itemName.ToUpper().Contains("CANCEL");
+                    TerminatedItem |= itemName.ToUpper().Contains("REMOVED");
+
+                    if (cbHideTerminatedItem.Checked && TerminatedItem)
+                    {
+                        row.Delete();
+                    }
+                    else
+                    {
+                        row[text.Header_Index] = index++;
+                    }
+
+                }
+                dt_Item.AcceptChanges();
+
+            }
+
+
+            dgvItemList.ClearSelection();
+            dgvMoreInfo.DataSource = null;
+            ShowSubListButton(false);
+
+            CURRENT_SELECTED_ITEMCODE = "";
+
             Cursor = Cursors.Arrow;
         }
 
@@ -215,6 +271,33 @@ namespace FactoryManagementSoftware.UI
 
             DB_ITEM_LIST.DefaultView.Sort = dalItem.ItemName + " ASC, " + dalItem.ItemCode + " ASC";
             DB_ITEM_LIST = DB_ITEM_LIST.DefaultView.ToTable();
+        }
+
+        private void UpdateRowToDBItemList(DataTable dt)
+        {
+            if(dt != null && dt.Rows.Count > 0)
+            {
+                DataColumnCollection columns = DB_ITEM_LIST.Columns;
+
+                string itemCode = dt.Rows[0][dalItem.ItemCode].ToString();
+
+                foreach(DataRow row in DB_ITEM_LIST.Rows)
+                {
+                    if(itemCode.Equals(row[dalItem.ItemCode].ToString()))
+                    {
+                        foreach(DataColumn col in dt.Columns)
+                        {
+                            string colName = col.ColumnName;
+                            
+                            if (columns.Contains(colName))
+                            {
+                                row[colName] = dt.Rows[0][colName];
+                            }
+
+                        }
+                    }
+                }
+            }
         }
 
         private void LoadGeneralInfo()
@@ -228,6 +311,8 @@ namespace FactoryManagementSoftware.UI
 
             int rowIndex = dgvItemList.CurrentCell.RowIndex;
             string itemCode = dgvItemList.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
+
+            CURRENT_SELECTED_ITEMCODE = itemCode;
 
             if (!string.IsNullOrEmpty(itemCode) && rowIndex > -1)
             {
@@ -279,6 +364,54 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+        }
+
+        private void LoadGeneralInfo(DataTable dt)
+        {
+            dgvMoreInfo.DataSource = null;
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                UpdateRowToDBItemList(dt);
+
+                DataTable dt_MoreInfo = NewItemGeneralInfoTable();
+                DataRow newRow;
+
+                int index = 1;
+
+                foreach (DataColumn col in dt.Columns)
+                {
+                    string Data = col.ColumnName;
+                    string Description = dt.Rows[0][Data].ToString();
+
+                    newRow = dt_MoreInfo.NewRow();
+
+                    newRow[text.Header_Index] = index++;
+                    newRow[text.Header_Data] = Data;
+                    newRow[text.Header_DataName] = Data;
+                    newRow[text.Header_Description] = Description;
+
+                    dt_MoreInfo.Rows.Add(newRow);
+                }
+
+                dgvMoreInfo.DataSource = dt_MoreInfo;
+                dgvMoreInfoEdit(dgvMoreInfo);
+                dgvMoreInfo.ClearSelection();
+
+                if (dt_MoreInfo.Rows.Count > 0)
+                {
+                    ShowSubListButton(true);
+                }
+                else
+                {
+                    ShowSubListButton(false);
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("DATATABLE FROM EDIT PAGE INVALID!");
+            }
         }
 
         private void MoreInfoModeStation()
@@ -335,11 +468,122 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = DB_ITEM_LIST.Clone();
 
+            if(string.IsNullOrEmpty(CURRENT_SELECTED_ITEMCODE))
+            {
+                MessageBox.Show("SELECTED ITEM CODE INVALID!");
+            }
+            else
+            {
+                foreach (DataRow row in DB_ITEM_LIST.Rows)
+                {
+                    if(CURRENT_SELECTED_ITEMCODE.Equals(row[dalItem.ItemCode].ToString()))
+                    {
+                        dt.ImportRow(row);
+                        break;
+
+                    }
+                }
+            }
+           
 
 
             return dt;
         }
 
+        private bool ItemTermination(string itemCode, string itemName)
+        {
+            bool result = false;
+            uItem.item_code = itemCode;
+            uItem.item_name = "(" + text.Terminated.ToUpper() + ")" + itemName;
+
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = MainDashboard.USER_ID;
+
+            result = dalItem.ItemNameUpdate(uItem);
+            if (!result)
+            {
+                MessageBox.Show("Failed to terminated item");
+            }
+
+            return result;
+        }
+
+        private bool ItemActivation(string itemCode, string itemName)
+        {
+            bool result = false;
+
+            if (itemName.Contains("(" + text.Terminated.ToUpper() + ")"))
+            {
+                itemName = itemName.Replace("(" + text.Terminated.ToUpper() + ")", "");
+
+                uItem.item_code = itemCode;
+                uItem.item_name = itemName;
+
+                uItem.item_updtd_date = DateTime.Now;
+                uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                result = dalItem.ItemNameUpdate(uItem);
+
+                if (!result)
+                {
+                    MessageBox.Show("Failed to activate item");
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Not terminated item!");
+            }
+
+            return result;
+        }
+
+        private void Item_my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                                             //MessageBox.Show(e.ClickedItem.Name.ToString());
+
+                DataGridView dgv = dgvItemList;
+
+                int rowIndex = dgvItemList.CurrentCell.RowIndex;
+
+                string itemCode = dgv.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
+                string itemName = dgv.Rows[rowIndex].Cells[text.Header_ItemName].Value.ToString();
+
+                string clickedItem = e.ClickedItem.Name.ToString();
+
+                if (dgv.SelectedRows.Count >= 0 && rowIndex >= 0)
+                {
+                    if (clickedItem.Equals(text.Terminated))
+                    {
+                        if (ItemTermination(itemCode, itemName))
+                        {
+                            dgv.Rows[rowIndex].Cells[text.Header_ItemName].Value = "(" + text.Terminated.ToUpper() + ")" + itemName;
+                            timer2.Stop();
+                            timer2.Start();
+                        }
+                    }
+                    else if (clickedItem.Equals(text.Activate))
+                    {
+                        if (ItemActivation(itemCode, itemName))
+                        {
+                            dgv.Rows[rowIndex].Cells[text.Header_ItemName].Value = itemName.Replace("(" + text.Terminated.ToUpper() + ")", "");
+                        }
+                    }
+                   
+
+                }
+
+                //listPaintAndKeepSelected(dgvItem);
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
         #endregion
 
         #region Form Action
@@ -476,9 +720,19 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void cbHideTerminatedItem_CheckedChanged(object sender, EventArgs e)
+        private void ClearDGV()
         {
             dgvItemList.DataSource = null;
+            dgvMoreInfo.DataSource = null;
+            CURRENT_SELECTED_ITEMCODE = "";
+
+            ShowSubListButton(false);
+
+        }
+
+        private void cbHideTerminatedItem_CheckedChanged(object sender, EventArgs e)
+        {
+            ClearDGV();
 
         }
 
@@ -511,10 +765,76 @@ namespace FactoryManagementSoftware.UI
             {
                 DataTable dt = GetSelectedItemInfo();
 
+                if(dt.Rows.Count > 1)
+                {
+                    MessageBox.Show("MULTIPLE ITEM ROW FOUND!");
+                }
                 frmItemEdit_NEW frm = new frmItemEdit_NEW(dt);
+
                 frm.ShowDialog();
+
+                if(frmItemEdit_NEW.DATA_SAVED)
+                {
+                    //CHANGE DB_ITEM_LIST DATA, CHANGE SUB LIST TABLE
+                    LoadGeneralInfo(frmItemEdit_NEW.DT_DATA_SAVED);
+
+                }
             }
         }
+
+        private void dgvItemList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            //try
+            //{
+            //    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            //    DataGridView dgv = dgvItemList;
+
+            //    //handle the row selection on right click
+            //    if (e.Button == MouseButtons.Right && userPermission >= MainDashboard.ACTION_LVL_TWO)
+            //    {
+            //        ContextMenuStrip my_menu = new ContextMenuStrip();
+
+            //        dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
+            //        // Can leave these here - doesn't hurt
+            //        dgv.Rows[e.RowIndex].Selected = true;
+            //        dgv.Focus();
+            //        int rowIndex = dgv.CurrentCell.RowIndex;
+
+            //        string itemCode = dgv.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
+            //        string itemName = dgv.Rows[rowIndex].Cells[text.Header_ItemName].Value.ToString();
+
+            //        if (itemName.Contains(text.Terminated) || itemName.Contains(text.Terminated.ToUpper()) || itemName.Contains("CANCEL"))
+            //        {
+            //            my_menu.Items.Add(text.Activate).Name = text.Activate;
+            //        }
+            //        else
+            //        {
+            //            my_menu.Items.Add(text.Terminated).Name = text.Terminated;
+            //        }
+
+
+            //        my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+            //        my_menu.ItemClicked += new ToolStripItemClickedEventHandler(Item_my_menu_ItemClicked);
+            //    }
+
+            //    Cursor = Cursors.Arrow; // change cursor to normal type
+            //}
+            //catch (Exception ex)
+            //{
+            //    tool.saveToTextAndMessageToUser(ex);
+            //}
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            timer2.Stop();
+            LoadDBItemList();
+            RemoveTerminatedItem();
+        }
+
         #endregion
 
 

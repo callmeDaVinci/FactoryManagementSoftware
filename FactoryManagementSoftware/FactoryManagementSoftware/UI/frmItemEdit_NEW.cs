@@ -33,6 +33,8 @@ namespace FactoryManagementSoftware.UI
             txtItemCode.Enabled = false;
             InitialData(dt);
 
+            DT_DATA_SAVED = dt;
+
             inputDisable();
         }
 
@@ -619,140 +621,91 @@ namespace FactoryManagementSoftware.UI
         {
             DATA_SAVED = true;
 
-            //DT_DATA_SAVED = dalItem.Select().Clone();
+            DT_DATA_SAVED.Rows[0][dalItem.ItemCat] = cmbCat.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemName] = txtItemName.Text;
 
-            //DataRow newRow = DT_DATA_SAVED.NewRow();
+            DT_DATA_SAVED.Rows[0][dalItem.ItemAssemblyCheck] = cbAssembly.Checked;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemProductionCheck] = cbProduction.Checked;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemSBBCheck] = cbSBB.Checked;
 
-            //newRow[dalItem.ItemCat] = cmbCat.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemUnit] = cmbUnit.Text;
 
-            //string itemCode = dt.Rows[0][dalItem.ItemCode].ToString();
+            DT_DATA_SAVED.Rows[0][dalItem.ItemWastage] = float.TryParse(txtWastageAllowed.Text, out float wastage) ? wastage / 100 : 0;
 
-            //cmbCat.Text = dt.Rows[0][dalItem.ItemCat].ToString();
-            //txtItemCode.Text = itemCode;
-            //txtItemName.Text = dt.Rows[0][dalItem.ItemName].ToString();
+            DT_DATA_SAVED.Rows[0][dalItem.ItemUnitToPCSRate] = txtPCSRate.Text;
 
-            //LoadPairedCustomer(itemCode);
+            DT_DATA_SAVED.Rows[0][dalItem.ItemQuoTon] = txtQuoTon.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemQuoCT] = txtQuoCT.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemQuoPWPcs] = txtQuoPWPcs.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemQuoRWPcs] = txtQuoRWPcs.Text;
 
-            //cbAssembly.Checked = bool.TryParse(dt.Rows[0][dalItem.ItemAssemblyCheck].ToString(), out bool checkTest) ? checkTest : false;
-            //cbProduction.Checked = bool.TryParse(dt.Rows[0][dalItem.ItemProductionCheck].ToString(), out checkTest) ? checkTest : false;
-            //cbSBB.Checked = bool.TryParse(dt.Rows[0][dalItem.ItemSBBCheck].ToString(), out checkTest) ? checkTest : false;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemProTon] = txtProTon.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemProCTTo] = txtProCTTo.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemCavity] = txtCavity.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemProCooling] = txtProCooling.Text;
 
-            //cmbUnit.Text = dt.Rows[0][dalItem.ItemUnit].ToString();
+            DT_DATA_SAVED.Rows[0][dalItem.ItemProPWShot] = txtProPWShot.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemProRWShot] = txtProRWShot.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemProPWPcs] = txtProPWPcs.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemProRWPcs] = txtProRWPcs.Text;
 
-            //float wastage = float.TryParse(dt.Rows[0][dalItem.ItemWastage].ToString(), out wastage) ? wastage * 100 : 0;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemMaterial] = cmbRawMaterial.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemMBatch] = cmbColorMaterial.Text;
 
-            //txtWastageAllowed.Text = wastage.ToString();
+            DT_DATA_SAVED.Rows[0][dalItem.ItemColor] = txtColor.Text;
+            DT_DATA_SAVED.Rows[0][dalItem.ItemMBRate] = txtMBRate.Text;
 
-            //txtPCSRate.Text = dt.Rows[0][dalItem.ItemUnitToPCSRate].ToString();
+            if (DT_SBB_TYPE == null || DT_SBB_TYPE.Rows.Count < 0)
+            {
+                LoadSBBTypeData();
+            }
 
-            //txtQuoTon.Text = dt.Rows[0][dalItem.ItemQuoTon].ToString();
-            //txtQuoCT.Text = dt.Rows[0][dalItem.ItemQuoCT].ToString();
-            //txtQuoPWPcs.Text = dt.Rows[0][dalItem.ItemQuoPWPcs].ToString();
-            //txtQuoRWPcs.Text = dt.Rows[0][dalItem.ItemQuoRWPcs].ToString();
+            foreach (DataRow row in DT_SBB_TYPE.Rows)
+            {
+                if (cmbSBBType.Text.Equals(row[dalSBBData.TypeName].ToString()))
+                {
+                    DT_DATA_SAVED.Rows[0][dalItem.TypeTblCode] = row[dalSBBData.TableCode].ToString();
+                    break;
+                }
+            }
 
-            //txtProTon.Text = dt.Rows[0][dalItem.ItemProTon].ToString();
-            //txtProCTTo.Text = dt.Rows[0][dalItem.ItemProCTTo].ToString();
-            //txtCavity.Text = dt.Rows[0][dalItem.ItemCavity].ToString();
-            //txtProCooling.Text = dt.Rows[0][dalItem.ItemProCooling].ToString();
+            LoadSBBCategoryDataToDataTable();
 
-            //txtProPWShot.Text = dt.Rows[0][dalItem.ItemProPWShot].ToString();
-            //txtProRWShot.Text = dt.Rows[0][dalItem.ItemProRWShot].ToString();
-            //txtProPWPcs.Text = dt.Rows[0][dalItem.ItemProPWPcs].ToString();
-            //txtProRWPcs.Text = dt.Rows[0][dalItem.ItemProRWPcs].ToString();
+            foreach (DataRow row in DT_SBB_CATEGORY.Rows)
+            {
+                if (cmbSBBCategory.Text.Equals(row[dalSBBData.CategoryName].ToString()))
+                {
+                    DT_DATA_SAVED.Rows[0][dalItem.CategoryTblCode] = row[dalSBBData.TableCode].ToString();
+                    break;
+                }
+            }
 
-            //cmbRawMaterial.Text = dt.Rows[0][dalItem.ItemMaterial].ToString();
-            //cmbColorMaterial.Text = dt.Rows[0][dalItem.ItemMBatch].ToString();
+            DataTable dt_Size1 = (DataTable)cmbSBBSize1.DataSource;
+            DataTable dt_Size2 = (DataTable)cmbSBBSize2.DataSource;
 
-            //if (cmbColorMaterial.SelectedIndex < 0)
-            //{
-            //    //pigment
-            //    cbPigment.Checked = true;
-            //    cmbColorMaterial.Text = dt.Rows[0][dalItem.ItemMBatch].ToString();
-            //}
+            if (dt_Size1 != null)
+            {
+                foreach (DataRow row in dt_Size1.Rows)
+                {
+                    if (cmbSBBSize1.Text.Equals(row[header_SizeString].ToString()))
+                    {
+                        DT_DATA_SAVED.Rows[0][dalItem.ItemSize1] = row[header_TblCode].ToString();
+                        break;
+                    }
+                }
+            }
 
-            //txtColor.Text = dt.Rows[0][dalItem.ItemColor].ToString();
-            //txtMBRate.Text = dt.Rows[0][dalItem.ItemMBRate].ToString();
-
-
-            //if (cbSBB.Checked)
-            //{
-
-
-            //    string typeCode = dt.Rows[0][dalItem.TypeTblCode].ToString();
-            //    string categoryCode = dt.Rows[0][dalItem.CategoryTblCode].ToString();
-            //    string itemSizeCode_1 = dt.Rows[0][dalItem.ItemSize1].ToString();
-            //    string itemSizeCode_2 = dt.Rows[0][dalItem.ItemSize2].ToString();
-
-            //    if (DT_SBB_TYPE == null || DT_SBB_TYPE.Rows.Count < 0)
-            //    {
-            //        LoadSBBTypeData();
-            //    }
-
-            //    foreach (DataRow row in DT_SBB_TYPE.Rows)
-            //    {
-            //        if (typeCode.Equals(row[dalSBBData.TableCode].ToString()))
-            //        {
-            //            cmbSBBType.Text = row[dalSBBData.TypeName].ToString();
-            //            break;
-            //        }
-            //    }
-
-            //    LoadSBBCategoryDataToDataTable();
-
-            //    foreach (DataRow row in DT_SBB_CATEGORY.Rows)
-            //    {
-            //        if (categoryCode.Equals(row[dalSBBData.TableCode].ToString()))
-            //        {
-            //            cmbSBBCategory.Text = row[dalSBBData.CategoryName].ToString();
-            //            break;
-            //        }
-            //    }
-
-            //    DataTable dt_Size1 = (DataTable)cmbSBBSize1.DataSource;
-            //    DataTable dt_Size2 = (DataTable)cmbSBBSize2.DataSource;
-
-            //    if (dt_Size1 != null)
-            //    {
-            //        foreach (DataRow row in dt_Size1.Rows)
-            //        {
-            //            if (row[header_TblCode].ToString().Equals(itemSizeCode_1))
-            //            {
-            //                cmbSBBSize1.Text = row[header_SizeString].ToString();
-            //                break;
-            //            }
-            //        }
-            //    }
-
-            //    if (dt_Size2 != null)
-            //    {
-            //        foreach (DataRow row in dt_Size2.Rows)
-            //        {
-            //            if (row[header_TblCode].ToString().Equals(itemSizeCode_2))
-            //            {
-            //                cmbSBBSize2.Text = row[header_SizeString].ToString();
-            //                break;
-            //            }
-            //        }
-            //    }
-
-            //    DataTable dt_StdPacking = dalSBBData.StdPackingSelect();
-
-            //    if (dt_StdPacking != null)
-            //    {
-            //        LoadSBBPackagingItem();
-            //        foreach (DataRow row in dt_StdPacking.Rows)
-            //        {
-            //            if (itemCode.Equals(row[dalItem.ItemCode].ToString()))
-            //            {
-            //                txtPcsPerPacket.Text = row[dalSBBData.QtyPerPacket].ToString();
-            //                txtPcsPerBag.Text = row[dalSBBData.QtyPerBag].ToString();
-            //                txtPcsPerContainer.Text = row[dalSBBData.QtyPerContainer].ToString();
-
-
-            //            }
-            //        }
-            //    }
-            //}
+            if (dt_Size2 != null)
+            {
+                foreach (DataRow row in dt_Size2.Rows)
+                {
+                    if (cmbSBBSize2.Text.Equals(row[header_SizeString].ToString()))
+                    {
+                        DT_DATA_SAVED.Rows[0][dalItem.ItemSize2] = row[header_TblCode].ToString();
+                        break;
+                    }
+                }
+            }
         }
 
         private void insertItem()
@@ -810,7 +763,6 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 MessageBox.Show("Item added successfully!");
-                ReturnDataAfterDataSaved();
                 Close();
             }
             else
