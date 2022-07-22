@@ -4,6 +4,7 @@ using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using System.Windows.Forms;
 using FactoryManagementSoftware.Module;
+using System.Linq;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -64,6 +65,7 @@ namespace FactoryManagementSoftware.UI
         materialDAL dalMaterial = new materialDAL();
 
         SBBDataDAL dalSBBData = new SBBDataDAL();
+        joinBLL uJoin = new joinBLL();
 
         Tool tool = new Tool();
         Text text = new Text();
@@ -721,7 +723,6 @@ namespace FactoryManagementSoftware.UI
                 if(cbSBB.Checked)
                 {
                     //update Customer
-
                     if(string.IsNullOrEmpty(cmbCust.Text) || cmbCust.SelectedIndex <= -1)
                     {
                         pairCustomer(text.SPP_BrandName);
@@ -759,10 +760,59 @@ namespace FactoryManagementSoftware.UI
                             MessageBox.Show("Failed to insert standard packing data to DB.");
                         }
                     }
-                  
+
+                    //update price
+                    if(IfSBBProductItem())
+                    {
+                        DialogResult dialogResult = MessageBox.Show("Do you want to add a new  Price & Discount Rate for this product?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            //password
+                            frmVerification frm = new frmVerification(text.PW_UnlockSBBCustomerDiscount)
+                            {
+                                StartPosition = FormStartPosition.CenterScreen
+                            };
+
+
+                            frm.ShowDialog();
+
+                            if (frmVerification.PASSWORD_MATCHED)
+                            {
+                                frmSBBPrice frm2 = new frmSBBPrice
+                                {
+                                    StartPosition = FormStartPosition.CenterScreen
+                                };
+
+                                frm2.ShowDialog();
+                            }
+                        }
+
+                        //update item group
+                        dialogResult = MessageBox.Show("Do you want to add a new  Item Group for this product?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            uJoin.join_parent_code = txtItemCode.Text;
+
+                            uJoin.join_child_code = "";
+
+                            frmJoinEdit frm = new frmJoinEdit(uJoin, false);
+
+                            frm.StartPosition = FormStartPosition.CenterScreen;
+                            frm.ShowDialog();//Item Edit
+                        }
+                    }
+
+
+
+
                 }
 
                 MessageBox.Show("Item added successfully!");
+
+
+                
                 Close();
             }
             else
@@ -1099,6 +1149,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
+                cmbCust.Enabled = true;
                 tlpMain.RowStyles[4] = new RowStyle(SizeType.Absolute, 0f);
 
             }
@@ -1654,7 +1705,11 @@ namespace FactoryManagementSoftware.UI
 
                     if (index != -1 && DT_SBB_TYPE != null)
                     {
-                        string typeName = DT_SBB_TYPE.Rows[index][dalSBBData.TypeName].ToString();
+                        if (btnSave.Text.Contains(Button_AddItem) && IfSBBProductItem())
+                        {
+                            AutoSetupSBBProductCodeAndName();
+                        }
+                            string typeName = DT_SBB_TYPE.Rows[index][dalSBBData.TypeName].ToString();
 
                         bool isCommon = bool.TryParse(DT_SBB_TYPE.Rows[index][dalSBBData.IsCommon].ToString(), out isCommon) ? isCommon : false;
 
@@ -1883,7 +1938,14 @@ namespace FactoryManagementSoftware.UI
 
             if(ProductCategorySelected)
             {
+                if(btnSave.Text.Contains(Button_AddItem))
+                {
+                    AutoSetupSBBProductCodeAndName();
+
+                }
+
                 cmbCust.Text = text.SPP_BrandName;
+                cmbCust.Enabled = false;
 
                 if (DT_SBB_PACKING == null || DT_SBB_PACKING.Rows.Count < 0)
                 {
@@ -1910,7 +1972,44 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
+            else
+            {
+                cmbCust.Enabled = true;
 
+            }
+
+        }
+
+        private void AutoSetupSBBProductCodeAndName()
+        {
+            string type = cmbSBBType.Text;
+            string size1 = cmbSBBSize1.Text;
+            string size2 = cmbSBBSize2.Text;
+
+            string SBBStart = "(OK) CF";
+
+            string TypefirstLetters = new String(type.Split(' ').Select(x => x[0]).ToArray());
+
+            string itemCode = SBBStart + TypefirstLetters;
+            string itemName = SBBStart + " " + type;
+
+            if (!string.IsNullOrEmpty(size1))
+            {
+                itemCode += " " + size1;
+                itemName += " " + size1;
+
+                if (!string.IsNullOrEmpty(size2))
+                {
+                    itemCode += " " + size2;
+                    itemName += " " + size2;
+                }
+            }
+
+            if(txtItemCode.Enabled)
+            {
+                txtItemCode.Text = itemCode;
+                txtItemName.Text = itemName;
+            }
         }
 
         private bool IfSBBProductItem()
@@ -1965,7 +2064,10 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbSBBSize1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (btnSave.Text.Contains(Button_AddItem) && IfSBBProductItem())
+            {
+                AutoSetupSBBProductCodeAndName();
+            }
         }
 
         private void lblClearSBBContainer_Click(object sender, EventArgs e)
@@ -1995,6 +2097,14 @@ namespace FactoryManagementSoftware.UI
             if (dialogResult == DialogResult.Yes)
             {
                 Close();
+            }
+        }
+
+        private void cmbSBBSize2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (btnSave.Text.Contains(Button_AddItem) && IfSBBProductItem())
+            {
+                AutoSetupSBBProductCodeAndName();
             }
         }
     }

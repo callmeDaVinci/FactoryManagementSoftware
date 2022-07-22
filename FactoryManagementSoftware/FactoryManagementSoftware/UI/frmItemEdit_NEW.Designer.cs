@@ -1299,6 +1299,7 @@
             this.cmbSBBSize2.Name = "cmbSBBSize2";
             this.cmbSBBSize2.Size = new System.Drawing.Size(118, 25);
             this.cmbSBBSize2.TabIndex = 1026;
+            this.cmbSBBSize2.SelectedIndexChanged += new System.EventHandler(this.cmbSBBSize2_SelectedIndexChanged);
             // 
             // label27
             // 
