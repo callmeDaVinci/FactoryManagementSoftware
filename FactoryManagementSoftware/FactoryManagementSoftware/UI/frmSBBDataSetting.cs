@@ -24,6 +24,14 @@ namespace FactoryManagementSoftware.UI
             InitializeData();
         }
 
+        public frmSBBDataSetting(string Mode)
+        {
+            InitializeComponent();
+            InitializeData(Mode);
+
+            CALL_FROM_OTHER_PAGE = true;
+        }
+
         SBBDataDAL dalData = new SBBDataDAL();
         SBBDataBLL uData = new SBBDataBLL();
 
@@ -41,13 +49,14 @@ namespace FactoryManagementSoftware.UI
 
         private readonly string text_ItemDataList = "SPP ITEM";
         private readonly string text_StdPackingList = "STANDARD PACKING LIST";
-        private readonly string text_SizeDataList = "SIZE";
+        static public readonly string text_SizeDataList = "SIZE";
         private readonly string text_TypeDataList = "TYPE";
         private readonly string text_CategoryDataList = "CATEGORY";
         private readonly string text_RouteDataList = "ROUTE";
 
         private bool loaded = false;
         private bool DataEdit = false;
+        private bool CALL_FROM_OTHER_PAGE = false;
         private void InitializeData()
         {
             //load size data:20mm,25mm...
@@ -76,9 +85,45 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private void InitializeData(string Mode)
+        {
+            //load size data:20mm,25mm...
+            DataTable dt_DataList = new DataTable();
+            dt_DataList.Columns.Add("ID");
+            dt_DataList.Columns.Add("DATA LIST");
+
+            dt_DataList.Rows.Add("1", text_ItemDataList);
+            dt_DataList.Rows.Add("2", text_SizeDataList);
+            dt_DataList.Rows.Add("3", text_TypeDataList);
+            dt_DataList.Rows.Add("4", text_CategoryDataList);
+            dt_DataList.Rows.Add("5", text_StdPackingList);
+            dt_DataList.Rows.Add("6", text_RouteDataList);
+
+            cmbDataList.DataSource = dt_DataList;
+            cmbDataList.DisplayMember = "DATA LIST";
+            cmbDataList.Text = Mode;
+
+            DataTable dt_Unit = new DataTable();
+            dt_Unit.Columns.Add("UNIT");
+            dt_Unit.Rows.Add(text.Unit_Millimetre);
+            dt_Unit.Rows.Add(text.Unit_Inch);
+
+            cmbUnit.DataSource = dt_Unit;
+            cmbUnit.DisplayMember = "UNIT";
+
+            ShowOrHideDataEdit(true);
+        }
+
         private void frmSPPDataSetting_Load(object sender, EventArgs e)
         {
-            ShowOrHideDataEdit(false);
+            if(!CALL_FROM_OTHER_PAGE)
+                ShowOrHideDataEdit(false);
+            else
+            {
+                LoadData();
+                ChangeEditPanel();
+            }
+
             loaded = true;
         }
 
@@ -357,8 +402,15 @@ namespace FactoryManagementSoftware.UI
 
                     if (selectedDataList == text_SizeDataList)
                     {
-                        uData.Size_Numerator = Convert.ToInt16(txtNumerator.Text);
-                        uData.Size_Denominator = Convert.ToInt16(txtDenominator.Text);
+
+                        float numerator = float.TryParse(txtNumerator.Text, out float x) ? x : 0;
+                        float denominator = float.TryParse(txtDenominator.Text, out x) ? x : 1;
+
+                        float weight = numerator / denominator;
+
+                        uData.Size_Numerator = (int) numerator;
+                        uData.Size_Denominator = (int) denominator;
+                        uData.Size_Weight = weight;
                         uData.Size_Unit = cmbUnit.Text;
 
                         if (!dalData.InsertSize(uData))
@@ -479,8 +531,14 @@ namespace FactoryManagementSoftware.UI
 
                     if (selectedDataList == text_SizeDataList)
                     {
-                        uData.Size_Numerator = Convert.ToInt16(txtNumerator.Text);
-                        uData.Size_Denominator = Convert.ToInt16(txtDenominator.Text);
+                        float numerator = float.TryParse(txtNumerator.Text, out float x) ? x : 0;
+                        float denominator = float.TryParse(txtDenominator.Text, out x) ? x : 1;
+
+                        float weight = numerator / denominator;
+
+                        uData.Size_Numerator = (int)numerator;
+                        uData.Size_Denominator = (int)denominator;
+                        uData.Size_Weight = weight;
                         uData.Size_Unit = cmbUnit.Text;
 
                         if (!dalData.SizeUpdate(uData))

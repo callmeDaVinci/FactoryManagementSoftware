@@ -2613,11 +2613,13 @@ namespace FactoryManagementSoftware.DAL
                             (" + SizeNumerator + ","
                             + SizeDenominator + ","
                             + SizeUnit + ","
+                            + SizeWeight + ","
                             + UpdatedDate + ","
                             + UpdatedBy + ") VALUES" +
                             "(@Size_Numerator," +
                             "@Size_Denominator," +
                             "@Size_Unit," +
+                            "@Size_Weight," +
                             "@Updated_Date," +
                             "@Updated_By)";
 
@@ -2626,6 +2628,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Size_Numerator", u.Size_Numerator);
                 cmd.Parameters.AddWithValue("@Size_Denominator", u.Size_Denominator);
                 cmd.Parameters.AddWithValue("@Size_Unit", u.Size_Unit);
+                cmd.Parameters.AddWithValue("@Size_Weight", u.Size_Weight);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
 
@@ -4299,6 +4302,7 @@ namespace FactoryManagementSoftware.DAL
                             + SizeNumerator + "=@Size_Numerator,"
                             + SizeDenominator + "=@Size_Denominator,"
                             + SizeUnit + "=@Size_Unit,"
+                            + SizeWeight + "=@Size_Weight,"
                              + IsRemoved + "=@IsRemoved,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
@@ -4309,6 +4313,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Size_Numerator", u.Size_Numerator);
                 cmd.Parameters.AddWithValue("@Size_Denominator", u.Size_Denominator);
                 cmd.Parameters.AddWithValue("@Size_Unit", u.Size_Unit);
+                cmd.Parameters.AddWithValue("@Size_Weight", u.Size_Weight);
                 cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
                 cmd.Parameters.AddWithValue("@updated_date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@updated_by", u.Updated_By);

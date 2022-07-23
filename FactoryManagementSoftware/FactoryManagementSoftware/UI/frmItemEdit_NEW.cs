@@ -623,88 +623,91 @@ namespace FactoryManagementSoftware.UI
         {
             DATA_SAVED = true;
 
-            DT_DATA_SAVED.Rows[0][dalItem.ItemCat] = cmbCat.Text;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemName] = txtItemName.Text;
-
-            DT_DATA_SAVED.Rows[0][dalItem.ItemAssemblyCheck] = cbAssembly.Checked;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemProductionCheck] = cbProduction.Checked;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemSBBCheck] = cbSBB.Checked;
-
-            DT_DATA_SAVED.Rows[0][dalItem.ItemUnit] = cmbUnit.Text;
-
-            DT_DATA_SAVED.Rows[0][dalItem.ItemWastage] = float.TryParse(txtWastageAllowed.Text, out float wastage) ? wastage / 100 : 0;
-
-            DT_DATA_SAVED.Rows[0][dalItem.ItemUnitToPCSRate] = txtPCSRate.Text;
-
-            DT_DATA_SAVED.Rows[0][dalItem.ItemQuoTon] = txtQuoTon.Text;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemQuoCT] = txtQuoCT.Text;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemQuoPWPcs] = txtQuoPWPcs.Text;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemQuoRWPcs] = txtQuoRWPcs.Text;
-
-            DT_DATA_SAVED.Rows[0][dalItem.ItemProTon] = txtProTon.Text;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemProCTTo] = txtProCTTo.Text;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemCavity] = txtCavity.Text;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemProCooling] = txtProCooling.Text;
-
-            DT_DATA_SAVED.Rows[0][dalItem.ItemProPWShot] = txtProPWShot.Text;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemProRWShot] = txtProRWShot.Text;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemProPWPcs] = txtProPWPcs.Text;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemProRWPcs] = txtProRWPcs.Text;
-
-            DT_DATA_SAVED.Rows[0][dalItem.ItemMaterial] = cmbRawMaterial.Text;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemMBatch] = cmbColorMaterial.Text;
-
-            DT_DATA_SAVED.Rows[0][dalItem.ItemColor] = txtColor.Text;
-            DT_DATA_SAVED.Rows[0][dalItem.ItemMBRate] = txtMBRate.Text;
-
-            if (DT_SBB_TYPE == null || DT_SBB_TYPE.Rows.Count < 0)
+            if(DT_DATA_SAVED != null && DT_DATA_SAVED.Rows.Count > 0)
             {
-                LoadSBBTypeData();
-            }
+                DT_DATA_SAVED.Rows[0][dalItem.ItemCat] = cmbCat.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemName] = txtItemName.Text;
 
-            foreach (DataRow row in DT_SBB_TYPE.Rows)
-            {
-                if (cmbSBBType.Text.Equals(row[dalSBBData.TypeName].ToString()))
+                DT_DATA_SAVED.Rows[0][dalItem.ItemAssemblyCheck] = cbAssembly.Checked;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemProductionCheck] = cbProduction.Checked;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemSBBCheck] = cbSBB.Checked;
+
+                DT_DATA_SAVED.Rows[0][dalItem.ItemUnit] = cmbUnit.Text;
+
+                DT_DATA_SAVED.Rows[0][dalItem.ItemWastage] = float.TryParse(txtWastageAllowed.Text, out float wastage) ? wastage / 100 : 0;
+
+                DT_DATA_SAVED.Rows[0][dalItem.ItemUnitToPCSRate] = txtPCSRate.Text;
+
+                DT_DATA_SAVED.Rows[0][dalItem.ItemQuoTon] = txtQuoTon.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemQuoCT] = txtQuoCT.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemQuoPWPcs] = txtQuoPWPcs.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemQuoRWPcs] = txtQuoRWPcs.Text;
+
+                DT_DATA_SAVED.Rows[0][dalItem.ItemProTon] = txtProTon.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemProCTTo] = txtProCTTo.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemCavity] = txtCavity.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemProCooling] = txtProCooling.Text;
+
+                DT_DATA_SAVED.Rows[0][dalItem.ItemProPWShot] = txtProPWShot.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemProRWShot] = txtProRWShot.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemProPWPcs] = txtProPWPcs.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemProRWPcs] = txtProRWPcs.Text;
+
+                DT_DATA_SAVED.Rows[0][dalItem.ItemMaterial] = cmbRawMaterial.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemMBatch] = cmbColorMaterial.Text;
+
+                DT_DATA_SAVED.Rows[0][dalItem.ItemColor] = txtColor.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemMBRate] = txtMBRate.Text;
+
+                if (DT_SBB_TYPE == null || DT_SBB_TYPE.Rows.Count < 0)
                 {
-                    DT_DATA_SAVED.Rows[0][dalItem.TypeTblCode] = row[dalSBBData.TableCode].ToString();
-                    break;
+                    LoadSBBTypeData();
                 }
-            }
 
-            LoadSBBCategoryDataToDataTable();
-
-            foreach (DataRow row in DT_SBB_CATEGORY.Rows)
-            {
-                if (cmbSBBCategory.Text.Equals(row[dalSBBData.CategoryName].ToString()))
+                foreach (DataRow row in DT_SBB_TYPE.Rows)
                 {
-                    DT_DATA_SAVED.Rows[0][dalItem.CategoryTblCode] = row[dalSBBData.TableCode].ToString();
-                    break;
-                }
-            }
-
-            DataTable dt_Size1 = (DataTable)cmbSBBSize1.DataSource;
-            DataTable dt_Size2 = (DataTable)cmbSBBSize2.DataSource;
-
-            if (dt_Size1 != null)
-            {
-                foreach (DataRow row in dt_Size1.Rows)
-                {
-                    if (cmbSBBSize1.Text.Equals(row[header_SizeString].ToString()))
+                    if (cmbSBBType.Text.Equals(row[dalSBBData.TypeName].ToString()))
                     {
-                        DT_DATA_SAVED.Rows[0][dalItem.ItemSize1] = row[header_TblCode].ToString();
+                        DT_DATA_SAVED.Rows[0][dalItem.TypeTblCode] = row[dalSBBData.TableCode].ToString();
                         break;
                     }
                 }
-            }
 
-            if (dt_Size2 != null)
-            {
-                foreach (DataRow row in dt_Size2.Rows)
+                LoadSBBCategoryDataToDataTable();
+
+                foreach (DataRow row in DT_SBB_CATEGORY.Rows)
                 {
-                    if (cmbSBBSize2.Text.Equals(row[header_SizeString].ToString()))
+                    if (cmbSBBCategory.Text.Equals(row[dalSBBData.CategoryName].ToString()))
                     {
-                        DT_DATA_SAVED.Rows[0][dalItem.ItemSize2] = row[header_TblCode].ToString();
+                        DT_DATA_SAVED.Rows[0][dalItem.CategoryTblCode] = row[dalSBBData.TableCode].ToString();
                         break;
+                    }
+                }
+
+                DataTable dt_Size1 = (DataTable)cmbSBBSize1.DataSource;
+                DataTable dt_Size2 = (DataTable)cmbSBBSize2.DataSource;
+
+                if (dt_Size1 != null)
+                {
+                    foreach (DataRow row in dt_Size1.Rows)
+                    {
+                        if (cmbSBBSize1.Text.Equals(row[header_SizeString].ToString()))
+                        {
+                            DT_DATA_SAVED.Rows[0][dalItem.ItemSize1] = row[header_TblCode].ToString();
+                            break;
+                        }
+                    }
+                }
+
+                if (dt_Size2 != null)
+                {
+                    foreach (DataRow row in dt_Size2.Rows)
+                    {
+                        if (cmbSBBSize2.Text.Equals(row[header_SizeString].ToString()))
+                        {
+                            DT_DATA_SAVED.Rows[0][dalItem.ItemSize2] = row[header_TblCode].ToString();
+                            break;
+                        }
                     }
                 }
             }
@@ -1754,6 +1757,8 @@ namespace FactoryManagementSoftware.UI
             {
                 DT_SBB_SIZE = dalSBBData.SizeForReadyGoodsSelect();
 
+                DT_SBB_SIZE.DefaultView.Sort = dalSBBData.SizeUnit + " DESC," + dalSBBData.SizeWeight + " ASC";
+                DT_SBB_SIZE = DT_SBB_SIZE.DefaultView.ToTable();
             }
 
             DataTable dt_CMB = new DataTable();
@@ -1824,8 +1829,115 @@ namespace FactoryManagementSoftware.UI
 
             if (dt_CMB.Rows.Count > 0)
             {
-                dt_CMB.DefaultView.Sort = header_Unit + " DESC," + header_SizeLevel + " ASC";
-                dt_CMB = dt_CMB.DefaultView.ToTable();
+                //dt_CMB.DefaultView.Sort = header_Unit + " DESC," + header_SizeLevel + " ASC";
+                //dt_CMB = dt_CMB.DefaultView.ToTable();
+
+                cmbSBBSize1.DataSource = dt_CMB;
+                cmbSBBSize1.DisplayMember = header_SizeString;
+                cmbSBBSize1.SelectedIndex = -1;
+
+
+                if (!itemType.Contains(text.SBB_TYPE_EQUAL) && !itemType.Contains(text.SBB_TYPE_ENDCAP) && !itemType.Contains(text.SBB_TYPE_POLYORING))
+                {
+                    cmbSBBSize2.Enabled = true;
+                    DataTable dt_Size2 = dt_CMB.Copy();
+                    //dt_CMB.DefaultView.Sort = header_SizeLevel + " ASC";
+                    cmbSBBSize2.DataSource = dt_Size2;
+                    cmbSBBSize2.DisplayMember = header_SizeString;
+                    cmbSBBSize2.SelectedIndex = -1;
+
+                }
+                else
+                {
+                    cmbSBBSize2.Enabled = false;
+                }
+
+            }
+
+        }
+
+        private void LoadSizeData(bool reloadDB)
+        {
+            string itemType = cmbSBBType.Text;
+
+            if (DT_SBB_SIZE == null || DT_SBB_SIZE.Rows.Count < 0 || reloadDB)
+            {
+                DT_SBB_SIZE = dalSBBData.SizeForReadyGoodsSelect();
+
+                DT_SBB_SIZE.DefaultView.Sort = dalSBBData.SizeUnit + " DESC," + dalSBBData.SizeWeight + " ASC";
+                DT_SBB_SIZE = DT_SBB_SIZE.DefaultView.ToTable();
+            }
+
+            DataTable dt_CMB = new DataTable();
+
+            dt_CMB.Columns.Add(header_TblCode);
+            dt_CMB.Columns.Add(header_SizeString);
+            dt_CMB.Columns.Add(header_Numerator);
+            dt_CMB.Columns.Add(header_Denominator);
+            dt_CMB.Columns.Add(header_Unit);
+            dt_CMB.Columns.Add(header_SizeLevel);
+
+            foreach (DataRow row in DT_SBB_SIZE.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalSBBData.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if (!isRemoved)
+                {
+                    string tableCode = row[dalSBBData.TableCode].ToString();
+                    int numerator = int.TryParse(row[dalSBBData.SizeNumerator].ToString(), out numerator) ? numerator : 0;
+                    int denominator = int.TryParse(row[dalSBBData.SizeDenominator].ToString(), out denominator) ? denominator : 0;
+                    string unit = row[dalSBBData.SizeUnit].ToString();
+
+                    string sizeString = numerator.ToString();
+
+                    if (denominator > 1)
+                    {
+                        if (numerator == 3 && denominator == 2)
+                        {
+                            sizeString = "1 1/2";
+                        }
+                        else
+                        {
+                            sizeString += "/" + denominator;
+                        }
+
+                    }
+
+                    float sizeLevel = numerator / denominator;
+
+
+                    bool sizeFilter = true;
+
+                    if ((itemType.Contains(text.SBB_TYPE_EQUAL) || itemType.Contains(text.SBB_TYPE_ENDCAP) || itemType.Contains(text.SBB_TYPE_ENDCAP) || itemType.Contains(text.SBB_TYPE_REDUCING)) && numerator < 20)
+                    {
+                        sizeFilter = false;
+                    }
+
+                    if (sizeFilter)
+                    {
+                        DataRow newRow = dt_CMB.NewRow();
+
+                        newRow[header_TblCode] = tableCode;
+                        newRow[header_SizeString] = sizeString;
+                        newRow[header_Numerator] = numerator;
+                        newRow[header_Denominator] = denominator;
+                        newRow[header_Unit] = unit;
+                        newRow[header_SizeLevel] = sizeLevel;
+
+                        dt_CMB.Rows.Add(newRow);
+                    }
+
+                }
+
+            }
+
+            cmbSBBSize1.DataSource = null;
+            cmbSBBSize2.DataSource = null;
+
+            if (dt_CMB.Rows.Count > 0)
+            {
+                //dt_CMB.DefaultView.Sort = header_Unit + " DESC," + header_SizeLevel + " ASC";
+                //dt_CMB = dt_CMB.DefaultView.ToTable();
 
                 cmbSBBSize1.DataSource = dt_CMB;
                 cmbSBBSize1.DisplayMember = header_SizeString;
@@ -2106,6 +2218,17 @@ namespace FactoryManagementSoftware.UI
             {
                 AutoSetupSBBProductCodeAndName();
             }
+        }
+
+        private void SizeEdit_Click(object sender, EventArgs e)
+        {
+            frmSBBDataSetting frm = new frmSBBDataSetting(frmSBBDataSetting.text_SizeDataList);
+
+            frm.ShowDialog();
+
+            //refresh size table
+            if(cmbSBBSize1.DataSource != null)
+            LoadSizeData(true);
         }
     }
 }

@@ -1058,7 +1058,7 @@
             this.label33.AutoSize = true;
             this.label33.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label33.ForeColor = System.Drawing.Color.Black;
-            this.label33.Location = new System.Drawing.Point(283, 71);
+            this.label33.Location = new System.Drawing.Point(287, 70);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(57, 15);
             this.label33.TabIndex = 1046;
@@ -1093,7 +1093,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.label16.Location = new System.Drawing.Point(368, 72);
+            this.label16.Location = new System.Drawing.Point(368, 70);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(71, 15);
             this.label16.TabIndex = 1044;
@@ -1131,7 +1131,7 @@
             this.lblClearSBBPacket.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblClearSBBPacket.Font = new System.Drawing.Font("Segoe UI", 6F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))));
             this.lblClearSBBPacket.ForeColor = System.Drawing.Color.Blue;
-            this.lblClearSBBPacket.Location = new System.Drawing.Point(915, 24);
+            this.lblClearSBBPacket.Location = new System.Drawing.Point(915, 20);
             this.lblClearSBBPacket.Name = "lblClearSBBPacket";
             this.lblClearSBBPacket.Size = new System.Drawing.Size(33, 12);
             this.lblClearSBBPacket.TabIndex = 1041;
@@ -1145,7 +1145,7 @@
             this.lblClearSize1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblClearSize1.Font = new System.Drawing.Font("Segoe UI", 6F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))));
             this.lblClearSize1.ForeColor = System.Drawing.Color.Blue;
-            this.lblClearSize1.Location = new System.Drawing.Point(110, 70);
+            this.lblClearSize1.Location = new System.Drawing.Point(107, 72);
             this.lblClearSize1.Name = "lblClearSize1";
             this.lblClearSize1.Size = new System.Drawing.Size(33, 12);
             this.lblClearSize1.TabIndex = 1040;
@@ -1159,7 +1159,7 @@
             this.lblClearSBBSize2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblClearSBBSize2.Font = new System.Drawing.Font("Segoe UI", 6F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))));
             this.lblClearSBBSize2.ForeColor = System.Drawing.Color.Blue;
-            this.lblClearSBBSize2.Location = new System.Drawing.Point(234, 70);
+            this.lblClearSBBSize2.Location = new System.Drawing.Point(234, 66);
             this.lblClearSBBSize2.Name = "lblClearSBBSize2";
             this.lblClearSBBSize2.Size = new System.Drawing.Size(33, 12);
             this.lblClearSBBSize2.TabIndex = 1039;
@@ -1173,7 +1173,7 @@
             this.lblClearSBBCategory.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblClearSBBCategory.Font = new System.Drawing.Font("Segoe UI", 6F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))));
             this.lblClearSBBCategory.ForeColor = System.Drawing.Color.Blue;
-            this.lblClearSBBCategory.Location = new System.Drawing.Point(493, 24);
+            this.lblClearSBBCategory.Location = new System.Drawing.Point(493, 20);
             this.lblClearSBBCategory.Name = "lblClearSBBCategory";
             this.lblClearSBBCategory.Size = new System.Drawing.Size(33, 12);
             this.lblClearSBBCategory.TabIndex = 1038;
@@ -1187,7 +1187,7 @@
             this.lblClearSBBTyple.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblClearSBBTyple.Font = new System.Drawing.Font("Segoe UI", 6F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))));
             this.lblClearSBBTyple.ForeColor = System.Drawing.Color.Blue;
-            this.lblClearSBBTyple.Location = new System.Drawing.Point(234, 24);
+            this.lblClearSBBTyple.Location = new System.Drawing.Point(234, 20);
             this.lblClearSBBTyple.Name = "lblClearSBBTyple";
             this.lblClearSBBTyple.Size = new System.Drawing.Size(33, 12);
             this.lblClearSBBTyple.TabIndex = 1037;
@@ -1224,7 +1224,7 @@
             this.cmbSBBPacket.Enabled = false;
             this.cmbSBBPacket.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cmbSBBPacket.FormattingEnabled = true;
-            this.cmbSBBPacket.Location = new System.Drawing.Point(659, 41);
+            this.cmbSBBPacket.Location = new System.Drawing.Point(659, 37);
             this.cmbSBBPacket.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbSBBPacket.Name = "cmbSBBPacket";
             this.cmbSBBPacket.Size = new System.Drawing.Size(289, 25);
@@ -1234,7 +1234,7 @@
             // 
             this.label30.AutoSize = true;
             this.label30.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.label30.Location = new System.Drawing.Point(657, 25);
+            this.label30.Location = new System.Drawing.Point(657, 21);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(48, 15);
             this.label30.TabIndex = 117;
@@ -1270,7 +1270,7 @@
             this.label28.AutoSize = true;
             this.label28.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label28.ForeColor = System.Drawing.Color.Black;
-            this.label28.Location = new System.Drawing.Point(542, 25);
+            this.label28.Location = new System.Drawing.Point(542, 20);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(77, 15);
             this.label28.TabIndex = 113;
@@ -1280,7 +1280,7 @@
             // 
             this.txtPcsPerPacket.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtPcsPerPacket.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.txtPcsPerPacket.Location = new System.Drawing.Point(545, 41);
+            this.txtPcsPerPacket.Location = new System.Drawing.Point(545, 37);
             this.txtPcsPerPacket.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtPcsPerPacket.Name = "txtPcsPerPacket";
             this.txtPcsPerPacket.Size = new System.Drawing.Size(108, 25);
@@ -1304,12 +1304,14 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.label27.Location = new System.Drawing.Point(149, 70);
+            this.label27.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label27.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.Location = new System.Drawing.Point(146, 69);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(38, 15);
             this.label27.TabIndex = 111;
             this.label27.Text = "SIZE 2";
+            this.label27.Click += new System.EventHandler(this.SizeEdit_Click);
             // 
             // cmbSBBSize1
             // 
@@ -1327,12 +1329,14 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.label25.Location = new System.Drawing.Point(21, 70);
+            this.label25.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label25.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.Location = new System.Drawing.Point(24, 69);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(38, 15);
             this.label25.TabIndex = 109;
             this.label25.Text = "SIZE 1";
+            this.label25.Click += new System.EventHandler(this.SizeEdit_Click);
             // 
             // cmbSBBCategory
             // 
@@ -1340,7 +1344,7 @@
             this.cmbSBBCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSBBCategory.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cmbSBBCategory.FormattingEnabled = true;
-            this.cmbSBBCategory.Location = new System.Drawing.Point(286, 41);
+            this.cmbSBBCategory.Location = new System.Drawing.Point(286, 37);
             this.cmbSBBCategory.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbSBBCategory.Name = "cmbSBBCategory";
             this.cmbSBBCategory.Size = new System.Drawing.Size(240, 25);
@@ -1351,7 +1355,7 @@
             // 
             this.lblSBBCategory.AutoSize = true;
             this.lblSBBCategory.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.lblSBBCategory.Location = new System.Drawing.Point(283, 24);
+            this.lblSBBCategory.Location = new System.Drawing.Point(283, 20);
             this.lblSBBCategory.Name = "lblSBBCategory";
             this.lblSBBCategory.Size = new System.Drawing.Size(65, 15);
             this.lblSBBCategory.TabIndex = 107;
@@ -1363,7 +1367,7 @@
             this.cmbSBBType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSBBType.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cmbSBBType.FormattingEnabled = true;
-            this.cmbSBBType.Location = new System.Drawing.Point(23, 41);
+            this.cmbSBBType.Location = new System.Drawing.Point(23, 37);
             this.cmbSBBType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbSBBType.Name = "cmbSBBType";
             this.cmbSBBType.Size = new System.Drawing.Size(244, 25);
@@ -1374,7 +1378,7 @@
             // 
             this.lblSBBType.AutoSize = true;
             this.lblSBBType.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.lblSBBType.Location = new System.Drawing.Point(21, 24);
+            this.lblSBBType.Location = new System.Drawing.Point(21, 20);
             this.lblSBBType.Name = "lblSBBType";
             this.lblSBBType.Size = new System.Drawing.Size(33, 15);
             this.lblSBBType.TabIndex = 46;

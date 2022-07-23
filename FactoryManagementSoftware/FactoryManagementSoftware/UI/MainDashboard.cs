@@ -971,5 +971,27 @@ namespace FactoryManagementSoftware.UI
                 }
             }
         }
+
+        private void iTEMToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (!NewItemListFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmItemMasterList frm = new frmItemMasterList();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                NewItemListFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmItemMasterList>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmItemMasterList>().First().BringToFront();
+                }
+            }
+        }
     }
 }

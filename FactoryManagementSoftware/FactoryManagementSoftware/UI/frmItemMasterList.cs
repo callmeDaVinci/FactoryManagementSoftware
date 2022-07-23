@@ -85,6 +85,7 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[text.Header_ItemCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
+            dgv.Columns[text.Header_ItemCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns[text.Header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
         }
@@ -108,8 +109,6 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_DataName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 dgv.Columns[text.Header_Description].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
-           
-
         }
 
         private DataTable NewItemTable()
@@ -140,6 +139,28 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region Load Data 
+
+        private DataTable SubListDataFilter(DataTable dt)
+        {
+            DataTable dt_SubList = dt.Clone();
+
+            foreach(DataRow row in dt_SubList.Rows)
+            {
+                string data = row[text.Header_DataName].ToString();
+
+                if (data.Equals(dalItem.ItemCode))
+                {
+                    row[text.Header_DataName] = text.Header_ItemCode;
+                }
+                else if (data.Equals(dalItem.ItemCode))
+                {
+                    row[text.Header_DataName] = text.Header_ItemCode;
+                }
+
+            }
+
+            return dt_SubList;
+        }
 
         private void LoadItemList()
         {
@@ -211,9 +232,7 @@ namespace FactoryManagementSoftware.UI
 
             dgvItemList.DataSource = dt_Item;
             dgvItemListUIEdit(dgvItemList);
-            dgvItemList.ClearSelection();
-            dgvMoreInfo.DataSource = null;
-            ShowSubListButton(false);
+            ResetMoreInfoList();
 
             CURRENT_SELECTED_ITEMCODE = "";
 
@@ -256,9 +275,7 @@ namespace FactoryManagementSoftware.UI
             }
 
 
-            dgvItemList.ClearSelection();
-            dgvMoreInfo.DataSource = null;
-            ShowSubListButton(false);
+            ResetMoreInfoList();
 
             CURRENT_SELECTED_ITEMCODE = "";
 
@@ -300,6 +317,127 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private string GeneralInfoDataNameChange(string data)
+        {
+            string dataName = "";
+
+            if (data.Equals(dalItem.ItemCat))
+            {
+                dataName = text.Header_Category;
+            }
+            else if (data.Equals(dalItem.ItemMaterial))
+            {
+                dataName = text.Header_Mat;
+            }
+            else if (data.Equals(dalItem.ItemName))
+            {
+                dataName = text.Header_ItemName;
+            }
+            else if (data.Equals(dalItem.ItemCode))
+            {
+                dataName = text.Header_ItemCode;
+            }
+            else if (data.Equals(dalItem.ItemColor))
+            {
+                dataName = text.Header_Color;
+            }
+            else if (data.Equals(dalItem.ItemProTon))
+            {
+                dataName = text.Header_ProTon;
+            }
+            else if (data.Equals(dalItem.ItemMBRate))
+            {
+                dataName = text.Header_ColorRate;
+            }
+            else if (data.Equals(dalItem.ItemProCTTo))
+            {
+                dataName = text.Header_ProCT;
+            }
+            else if (data.Equals(dalItem.ItemProPWPcs))
+            {
+                dataName = text.Header_ProPwPcs;
+            }
+            else if (data.Equals(dalItem.ItemProRWPcs))
+            {
+                dataName = text.Header_ProRwPcs;
+            }
+            else if (data.Equals(dalItem.ItemProPWShot))
+            {
+                dataName = text.Header_ProPwShot;
+            }
+            else if (data.Equals(dalItem.ItemProRWShot))
+            {
+                dataName = text.Header_ProRwShot;
+            }
+            else if (data.Equals(dalItem.ItemCavity))
+            {
+                dataName = text.Header_Cavity;
+            }
+            else if (data.Equals(dalItem.ItemProCooling))
+            {
+                dataName = text.Header_Cooling;
+            }
+            else if (data.Equals(dalItem.ItemWastage))
+            {
+                dataName = text.Header_WastageAllowed_Percentage;
+            }
+            else if (data.Equals(dalItem.ItemAddDate))
+            {
+                dataName = text.Header_AddedDate;
+            }
+            else if (data.Equals(dalItem.ItemAddBy))
+            {
+                dataName = text.Header_AddedBy;
+            }
+            else if (data.Equals(dalItem.ItemUpdateDate))
+            {
+                dataName = text.Header_UpdatedDate;
+            }
+            else if (data.Equals(dalItem.ItemUpdateBy))
+            {
+                dataName = text.Header_UpdatedBy;
+            }
+            else if (data.Equals(dalItem.ItemQuoTon))
+            {
+                dataName = text.Header_QuoTon;
+            }
+            else if (data.Equals(dalItem.ItemQuoCT))
+            {
+                dataName = text.Header_QuoCT;
+            }
+            else if (data.Equals(dalItem.ItemQuoPWPcs))
+            {
+                dataName = text.Header_QuoPwPcs;
+            }
+            else if (data.Equals(dalItem.ItemQuoRWPcs))
+            {
+                dataName = text.Header_QuoRwPcs;
+            }
+            return dataName;
+        }
+
+        private bool IfQuotationData(string data)
+        {
+            if (data.Equals(dalItem.ItemQuoTon))
+            {
+                return true;
+            }
+            else if (data.Equals(dalItem.ItemQuoCT))
+            {
+                return true;
+
+            }
+            else if (data.Equals(dalItem.ItemQuoPWPcs))
+            {
+                return true;
+            }
+            else if (data.Equals(dalItem.ItemQuoRWPcs))
+            {
+                return true;
+            }
+
+            return false;
+        }
         private void LoadGeneralInfo()
         {
             dgvMoreInfo.DataSource = null;
@@ -332,15 +470,54 @@ namespace FactoryManagementSoftware.UI
                             string Data = col.ColumnName;
                             string Description = DB_ITEM_LIST.Rows[DBRowIndex][Data].ToString();
 
-                            newRow = dt_MoreInfo.NewRow();
+                            string DataName = GeneralInfoDataNameChange(Data);
+                            bool FilterPassed = true;
 
-                            newRow[text.Header_Index] = index++;
-                            newRow[text.Header_Data] = Data;
-                            newRow[text.Header_DataName] = Data;
-                            newRow[text.Header_Description] = Description;
+                            if(string.IsNullOrEmpty(DataName))
+                            {
+                                FilterPassed = false;
+                            }
 
-                            dt_MoreInfo.Rows.Add(newRow);
+                            if (IfQuotationData(Data) && !cbShowQuotationItem.Checked)
+                            {
+                                FilterPassed = false;
+                            }
 
+                            if (FilterPassed)
+                            {
+                                if (Data.Equals(dalItem.ItemMBRate))
+                                {
+                                    Description = float.TryParse(Description, out float i) ? (i * 100).ToString() : 0.ToString();
+                                }
+
+                                if (Data.Equals(dalItem.ItemWastage))
+                                {
+                                    Description = float.TryParse(Description, out float i) ? (i * 100).ToString() : 0.ToString();
+                                }
+
+                                if (Data.Equals(dalItem.ItemAddBy))
+                                {
+                                    int userID = int.TryParse(Description, out int i) ? i : 0;
+
+                                    Description = dalUser.getUsername(userID);
+                                }
+
+                                if (Data.Equals(dalItem.ItemUpdateBy))
+                                {
+                                    int userID = int.TryParse(Description, out int i) ? i : 0;
+
+                                    Description = dalUser.getUsername(userID);
+                                }
+
+                                newRow = dt_MoreInfo.NewRow();
+
+                                newRow[text.Header_Index] = index++;
+                                newRow[text.Header_Data] = Data;
+                                newRow[text.Header_DataName] = DataName;
+                                newRow[text.Header_Description] = Description;
+
+                                dt_MoreInfo.Rows.Add(newRow);
+                            }
                         }
 
                         break;
@@ -384,14 +561,54 @@ namespace FactoryManagementSoftware.UI
                     string Data = col.ColumnName;
                     string Description = dt.Rows[0][Data].ToString();
 
-                    newRow = dt_MoreInfo.NewRow();
+                    string DataName = GeneralInfoDataNameChange(Data);
+                    bool FilterPassed = true;
 
-                    newRow[text.Header_Index] = index++;
-                    newRow[text.Header_Data] = Data;
-                    newRow[text.Header_DataName] = Data;
-                    newRow[text.Header_Description] = Description;
+                    if (string.IsNullOrEmpty(DataName))
+                    {
+                        FilterPassed = false;
+                    }
 
-                    dt_MoreInfo.Rows.Add(newRow);
+                    if (IfQuotationData(Data) && !cbShowQuotationItem.Checked)
+                    {
+                        FilterPassed = false;
+                    }
+
+                    if (FilterPassed)
+                    {
+                        if (Data.Equals(dalItem.ItemMBRate))
+                        {
+                            Description = float.TryParse(Description, out float i) ? (i * 100).ToString() : 0.ToString();
+                        }
+
+                        if (Data.Equals(dalItem.ItemWastage))
+                        {
+                            Description = float.TryParse(Description, out float i) ? (i * 100).ToString() : 0.ToString();
+                        }
+
+                        if (Data.Equals(dalItem.ItemAddBy))
+                        {
+                            int userID = int.TryParse(Description, out int i) ? i : 0;
+
+                            Description = dalUser.getUsername(userID);
+                        }
+
+                        if (Data.Equals(dalItem.ItemUpdateBy))
+                        {
+                            int userID = int.TryParse(Description, out int i) ? i : 0;
+
+                            Description = dalUser.getUsername(userID);
+                        }
+
+                        newRow = dt_MoreInfo.NewRow();
+
+                        newRow[text.Header_Index] = index++;
+                        newRow[text.Header_Data] = Data;
+                        newRow[text.Header_DataName] = DataName;
+                        newRow[text.Header_Description] = Description;
+
+                        dt_MoreInfo.Rows.Add(newRow);
+                    }
                 }
 
                 dgvMoreInfo.DataSource = dt_MoreInfo;
@@ -661,6 +878,13 @@ namespace FactoryManagementSoftware.UI
             cmbCust.SelectedIndex = -1;
         }
 
+        private void ResetMoreInfoList()
+        {
+            dgvItemList.ClearSelection();
+            dgvMoreInfo.DataSource = null;
+            ShowSubListButton(false);
+        }
+
         private void cbShowQuotationItem_CheckedChanged(object sender, EventArgs e)
         {
             if(cbShowQuotationItem.Checked)
@@ -672,6 +896,10 @@ namespace FactoryManagementSoftware.UI
                 if (!frmVerification.PASSWORD_MATCHED)
                 {
                     cbShowQuotationItem.Checked = false;
+                }
+                else
+                {
+                    ResetMoreInfoList();
                 }
             }
           
@@ -727,7 +955,6 @@ namespace FactoryManagementSoftware.UI
             CURRENT_SELECTED_ITEMCODE = "";
 
             ShowSubListButton(false);
-
         }
 
         private void cbHideTerminatedItem_CheckedChanged(object sender, EventArgs e)

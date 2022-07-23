@@ -303,7 +303,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_BestTon { get; } = "BEST TON";
         public string Header_ProTon { get; } = "MACHINE TON";
         public string Header_ColorMaterial { get; } = "COLOR MATERIAL";
-        public string Header_ColorRate { get; } = "COLOR MATERIAL RATE";
+        public string Header_ColorRate { get; } = "COLOR MATERIAL RATE (%)";
 
         public string Header_QuoCT { get; } = "QUOTATION CYCLE TIME";
         public string Header_ProCT { get; } = "PRODUCTION CYCLE TIME";
@@ -321,7 +321,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_Cooling { get; } = "COOLING TIME (s)";
 
         public string Header_Wastage { get; } = "WASTAGE";
-        public string Header_WastageAllowed { get; } = "WASTAGE ALLOWED";
+        public string Header_WastageAllowed_Percentage { get; } = "WASTAGE ALLOWED (%)";
 
         public string Header_AddedDate { get; } = "ADDED DATE";
         public string Header_AddedBy { get; } = "ADDED BY";
