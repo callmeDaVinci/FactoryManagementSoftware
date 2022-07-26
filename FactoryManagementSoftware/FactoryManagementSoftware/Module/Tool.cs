@@ -1237,6 +1237,26 @@ namespace FactoryManagementSoftware.Module
             cmb.SelectedIndex = 0;
         }
 
+        public void LoadCustomerAndAllToComboBoxSBB(ComboBox cmb)
+        {
+            Text text = new Text();
+            DataTable dt = dalCust.FullSelect();
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
+            distinctTable.Rows.Add("All");
+            distinctTable.DefaultView.Sort = "cust_name ASC";
+
+            foreach(DataRow row in distinctTable.Rows)
+            {
+                if(row["cust_name"].ToString().Equals(text.SPP_BrandName))
+                {
+                    row["cust_name"] = text.SBB_BrandName;
+                }
+            }
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "cust_name";
+            cmb.SelectedIndex = -1;
+        }
+
         public bool IfCustomer(DataTable dt, string keywords)
         {
             bool result = false;

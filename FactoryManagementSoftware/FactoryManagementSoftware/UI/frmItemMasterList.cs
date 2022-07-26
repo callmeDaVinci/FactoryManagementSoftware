@@ -37,6 +37,7 @@ namespace FactoryManagementSoftware.UI
         itemDAL dalItem = new itemDAL();
         itemBLL uItem = new itemBLL();
         joinDAL dalJoin = new joinDAL();
+        itemCustDAL dalItemCust = new itemCustDAL();
 
         userDAL dalUser = new userDAL();
 
@@ -71,9 +72,7 @@ namespace FactoryManagementSoftware.UI
 
             LoadMoreInfoModetoCMB(cmbMoreInfoMode);
 
-            tool.LoadCustomerAndAllToComboBox(cmbCust);
-
-
+            tool.LoadCustomerAndAllToComboBoxSBB(cmbCust);
         }
 
         private void dgvItemListUIEdit(DataGridView dgv)
@@ -281,6 +280,12 @@ namespace FactoryManagementSoftware.UI
             return dt_SubList;
         }
 
+        private bool CustomerFilter(string itemCode, string custID, DataTable dt_Item_Cust, DataTable dt_Join)
+        {
+            bool CustomerMatched = true;
+
+            return CustomerMatched;
+        }
         private void LoadItemList()
         {
             Cursor = Cursors.WaitCursor;
@@ -292,6 +297,20 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt_Item = NewItemTable();
             DataRow newRow;
+
+            DataTable dt_Join = new DataTable();
+            DataTable dt_Item_Cust = new DataTable();
+
+            string custName = cmbCust.Text;
+            string custID = "-1";
+
+            if(!string.IsNullOrEmpty(custName))
+            {
+                dt_Join = dalJoin.SelectAll();
+                dt_Item_Cust = dalItemCust.SelectAll();
+                custID = tool.getCustID(custName).ToString();
+            }
+            
 
             int index = 1;
             string SearchText = txtSearch.Text.ToUpper();
@@ -334,6 +353,13 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
                
+                if(custID != "-1")
+                {
+                    if(!CustomerFilter(itemCode, custID, dt_Item_Cust, dt_Join))
+                    {
+                        FilterPassed = false;
+                    }
+                }
 
                 if(FilterPassed)
                 {
@@ -654,6 +680,57 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private string GeneralInfoFloatConvert(string Data, string Description)
+        {
+            if (Data.Equals(dalItem.ItemMBRate))
+            {
+                Description = float.TryParse(Description, out float i) ? (i * 100).ToString() : 0.ToString();
+            }
+            else if (Data.Equals(dalItem.ItemWastage))
+            {
+                Description = float.TryParse(Description, out float i) ? (i * 100).ToString() : 0.ToString();
+            }
+            else if (Data.Equals(dalItem.ItemQuoPWPcs))
+            {
+                Description = float.TryParse(Description, out float i) ? i.ToString("0.##") : 0.ToString();
+            }
+            else if (Data.Equals(dalItem.ItemQuoRWPcs))
+            {
+                Description = float.TryParse(Description, out float i) ? i.ToString("0.##") : 0.ToString();
+            }
+            else if (Data.Equals(dalItem.ItemProRWPcs))
+            {
+                Description = float.TryParse(Description, out float i) ? i.ToString("0.##") : 0.ToString();
+            }
+            else if (Data.Equals(dalItem.ItemProRWShot))
+            {
+                Description = float.TryParse(Description, out float i) ? i.ToString("0.##") : 0.ToString();
+            }
+            else if (Data.Equals(dalItem.ItemProPWPcs))
+            {
+                Description = float.TryParse(Description, out float i) ? i.ToString("0.##") : 0.ToString();
+            }
+            else if (Data.Equals(dalItem.ItemProPWShot))
+            {
+                Description = float.TryParse(Description, out float i) ? i.ToString("0.##") : 0.ToString();
+            }
+            else if (Data.Equals(dalItem.ItemAddBy))
+            {
+                int userID = int.TryParse(Description, out int i) ? i : 0;
+
+                Description = dalUser.getUsername(userID);
+            }
+            else if (Data.Equals(dalItem.ItemUpdateBy))
+            {
+                int userID = int.TryParse(Description, out int i) ? i : 0;
+
+                Description = dalUser.getUsername(userID);
+            }
+
+            return Description;
+
+        }
+
         private void LoadGeneralInfo()
         {
             dgvMoreInfo.DataSource = null;
@@ -707,29 +784,7 @@ namespace FactoryManagementSoftware.UI
 
                             if (FilterPassed)
                             {
-                                if (Data.Equals(dalItem.ItemMBRate))
-                                {
-                                    Description = float.TryParse(Description, out float i) ? (i * 100).ToString() : 0.ToString();
-                                }
-
-                                if (Data.Equals(dalItem.ItemWastage))
-                                {
-                                    Description = float.TryParse(Description, out float i) ? (i * 100).ToString() : 0.ToString();
-                                }
-
-                                if (Data.Equals(dalItem.ItemAddBy))
-                                {
-                                    int userID = int.TryParse(Description, out int i) ? i : 0;
-
-                                    Description = dalUser.getUsername(userID);
-                                }
-
-                                if (Data.Equals(dalItem.ItemUpdateBy))
-                                {
-                                    int userID = int.TryParse(Description, out int i) ? i : 0;
-
-                                    Description = dalUser.getUsername(userID);
-                                }
+                                Description = GeneralInfoFloatConvert(Data, Description);
 
                                 newRow = dt_MoreInfo.NewRow();
 
@@ -798,31 +853,9 @@ namespace FactoryManagementSoftware.UI
 
                     if (FilterPassed)
                     {
-                        if (Data.Equals(dalItem.ItemMBRate))
-                        {
-                            Description = float.TryParse(Description, out float i) ? (i * 100).ToString() : 0.ToString();
-                        }
+                        Description = GeneralInfoFloatConvert(Data, Description);
 
-                        if (Data.Equals(dalItem.ItemWastage))
-                        {
-                            Description = float.TryParse(Description, out float i) ? (i * 100).ToString() : 0.ToString();
-                        }
-
-                        if (Data.Equals(dalItem.ItemAddBy))
-                        {
-                            int userID = int.TryParse(Description, out int i) ? i : 0;
-
-                            Description = dalUser.getUsername(userID);
-                        }
-
-                        if (Data.Equals(dalItem.ItemUpdateBy))
-                        {
-                            int userID = int.TryParse(Description, out int i) ? i : 0;
-
-                            Description = dalUser.getUsername(userID);
-                        }
-
-                        newRow = dt_MoreInfo.NewRow();
+                         newRow = dt_MoreInfo.NewRow();
 
                         newRow[text.Header_Index] = index++;
                         newRow[text.Header_Data] = Data;
@@ -1261,7 +1294,9 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cmbCategory.Text != text.Cat_Part)
+            cmbCust.SelectedIndex = -1;
+
+            if (cmbCategory.Text != text.Cat_Part)
             {
                 cmbCust.SelectedIndex = -1;
                 cmbCust.Enabled = false;
@@ -1269,8 +1304,9 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 cmbCust.Enabled = true;
-                cmbCust.Text = "ALL";
             }
+
+            ClearDGV();
         }
 
         private void btnFilterApply_Click(object sender, EventArgs e)
@@ -1445,6 +1481,11 @@ namespace FactoryManagementSoftware.UI
                 }
             }
            
+        }
+
+        private void cmbCust_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ClearDGV();
         }
     }
 }
