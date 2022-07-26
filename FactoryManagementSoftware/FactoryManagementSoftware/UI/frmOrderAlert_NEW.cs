@@ -21,9 +21,9 @@ using System.Collections;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmMaterialUsedReport_NEW : Form
+    public partial class frmOrderAlert_NEW : Form
     {
-        public frmMaterialUsedReport_NEW()
+        public frmOrderAlert_NEW()
         {
             InitializeComponent();
 
@@ -33,7 +33,6 @@ namespace FactoryManagementSoftware.UI
             cmbCustomer.Text = tool.getCustName(1);
 
             LoadDataToReportTypeCMB(cmbReportType);
-
             loadMonthDataToCMB(cmbMonth);
             loadYearDataToCMB(cmbYear);
 
@@ -49,14 +48,17 @@ namespace FactoryManagementSoftware.UI
             cmbMonthFrom.Text = DateTime.Now.Month.ToString();
             cmbYearFrom.Text = DateTime.Now.Year.ToString();
 
-            cmbMonthTo.Text = DateTime.Now.AddMonths(2).Month.ToString();
-            cmbYearTo.Text = DateTime.Now.AddMonths(2).Year.ToString();
+            cmbMonthTo.Text = DateTime.Now.AddMonths(3).Month.ToString();
+            cmbYearTo.Text = DateTime.Now.AddMonths(3).Year.ToString();
 
 
             dt_MatUsed = NewMatUsedTable();
             dt_DeliveredData = NewDeliveredDataTable();
 
             headerOutQty = text.Header_Delivered;
+
+            cmbReportType.Text = reportType_Forecast;
+            cbStockType.Checked = true;
         }
 
         #region variable declare
@@ -2413,7 +2415,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmMaterialUsedReport_NEW_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MainDashboard.MaterialUsedReportFormOpen = false;
+            MainDashboard.ordFormOpen = false;
         }
 
         #endregion
@@ -2656,264 +2658,6 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        #region export to excel
-
-        private string setFileName()
-        {
-            if (cmbReportType.Text.Equals(reportType_Delivered))
-            {
-                return cmbReportType.Text + "_MaterialUsedReport " + "(" + cmbCustomer.Text + "_" + cmbMonth.Text + "_" + cmbYear.Text + ")_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
-
-            }
-            else if (cmbReportType.Text.Equals(reportType_ReadyStock))
-            {
-                return cmbReportType.Text + "_MaterialUsedReport " + "(" + cmbCustomer.Text + ")_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
-
-            }
-            else if(cbSummary.Checked)
-            {
-                var date = GetStartAndEndDate();
-                DateTime dateStart = date.Item1;
-                DateTime dateEnd = date.Item2;
-
-                string start = dateStart.ToString("MM_yyyy");
-                string end = dateEnd.ToString("MM_yyyy");
-
-                string ForecastPeriod = start + "-"+ end;
-                return cmbReportType.Text + " SUMMARY_MaterialUsedReport " + "(" + cmbCustomer.Text + "_" + ForecastPeriod + ")_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
-            }
-            else
-            {
-                return cmbReportType.Text + "_MaterialUsedReport " + "(" + cmbCustomer.Text + "_" + cmbMonth.Text + "_" + cmbYear.Text + ")_" + DateTime.Now.ToString("ddMMyyyy_HHmmss") + ".xls";
-            }
-        }
-
-        private void btnExportToExcel_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-
-            string path = @"D:\StockAssistant\Document\MaterialUsedReport";
-            Directory.CreateDirectory(path);
-            sfd.InitialDirectory = path;
-            sfd.Filter = "Excel Documents (*.xls)|*.xls";
-            sfd.FileName = setFileName();
-
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
-
-                // Copy DataGridView results to clipboard
-                copyAlltoClipboard();
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                object misValue = Missing.Value;
-                Excel.Application xlexcel = new Excel.Application();
-                xlexcel.PrintCommunication = false;
-                xlexcel.ScreenUpdating = false;
-                xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
-                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
-
-                xlexcel.Calculation = XlCalculation.xlCalculationManual;
-                Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                xlWorkSheet.Name = cmbCustomer.Text;
-
-                #region Save data to Sheet
-
-                //Header and Footer setup
-                string centerHeader = "&\"Calibri,Bold\"&16 (" + cmbCustomer.Text + ")" + cmbReportType.Text + "_MATERIAL USED REPORT";
-                if (cmbReportType.Text.Equals(reportType_Delivered))
-                {
-                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + dtpFrom.Text + ">" + dtpTo.Text;
-                }
-                else if (cmbReportType.Text.Equals(reportType_ReadyStock))
-                {
-                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy");
-                }
-                else if (cmbReportType.Text.Equals(reportType_Forecast) && cbSummary.Checked)
-                {
-                    var date = GetStartAndEndDate();
-                    DateTime dateStart = date.Item1;
-                    DateTime dateEnd = date.Item2;
-                    string ForecastPeriod = dateStart.ToString("MM/yyyy") + "-" + dateEnd.ToString("MM/yyyy");
-
-                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + ForecastPeriod + header_Forecast;
-                    centerHeader = "&\"Calibri,Bold\"&14 (" + cmbCustomer.Text + ")" + cmbReportType.Text + " SUMMARY_MATERIAL USED REPORT";
-
-                }
-                else if (cmbReportType.Text.Equals(reportType_Forecast))
-                {
-                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + cmbMonth.Text + "/" + cmbYear.Text + header_Forecast;
-                }
-
-                xlWorkSheet.PageSetup.CenterHeader = centerHeader;
-
-                xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-
-                xlWorkSheet.PageSetup.CenterFooter = "&\"Calibri,Bold\"&11 " + DateTime.Now.Date.ToString("dd/MM/yyyy") + " Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
-
-                //Page setup
-                if(cmbReportType.Text.Equals(reportType_Forecast) && cbSummary.Checked)
-                {
-                    double pointToCMRate = 0.035;
-                  
-                    xlWorkSheet.PageSetup.LeftMargin = 1 / pointToCMRate;
-                    xlWorkSheet.PageSetup.RightMargin = 1 / pointToCMRate;
-
-                    xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                    xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
-                    xlWorkSheet.PageSetup.Zoom = false;
-                    xlWorkSheet.PageSetup.CenterHorizontally = true;
-                   
-                    xlWorkSheet.PageSetup.FitToPagesWide = 1;
-                    xlWorkSheet.PageSetup.FitToPagesTall = false;
-                    xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
-                }
-                else
-                {
-                    xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                    xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
-                    xlWorkSheet.PageSetup.Zoom = false;
-                    xlWorkSheet.PageSetup.CenterHorizontally = true;
-                    xlWorkSheet.PageSetup.LeftMargin = 1;
-                    xlWorkSheet.PageSetup.RightMargin = 1;
-                    xlWorkSheet.PageSetup.FitToPagesWide = 1;
-                    xlWorkSheet.PageSetup.FitToPagesTall = false;
-                    xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
-                }
-
-                xlexcel.PrintCommunication = true;
-                xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
-                // Paste clipboard results to worksheet range
-                xlWorkSheet.Select();
-                Range CR = (Range)xlWorkSheet.Cells[1, 1];
-                CR.Select();
-                xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
-
-                //content edit
-                Range tRange = xlWorkSheet.UsedRange;
-                //tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-                //tRange.Borders.Weight = XlBorderWeight.xlThin;
-                tRange.Font.Size = 11;
-                tRange.Font.Name = "Calibri";
-                tRange.EntireColumn.AutoFit();
-                tRange.EntireRow.AutoFit();
-                tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
-
-                if (cmbReportType.Text.Equals(reportType_Forecast) && cbSummary.Checked)
-                {
-                    tRange.RowHeight = 30;
-                    tRange.VerticalAlignment = XlVAlign.xlVAlignCenter;
-
-                    Color color = Color.Gray;
-                    tRange.Borders[XlBordersIndex.xlInsideHorizontal].Color = color;
-                    tRange.Borders[XlBordersIndex.xlInsideVertical].Color = color;
-
-                    tRange.Borders[XlBordersIndex.xlEdgeRight].Color = color;
-                    tRange.Borders[XlBordersIndex.xlEdgeLeft].Color = color;
-                    tRange.Borders[XlBordersIndex.xlEdgeTop].Color = color;
-                    tRange.Borders[XlBordersIndex.xlEdgeBottom].Color = color;
-
-                    DataTable dt = (DataTable)dgvMatUsedReport.DataSource;
-
-                    int TotalColNumber = -1;
-
-                    if(dt.Columns.Contains(header_TotalOut))
-                    {
-                        TotalColNumber = dt.Columns[header_TotalOut].Ordinal -7;
-                        int lastRowNumber = dt.Rows.Count - 1;
-
-                        Range TotalHeader = (Range)xlWorkSheet.Cells[1, TotalColNumber];
-                        TotalHeader.HorizontalAlignment = XlHAlign.xlHAlignRight;
-                        TotalHeader.Font.Bold = true;
-
-                        Range boldRange = xlWorkSheet.Columns[TotalColNumber];
-                        boldRange.Font.Bold = true;
-
-                        Range firstCol = xlWorkSheet.Columns[1];
-                        firstCol.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                    }
-
-                    if (dt.Columns.Contains(header_Bal))
-                    {
-                        int BalColNumber = dt.Columns[header_Bal].Ordinal - 7;
-
-                        Range BalHeader = (Range)xlWorkSheet.Cells[1, BalColNumber];
-                        BalHeader.HorizontalAlignment = XlHAlign.xlHAlignRight;
-
-                        foreach (DataRow row in dt.Rows)
-                        {
-                            float bal = float.TryParse(row[header_Bal].ToString(), out float x) ? x : 0;
-
-                            int index = dt.Rows.IndexOf(row) + 2;
-
-                            Range balRow = (Range)xlWorkSheet.Cells[index, BalColNumber];
-
-                            if (bal < 0)
-                            {
-                                balRow.Font.Bold = true;
-                            }
-                            else
-                            {
-                                balRow.Font.Bold = false;
-                            }
-                        }
-                        
-                    }
-                }
-                    
-                #endregion
-
-                    //Save the excel file under the captured location from the SaveFileDialog
-                    xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
-                    misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlexcel.DisplayAlerts = true;
-
-                xlWorkBook.Close(true, misValue, misValue);
-                xlexcel.Quit();
-
-                releaseObject(xlWorkSheet);
-                releaseObject(xlWorkBook);
-                releaseObject(xlexcel);
-
-                // Clear Clipboard and DataGridView selection
-                Clipboard.Clear();
-                dgvMatUsedReport.ClearSelection();
-
-                // Open the newly saved excel file
-                if (File.Exists(sfd.FileName))
-                    System.Diagnostics.Process.Start(sfd.FileName);
-            }
-
-            Cursor = Cursors.Arrow; // change cursor to normal type
-        }
-
-        private void copyAlltoClipboard()
-        {
-            dgvMatUsedReport.SelectAll();
-            DataObject dataObj = dgvMatUsedReport.GetClipboardContent();
-            if (dataObj != null)
-                Clipboard.SetDataObject(dataObj);
-        }
-
-        private void releaseObject(object obj)
-        {
-            try
-            {
-                Marshal.ReleaseComObject(obj);
-                obj = null;
-            }
-            catch (Exception ex)
-            {
-                obj = null;
-                MessageBox.Show("Exception Occurred while releasing object " + ex.ToString());
-            }
-            finally
-            {
-                GC.Collect();
-            }
-        }
-
-        #endregion
-
         private void cbSummary_CheckedChanged(object sender, EventArgs e)
         {
             if(cbSummary.Checked)
@@ -2939,8 +2683,8 @@ namespace FactoryManagementSoftware.UI
 
                 DateTime dateStart = new DateTime(yearStart, monthStart, 1);
 
-                cmbMonthTo.Text = dateStart.AddMonths(2).Month.ToString();
-                cmbYearTo.Text = dateStart.AddMonths(2).Year.ToString();
+                cmbMonthTo.Text = dateStart.AddMonths(3).Month.ToString();
+                cmbYearTo.Text = dateStart.AddMonths(3).Year.ToString();
             }
            
         }

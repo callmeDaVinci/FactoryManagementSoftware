@@ -536,6 +536,11 @@ namespace FactoryManagementSoftware.UI
                 {
                     facName = row[dalMac.MacLocation].ToString();
                     matCode = row[dalMatPlan.MatCode].ToString();
+
+                    if(matCode.Equals("CTN 590 X 310 X 388 MM"))
+                    {
+                        float test = 0;
+                    }
                     matFrom = row[dalMatPlan.MatFrom].ToString();
                     string partCode = row[dalPlan.partCode].ToString();
                     
@@ -585,6 +590,11 @@ namespace FactoryManagementSoftware.UI
                         stockQty = tool.getStockBalance(matCode, facName, dt_Stock);
                         remainingStock = stockQty;
                         TransferPending = 0;
+                    }
+                    else if(preMatCode != matCode)
+                    {
+                        stockQty = tool.getStockBalance(matCode, facName, dt_Stock);
+                        remainingStock = stockQty;
                     }
 
                     string itemCat = tool.getItemCatFromDataTable(dt_ItemInfo, row[dalMatPlan.MatCode].ToString());

@@ -24,10 +24,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>\\DESKTOP-MFUKGH2\Server\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
-    <UpdateUrl>\\DESKTOP-MFUKGH2\Server\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
+    <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
+    <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>426</ApplicationRevision>
+    <ApplicationRevision>427</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -231,6 +231,12 @@
     <Compile Include="Module\ExcelTool.cs" />
     <Compile Include="Module\Tool.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="UI\frmOrderAlert_NEW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmOrderAlert_NEW.Designer.cs">
+      <DependentUpon>frmOrderAlert_NEW.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmOUGPOList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -952,6 +958,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItemGroupList.resx">
       <DependentUpon>frmItemGroupList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmOrderAlert_NEW.resx">
+      <DependentUpon>frmOrderAlert_NEW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOUGPOList.resx">
       <DependentUpon>frmOUGPOList.cs</DependentUpon>
