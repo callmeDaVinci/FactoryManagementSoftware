@@ -36,6 +36,7 @@ namespace FactoryManagementSoftware.UI
 
         itemDAL dalItem = new itemDAL();
         itemBLL uItem = new itemBLL();
+        joinDAL dalJoin = new joinDAL();
 
         userDAL dalUser = new userDAL();
 
@@ -50,8 +51,11 @@ namespace FactoryManagementSoftware.UI
         readonly string MODE_CUSTOMER = "CUSTOMER";
 
         private string CURRENT_SELECTED_ITEMCODE = "";
+        private string CURRENT_MORE_INFO_SHOWING_ITEMCODE = "";
 
         private DataTable DB_ITEM_LIST;
+
+        private bool PageLoaded = false;
 
         #endregion
 
@@ -64,6 +68,8 @@ namespace FactoryManagementSoftware.UI
             tool.loadItemCategoryDataToComboBox(cmbCategory);
 
             cmbCategory.Text = text.Cat_Part;
+
+            LoadMoreInfoModetoCMB(cmbMoreInfoMode);
 
             tool.LoadCustomerAndAllToComboBox(cmbCust);
 
@@ -98,6 +104,7 @@ namespace FactoryManagementSoftware.UI
 
 
             dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[text.Header_Index].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
             if (lblMoreInfo.Text.Contains(MODE_GENERAL_INFO))
             {
@@ -108,6 +115,19 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Columns[text.Header_DataName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 dgv.Columns[text.Header_Description].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+
+            else if (lblMoreInfo.Text.Contains(MODE_GROUP))
+            {
+                dgv.Columns[text.Header_ChildCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[text.Header_ChildName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[text.Header_JoinRatio].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dgv.Columns[text.Header_ChildCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+
+                dgv.Columns[text.Header_ChildCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgv.Columns[text.Header_ChildName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgv.Columns[text.Header_JoinRatio].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             }
         }
 
@@ -136,9 +156,108 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
+        private DataTable NewItemGroupInfoTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(text.Header_ChildCode, typeof(string));
+            dt.Columns.Add(text.Header_ChildName, typeof(string));
+            dt.Columns.Add(text.Header_JoinRatio, typeof(string));
+
+            return dt;
+        }
         #endregion
 
         #region Load Data 
+
+        private void LoadMoreInfoModetoCMB(ComboBox cmb)
+        {
+            string ModeColumnName = "MODE";
+            DataTable dt = new DataTable();
+            dt.Columns.Add(ModeColumnName);
+
+            dt.Rows.Add(MODE_GENERAL_INFO);
+            dt.Rows.Add(MODE_GROUP);
+            //dt.Rows.Add(MODE_CUSTOMER);
+            //dt.Rows.Add(MODE_STOCK_LOCATION);
+            //dt.Rows.Add(MODE_PRODUCTION);
+
+            cmb.DataSource = dt;
+            cmb.DisplayMember = ModeColumnName;
+            cmb.Text = MODE_GENERAL_INFO;
+        }
+        private void NewButtonActivated()
+        {
+            string CurrentMode = lblMoreInfo.Text;
+
+            if (CurrentMode.Contains(MODE_GENERAL_INFO))
+            {
+                //frmItemEdit_NEW frm = new frmItemEdit_NEW();
+                //frm.StartPosition = FormStartPosition.CenterScreen;
+                //frm.ShowDialog();
+
+                //if(frmItemEdit_NEW.DATA_SAVED)
+                //    LoadItemList();
+            }
+            else if (CurrentMode.Contains(MODE_GROUP))
+            {
+
+            }
+            else if (CurrentMode.Contains(MODE_TRASACTION))
+            {
+
+            }
+            else if (CurrentMode.Contains(MODE_PRODUCTION))
+            {
+
+            }
+            else if (CurrentMode.Contains(MODE_STOCK_LOCATION))
+            {
+
+            }
+            else if (CurrentMode.Contains(MODE_CUSTOMER))
+            {
+
+            }
+
+        }
+
+        private void EditButtonActivated()
+        {
+            string CurrentMode = lblMoreInfo.Text;
+
+            if (CurrentMode.Contains(MODE_GENERAL_INFO))
+            {
+                //frmItemEdit_NEW frm = new frmItemEdit_NEW();
+                //frm.StartPosition = FormStartPosition.CenterScreen;
+                //frm.ShowDialog();
+
+                //if(frmItemEdit_NEW.DATA_SAVED)
+                //    LoadItemList();
+            }
+            else if (CurrentMode.Contains(MODE_GROUP))
+            {
+
+            }
+            else if (CurrentMode.Contains(MODE_TRASACTION))
+            {
+
+            }
+            else if (CurrentMode.Contains(MODE_PRODUCTION))
+            {
+
+            }
+            else if (CurrentMode.Contains(MODE_STOCK_LOCATION))
+            {
+
+            }
+            else if (CurrentMode.Contains(MODE_CUSTOMER))
+            {
+
+            }
+
+        }
 
         private DataTable SubListDataFilter(DataTable dt)
         {
@@ -232,13 +351,22 @@ namespace FactoryManagementSoftware.UI
 
             dgvItemList.DataSource = dt_Item;
             dgvItemListUIEdit(dgvItemList);
+
             ResetMoreInfoList();
 
-            CURRENT_SELECTED_ITEMCODE = "";
+            ResetSelectedItemLabel();
 
             Cursor = Cursors.Arrow;
         }
 
+        private void ResetSelectedItemLabel()
+        {
+            CURRENT_SELECTED_ITEMCODE = "";
+            lblItemListSelectedItem.Text = "";
+
+            CURRENT_MORE_INFO_SHOWING_ITEMCODE = "";
+            lblMoreInfoShowingItem.Text = "";
+        }
         private void RemoveTerminatedItem()
         {
             Cursor = Cursors.WaitCursor;
@@ -277,7 +405,7 @@ namespace FactoryManagementSoftware.UI
 
             ResetMoreInfoList();
 
-            CURRENT_SELECTED_ITEMCODE = "";
+            ResetSelectedItemLabel();
 
             Cursor = Cursors.Arrow;
         }
@@ -438,6 +566,94 @@ namespace FactoryManagementSoftware.UI
 
             return false;
         }
+
+        private void SelectedItemLabelSet(string itemCode)
+        {
+            CURRENT_SELECTED_ITEMCODE = itemCode;
+            lblItemListSelectedItem.Text = itemCode;
+        }
+
+        private void ShowingItemLabelSet(string itemCode)
+        {
+            CURRENT_MORE_INFO_SHOWING_ITEMCODE = itemCode;
+            lblMoreInfoShowingItem.Text = itemCode;
+        }
+
+        private void LoadGroupInfo()
+        {
+            dgvMoreInfo.DataSource = null;
+
+            int rowIndex = dgvItemList.CurrentCell.RowIndex;
+            string itemCode = dgvItemList.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
+
+            ShowingItemLabelSet(itemCode);
+
+            if(CURRENT_SELECTED_ITEMCODE != itemCode && rowIndex > -1)
+            {
+                SelectedItemLabelSet(itemCode);
+            }
+
+            if (!string.IsNullOrEmpty(itemCode) && rowIndex > -1)
+            {
+                DataTable DB_Join = dalJoin.loadChildList(itemCode);
+
+                DataTable dt_MoreInfo = NewItemGroupInfoTable();
+                DataRow newRow;
+
+                int index = 1;
+
+                foreach (DataRow row in DB_Join.Rows)
+                {
+                    string min   = row[dalJoin.JoinMin].ToString();
+                    string max = row[dalJoin.JoinMax].ToString();
+                    string ChildQty = row[dalJoin.JoinQty].ToString();
+                    string ChildCode = row[dalJoin.JoinChild].ToString();
+
+                    string ChildName = tool.getItemName(ChildCode);
+
+                    string ratio;
+
+                    if(min == max)
+                    {
+                        ratio = max + ":" + ChildQty;
+                    }
+                    else
+                    {
+                        ratio = min + "~" + max + ":" + ChildQty;
+                    }
+
+
+                    newRow = dt_MoreInfo.NewRow();
+
+                    newRow[text.Header_Index] = index++;
+                    newRow[text.Header_ChildCode] = ChildCode;
+                    newRow[text.Header_ChildName] = ChildName;
+                    newRow[text.Header_JoinRatio] = ratio;
+
+                    dt_MoreInfo.Rows.Add(newRow);
+                }
+
+
+                dgvMoreInfo.DataSource = dt_MoreInfo;
+                dgvMoreInfoEdit(dgvMoreInfo);
+                dgvMoreInfo.ClearSelection();
+
+                if (dt_MoreInfo.Rows.Count >= 0)
+                {
+                    ShowSubListButton(true);
+                }
+                else
+                {
+                    ShowSubListButton(false);
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Item Code not found!");
+            }
+        }
+
         private void LoadGeneralInfo()
         {
             dgvMoreInfo.DataSource = null;
@@ -450,7 +666,13 @@ namespace FactoryManagementSoftware.UI
             int rowIndex = dgvItemList.CurrentCell.RowIndex;
             string itemCode = dgvItemList.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
 
-            CURRENT_SELECTED_ITEMCODE = itemCode;
+            ShowingItemLabelSet(itemCode);
+
+            if (CURRENT_SELECTED_ITEMCODE != itemCode && rowIndex > -1)
+            {
+                SelectedItemLabelSet(itemCode);
+            }
+
 
             if (!string.IsNullOrEmpty(itemCode) && rowIndex > -1)
             {
@@ -633,33 +855,75 @@ namespace FactoryManagementSoftware.UI
 
         private void MoreInfoModeStation()
         {
-            string CurrentMode = lblMoreInfo.Text;
+            string CurrentMode = cmbMoreInfoMode.Text;
 
-            if (CurrentMode.Contains(MODE_GENERAL_INFO))
+            if (CurrentMode.Equals(MODE_GENERAL_INFO))
             {
                 LoadGeneralInfo();
             }
-            else if (CurrentMode.Contains(MODE_GROUP))
+            else if (CurrentMode.Equals(MODE_GROUP))
+            {
+                LoadGroupInfo();
+            }
+            else if (CurrentMode.Equals(MODE_TRASACTION))
             {
 
             }
-            else if (CurrentMode.Contains(MODE_TRASACTION))
+            else if (CurrentMode.Equals(MODE_PRODUCTION))
             {
 
             }
-            else if (CurrentMode.Contains(MODE_PRODUCTION))
+            else if (CurrentMode.Equals(MODE_STOCK_LOCATION))
             {
 
             }
-            else if (CurrentMode.Contains(MODE_STOCK_LOCATION))
-            {
-
-            }
-            else if (CurrentMode.Contains(MODE_CUSTOMER))
+            else if (CurrentMode.Equals(MODE_CUSTOMER))
             {
 
             }
         }
+
+        private void MoreInfoModeStation(string ModeChange)
+        {
+            if(PageLoaded)
+            {
+                string CurrentMode = ModeChange;
+
+                lblMoreInfo.Text = CurrentMode;
+
+                if (CurrentMode.Contains(MODE_GENERAL_INFO))
+                {
+                    LoadGeneralInfo();
+                }
+                else if (CurrentMode.Contains(MODE_GROUP))
+                {
+                    LoadGroupInfo();
+                }
+                else if (CurrentMode.Contains(MODE_TRASACTION))
+                {
+
+                }
+                else if (CurrentMode.Contains(MODE_PRODUCTION))
+                {
+
+                }
+                else if (CurrentMode.Contains(MODE_STOCK_LOCATION))
+                {
+
+                }
+                else if (CurrentMode.Contains(MODE_CUSTOMER))
+                {
+
+                }
+                else
+                {
+                    dgvMoreInfo.DataSource = null;
+                    MessageBox.Show("More Info Mode not found!");
+                }
+            }
+           
+        }
+
 
         private void ItemUpdatedReturn(string ItemCode)
         {
@@ -789,7 +1053,18 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[rowIndex].Cells[text.Header_ItemName].Value = itemName.Replace("(" + text.Terminated.ToUpper() + ")", "");
                         }
                     }
-                   
+                    else if (clickedItem.Equals(MODE_GENERAL_INFO))
+                    {
+                        cmbMoreInfoMode.Text = clickedItem;
+                    }
+                    else if (clickedItem.Equals(MODE_GROUP))
+                    {
+                        cmbMoreInfoMode.Text = clickedItem;
+                    }
+                    else if(CURRENT_SELECTED_ITEMCODE != CURRENT_MORE_INFO_SHOWING_ITEMCODE)
+                    {
+                        MoreInfoModeStation();
+                    }
 
                 }
 
@@ -815,6 +1090,8 @@ namespace FactoryManagementSoftware.UI
             tool.DoubleBuffered(dgvItemList, true);
             tool.DoubleBuffered(dgvMoreInfo, true);
             PageReset();
+
+            PageLoaded = true;
         }
 
         private void lblFilter_Click(object sender, EventArgs e)
@@ -856,11 +1133,70 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void ShowEditButton(bool toShow)
+        {
+            if (toShow)
+            {
+                if(lblMoreInfo.Text.Contains(MODE_GENERAL_INFO))
+                {
+                    tlpButton.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 40f);
+                    tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 60f);
+                    tlpButton.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 0f);
+
+                    btnRemove.Visible = true;
+                    btnEdit.Visible = true;
+                    btnNew.Visible = false;
+
+                }
+                else
+                {
+                    tlpButton.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 30f);
+                    tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 30f);
+                    tlpButton.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 40f);
+
+                    btnRemove.Visible = true;
+                    btnEdit.Visible = true;
+                    btnNew.Visible = true;
+                }
+               
+            }
+            else
+            {
+                if (lblMoreInfo.Text.Contains(MODE_GENERAL_INFO))
+                {
+                    ShowSubListButton(false);
+
+                }
+                else
+                {
+                    tlpButton.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 0f);
+                    tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0f);
+                    tlpButton.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 100f);
+
+                    btnRemove.Visible = false;
+                    btnEdit.Visible = false;
+                    btnNew.Visible = true;
+                }
+
+               
+            }
+        }
+
         private void ShowSubListButton(bool toShow)
         {
             if (toShow)
             {
-                tlpMoreInfo.RowStyles[1] = new RowStyle(SizeType.Absolute, 35f);
+                tlpMoreInfo.RowStyles[1] = new RowStyle(SizeType.Absolute, 50f);
+
+                if(lblMoreInfo.Text.Contains(MODE_GENERAL_INFO))
+                {
+                    ShowEditButton(true);
+                }
+                else
+                {
+                    ShowEditButton(false);
+
+                }
             }
             else
             {
@@ -883,6 +1219,10 @@ namespace FactoryManagementSoftware.UI
             dgvItemList.ClearSelection();
             dgvMoreInfo.DataSource = null;
             ShowSubListButton(false);
+
+            CURRENT_MORE_INFO_SHOWING_ITEMCODE = "";
+            lblMoreInfoShowingItem.Text = "";
+
         }
 
         private void cbShowQuotationItem_CheckedChanged(object sender, EventArgs e)
@@ -891,18 +1231,17 @@ namespace FactoryManagementSoftware.UI
             {
                 frmVerification frm = new frmVerification(text.PW_TopManagement);
 
+                frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.ShowDialog();
 
                 if (!frmVerification.PASSWORD_MATCHED)
                 {
                     cbShowQuotationItem.Checked = false;
                 }
-                else
-                {
-                    ResetMoreInfoList();
-                }
             }
-          
+
+            MoreInfoModeStation();
+
         }
 
         private void btnAddItem_Click(object sender, EventArgs e)
@@ -911,8 +1250,8 @@ namespace FactoryManagementSoftware.UI
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();
 
-            LoadItemList();
-
+            if (frmItemEdit_NEW.DATA_SAVED)
+                LoadItemList();
         }
 
         private void btnFilter_Click_1(object sender, EventArgs e)
@@ -952,7 +1291,7 @@ namespace FactoryManagementSoftware.UI
         {
             dgvItemList.DataSource = null;
             dgvMoreInfo.DataSource = null;
-            CURRENT_SELECTED_ITEMCODE = "";
+            ResetSelectedItemLabel();
 
             ShowSubListButton(false);
         }
@@ -1011,48 +1350,59 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItemList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            //try
-            //{
-            //    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-            //    DataGridView dgv = dgvItemList;
+                DataGridView dgv = dgvItemList;
 
-            //    //handle the row selection on right click
-            //    if (e.Button == MouseButtons.Right && userPermission >= MainDashboard.ACTION_LVL_TWO)
-            //    {
-            //        ContextMenuStrip my_menu = new ContextMenuStrip();
+                //handle the row selection on right click
+                if (e.Button == MouseButtons.Right && userPermission >= MainDashboard.ACTION_LVL_TWO)
+                {
+                    ContextMenuStrip my_menu = new ContextMenuStrip();
 
-            //        dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
 
-            //        // Can leave these here - doesn't hurt
-            //        dgv.Rows[e.RowIndex].Selected = true;
-            //        dgv.Focus();
-            //        int rowIndex = dgv.CurrentCell.RowIndex;
+                    // Can leave these here - doesn't hurt
+                    dgv.Rows[e.RowIndex].Selected = true;
+                    dgv.Focus();
+                    int rowIndex = dgv.CurrentCell.RowIndex;
 
-            //        string itemCode = dgv.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
-            //        string itemName = dgv.Rows[rowIndex].Cells[text.Header_ItemName].Value.ToString();
+                    string itemCode = dgv.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
 
-            //        if (itemName.Contains(text.Terminated) || itemName.Contains(text.Terminated.ToUpper()) || itemName.Contains("CANCEL"))
-            //        {
-            //            my_menu.Items.Add(text.Activate).Name = text.Activate;
-            //        }
-            //        else
-            //        {
-            //            my_menu.Items.Add(text.Terminated).Name = text.Terminated;
-            //        }
+                    if(CURRENT_SELECTED_ITEMCODE != itemCode && rowIndex > -1)
+                        SelectedItemLabelSet(itemCode);
 
+                    //string itemName = dgv.Rows[rowIndex].Cells[text.Header_ItemName].Value.ToString();
 
-            //        my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+                    //if (itemName.Contains(text.Terminated) || itemName.Contains(text.Terminated.ToUpper()) || itemName.Contains("CANCEL"))
+                    //{
+                    //    my_menu.Items.Add(text.Activate).Name = text.Activate;
+                    //}
+                    //else
+                    //{
+                    //    my_menu.Items.Add(text.Terminated).Name = text.Terminated;
+                    //}
 
-            //        my_menu.ItemClicked += new ToolStripItemClickedEventHandler(Item_my_menu_ItemClicked);
-            //    }
+                    my_menu.Items.Add(MODE_GENERAL_INFO).Name = MODE_GENERAL_INFO;
+                    my_menu.Items.Add(MODE_GROUP).Name = MODE_GROUP;
 
-            //    Cursor = Cursors.Arrow; // change cursor to normal type
-            //}
-            //catch (Exception ex)
-            //{
-            //    tool.saveToTextAndMessageToUser(ex);
-            //}
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(Item_my_menu_ItemClicked);
+
+                    if (CURRENT_SELECTED_ITEMCODE != CURRENT_MORE_INFO_SHOWING_ITEMCODE)
+                    {
+                        MoreInfoModeStation();
+                    }
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
         }
 
         private void timer2_Tick(object sender, EventArgs e)
@@ -1062,8 +1412,39 @@ namespace FactoryManagementSoftware.UI
             RemoveTerminatedItem();
         }
 
+
         #endregion
 
+        private void dgvMoreInfo_SelectionChanged(object sender, EventArgs e)
+        {
+            ShowEditButton(dgvMoreInfo.DataSource != null && dgvMoreInfo.CurrentCell.RowIndex >= 0);
+        }
 
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            NewButtonActivated();
+        }
+
+        private void cmbMoreInfoMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MoreInfoModeStation(cmbMoreInfoMode.Text);
+        }
+
+        private void dgvItemList_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = dgvItemList.CurrentCell.RowIndex;
+
+            if(dgvItemList.DataSource != null && dgvMoreInfo.DataSource != null && rowIndex > -1)
+            {
+
+                SelectedItemLabelSet(dgvItemList.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString());
+
+                if (!lblMoreInfoShowingItem.Text.Equals(lblItemListSelectedItem.Text))
+                {
+                    MoreInfoModeStation(cmbMoreInfoMode.Text);
+                }
+            }
+           
+        }
     }
 }

@@ -335,6 +335,12 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_Data { get; } = "DATA DB";
         public string Header_DataName { get; } = "DATA";
+        public string Header_ChildCode { get; } = "CHILD CODE";
+        public string Header_ChildName { get; } = "CHILD NAME";
+        public string Header_JoinRatio { get; } = "PARENT : CHILD";
+        public string Header_ParentMax { get; } = "PARENT MAX";
+        public string Header_ParentMin { get; } = "PARENT MIN";
+        public string Header_ChildQty { get; } = "CHILD QTY";
 
         public string Header_Description { get; } = "DESCRIPTION";
 

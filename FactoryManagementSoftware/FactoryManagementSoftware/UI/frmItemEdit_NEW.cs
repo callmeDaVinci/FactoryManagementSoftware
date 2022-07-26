@@ -636,7 +636,7 @@ namespace FactoryManagementSoftware.UI
 
                 DT_DATA_SAVED.Rows[0][dalItem.ItemWastage] = float.TryParse(txtWastageAllowed.Text, out float wastage) ? wastage / 100 : 0;
 
-                DT_DATA_SAVED.Rows[0][dalItem.ItemUnitToPCSRate] = txtPCSRate.Text;
+                DT_DATA_SAVED.Rows[0][dalItem.ItemUnitToPCSRate] = float.TryParse(txtPCSRate.Text, out float pcsrate) ? pcsrate : 0; 
 
                 DT_DATA_SAVED.Rows[0][dalItem.ItemQuoTon] = txtQuoTon.Text;
                 DT_DATA_SAVED.Rows[0][dalItem.ItemQuoCT] = txtQuoCT.Text;
