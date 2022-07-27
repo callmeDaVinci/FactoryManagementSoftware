@@ -366,7 +366,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_MatType].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
             dgv.Columns[text.Header_MatCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 
-            if(cmbReportType.Text.Equals(reportType_Forecast) && cbSummary.Checked)
+            if(cmbReportType.Text.Equals(reportType_Forecast) )
             {
                 string month = null;
 
@@ -544,7 +544,7 @@ namespace FactoryManagementSoftware.UI
         {
             dgvMatUsedReport.SuspendLayout();
 
-            tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+            //tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
 
             dgvMatUsedReport.ResumeLayout();
 
@@ -2429,7 +2429,7 @@ namespace FactoryManagementSoftware.UI
 
             if (text == textMoreFilters)
             {
-                tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 175f);
+                //tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 175f);
 
                 dgvMatUsedReport.ResumeLayout();
 
@@ -2437,7 +2437,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (text == textHideFilters)
             {
-                tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+                //tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
 
                 dgvMatUsedReport.ResumeLayout();
 
@@ -2490,8 +2490,8 @@ namespace FactoryManagementSoftware.UI
             if (reportType.Equals(reportType_Delivered))
             {
                 tlpFilter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
-                cbSummary.Checked = false;
-                cbSummary.Visible = false;
+                //cbSummary.Checked = false;
+                //cbSummary.Visible = false;
 
                 gbMonthYear.Enabled = true;
                 gbDatePeriod.Enabled = true;
@@ -2508,8 +2508,8 @@ namespace FactoryManagementSoftware.UI
             else if (reportType.Equals(reportType_ReadyStock))
             {
                 tlpFilter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
-                cbSummary.Checked = false;
-                cbSummary.Visible = false;
+                //cbSummary.Checked = false;
+                //cbSummary.Visible = false;
 
                 gbMonthYear.Enabled = false;
                 gbDatePeriod.Enabled = false;
@@ -2531,9 +2531,9 @@ namespace FactoryManagementSoftware.UI
                 cbForecastDeductStock.Checked = false;
 
 
-                cbSummary.Visible = true;
+                //cbSummary.Visible = true;
 
-                cbSummary.Checked = true;
+                //cbSummary.Checked = true;
 
                 gbMonthYear.Enabled = true;
                 gbDatePeriod.Enabled = false;
@@ -2597,7 +2597,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if(cmbReportType.Text.Equals(reportType_Forecast) && cbSummary.Checked)
+                if(cmbReportType.Text.Equals(reportType_Forecast) && true)//cbSummary.Checked
                 {
                     LoadSummaryForecastMatUsedData();
                 }
@@ -2614,7 +2614,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (cmbReportType.Text.Equals(reportType_Forecast) && cbSummary.Checked)
+                if (cmbReportType.Text.Equals(reportType_Forecast) && true) //cbSummary.Checked
                 {
                     LoadSummaryForecastMatUsedData();
                 }
@@ -2660,7 +2660,7 @@ namespace FactoryManagementSoftware.UI
 
         private void cbSummary_CheckedChanged(object sender, EventArgs e)
         {
-            if(cbSummary.Checked)
+            if(true)//cbSummary.Checked
             {
                 tlpFilter.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0f);
                 tlpFilter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 240f);

@@ -408,6 +408,7 @@ namespace FactoryManagementSoftware.UI
             if (cbProduction.Checked)
             {
                 uItem.item_production = 1;
+                
             }
             else
             {
@@ -421,7 +422,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                uItem.item_production = 0;
+                uItem.item_sbb = 0;
             }
 
 
@@ -448,7 +449,7 @@ namespace FactoryManagementSoftware.UI
             //Material Data
             uItem.item_material = cmbRawMaterial.Text;
             uItem.item_mb = cmbColorMaterial.Text;
-            uItem.item_mb_rate = float.TryParse(txtMBRate.Text, out float colorRate) ? uItem.item_mb_rate : 0;
+            uItem.item_mb_rate = float.TryParse(txtMBRate.Text, out float colorRate) ? colorRate / 100 : 0;
             uItem.item_color = txtColor.Text;
 
             uItem.unit_to_pcs_rate = float.TryParse(txtPCSRate.Text, out float PcsRate) ? PcsRate : 1;
@@ -468,8 +469,13 @@ namespace FactoryManagementSoftware.UI
 
         private void updateItem()
         {
+
             GetData();
-            
+
+            float i = uItem.item_mb_rate;
+            string unit = uItem.item_unit;
+
+
             if (dalItem.ItemMasterList_ItemUpdate(uItem))
             {
                 //data updated successfully
@@ -668,7 +674,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     if (cmbSBBType.Text.Equals(row[dalSBBData.TypeName].ToString()))
                     {
-                        DT_DATA_SAVED.Rows[0][dalItem.TypeTblCode] = row[dalSBBData.TableCode].ToString();
+                        DT_DATA_SAVED.Rows[0][dalItem.TypeTblCode] = int.TryParse(row[dalSBBData.TableCode].ToString(), out int i)? i : 0;
                         break;
                     }
                 }

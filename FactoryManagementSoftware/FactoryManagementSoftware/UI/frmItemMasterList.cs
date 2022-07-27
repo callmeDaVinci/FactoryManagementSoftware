@@ -1284,7 +1284,18 @@ namespace FactoryManagementSoftware.UI
             frm.ShowDialog();
 
             if (frmItemEdit_NEW.DATA_SAVED)
+            {
+                frmLoading.ShowLoadingScreen();
+
+                Cursor = Cursors.WaitCursor;
+
+                LoadDBItemList();
                 LoadItemList();
+
+                Cursor = Cursors.Arrow;
+
+                frmLoading.CloseForm();
+            }
         }
 
         private void btnFilter_Click_1(object sender, EventArgs e)
@@ -1315,6 +1326,7 @@ namespace FactoryManagementSoftware.UI
 
             Cursor = Cursors.WaitCursor;
 
+            LoadDBItemList();
             LoadItemList();
 
             Cursor = Cursors.Arrow;
@@ -1378,7 +1390,17 @@ namespace FactoryManagementSoftware.UI
                 if(frmItemEdit_NEW.DATA_SAVED)
                 {
                     //CHANGE DB_ITEM_LIST DATA, CHANGE SUB LIST TABLE
-                    LoadGeneralInfo(frmItemEdit_NEW.DT_DATA_SAVED);
+                    frmLoading.ShowLoadingScreen();
+
+                    Cursor = Cursors.WaitCursor;
+
+                    LoadDBItemList();
+                    LoadItemList();
+
+                    Cursor = Cursors.Arrow;
+
+                    frmLoading.CloseForm();
+                    //LoadGeneralInfo(frmItemEdit_NEW.DT_DATA_SAVED);
 
                 }
             }

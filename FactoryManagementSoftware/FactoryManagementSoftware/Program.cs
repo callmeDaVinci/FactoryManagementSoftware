@@ -26,9 +26,9 @@ namespace FactoryManagementSoftware
            
            //Application.Run(new frmItemEdit_NEW());
 
-           Application.Run(new frmOrderAlert_NEW());
+           //Application.Run(new frmOrderAlert_NEW());
 
-          //Application.Run(new MainDashboard(1));
+          Application.Run(new MainDashboard(1));
 
            //Application.Run(new frmLogIn());
 
