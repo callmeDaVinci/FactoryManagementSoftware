@@ -27,23 +27,18 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
 
-            tool.DoubleBuffered(dgvMatUsedReport, true);
+            tool.DoubleBuffered(dgvAlertSummary, true);
 
             tool.LoadCustomerAndAllToComboBox(cmbCustomer);
             cmbCustomer.Text = tool.getCustName(1);
 
             LoadDataToReportTypeCMB(cmbReportType);
-            loadMonthDataToCMB(cmbMonth);
-            loadYearDataToCMB(cmbYear);
 
             loadMonthDataToCMB(cmbMonthFrom);
             loadYearDataToCMB(cmbYearFrom);
 
             loadMonthDataToCMB(cmbMonthTo);
             loadYearDataToCMB(cmbYearTo);
-
-            cmbMonth.Text = DateTime.Now.Month.ToString();
-            cmbYear.Text = DateTime.Now.Year.ToString();
 
             cmbMonthFrom.Text = DateTime.Now.Month.ToString();
             cmbYearFrom.Text = DateTime.Now.Year.ToString();
@@ -53,7 +48,7 @@ namespace FactoryManagementSoftware.UI
 
 
             dt_MatUsed = NewMatUsedTable();
-            dt_DeliveredData = NewDeliveredDataTable();
+            dt_DeliveredData = NewOrderAlertSummaryTable();
 
             headerOutQty = text.Header_Delivered;
 
@@ -84,6 +79,11 @@ namespace FactoryManagementSoftware.UI
         readonly string reportTitle_ActualUsed = "MATERIAL USED REPORT";
         readonly string reportTitle_Forecast = "MATERIAL USED REPORT";
         readonly string reportTitle_ReadyStock = "MATERIAL USED REPORT";
+
+        readonly string BTN_SHOW_ORDER_ALERT = "SHOW ORDER ALERT";
+        readonly string BTN_HIDE_ORDER_ALERT = "HIDE ORDER ALERT";
+        readonly string BTN_ORDER_ALERT_ONLY = "ORDER ALERT ONLY";
+        readonly string BTN_SHOW_ORDER_RECORD = "SHOW ORDER RECORD";
 
         itemForecastDAL dalItemForecast = new itemForecastDAL();
         itemForecastBLL uItemForecast = new itemForecastBLL();
@@ -118,25 +118,11 @@ namespace FactoryManagementSoftware.UI
 
         #region UI Design
 
-        private DataTable NewDeliveredDataTable()
+        private DataTable NewOrderAlertSummaryTable()
         {
             DataTable dt = new DataTable();
 
-            string reportType = cmbReportType.Text;
-
-            if (reportType.Equals(reportType_Delivered))
-            {
-                headerOutQty = "DELIVERED";
-            }
-            else if (reportType.Equals(reportType_ReadyStock))
-            {
-                headerOutQty = "STOCK";
-            }
-            else if (reportType.Equals(reportType_Forecast))
-            {
-                headerOutQty = cmbMonth.Text + "/" + cmbYear.Text + header_Forecast;
-            }
-
+            headerOutQty = cmbMonthFrom.Text + "/" + cmbYearFrom.Text + header_Forecast;
             dt.Columns.Add(text.Header_PartCode, typeof(string));
             dt.Columns.Add(text.Header_PartName, typeof(string));
             dt.Columns.Add(headerOutQty, typeof(float));
@@ -227,20 +213,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
-            string reportType = cmbReportType.Text;
-
-            if(reportType.Equals(reportType_Delivered))
-            {
-                headerOutQty = "DELIVERED";
-            }
-            else if (reportType.Equals(reportType_ReadyStock))
-            {
-                headerOutQty = "STOCK";
-            }
-            else if (reportType.Equals(reportType_Forecast))
-            {
-                headerOutQty = cmbMonth.Text + "/"+cmbYear.Text+ header_Forecast;
-            }
+            headerOutQty = cmbMonthFrom.Text + "/" + cmbYearFrom.Text + header_Forecast;
 
             dt.Columns.Add(text.Header_Index, typeof(int));
             dt.Columns.Add(text.Header_MatType, typeof(string));
@@ -492,7 +465,7 @@ namespace FactoryManagementSoftware.UI
         private void dgvMatUsedReport_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
 
-            DataGridView dgv = dgvMatUsedReport;
+            DataGridView dgv = dgvAlertSummary;
             dgv.SuspendLayout();
 
             int row = e.RowIndex;
@@ -532,24 +505,123 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMatUsedReport_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            dgvMatUsedUIEdit(dgvMatUsedReport);
-            dgvMatUsedReport.AutoResizeColumns();
+            dgvMatUsedUIEdit(dgvAlertSummary);
+            dgvAlertSummary.AutoResizeColumns();
         }
 
         #endregion
 
         #region Load Data/Validation
 
+        private void MainFilterOnly(bool showMainFilterOnly)
+        {
+            if (showMainFilterOnly)
+            {
+                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+            }
+            else
+            {
+                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 110f);
+
+            }
+        }
+        private void PanelUISetting(bool ShowOrderRecord,bool ShowOrderAlert)
+        {
+            btnFilter.Text = textMoreFilters;
+
+            if (ShowOrderRecord && ShowOrderAlert)
+            {
+                //order record & alert
+                tlpMain.RowStyles[0] = new RowStyle(SizeType.Percent, 50f);
+                tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 65f);
+                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 30f);
+                tlpMain.RowStyles[4] = new RowStyle(SizeType.Percent, 50f);
+
+                dgvOrderRecord.Visible = true;
+                dgvAlertSummary.Visible = true;
+
+                //main filter
+                tlpMainFIlter.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
+                tlpMainFIlter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 180f);
+                tlpMainFIlter.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 300f);
+                tlpMainFIlter.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 300f);
+                tlpMainFIlter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 130f);
+                tlpMainFIlter.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 135f);
+            }
+            else if (ShowOrderRecord && !ShowOrderAlert)
+            {
+                //order record 
+                tlpMain.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
+                tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 65f);
+                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[4] = new RowStyle(SizeType.Percent, 0f);
+
+                dgvOrderRecord.Visible = true;
+                dgvAlertSummary.Visible = false;
+
+                //main filter
+                tlpMainFIlter.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
+                tlpMainFIlter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 180f);
+                tlpMainFIlter.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpMainFIlter.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpMainFIlter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpMainFIlter.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 0f);
+            }
+            else if (!ShowOrderRecord && ShowOrderAlert)
+            {
+                //order alert 
+                tlpMain.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
+                tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 65f);
+                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 30f);
+                tlpMain.RowStyles[4] = new RowStyle(SizeType.Percent, 100f);
+
+                dgvOrderRecord.Visible = false;
+                dgvAlertSummary.Visible = true;
+
+                //main filter
+                tlpMainFIlter.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
+                tlpMainFIlter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 180f);
+                tlpMainFIlter.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 300f);
+                tlpMainFIlter.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 300f);
+                tlpMainFIlter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 130f);
+                tlpMainFIlter.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 135f);
+            }
+            else
+            {
+                //order alert 
+                tlpMain.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
+                tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 65f);
+                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[4] = new RowStyle(SizeType.Percent, 100f);
+
+                dgvOrderRecord.Visible = false;
+                dgvAlertSummary.Visible = false;
+
+                //main filter
+                tlpMainFIlter.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
+                tlpMainFIlter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 180f);
+                tlpMainFIlter.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpMainFIlter.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpMainFIlter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpMainFIlter.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 0f);
+            }
+        }
         private void frmMaterialUsedReport_NEW_Load(object sender, EventArgs e)
         {
-            dgvMatUsedReport.SuspendLayout();
+            PanelUISetting(true, false);
 
-            //tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+            //dgvMatUsedReport.SuspendLayout();
 
-            dgvMatUsedReport.ResumeLayout();
+            ////tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
 
-            tlpFilter.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 240f);
-            tlpFilter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
+            //dgvMatUsedReport.ResumeLayout();
+
+            //tlpFilter.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 240f);
+            //tlpFilter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
 
             btnFilter.Text = textMoreFilters;
 
@@ -604,8 +676,8 @@ namespace FactoryManagementSoftware.UI
         {
             if (cmbCustomer.SelectedIndex != -1)
             {
-                int month = int.TryParse(cmbMonth.Text, out month) ? month : DateTime.Now.Month;
-                int year = int.TryParse(cmbYear.Text, out year) ? year : DateTime.Now.Year;
+                int month = int.TryParse(cmbMonthFrom.Text, out month) ? month : DateTime.Now.Month;
+                int year = int.TryParse(cmbYearFrom.Text, out year) ? year : DateTime.Now.Year;
 
                 if (cmbCustomer.Text.Equals(tool.getCustName(1)))
                 {
@@ -784,7 +856,7 @@ namespace FactoryManagementSoftware.UI
 
             else if (cmbReportType.Text.Equals(reportType_Forecast))
             {
-                DeliveredQty = tool.getItemForecast(dt_ItemForecast, itemCode, Convert.ToInt32(cmbYear.Text), Convert.ToInt32(cmbMonth.Text));
+                DeliveredQty = tool.getItemForecast(dt_ItemForecast, itemCode, Convert.ToInt32(cmbYearFrom.Text), Convert.ToInt32(cmbMonthFrom.Text));
                 dbItemName = tool.getItemNameFromDataTable(dt_Item, itemCode);
 
                if(cbForecastDeductStock.Checked)
@@ -830,7 +902,7 @@ namespace FactoryManagementSoftware.UI
 
             row_Delivered = dt_DeliveredData.NewRow();
 
-            DeliveredQty = tool.getItemForecast(dt_ItemForecast, itemCode, Convert.ToInt32(cmbYear.Text), Convert.ToInt32(cmbMonth.Text));
+            DeliveredQty = tool.getItemForecast(dt_ItemForecast, itemCode, Convert.ToInt32(cmbYearFrom.Text), Convert.ToInt32(cmbMonthFrom.Text));
             dbItemName = tool.getItemNameFromDataTable(dt_Item, itemCode);
 
             if (cbForecastDeductStock.Checked)
@@ -909,7 +981,7 @@ namespace FactoryManagementSoftware.UI
         private void LoadSummaryForecastMatUsedData()
         {
             frmLoading.ShowLoadingScreen();
-            dgvMatUsedReport.DataSource = null;
+            dgvAlertSummary.DataSource = null;
 
             #region Datatable Data
             dt_DeliveredData = SummaryDataTable();
@@ -1259,7 +1331,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                dgvMatUsedReport.DataSource = null;
+                dgvAlertSummary.DataSource = null;
             }
 
             frmLoading.CloseForm();
@@ -1493,12 +1565,12 @@ namespace FactoryManagementSoftware.UI
                 dt_MatUsed = RemoveDuplicateRows(dt_MatUsed, text.Header_MatCode);
 
                 dt_MatUsed = RearrangeIndex(dt_MatUsed);
-                dgvMatUsedReport.DataSource = dt_MatUsed;
-                dgvMatUsedReport.ClearSelection();
+                dgvAlertSummary.DataSource = dt_MatUsed;
+                dgvAlertSummary.ClearSelection();
             }
             else
             {
-                dgvMatUsedReport.DataSource = null;
+                dgvAlertSummary.DataSource = null;
             }
 
         }
@@ -1764,10 +1836,10 @@ namespace FactoryManagementSoftware.UI
         private void LoadMatUsedData_2()
         {
             frmLoading.ShowLoadingScreen();
-            dgvMatUsedReport.DataSource = null;
+            dgvAlertSummary.DataSource = null;
 
             #region Datatable Data
-            dt_DeliveredData = NewDeliveredDataTable();
+            dt_DeliveredData = NewOrderAlertSummaryTable();
             //get all pmma item
             string custName = cmbCustomer.Text;
 
@@ -2145,8 +2217,8 @@ namespace FactoryManagementSoftware.UI
             //set data source to datagridview
             if (dt_MatUsed.Rows.Count > 0)
             {
-                dgvMatUsedReport.DataSource = dt_MatUsed;
-                dgvMatUsedReport.ClearSelection();
+                dgvAlertSummary.DataSource = dt_MatUsed;
+                dgvAlertSummary.ClearSelection();
             }
 
             frmLoading.CloseForm();//2079ms
@@ -2407,8 +2479,8 @@ namespace FactoryManagementSoftware.UI
 
             if (dt_MatUsed.Rows.Count > 0)
             {
-                dgvMatUsedReport.DataSource = dt_MatUsed;
-                dgvMatUsedReport.ClearSelection();
+                dgvAlertSummary.DataSource = dt_MatUsed;
+                dgvAlertSummary.ClearSelection();
             }
 
         }
@@ -2424,22 +2496,17 @@ namespace FactoryManagementSoftware.UI
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
-            dgvMatUsedReport.SuspendLayout();
             string text = btnFilter.Text;
 
             if (text == textMoreFilters)
             {
-                //tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 175f);
-
-                dgvMatUsedReport.ResumeLayout();
+                MainFilterOnly(false);
 
                 btnFilter.Text = textHideFilters;
             }
             else if (text == textHideFilters)
             {
-                //tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
-
-                dgvMatUsedReport.ResumeLayout();
+                MainFilterOnly(true);
 
                 btnFilter.Text = textMoreFilters;
             }
@@ -2463,7 +2530,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             custChanging = true;
-            dgvMatUsedReport.DataSource = null;
+            dgvAlertSummary.DataSource = null;
 
             if (cmbCustomer.SelectedIndex != -1)
             {
@@ -2484,61 +2551,55 @@ namespace FactoryManagementSoftware.UI
         private void cmbReportType_SelectedIndexChanged(object sender, EventArgs e)
         {
             string reportType = cmbReportType.Text;
-            dt_DeliveredData = NewDeliveredDataTable();
-            dgvMatUsedReport.DataSource = null;
+            dt_DeliveredData = NewOrderAlertSummaryTable();
+            dgvAlertSummary.DataSource = null;
 
             if (reportType.Equals(reportType_Delivered))
             {
-                tlpFilter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
-                //cbSummary.Checked = false;
-                //cbSummary.Visible = false;
+                //    tlpFilter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
+                //    //cbSummary.Checked = false;
+                //    //cbSummary.Visible = false;
 
-                gbMonthYear.Enabled = true;
-                gbDatePeriod.Enabled = true;
+                //    gbDatePeriod.Enabled = true;
 
-                dtpFrom.Format = DateTimePickerFormat.Short;
-                dtpTo.Format = DateTimePickerFormat.Short;
+                //    dtpFrom.Format = DateTimePickerFormat.Short;
+                //    dtpTo.Format = DateTimePickerFormat.Short;
 
-                cmbMonth.Text = DateTime.Now.Month.ToString();
-                cmbYear.Text = DateTime.Now.Year.ToString();
-                //getStartandEndDate();
+                //    cmbmf.Text = DateTime.Now.Month.ToString();
+                //    cmbYear.Text = DateTime.Now.Year.ToString();
+                //    //getStartandEndDate();
 
-                lblReportTitle.Text = reportTitle_ActualUsed;
+                //    lblReportTitle.Text = reportTitle_ActualUsed;
+                //}
             }
             else if (reportType.Equals(reportType_ReadyStock))
             {
-                tlpFilter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
-                //cbSummary.Checked = false;
-                //cbSummary.Visible = false;
+                //tlpFilter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
+                ////cbSummary.Checked = false;
+                ////cbSummary.Visible = false;
 
-                gbMonthYear.Enabled = false;
-                gbDatePeriod.Enabled = false;
+                //gbMonthYear.Enabled = false;
+                //gbDatePeriod.Enabled = false;
 
-                cmbMonth.SelectedIndex = -1;
-                cmbYear.SelectedIndex = -1;
+                //cmbMonth.SelectedIndex = -1;
+                //cmbYear.SelectedIndex = -1;
 
-                dtpFrom.CustomFormat = " ";
-                dtpFrom.Format = DateTimePickerFormat.Custom;
+                //dtpFrom.CustomFormat = " ";
+                //dtpFrom.Format = DateTimePickerFormat.Custom;
 
-                dtpTo.CustomFormat = " ";
-                dtpTo.Format = DateTimePickerFormat.Custom;
+                //dtpTo.CustomFormat = " ";
+                //dtpTo.Format = DateTimePickerFormat.Custom;
 
-                lblReportTitle.Text = reportTitle_ReadyStock;
+                //lblReportTitle.Text = reportTitle_ReadyStock;
             }
             else if (reportType.Equals(reportType_Forecast))
             {
                 tlpFilter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 240f);
                 cbForecastDeductStock.Checked = false;
 
-
-                //cbSummary.Visible = true;
-
-                //cbSummary.Checked = true;
-
-                gbMonthYear.Enabled = true;
                 gbDatePeriod.Enabled = false;
-                cmbMonth.Text = DateTime.Now.Month.ToString();
-                cmbYear.Text = DateTime.Now.Year.ToString();
+                cmbMonthFrom.Text = DateTime.Now.Month.ToString();
+                cmbYearFrom.Text = DateTime.Now.Year.ToString();
 
                 dtpFrom.CustomFormat = " ";
                 dtpFrom.Format = DateTimePickerFormat.Custom;
@@ -2546,32 +2607,7 @@ namespace FactoryManagementSoftware.UI
                 dtpTo.CustomFormat = " ";
                 dtpTo.Format = DateTimePickerFormat.Custom;
 
-                lblReportTitle.Text = reportTitle_Forecast;
-            }
-        }
-
-        private void lblCurrentMonth_Click(object sender, EventArgs e)
-        {
-            cmbMonth.Text = DateTime.Now.Month.ToString();
-            cmbYear.Text = DateTime.Now.Year.ToString();
-            getStartandEndDate();
-        }
-
-        private void cmbMonth_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmbMonth.SelectedIndex != -1)
-            {
-                dgvMatUsedReport.DataSource = null;
-                getStartandEndDate();
-            }
-        }
-
-        private void cmbYear_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmbYear.SelectedIndex != -1)
-            {
-                dgvMatUsedReport.DataSource = null;
-                getStartandEndDate();
+                //lblAlertTitle.Text = reportTitle_Forecast;
             }
         }
 
@@ -2625,7 +2661,7 @@ namespace FactoryManagementSoftware.UI
 
         private void lblZeroCostOnly_Click(object sender, EventArgs e)
         {
-            dgvMatUsedReport.DataSource = null;
+            dgvAlertSummary.DataSource = null;
             if (cbZeroCostOnly.Checked)
             {
                 cbZeroCostOnly.Checked = false;
@@ -2638,22 +2674,22 @@ namespace FactoryManagementSoftware.UI
 
         private void cbRawMat_CheckedChanged(object sender, EventArgs e)
         {
-            dgvMatUsedReport.DataSource = null;
+            dgvAlertSummary.DataSource = null;
         }
 
         private void cbMasterBatch_CheckedChanged(object sender, EventArgs e)
         {
-            dgvMatUsedReport.DataSource = null;
+            dgvAlertSummary.DataSource = null;
         }
 
         private void cbPigment_CheckedChanged(object sender, EventArgs e)
         {
-            dgvMatUsedReport.DataSource = null;
+            dgvAlertSummary.DataSource = null;
         }
 
         private void cbSubMat_CheckedChanged(object sender, EventArgs e)
         {
-            dgvMatUsedReport.DataSource = null;
+            dgvAlertSummary.DataSource = null;
         }
 
         #endregion
@@ -2704,6 +2740,75 @@ namespace FactoryManagementSoftware.UI
             {
                 header_Forecast = ForecastType_FORECAST;
 
+            }
+        }
+
+        private void cbStockType_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnShowOrHideOrderAlert_Click(object sender, EventArgs e)
+        {
+            if(btnShowOrHideOrderAlert.Text.Equals(BTN_HIDE_ORDER_ALERT))
+            {
+                btnShowOrHideOrderAlert.Text = BTN_SHOW_ORDER_ALERT;
+
+                if (btnOrderAlertOnly.Text.Equals(BTN_ORDER_ALERT_ONLY))
+                {
+                    PanelUISetting(true, false);
+                }
+                else
+                {
+                    PanelUISetting(false, false);
+                }
+
+            }
+            else
+            {
+                btnShowOrHideOrderAlert.Text = BTN_HIDE_ORDER_ALERT;
+
+                if (btnOrderAlertOnly.Text.Equals(BTN_ORDER_ALERT_ONLY))
+                {
+                    PanelUISetting(true, true);
+                }
+                else
+                {
+                    PanelUISetting(false, true);
+                }
+            }
+        }
+
+        private void btnOrderAlertOnly_Click(object sender, EventArgs e)
+        {
+            string text = btnOrderAlertOnly.Text;
+
+            if (text == BTN_ORDER_ALERT_ONLY)
+            {
+                //dgvOrderRecord.Visible = false;
+                PanelUISetting(false, true);
+
+                btnShowOrHideOrderAlert.Text = BTN_HIDE_ORDER_ALERT;
+                btnOrderAlertOnly.Text = BTN_SHOW_ORDER_RECORD;
+            }
+            else if (text == BTN_SHOW_ORDER_RECORD)
+            {
+                dgvOrderRecord.Visible = true;
+
+                if (btnShowOrHideOrderAlert.Text.Equals(BTN_SHOW_ORDER_ALERT))
+                {
+                    PanelUISetting(true, false);
+                }
+                else
+                {
+                    PanelUISetting(true, true);
+                }
+
+                btnOrderAlertOnly.Text = BTN_ORDER_ALERT_ONLY;
+            }
+            else
+            {
+                MessageBox.Show("Button Error!");
             }
         }
     }
