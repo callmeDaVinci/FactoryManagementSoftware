@@ -17,6 +17,7 @@ namespace FactoryManagementSoftware.UI
         static public bool inOutFormOpen = false;
         static public bool catFormOpen = false;
         static public bool ordFormOpen = false;
+        static public bool NewOrdFormOpen = false;
         static public bool dataFormOpen = false;
         static public bool MouldFormOpen = false;
         static public bool itemCustFormOpen = false;
@@ -323,7 +324,7 @@ namespace FactoryManagementSoftware.UI
             frm.Show();
         }
 
-        private void orderToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void test()
         {
             //if (!ordFormOpen)
             //{
@@ -365,6 +366,49 @@ namespace FactoryManagementSoftware.UI
                     Application.OpenForms.OfType<frmOrder>().First().BringToFront();
                 }
             }
+        }
+        private void orderToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            //if (!ordFormOpen)
+            //{
+            //    frmLoading.ShowLoadingScreen();
+            //    frmOrderAlert_NEW ord = new frmOrderAlert_NEW
+            //    {
+            //        MdiParent = this,
+            //        StartPosition = FormStartPosition.CenterScreen,
+            //        WindowState = FormWindowState.Maximized
+            //    };
+            //    ord.Show();
+            //    ordFormOpen = true;
+            //    frmLoading.CloseForm();
+            //}
+            //else
+            //{
+            //    if (Application.OpenForms.OfType<frmOrderAlert_NEW>().Count() == 1)
+            //    {
+            //        Application.OpenForms.OfType<frmOrderAlert_NEW>().First().BringToFront();
+            //    }
+            //}
+            //if (!ordFormOpen)
+            //{
+            //    frmLoading.ShowLoadingScreen();
+            //    frmOrder ord = new frmOrder
+            //    {
+            //        MdiParent = this,
+            //        StartPosition = FormStartPosition.CenterScreen,
+            //        WindowState = FormWindowState.Maximized
+            //    };
+            //    ord.Show();
+            //    ordFormOpen = true;
+            //    frmLoading.CloseForm();
+            //}
+            //else
+            //{
+            //    if (Application.OpenForms.OfType<frmOrder>().Count() == 1)
+            //    {
+            //        Application.OpenForms.OfType<frmOrder>().First().BringToFront();
+            //    }
+            //}
         }
 
         private void stockToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1012,6 +1056,75 @@ namespace FactoryManagementSoftware.UI
                     Application.OpenForms.OfType<frmItemMasterList>().First().BringToFront();
                 }
             }
+        }
+
+        private void oLDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //if (!ordFormOpen)
+            //{
+            //    frmLoading.ShowLoadingScreen();
+            //    frmOrderAlert_NEW ord = new frmOrderAlert_NEW
+            //    {
+            //        MdiParent = this,
+            //        StartPosition = FormStartPosition.CenterScreen,
+            //        WindowState = FormWindowState.Maximized
+            //    };
+            //    ord.Show();
+            //    ordFormOpen = true;
+            //    frmLoading.CloseForm();
+            //}
+            //else
+            //{
+            //    if (Application.OpenForms.OfType<frmOrderAlert_NEW>().Count() == 1)
+            //    {
+            //        Application.OpenForms.OfType<frmOrderAlert_NEW>().First().BringToFront();
+            //    }
+            //}
+            if (!ordFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmOrder ord = new frmOrder
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                ord.Show();
+                ordFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmOrder>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmOrder>().First().BringToFront();
+                }
+            }
+        }
+
+        private void nEWToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            if (!NewOrdFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmOrderAlert_NEW ord = new frmOrderAlert_NEW
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                ord.Show();
+                NewOrdFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmOrderAlert_NEW>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmOrderAlert_NEW>().First().BringToFront();
+                }
+            }
+
         }
     }
 }

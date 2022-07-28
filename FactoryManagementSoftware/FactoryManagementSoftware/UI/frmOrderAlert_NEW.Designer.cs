@@ -28,17 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpMainFIlter = new System.Windows.Forms.TableLayoutPanel();
             this.btnOrderAlertOnly = new System.Windows.Forms.Button();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.cbZeroCostOnly = new System.Windows.Forms.CheckBox();
-            this.cmbReportType = new System.Windows.Forms.ComboBox();
+            this.cmbItemType = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label8 = new System.Windows.Forms.Label();
             this.cmbCustomer = new System.Windows.Forms.ComboBox();
@@ -69,11 +69,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.cmbYearFrom = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cbPigment = new System.Windows.Forms.CheckBox();
-            this.cbSubMat = new System.Windows.Forms.CheckBox();
-            this.cbMasterBatch = new System.Windows.Forms.CheckBox();
-            this.cbRawMat = new System.Windows.Forms.CheckBox();
-            this.cbStockType = new System.Windows.Forms.CheckBox();
+            this.cbZeroStockType = new System.Windows.Forms.CheckBox();
             this.cbForecastDeductStock = new System.Windows.Forms.CheckBox();
             this.btnFilterApply = new System.Windows.Forms.Button();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
@@ -142,7 +138,7 @@
             this.tableLayoutPanel6.ColumnCount = 1;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel7, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.cmbReportType, 0, 1);
+            this.tableLayoutPanel6.Controls.Add(this.cmbItemType, 0, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(758, 0);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
@@ -177,9 +173,9 @@
             this.label1.Location = new System.Drawing.Point(4, 13);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(27, 12);
+            this.label1.Size = new System.Drawing.Size(52, 12);
             this.label1.TabIndex = 167;
-            this.label1.Text = "TYPE";
+            this.label1.Text = "ITEM TYPE";
             // 
             // cbZeroCostOnly
             // 
@@ -195,22 +191,23 @@
             this.cbZeroCostOnly.Text = "ZERO COST";
             this.cbZeroCostOnly.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbZeroCostOnly.UseVisualStyleBackColor = true;
+            this.cbZeroCostOnly.CheckedChanged += new System.EventHandler(this.cbZeroCostOnly_CheckedChanged);
             // 
-            // cmbReportType
+            // cmbItemType
             // 
-            this.cmbReportType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cmbItemType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbReportType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cmbReportType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbReportType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbReportType.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cmbReportType.FormattingEnabled = true;
-            this.cmbReportType.Location = new System.Drawing.Point(0, 30);
-            this.cmbReportType.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.cmbReportType.Name = "cmbReportType";
-            this.cmbReportType.Size = new System.Drawing.Size(290, 25);
-            this.cmbReportType.TabIndex = 166;
-            this.cmbReportType.SelectedIndexChanged += new System.EventHandler(this.cmbReportType_SelectedIndexChanged);
+            this.cmbItemType.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmbItemType.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmbItemType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbItemType.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cmbItemType.FormattingEnabled = true;
+            this.cmbItemType.Location = new System.Drawing.Point(0, 30);
+            this.cmbItemType.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.cmbItemType.Name = "cmbItemType";
+            this.cmbItemType.Size = new System.Drawing.Size(290, 25);
+            this.cmbItemType.TabIndex = 166;
+            this.cmbItemType.SelectedIndexChanged += new System.EventHandler(this.cmbReportType_SelectedIndexChanged);
             // 
             // tableLayoutPanel1
             // 
@@ -313,27 +310,27 @@
             this.dgvAlertSummary.AllowUserToOrderColumns = true;
             this.dgvAlertSummary.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvAlertSummary.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.dgvAlertSummary.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle25.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle25.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAlertSummary.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle25;
+            this.dgvAlertSummary.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAlertSummary.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvAlertSummary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAlertSummary.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle26.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle26.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle26.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAlertSummary.DefaultCellStyle = dataGridViewCellStyle26;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAlertSummary.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvAlertSummary.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAlertSummary.GridColor = System.Drawing.Color.White;
+            this.dgvAlertSummary.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvAlertSummary.Location = new System.Drawing.Point(4, 446);
             this.dgvAlertSummary.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.dgvAlertSummary.Name = "dgvAlertSummary";
@@ -464,6 +461,7 @@
             this.cmbYearTo.Name = "cmbYearTo";
             this.cmbYearTo.Size = new System.Drawing.Size(81, 25);
             this.cmbYearTo.TabIndex = 161;
+            this.cmbYearTo.SelectedIndexChanged += new System.EventHandler(this.cmbYearTo_SelectedIndexChanged);
             // 
             // label10
             // 
@@ -486,6 +484,7 @@
             this.cmbMonthTo.Name = "cmbMonthTo";
             this.cmbMonthTo.Size = new System.Drawing.Size(62, 25);
             this.cmbMonthTo.TabIndex = 159;
+            this.cmbMonthTo.SelectedIndexChanged += new System.EventHandler(this.cmbMonthTo_SelectedIndexChanged);
             // 
             // label12
             // 
@@ -527,9 +526,11 @@
             this.lblChangeDate.TabIndex = 165;
             this.lblChangeDate.Text = "PMMA DATE EDIT";
             this.lblChangeDate.Visible = false;
+            this.lblChangeDate.Click += new System.EventHandler(this.lblChangeDate_Click);
             // 
             // dtpTo
             // 
+            this.dtpTo.Enabled = false;
             this.dtpTo.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpTo.Location = new System.Drawing.Point(137, 45);
@@ -539,6 +540,7 @@
             // 
             // dtpFrom
             // 
+            this.dtpFrom.Enabled = false;
             this.dtpFrom.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpFrom.Location = new System.Drawing.Point(18, 45);
@@ -604,6 +606,7 @@
             this.cmbMonthFrom.Name = "cmbMonthFrom";
             this.cmbMonthFrom.Size = new System.Drawing.Size(62, 25);
             this.cmbMonthFrom.TabIndex = 154;
+            this.cmbMonthFrom.SelectedIndexChanged += new System.EventHandler(this.cmbMonthFrom_SelectedIndexChanged);
             // 
             // label6
             // 
@@ -628,14 +631,11 @@
             this.cmbYearFrom.Name = "cmbYearFrom";
             this.cmbYearFrom.Size = new System.Drawing.Size(81, 25);
             this.cmbYearFrom.TabIndex = 156;
+            this.cmbYearFrom.SelectedIndexChanged += new System.EventHandler(this.cmbYearFrom_SelectedIndexChanged);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.cbPigment);
-            this.groupBox2.Controls.Add(this.cbSubMat);
-            this.groupBox2.Controls.Add(this.cbMasterBatch);
-            this.groupBox2.Controls.Add(this.cbRawMat);
-            this.groupBox2.Controls.Add(this.cbStockType);
+            this.groupBox2.Controls.Add(this.cbZeroStockType);
             this.groupBox2.Controls.Add(this.cbForecastDeductStock);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -646,76 +646,21 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "FORECAST SETTING";
             // 
-            // cbPigment
+            // cbZeroStockType
             // 
-            this.cbPigment.AutoSize = true;
-            this.cbPigment.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbPigment.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbPigment.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbPigment.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbPigment.Location = new System.Drawing.Point(234, 45);
-            this.cbPigment.Name = "cbPigment";
-            this.cbPigment.Size = new System.Drawing.Size(18, 17);
-            this.cbPigment.TabIndex = 169;
-            this.cbPigment.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbPigment.UseVisualStyleBackColor = true;
-            // 
-            // cbSubMat
-            // 
-            this.cbSubMat.AutoSize = true;
-            this.cbSubMat.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbSubMat.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbSubMat.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbSubMat.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbSubMat.Location = new System.Drawing.Point(188, 47);
-            this.cbSubMat.Name = "cbSubMat";
-            this.cbSubMat.Size = new System.Drawing.Size(18, 17);
-            this.cbSubMat.TabIndex = 169;
-            this.cbSubMat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbSubMat.UseVisualStyleBackColor = true;
-            // 
-            // cbMasterBatch
-            // 
-            this.cbMasterBatch.AutoSize = true;
-            this.cbMasterBatch.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbMasterBatch.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbMasterBatch.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbMasterBatch.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbMasterBatch.Location = new System.Drawing.Point(164, 47);
-            this.cbMasterBatch.Name = "cbMasterBatch";
-            this.cbMasterBatch.Size = new System.Drawing.Size(18, 17);
-            this.cbMasterBatch.TabIndex = 169;
-            this.cbMasterBatch.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbMasterBatch.UseVisualStyleBackColor = true;
-            // 
-            // cbRawMat
-            // 
-            this.cbRawMat.AutoSize = true;
-            this.cbRawMat.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRawMat.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbRawMat.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbRawMat.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRawMat.Location = new System.Drawing.Point(128, 47);
-            this.cbRawMat.Name = "cbRawMat";
-            this.cbRawMat.Size = new System.Drawing.Size(18, 17);
-            this.cbRawMat.TabIndex = 168;
-            this.cbRawMat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRawMat.UseVisualStyleBackColor = true;
-            // 
-            // cbStockType
-            // 
-            this.cbStockType.AutoSize = true;
-            this.cbStockType.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbStockType.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbStockType.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbStockType.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbStockType.Location = new System.Drawing.Point(12, 52);
-            this.cbStockType.Name = "cbStockType";
-            this.cbStockType.Size = new System.Drawing.Size(96, 19);
-            this.cbStockType.TabIndex = 158;
-            this.cbStockType.Text = "ZERO STOCK";
-            this.cbStockType.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbStockType.UseVisualStyleBackColor = true;
+            this.cbZeroStockType.AutoSize = true;
+            this.cbZeroStockType.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbZeroStockType.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbZeroStockType.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbZeroStockType.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbZeroStockType.Location = new System.Drawing.Point(12, 52);
+            this.cbZeroStockType.Name = "cbZeroStockType";
+            this.cbZeroStockType.Size = new System.Drawing.Size(96, 19);
+            this.cbZeroStockType.TabIndex = 158;
+            this.cbZeroStockType.Text = "ZERO STOCK";
+            this.cbZeroStockType.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbZeroStockType.UseVisualStyleBackColor = true;
+            this.cbZeroStockType.CheckedChanged += new System.EventHandler(this.cbZeroStockType_CheckedChanged);
             // 
             // cbForecastDeductStock
             // 
@@ -746,7 +691,7 @@
             this.btnFilterApply.TabIndex = 145;
             this.btnFilterApply.Text = "APPLY";
             this.btnFilterApply.UseVisualStyleBackColor = false;
-            this.btnFilterApply.Click += new System.EventHandler(this.btnFilterApply_Click);
+            this.btnFilterApply.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // tlpMain
             // 
@@ -778,24 +723,24 @@
             this.dgvOrderRecord.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvOrderRecord.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvOrderRecord.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle27.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle27.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle27.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvOrderRecord.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle27;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvOrderRecord.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvOrderRecord.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvOrderRecord.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle28.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle28.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle28.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle28.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvOrderRecord.DefaultCellStyle = dataGridViewCellStyle28;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvOrderRecord.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvOrderRecord.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvOrderRecord.GridColor = System.Drawing.Color.White;
             this.dgvOrderRecord.Location = new System.Drawing.Point(4, 1);
@@ -834,7 +779,7 @@
             this.Name = "frmOrderAlert_NEW";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ORDER";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMaterialUsedReport_NEW_FormClosed);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmOrderAlert_NEW_FormClosed);
             this.Load += new System.EventHandler(this.frmMaterialUsedReport_NEW_Load);
             this.tlpMainFIlter.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
@@ -884,7 +829,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cmbReportType;
+        private System.Windows.Forms.ComboBox cmbItemType;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.TableLayoutPanel tlpFilter;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -898,17 +843,13 @@
         private System.Windows.Forms.ComboBox cmbYearTo;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox cbForecastDeductStock;
-        private System.Windows.Forms.CheckBox cbStockType;
+        private System.Windows.Forms.CheckBox cbZeroStockType;
         private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.DataGridView dgvOrderRecord;
         private System.Windows.Forms.Button btnShowOrHideOrderAlert;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btnFilterApply;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.CheckBox cbPigment;
-        private System.Windows.Forms.CheckBox cbSubMat;
-        private System.Windows.Forms.CheckBox cbMasterBatch;
-        private System.Windows.Forms.CheckBox cbRawMat;
         private System.Windows.Forms.Button btnOrderAlertOnly;
     }
 }
