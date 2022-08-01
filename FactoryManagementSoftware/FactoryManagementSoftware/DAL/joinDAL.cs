@@ -862,7 +862,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable existCheck(string parent, string child)
+        public DataTable existCheck(string parentCode, string childCode)
         {
             SqlConnection conn = new SqlConnection(myconnstrng);
             DataTable dt = new DataTable();
@@ -872,8 +872,8 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@parent_code", parent);
-                cmd.Parameters.AddWithValue("@child_code", child);
+                cmd.Parameters.AddWithValue("@parent_code", parentCode);
+                cmd.Parameters.AddWithValue("@child_code", childCode);
 
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 conn.Open();

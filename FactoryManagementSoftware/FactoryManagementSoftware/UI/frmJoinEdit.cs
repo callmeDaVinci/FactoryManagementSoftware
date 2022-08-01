@@ -27,36 +27,51 @@ namespace FactoryManagementSoftware.UI
             uJoin = u;
             loadItemCategoryData();
 
-            cmbParentName.Text = tool.getItemName(u.join_parent_code);
-            cmbParentCode.Text = u.join_parent_code;
+            LoadJoinData(u.join_parent_code, u.join_child_code);
+            //cmbParentName.Text = tool.getItemName(u.join_parent_code);
+            //cmbParentCode.Text = u.join_parent_code;
 
-            cmbChildCat.Text = dalItem.getCatName(u.join_child_code);
-            cmbChildName.Text = tool.getItemName(u.join_child_code);
-            LoadChidCodeCMB();
-            cmbChildCode.Text = u.join_child_code;
+            //cmbChildCat.Text = dalItem.getCatName(u.join_child_code);
+            //cmbChildName.Text = tool.getItemName(u.join_child_code);
+            //LoadChidCodeCMB();
+            //cmbChildCode.Text = u.join_child_code;
 
-            txtChildQty.Text = u.join_qty.ToString();
-            txtMax.Text = u.join_max.ToString();
-            txtMin.Text = u.join_min.ToString();
+            //txtChildQty.Text = u.join_qty.ToString();
+            //txtMax.Text = u.join_max.ToString();
+            //txtMin.Text = u.join_min.ToString();
 
-            if (!string.IsNullOrEmpty(u.join_parent_code))
-            {
-                cmbParentCat.Enabled = false;
-                cmbParentName.Enabled = false;
-                cmbParentCode.Enabled = false;
-            }
+            //if (!string.IsNullOrEmpty(u.join_parent_code))
+            //{
+            //    cmbParentCat.Enabled = false;
+            //    cmbParentName.Enabled = false;
+            //    cmbParentCode.Enabled = false;
+            //}
 
-            if (!string.IsNullOrEmpty(u.join_child_code))
-            {
-                cmbChildCat.Enabled = false;
-                cmbChildName.Enabled = false;
-                cmbChildCode.Enabled = false;
+            //if (!string.IsNullOrEmpty(u.join_child_code))
+            //{
+            //    cmbChildCat.Enabled = false;
+            //    cmbChildName.Enabled = false;
+            //    cmbChildCode.Enabled = false;
 
-                cmbChildName.DropDownStyle = ComboBoxStyle.DropDownList;
-            }
+            //    cmbChildName.DropDownStyle = ComboBoxStyle.DropDownList;
+            //}
 
-            cbMainCarton.Checked = u.join_main_carton;
+            //cbMainCarton.Checked = u.join_main_carton;
 
+            updateTestName();
+        }
+
+        public frmJoinEdit(joinBLL u, bool closeAfterSave, bool newJoin)
+        {
+            CLOSE_PAGE_AFTER_SAVED = closeAfterSave;
+            DATA_UPDATED = false;
+
+            InitializeComponent();
+            uJoin = u;
+            loadItemCategoryData();
+
+            LoadJoinData(u.join_parent_code);
+           
             updateTestName();
         }
 
@@ -79,6 +94,92 @@ namespace FactoryManagementSoftware.UI
         private readonly string LBL_PARENT_NORMAL = "PARENT QTY";
 
         #region Load/Close
+
+        private void LoadJoinData(string ParentCode)
+        {
+            string ParentName = tool.getItemName(ParentCode);
+
+            bool Code_Inspection = !string.IsNullOrEmpty(ParentName);
+
+            if (!Code_Inspection)
+            {
+                MessageBox.Show("Item code invalid.");
+            }
+            else
+            {
+                cmbParentName.Text = ParentName;
+                cmbParentCode.Text = ParentCode;
+
+
+
+                txtChildQty.Text = "1";
+                txtMax.Text = "1";
+                txtMin.Text = "1";
+
+                if (!string.IsNullOrEmpty(ParentCode))
+                {
+                    cmbParentCat.Enabled = false;
+                    cmbParentName.Enabled = false;
+                    cmbParentCode.Enabled = false;
+                }
+            }
+
+        }
+
+        private void LoadJoinData(string ParentCode, string ChildCode)
+        {
+            string ParentName = tool.getItemName(ParentCode);
+            string ChildName = tool.getItemName(ChildCode);
+
+            bool Code_Inspection = !string.IsNullOrEmpty(ParentName);
+            Code_Inspection &= !string.IsNullOrEmpty(ChildName);
+            Code_Inspection &= ParentCode != ChildCode;
+
+            DataTable dt_Join = dalJoin.existCheck(ParentCode,ChildCode);
+
+            if(dt_Join.Rows.Count <= 0 || !Code_Inspection)
+            {
+                MessageBox.Show("Item code invalid or Join Data not found.");
+            }
+            else
+            {
+                foreach (DataRow row in dt_Join.Rows)
+                {
+                    cmbParentName.Text = ParentName;
+                    cmbParentCode.Text = ParentCode;
+
+                    cmbChildCat.Text = dalItem.getCatName(ChildCode);
+                    cmbChildName.Text = ChildName;
+
+                    LoadChidCodeCMB();
+                    cmbChildCode.Text = ChildCode;
+
+                    txtChildQty.Text = row[dalJoin.JoinQty].ToString();
+                    txtMax.Text = row[dalJoin.JoinMax].ToString();
+                    txtMin.Text = row[dalJoin.JoinMin].ToString();
+
+                    if (!string.IsNullOrEmpty(ParentCode))
+                    {
+                        cmbParentCat.Enabled = false;
+                        cmbParentName.Enabled = false;
+                        cmbParentCode.Enabled = false;
+                    }
+
+                    if (!string.IsNullOrEmpty(ChildCode))
+                    {
+                        cmbChildCat.Enabled = false;
+                        cmbChildName.Enabled = false;
+                        cmbChildCode.Enabled = false;
+
+                        cmbChildName.DropDownStyle = ComboBoxStyle.DropDownList;
+                    }
+
+                    cbMainCarton.Checked = bool.TryParse(row[dalJoin.JoinMainCarton].ToString(), out bool cbChecked) ? cbChecked : false;
+                    cbStockOut.Checked = bool.TryParse(row[dalJoin.JoinStockOut].ToString(), out cbChecked) ? cbChecked : false;
+                }
+            }
+           
+        }
 
         private void loadItemCategoryData()
         {
@@ -139,6 +240,7 @@ namespace FactoryManagementSoftware.UI
               
             }
         }
+
         private string GetChildCode(DataTable dt, string parentCode)
         {
             foreach (DataRow row in dt.Rows)

@@ -209,7 +209,7 @@ namespace FactoryManagementSoftware.UI
 
                     uJoin.join_child_code = "";
 
-                    frmJoinEdit frm = new frmJoinEdit(uJoin, true);
+                    frmJoinEdit frm = new frmJoinEdit(uJoin, true, true);
 
                     frm.StartPosition = FormStartPosition.CenterScreen;
                     frm.ShowDialog();//Item Edit
@@ -627,77 +627,86 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadGroupInfo()
         {
-            dgvMoreInfo.DataSource = null;
-
-            int rowIndex = dgvItemList.CurrentCell.RowIndex;
-            string itemCode = dgvItemList.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
-
-            ShowingItemLabelSet(itemCode);
-
-            if(CURRENT_SELECTED_ITEMCODE != itemCode && rowIndex > -1)
+            if (dgvItemList != null && dgvItemList.SelectedRows.Count > 0)
             {
-                SelectedItemLabelSet(itemCode);
-            }
+                int rowIndex = dgvItemList.CurrentCell.RowIndex;
+                string itemCode = dgvItemList.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
 
-            if (!string.IsNullOrEmpty(itemCode) && rowIndex > -1)
-            {
-                DataTable DB_Join = dalJoin.loadChildList(itemCode);
-
-                DataTable dt_MoreInfo = NewItemGroupInfoTable();
-                DataRow newRow;
-
-                int index = 1;
-
-                foreach (DataRow row in DB_Join.Rows)
+                if (dgvMoreInfo.DataSource != null)
                 {
-                    string min   = row[dalJoin.JoinMin].ToString();
-                    string max = row[dalJoin.JoinMax].ToString();
-                    string ChildQty = row[dalJoin.JoinQty].ToString();
-                    string ChildCode = row[dalJoin.JoinChild].ToString();
+                    ShowingItemLabelSet(itemCode);
 
-                    string ChildName = tool.getItemName(ChildCode);
+                }
+                dgvMoreInfo.DataSource = null;
 
-                    string ratio;
+                if (CURRENT_SELECTED_ITEMCODE != itemCode && rowIndex > -1)
+                {
+                    SelectedItemLabelSet(itemCode);
+                }
 
-                    if(min == max)
+                if (!string.IsNullOrEmpty(itemCode) && rowIndex > -1)
+                {
+                    DataTable DB_Join = dalJoin.loadChildList(itemCode);
+
+                    DataTable dt_MoreInfo = NewItemGroupInfoTable();
+                    DataRow newRow;
+
+                    int index = 1;
+
+                    foreach (DataRow row in DB_Join.Rows)
                     {
-                        ratio = max + ":" + ChildQty;
+                        string min = row[dalJoin.JoinMin].ToString();
+                        string max = row[dalJoin.JoinMax].ToString();
+                        string ChildQty = row[dalJoin.JoinQty].ToString();
+                        string ChildCode = row[dalJoin.JoinChild].ToString();
+
+                        string ChildName = tool.getItemName(ChildCode);
+
+                        string ratio;
+
+                        if (min == max)
+                        {
+                            ratio = max + ":" + ChildQty;
+                        }
+                        else
+                        {
+                            ratio = min + "~" + max + ":" + ChildQty;
+                        }
+
+
+                        newRow = dt_MoreInfo.NewRow();
+
+                        newRow[text.Header_Index] = index++;
+                        newRow[text.Header_ChildCode] = ChildCode;
+                        newRow[text.Header_ChildName] = ChildName;
+                        newRow[text.Header_JoinRatio] = ratio;
+
+                        dt_MoreInfo.Rows.Add(newRow);
+                    }
+
+
+                    dgvMoreInfo.DataSource = dt_MoreInfo;
+                    dgvMoreInfoEdit(dgvMoreInfo);
+                    dgvMoreInfo.ClearSelection();
+
+                    if (dt_MoreInfo.Rows.Count >= 0)
+                    {
+                        ShowSubListButton(true);
                     }
                     else
                     {
-                        ratio = min + "~" + max + ":" + ChildQty;
+                        ShowSubListButton(false);
+
                     }
-
-
-                    newRow = dt_MoreInfo.NewRow();
-
-                    newRow[text.Header_Index] = index++;
-                    newRow[text.Header_ChildCode] = ChildCode;
-                    newRow[text.Header_ChildName] = ChildName;
-                    newRow[text.Header_JoinRatio] = ratio;
-
-                    dt_MoreInfo.Rows.Add(newRow);
-                }
-
-
-                dgvMoreInfo.DataSource = dt_MoreInfo;
-                dgvMoreInfoEdit(dgvMoreInfo);
-                dgvMoreInfo.ClearSelection();
-
-                if (dt_MoreInfo.Rows.Count >= 0)
-                {
-                    ShowSubListButton(true);
                 }
                 else
                 {
-                    ShowSubListButton(false);
-
+                    MessageBox.Show("Item Code not found!");
                 }
             }
-            else
-            {
-                MessageBox.Show("Item Code not found!");
-            }
+
+
+          
         }
 
         private string GeneralInfoFloatConvert(string Data, string Description)
@@ -755,8 +764,6 @@ namespace FactoryManagementSoftware.UI
         {
             if(dgvItemList != null && dgvItemList.SelectedRows.Count > 0)
             {
-                dgvMoreInfo.DataSource = null;
-
                 if (DB_ITEM_LIST == null || DB_ITEM_LIST.Rows.Count < 0)
                 {
                     LoadDBItemList();
@@ -764,6 +771,13 @@ namespace FactoryManagementSoftware.UI
 
                 int rowIndex = dgvItemList.CurrentCell.RowIndex;
                 string itemCode = dgvItemList.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
+
+                if (dgvMoreInfo.DataSource != null)
+                {
+                    ShowingItemLabelSet(itemCode);
+
+                }
+                dgvMoreInfo.DataSource = null;
 
                 ShowingItemLabelSet(itemCode);
 
@@ -1430,6 +1444,7 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
+
             else if(lblMoreInfo.Text.Contains(MODE_GROUP))
             {
                 int rowIndex = dgvMoreInfo.CurrentCell.RowIndex;
@@ -1439,17 +1454,12 @@ namespace FactoryManagementSoftware.UI
                 {
                     uJoin.join_parent_code = CURRENT_MORE_INFO_SHOWING_ITEMCODE;
 
-                    uJoin.join_qty = float.TryParse(dgvMoreInfo.Rows[rowIndex].Cells[text.Header_JoinQty].Value.ToString(), out float ChildQty) ? ChildQty : 1;
-                    uJoin.join_max = int.TryParse(dgvMoreInfo.Rows[rowIndex].Cells[text.Header_JoinMax].Value.ToString(), out int ParentMax) ? ParentMax : 1;
-                    uJoin.join_min = int.TryParse(dgvMoreInfo.Rows[rowIndex].Cells[text.Header_JoinMin].Value.ToString(), out int ParentMin) ? ParentMin : 1;
-
-                    uJoin.join_main_carton = bool.TryParse(dgv.Rows[rowIndex].Cells[header_MainCarton].Value.ToString(), out bool mainCarton) ? mainCarton : false;
-
                     frmJoinEdit frm = new frmJoinEdit(uJoin, true);
                     frm.StartPosition = FormStartPosition.CenterScreen;
                     frm.ShowDialog();//Item Edit
 
-                    LoadItemGroup(true);
+                    if (frmJoinEdit.DATA_UPDATED)
+                        LoadGroupInfo();
                 }
                 else
                 {
@@ -1587,6 +1597,70 @@ namespace FactoryManagementSoftware.UI
         private void cmbCust_SelectedIndexChanged(object sender, EventArgs e)
         {
             ClearDGV();
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            if (lblMoreInfo.Text.Contains(MODE_GENERAL_INFO))
+            {
+                //DataTable dt = GetSelectedItemInfo();
+
+                //if (dt.Rows.Count > 1)
+                //{
+                //    MessageBox.Show("MULTIPLE ITEM ROW FOUND!");
+                //}
+
+                //frmItemEdit_NEW frm = new frmItemEdit_NEW(dt, cbShowQuotationItem.Checked);
+
+                //frm.ShowDialog();
+
+                //if (frmItemEdit_NEW.DATA_SAVED)
+                //{
+                //    //CHANGE DB_ITEM_LIST DATA, CHANGE SUB LIST TABLE
+                //    frmLoading.ShowLoadingScreen();
+
+                //    Cursor = Cursors.WaitCursor;
+
+                //    LoadDBItemList();
+                //    LoadItemList();
+
+                //    Cursor = Cursors.Arrow;
+
+                //    frmLoading.CloseForm();
+                //    //LoadGeneralInfo(frmItemEdit_NEW.DT_DATA_SAVED);
+
+                //}
+            }
+
+            else if (lblMoreInfo.Text.Contains(MODE_GROUP))
+            {
+                int rowIndex = dgvMoreInfo.CurrentCell.RowIndex;
+                string childCode = dgvMoreInfo.Rows[rowIndex].Cells[text.Header_ChildCode].Value.ToString();
+                string childName = tool.getItemName(childCode);
+
+                if (MessageBox.Show("Are you sure you want to remove " + childName + " from this Item Group? ", "Message",
+                                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+
+                    uJoin.join_parent_code = CURRENT_SELECTED_ITEMCODE;
+                    uJoin.join_child_code = childCode;
+
+                    bool success = dalJoin.Delete(uJoin);
+
+                    if (success == true)
+                    {
+                        //item deleted successfully
+                        MessageBox.Show("Item deleted successfully");
+                        LoadGroupInfo();
+                    }
+                    else
+                    {
+                        //Failed to delete item
+                        MessageBox.Show("Failed to delete item");
+                    }
+
+                }
+            }
         }
     }
 }

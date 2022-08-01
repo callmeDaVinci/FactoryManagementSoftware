@@ -1083,6 +1083,8 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
+                        tool.historyRecord(text.LogIn, text.Failed, DateTime.Now, userID);
+
                         if (cmbCat.Text.Equals(text.Cat_Part))
                         {
                             insertItem();
@@ -1448,7 +1450,7 @@ namespace FactoryManagementSoftware.UI
 
         private void cbAssembly_CheckedChanged(object sender, EventArgs e)
         {
-            ShowGroupEditButton(cbAssembly.Checked);
+            //ShowGroupEditButton(cbAssembly.Checked);
         }
 
         private void unitDataSource()
