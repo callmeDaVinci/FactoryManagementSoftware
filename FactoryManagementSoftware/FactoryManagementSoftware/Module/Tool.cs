@@ -1445,6 +1445,22 @@ namespace FactoryManagementSoftware.Module
             return custName;
         }
 
+        public string getCustName(int custID, DataTable dt_Cust)
+        {
+            string custName = "";
+
+            foreach (DataRow Cust in dt_Cust.Rows)
+            {
+                if(custID.ToString().Equals(Cust["cust_id"].ToString()))
+                {
+                    custName = Cust["cust_name"].ToString();
+                    return custName;
+                }
+            }
+
+            return custName;
+        }
+
         public string getItemName(string itemCode)
         {
             string itemName = "";
@@ -10999,62 +11015,6 @@ namespace FactoryManagementSoftware.Module
 
         }
 
-        public void Item_HistoryRecord(string action, string detail, DateTime date, int by, string page_name, int data_id)
-        {
-            string machineName = Environment.MachineName;
-            string ip = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.GetValue(1).ToString();
-
-            //save history
-            historyDAL dalHistory = new historyDAL();
-            historyBLL uHistory = new historyBLL();
-
-            userDAL dalUser = new userDAL();
-            uHistory.history_date = date;
-            uHistory.history_by = by;
-            uHistory.history_action = "[" + dalUser.getUsername(by) + " (" + machineName + " " + ip + " ) " + "] " + action;
-            uHistory.history_detail = detail;
-            uHistory.page_name = page_name;
-            uHistory.data_id = data_id;
-
-            bool result = dalHistory.insertWithDataID(uHistory);
-
-            if (!result)
-            {
-                MessageBox.Show("Failed to add new history");
-            }
-
-            Directory.CreateDirectory(@"D:\StockAssistant\SystemHistory");
-            string today = DateTime.Now.Date.ToString("yyyy_MM_dd");
-            string filePath = @"D:\StockAssistant\SystemHistory\History_" + today + ".txt";
-
-            string str = "";
-            if (File.Exists(filePath))
-            {
-                using (StreamReader sreader = new StreamReader(filePath))
-                {
-                    str = sreader.ReadToEnd();
-                }
-                File.Delete(filePath);
-            }
-
-            using (StreamWriter writer = new StreamWriter(filePath, true))
-            {
-                writer.WriteLine("-----------------------------------------------------------------------------");
-                writer.WriteLine("Date : " + DateTime.Now.ToString());
-                writer.WriteLine();
-                writer.WriteLine("Action : " + action);
-                writer.WriteLine();
-                writer.WriteLine("Detail : " + detail);
-                writer.WriteLine();
-                writer.WriteLine("By : " + dalUser.getUsername(by));
-                writer.WriteLine();
-                writer.WriteLine("Page: " + page_name + "; Data ID: " + data_id);
-                writer.WriteLine();
-
-                writer.Write(str);
-            }
-
-        }
         #endregion
     }
 }

@@ -260,6 +260,7 @@ namespace FactoryManagementSoftware.Module
 
         #region  DGV TABLE HEADER NAME
         public string Header_Index { get; } = "#";
+        public string Header_Customer { get; } = "CUSTOMER";
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
         public string Header_PartCode { get; } = "PART CODE";
         public string Header_ItemCode { get; } = "ITEM CODE";

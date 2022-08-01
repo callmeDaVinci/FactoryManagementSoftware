@@ -10,6 +10,7 @@ namespace FactoryManagementSoftware.DAL
     class itemCustDAL
     {
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+        public string CustID { get; } = "cust_id";
 
         #region Select Data from Database
 

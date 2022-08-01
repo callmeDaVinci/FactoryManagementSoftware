@@ -40,7 +40,8 @@ namespace FactoryManagementSoftware.UI
         joinBLL uJoin = new joinBLL();
 
         itemCustDAL dalItemCust = new itemCustDAL();
-        
+        custDAL dalCust = new custDAL();
+
         userDAL dalUser = new userDAL();
 
         readonly string text_ShowFilter = "SHOW FILTER";
@@ -52,7 +53,7 @@ namespace FactoryManagementSoftware.UI
         readonly string MODE_PRODUCTION = "PRODUCTION RECORD";
         readonly string MODE_STOCK_LOCATION = "STOCK LOCATION";
         readonly string MODE_CUSTOMER = "CUSTOMER";
-
+        readonly string CUSTOMER_NOT_FOUND = "CUSTOMER NOT FOUND";
         private string CURRENT_SELECTED_ITEMCODE = "";
         private string CURRENT_MORE_INFO_SHOWING_ITEMCODE = "";
 
@@ -84,14 +85,25 @@ namespace FactoryManagementSoftware.UI
 
             // dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
+            if(cbShowCustomer.Checked)
+            {
+                dgv.Columns[text.Header_Customer].Visible = true;
+                dgv.Columns[text.Header_Customer].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgv.Columns[text.Header_Customer].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[text.Header_Customer].DefaultCellStyle.Font = new Font("Segoe UI", 5F, FontStyle.Bold);
+            }
+            else
+            {
+                dgv.Columns[text.Header_Customer].Visible = false;
+            }
+
             dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[text.Header_ItemCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dgv.Columns[text.Header_ItemName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dgv.Columns[text.Header_BalStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[text.Header_Status].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
             dgv.Columns[text.Header_ItemCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
-
+          
             dgv.Columns[text.Header_ItemCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns[text.Header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
@@ -137,6 +149,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = new DataTable();
 
             dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(text.Header_Customer, typeof(string));
             dt.Columns.Add(text.Header_ItemCode, typeof(string));
             dt.Columns.Add(text.Header_ItemName, typeof(string));
             dt.Columns.Add(text.Header_BalStock, typeof(string));
@@ -300,12 +313,139 @@ namespace FactoryManagementSoftware.UI
             return dt_SubList;
         }
 
-        private bool CustomerFilter(string itemCode, string custID, DataTable dt_Item_Cust, DataTable dt_Join)
+        private string ifDeliveryProduct(string itemCode, DataTable dt_Item_Cust, DataTable dt_Cust)
         {
-            bool CustomerMatched = true;
+            string Customer = "";
 
-            return CustomerMatched;
+            foreach (DataRow row in dt_Item_Cust.Rows)
+            {
+                if (itemCode.Equals(row[dalItem.ItemCode].ToString()))
+                {
+                    string cust_name = "";
+
+                    foreach (DataRow Cust in dt_Cust.Rows)
+                    {
+                        if (row[dalItemCust.CustID].ToString().Equals(Cust[dalItemCust.CustID].ToString()))
+                        {
+                            cust_name = Cust["cust_name"].ToString();
+
+                            if (cust_name.Equals(text.SPP_BrandName))
+                            {
+                                cust_name = text.SBB_BrandName;
+                            }
+
+                            if (string.IsNullOrEmpty(Customer))
+                            {
+
+                                Customer = cust_name;
+                            }
+                            else
+                            {
+                                Customer += "," + cust_name;
+                            }
+
+                            break;
+                        }
+                    }
+
+                  
+                }
+            }
+
+            return Customer;
         }
+
+        private bool ifDeliveryProduct(string itemCode, DataTable dt_Item_Cust)
+        {
+            foreach (DataRow row in dt_Item_Cust.Rows)
+            {
+                if (itemCode.Equals(row[dalItem.ItemCode].ToString()))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool CustomerFilter(string itemCode, string custID, DataTable dt_Item_Cust)
+        {
+            foreach(DataRow row in dt_Item_Cust.Rows)
+            {
+                if(custID.Equals(row[dalItemCust.CustID].ToString()) && itemCode.Equals(row[dalItem.ItemCode].ToString()))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool ifParentCustomerMatched(string itemCode, string custID, DataTable dt_Item_Cust, DataTable dt_Join)
+        {
+
+            foreach (DataRow row in dt_Item_Cust.Rows)
+            {
+                if (custID.Equals(row[dalItemCust.CustID].ToString()) && itemCode.Equals(row[dalItem.ItemCode].ToString()))
+                {
+                    return true;
+                }
+            }
+
+            if (itemCode.ToString().Substring(0, 2) == "CF" && !cbShowDeliveryProductOnly.Checked && custID.Equals("15"))
+            {
+                return true;
+            }
+
+            foreach (DataRow rowJoin in dt_Join.Rows)
+            {
+                if(rowJoin[dalJoin.JoinChild].ToString().Equals(itemCode))
+                {
+                    string parentCode = rowJoin[dalJoin.JoinParent].ToString();
+
+                    foreach (DataRow row in dt_Item_Cust.Rows)
+                    {
+                        if (custID.Equals(row[dalItemCust.CustID].ToString()) && parentCode.Equals(row[dalItem.ItemCode].ToString()))
+                        {
+                            return true;
+                        }
+                    }
+
+                }
+                
+            }
+            return false;
+        }
+
+        private string ifParentCustomerMatched(string itemCode, string custID, DataTable dt_Item_Cust, DataTable dt_Join, DataTable dt_Cust)
+        {
+            string Customer = CUSTOMER_NOT_FOUND;
+
+            if (itemCode.ToString().Substring(0, 2) == "CF" && !cbShowDeliveryProductOnly.Checked && custID.Equals("15"))
+            {
+                return "";
+            }
+
+            foreach (DataRow rowJoin in dt_Join.Rows)
+            {
+                if (rowJoin[dalJoin.JoinChild].ToString().Equals(itemCode))
+                {
+                    string parentCode = rowJoin[dalJoin.JoinParent].ToString();
+
+                    foreach (DataRow row in dt_Item_Cust.Rows)
+                    {
+                        if (custID.Equals(row[dalItemCust.CustID].ToString()) && parentCode.Equals(row[dalItem.ItemCode].ToString()))
+                        {
+                            return "";
+                        }
+                    }
+
+                }
+
+            }
+            return Customer;
+        }
+
         private void LoadItemList()
         {
             Cursor = Cursors.WaitCursor;
@@ -318,17 +458,25 @@ namespace FactoryManagementSoftware.UI
             DataTable dt_Item = NewItemTable();
             DataRow newRow;
 
-            DataTable dt_Join = new DataTable();
-            DataTable dt_Item_Cust = new DataTable();
+            DataTable dt_Join = dalJoin.SelectAll();
+            DataTable dt_Item_Cust = dalItemCust.SelectAll();
+            DataTable dt_Cust = dalCust.Select();
 
             string custName = cmbCust.Text;
             string custID = "-1";
+            string SBBCustID = tool.getCustID(text.SPP_BrandName).ToString();
 
-            if(!string.IsNullOrEmpty(custName))
+            if (!string.IsNullOrEmpty(custName))
             {
-                dt_Join = dalJoin.SelectAll();
-                dt_Item_Cust = dalItemCust.SelectAll();
-                custID = tool.getCustID(custName).ToString();
+                if(custName.ToUpper().Equals(text.SBB_BrandName.ToUpper()))
+                {
+                    custID = SBBCustID;
+                }
+                else
+                {
+                    custID = tool.getCustID(custName).ToString();
+
+                }
             }
             
 
@@ -372,20 +520,89 @@ namespace FactoryManagementSoftware.UI
                         FilterPassed = false;
                     }
                 }
-               
-                if(custID != "-1")
+
+                string itemCustomer = "";
+
+                if(FilterPassed)
                 {
-                    if(!CustomerFilter(itemCode, custID, dt_Item_Cust, dt_Join))
+                    if(cbShowCustomer.Checked)
                     {
-                        FilterPassed = false;
+                        if (!cbShowSBBProduct.Checked)
+                        {
+                            if (CustomerFilter(itemCode, SBBCustID, dt_Item_Cust))
+                            {
+                                FilterPassed = false;
+                            }
+                        }
+
+                        if (cbShowDeliveryProductOnly.Checked)
+                        {
+                            if (custID != "-1")
+                            {
+                                if(!CustomerFilter(itemCode, custID, dt_Item_Cust))
+                                {
+                                    FilterPassed = false;
+                                }
+                                else
+                                {
+                                    itemCustomer = custName;
+                                }
+                                
+                            }
+                            else
+                            {
+                                itemCustomer = ifDeliveryProduct(itemCode, dt_Item_Cust, dt_Cust);
+
+                                if(string.IsNullOrEmpty(itemCustomer))
+                                    FilterPassed = false;
+                            }
+                        }
+                        else
+                        {
+                            itemCustomer = ifDeliveryProduct(itemCode, dt_Item_Cust, dt_Cust);
+
+                            
+                        }
                     }
+                    else
+                    {
+                        if (!cbShowSBBProduct.Checked)
+                        {
+                            if (CustomerFilter(itemCode, SBBCustID, dt_Item_Cust))
+                            {
+                                FilterPassed = false;
+                            }
+                        }
+
+                        if (cbShowDeliveryProductOnly.Checked)
+                        {
+                            if (custID != "-1" && !CustomerFilter(itemCode, custID, dt_Item_Cust))
+                            {
+                                FilterPassed = false;
+                            }
+                            else if (!ifDeliveryProduct(itemCode, dt_Item_Cust))
+                            {
+                                FilterPassed = false;
+                            }
+                        }
+                        else
+                        {
+                            if (custID != "-1" && !ifParentCustomerMatched(itemCode, custID, dt_Item_Cust, dt_Join))
+                            {
+                                FilterPassed = false;
+                            }
+                        }
+                    }
+                 
                 }
+               
 
                 if(FilterPassed)
                 {
                     newRow = dt_Item.NewRow();
 
                     newRow[text.Header_Index] = index++;
+                    newRow[text.Header_Customer] = itemCustomer;
                     newRow[text.Header_ItemCode] = itemCode;
                     newRow[text.Header_ItemName] = itemName;
                     newRow[text.Header_BalStock] = stockBalance.ToString("0.##");
@@ -1350,10 +1567,15 @@ namespace FactoryManagementSoftware.UI
             {
                 cmbCust.SelectedIndex = -1;
                 cmbCust.Enabled = false;
+                cbShowCustomer.Checked = false;
+                cbShowCustomer.Enabled = false;
+
             }
             else
             {
-                //cmbCust.Enabled = true;
+                cmbCust.Enabled = true;
+                cbShowCustomer.Enabled = true;
+
             }
 
             ClearDGV();
@@ -1597,6 +1819,28 @@ namespace FactoryManagementSoftware.UI
         private void cmbCust_SelectedIndexChanged(object sender, EventArgs e)
         {
             ClearDGV();
+
+            string selectedCust = cmbCust.Text.ToUpper();
+
+            if(selectedCust.Equals("ALL") || cmbCust.SelectedIndex <= -1)
+            {
+                cbShowSBBProduct.Enabled = true;
+                cbShowDeliveryProductOnly.Checked = false;
+
+
+            }
+            else if(selectedCust.ToUpper().Equals(text.SBB_BrandName) || selectedCust.ToUpper().Equals(text.SPP_BrandName))
+            {
+                cbShowDeliveryProductOnly.Checked = true;
+                cbShowSBBProduct.Checked = true;
+                cbShowSBBProduct.Enabled = false;
+            }
+            else
+            {
+                cbShowDeliveryProductOnly.Checked = true;
+                cbShowSBBProduct.Checked = false;
+                cbShowSBBProduct.Enabled = false;
+            }
         }
 
         private void btnRemove_Click(object sender, EventArgs e)

@@ -1083,7 +1083,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        tool.historyRecord(text.LogIn, text.Failed, DateTime.Now, userID);
+                        //tool.historyRecord(text.LogIn, text.Failed, DateTime.Now, userID);
 
                         if (cmbCat.Text.Equals(text.Cat_Part))
                         {
