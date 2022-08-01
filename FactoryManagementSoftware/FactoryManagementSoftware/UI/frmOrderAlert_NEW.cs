@@ -488,7 +488,7 @@ namespace FactoryManagementSoftware.UI
             tool.DoubleBuffered(dgvOrderRecord, true);
             tool.DoubleBuffered(dgvAlertSummary, true);
 
-            PanelUISetting(true, false);
+            PanelUISetting(true, true);
 
             CMBReset();
             DateReset();
@@ -651,8 +651,6 @@ namespace FactoryManagementSoftware.UI
         }
         private void frmMaterialUsedReport_NEW_Load(object sender, EventArgs e)
         {
-            
-
             loaded = true;
         }
 
@@ -1070,11 +1068,11 @@ namespace FactoryManagementSoftware.UI
 
                 string ItemTypeSelected = cmbItemType.Text;
 
-                bool itemCatMatched = ItemTypeSelected == text.Cat_RawMat;
-                itemCatMatched |= ItemTypeSelected == text.Cat_MB;
-                itemCatMatched |= ItemTypeSelected == text.Cat_Pigment;
-                itemCatMatched |= ItemTypeSelected == text.Cat_SubMat;
-                itemCatMatched |= ItemTypeSelected == text.Cat_Carton;
+                bool itemCatMatched = ItemTypeSelected == matCat;
+                //itemCatMatched |= ItemTypeSelected == text.Cat_MB;
+                //itemCatMatched |= ItemTypeSelected == text.Cat_Pigment;
+                //itemCatMatched |= ItemTypeSelected == text.Cat_SubMat;
+                //itemCatMatched |= ItemTypeSelected == text.Cat_Carton;
                 itemCatMatched |= ItemTypeSelected.ToUpper() == "ALL";
 
                 if (itemCatMatched)
@@ -1120,7 +1118,10 @@ namespace FactoryManagementSoftware.UI
                                     {
                                         string parentName = joinRow["parent_name"].ToString();
 
-
+                                        if(parentName.Equals("DISCH.GRILLE HOR.BLADE SUPPORT"))
+                                        {
+                                            float TEST = 0;
+                                        }
                                         //Get delivered out data
                                         dt_DeliveredData.Rows.Clear();
                                         float reference_Value = GetForecastQty(custName, parentCode, dt_JoinforChecking, dt_PartTrfHist, "11", "2021");
@@ -1143,7 +1144,7 @@ namespace FactoryManagementSoftware.UI
                                         float itemWeight = partWeight + runnerWeight;
                                         #endregion
 
-                                        float wastage = Convert.ToSingle(matRow[dalItem.ItemWastage]); // tool.getItemWastageAllowedFromDataTable(dt_Item, matCode);
+                                        float wastage = Convert.ToSingle(matRow[dalItem.ItemWastage]); 
 
                                         float wastageAdd = reference_Value * wastage;
                                         int MatUsedWithWastage = (int)Math.Ceiling(reference_Value + wastageAdd);
@@ -1166,8 +1167,6 @@ namespace FactoryManagementSoftware.UI
                                                 {
                                                     parent = "";
                                                 }
-
-                                                //matUsedInKG = qty * itemWeight / 1000;
 
                                                 wastageAdd = qty * wastage;
                                                 MatUsedWithWastage = (int)Math.Ceiling(qty + wastageAdd);
@@ -1383,6 +1382,9 @@ namespace FactoryManagementSoftware.UI
                 string partCode = row[text.Header_PartCode].ToString();
                 string matType = row[text.Header_MatType].ToString();
 
+                string matName = row[text.Header_MatName].ToString();
+
+
                 float itemWeight = float.TryParse(row[text.Header_ItemWeight_G].ToString(), out float x) ? x : 0;
                 float wastage = float.TryParse(row[text.Header_Wastage].ToString(), out x) ? x : 0;
                 float joinQty = 1;
@@ -1406,8 +1408,6 @@ namespace FactoryManagementSoftware.UI
                         {
                             joinQty = Convert.ToSingle(join["join_qty"]);
                             break;
-                            //string parentCode = join["parent_code"].ToString();
-                            //DeliveredQty += joinQty * DeliveredToCustomerQty(customer, parentCode, dt_Join, dt_ToCustomer);
                         }
                     }
                 }
@@ -1439,7 +1439,7 @@ namespace FactoryManagementSoftware.UI
                                 //calculate material used
                                 matUsedInKG = OrderedQty * itemWeight / 1000;
 
-                                if(matType.Equals(text.Cat_SubMat))
+                                if(matType.Equals(text.Cat_SubMat) || matType.Equals(text.Cat_Carton) || matType.Equals(text.Cat_Packaging))
                                 {
                                     row[month] = Math.Round(OrderedQty + OrderedQty * wastage, 0);
                                 }

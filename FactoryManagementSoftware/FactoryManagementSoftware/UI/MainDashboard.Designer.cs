@@ -63,8 +63,7 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.nEWToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oLDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oRDER20ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -76,6 +75,7 @@
             this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.adminToolStripMenuItem,
+            this.iTEMToolStripMenuItem1,
             this.dAILYToolStripMenuItem,
             this.productionToolStripMenuItem,
             this.stockToolStripMenuItem,
@@ -85,7 +85,7 @@
             this.sPPToolStripMenuItem,
             this.reportToolStripMenuItem,
             this.pOToolStripMenuItem,
-            this.iTEMToolStripMenuItem1});
+            this.oRDER20ToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
@@ -218,9 +218,6 @@
             // 
             // orderToolStripMenuItem1
             // 
-            this.orderToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.nEWToolStripMenuItem,
-            this.oLDToolStripMenuItem});
             this.orderToolStripMenuItem1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.orderToolStripMenuItem1.Name = "orderToolStripMenuItem1";
             this.orderToolStripMenuItem1.Size = new System.Drawing.Size(76, 27);
@@ -350,19 +347,12 @@
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
-            // nEWToolStripMenuItem
+            // oRDER20ToolStripMenuItem
             // 
-            this.nEWToolStripMenuItem.Name = "nEWToolStripMenuItem";
-            this.nEWToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
-            this.nEWToolStripMenuItem.Text = "NEW VERSION";
-            this.nEWToolStripMenuItem.Click += new System.EventHandler(this.nEWToolStripMenuItem_Click_1);
-            // 
-            // oLDToolStripMenuItem
-            // 
-            this.oLDToolStripMenuItem.Name = "oLDToolStripMenuItem";
-            this.oLDToolStripMenuItem.Size = new System.Drawing.Size(216, 28);
-            this.oLDToolStripMenuItem.Text = "OLD VERSION";
-            this.oLDToolStripMenuItem.Click += new System.EventHandler(this.oLDToolStripMenuItem_Click);
+            this.oRDER20ToolStripMenuItem.Name = "oRDER20ToolStripMenuItem";
+            this.oRDER20ToolStripMenuItem.Size = new System.Drawing.Size(103, 27);
+            this.oRDER20ToolStripMenuItem.Text = "ORDER 2.0";
+            this.oRDER20ToolStripMenuItem.Click += new System.EventHandler(this.oRDER20ToolStripMenuItem_Click);
             // 
             // MainDashboard
             // 
@@ -428,8 +418,7 @@
         private System.Windows.Forms.ToolStripMenuItem pOToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newItemListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iTEMToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem nEWToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem oLDToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem oRDER20ToolStripMenuItem;
     }
 }
 

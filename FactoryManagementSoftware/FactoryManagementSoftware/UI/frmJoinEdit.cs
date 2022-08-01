@@ -12,13 +12,17 @@ namespace FactoryManagementSoftware.UI
     {
         public frmJoinEdit()
         {
+            DATA_UPDATED = false;
+
             InitializeComponent();
             loadItemCategoryData();
         }
 
         public frmJoinEdit(joinBLL u, bool closeAfterSave)
         {
-            closeAfter = closeAfterSave;
+            CLOSE_PAGE_AFTER_SAVED = closeAfterSave;
+            DATA_UPDATED = false;
+
             InitializeComponent();
             uJoin = u;
             loadItemCategoryData();
@@ -54,8 +58,6 @@ namespace FactoryManagementSoftware.UI
             cbMainCarton.Checked = u.join_main_carton;
 
             updateTestName();
-
-
         }
 
         itemCatDAL dALItemCat = new itemCatDAL();
@@ -69,7 +71,13 @@ namespace FactoryManagementSoftware.UI
         Text text = new Text();
         SBBDataDAL dalSBB = new SBBDataDAL();
 
-        private bool closeAfter = false;
+        private bool CLOSE_PAGE_AFTER_SAVED = false;
+        private bool PARENT_JOIN_MIN_MAX_MODE = false;
+        static public bool DATA_UPDATED = false;
+
+        private readonly string LBL_PARENT_MAX = "PARENT QTY (MAX)";
+        private readonly string LBL_PARENT_NORMAL = "PARENT QTY";
+
         #region Load/Close
 
         private void loadItemCategoryData()
@@ -106,9 +114,31 @@ namespace FactoryManagementSoftware.UI
 
         private void frmJoinEdit_Load(object sender, EventArgs e)
         {
-
+            ParentQtyMaxMode(false);
         }
 
+        private void ParentQtyMaxMode(bool isMaxMinMode)
+        {
+            if(isMaxMinMode)
+            {
+                lblParentQtyMAX.Text = LBL_PARENT_MAX;
+
+                tlpJoin.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 160f);
+                tlpJoin.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 20f);
+                tlpJoin.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 160f);
+
+            }
+            else
+            {
+                lblParentQtyMAX.Text = LBL_PARENT_NORMAL;
+
+                tlpJoin.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpJoin.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpJoin.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 340f);
+
+              
+            }
+        }
         private string GetChildCode(DataTable dt, string parentCode)
         {
             foreach (DataRow row in dt.Rows)
@@ -499,6 +529,7 @@ namespace FactoryManagementSoftware.UI
             if (Validation())
             {
                 DialogResult dialogResult = MessageBox.Show("Are you sure want to insert data to database?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
                 if (dialogResult == DialogResult.Yes)
                 {
                    
@@ -509,8 +540,8 @@ namespace FactoryManagementSoftware.UI
                     frmJoin.editedParentCode = uJoin.join_parent_code;
                     frmJoin.editedChildCode = uJoin.join_child_code;
 
-                    uJoin.join_max = Convert.ToInt32(txtMax.Text);
-                    uJoin.join_min = Convert.ToInt32(txtMin.Text);
+                    uJoin.join_max = int.TryParse(txtMax.Text, out int JoinINT) ? JoinINT : 1;
+                    uJoin.join_min = int.TryParse(txtMin.Text, out JoinINT) ? JoinINT : uJoin.join_max;
 
                     if (cmbChildCat.Text.Equals("Carton"))
                     {
@@ -540,8 +571,7 @@ namespace FactoryManagementSoftware.UI
                         {
                             //Data Successfully Inserted
                             MessageBox.Show("Join updated.");
-                            
-                            
+                            DATA_UPDATED = true;
                         }
                         else
                         {
@@ -561,6 +591,7 @@ namespace FactoryManagementSoftware.UI
                             //Data Successfully Inserted
                             MessageBox.Show("Join successfully created");
                             // this.Close();
+                            DATA_UPDATED = true;
                         }
                         else
                         {
@@ -569,7 +600,7 @@ namespace FactoryManagementSoftware.UI
                         }
                     }
 
-                    if (success && closeAfter)
+                    if (success && CLOSE_PAGE_AFTER_SAVED)
                     {
                         Close();
                     }
@@ -579,6 +610,9 @@ namespace FactoryManagementSoftware.UI
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
+            if(!PARENT_JOIN_MIN_MAX_MODE)
+                txtMin.Text = txtMax.Text;
+
             updateTestQty();
             errorProvider7.Clear();
         }
@@ -699,6 +733,18 @@ namespace FactoryManagementSoftware.UI
         private void cmbChildName_DropDownClosed(object sender, EventArgs e)
         {
             this.BeginInvoke(new Action(() => { cmbChildName.Select(0, 0); }));
+        }
+
+        private void lblParentQtyMAX_Click(object sender, EventArgs e)
+        {
+            if(lblParentQtyMAX.Text.Equals(LBL_PARENT_MAX))
+            {
+                ParentQtyMaxMode(false);
+            }
+            else
+            {
+                ParentQtyMaxMode(true);
+            }
         }
     }
 }

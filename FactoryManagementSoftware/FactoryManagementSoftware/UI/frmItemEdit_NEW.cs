@@ -24,6 +24,25 @@ namespace FactoryManagementSoftware.UI
             DataReset();
         }
 
+        public frmItemEdit_NEW(bool ShowQuotation)
+        {
+            //item Adding
+
+            InitializeComponent();
+
+            Text = itemEdit_Add;
+            MODE_ADDING = true;
+            btnSave.Text = Button_AddItem;
+            txtItemCode.Enabled = true;
+
+            DataReset();
+
+            if(ShowQuotation)
+            {
+                ShowQuotationData();
+            }
+        }
+
         public frmItemEdit_NEW(DataTable dt)
         {
             InitializeComponent();
@@ -37,6 +56,26 @@ namespace FactoryManagementSoftware.UI
             DT_DATA_SAVED = dt;
 
             inputDisable();
+        }
+
+        public frmItemEdit_NEW(DataTable dt, bool showQuotation)
+        {
+            InitializeComponent();
+
+            Text = itemEdit_Edit;
+            DataReset();
+
+            txtItemCode.Enabled = false;
+            InitialData(dt);
+
+            DT_DATA_SAVED = dt;
+
+            inputDisable();
+
+            if (showQuotation)
+            {
+                ShowQuotationData();
+            }
         }
 
         private void DataReset()
@@ -1475,6 +1514,15 @@ namespace FactoryManagementSoftware.UI
                 tlpQuotation.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
                 tlpQuotation.RowStyles[1] = new RowStyle(SizeType.Percent, 0f);
             }
+        }
+
+        private void ShowQuotationData()
+        {
+            QuotationDataVisible = true;
+
+            tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 75f);
+            tlpQuotation.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
+            tlpQuotation.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
         }
 
         private void label32_Click(object sender, EventArgs e)
