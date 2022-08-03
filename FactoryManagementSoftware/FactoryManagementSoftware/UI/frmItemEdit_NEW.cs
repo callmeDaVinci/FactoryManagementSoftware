@@ -66,6 +66,7 @@ namespace FactoryManagementSoftware.UI
             DataReset();
 
             txtItemCode.Enabled = false;
+
             InitialData(dt);
 
             DT_DATA_SAVED = dt;
@@ -83,10 +84,9 @@ namespace FactoryManagementSoftware.UI
             QuotationDataUIChanged(false);
             ShowSBBSetting(false);
             ShowProductionSetting(false);
-           // ShowCustomerButton(false);
             ShowGroupEditButton(false);
 
-            tool.loadCustomerToComboBox(cmbCust);
+            tool.LoadCustomerToComboBoxSBB(cmbCust);
             loadItemCategoryData();
             loadMaterialTypeData();
             loadMasterBatchData();
@@ -156,7 +156,7 @@ namespace FactoryManagementSoftware.UI
             cmbCat.DisplayMember = "item_cat_name";
             cmbCat.SelectedIndex = -1;
 
-            cbZeroCost.Visible = false;
+            cbZeroCost.Enabled = false;
         }
 
         private void loadMaterialTypeData()
@@ -375,6 +375,12 @@ namespace FactoryManagementSoftware.UI
                         }
                     }
                 }
+
+                if(cmbRawMaterial.SelectedIndex != -1 && cmbCat.Text.Equals(text.Cat_Part))
+                {
+                    cbProduction.Checked = true;
+
+                }
             }
             else
             {
@@ -519,6 +525,11 @@ namespace FactoryManagementSoftware.UI
             {
                 //data updated successfully
                 MessageBox.Show("Item updated successfully!");
+
+                if(cmbCust.SelectedIndex != -1 && cmbCat.Text.Equals(text.Cat_Part))
+                {
+                    pairCustomer();
+                }
 
                 //update packaging
                 SBBDataBLL uData = new SBBDataBLL();
@@ -768,17 +779,30 @@ namespace FactoryManagementSoftware.UI
             if (success)
             {
                 //update packaging if SBB checked, and Customer pair if Product
-                if(cbSBB.Checked)
+
+                if (cmbCust.SelectedIndex != -1 && cmbCat.Text.Equals(text.Cat_Part))
+                {
+                    pairCustomer();
+                }
+
+                if (cbSBB.Checked)
                 {
                     //update Customer
                     if(string.IsNullOrEmpty(cmbCust.Text) || cmbCust.SelectedIndex <= -1)
                     {
-                        pairCustomer(text.SPP_BrandName);
+                        if(IfSBBProductItem())
+                        {
+                            pairCustomer(text.SPP_BrandName);
+
+                        }
                     }
                     else
                     {
-                        pairCustomer();
+                        if (IfSBBProductItem())
+                        {
+                            pairCustomer();
 
+                        }
                     }
 
                     //update packaging
@@ -856,10 +880,7 @@ namespace FactoryManagementSoftware.UI
 
 
                 }
-
                 MessageBox.Show("Item added successfully!");
-
-
                 
                 Close();
             }
@@ -929,7 +950,16 @@ namespace FactoryManagementSoftware.UI
 
             string cust = cmbCust.Text;
 
-            if (cmbCat.Text.Equals("Part") && !string.IsNullOrEmpty(cust))
+            bool SBBItemCheck = true;
+
+            if(cust.Equals(text.SBB_BrandName) || cust.Equals(text.SPP_BrandName))
+            {
+                cust = text.SPP_BrandName;
+
+                SBBItemCheck = IfSBBProductItem();
+            }
+
+            if (cmbCat.Text.Equals("Part") && !string.IsNullOrEmpty(cust) && SBBItemCheck)
             {
                 if (!IfExists(txtItemCode.Text, cust))
                 {
@@ -958,7 +988,16 @@ namespace FactoryManagementSoftware.UI
             itemCustBLL uItemCust = new itemCustBLL();
             itemCustDAL dalItemCust = new itemCustDAL();
 
-            if (cmbCat.Text.Equals("Part") && !string.IsNullOrEmpty(cust))
+            bool SBBItemCheck = true;
+
+            if (cust.Equals(text.SBB_BrandName) || cust.Equals(text.SPP_BrandName))
+            {
+                cust = text.SPP_BrandName;
+
+                SBBItemCheck = IfSBBProductItem();
+            }
+
+            if (cmbCat.Text.Equals("Part") && !string.IsNullOrEmpty(cust) && SBBItemCheck)
             {
                 if (!IfExists(txtItemCode.Text, cust))
                 {
@@ -1123,40 +1162,24 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            cbZeroCost.Visible = !isPartItem;
-            cbAssembly.Visible = isPartItem;
-            cbProduction.Visible = isPartItem;
-            cbSBB.Visible = isPartItem;
+            cbZeroCost.Enabled = !isPartItem;
+            cbAssembly.Enabled = isPartItem;
+            cbProduction.Enabled = isPartItem;
+            cbSBB.Enabled = isPartItem;
 
-            //ShowCustomerButton(isPartItem);
-            //ShowProductionSetting(isPartItem);
         }
 
-
-        private void ShowCustomerButton(bool show)
-        {
-            if (show)
-            {
-                tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 100f);
-
-            }
-            else
-            {
-                tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
-
-            }
-        }
-
+        
         private void ShowGroupEditButton(bool show)
         {
             if (show)
             {
-                tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 100f);
+                tlpButton.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 100f);
 
             }
             else
             {
-                tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpButton.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0f);
 
             }
         }
@@ -1167,7 +1190,7 @@ namespace FactoryManagementSoftware.UI
             {
                 if(QuotationDataVisible)
                 {
-                    tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 70f);
+                    tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 80f);
 
                 }
                 else
@@ -1176,7 +1199,7 @@ namespace FactoryManagementSoftware.UI
 
                 }
 
-                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 115f);
+                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 150f);
                 tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 90f);
 
             }
@@ -1192,7 +1215,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (show)
             {
-                tlpMain.RowStyles[4] = new RowStyle(SizeType.Absolute, 135f);
+                tlpMain.RowStyles[4] = new RowStyle(SizeType.Absolute, 150f);
 
                 LoadSBBTypeData();
 
@@ -1493,7 +1516,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     QuotationDataVisible = true;
 
-                    tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 75f);
+                    tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 80f);
                     tlpQuotation.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
                     tlpQuotation.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
                 }
@@ -1522,7 +1545,7 @@ namespace FactoryManagementSoftware.UI
         {
             QuotationDataVisible = true;
 
-            tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 75f);
+            tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 80f);
             tlpQuotation.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
             tlpQuotation.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
         }
@@ -2112,7 +2135,7 @@ namespace FactoryManagementSoftware.UI
 
                 }
 
-                cmbCust.Text = text.SPP_BrandName;
+                cmbCust.Text = text.SBB_BrandName;
                 cmbCust.Enabled = false;
 
                 if (DT_SBB_PACKING == null || DT_SBB_PACKING.Rows.Count < 0)
@@ -2285,6 +2308,21 @@ namespace FactoryManagementSoftware.UI
             //refresh size table
             if(cmbSBBSize1.DataSource != null)
             LoadSizeData(true);
+        }
+
+        private void tlpButton_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void cmbCust_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string custName = cmbCust.Text;
+
+            if(custName.Equals(text.SBB_BrandName) || custName.Equals(text.SPP_BrandName))
+            {
+                cbSBB.Checked = true;
+            }
         }
     }
 }

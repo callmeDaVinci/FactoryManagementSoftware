@@ -29,14 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpBase = new System.Windows.Forms.TableLayoutPanel();
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbShowCustomer = new System.Windows.Forms.CheckBox();
+            this.cbShowSBBProduct = new System.Windows.Forms.CheckBox();
             this.cbShowDeliveryProductOnly = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
@@ -80,8 +82,6 @@
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.cbShowSBBProduct = new System.Windows.Forms.CheckBox();
-            this.cbShowCustomer = new System.Windows.Forms.CheckBox();
             this.tlpBase.SuspendLayout();
             this.gbFilter.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -178,6 +178,32 @@
             this.tableLayoutPanel15.Size = new System.Drawing.Size(487, 49);
             this.tableLayoutPanel15.TabIndex = 1042;
             // 
+            // cbShowCustomer
+            // 
+            this.cbShowCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbShowCustomer.AutoSize = true;
+            this.cbShowCustomer.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbShowCustomer.Location = new System.Drawing.Point(341, 27);
+            this.cbShowCustomer.Name = "cbShowCustomer";
+            this.cbShowCustomer.Size = new System.Drawing.Size(127, 19);
+            this.cbShowCustomer.TabIndex = 1025;
+            this.cbShowCustomer.Text = "SHOW CUSTOMER";
+            this.cbShowCustomer.UseVisualStyleBackColor = true;
+            this.cbShowCustomer.CheckedChanged += new System.EventHandler(this.cbShowCustomer_CheckedChanged);
+            // 
+            // cbShowSBBProduct
+            // 
+            this.cbShowSBBProduct.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbShowSBBProduct.AutoSize = true;
+            this.cbShowSBBProduct.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbShowSBBProduct.Location = new System.Drawing.Point(187, 27);
+            this.cbShowSBBProduct.Name = "cbShowSBBProduct";
+            this.cbShowSBBProduct.Size = new System.Drawing.Size(143, 19);
+            this.cbShowSBBProduct.TabIndex = 1024;
+            this.cbShowSBBProduct.Text = "SHOW SBB PRODUCT";
+            this.cbShowSBBProduct.UseVisualStyleBackColor = true;
+            this.cbShowSBBProduct.CheckedChanged += new System.EventHandler(this.cbShowSBBProduct_CheckedChanged);
+            // 
             // cbShowDeliveryProductOnly
             // 
             this.cbShowDeliveryProductOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -189,11 +215,12 @@
             this.cbShowDeliveryProductOnly.TabIndex = 1023;
             this.cbShowDeliveryProductOnly.Text = "DELIVERY PRODUCT ONLY";
             this.cbShowDeliveryProductOnly.UseVisualStyleBackColor = true;
+            this.cbShowDeliveryProductOnly.CheckedChanged += new System.EventHandler(this.cbShowDeliveryProductOnly_CheckedChanged);
             // 
             // tableLayoutPanel11
             // 
             this.tableLayoutPanel11.ColumnCount = 1;
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 290F));
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 487F));
             this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel12, 0, 0);
             this.tableLayoutPanel11.Controls.Add(this.cmbMoreInfoMode, 0, 1);
             this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -604,24 +631,24 @@
             this.dgvMoreInfo.AllowUserToOrderColumns = true;
             this.dgvMoreInfo.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvMoreInfo.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMoreInfo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMoreInfo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvMoreInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMoreInfo.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMoreInfo.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMoreInfo.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvMoreInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMoreInfo.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvMoreInfo.Location = new System.Drawing.Point(0, 0);
@@ -715,24 +742,24 @@
             this.dgvItemList.AllowUserToOrderColumns = true;
             this.dgvItemList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.dgvItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItemList.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItemList.DefaultCellStyle = dataGridViewCellStyle12;
             this.dgvItemList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvItemList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvItemList.Location = new System.Drawing.Point(0, 25);
@@ -860,30 +887,6 @@
             // 
             this.timer2.Interval = 500;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
-            // 
-            // cbShowSBBProduct
-            // 
-            this.cbShowSBBProduct.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbShowSBBProduct.AutoSize = true;
-            this.cbShowSBBProduct.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbShowSBBProduct.Location = new System.Drawing.Point(187, 27);
-            this.cbShowSBBProduct.Name = "cbShowSBBProduct";
-            this.cbShowSBBProduct.Size = new System.Drawing.Size(143, 19);
-            this.cbShowSBBProduct.TabIndex = 1024;
-            this.cbShowSBBProduct.Text = "SHOW SBB PRODUCT";
-            this.cbShowSBBProduct.UseVisualStyleBackColor = true;
-            // 
-            // cbShowCustomer
-            // 
-            this.cbShowCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbShowCustomer.AutoSize = true;
-            this.cbShowCustomer.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbShowCustomer.Location = new System.Drawing.Point(341, 27);
-            this.cbShowCustomer.Name = "cbShowCustomer";
-            this.cbShowCustomer.Size = new System.Drawing.Size(127, 19);
-            this.cbShowCustomer.TabIndex = 1025;
-            this.cbShowCustomer.Text = "SHOW CUSTOMER";
-            this.cbShowCustomer.UseVisualStyleBackColor = true;
             // 
             // frmItemMasterList
             // 

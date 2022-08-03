@@ -523,45 +523,42 @@ namespace FactoryManagementSoftware.UI
 
                 string itemCustomer = "";
 
-                if(FilterPassed)
+                if (FilterPassed && !cbShowSBBProduct.Checked && CustomerFilter(itemCode, SBBCustID, dt_Item_Cust))
+                {
+                    FilterPassed = false;
+                }
+               
+
+                if (FilterPassed && custID != "-1")
                 {
                     if(cbShowCustomer.Checked)
                     {
-                        if (!cbShowSBBProduct.Checked)
+                        if (cbShowDeliveryProductOnly.Checked)
                         {
-                            if (CustomerFilter(itemCode, SBBCustID, dt_Item_Cust))
+                            if (!CustomerFilter(itemCode, custID, dt_Item_Cust))
                             {
                                 FilterPassed = false;
                             }
-                        }
-
-                        if (cbShowDeliveryProductOnly.Checked)
-                        {
-                            if (custID != "-1")
-                            {
-                                if(!CustomerFilter(itemCode, custID, dt_Item_Cust))
-                                {
-                                    FilterPassed = false;
-                                }
-                                else
-                                {
-                                    itemCustomer = custName;
-                                }
-                                
-                            }
                             else
                             {
-                                itemCustomer = ifDeliveryProduct(itemCode, dt_Item_Cust, dt_Cust);
-
-                                if(string.IsNullOrEmpty(itemCustomer))
-                                    FilterPassed = false;
+                                itemCustomer = custName;
                             }
                         }
                         else
                         {
-                            itemCustomer = ifDeliveryProduct(itemCode, dt_Item_Cust, dt_Cust);
+                            if(CustomerFilter(itemCode, custID, dt_Item_Cust))
+                            {
+                                itemCustomer = custName;
+                            }
+                            else
+                            {
+                                itemCustomer = ifParentCustomerMatched(itemCode, custID, dt_Item_Cust, dt_Join, dt_Cust);
 
-                            
+                                if (itemCustomer == CUSTOMER_NOT_FOUND)
+                                {
+                                    FilterPassed = false;
+                                }
+                            }
                         }
                     }
                     else
@@ -576,14 +573,14 @@ namespace FactoryManagementSoftware.UI
 
                         if (cbShowDeliveryProductOnly.Checked)
                         {
-                            if (custID != "-1" && !CustomerFilter(itemCode, custID, dt_Item_Cust))
+                            if (!CustomerFilter(itemCode, custID, dt_Item_Cust))
                             {
                                 FilterPassed = false;
                             }
-                            else if (!ifDeliveryProduct(itemCode, dt_Item_Cust))
-                            {
-                                FilterPassed = false;
-                            }
+                            //else if (!ifDeliveryProduct(itemCode, dt_Item_Cust))
+                            //{
+                            //    FilterPassed = false;
+                            //}
                         }
                         else
                         {
@@ -591,12 +588,15 @@ namespace FactoryManagementSoftware.UI
                             {
                                 FilterPassed = false;
                             }
+                            //else if (!ifDeliveryProduct(itemCode, dt_Item_Cust))
+                            //{
+                            //    FilterPassed = false;
+                            //}
                         }
                     }
                  
                 }
                
-
                 if(FilterPassed)
                 {
                     newRow = dt_Item.NewRow();
@@ -881,8 +881,20 @@ namespace FactoryManagementSoftware.UI
 
                         string ratio;
 
+                        float childQty_Float = float.TryParse(ChildQty, out float f) ? f : -1;
+
+                        if(childQty_Float != -1)
+                        {
+                            ChildQty = childQty_Float.ToString("0.##");
+                        }
+
                         if (min == max)
                         {
+                            if(max == "" || max == "0")
+                            {
+                                max = "1";
+                            }
+
                             ratio = max + ":" + ChildQty;
                         }
                         else
@@ -1825,21 +1837,33 @@ namespace FactoryManagementSoftware.UI
             if(selectedCust.Equals("ALL") || cmbCust.SelectedIndex <= -1)
             {
                 cbShowSBBProduct.Enabled = true;
+
                 cbShowDeliveryProductOnly.Checked = false;
+                cbShowDeliveryProductOnly.Enabled = false;
+                cbShowCustomer.Checked = false;
+                cbShowCustomer.Enabled = false;
 
 
             }
             else if(selectedCust.ToUpper().Equals(text.SBB_BrandName) || selectedCust.ToUpper().Equals(text.SPP_BrandName))
             {
                 cbShowDeliveryProductOnly.Checked = true;
+                cbShowDeliveryProductOnly.Enabled = true;
                 cbShowSBBProduct.Checked = true;
                 cbShowSBBProduct.Enabled = false;
+
+                cbShowCustomer.Checked = true;
+                cbShowCustomer.Enabled = true;
             }
             else
             {
+                cbShowDeliveryProductOnly.Enabled = true;
                 cbShowDeliveryProductOnly.Checked = true;
                 cbShowSBBProduct.Checked = false;
                 cbShowSBBProduct.Enabled = false;
+
+                cbShowCustomer.Checked = true;
+                cbShowCustomer.Enabled = true;
             }
         }
 
@@ -1847,33 +1871,31 @@ namespace FactoryManagementSoftware.UI
         {
             if (lblMoreInfo.Text.Contains(MODE_GENERAL_INFO))
             {
-                //DataTable dt = GetSelectedItemInfo();
+                string itemCode = CURRENT_MORE_INFO_SHOWING_ITEMCODE;
+                string itemName = tool.getItemName(CURRENT_MORE_INFO_SHOWING_ITEMCODE);
 
-                //if (dt.Rows.Count > 1)
-                //{
-                //    MessageBox.Show("MULTIPLE ITEM ROW FOUND!");
-                //}
+                if (MessageBox.Show("Are you sure you want to terminate " + itemName + "? ", "Message",
+                                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    if (ItemTermination(itemCode, itemName))
+                    {
+                        MessageBox.Show("Item terminated!");
 
-                //frmItemEdit_NEW frm = new frmItemEdit_NEW(dt, cbShowQuotationItem.Checked);
+                        frmLoading.ShowLoadingScreen();
 
-                //frm.ShowDialog();
+                        Cursor = Cursors.WaitCursor;
 
-                //if (frmItemEdit_NEW.DATA_SAVED)
-                //{
-                //    //CHANGE DB_ITEM_LIST DATA, CHANGE SUB LIST TABLE
-                //    frmLoading.ShowLoadingScreen();
+                        LoadDBItemList();
+                        LoadItemList();
 
-                //    Cursor = Cursors.WaitCursor;
+                        Cursor = Cursors.Arrow;
 
-                //    LoadDBItemList();
-                //    LoadItemList();
+                        frmLoading.CloseForm();
 
-                //    Cursor = Cursors.Arrow;
+                    }
+                }
+                   
 
-                //    frmLoading.CloseForm();
-                //    //LoadGeneralInfo(frmItemEdit_NEW.DT_DATA_SAVED);
-
-                //}
             }
 
             else if (lblMoreInfo.Text.Contains(MODE_GROUP))
@@ -1905,6 +1927,21 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
+        }
+
+        private void cbShowSBBProduct_CheckedChanged(object sender, EventArgs e)
+        {
+            ClearDGV();
+        }
+
+        private void cbShowDeliveryProductOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            ClearDGV();
+        }
+
+        private void cbShowCustomer_CheckedChanged(object sender, EventArgs e)
+        {
+            ClearDGV();
         }
     }
 }
