@@ -185,21 +185,21 @@ namespace FactoryManagementSoftware.UI
             if (string.IsNullOrEmpty(cmbCat.Text))
             {
                 result = false;
-                errorProvider3.SetError(cmbCat, "Item Category Required");
+                errorProvider3.SetError(lblCategory, "Item Category Required");
             }
 
             if (string.IsNullOrEmpty(txtItemCode.Text))
             {
                 result = false;
 
-                errorProvider1.SetError(txtItemCode, "Item Code Required");
+                errorProvider1.SetError(lblItemCode, "Item Code Required");
             }
 
             if (string.IsNullOrEmpty(txtItemName.Text))
             {
                 result = false;
 
-                errorProvider2.SetError(txtItemName, "Item Name Required");
+                errorProvider2.SetError(lblItemName, "Item Name Required");
             }
 
             if (cbSBB.Checked)
@@ -1095,45 +1095,55 @@ namespace FactoryManagementSoftware.UI
 
                 bool ExistingItem = IfProductsExists(txtItemCode.Text);
 
-                if (!ExistingItem)
+                if(ExistingItem && btnSave.Text.Contains(Button_AddItem))
                 {
-                    Message = "Confirm to add new Item?";
+                    errorProvider1.SetError(lblItemCode, "Item Code have been used!");
                 }
-                else 
+                else
                 {
-                    Message = "Confirm to update?";
-                }
-
-                DialogResult dialogResult = MessageBox.Show(Message, "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-
-                if (dialogResult == DialogResult.Yes)
-                {
-                    if (ExistingItem)
+                    if (!ExistingItem)
                     {
-                        if(cmbCat.Text.Equals(text.Cat_Part))
-                        {
-                            updateItem();
-                        }
-                        else
-                        {
-                            updateMaterial();
-                        }   
+                        Message = "Confirm to add new Item?";
                     }
                     else
                     {
-                        //tool.historyRecord(text.LogIn, text.Failed, DateTime.Now, userID);
+                        Message = "Confirm to update?";
+                    }
 
-                        if (cmbCat.Text.Equals(text.Cat_Part))
+                    DialogResult dialogResult = MessageBox.Show(Message, "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        if (ExistingItem)
                         {
-                            insertItem();
+                            if (cmbCat.Text.Equals(text.Cat_Part))
+                            {
+                                updateItem();
+                            }
+                            else
+                            {
+                                updateMaterial();
+                            }
                         }
                         else
                         {
-                            insertMaterial();
+                            //tool.historyRecord(text.LogIn, text.Failed, DateTime.Now, userID);
+
+                            if (cmbCat.Text.Equals(text.Cat_Part))
+                            {
+                                insertItem();
+                            }
+                            else
+                            {
+                                insertMaterial();
+                            }
                         }
                     }
+
                 }
+
+               
             }
             Cursor = Cursors.Arrow; // change cursor to normal type
         }

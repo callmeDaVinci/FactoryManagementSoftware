@@ -75,7 +75,7 @@ namespace FactoryManagementSoftware.UI
 
             LoadMoreInfoModetoCMB(cmbMoreInfoMode);
 
-            tool.LoadCustomerAndAllToComboBoxSBB(cmbCust);
+            tool.LoadCustomerToComboBoxSBB(cmbCust);
         }
 
         private void dgvItemListUIEdit(DataGridView dgv)
@@ -152,7 +152,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_Customer, typeof(string));
             dt.Columns.Add(text.Header_ItemCode, typeof(string));
             dt.Columns.Add(text.Header_ItemName, typeof(string));
-            dt.Columns.Add(text.Header_BalStock, typeof(string));
+            dt.Columns.Add(text.Header_BalStock, typeof(float));
             dt.Columns.Add(text.Header_Status, typeof(string));
 
             return dt;
@@ -523,7 +523,7 @@ namespace FactoryManagementSoftware.UI
 
                 string itemCustomer = "";
 
-                if (FilterPassed && !cbShowSBBProduct.Checked && CustomerFilter(itemCode, SBBCustID, dt_Item_Cust))
+                if (FilterPassed && !cbShowSBBProduct.Checked && ifParentCustomerMatched(itemCode, SBBCustID, dt_Item_Cust, dt_Join))
                 {
                     FilterPassed = false;
                 }
@@ -605,7 +605,7 @@ namespace FactoryManagementSoftware.UI
                     newRow[text.Header_Customer] = itemCustomer;
                     newRow[text.Header_ItemCode] = itemCode;
                     newRow[text.Header_ItemName] = itemName;
-                    newRow[text.Header_BalStock] = stockBalance.ToString("0.##");
+                    newRow[text.Header_BalStock] = decimal.Round((decimal)stockBalance, 2, MidpointRounding.AwayFromZero);//stockBalance.ToString("0.##")
                     newRow[text.Header_Status] = Status;
 
                     dt_Item.Rows.Add(newRow);
@@ -1579,15 +1579,17 @@ namespace FactoryManagementSoftware.UI
             {
                 cmbCust.SelectedIndex = -1;
                 cmbCust.Enabled = false;
+
                 cbShowCustomer.Checked = false;
                 cbShowCustomer.Enabled = false;
 
+                cbShowSBBProduct.Checked = false;
+                cbShowSBBProduct.Enabled = false;
             }
             else
             {
                 cmbCust.Enabled = true;
-                cbShowCustomer.Enabled = true;
-
+                cbShowSBBProduct.Enabled = true;
             }
 
             ClearDGV();
@@ -1669,7 +1671,8 @@ namespace FactoryManagementSoftware.UI
                     Cursor = Cursors.WaitCursor;
 
                     LoadDBItemList();
-                    LoadItemList();
+                    LoadGeneralInfo();
+                    UpdateItemName();
 
                     Cursor = Cursors.Arrow;
 
@@ -1729,6 +1732,37 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void UpdateItemName()
+        {
+            if(DB_ITEM_LIST != null && dgvItemList.DataSource != null)
+            {
+                DataTable dt = (DataTable)dgvItemList.DataSource;
+
+                string itemName = "";
+
+                foreach(DataRow row in DB_ITEM_LIST.Rows)
+                {
+                    if (CURRENT_MORE_INFO_SHOWING_ITEMCODE.Equals(row[dalItem.ItemCode].ToString()))
+                    {
+                        itemName = row[dalItem.ItemName].ToString();
+                        break;
+                    }
+                }
+
+                if(!string.IsNullOrEmpty(itemName))
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        if (CURRENT_MORE_INFO_SHOWING_ITEMCODE.Equals(row[text.Header_ItemCode].ToString()))
+                        {
+                            row[text.Header_ItemName] = itemName;
+                            break;
+                        }
+                    }
+                }
+               
+            }
+        }
         private void dgvItemList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             try
@@ -1942,6 +1976,63 @@ namespace FactoryManagementSoftware.UI
         private void cbShowCustomer_CheckedChanged(object sender, EventArgs e)
         {
             ClearDGV();
+        }
+
+        private void dgvItemList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            DataGridView dgv = dgvItemList;
+
+            dgv.SuspendLayout();
+            int n = e.RowIndex;
+
+            if (dgv.Columns[e.ColumnIndex].Name == text.Header_BalStock)
+            {
+                float qty = 0;
+
+                if (dgv.Rows[n].Cells[text.Header_BalStock] != null)
+                {
+                    float.TryParse(dgv.Rows[n].Cells[text.Header_BalStock].Value.ToString(), out (qty));
+                }
+
+                if (qty < 0)
+                {
+                    dgv.Rows[n].Cells[text.Header_BalStock].Style = new DataGridViewCellStyle { ForeColor = Color.Red };
+                }
+                else
+                {
+                    dgv.Rows[n].Cells[text.Header_BalStock].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
+                }
+            }
+
+            dgv.ResumeLayout();
+        }
+
+        private void dgvMoreInfo_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (lblMoreInfo.Text.Contains(MODE_GENERAL_INFO))
+            {
+                DataGridView dgv = dgvMoreInfo;
+
+                dgv.SuspendLayout();
+                int n = e.RowIndex;
+
+                if (dgv.Columns[e.ColumnIndex].Name == text.Header_Data)
+                {
+                    string data = dgv.Rows[n].Cells[text.Header_Data].Value.ToString();
+
+                    if(IfQuotationData(data))
+                    {
+                        dgv.Rows[n].Cells[text.Header_DataName].Style.BackColor = Color.FromArgb(255, 118, 117);
+                        dgv.Rows[n].Cells[text.Header_Description].Style.BackColor = Color.FromArgb(255, 118, 117);
+                    }
+                    else
+                    {
+                        dgv.Rows[n].Cells[text.Header_Description].Style.BackColor = Color.White;
+                        dgv.Rows[n].Cells[text.Header_DataName].Style.BackColor = Color.White;
+
+                    }
+                }
+            }
         }
     }
 }

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lblCategory = new System.Windows.Forms.Label();
             this.cmbRawMaterial = new System.Windows.Forms.ComboBox();
             this.cmbColorMaterial = new System.Windows.Forms.ComboBox();
             this.txtProPWPcs = new System.Windows.Forms.TextBox();
@@ -116,9 +116,11 @@
             this.tableLayoutPanel59 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel60 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel61 = new System.Windows.Forms.TableLayoutPanel();
+            this.label24 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.tableLayoutPanel64 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel65 = new System.Windows.Forms.TableLayoutPanel();
+            this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.tableLayoutPanel69 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -181,8 +183,6 @@
             this.label32 = new System.Windows.Forms.Label();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel30 = new System.Windows.Forms.TableLayoutPanel();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -245,16 +245,16 @@
             this.tableLayoutPanel30.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label4
+            // lblCategory
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.label4.Location = new System.Drawing.Point(3, 8);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 12);
-            this.label4.TabIndex = 36;
-            this.label4.Text = "CATEGORY";
+            this.lblCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblCategory.AutoSize = true;
+            this.lblCategory.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblCategory.Location = new System.Drawing.Point(3, 8);
+            this.lblCategory.Name = "lblCategory";
+            this.lblCategory.Size = new System.Drawing.Size(53, 12);
+            this.lblCategory.TabIndex = 36;
+            this.lblCategory.Text = "CATEGORY";
             // 
             // cmbRawMaterial
             // 
@@ -1067,7 +1067,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.cmbCat, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.label4, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblCategory, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.cmbCust, 2, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(350, 0);
@@ -1180,7 +1180,7 @@
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
             this.label20.ForeColor = System.Drawing.Color.Black;
-            this.label20.Location = new System.Drawing.Point(123, 5);
+            this.label20.Location = new System.Drawing.Point(120, 5);
             this.label20.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(28, 15);
@@ -1460,6 +1460,19 @@
             this.tableLayoutPanel61.Size = new System.Drawing.Size(304, 20);
             this.tableLayoutPanel61.TabIndex = 1041;
             // 
+            // label24
+            // 
+            this.label24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.label24.ForeColor = System.Drawing.Color.Black;
+            this.label24.Location = new System.Drawing.Point(3, 8);
+            this.label24.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(117, 12);
+            this.label24.TabIndex = 1036;
+            this.label24.Text = "RUNNER WEIGHT (g) PER";
+            // 
             // label21
             // 
             this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -1504,6 +1517,19 @@
             this.tableLayoutPanel65.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel65.Size = new System.Drawing.Size(340, 20);
             this.tableLayoutPanel65.TabIndex = 1041;
+            // 
+            // label22
+            // 
+            this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.label22.ForeColor = System.Drawing.Color.Black;
+            this.label22.Location = new System.Drawing.Point(0, 8);
+            this.label22.Margin = new System.Windows.Forms.Padding(0);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(101, 12);
+            this.label22.TabIndex = 1036;
+            this.label22.Text = "PART WEIGHT (g) PER";
             // 
             // label23
             // 
@@ -2459,32 +2485,6 @@
             this.tableLayoutPanel30.Size = new System.Drawing.Size(1052, 703);
             this.tableLayoutPanel30.TabIndex = 1035;
             // 
-            // label24
-            // 
-            this.label24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.label24.ForeColor = System.Drawing.Color.Black;
-            this.label24.Location = new System.Drawing.Point(3, 8);
-            this.label24.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(117, 12);
-            this.label24.TabIndex = 1036;
-            this.label24.Text = "RUNNER WEIGHT (g) PER";
-            // 
-            // label22
-            // 
-            this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.label22.ForeColor = System.Drawing.Color.Black;
-            this.label22.Location = new System.Drawing.Point(0, 8);
-            this.label22.Margin = new System.Windows.Forms.Padding(0);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(101, 12);
-            this.label22.TabIndex = 1036;
-            this.label22.Text = "PART WEIGHT (g) PER";
-            // 
             // frmItemEdit_NEW
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -2607,7 +2607,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblCategory;
         private System.Windows.Forms.ComboBox cmbRawMaterial;
         private System.Windows.Forms.ComboBox cmbColorMaterial;
         private System.Windows.Forms.TextBox txtProPWPcs;
