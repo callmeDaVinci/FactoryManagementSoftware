@@ -316,6 +316,18 @@ namespace FactoryManagementSoftware.UI
         {
             Application.Exit();
         }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Please contact your system administrator for password reset.");
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+            frmUserEdit frm = new frmUserEdit(true);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//Item Edit
+        }
     }
     
 }

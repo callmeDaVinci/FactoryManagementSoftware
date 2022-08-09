@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
+using System.Data;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -60,6 +61,10 @@ namespace FactoryManagementSoftware.UI
             USER_ID = userID;
 
             int userPermission = dalUser.getPermissionLevel(USER_ID);
+            string userName = dalUser.getUsername(USER_ID);
+
+            usernameToolStripMenuItem.Text = userName;
+
             sPPToolStripMenuItem.Visible = true;
             pOToolStripMenuItem.Visible = false;
             //oRDER20ToolStripMenuItem.Visible = false;
@@ -1028,6 +1033,50 @@ namespace FactoryManagementSoftware.UI
                     Application.OpenForms.OfType<frmOrderAlert_NEW>().First().BringToFront();
                 }
             }
+        }
+
+        private void toolStripStatusLabel1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripStatusLabel1_Click_2(object sender, EventArgs e)
+        {
+
+        }
+
+        private void usernameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            userDAL dalUser = new userDAL();
+            userBLL uUser = new userBLL();
+
+            DataTable dt = dalUser.userIDSearch(USER_ID);
+
+            if(dt != null && dt.Rows.Count >= 0)
+            {
+                foreach(DataRow row in dt.Rows)
+                {
+                    if(row[dalUser.UserID].ToString().Equals(USER_ID.ToString()))
+                    {
+                        uUser.user_id = USER_ID;
+                        uUser.user_name = row[dalUser.Username].ToString();
+                        uUser.user_password = row[dalUser.Password].ToString();
+                        uUser.user_permissions = int.TryParse(row[dalUser.Permission].ToString(), out int permission) ? permission : 0;
+
+                        break;
+                    }
+                }
+
+                frmUserEdit frm = new frmUserEdit(uUser);
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.ShowDialog();//Item Edit
+            }
+           else
+            {
+                MessageBox.Show("User data not found!");
+            }
+
+           
         }
     }
 }

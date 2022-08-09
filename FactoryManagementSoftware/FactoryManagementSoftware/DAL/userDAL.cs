@@ -15,6 +15,7 @@ namespace FactoryManagementSoftware.DAL
         public string Username { get; } = "user_name";
         public string Password { get; } = "user_password";
         public string Permission { get; } = "user_permission";
+        public string ItemPermission { get; } = "item_permission";
 
         public string AddedDate { get; } = "added_date";
         public string AddedBy { get; } = "added_by";
@@ -380,6 +381,22 @@ namespace FactoryManagementSoftware.DAL
             return -1;
         }
 
+        public bool getItemPermission(int id)
+        {
+            DataTable dt = userIDSearch(id);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow user in dt.Rows)
+                {
+                    if (Convert.ToInt32(user[UserID]) == id)
+                    {
+                        return bool.TryParse(user[ItemPermission].ToString(), out bool result) ? result : false;
+                    }
+                }
+            }
+            return false;
+        }
 
     }
 }

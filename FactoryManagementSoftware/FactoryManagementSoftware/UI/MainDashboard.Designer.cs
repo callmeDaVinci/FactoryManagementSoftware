@@ -43,6 +43,7 @@
             this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mouldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newItemListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.iTEMToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.dAILYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.productionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,12 +59,12 @@
             this.productionReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sBBDeliveredReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.iTEMToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.oRDER20ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.oRDER20ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.usernameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -85,7 +86,8 @@
             this.sPPToolStripMenuItem,
             this.reportToolStripMenuItem,
             this.pOToolStripMenuItem,
-            this.oRDER20ToolStripMenuItem});
+            this.oRDER20ToolStripMenuItem,
+            this.usernameToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
@@ -191,6 +193,13 @@
             this.newItemListToolStripMenuItem.Size = new System.Drawing.Size(190, 28);
             this.newItemListToolStripMenuItem.Text = "New Item List";
             this.newItemListToolStripMenuItem.Click += new System.EventHandler(this.newItemListToolStripMenuItem_Click);
+            // 
+            // iTEMToolStripMenuItem1
+            // 
+            this.iTEMToolStripMenuItem1.Name = "iTEMToolStripMenuItem1";
+            this.iTEMToolStripMenuItem1.Size = new System.Drawing.Size(60, 27);
+            this.iTEMToolStripMenuItem1.Text = "ITEM";
+            this.iTEMToolStripMenuItem1.Click += new System.EventHandler(this.iTEMToolStripMenuItem1_Click);
             // 
             // dAILYToolStripMenuItem
             // 
@@ -313,12 +322,13 @@
             this.pOToolStripMenuItem.Text = "PO";
             this.pOToolStripMenuItem.Click += new System.EventHandler(this.pOToolStripMenuItem_Click);
             // 
-            // iTEMToolStripMenuItem1
+            // oRDER20ToolStripMenuItem
             // 
-            this.iTEMToolStripMenuItem1.Name = "iTEMToolStripMenuItem1";
-            this.iTEMToolStripMenuItem1.Size = new System.Drawing.Size(60, 27);
-            this.iTEMToolStripMenuItem1.Text = "ITEM";
-            this.iTEMToolStripMenuItem1.Click += new System.EventHandler(this.iTEMToolStripMenuItem1_Click);
+            this.oRDER20ToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.oRDER20ToolStripMenuItem.Name = "oRDER20ToolStripMenuItem";
+            this.oRDER20ToolStripMenuItem.Size = new System.Drawing.Size(103, 27);
+            this.oRDER20ToolStripMenuItem.Text = "ORDER 2.0";
+            this.oRDER20ToolStripMenuItem.Click += new System.EventHandler(this.oRDER20ToolStripMenuItem_Click);
             // 
             // statusStrip
             // 
@@ -347,12 +357,14 @@
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
-            // oRDER20ToolStripMenuItem
+            // usernameToolStripMenuItem
             // 
-            this.oRDER20ToolStripMenuItem.Name = "oRDER20ToolStripMenuItem";
-            this.oRDER20ToolStripMenuItem.Size = new System.Drawing.Size(103, 27);
-            this.oRDER20ToolStripMenuItem.Text = "ORDER 2.0";
-            this.oRDER20ToolStripMenuItem.Click += new System.EventHandler(this.oRDER20ToolStripMenuItem_Click);
+            this.usernameToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.usernameToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameToolStripMenuItem.Name = "usernameToolStripMenuItem";
+            this.usernameToolStripMenuItem.Size = new System.Drawing.Size(82, 27);
+            this.usernameToolStripMenuItem.Text = "username";
+            this.usernameToolStripMenuItem.Click += new System.EventHandler(this.usernameToolStripMenuItem_Click);
             // 
             // MainDashboard
             // 
@@ -419,6 +431,7 @@
         private System.Windows.Forms.ToolStripMenuItem newItemListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iTEMToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem oRDER20ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem usernameToolStripMenuItem;
     }
 }
 

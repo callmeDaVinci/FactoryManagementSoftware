@@ -23,6 +23,8 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
 
             userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+            itemPermission = dalUser.getItemPermission(MainDashboard.USER_ID);
+
         }
 
         #endregion
@@ -30,6 +32,7 @@ namespace FactoryManagementSoftware.UI
         #region Object & Variable Declare
 
         private int userPermission = -1;
+        private bool itemPermission = false;
 
         Tool tool = new Tool();
         Text text = new Text();
@@ -727,6 +730,10 @@ namespace FactoryManagementSoftware.UI
             else if (data.Equals(dalItem.ItemCode))
             {
                 dataName = text.Header_ItemCode;
+            }
+            else if (data.Equals(dalItem.ItemMBatch))
+            {
+                dataName = text.Header_ColorMaterial;
             }
             else if (data.Equals(dalItem.ItemColor))
             {
@@ -1484,7 +1491,7 @@ namespace FactoryManagementSoftware.UI
 
         private void ShowSubListButton(bool toShow)
         {
-            if (toShow)
+            if (toShow && itemPermission)
             {
                 tlpMoreInfo.RowStyles[1] = new RowStyle(SizeType.Absolute, 50f);
 
@@ -1832,7 +1839,11 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMoreInfo_SelectionChanged(object sender, EventArgs e)
         {
-            ShowEditButton(dgvMoreInfo.DataSource != null && dgvMoreInfo.CurrentCell.RowIndex >= 0);
+            if(dgvMoreInfo.SelectedRows.Count > 0)
+            {
+                ShowEditButton(dgvMoreInfo.DataSource != null && dgvMoreInfo.CurrentCell.RowIndex >= 0);
+
+            }
         }
 
         private void btnNew_Click(object sender, EventArgs e)

@@ -42,6 +42,9 @@
             this.lblVersion = new System.Windows.Forms.Label();
             this.lblDate = new System.Windows.Forms.Label();
             this.gunaPictureBox1 = new Guna.UI.WinForms.GunaPictureBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.gunaPanel1.SuspendLayout();
@@ -59,22 +62,22 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(176)))), ((int)(((byte)(242)))));
-            this.label1.Location = new System.Drawing.Point(295, 134);
+            this.label1.Location = new System.Drawing.Point(295, 137);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(87, 23);
+            this.label1.Size = new System.Drawing.Size(75, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "Username";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(176)))), ((int)(((byte)(242)))));
-            this.label2.Location = new System.Drawing.Point(295, 215);
+            this.label2.Location = new System.Drawing.Point(295, 218);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 23);
+            this.label2.Size = new System.Drawing.Size(70, 20);
             this.label2.TabIndex = 1;
             this.label2.Text = "Password";
             // 
@@ -165,6 +168,9 @@
             // 
             // gunaPanel1
             // 
+            this.gunaPanel1.Controls.Add(this.label6);
+            this.gunaPanel1.Controls.Add(this.label5);
+            this.gunaPanel1.Controls.Add(this.label4);
             this.gunaPanel1.Controls.Add(this.lblVersion);
             this.gunaPanel1.Controls.Add(this.lblDate);
             this.gunaPanel1.Controls.Add(this.label3);
@@ -218,6 +224,43 @@
             this.gunaPictureBox1.TabIndex = 9;
             this.gunaPictureBox1.TabStop = false;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(176)))), ((int)(((byte)(242)))));
+            this.label4.Location = new System.Drawing.Point(331, 423);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(74, 19);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "New User?";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(176)))), ((int)(((byte)(242)))));
+            this.label5.Location = new System.Drawing.Point(411, 423);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 19);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "SIGN UP";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 7.5F, System.Drawing.FontStyle.Italic);
+            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(176)))), ((int)(((byte)(200)))));
+            this.label6.Location = new System.Drawing.Point(441, 372);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(106, 17);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "Forgot Password?";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
+            // 
             // frmLogIn
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
@@ -258,5 +301,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblDate;
         private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
     }
 }

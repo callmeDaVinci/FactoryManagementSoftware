@@ -13,6 +13,7 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
         }
+
         DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
         DataGridViewAutoSizeColumnMode DisplayedCells = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
