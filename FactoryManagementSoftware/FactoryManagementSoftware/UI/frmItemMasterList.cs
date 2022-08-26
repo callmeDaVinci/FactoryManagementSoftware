@@ -33,6 +33,7 @@ namespace FactoryManagementSoftware.UI
 
         private int userPermission = -1;
         private bool itemPermission = false;
+        private bool itemGroupPermission = false;
 
         Tool tool = new Tool();
         Text text = new Text();
@@ -1491,7 +1492,7 @@ namespace FactoryManagementSoftware.UI
 
         private void ShowSubListButton(bool toShow)
         {
-            if (toShow && itemPermission)
+            if (toShow && (itemPermission || lblMoreInfo.Text.Contains(MODE_GROUP)))
             {
                 tlpMoreInfo.RowStyles[1] = new RowStyle(SizeType.Absolute, 50f);
 
@@ -2044,6 +2045,11 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
             }
+        }
+
+        private void dgvItemList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

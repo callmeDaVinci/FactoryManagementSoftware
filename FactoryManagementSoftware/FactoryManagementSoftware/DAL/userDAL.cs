@@ -392,6 +392,7 @@ namespace FactoryManagementSoftware.DAL
                     if (Convert.ToInt32(user[UserID]) == id)
                     {
                         return bool.TryParse(user[ItemPermission].ToString(), out bool result) ? result : false;
+                        //return true;
                     }
                 }
             }

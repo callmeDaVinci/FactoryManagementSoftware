@@ -774,6 +774,7 @@
             this.dgvItemList.Size = new System.Drawing.Size(784, 481);
             this.dgvItemList.TabIndex = 1038;
             this.dgvItemList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItemList_CellClick);
+            this.dgvItemList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItemList_CellContentClick);
             this.dgvItemList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvItemList_CellFormatting);
             this.dgvItemList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvItemList_CellMouseDown);
             this.dgvItemList.SelectionChanged += new System.EventHandler(this.dgvItemList_SelectionChanged);

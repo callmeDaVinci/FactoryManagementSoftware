@@ -65,9 +65,15 @@ namespace FactoryManagementSoftware.UI
 
             usernameToolStripMenuItem.Text = userName;
 
-            sPPToolStripMenuItem.Visible = true;
+            sPPToolStripMenuItem.Visible = false;
             pOToolStripMenuItem.Visible = false;
-            //oRDER20ToolStripMenuItem.Visible = false;
+            oRDER20ToolStripMenuItem.Visible = false;
+
+            if (userPermission >= ACTION_LVL_FIVE)
+            {
+                oRDER20ToolStripMenuItem.Visible = true;
+                sPPToolStripMenuItem.Visible = true;
+            }
 
             if (userPermission >= ACTION_LVL_FOUR)
             {

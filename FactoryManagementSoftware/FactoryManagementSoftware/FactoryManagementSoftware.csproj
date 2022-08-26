@@ -27,7 +27,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>428</ApplicationRevision>
+    <ApplicationRevision>429</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -82,6 +82,9 @@
     <Reference Include="Guna.UI">
       <HintPath>..\packages\Guna.UI.WinForms_v1.0.0.9\.net 3.5\Guna.UI.dll</HintPath>
     </Reference>
+    <Reference Include="Guna.UI2">
+      <HintPath>..\..\..\..\Users\Jun\Desktop\Guna.UI2.dll</HintPath>
+    </Reference>
     <Reference Include="itextsharp">
       <HintPath>..\..\..\..\Download\itextsharp\itextsharp.dll</HintPath>
     </Reference>
@@ -103,6 +106,7 @@
     <Reference Include="Microsoft.SqlServer.Types, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ReportViewer.2015.12.0.2.2403\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Spire.License, Version=1.3.8.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
       <HintPath>..\packages\FreeSpire.PDF.7.2.0\lib\net40\Spire.License.dll</HintPath>
     </Reference>
@@ -125,6 +129,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />

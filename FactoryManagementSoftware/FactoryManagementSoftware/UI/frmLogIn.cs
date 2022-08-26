@@ -328,6 +328,11 @@ namespace FactoryManagementSoftware.UI
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//Item Edit
         }
+
+        private void lblVersion_Click(object sender, EventArgs e)
+        {
+
+        }
     }
     
 }

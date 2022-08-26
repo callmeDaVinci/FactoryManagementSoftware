@@ -49,7 +49,7 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            gbMonthlyDeliveredBag.Text = Text_GB_MonthlyDeliveredBags + " (" + MonthlyDateStart.ToString("dd/MM") + " - " + MonthlyDateEnd.ToString("dd/MM") + ")";
+            lblMonthlyDeliveredBag.Text = Text_GB_MonthlyDeliveredBags + " (" + MonthlyDateStart.ToString("dd/MM") + " - " + MonthlyDateEnd.ToString("dd/MM") + ")";
 
         }
 
@@ -108,7 +108,7 @@ namespace FactoryManagementSoftware.UI
         readonly string DataSource_GoogleDrive = "GOOGLE DRIVE(SEMENYIH)";
         readonly string DataSource_LocalDB = "LOCAL DB";
 
-        readonly string Text_GB_MonthlyDeliveredBags = "MONTHLY DELIVERED BAGs";
+        readonly string Text_GB_MonthlyDeliveredBags = "Monthly Delivered Bags";
         private bool DeliveredBags_FullScreen = false;
 
 
@@ -190,7 +190,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_OrderQty = "ORDER QTY";
         readonly string header_DeliveredQty = "DELIVERED QTY";
         readonly string header_Note = "NOTE";
-        readonly string header_StockCheck = "STOCK CHECK";
+        readonly string header_StockCheck = "Stock Check";
         readonly string header_DONo = "D/O #";
         readonly string header_PONo = "P/O NO";
         readonly string header_DataType = "DATA TYPE";
@@ -400,9 +400,9 @@ namespace FactoryManagementSoftware.UI
 
         private void DgvUIEdit(DataGridView dgv)
         {
-            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
             //dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
             dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -418,11 +418,19 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_ItemType].Visible = false;
                 dgv.Columns[header_ItemCategory].Visible = false;
                 dgv.Columns[header_ItemCode].Visible = true;
+
+                dgv.Columns[header_StdPacking_Bag].Visible = false;
+                dgv.Columns[header_StdPacking_Ctn].Visible = false;
+                dgv.Columns[header_StdPacking_String].Visible = false;
+                dgv.Columns[header_ActualStock_PCS].Visible = false;
+                dgv.Columns[header_ActualStock_BAG].Visible = false;
+                dgv.Columns[header_ActualStock_CTN].Visible = false;
+
                 //dgv.Columns[header_ItemCode].DefaultCellStyle.ForeColor = Color.Gray;
                 //dgv.Columns[header_ItemCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
-                dgv.Columns[header_ItemName].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-                dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+                dgv.Columns[header_ItemName].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 
 
@@ -499,13 +507,14 @@ namespace FactoryManagementSoftware.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            frmSPPInventory frm = new frmSPPInventory
-            {
-                StartPosition = FormStartPosition.CenterScreen
-            };
+            WorkInProgressMessage();
+            //frmSPPInventory frm = new frmSPPInventory
+            //{
+            //    StartPosition = FormStartPosition.CenterScreen
+            //};
 
 
-            frm.ShowDialog();
+            //frm.ShowDialog();
 
         }
 
@@ -2342,8 +2351,6 @@ namespace FactoryManagementSoftware.UI
             LoadTypeCMB(cmbType);
             LoadStockLocationCMB(cmbStockLocation);
 
-            btnMonthlyDateSetting.Text = MonthlyDate_Normal;
-
             RefreshPage();
 
             Loaded = true;
@@ -2378,27 +2385,27 @@ namespace FactoryManagementSoftware.UI
 
         private void button9_Click(object sender, EventArgs e)
         {
-
-            if (!MainDashboard.ProductionFormOpen)
-            {
-                frmLoading.ShowLoadingScreen();
-                frmSBBproductionSchedule frm = new frmSBBproductionSchedule
-                {
-                    MdiParent = this.ParentForm,
-                    StartPosition = FormStartPosition.CenterScreen,
-                    WindowState = FormWindowState.Maximized
-                };
-                frm.Show();
-                MainDashboard.ProductionFormOpen = true;
-                frmLoading.CloseForm();
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmSBBproductionSchedule>().Count() == 1)
-                {
-                    Application.OpenForms.OfType<frmSBBproductionSchedule>().First().BringToFront();
-                }
-            }
+            WorkInProgressMessage();
+            //if (!MainDashboard.ProductionFormOpen)
+            //{
+            //    frmLoading.ShowLoadingScreen();
+            //    frmSBBproductionSchedule frm = new frmSBBproductionSchedule
+            //    {
+            //        MdiParent = this.ParentForm,
+            //        StartPosition = FormStartPosition.CenterScreen,
+            //        WindowState = FormWindowState.Maximized
+            //    };
+            //    frm.Show();
+            //    MainDashboard.ProductionFormOpen = true;
+            //    frmLoading.CloseForm();
+            //}
+            //else
+            //{
+            //    if (Application.OpenForms.OfType<frmSBBproductionSchedule>().Count() == 1)
+            //    {
+            //        Application.OpenForms.OfType<frmSBBproductionSchedule>().First().BringToFront();
+            //    }
+            //}
         }
 
         private void OpenPOList(object sender, EventArgs e)
@@ -2429,13 +2436,14 @@ namespace FactoryManagementSoftware.UI
 
         private void button4_Click(object sender, EventArgs e)
         {
-            frmSBBProductionPlanning frm = new frmSBBProductionPlanning
-            {
-                StartPosition = FormStartPosition.CenterScreen
-            };
+            WorkInProgressMessage();
+            //frmSBBProductionPlanning frm = new frmSBBProductionPlanning
+            //{
+            //    StartPosition = FormStartPosition.CenterScreen
+            //};
 
 
-            frm.ShowDialog();
+            //frm.ShowDialog();
 
 
             ////WorkInProgressMessage();
@@ -3602,23 +3610,27 @@ namespace FactoryManagementSoftware.UI
 
         private void OpenDeliveryPlanning(object sender, EventArgs e)
         {
-            frmDeliverySchedule frm = new frmDeliverySchedule
-            {
-                StartPosition = FormStartPosition.CenterScreen
-            };
+            WorkInProgressMessage();
 
-            frm.ShowDialog();
+            //frmDeliverySchedule frm = new frmDeliverySchedule
+            //{
+            //    StartPosition = FormStartPosition.CenterScreen
+            //};
+
+            //frm.ShowDialog();
 
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            frmSBBMatPlan frm = new frmSBBMatPlan
-            {
-                StartPosition = FormStartPosition.CenterScreen
-            };
+            WorkInProgressMessage();
 
-            frm.ShowDialog();
+            //frmSBBMatPlan frm = new frmSBBMatPlan
+            //{
+            //    StartPosition = FormStartPosition.CenterScreen
+            //};
+
+            //frm.ShowDialog();
         }
 
         private void label8_Click(object sender, EventArgs e)
@@ -3784,7 +3796,7 @@ namespace FactoryManagementSoftware.UI
                 btnStockCheck.Enabled = false;
 
                 btnStockCheck.Text = "TALLY ALL";
-                gbStockAlert.Text = "STOCK CHECK";
+                lblStockAlert.Text = "Stock Check";
 
                 btnStockRefresh.Visible = false;
                 cmbType.Visible = false;
@@ -3838,8 +3850,8 @@ namespace FactoryManagementSoftware.UI
 
                 btnStockCheck.Enabled = true;
 
-                btnStockCheck.Text = "STOCK CHECK";
-                gbStockAlert.Text = "STOCK ALERT";
+                btnStockCheck.Text = "Stock Check";
+                lblStockAlert.Text = "Stock Alert";
 
                 btnStockRefresh.Visible = true;
                 cmbType.Visible = true;
@@ -3865,7 +3877,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnLOAD_Click(object sender, EventArgs e)
         {
-            if (gbStockAlert.Text == "STOCK ALERT")
+            if (lblStockAlert.Text == "Stock Alert")
                 StockCheckUIMode(true);
             else
             {
@@ -4156,7 +4168,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvStockAlert_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(gbStockAlert.Text == "STOCK ALERT")
+            if(lblStockAlert.Text == "Stock Alert")
             {
                 DataGridView dgv = dgvStockAlert;
 
@@ -4226,78 +4238,78 @@ namespace FactoryManagementSoftware.UI
 
         private void MonthlyDeliveredBagFullScreen()
         {
-            if(DeliveredBags_FullScreen)
-            {
-                btnDeliveredFullScreen.BackgroundImage = Properties.Resources.icons8_exit_full_screen_64;
+            //if(DeliveredBags_FullScreen)
+            //{
+            //    btnDeliveredFullScreen.BackgroundImage = Properties.Resources.icons8_exit_full_screen_64;
 
-                tlpMonthlyDeliveredBag.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
-                tlpMonthlyDeliveredBag.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0f);
+            //    tlpMonthlyDeliveredBag.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
+            //    tlpMonthlyDeliveredBag.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0f);
 
-                tlpDashBoard.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
-                tlpDashBoard.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
-                tlpDashBoard.RowStyles[2] = new RowStyle(SizeType.Percent, 0f);
+            //    tlpDashBoard.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
+            //    tlpDashBoard.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
+            //    tlpDashBoard.RowStyles[2] = new RowStyle(SizeType.Percent, 0f);
 
 
-                tlpDeliveredQtyAndDetail.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
-                tlpDeliveredQtyAndDetail.RowStyles[1] = new RowStyle(SizeType.Absolute, 0);
+            //    tlpDeliveredQtyAndDetail.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
+            //    tlpDeliveredQtyAndDetail.RowStyles[1] = new RowStyle(SizeType.Absolute, 0);
 
-                DeliveredBag_FontSize = 250;
+            //    DeliveredBag_FontSize = 250;
 
-                lblMonthlyDelivered.Font = new Font("Segoe UI", DeliveredBag_FontSize, FontStyle.Regular);
+            //    lblMonthlyDelivered.Font = new Font("Segoe UI", DeliveredBag_FontSize, FontStyle.Regular);
 
-                tlpSummary.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0f);
-                tlpSummary.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
-                tlpSummary.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 100f);
+            //    tlpSummary.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0f);
+            //    tlpSummary.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
+            //    tlpSummary.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 100f);
 
-                tlpSBB.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
-                tlpSBB.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
+            //    tlpSBB.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
+            //    tlpSBB.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
 
-                //btnFullScreenRefresh.Visible = true;
-            }
-            else
-            {
-                btnDeliveredFullScreen.BackgroundImage = Properties.Resources.icons8_toggle_full_screen_50;
+            //    //btnFullScreenRefresh.Visible = true;
+            //}
+            //else
+            //{
+            //    btnDeliveredFullScreen.BackgroundImage = Properties.Resources.icons8_toggle_full_screen_50;
 
-                tlpMonthlyDeliveredBag.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 300f);
-                tlpMonthlyDeliveredBag.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100f);
+            //    tlpMonthlyDeliveredBag.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 300f);
+            //    tlpMonthlyDeliveredBag.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100f);
 
-                tlpDashBoard.RowStyles[0] = new RowStyle(SizeType.Absolute, 30f);
-                tlpDashBoard.RowStyles[1] = new RowStyle(SizeType.Absolute, 270f);
-                tlpDashBoard.RowStyles[2] = new RowStyle(SizeType.Percent, 100f);
+            //    tlpDashBoard.RowStyles[0] = new RowStyle(SizeType.Absolute, 30f);
+            //    tlpDashBoard.RowStyles[1] = new RowStyle(SizeType.Absolute, 270f);
+            //    tlpDashBoard.RowStyles[2] = new RowStyle(SizeType.Percent, 100f);
 
-                tlpDeliveredQtyAndDetail.RowStyles[0] = new RowStyle(SizeType.Absolute, 163f);
-                tlpDeliveredQtyAndDetail.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
+            //    tlpDeliveredQtyAndDetail.RowStyles[0] = new RowStyle(SizeType.Absolute, 163f);
+            //    tlpDeliveredQtyAndDetail.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
 
-                DeliveredBag_FontSize = 60;
-                lblMonthlyDelivered.Font = new Font("Segoe UI", DeliveredBag_FontSize, FontStyle.Regular);
+            //    DeliveredBag_FontSize = 60;
+            //    lblMonthlyDelivered.Font = new Font("Segoe UI", DeliveredBag_FontSize, FontStyle.Regular);
 
-                tlpSummary.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 230f);
-                tlpSummary.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 230f);
-                tlpSummary.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 100f);
+            //    tlpSummary.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 230f);
+            //    tlpSummary.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 230f);
+            //    tlpSummary.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 100f);
 
-                tlpSBB.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
-                tlpSBB.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 372f);
+            //    tlpSBB.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
+            //    tlpSBB.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 372f);
 
-                //btnFullScreenRefresh.Visible = false;
+            //    //btnFullScreenRefresh.Visible = false;
 
-            }
+            //}
         }
 
         private void btnDeliveredFullScreen_Click(object sender, EventArgs e)
         {
-            if(DeliveredBags_FullScreen)
-            {
-                DeliveredBags_FullScreen = false;
+            //if(DeliveredBags_FullScreen)
+            //{
+            //    DeliveredBags_FullScreen = false;
 
               
-            }
-            else
-            {
-                DeliveredBags_FullScreen = true;
+            //}
+            //else
+            //{
+            //    DeliveredBags_FullScreen = true;
 
-            }
+            //}
 
-            MonthlyDeliveredBagFullScreen();
+            //MonthlyDeliveredBagFullScreen();
         }
 
         private void btnFullScreenRefresh_Click(object sender, EventArgs e)
@@ -4387,21 +4399,6 @@ namespace FactoryManagementSoftware.UI
                 header_Stock += stockLocation + " (PCS / KG)";
 
                 LoadStockAlert();//166
-            }
-        }
-
-        private void btnMonthlyDateSetting_Click(object sender, EventArgs e)
-        {
-            string MonthlySetting = btnMonthlyDateSetting.Text;
-
-            if(MonthlySetting.Equals(MonthlyDate_Safety))
-            {
-                btnMonthlyDateSetting.Text = MonthlyDate_Normal;
-            }
-            else if(MonthlySetting.Equals(MonthlyDate_Normal))
-            {
-                btnMonthlyDateSetting.Text = MonthlyDate_Safety;
-                InitialMonthlyDate();
             }
         }
 
