@@ -4655,6 +4655,7 @@ namespace FactoryManagementSoftware.UI
                             string shippingContact = null;
                             string transporterName = "";
                             int totalBag = 0;
+                            int totalOringBag = 0;
                             int totalBalPcs = 0;
                             string RemarkInDO = "";
 
@@ -4723,15 +4724,29 @@ namespace FactoryManagementSoftware.UI
                                         int stdPacking = int.TryParse(row2[dalSPP.QtyPerBag].ToString(), out stdPacking) ? stdPacking : 0;
                                         int bag = deliveryQty / stdPacking;
 
-                                        if(type == text.Type_PolyORing)
-                                        {
-                                            bag = 0;
-                                        }
+                                        //if(type == text.Type_PolyORing)
+                                        //{
+                                        //    bag = 0;
+                                        //}
 
                                         string size = row2[dalSPP.SizeNumerator].ToString();
                                         string unit = row2[dalSPP.SizeUnit].ToString().ToUpper();
                                         string itemCode = row2[dalSPP.ItemCode].ToString();
-                                        string remark = bag + " BAG(S)";
+
+                                        string remark = "";
+
+                                        if (itemCode.Contains("CFPOR"))
+                                        {
+                                            totalOringBag += bag;
+
+                                            remark = bag + " PACKET(S)";
+
+                                        }
+                                        else
+                                        {
+                                            remark = bag + " BAG(S)";
+
+                                        }
 
                                         int balancePcs = deliveryQty % stdPacking;
 
@@ -5039,11 +5054,13 @@ namespace FactoryManagementSoftware.UI
                                         RowToInsert = pcsUnitColStart + (itemRowOffset + rowNo).ToString() + pcsUnitColEnd + (itemRowOffset + rowNo).ToString();
                                         InsertToSheet(xlWorkSheet, RowToInsert, "PCS");
 
-                                        if(type != text.Type_PolyORing)
-                                        {
-                                            RowToInsert = remarkColStart + (itemRowOffset + rowNo).ToString() + remarkColEnd + (itemRowOffset + rowNo).ToString();
-                                            InsertToSheet(xlWorkSheet, RowToInsert, remark);
-                                        }
+                                        //if(type != text.Type_PolyORing)
+                                        //{
+                                           
+                                        //}
+
+                                        RowToInsert = remarkColStart + (itemRowOffset + rowNo).ToString() + remarkColEnd + (itemRowOffset + rowNo).ToString();
+                                        InsertToSheet(xlWorkSheet, RowToInsert, remark);
 
                                         if (PONo == Text_MultiPOCode)
                                         {
@@ -5067,17 +5084,38 @@ namespace FactoryManagementSoftware.UI
 
                                 }
                             }
+                            if(totalBag - totalOringBag <= 0)
+                            {
+                                InsertToSheet(xlWorkSheet, areaTotalData, "TOT. "  + totalOringBag + " PACKETS");
 
-                            if (totalBalPcs > 0)
+                            }
+                            else if (totalBalPcs > 0)
                             {
 
-                                InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalBag + " BAG(S) + " + totalBalPcs + " PCS");
+                                if (totalOringBag > 0)
+                                {
+                                    totalBag -= totalOringBag;
+
+                                    InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalBag + " BAG(S) + " + totalBalPcs + " PCS " + totalOringBag + " PACKETS");
+                                }
+                                else
+                                {
+                                    InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalBag + " BAG(S) + " + totalBalPcs + " PCS");
+
+                                }
 
                             }
                             else if(totalBag > 0)
                             {
-                                InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalBag + " BAG(S)");
-
+                                if (totalOringBag > 0)
+                                {
+                                    totalBag -= totalOringBag;
+                                    InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalBag + " BAG(S) " + totalOringBag + " PACKETS");
+                                }
+                                else
+                                {
+                                    InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalBag + " BAG(S)");
+                                }
                             }
 
                             if (string.IsNullOrEmpty(billingAddress_3))

@@ -2307,10 +2307,15 @@ namespace FactoryManagementSoftware.UI
             if (cbMergeCustomer.Checked)
             {
                 dgv.Columns[header_ItemString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[header_ItemType].Visible = false;
+                dgv.Columns[header_ItemSizeString].Visible = false;
             }
             else
             {
                 dgv.Columns[header_ItemString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[header_ItemType].Visible = true;
+                dgv.Columns[header_ItemSizeString].Visible = true;
+
             }
         }
         #endregion
@@ -2376,12 +2381,17 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = (DataTable)dgv.DataSource;
 
             int totalBag = 0;
+            int totalOringBag = 0;
             int totalPcs = 0;
             float totalSales = 0;
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 int pcsPerBag = int.TryParse(dt.Rows[i][header_StdPacking].ToString(), out pcsPerBag) ? pcsPerBag : -1;
+
+                string itemCode = dt.Rows[i][header_ItemCode].ToString();
+
+                bool OringFound = itemCode.Contains("CFPOR");
 
                 if (pcsPerBag != -1)
                 {
@@ -2418,6 +2428,11 @@ namespace FactoryManagementSoftware.UI
 
                                         totalBag += deliveredBag;
                                         totalPcs += deliveredPcs;
+
+                                        if(OringFound)
+                                        {
+                                            totalOringBag += deliveredBag;
+                                        }
                                     }
                                 }
                                 else
@@ -2429,6 +2444,11 @@ namespace FactoryManagementSoftware.UI
                                     {
                                         totalBag += deliveredBag;
                                         totalPcs += deliveredPcs;
+
+                                        if (OringFound)
+                                        {
+                                            totalOringBag += deliveredBag;
+                                        }
                                     }
                                 }
                               
@@ -2451,6 +2471,10 @@ namespace FactoryManagementSoftware.UI
                                     totalPcs += TotalDeliveredPcs;
                                     totalSales += TotalDeliveredSales;
 
+                                    if (OringFound)
+                                    {
+                                        totalOringBag += TotalDeliveredBag;
+                                    }
                                 }
                             }
                            
@@ -2460,8 +2484,9 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+            totalBag -= totalOringBag;
 
-            if(cmbReportType.Text.Equals(dateType_Sales))
+            if (cmbReportType.Text.Equals(dateType_Sales))
             {
                 lblTotalBag.Text = "RM " +totalSales.ToString("N2") + " : "+ totalBag + " BAG(s) / " + totalPcs + " PCS " + text_Selected;
 
@@ -2472,7 +2497,12 @@ namespace FactoryManagementSoftware.UI
 
             }
 
+            if(totalOringBag > 0)
+            {
+                lblTotalBag.Text = lblTotalBag.Text.Replace(text_Selected, " + ORING " + totalOringBag + " PACKET(s) " + text_Selected);
 
+            }
+             
         }
 
         private void cbSortBySize_CheckedChanged(object sender, EventArgs e)

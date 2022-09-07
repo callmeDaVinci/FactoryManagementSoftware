@@ -2889,7 +2889,6 @@ namespace FactoryManagementSoftware.UI
             for (int i = 0; i < dt_Merge.Rows.Count; i++)
             {
                 string custID = dt_Merge.Rows[i][header_CustID].ToString();
-                // int qtyPerBag = int.TryParse(dt_Merge.Rows[i][header_QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
 
                 if (preCustID == null || preCustID != custID)
                 {
@@ -2936,9 +2935,12 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            int ORingDeliveredQty = GetOringDeliveredQty();
+            var ORingDeliveredInfo = GetOringDeliveredQty();
 
-            if(ORingDeliveredQty > 0)
+            int ORingDeliveredQty = ORingDeliveredInfo.Item2;
+            DataTable dt_OringDelivered = ORingDeliveredInfo.Item1;
+
+            if (ORingDeliveredQty > 0)
             {
                 lblORingDelivered.Text = "+ O Ring " + ORingDeliveredQty.ToString() + " Packet(s)";
             }
@@ -2970,6 +2972,7 @@ namespace FactoryManagementSoftware.UI
             int otherBagDelivered = 0;
             int otherBalPacketDelivered = 0;
             int otherBalPcsDelivered = 0;
+            int otherORingDelivered = 0;
 
             for (int i = 0; i < dt_Merge.Rows.Count; i++)
             {
@@ -2983,7 +2986,37 @@ namespace FactoryManagementSoftware.UI
                 string deliveredBalPkt = dt_Merge.Rows[i][header_TotalPkt].ToString();
                 string deliveredBalPcs = dt_Merge.Rows[i][header_TotalBalPcs].ToString();
 
+                string custID = dt_Merge.Rows[i][header_CustID].ToString();
+
                 string bal = "";
+
+
+                //get oring deliverd for customer
+                foreach (DataRow row in dt_OringDelivered.Rows)
+                {
+                    if (custID.Equals(row[header_CustID].ToString()))
+                    {
+                        int oringDeliveredBag = int.TryParse(row[header_TotalBag].ToString(), out oringDeliveredBag) ? oringDeliveredBag : 0;
+
+                        int temp = int.TryParse(deliveredBag, out temp) ? temp : 0;
+
+                        int excludeORingDeliveredBagQty = temp - oringDeliveredBag;
+
+                        if (excludeORingDeliveredBagQty < 0)
+                        {
+                            excludeORingDeliveredBagQty = 0;
+                        }
+
+                        deliveredBag = excludeORingDeliveredBagQty.ToString();
+
+                        if (i >= 9)
+                        {
+                            otherORingDelivered += oringDeliveredBag;
+                        }
+
+
+                    }
+                }
 
                 if (!string.IsNullOrEmpty(deliveredBalPkt) && deliveredBalPkt != "0")
                 {
@@ -3089,7 +3122,18 @@ namespace FactoryManagementSoftware.UI
             }
 
             lblTopCust_10.Text = "OTHER";
-            lblTopCustomer_Bag_10.Text = otherBagDelivered.ToString();
+
+            if(otherBagDelivered - otherORingDelivered < 0)
+            {
+                lblTopCustomer_Bag_10.Text = "0";
+
+            }
+            else
+            {
+                lblTopCustomer_Bag_10.Text = (otherBagDelivered - otherORingDelivered).ToString();
+
+            }
+
             if (!string.IsNullOrEmpty(otherbal))
             {
                 lblTopCustomer_Bal_10.Text = otherbal;
@@ -3185,8 +3229,9 @@ namespace FactoryManagementSoftware.UI
             //105
         }
 
-        private int GetOringDeliveredQty()
+        private Tuple<DataTable, int> GetOringDeliveredQty()
         {
+            DataTable dt = NewDeliveredTable();
             int deliveredBag = 0;
 
             DataTable dt_DOList = dalSBB.DOWithTrfInfoSelect(MonthlyDateStart.ToString("yyyy/MM/dd"), MonthlyDateEnd.ToString("yyyy/MM/dd"));
@@ -3196,11 +3241,6 @@ namespace FactoryManagementSoftware.UI
                 string trfResult = row[dalTrfHist.TrfResult].ToString();
                 string itemCode = row[dalSBB.ItemCode].ToString();
 
-                if(itemCode.Contains("OR"))
-                {
-                    float TEST = 0;
-                }
-
                 if (trfResult == "Passed" && itemCode.Contains("CFPOR"))
                 {
                     int deliveredPcs = int.TryParse(row[dalTrfHist.TrfQty].ToString(), out deliveredPcs) ? deliveredPcs : 0;
@@ -3208,10 +3248,25 @@ namespace FactoryManagementSoftware.UI
                     int qtyPerBag = int.TryParse(row[dalSBB.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
 
                     deliveredBag += deliveredPcs / qtyPerBag;
+
+                    int custID = int.TryParse(row[dalSBB.CustTblCode].ToString(), out custID) ? custID : 0;
+
+
+                    DataRow newRow = dt.NewRow();
+
+                    newRow[header_CustID] = custID;
+                    //newRow[header_CustShortName] = shortName;
+
+                    newRow[header_TotalPcs] = deliveredPcs;
+                    newRow[header_TotalBag] = deliveredPcs / qtyPerBag;
+                    // newRow[header_TotalPkt] = deliveredPkt;
+                    //newRow[header_TotalBalPcs] = deliveredBalPcs;
+
+                    dt.Rows.Add(newRow);
                 }
             }
 
-            return deliveredBag;
+            return Tuple.Create(dt, deliveredBag);
         }
 
         private void LoadPendingSummary()

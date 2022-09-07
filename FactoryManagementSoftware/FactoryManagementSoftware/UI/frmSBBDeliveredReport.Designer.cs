@@ -29,14 +29,17 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpReport = new System.Windows.Forms.TableLayoutPanel();
             this.dgvList = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.lblTotalBag = new System.Windows.Forms.Label();
             this.lblReportTitle = new System.Windows.Forms.Label();
             this.gbFilter = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cb23to22 = new System.Windows.Forms.CheckBox();
+            this.cb1to31 = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbDeliveredUnitInSales = new System.Windows.Forms.CheckBox();
             this.cbDeliveredQtyInPcs = new System.Windows.Forms.CheckBox();
@@ -74,13 +77,11 @@
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.cb1to31 = new System.Windows.Forms.CheckBox();
-            this.cb23to22 = new System.Windows.Forms.CheckBox();
             this.tlpReport.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvList)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
             this.gbFilter.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gbItemType.SuspendLayout();
@@ -92,7 +93,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpReport
@@ -121,24 +121,24 @@
             this.dgvList.AllowUserToDeleteRows = false;
             this.dgvList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvList.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvList.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvList.GridColor = System.Drawing.Color.WhiteSmoke;
             this.dgvList.Location = new System.Drawing.Point(0, 259);
@@ -212,6 +212,44 @@
             this.gbFilter.TabIndex = 144;
             this.gbFilter.TabStop = false;
             this.gbFilter.Text = "FILTER";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.cb23to22);
+            this.groupBox3.Controls.Add(this.cb1to31);
+            this.groupBox3.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.groupBox3.Location = new System.Drawing.Point(394, 24);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(147, 106);
+            this.groupBox3.TabIndex = 155;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "MONTHLY DATE SETTING";
+            // 
+            // cb23to22
+            // 
+            this.cb23to22.AutoSize = true;
+            this.cb23to22.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb23to22.Location = new System.Drawing.Point(31, 70);
+            this.cb23to22.Name = "cb23to22";
+            this.cb23to22.Size = new System.Drawing.Size(64, 19);
+            this.cb23to22.TabIndex = 6;
+            this.cb23to22.Text = "23 - 22";
+            this.cb23to22.UseVisualStyleBackColor = true;
+            this.cb23to22.CheckedChanged += new System.EventHandler(this.cb23to22_CheckedChanged);
+            // 
+            // cb1to31
+            // 
+            this.cb1to31.AutoSize = true;
+            this.cb1to31.Checked = true;
+            this.cb1to31.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cb1to31.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb1to31.Location = new System.Drawing.Point(31, 38);
+            this.cb1to31.Name = "cb1to31";
+            this.cb1to31.Size = new System.Drawing.Size(92, 19);
+            this.cb1to31.TabIndex = 5;
+            this.cb1to31.Text = "1 - 30 OR 31";
+            this.cb1to31.UseVisualStyleBackColor = true;
+            this.cb1to31.CheckedChanged += new System.EventHandler(this.cb1to31_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -679,44 +717,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1348, 721);
             this.tableLayoutPanel1.TabIndex = 168;
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.cb23to22);
-            this.groupBox3.Controls.Add(this.cb1to31);
-            this.groupBox3.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.groupBox3.Location = new System.Drawing.Point(394, 24);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(147, 106);
-            this.groupBox3.TabIndex = 155;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "MONTHLY DATE SETTING";
-            // 
-            // cb1to31
-            // 
-            this.cb1to31.AutoSize = true;
-            this.cb1to31.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb1to31.Location = new System.Drawing.Point(31, 38);
-            this.cb1to31.Name = "cb1to31";
-            this.cb1to31.Size = new System.Drawing.Size(92, 19);
-            this.cb1to31.TabIndex = 5;
-            this.cb1to31.Text = "1 - 30 OR 31";
-            this.cb1to31.UseVisualStyleBackColor = true;
-            this.cb1to31.CheckedChanged += new System.EventHandler(this.cb1to31_CheckedChanged);
-            // 
-            // cb23to22
-            // 
-            this.cb23to22.AutoSize = true;
-            this.cb23to22.Checked = true;
-            this.cb23to22.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb23to22.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb23to22.Location = new System.Drawing.Point(31, 70);
-            this.cb23to22.Name = "cb23to22";
-            this.cb23to22.Size = new System.Drawing.Size(64, 19);
-            this.cb23to22.TabIndex = 6;
-            this.cb23to22.Text = "23 - 22";
-            this.cb23to22.UseVisualStyleBackColor = true;
-            this.cb23to22.CheckedChanged += new System.EventHandler(this.cb23to22_CheckedChanged);
-            // 
             // frmSBBDeliveredReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -734,6 +734,8 @@
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             this.gbFilter.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -751,8 +753,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
