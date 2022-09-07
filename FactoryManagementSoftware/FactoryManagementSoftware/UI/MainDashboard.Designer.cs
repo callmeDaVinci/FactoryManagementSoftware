@@ -50,7 +50,7 @@
             this.orderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.forecastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pMMAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sPPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sBBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deliveryReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,7 +83,7 @@
             this.orderToolStripMenuItem1,
             this.forecastToolStripMenuItem,
             this.pMMAToolStripMenuItem,
-            this.sPPToolStripMenuItem,
+            this.sBBToolStripMenuItem,
             this.reportToolStripMenuItem,
             this.pOToolStripMenuItem,
             this.oRDER20ToolStripMenuItem,
@@ -258,10 +258,10 @@
             // 
             // sPPToolStripMenuItem
             // 
-            this.sPPToolStripMenuItem.Name = "sPPToolStripMenuItem";
-            this.sPPToolStripMenuItem.Size = new System.Drawing.Size(47, 24);
-            this.sPPToolStripMenuItem.Text = "SBB";
-            this.sPPToolStripMenuItem.Click += new System.EventHandler(this.sPPToolStripMenuItem_Click);
+            this.sBBToolStripMenuItem.Name = "sPPToolStripMenuItem";
+            this.sBBToolStripMenuItem.Size = new System.Drawing.Size(47, 24);
+            this.sBBToolStripMenuItem.Text = "SBB";
+            this.sBBToolStripMenuItem.Click += new System.EventHandler(this.sPPToolStripMenuItem_Click);
             // 
             // reportToolStripMenuItem
             // 
@@ -430,7 +430,7 @@
         private System.Windows.Forms.ToolStripMenuItem productionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dAILYToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem productionReportToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem sPPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sBBToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sBBDeliveredReportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mouldToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pOToolStripMenuItem;

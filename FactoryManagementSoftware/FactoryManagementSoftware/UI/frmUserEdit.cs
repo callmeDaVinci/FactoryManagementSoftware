@@ -46,7 +46,19 @@ namespace FactoryManagementSoftware.UI
 
             uUser = u;
 
-            if (u.user_permissions < 5)
+            int EditorID = MainDashboard.USER_ID;
+
+            int PermissionLevel = u.user_permissions;
+
+            if (EditorID != -1)
+            {
+                int EditorPermissions = dalUser.getPermissionLevel(EditorID);
+
+                PermissionLevel = EditorPermissions;
+            }
+
+
+            if (PermissionLevel < 5)
             {
                 cmbPermissions.Enabled = false;
             }

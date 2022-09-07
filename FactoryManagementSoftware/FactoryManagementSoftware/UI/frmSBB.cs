@@ -2066,7 +2066,7 @@ namespace FactoryManagementSoftware.UI
             dt_SBBItemSelect = dalItemCust.SBBItemSelect(itemCust);//49
             dt_POSelectWithSizeAndType = dalSBB.SBBPagePOSelectWithSizeAndType();//60
 
-            dt_DOWithTrfInfoSelectedPeriod = dalSBB.SBBPageOWithTrfInfoSelect(start, end);//765
+            dt_DOWithTrfInfoSelectedPeriod = dalSBB.SBBPageDOWithTrfInfoSelect(start, end);//765
 
             dt_Stock = dalStock.StockDataSelect();
 
@@ -2936,6 +2936,18 @@ namespace FactoryManagementSoftware.UI
 
             }
 
+            int ORingDeliveredQty = GetOringDeliveredQty();
+
+            if(ORingDeliveredQty > 0)
+            {
+                lblORingDelivered.Text = "+ O Ring " + ORingDeliveredQty.ToString() + " Packet(s)";
+            }
+            else
+            {
+                lblORingDelivered.Text = "-";
+
+            }
+
             dt_Merge.AcceptChanges();
 
             dt_Merge.DefaultView.Sort = header_TotalBag + " DESC";
@@ -3076,20 +3088,18 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+            lblTopCust_10.Text = "OTHER";
+            lblTopCustomer_Bag_10.Text = otherBagDelivered.ToString();
             if (!string.IsNullOrEmpty(otherbal))
             {
-                lblTopCust_10.Text = "OTHER";
-                lblTopCustomer_Bag_10.Text = otherBagDelivered.ToString();
                 lblTopCustomer_Bal_10.Text = otherbal;
             }
             else
             {
-                lblTopCust_10.Text = "";
-                lblTopCustomer_Bag_10.Text = "";
                 lblTopCustomer_Bal_10.Text = "";
             }
 
-            lblMonthlyDelivered.Text = totalBagDelivered.ToString();
+            lblMonthlyDelivered.Text = (totalBagDelivered - ORingDeliveredQty).ToString();
 
             ShowDeliverdPercentage(totalBagDelivered);
 
@@ -3173,6 +3183,35 @@ namespace FactoryManagementSoftware.UI
             if(dt_DeliveredReport != null && dt_DeliveredReport.Rows.Count > 0)
             ShowData(dt_DeliveredReport);
             //105
+        }
+
+        private int GetOringDeliveredQty()
+        {
+            int deliveredBag = 0;
+
+            DataTable dt_DOList = dalSBB.DOWithTrfInfoSelect(MonthlyDateStart.ToString("yyyy/MM/dd"), MonthlyDateEnd.ToString("yyyy/MM/dd"));
+
+            foreach (DataRow row in dt_DOList.Rows)
+            {
+                string trfResult = row[dalTrfHist.TrfResult].ToString();
+                string itemCode = row[dalSBB.ItemCode].ToString();
+
+                if(itemCode.Contains("OR"))
+                {
+                    float TEST = 0;
+                }
+
+                if (trfResult == "Passed" && itemCode.Contains("CFPOR"))
+                {
+                    int deliveredPcs = int.TryParse(row[dalTrfHist.TrfQty].ToString(), out deliveredPcs) ? deliveredPcs : 0;
+
+                    int qtyPerBag = int.TryParse(row[dalSBB.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+
+                    deliveredBag += deliveredPcs / qtyPerBag;
+                }
+            }
+
+            return deliveredBag;
         }
 
         private void LoadPendingSummary()

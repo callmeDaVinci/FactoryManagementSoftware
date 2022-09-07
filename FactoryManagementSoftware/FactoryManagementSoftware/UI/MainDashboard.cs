@@ -65,19 +65,19 @@ namespace FactoryManagementSoftware.UI
 
             usernameToolStripMenuItem.Text = userName;
 
-            sPPToolStripMenuItem.Visible = false;
+
             pOToolStripMenuItem.Visible = false;
             oRDER20ToolStripMenuItem.Visible = false;
 
             if (userPermission >= ACTION_LVL_FIVE)
             {
                 oRDER20ToolStripMenuItem.Visible = true;
-                sPPToolStripMenuItem.Visible = true;
+                sBBToolStripMenuItem.Visible = true;
             }
 
             if (userPermission >= ACTION_LVL_FOUR)
             {
-                sPPToolStripMenuItem.Visible = true;
+                sBBToolStripMenuItem.Visible = true;
                 adminToolStripMenuItem.Visible = true;
                 orderToolStripMenuItem1.Visible = true;
                 productionToolStripMenuItem.Visible = true;
@@ -86,14 +86,12 @@ namespace FactoryManagementSoftware.UI
             else if(userPermission >= ACTION_LVL_TWO)
             {
                 forecastToolStripMenuItem.Visible = true;
-                //sPPToolStripMenuItem.Visible = false;
                 adminToolStripMenuItem.Visible = false;
                 orderToolStripMenuItem1.Visible = true;
                 productionToolStripMenuItem.Visible = true;
             }
             else
             {
-                //sPPToolStripMenuItem.Visible = false;
                 pMMAToolStripMenuItem.Visible = false;
                 forecastToolStripMenuItem.Visible = false;
                 adminToolStripMenuItem.Visible = false;

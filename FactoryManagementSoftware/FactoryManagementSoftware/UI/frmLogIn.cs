@@ -193,7 +193,7 @@ namespace FactoryManagementSoftware.UI
             dt_SBBItemSelect = dalItemCust.SBBItemSelect(itemCust);//49
             dt_POSelectWithSizeAndType = dalSBB.SBBPagePOSelectWithSizeAndType();//60
 
-            dt_DOWithTrfInfoSelectedPeriod = dalSBB.SBBPageOWithTrfInfoSelect(start, end);//765
+            dt_DOWithTrfInfoSelectedPeriod = dalSBB.SBBPageDOWithTrfInfoSelect(start, end);//765
 
             dt_SBBCustSearchWithTypeAndSize = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);//26
             dt_SBBCustSearchWithTypeAndSize.DefaultView.Sort = dalSBB.TypeName + " ASC," + dalSBB.SizeNumerator + " ASC," + dalSBB.SizeWeight + "1 ASC";

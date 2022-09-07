@@ -1796,7 +1796,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable SBBPageOWithTrfInfoSelect(string start, string end)
+        public DataTable SBBPageDOWithTrfInfoSelect(string start, string end)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
