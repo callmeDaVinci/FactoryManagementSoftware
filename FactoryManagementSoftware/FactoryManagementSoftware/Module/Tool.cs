@@ -2996,6 +2996,23 @@ namespace FactoryManagementSoftware.Module
             DataRow dtJoin_row;
             int index = 1;
 
+            if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C")
+            {
+                foreach (DataRow row in dalJoin.SelectWithChildCat().Rows)
+                    if (itemCode == row[dalJoin.ParentCode].ToString())
+                    {
+                        string childCode = row[dalJoin.ChildCode].ToString();
+
+                        if (childCode.Substring(0, 2) == "CF")
+                        {
+                            itemCode = childCode;
+
+                            break;
+                        }
+                    }
+                }
+            }
+
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow row in dt.Rows)

@@ -1469,6 +1469,7 @@ namespace FactoryManagementSoftware.UI
 
             if (parentItemCode.Substring(0, 3) == text.Inspection_Pass && cmbTrfFromCategory.Text.Equals(text.Assembly))
             {
+                //EQUAL ITEM ONLY
                 if (parentItemCode[7].ToString() == "E" && parentItemCode[8].ToString() != "C")
 
                 {

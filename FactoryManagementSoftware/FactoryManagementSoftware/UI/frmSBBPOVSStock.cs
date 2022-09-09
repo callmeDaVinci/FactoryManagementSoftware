@@ -655,17 +655,28 @@ namespace FactoryManagementSoftware.UI
 
                     string stockString = pcsStock + " PCS";
                     string stdPackingString = qtyPerPacket + "/PKT, " + qtyPerBag + "/BAG";
+
+
+                    if (typeName == text.Type_PolyORing)
+                    {
+                        stdPackingString = qtyPerPacket + "/PKT";
+                    }
+
                     planning_row[header_Type] = itemCode;
                     planning_row[header_StockString] = stockString;
                     planning_row[header_BalAfterDelivery] = stdPackingString;
                     planning_row[header_QtyPerPkt] = qtyPerPacket;
                     dt_Planning.Rows.Add(planning_row);
 
-
                     //stockString = bagStock + " BAGS (" + pcsStock + ")";
+
+
                     stockString = bagStock + " BAGS";
 
-                  
+                    if (typeName == text.Type_PolyORing)
+                    {
+                        stockString = bagStock + " PKTS";
+                    }
 
                     planning_row = dt_Planning.NewRow();
 
@@ -689,6 +700,9 @@ namespace FactoryManagementSoftware.UI
                         string nl = Environment.NewLine;
                         stockString += nl + " + " + balStock + " PCS";
                     }
+
+                   
+
                     planning_row[header_StockString] = stockString;
 
                     dt_Planning.Rows.Add(planning_row);
@@ -1453,13 +1467,35 @@ namespace FactoryManagementSoftware.UI
 
                     int balAfterDelivery = bal_Pcs / pcsPerBag;
 
-                    dt.Rows[rowIndex][header_BalAfterDelivery] = balAfterDelivery + " BAGS";
+                    string balAFterDelivery = dt.Rows[rowIndex][header_BalAfterDelivery].ToString();
+
+                    if(balAFterDelivery.Contains("PKTS"))
+                    {
+                        dt.Rows[rowIndex][header_BalAfterDelivery] = balAfterDelivery + " PKTS";
+
+                    }
+                    else
+                    {
+                        dt.Rows[rowIndex][header_BalAfterDelivery] = balAfterDelivery + " BAGS";
+
+                    }
 
                     int balPcsAfterDelivery = bal_Pcs % pcsPerBag;
 
                     if(balPcsAfterDelivery != 0)
                     {
-                        dt.Rows[rowIndex][header_BalAfterDelivery] = balAfterDelivery + " BAGS + "+ balPcsAfterDelivery+" PCS";
+                        if (balAFterDelivery.Contains("PKTS"))
+                        {
+                            dt.Rows[rowIndex][header_BalAfterDelivery] = balAfterDelivery + " PKTS + " + balPcsAfterDelivery + " PCS";
+
+                        }
+                        else
+                        {
+                            dt.Rows[rowIndex][header_BalAfterDelivery] = balAfterDelivery + " BAGS + " + balPcsAfterDelivery + " PCS";
+
+                        }
+
+                        
 
                     }
 
@@ -3637,11 +3673,9 @@ namespace FactoryManagementSoftware.UI
                         {
                             validCelltoShowMenu = true;
 
-
-                           
-
                             //search joint group and find Body itemCode
                             DataTable dt = tool.getJoinDataTableFromDataTable(dt_JoinInfo, itemCode);
+
                             string headerParentCode = "PARENT CODE";
                             string headerChildCode = "CHILD CODE";
                             string headerJoinQty = "JOIN QTY";
@@ -3653,29 +3687,73 @@ namespace FactoryManagementSoftware.UI
                             int joinQty = 0;
 
                             string bodyCode = "";
+                            bool isOring = false;
 
-                            foreach(DataRow row in dt.Rows)
+                            string equalItemCode = "";
+
+                            if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C")
+                            {
+                                foreach (DataRow row in dalJoin.SelectWithChildCat().Rows)
+                                {
+                                    if (itemCode == row[dalJoin.ParentCode].ToString())
+                                    {
+                                        string childCode = row[dalJoin.ChildCode].ToString();
+
+                                        if (childCode.Substring(0, 2) == "CF")
+                                        {
+                                            equalItemCode = childCode;
+
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            foreach (DataRow row in dt.Rows)
                             {
                                 string ParentCode = row[headerParentCode].ToString();
                                 string ChildCode = row[headerChildCode].ToString();
+                              
 
-                                if(ParentCode.Equals(itemCode))
+                                if(ParentCode.Contains("CFPOR"))
+                                {
+                                    isOring = true;
+                                }
+
+                                if (ParentCode.Equals(itemCode) || ParentCode.Equals(equalItemCode))
                                 {
                                     foreach(DataRow itemRow in dt_Item.Rows)
                                     {
                                         string searching_Code = itemRow[dalItem.ItemCode].ToString();
                                         string itemCategory = itemRow[dalItem.CategoryTblCode].ToString();
+                                        string itemType = itemRow[dalItem.TypeTblCode].ToString();
+                                        
+                                        if(isOring)
+                                        {
+                                            if (searching_Code.Equals(ChildCode) && itemType.Equals("5"))
+                                            {
+                                                bodyCode = ChildCode;
 
-                                        if(searching_Code.Equals(ChildCode) && itemCategory.Equals("2"))
+                                                joinMax = int.TryParse(row[headerJoinMax].ToString(), out i) ? i : 0;
+                                                joinMin = int.TryParse(row[headerJoinMin].ToString(), out i) ? i : 0;
+                                                joinQty = int.TryParse(row[headerJoinQty].ToString(), out i) ? i : 0;
+
+                                                break;
+                                            }
+                                        }
+                                        else if (searching_Code.Equals(ChildCode) && itemCategory.Equals("2"))
                                         {
                                             bodyCode = ChildCode;
 
-                                            joinMax = int.TryParse(row[headerJoinMax].ToString(), out  i) ? i : 0;
-                                            joinMin = int.TryParse(row[headerJoinMin].ToString(), out  i) ? i : 0;
-                                            joinQty = int.TryParse(row[headerJoinQty].ToString(), out  i) ? i : 0;
+                                            joinMax = int.TryParse(row[headerJoinMax].ToString(), out i) ? i : 0;
+                                            joinMin = int.TryParse(row[headerJoinMin].ToString(), out i) ? i : 0;
+                                            joinQty = int.TryParse(row[headerJoinQty].ToString(), out i) ? i : 0;
 
                                             break;
+
                                         }
+
+                                     
                                     }
                                 }
 
@@ -3687,6 +3765,7 @@ namespace FactoryManagementSoftware.UI
 
                             int SemenyihBodyStock = 0;
                             int BinaBodyStock = 0;
+                            
 
                             //get body item stock qty: Semenyih & Bina
                             foreach(DataRow row in dt_AllStockData.Rows)
@@ -3705,7 +3784,6 @@ namespace FactoryManagementSoftware.UI
                                         BinaBodyStock = int.TryParse(row["stock_qty"].ToString(), out i) ? i : 0;
                                     }
 
-                                    break;
                                 }
 
 
@@ -3714,6 +3792,12 @@ namespace FactoryManagementSoftware.UI
                             //get total possible bag qty: body stock / (std qty/bag) / joint qty
 
                             //show data: Semenyih & Bina
+                            string unit = "Bags";
+
+                            if(isOring)
+                            {
+                                unit = "Packets";
+                            }
 
                             string bodyStockString = "BODY STOCK (" + bodyCode +")";
                             my_menu.Items.Add(bodyStockString).Name = bodyStockString;
@@ -3724,8 +3808,8 @@ namespace FactoryManagementSoftware.UI
                             int SemenyihBodyStock_Bag = stdPacking > 0? SemenyihBodyStock/stdPacking : 0;
                             int BinaBodyStock_Bag = stdPacking > 0 ? BinaBodyStock / stdPacking : 0;
 
-                            string SemenyihStockString = "SEMENYIH: " + SemenyihBodyStock + " ( " + SemenyihBodyStock_Bag + " Bags)";
-                            string BinaStockString     = "BINA         : " + BinaBodyStock + " ( " + BinaBodyStock_Bag + " Bags)";
+                            string SemenyihStockString = "SEMENYIH: " + SemenyihBodyStock + " ( " + SemenyihBodyStock_Bag + " " +unit+")";
+                            string BinaStockString     = "BINA         : " + BinaBodyStock + " ( " + BinaBodyStock_Bag + " " + unit + ")";
 
                             my_menu.Items.Add(SemenyihStockString).Name = SemenyihStockString;
                             my_menu.Items.Add(BinaStockString).Name = BinaStockString;
