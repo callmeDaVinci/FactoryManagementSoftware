@@ -224,7 +224,7 @@
             this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel1, 0, 3);
             this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel3, 0, 1);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(1583, 3);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(949, 3);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 4;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
@@ -579,7 +579,7 @@
             this.tlpSBB.RowCount = 1;
             this.tlpSBB.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpSBB.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 691F));
-            this.tlpSBB.Size = new System.Drawing.Size(1952, 691);
+            this.tlpSBB.Size = new System.Drawing.Size(1318, 691);
             this.tlpSBB.TabIndex = 177;
             // 
             // tlpDashBoard
@@ -598,7 +598,7 @@
             this.tlpDashBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 270F));
             this.tlpDashBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tlpDashBoard.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpDashBoard.Size = new System.Drawing.Size(1577, 688);
+            this.tlpDashBoard.Size = new System.Drawing.Size(943, 688);
             this.tlpDashBoard.TabIndex = 181;
             // 
             // tableLayoutPanel29
@@ -613,7 +613,7 @@
             this.tableLayoutPanel29.Name = "tableLayoutPanel29";
             this.tableLayoutPanel29.RowCount = 1;
             this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel29.Size = new System.Drawing.Size(1571, 24);
+            this.tableLayoutPanel29.Size = new System.Drawing.Size(937, 24);
             this.tableLayoutPanel29.TabIndex = 182;
             // 
             // cmbDataSource
@@ -661,7 +661,7 @@
             this.tlpSummary.Name = "tlpSummary";
             this.tlpSummary.RowCount = 1;
             this.tlpSummary.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpSummary.Size = new System.Drawing.Size(1574, 267);
+            this.tlpSummary.Size = new System.Drawing.Size(940, 267);
             this.tlpSummary.TabIndex = 180;
             this.tlpSummary.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel14_Paint);
             // 
@@ -674,7 +674,7 @@
             this.guna2GradientPanel6.FillColor2 = System.Drawing.Color.White;
             this.guna2GradientPanel6.Location = new System.Drawing.Point(893, 3);
             this.guna2GradientPanel6.Name = "guna2GradientPanel6";
-            this.guna2GradientPanel6.Size = new System.Drawing.Size(678, 261);
+            this.guna2GradientPanel6.Size = new System.Drawing.Size(44, 261);
             this.guna2GradientPanel6.TabIndex = 183;
             // 
             // tableLayoutPanel30
@@ -689,7 +689,7 @@
             this.tableLayoutPanel30.Name = "tableLayoutPanel30";
             this.tableLayoutPanel30.RowCount = 1;
             this.tableLayoutPanel30.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel30.Size = new System.Drawing.Size(678, 261);
+            this.tableLayoutPanel30.Size = new System.Drawing.Size(44, 261);
             this.tableLayoutPanel30.TabIndex = 180;
             // 
             // tableLayoutPanel19
@@ -705,7 +705,7 @@
             this.tableLayoutPanel19.RowCount = 2;
             this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel19.Size = new System.Drawing.Size(658, 241);
+            this.tableLayoutPanel19.Size = new System.Drawing.Size(24, 241);
             this.tableLayoutPanel19.TabIndex = 183;
             // 
             // tableLayoutPanel20
@@ -721,7 +721,7 @@
             this.tableLayoutPanel20.Name = "tableLayoutPanel20";
             this.tableLayoutPanel20.RowCount = 1;
             this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel20.Size = new System.Drawing.Size(658, 25);
+            this.tableLayoutPanel20.Size = new System.Drawing.Size(24, 25);
             this.tableLayoutPanel20.TabIndex = 182;
             // 
             // button2
@@ -734,7 +734,7 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(635, 2);
+            this.button2.Location = new System.Drawing.Point(1, 2);
             this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(21, 21);
@@ -750,7 +750,7 @@
             this.label13.Location = new System.Drawing.Point(3, 5);
             this.label13.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(102, 19);
+            this.label13.Size = new System.Drawing.Size(1, 19);
             this.label13.TabIndex = 186;
             this.label13.Text = "Top Customer";
             // 
@@ -816,7 +816,7 @@
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel18.Size = new System.Drawing.Size(652, 210);
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(18, 210);
             this.tableLayoutPanel18.TabIndex = 182;
             // 
             // lblTopCustomer_Bal_10
@@ -827,7 +827,7 @@
             this.lblTopCustomer_Bal_10.Location = new System.Drawing.Point(573, 126);
             this.lblTopCustomer_Bal_10.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bal_10.Name = "lblTopCustomer_Bal_10";
-            this.lblTopCustomer_Bal_10.Size = new System.Drawing.Size(15, 19);
+            this.lblTopCustomer_Bal_10.Size = new System.Drawing.Size(1, 17);
             this.lblTopCustomer_Bal_10.TabIndex = 185;
             this.lblTopCustomer_Bal_10.Text = "-";
             this.lblTopCustomer_Bal_10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -840,7 +840,7 @@
             this.lblTopCustomer_Bal_9.Location = new System.Drawing.Point(573, 104);
             this.lblTopCustomer_Bal_9.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bal_9.Name = "lblTopCustomer_Bal_9";
-            this.lblTopCustomer_Bal_9.Size = new System.Drawing.Size(15, 17);
+            this.lblTopCustomer_Bal_9.Size = new System.Drawing.Size(1, 17);
             this.lblTopCustomer_Bal_9.TabIndex = 185;
             this.lblTopCustomer_Bal_9.Text = "-";
             this.lblTopCustomer_Bal_9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -853,7 +853,7 @@
             this.lblTopCustomer_Bal_8.Location = new System.Drawing.Point(573, 82);
             this.lblTopCustomer_Bal_8.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bal_8.Name = "lblTopCustomer_Bal_8";
-            this.lblTopCustomer_Bal_8.Size = new System.Drawing.Size(15, 17);
+            this.lblTopCustomer_Bal_8.Size = new System.Drawing.Size(1, 17);
             this.lblTopCustomer_Bal_8.TabIndex = 185;
             this.lblTopCustomer_Bal_8.Text = "-";
             this.lblTopCustomer_Bal_8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -866,7 +866,7 @@
             this.lblTopCustomer_Bal_7.Location = new System.Drawing.Point(573, 60);
             this.lblTopCustomer_Bal_7.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bal_7.Name = "lblTopCustomer_Bal_7";
-            this.lblTopCustomer_Bal_7.Size = new System.Drawing.Size(15, 17);
+            this.lblTopCustomer_Bal_7.Size = new System.Drawing.Size(1, 17);
             this.lblTopCustomer_Bal_7.TabIndex = 185;
             this.lblTopCustomer_Bal_7.Text = "-";
             this.lblTopCustomer_Bal_7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -877,10 +877,10 @@
             this.lblTopCustomer_Bal_6.AutoSize = true;
             this.lblTopCustomer_Bal_6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTopCustomer_Bal_6.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCustomer_Bal_6.Location = new System.Drawing.Point(573, 34);
+            this.lblTopCustomer_Bal_6.Location = new System.Drawing.Point(573, 36);
             this.lblTopCustomer_Bal_6.Margin = new System.Windows.Forms.Padding(3, 5, 3, 2);
             this.lblTopCustomer_Bal_6.Name = "lblTopCustomer_Bal_6";
-            this.lblTopCustomer_Bal_6.Size = new System.Drawing.Size(15, 19);
+            this.lblTopCustomer_Bal_6.Size = new System.Drawing.Size(1, 17);
             this.lblTopCustomer_Bal_6.TabIndex = 185;
             this.lblTopCustomer_Bal_6.Text = "-";
             this.lblTopCustomer_Bal_6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -893,7 +893,7 @@
             this.lblTopCustomer_Bag_10.Location = new System.Drawing.Point(473, 126);
             this.lblTopCustomer_Bag_10.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bag_10.Name = "lblTopCustomer_Bag_10";
-            this.lblTopCustomer_Bag_10.Size = new System.Drawing.Size(15, 19);
+            this.lblTopCustomer_Bag_10.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bag_10.TabIndex = 182;
             this.lblTopCustomer_Bag_10.Text = "-";
             this.lblTopCustomer_Bag_10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -906,7 +906,7 @@
             this.lblTopCustomer_Bag_9.Location = new System.Drawing.Point(473, 104);
             this.lblTopCustomer_Bag_9.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bag_9.Name = "lblTopCustomer_Bag_9";
-            this.lblTopCustomer_Bag_9.Size = new System.Drawing.Size(15, 17);
+            this.lblTopCustomer_Bag_9.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bag_9.TabIndex = 182;
             this.lblTopCustomer_Bag_9.Text = "-";
             this.lblTopCustomer_Bag_9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -919,7 +919,7 @@
             this.lblTopCustomer_Bag_8.Location = new System.Drawing.Point(473, 82);
             this.lblTopCustomer_Bag_8.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bag_8.Name = "lblTopCustomer_Bag_8";
-            this.lblTopCustomer_Bag_8.Size = new System.Drawing.Size(15, 17);
+            this.lblTopCustomer_Bag_8.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bag_8.TabIndex = 182;
             this.lblTopCustomer_Bag_8.Text = "-";
             this.lblTopCustomer_Bag_8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -932,7 +932,7 @@
             this.lblTopCustomer_Bag_7.Location = new System.Drawing.Point(473, 60);
             this.lblTopCustomer_Bag_7.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bag_7.Name = "lblTopCustomer_Bag_7";
-            this.lblTopCustomer_Bag_7.Size = new System.Drawing.Size(15, 17);
+            this.lblTopCustomer_Bag_7.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bag_7.TabIndex = 182;
             this.lblTopCustomer_Bag_7.Text = "-";
             this.lblTopCustomer_Bag_7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -943,10 +943,10 @@
             this.lblTopCustomer_Bag_6.AutoSize = true;
             this.lblTopCustomer_Bag_6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTopCustomer_Bag_6.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCustomer_Bag_6.Location = new System.Drawing.Point(473, 34);
+            this.lblTopCustomer_Bag_6.Location = new System.Drawing.Point(473, 36);
             this.lblTopCustomer_Bag_6.Margin = new System.Windows.Forms.Padding(3, 5, 3, 2);
             this.lblTopCustomer_Bag_6.Name = "lblTopCustomer_Bag_6";
-            this.lblTopCustomer_Bag_6.Size = new System.Drawing.Size(15, 19);
+            this.lblTopCustomer_Bag_6.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bag_6.TabIndex = 182;
             this.lblTopCustomer_Bag_6.Text = "-";
             this.lblTopCustomer_Bag_6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1094,7 +1094,7 @@
             this.lblTopCustomer_Bal_5.Location = new System.Drawing.Point(233, 126);
             this.lblTopCustomer_Bal_5.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bal_5.Name = "lblTopCustomer_Bal_5";
-            this.lblTopCustomer_Bal_5.Size = new System.Drawing.Size(15, 19);
+            this.lblTopCustomer_Bal_5.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bal_5.TabIndex = 184;
             this.lblTopCustomer_Bal_5.Text = "-";
             this.lblTopCustomer_Bal_5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1107,7 +1107,7 @@
             this.lblTopCustomer_Bal_4.Location = new System.Drawing.Point(233, 104);
             this.lblTopCustomer_Bal_4.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bal_4.Name = "lblTopCustomer_Bal_4";
-            this.lblTopCustomer_Bal_4.Size = new System.Drawing.Size(15, 17);
+            this.lblTopCustomer_Bal_4.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bal_4.TabIndex = 184;
             this.lblTopCustomer_Bal_4.Text = "-";
             this.lblTopCustomer_Bal_4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1120,7 +1120,7 @@
             this.lblTopCustomer_Bal_3.Location = new System.Drawing.Point(233, 82);
             this.lblTopCustomer_Bal_3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bal_3.Name = "lblTopCustomer_Bal_3";
-            this.lblTopCustomer_Bal_3.Size = new System.Drawing.Size(15, 17);
+            this.lblTopCustomer_Bal_3.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bal_3.TabIndex = 184;
             this.lblTopCustomer_Bal_3.Text = "-";
             this.lblTopCustomer_Bal_3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1133,7 +1133,7 @@
             this.lblTopCustomer_Bal_2.Location = new System.Drawing.Point(233, 60);
             this.lblTopCustomer_Bal_2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bal_2.Name = "lblTopCustomer_Bal_2";
-            this.lblTopCustomer_Bal_2.Size = new System.Drawing.Size(15, 17);
+            this.lblTopCustomer_Bal_2.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bal_2.TabIndex = 184;
             this.lblTopCustomer_Bal_2.Text = "-";
             this.lblTopCustomer_Bal_2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1144,10 +1144,10 @@
             this.lblTopCustomer_Bal_1.AutoSize = true;
             this.lblTopCustomer_Bal_1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTopCustomer_Bal_1.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCustomer_Bal_1.Location = new System.Drawing.Point(233, 34);
+            this.lblTopCustomer_Bal_1.Location = new System.Drawing.Point(233, 36);
             this.lblTopCustomer_Bal_1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 2);
             this.lblTopCustomer_Bal_1.Name = "lblTopCustomer_Bal_1";
-            this.lblTopCustomer_Bal_1.Size = new System.Drawing.Size(15, 19);
+            this.lblTopCustomer_Bal_1.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bal_1.TabIndex = 184;
             this.lblTopCustomer_Bal_1.Text = "-";
             this.lblTopCustomer_Bal_1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1160,7 +1160,7 @@
             this.lblTopCustomer_Bag_5.Location = new System.Drawing.Point(133, 126);
             this.lblTopCustomer_Bag_5.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bag_5.Name = "lblTopCustomer_Bag_5";
-            this.lblTopCustomer_Bag_5.Size = new System.Drawing.Size(15, 19);
+            this.lblTopCustomer_Bag_5.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bag_5.TabIndex = 184;
             this.lblTopCustomer_Bag_5.Text = "-";
             this.lblTopCustomer_Bag_5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1173,7 +1173,7 @@
             this.lblTopCustomer_Bag_4.Location = new System.Drawing.Point(133, 104);
             this.lblTopCustomer_Bag_4.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bag_4.Name = "lblTopCustomer_Bag_4";
-            this.lblTopCustomer_Bag_4.Size = new System.Drawing.Size(15, 17);
+            this.lblTopCustomer_Bag_4.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bag_4.TabIndex = 184;
             this.lblTopCustomer_Bag_4.Text = "-";
             this.lblTopCustomer_Bag_4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1186,7 +1186,7 @@
             this.lblTopCustomer_Bag_3.Location = new System.Drawing.Point(133, 82);
             this.lblTopCustomer_Bag_3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bag_3.Name = "lblTopCustomer_Bag_3";
-            this.lblTopCustomer_Bag_3.Size = new System.Drawing.Size(15, 17);
+            this.lblTopCustomer_Bag_3.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bag_3.TabIndex = 184;
             this.lblTopCustomer_Bag_3.Text = "-";
             this.lblTopCustomer_Bag_3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1321,7 +1321,7 @@
             this.lblTopCustomer_Bag_2.Location = new System.Drawing.Point(133, 60);
             this.lblTopCustomer_Bag_2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCustomer_Bag_2.Name = "lblTopCustomer_Bag_2";
-            this.lblTopCustomer_Bag_2.Size = new System.Drawing.Size(15, 17);
+            this.lblTopCustomer_Bag_2.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bag_2.TabIndex = 179;
             this.lblTopCustomer_Bag_2.Text = "-";
             this.lblTopCustomer_Bag_2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1332,10 +1332,10 @@
             this.lblTopCustomer_Bag_1.AutoSize = true;
             this.lblTopCustomer_Bag_1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTopCustomer_Bag_1.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCustomer_Bag_1.Location = new System.Drawing.Point(133, 34);
+            this.lblTopCustomer_Bag_1.Location = new System.Drawing.Point(133, 36);
             this.lblTopCustomer_Bag_1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 2);
             this.lblTopCustomer_Bag_1.Name = "lblTopCustomer_Bag_1";
-            this.lblTopCustomer_Bag_1.Size = new System.Drawing.Size(15, 19);
+            this.lblTopCustomer_Bag_1.Size = new System.Drawing.Size(13, 17);
             this.lblTopCustomer_Bag_1.TabIndex = 173;
             this.lblTopCustomer_Bag_1.Text = "-";
             this.lblTopCustomer_Bag_1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1436,7 +1436,7 @@
             this.lblDOBagQty.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDOBagQty.Location = new System.Drawing.Point(116, 20);
             this.lblDOBagQty.Name = "lblDOBagQty";
-            this.lblDOBagQty.Size = new System.Drawing.Size(15, 19);
+            this.lblDOBagQty.Size = new System.Drawing.Size(13, 17);
             this.lblDOBagQty.TabIndex = 179;
             this.lblDOBagQty.Text = "-";
             this.lblDOBagQty.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1460,7 +1460,7 @@
             this.lblPendingDOCust.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPendingDOCust.Location = new System.Drawing.Point(116, 0);
             this.lblPendingDOCust.Name = "lblPendingDOCust";
-            this.lblPendingDOCust.Size = new System.Drawing.Size(15, 19);
+            this.lblPendingDOCust.Size = new System.Drawing.Size(13, 17);
             this.lblPendingDOCust.TabIndex = 173;
             this.lblPendingDOCust.Text = "-";
             this.lblPendingDOCust.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1739,9 +1739,9 @@
             this.lblPOBagQty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblPOBagQty.AutoSize = true;
             this.lblPOBagQty.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPOBagQty.Location = new System.Drawing.Point(121, 21);
+            this.lblPOBagQty.Location = new System.Drawing.Point(121, 23);
             this.lblPOBagQty.Name = "lblPOBagQty";
-            this.lblPOBagQty.Size = new System.Drawing.Size(15, 19);
+            this.lblPOBagQty.Size = new System.Drawing.Size(13, 17);
             this.lblPOBagQty.TabIndex = 179;
             this.lblPOBagQty.Text = "-";
             this.lblPOBagQty.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -1765,9 +1765,9 @@
             this.lblPendingPOCust.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblPendingPOCust.AutoSize = true;
             this.lblPendingPOCust.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPendingPOCust.Location = new System.Drawing.Point(121, 1);
+            this.lblPendingPOCust.Location = new System.Drawing.Point(121, 3);
             this.lblPendingPOCust.Name = "lblPendingPOCust";
-            this.lblPendingPOCust.Size = new System.Drawing.Size(15, 19);
+            this.lblPendingPOCust.Size = new System.Drawing.Size(13, 17);
             this.lblPendingPOCust.TabIndex = 173;
             this.lblPendingPOCust.Text = "-";
             this.lblPendingPOCust.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1817,7 +1817,7 @@
             this.tableLayoutPanel21.Name = "tableLayoutPanel21";
             this.tableLayoutPanel21.RowCount = 1;
             this.tableLayoutPanel21.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel21.Size = new System.Drawing.Size(1577, 378);
+            this.tableLayoutPanel21.Size = new System.Drawing.Size(943, 378);
             this.tableLayoutPanel21.TabIndex = 178;
             // 
             // guna2GradientPanel4
@@ -2111,6 +2111,7 @@
             this.dgvStockAlert.Name = "dgvStockAlert";
             this.dgvStockAlert.ReadOnly = true;
             this.dgvStockAlert.RowHeadersVisible = false;
+            this.dgvStockAlert.RowHeadersWidth = 51;
             this.dgvStockAlert.RowTemplate.Height = 50;
             this.dgvStockAlert.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvStockAlert.Size = new System.Drawing.Size(844, 241);
@@ -2131,7 +2132,7 @@
             this.guna2GradientPanel3.FillColor2 = System.Drawing.Color.White;
             this.guna2GradientPanel3.Location = new System.Drawing.Point(893, 3);
             this.guna2GradientPanel3.Name = "guna2GradientPanel3";
-            this.guna2GradientPanel3.Size = new System.Drawing.Size(681, 372);
+            this.guna2GradientPanel3.Size = new System.Drawing.Size(47, 372);
             this.guna2GradientPanel3.TabIndex = 180;
             // 
             // tableLayoutPanel31
@@ -2145,7 +2146,7 @@
             this.tableLayoutPanel31.Name = "tableLayoutPanel31";
             this.tableLayoutPanel31.RowCount = 1;
             this.tableLayoutPanel31.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel31.Size = new System.Drawing.Size(681, 372);
+            this.tableLayoutPanel31.Size = new System.Drawing.Size(47, 372);
             this.tableLayoutPanel31.TabIndex = 180;
             // 
             // tableLayoutPanel26
@@ -2163,7 +2164,7 @@
             this.tableLayoutPanel26.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel26.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76F));
             this.tableLayoutPanel26.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel26.Size = new System.Drawing.Size(661, 352);
+            this.tableLayoutPanel26.Size = new System.Drawing.Size(27, 352);
             this.tableLayoutPanel26.TabIndex = 179;
             // 
             // label22
@@ -2174,7 +2175,7 @@
             this.label22.Location = new System.Drawing.Point(3, 5);
             this.label22.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(144, 19);
+            this.label22.Size = new System.Drawing.Size(21, 20);
             this.label22.TabIndex = 183;
             this.label22.Text = "Part/Material Usage";
             // 
@@ -2204,9 +2205,10 @@
             this.dgvUsage.Name = "dgvUsage";
             this.dgvUsage.ReadOnly = true;
             this.dgvUsage.RowHeadersVisible = false;
+            this.dgvUsage.RowHeadersWidth = 51;
             this.dgvUsage.RowTemplate.Height = 50;
             this.dgvUsage.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvUsage.Size = new System.Drawing.Size(651, 241);
+            this.dgvUsage.Size = new System.Drawing.Size(17, 241);
             this.dgvUsage.TabIndex = 179;
             this.dgvUsage.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvPartsAlert_CellFormatting);
             // 
@@ -2227,7 +2229,7 @@
             this.tableLayoutPanel27.RowCount = 2;
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
-            this.tableLayoutPanel27.Size = new System.Drawing.Size(661, 76);
+            this.tableLayoutPanel27.Size = new System.Drawing.Size(27, 76);
             this.tableLayoutPanel27.TabIndex = 179;
             // 
             // dtpDate2
@@ -2235,9 +2237,9 @@
             this.dtpDate2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtpDate2.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.dtpDate2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDate2.Location = new System.Drawing.Point(338, 42);
+            this.dtpDate2.Location = new System.Drawing.Point(21, 42);
             this.dtpDate2.Name = "dtpDate2";
-            this.dtpDate2.Size = new System.Drawing.Size(320, 25);
+            this.dtpDate2.Size = new System.Drawing.Size(3, 25);
             this.dtpDate2.TabIndex = 183;
             this.dtpDate2.ValueChanged += new System.EventHandler(this.dtpDate2_ValueChanged);
             // 
@@ -2247,10 +2249,10 @@
             this.lblDate1.AutoSize = true;
             this.lblDate1.Font = new System.Drawing.Font("Segoe UI", 7.8F);
             this.lblDate1.ForeColor = System.Drawing.Color.Black;
-            this.lblDate1.Location = new System.Drawing.Point(3, 20);
+            this.lblDate1.Location = new System.Drawing.Point(3, 5);
             this.lblDate1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblDate1.Name = "lblDate1";
-            this.lblDate1.Size = new System.Drawing.Size(94, 19);
+            this.lblDate1.Size = new System.Drawing.Size(2, 34);
             this.lblDate1.TabIndex = 180;
             this.lblDate1.Text = "Date Between";
             // 
@@ -2261,7 +2263,7 @@
             this.dtpDate1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpDate1.Location = new System.Drawing.Point(3, 42);
             this.dtpDate1.Name = "dtpDate1";
-            this.dtpDate1.Size = new System.Drawing.Size(319, 25);
+            this.dtpDate1.Size = new System.Drawing.Size(2, 25);
             this.dtpDate1.TabIndex = 182;
             this.dtpDate1.Value = new System.DateTime(2021, 11, 12, 8, 50, 0, 0);
             this.dtpDate1.ValueChanged += new System.EventHandler(this.dtpDate1_ValueChanged);
@@ -2276,12 +2278,12 @@
             this.tableLayoutPanel28.Controls.Add(this.cbMat, 1, 0);
             this.tableLayoutPanel28.Controls.Add(this.cbParts, 0, 0);
             this.tableLayoutPanel28.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel28.Location = new System.Drawing.Point(335, 0);
+            this.tableLayoutPanel28.Location = new System.Drawing.Point(18, 0);
             this.tableLayoutPanel28.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel28.Name = "tableLayoutPanel28";
             this.tableLayoutPanel28.RowCount = 1;
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel28.Size = new System.Drawing.Size(326, 39);
+            this.tableLayoutPanel28.Size = new System.Drawing.Size(9, 39);
             this.tableLayoutPanel28.TabIndex = 184;
             // 
             // cbPackaging
@@ -2293,7 +2295,7 @@
             this.cbPackaging.Font = new System.Drawing.Font("Segoe UI", 6F);
             this.cbPackaging.Location = new System.Drawing.Point(145, 19);
             this.cbPackaging.Name = "cbPackaging";
-            this.cbPackaging.Size = new System.Drawing.Size(80, 17);
+            this.cbPackaging.Size = new System.Drawing.Size(1, 17);
             this.cbPackaging.TabIndex = 178;
             this.cbPackaging.Text = "PACKAGING";
             this.cbPackaging.UseVisualStyleBackColor = true;
@@ -2339,7 +2341,7 @@
             this.tableLayoutPanel17.Name = "tableLayoutPanel17";
             this.tableLayoutPanel17.RowCount = 1;
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel17.Size = new System.Drawing.Size(1982, 721);
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(1348, 721);
             this.tableLayoutPanel17.TabIndex = 178;
             // 
             // frmSBB
@@ -2348,7 +2350,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(1982, 721);
+            this.ClientSize = new System.Drawing.Size(1348, 721);
             this.Controls.Add(this.tableLayoutPanel17);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.SystemColors.ControlText;

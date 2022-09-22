@@ -69,6 +69,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.cmbYearFrom = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbShowTerminatedItem = new System.Windows.Forms.CheckBox();
             this.cbZeroStockType = new System.Windows.Forms.CheckBox();
             this.cbForecastDeductStock = new System.Windows.Forms.CheckBox();
             this.btnFilterApply = new System.Windows.Forms.Button();
@@ -336,6 +337,7 @@
             this.dgvAlertSummary.Name = "dgvAlertSummary";
             this.dgvAlertSummary.ReadOnly = true;
             this.dgvAlertSummary.RowHeadersVisible = false;
+            this.dgvAlertSummary.RowHeadersWidth = 51;
             this.dgvAlertSummary.RowTemplate.Height = 60;
             this.dgvAlertSummary.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAlertSummary.Size = new System.Drawing.Size(1310, 244);
@@ -417,7 +419,7 @@
             this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 265F));
-            this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 298F));
+            this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 398F));
             this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpFilter.Controls.Add(this.groupBox3, 1, 0);
@@ -635,16 +637,32 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cbShowTerminatedItem);
             this.groupBox2.Controls.Add(this.cbZeroStockType);
             this.groupBox2.Controls.Add(this.cbForecastDeductStock);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(668, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(292, 74);
+            this.groupBox2.Size = new System.Drawing.Size(392, 74);
             this.groupBox2.TabIndex = 167;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "FORECAST SETTING";
+            this.groupBox2.Text = "OTHER SETTING";
+            // 
+            // cbShowTerminatedItem
+            // 
+            this.cbShowTerminatedItem.AutoSize = true;
+            this.cbShowTerminatedItem.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbShowTerminatedItem.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbShowTerminatedItem.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbShowTerminatedItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbShowTerminatedItem.Location = new System.Drawing.Point(204, 22);
+            this.cbShowTerminatedItem.Name = "cbShowTerminatedItem";
+            this.cbShowTerminatedItem.Size = new System.Drawing.Size(165, 19);
+            this.cbShowTerminatedItem.TabIndex = 168;
+            this.cbShowTerminatedItem.Text = "SHOW TERMINATED ITEM";
+            this.cbShowTerminatedItem.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbShowTerminatedItem.UseVisualStyleBackColor = true;
             // 
             // cbZeroStockType
             // 
@@ -748,6 +766,7 @@
             this.dgvOrderRecord.Name = "dgvOrderRecord";
             this.dgvOrderRecord.ReadOnly = true;
             this.dgvOrderRecord.RowHeadersVisible = false;
+            this.dgvOrderRecord.RowHeadersWidth = 51;
             this.dgvOrderRecord.RowTemplate.Height = 60;
             this.dgvOrderRecord.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvOrderRecord.Size = new System.Drawing.Size(1310, 243);
@@ -851,5 +870,6 @@
         private System.Windows.Forms.Button btnFilterApply;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button btnOrderAlertOnly;
+        private System.Windows.Forms.CheckBox cbShowTerminatedItem;
     }
 }

@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpForecastReport = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -185,10 +185,10 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(4, 16);
+            this.label1.Location = new System.Drawing.Point(4, 18);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 19);
+            this.label1.Size = new System.Drawing.Size(86, 17);
             this.label1.TabIndex = 167;
             this.label1.Text = "REPORT TYPE";
             // 
@@ -197,10 +197,10 @@
             this.cbSummary.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbSummary.AutoSize = true;
             this.cbSummary.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbSummary.Location = new System.Drawing.Point(125, 12);
+            this.cbSummary.Location = new System.Drawing.Point(130, 14);
             this.cbSummary.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.cbSummary.Name = "cbSummary";
-            this.cbSummary.Size = new System.Drawing.Size(88, 23);
+            this.cbSummary.Size = new System.Drawing.Size(83, 21);
             this.cbSummary.TabIndex = 168;
             this.cbSummary.Text = "summary";
             this.cbSummary.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -262,10 +262,10 @@
             this.lblZeroCostOnly.AutoSize = true;
             this.lblZeroCostOnly.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblZeroCostOnly.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblZeroCostOnly.Location = new System.Drawing.Point(224, 9);
+            this.lblZeroCostOnly.Location = new System.Drawing.Point(224, 11);
             this.lblZeroCostOnly.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblZeroCostOnly.Name = "lblZeroCostOnly";
-            this.lblZeroCostOnly.Size = new System.Drawing.Size(94, 19);
+            this.lblZeroCostOnly.Size = new System.Drawing.Size(90, 17);
             this.lblZeroCostOnly.TabIndex = 165;
             this.lblZeroCostOnly.Text = "zero cost only";
             this.lblZeroCostOnly.Click += new System.EventHandler(this.lblZeroCostOnly_Click);
@@ -284,16 +284,17 @@
             this.cbZeroCostOnly.TabIndex = 156;
             this.cbZeroCostOnly.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbZeroCostOnly.UseVisualStyleBackColor = true;
+            this.cbZeroCostOnly.CheckedChanged += new System.EventHandler(this.cbZeroCostOnly_CheckedChanged);
             // 
             // label8
             // 
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(4, 9);
+            this.label8.Location = new System.Drawing.Point(4, 11);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(80, 19);
+            this.label8.Size = new System.Drawing.Size(75, 17);
             this.label8.TabIndex = 149;
             this.label8.Text = "CUSTOMER";
             // 
@@ -370,24 +371,24 @@
             this.dgvMatUsedReport.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvMatUsedReport.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvMatUsedReport.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMatUsedReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMatUsedReport.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvMatUsedReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMatUsedReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMatUsedReport.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMatUsedReport.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvMatUsedReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMatUsedReport.GridColor = System.Drawing.Color.White;
             this.dgvMatUsedReport.Location = new System.Drawing.Point(4, 314);
@@ -395,6 +396,7 @@
             this.dgvMatUsedReport.Name = "dgvMatUsedReport";
             this.dgvMatUsedReport.ReadOnly = true;
             this.dgvMatUsedReport.RowHeadersVisible = false;
+            this.dgvMatUsedReport.RowHeadersWidth = 51;
             this.dgvMatUsedReport.RowTemplate.Height = 60;
             this.dgvMatUsedReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMatUsedReport.Size = new System.Drawing.Size(1542, 514);
@@ -439,10 +441,10 @@
             this.lblReportTitle.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblReportTitle.AutoSize = true;
             this.lblReportTitle.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblReportTitle.Location = new System.Drawing.Point(4, 10);
+            this.lblReportTitle.Location = new System.Drawing.Point(4, 11);
             this.lblReportTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblReportTitle.Name = "lblReportTitle";
-            this.lblReportTitle.Size = new System.Drawing.Size(166, 19);
+            this.lblReportTitle.Size = new System.Drawing.Size(156, 17);
             this.lblReportTitle.TabIndex = 153;
             this.lblReportTitle.Text = "MATERIAL  USED REPORT";
             // 
@@ -559,9 +561,9 @@
             this.cbStockType.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbStockType.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbStockType.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbStockType.Location = new System.Drawing.Point(23, 93);
+            this.cbStockType.Location = new System.Drawing.Point(23, 95);
             this.cbStockType.Name = "cbStockType";
-            this.cbStockType.Size = new System.Drawing.Size(110, 23);
+            this.cbStockType.Size = new System.Drawing.Size(105, 21);
             this.cbStockType.TabIndex = 158;
             this.cbStockType.Text = "ZERO STOCK";
             this.cbStockType.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -575,9 +577,9 @@
             this.cbForecastDeductStock.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbForecastDeductStock.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbForecastDeductStock.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbForecastDeductStock.Location = new System.Drawing.Point(23, 57);
+            this.cbForecastDeductStock.Location = new System.Drawing.Point(23, 59);
             this.cbForecastDeductStock.Name = "cbForecastDeductStock";
-            this.cbForecastDeductStock.Size = new System.Drawing.Size(197, 23);
+            this.cbForecastDeductStock.Size = new System.Drawing.Size(186, 21);
             this.cbForecastDeductStock.TabIndex = 157;
             this.cbForecastDeductStock.Text = "FORECAST - READY STOCK";
             this.cbForecastDeductStock.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -737,7 +739,7 @@
             this.label2.Location = new System.Drawing.Point(17, 30);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 19);
+            this.label2.Size = new System.Drawing.Size(56, 17);
             this.label2.TabIndex = 153;
             this.label2.Text = "MONTH";
             // 
@@ -750,7 +752,7 @@
             this.lblCurrentMonth.Location = new System.Drawing.Point(17, 82);
             this.lblCurrentMonth.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCurrentMonth.Name = "lblCurrentMonth";
-            this.lblCurrentMonth.Size = new System.Drawing.Size(76, 19);
+            this.lblCurrentMonth.Size = new System.Drawing.Size(69, 17);
             this.lblCurrentMonth.TabIndex = 166;
             this.lblCurrentMonth.Text = "this month";
             this.lblCurrentMonth.Click += new System.EventHandler(this.lblCurrentMonth_Click);
@@ -773,7 +775,7 @@
             this.label3.Location = new System.Drawing.Point(120, 30);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 19);
+            this.label3.Size = new System.Drawing.Size(38, 17);
             this.label3.TabIndex = 155;
             this.label3.Text = "YEAR";
             // 
@@ -830,9 +832,9 @@
             this.cbSubMat.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbSubMat.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbSubMat.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbSubMat.Location = new System.Drawing.Point(165, 93);
+            this.cbSubMat.Location = new System.Drawing.Point(173, 95);
             this.cbSubMat.Name = "cbSubMat";
-            this.cbSubMat.Size = new System.Drawing.Size(123, 23);
+            this.cbSubMat.Size = new System.Drawing.Size(115, 21);
             this.cbSubMat.TabIndex = 160;
             this.cbSubMat.Text = "SUB MATERIAL";
             this.cbSubMat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -849,9 +851,9 @@
             this.cbPigment.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbPigment.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbPigment.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbPigment.Location = new System.Drawing.Point(19, 93);
+            this.cbPigment.Location = new System.Drawing.Point(24, 95);
             this.cbPigment.Name = "cbPigment";
-            this.cbPigment.Size = new System.Drawing.Size(90, 23);
+            this.cbPigment.Size = new System.Drawing.Size(85, 21);
             this.cbPigment.TabIndex = 159;
             this.cbPigment.Text = "PIGMENT";
             this.cbPigment.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -868,9 +870,9 @@
             this.cbMasterBatch.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbMasterBatch.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbMasterBatch.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbMasterBatch.Location = new System.Drawing.Point(165, 57);
+            this.cbMasterBatch.Location = new System.Drawing.Point(172, 59);
             this.cbMasterBatch.Name = "cbMasterBatch";
-            this.cbMasterBatch.Size = new System.Drawing.Size(127, 23);
+            this.cbMasterBatch.Size = new System.Drawing.Size(120, 21);
             this.cbMasterBatch.TabIndex = 158;
             this.cbMasterBatch.Text = "MASTER BATCH";
             this.cbMasterBatch.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -887,9 +889,9 @@
             this.cbRawMat.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbRawMat.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbRawMat.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRawMat.Location = new System.Drawing.Point(19, 57);
+            this.cbRawMat.Location = new System.Drawing.Point(27, 59);
             this.cbRawMat.Name = "cbRawMat";
-            this.cbRawMat.Size = new System.Drawing.Size(127, 23);
+            this.cbRawMat.Size = new System.Drawing.Size(119, 21);
             this.cbRawMat.TabIndex = 157;
             this.cbRawMat.Text = "RAW MATERIAL";
             this.cbRawMat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -920,7 +922,7 @@
             this.lblChangeDate.Location = new System.Drawing.Point(167, 82);
             this.lblChangeDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblChangeDate.Name = "lblChangeDate";
-            this.lblChangeDate.Size = new System.Drawing.Size(84, 19);
+            this.lblChangeDate.Size = new System.Drawing.Size(80, 17);
             this.lblChangeDate.TabIndex = 165;
             this.lblChangeDate.Text = "change date";
             this.lblChangeDate.Visible = false;
@@ -949,7 +951,7 @@
             this.label7.Location = new System.Drawing.Point(134, 33);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(26, 19);
+            this.label7.Size = new System.Drawing.Size(24, 17);
             this.label7.TabIndex = 150;
             this.label7.Text = "TO";
             // 
@@ -960,7 +962,7 @@
             this.label11.Location = new System.Drawing.Point(15, 32);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(48, 19);
+            this.label11.Size = new System.Drawing.Size(44, 17);
             this.label11.TabIndex = 148;
             this.label11.Text = "FROM";
             // 

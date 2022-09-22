@@ -2962,5 +2962,10 @@ namespace FactoryManagementSoftware.UI
 
             }
         }
+
+        private void cbZeroCostOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            cbStockType.Checked = cbZeroCostOnly.Checked;
+        }
     }
 }

@@ -2999,6 +2999,7 @@ namespace FactoryManagementSoftware.Module
             if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C")
             {
                 foreach (DataRow row in dalJoin.SelectWithChildCat().Rows)
+                {
                     if (itemCode == row[dalJoin.ParentCode].ToString())
                     {
                         string childCode = row[dalJoin.ChildCode].ToString();
