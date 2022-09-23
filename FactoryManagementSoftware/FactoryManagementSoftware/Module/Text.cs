@@ -260,6 +260,7 @@ namespace FactoryManagementSoftware.Module
 
         #region  DGV TABLE HEADER NAME
         public string Header_Index { get; } = "#";
+        public string Header_GroupLevel { get; } = "LEVEL";
         public string Header_Customer { get; } = "CUSTOMER";
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
         public string Header_PartCode { get; } = "PART CODE";
@@ -276,6 +277,11 @@ namespace FactoryManagementSoftware.Module
         public string Header_Used_KG_Piece { get; } = "USED(KG/PIECE)";
         public string Header_DirectOut_KG_Piece { get; } = "DIRECT OUT(KG/PIECE)";
         public string Header_BalStock { get; } = "BAL. STOCK";
+        public string Header_ReadyStock { get; } = "READY STOCK";
+
+        public string Header_Unit { get; } = "UNIT";
+
+
         public string Header_Percentage { get; } = "%";
         public string Header_Adjust { get; } = "ADJUST";
         public string Header_Remark { get; } = "REMARK";
@@ -289,6 +295,10 @@ namespace FactoryManagementSoftware.Module
         public string Header_MatName { get; } = "MAT. NAME";
         public string Header_Color { get; } = "COLOR";
         public string Header_ItemWeight_KG { get; } = "ITEM WEIGHT(KG)";
+
+        public string Header_RunnerWeight_G { get; } = "RUNNER WEIGHT(G)";
+        public string Header_PartWeight_G { get; } = "PART WEIGHT(G)";
+
         public string Header_ItemWeight_G { get; } = "ITEM WEIGHT(g)";
         public string Header_ParentStillNeed { get; } = "PARENT STILL NEED";
         public string Header_StillNeed { get; } = "STILL NEED";

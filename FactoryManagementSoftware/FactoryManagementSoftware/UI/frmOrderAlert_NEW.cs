@@ -19,6 +19,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
 using System.Collections;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
+using Microsoft.Office.Interop.Word;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -41,11 +42,13 @@ namespace FactoryManagementSoftware.UI
         private string header_Stock = "STOCK";
         private string header_Bal = "BAL.";
         private string header_Unit = "UNIT";
+        private string header_ParentIndex = "PARENT #";
 
         private string Unit_KG = "KG";
         private string Unit_PCS = "PCS";
 
         private string string_Forecast = " FORECAST";
+        private string string_StillNeed = " STILL NEED";
         private string string_Delivered = " DELIVERED";
 
         private string ForecastType_DeductStock = " (FORECAST-STOCK)";
@@ -85,6 +88,11 @@ namespace FactoryManagementSoftware.UI
         DataTable dt_Join = new DataTable();
         DataTable dt_Item = new DataTable();
         DataTable dt_OrginalData = new DataTable();
+        DataTable DT_PART_TRANSFER = new DataTable();
+
+        private DataTable DT_PRODUCT_FORECAST_SUMMARY;
+
+        private DataTable DT_MATERIAL_FORECAST_SUMMARY;
 
         private DataTable dt_MatUsed_Forecast;
         private DataTable dt_MatStock;
@@ -113,6 +121,18 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
+            dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(header_ParentIndex, typeof(int));
+            dt.Columns.Add(text.Header_GroupLevel, typeof(int));
+            dt.Columns.Add(text.Header_Type, typeof(string));
+            dt.Columns.Add(text.Header_PartWeight_G, typeof(float));
+            dt.Columns.Add(text.Header_RunnerWeight_G, typeof(float));
+            dt.Columns.Add(text.Header_WastageAllowed_Percentage, typeof(float));
+            dt.Columns.Add(text.Header_JoinQty, typeof(float));
+            dt.Columns.Add(text.Header_JoinMax, typeof(float));
+            dt.Columns.Add(text.Header_JoinMin, typeof(float));
+            dt.Columns.Add(text.Header_ReadyStock, typeof(float));
+            dt.Columns.Add(text.Header_Unit, typeof(string));
             dt.Columns.Add(text.Header_PartCode, typeof(string));
             dt.Columns.Add(text.Header_PartName, typeof(string));
 
@@ -143,51 +163,24 @@ namespace FactoryManagementSoftware.UI
                 monthEnd = tmp;
             }
 
-            //header_Forecast = monthStart + "/" + yearStart + string_Forecast;
-            //header_Delivered = monthStart + "/" + yearStart + string_Delivered;
-
-            for (int i = yearStart; i <= yearEnd; i++)
+            for (var date = dateStart; date <= dateEnd; date = date.AddMonths(1))
             {
-                if (yearStart == yearEnd)
-                {
-                    for (int j = monthStart; j <= monthEnd; j++)
-                    {
-                        month = j + "/" + i;
-                        dt.Columns.Add(month + string_Forecast, typeof(float));
-                        dt.Columns.Add(month + string_Delivered, typeof(float));
+                var i = date.Year;
+                var j = date.Month;
 
-                    }
-                }
-                else
+                if (date == dateStart && j < monthStart)
                 {
-                    if (i == yearStart)
-                    {
-                        for (int j = monthStart; j <= 12; j++)
-                        {
-                            month = j + "/" + i;
-                            dt.Columns.Add(month + string_Forecast, typeof(float));
-                            dt.Columns.Add(month + string_Delivered, typeof(float));
-                        }
-                    }
-                    else if (i == yearEnd)
-                    {
-                        for (int j = 1; j <= monthEnd; j++)
-                        {
-                            month = j + "/" + i;
-                            dt.Columns.Add(month + string_Forecast, typeof(float));
-                            dt.Columns.Add(month + string_Delivered, typeof(float));
-                        }
-                    }
-                    else
-                    {
-                        for (int j = 1; j <= 12; j++)
-                        {
-                            month = j + "/" + i;
-                            dt.Columns.Add(month + string_Forecast, typeof(float));
-                            dt.Columns.Add(month + string_Delivered, typeof(float));
-                        }
-                    }
+                    date = date.AddMonths(1);
+                    i = date.Year;
+                    j = date.Month;
+                    date = new DateTime(i, j, 1);
                 }
+
+                month = j + "/" + i;
+
+                dt.Columns.Add(month + string_Forecast, typeof(float));
+                dt.Columns.Add(month + string_Delivered, typeof(float));
+                dt.Columns.Add(month + string_StillNeed, typeof(float));
             }
 
             return dt;
@@ -742,40 +735,43 @@ namespace FactoryManagementSoftware.UI
             return isCustomerItem;
         }
 
-        private float DeliveredToCustomerQty(string itemCode, DataTable dt_ToCustomer, int year, int month, bool PMMACustomer,DataTable dt_PMMADate)
+        private float DeliveredToCustomerQty(string itemCode, DateTime dateFrom, DateTime dateTo)
         {
             float DeliveredQty = 0;
 
-            DateTime dateStart, dateEnd;
-            if (PMMACustomer)
-            {
-                dateStart = tool.GetPMMAStartDate(month, year, dt_PMMADate);
-                dateEnd = tool.GetPMMAEndDate(month, year, dt_PMMADate);
-            }
-            else
-            {
-                dateStart = new DateTime(year, month, 1);
-                dateEnd = new DateTime(year, month, DateTime.DaysInMonth(year, month));
-            }
+            DT_PART_TRANSFER.AcceptChanges();
 
-            foreach (DataRow trfHistRow in dt_ToCustomer.Rows)
+            bool itemFound = false;
+
+            foreach (DataRow trfHistRow in DT_PART_TRANSFER.Rows)
             {
                 string result = trfHistRow[dalTrfHist.TrfResult].ToString();
                 DateTime trfDate = DateTime.TryParse(trfHistRow[dalTrfHist.TrfDate].ToString(), out trfDate) ? trfDate : DateTime.MaxValue;
 
-                bool dateMatched = trfDate >= dateStart;
-                dateMatched &= trfDate <= dateEnd;
+                bool dateMatched = trfDate >= dateFrom;
+                dateMatched &= trfDate <= dateTo;
 
-                if (itemCode == trfHistRow[dalTrfHist.TrfItemCode].ToString() && result == "Passed" && dateMatched)
+                if(itemFound && itemCode != trfHistRow[dalTrfHist.TrfItemCode].ToString())
                 {
-                    int qty = trfHistRow[dalTrfHist.TrfQty] == DBNull.Value ? 0 : Convert.ToInt32(trfHistRow[dalTrfHist.TrfQty]);
-                    DeliveredQty += qty;
+                    break;
                 }
 
+                if (itemCode == trfHistRow[dalTrfHist.TrfItemCode].ToString() && result == text.Passed && dateMatched)
+                {
+                    itemFound = true;
+
+                    int qty = trfHistRow[dalTrfHist.TrfQty] == DBNull.Value ? 0 : Convert.ToInt32(trfHistRow[dalTrfHist.TrfQty]);
+                    DeliveredQty += qty;
+                    trfHistRow.Delete();
+                }
             }
+
+            DT_PART_TRANSFER.AcceptChanges();
+
             return DeliveredQty;
         }
 
+     
         private float ReadyStock(string customer, string itemCode, DataTable dt_Join, DataTable dt_ToCustomer)
         {
             float DeliveredQty = 0;
@@ -1612,48 +1608,187 @@ namespace FactoryManagementSoftware.UI
             return dt_Product;
         }
 
-        private void GetChildFromGroup(DataTable dt_Join, DataTable dt_Item, string partCode, string partName)
+        private void GetChildFromGroup(DataTable dt_Join, DataTable dt_Item, string parentCode, int parentIndex, int groupLevel)
         {
             //search child
             foreach (DataRow join in dt_Join.Rows)
             {
-                if (partCode == join[dalJoin.ParentCode].ToString())
+                if (parentCode == join[dalJoin.ParentCode].ToString())
                 {
-                    string parentCode = join["parent_code"].ToString();
+                    string childCode = join[dalJoin.ChildCode].ToString();
 
                     float joinQty = float.TryParse(join[dalJoin.JoinQty].ToString(), out float i) ? i : 1;
-                    int joinMax = int.TryParse(join[dalJoin.JoinMax].ToString(), out int j) ? j : 0;
-                    int JoinMin = int.TryParse(join[dalJoin.JoinMin].ToString(), out j) ? j : 0;
+                    float joinMax = float.TryParse(join[dalJoin.JoinMax].ToString(), out i) ? i : 1;
+                    float joinMin = float.TryParse(join[dalJoin.JoinMin].ToString(), out i) ? i : 1;
 
-                    //joinMax = joinMax <= 0 ? 1 : joinMax;
-                    //JoinMin = JoinMin <= 0 ? 1 : JoinMin;
+                    foreach (DataRow item in dt_Item.Rows)
+                    {
+                        if(childCode == item[dalItem.ItemCode].ToString())
+                        {
+                            #region add child to table
 
-                    //int ParentQty = Convert.ToInt32(qty);
+                            int childIndex = parentIndex * 10;
 
-                    //int fullQty = ParentQty / joinMax;
+                            DataRow newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
 
-                    //int notFullQty = ParentQty % joinMax;
+                            string itemCode = item[dalItem.ItemCode].ToString();
+                            string itemName = item[dalItem.ItemName].ToString();
+                            float Ready_Stock = float.TryParse(item[dalItem.ItemStock].ToString(), out Ready_Stock) ? Ready_Stock : 0;
 
-                    //childQty = fullQty * joinQty;
+                            newRow[text.Header_Index] = childIndex;
+                            newRow[header_ParentIndex] = parentIndex;
+                            newRow[text.Header_GroupLevel] = groupLevel + 1;
+                            newRow[text.Header_Type] = item[dalItem.ItemCat].ToString();
+                            newRow[text.Header_PartCode] = itemCode;
+                            newRow[text.Header_PartName] = itemName;
+                            newRow[text.Header_JoinQty] = joinQty;
+                            newRow[text.Header_JoinMax] = joinMax;
+                            newRow[text.Header_JoinMin] = joinMin;
+                            newRow[text.Header_ReadyStock] = Ready_Stock;
 
-                    //if (notFullQty >= JoinMin)
-                    //{
-                    //    childQty += joinQty;
+                            #region add item weight info
 
-                    //}
+                            float partWeight = 0;
+                            float runnerWeight = 0;
 
+                            if (cbZeroCostOnly.Checked)
+                            {
+                                partWeight = float.TryParse(item[dalItem.ItemQuoPWPcs].ToString(), out partWeight) ? partWeight : 0;
+                                runnerWeight = float.TryParse(item[dalItem.ItemQuoRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
+
+                                if (partWeight <= 0)
+                                {
+                                    partWeight = float.TryParse(item[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
+                                    runnerWeight = float.TryParse(item[dalItem.ItemProRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
+                                }
+
+                            }
+                            else
+                            {
+                                partWeight = float.TryParse(item[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
+                                runnerWeight = float.TryParse(item[dalItem.ItemProRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
+                            }
+
+                            float itemWeight = partWeight + runnerWeight;
+
+                            float wastage = item[dalItem.ItemWastage] == DBNull.Value ? 0 : Convert.ToSingle(item[dalItem.ItemWastage]);
+
+                            newRow[text.Header_PartWeight_G] = partWeight;
+                            newRow[text.Header_RunnerWeight_G] = runnerWeight;
+                            newRow[text.Header_WastageAllowed_Percentage] = wastage;
+                            newRow[text.Header_Unit] = text.Unit_Piece;
+
+                            #endregion
+
+                            DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
+
+                            #endregion
+
+                            #region add material
+
+                            string RawMaterial = item[dalItem.ItemMaterial].ToString();
+                            string ColorMaterial = item[dalItem.ItemMBatch].ToString();
+
+                            if (!string.IsNullOrEmpty(RawMaterial))
+                            {
+                                newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
+
+                                newRow[text.Header_Index] = 0;
+                                newRow[header_ParentIndex] = childIndex;
+                                newRow[text.Header_GroupLevel] = groupLevel + 2;
+                                newRow[text.Header_Type] = text.Cat_RawMat;
+                                newRow[text.Header_PartCode] = RawMaterial;
+                                newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, RawMaterial);
+                                newRow[text.Header_ReadyStock] = tool.getStockQtyFromDataTable(dt_Item, RawMaterial);
+                                newRow[text.Header_Unit] = text.Unit_KG;
+
+                                DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
+
+                            }
+
+                            if (!string.IsNullOrEmpty(ColorMaterial))
+                            {
+                                newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
+
+                                newRow[text.Header_Index] = 0;
+                                newRow[header_ParentIndex] = childIndex;
+                                newRow[text.Header_GroupLevel] = groupLevel + 2;
+                                newRow[text.Header_Type] = tool.getCatNameFromDataTable(dt_Item, ColorMaterial);
+                                newRow[text.Header_PartCode] = ColorMaterial;
+                                newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, ColorMaterial);
+                                newRow[text.Header_ReadyStock] = tool.getStockQtyFromDataTable(dt_Item, ColorMaterial);
+                                newRow[text.Header_Unit] = text.Unit_KG;
+
+                                DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
+
+                            }
+
+                            #endregion
+
+                            GetChildFromGroup(dt_Join, dt_Item, childCode, childIndex, groupLevel + 2);
+
+                            break;
+                        }
+
+                        
+                    }
+
+                    break;
                 }
             }
 
         }
 
+        private float getItemForecast(string itemCode, int year, int month)
+        {
+            float forecast = -1;
+
+            dt_ItemForecast.AcceptChanges();
+
+            foreach (DataRow row in dt_ItemForecast.Rows)
+            {
+                string code = row[dalItemForecast.ItemCode].ToString();
+                int yearData = Convert.ToInt32(row[dalItemForecast.ForecastYear].ToString());
+                int monthData = Convert.ToInt32(row[dalItemForecast.ForecastMonth].ToString());
+                bool itemMatch = code == itemCode && yearData == year && monthData == month;
+
+                if (itemMatch)
+                {
+                    forecast =  float.TryParse(row[dalItemForecast.ForecastQty].ToString(), out float i) ? i : -1;
+                    row.Delete();
+                    break;
+                }
+            }
+
+            dt_ItemForecast.AcceptChanges();
+
+            return forecast;
+        }
+
+        private void ForecastDataFilter(int yearFrom, int yearTo)
+        {
+            dt_ItemForecast.AcceptChanges();
+
+            foreach (DataRow row in dt_ItemForecast.Rows)
+            {
+                int yearData = Convert.ToInt32(row[dalItemForecast.ForecastYear].ToString());
+
+                if (yearData < yearFrom || yearData > yearTo)
+                {
+                    row.Delete();
+                }
+            }
+
+            dt_ItemForecast.AcceptChanges();
+        }
+
         private void NEW_GetSummaryForecastMatUsedData()
         {
+            #region data setting 
+
             frmLoading.ShowLoadingScreen();
 
             dgvAlertSummary.DataSource = null;
-
-            #region Datatable Data
 
             dt_DeliveredData = SummaryDataTable();
 
@@ -1690,21 +1825,35 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            if(!cbShowTerminatedItem.Checked)
+            DT_PART_TRANSFER = dt_PartTrfHist.Copy();
+
+            dt_ItemForecast.DefaultView.Sort = dalItemForecast.ItemCode + " ASC, " + dalItemForecast.ForecastYear + " DESC, " + dalItemForecast.ForecastMonth + " DESC";
+            dt_ItemForecast = dt_ItemForecast.DefaultView.ToTable();
+
+            DT_PART_TRANSFER.DefaultView.Sort = dalTrfHist.TrfItemCode + " ASC, " + dalTrfHist.TrfDate + " ASC";
+            DT_PART_TRANSFER = DT_PART_TRANSFER.DefaultView.ToTable();
+
+
+            if (!cbShowTerminatedItem.Checked)
             {
                 dt_CustProduct = RemoveTerminatedProduct(dt_CustProduct);
             }
 
+            #endregion 
 
+            //generate product forecast summary (with delivered data)
             if (dt_CustProduct != null)
             {
+                #region data setting 2
+
+                dt_CustProduct.DefaultView.Sort = dalItem.ItemCode + " ASC";
+                dt_CustProduct = dt_CustProduct.DefaultView.ToTable();
+
                 int monthStart = Convert.ToInt32(cmbMonthFrom.Text);
                 int monthEnd = Convert.ToInt32(cmbMonthTo.Text);
 
                 int yearStart = Convert.ToInt32(cmbYearFrom.Text);
                 int yearEnd = Convert.ToInt32(cmbYearTo.Text);
-
-                //check date
 
                 DateTime dateStart = new DateTime(yearStart, monthStart, 1);
                 DateTime dateEnd = new DateTime(yearEnd, monthEnd, 1);
@@ -1722,534 +1871,193 @@ namespace FactoryManagementSoftware.UI
                     monthEnd = tmp;
                 }
 
-                string ForecastMonth;
-                string DeliveredMonth;
+                string MonthlyForecast;
+                string MonthlyDelivered;
+                string MonthlyStillNeed;
+
                 DataTable dt_PMMA_Date = dalPmmaDate.Select();
 
-                DataTable dt_ProductSummary = SummaryDataTable();
+                DT_PRODUCT_FORECAST_SUMMARY = SummaryDataTable();
+
+                if (PMMACustomer)
+                {
+                    dateStart = tool.GetPMMAStartDate(monthStart, yearStart, dt_PMMA_Date);
+                    dateEnd = tool.GetPMMAEndDate(monthEnd, yearEnd, dt_PMMA_Date);
+                }
+                else
+                {
+                    dateStart = new DateTime(yearStart, monthStart, 1);
+                    dateEnd = new DateTime(yearEnd, monthEnd, DateTime.DaysInMonth(yearEnd, monthEnd));
+                }
+
+                ForecastDataFilter(yearStart, yearEnd);
+
+                #endregion
+
+                int index = 1;
 
                 foreach (DataRow ProductRow in dt_CustProduct.Rows)
                 {
+                    DataRow newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
+
                     string ProductCode = ProductRow[dalItem.ItemCode].ToString();
                     string ProductName = ProductRow[dalItem.ItemName].ToString();
                     float Ready_Stock = float.TryParse(ProductRow[dalItem.ItemStock].ToString(), out Ready_Stock) ? Ready_Stock : 0;
                     float Forecast = 0;
                     float Delivered = 0;
+                    float StillNeed = 0;
 
-                    DataRow newRow = dt_ProductSummary.NewRow();
-
+                    newRow[text.Header_Index] = index;
+                    newRow[header_ParentIndex] = 0;
+                    newRow[text.Header_GroupLevel] = 0;
+                    newRow[text.Header_Type] = ProductRow[dalItem.ItemCat].ToString();
                     newRow[text.Header_PartCode] = ProductCode;
                     newRow[text.Header_PartName] = ProductName;
+                    newRow[text.Header_ReadyStock] = Ready_Stock;
 
-                    for (int i = yearStart; i <= yearEnd; i++)
+                    for (var date = dateStart; date <= dateEnd; date = date.AddMonths(1))
                     {
-                        if (yearStart == yearEnd)
+                        var i = date.Year;
+                        var j = date.Month;
+
+                        if (date == dateStart && j < monthStart)
                         {
-                            for (int j = monthStart; j <= monthEnd; j++)
-                            {
-                                ForecastMonth = j + "/" + i + string_Forecast;
+                            date = date.AddMonths(1);
+                            i = date.Year;
+                            j = date.Month;
+                            date = new DateTime(i, j, 1);
+                        }
 
-                                if (dt_ProductSummary.Columns.Contains(ForecastMonth))
-                                {
-                                    if (cbForecastDeductStock.Checked)
-                                    {
-                                        Forecast =  tool.getItemForecast(dt_ItemForecast, ProductCode, i, j) - Ready_Stock;
-                                    }
-                                    else
-                                    {
-                                        Forecast = tool.getItemForecast(dt_ItemForecast, ProductCode, i, j);
-                                    }
+                        MonthlyForecast = j + "/" + i + string_Forecast;
+                        MonthlyDelivered = j + "/" + i + string_Delivered;
+                        MonthlyStillNeed = j + "/" + i + string_StillNeed;
 
-                                    Forecast = Forecast <= -1 ? 0 : Forecast;
+                        DateTime dateFrom, dateTo;
 
-                                    newRow[ForecastMonth] = Forecast;
-                                    newRow[j + "/" + i + string_Delivered] = DeliveredToCustomerQty(ProductCode, dt_PartTrfHist, i, j, PMMACustomer, dt_PMMA_Date);
-
-                                    ////calculate material used
-                                    //matUsedInKG = OrderedQty * itemWeight / 1000;
-
-                                    //if (matType.Equals(text.Cat_SubMat) || matType.Equals(text.Cat_Carton) || matType.Equals(text.Cat_Packaging))
-                                    //{
-                                    //    row[month] = Math.Round(OrderedQty + OrderedQty * wastage, 0);
-                                    //}
-                                    //else
-                                    //{
-                                    //    row[month] = Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
-
-                                    //}
-
-                                }
-                            }
+                        if (PMMACustomer)
+                        {
+                            dateFrom = tool.GetPMMAStartDate(j, i, dt_PMMA_Date);
+                            dateTo = tool.GetPMMAEndDate(j, i, dt_PMMA_Date);
                         }
                         else
                         {
-                            if (i == yearStart)
-                            {
-                                for (int j = monthStart; j <= 12; j++)
-                                {
-                                    ForecastMonth = j + "/" + i + string_Forecast;
-                                    if (dt_ProductSummary.Columns.Contains(ForecastMonth))
-                                    {
-                                        if (cbForecastDeductStock.Checked)
-                                        {
-                                            Forecast = tool.getItemForecast(dt_ItemForecast, ProductCode, i, j) - Ready_Stock;
-                                        }
-                                        else
-                                        {
-                                            Forecast = tool.getItemForecast(dt_ItemForecast, ProductCode, i, j);
-
-                                        }
-
-                                        Forecast = Forecast <= -1 ? 0 : Forecast;
-                                        newRow[ForecastMonth] = Forecast;
-                                        newRow[j + "/" + i + string_Delivered] = DeliveredToCustomerQty(ProductCode, dt_PartTrfHist, i, j, PMMACustomer, dt_PMMA_Date);
-
-                                        ////calculate material used
-                                        //matUsedInKG = OrderedQty * itemWeight / 1000;
-
-                                        //if (matType.Equals(text.Cat_SubMat))
-                                        //{
-                                        //    row[month] = Math.Round(OrderedQty + OrderedQty * wastage, 0);
-                                        //}
-                                        //else
-                                        //{
-                                        //    row[month] = Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
-                                        //}
-                                    }
-                                }
-                            }
-                            else if (i == yearEnd)
-                            {
-                                for (int j = 1; j <= monthEnd; j++)
-                                {
-                                    ForecastMonth = j + "/" + i + string_Forecast;
-                                    if (dt_ProductSummary.Columns.Contains(ForecastMonth))
-                                    {
-                                        if (cbForecastDeductStock.Checked)
-                                        {
-                                            Forecast = tool.getItemForecast(dt_ItemForecast, ProductCode, i, j) - Ready_Stock;
-                                        }
-                                        else
-                                        {
-                                            Forecast = tool.getItemForecast(dt_ItemForecast, ProductCode, i, j);
-
-                                        }
-
-                                        Forecast = Forecast <= -1 ? 0 : Forecast;
-                                        newRow[ForecastMonth] = Forecast;
-                                        newRow[j + "/" + i + string_Delivered] = DeliveredToCustomerQty(ProductCode, dt_PartTrfHist, i, j, PMMACustomer, dt_PMMA_Date);
-
-
-                                        ////calculate material used
-                                        //matUsedInKG = OrderedQty * itemWeight / 1000;
-
-                                        //if (matType.Equals(text.Cat_SubMat))
-                                        //{
-                                        //    row[month] = Math.Round(OrderedQty + OrderedQty * wastage, 0);
-                                        //}
-                                        //else
-                                        //{
-                                        //    row[month] = Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
-                                        //}
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                for (int j = 1; j <= 12; j++)
-                                {
-                                    ForecastMonth = j + "/" + i + string_Forecast;
-                                    if (dt_ProductSummary.Columns.Contains(ForecastMonth))
-                                    {
-                                        if (cbForecastDeductStock.Checked)
-                                        {
-                                            Forecast = tool.getItemForecast(dt_ItemForecast, ProductCode, i, j) - Ready_Stock;
-
-                                        }
-                                        else
-                                        {
-                                            Forecast = tool.getItemForecast(dt_ItemForecast, ProductCode, i, j);
-
-
-                                        }
-
-                                        Forecast = Forecast <= -1 ? 0 : Forecast;
-                                        newRow[ForecastMonth] = Forecast;
-                                        newRow[j + "/" + i + string_Delivered] = DeliveredToCustomerQty(ProductCode, dt_PartTrfHist, i, j, PMMACustomer, dt_PMMA_Date);
-
-
-                                        ////calculate material used
-                                        //matUsedInKG = OrderedQty * itemWeight / 1000;
-
-                                        //if (matType.Equals(text.Cat_SubMat))
-                                        //{
-                                        //    row[month] = Math.Round(OrderedQty + OrderedQty * wastage, 0);
-                                        //}
-                                        //else
-                                        //{
-                                        //    row[month] = Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
-                                        //}
-                                    }
-                                }
-                            }
+                            dateFrom = new DateTime(i, j, 1);
+                            dateTo = new DateTime(i, j, DateTime.DaysInMonth(i, j));
                         }
-                    }
 
-                    dt_ProductSummary.Rows.Add(newRow);
-
-                    //get forecast data
-
-                    //get delivered data
-
-
-                    ////if part
-                    //
-
-                    //float PartWeight = 0;
-                    //float RunnerWeight = 0;
-
-                    //if (cbZeroCostOnly.Checked)
-                    //{
-                    //    PartWeight = float.TryParse(ProductRow[dalItem.ItemQuoPWPcs].ToString(), out PartWeight) ? PartWeight : 0;
-                    //    RunnerWeight = float.TryParse(ProductRow[dalItem.ItemQuoRWPcs].ToString(), out RunnerWeight) ? RunnerWeight : 0;
-
-                    //    if (PartWeight <= 0)
-                    //    {
-                    //        PartWeight = float.TryParse(ProductRow[dalItem.ItemProPWPcs].ToString(), out PartWeight) ? PartWeight : 0;
-                    //        RunnerWeight = float.TryParse(ProductRow[dalItem.ItemProRWPcs].ToString(), out RunnerWeight) ? RunnerWeight : 0;
-                    //    }
-
-                    //}
-                    //else
-                    //{
-                    //    PartWeight = float.TryParse(ProductRow[dalItem.ItemProPWPcs].ToString(), out PartWeight) ? PartWeight : 0;
-                    //    RunnerWeight = float.TryParse(ProductRow[dalItem.ItemProRWPcs].ToString(), out RunnerWeight) ? RunnerWeight : 0;
-                    //}
-
-                    //float itemWeight = PartWeight + RunnerWeight;
-
-                    //float wastage = ProductRow[dalItem.ItemWastage] == DBNull.Value ? 0 : Convert.ToSingle(ProductRow[dalItem.ItemWastage]);
-
-                    ////Get delivered out data
-                    //dt_DeliveredData.Rows.Clear();
-
-                    //float matUsedInKG_PerPCS = 1 * itemWeight / 1000;
-                    //float MatUsedIncludedWastage_PerPCS = (float)Math.Round(matUsedInKG_PerPCS + matUsedInKG_PerPCS * wastage, 2);
-                }
-            }
-
-            
-            if (cbZeroCostOnly.Checked)
-            {
-                dt_Mat = dalMat.SelectZeroCostMaterial();
-            }
-            else
-            {
-                dt_Mat = dalMat.Select();
-            }
-
-            //create datatable
-            dt_MatUsed_Forecast = SummaryForecastMatUsedTable();
-            DataRow row_DGVSouce;
-
-            
-
-            //get all part list
-            DataTable dt_Part = dalItem.catSelect(text.Cat_Part);
-            DataTable dt_PartForChecking = dt_Part.Copy();
-
-
-            DataTable dt_JoinforChecking = dt_Join.Copy();
-
-            #endregion
-
-            #region variable
-
-            int index = 1;
-            int dgvRowIndex = 0;
-            string previousMatCode = null;
-            float totalMatUsed = 0;
-            bool printed = false;
-
-            #endregion
-
-            //foreach material list
-            foreach (DataRow matRow in dt_Mat.Rows)
-            {
-                string matCode = matRow[dalMat.MatCode].ToString();
-                string matName = matRow[dalMat.MatName].ToString();
-                string matCat = matRow[dalMat.MatCat].ToString();
-
-                string ItemTypeSelected = cmbItemType.Text;
-
-                bool itemCatMatched = ItemTypeSelected == matCat;
-
-                //itemCatMatched |= ItemTypeSelected == text.Cat_MB;
-                //itemCatMatched |= ItemTypeSelected == text.Cat_Pigment;
-                //itemCatMatched |= ItemTypeSelected == text.Cat_SubMat;
-                //itemCatMatched |= ItemTypeSelected == text.Cat_Carton;
-
-                itemCatMatched |= ItemTypeSelected.ToUpper() == "ALL";
-
-                if (itemCatMatched)
-                {
-                    if (previousMatCode == null)
-                    {
-                        previousMatCode = matCode;
-                        totalMatUsed = 0;
-                    }
-
-                    else if (previousMatCode != matCode && printed)
-                    {
-                        string printedMatCode = dt_MatUsed_Forecast.Rows[dgvRowIndex - 1][text.Header_MatCode].ToString();
-
-                        if (dgvRowIndex - 1 >= 0 && !string.IsNullOrEmpty(printedMatCode))
+                        if (DT_PRODUCT_FORECAST_SUMMARY.Columns.Contains(MonthlyForecast) && DT_PRODUCT_FORECAST_SUMMARY.Columns.Contains(MonthlyDelivered) && DT_PRODUCT_FORECAST_SUMMARY.Columns.Contains(MonthlyStillNeed))
                         {
-                            dt_MatUsed_Forecast.Rows[dgvRowIndex - 1][text.Header_TotalMaterialUsed_KG_Piece] = Math.Round(totalMatUsed, 2);
+                            Forecast = getItemForecast(ProductCode, i, j);
 
-                            //add spacing
-                            //row_DGVSouce = dt_MatUsed.NewRow();
-                            //dt_MatUsed.Rows.Add(row_DGVSouce);
-                            totalMatUsed = 0;
-                            previousMatCode = matCode;
-                            //dgvRowIndex++;
+                            if (cbForecastDeductStock.Checked)
+                            {
+                                Forecast -= Ready_Stock;
+                            }
+
+                            Forecast = Forecast <= -1 ? 0 : Forecast;
+
+                            if (true)
+                            {
+                                Delivered = DeliveredToCustomerQty(ProductCode, dateFrom, dateTo);
+                                newRow[MonthlyDelivered] = Delivered;
+                            }
+
+                            StillNeed = Forecast - Delivered;
+
+                            StillNeed = StillNeed < 0 ? 0 : StillNeed;
+
+                            newRow[MonthlyForecast] = Forecast;
+                            newRow[MonthlyStillNeed] = StillNeed;
                         }
-
                     }
 
-                    if (ItemTypeSelected == text.Cat_SubMat)
+                    #region add item weight info
+
+                    float partWeight = 0;
+                    float runnerWeight = 0;
+
+                    if (cbZeroCostOnly.Checked)
                     {
-                        //foreach all join list (for sub material)
-                        foreach (DataRow joinRow in dt_Join.Rows)
+                        partWeight = float.TryParse(ProductRow[dalItem.ItemQuoPWPcs].ToString(), out partWeight) ? partWeight : 0;
+                        runnerWeight = float.TryParse(ProductRow[dalItem.ItemQuoRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
+
+                        if (partWeight <= 0)
                         {
-                            if (joinRow.RowState != DataRowState.Deleted)
-                            {
-                                string childCode = joinRow["child_code"].ToString();
-
-                                if (childCode == matCode)
-                                {
-                                    string parentCode = joinRow["parent_code"].ToString();
-
-                                    if (ifCustomerItem(parentCode, dt_JoinforChecking, dt_CustProduct))
-                                    {
-                                        string parentName = joinRow["parent_name"].ToString();
-
-
-                                        //Get delivered out data
-                                        dt_DeliveredData.Rows.Clear();
-                                        float reference_Value = GetForecastQty(custName, parentCode, dt_JoinforChecking, dt_PartTrfHist, "11", "2021");
-
-                                        #region get weight data
-                                        float partWeight = 0;
-                                        float runnerWeight = 0;
-
-                                        if (cbZeroCostOnly.Checked)
-                                        {
-                                            partWeight = float.TryParse(joinRow[dalItem.ItemQuoPWPcs].ToString(), out partWeight) ? partWeight : 0;
-                                            runnerWeight = float.TryParse(joinRow[dalItem.ItemQuoRWPcs].ToString(), out partWeight) ? partWeight : 0;
-                                        }
-                                        else
-                                        {
-                                            partWeight = float.TryParse(joinRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
-                                            runnerWeight = float.TryParse(joinRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
-                                        }
-
-                                        float itemWeight = partWeight + runnerWeight;
-
-                                        #endregion
-
-                                        float wastage = Convert.ToSingle(matRow[dalItem.ItemWastage]);
-
-                                        float wastageAdd = reference_Value * wastage;
-                                        int MatUsedWithWastage = (int)Math.Ceiling(reference_Value + wastageAdd);
-                                        totalMatUsed += MatUsedWithWastage;
-
-                                        #region New Test: with parent code/name
-                                        foreach (DataRow row in dt_DeliveredData.Rows)
-                                        {
-                                            string DeliveredCode = row[text.Header_PartCode] == DBNull.Value ? null : row[text.Header_PartCode].ToString();
-                                            string DeliveredName = row[text.Header_PartName] == DBNull.Value ? null : row[text.Header_PartName].ToString();
-
-                                            float qty = Convert.ToSingle(row[header_Forecast]);
-                                            //string parent = DeliveredName + "(" + DeliveredCode + ")";
-                                            string parent = DeliveredCode;
-
-                                            if ((DeliveredName != null && DeliveredCode != null) || (reference_Value == 0 && parentCode == DeliveredCode))
-                                            {
-
-                                                if (DeliveredCode == parentCode)
-                                                {
-                                                    parent = "";
-                                                }
-
-                                                wastageAdd = qty * wastage;
-                                                MatUsedWithWastage = (int)Math.Ceiling(qty + wastageAdd);
-
-                                                row_DGVSouce = dt_MatUsed_Forecast.NewRow();
-                                                row_DGVSouce[text.Header_MatType] = matCat;
-                                                row_DGVSouce[text.Header_Index] = index;
-                                                row_DGVSouce[text.Header_MatCode] = matCode;
-                                                row_DGVSouce[text.Header_MatName] = matName;
-                                                row_DGVSouce[text.Header_PartName] = parentName;
-                                                row_DGVSouce[text.Header_PartCode] = parentCode;
-                                                row_DGVSouce[text.Header_Parent] = parent;
-                                                row_DGVSouce[text.Header_ItemWeight_G] = itemWeight;
-                                                row_DGVSouce[text.Header_Wastage] = wastage;
-
-                                                row_DGVSouce[header_Forecast] = Math.Round(qty, 2);
-                                                row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = qty;
-                                                row_DGVSouce[text.Header_MaterialUsedWithWastage] = MatUsedWithWastage;
-
-                                                dt_MatUsed_Forecast.Rows.Add(row_DGVSouce);
-                                                dgvRowIndex++;
-                                                index++;
-                                                printed = true;
-                                            }
-                                        }
-                                        //joinRow.Delete();
-
-                                        #endregion
-
-
-
-                                    }
-                                }
-                            }
+                            partWeight = float.TryParse(ProductRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
+                            runnerWeight = float.TryParse(ProductRow[dalItem.ItemProRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
                         }
-                        dt_Join.AcceptChanges();
+
                     }
                     else
                     {
-                        //foreach all part list(for raw material)
-                        foreach (DataRow partRow in dt_Part.Rows)
-                        {
-                            if (partRow.RowState != DataRowState.Deleted)
-                            {
-                                string itemMatCode = partRow[dalItem.ItemMaterial].ToString();
-
-                                if (matCat != text.Cat_RawMat)
-                                {
-                                    itemMatCode = partRow[dalItem.ItemMBatch].ToString();
-                                }
-
-                                if (itemMatCode == matCode)
-                                {
-                                    string itemCode = partRow[dalItem.ItemCode].ToString();
-
-
-                                    if (ifCustomerItem(itemCode, dt_JoinforChecking, dt_CustProduct))
-                                    {
-                                        string itemName = partRow[dalItem.ItemName].ToString();
-
-                                        float partWeight = 0;
-                                        float runnerWeight = 0;
-
-                                        if (cbZeroCostOnly.Checked)
-                                        {
-                                            partWeight = float.TryParse(partRow[dalItem.ItemQuoPWPcs].ToString(), out partWeight) ? partWeight : 0;
-                                            runnerWeight = float.TryParse(partRow[dalItem.ItemQuoRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
-
-                                            if (partWeight <= 0)
-                                            {
-                                                partWeight = float.TryParse(partRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
-                                                runnerWeight = float.TryParse(partRow[dalItem.ItemProRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
-                                            }
-
-                                        }
-                                        else
-                                        {
-                                            partWeight = float.TryParse(partRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
-                                            runnerWeight = float.TryParse(partRow[dalItem.ItemProRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
-                                        }
-
-                                        float itemWeight = partWeight + runnerWeight;
-
-                                        float wastage = partRow[dalItem.ItemWastage] == DBNull.Value ? 0 : Convert.ToSingle(partRow[dalItem.ItemWastage]);
-
-                                        //Get delivered out data
-                                        dt_DeliveredData.Rows.Clear();
-                                        float deliveredQty = GetForecastQty(custName, itemCode, dt_JoinforChecking, dt_PartTrfHist, "11", "2021");
-
-                                        float matUsedInKG = deliveredQty * itemWeight / 1000;
-                                        totalMatUsed += (float)Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
-
-
-                                        #region New Test: with parent code/name
-                                        foreach (DataRow row in dt_DeliveredData.Rows)
-                                        {
-                                            string DeliveredCode = row[text.Header_PartCode] == DBNull.Value ? null : row[text.Header_PartCode].ToString();
-
-                                            //if(itemCode == "V99CJP0M0")
-                                            //{
-                                            //    float TEST = 0;
-                                            //}
-                                            string DeliveredName = row[text.Header_PartName] == DBNull.Value ? null : row[text.Header_PartName].ToString();
-                                            float qty = Convert.ToSingle(row[header_Forecast]);
-                                            string parent = DeliveredCode;
-                                            // string parent = DeliveredName + "(" + DeliveredCode + ")";
-
-                                            if ((DeliveredName != null && DeliveredCode != null) || (deliveredQty == 0 && itemCode == DeliveredCode))
-                                            {
-                                                row_DGVSouce = dt_MatUsed_Forecast.NewRow();
-
-                                                if (DeliveredCode == itemCode)
-                                                {
-                                                    parent = "";
-                                                }
-
-                                                matUsedInKG = qty * itemWeight / 1000;
-
-                                                row_DGVSouce[text.Header_Index] = index;
-                                                row_DGVSouce[text.Header_MatType] = matCat;
-                                                row_DGVSouce[text.Header_MatCode] = matCode;
-                                                row_DGVSouce[text.Header_MatName] = matName;
-                                                row_DGVSouce[text.Header_PartName] = itemName;
-                                                row_DGVSouce[text.Header_PartCode] = itemCode;
-                                                row_DGVSouce[text.Header_Parent] = parent;
-                                                row_DGVSouce[text.Header_ItemWeight_G] = itemWeight;
-                                                row_DGVSouce[text.Header_Wastage] = wastage;
-                                                row_DGVSouce[header_Forecast] = Math.Round(qty, 2);
-                                                row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = Math.Round(matUsedInKG, 2);
-                                                row_DGVSouce[text.Header_MaterialUsedWithWastage] = Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
-
-                                                dt_MatUsed_Forecast.Rows.Add(row_DGVSouce);
-                                                index++;
-                                                dgvRowIndex++;
-                                                printed = true;
-                                            }
-                                        }
-
-                                        //partRow.Delete();
-                                        #endregion
-                                    }
-                                }
-
-                                if (!ifZeroCostMat(itemMatCode, dt_Mat))
-                                {
-                                    //partRow.Delete();
-                                }
-                            }
-                        }
-                        //dt_Part.AcceptChanges();
+                        partWeight = float.TryParse(ProductRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
+                        runnerWeight = float.TryParse(ProductRow[dalItem.ItemProRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
                     }
+
+                    float itemWeight = partWeight + runnerWeight;
+
+                    float wastage = ProductRow[dalItem.ItemWastage] == DBNull.Value ? 0 : Convert.ToSingle(ProductRow[dalItem.ItemWastage]);
+
+                    newRow[text.Header_PartWeight_G] = partWeight;
+                    newRow[text.Header_RunnerWeight_G] = runnerWeight;
+                    newRow[text.Header_WastageAllowed_Percentage] = wastage;
+                    newRow[text.Header_Unit] = text.Unit_Piece;
+
+                    #endregion
+
+                    DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
+
+                    #region add material
+
+                    string RawMaterial = ProductRow[dalItem.ItemMaterial].ToString();
+                    string ColorMaterial = ProductRow[dalItem.ItemMBatch].ToString();
+
+                    if(!string.IsNullOrEmpty(RawMaterial))
+                    {
+                        newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
+
+                        newRow[text.Header_Index] = 0;
+                        newRow[header_ParentIndex] = index;
+                        newRow[text.Header_GroupLevel] = 1;
+                        newRow[text.Header_Type] = text.Cat_RawMat;
+                        newRow[text.Header_PartCode] = RawMaterial;
+                        newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, RawMaterial);
+                        newRow[text.Header_ReadyStock] = tool.getStockQtyFromDataTable(dt_Item,RawMaterial);
+                        newRow[text.Header_Unit] = text.Unit_KG;
+
+                        DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
+
+                    }
+
+                    if (!string.IsNullOrEmpty(ColorMaterial))
+                    {
+                        newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
+
+                        newRow[text.Header_Index] = 0;
+                        newRow[header_ParentIndex] = index;
+                        newRow[text.Header_GroupLevel] = 1;
+                        newRow[text.Header_Type] = tool.getCatNameFromDataTable(dt_Item, ColorMaterial);
+                        newRow[text.Header_PartCode] = ColorMaterial;
+                        newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, ColorMaterial);
+                        newRow[text.Header_ReadyStock] = tool.getStockQtyFromDataTable(dt_Item, ColorMaterial);
+                        newRow[text.Header_Unit] = text.Unit_KG;
+
+                        DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
+
+                    }
+
+                    #endregion
+
+                    #region add child group
+
+                    GetChildFromGroup(dt_Join, dt_Item, ProductCode, index,0);
+
+                    #endregion
+
+                    index++;
                 }
 
-            }
 
-            //last row 
-            string printedMatCode2 = dt_MatUsed_Forecast.Rows[dgvRowIndex - 1][text.Header_MatCode].ToString();
-            if (dgvRowIndex - 1 >= 0 && !string.IsNullOrEmpty(printedMatCode2))
-            {
-                dt_MatUsed_Forecast.Rows[dgvRowIndex - 1][text.Header_TotalMaterialUsed_KG_Piece] = Math.Round(totalMatUsed, 2);
-            }
-
-            if (dt_MatUsed_Forecast.Rows.Count > 0)
-            {
-                PrintForecastSummary(dt_MatUsed_Forecast);
-            }
-            else
-            {
-                dgvAlertSummary.DataSource = null;
             }
 
             frmLoading.CloseForm();

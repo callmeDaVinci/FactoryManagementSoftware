@@ -2134,7 +2134,7 @@ namespace FactoryManagementSoftware.Module
 
                 if(itemMatch)
                 {
-                    return float.TryParse(row[dalItemForecast.ForecastQty].ToString(), out float i) ? Convert.ToSingle(row[dalItemForecast.ForecastQty].ToString()) : -1;
+                    return float.TryParse(row[dalItemForecast.ForecastQty].ToString(), out float i)? i : -1;
                 }
             }
 
