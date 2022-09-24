@@ -20,6 +20,7 @@ using System.Reflection;
 using System.Collections;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 using Microsoft.Office.Interop.Word;
+using Syncfusion.XlsIO.Parser.Biff_Records;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -1608,9 +1609,10 @@ namespace FactoryManagementSoftware.UI
             return dt_Product;
         }
 
-        private void GetChildFromGroup(DataTable dt_Join, DataTable dt_Item, string parentCode, int parentIndex, int groupLevel)
+        private void GetChildFromGroup(DataTable dt_Join, DataTable dt_Item, string parentCode, int parentIndex, int groupLevel, int childIndex)
         {
             //search child
+
             foreach (DataRow join in dt_Join.Rows)
             {
                 if (parentCode == join[dalJoin.ParentCode].ToString())
@@ -1626,8 +1628,6 @@ namespace FactoryManagementSoftware.UI
                         if(childCode == item[dalItem.ItemCode].ToString())
                         {
                             #region add child to table
-
-                            int childIndex = parentIndex * 10;
 
                             DataRow newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
 
@@ -1682,7 +1682,11 @@ namespace FactoryManagementSoftware.UI
 
                             DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
 
+                            ChildQtyCalculation(childIndex);
+
                             #endregion
+
+                            int subChildIndex = childIndex * 100 + 1;
 
                             #region add material
 
@@ -1693,16 +1697,18 @@ namespace FactoryManagementSoftware.UI
                             {
                                 newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
 
-                                newRow[text.Header_Index] = 0;
+                                newRow[text.Header_Index] = subChildIndex++;
                                 newRow[header_ParentIndex] = childIndex;
                                 newRow[text.Header_GroupLevel] = groupLevel + 2;
                                 newRow[text.Header_Type] = text.Cat_RawMat;
                                 newRow[text.Header_PartCode] = RawMaterial;
                                 newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, RawMaterial);
-                                newRow[text.Header_ReadyStock] = tool.getStockQtyFromDataTable(dt_Item, RawMaterial);
+                                newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, RawMaterial), 2);
                                 newRow[text.Header_Unit] = text.Unit_KG;
 
                                 DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
+
+                                ChildQtyCalculation(subChildIndex - 1);
 
                             }
 
@@ -1710,22 +1716,27 @@ namespace FactoryManagementSoftware.UI
                             {
                                 newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
 
-                                newRow[text.Header_Index] = 0;
+                                newRow[text.Header_Index] = subChildIndex++;
                                 newRow[header_ParentIndex] = childIndex;
                                 newRow[text.Header_GroupLevel] = groupLevel + 2;
                                 newRow[text.Header_Type] = tool.getCatNameFromDataTable(dt_Item, ColorMaterial);
                                 newRow[text.Header_PartCode] = ColorMaterial;
                                 newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, ColorMaterial);
-                                newRow[text.Header_ReadyStock] = tool.getStockQtyFromDataTable(dt_Item, ColorMaterial);
+                                newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, ColorMaterial), 2);
                                 newRow[text.Header_Unit] = text.Unit_KG;
 
                                 DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
+
+                                ChildQtyCalculation(subChildIndex - 1);
+
 
                             }
 
                             #endregion
 
-                            GetChildFromGroup(dt_Join, dt_Item, childCode, childIndex, groupLevel + 2);
+                            GetChildFromGroup(dt_Join, dt_Item, childCode, childIndex, groupLevel + 1, subChildIndex);
+
+                            childIndex++;
 
                             break;
                         }
@@ -1733,7 +1744,6 @@ namespace FactoryManagementSoftware.UI
                         
                     }
 
-                    break;
                 }
             }
 
@@ -1780,6 +1790,75 @@ namespace FactoryManagementSoftware.UI
             }
 
             dt_ItemForecast.AcceptChanges();
+        }
+
+        private void ChildQtyCalculation(int childIndex)
+        {
+            if(DT_PRODUCT_FORECAST_SUMMARY != null)
+                foreach(DataRow row in DT_PRODUCT_FORECAST_SUMMARY.Rows)
+                {
+                    if(childIndex.ToString() == row[text.Header_Index].ToString())
+                    {
+                        string parentIndex = row[header_ParentIndex].ToString();
+
+                        for(int i = 0; i < DT_PRODUCT_FORECAST_SUMMARY.Rows.Count; i++)
+                        {
+                            if (DT_PRODUCT_FORECAST_SUMMARY.Rows[i][text.Header_Index].ToString() == parentIndex)
+                            {
+                                for (int j = 0; j < DT_PRODUCT_FORECAST_SUMMARY.Columns.Count; j++)
+                                {
+                                    string colName = DT_PRODUCT_FORECAST_SUMMARY.Columns[j].ColumnName;
+
+                                    if (colName.Contains(string_Forecast) || colName.Contains(string_Delivered) || colName.Contains(string_StillNeed))
+                                    {
+                                        float parentQty = float.TryParse(DT_PRODUCT_FORECAST_SUMMARY.Rows[i][j].ToString(), out parentQty) ? parentQty : 0;
+                                        float wastage = float.TryParse(DT_PRODUCT_FORECAST_SUMMARY.Rows[i][text.Header_WastageAllowed_Percentage].ToString(), out wastage) ? wastage : 0;
+
+                                        string childType = row[text.Header_Type].ToString();
+
+                                        float childQty;
+
+                                        if (childType == text.Cat_RawMat || childType == text.Cat_MB || childType == text.Cat_Pigment)
+                                        {
+                                            float partWeight = float.TryParse(DT_PRODUCT_FORECAST_SUMMARY.Rows[i][text.Header_PartWeight_G].ToString(), out partWeight) ? partWeight : 0;
+                                            float runnerWeight = float.TryParse(DT_PRODUCT_FORECAST_SUMMARY.Rows[i][text.Header_RunnerWeight_G].ToString(), out runnerWeight) ? runnerWeight : 0;
+
+                                            float itemWeight = partWeight + runnerWeight;
+
+                                            childQty = parentQty * itemWeight * (1 + wastage);
+
+                                        }
+                                        else
+                                        {
+                                            float joinMax = float.TryParse(row[text.Header_JoinMax].ToString(), out joinMax) ? joinMax : 1;
+                                            float joinQty = float.TryParse(row[text.Header_JoinQty].ToString(), out joinQty) ? joinQty : 0;
+
+                                            joinMax = joinMax <= 0 ? 1 : joinMax;
+
+                                            if(childType == text.Cat_Part)
+                                            {
+                                                childQty = parentQty / joinMax * joinQty;
+
+                                            }
+                                            else
+                                            {
+                                                childQty = (float)Math.Ceiling( parentQty / joinMax * joinQty * (1 + wastage));
+
+                                            }
+                                        }
+
+                                        row[colName] = childQty;
+                                    }
+                                }
+
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+            
+                }
         }
 
         private void NEW_GetSummaryForecastMatUsedData()
@@ -1909,7 +1988,7 @@ namespace FactoryManagementSoftware.UI
 
                     newRow[text.Header_Index] = index;
                     newRow[header_ParentIndex] = 0;
-                    newRow[text.Header_GroupLevel] = 0;
+                    newRow[text.Header_GroupLevel] = 1;
                     newRow[text.Header_Type] = ProductRow[dalItem.ItemCat].ToString();
                     newRow[text.Header_PartCode] = ProductCode;
                     newRow[text.Header_PartName] = ProductName;
@@ -2012,37 +2091,42 @@ namespace FactoryManagementSoftware.UI
                     string RawMaterial = ProductRow[dalItem.ItemMaterial].ToString();
                     string ColorMaterial = ProductRow[dalItem.ItemMBatch].ToString();
 
+                    int childIndex = index *1000 + 1;
+
                     if(!string.IsNullOrEmpty(RawMaterial))
                     {
                         newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
 
-                        newRow[text.Header_Index] = 0;
+                        newRow[text.Header_Index] = childIndex++;
                         newRow[header_ParentIndex] = index;
-                        newRow[text.Header_GroupLevel] = 1;
+                        newRow[text.Header_GroupLevel] = 2;
                         newRow[text.Header_Type] = text.Cat_RawMat;
                         newRow[text.Header_PartCode] = RawMaterial;
                         newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, RawMaterial);
-                        newRow[text.Header_ReadyStock] = tool.getStockQtyFromDataTable(dt_Item,RawMaterial);
+                        newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, RawMaterial), 2);
                         newRow[text.Header_Unit] = text.Unit_KG;
 
                         DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
 
+                        ChildQtyCalculation(childIndex-1);
                     }
 
                     if (!string.IsNullOrEmpty(ColorMaterial))
                     {
                         newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
 
-                        newRow[text.Header_Index] = 0;
+                        newRow[text.Header_Index] = childIndex++;
                         newRow[header_ParentIndex] = index;
-                        newRow[text.Header_GroupLevel] = 1;
+                        newRow[text.Header_GroupLevel] = 2;
                         newRow[text.Header_Type] = tool.getCatNameFromDataTable(dt_Item, ColorMaterial);
                         newRow[text.Header_PartCode] = ColorMaterial;
                         newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, ColorMaterial);
-                        newRow[text.Header_ReadyStock] = tool.getStockQtyFromDataTable(dt_Item, ColorMaterial);
+                        newRow[text.Header_ReadyStock] = (float) Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, ColorMaterial), 2);
                         newRow[text.Header_Unit] = text.Unit_KG;
 
+
                         DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
+                        ChildQtyCalculation(childIndex - 1);
 
                     }
 
@@ -2050,7 +2134,12 @@ namespace FactoryManagementSoftware.UI
 
                     #region add child group
 
-                    GetChildFromGroup(dt_Join, dt_Item, ProductCode, index,0);
+                    GetChildFromGroup(dt_Join, dt_Item, ProductCode, index,1, childIndex);
+
+                    #endregion
+
+
+                    #region child item qty calculation
 
                     #endregion
 
