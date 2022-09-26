@@ -278,7 +278,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_DirectOut_KG_Piece { get; } = "DIRECT OUT(KG/PIECE)";
         public string Header_BalStock { get; } = "BAL. STOCK";
         public string Header_ReadyStock { get; } = "READY STOCK";
-
+        public string Header_PendingOrder { get; } = "PENDING ORDER";
         public string Header_Unit { get; } = "UNIT";
 
 

@@ -51,6 +51,7 @@ namespace FactoryManagementSoftware.UI
         private string string_Forecast = " FORECAST";
         private string string_StillNeed = " STILL NEED";
         private string string_Delivered = " DELIVERED";
+        private string string_EstBalance = " EST. BAL.";
 
         private string ForecastType_DeductStock = " (FORECAST-STOCK)";
         private string ForecastType_FORECAST = " FORECAST";
@@ -118,7 +119,7 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
-        private DataTable SummaryDataTable()
+        private DataTable Product_SummaryDataTable()
         {
             DataTable dt = new DataTable();
 
@@ -183,6 +184,70 @@ namespace FactoryManagementSoftware.UI
                 dt.Columns.Add(month + string_Delivered, typeof(float));
                 dt.Columns.Add(month + string_StillNeed, typeof(float));
             }
+
+            dt.Columns.Add(text.Header_PendingOrder, typeof(string));
+
+            return dt;
+        }
+
+        private DataTable Material_SummaryDataTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(text.Header_Type, typeof(string));
+            dt.Columns.Add(text.Header_PartCode, typeof(string));
+            dt.Columns.Add(text.Header_PartName, typeof(string));
+            dt.Columns.Add(text.Header_ReadyStock, typeof(float));
+
+            #region Get Start Date & End Date
+
+            int monthStart = Convert.ToInt32(cmbMonthFrom.Text);
+            int monthEnd = Convert.ToInt32(cmbMonthTo.Text);
+
+            int yearStart = Convert.ToInt32(cmbYearFrom.Text);
+            int yearEnd = Convert.ToInt32(cmbYearTo.Text);
+
+            DateTime dateStart = new DateTime(yearStart, monthStart, 1);
+            DateTime dateEnd = new DateTime(yearEnd, monthEnd, 1);
+
+            if (dateStart > dateEnd)
+            {
+                int tmp;
+
+                tmp = yearStart;
+                yearStart = yearEnd;
+                yearEnd = tmp;
+
+                tmp = monthStart;
+                monthStart = monthEnd;
+                monthEnd = tmp;
+            }
+
+            #endregion
+
+            for (var date = dateStart; date <= dateEnd; date = date.AddMonths(1))
+            {
+                var i = date.Year;
+                var j = date.Month;
+
+                if (date == dateStart && j < monthStart)
+                {
+                    date = date.AddMonths(1);
+                    i = date.Year;
+                    j = date.Month;
+                    date = new DateTime(i, j, 1);
+                }
+
+                string month = j + "/" + i;
+                dt.Columns.Add(month + string_Forecast, typeof(float));
+                dt.Columns.Add(month + string_Delivered, typeof(float));
+                dt.Columns.Add(month + string_StillNeed, typeof(float));
+                dt.Columns.Add(month + string_EstBalance, typeof(float));
+            }
+
+            dt.Columns.Add(text.Header_PendingOrder, typeof(string));
+            dt.Columns.Add(text.Header_Unit, typeof(string));
 
             return dt;
         }
@@ -1002,7 +1067,7 @@ namespace FactoryManagementSoftware.UI
 
             #region Datatable Data
 
-            dt_DeliveredData = SummaryDataTable();
+            dt_DeliveredData = Product_SummaryDataTable();
 
             string custName = cmbCustomer.Text;
 
@@ -1634,6 +1699,7 @@ namespace FactoryManagementSoftware.UI
                             string itemCode = item[dalItem.ItemCode].ToString();
                             string itemName = item[dalItem.ItemName].ToString();
                             float Ready_Stock = float.TryParse(item[dalItem.ItemStock].ToString(), out Ready_Stock) ? Ready_Stock : 0;
+                            float pendingOrder = float.TryParse(item[dalItem.ItemOrd].ToString(), out pendingOrder) ? pendingOrder : 0;
 
                             newRow[text.Header_Index] = childIndex;
                             newRow[header_ParentIndex] = parentIndex;
@@ -1645,6 +1711,7 @@ namespace FactoryManagementSoftware.UI
                             newRow[text.Header_JoinMax] = joinMax;
                             newRow[text.Header_JoinMin] = joinMin;
                             newRow[text.Header_ReadyStock] = Ready_Stock;
+                            newRow[text.Header_PendingOrder] = pendingOrder;
 
                             #region add item weight info
 
@@ -1704,6 +1771,7 @@ namespace FactoryManagementSoftware.UI
                                 newRow[text.Header_PartCode] = RawMaterial;
                                 newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, RawMaterial);
                                 newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, RawMaterial), 2);
+                                newRow[text.Header_PendingOrder] = (float)Math.Round((double)tool.getOrderQtyFromDataTable(dt_Item, RawMaterial), 2);
                                 newRow[text.Header_Unit] = text.Unit_KG;
 
                                 DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
@@ -1723,6 +1791,7 @@ namespace FactoryManagementSoftware.UI
                                 newRow[text.Header_PartCode] = ColorMaterial;
                                 newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, ColorMaterial);
                                 newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, ColorMaterial), 2);
+                                newRow[text.Header_PendingOrder] = (float)Math.Round((double)tool.getOrderQtyFromDataTable(dt_Item, ColorMaterial), 2);
                                 newRow[text.Header_Unit] = text.Unit_KG;
 
                                 DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
@@ -1869,7 +1938,7 @@ namespace FactoryManagementSoftware.UI
 
             dgvAlertSummary.DataSource = null;
 
-            dt_DeliveredData = SummaryDataTable();
+            dt_DeliveredData = Product_SummaryDataTable();
 
             string custName = cmbCustomer.Text;
 
@@ -1956,7 +2025,7 @@ namespace FactoryManagementSoftware.UI
 
                 DataTable dt_PMMA_Date = dalPmmaDate.Select();
 
-                DT_PRODUCT_FORECAST_SUMMARY = SummaryDataTable();
+                DT_PRODUCT_FORECAST_SUMMARY = Product_SummaryDataTable();
 
                 if (PMMACustomer)
                 {
@@ -1982,6 +2051,7 @@ namespace FactoryManagementSoftware.UI
                     string ProductCode = ProductRow[dalItem.ItemCode].ToString();
                     string ProductName = ProductRow[dalItem.ItemName].ToString();
                     float Ready_Stock = float.TryParse(ProductRow[dalItem.ItemStock].ToString(), out Ready_Stock) ? Ready_Stock : 0;
+                    float Pending_Order = float.TryParse(ProductRow[dalItem.ItemOrd].ToString(), out Pending_Order) ? Pending_Order : 0;
                     float Forecast = 0;
                     float Delivered = 0;
                     float StillNeed = 0;
@@ -1993,6 +2063,7 @@ namespace FactoryManagementSoftware.UI
                     newRow[text.Header_PartCode] = ProductCode;
                     newRow[text.Header_PartName] = ProductName;
                     newRow[text.Header_ReadyStock] = Ready_Stock;
+                    newRow[text.Header_PendingOrder] = Pending_Order;
 
                     for (var date = dateStart; date <= dateEnd; date = date.AddMonths(1))
                     {
@@ -2104,6 +2175,7 @@ namespace FactoryManagementSoftware.UI
                         newRow[text.Header_PartCode] = RawMaterial;
                         newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, RawMaterial);
                         newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, RawMaterial), 2);
+                        newRow[text.Header_PendingOrder] = (float)Math.Round((double)tool.getOrderQtyFromDataTable(dt_Item, ColorMaterial), 2);
                         newRow[text.Header_Unit] = text.Unit_KG;
 
                         DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
@@ -2122,6 +2194,7 @@ namespace FactoryManagementSoftware.UI
                         newRow[text.Header_PartCode] = ColorMaterial;
                         newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, ColorMaterial);
                         newRow[text.Header_ReadyStock] = (float) Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, ColorMaterial), 2);
+                        newRow[text.Header_PendingOrder] = (float)Math.Round((double)tool.getOrderQtyFromDataTable(dt_Item, ColorMaterial), 2);
                         newRow[text.Header_Unit] = text.Unit_KG;
 
 
@@ -2138,18 +2211,107 @@ namespace FactoryManagementSoftware.UI
 
                     #endregion
 
-
-                    #region child item qty calculation
-
-                    #endregion
-
                     index++;
                 }
 
-
+                //material & child Item merge & balance calculation
+                ChildItemMergeAndBalCalculation();
             }
 
             frmLoading.CloseForm();
+        }
+
+        private void ChildItemMergeAndBalCalculation()
+        {
+            DT_MATERIAL_FORECAST_SUMMARY = Material_SummaryDataTable();
+
+            if(DT_PRODUCT_FORECAST_SUMMARY != null)
+            {
+                DataTable dt_Product = DT_PRODUCT_FORECAST_SUMMARY.Copy();
+
+                dt_Product.DefaultView.Sort = text.Header_PartCode + " ASC";
+                dt_Product = dt_Product.DefaultView.ToTable();
+
+                string previousItemCode = null;
+
+                DataRow newRow = DT_MATERIAL_FORECAST_SUMMARY.NewRow();
+
+                int index = 1;
+
+                float previousEstBalance = 0;
+
+                foreach (DataRow productRow in dt_Product.Rows)
+                {
+                    string itemCode = productRow[text.Header_PartCode].ToString();
+                    string itemName = productRow[text.Header_PartName].ToString();
+                    string itemType = productRow[text.Header_Type].ToString();
+                    string itemUnit = productRow[text.Header_Unit].ToString();
+
+                    float readyStock = float.TryParse(productRow[text.Header_ReadyStock].ToString(), out readyStock) ? readyStock : 0;
+                    float pendingOrder = float.TryParse(productRow[text.Header_PendingOrder].ToString(), out pendingOrder) ? pendingOrder : 0;
+
+                    if (previousItemCode != itemCode)
+                    {
+                        if (previousItemCode != null)//next code found, save previous code's data to table
+                        {
+                            DT_MATERIAL_FORECAST_SUMMARY.Rows.Add(newRow);
+                        }
+
+                        previousItemCode = itemCode;
+                        previousEstBalance = 0;
+
+                        newRow = DT_MATERIAL_FORECAST_SUMMARY.NewRow();
+
+                        newRow[text.Header_Index] = index++;
+                        newRow[text.Header_Type] = itemType;
+                        newRow[text.Header_ReadyStock] = readyStock;
+                        newRow[text.Header_PartCode] = itemCode;
+                        newRow[text.Header_PartName] = itemName;
+                        newRow[text.Header_Unit] = itemUnit;
+                        newRow[text.Header_PendingOrder] = pendingOrder;
+
+                    }
+
+                    foreach(DataColumn productCol in dt_Product.Columns)
+                    {
+                        string colName = productCol.ColumnName;
+                        bool colFound = colName.Contains(string_Forecast);
+                        colFound |= colName.Contains(string_Delivered);
+                        colFound |= colName.Contains(string_StillNeed);
+                        colFound |= colName.Contains(string_EstBalance);
+
+                        if (colFound)
+                        {
+                            if(colName.Contains(string_EstBalance))
+                            {
+                                string StillNeed_ColName = colName.Replace(string_EstBalance, string_StillNeed);
+                                float StillNeed_Qty = float.TryParse(productRow[StillNeed_ColName].ToString(), out StillNeed_Qty) ? StillNeed_Qty : 0;
+
+                                float estBalance = readyStock - StillNeed_Qty;
+
+                                if(estBalance < 0)
+                                {
+                                    readyStock -= StillNeed_Qty;
+
+                                }
+                            }
+                            else
+                            {
+                                float qty = float.TryParse(productRow[colName].ToString(), out qty) ? qty : 0;
+                                float previous_qty = float.TryParse(newRow[colName].ToString(), out previous_qty) ? previous_qty : 0;
+
+                                newRow[colName] = qty + previous_qty;
+                            }
+                            
+
+
+                        }
+
+                    }
+                }
+
+                DT_MATERIAL_FORECAST_SUMMARY.Rows.Add(newRow);
+            }
         }
 
         private DataTable RearrangeIndex(DataTable dataTable)
