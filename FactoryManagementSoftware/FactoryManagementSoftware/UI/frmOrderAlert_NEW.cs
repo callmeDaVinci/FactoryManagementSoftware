@@ -21,6 +21,7 @@ using System.Collections;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 using Microsoft.Office.Interop.Word;
 using Syncfusion.XlsIO.Parser.Biff_Records;
+using iTextSharp.text.pdf;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -130,6 +131,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_PartWeight_G, typeof(float));
             dt.Columns.Add(text.Header_RunnerWeight_G, typeof(float));
             dt.Columns.Add(text.Header_WastageAllowed_Percentage, typeof(float));
+            dt.Columns.Add(text.Header_ColorRate, typeof(float));
             dt.Columns.Add(text.Header_JoinQty, typeof(float));
             dt.Columns.Add(text.Header_JoinMax, typeof(float));
             dt.Columns.Add(text.Header_JoinMin, typeof(float));
@@ -502,6 +504,52 @@ namespace FactoryManagementSoftware.UI
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
         }
 
+        private void dgvUIEdit(DataGridView dgv)
+        {
+            if(dgv == dgvAlertSummary)
+            {
+                dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                //dgv.Columns[text.Header_PartName].DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 8F, FontStyle.Bold);
+
+                dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dgv.Columns[text.Header_PartCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                dgv.Columns[text.Header_Type].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+
+                dgv.Columns[text.Header_ReadyStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                if (DT_MATERIAL_FORECAST_SUMMARY != null)
+                {
+                    foreach(DataColumn col in DT_MATERIAL_FORECAST_SUMMARY.Columns)
+                    {
+                        string colName = col.ColumnName;
+
+                        if(colName.Contains(string_Forecast) || colName.Contains(string_Delivered) || colName.Contains(string_StillNeed))
+                        {
+                            dgv.Columns[colName].Visible = false;
+                        }
+                        else if(colName.Contains(string_EstBalance))
+                        {
+                            dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                        }
+                    }
+                }
+
+                dgv.Columns[text.Header_Unit].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+
+                dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dgv.Columns[text.Header_PendingOrder].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dgv.Columns[text.Header_PartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+                dgv.Columns[text.Header_PartName].Frozen = true;
+
+                dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+            }
+            
+        }
+
         private void dgvMatUsedReport_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
 
@@ -511,7 +559,9 @@ namespace FactoryManagementSoftware.UI
             int row = e.RowIndex;
             int col = e.ColumnIndex;
 
-            if (dgv.Columns[col].Name == text.Header_MatCode)
+            string colName = dgv.Columns[col].Name;
+
+            if (colName == text.Header_MatCode)
             {
                 string matCode = dgv.Rows[row].Cells[text.Header_MatCode].Value.ToString();
 
@@ -526,17 +576,17 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[row].Height = 50;
                 }
             }
-            else if (dgv.Columns[col].Name == header_Bal)
+            else if (colName.Contains(string_EstBalance))
             {
-                float bal = float.TryParse(dgv.Rows[row].Cells[header_Bal].Value.ToString(), out float x) ? x : 0;
+                float bal = float.TryParse(dgv.Rows[row].Cells[colName].Value.ToString(), out float x) ? x : 0;
 
                 if (bal < 0)
                 {
-                    dgv.Rows[row].Cells[header_Bal].Style.ForeColor = Color.Red;
+                    dgv.Rows[row].Cells[colName].Style.ForeColor = Color.Red;
                 }
                 else
                 {
-                    dgv.Rows[row].Cells[header_Bal].Style.ForeColor = Color.Black;
+                    dgv.Rows[row].Cells[colName].Style.ForeColor = Color.Black;
 
                 }
             }
@@ -545,8 +595,8 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMatUsedReport_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            dgvMatUsedUIEdit(dgvAlertSummary);
-            dgvAlertSummary.AutoResizeColumns();
+            //dgvMatUsedUIEdit(dgvAlertSummary);
+            //dgvAlertSummary.AutoResizeColumns();
         }
 
         #endregion
@@ -1401,7 +1451,7 @@ namespace FactoryManagementSoftware.UI
 
             if (dt_MatUsed_Forecast.Rows.Count > 0)
             {
-                PrintForecastSummary(dt_MatUsed_Forecast);
+                New_PrintForecastSummary();
             }
             else
             {
@@ -1410,6 +1460,7 @@ namespace FactoryManagementSoftware.UI
 
             frmLoading.CloseForm();
         }
+
 
         private void PrintForecastSummary(DataTable dt_MatUsed)
         {
@@ -1653,6 +1704,49 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        #region NEW Method
+
+        private void New_PrintForecastSummary()
+        {
+            dgvAlertSummary.DataSource = null;
+
+            if (DT_MATERIAL_FORECAST_SUMMARY != null)
+            {
+                string Material_Type = cmbItemType.Text;
+
+                DataTable dt_MaterialList = DT_MATERIAL_FORECAST_SUMMARY.Clone();
+
+                if(Material_Type.ToUpper() != text.Cmb_All)
+                {
+                    foreach (DataRow row in DT_MATERIAL_FORECAST_SUMMARY.Rows)
+                    {
+                        string matType = row[text.Header_Type].ToString();
+                        string stock = row[text.Header_ReadyStock].ToString();
+
+                        if (matType == Material_Type && stock != "-1")
+                        {
+                            dt_MaterialList.ImportRow(row);
+                        }
+                    }
+                }
+                
+
+                if (dt_MaterialList.Rows.Count > 0)
+                {
+                    dt_MaterialList = NEW_RearrangeIndex(dt_MaterialList);
+
+                    dt_MaterialList.DefaultView.Sort = text.Header_PartName + " ASC";
+                    dt_MaterialList = dt_MaterialList.DefaultView.ToTable();
+
+                    dgvAlertSummary.DataSource = dt_MaterialList;
+                    dgvUIEdit(dgvAlertSummary);
+                    dgvAlertSummary.ClearSelection();
+                }
+            }
+         
+
+        }
+
         private DataTable RemoveTerminatedProduct(DataTable dt_Product)
         {
             if(dt_Product != null)
@@ -1700,7 +1794,13 @@ namespace FactoryManagementSoftware.UI
                             string itemName = item[dalItem.ItemName].ToString();
                             float Ready_Stock = float.TryParse(item[dalItem.ItemStock].ToString(), out Ready_Stock) ? Ready_Stock : 0;
                             float pendingOrder = float.TryParse(item[dalItem.ItemOrd].ToString(), out pendingOrder) ? pendingOrder : 0;
+                            float Color_Rate = float.TryParse(item[dalItem.ItemMBRate].ToString(), out Color_Rate) ? Color_Rate : 0;
 
+                            if (cbZeroStockType.Checked)
+                            {
+                                Ready_Stock = tool.getPMMAQtyFromDataTable(dt_Item, itemCode);
+                            }
+                           
                             newRow[text.Header_Index] = childIndex;
                             newRow[header_ParentIndex] = parentIndex;
                             newRow[text.Header_GroupLevel] = groupLevel + 1;
@@ -1712,6 +1812,7 @@ namespace FactoryManagementSoftware.UI
                             newRow[text.Header_JoinMin] = joinMin;
                             newRow[text.Header_ReadyStock] = Ready_Stock;
                             newRow[text.Header_PendingOrder] = pendingOrder;
+                            newRow[text.Header_ColorRate] = Color_Rate;
 
                             #region add item weight info
 
@@ -1770,7 +1871,21 @@ namespace FactoryManagementSoftware.UI
                                 newRow[text.Header_Type] = text.Cat_RawMat;
                                 newRow[text.Header_PartCode] = RawMaterial;
                                 newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, RawMaterial);
-                                newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, RawMaterial), 2);
+
+                                if(RawMaterial == "ABS 450Y MH1")
+                                {
+                                    float TEST = 0;
+                                }
+
+                                if (cbZeroStockType.Checked)
+                                {
+                                    newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getPMMAQtyFromDataTable(dt_Item, RawMaterial), 2);
+                                }
+                                else
+                                {
+                                    newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, RawMaterial), 2);
+                                }
+
                                 newRow[text.Header_PendingOrder] = (float)Math.Round((double)tool.getOrderQtyFromDataTable(dt_Item, RawMaterial), 2);
                                 newRow[text.Header_Unit] = text.Unit_KG;
 
@@ -1790,7 +1905,16 @@ namespace FactoryManagementSoftware.UI
                                 newRow[text.Header_Type] = tool.getCatNameFromDataTable(dt_Item, ColorMaterial);
                                 newRow[text.Header_PartCode] = ColorMaterial;
                                 newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, ColorMaterial);
-                                newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, ColorMaterial), 2);
+
+                                if (cbZeroStockType.Checked)
+                                {
+                                    newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getPMMAQtyFromDataTable(dt_Item, ColorMaterial), 2);
+                                }
+                                else
+                                {
+                                    newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, ColorMaterial), 2);
+                                }
+
                                 newRow[text.Header_PendingOrder] = (float)Math.Round((double)tool.getOrderQtyFromDataTable(dt_Item, ColorMaterial), 2);
                                 newRow[text.Header_Unit] = text.Unit_KG;
 
@@ -1891,11 +2015,16 @@ namespace FactoryManagementSoftware.UI
                                         {
                                             float partWeight = float.TryParse(DT_PRODUCT_FORECAST_SUMMARY.Rows[i][text.Header_PartWeight_G].ToString(), out partWeight) ? partWeight : 0;
                                             float runnerWeight = float.TryParse(DT_PRODUCT_FORECAST_SUMMARY.Rows[i][text.Header_RunnerWeight_G].ToString(), out runnerWeight) ? runnerWeight : 0;
+                                            float colorRate = float.TryParse(DT_PRODUCT_FORECAST_SUMMARY.Rows[i][text.Header_ColorRate].ToString(), out colorRate) ? colorRate : 0;
 
-                                            float itemWeight = partWeight + runnerWeight;
+                                            float itemWeight = (partWeight + runnerWeight)/1000;
 
-                                            childQty = parentQty * itemWeight * (1 + wastage);
+                                            childQty = (float) decimal.Round((decimal)( parentQty * itemWeight * (1 + wastage)), 3);
 
+                                            if (childType == text.Cat_MB || childType == text.Cat_Pigment)
+                                            {
+                                                childQty = (float)decimal.Round((decimal)(parentQty * itemWeight * colorRate * (1 + wastage)), 3);
+                                            }
                                         }
                                         else
                                         {
@@ -2052,6 +2181,7 @@ namespace FactoryManagementSoftware.UI
                     string ProductName = ProductRow[dalItem.ItemName].ToString();
                     float Ready_Stock = float.TryParse(ProductRow[dalItem.ItemStock].ToString(), out Ready_Stock) ? Ready_Stock : 0;
                     float Pending_Order = float.TryParse(ProductRow[dalItem.ItemOrd].ToString(), out Pending_Order) ? Pending_Order : 0;
+                    float Color_Rate = float.TryParse(ProductRow[dalItem.ItemMBRate].ToString(), out Color_Rate) ? Color_Rate : 0;
                     float Forecast = 0;
                     float Delivered = 0;
                     float StillNeed = 0;
@@ -2064,6 +2194,7 @@ namespace FactoryManagementSoftware.UI
                     newRow[text.Header_PartName] = ProductName;
                     newRow[text.Header_ReadyStock] = Ready_Stock;
                     newRow[text.Header_PendingOrder] = Pending_Order;
+                    newRow[text.Header_ColorRate] = Color_Rate;
 
                     for (var date = dateStart; date <= dateEnd; date = date.AddMonths(1))
                     {
@@ -2174,8 +2305,19 @@ namespace FactoryManagementSoftware.UI
                         newRow[text.Header_Type] = text.Cat_RawMat;
                         newRow[text.Header_PartCode] = RawMaterial;
                         newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, RawMaterial);
-                        newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, RawMaterial), 2);
-                        newRow[text.Header_PendingOrder] = (float)Math.Round((double)tool.getOrderQtyFromDataTable(dt_Item, ColorMaterial), 2);
+
+
+                        if (cbZeroStockType.Checked)
+                        {
+                            newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getPMMAQtyFromDataTable(dt_Item, RawMaterial), 2);
+                        }
+                        else
+                        {
+                            newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, RawMaterial), 2);
+                        }
+
+                        newRow[text.Header_PendingOrder] = (float)Math.Round((double)tool.getOrderQtyFromDataTable(dt_Item, RawMaterial), 2);
+
                         newRow[text.Header_Unit] = text.Unit_KG;
 
                         DT_PRODUCT_FORECAST_SUMMARY.Rows.Add(newRow);
@@ -2193,7 +2335,16 @@ namespace FactoryManagementSoftware.UI
                         newRow[text.Header_Type] = tool.getCatNameFromDataTable(dt_Item, ColorMaterial);
                         newRow[text.Header_PartCode] = ColorMaterial;
                         newRow[text.Header_PartName] = tool.getItemNameFromDataTable(dt_Item, ColorMaterial);
-                        newRow[text.Header_ReadyStock] = (float) Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, ColorMaterial), 2);
+
+                        if (cbZeroStockType.Checked)
+                        {
+                            newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getPMMAQtyFromDataTable(dt_Item, ColorMaterial), 2);
+                        }
+                        else
+                        {
+                            newRow[text.Header_ReadyStock] = (float)Math.Round((double)tool.getStockQtyFromDataTable(dt_Item, ColorMaterial), 2);
+                        }
+
                         newRow[text.Header_PendingOrder] = (float)Math.Round((double)tool.getOrderQtyFromDataTable(dt_Item, ColorMaterial), 2);
                         newRow[text.Header_Unit] = text.Unit_KG;
 
@@ -2216,6 +2367,8 @@ namespace FactoryManagementSoftware.UI
 
                 //material & child Item merge & balance calculation
                 ChildItemMergeAndBalCalculation();
+
+                New_PrintForecastSummary();
             }
 
             frmLoading.CloseForm();
@@ -2238,8 +2391,6 @@ namespace FactoryManagementSoftware.UI
 
                 int index = 1;
 
-                float previousEstBalance = 0;
-
                 foreach (DataRow productRow in dt_Product.Rows)
                 {
                     string itemCode = productRow[text.Header_PartCode].ToString();
@@ -2258,7 +2409,6 @@ namespace FactoryManagementSoftware.UI
                         }
 
                         previousItemCode = itemCode;
-                        previousEstBalance = 0;
 
                         newRow = DT_MATERIAL_FORECAST_SUMMARY.NewRow();
 
@@ -2278,33 +2428,26 @@ namespace FactoryManagementSoftware.UI
                         bool colFound = colName.Contains(string_Forecast);
                         colFound |= colName.Contains(string_Delivered);
                         colFound |= colName.Contains(string_StillNeed);
-                        colFound |= colName.Contains(string_EstBalance);
 
                         if (colFound)
                         {
-                            if(colName.Contains(string_EstBalance))
+                            float qty = float.TryParse(productRow[colName].ToString(), out qty) ? qty : 0;
+                            float previous_qty = float.TryParse(newRow[colName].ToString(), out previous_qty) ? previous_qty : 0;
+
+                            newRow[colName] = (float)decimal.Round((decimal)(qty + previous_qty), 3);
+
+                            if (colName.Contains(string_StillNeed))
                             {
-                                string StillNeed_ColName = colName.Replace(string_EstBalance, string_StillNeed);
-                                float StillNeed_Qty = float.TryParse(productRow[StillNeed_ColName].ToString(), out StillNeed_Qty) ? StillNeed_Qty : 0;
+                                string EstBalance_ColName = colName.Replace(string_StillNeed, string_EstBalance);
+                                float StillNeed_Qty = qty + previous_qty;
 
-                                float estBalance = readyStock - StillNeed_Qty;
+                                
+                                readyStock = (float)decimal.Round((decimal) (readyStock - StillNeed_Qty), 3);
 
-                                if(estBalance < 0)
-                                {
-                                    readyStock -= StillNeed_Qty;
 
-                                }
+                                newRow[EstBalance_ColName] = readyStock;
                             }
-                            else
-                            {
-                                float qty = float.TryParse(productRow[colName].ToString(), out qty) ? qty : 0;
-                                float previous_qty = float.TryParse(newRow[colName].ToString(), out previous_qty) ? previous_qty : 0;
-
-                                newRow[colName] = qty + previous_qty;
-                            }
-                            
-
-
+                           
                         }
 
                     }
@@ -2313,6 +2456,8 @@ namespace FactoryManagementSoftware.UI
                 DT_MATERIAL_FORECAST_SUMMARY.Rows.Add(newRow);
             }
         }
+
+        #endregion
 
         private DataTable RearrangeIndex(DataTable dataTable)
         {
@@ -2439,6 +2584,21 @@ namespace FactoryManagementSoftware.UI
 
                     row[header_Unit] = Unit_KG;
 
+                }
+            }
+
+            return dataTable;
+        }
+
+        private DataTable NEW_RearrangeIndex(DataTable dataTable)
+        {
+            int index = 1;
+
+            if(dataTable != null)
+            {
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    row[text.Header_Index] = index++;
                 }
             }
 

@@ -294,6 +294,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_MatCode { get; } = "MAT. CODE";
         public string Header_MatName { get; } = "MAT. NAME";
         public string Header_Color { get; } = "COLOR";
+
         public string Header_ItemWeight_KG { get; } = "ITEM WEIGHT(KG)";
 
         public string Header_RunnerWeight_G { get; } = "RUNNER WEIGHT(G)";
@@ -333,6 +334,8 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_Wastage { get; } = "WASTAGE";
         public string Header_WastageAllowed_Percentage { get; } = "WASTAGE ALLOWED (%)";
+        public string Cmb_All { get; } = "ALL";
+
 
         public string Header_AddedDate { get; } = "ADDED DATE";
         public string Header_AddedBy { get; } = "ADDED BY";
