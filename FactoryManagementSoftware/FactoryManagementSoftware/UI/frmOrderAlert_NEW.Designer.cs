@@ -343,6 +343,7 @@
             this.dgvAlertSummary.Size = new System.Drawing.Size(1310, 244);
             this.dgvAlertSummary.TabIndex = 152;
             this.dgvAlertSummary.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMatUsedReport_CellFormatting);
+            this.dgvAlertSummary.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAlertSummary_CellMouseDoubleClick);
             this.dgvAlertSummary.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvMatUsedReport_DataBindingComplete);
             // 
             // tableLayoutPanel4

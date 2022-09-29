@@ -22,6 +22,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 using Microsoft.Office.Interop.Word;
 using Syncfusion.XlsIO.Parser.Biff_Records;
 using iTextSharp.text.pdf;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ExplorerBar;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -2949,6 +2950,53 @@ namespace FactoryManagementSoftware.UI
         private void cbZeroStockType_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void dgvAlertSummary_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+
+            if (rowIndex >= 0)
+            {
+                string itemCode = dgvAlertSummary.Rows[rowIndex].Cells[text.Header_PartCode].Value.ToString();
+
+                DataTable dt_MaterialList = DT_MATERIAL_FORECAST_SUMMARY.Clone();
+
+                DataTable dt = (DataTable)dgvAlertSummary.DataSource;
+
+                dt_MaterialList.ImportRow(dt.Rows[rowIndex]);
+
+
+                int monthStart = Convert.ToInt32(cmbMonthFrom.Text);
+                int monthEnd = Convert.ToInt32(cmbMonthTo.Text);
+
+                int yearStart = Convert.ToInt32(cmbYearFrom.Text);
+                int yearEnd = Convert.ToInt32(cmbYearTo.Text);
+
+                //check date
+                DateTime dateStart = new DateTime(yearStart, monthStart, 1);
+                DateTime dateEnd = new DateTime(yearEnd, monthEnd, 1);
+
+                if (dateStart > dateEnd)
+                {
+                    int tmp;
+
+                    tmp = yearStart;
+                    yearStart = yearEnd;
+                    yearEnd = tmp;
+
+                    tmp = monthStart;
+                    monthStart = monthEnd;
+                    monthEnd = tmp;
+                }
+
+                frmOrderAlertDetail_NEW frm = new frmOrderAlertDetail_NEW(DT_PRODUCT_FORECAST_SUMMARY,dt_MaterialList, itemCode, dateStart, dateEnd);
+
+                frm.StartPosition = FormStartPosition.CenterScreen;
+
+                frm.ShowDialog();
+
+            }
         }
     }
 }

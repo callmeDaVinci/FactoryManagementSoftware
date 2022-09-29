@@ -236,6 +236,12 @@
     <Compile Include="Module\ExcelTool.cs" />
     <Compile Include="Module\Tool.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="UI\frmOrderAlertDetail_NEW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmOrderAlertDetail_NEW.Designer.cs">
+      <DependentUpon>frmOrderAlertDetail_NEW.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmOrderAlert_NEW.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -963,6 +969,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItemGroupList.resx">
       <DependentUpon>frmItemGroupList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmOrderAlertDetail_NEW.resx">
+      <DependentUpon>frmOrderAlertDetail_NEW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderAlert_NEW.resx">
       <DependentUpon>frmOrderAlert_NEW.cs</DependentUpon>
