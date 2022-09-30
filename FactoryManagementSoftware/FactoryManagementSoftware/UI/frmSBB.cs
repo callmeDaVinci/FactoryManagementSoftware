@@ -4506,5 +4506,10 @@ namespace FactoryManagementSoftware.UI
 
             frm.ShowDialog();
         }
+
+        private void tableLayoutPanel17_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

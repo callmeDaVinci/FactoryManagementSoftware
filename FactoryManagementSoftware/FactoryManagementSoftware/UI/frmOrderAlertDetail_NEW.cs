@@ -159,13 +159,13 @@ namespace FactoryManagementSoftware.UI
 
                 if (PageLoaded)
                 {
-                    dgv.DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+                    dgv.DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
                     //dgv.Columns[text.Header_PartName].DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 8F, FontStyle.Bold);
 
                     dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                    dgv.Columns[text.Header_ParentOrProduct].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-                    dgv.Columns[text.Header_Product].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                    dgv.Columns[text.Header_ParentOrProduct].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                    dgv.Columns[text.Header_Product].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
 
                     dgv.Columns[text.Header_ReadyStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
@@ -212,11 +212,11 @@ namespace FactoryManagementSoftware.UI
 
                     dgv.Columns[text.Header_WastageAllowed_Percentage].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                    dgv.Columns[text.Header_Unit].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                    dgv.Columns[text.Header_Unit].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
 
                     dgv.Columns[text.Header_MaterialUsedWithWastage].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                    dgv.Columns[text.Header_MaterialUsedWithWastage].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+                    dgv.Columns[text.Header_MaterialUsedWithWastage].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
 
                     dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
@@ -469,7 +469,8 @@ namespace FactoryManagementSoftware.UI
 
                             childQty = childQty < 0 ? 0 : childQty;
 
-                            childQty = (float)decimal.Round((decimal)(childQty / 1000), 3);
+                            if (ItemType == text.Cat_RawMat || ItemType == text.Cat_MB || ItemType == text.Cat_Pigment)
+                                childQty = (float)decimal.Round((decimal)(childQty / 1000), 3);
 
                             newDataRow[text.Header_MaterialUsedWithWastage] = childQty;
 
@@ -493,7 +494,7 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            lblTotal.Text = "TOTAL " + totalMatUsed + " " + unit;
+            lblTotal.Text = "Total " + totalMatUsed + " " + unit;
 
         }
 
@@ -652,7 +653,8 @@ namespace FactoryManagementSoftware.UI
 
                     childQty = childQty < 0 ? 0 : childQty;
 
-                    childQty = (float)decimal.Round((decimal)(childQty / 1000), 3);
+                    if (ItemType == text.Cat_RawMat || ItemType == text.Cat_MB || ItemType == text.Cat_Pigment)
+                        childQty = (float)decimal.Round((decimal)(childQty / 1000), 3);
 
                     row[month + string_StillNeed] = parentQty;
                     row[text.Header_MaterialUsedWithWastage] = childQty;
@@ -665,7 +667,7 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            lblTotal.Text = "TOTAL " + totalMatUsed + " " + unit;
+            lblTotal.Text = "Total " + totalMatUsed + " " + unit;
 
             PageLoaded = true;
         }

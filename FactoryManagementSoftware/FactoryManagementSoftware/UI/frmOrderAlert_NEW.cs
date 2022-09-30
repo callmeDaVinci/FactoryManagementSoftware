@@ -461,12 +461,12 @@ namespace FactoryManagementSoftware.UI
         {
             if(dgv == dgvAlertSummary)
             {
-                dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
                 //dgv.Columns[text.Header_PartName].DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 8F, FontStyle.Bold);
 
                 dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                dgv.Columns[text.Header_PartCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                dgv.Columns[text.Header_PartCode].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
                 dgv.Columns[text.Header_Type].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 
                 dgv.Columns[text.Header_ReadyStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -494,7 +494,7 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Columns[text.Header_PendingOrder].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                dgv.Columns[text.Header_ReadyStock].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+                dgv.Columns[text.Header_ReadyStock].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
                 dgv.Columns[text.Header_PendingOrder].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
 
                 dgv.Columns[text.Header_PartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -731,14 +731,18 @@ namespace FactoryManagementSoftware.UI
         }
         private void frmMaterialUsedReport_NEW_Load(object sender, EventArgs e)
         {
-            loaded = true;
+            loaded = false;
+
             PanelUISetting(true, false);
 
             tool.DoubleBuffered(dgvOrder, true);
             tool.DoubleBuffered(dgvAlertSummary, true);
-            resetForm();
-            cmbStatusSearch.SelectedIndex = 0;
 
+            cmbStatusSearch.SelectedIndex = 1;
+
+            resetForm();
+
+           
         }
 
         private void loadMonthDataToCMB(ComboBox cmb)
@@ -1811,38 +1815,45 @@ namespace FactoryManagementSoftware.UI
 
         private void resetForm()
         {
+            loaded = false;
+
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
             loadOrderRecord();
+
             txtOrdSearch.Clear();
+
+            loaded = true;
             lblUpdatedTime2.Text = DateTime.Now.ToString();
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void dgvOrderUIEdit(DataGridView dgv)
         {
-            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 
-            //dgv.Columns[text.Header_PartName].DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 8F, FontStyle.Bold);
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+
 
             //dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             //dgv.Columns[text.Header_PartCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
-            dgv.Columns[headerID].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgv.Columns[headerType].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgv.Columns[headerCat].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgv.Columns[headerDateRequired].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dgv.Columns[headerID].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dgv.Columns[headerType].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dgv.Columns[headerCat].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dgv.Columns[headerDateRequired].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
-            dgv.Columns[headerCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dgv.Columns[headerCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns[headerName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgv.Columns[headerOrdered].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgv.Columns[headerPending].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgv.Columns[headerReceived].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgv.Columns[headerUnit].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgv.Columns[headerStatus].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            dgv.Columns[headerPONO].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dgv.Columns[headerOrdered].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dgv.Columns[headerPending].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dgv.Columns[headerReceived].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dgv.Columns[headerUnit].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dgv.Columns[headerStatus].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //dgv.Columns[headerPONO].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
 
             dgv.Columns[headerID].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -1859,18 +1870,15 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerPending].DefaultCellStyle.Format = "0.###";
             dgv.Columns[headerReceived].DefaultCellStyle.Format = "0.###";
 
-            dgv.Columns[headerOrdered].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            dgv.Columns[headerPending].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            dgv.Columns[headerReceived].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
 
 
             dgv.Columns[headerCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
             dgv.Columns[headerName].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
             dgv.Columns[headerType].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
-            dgv.Columns[headerDateRequired].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+            dgv.Columns[headerDateRequired].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 
-            dgv.Columns[headerPONO].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+            dgv.Columns[headerPONO].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             dgv.Columns[headerCat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
             dgv.Columns[headerUnit].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
             dgv.Columns[headerStatus].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
@@ -1916,7 +1924,9 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow ord in sortedDt.Rows)
                 {
-                    if (statusSearch.Equals("ALL") || ord["ord_status"].ToString().Equals(statusSearch))
+                    string ordStatus = ord["ord_status"].ToString();
+
+                    if (statusSearch.Equals("ALL") || ordStatus.Equals(statusSearch) || statusSearch.Contains(ordStatus))
                     {
 
                         int orderID = Convert.ToInt32(ord["ord_id"].ToString());
@@ -1927,7 +1937,7 @@ namespace FactoryManagementSoftware.UI
 
                             string itemCode = ord["ord_item_code"].ToString();
                             string ordID = ord["ord_id"].ToString();
-                            string ordStatus = ord["ord_status"].ToString();
+                           
 
                             int ordPONo = ord["ord_po_no"] == DBNull.Value ? -1 : Convert.ToInt32(ord["ord_po_no"].ToString());
 
@@ -2381,6 +2391,7 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbStatusSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if(loaded)
             loadOrderRecord();
         }
 
@@ -2414,6 +2425,7 @@ namespace FactoryManagementSoftware.UI
 
         private void txtOrdSearch_TextChanged(object sender, EventArgs e)
         {
+            if(loaded)
             loadOrderRecord();
         }
 
@@ -2739,6 +2751,11 @@ namespace FactoryManagementSoftware.UI
                     e.Handled = true;//pass by the default sorting
                 }
             }
+        }
+
+        private void frmOrderAlert_NEW_Shown(object sender, EventArgs e)
+        {
+            loaded = true;
         }
     }
 }
