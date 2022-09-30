@@ -344,7 +344,9 @@
             this.dgvAlertSummary.TabIndex = 152;
             this.dgvAlertSummary.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMatUsedReport_CellFormatting);
             this.dgvAlertSummary.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAlertSummary_CellMouseDoubleClick);
+            this.dgvAlertSummary.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgvAlertSummary_ColumnDisplayIndexChanged);
             this.dgvAlertSummary.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvMatUsedReport_DataBindingComplete);
+            this.dgvAlertSummary.Sorted += new System.EventHandler(this.dgvAlertSummary_Sorted);
             // 
             // tableLayoutPanel4
             // 
@@ -657,7 +659,7 @@
             this.cbShowTerminatedItem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbShowTerminatedItem.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbShowTerminatedItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowTerminatedItem.Location = new System.Drawing.Point(204, 22);
+            this.cbShowTerminatedItem.Location = new System.Drawing.Point(119, 22);
             this.cbShowTerminatedItem.Name = "cbShowTerminatedItem";
             this.cbShowTerminatedItem.Size = new System.Drawing.Size(165, 19);
             this.cbShowTerminatedItem.TabIndex = 168;
@@ -672,7 +674,7 @@
             this.cbZeroStockType.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbZeroStockType.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbZeroStockType.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbZeroStockType.Location = new System.Drawing.Point(12, 52);
+            this.cbZeroStockType.Location = new System.Drawing.Point(17, 25);
             this.cbZeroStockType.Name = "cbZeroStockType";
             this.cbZeroStockType.Size = new System.Drawing.Size(96, 19);
             this.cbZeroStockType.TabIndex = 158;
@@ -688,13 +690,14 @@
             this.cbForecastDeductStock.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbForecastDeductStock.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbForecastDeductStock.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbForecastDeductStock.Location = new System.Drawing.Point(12, 22);
+            this.cbForecastDeductStock.Location = new System.Drawing.Point(119, 47);
             this.cbForecastDeductStock.Name = "cbForecastDeductStock";
             this.cbForecastDeductStock.Size = new System.Drawing.Size(170, 19);
             this.cbForecastDeductStock.TabIndex = 157;
             this.cbForecastDeductStock.Text = "FORECAST - READY STOCK";
             this.cbForecastDeductStock.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbForecastDeductStock.UseVisualStyleBackColor = true;
+            this.cbForecastDeductStock.Visible = false;
             // 
             // btnFilterApply
             // 

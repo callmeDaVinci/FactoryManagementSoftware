@@ -260,6 +260,7 @@ namespace FactoryManagementSoftware.Module
 
         #region  DGV TABLE HEADER NAME
         public string Header_Index { get; } = "#";
+        public string Header_ParentOrProduct { get; } = "PARENT/PRODUCT";
         public string Header_GroupLevel { get; } = "LEVEL";
         public string Header_Customer { get; } = "CUSTOMER";
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
@@ -272,6 +273,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_PartNameWithParent { get; } = "PART NAME_(PARENT)";
         public string Header_PartName { get; } = "PART NAME";
         public string Header_Parent { get; } = "PARENT";
+        public string Header_Product { get; } = "PRODUCT";
         public string Header_OpeningStock { get; } = "OPENING STOCK";
         public string Header_In_KG_Piece { get; } = "IN(KG/PIECE)";
         public string Header_Used_KG_Piece { get; } = "USED(KG/PIECE)";
@@ -301,6 +303,12 @@ namespace FactoryManagementSoftware.Module
         public string Header_PartWeight_G { get; } = "PART WEIGHT(G)";
 
         public string Header_ItemWeight_G { get; } = "ITEM WEIGHT(g)";
+
+        public string Header_ItemWeight_G_Piece { get; } = "ITEM WEIGHT/Pcs (g)";
+        private string header_ParentIndex = "PARENT #";
+
+        public string Header_ParentIndex { get; } = "PARENT #";
+
         public string Header_ParentStillNeed { get; } = "PARENT STILL NEED";
         public string Header_StillNeed { get; } = "STILL NEED";
         public string Header_Delivered { get; } = "DELIVERED";
@@ -315,6 +323,8 @@ namespace FactoryManagementSoftware.Module
         public string Header_BestTon { get; } = "BEST TON";
         public string Header_ProTon { get; } = "MACHINE TON";
         public string Header_ColorMaterial { get; } = "COLOR MATERIAL";
+        public string Header_Month { get; } = "Month";
+
         public string Header_ColorRate { get; } = "COLOR MATERIAL RATE (%)";
 
         public string Header_QuoCT { get; } = "QUOTATION CYCLE TIME";
