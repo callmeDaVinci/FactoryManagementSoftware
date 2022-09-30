@@ -353,8 +353,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_UpdatedDate { get; } = "UPDATED DATE";
         public string Header_UpdatedBy { get; } = "UPDATED BY";
 
-
-
+        public string Str_MoreDetail { get; } = "More Details";
 
 
         public string Header_Data { get; } = "DATA DB";

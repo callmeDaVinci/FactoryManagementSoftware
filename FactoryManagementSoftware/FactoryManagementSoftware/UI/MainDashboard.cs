@@ -67,11 +67,9 @@ namespace FactoryManagementSoftware.UI
 
 
             pOToolStripMenuItem.Visible = false;
-            oRDER20ToolStripMenuItem.Visible = false;
 
             if (userPermission >= ACTION_LVL_FIVE)
             {
-                oRDER20ToolStripMenuItem.Visible = true;
                 sBBToolStripMenuItem.Visible = true;
             }
 
@@ -379,26 +377,7 @@ namespace FactoryManagementSoftware.UI
         }
         private void orderToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (!ordFormOpen)
-            {
-                frmLoading.ShowLoadingScreen();
-                frmOrder ord = new frmOrder
-                {
-                    MdiParent = this,
-                    StartPosition = FormStartPosition.CenterScreen,
-                    WindowState = FormWindowState.Maximized
-                };
-                ord.Show();
-                ordFormOpen = true;
-                frmLoading.CloseForm();
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmOrder>().Count() == 1)
-                {
-                    Application.OpenForms.OfType<frmOrder>().First().BringToFront();
-                }
-            }
+           
         }
 
         private void stockToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1017,26 +996,7 @@ namespace FactoryManagementSoftware.UI
 
         private void oRDER20ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!NewOrdFormOpen)
-            {
-                frmLoading.ShowLoadingScreen();
-                frmOrderAlert_NEW ord = new frmOrderAlert_NEW
-                {
-                    MdiParent = this,
-                    StartPosition = FormStartPosition.CenterScreen,
-                    WindowState = FormWindowState.Maximized
-                };
-                ord.Show();
-                NewOrdFormOpen = true;
-                frmLoading.CloseForm();
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmOrderAlert_NEW>().Count() == 1)
-                {
-                    Application.OpenForms.OfType<frmOrderAlert_NEW>().First().BringToFront();
-                }
-            }
+           
         }
 
         private void toolStripStatusLabel1_Click_1(object sender, EventArgs e)
@@ -1081,6 +1041,54 @@ namespace FactoryManagementSoftware.UI
             }
 
            
+        }
+
+        private void oldVersionToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            if (!ordFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmOrder ord = new frmOrder
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                ord.Show();
+                ordFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmOrder>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmOrder>().First().BringToFront();
+                }
+            }
+        }
+
+        private void newVersionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!NewOrdFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmOrderAlert_NEW ord = new frmOrderAlert_NEW
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                ord.Show();
+                NewOrdFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmOrderAlert_NEW>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmOrderAlert_NEW>().First().BringToFront();
+                }
+            }
         }
     }
 }

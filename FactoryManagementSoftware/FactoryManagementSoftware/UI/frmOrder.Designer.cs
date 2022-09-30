@@ -103,6 +103,7 @@
             this.dgvOrderAlert.Name = "dgvOrderAlert";
             this.dgvOrderAlert.ReadOnly = true;
             this.dgvOrderAlert.RowHeadersVisible = false;
+            this.dgvOrderAlert.RowHeadersWidth = 51;
             this.dgvOrderAlert.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvOrderAlert.RowTemplate.Height = 40;
             this.dgvOrderAlert.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -163,9 +164,9 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(3, 30);
+            this.label1.Location = new System.Drawing.Point(3, 32);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 19);
+            this.label1.Size = new System.Drawing.Size(76, 17);
             this.label1.TabIndex = 83;
             this.label1.Text = "SEARCH BY:";
             // 
@@ -193,9 +194,9 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(3, 33);
+            this.label3.Location = new System.Drawing.Point(3, 35);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 19);
+            this.label3.Size = new System.Drawing.Size(51, 17);
             this.label3.TabIndex = 86;
             this.label3.Text = "STATUS";
             // 
@@ -260,9 +261,9 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label4.Location = new System.Drawing.Point(3, 2);
+            this.label4.Location = new System.Drawing.Point(3, 4);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(39, 19);
+            this.label4.Size = new System.Drawing.Size(36, 17);
             this.label4.TabIndex = 109;
             this.label4.Text = "TYPE";
             // 
@@ -271,9 +272,9 @@
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(3, 2);
+            this.label5.Location = new System.Drawing.Point(3, 4);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(80, 19);
+            this.label5.Size = new System.Drawing.Size(75, 17);
             this.label5.TabIndex = 111;
             this.label5.Text = "CUSTOMER";
             // 
@@ -307,9 +308,9 @@
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(3, 58);
+            this.label7.Location = new System.Drawing.Point(3, 60);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(106, 19);
+            this.label7.Size = new System.Drawing.Size(98, 17);
             this.label7.TabIndex = 116;
             this.label7.Text = "LAST UPDATED:";
             // 
@@ -319,7 +320,7 @@
             this.lblUpdatedTime.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUpdatedTime.Location = new System.Drawing.Point(3, 77);
             this.lblUpdatedTime.Name = "lblUpdatedTime";
-            this.lblUpdatedTime.Size = new System.Drawing.Size(179, 19);
+            this.lblUpdatedTime.Size = new System.Drawing.Size(167, 17);
             this.lblUpdatedTime.TabIndex = 115;
             this.lblUpdatedTime.Text = "SHOW DATA FOR THE PAST";
             // 
@@ -434,9 +435,9 @@
             this.cbOrderIDSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbOrderIDSearch.AutoSize = true;
             this.cbOrderIDSearch.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbOrderIDSearch.Location = new System.Drawing.Point(296, 23);
+            this.cbOrderIDSearch.Location = new System.Drawing.Point(296, 25);
             this.cbOrderIDSearch.Name = "cbOrderIDSearch";
-            this.cbOrderIDSearch.Size = new System.Drawing.Size(93, 23);
+            this.cbOrderIDSearch.Size = new System.Drawing.Size(88, 21);
             this.cbOrderIDSearch.TabIndex = 127;
             this.cbOrderIDSearch.Text = "ORDER ID";
             this.cbOrderIDSearch.UseVisualStyleBackColor = true;
@@ -447,9 +448,9 @@
             this.cbPOSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbPOSearch.AutoSize = true;
             this.cbPOSearch.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbPOSearch.Location = new System.Drawing.Point(213, 23);
+            this.cbPOSearch.Location = new System.Drawing.Point(213, 25);
             this.cbPOSearch.Name = "cbPOSearch";
-            this.cbPOSearch.Size = new System.Drawing.Size(75, 23);
+            this.cbPOSearch.Size = new System.Drawing.Size(71, 21);
             this.cbPOSearch.TabIndex = 126;
             this.cbPOSearch.Text = "PO NO";
             this.cbPOSearch.UseVisualStyleBackColor = true;
@@ -462,9 +463,9 @@
             this.cbCodeNameSearch.Checked = true;
             this.cbCodeNameSearch.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbCodeNameSearch.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbCodeNameSearch.Location = new System.Drawing.Point(94, 23);
+            this.cbCodeNameSearch.Location = new System.Drawing.Point(94, 25);
             this.cbCodeNameSearch.Name = "cbCodeNameSearch";
-            this.cbCodeNameSearch.Size = new System.Drawing.Size(112, 23);
+            this.cbCodeNameSearch.Size = new System.Drawing.Size(106, 21);
             this.cbCodeNameSearch.TabIndex = 125;
             this.cbCodeNameSearch.Text = "CODE/NAME";
             this.cbCodeNameSearch.UseVisualStyleBackColor = true;
@@ -559,6 +560,7 @@
             this.dgvOrder.Name = "dgvOrder";
             this.dgvOrder.ReadOnly = true;
             this.dgvOrder.RowHeadersVisible = false;
+            this.dgvOrder.RowHeadersWidth = 51;
             this.dgvOrder.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvOrder.RowTemplate.Height = 40;
             this.dgvOrder.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;

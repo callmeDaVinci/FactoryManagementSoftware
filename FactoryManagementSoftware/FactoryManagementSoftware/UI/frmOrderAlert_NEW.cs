@@ -23,6 +23,13 @@ using Microsoft.Office.Interop.Word;
 using Syncfusion.XlsIO.Parser.Biff_Records;
 using iTextSharp.text.pdf;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ExplorerBar;
+using Microsoft.Office.Core;
+using System.Runtime.Remoting.Messaging;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using ComboBox = System.Windows.Forms.ComboBox;
+using Range = Microsoft.Office.Interop.Excel.Range;
+using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
+using XlBorderWeight = Microsoft.Office.Interop.Excel.XlBorderWeight;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -36,6 +43,43 @@ namespace FactoryManagementSoftware.UI
         }
 
         #region variable declare
+
+        readonly string status_Received = "RECEIVED";
+        readonly string status_Requesting = "REQUESTING";
+        readonly string status_Pending = "PENDING";
+        readonly string status_Cancelled = "CANCELLED";
+        readonly string headerPONO = "P/O NO";
+        readonly string headerID = "ID";
+        readonly string headerDateRequired = "DATE REQUIRED";
+        readonly string headerCat = "CATEGORY";
+        readonly string headerOrdered = "ORDERED";
+        readonly string headerPending = "PENDING / OVER";
+        readonly string headerReceived = "RECEIVED";
+        readonly string headerUnit = "UNIT";
+        readonly string headerStatus = "STATUS";
+        readonly string headerIndex = "#";
+        readonly string headerType = "TYPE";
+        readonly string headerMat = "MATERIAL";
+        readonly string headerCode = "CODE";
+        readonly string headerName = "NAME";
+        readonly string headerMB = "MB";
+        readonly string headerMBRate = "MB RATE";
+        readonly string headerWeight = "WEIGHT";
+        readonly string headerWastage = "WASTAGE RATE";
+        //private string readyStockHeaderText = "READY STOCK";
+        readonly string headerReadyStock = "READY STOCK";
+        readonly string headerZeroCostStock = "ZERO COST STOCK";
+        private string headerBalanceZero = "FORECAST BAL 0";
+        private string headerBalanceOne = "FORECAST BAL 1";
+        private string headerBalanceTwo = "FORECAST BAL 2";
+        private string headerBalanceThree = "FORECAST BAL 3";
+        private string headerBalanceFour = "FORECAST BALANCE 4";
+        readonly string headerPendingOrder = "PENDING ORDER";
+
+        readonly string headerForecast1 = "FORECAST 1";
+        readonly string headerForecast2 = "FORECAST 2";
+        readonly string headerForecast3 = "FORECAST 3";
+        readonly string headerForecast4 = "FORECAST 4";
 
         private string textMoreFilters = "MORE FILTERS ...";
         private string textHideFilters = "HIDE FILTERS";
@@ -71,6 +115,22 @@ namespace FactoryManagementSoftware.UI
         readonly string BTN_HIDE_ORDER_ALERT = "HIDE ORDER ALERT";
         readonly string BTN_ORDER_ALERT_ONLY = "ORDER ALERT ONLY";
         readonly string BTN_SHOW_ORDER_RECORD = "SHOW ORDER RECORD";
+
+        private int selectedOrderID = -1;
+        static public string finalOrderNumber;
+        static public string receivedNumber;
+        static public string note;
+        static public bool cancel;
+        static public bool receivedReturn = false;
+        static public bool orderApproved = false;
+        static public bool zeroCost = false;
+        static public bool orderCompleted = false;
+        private int userPermission = -1;
+
+        orderActionBLL uOrderAction = new orderActionBLL();
+        orderActionDAL dalOrderAction = new orderActionDAL();
+        ordBLL uOrd = new ordBLL();
+        ordDAL dalOrd = new ordDAL();
 
         itemForecastDAL dalItemForecast = new itemForecastDAL();
         itemForecastBLL uItemForecast = new itemForecastBLL();
@@ -108,6 +168,26 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region UI Design
+
+        private DataTable NewOrderRecordTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(headerID, typeof(int));
+            dt.Columns.Add(headerDateRequired, typeof(DateTime));
+            dt.Columns.Add(headerType, typeof(string));
+            dt.Columns.Add(headerCat, typeof(string));
+            dt.Columns.Add(headerCode, typeof(string));
+            dt.Columns.Add(headerName, typeof(string));
+            dt.Columns.Add(headerPONO, typeof(int));
+            dt.Columns.Add(headerOrdered, typeof(float));
+            dt.Columns.Add(headerPending, typeof(float));
+            dt.Columns.Add(headerReceived, typeof(float));
+            dt.Columns.Add(headerUnit, typeof(string));
+            dt.Columns.Add(headerStatus, typeof(string));
+
+            return dt;
+        }
 
         private DataTable NewOrderAlertSummaryTable()
         {
@@ -481,7 +561,7 @@ namespace FactoryManagementSoftware.UI
 
         private void ResetPage()
         {
-            tool.DoubleBuffered(dgvOrderRecord, true);
+            tool.DoubleBuffered(dgvOrder, true);
             tool.DoubleBuffered(dgvAlertSummary, true);
 
             PanelUISetting(true, true);
@@ -540,12 +620,12 @@ namespace FactoryManagementSoftware.UI
         {
             if (showMainFilterOnly)
             {
-                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);//row 2
                 btnFilter.Text = textMoreFilters;
             }
             else
             {
-                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 110f);
+                tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 110f);//row 2
                 btnFilter.Text = textHideFilters;
             }
         }
@@ -559,13 +639,14 @@ namespace FactoryManagementSoftware.UI
                 btnOrderAlertOnly.Text = BTN_ORDER_ALERT_ONLY;
 
                 //order record & alert
-                tlpMain.RowStyles[0] = new RowStyle(SizeType.Percent, 50f);
-                tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 65f);
-                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
-                tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 30f);
-                tlpMain.RowStyles[4] = new RowStyle(SizeType.Percent, 50f);
+                tlpMain.RowStyles[0] = new RowStyle(SizeType.Absolute, 75f);
+                tlpMain.RowStyles[1] = new RowStyle(SizeType.Percent, 50f);
+                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 65f);
+                tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[4] = new RowStyle(SizeType.Absolute, 30f);
+                tlpMain.RowStyles[5] = new RowStyle(SizeType.Percent, 50f);
 
-                dgvOrderRecord.Visible = true;
+                dgvOrder.Visible = true;
                 dgvAlertSummary.Visible = true;
 
                 //main filter
@@ -582,13 +663,14 @@ namespace FactoryManagementSoftware.UI
                 btnOrderAlertOnly.Text = BTN_ORDER_ALERT_ONLY;
 
                 //order record 
-                tlpMain.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
-                tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 65f);
-                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[0] = new RowStyle(SizeType.Absolute, 75f);
+                tlpMain.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
+                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 65f);
                 tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
-                tlpMain.RowStyles[4] = new RowStyle(SizeType.Percent, 0f);
+                tlpMain.RowStyles[4] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[5] = new RowStyle(SizeType.Percent, 0f);
 
-                dgvOrderRecord.Visible = true;
+                dgvOrder.Visible = true;
                 dgvAlertSummary.Visible = false;
 
                 //main filter
@@ -605,13 +687,14 @@ namespace FactoryManagementSoftware.UI
                 btnOrderAlertOnly.Text = BTN_SHOW_ORDER_RECORD;
 
                 //order alert 
-                tlpMain.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
-                tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 65f);
-                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
-                tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 30f);
-                tlpMain.RowStyles[4] = new RowStyle(SizeType.Percent, 100f);
+                tlpMain.RowStyles[0] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[1] = new RowStyle(SizeType.Percent, 0f);
+                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 65f);
+                tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[4] = new RowStyle(SizeType.Absolute, 30f);
+                tlpMain.RowStyles[5] = new RowStyle(SizeType.Percent, 100f);
 
-                dgvOrderRecord.Visible = false;
+                dgvOrder.Visible = false;
                 dgvAlertSummary.Visible = true;
 
                 //main filter
@@ -627,13 +710,14 @@ namespace FactoryManagementSoftware.UI
                 btnShowOrHideOrderAlert.Text = BTN_SHOW_ORDER_ALERT;
 
                 //order alert 
-                tlpMain.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
-                tlpMain.RowStyles[1] = new RowStyle(SizeType.Absolute, 65f);
-                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[0] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[1] = new RowStyle(SizeType.Percent, 0f);
+                tlpMain.RowStyles[2] = new RowStyle(SizeType.Absolute, 65f);
                 tlpMain.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
-                tlpMain.RowStyles[4] = new RowStyle(SizeType.Percent, 100f);
+                tlpMain.RowStyles[4] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMain.RowStyles[5] = new RowStyle(SizeType.Percent, 100f);
 
-                dgvOrderRecord.Visible = false;
+                dgvOrder.Visible = false;
                 dgvAlertSummary.Visible = false;
 
                 //main filter
@@ -648,6 +732,13 @@ namespace FactoryManagementSoftware.UI
         private void frmMaterialUsedReport_NEW_Load(object sender, EventArgs e)
         {
             loaded = true;
+            PanelUISetting(true, false);
+
+            tool.DoubleBuffered(dgvOrder, true);
+            tool.DoubleBuffered(dgvAlertSummary, true);
+            resetForm();
+            cmbStatusSearch.SelectedIndex = 0;
+
         }
 
         private void loadMonthDataToCMB(ComboBox cmb)
@@ -1665,6 +1756,292 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
+        #region Old Order Page method
+
+        private int GetPONoFromActionRecord(string orderID, DataTable dt_OrderAction)
+        {
+            int PoNo = -1;
+            int actionID = 0;
+            bool orderFound = false;
+
+            foreach (DataRow row in dt_OrderAction.Rows)
+            {
+                if (orderID == row["ord_id"].ToString())
+                {
+                    orderFound = true;
+
+                    string action = row["action"].ToString();
+                    string actionDetail = row["action_detail"].ToString();
+                    string to = row["action_to"].ToString();
+
+                    if (action == "EDIT" && actionDetail == "P/O NO")
+                    {
+                        if (PoNo != -1)
+                        {
+                            int NewactionID = int.TryParse(row["order_action_id"].ToString(), out int i) ? i : 0;
+
+                            if (NewactionID > actionID)
+                            {
+                                actionID = NewactionID;
+
+                                PoNo = int.TryParse(to, out i) ? i : -1;
+                            }
+                        }
+                        else
+                        {
+                            actionID = int.TryParse(row["order_action_id"].ToString(), out int i) ? i : actionID;
+                            PoNo = int.TryParse(to, out i) ? i : -1;
+
+
+                        }
+                    }
+
+
+                }
+                else if (orderFound)
+                {
+                    return PoNo;
+                }
+
+            }
+
+            return PoNo;
+
+        }
+
+        private void resetForm()
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            loadOrderRecord();
+            txtOrdSearch.Clear();
+            lblUpdatedTime2.Text = DateTime.Now.ToString();
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void dgvOrderUIEdit(DataGridView dgv)
+        {
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+
+            //dgv.Columns[text.Header_PartName].DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 8F, FontStyle.Bold);
+
+            //dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            //dgv.Columns[text.Header_PartCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+
+            dgv.Columns[headerID].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns[headerType].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns[headerCat].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns[headerDateRequired].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+            dgv.Columns[headerCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns[headerName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            dgv.Columns[headerOrdered].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns[headerPending].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns[headerReceived].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns[headerUnit].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns[headerStatus].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns[headerPONO].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+
+            dgv.Columns[headerID].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerPONO].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerOrdered].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerPending].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerReceived].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerDateRequired].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerType].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerCat].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerUnit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dgv.Columns[headerOrdered].DefaultCellStyle.Format = "0.###";
+            dgv.Columns[headerPending].DefaultCellStyle.Format = "0.###";
+            dgv.Columns[headerReceived].DefaultCellStyle.Format = "0.###";
+
+            dgv.Columns[headerOrdered].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            dgv.Columns[headerPending].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            dgv.Columns[headerReceived].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+
+
+            dgv.Columns[headerCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+            dgv.Columns[headerName].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+
+            dgv.Columns[headerType].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgv.Columns[headerDateRequired].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+
+            dgv.Columns[headerPONO].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+            dgv.Columns[headerCat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgv.Columns[headerUnit].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgv.Columns[headerStatus].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+
+
+
+
+        }
+
+        private void loadOrderRecord()
+        {
+            DataTable dtOrder = NewOrderRecordTable();
+            DataRow dtOrder_row;
+            DataTable dt_itemInfo = dalItem.Select();
+
+            DataTable dt_OrderAction = dalOrderAction.Select();
+            dt_OrderAction.DefaultView.Sort = "ord_id DESC";
+            dt_OrderAction = dt_OrderAction.DefaultView.ToTable();
+
+            string keywords = txtOrdSearch.Text;
+
+            //check if the keywords has value or not
+            if (keywords != null)
+            {
+                string statusSearch = cmbStatusSearch.Text;
+                DataTable dt;
+
+                if (cbCodeNameSearch.Checked)
+                {
+                    dt = dalOrd.Search(keywords);
+                }
+                else if (cbPOSearch.Checked)
+                {
+                    dt = dalOrd.PONOSearch(keywords);
+                }
+                else
+                {
+                    dt = dalOrd.IDSearch(keywords);
+                }
+
+                dt.DefaultView.Sort = "ord_added_date DESC";
+                DataTable sortedDt = dt.DefaultView.ToTable();
+
+                foreach (DataRow ord in sortedDt.Rows)
+                {
+                    if (statusSearch.Equals("ALL") || ord["ord_status"].ToString().Equals(statusSearch))
+                    {
+
+                        int orderID = Convert.ToInt32(ord["ord_id"].ToString());
+
+                        if (orderID > 8)
+                        {
+                            dtOrder_row = dtOrder.NewRow();
+
+                            string itemCode = ord["ord_item_code"].ToString();
+                            string ordID = ord["ord_id"].ToString();
+                            string ordStatus = ord["ord_status"].ToString();
+
+                            int ordPONo = ord["ord_po_no"] == DBNull.Value ? -1 : Convert.ToInt32(ord["ord_po_no"].ToString());
+
+
+                            if (ordPONo <= 0 && (ordStatus == status_Received || ordStatus == status_Pending))
+                            {
+                                ordPONo = GetPONoFromActionRecord(ordID, dt_OrderAction);
+
+                                //update PO NO to DB
+                                uOrd.ord_id = int.TryParse(ordID, out int i) ? i : -1;
+                                uOrd.ord_po_no = ordPONo;
+                                uOrd.ord_updated_date = DateTime.Now;
+                                uOrd.ord_updated_by = MainDashboard.USER_ID;
+
+                                if (!dalOrd.POUpdate(uOrd))
+                                {
+                                    MessageBox.Show("Failed to update PO No to Order!");
+
+                                }
+                            }
+
+                            dtOrder_row[headerID] = ordID;
+                            //lblDebug.Text = "before date assign";
+
+                            DateTime requiredDate = DateTime.ParseExact(Convert.ToDateTime(ord["ord_required_date"]).ToString("dd/MM/yyyy"), "dd/MM/yyyy", null);
+                            //lblDebug.Text = "After requiredDateAssign";
+                            dtOrder_row[headerDateRequired] = requiredDate;
+                            //lblDebug.Text = "After date assign";
+                            dtOrder_row[headerType] = ord["ord_type"].ToString();
+                            dtOrder_row[headerCat] = tool.getCatNameFromDataTable(dt_itemInfo, itemCode);
+                            dtOrder_row[headerCode] = itemCode;
+                            dtOrder_row[headerName] = ord["item_name"].ToString();
+                            dtOrder_row[headerPONO] = ordPONo;
+                            dtOrder_row[headerOrdered] = ord["ord_qty"].ToString();
+                            dtOrder_row[headerPending] = ord["ord_pending"].ToString();
+                            dtOrder_row[headerReceived] = ord["ord_received"].ToString();
+                            dtOrder_row[headerUnit] = ord["ord_unit"].ToString();
+                            dtOrder_row[headerStatus] = ordStatus;
+
+                            dtOrder.Rows.Add(dtOrder_row);
+                        }
+                    }
+                }
+            }
+
+            dgvOrder.DataSource = null;
+
+            if (dtOrder.Rows.Count > 0)
+            {
+                dtOrder.DefaultView.Sort = "ID DESC";
+                dgvOrder.DataSource = dtOrder;
+                dgvOrderUIEdit(dgvOrder);
+                dgvOrder.ClearSelection();
+            }
+        }
+
+        private void refreshOrderRecord(int orderID)
+        {
+            //dgvOrderAlert.Rows.Clear();
+            loadOrderRecord();
+            dgvOrder.ClearSelection();
+            if (orderID != -1)
+            {
+                foreach (DataGridViewRow row in dgvOrder.Rows)
+                {
+                    if (Convert.ToInt32(row.Cells[headerID].Value.ToString()).Equals(orderID))
+                    {
+                        int rowIndex = row.Index;
+                        row.Selected = true;
+                        dgvOrder.FirstDisplayedScrollingRowIndex = rowIndex;
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        private string setFileName()
+        {
+            string fileName = "Test.xls";
+
+            DateTime currentDate = DateTime.Now;
+            fileName = "OrderReport(" + cmbStatusSearch.Text + ")_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
+            return fileName;
+        }
+
+        private void copyAlltoClipboard()
+        {
+            dgvOrder.SelectAll();
+            DataObject dataObj = dgvOrder.GetClipboardContent();
+            if (dataObj != null)
+                Clipboard.SetDataObject(dataObj);
+        }
+
+        private void releaseObject(object obj)
+        {
+            try
+            {
+                Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                MessageBox.Show("Exception Occurred while releasing object " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
+
+        #endregion
+
         #region UI Action
 
         private void btnFilter_Click(object sender, EventArgs e)
@@ -1908,6 +2285,459 @@ namespace FactoryManagementSoftware.UI
                 row.Cells[text.Header_Index].Value = index.ToString();
 
                 index++;
+            }
+        }
+
+        private void dgvAlertSummary_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            //handle the row selection on right click
+            if (e.Button == MouseButtons.Right && e.RowIndex > -1)
+            {
+                DataGridView dgv = dgvAlertSummary;
+
+                ContextMenuStrip my_menu = new ContextMenuStrip();
+                dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                // Can leave these here - doesn't hurt
+                dgv.Rows[e.RowIndex].Selected = true;
+                dgv.Focus();
+                int rowIndex = dgv.CurrentCell.RowIndex;
+
+
+                try
+                {
+
+                    my_menu.Items.Add(text.Str_MoreDetail).Name = text.Str_MoreDetail;
+
+                    contextMenuStrip1 = my_menu;
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+                    
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            DataGridView dgv = dgvAlertSummary;
+            string itemClicked = e.ClickedItem.Name.ToString();
+            int rowIndex = dgv.CurrentCell.RowIndex;
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            contextMenuStrip1.Hide();
+
+            if (itemClicked.Equals(text.Str_MoreDetail))
+            {
+                if (rowIndex >= 0)
+                {
+                    string itemCode = dgvAlertSummary.Rows[rowIndex].Cells[text.Header_PartCode].Value.ToString();
+
+                    int monthStart = Convert.ToInt32(cmbMonthFrom.Text);
+                    int monthEnd = Convert.ToInt32(cmbMonthTo.Text);
+
+                    int yearStart = Convert.ToInt32(cmbYearFrom.Text);
+                    int yearEnd = Convert.ToInt32(cmbYearTo.Text);
+
+                    //check date
+                    DateTime dateStart = new DateTime(yearStart, monthStart, 1);
+                    DateTime dateEnd = new DateTime(yearEnd, monthEnd, 1);
+
+                    if (dateStart > dateEnd)
+                    {
+                        int tmp;
+
+                        tmp = yearStart;
+                        yearStart = yearEnd;
+                        yearEnd = tmp;
+
+                        tmp = monthStart;
+                        monthStart = monthEnd;
+                        monthEnd = tmp;
+                    }
+
+                    frmOrderAlertDetail_NEW frm = new frmOrderAlertDetail_NEW(DT_PRODUCT_FORECAST_SUMMARY, itemCode, dateStart, dateEnd);
+
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+
+                    frm.ShowDialog();
+
+                }
+            }
+         
+            Cursor = Cursors.Arrow; // change cursor to normal type
+
+        }
+
+        private void cmbStatusSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadOrderRecord();
+        }
+
+        private void cbCodeNameSearch_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbCodeNameSearch.Checked)
+            {
+                cbPOSearch.Checked = false;
+                cbOrderIDSearch.Checked = false;
+            }
+        }
+
+        private void cbPOSearch_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (cbPOSearch.Checked)
+            {
+                cbCodeNameSearch.Checked = false;
+                cbOrderIDSearch.Checked = false;
+            }
+        }
+
+        private void cbOrderIDSearch_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbOrderIDSearch.Checked)
+            {
+                cbCodeNameSearch.Checked = false;
+                cbPOSearch.Checked = false;
+            }
+        }
+
+        private void txtOrdSearch_TextChanged(object sender, EventArgs e)
+        {
+            loadOrderRecord();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            resetForm();
+        }
+
+        private void btnOrder_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            frmOrderRequest frm = new frmOrderRequest();
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//create new order
+
+            if (frmOrderRequest.orderSuccess)
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                resetForm();
+                frmOrderRequest.orderSuccess = false;
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                dgvOrder.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                SaveFileDialog sfd = new SaveFileDialog();
+
+                string path = @"D:\StockAssistant\Document\OrderReport";
+                Directory.CreateDirectory(path);
+                sfd.InitialDirectory = path;
+
+                sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                sfd.FileName = setFileName();
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+
+                    tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+
+                    // Copy DataGridView results to clipboard
+                    copyAlltoClipboard();
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    object misValue = System.Reflection.Missing.Value;
+                    Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application
+                    {
+                        PrintCommunication = false,
+                        ScreenUpdating = false,
+                        DisplayAlerts = false // Without this you will get two confirm overwrite prompts
+                    };
+                    Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+
+                    xlexcel.Calculation = XlCalculation.xlCalculationManual;
+                    Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+                    xlWorkSheet.Name = cmbStatusSearch.Text;
+
+                    #region Save data to Sheet
+
+                    //Header and Footer setup
+                    xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&16 " + DateTime.Now.Date.ToString("dd/MM/yyyy");
+                    xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 ORDERING RECORD";
+                    xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&16 PG -&P";
+                    xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID);
+
+                    //Page setup
+
+
+
+
+                    xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+
+                    xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                    xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
+                    xlWorkSheet.PageSetup.Zoom = false;
+                    xlWorkSheet.PageSetup.CenterHorizontally = true;
+
+                    double pointToCMRate = 0.035;
+                    xlWorkSheet.PageSetup.TopMargin = 1.4 / pointToCMRate;
+                    xlWorkSheet.PageSetup.BottomMargin = 1.4 / pointToCMRate;
+                    xlWorkSheet.PageSetup.HeaderMargin = 0.6 / pointToCMRate;
+                    xlWorkSheet.PageSetup.FooterMargin = 0.6 / pointToCMRate;
+                    xlWorkSheet.PageSetup.LeftMargin = 0 / pointToCMRate;
+                    xlWorkSheet.PageSetup.RightMargin = 0 / pointToCMRate;
+
+                    xlWorkSheet.PageSetup.FitToPagesWide = 1;
+                    xlWorkSheet.PageSetup.FitToPagesTall = false;
+
+
+                    xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+
+                    xlexcel.PrintCommunication = true;
+                    xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+                    // Paste clipboard results to worksheet range
+                    xlWorkSheet.Select();
+                    Range CR = (Range)xlWorkSheet.Cells[1, 1];
+                    CR.Select();
+                    xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+
+                    //content edit
+                    Range tRange = xlWorkSheet.UsedRange;
+                    tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                    tRange.Borders.Weight = XlBorderWeight.xlThin;
+                    tRange.Font.Size = 11;
+                    tRange.Font.Name = "Calibri";
+                    tRange.EntireColumn.AutoFit();
+                    tRange.EntireRow.AutoFit();
+                    tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
+
+                    #endregion
+
+                    //Save the excel file under the captured location from the SaveFileDialog
+                    xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
+                        misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                    xlexcel.DisplayAlerts = true;
+
+                    xlWorkBook.Close(true, misValue, misValue);
+                    xlexcel.Quit();
+
+                    releaseObject(xlWorkSheet);
+                    releaseObject(xlWorkBook);
+                    releaseObject(xlexcel);
+
+                    // Clear Clipboard and DataGridView selection
+                    Clipboard.Clear();
+                    dgvOrder.ClearSelection();
+
+                    // Open the newly saved excel file
+                    if (File.Exists(sfd.FileName))
+                        System.Diagnostics.Process.Start(sfd.FileName);
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+                dgvOrder.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+        }
+
+        private void dgvOrder_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            //MessageBox.Show("double click");
+            int rowIndex = dgvOrder.CurrentCell.RowIndex;
+            if (rowIndex >= 0)
+            {
+                int orderID = Convert.ToInt32(dgvOrder.Rows[rowIndex].Cells[headerID].Value);
+
+                DataTable dt = dalOrderAction.Select(orderID);
+                if (dt.Rows.Count > 0)
+                {
+                    frmOrderActionHistory frm = new frmOrderActionHistory(orderID);
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.ShowDialog();//Item Edit
+                }
+                else
+                {
+                    MessageBox.Show("No action record under this order yet.");
+                }
+            }
+
+            if (receivedReturn)//if order approved from approve form, then change order status from requesting to pending
+            {
+                refreshOrderRecord(selectedOrderID);
+                receivedReturn = false;
+            }
+
+            lblUpdatedTime.Text = DateTime.Now.ToString();
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void dgvOrder_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            DataGridView dgv = dgvOrder;
+            dgv.SuspendLayout();
+            int row = e.RowIndex;
+            int col = e.ColumnIndex;
+
+            if (dgv.Columns[col].Name == headerOrdered)
+            {
+                dgv.Rows[row].Cells[col].Style.BackColor = Color.FromArgb(232, 244, 66);
+            }
+            else if (dgv.Columns[col].Name == headerPending)
+            {
+                dgv.Rows[row].Cells[col].Style.BackColor = Color.FromArgb(66, 191, 244);
+            }
+            else if (dgv.Columns[col].Name == headerReceived)
+            {
+                dgv.Rows[row].Cells[col].Style.BackColor = Color.FromArgb(66, 244, 161);
+            }
+            else if (dgv.Columns[col].Name == headerStatus)
+            {
+                string value = dgv.Rows[row].Cells[headerStatus].Value.ToString();
+                Color foreColor = dgvOrder.DefaultCellStyle.ForeColor;
+
+                if (value.Equals(status_Requesting))
+                {
+                    foreColor = Color.FromArgb(244, 170, 66);
+                }
+                else if (value.Equals(status_Cancelled))
+                {
+                    foreColor = Color.FromArgb(234, 67, 53);
+                }
+                else if (value.Equals(status_Pending))
+                {
+                    foreColor = Color.FromArgb(66, 133, 244);
+                }
+                else if (value.Equals(status_Received))
+                {
+                    foreColor = Color.FromArgb(52, 168, 83);
+                }
+                dgv.Rows[row].Cells[headerStatus].Style.ForeColor = foreColor;
+            }
+
+            dgv.ResumeLayout();
+        }
+
+        private void dgvOrder_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            //handle the row selection on right click
+            if (e.Button == MouseButtons.Right && e.RowIndex > -1)//&& userPermission >= MainDashboard.ACTION_LVL_TWO
+            {
+                ContextMenuStrip my_menu = new ContextMenuStrip();
+                dgvOrder.CurrentCell = dgvOrder.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                // Can leave these here - doesn't hurt
+                dgvOrder.Rows[e.RowIndex].Selected = true;
+                dgvOrder.Focus();
+                int rowIndex = dgvOrder.CurrentCell.RowIndex;
+
+                try
+                {
+                    string result = dgvOrder.Rows[rowIndex].Cells[headerStatus].Value.ToString();
+
+                    if (result.Equals(status_Requesting))
+                    {
+                        if (userPermission >= MainDashboard.ACTION_LVL_THREE)
+                        {
+                            my_menu.Items.Add("Approve").Name = "Approve";
+                        }
+
+                        my_menu.Items.Add("Cancel").Name = "Cancel";
+                    }
+                    else if (result.Equals(status_Cancelled))
+                    {
+                        my_menu.Items.Add("Request").Name = "Request";
+                    }
+                    else if (result.Equals(status_Pending))
+                    {
+                        my_menu.Items.Add("Receive").Name = "Receive";
+
+                        if (userPermission >= MainDashboard.ACTION_LVL_TWO)
+                        {
+                            my_menu.Items.Add("Edit").Name = "Edit";
+                            my_menu.Items.Add("Complete").Name = "Complete";
+                        }
+                        my_menu.Items.Add("Follow Up/ Action").Name = "Follow Up/ Action";
+                        my_menu.Items.Add("Cancel").Name = "Cancel";
+                    }
+                    else if (result.Equals(status_Received))
+                    {
+                        if (userPermission >= MainDashboard.ACTION_LVL_TWO)
+                        {
+                            my_menu.Items.Add("Incomplete").Name = "Incomplete";
+                        }
+
+                        my_menu.Items.Add("Cancel").Name = "Cancel";
+                    }
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+                    contextMenuStrip1 = my_menu;
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void dgvOrder_MouseClick(object sender, MouseEventArgs e)
+        {
+            var ht = dgvOrder.HitTest(e.X, e.Y);
+
+            if (ht.Type == DataGridViewHitTestType.None)
+            {
+                //clicked on grey area
+                dgvOrder.ClearSelection();
+            }
+        }
+
+        private void dgvOrder_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvOrder.CurrentCell != null)
+                selectedOrderID = Convert.ToInt32(dgvOrder.Rows[dgvOrder.CurrentCell.RowIndex].Cells[headerID].Value);
+        }
+
+        private void dgvOrder_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
+        {
+            object tempObject1 = e.CellValue1;
+            object tempObject2 = e.CellValue2;
+            if (!(tempObject1 is null) && !(tempObject2 is null))
+            {
+                if (float.TryParse(tempObject1.ToString(), out float tmp) && float.TryParse(tempObject2.ToString(), out tmp))
+                {
+                    e.SortResult = float.Parse(tempObject1.ToString()).CompareTo(float.Parse(tempObject2.ToString()));
+                    e.Handled = true;//pass by the default sorting
+                }
             }
         }
     }
