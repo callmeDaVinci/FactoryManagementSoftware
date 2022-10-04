@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvAction = new System.Windows.Forms.DataGridView();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.order_action_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.order_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.trf_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,6 +45,7 @@
             this.action_from = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.action_to = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.note = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAction)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,6 +53,8 @@
             // 
             this.dgvAction.AllowUserToAddRows = false;
             this.dgvAction.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.dgvAction.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvAction.BackgroundColor = System.Drawing.Color.White;
             this.dgvAction.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvAction.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
@@ -70,74 +73,76 @@
             this.dgvAction.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAction.GridColor = System.Drawing.SystemColors.Control;
             this.dgvAction.Location = new System.Drawing.Point(0, 0);
-            this.dgvAction.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
+            this.dgvAction.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.dgvAction.Name = "dgvAction";
             this.dgvAction.ReadOnly = true;
             this.dgvAction.RowHeadersVisible = false;
+            this.dgvAction.RowHeadersWidth = 51;
             this.dgvAction.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvAction.RowTemplate.Height = 40;
             this.dgvAction.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvAction.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAction.Size = new System.Drawing.Size(1167, 597);
+            this.dgvAction.Size = new System.Drawing.Size(961, 501);
             this.dgvAction.TabIndex = 39;
             this.dgvAction.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAction_CellClick);
             this.dgvAction.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAction_CellMouseDown);
             this.dgvAction.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvAction_MouseClick);
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
             // order_action_id
             // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.order_action_id.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.order_action_id.DefaultCellStyle = dataGridViewCellStyle2;
             this.order_action_id.HeaderText = "Action ID";
+            this.order_action_id.MinimumWidth = 6;
             this.order_action_id.Name = "order_action_id";
             this.order_action_id.ReadOnly = true;
+            this.order_action_id.Width = 125;
             // 
             // order_id
             // 
             this.order_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.order_id.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.order_id.DefaultCellStyle = dataGridViewCellStyle3;
             this.order_id.HeaderText = "Order ID";
+            this.order_id.MinimumWidth = 6;
             this.order_id.Name = "order_id";
             this.order_id.ReadOnly = true;
-            this.order_id.Width = 97;
+            this.order_id.Width = 85;
             // 
             // trf_id
             // 
             this.trf_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.trf_id.HeaderText = "Trf ID";
+            this.trf_id.MinimumWidth = 6;
             this.trf_id.Name = "trf_id";
             this.trf_id.ReadOnly = true;
-            this.trf_id.Width = 59;
+            this.trf_id.Width = 54;
             // 
             // added_date
             // 
             this.added_date.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.added_date.HeaderText = "Date";
+            this.added_date.MinimumWidth = 6;
             this.added_date.Name = "added_date";
             this.added_date.ReadOnly = true;
-            this.added_date.Width = 75;
+            this.added_date.Width = 67;
             // 
             // added_by
             // 
             this.added_by.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.added_by.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.added_by.DefaultCellStyle = dataGridViewCellStyle4;
             this.added_by.HeaderText = "By";
+            this.added_by.MinimumWidth = 6;
             this.added_by.Name = "added_by";
             this.added_by.ReadOnly = true;
-            this.added_by.Width = 57;
+            this.added_by.Width = 53;
             // 
             // action
             // 
             this.action.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.action.HeaderText = "Action";
+            this.action.MinimumWidth = 6;
             this.action.Name = "action";
             this.action.ReadOnly = true;
             // 
@@ -145,6 +150,7 @@
             // 
             this.action_detail.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.action_detail.HeaderText = "Detail";
+            this.action_detail.MinimumWidth = 6;
             this.action_detail.Name = "action_detail";
             this.action_detail.ReadOnly = true;
             // 
@@ -152,37 +158,46 @@
             // 
             this.action_from.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.action_from.HeaderText = "From";
+            this.action_from.MinimumWidth = 6;
             this.action_from.Name = "action_from";
             this.action_from.ReadOnly = true;
-            this.action_from.Width = 78;
+            this.action_from.Width = 70;
             // 
             // action_to
             // 
             this.action_to.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.action_to.HeaderText = "To";
+            this.action_to.MinimumWidth = 6;
             this.action_to.Name = "action_to";
             this.action_to.ReadOnly = true;
-            this.action_to.Width = 56;
+            this.action_to.Width = 52;
             // 
             // note
             // 
             this.note.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.note.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.note.DefaultCellStyle = dataGridViewCellStyle5;
             this.note.HeaderText = "Note/ Purchase To";
+            this.note.MinimumWidth = 6;
             this.note.Name = "note";
             this.note.ReadOnly = true;
-            this.note.Width = 149;
+            this.note.Width = 125;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // frmOrderActionHistory
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1167, 597);
+            this.ClientSize = new System.Drawing.Size(961, 501);
             this.Controls.Add(this.dgvAction);
-            this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.MinimizeBox = false;
             this.Name = "frmOrderActionHistory";
             this.Text = "Order Action";

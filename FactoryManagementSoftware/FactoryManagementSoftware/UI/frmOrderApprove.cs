@@ -16,8 +16,13 @@ namespace FactoryManagementSoftware.UI
         private string orderReceived = 0.ToString();
         private int orderPoNO;
 
+        static public bool orderApproved = false;
+        static public string FINAL_ORDER_QTY = "";
+
         public frmOrderApprove(string orderID, DateTime requiredDate, string itemName, string itemCode, string qty, string unit, string type, int pono, string received)
         {
+            FINAL_ORDER_QTY = "";
+            orderApproved = false;
             //DateTime date = DateTime.ParseExact(requiredDate, "dd/MM/yyyy", null);
             date = requiredDate.ToString();
             orderQty = qty;
@@ -51,6 +56,8 @@ namespace FactoryManagementSoftware.UI
 
         public frmOrderApprove(string orderID,DateTime requiredDate,string itemName,string itemCode,string qty,string unit, string type, int pono)
         {
+            FINAL_ORDER_QTY = "";
+            orderApproved = false;
             //DateTime date = DateTime.ParseExact(requiredDate, "dd/MM/yyyy", null);
             date = requiredDate.ToString();
             orderQty = qty;
@@ -154,6 +161,13 @@ namespace FactoryManagementSoftware.UI
             {
                 frmOrder.orderApproved = true;
                 frmOrder.finalOrderNumber = txtQty.Text;
+
+                frmOrderAlert_NEW.orderApproved = true;
+                frmOrderAlert_NEW.finalOrderNumber = txtQty.Text;
+
+                orderApproved = false;
+                FINAL_ORDER_QTY = txtQty.Text;
+
                 checkEdit(uOrder.ord_id);
                 Close();
 

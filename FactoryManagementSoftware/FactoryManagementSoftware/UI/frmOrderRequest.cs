@@ -70,6 +70,24 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
+        public frmOrderRequest(string category, string itemCode, string itemName,bool ZeroCost)
+        {
+            InitializeComponent();
+
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            loadItemCategoryData();
+
+            cmbItemCat.Text = category;
+            cmbItemName.Text = itemName;
+            cmbItemCode.Text = itemCode;
+
+            cbZeroCost.Checked = ZeroCost;
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+
         static public bool orderSuccess = false;
 
         #region create class object (database)
@@ -145,29 +163,29 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = new DataTable();
             dt.Columns.Add("item_unit");
 
-            if (itemCat.Equals("RAW Material") || itemCat.Equals("Master Batch") || itemCat.Equals("Pigment"))
+            if (itemCat.Equals(text.Cat_RawMat) || itemCat.Equals(text.Cat_MB) || itemCat.Equals(text.Cat_Pigment))
             {
                 dt.Clear();
-                dt.Rows.Add("kg");
-                dt.Rows.Add("g");
-                dt.Rows.Add("meter");
+                dt.Rows.Add(text.Unit_KG);
+                dt.Rows.Add(text.Unit_g);
+                dt.Rows.Add(text.Unit_Meter);
 
             }
-            else if (itemCat.Equals("Part") || itemCat.Equals("Carton"))
+            else if (itemCat.Equals(text.Cat_Part) || itemCat.Equals(text.Cat_Carton))
             {
                 dt.Clear();
-                dt.Rows.Add("set");
-                dt.Rows.Add("piece");
+                dt.Rows.Add(text.Unit_Set);
+                dt.Rows.Add(text.Unit_Piece);
                 cmbQtyUnit.DataSource = dt;
             }
             else if (!string.IsNullOrEmpty(itemCat))
             {
                 dt.Clear();
-                dt.Rows.Add("set");
-                dt.Rows.Add("piece");
-                dt.Rows.Add("kg");
-                dt.Rows.Add("g");
-                dt.Rows.Add("meter");
+                dt.Rows.Add(text.Unit_Set);
+                dt.Rows.Add(text.Unit_Piece);
+                dt.Rows.Add(text.Unit_KG);
+                dt.Rows.Add(text.Unit_g);
+                dt.Rows.Add(text.Unit_Meter);
 
             }
             else
@@ -192,37 +210,37 @@ namespace FactoryManagementSoftware.UI
             if (string.IsNullOrEmpty(cmbItemCat.Text))
             {
                 result = false;
-                errorProvider1.SetError(cmbItemCat, "Item Category Required");
+                errorProvider1.SetError(lblCategory, "Item Category Required");
             }
 
             if (string.IsNullOrEmpty(cmbItemName.Text))
             {
                 result = false;
-                errorProvider2.SetError(cmbItemName, "Item Name Required");
+                errorProvider2.SetError(lblName, "Item Name Required");
             }
 
             if (string.IsNullOrEmpty(cmbItemCode.Text))
             {
                 result = false;
-                errorProvider3.SetError(cmbItemCode, "Item Code Required");
+                errorProvider3.SetError(lblCode, "Item Code Required");
             }
 
             if (string.IsNullOrEmpty(txtQty.Text))
             {
                 result = false;
-                errorProvider4.SetError(txtQty, "Item order qty Required");
+                errorProvider4.SetError(lblQty, "Item order qty Required");
             }
 
             if (string.IsNullOrEmpty(cmbQtyUnit.Text))
             {
                 result = false;
-                errorProvider5.SetError(cmbQtyUnit, "Item order unit Required");
+                errorProvider5.SetError(lblUnit, "Item order unit Required");
             }
 
             if (string.IsNullOrEmpty(dtpRequiredDate.Text))
             {
                 result = false;
-                errorProvider6.SetError(dtpRequiredDate, "Item forecast date Required");
+                errorProvider6.SetError(lblDate, "Item forecast date Required");
             }
 
             materialDAL dalMat = new materialDAL();
@@ -256,9 +274,9 @@ namespace FactoryManagementSoftware.UI
 
         private void getDataFromUser()
         {
-            int id = Convert.ToInt32(txtOrderID.Text);
+            int id = int.TryParse(txtOrderID.Text, out id) ? id : -1;
 
-            if(id == -1)//create new order record
+            if (id == -1)//create new order record
             {
                 uOrd.ord_added_date = DateTime.Now;
                 uOrd.ord_added_by = MainDashboard.USER_ID;
@@ -392,11 +410,12 @@ namespace FactoryManagementSoftware.UI
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             
-            int id = Convert.ToInt32(txtOrderID.Text);
+            int id = int.TryParse(txtOrderID.Text, out id)? id : -1;
+
             bool success;
             if (Validation())
             {
-                DialogResult dialogResult = MessageBox.Show("Are you sure want to request this order?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult dialogResult = MessageBox.Show("Confirm to request this order?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
                 {
 
@@ -430,8 +449,10 @@ namespace FactoryManagementSoftware.UI
                         {
                             MessageBox.Show("New order is requesting...");
 
-                            if(continueOpen)
+                            dialogResult = MessageBox.Show("Continue to add another order request?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if(dialogResult == DialogResult.Yes)
                             {
+
                                 txtQty.Clear();
                             }
                             else

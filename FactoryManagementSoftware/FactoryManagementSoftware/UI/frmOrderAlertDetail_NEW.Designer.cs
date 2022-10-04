@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvMaterialForecastInfo = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -46,6 +46,7 @@
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.lblMaterial = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaterialForecastInfo)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
             this.tlpFilter.SuspendLayout();
@@ -63,24 +64,24 @@
             this.dgvMaterialForecastInfo.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvMaterialForecastInfo.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvMaterialForecastInfo.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMaterialForecastInfo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMaterialForecastInfo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvMaterialForecastInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMaterialForecastInfo.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMaterialForecastInfo.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMaterialForecastInfo.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvMaterialForecastInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMaterialForecastInfo.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvMaterialForecastInfo.Location = new System.Drawing.Point(4, 159);
@@ -94,14 +95,17 @@
             this.dgvMaterialForecastInfo.Size = new System.Drawing.Size(1255, 544);
             this.dgvMaterialForecastInfo.TabIndex = 152;
             this.dgvMaterialForecastInfo.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMaterialForecastInfo_CellFormatting);
+            this.dgvMaterialForecastInfo.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvMaterialForecastInfo_DataBindingComplete);
             // 
             // tableLayoutPanel4
             // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.ColumnCount = 3;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 206F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 358F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.label2, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblTotal, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lblTotal, 2, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 114);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
@@ -195,6 +199,8 @@
             // 
             this.cbShowStillNeedQty.AutoSize = true;
             this.cbShowStillNeedQty.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbShowStillNeedQty.Checked = true;
+            this.cbShowStillNeedQty.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbShowStillNeedQty.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbShowStillNeedQty.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbShowStillNeedQty.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -246,6 +252,8 @@
             // 
             this.cbShowDeliveredQty.AutoSize = true;
             this.cbShowDeliveredQty.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbShowDeliveredQty.Checked = true;
+            this.cbShowDeliveredQty.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbShowDeliveredQty.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbShowDeliveredQty.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbShowDeliveredQty.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -299,11 +307,11 @@
             // 
             this.lblMaterial.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblMaterial.AutoSize = true;
-            this.lblMaterial.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMaterial.Location = new System.Drawing.Point(4, 17);
+            this.lblMaterial.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic);
+            this.lblMaterial.Location = new System.Drawing.Point(4, 9);
             this.lblMaterial.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMaterial.Name = "lblMaterial";
-            this.lblMaterial.Size = new System.Drawing.Size(79, 20);
+            this.lblMaterial.Size = new System.Drawing.Size(108, 28);
             this.lblMaterial.TabIndex = 153;
             this.lblMaterial.Text = "code name";
             // 
@@ -320,6 +328,20 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1303, 744);
             this.tableLayoutPanel2.TabIndex = 167;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.LightGray;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label2.Location = new System.Drawing.Point(209, 24);
+            this.label2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(262, 17);
+            this.label2.TabIndex = 169;
+            this.label2.Text = "( Direct Use On (Parent) = Outgoing Product)";
             // 
             // frmOrderAlertDetail_NEW
             // 
@@ -365,5 +387,6 @@
         private System.Windows.Forms.CheckBox cbShowForecastQty;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblMaterial;
+        private System.Windows.Forms.Label label2;
     }
 }

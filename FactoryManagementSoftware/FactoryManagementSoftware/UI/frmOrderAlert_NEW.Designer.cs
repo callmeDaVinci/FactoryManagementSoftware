@@ -49,8 +49,8 @@
             this.dgvAlertSummary = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.lblUpdatedTime = new System.Windows.Forms.Label();
-            this.lblLastUpdated = new System.Windows.Forms.Label();
             this.lblAlertTitle = new System.Windows.Forms.Label();
+            this.lblLastUpdated = new System.Windows.Forms.Label();
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.tlpFilter = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -95,6 +95,7 @@
             this.dgvOrder = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tlpMainFIlter.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -121,7 +122,7 @@
             // 
             this.tlpMainFIlter.ColumnCount = 6;
             this.tlpMainFIlter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMainFIlter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 170F));
+            this.tlpMainFIlter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tlpMainFIlter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tlpMainFIlter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tlpMainFIlter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
@@ -149,12 +150,12 @@
             this.btnOrderAlertOnly.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnOrderAlertOnly.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOrderAlertOnly.ForeColor = System.Drawing.Color.Black;
-            this.btnOrderAlertOnly.Location = new System.Drawing.Point(288, 19);
+            this.btnOrderAlertOnly.Location = new System.Drawing.Point(258, 19);
             this.btnOrderAlertOnly.Margin = new System.Windows.Forms.Padding(5, 0, 5, 5);
             this.btnOrderAlertOnly.Name = "btnOrderAlertOnly";
-            this.btnOrderAlertOnly.Size = new System.Drawing.Size(160, 36);
+            this.btnOrderAlertOnly.Size = new System.Drawing.Size(190, 36);
             this.btnOrderAlertOnly.TabIndex = 168;
-            this.btnOrderAlertOnly.Text = "ORDER ALERT ONLY";
+            this.btnOrderAlertOnly.Text = "MATERIAL FORECAST ONLY";
             this.btnOrderAlertOnly.UseVisualStyleBackColor = false;
             this.btnOrderAlertOnly.Click += new System.EventHandler(this.btnOrderAlertOnly_Click);
             // 
@@ -289,9 +290,9 @@
             this.btnShowOrHideOrderAlert.Location = new System.Drawing.Point(0, 19);
             this.btnShowOrHideOrderAlert.Margin = new System.Windows.Forms.Padding(0, 0, 5, 5);
             this.btnShowOrHideOrderAlert.Name = "btnShowOrHideOrderAlert";
-            this.btnShowOrHideOrderAlert.Size = new System.Drawing.Size(278, 36);
+            this.btnShowOrHideOrderAlert.Size = new System.Drawing.Size(248, 36);
             this.btnShowOrHideOrderAlert.TabIndex = 167;
-            this.btnShowOrHideOrderAlert.Text = "SHOW ORDER ALERT";
+            this.btnShowOrHideOrderAlert.Text = "SHOW MATERIAL FORECAST";
             this.btnShowOrHideOrderAlert.UseVisualStyleBackColor = false;
             this.btnShowOrHideOrderAlert.Click += new System.EventHandler(this.btnShowOrHideOrderAlert_Click);
             // 
@@ -376,13 +377,13 @@
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.ColumnCount = 4;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 165F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1094F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 8F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Controls.Add(this.lblUpdatedTime, 3, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblLastUpdated, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.lblAlertTitle, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lblLastUpdated, 2, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 453);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
@@ -394,39 +395,39 @@
             // 
             // lblUpdatedTime
             // 
-            this.lblUpdatedTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblUpdatedTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblUpdatedTime.AutoSize = true;
             this.lblUpdatedTime.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUpdatedTime.Location = new System.Drawing.Point(238, 18);
+            this.lblUpdatedTime.Location = new System.Drawing.Point(1190, 18);
             this.lblUpdatedTime.Name = "lblUpdatedTime";
             this.lblUpdatedTime.Size = new System.Drawing.Size(125, 12);
             this.lblUpdatedTime.TabIndex = 155;
             this.lblUpdatedTime.Text = "SHOW DATA FOR THE PAST";
             this.lblUpdatedTime.Visible = false;
             // 
+            // lblAlertTitle
+            // 
+            this.lblAlertTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblAlertTitle.AutoSize = true;
+            this.lblAlertTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.lblAlertTitle.Location = new System.Drawing.Point(4, 10);
+            this.lblAlertTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblAlertTitle.Name = "lblAlertTitle";
+            this.lblAlertTitle.Size = new System.Drawing.Size(407, 20);
+            this.lblAlertTitle.TabIndex = 153;
+            this.lblAlertTitle.Text = "MATERIAL FORECAST SUMMARY (FORECAST - DELIVERED)";
+            // 
             // lblLastUpdated
             // 
             this.lblLastUpdated.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLastUpdated.AutoSize = true;
             this.lblLastUpdated.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLastUpdated.Location = new System.Drawing.Point(178, 6);
+            this.lblLastUpdated.Location = new System.Drawing.Point(1105, 18);
             this.lblLastUpdated.Name = "lblLastUpdated";
-            this.lblLastUpdated.Size = new System.Drawing.Size(49, 24);
+            this.lblLastUpdated.Size = new System.Drawing.Size(73, 12);
             this.lblLastUpdated.TabIndex = 156;
             this.lblLastUpdated.Text = "LAST UPDATED:";
             this.lblLastUpdated.Visible = false;
-            // 
-            // lblAlertTitle
-            // 
-            this.lblAlertTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblAlertTitle.AutoSize = true;
-            this.lblAlertTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 7.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAlertTitle.Location = new System.Drawing.Point(4, 15);
-            this.lblAlertTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblAlertTitle.Name = "lblAlertTitle";
-            this.lblAlertTitle.Size = new System.Drawing.Size(141, 15);
-            this.lblAlertTitle.TabIndex = 153;
-            this.lblAlertTitle.Text = "ORDER ALERT SUMMARY";
             // 
             // gbFilter
             // 
@@ -699,7 +700,7 @@
             this.cbZeroStockType.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbZeroStockType.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbZeroStockType.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbZeroStockType.Location = new System.Drawing.Point(17, 25);
+            this.cbZeroStockType.Location = new System.Drawing.Point(17, 26);
             this.cbZeroStockType.Name = "cbZeroStockType";
             this.cbZeroStockType.Size = new System.Drawing.Size(96, 19);
             this.cbZeroStockType.TabIndex = 158;
@@ -1086,6 +1087,11 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // frmOrderAlert_NEW
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -1199,5 +1205,6 @@
         private System.Windows.Forms.TextBox txtOrdSearch;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnReport;
+        private System.Windows.Forms.Timer timer1;
     }
 }

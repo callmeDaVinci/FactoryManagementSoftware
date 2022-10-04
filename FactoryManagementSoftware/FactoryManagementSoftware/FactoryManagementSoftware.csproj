@@ -27,7 +27,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>434</ApplicationRevision>
+    <ApplicationRevision>437</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -208,6 +208,12 @@
     <Compile Include="DAL\trfHistDAL.cs" />
     <Compile Include="DAL\userDAL.cs" />
     <Compile Include="DAL\Utilities.cs" />
+    <Compile Include="UI\frmInOut_NEW.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmInOut_NEW.Designer.cs">
+      <DependentUpon>frmInOut_NEW.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmItemMasterList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -958,6 +964,9 @@
     <Compile Include="UI\NewInOutReport.Designer.cs">
       <DependentUpon>NewInOutReport.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\frmInOut_NEW.resx">
+      <DependentUpon>frmInOut_NEW.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItemMasterList.resx">
       <DependentUpon>frmItemMasterList.cs</DependentUpon>
     </EmbeddedResource>

@@ -136,7 +136,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     actualReceivedQty = Convert.ToSingle(receivedQty);
                 }
-                errorProvider1.SetError(txtQty, "Wrong receive qty." + "\nOrdered Qty: " + orderQty + "\nReceived Qty: " + actualReceivedQty + "\nReceive qty cannot higher than " + maxReceiveQty);
+                errorProvider1.SetError(lblQty, "Wrong receive qty." + "\nOrdered Qty: " + orderQty + "\nReceived Qty: " + actualReceivedQty + "\nReceive qty cannot higher than " + maxReceiveQty);
 
                 DialogResult dialogResult = MessageBox.Show("Ordered qty: "+orderQty+"\nPending qty: "+(Convert.ToSingle(orderQty) - actualReceivedQty)+"\nReceive  qty: "+ receivedNumber+"\nThe receive qty has exceeded the pending qty, are you sure want to proccess this action?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.Yes)
@@ -149,13 +149,13 @@ namespace FactoryManagementSoftware.UI
             if (receivedNumber <= 0)
             {
                 result = false;
-                errorProvider1.SetError(txtQty, "Receive qty cannot below the 1");
+                errorProvider1.SetError(lblQty, "Receive qty cannot below the 1");
             }
 
             if (string.IsNullOrEmpty(txtLotNO.Text))
             {
                 result = false;
-                errorProvider2.SetError(txtLotNO, "Lot Number Required");
+                errorProvider2.SetError(lblLotNo, "Lot Number Required");
             }
 
             return result;
@@ -232,6 +232,7 @@ namespace FactoryManagementSoftware.UI
             return afterTotalQty;
 
         }
+
         private int transferRecord(string stockResult)
         {
             string locationFrom;
@@ -253,7 +254,7 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_hist_qty = Convert.ToSingle(txtQty.Text);
             utrfHist.trf_hist_unit = Unit;
             utrfHist.trf_hist_trf_date = Convert.ToDateTime(dtpTrfDate.Text);
-            utrfHist.trf_hist_note = "[" + dalUser.getUsername(MainDashboard.USER_ID) + "] Order: Received";
+            utrfHist.trf_hist_note = "[" + dalUser.getUsername(MainDashboard.USER_ID) + "] OrderID: " +orderID + " Received";
             utrfHist.trf_hist_added_date = DateTime.Now;
             utrfHist.trf_hist_added_by = MainDashboard.USER_ID;
             utrfHist.trf_result = stockResult;

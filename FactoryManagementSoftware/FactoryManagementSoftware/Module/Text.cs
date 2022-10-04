@@ -261,6 +261,8 @@ namespace FactoryManagementSoftware.Module
         #region  DGV TABLE HEADER NAME
         public string Header_Index { get; } = "#";
         public string Header_ParentOrProduct { get; } = "PARENT/PRODUCT";
+
+        public string Header_DirectUseOn { get; } = "DIRECT USE ON (PARENT)";
         public string Header_GroupLevel { get; } = "LEVEL";
         public string Header_Customer { get; } = "CUSTOMER";
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
@@ -273,7 +275,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_PartNameWithParent { get; } = "PART NAME_(PARENT)";
         public string Header_PartName { get; } = "PART NAME";
         public string Header_Parent { get; } = "PARENT";
-        public string Header_Product { get; } = "PRODUCT";
+        public string Header_Product { get; } = "OUTGOING PRODUCT";
         public string Header_OpeningStock { get; } = "OPENING STOCK";
         public string Header_In_KG_Piece { get; } = "IN(KG/PIECE)";
         public string Header_Used_KG_Piece { get; } = "USED(KG/PIECE)";
@@ -305,6 +307,9 @@ namespace FactoryManagementSoftware.Module
         public string Header_ItemWeight_G { get; } = "ITEM WEIGHT(g)";
 
         public string Header_ItemWeight_G_Piece { get; } = "ITEM WEIGHT/Pcs (g)";
+
+        public string Header_Parent_Weight_G_Piece { get; } = "PARENT WEIGHT/Pcs (g)";
+
         private string header_ParentIndex = "PARENT #";
 
         public string Header_ParentIndex { get; } = "PARENT #";
@@ -343,7 +348,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_Cooling { get; } = "COOLING TIME (s)";
 
         public string Header_Wastage { get; } = "WASTAGE";
-        public string Header_WastageAllowed_Percentage { get; } = "WASTAGE ALLOWED (%)";
+        public string Header_WastageAllowed_Percentage { get; } = "MAT. WASTAGE ALLOWED (%)";
         public string Cmb_All { get; } = "ALL";
 
 
@@ -354,6 +359,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_UpdatedBy { get; } = "UPDATED BY";
 
         public string Str_MoreDetail { get; } = "More Details";
+        public string Str_OrderRequest { get; } = "Order Request";
 
 
         public string Header_Data { get; } = "DATA DB";
@@ -361,6 +367,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_ChildCode { get; } = "CHILD CODE";
         public string Header_ChildName { get; } = "CHILD NAME";
         public string Header_JoinRatio { get; } = "PARENT:CHILD";
+        public string Header_JoinRatio_Product_Mat { get; } = "PRODUCT:MAT.";
         public string Header_ParentMax { get; } = "PARENT MAX";
         public string Header_ParentMin { get; } = "PARENT MIN";
         public string Header_ChildQty { get; } = "CHILD QTY";

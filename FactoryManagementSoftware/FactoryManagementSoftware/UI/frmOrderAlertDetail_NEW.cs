@@ -51,7 +51,12 @@ namespace FactoryManagementSoftware.UI
         private string string_Forecast = " FORECAST";
         private string string_StillNeed = " STILL NEED";
         private string string_Delivered = " DELIVERED";
-        private string string_EstBalance = " EST. BAL.";
+
+        private string string_Product_Forecast = " PRODUCT FORECAST";
+        private string string_Product_StillNeed = " PRODUCT STILL NEED";
+        private string string_Product_Delivered = " PRODUCT DELIVERED";
+
+        //private string string_EstBalance = " EST. BAL.";
 
         itemForecastDAL dalItemForecast = new itemForecastDAL();
         itemForecastBLL uItemForecast = new itemForecastBLL();
@@ -83,23 +88,23 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_PartCode, typeof(string));
             dt.Columns.Add(text.Header_PartName, typeof(string));
 
-            dt.Columns.Add(text.Header_ParentOrProduct, typeof(string));
+            dt.Columns.Add(text.Header_DirectUseOn, typeof(string));
             dt.Columns.Add(text.Header_Product, typeof(string));
 
             dt.Columns.Add(text.Header_ReadyStock, typeof(float));
 
-            dt.Columns.Add(month + string_Forecast, typeof(float));
-            dt.Columns.Add(month + string_Delivered, typeof(float));
-            dt.Columns.Add(month + string_StillNeed, typeof(float));
+            dt.Columns.Add(month + string_Product_Forecast, typeof(float));
+            dt.Columns.Add(month + string_Product_Delivered, typeof(float));
+            dt.Columns.Add(month + string_Product_StillNeed, typeof(float));
 
             dt.Columns.Add(text.Header_PartWeight_G, typeof(float));
             dt.Columns.Add(text.Header_RunnerWeight_G, typeof(float));
-            dt.Columns.Add(text.Header_ItemWeight_G_Piece, typeof(float));
+            dt.Columns.Add(text.Header_Parent_Weight_G_Piece, typeof(float));
 
             dt.Columns.Add(text.Header_JoinQty, typeof(float));
             dt.Columns.Add(text.Header_JoinMax, typeof(float));
             dt.Columns.Add(text.Header_JoinMin, typeof(float));
-            dt.Columns.Add(text.Header_JoinRatio, typeof(string));
+            dt.Columns.Add(text.Header_JoinRatio_Product_Mat, typeof(string));
 
             dt.Columns.Add(text.Header_WastageAllowed_Percentage, typeof(float));
             dt.Columns.Add(text.Header_ColorRate, typeof(float));
@@ -120,33 +125,33 @@ namespace FactoryManagementSoftware.UI
                 {
                     string colName = col.ColumnName;
 
-                    if (!cbShowForecastQty.Checked && colName.Contains(string_Forecast))
+                    if (!cbShowForecastQty.Checked && colName.Contains(string_Product_Forecast))
                     {
                         dgv.Columns[colName].Visible = false;
                     }
-                    else if (colName.Contains(string_Forecast))
+                    else if (colName.Contains(string_Product_Forecast))
                     {
                         dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                         dgv.Columns[colName].Visible = true;
 
                     }
 
-                    if (!cbShowDeliveredQty.Checked && colName.Contains(string_Delivered))
+                    if (!cbShowDeliveredQty.Checked && colName.Contains(string_Product_Delivered))
                     {
                         dgv.Columns[colName].Visible = false;
                     }
-                    else if (colName.Contains(string_Delivered))
+                    else if (colName.Contains(string_Product_Delivered))
                     {
                         dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                         dgv.Columns[colName].Visible = true;
 
 
                     }
-                    if (!cbShowStillNeedQty.Checked && colName.Contains(string_StillNeed))
+                    if (!cbShowStillNeedQty.Checked && colName.Contains(string_Product_StillNeed))
                     {
                         dgv.Columns[colName].Visible = false;
                     }
-                    else if (colName.Contains(string_StillNeed))
+                    else if (colName.Contains(string_Product_StillNeed))
                     {
                         dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                         dgv.Columns[colName].Visible = true;
@@ -164,7 +169,7 @@ namespace FactoryManagementSoftware.UI
 
                     dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                    dgv.Columns[text.Header_ParentOrProduct].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                    dgv.Columns[text.Header_DirectUseOn].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
                     dgv.Columns[text.Header_Product].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
 
                     dgv.Columns[text.Header_ReadyStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -186,9 +191,9 @@ namespace FactoryManagementSoftware.UI
 
                     if (MatType == text.Cat_RawMat || MatType == text.Cat_MB || MatType == text.Cat_Pigment)
                     {
-                        dgv.Columns[text.Header_JoinRatio].Visible = false;
+                        dgv.Columns[text.Header_JoinRatio_Product_Mat].Visible = false;
 
-                        dgv.Columns[text.Header_ItemWeight_G_Piece].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                        dgv.Columns[text.Header_Parent_Weight_G_Piece].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                         if (MatType == text.Cat_MB || MatType == text.Cat_Pigment)
                         {
@@ -201,13 +206,13 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        dgv.Columns[text.Header_ItemWeight_G_Piece].Visible = false;
+                        dgv.Columns[text.Header_Parent_Weight_G_Piece].Visible = false;
                         dgv.Columns[text.Header_ColorRate].Visible = false;
-                        dgv.Columns[text.Header_JoinRatio].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                        dgv.Columns[text.Header_JoinRatio_Product_Mat].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                     }
 
-                    dgv.Columns[text.Header_ParentOrProduct].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                    dgv.Columns[text.Header_DirectUseOn].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                     dgv.Columns[text.Header_Product].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
                     dgv.Columns[text.Header_WastageAllowed_Percentage].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -220,7 +225,7 @@ namespace FactoryManagementSoftware.UI
 
                     dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                    dgv.Columns[text.Header_ParentOrProduct].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    dgv.Columns[text.Header_DirectUseOn].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                     dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
                 }
@@ -233,7 +238,8 @@ namespace FactoryManagementSoftware.UI
         {
             PageLoaded = false;
 
-            lblMaterial.Text = tool.getItemName(MAT_CODE) + " (" + MAT_CODE + ")";
+            lblMaterial.Text = "Material: " + tool.getItemName(MAT_CODE) + " (" + MAT_CODE + ")";
+
             cmbDateSetup();
             dgvMaterialForecastInfo.DataSource = null;
 
@@ -321,17 +327,19 @@ namespace FactoryManagementSoftware.UI
 
                             string parent = parentDataRow[text.Header_PartName] + " (" + parentDataRow[text.Header_PartCode] + ")";
 
-                            newDataRow[text.Header_ParentOrProduct] = parent;
+                            newDataRow[text.Header_DirectUseOn] = parent;
 
                             if (productDataRow != null)
                             {
                                 string product = productDataRow[text.Header_PartName] + " (" + productDataRow[text.Header_PartCode] + ")";
 
-                                if(parent != product)
-                                {
-                                    newDataRow[text.Header_Product] = product;
+                                newDataRow[text.Header_Product] = product;
 
-                                }
+                                //if (parent != product)
+                                //{
+                                //    newDataRow[text.Header_Product] = product;
+
+                                //}
 
                             }
 
@@ -341,9 +349,9 @@ namespace FactoryManagementSoftware.UI
                             float StillNeed = float.TryParse(parentDataRow[month + string_StillNeed].ToString(), out StillNeed) ? StillNeed : 0;
 
                             newDataRow[text.Header_ReadyStock] = parentDataRow[text.Header_ReadyStock];
-                            newDataRow[month + string_Forecast] = parentDataRow[month + string_Forecast];
-                            newDataRow[month + string_Delivered] = parentDataRow[month + string_Delivered];
-                            newDataRow[month + string_StillNeed] = parentDataRow[month + string_StillNeed];
+                            newDataRow[month + string_Product_Forecast] = parentDataRow[month + string_Forecast];
+                            newDataRow[month + string_Product_Delivered] = parentDataRow[month + string_Delivered];
+                            newDataRow[month + string_Product_StillNeed] = parentDataRow[month + string_StillNeed];
 
                             newDataRow[text.Header_PartWeight_G] = parentDataRow[text.Header_PartWeight_G];
                             newDataRow[text.Header_RunnerWeight_G] = parentDataRow[text.Header_RunnerWeight_G];
@@ -353,7 +361,7 @@ namespace FactoryManagementSoftware.UI
 
                             float itemWeight = partWeight + runnerWeight;
 
-                            newDataRow[text.Header_ItemWeight_G_Piece] = itemWeight;
+                            newDataRow[text.Header_Parent_Weight_G_Piece] = itemWeight;
 
 
                             //float joinQty = float.TryParse(parentDataRow[text.Header_JoinQty].ToString(), out joinQty) ? joinQty : 0;
@@ -398,7 +406,7 @@ namespace FactoryManagementSoftware.UI
                             }
                             #endregion
 
-                            newDataRow[text.Header_JoinRatio] = ratio;
+                            newDataRow[text.Header_JoinRatio_Product_Mat] = ratio;
 
                             newDataRow[text.Header_ColorRate] = parentDataRow[text.Header_ColorRate];
 
@@ -420,7 +428,7 @@ namespace FactoryManagementSoftware.UI
 
                                     parentQty = parentQty < 0 ? 0 : parentQty;
 
-                                    newDataRow[month + string_StillNeed] = parentQty;
+                                    newDataRow[month + string_Product_StillNeed] = parentQty;
                                 }
                                 else
                                 {
@@ -579,8 +587,8 @@ namespace FactoryManagementSoftware.UI
                     string index = row[text.Header_Index].ToString();
 
                     float ReadyStock = float.TryParse(row[text.Header_ReadyStock].ToString(), out ReadyStock) ? ReadyStock : 0;
-                    float Forecast = float.TryParse(row[month + string_Forecast].ToString(), out Forecast) ? Forecast : 0;
-                    float Delivered = float.TryParse(row[month + string_Delivered].ToString(), out Delivered) ? Delivered : 0;
+                    float Forecast = float.TryParse(row[month + string_Product_Forecast].ToString(), out Forecast) ? Forecast : 0;
+                    float Delivered = float.TryParse(row[month + string_Product_Delivered].ToString(), out Delivered) ? Delivered : 0;
 
                     float partWeight = float.TryParse(row[text.Header_PartWeight_G].ToString(), out partWeight) ? partWeight : 0;
                     float runnerWeight = float.TryParse(row[text.Header_RunnerWeight_G].ToString(), out runnerWeight) ? runnerWeight : 0;
@@ -606,7 +614,7 @@ namespace FactoryManagementSoftware.UI
                         {
                             parentQty = Forecast - Delivered - ReadyStock < 0 ? 0 : Forecast - Delivered - ReadyStock;
 
-                            row[month + string_StillNeed] = parentQty;
+                            row[month + string_Product_StillNeed] = parentQty;
                         }
                         else
                         {
@@ -656,7 +664,7 @@ namespace FactoryManagementSoftware.UI
                     if (ItemType == text.Cat_RawMat || ItemType == text.Cat_MB || ItemType == text.Cat_Pigment)
                         childQty = (float)decimal.Round((decimal)(childQty / 1000), 3);
 
-                    row[month + string_StillNeed] = parentQty;
+                    row[month + string_Product_StillNeed] = parentQty;
                     row[text.Header_MaterialUsedWithWastage] = childQty;
 
                     totalMatUsed += childQty;
@@ -742,12 +750,43 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMaterialForecastInfo_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            dgvMaterialForecastInfo.ClearSelection();
+            DataGridView dgv = dgvMaterialForecastInfo;
+            dgv.SuspendLayout();
+
+            int row = e.RowIndex;
+            int col = e.ColumnIndex;
+
+            string colName = dgv.Columns[col].Name;
+
+            if (colName == text.Header_Product)
+            {
+                string Product = dgv.Rows[row].Cells[col].Value.ToString();
+                string Parent = dgv.Rows[row].Cells[text.Header_DirectUseOn].Value.ToString();
+
+                if (Product == Parent)
+                {
+                    dgv.Rows[row].Cells[col].Style.BackColor = Color.LightGray;
+                    dgv.Rows[row].Cells[text.Header_DirectUseOn].Style.BackColor = Color.LightGray;
+
+                }
+                else
+                {
+                    dgv.Rows[row].Cells[col].Style.BackColor = Color.White;
+                    dgv.Rows[row].Cells[text.Header_DirectUseOn].Style.BackColor = Color.White;
+                }
+            }
+
+            dgv.ResumeLayout();
         }
 
         private void btnFilterApply_Click(object sender, EventArgs e)
         {
             DataFilter();
+        }
+
+        private void dgvMaterialForecastInfo_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            dgvMaterialForecastInfo.ClearSelection();
         }
     }
 }

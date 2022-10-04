@@ -163,7 +163,7 @@ namespace FactoryManagementSoftware.UI
 
             dgv.EnableHeadersVisualStyles = false;
             dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(10, 24, 74);
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
 
             foreach (DataGridViewColumn dgvc in dgv.Columns)

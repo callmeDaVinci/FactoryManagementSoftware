@@ -40,6 +40,8 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
 
             ResetPage();
+
+            userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
         }
 
         #region variable declare
@@ -111,9 +113,9 @@ namespace FactoryManagementSoftware.UI
         readonly string reportTitle_Forecast = "MATERIAL USED REPORT";
         readonly string reportTitle_ReadyStock = "MATERIAL USED REPORT";
 
-        readonly string BTN_SHOW_ORDER_ALERT = "SHOW ORDER ALERT";
-        readonly string BTN_HIDE_ORDER_ALERT = "HIDE ORDER ALERT";
-        readonly string BTN_ORDER_ALERT_ONLY = "ORDER ALERT ONLY";
+        readonly string BTN_SHOW_MATERIAL_FOREACST = "SHOW MATERIAL FORECAST";
+        readonly string BTN_HIDE_MATERIAL_FORECAST = "HIDE MATERIAL FORECAST";
+        readonly string BTN_MATERIAL_FORECAST_ONLY = "MATERIAL FORECAST ONLY";
         readonly string BTN_SHOW_ORDER_RECORD = "SHOW ORDER RECORD";
 
         private int selectedOrderID = -1;
@@ -635,8 +637,8 @@ namespace FactoryManagementSoftware.UI
 
             if (ShowOrderRecord && ShowOrderAlert)
             {
-                btnShowOrHideOrderAlert.Text = BTN_HIDE_ORDER_ALERT;
-                btnOrderAlertOnly.Text = BTN_ORDER_ALERT_ONLY;
+                btnShowOrHideOrderAlert.Text = BTN_HIDE_MATERIAL_FORECAST;
+                btnOrderAlertOnly.Text = BTN_MATERIAL_FORECAST_ONLY;
 
                 //order record & alert
                 tlpMain.RowStyles[0] = new RowStyle(SizeType.Absolute, 75f);
@@ -651,7 +653,7 @@ namespace FactoryManagementSoftware.UI
 
                 //main filter
                 tlpMainFIlter.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
-                tlpMainFIlter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 180f);
+                tlpMainFIlter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 200f);
                 tlpMainFIlter.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 300f);
                 tlpMainFIlter.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 300f);
                 tlpMainFIlter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 130f);
@@ -659,8 +661,8 @@ namespace FactoryManagementSoftware.UI
             }
             else if (ShowOrderRecord && !ShowOrderAlert)
             {
-                btnShowOrHideOrderAlert.Text = BTN_SHOW_ORDER_ALERT;
-                btnOrderAlertOnly.Text = BTN_ORDER_ALERT_ONLY;
+                btnShowOrHideOrderAlert.Text = BTN_SHOW_MATERIAL_FOREACST;
+                btnOrderAlertOnly.Text = BTN_MATERIAL_FORECAST_ONLY;
 
                 //order record 
                 tlpMain.RowStyles[0] = new RowStyle(SizeType.Absolute, 75f);
@@ -675,7 +677,7 @@ namespace FactoryManagementSoftware.UI
 
                 //main filter
                 tlpMainFIlter.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
-                tlpMainFIlter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 180f);
+                tlpMainFIlter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 200f);
                 tlpMainFIlter.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0f);
                 tlpMainFIlter.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
                 tlpMainFIlter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
@@ -683,7 +685,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (!ShowOrderRecord && ShowOrderAlert)
             {
-                btnShowOrHideOrderAlert.Text = BTN_HIDE_ORDER_ALERT;
+                btnShowOrHideOrderAlert.Text = BTN_HIDE_MATERIAL_FORECAST;
                 btnOrderAlertOnly.Text = BTN_SHOW_ORDER_RECORD;
 
                 //order alert 
@@ -699,7 +701,7 @@ namespace FactoryManagementSoftware.UI
 
                 //main filter
                 tlpMainFIlter.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
-                tlpMainFIlter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 180f);
+                tlpMainFIlter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 200f);
                 tlpMainFIlter.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 300f);
                 tlpMainFIlter.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 300f);
                 tlpMainFIlter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 130f);
@@ -707,7 +709,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                btnShowOrHideOrderAlert.Text = BTN_SHOW_ORDER_ALERT;
+                btnShowOrHideOrderAlert.Text = BTN_SHOW_MATERIAL_FOREACST;
 
                 //order alert 
                 tlpMain.RowStyles[0] = new RowStyle(SizeType.Absolute, 0f);
@@ -722,7 +724,7 @@ namespace FactoryManagementSoftware.UI
 
                 //main filter
                 tlpMainFIlter.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
-                tlpMainFIlter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 180f);
+                tlpMainFIlter.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 200f);
                 tlpMainFIlter.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0f);
                 tlpMainFIlter.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
                 tlpMainFIlter.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
@@ -1890,6 +1892,8 @@ namespace FactoryManagementSoftware.UI
 
         private void loadOrderRecord()
         {
+            loaded = false;
+
             DataTable dtOrder = NewOrderRecordTable();
             DataRow dtOrder_row;
             DataTable dt_itemInfo = dalItem.Select();
@@ -1903,7 +1907,7 @@ namespace FactoryManagementSoftware.UI
             //check if the keywords has value or not
             if (keywords != null)
             {
-                string statusSearch = cmbStatusSearch.Text;
+               
                 DataTable dt;
 
                 if (cbCodeNameSearch.Checked)
@@ -1912,13 +1916,16 @@ namespace FactoryManagementSoftware.UI
                 }
                 else if (cbPOSearch.Checked)
                 {
+                    cmbStatusSearch.Text = text.Cmb_All;
                     dt = dalOrd.PONOSearch(keywords);
                 }
                 else
                 {
+                    cmbStatusSearch.Text = text.Cmb_All;
                     dt = dalOrd.IDSearch(keywords);
                 }
 
+                string statusSearch = cmbStatusSearch.Text;
                 dt.DefaultView.Sort = "ord_added_date DESC";
                 DataTable sortedDt = dt.DefaultView.ToTable();
 
@@ -1992,6 +1999,119 @@ namespace FactoryManagementSoftware.UI
                 dgvOrderUIEdit(dgvOrder);
                 dgvOrder.ClearSelection();
             }
+
+            loaded = true;
+        }
+
+        private void loadOrderRecordFromStatusSearch()
+        {
+            loaded = false;
+
+            DataTable dtOrder = NewOrderRecordTable();
+            DataRow dtOrder_row;
+            DataTable dt_itemInfo = dalItem.Select();
+
+            DataTable dt_OrderAction = dalOrderAction.Select();
+            dt_OrderAction.DefaultView.Sort = "ord_id DESC";
+            dt_OrderAction = dt_OrderAction.DefaultView.ToTable();
+
+            string keywords = txtOrdSearch.Text;
+
+            //check if the keywords has value or not
+            if (keywords != null)
+            {
+
+                DataTable dt;
+
+                if (cbCodeNameSearch.Checked)
+                {
+                    dt = dalOrd.Search(keywords);
+                }
+                else if (cbPOSearch.Checked)
+                {
+                    dt = dalOrd.PONOSearch(keywords);
+                }
+                else
+                {
+                    dt = dalOrd.IDSearch(keywords);
+                }
+
+                string statusSearch = cmbStatusSearch.Text;
+                dt.DefaultView.Sort = "ord_added_date DESC";
+                DataTable sortedDt = dt.DefaultView.ToTable();
+
+                foreach (DataRow ord in sortedDt.Rows)
+                {
+                    string ordStatus = ord["ord_status"].ToString();
+
+                    if (statusSearch.Equals("ALL") || ordStatus.Equals(statusSearch) || statusSearch.Contains(ordStatus))
+                    {
+
+                        int orderID = Convert.ToInt32(ord["ord_id"].ToString());
+
+                        if (orderID > 8)
+                        {
+                            dtOrder_row = dtOrder.NewRow();
+
+                            string itemCode = ord["ord_item_code"].ToString();
+                            string ordID = ord["ord_id"].ToString();
+
+
+                            int ordPONo = ord["ord_po_no"] == DBNull.Value ? -1 : Convert.ToInt32(ord["ord_po_no"].ToString());
+
+
+                            if (ordPONo <= 0 && (ordStatus == status_Received || ordStatus == status_Pending))
+                            {
+                                ordPONo = GetPONoFromActionRecord(ordID, dt_OrderAction);
+
+                                //update PO NO to DB
+                                uOrd.ord_id = int.TryParse(ordID, out int i) ? i : -1;
+                                uOrd.ord_po_no = ordPONo;
+                                uOrd.ord_updated_date = DateTime.Now;
+                                uOrd.ord_updated_by = MainDashboard.USER_ID;
+
+                                if (!dalOrd.POUpdate(uOrd))
+                                {
+                                    MessageBox.Show("Failed to update PO No to Order!");
+
+                                }
+                            }
+
+                            dtOrder_row[headerID] = ordID;
+                            //lblDebug.Text = "before date assign";
+
+                            DateTime requiredDate = DateTime.ParseExact(Convert.ToDateTime(ord["ord_required_date"]).ToString("dd/MM/yyyy"), "dd/MM/yyyy", null);
+                            //lblDebug.Text = "After requiredDateAssign";
+                            dtOrder_row[headerDateRequired] = requiredDate;
+                            //lblDebug.Text = "After date assign";
+                            dtOrder_row[headerType] = ord["ord_type"].ToString();
+                            dtOrder_row[headerCat] = tool.getCatNameFromDataTable(dt_itemInfo, itemCode);
+                            dtOrder_row[headerCode] = itemCode;
+                            dtOrder_row[headerName] = ord["item_name"].ToString();
+                            dtOrder_row[headerPONO] = ordPONo;
+                            dtOrder_row[headerOrdered] = ord["ord_qty"].ToString();
+                            dtOrder_row[headerPending] = ord["ord_pending"].ToString();
+                            dtOrder_row[headerReceived] = ord["ord_received"].ToString();
+                            dtOrder_row[headerUnit] = ord["ord_unit"].ToString();
+                            dtOrder_row[headerStatus] = ordStatus;
+
+                            dtOrder.Rows.Add(dtOrder_row);
+                        }
+                    }
+                }
+            }
+
+            dgvOrder.DataSource = null;
+
+            if (dtOrder.Rows.Count > 0)
+            {
+                dtOrder.DefaultView.Sort = "ID DESC";
+                dgvOrder.DataSource = dtOrder;
+                dgvOrderUIEdit(dgvOrder);
+                dgvOrder.ClearSelection();
+            }
+
+            loaded = true;
         }
 
         private void refreshOrderRecord(int orderID)
@@ -2156,9 +2276,9 @@ namespace FactoryManagementSoftware.UI
 
         private void btnShowOrHideOrderAlert_Click(object sender, EventArgs e)
         {
-            if(btnShowOrHideOrderAlert.Text.Equals(BTN_HIDE_ORDER_ALERT))
+            if(btnShowOrHideOrderAlert.Text.Equals(BTN_HIDE_MATERIAL_FORECAST))
             {
-                if (btnOrderAlertOnly.Text.Equals(BTN_ORDER_ALERT_ONLY))
+                if (btnOrderAlertOnly.Text.Equals(BTN_MATERIAL_FORECAST_ONLY))
                 {
                     PanelUISetting(true, false);
                 }
@@ -2170,7 +2290,7 @@ namespace FactoryManagementSoftware.UI
             else
             {
 
-                if (btnOrderAlertOnly.Text.Equals(BTN_ORDER_ALERT_ONLY))
+                if (btnOrderAlertOnly.Text.Equals(BTN_MATERIAL_FORECAST_ONLY))
                 {
                     PanelUISetting(true, true);
                 }
@@ -2185,13 +2305,13 @@ namespace FactoryManagementSoftware.UI
         {
             string text = btnOrderAlertOnly.Text;
 
-            if (text == BTN_ORDER_ALERT_ONLY)
+            if (text == BTN_MATERIAL_FORECAST_ONLY)
             {
                 PanelUISetting(false, true);
             }
             else if (text == BTN_SHOW_ORDER_RECORD)
             {
-                if (btnShowOrHideOrderAlert.Text.Equals(BTN_SHOW_ORDER_ALERT))
+                if (btnShowOrHideOrderAlert.Text.Equals(BTN_SHOW_MATERIAL_FOREACST))
                 {
                     PanelUISetting(true, false);
                 }
@@ -2319,12 +2439,13 @@ namespace FactoryManagementSoftware.UI
                 {
 
                     my_menu.Items.Add(text.Str_MoreDetail).Name = text.Str_MoreDetail;
+                    my_menu.Items.Add(text.Str_OrderRequest).Name = text.Str_OrderRequest;
 
                     contextMenuStrip1 = my_menu;
 
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
                     
-                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(MaterialForecast_my_menu_ItemClicked);
 
                 }
                 catch (Exception ex)
@@ -2336,7 +2457,404 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
+        #region order status change
+
+        private void orderRequest(int orderID)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            //get data from datagridview
+            // item category, item code, item name, order id, 
+            string id = "";
+            string type = "";
+            string cat = "";
+            string itemCode = "";
+            string itemName = "";
+            string qty = "";
+            string unit = "";
+            string date = "";
+            DataTable dt = dalOrd.Select(orderID);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow ord in dt.Rows)
+                {
+                    id = ord["ord_id"].ToString();
+                    cat = ord["item_cat"].ToString();
+                    itemCode = ord["ord_item_code"].ToString();
+                    itemName = ord["item_name"].ToString();
+                    type = ord["ord_type"].ToString();
+                    qty = ord["ord_qty"].ToString();
+                    unit = ord["ord_unit"].ToString();
+                    date = Convert.ToDateTime(ord["ord_required_date"].ToString()).ToString("dd/MM/yyyy");
+
+                }
+            }
+
+            frmOrderRequest frm = new frmOrderRequest(id, cat, itemCode, itemName, qty, unit, date, type);
+
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//order request
+
+            if (frmOrderRequest.orderSuccess)
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                frmOrderRequest.orderSuccess = false;
+                resetForm();
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+
+            refreshOrderRecord(orderID);
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void orderApprove(int rowIndex, int orderID)
+        {
+            try
+            {
+                if (userPermission >= MainDashboard.ACTION_LVL_THREE)
+                {
+                    string itemCode = dgvOrder.Rows[rowIndex].Cells[headerCode].Value.ToString();
+                    string itemName = dgvOrder.Rows[rowIndex].Cells[headerName].Value.ToString();
+                    //string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+                    DateTime requiredDate = Convert.ToDateTime(dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value);
+                    string qty = dgvOrder.Rows[rowIndex].Cells[headerOrdered].Value.ToString();
+                    string unit = dgvOrder.Rows[rowIndex].Cells[headerUnit].Value.ToString();
+                    string type = dgvOrder.Rows[rowIndex].Cells[headerType].Value == DBNull.Value ? "PURCHASE" : dgvOrder.Rows[rowIndex].Cells[headerType].Value.ToString();
+                    int po_no = dgvOrder.Rows[rowIndex].Cells[headerPONO].Value == DBNull.Value ? -1 : Convert.ToInt32(dgvOrder.Rows[rowIndex].Cells[headerPONO].Value.ToString());
+
+
+                    //approve form
+                    frmOrderApprove frm = new frmOrderApprove(orderID.ToString(), requiredDate, itemName, itemCode, qty, unit, type, po_no);
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.ShowDialog();
+
+                    if (frmOrderApprove.orderApproved)//if order approved from approve form, then change order status from requesting to pending
+                    {
+                        dalItem.orderAdd(itemCode, frmOrderApprove.FINAL_ORDER_QTY);//add order qty to item
+                        refreshOrderRecord(orderID);
+                        orderApproved = false;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Action denied. Please contact admin for this action.");
+                    tool.historyRecord(text.System, "Action denied. Please contact admin for this action.(frmOrder)", DateTime.Now, MainDashboard.USER_ID);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                refreshOrderRecord(orderID);
+            }
+
+        }
+
+        private void orderEdit(int rowIndex, int orderID)
+        {
+            try
+            {
+                if (userPermission >= MainDashboard.ACTION_LVL_THREE)
+                {
+                    string itemCode = dgvOrder.Rows[rowIndex].Cells[headerCode].Value.ToString();
+                    string itemName = dgvOrder.Rows[rowIndex].Cells[headerName].Value.ToString();
+                    //string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+                    DateTime requiredDate = Convert.ToDateTime(dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value);
+                    string qty = dgvOrder.Rows[rowIndex].Cells[headerOrdered].Value.ToString();
+                    string received = dgvOrder.Rows[rowIndex].Cells[headerReceived].Value.ToString();
+                    string unit = dgvOrder.Rows[rowIndex].Cells[headerUnit].Value.ToString();
+                    string type = dgvOrder.Rows[rowIndex].Cells[headerType].Value == DBNull.Value ? "PURCHASE" : dgvOrder.Rows[rowIndex].Cells[headerType].Value.ToString();
+                    int po_no = dgvOrder.Rows[rowIndex].Cells[headerPONO].Value == DBNull.Value ? -1 : Convert.ToInt32(dgvOrder.Rows[rowIndex].Cells[headerPONO].Value.ToString());
+
+
+                    //approve form
+                    frmOrderApprove frm = new frmOrderApprove(orderID.ToString(), requiredDate, itemName, itemCode, qty, unit, type, po_no, received);
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.ShowDialog();
+
+                    if (frmOrderApprove.orderApproved)//if order approved from approve form, then change order status from requesting to pending
+                    {
+                        float final_Order_Qty = float.TryParse(frmOrderApprove.FINAL_ORDER_QTY, out float i) ? i : 0;
+                        float Qty = float.TryParse(qty, out  i) ? i : 0;
+
+                        dalItem.orderAdd(itemCode, final_Order_Qty - Qty);//add order qty to item
+                        refreshOrderRecord(orderID);
+                        orderApproved = false;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Action denied. Please contact admin for this action.");
+                    tool.historyRecord(text.System, "Action denied. Please contact admin for this action.(frmOrder)", DateTime.Now, MainDashboard.USER_ID);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                refreshOrderRecord(orderID);
+            }
+
+        }
+
+        private void orderReceive(int rowIndex, int orderID)
+        {
+            //get data from datagridview
+            string itemCode = dgvOrder.Rows[rowIndex].Cells[headerCode].Value.ToString();
+            string itemName = dgvOrder.Rows[rowIndex].Cells[headerName].Value.ToString();
+            string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+            string qty = dgvOrder.Rows[rowIndex].Cells[headerOrdered].Value.ToString();
+            string unit = dgvOrder.Rows[rowIndex].Cells[headerUnit].Value.ToString();
+            float received = Convert.ToSingle(dgvOrder.Rows[rowIndex].Cells[headerReceived].Value);
+            string type = dgvOrder.Rows[rowIndex].Cells[headerType].Value == DBNull.Value ? "PURCHASE" : dgvOrder.Rows[rowIndex].Cells[headerType].Value.ToString();
+
+            frmOrderReceive frm = new frmOrderReceive(orderID, itemCode, itemName, Convert.ToSingle(qty), Convert.ToSingle(received), unit, type);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//stock in
+
+            refreshOrderRecord(orderID);
+
+        }
+
+        private void orderCancel(int rowIndex, int orderID, string presentStatus)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            //DialogResult dialogResult = MessageBox.Show("Are you sure want to cancel this order?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            //if (dialogResult == DialogResult.Yes)
+            //{
+            string itemCode = dgvOrder.Rows[rowIndex].Cells[headerCode].Value.ToString();
+            string itemName = dgvOrder.Rows[rowIndex].Cells[headerName].Value.ToString();
+            //string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+            DateTime requiredDate = Convert.ToDateTime(dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value);
+            string qty = dgvOrder.Rows[rowIndex].Cells[headerOrdered].Value.ToString();
+            string unit = dgvOrder.Rows[rowIndex].Cells[headerUnit].Value.ToString();
+            float received = Convert.ToSingle(dgvOrder.Rows[rowIndex].Cells[headerReceived].Value);
+            string pending = dgvOrder.Rows[rowIndex].Cells[headerPending].Value.ToString();
+            string type = dgvOrder.Rows[rowIndex].Cells[headerType].Value == DBNull.Value ? "PURCHASE" : dgvOrder.Rows[rowIndex].Cells[headerType].Value.ToString();
+
+            if (received > 0)//if have received record under this order ,then need to return this item from stock before cancel this order
+            {
+                DialogResult dialogResult = MessageBox.Show(@"There is an existing received record under this order. Please undo this record before canceling.", "Message", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                if (dialogResult == DialogResult.OK)
+                {
+                    frmOrderActionHistory frm = new frmOrderActionHistory(orderID);
+
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.ShowDialog();//return item from stock
+                }
+            }
+            else
+            {
+                frmOrderCancel frm = new frmOrderCancel();
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.ShowDialog();
+
+                if (frmOrderCancel.orderCancelled)
+                {
+                    uOrd.ord_id = orderID;
+                    DateTime date = requiredDate;//DateTime.ParseExact(requiredDate, "dd/MM/yyyy", null)
+                    uOrd.ord_required_date = date;
+                    uOrd.ord_qty = Convert.ToSingle(qty);
+                    uOrd.ord_pending = 0;
+                    uOrd.ord_received = 0;
+                    uOrd.ord_updated_date = DateTime.Now;
+                    uOrd.ord_updated_by = MainDashboard.USER_ID;
+                    uOrd.ord_item_code = itemCode;
+                    uOrd.ord_note = frmOrderCancel.CancelledReason;
+                    uOrd.ord_unit = unit;
+                    uOrd.ord_status = status_Cancelled;
+
+                    uOrd.ord_type = type;
+
+                    if (dalOrd.Update(uOrd))
+                    {
+                        if (!presentStatus.Equals(status_Requesting))
+                        {
+                            dalItem.orderSubtract(itemCode, pending); //subtract order qty
+                        }
+
+                        dalOrderAction.orderCancel(orderID, -1, note);
+                    }
+                }
+
+            }
+            refreshOrderRecord(orderID);
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void orderComplete(int rowIndex, int orderID)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            string itemCode = dgvOrder.Rows[rowIndex].Cells[headerCode].Value.ToString();
+            string itemName = dgvOrder.Rows[rowIndex].Cells[headerName].Value.ToString();
+            //string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+            DateTime requiredDate = Convert.ToDateTime(dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value);
+
+            string qty = dgvOrder.Rows[rowIndex].Cells[headerOrdered].Value.ToString();
+            string unit = dgvOrder.Rows[rowIndex].Cells[headerUnit].Value.ToString();
+            float received = Convert.ToSingle(dgvOrder.Rows[rowIndex].Cells[headerReceived].Value);
+            string pending = dgvOrder.Rows[rowIndex].Cells[headerPending].Value.ToString();
+            string type = dgvOrder.Rows[rowIndex].Cells[headerType].Value == DBNull.Value ? "PURCHASE" : dgvOrder.Rows[rowIndex].Cells[headerType].Value.ToString();
+            int po_no = dgvOrder.Rows[rowIndex].Cells[headerPONO].Value == DBNull.Value ? -1 : Convert.ToInt32(dgvOrder.Rows[rowIndex].Cells[headerPONO].Value.ToString());
+
+            frmOrderComplete frm = new frmOrderComplete();
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();
+
+            if (frmOrderComplete.orderCompleted)
+            {
+                uOrd.ord_id = orderID;
+                DateTime date = requiredDate;
+                uOrd.ord_required_date = date;
+                uOrd.ord_qty = Convert.ToSingle(qty);
+                uOrd.ord_pending = 0;
+                uOrd.ord_po_no = po_no;
+                uOrd.ord_received = received;
+                uOrd.ord_updated_date = DateTime.Now;
+                uOrd.ord_updated_by = MainDashboard.USER_ID;
+                uOrd.ord_item_code = itemCode;
+                uOrd.ord_note = frmOrderComplete.NOTE;
+                uOrd.ord_unit = unit;
+                uOrd.ord_status = status_Received;
+                uOrd.ord_type = type;
+
+                if (dalOrd.Update(uOrd))
+                {
+                    float pendingQty = float.TryParse(pending, out pendingQty) ? pendingQty : 0;
+
+                    if (pendingQty > 0)
+                    {
+                        dalItem.orderSubtract(itemCode, pending); //subtract order qty
+                    }
+
+
+                    dalOrderAction.orderClose(orderID, note);
+                }
+
+                refreshOrderRecord(orderID);
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void orderIncomplete(int rowIndex, int orderID)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to reopen this order?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+            {
+
+                string itemCode = dgvOrder.Rows[rowIndex].Cells[headerCode].Value.ToString();
+                string itemName = dgvOrder.Rows[rowIndex].Cells[headerName].Value.ToString();
+                //string requiredDate = dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value.ToString();
+                DateTime requiredDate = Convert.ToDateTime(dgvOrder.Rows[rowIndex].Cells[headerDateRequired].Value);
+
+                string qty = dgvOrder.Rows[rowIndex].Cells[headerOrdered].Value.ToString();
+                string unit = dgvOrder.Rows[rowIndex].Cells[headerUnit].Value.ToString();
+                float received = Convert.ToSingle(dgvOrder.Rows[rowIndex].Cells[headerReceived].Value);
+                string pending = dgvOrder.Rows[rowIndex].Cells[headerPending].Value.ToString();
+                string type = dgvOrder.Rows[rowIndex].Cells[headerType].Value == DBNull.Value ? "PURCHASE" : dgvOrder.Rows[rowIndex].Cells[headerType].Value.ToString();
+
+                uOrd.ord_id = orderID;
+                DateTime date = requiredDate;
+                uOrd.ord_required_date = date;
+                uOrd.ord_qty = Convert.ToSingle(qty);
+                uOrd.ord_pending = uOrd.ord_qty - received;
+                uOrd.ord_received = received;
+                uOrd.ord_updated_date = DateTime.Now;
+                uOrd.ord_updated_by = MainDashboard.USER_ID;
+                uOrd.ord_item_code = itemCode;
+                uOrd.ord_note = "";
+                uOrd.ord_unit = unit;
+                uOrd.ord_status = status_Pending;
+                uOrd.ord_type = type;
+
+                if (dalOrd.Update(uOrd))
+                {
+                    dalItem.orderAdd(itemCode, uOrd.ord_qty - received); //subtract order qty
+
+                    dalOrderAction.orderReOpen(orderID, "");
+                }
+
+                refreshOrderRecord(orderID);
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+        }
+
+        private void orderFollowUpAction(int orderID)
+        {
+            frmOrderFollowUpAction frm = new frmOrderFollowUpAction(orderID);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();
+
+            refreshOrderRecord(orderID);
+        }
+
+        #endregion
+
         private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            DataGridView dgv = dgvOrder;
+            string itemClicked = e.ClickedItem.Name.ToString();
+            int rowIndex = dgv.CurrentCell.RowIndex;
+            int orderID = Convert.ToInt32(dgv.Rows[rowIndex].Cells[headerID].Value);
+            string presentStatus = dgv.Rows[rowIndex].Cells[headerStatus].Value.ToString();
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            contextMenuStrip1.Hide();
+            if (itemClicked.Equals("Request"))
+            {
+                orderRequest(orderID);
+            }
+            else if (itemClicked.Equals("Approve"))
+            {
+                orderApprove(rowIndex, orderID);
+            }
+            else if (itemClicked.Equals("Edit"))
+            {
+                orderEdit(rowIndex, orderID);
+            }
+            else if (itemClicked.Equals("Cancel"))
+            {
+                orderCancel(rowIndex, orderID, presentStatus);
+            }
+            else if (itemClicked.Equals("Receive"))
+            {
+                orderReceive(rowIndex, orderID);
+            }
+            else if (itemClicked.Equals("Complete"))
+            {
+                orderComplete(rowIndex, orderID);
+            }
+            else if (itemClicked.Equals("Incomplete"))
+            {
+                orderIncomplete(rowIndex, orderID);
+            }
+            else if (itemClicked.Equals("Follow Up/ Action"))
+            {
+                orderFollowUpAction(orderID);
+            }
+          
+            lblUpdatedTime.Text = DateTime.Now.ToString();
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+
+        }
+
+        private void MaterialForecast_my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
@@ -2384,7 +2902,31 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
-         
+            else if (itemClicked.Equals(text.Str_OrderRequest))
+            {
+                if (rowIndex >= 0)
+                {
+                    string itemCode = dgvAlertSummary.Rows[rowIndex].Cells[text.Header_PartCode].Value.ToString();
+                    string itemName = dgvAlertSummary.Rows[rowIndex].Cells[text.Header_PartName].Value.ToString();
+
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                    frmOrderRequest frm = new frmOrderRequest(tool.getItemCat(itemCode), itemCode, itemName, cbZeroCostOnly.Checked);
+
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.ShowDialog();//create new order
+
+                    if (frmOrderRequest.orderSuccess)
+                    {
+                        Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                        resetForm();
+                        frmOrderRequest.orderSuccess = false;
+                        Cursor = Cursors.Arrow; // change cursor to normal type
+                    }
+                    Cursor = Cursors.Arrow; // change cursor to normal type
+
+                }
+            }
             Cursor = Cursors.Arrow; // change cursor to normal type
 
         }
@@ -2392,7 +2934,7 @@ namespace FactoryManagementSoftware.UI
         private void cmbStatusSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(loaded)
-            loadOrderRecord();
+                loadOrderRecordFromStatusSearch();
         }
 
         private void cbCodeNameSearch_CheckedChanged(object sender, EventArgs e)
@@ -2401,6 +2943,8 @@ namespace FactoryManagementSoftware.UI
             {
                 cbPOSearch.Checked = false;
                 cbOrderIDSearch.Checked = false;
+                if (loaded)
+                    loadOrderRecord();
             }
         }
 
@@ -2411,6 +2955,8 @@ namespace FactoryManagementSoftware.UI
             {
                 cbCodeNameSearch.Checked = false;
                 cbOrderIDSearch.Checked = false;
+                if (loaded)
+                    loadOrderRecord();
             }
         }
 
@@ -2420,13 +2966,15 @@ namespace FactoryManagementSoftware.UI
             {
                 cbCodeNameSearch.Checked = false;
                 cbPOSearch.Checked = false;
+                if (loaded)
+                    loadOrderRecord();
             }
         }
 
         private void txtOrdSearch_TextChanged(object sender, EventArgs e)
         {
-            if(loaded)
-            loadOrderRecord();
+            timer1.Stop();
+            timer1.Start();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -2756,6 +3304,18 @@ namespace FactoryManagementSoftware.UI
         private void frmOrderAlert_NEW_Shown(object sender, EventArgs e)
         {
             loaded = true;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            timer1.Stop();
+
+            if (loaded)
+                loadOrderRecord();
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
     }
 }

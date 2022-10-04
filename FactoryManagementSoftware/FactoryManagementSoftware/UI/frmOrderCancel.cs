@@ -15,7 +15,12 @@ namespace FactoryManagementSoftware.UI
         public frmOrderCancel()
         {
             InitializeComponent();
+            orderCancelled = false;
+            CancelledReason = "";
         }
+
+        static public bool orderCancelled = false;
+        static public string  CancelledReason = "";
 
         private void btnReset_Click(object sender, EventArgs e)
         {
@@ -27,6 +32,11 @@ namespace FactoryManagementSoftware.UI
         {
             frmOrder.note = txtNote.Text;
             frmOrder.cancel = true;
+
+            frmOrderAlert_NEW.note = txtNote.Text;
+            frmOrderAlert_NEW.cancel = true;
+
+            orderCancelled = true;
             Close();
         }
     }
