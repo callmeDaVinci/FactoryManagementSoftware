@@ -89,9 +89,14 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_PartName, typeof(string));
 
             dt.Columns.Add(text.Header_DirectUseOn, typeof(string));
+
+            dt.Columns.Add(text.Header_ParentStock, typeof(float));
+
             dt.Columns.Add(text.Header_Product, typeof(string));
 
-            dt.Columns.Add(text.Header_ReadyStock, typeof(float));
+            dt.Columns.Add(text.Header_ProductStock, typeof(float));
+
+            //dt.Columns.Add(text.Header_ReadyStock, typeof(float));
 
             dt.Columns.Add(month + string_Product_Forecast, typeof(float));
             dt.Columns.Add(month + string_Product_Delivered, typeof(float));

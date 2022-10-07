@@ -259,6 +259,9 @@ namespace FactoryManagementSoftware.Module
         #endregion
 
         #region  DGV TABLE HEADER NAME
+
+        public string Header_IndexMarking { get; } = "#Marking";
+
         public string Header_Index { get; } = "#";
         public string Header_ParentOrProduct { get; } = "PARENT/PRODUCT";
 
@@ -272,6 +275,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_JoinQty { get; } = "JOIN QTY";
         public string Header_JoinMax { get; } = "JOIN MAX";
         public string Header_JoinMin { get; } = "JOIN MIN";
+        public string Header_JoinWastage { get; } = "JOIN WASTAGE";
         public string Header_PartNameWithParent { get; } = "PART NAME_(PARENT)";
         public string Header_PartName { get; } = "PART NAME";
         public string Header_Parent { get; } = "PARENT";
@@ -282,6 +286,9 @@ namespace FactoryManagementSoftware.Module
         public string Header_DirectOut_KG_Piece { get; } = "DIRECT OUT(KG/PIECE)";
         public string Header_BalStock { get; } = "BAL. STOCK";
         public string Header_ReadyStock { get; } = "READY STOCK";
+        public string Header_ParentStock { get; } = "PARENT STOCK";
+        public string Header_ProductStock { get; } = "PRODUCT STOCK";
+
         public string Header_PendingOrder { get; } = "PENDING ORDER";
         public string Header_Unit { get; } = "UNIT";
 
@@ -360,6 +367,12 @@ namespace FactoryManagementSoftware.Module
 
         public string Str_MoreDetail { get; } = "More Details";
         public string Str_OrderRequest { get; } = "Order Request";
+
+        public string str_Forecast { get; } = " FORECAST";
+        public string str_Delivered { get; } = " DELIVERED";
+        public string str_EstBalance { get; } = " EST. BAL.";
+        public string str_InsufficientQty { get; } = " INSUFFICIENT QTY";
+        public string str_RequiredQty { get; } = " REQUIRED QTY";
 
 
         public string Header_Data { get; } = "DATA DB";

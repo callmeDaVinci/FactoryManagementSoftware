@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpMainFIlter = new System.Windows.Forms.TableLayoutPanel();
             this.btnOrderAlertOnly = new System.Windows.Forms.Button();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -70,9 +70,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.cmbYearFrom = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbDeductDeliveredQty = new System.Windows.Forms.CheckBox();
             this.cbShowTerminatedItem = new System.Windows.Forms.CheckBox();
             this.cbZeroStockType = new System.Windows.Forms.CheckBox();
-            this.cbForecastDeductStock = new System.Windows.Forms.CheckBox();
+            this.cbDeductUsedStock = new System.Windows.Forms.CheckBox();
             this.btnFilterApply = new System.Windows.Forms.Button();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -337,24 +338,24 @@
             this.dgvAlertSummary.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvAlertSummary.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvAlertSummary.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAlertSummary.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAlertSummary.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvAlertSummary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAlertSummary.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAlertSummary.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAlertSummary.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvAlertSummary.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAlertSummary.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvAlertSummary.Location = new System.Drawing.Point(4, 484);
@@ -666,9 +667,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cbDeductDeliveredQty);
             this.groupBox2.Controls.Add(this.cbShowTerminatedItem);
             this.groupBox2.Controls.Add(this.cbZeroStockType);
-            this.groupBox2.Controls.Add(this.cbForecastDeductStock);
+            this.groupBox2.Controls.Add(this.cbDeductUsedStock);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(668, 3);
@@ -678,6 +680,23 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "OTHER SETTING";
             // 
+            // cbDeductDeliveredQty
+            // 
+            this.cbDeductDeliveredQty.AutoSize = true;
+            this.cbDeductDeliveredQty.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeductDeliveredQty.Checked = true;
+            this.cbDeductDeliveredQty.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDeductDeliveredQty.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbDeductDeliveredQty.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbDeductDeliveredQty.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeductDeliveredQty.Location = new System.Drawing.Point(204, 52);
+            this.cbDeductDeliveredQty.Name = "cbDeductDeliveredQty";
+            this.cbDeductDeliveredQty.Size = new System.Drawing.Size(157, 19);
+            this.cbDeductDeliveredQty.TabIndex = 169;
+            this.cbDeductDeliveredQty.Text = "DEDUCT DELIVERED QTY";
+            this.cbDeductDeliveredQty.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeductDeliveredQty.UseVisualStyleBackColor = true;
+            // 
             // cbShowTerminatedItem
             // 
             this.cbShowTerminatedItem.AutoSize = true;
@@ -685,7 +704,7 @@
             this.cbShowTerminatedItem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbShowTerminatedItem.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbShowTerminatedItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowTerminatedItem.Location = new System.Drawing.Point(119, 26);
+            this.cbShowTerminatedItem.Location = new System.Drawing.Point(17, 51);
             this.cbShowTerminatedItem.Name = "cbShowTerminatedItem";
             this.cbShowTerminatedItem.Size = new System.Drawing.Size(165, 19);
             this.cbShowTerminatedItem.TabIndex = 168;
@@ -709,21 +728,22 @@
             this.cbZeroStockType.UseVisualStyleBackColor = true;
             this.cbZeroStockType.CheckedChanged += new System.EventHandler(this.cbZeroStockType_CheckedChanged);
             // 
-            // cbForecastDeductStock
+            // cbDeductUsedStock
             // 
-            this.cbForecastDeductStock.AutoSize = true;
-            this.cbForecastDeductStock.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbForecastDeductStock.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbForecastDeductStock.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbForecastDeductStock.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbForecastDeductStock.Location = new System.Drawing.Point(119, 49);
-            this.cbForecastDeductStock.Name = "cbForecastDeductStock";
-            this.cbForecastDeductStock.Size = new System.Drawing.Size(170, 19);
-            this.cbForecastDeductStock.TabIndex = 157;
-            this.cbForecastDeductStock.Text = "FORECAST - READY STOCK";
-            this.cbForecastDeductStock.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbForecastDeductStock.UseVisualStyleBackColor = true;
-            this.cbForecastDeductStock.Visible = false;
+            this.cbDeductUsedStock.AutoSize = true;
+            this.cbDeductUsedStock.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeductUsedStock.Checked = true;
+            this.cbDeductUsedStock.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDeductUsedStock.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbDeductUsedStock.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbDeductUsedStock.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeductUsedStock.Location = new System.Drawing.Point(204, 29);
+            this.cbDeductUsedStock.Name = "cbDeductUsedStock";
+            this.cbDeductUsedStock.Size = new System.Drawing.Size(142, 19);
+            this.cbDeductUsedStock.TabIndex = 157;
+            this.cbDeductUsedStock.Text = "DEDUCT USED STOCK";
+            this.cbDeductUsedStock.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeductUsedStock.UseVisualStyleBackColor = true;
             // 
             // btnFilterApply
             // 
@@ -1030,24 +1050,24 @@
             this.dgvOrder.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvOrder.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvOrder.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvOrder.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvOrder.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvOrder.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvOrder.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvOrder.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvOrder.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvOrder.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvOrder.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvOrder.Location = new System.Drawing.Point(4, 76);
@@ -1177,7 +1197,7 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.ComboBox cmbYearTo;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox cbForecastDeductStock;
+        private System.Windows.Forms.CheckBox cbDeductUsedStock;
         private System.Windows.Forms.CheckBox cbZeroStockType;
         private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.DataGridView dgvOrder;
@@ -1206,5 +1226,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnReport;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.CheckBox cbDeductDeliveredQty;
     }
 }

@@ -96,10 +96,10 @@ namespace FactoryManagementSoftware.UI
         private string Unit_KG = "KG";
         private string Unit_PCS = "PCS";
 
-        private string string_Forecast = " FORECAST";
-        private string string_StillNeed = " STILL NEED";
-        private string string_Delivered = " DELIVERED";
-        private string string_EstBalance = " EST. BAL.";
+        //private string text.str_Forecast = " FORECAST";
+        //private string string_StillNeed = " STILL NEED";
+        //private string text.str_Delivered = " DELIVERED";
+        //private string text.str_EstBalance = " EST. BAL.";
 
         private string ForecastType_DeductStock = " (FORECAST-STOCK)";
         private string ForecastType_FORECAST = " FORECAST";
@@ -195,7 +195,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
-            header_Forecast = cmbMonthFrom.Text + "/" + cmbYearFrom.Text + string_Forecast;
+            header_Forecast = cmbMonthFrom.Text + "/" + cmbYearFrom.Text + text.str_Forecast;
             dt.Columns.Add(text.Header_PartCode, typeof(string));
             dt.Columns.Add(text.Header_PartName, typeof(string));
             dt.Columns.Add(header_Forecast, typeof(float));
@@ -207,6 +207,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
+            dt.Columns.Add(text.Header_IndexMarking, typeof(int));
             dt.Columns.Add(text.Header_Index, typeof(int));
             dt.Columns.Add(header_ParentIndex, typeof(int));
             dt.Columns.Add(text.Header_GroupLevel, typeof(int));
@@ -218,10 +219,12 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_JoinQty, typeof(float));
             dt.Columns.Add(text.Header_JoinMax, typeof(float));
             dt.Columns.Add(text.Header_JoinMin, typeof(float));
+            dt.Columns.Add(text.Header_JoinWastage, typeof(float));
             dt.Columns.Add(text.Header_ReadyStock, typeof(float));
             dt.Columns.Add(text.Header_Unit, typeof(string));
             dt.Columns.Add(text.Header_PartCode, typeof(string));
             dt.Columns.Add(text.Header_PartName, typeof(string));
+            dt.Columns.Add(text.Header_BalStock, typeof(float));
 
             // headerOutQty = cmbMonth.Text + "/" + cmbYear.Text + " FORECAST";
 
@@ -265,9 +268,10 @@ namespace FactoryManagementSoftware.UI
 
                 month = j + "/" + i;
 
-                dt.Columns.Add(month + string_Forecast, typeof(float));
-                dt.Columns.Add(month + string_Delivered, typeof(float));
-                dt.Columns.Add(month + string_StillNeed, typeof(float));
+                dt.Columns.Add(month + text.str_Forecast, typeof(float));
+                dt.Columns.Add(month + text.str_Delivered, typeof(float));
+                dt.Columns.Add(month + text.str_RequiredQty, typeof(float));
+                dt.Columns.Add(month + text.str_InsufficientQty, typeof(float));
             }
 
             dt.Columns.Add(text.Header_PendingOrder, typeof(string));
@@ -325,10 +329,11 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 string month = j + "/" + i;
-                dt.Columns.Add(month + string_Forecast, typeof(float));
-                dt.Columns.Add(month + string_Delivered, typeof(float));
-                dt.Columns.Add(month + string_StillNeed, typeof(float));
-                dt.Columns.Add(month + string_EstBalance, typeof(float));
+                dt.Columns.Add(month + text.str_Forecast, typeof(float));
+                dt.Columns.Add(month + text.str_Delivered, typeof(float));
+                dt.Columns.Add(month + text.str_RequiredQty, typeof(float));
+                dt.Columns.Add(month + text.str_InsufficientQty, typeof(float));
+                dt.Columns.Add(month + text.str_EstBalance, typeof(float));
             }
 
             dt.Columns.Add(text.Header_PendingOrder, typeof(string));
@@ -341,7 +346,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
-            header_Forecast = cmbMonthFrom.Text + "/" + cmbYearFrom.Text + string_Forecast;
+            header_Forecast = cmbMonthFrom.Text + "/" + cmbYearFrom.Text + text.str_Forecast;
 
             dt.Columns.Add(text.Header_Index, typeof(int));
             dt.Columns.Add(text.Header_MatType, typeof(string));
@@ -402,7 +407,7 @@ namespace FactoryManagementSoftware.UI
                 monthEnd = tmp;
             }
 
-            header_Forecast = monthStart + "/" + yearStart + string_Forecast;
+            header_Forecast = monthStart + "/" + yearStart + text.str_Forecast;
 
             for (int i = yearStart; i <= yearEnd; i++)
             {
@@ -410,7 +415,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     for (int j = monthStart; j <= monthEnd; j++)
                     {
-                        month = j + "/" + i + string_Forecast;
+                        month = j + "/" + i + text.str_Forecast;
                         dt.Columns.Add(month, typeof(float));
                        
                     }
@@ -421,7 +426,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         for (int j = monthStart; j <= 12; j++)
                         {
-                            month = j + "/" + i + string_Forecast;
+                            month = j + "/" + i + text.str_Forecast;
                             dt.Columns.Add(month, typeof(float));
                         }
                     }
@@ -429,7 +434,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         for (int j = 1; j <= monthEnd; j++)
                         {
-                            month = j + "/" + i + string_Forecast;
+                            month = j + "/" + i + text.str_Forecast;
                             dt.Columns.Add(month, typeof(float));
                         }
                     }
@@ -437,7 +442,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         for (int j = 1; j <= 12; j++)
                         {
-                            month = j + "/" + i + string_Forecast;
+                            month = j + "/" + i + text.str_Forecast;
                             dt.Columns.Add(month, typeof(float));
                         }
                     }
@@ -479,11 +484,11 @@ namespace FactoryManagementSoftware.UI
                     {
                         string colName = col.ColumnName;
 
-                        if(colName.Contains(string_Forecast) || colName.Contains(string_Delivered) || colName.Contains(string_StillNeed))
+                        if(colName.Contains(text.str_Forecast) || colName.Contains(text.str_Delivered))
                         {
                             dgv.Columns[colName].Visible = false;
                         }
-                        else if(colName.Contains(string_EstBalance))
+                        else if(colName.Contains(text.str_EstBalance))
                         {
                             dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                         }
@@ -534,7 +539,7 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[row].Height = 50;
                 }
             }
-            else if (colName.Contains(string_EstBalance))
+            else if (colName.Contains(text.str_EstBalance))
             {
                 float bal = float.TryParse(dgv.Rows[row].Cells[colName].Value.ToString(), out float x) ? x : 0;
 
@@ -909,7 +914,7 @@ namespace FactoryManagementSoftware.UI
                 DeliveredQty = tool.getItemForecast(dt_ItemForecast, itemCode, Convert.ToInt32(cmbYearFrom.Text), Convert.ToInt32(cmbMonthFrom.Text));
                 dbItemName = tool.getItemNameFromDataTable(dt_Item, itemCode);
 
-               if(cbForecastDeductStock.Checked)
+               if(cbDeductUsedStock.Checked)
                 {
                     float readyStock = tool.getStockQtyFromDataTable(dt_Item, itemCode);
 
@@ -955,7 +960,7 @@ namespace FactoryManagementSoftware.UI
             DeliveredQty = tool.getItemForecast(dt_ItemForecast, itemCode, Convert.ToInt32(year), Convert.ToInt32(Month));
             dbItemName = tool.getItemNameFromDataTable(dt_Item, itemCode);
 
-            if (cbForecastDeductStock.Checked)
+            if (cbDeductUsedStock.Checked)
             {
                 float readyStock = tool.getStockQtyFromDataTable(dt_Item, itemCode);
 
@@ -1061,6 +1066,7 @@ namespace FactoryManagementSoftware.UI
                     float joinQty = float.TryParse(join[dalJoin.JoinQty].ToString(), out float i) ? i : 1;
                     float joinMax = float.TryParse(join[dalJoin.JoinMax].ToString(), out i) ? i : 1;
                     float joinMin = float.TryParse(join[dalJoin.JoinMin].ToString(), out i) ? i : 1;
+                    float joinWastage = float.TryParse(join[dalJoin.JoinWastage].ToString(), out i) ? i : 1;
 
                     foreach (DataRow item in dt_Item.Rows)
                     {
@@ -1073,13 +1079,13 @@ namespace FactoryManagementSoftware.UI
                             string itemCode = item[dalItem.ItemCode].ToString();
                             string itemName = item[dalItem.ItemName].ToString();
                             string itemType = item[dalItem.ItemCat].ToString();
-                            float Ready_Stock = float.TryParse(item[dalItem.ItemStock].ToString(), out Ready_Stock) ? Ready_Stock : 0;
+                            float Child_Stock = float.TryParse(item[dalItem.ItemStock].ToString(), out Child_Stock) ? Child_Stock : 0;
                             float pendingOrder = float.TryParse(item[dalItem.ItemOrd].ToString(), out pendingOrder) ? pendingOrder : 0;
                             float Color_Rate = float.TryParse(item[dalItem.ItemMBRate].ToString(), out Color_Rate) ? Color_Rate : 0;
 
                             if (cbZeroStockType.Checked && itemType != text.Cat_Part)
                             {
-                                Ready_Stock = tool.getPMMAQtyFromDataTable(dt_Item, itemCode);
+                                Child_Stock = tool.getPMMAQtyFromDataTable(dt_Item, itemCode);
                             }
                            
                             newRow[text.Header_Index] = childIndex;
@@ -1091,7 +1097,7 @@ namespace FactoryManagementSoftware.UI
                             newRow[text.Header_JoinQty] = joinQty;
                             newRow[text.Header_JoinMax] = joinMax;
                             newRow[text.Header_JoinMin] = joinMin;
-                            newRow[text.Header_ReadyStock] = Ready_Stock;
+                            newRow[text.Header_ReadyStock] = Child_Stock;
                             newRow[text.Header_PendingOrder] = pendingOrder;
                             newRow[text.Header_ColorRate] = Color_Rate;
 
@@ -1275,6 +1281,8 @@ namespace FactoryManagementSoftware.UI
                     {
                         string parentIndex = row[header_ParentIndex].ToString();
 
+                        float Ready_Stock = float.TryParse(row[text.Header_ReadyStock].ToString(), out Ready_Stock) ? Ready_Stock : 0;
+
                         for(int i = 0; i < DT_PRODUCT_FORECAST_SUMMARY.Rows.Count; i++)
                         {
                             if (DT_PRODUCT_FORECAST_SUMMARY.Rows[i][text.Header_Index].ToString() == parentIndex)
@@ -1283,7 +1291,12 @@ namespace FactoryManagementSoftware.UI
                                 {
                                     string colName = DT_PRODUCT_FORECAST_SUMMARY.Columns[j].ColumnName;
 
-                                    if (colName.Contains(string_Forecast) || colName.Contains(string_Delivered) || colName.Contains(string_StillNeed))
+                                    bool colFound = colName.Contains(text.str_Forecast);
+                                    colFound |= colName.Contains(text.str_Delivered);
+                                    colFound |= colName.Contains(text.str_RequiredQty);
+                                    colFound |= colName.Contains(text.str_InsufficientQty);
+
+                                    if (colFound)
                                     {
                                         float parentQty = float.TryParse(DT_PRODUCT_FORECAST_SUMMARY.Rows[i][j].ToString(), out parentQty) ? parentQty : 0;
                                         float wastage = float.TryParse(DT_PRODUCT_FORECAST_SUMMARY.Rows[i][text.Header_WastageAllowed_Percentage].ToString(), out wastage) ? wastage : 0;
@@ -1311,6 +1324,7 @@ namespace FactoryManagementSoftware.UI
                                         {
                                             float joinMax = float.TryParse(row[text.Header_JoinMax].ToString(), out joinMax) ? joinMax : 1;
                                             float joinQty = float.TryParse(row[text.Header_JoinQty].ToString(), out joinQty) ? joinQty : 0;
+                                            float joinWastage = float.TryParse(row[text.Header_JoinWastage].ToString(), out joinWastage) ? joinWastage : 0;
 
                                             joinMax = joinMax <= 0 ? 1 : joinMax;
 
@@ -1321,7 +1335,7 @@ namespace FactoryManagementSoftware.UI
                                             }
                                             else
                                             {
-                                                childQty = (float)Math.Ceiling( parentQty / joinMax * joinQty * (1 + wastage));
+                                                childQty = (float)Math.Ceiling( parentQty / joinMax * joinQty * (1 + joinWastage));
 
                                             }
                                         }
@@ -1431,7 +1445,8 @@ namespace FactoryManagementSoftware.UI
 
                 string MonthlyForecast;
                 string MonthlyDelivered;
-                string MonthlyStillNeed;
+                string MonthlyRequired;
+                string MonthlyInsufficient;
 
                 DataTable dt_PMMA_Date = dalPmmaDate.Select();
 
@@ -1465,7 +1480,8 @@ namespace FactoryManagementSoftware.UI
                     float Color_Rate = float.TryParse(ProductRow[dalItem.ItemMBRate].ToString(), out Color_Rate) ? Color_Rate : 0;
                     float Forecast = 0;
                     float Delivered = 0;
-                    float StillNeed = 0;
+                    float Required = 0;
+                    float Insufficient = 0;
 
                     newRow[text.Header_Index] = index;
                     newRow[header_ParentIndex] = 0;
@@ -1490,9 +1506,10 @@ namespace FactoryManagementSoftware.UI
                             date = new DateTime(i, j, 1);
                         }
 
-                        MonthlyForecast = j + "/" + i + string_Forecast;
-                        MonthlyDelivered = j + "/" + i + string_Delivered;
-                        MonthlyStillNeed = j + "/" + i + string_StillNeed;
+                        MonthlyForecast = j + "/" + i + text.str_Forecast;
+                        MonthlyDelivered = j + "/" + i + text.str_Delivered;
+                        MonthlyRequired = j + "/" + i + text.str_RequiredQty;
+                        MonthlyInsufficient = j + "/" + i + text.str_InsufficientQty;
 
                         DateTime dateFrom, dateTo;
 
@@ -1507,29 +1524,34 @@ namespace FactoryManagementSoftware.UI
                             dateTo = new DateTime(i, j, DateTime.DaysInMonth(i, j));
                         }
 
-                        if (DT_PRODUCT_FORECAST_SUMMARY.Columns.Contains(MonthlyForecast) && DT_PRODUCT_FORECAST_SUMMARY.Columns.Contains(MonthlyDelivered) && DT_PRODUCT_FORECAST_SUMMARY.Columns.Contains(MonthlyStillNeed))
+                        bool colFound = DT_PRODUCT_FORECAST_SUMMARY.Columns.Contains(MonthlyForecast);
+                        colFound &= DT_PRODUCT_FORECAST_SUMMARY.Columns.Contains(MonthlyDelivered);
+                        colFound &= DT_PRODUCT_FORECAST_SUMMARY.Columns.Contains(MonthlyRequired);
+                        colFound &= DT_PRODUCT_FORECAST_SUMMARY.Columns.Contains(MonthlyInsufficient);
+
+                        if (colFound)
                         {
                             Forecast = getItemForecast(ProductCode, i, j);
 
-                            if (cbForecastDeductStock.Checked)
-                            {
-                                Forecast -= Ready_Stock;
-                            }
+                            Forecast = Forecast < 0 ? 0 : Forecast;
 
-                            Forecast = Forecast <= -1 ? 0 : Forecast;
-
-                            if (true)
+                            if (cbDeductDeliveredQty.Checked)
                             {
                                 Delivered = DeliveredToCustomerQty(ProductCode, dateFrom, dateTo);
                                 newRow[MonthlyDelivered] = Delivered;
                             }
 
-                            StillNeed = Forecast - Delivered;
+                            Required = Forecast - Delivered;
 
-                            StillNeed = StillNeed < 0 ? 0 : StillNeed;
+                            Required = Required < 0 ? 0 : Required;
+
+                            Insufficient = Ready_Stock - Required;
+
+                            Insufficient = Insufficient > 0 ? 0 : Insufficient;
 
                             newRow[MonthlyForecast] = Forecast;
-                            newRow[MonthlyStillNeed] = StillNeed;
+                            newRow[MonthlyRequired] = Required;
+                            newRow[MonthlyInsufficient] = Insufficient;
                         }
                     }
 
@@ -1646,6 +1668,18 @@ namespace FactoryManagementSoftware.UI
                     index++;
                 }
 
+                //index marking
+                DT_PRODUCT_FORECAST_SUMMARY = IndexMarking(DT_PRODUCT_FORECAST_SUMMARY);
+
+                //stock deduct
+                if(cbDeductUsedStock.Checked)
+                {
+                    StockDeductCalculation();
+                    DT_PRODUCT_FORECAST_SUMMARY.DefaultView.Sort = text.Header_IndexMarking + " ASC";
+                    DT_PRODUCT_FORECAST_SUMMARY = DT_PRODUCT_FORECAST_SUMMARY.DefaultView.ToTable();
+
+                }
+
                 //material & child Item merge & balance calculation
                 ChildItemMergeAndBalCalculation();
 
@@ -1653,6 +1687,285 @@ namespace FactoryManagementSoftware.UI
             }
 
             frmLoading.CloseForm();
+        }
+
+        private DataTable IndexMarking(DataTable dt)
+        {
+            if(dt != null && dt.Columns.Contains(text.Header_IndexMarking))
+            {
+                int indexMarking = 1;
+
+                foreach(DataRow row in dt.Rows)
+                {
+                    row[text.Header_IndexMarking] = indexMarking++;
+                }
+            }
+
+            return dt;
+        }
+
+        private float GetLatestBalStock(int CurrentLevel, string itemCode, float BalStock)
+        {
+
+            if(DT_PRODUCT_FORECAST_SUMMARY != null)
+            {
+                if(CurrentLevel > 1)
+                {
+                    CurrentLevel --;
+                }
+                
+                bool LevelItemFound = false;
+
+                foreach (DataRow row in DT_PRODUCT_FORECAST_SUMMARY.Rows)
+                {
+                    string looping_ItemCode = row[text.Header_PartCode].ToString();
+                    int looping_Level = int.TryParse(row[text.Header_GroupLevel].ToString(), out int i) ? i : 0;
+
+                    if(looping_Level == CurrentLevel && looping_ItemCode == itemCode)
+                    {
+                        LevelItemFound = true;
+                        float StockTmp = float.TryParse(row[text.Header_BalStock].ToString(), out StockTmp) ? StockTmp : 0;
+
+                        if( StockTmp < BalStock)
+                        {
+                            BalStock = StockTmp;
+                        }
+
+                    }
+                }
+
+                if(!LevelItemFound && CurrentLevel > 1)
+                {
+                    BalStock = GetLatestBalStock(CurrentLevel - 1, itemCode, BalStock);
+                }
+                else if(!LevelItemFound && CurrentLevel == 1)
+                {
+                    foreach (DataRow row in DT_PRODUCT_FORECAST_SUMMARY.Rows)
+                    {
+                        if (row[text.Header_PartCode].ToString() == itemCode)
+                        {
+                            BalStock = float.TryParse(row[text.Header_ReadyStock].ToString(), out BalStock) ? BalStock : 0;
+
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return BalStock;
+
+        }
+
+        private void StockDeductCalculation()//Level 1 only
+        {
+            if (DT_PRODUCT_FORECAST_SUMMARY != null)
+            {
+                float balStock = 0;
+                string Last_PartCode = null;
+                bool LevelFound = false;
+
+                DT_PRODUCT_FORECAST_SUMMARY.DefaultView.Sort = text.Header_Type + " ASC," + text.Header_PartCode + " ASC," + text.Header_GroupLevel + " ASC";
+                DT_PRODUCT_FORECAST_SUMMARY = DT_PRODUCT_FORECAST_SUMMARY.DefaultView.ToTable();
+                int Level_Checking = 1;
+
+                foreach (DataRow row in DT_PRODUCT_FORECAST_SUMMARY.Rows)
+                {
+                    string itemType = row[text.Header_Type].ToString();
+
+                    if (itemType == text.Cat_Part)
+                    {
+                        int Level = int.TryParse(row[text.Header_GroupLevel].ToString(), out Level) ? Level : 0;
+                        string itemCode = row[text.Header_PartCode].ToString();
+
+                        if (Last_PartCode != itemCode)
+                        {
+                            Last_PartCode = itemCode;
+                            balStock = float.TryParse(row[text.Header_ReadyStock].ToString(), out float i) ? i : 0;
+
+                        }
+
+                        if (Level == Level_Checking && Last_PartCode == itemCode)
+                        {
+                            LevelFound = true;
+
+                            foreach (DataColumn col in DT_PRODUCT_FORECAST_SUMMARY.Columns)
+                            {
+                                string colName = col.ColumnName;
+
+                                if (colName.Contains(text.str_RequiredQty))
+                                {
+                                    float Required = float.TryParse(row[colName].ToString(), out float j) ? j : 0;
+                                    float Insufficient = 0;
+
+                                    balStock -= Required;
+
+                                    if (balStock < 0)
+                                    {
+                                        Insufficient = (float) balStock;
+                                        balStock = 0;
+                                    }
+                                    else
+                                    {
+                                        Insufficient = 0;
+                                    }
+
+                                    row[colName.Replace(text.str_RequiredQty, text.str_InsufficientQty)] = Insufficient;
+                                    row[text.Header_BalStock] = balStock;
+                                }
+                            }
+
+                          
+                        }
+                    }
+
+                }
+
+               
+
+                if(LevelFound)
+                {
+                    StockDeductCalculation(Level_Checking + 1);
+                }
+            }
+        }
+
+        private void StockDeductCalculation(int Level_Checking)// Level 2 above
+        {
+            if (DT_PRODUCT_FORECAST_SUMMARY != null)
+            {
+                float balStock = 0;
+                string Last_PartCode = null;
+                bool LevelFound = false;
+
+    
+                foreach (DataRow row in DT_PRODUCT_FORECAST_SUMMARY.Rows)
+                {
+                    string itemType = row[text.Header_Type].ToString();
+                    string indexMarking = row[text.Header_Index].ToString();
+
+                  
+                    if (true)//itemType == text.Cat_Part
+                    {
+                        int Level = int.TryParse(row[text.Header_GroupLevel].ToString(), out Level) ? Level : 0;
+                        string itemCode = row[text.Header_PartCode].ToString();
+
+
+                        if (Last_PartCode != itemCode)
+                        {
+                            Last_PartCode = itemCode;
+
+                            float ReadyStock = float.TryParse(row[text.Header_ReadyStock].ToString(), out ReadyStock) ? ReadyStock : 0;
+
+
+                            //get lastest bal stock (from lower level)
+                            balStock = GetLatestBalStock(Level_Checking, itemCode, ReadyStock);
+                            //balStock = float.TryParse(row[text.Header_ReadyStock].ToString(), out float i) ? i : 0;
+
+                            balStock = balStock < 0 ? 0 : balStock;
+                        }
+
+                        if (Level == Level_Checking && Last_PartCode == itemCode)
+                        {
+                            LevelFound = true;
+
+                            foreach (DataColumn col in DT_PRODUCT_FORECAST_SUMMARY.Columns)
+                            {
+                                string colName = col.ColumnName;
+
+                                if (colName.Contains(text.str_InsufficientQty))
+                                {
+                                    DataRow ParentRow = GetParentDatarow(row[text.Header_ParentIndex].ToString());
+
+                                    float Required = float.TryParse(ParentRow[colName].ToString(), out float j) ? j * -1 : 0;
+
+                                    if (itemType == text.Cat_RawMat || itemType == text.Cat_MB || itemType == text.Cat_Pigment)
+                                    {
+                                        float partWeight = float.TryParse(ParentRow[text.Header_PartWeight_G].ToString(), out partWeight) ? partWeight : 0;
+                                        float runnerWeight = float.TryParse(ParentRow[text.Header_RunnerWeight_G].ToString(), out runnerWeight) ? runnerWeight : 0;
+                                        float colorRate = float.TryParse(ParentRow[text.Header_ColorRate].ToString(), out colorRate) ? colorRate : 0;
+                                        float wastage = float.TryParse(ParentRow[text.Header_WastageAllowed_Percentage].ToString(), out wastage) ? wastage : 0;
+
+                                        float itemWeight = (partWeight + runnerWeight) / 1000;
+
+                                        if (itemType == text.Cat_MB || itemType == text.Cat_Pigment)
+                                        {
+                                            Required = (float)decimal.Round((decimal)(Required * itemWeight * colorRate * (1 + wastage)), 3);
+                                        }
+                                        else
+                                        {
+                                            Required = (float)decimal.Round((decimal)(Required * itemWeight * (1 + wastage)), 3);
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        float joinMax = float.TryParse(row[text.Header_JoinMax].ToString(), out joinMax) ? joinMax : 1;
+                                        float joinQty = float.TryParse(row[text.Header_JoinQty].ToString(), out joinQty) ? joinQty : 0;
+                                        float joinWastage = float.TryParse(row[text.Header_JoinWastage].ToString(), out joinWastage) ? joinWastage : 0;
+
+                                        joinMax = joinMax <= 0 ? 1 : joinMax;
+
+                                        if (itemType == text.Cat_Part)
+                                        {
+                                            Required = Required / joinMax * joinQty;
+
+                                        }
+                                        else
+                                        {
+                                            Required = (float)Math.Ceiling(Required / joinMax * joinQty * (1 + joinWastage));
+
+                                        }
+                                    }
+
+
+                                    balStock -= Required;
+
+                                    float Insufficient = 0;
+
+                                    if (balStock < 0)
+                                    {
+                                        Insufficient = (float)balStock;
+                                        balStock = 0;
+                                    }
+                                    else
+                                    {
+                                        Insufficient = 0;
+                                    }
+
+                                    //if (itemType == text.Cat_Part)
+                                    //    row[colName] = Required;
+
+                                    row[colName.Replace(text.str_InsufficientQty, text.str_RequiredQty)] = Required;
+                                    row[colName] = Insufficient;
+                                    row[text.Header_BalStock] = balStock;
+                                }
+
+                            }
+
+
+                        }
+                    }
+
+                }
+
+                if (LevelFound)
+                {
+                    StockDeductCalculation(Level_Checking + 1);
+                }
+            }
+        }
+
+        private DataRow GetParentDatarow(string ParentIndex)
+        {
+
+            foreach(DataRow row in DT_PRODUCT_FORECAST_SUMMARY.Rows)
+            {
+                if(ParentIndex == row[text.Header_Index].ToString())
+                {
+                    return row;
+                }
+            }
+            return null;
         }
 
         private void ChildItemMergeAndBalCalculation()
@@ -1706,24 +2019,26 @@ namespace FactoryManagementSoftware.UI
                     foreach(DataColumn productCol in dt_Product.Columns)
                     {
                         string colName = productCol.ColumnName;
-                        bool colFound = colName.Contains(string_Forecast);
-                        colFound |= colName.Contains(string_Delivered);
-                        colFound |= colName.Contains(string_StillNeed);
+                        bool colFound = colName.Contains(text.str_Forecast);
+                        colFound |= colName.Contains(text.str_Delivered);
+                        colFound |= colName.Contains(text.str_RequiredQty);
+                        colFound |= colName.Contains(text.str_InsufficientQty);
 
                         if (colFound)
                         {
                             float qty = float.TryParse(productRow[colName].ToString(), out qty) ? qty : 0;
+
                             float previous_qty = float.TryParse(newRow[colName].ToString(), out previous_qty) ? previous_qty : 0;
 
                             newRow[colName] = (float)decimal.Round((decimal)(qty + previous_qty), 3);
 
-                            if (colName.Contains(string_StillNeed))
+                            if (colName.Contains(text.str_InsufficientQty))
                             {
-                                string EstBalance_ColName = colName.Replace(string_StillNeed, string_EstBalance);
-                                float StillNeed_Qty = qty + previous_qty;
+                                string EstBalance_ColName = colName.Replace(text.str_InsufficientQty, text.str_EstBalance);
+                                float Insufficient = qty + previous_qty;
 
                                 
-                                readyStock = (float)decimal.Round((decimal) (readyStock - StillNeed_Qty), 3);
+                                readyStock = (float)decimal.Round((decimal) (readyStock + Insufficient), 3);
 
 
                                 newRow[EstBalance_ColName] = readyStock;
