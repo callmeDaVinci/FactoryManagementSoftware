@@ -484,7 +484,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         string colName = col.ColumnName;
 
-                        if(colName.Contains(text.str_Forecast) || colName.Contains(text.str_Delivered))
+                        if(colName.Contains(text.str_Forecast) || colName.Contains(text.str_Delivered) || colName.Contains(text.str_RequiredQty) || colName.Contains(text.str_InsufficientQty))
                         {
                             dgv.Columns[colName].Visible = false;
                         }
@@ -2032,13 +2032,13 @@ namespace FactoryManagementSoftware.UI
 
                             newRow[colName] = (float)decimal.Round((decimal)(qty + previous_qty), 3);
 
-                            if (colName.Contains(text.str_InsufficientQty))
+                            if (colName.Contains(text.str_RequiredQty))
                             {
-                                string EstBalance_ColName = colName.Replace(text.str_InsufficientQty, text.str_EstBalance);
-                                float Insufficient = qty + previous_qty;
+                                string EstBalance_ColName = colName.Replace(text.str_RequiredQty, text.str_EstBalance);
+                                float Required = qty + previous_qty;
 
                                 
-                                readyStock = (float)decimal.Round((decimal) (readyStock + Insufficient), 3);
+                                readyStock = (float)decimal.Round((decimal) (readyStock - Required), 3);
 
 
                                 newRow[EstBalance_ColName] = readyStock;
