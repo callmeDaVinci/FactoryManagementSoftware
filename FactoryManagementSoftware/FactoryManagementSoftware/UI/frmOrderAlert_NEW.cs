@@ -30,6 +30,7 @@ using ComboBox = System.Windows.Forms.ComboBox;
 using Range = Microsoft.Office.Interop.Excel.Range;
 using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
 using XlBorderWeight = Microsoft.Office.Interop.Excel.XlBorderWeight;
+using iTextSharp.text;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -159,6 +160,8 @@ namespace FactoryManagementSoftware.UI
         private DataTable DT_PRODUCT_FORECAST_SUMMARY;
 
         private DataTable DT_MATERIAL_FORECAST_SUMMARY;
+
+        private DataTable DT_STOCK_LIST;
 
         private DataTable dt_MatUsed_Forecast;
         private DataTable dt_MatStock;
@@ -338,6 +341,17 @@ namespace FactoryManagementSoftware.UI
 
             dt.Columns.Add(text.Header_PendingOrder, typeof(string));
             dt.Columns.Add(text.Header_Unit, typeof(string));
+
+            return dt;
+        }
+
+        private DataTable New_StockList_DataTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(text.Header_PartCode, typeof(string));
+            dt.Columns.Add(text.Header_BalStock, typeof(float));
 
             return dt;
         }
@@ -1672,9 +1686,9 @@ namespace FactoryManagementSoftware.UI
                 DT_PRODUCT_FORECAST_SUMMARY = IndexMarking(DT_PRODUCT_FORECAST_SUMMARY);
 
                 //stock deduct
-                if(cbDeductUsedStock.Checked)
+                if(cbDeductUsedStock.Checked)//1873ms
                 {
-                    StockDeductCalculation();
+                    NEW_StockDeductCalculation();
                     DT_PRODUCT_FORECAST_SUMMARY.DefaultView.Sort = text.Header_IndexMarking + " ASC";
                     DT_PRODUCT_FORECAST_SUMMARY = DT_PRODUCT_FORECAST_SUMMARY.DefaultView.ToTable();
 
@@ -1756,11 +1770,142 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private float GetLatestBalStock(string itemCode)
+        {
+            float balStock = 0;
+
+            if(DT_STOCK_LIST != null)
+            {
+                
+                foreach (DataRow row in DT_STOCK_LIST.Rows)
+                {
+                    if(itemCode == row[text.Header_PartCode].ToString())
+                    {
+                        return float.TryParse(row[text.Header_BalStock].ToString(), out balStock) ? balStock : 0;
+                    }
+                }
+
+                //if item not found in stock list
+                if (DT_PRODUCT_FORECAST_SUMMARY != null)
+                    foreach (DataRow row in DT_PRODUCT_FORECAST_SUMMARY.Rows)
+                    {
+                        if (itemCode == row[text.Header_PartCode].ToString())
+                        {
+                            balStock = float.TryParse(row[text.Header_ReadyStock].ToString(), out balStock) ? balStock : 0;
+                            balStock = balStock == -1 ? 0 : balStock;
+
+                            UpdateLatestBalStock(itemCode, balStock);
+                            break;
+                        }
+                    }
+            }
+
+            return balStock;
+        }
+
+        private void UpdateLatestBalStock(string itemCode, float balStock)
+        {
+            if (DT_STOCK_LIST == null)
+            {
+                DT_STOCK_LIST = New_StockList_DataTable();
+            }
+
+
+            foreach (DataRow row in DT_STOCK_LIST.Rows)
+            {
+                if(itemCode == row[text.Header_PartCode].ToString())
+                {
+                    row[text.Header_BalStock] = balStock;
+                    return;
+                }
+            }
+
+            //if data not found
+            DataRow NewRow = DT_STOCK_LIST.NewRow();
+
+            NewRow[text.Header_PartCode] = itemCode;
+            NewRow[text.Header_BalStock] = balStock;
+            DT_STOCK_LIST.Rows.Add(NewRow);
+
+        }
+
+        private void NEW_StockDeductCalculation()//Level 1 only
+        {
+            if (DT_PRODUCT_FORECAST_SUMMARY != null)
+            {
+
+                if(DT_STOCK_LIST == null)
+                {
+                    DT_STOCK_LIST = New_StockList_DataTable();
+                }
+
+                float Bal_Stock = 0;
+                string Last_PartCode = null;
+
+                DT_PRODUCT_FORECAST_SUMMARY.DefaultView.Sort = text.Header_Type + " ASC," + text.Header_PartCode + " ASC," + text.Header_GroupLevel + " ASC";
+                DT_PRODUCT_FORECAST_SUMMARY = DT_PRODUCT_FORECAST_SUMMARY.DefaultView.ToTable();
+                int Level_Checking = 1;
+
+                foreach(DataColumn col in DT_PRODUCT_FORECAST_SUMMARY.Columns)
+                {
+                    string ColName = col.ColumnName;
+
+                    if(ColName.Contains(text.str_Forecast))
+                    {
+                        foreach (DataRow row in DT_PRODUCT_FORECAST_SUMMARY.Rows)
+                        {
+                            string itemType = row[text.Header_Type].ToString();
+
+                            if (itemType == text.Cat_Part)
+                            {
+                                int Level = int.TryParse(row[text.Header_GroupLevel].ToString(), out Level) ? Level : 0;
+                                string itemCode = row[text.Header_PartCode].ToString();
+
+                                if (Last_PartCode != itemCode)
+                                {
+                                    Last_PartCode = itemCode;
+                                    Bal_Stock = GetLatestBalStock(itemCode);
+                                }
+
+                                if (Level == Level_Checking && Last_PartCode == itemCode)
+                                {
+                                    float Required = float.TryParse(row[ColName.Replace(text.str_Forecast, text.str_RequiredQty)].ToString(), out float j) ? j : 0;
+                                    float Insufficient = 0;
+
+                                    Bal_Stock -= Required;
+
+                                    if (Bal_Stock < 0)
+                                    {
+                                        Insufficient = (float)Bal_Stock;
+                                        Bal_Stock = 0;
+                                    }
+                                    else
+                                    {
+                                        Insufficient = 0;
+                                    }
+
+                                    row[ColName.Replace(text.str_Forecast, text.str_InsufficientQty)] = Insufficient;
+                                    row[text.Header_BalStock] = Bal_Stock;
+
+                                    UpdateLatestBalStock(itemCode, Bal_Stock);
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+
+                //Level 2 and above
+                StockDeductCalculation(Level_Checking + 1);
+            }
+        }
+
         private void StockDeductCalculation()//Level 1 only
         {
             if (DT_PRODUCT_FORECAST_SUMMARY != null)
             {
-                float balStock = 0;
+                float Bal_Stock = 0;
                 string Last_PartCode = null;
                 bool LevelFound = false;
 
@@ -1780,9 +1925,11 @@ namespace FactoryManagementSoftware.UI
                         if (Last_PartCode != itemCode)
                         {
                             Last_PartCode = itemCode;
-                            balStock = float.TryParse(row[text.Header_ReadyStock].ToString(), out float i) ? i : 0;
 
+                            //initial Bal Stock = Ready Stock
+                            Bal_Stock = float.TryParse(row[text.Header_ReadyStock].ToString(), out float i) ? i : 0;
                         }
+
 
                         if (Level == Level_Checking && Last_PartCode == itemCode)
                         {
@@ -1797,12 +1944,12 @@ namespace FactoryManagementSoftware.UI
                                     float Required = float.TryParse(row[colName].ToString(), out float j) ? j : 0;
                                     float Insufficient = 0;
 
-                                    balStock -= Required;
+                                    Bal_Stock -= Required;
 
-                                    if (balStock < 0)
+                                    if (Bal_Stock < 0)
                                     {
-                                        Insufficient = (float) balStock;
-                                        balStock = 0;
+                                        Insufficient = (float) Bal_Stock;
+                                        Bal_Stock = 0;
                                     }
                                     else
                                     {
@@ -1810,7 +1957,7 @@ namespace FactoryManagementSoftware.UI
                                     }
 
                                     row[colName.Replace(text.str_RequiredQty, text.str_InsufficientQty)] = Insufficient;
-                                    row[text.Header_BalStock] = balStock;
+                                    row[text.Header_BalStock] = Bal_Stock;
                                 }
                             }
 
@@ -1837,116 +1984,104 @@ namespace FactoryManagementSoftware.UI
                 string Last_PartCode = null;
                 bool LevelFound = false;
 
-    
-                foreach (DataRow row in DT_PRODUCT_FORECAST_SUMMARY.Rows)
+                foreach (DataColumn col in DT_PRODUCT_FORECAST_SUMMARY.Columns)
                 {
-                    string itemType = row[text.Header_Type].ToString();
-                    string indexMarking = row[text.Header_Index].ToString();
+                    string ColName = col.ColumnName;
 
-                  
-                    if (true)//itemType == text.Cat_Part
+                    if (ColName.Contains(text.str_Forecast))
                     {
-                        int Level = int.TryParse(row[text.Header_GroupLevel].ToString(), out Level) ? Level : 0;
-                        string itemCode = row[text.Header_PartCode].ToString();
-
-
-                        if (Last_PartCode != itemCode)
+                        foreach (DataRow row in DT_PRODUCT_FORECAST_SUMMARY.Rows)
                         {
-                            Last_PartCode = itemCode;
+                            string itemType = row[text.Header_Type].ToString();
+                            string indexMarking = row[text.Header_Index].ToString();
+                            int Level = int.TryParse(row[text.Header_GroupLevel].ToString(), out Level) ? Level : 0;
+                            string itemCode = row[text.Header_PartCode].ToString();
 
-                            float ReadyStock = float.TryParse(row[text.Header_ReadyStock].ToString(), out ReadyStock) ? ReadyStock : 0;
-
-
-                            //get lastest bal stock (from lower level)
-                            balStock = GetLatestBalStock(Level_Checking, itemCode, ReadyStock);
-                            //balStock = float.TryParse(row[text.Header_ReadyStock].ToString(), out float i) ? i : 0;
-
-                            balStock = balStock < 0 ? 0 : balStock;
-                        }
-
-                        if (Level == Level_Checking && Last_PartCode == itemCode)
-                        {
-                            LevelFound = true;
-
-                            foreach (DataColumn col in DT_PRODUCT_FORECAST_SUMMARY.Columns)
+                            if (Last_PartCode != itemCode)
                             {
-                                string colName = col.ColumnName;
+                                Last_PartCode = itemCode;
 
-                                if (colName.Contains(text.str_InsufficientQty))
-                                {
-                                    DataRow ParentRow = GetParentDatarow(row[text.Header_ParentIndex].ToString());
-
-                                    float Required = float.TryParse(ParentRow[colName].ToString(), out float j) ? j * -1 : 0;
-
-                                    if (itemType == text.Cat_RawMat || itemType == text.Cat_MB || itemType == text.Cat_Pigment)
-                                    {
-                                        float partWeight = float.TryParse(ParentRow[text.Header_PartWeight_G].ToString(), out partWeight) ? partWeight : 0;
-                                        float runnerWeight = float.TryParse(ParentRow[text.Header_RunnerWeight_G].ToString(), out runnerWeight) ? runnerWeight : 0;
-                                        float colorRate = float.TryParse(ParentRow[text.Header_ColorRate].ToString(), out colorRate) ? colorRate : 0;
-                                        float wastage = float.TryParse(ParentRow[text.Header_WastageAllowed_Percentage].ToString(), out wastage) ? wastage : 0;
-
-                                        float itemWeight = (partWeight + runnerWeight) / 1000;
-
-                                        if (itemType == text.Cat_MB || itemType == text.Cat_Pigment)
-                                        {
-                                            Required = (float)decimal.Round((decimal)(Required * itemWeight * colorRate * (1 + wastage)), 3);
-                                        }
-                                        else
-                                        {
-                                            Required = (float)decimal.Round((decimal)(Required * itemWeight * (1 + wastage)), 3);
-
-                                        }
-                                    }
-                                    else
-                                    {
-                                        float joinMax = float.TryParse(row[text.Header_JoinMax].ToString(), out joinMax) ? joinMax : 1;
-                                        float joinQty = float.TryParse(row[text.Header_JoinQty].ToString(), out joinQty) ? joinQty : 0;
-                                        float joinWastage = float.TryParse(row[text.Header_JoinWastage].ToString(), out joinWastage) ? joinWastage : 0;
-
-                                        joinMax = joinMax <= 0 ? 1 : joinMax;
-
-                                        if (itemType == text.Cat_Part)
-                                        {
-                                            Required = Required / joinMax * joinQty;
-
-                                        }
-                                        else
-                                        {
-                                            Required = (float)Math.Ceiling(Required / joinMax * joinQty * (1 + joinWastage));
-
-                                        }
-                                    }
-
-
-                                    balStock -= Required;
-
-                                    float Insufficient = 0;
-
-                                    if (balStock < 0)
-                                    {
-                                        Insufficient = (float)balStock;
-                                        balStock = 0;
-                                    }
-                                    else
-                                    {
-                                        Insufficient = 0;
-                                    }
-
-                                    //if (itemType == text.Cat_Part)
-                                    //    row[colName] = Required;
-
-                                    row[colName.Replace(text.str_InsufficientQty, text.str_RequiredQty)] = Required;
-                                    row[colName] = Insufficient;
-                                    row[text.Header_BalStock] = balStock;
-                                }
-
+                                balStock = GetLatestBalStock(itemCode);
                             }
 
+                            if (Level == Level_Checking && Last_PartCode == itemCode)
+                            {
+                                LevelFound = true;
+
+                                DataRow ParentRow = GetParentDatarow(row[text.Header_ParentIndex].ToString());
+
+                                float Required = float.TryParse(ParentRow[ColName.Replace(text.str_Forecast, text.str_InsufficientQty)].ToString(), out float j) ? j * -1 : 0;
+
+                                if (itemType == text.Cat_RawMat || itemType == text.Cat_MB || itemType == text.Cat_Pigment)
+                                {
+                                    float partWeight = float.TryParse(ParentRow[text.Header_PartWeight_G].ToString(), out partWeight) ? partWeight : 0;
+                                    float runnerWeight = float.TryParse(ParentRow[text.Header_RunnerWeight_G].ToString(), out runnerWeight) ? runnerWeight : 0;
+                                    float colorRate = float.TryParse(ParentRow[text.Header_ColorRate].ToString(), out colorRate) ? colorRate : 0;
+                                    float wastage = float.TryParse(ParentRow[text.Header_WastageAllowed_Percentage].ToString(), out wastage) ? wastage : 0;
+
+                                    float itemWeight = (partWeight + runnerWeight) / 1000;
+
+                                    if (itemType == text.Cat_MB || itemType == text.Cat_Pigment)
+                                    {
+                                        Required = (float)decimal.Round((decimal)(Required * itemWeight * colorRate * (1 + wastage)), 3);
+                                    }
+                                    else
+                                    {
+                                        Required = (float)decimal.Round((decimal)(Required * itemWeight * (1 + wastage)), 3);
+
+                                    }
+                                }
+                                else
+                                {
+                                    float joinMax = float.TryParse(row[text.Header_JoinMax].ToString(), out joinMax) ? joinMax : 1;
+                                    float joinQty = float.TryParse(row[text.Header_JoinQty].ToString(), out joinQty) ? joinQty : 0;
+                                    float joinWastage = float.TryParse(row[text.Header_JoinWastage].ToString(), out joinWastage) ? joinWastage : 0;
+
+                                    joinMax = joinMax <= 0 ? 1 : joinMax;
+
+                                    if (itemType == text.Cat_Part)
+                                    {
+                                        Required = Required / joinMax * joinQty;
+
+                                    }
+                                    else
+                                    {
+                                        Required = (float)Math.Ceiling(Required / joinMax * joinQty * (1 + joinWastage));
+
+                                    }
+                                }
+
+
+                                balStock -= Required;
+
+                                float Insufficient = 0;
+
+                                if (balStock < 0)
+                                {
+                                    Insufficient = (float)balStock;
+                                    balStock = 0;
+                                }
+                                else
+                                {
+                                    Insufficient = 0;
+                                }
+
+                                UpdateLatestBalStock(itemCode, balStock);
+
+                                row[ColName.Replace(text.str_Forecast, text.str_RequiredQty)] = Required;
+                                row[ColName.Replace(text.str_Forecast, text.str_InsufficientQty)] = Insufficient;
+
+                                row[text.Header_BalStock] = balStock;
+
+
+                            }
 
                         }
                     }
 
                 }
+
+               
 
                 if (LevelFound)
                 {
@@ -2709,7 +2844,7 @@ namespace FactoryManagementSoftware.UI
                     monthEnd = tmp;
                 }
 
-                frmOrderAlertDetail_NEW frm = new frmOrderAlertDetail_NEW(DT_PRODUCT_FORECAST_SUMMARY, itemCode, dateStart, dateEnd);
+                frmOrderAlertDetail_NEW frm = new frmOrderAlertDetail_NEW(DT_PRODUCT_FORECAST_SUMMARY ,itemCode, dateStart, dateEnd);
 
                 frm.StartPosition = FormStartPosition.CenterScreen;
 

@@ -29,7 +29,7 @@ namespace FactoryManagementSoftware.UI
 {
     public partial class frmOrderAlertDetail_NEW : Form
     {
-        public frmOrderAlertDetail_NEW(DataTable dt_Product_Info,string matCode, DateTime dateFrom, DateTime dateTo)
+        public frmOrderAlertDetail_NEW(DataTable dt_Product_Info ,string matCode, DateTime dateFrom, DateTime dateTo)
         {
             InitializeComponent();
             DT_PRODUCT = dt_Product_Info;
@@ -338,6 +338,44 @@ namespace FactoryManagementSoftware.UI
             }
             return Required;
         }
+
+        private float GetLastMonthBalStock(string itemCode, float ReadyStock, string Month)
+        {
+            float BalStock = ReadyStock;
+
+            if(DT_PRODUCT != null)
+            {
+                foreach(DataColumn col in DT_PRODUCT.Columns)
+                {
+                    string colName = col.ColumnName;
+
+                    if (colName.Contains(text.str_RequiredQty) && !colName.Contains(Month))
+                    {
+                        float Required = 0;
+
+                        foreach (DataRow row in DT_PRODUCT.Rows)
+                        {
+                            if (itemCode == row[text.Header_PartCode].ToString())
+                            {
+                                Required += float.TryParse(row[colName].ToString(), out float i) ? i : 0;
+                            }
+                        }
+
+                        BalStock -= Required;
+                    }
+                    else if(colName.Contains(Month))
+                    {
+                        break;
+                    }
+                }
+                
+            }
+
+            BalStock = BalStock < 0 ? 0 : BalStock;
+
+            return BalStock;
+        }
+
         private void DataFilter()
         {
             dgvMaterialForecastInfo.DataSource = null;
@@ -374,16 +412,22 @@ namespace FactoryManagementSoftware.UI
                         {
                             string ParentCode = parentDataRow[text.Header_PartCode].ToString();
 
-                            
-
                             string parent = parentDataRow[text.Header_PartName] + " (" + parentDataRow[text.Header_PartCode] + ")";
 
                             float ReadyStock = float.TryParse(parentDataRow[text.Header_ReadyStock].ToString(), out ReadyStock) ? ReadyStock : 0;
+                            float BalStock = GetLastMonthBalStock(ParentCode, ReadyStock, month);
+
+                            if(ParentCode == "A41K150K0")
+                            {
+                                float checkpoint = 1;
+                            }
+
+                            ReadyStock = BalStock;
+
                             float Required = float.TryParse(parentDataRow[month + text.str_RequiredQty].ToString(), out Required) ? Required : 0;
-                            float Insufficient = ReadyStock - Required;
+                            float Insufficient = BalStock - Required;
 
                             Insufficient = Insufficient > 0 ? 0 : Insufficient;
-
 
                             float partWeight = float.TryParse(parentDataRow[text.Header_PartWeight_G].ToString(), out partWeight) ? partWeight : 0;
                             float runnerWeight = float.TryParse(parentDataRow[text.Header_RunnerWeight_G].ToString(), out runnerWeight) ? runnerWeight : 0;
@@ -542,7 +586,7 @@ namespace FactoryManagementSoftware.UI
                                 newDataRow[text.Header_PartCode] = parentDataRow[text.Header_PartCode];
                                 newDataRow[text.Header_PartName] = parentDataRow[text.Header_PartName];
                                 newDataRow[text.Header_DirectUseOn] = parent;
-                                newDataRow[text.Header_ReadyStock] = parentDataRow[text.Header_ReadyStock];
+                                newDataRow[text.Header_ReadyStock] = BalStock;
                                 newDataRow[month + text.str_RequiredQty] = Required;
                                 newDataRow[month + text.str_InsufficientQty] = Insufficient;
                                 newDataRow[text.Header_PartWeight_G] = parentDataRow[text.Header_PartWeight_G];
@@ -567,7 +611,15 @@ namespace FactoryManagementSoftware.UI
                 dgvUIEdit(dgvMaterialForecastInfo);
                 dgvMaterialForecastInfo.ClearSelection();
 
+                totalMatUsed = 0;
+                foreach (DataRow row in dt_Forecast_Detail.Rows)
+                {
+                    totalMatUsed += float.TryParse(row[text.Header_MaterialUsedWithWastage].ToString(), out float i)? i: 0;
+
+                }
             }
+            
+            
 
             lblTotal.Text = "Total " + totalMatUsed + " " + unit;
 
