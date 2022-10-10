@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvMaterialForecastInfo = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
@@ -38,15 +39,13 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cmbMonthYear = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cbShowStillNeedQty = new System.Windows.Forms.CheckBox();
-            this.cbShowForecastQty = new System.Windows.Forms.CheckBox();
-            this.cbShowStock = new System.Windows.Forms.CheckBox();
-            this.cbShowDeliveredQty = new System.Windows.Forms.CheckBox();
+            this.cbShowFullDetail = new System.Windows.Forms.CheckBox();
             this.btnFilterApply = new System.Windows.Forms.Button();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.lblMaterial = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.txtOutgoingProduct = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaterialForecastInfo)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
             this.tlpFilter.SuspendLayout();
@@ -61,27 +60,26 @@
             this.dgvMaterialForecastInfo.AllowUserToAddRows = false;
             this.dgvMaterialForecastInfo.AllowUserToDeleteRows = false;
             this.dgvMaterialForecastInfo.AllowUserToOrderColumns = true;
-            this.dgvMaterialForecastInfo.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvMaterialForecastInfo.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvMaterialForecastInfo.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMaterialForecastInfo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMaterialForecastInfo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvMaterialForecastInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMaterialForecastInfo.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMaterialForecastInfo.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMaterialForecastInfo.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvMaterialForecastInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMaterialForecastInfo.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvMaterialForecastInfo.Location = new System.Drawing.Point(4, 159);
@@ -90,22 +88,24 @@
             this.dgvMaterialForecastInfo.ReadOnly = true;
             this.dgvMaterialForecastInfo.RowHeadersVisible = false;
             this.dgvMaterialForecastInfo.RowHeadersWidth = 51;
-            this.dgvMaterialForecastInfo.RowTemplate.Height = 60;
+            this.dgvMaterialForecastInfo.RowTemplate.Height = 50;
             this.dgvMaterialForecastInfo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMaterialForecastInfo.Size = new System.Drawing.Size(1255, 544);
             this.dgvMaterialForecastInfo.TabIndex = 152;
             this.dgvMaterialForecastInfo.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMaterialForecastInfo_CellFormatting);
+            this.dgvMaterialForecastInfo.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvMaterialForecastInfo_CellMouseDown);
             this.dgvMaterialForecastInfo.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvMaterialForecastInfo_DataBindingComplete);
             // 
             // tableLayoutPanel4
             // 
-            this.tableLayoutPanel4.ColumnCount = 3;
+            this.tableLayoutPanel4.ColumnCount = 4;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 206F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 358F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 197F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 181F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.label2, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblTotal, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lblTotal, 3, 0);
+            this.tableLayoutPanel4.Controls.Add(this.txtOutgoingProduct, 1, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 114);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
@@ -182,10 +182,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.cbShowStillNeedQty);
-            this.groupBox2.Controls.Add(this.cbShowForecastQty);
-            this.groupBox2.Controls.Add(this.cbShowStock);
-            this.groupBox2.Controls.Add(this.cbShowDeliveredQty);
+            this.groupBox2.Controls.Add(this.cbShowFullDetail);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(144, 3);
@@ -195,76 +192,21 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "FILTER";
             // 
-            // cbShowStillNeedQty
+            // cbShowFullDetail
             // 
-            this.cbShowStillNeedQty.AutoSize = true;
-            this.cbShowStillNeedQty.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowStillNeedQty.Checked = true;
-            this.cbShowStillNeedQty.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbShowStillNeedQty.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbShowStillNeedQty.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbShowStillNeedQty.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowStillNeedQty.Location = new System.Drawing.Point(288, 30);
-            this.cbShowStillNeedQty.Name = "cbShowStillNeedQty";
-            this.cbShowStillNeedQty.Size = new System.Drawing.Size(133, 19);
-            this.cbShowStillNeedQty.TabIndex = 160;
-            this.cbShowStillNeedQty.Text = "Show Still Need Qty";
-            this.cbShowStillNeedQty.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowStillNeedQty.UseVisualStyleBackColor = true;
-            this.cbShowStillNeedQty.CheckedChanged += new System.EventHandler(this.cbShowStillNeedQty_CheckedChanged);
-            // 
-            // cbShowForecastQty
-            // 
-            this.cbShowForecastQty.AutoSize = true;
-            this.cbShowForecastQty.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowForecastQty.Checked = true;
-            this.cbShowForecastQty.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbShowForecastQty.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbShowForecastQty.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbShowForecastQty.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowForecastQty.Location = new System.Drawing.Point(17, 30);
-            this.cbShowForecastQty.Name = "cbShowForecastQty";
-            this.cbShowForecastQty.Size = new System.Drawing.Size(127, 19);
-            this.cbShowForecastQty.TabIndex = 159;
-            this.cbShowForecastQty.Text = "Show Forecast Qty";
-            this.cbShowForecastQty.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowForecastQty.UseVisualStyleBackColor = true;
-            this.cbShowForecastQty.CheckedChanged += new System.EventHandler(this.cbShowForecastQty_CheckedChanged);
-            // 
-            // cbShowStock
-            // 
-            this.cbShowStock.AutoSize = true;
-            this.cbShowStock.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowStock.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbShowStock.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbShowStock.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowStock.Location = new System.Drawing.Point(427, 30);
-            this.cbShowStock.Name = "cbShowStock";
-            this.cbShowStock.Size = new System.Drawing.Size(90, 19);
-            this.cbShowStock.TabIndex = 158;
-            this.cbShowStock.Text = "Show Stock";
-            this.cbShowStock.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowStock.UseVisualStyleBackColor = true;
-            this.cbShowStock.Visible = false;
-            this.cbShowStock.CheckedChanged += new System.EventHandler(this.cbShowStock_CheckedChanged);
-            // 
-            // cbShowDeliveredQty
-            // 
-            this.cbShowDeliveredQty.AutoSize = true;
-            this.cbShowDeliveredQty.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowDeliveredQty.Checked = true;
-            this.cbShowDeliveredQty.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbShowDeliveredQty.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbShowDeliveredQty.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbShowDeliveredQty.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowDeliveredQty.Location = new System.Drawing.Point(150, 30);
-            this.cbShowDeliveredQty.Name = "cbShowDeliveredQty";
-            this.cbShowDeliveredQty.Size = new System.Drawing.Size(132, 19);
-            this.cbShowDeliveredQty.TabIndex = 157;
-            this.cbShowDeliveredQty.Text = "Show Delivered Qty";
-            this.cbShowDeliveredQty.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowDeliveredQty.UseVisualStyleBackColor = true;
-            this.cbShowDeliveredQty.CheckedChanged += new System.EventHandler(this.cbShowDeliveredQty_CheckedChanged);
+            this.cbShowFullDetail.AutoSize = true;
+            this.cbShowFullDetail.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbShowFullDetail.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbShowFullDetail.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbShowFullDetail.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbShowFullDetail.Location = new System.Drawing.Point(25, 30);
+            this.cbShowFullDetail.Name = "cbShowFullDetail";
+            this.cbShowFullDetail.Size = new System.Drawing.Size(113, 19);
+            this.cbShowFullDetail.TabIndex = 158;
+            this.cbShowFullDetail.Text = "Show Full Detail";
+            this.cbShowFullDetail.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbShowFullDetail.UseVisualStyleBackColor = true;
+            this.cbShowFullDetail.CheckedChanged += new System.EventHandler(this.cbShowFullDetail_CheckedChanged);
             // 
             // btnFilterApply
             // 
@@ -329,19 +271,25 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1303, 744);
             this.tableLayoutPanel2.TabIndex = 167;
             // 
-            // label2
+            // contextMenuStrip1
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.LightGray;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label2.Location = new System.Drawing.Point(209, 24);
-            this.label2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(262, 17);
-            this.label2.TabIndex = 169;
-            this.label2.Text = "( Direct Use On (Parent) = Outgoing Product)";
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // txtOutgoingProduct
+            // 
+            this.txtOutgoingProduct.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtOutgoingProduct.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(203)))), ((int)(((byte)(110)))));
+            this.txtOutgoingProduct.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOutgoingProduct.Location = new System.Drawing.Point(209, 16);
+            this.txtOutgoingProduct.Name = "txtOutgoingProduct";
+            this.txtOutgoingProduct.ReadOnly = true;
+            this.txtOutgoingProduct.Size = new System.Drawing.Size(191, 25);
+            this.txtOutgoingProduct.TabIndex = 169;
+            this.txtOutgoingProduct.Text = "Outgoing Product";
+            this.txtOutgoingProduct.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // frmOrderAlertDetail_NEW
             // 
@@ -378,15 +326,13 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ComboBox cmbMonthYear;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox cbShowDeliveredQty;
-        private System.Windows.Forms.CheckBox cbShowStock;
         private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.Button btnFilterApply;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.CheckBox cbShowStillNeedQty;
-        private System.Windows.Forms.CheckBox cbShowForecastQty;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblMaterial;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox cbShowFullDetail;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.TextBox txtOutgoingProduct;
     }
 }

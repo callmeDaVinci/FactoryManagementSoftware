@@ -29,18 +29,20 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.tlpForecastReport = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnExcelAll = new System.Windows.Forms.Button();
             this.btnSummary = new System.Windows.Forms.Button();
-            this.btnExcel = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbMainCustomerOnly = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.cmbCustomer = new System.Windows.Forms.ComboBox();
             this.btnFullReport = new System.Windows.Forms.Button();
             this.btnFilter = new System.Windows.Forms.Button();
+            this.btnExcel = new System.Windows.Forms.Button();
             this.dgvForecastReport = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.lblForecastType = new System.Windows.Forms.Label();
@@ -86,11 +88,10 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbMainCustomerOnly = new System.Windows.Forms.CheckBox();
             this.tlpForecastReport.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -102,7 +103,6 @@
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.tableLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpForecastReport
@@ -187,23 +187,6 @@
             this.btnSummary.UseVisualStyleBackColor = false;
             this.btnSummary.Click += new System.EventHandler(this.button1_Click);
             // 
-            // btnExcel
-            // 
-            this.btnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExcel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
-            this.btnExcel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnExcel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnExcel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExcel.ForeColor = System.Drawing.Color.White;
-            this.btnExcel.Location = new System.Drawing.Point(1412, 38);
-            this.btnExcel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 2);
-            this.btnExcel.Name = "btnExcel";
-            this.btnExcel.Size = new System.Drawing.Size(130, 36);
-            this.btnExcel.TabIndex = 157;
-            this.btnExcel.Text = "EXCEL";
-            this.btnExcel.UseVisualStyleBackColor = false;
-            this.btnExcel.Click += new System.EventHandler(this.btnExportToExcel_Click);
-            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
@@ -220,15 +203,50 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(350, 76);
             this.tableLayoutPanel1.TabIndex = 159;
             // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 2;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.cbMainCustomerOnly, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.label8, 0, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(350, 39);
+            this.tableLayoutPanel5.TabIndex = 165;
+            // 
+            // cbMainCustomerOnly
+            // 
+            this.cbMainCustomerOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbMainCustomerOnly.AutoSize = true;
+            this.cbMainCustomerOnly.Checked = true;
+            this.cbMainCustomerOnly.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbMainCustomerOnly.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbMainCustomerOnly.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbMainCustomerOnly.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbMainCustomerOnly.Location = new System.Drawing.Point(198, 18);
+            this.cbMainCustomerOnly.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.cbMainCustomerOnly.Name = "cbMainCustomerOnly";
+            this.cbMainCustomerOnly.Size = new System.Drawing.Size(149, 21);
+            this.cbMainCustomerOnly.TabIndex = 167;
+            this.cbMainCustomerOnly.Text = "Main Customer Only";
+            this.cbMainCustomerOnly.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbMainCustomerOnly.UseVisualStyleBackColor = true;
+            this.cbMainCustomerOnly.CheckedChanged += new System.EventHandler(this.cbMainCustomerOnly_CheckedChanged);
+            // 
             // label8
             // 
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(5, 19);
+            this.label8.Location = new System.Drawing.Point(5, 22);
             this.label8.Margin = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(80, 19);
+            this.label8.Size = new System.Drawing.Size(75, 17);
             this.label8.TabIndex = 149;
             this.label8.Text = "CUSTOMER";
             // 
@@ -238,7 +256,7 @@
             this.cmbCustomer.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCustomer.FormattingEnabled = true;
-            this.cmbCustomer.Location = new System.Drawing.Point(5, 38);
+            this.cmbCustomer.Location = new System.Drawing.Point(5, 39);
             this.cmbCustomer.Margin = new System.Windows.Forms.Padding(5, 0, 5, 5);
             this.cmbCustomer.Name = "cmbCustomer";
             this.cmbCustomer.Size = new System.Drawing.Size(336, 31);
@@ -280,6 +298,23 @@
             this.btnFilter.UseVisualStyleBackColor = false;
             this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // 
+            // btnExcel
+            // 
+            this.btnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExcel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.btnExcel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExcel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnExcel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExcel.ForeColor = System.Drawing.Color.White;
+            this.btnExcel.Location = new System.Drawing.Point(1412, 38);
+            this.btnExcel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 2);
+            this.btnExcel.Name = "btnExcel";
+            this.btnExcel.Size = new System.Drawing.Size(130, 36);
+            this.btnExcel.TabIndex = 157;
+            this.btnExcel.Text = "EXCEL";
+            this.btnExcel.UseVisualStyleBackColor = false;
+            this.btnExcel.Click += new System.EventHandler(this.btnExportToExcel_Click);
+            // 
             // dgvForecastReport
             // 
             this.dgvForecastReport.AllowUserToAddRows = false;
@@ -290,14 +325,14 @@
             this.dgvForecastReport.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecastReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvForecastReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvForecastReport.GridColor = System.Drawing.Color.White;
             this.dgvForecastReport.Location = new System.Drawing.Point(4, 392);
@@ -305,6 +340,7 @@
             this.dgvForecastReport.Name = "dgvForecastReport";
             this.dgvForecastReport.ReadOnly = true;
             this.dgvForecastReport.RowHeadersVisible = false;
+            this.dgvForecastReport.RowHeadersWidth = 51;
             this.dgvForecastReport.RowTemplate.Height = 60;
             this.dgvForecastReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvForecastReport.Size = new System.Drawing.Size(1539, 436);
@@ -334,10 +370,10 @@
             this.lblForecastType.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblForecastType.AutoSize = true;
             this.lblForecastType.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblForecastType.Location = new System.Drawing.Point(4, 13);
+            this.lblForecastType.Location = new System.Drawing.Point(4, 14);
             this.lblForecastType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblForecastType.Name = "lblForecastType";
-            this.lblForecastType.Size = new System.Drawing.Size(126, 19);
+            this.lblForecastType.Size = new System.Drawing.Size(119, 17);
             this.lblForecastType.TabIndex = 153;
             this.lblForecastType.Text = "FORECAST REPORT";
             // 
@@ -457,10 +493,10 @@
             this.cbIncludeTerminated.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbIncludeTerminated.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbIncludeTerminated.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbIncludeTerminated.Location = new System.Drawing.Point(17, 51);
+            this.cbIncludeTerminated.Location = new System.Drawing.Point(17, 53);
             this.cbIncludeTerminated.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.cbIncludeTerminated.Name = "cbIncludeTerminated";
-            this.cbIncludeTerminated.Size = new System.Drawing.Size(179, 23);
+            this.cbIncludeTerminated.Size = new System.Drawing.Size(169, 21);
             this.cbIncludeTerminated.TabIndex = 165;
             this.cbIncludeTerminated.Text = "Include Terminated Item";
             this.cbIncludeTerminated.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -474,10 +510,10 @@
             this.cbIncludeProInfo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbIncludeProInfo.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbIncludeProInfo.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbIncludeProInfo.Location = new System.Drawing.Point(17, 104);
+            this.cbIncludeProInfo.Location = new System.Drawing.Point(17, 106);
             this.cbIncludeProInfo.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.cbIncludeProInfo.Name = "cbIncludeProInfo";
-            this.cbIncludeProInfo.Size = new System.Drawing.Size(127, 23);
+            this.cbIncludeProInfo.Size = new System.Drawing.Size(121, 21);
             this.cbIncludeProInfo.TabIndex = 166;
             this.cbIncludeProInfo.Text = "include Pro Info";
             this.cbIncludeProInfo.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -492,7 +528,7 @@
             this.cbWithSubMat.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbWithSubMat.Location = new System.Drawing.Point(17, 25);
             this.cbWithSubMat.Name = "cbWithSubMat";
-            this.cbWithSubMat.Size = new System.Drawing.Size(151, 23);
+            this.cbWithSubMat.Size = new System.Drawing.Size(145, 21);
             this.cbWithSubMat.TabIndex = 156;
             this.cbWithSubMat.Text = "Show Sub Materials";
             this.cbWithSubMat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -508,10 +544,10 @@
             this.cbRemoveNoOrderItem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbRemoveNoOrderItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbRemoveNoOrderItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRemoveNoOrderItem.Location = new System.Drawing.Point(17, 77);
+            this.cbRemoveNoOrderItem.Location = new System.Drawing.Point(17, 79);
             this.cbRemoveNoOrderItem.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.cbRemoveNoOrderItem.Name = "cbRemoveNoOrderItem";
-            this.cbRemoveNoOrderItem.Size = new System.Drawing.Size(189, 23);
+            this.cbRemoveNoOrderItem.Size = new System.Drawing.Size(181, 21);
             this.cbRemoveNoOrderItem.TabIndex = 167;
             this.cbRemoveNoOrderItem.Text = "Remove No Forecast Item";
             this.cbRemoveNoOrderItem.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -547,7 +583,7 @@
             this.cbShowToOrderItem.Location = new System.Drawing.Point(18, 159);
             this.cbShowToOrderItem.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.cbShowToOrderItem.Name = "cbShowToOrderItem";
-            this.cbShowToOrderItem.Size = new System.Drawing.Size(160, 23);
+            this.cbShowToOrderItem.Size = new System.Drawing.Size(153, 21);
             this.cbShowToOrderItem.TabIndex = 170;
             this.cbShowToOrderItem.Text = "Show To Order Items";
             this.cbShowToOrderItem.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -565,7 +601,7 @@
             this.cbShowToAssemblyItem.Location = new System.Drawing.Point(18, 133);
             this.cbShowToAssemblyItem.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.cbShowToAssemblyItem.Name = "cbShowToAssemblyItem";
-            this.cbShowToAssemblyItem.Size = new System.Drawing.Size(182, 23);
+            this.cbShowToAssemblyItem.Size = new System.Drawing.Size(173, 21);
             this.cbShowToAssemblyItem.TabIndex = 170;
             this.cbShowToAssemblyItem.Text = "Show To Assembly Items";
             this.cbShowToAssemblyItem.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -583,7 +619,7 @@
             this.cbShowToProduceItem.Location = new System.Drawing.Point(18, 106);
             this.cbShowToProduceItem.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.cbShowToProduceItem.Name = "cbShowToProduceItem";
-            this.cbShowToProduceItem.Size = new System.Drawing.Size(174, 23);
+            this.cbShowToProduceItem.Size = new System.Drawing.Size(166, 21);
             this.cbShowToProduceItem.TabIndex = 169;
             this.cbShowToProduceItem.Text = "Show To Produce Items";
             this.cbShowToProduceItem.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -601,7 +637,7 @@
             this.cbSortByBalance.Location = new System.Drawing.Point(18, 79);
             this.cbSortByBalance.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.cbSortByBalance.Name = "cbSortByBalance";
-            this.cbSortByBalance.Size = new System.Drawing.Size(125, 23);
+            this.cbSortByBalance.Size = new System.Drawing.Size(119, 21);
             this.cbSortByBalance.TabIndex = 168;
             this.cbSortByBalance.Text = "Sort By Balance";
             this.cbSortByBalance.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -619,7 +655,7 @@
             this.cbSortByToDOType.Location = new System.Drawing.Point(18, 52);
             this.cbSortByToDOType.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.cbSortByToDOType.Name = "cbSortByToDOType";
-            this.cbSortByToDOType.Size = new System.Drawing.Size(150, 23);
+            this.cbSortByToDOType.Size = new System.Drawing.Size(143, 21);
             this.cbSortByToDOType.TabIndex = 166;
             this.cbSortByToDOType.Text = "Sort By To DO Type";
             this.cbSortByToDOType.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -635,7 +671,7 @@
             this.cbShowRawMaterial.Location = new System.Drawing.Point(18, 185);
             this.cbShowRawMaterial.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.cbShowRawMaterial.Name = "cbShowRawMaterial";
-            this.cbShowRawMaterial.Size = new System.Drawing.Size(147, 23);
+            this.cbShowRawMaterial.Size = new System.Drawing.Size(141, 21);
             this.cbShowRawMaterial.TabIndex = 167;
             this.cbShowRawMaterial.Text = "Show Raw Material";
             this.cbShowRawMaterial.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -653,7 +689,7 @@
             this.cbShowInsufficientOnly.Location = new System.Drawing.Point(18, 25);
             this.cbShowInsufficientOnly.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.cbShowInsufficientOnly.Name = "cbShowInsufficientOnly";
-            this.cbShowInsufficientOnly.Size = new System.Drawing.Size(199, 23);
+            this.cbShowInsufficientOnly.Size = new System.Drawing.Size(185, 21);
             this.cbShowInsufficientOnly.TabIndex = 167;
             this.cbShowInsufficientOnly.Text = "Show Insufficient Item Only";
             this.cbShowInsufficientOnly.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -684,7 +720,7 @@
             this.lblCurrentMonth.Location = new System.Drawing.Point(88, 33);
             this.lblCurrentMonth.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCurrentMonth.Name = "lblCurrentMonth";
-            this.lblCurrentMonth.Size = new System.Drawing.Size(100, 19);
+            this.lblCurrentMonth.Size = new System.Drawing.Size(90, 17);
             this.lblCurrentMonth.TabIndex = 166;
             this.lblCurrentMonth.Text = "Current Month";
             this.lblCurrentMonth.Visible = false;
@@ -711,7 +747,7 @@
             this.label6.Location = new System.Drawing.Point(30, 95);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(26, 19);
+            this.label6.Size = new System.Drawing.Size(24, 17);
             this.label6.TabIndex = 150;
             this.label6.Text = "TO";
             // 
@@ -735,7 +771,7 @@
             this.label4.Location = new System.Drawing.Point(7, 54);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 19);
+            this.label4.Size = new System.Drawing.Size(44, 17);
             this.label4.TabIndex = 148;
             this.label4.Text = "FROM";
             // 
@@ -759,7 +795,7 @@
             this.label12.Location = new System.Drawing.Point(13, 32);
             this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(90, 19);
+            this.label12.Size = new System.Drawing.Size(84, 17);
             this.label12.TabIndex = 155;
             this.label12.Text = "NAME/CODE";
             // 
@@ -794,7 +830,7 @@
             this.cbDescending.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbDescending.Location = new System.Drawing.Point(16, 82);
             this.cbDescending.Name = "cbDescending";
-            this.cbDescending.Size = new System.Drawing.Size(100, 23);
+            this.cbDescending.Size = new System.Drawing.Size(97, 21);
             this.cbDescending.TabIndex = 151;
             this.cbDescending.Text = "descending";
             this.cbDescending.UseVisualStyleBackColor = true;
@@ -818,7 +854,7 @@
             this.label2.Location = new System.Drawing.Point(12, 31);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 19);
+            this.label2.Size = new System.Drawing.Size(57, 17);
             this.label2.TabIndex = 146;
             this.label2.Text = "SORT BY";
             // 
@@ -831,7 +867,7 @@
             this.label1.Location = new System.Drawing.Point(129, 33);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(37, 19);
+            this.label1.Size = new System.Drawing.Size(36, 17);
             this.label1.TabIndex = 148;
             this.label1.Text = "clear";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -853,7 +889,7 @@
             this.label3.Location = new System.Drawing.Point(178, 32);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(87, 19);
+            this.label3.Size = new System.Drawing.Size(81, 17);
             this.label3.TabIndex = 150;
             this.label3.Text = "ALERT LEVEL";
             // 
@@ -881,7 +917,7 @@
             this.lblChangeDate.Location = new System.Drawing.Point(83, 121);
             this.lblChangeDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblChangeDate.Name = "lblChangeDate";
-            this.lblChangeDate.Size = new System.Drawing.Size(110, 19);
+            this.lblChangeDate.Size = new System.Drawing.Size(99, 17);
             this.lblChangeDate.TabIndex = 165;
             this.lblChangeDate.Text = "PMMA Date Edit";
             this.lblChangeDate.Visible = false;
@@ -912,7 +948,7 @@
             this.label7.Location = new System.Drawing.Point(33, 95);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(26, 19);
+            this.label7.Size = new System.Drawing.Size(24, 17);
             this.label7.TabIndex = 150;
             this.label7.Text = "TO";
             // 
@@ -923,7 +959,7 @@
             this.label11.Location = new System.Drawing.Point(14, 54);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(48, 19);
+            this.label11.Size = new System.Drawing.Size(44, 17);
             this.label11.TabIndex = 148;
             this.label11.Text = "FROM";
             // 
@@ -931,41 +967,6 @@
             // 
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 2;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Controls.Add(this.cbMainCustomerOnly, 1, 0);
-            this.tableLayoutPanel5.Controls.Add(this.label8, 0, 0);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(350, 38);
-            this.tableLayoutPanel5.TabIndex = 165;
-            // 
-            // cbMainCustomerOnly
-            // 
-            this.cbMainCustomerOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbMainCustomerOnly.AutoSize = true;
-            this.cbMainCustomerOnly.Checked = true;
-            this.cbMainCustomerOnly.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbMainCustomerOnly.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbMainCustomerOnly.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbMainCustomerOnly.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbMainCustomerOnly.Location = new System.Drawing.Point(188, 15);
-            this.cbMainCustomerOnly.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.cbMainCustomerOnly.Name = "cbMainCustomerOnly";
-            this.cbMainCustomerOnly.Size = new System.Drawing.Size(159, 23);
-            this.cbMainCustomerOnly.TabIndex = 167;
-            this.cbMainCustomerOnly.Text = "Main Customer Only";
-            this.cbMainCustomerOnly.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbMainCustomerOnly.UseVisualStyleBackColor = true;
-            this.cbMainCustomerOnly.CheckedChanged += new System.EventHandler(this.cbMainCustomerOnly_CheckedChanged);
             // 
             // frmForecastReport_NEW
             // 
@@ -986,6 +987,8 @@
             this.tlpForecastReport.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastReport)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
@@ -1005,8 +1008,6 @@
             this.groupBox5.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.tableLayoutPanel5.ResumeLayout(false);
-            this.tableLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
 
         }

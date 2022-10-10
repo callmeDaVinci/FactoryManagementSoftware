@@ -278,6 +278,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_JoinWastage { get; } = "JOIN WASTAGE";
         public string Header_PartNameWithParent { get; } = "PART NAME_(PARENT)";
         public string Header_PartName { get; } = "PART NAME";
+        public string Header_ItemNameAndCode { get; } = "ITEM NAME (CODE)";
         public string Header_Parent { get; } = "PARENT";
         public string Header_Product { get; } = "OUTGOING PRODUCT";
         public string Header_OpeningStock { get; } = "OPENING STOCK";
@@ -328,6 +329,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_MaterialUsed_KG_Piece { get; } = "MAT. USED(KG/PIECE)";
         public string Header_MaterialUsed_KG { get; } = "MAT. USED(KG)";
         public string Header_MaterialUsedWithWastage { get; } = "MAT. USED AFTER WASTAGE";
+        public string Header_MaterialRequiredIncludedWastage { get; } = "MAT. REQUIRED INCLUDED WASTAGE";
         public string Header_TotalMaterialUsed_KG_Piece { get; } = "TOTAL MAT. USED(KG/PIECE)";
         public string Header_TotalMaterialUsed_KG { get; } = "TOTAL MAT. USED(KG)";
 
