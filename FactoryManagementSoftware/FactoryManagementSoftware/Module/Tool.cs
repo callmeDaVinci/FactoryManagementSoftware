@@ -7766,7 +7766,7 @@ namespace FactoryManagementSoftware.Module
                 {
                     itemCode = item["item_code"].ToString();
 
-                    if(itemCode == "V84KM43RV" || itemCode == "V84KM4400" || itemCode == "V84KUS0R0" || itemCode == "V84KUU0V0")
+                    if(itemCode == "A0LK190A0")
                     {
                         float test = 0;
                     }

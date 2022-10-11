@@ -1133,6 +1133,7 @@ namespace FactoryManagementSoftware.UI
                             float Child_Stock = float.TryParse(item[dalItem.ItemStock].ToString(), out Child_Stock) ? Child_Stock : 0;
                             float pendingOrder = float.TryParse(item[dalItem.ItemOrd].ToString(), out pendingOrder) ? pendingOrder : 0;
                             float Color_Rate = float.TryParse(item[dalItem.ItemMBRate].ToString(), out Color_Rate) ? Color_Rate : 0;
+                            string itemUnit = item[dalItem.ItemUnit].ToString();
 
                             if (cbZeroStockType.Checked && itemType != text.Cat_Part)
                             {
@@ -1182,7 +1183,7 @@ namespace FactoryManagementSoftware.UI
                             newRow[text.Header_PartWeight_G] = partWeight;
                             newRow[text.Header_RunnerWeight_G] = runnerWeight;
                             newRow[text.Header_WastageAllowed_Percentage] = wastage;
-                            newRow[text.Header_Unit] = text.Unit_Piece;
+                            newRow[text.Header_Unit] = itemUnit;
 
                             #endregion
 
@@ -1527,6 +1528,7 @@ namespace FactoryManagementSoftware.UI
 
                     string ProductCode = ProductRow[dalItem.ItemCode].ToString();
                     string ProductName = ProductRow[dalItem.ItemName].ToString();
+                    string itemUnit = ProductRow[dalItem.ItemUnit].ToString();
                     float Ready_Stock = float.TryParse(ProductRow[dalItem.ItemStock].ToString(), out Ready_Stock) ? Ready_Stock : 0;
                     float Pending_Order = float.TryParse(ProductRow[dalItem.ItemOrd].ToString(), out Pending_Order) ? Pending_Order : 0;
                     float Color_Rate = float.TryParse(ProductRow[dalItem.ItemMBRate].ToString(), out Color_Rate) ? Color_Rate : 0;
@@ -1643,7 +1645,7 @@ namespace FactoryManagementSoftware.UI
                     newRow[text.Header_PartWeight_G] = partWeight;
                     newRow[text.Header_RunnerWeight_G] = runnerWeight;
                     newRow[text.Header_WastageAllowed_Percentage] = wastage;
-                    newRow[text.Header_Unit] = text.Unit_Piece;
+                    newRow[text.Header_Unit] = itemUnit;
 
                     #endregion
 
@@ -2884,11 +2886,15 @@ namespace FactoryManagementSoftware.UI
                 cbZeroStockType.Checked = true;
                 cbZeroStockType.Enabled = true;
 
+                cbDeductUsedStock.Checked = false;
+
             }
             else
             {
                 cbZeroStockType.Checked = false;
                 cbZeroStockType.Enabled = false;
+                cbDeductUsedStock.Checked = true;
+
             }
         }
 
@@ -3850,6 +3856,24 @@ namespace FactoryManagementSoftware.UI
                 loadOrderRecord();
 
             Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void cbDeductUsedStock_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbDeductUsedStock.Checked)
+            {
+                if(cbZeroCostOnly.Checked)
+                {
+                    cbZeroCostOnly.Checked = false;
+                    MessageBox.Show("Zero Cost Mode is Off !");
+                }
+              
+            }
+        }
+
+        private void cbDeductDeliveredQty_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
