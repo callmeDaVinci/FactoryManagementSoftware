@@ -256,7 +256,7 @@ namespace FactoryManagementSoftware.UI
 
             u.item_material = cmbMaterialType.Text;
             u.item_mb = cmbMasterBatch.Text;
-            u.item_mb_rate = Convert.ToSingle(txtMBRate.Text);
+            u.item_mb_rate =float.TryParse(txtMBRate.Text, out float i) ? i : 0;
             u.item_color = txtColor.Text;
 
             u.item_quo_ton = tool.Int_TryParse(txtQuoTon.Text);

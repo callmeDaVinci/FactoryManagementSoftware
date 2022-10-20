@@ -29,9 +29,11 @@ namespace FactoryManagementSoftware.UI
 {
     public partial class frmOrderAlertDetail_NEW : Form
     {
-        public frmOrderAlertDetail_NEW(DataTable dt_Product_Info, DataTable dt_Balance_Info ,string matCode, DateTime dateFrom, DateTime dateTo)
+        public frmOrderAlertDetail_NEW(DataTable dt_Product_Info, DataTable dt_Balance_Info ,string matCode, DateTime dateFrom, DateTime dateTo, bool deductUsedStock)
         {
             InitializeComponent();
+
+            DEDUCT_STOCK = deductUsedStock;
             DT_PRODUCT = dt_Product_Info;
             DT_BALANCE_INFO = dt_Balance_Info;
             MAT_CODE = matCode;
@@ -52,6 +54,7 @@ namespace FactoryManagementSoftware.UI
         DataTable DT_FULLDETAIL;
         DateTime DATE_FROM;
         DateTime DATE_TO;
+        private bool DEDUCT_STOCK;
 
         //private string string_Forecast = " FORECAST";
         //private string string_StillNeed = " STILL NEED";
@@ -167,7 +170,18 @@ namespace FactoryManagementSoftware.UI
 
                     if (colName.Contains(text.str_InsufficientQty))
                     {
-                        dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                        if(DEDUCT_STOCK)
+                        {
+                            dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                            dgv.Columns[colName].Visible = true;
+
+
+                        }
+                        else
+                        {
+                            dgv.Columns[colName].Visible = false;
+
+                        }
 
                     }
                     else if (colName.Contains(text.str_Delivered))
@@ -649,17 +663,24 @@ namespace FactoryManagementSoftware.UI
                                 float ReadyStock = float.TryParse(parentDataRow[text.Header_ReadyStock].ToString(), out ReadyStock) ? ReadyStock : 0;
                                 float BalStock = GetLastMonthBalStock(ParentCode, ReadyStock, month);
 
-                                if (ParentCode == "A41K150K0")
-                                {
-                                    float checkpoint = 1;
-                                }
-
                                 ReadyStock = BalStock;
 
                                 float Required = float.TryParse(parentDataRow[month + text.str_RequiredQty].ToString(), out Required) ? Required : 0;
                                 float Insufficient = BalStock - Required;
-
                                 Insufficient = Insufficient > 0 ? 0 : Insufficient;
+
+                                float ChildQtyRequired_Target = 0;
+
+                                if(DEDUCT_STOCK)
+                                {
+                                    ChildQtyRequired_Target = Insufficient;
+                                }
+                                else
+                                {
+                                    ChildQtyRequired_Target = Required > 0 ? Required * -1 : 0 ;
+
+                                }
+
 
                                 float partWeight = float.TryParse(parentDataRow[text.Header_PartWeight_G].ToString(), out partWeight) ? partWeight : 0;
                                 float runnerWeight = float.TryParse(parentDataRow[text.Header_RunnerWeight_G].ToString(), out runnerWeight) ? runnerWeight : 0;
@@ -721,19 +742,29 @@ namespace FactoryManagementSoftware.UI
 
                                         dt_Row[month + text.str_InsufficientQty] = Insufficient;
 
-                                        if (Insufficient < 0)
+                                        if (DEDUCT_STOCK)
                                         {
-                                            Insufficient *= -1;
+                                            ChildQtyRequired_Target = Insufficient;
+                                        }
+                                        else
+                                        {
+                                            ChildQtyRequired_Target = Required > 0 ? Required * -1 : 0;
+
+                                        }
+
+                                        if (ChildQtyRequired_Target < 0)
+                                        {
+                                            ChildQtyRequired_Target *= -1;
 
                                             #region total qty required calculation
 
                                             if (ItemType == text.Cat_RawMat || ItemType == text.Cat_MB || ItemType == text.Cat_Pigment)
                                             {
-                                                childQty = (float)decimal.Round((decimal)(Insufficient * itemWeight * (1 + Wastage)), 3);
+                                                childQty = (float)decimal.Round((decimal)(ChildQtyRequired_Target * itemWeight * (1 + Wastage)), 3);
 
                                                 if (ItemType == text.Cat_MB || ItemType == text.Cat_Pigment)
                                                 {
-                                                    childQty = (float)decimal.Round((decimal)(Insufficient * itemWeight * colorRate * (1 + Wastage)), 3);
+                                                    childQty = (float)decimal.Round((decimal)(ChildQtyRequired_Target * itemWeight * colorRate * (1 + Wastage)), 3);
                                                 }
                                             }
                                             else
@@ -742,12 +773,12 @@ namespace FactoryManagementSoftware.UI
 
                                                 if (ItemType == text.Cat_Part)
                                                 {
-                                                    childQty = Insufficient / joinMax * joinQty;
+                                                    childQty = ChildQtyRequired_Target / joinMax * joinQty;
 
                                                 }
                                                 else
                                                 {
-                                                    childQty = (float)Math.Ceiling(Insufficient / joinMax * joinQty * (1 + Wastage));
+                                                    childQty = (float)Math.Ceiling(ChildQtyRequired_Target / joinMax * joinQty * (1 + Wastage));
                                                 }
                                             }
 
@@ -762,6 +793,7 @@ namespace FactoryManagementSoftware.UI
 
                                             #endregion
                                         }
+
                                         dt_Row[text.Header_MaterialRequiredIncludedWastage] = childQty;
 
                                         break;
@@ -770,19 +802,19 @@ namespace FactoryManagementSoftware.UI
 
                                 if (!ifParentFound)
                                 {
-                                    if (Insufficient < 0)
+                                    if (ChildQtyRequired_Target < 0)
                                     {
-                                        Insufficient *= -1;
+                                        ChildQtyRequired_Target *= -1;
 
                                         #region total qty required calculation
 
                                         if (ItemType == text.Cat_RawMat || ItemType == text.Cat_MB || ItemType == text.Cat_Pigment)
                                         {
-                                            childQty = (float)decimal.Round((decimal)(Insufficient * itemWeight * (1 + Wastage)), 3);
+                                            childQty = (float)decimal.Round((decimal)(ChildQtyRequired_Target * itemWeight * (1 + Wastage)), 3);
 
                                             if (ItemType == text.Cat_MB || ItemType == text.Cat_Pigment)
                                             {
-                                                childQty = (float)decimal.Round((decimal)(Insufficient * itemWeight * colorRate * (1 + Wastage)), 3);
+                                                childQty = (float)decimal.Round((decimal)(ChildQtyRequired_Target * itemWeight * colorRate * (1 + Wastage)), 3);
                                             }
                                         }
                                         else
@@ -791,12 +823,12 @@ namespace FactoryManagementSoftware.UI
 
                                             if (ItemType == text.Cat_Part)
                                             {
-                                                childQty = Insufficient / joinMax * joinQty;
+                                                childQty = ChildQtyRequired_Target / joinMax * joinQty;
 
                                             }
                                             else
                                             {
-                                                childQty = (float)Math.Ceiling(Insufficient / joinMax * joinQty * (1 + Wastage));
+                                                childQty = (float)Math.Ceiling(ChildQtyRequired_Target / joinMax * joinQty * (1 + Wastage));
                                             }
                                         }
 
@@ -1249,7 +1281,7 @@ namespace FactoryManagementSoftware.UI
 
             string colName = dgv.Columns[col].Name;
 
-            if (colName.Contains(text.str_InsufficientQty))
+            if (colName.Contains(text.str_InsufficientQty) && DEDUCT_STOCK)
             {
                 float Insufficient = float.TryParse(dgv.Rows[row].Cells[col].Value.ToString(), out float i) ? i : 0;
 
@@ -1267,7 +1299,26 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
-           
+
+            else if (colName.Contains(text.str_RequiredQty) && !DEDUCT_STOCK)
+            {
+                float Required = float.TryParse(dgv.Rows[row].Cells[col].Value.ToString(), out float i) ? i : 0;
+
+
+                if (Required > 0)
+                {
+                    dgv.Rows[row].Cells[col].Style.ForeColor = Color.Red;
+                    dgv.Rows[row].Cells[col].Style.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+
+                }
+                else
+                {
+                    dgv.Rows[row].Cells[col].Style.ForeColor = Color.Black;
+                    dgv.Rows[row].Cells[col].Style.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+
+                }
+            }
+
             else if (colName.Contains(text.str_EstBalance) || colName.Equals(text.Header_ReadyStock))
             {
                 float Bal = float.TryParse(dgv.Rows[row].Cells[col].Value.ToString(), out float i) ? i : 0;

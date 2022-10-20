@@ -1198,6 +1198,10 @@ namespace FactoryManagementSoftware.UI
                         newRow[header_BalAfter] = itemStock - pendingQty;
                         newRow[header_QtyPerBag] = itemPerBag;
 
+                        if(itemPerBag == 0)
+                        {
+                            itemPerBag = 1;
+                        }
                         newRow[header_BalAfterBag] = (itemStock - pendingQty) / itemPerBag;
                         newRow[header_BalAfterPcs] = (itemStock - pendingQty) % itemPerBag;
 
@@ -2622,6 +2626,10 @@ namespace FactoryManagementSoftware.UI
                     int QtyPerBag = int.TryParse(row[dalSBB.QtyPerBag].ToString(), out QtyPerBag) ? QtyPerBag : 1;
                     int QtyPerPkt = int.TryParse(row[dalSBB.QtyPerPacket].ToString(), out QtyPerPkt) ? QtyPerPkt : 1;
 
+                    if(QtyPerBag == 0)
+                    {
+                        QtyPerBag = 1;
+                    }
                     pendingBags += pendingDeliver / QtyPerBag;
 
                     if (QtyPerPkt != 0)

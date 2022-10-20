@@ -766,6 +766,193 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void NEW_AddDataToForecastTable()
+        {
+            DataTable dt_Forecast = NewForecastTable();
+            DataRow row_dtForecast;
+
+            int month, year;
+            string itemCode = cmbPartCode.Text;
+
+
+            if (!string.IsNullOrEmpty(itemCode))
+            {
+                float readyStock = dalItem.getStockQty(itemCode);
+                row_dtForecast = dt_Forecast.NewRow();
+                row_dtForecast[headerCheck] = false;
+                row_dtForecast[headerDescription] = "READY STOCK";
+                row_dtForecast[headerBalance] = readyStock;
+
+                dt_Forecast.Rows.Add(row_dtForecast);
+
+                month = DateTime.Now.Month;
+                year = DateTime.Now.Year;
+
+                string monthName;
+                monthName = new DateTime(year, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
+
+                string customer = tool.getCustomerName(itemCode);
+
+                if (customer == tool.getCustName(1))
+                {
+                    BalForecastBLL balForecastBLL = new BalForecastBLL();
+
+                    int monthStart = DateTime.Now.Month;
+                    int yearStart = DateTime.Now.Year;
+
+                    DateTime dateStart = new DateTime(yearStart, monthStart, 1);
+
+                    DateTime dateEnd = dateStart.AddMonths(3);
+
+                    int monthEnd = dateEnd.Month;
+                    int yearEnd = dateEnd.Year;
+
+                    dateEnd = new DateTime(yearEnd, monthEnd, DateTime.DaysInMonth(yearEnd, monthEnd));
+
+
+                    balForecastBLL.Cust_ID = tool.getCustID(customer);
+                    balForecastBLL.Cust_Name = customer;
+
+                    balForecastBLL.Date_From = dateStart;
+                    balForecastBLL.Date_To = dateEnd;
+
+                    balForecastBLL.Month_From = monthStart;
+                    balForecastBLL.Month_To = monthEnd;
+                    balForecastBLL.Year_From = yearStart;
+                    balForecastBLL.Year_To = yearEnd;
+
+                    balForecastBLL.Item_Type = text.Cat_Part;
+
+                    balForecastBLL.Deduct_Delivered = true;
+                    balForecastBLL.Deduct_Stock = true;
+                    balForecastBLL.ZeroCost_Material = false;
+                    balForecastBLL.ZeroCost_Stock = false;
+
+                    DataTable dt_Bal_Forecast = tool.GetSummaryForecastMatUsedData(balForecastBLL);
+
+
+                    if(dt_Bal_Forecast != null)
+                    {
+                        DateTime DateTmp = dateStart;
+
+                        foreach(DataRow row in dt_Bal_Forecast.Rows)
+                        {
+                            if (row[text.Header_PartCode].ToString() == itemCode)
+                            {
+                                while (DateTmp <= dateEnd)
+                                {
+                                    foreach (DataColumn col in dt_Bal_Forecast.Columns)
+                                    {
+                                        string colName = col.ColumnName;
+
+                                        if (colName.Contains(text.str_EstBalance) && colName.Contains(DateTmp.Month.ToString()) && colName.Contains(DateTmp.Year.ToString()))
+                                        {
+                                            float estBalance = float.TryParse(row[colName].ToString(), out estBalance) ? estBalance : 0;
+
+                                            monthName = new DateTime(DateTmp.Year, DateTmp.Month, 1).ToString("MMM", CultureInfo.InvariantCulture);
+
+                                            row_dtForecast = dt_Forecast.NewRow();
+                                            row_dtForecast[headerCheck] = false;
+                                            row_dtForecast[headerDescription] = monthName + " " + DateTmp.Year;
+                                            row_dtForecast[headerBalance] = estBalance;
+
+                                            dt_Forecast.Rows.Add(row_dtForecast);
+
+                                            break;
+                                        }
+                                       
+                                    }
+                                    DateTmp = DateTmp.AddMonths(1);
+
+                                }
+
+
+
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    DataTable dt_TrfHist = dalTrfHist.rangeItemToCustomerSearch(customer);
+                    DataTable dt_PMMADate = dalPmmaDate.Select();
+
+                    float deliveredOut = GetMaxOut(itemCode, customer, 0, dt_TrfHist, dt_PMMADate);
+
+                    float forecast1, forecast2, forecast3;
+
+                    forecast1 = CalculateEstimateOrder(itemCode);
+                    forecast2 = forecast1;
+                    forecast3 = forecast1;
+
+                    forecast1 = forecast1 == -1 ? 0 : forecast1;
+                    forecast2 = forecast2 == -1 ? 0 : forecast2;
+
+                    forecast3 = forecast3 == -1 ? 0 : forecast3;
+
+                    if (deliveredOut > forecast1)
+                    {
+                        deliveredOut = 0;
+                    }
+
+                    float balance1 = readyStock - forecast1 + deliveredOut;
+                    float balance2 = balance1 - forecast2;
+                    float balance3 = balance2 - forecast3;
+
+                    row_dtForecast = dt_Forecast.NewRow();
+                    row_dtForecast[headerCheck] = false;
+                    row_dtForecast[headerDescription] = monthName + " " + year;
+                    row_dtForecast[headerBalance] = balance1;
+
+                    dt_Forecast.Rows.Add(row_dtForecast);
+
+                    if (month != 12)
+                    {
+                        month++;
+                    }
+                    else
+                    {
+                        month = 1;
+                        year++;
+                    }
+
+                    monthName = new DateTime(year, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
+                    row_dtForecast = dt_Forecast.NewRow();
+                    row_dtForecast[headerCheck] = false;
+                    row_dtForecast[headerDescription] = monthName + " " + year;
+                    row_dtForecast[headerBalance] = balance2; /*tool.GetBalanceStock(itemCode, month, year);*/
+
+                    dt_Forecast.Rows.Add(row_dtForecast);
+
+                    if (month != 12)
+                    {
+                        month++;
+                    }
+                    else
+                    {
+                        month = 1;
+                        year++;
+                    }
+
+                    monthName = new DateTime(year, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
+                    row_dtForecast = dt_Forecast.NewRow();
+                    row_dtForecast[headerCheck] = false;
+                    row_dtForecast[headerDescription] = monthName + " " + year;
+                    row_dtForecast[headerBalance] = balance3;/* tool.GetBalanceStock(itemCode, month, year);*/
+
+                    dt_Forecast.Rows.Add(row_dtForecast);
+                }
+              
+            }
+            dgvCheckList.DataSource = null;
+            if (dt_Forecast.Rows.Count > 0)
+            {
+                dgvForecast.DataSource = dt_Forecast;
+                dgvForecastUIEdit(dgvForecast);
+                dgvForecast.ClearSelection();
+            }
+        }
         #region KeyPress
 
         private void txtMatBagQty_KeyPress(object sender, KeyPressEventArgs e)
@@ -1024,7 +1211,8 @@ namespace FactoryManagementSoftware.UI
                       
                         //CalTotalMatAfterWastage();
                     }
-                    AddDataToForecastTable();
+                    //AddDataToForecastTable();
+                    NEW_AddDataToForecastTable();
                 }
              
                 catch (Exception ex)
@@ -1044,6 +1232,7 @@ namespace FactoryManagementSoftware.UI
 
             btnRawMatUpdate.Visible = false;
             btnColorMatUpdate.Visible = false;
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void cbRecycleUse_CheckedChanged(object sender, EventArgs e)

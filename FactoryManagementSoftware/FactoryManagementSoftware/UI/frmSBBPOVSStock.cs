@@ -11,6 +11,7 @@ using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.Module;
 using System.Globalization;
+using Org.BouncyCastle.Bcpg;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -168,24 +169,6 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_POTblCode, typeof(int));
             dt.Columns.Add(header_ToDeliveryPCSQty, typeof(int));
            
-            return dt;
-        }
-
-        private DataTable NewDOTable()
-        {
-            DataTable dt = new DataTable();
-
-            dt.Columns.Add(header_DataType, typeof(string));
-            dt.Columns.Add(header_DONo, typeof(int));
-            dt.Columns.Add(header_DONoString, typeof(string));
-            dt.Columns.Add(header_PODate, typeof(DateTime));
-            dt.Columns.Add(header_POCode, typeof(int));
-            dt.Columns.Add(header_PONo, typeof(string));
-
-            dt.Columns.Add(header_Customer, typeof(string));
-            dt.Columns.Add(header_CustomerCode, typeof(int));
-            dt.Columns.Add(header_DeliveredDate, typeof(DateTime));
-
             return dt;
         }
 
@@ -2340,6 +2323,9 @@ namespace FactoryManagementSoftware.UI
             int totalPcs = 0;
             int totalBalPcs = 0;
 
+            int total_Oring_Pkts = 0;
+            int total_Oring_Pcs = 0;
+
             int totalCellSelected = 0;
             int totalColSelected = 0;
 
@@ -2371,6 +2357,7 @@ namespace FactoryManagementSoftware.UI
 
                             int toDeliverQty = int.TryParse(dt.Rows[i][searchingColumns].ToString(), out toDeliverQty) ? toDeliverQty : -1;
 
+                            string itemCode = dt.Rows[i][header_Code].ToString();
 
                             if (toDeliverQty > -1)
                             {
@@ -2381,45 +2368,57 @@ namespace FactoryManagementSoftware.UI
 
                             if (toDeliverQty > 0 || toDeliverPcs > 0)
                             {
-
-                                totalBag += cmbEditUnit.Text != text_Bag ? toDeliverQty / pcsPerBag : toDeliverQty;
-                                totalPcs += toDeliverPcs;
-                               // totalPcs += cmbEditUnit.Text != text_Bag ? toDeliverQty : toDeliverQty * pcsPerBag;
-
-
-                                //dgv.Rows[i - 1].Cells[header_PriorityToDeliveryPlanningInPCS + priorityLvl].Value = stillNeedInPcs;
-                                //int toDeliverPcs = cmbEditUnit.Text != text_Bag ? toDeliverQty : toDeliverQty * pcsPerBag;
+                                if(itemCode.Contains("CFPOR"))
+                                {
+                                    total_Oring_Pkts += cmbEditUnit.Text != text_Bag ? toDeliverQty / pcsPerBag : toDeliverQty;
+                                    total_Oring_Pcs += toDeliverPcs;
+                                }
+                                else
+                                {
+                                    totalBag += cmbEditUnit.Text != text_Bag ? toDeliverQty / pcsPerBag : toDeliverQty;
+                                    totalPcs += toDeliverPcs;
+                                }
+                              
+                          
 
                                 if (pcsPerPacket > 0)
                                 {
-                                    //int planningPcs = int.TryParse(dt.Rows[i-1][header_PriorityToDeliveryPlanningInPCS + priorityLvl.ToString()].ToString(), out planningPcs) ? planningPcs : 0;
-                                    //totalPkts += planningPcs % pcsPerBag / pcsPerPacket;
-                                    totalPkts += toDeliverPcs % pcsPerBag / pcsPerPacket;
-                                    totalBalPcs += toDeliverPcs % pcsPerPacket;
+                                    if (itemCode.Contains("CFPOR"))
+                                    {
+                                        total_Oring_Pkts += toDeliverPcs % pcsPerBag / pcsPerPacket;
+                                        total_Oring_Pcs += toDeliverPcs % pcsPerPacket;
+                                    }
+                                    else
+                                    {
+                                        totalPkts += toDeliverPcs % pcsPerBag / pcsPerPacket;
+                                        totalBalPcs += toDeliverPcs % pcsPerPacket;
+                                    }
+
+                                    
 
                                 }
                                 else
                                 {
-                                    totalBalPcs += toDeliverPcs % pcsPerBag;
+                                    if (itemCode.Contains("CFPOR"))
+                                    {
+                                        total_Oring_Pcs += toDeliverPcs % pcsPerBag;
+
+                                    }
+                                    else
+                                    {
+                                        totalBalPcs += toDeliverPcs % pcsPerBag;
+
+                                    }
+
 
                                 }
                             }
-
-
-
                         }
 
                         if (colName == searchingColumns)
                             priorityLvl++;
-
-
                     }
-
-
                 }
-
-
-
             }
 
             for (int j = 0; j < dt.Columns.Count; j++)
@@ -2439,7 +2438,7 @@ namespace FactoryManagementSoftware.UI
 
             string selectedType = "cell";
 
-            string totalSelected_Text = " (" + totalCellSelected + " Cells)";
+            string totalSelected_Text = totalCellSelected + " Cells";
 
             if (dgv.SelectionMode == DataGridViewSelectionMode.FullColumnSelect)
             {
@@ -2452,18 +2451,55 @@ namespace FactoryManagementSoftware.UI
                 selectedType += "s";
             }
 
-            totalSelected_Text = " (" + totalSelected + " " + selectedType + ")";
+            totalSelected_Text =  totalSelected + " " + selectedType ;
+            string str_Bag = " Bags";
+            string str_Pkt = " Packets";
+            string str_Pcs = " Pcs";
+            string str_BalPcs = " Bal. Pcs";
 
-            if(totalPkts > 0)
+            string str_Oring_Pkt = " Oring Packets";
+            string str_Oring_Pcs = " Oring Pcs";
+
+            if (totalBag <= 1)
+            {
+                str_Bag = " Bag";
+            }
+
+            if (totalPkts <= 1)
+            {
+                str_Pkt = " Packet";
+            }
+
+            if (totalPcs <= 1)
+            {
+                str_Pcs = " Piece";
+            }
+
+            if (totalBalPcs <= 1)
+            {
+                str_BalPcs = " Piece";
+            }
+
+            if (total_Oring_Pkts <= 1)
+            {
+                str_Oring_Pkt = " Oring Packet";
+            }
+
+            if (total_Oring_Pcs <= 1)
+            {
+                str_Oring_Pcs = " Oring Piece";
+            }
+
+            if (totalPkts > 0)
             {
                 if(totalBalPcs > 0)
                 {
-                    lblTotalBag.Text = totalBag + " BAG(s) + " + totalPkts + " PKT(s) + " + totalBalPcs + " PCS(s) " + "or " + totalPcs + " PCS " + text_Selected + totalSelected_Text;
+                    lblTotalBag.Text = totalBag + str_Bag +" + " + totalPkts + str_Pkt + " + " + totalBalPcs + str_BalPcs + "or " + totalPcs + str_Pcs ;
 
                 }
                 else
                 {
-                    lblTotalBag.Text = totalBag + " BAG(s) + " + totalPkts + " PKT(s) " + "or " + totalPcs + " PCS " + text_Selected + totalSelected_Text;
+                    lblTotalBag.Text = totalBag + str_Bag + " + " + totalPkts + str_Pkt + "or " + totalPcs + str_Pcs;
 
                 }
 
@@ -2472,17 +2508,42 @@ namespace FactoryManagementSoftware.UI
             {
                 if (totalBalPcs > 0)
                 {
-                    lblTotalBag.Text = totalBag + " BAG(s) + " + totalBalPcs + " PCS(s) " + "or " + totalPcs + " PCS " + text_Selected + totalSelected_Text;
+                    lblTotalBag.Text = totalBag + str_Bag + " + " + totalBalPcs + str_BalPcs + "or " + totalPcs + str_Pcs;
 
                 }
                 else
                 {
-                    lblTotalBag.Text = totalBag + " BAG(s) or " + totalPcs + " PCS " + text_Selected + totalSelected_Text;
+                    lblTotalBag.Text = totalBag + str_Bag + " or " + totalPcs + str_Pcs;
 
 
                 }
             }
-            
+
+            if (total_Oring_Pkts > 0)
+            {
+                if (total_Oring_Pcs > 0)
+                {
+                    lblTotalBag.Text += " + " + total_Oring_Pkts + str_Oring_Pkt + " or " + total_Oring_Pcs + str_Oring_Pcs;
+
+                }
+                else
+                {
+                    lblTotalBag.Text += " + " + total_Oring_Pkts + str_Oring_Pkt;
+
+                }
+
+            }
+            else
+            {
+                if (total_Oring_Pcs > 0)
+                {
+                    lblTotalBag.Text += " + " + total_Oring_Pcs + str_Oring_Pcs;
+
+                }
+             
+            }
+            lblTotalBag.Text += " ("+totalSelected_Text+ text_Selected+")";
+
         }
 
         private void NewTrip(DataGridView dgv)

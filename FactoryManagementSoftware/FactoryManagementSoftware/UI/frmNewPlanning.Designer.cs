@@ -205,6 +205,7 @@
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54.70852F));
             this.tableLayoutPanel18.Size = new System.Drawing.Size(298, 443);
             this.tableLayoutPanel18.TabIndex = 33;
+            this.tableLayoutPanel18.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel18_Paint);
             // 
             // tableLayoutPanel19
             // 
@@ -246,9 +247,9 @@
             this.cbEditMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbEditMode.AutoSize = true;
             this.cbEditMode.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbEditMode.Location = new System.Drawing.Point(185, 3);
+            this.cbEditMode.Location = new System.Drawing.Point(191, 3);
             this.cbEditMode.Name = "cbEditMode";
-            this.cbEditMode.Size = new System.Drawing.Size(104, 23);
+            this.cbEditMode.Size = new System.Drawing.Size(98, 21);
             this.cbEditMode.TabIndex = 101;
             this.cbEditMode.Text = "EDIT MODE";
             this.cbEditMode.UseVisualStyleBackColor = true;
@@ -336,9 +337,9 @@
             // 
             this.lblQuoCT.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblQuoCT.AutoSize = true;
-            this.lblQuoCT.Location = new System.Drawing.Point(3, 11);
+            this.lblQuoCT.Location = new System.Drawing.Point(3, 13);
             this.lblQuoCT.Name = "lblQuoCT";
-            this.lblQuoCT.Size = new System.Drawing.Size(61, 19);
+            this.lblQuoCT.Size = new System.Drawing.Size(56, 17);
             this.lblQuoCT.TabIndex = 1;
             this.lblQuoCT.Text = "QUO CT";
             // 
@@ -346,9 +347,9 @@
             // 
             this.lblProCT.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblProCT.AutoSize = true;
-            this.lblProCT.Location = new System.Drawing.Point(73, 11);
+            this.lblProCT.Location = new System.Drawing.Point(73, 13);
             this.lblProCT.Name = "lblProCT";
-            this.lblProCT.Size = new System.Drawing.Size(56, 19);
+            this.lblProCT.Size = new System.Drawing.Size(52, 17);
             this.lblProCT.TabIndex = 10;
             this.lblProCT.Text = "PRO CT";
             // 
@@ -356,9 +357,9 @@
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 21);
+            this.label10.Location = new System.Drawing.Point(3, 23);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(72, 19);
+            this.label10.Size = new System.Drawing.Size(67, 17);
             this.label10.TabIndex = 16;
             this.label10.Text = "QUO TON";
             // 
@@ -386,9 +387,9 @@
             // 
             this.lblRW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblRW.AutoSize = true;
-            this.lblRW.Location = new System.Drawing.Point(149, 181);
+            this.lblRW.Location = new System.Drawing.Point(149, 183);
             this.lblRW.Name = "lblRW";
-            this.lblRW.Size = new System.Drawing.Size(111, 19);
+            this.lblRW.Size = new System.Drawing.Size(106, 17);
             this.lblRW.TabIndex = 6;
             this.lblRW.Text = "RW PER SHOT(g)";
             // 
@@ -406,9 +407,9 @@
             // 
             this.lblCavity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCavity.AutoSize = true;
-            this.lblCavity.Location = new System.Drawing.Point(3, 101);
+            this.lblCavity.Location = new System.Drawing.Point(3, 103);
             this.lblCavity.Name = "lblCavity";
-            this.lblCavity.Size = new System.Drawing.Size(54, 19);
+            this.lblCavity.Size = new System.Drawing.Size(48, 17);
             this.lblCavity.TabIndex = 0;
             this.lblCavity.Text = "CAVITY";
             // 
@@ -416,9 +417,9 @@
             // 
             this.lblPW.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblPW.AutoSize = true;
-            this.lblPW.Location = new System.Drawing.Point(3, 181);
+            this.lblPW.Location = new System.Drawing.Point(3, 183);
             this.lblPW.Name = "lblPW";
-            this.lblPW.Size = new System.Drawing.Size(111, 19);
+            this.lblPW.Size = new System.Drawing.Size(105, 17);
             this.lblPW.TabIndex = 4;
             this.lblPW.Text = "PW PER SHOT(g)";
             // 
@@ -436,9 +437,9 @@
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(149, 21);
+            this.label9.Location = new System.Drawing.Point(149, 23);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(67, 19);
+            this.label9.Size = new System.Drawing.Size(63, 17);
             this.label9.TabIndex = 14;
             this.label9.Text = "PRO TON";
             // 
@@ -456,9 +457,9 @@
             // 
             this.lblPartName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblPartName.AutoSize = true;
-            this.lblPartName.Location = new System.Drawing.Point(3, 49);
+            this.lblPartName.Location = new System.Drawing.Point(3, 51);
             this.lblPartName.Name = "lblPartName";
-            this.lblPartName.Size = new System.Drawing.Size(48, 19);
+            this.lblPartName.Size = new System.Drawing.Size(45, 17);
             this.lblPartName.TabIndex = 0;
             this.lblPartName.Text = "NAME";
             // 
@@ -480,9 +481,9 @@
             // 
             this.lblPartCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblPartCode.AutoSize = true;
-            this.lblPartCode.Location = new System.Drawing.Point(3, 123);
+            this.lblPartCode.Location = new System.Drawing.Point(3, 125);
             this.lblPartCode.Name = "lblPartCode";
-            this.lblPartCode.Size = new System.Drawing.Size(46, 19);
+            this.lblPartCode.Size = new System.Drawing.Size(42, 17);
             this.lblPartCode.TabIndex = 2;
             this.lblPartCode.Text = "CODE";
             // 
@@ -595,9 +596,9 @@
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(3, 14);
+            this.label11.Location = new System.Drawing.Point(3, 16);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(46, 19);
+            this.label11.Size = new System.Drawing.Size(42, 17);
             this.label11.TabIndex = 17;
             this.label11.Text = "CODE";
             // 
@@ -625,9 +626,9 @@
             // 
             this.label18.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(3, 8);
+            this.label18.Location = new System.Drawing.Point(3, 9);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(125, 19);
+            this.label18.Size = new System.Drawing.Size(117, 17);
             this.label18.TabIndex = 30;
             this.label18.Text = "WITH WASTAGE %:";
             // 
@@ -661,9 +662,9 @@
             // 
             this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(232, 8);
+            this.label8.Location = new System.Drawing.Point(233, 9);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(19, 19);
+            this.label8.Size = new System.Drawing.Size(17, 17);
             this.label8.TabIndex = 107;
             this.label8.Text = "=";
             // 
@@ -699,9 +700,9 @@
             // 
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(118, 6);
+            this.label7.Location = new System.Drawing.Point(130, 7);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(188, 19);
+            this.label7.Size = new System.Drawing.Size(176, 17);
             this.label7.TabIndex = 33;
             this.label7.Text = "TOTAL MAT AFTER WASTAGE:";
             // 
@@ -734,7 +735,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(135, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(26, 19);
+            this.label3.Size = new System.Drawing.Size(24, 17);
             this.label3.TabIndex = 107;
             this.label3.Text = "KG";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -758,9 +759,9 @@
             // 
             this.label12.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(69, 12);
+            this.label12.Location = new System.Drawing.Point(69, 13);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(15, 19);
+            this.label12.Size = new System.Drawing.Size(14, 17);
             this.label12.TabIndex = 21;
             this.label12.Text = "x";
             // 
@@ -794,9 +795,9 @@
             // 
             this.label13.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(189, 12);
+            this.label13.Location = new System.Drawing.Point(198, 13);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(116, 19);
+            this.label13.Size = new System.Drawing.Size(107, 17);
             this.label13.TabIndex = 22;
             this.label13.Text = "RAW + COLOR =";
             this.label13.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -805,9 +806,9 @@
             // 
             this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(3, 77);
+            this.label14.Location = new System.Drawing.Point(3, 79);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(103, 19);
+            this.label14.Size = new System.Drawing.Size(94, 17);
             this.label14.TabIndex = 17;
             this.label14.Text = "MATERIAL BAG";
             // 
@@ -843,9 +844,9 @@
             // 
             this.label15.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(179, 9);
+            this.label15.Location = new System.Drawing.Point(179, 10);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(26, 19);
+            this.label15.Size = new System.Drawing.Size(24, 17);
             this.label15.TabIndex = 24;
             this.label15.Text = "KG";
             // 
@@ -856,9 +857,9 @@
             this.cbRecycleUse.Checked = true;
             this.cbRecycleUse.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbRecycleUse.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbRecycleUse.Location = new System.Drawing.Point(3, 200);
+            this.cbRecycleUse.Location = new System.Drawing.Point(3, 202);
             this.cbRecycleUse.Name = "cbRecycleUse";
-            this.cbRecycleUse.Size = new System.Drawing.Size(170, 23);
+            this.cbRecycleUse.Size = new System.Drawing.Size(163, 21);
             this.cbRecycleUse.TabIndex = 14;
             this.cbRecycleUse.Text = "RUNNER RECYCLE USE";
             this.cbRecycleUse.UseVisualStyleBackColor = true;
@@ -926,9 +927,9 @@
             // 
             this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(3, 74);
+            this.label19.Location = new System.Drawing.Point(3, 76);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(55, 19);
+            this.label19.Size = new System.Drawing.Size(50, 17);
             this.label19.TabIndex = 17;
             this.label19.Text = "COLOR";
             // 
@@ -962,9 +963,9 @@
             // 
             this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(239, 69);
+            this.label22.Location = new System.Drawing.Point(239, 76);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(103, 24);
+            this.label22.Size = new System.Drawing.Size(120, 17);
             this.label22.TabIndex = 31;
             this.label22.Text = "PLANNED QTY (KG)";
             // 
@@ -972,9 +973,9 @@
             // 
             this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(239, 6);
+            this.label21.Location = new System.Drawing.Point(239, 8);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(67, 19);
+            this.label21.Size = new System.Drawing.Size(63, 17);
             this.label21.TabIndex = 34;
             this.label21.Text = "USAGE %";
             // 
@@ -982,9 +983,9 @@
             // 
             this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(3, 6);
+            this.label20.Location = new System.Drawing.Point(3, 8);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(135, 19);
+            this.label20.Size = new System.Drawing.Size(125, 17);
             this.label20.TabIndex = 31;
             this.label20.Text = "MB/PIGMENT CODE";
             // 
@@ -1055,7 +1056,7 @@
             this.label25.AutoSize = true;
             this.label25.Location = new System.Drawing.Point(404, 0);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(34, 19);
+            this.label25.Size = new System.Drawing.Size(32, 17);
             this.label25.TabIndex = 35;
             this.label25.Text = "HRS";
             // 
@@ -1090,7 +1091,7 @@
             this.label23.AutoSize = true;
             this.label23.Location = new System.Drawing.Point(47, 0);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(123, 19);
+            this.label23.Size = new System.Drawing.Size(115, 17);
             this.label23.TabIndex = 31;
             this.label23.Text = "X WORKING DAY (";
             this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1101,7 +1102,7 @@
             this.label24.AutoSize = true;
             this.label24.Location = new System.Drawing.Point(248, 0);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(52, 19);
+            this.label24.Size = new System.Drawing.Size(49, 17);
             this.label24.TabIndex = 33;
             this.label24.Text = "HRS) +";
             // 
@@ -1164,6 +1165,7 @@
             this.dgvForecast.Margin = new System.Windows.Forms.Padding(2);
             this.dgvForecast.Name = "dgvForecast";
             this.dgvForecast.RowHeadersVisible = false;
+            this.dgvForecast.RowHeadersWidth = 51;
             this.dgvForecast.RowTemplate.Height = 40;
             this.dgvForecast.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvForecast.Size = new System.Drawing.Size(372, 301);
@@ -1199,9 +1201,9 @@
             this.cbOtherPurpose.Checked = true;
             this.cbOtherPurpose.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbOtherPurpose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbOtherPurpose.Location = new System.Drawing.Point(3, 325);
+            this.cbOtherPurpose.Location = new System.Drawing.Point(3, 327);
             this.cbOtherPurpose.Name = "cbOtherPurpose";
-            this.cbOtherPurpose.Size = new System.Drawing.Size(166, 23);
+            this.cbOtherPurpose.Size = new System.Drawing.Size(157, 21);
             this.cbOtherPurpose.TabIndex = 32;
             this.cbOtherPurpose.Text = "FOR OTHER PURPOSE";
             this.cbOtherPurpose.UseVisualStyleBackColor = false;
@@ -1211,9 +1213,9 @@
             // 
             this.label28.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(3, 95);
+            this.label28.Location = new System.Drawing.Point(3, 97);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(128, 19);
+            this.label28.Size = new System.Drawing.Size(118, 17);
             this.label28.TabIndex = 20;
             this.label28.Text = "ABLE TO PRODUCE";
             // 
@@ -1233,9 +1235,9 @@
             // 
             this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(3, 3);
+            this.label27.Location = new System.Drawing.Point(3, 5);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(85, 19);
+            this.label27.Size = new System.Drawing.Size(80, 17);
             this.label27.TabIndex = 18;
             this.label27.Text = "TARGET QTY";
             // 
@@ -1387,6 +1389,7 @@
             this.dgvCheckList.Name = "dgvCheckList";
             this.dgvCheckList.ReadOnly = true;
             this.dgvCheckList.RowHeadersVisible = false;
+            this.dgvCheckList.RowHeadersWidth = 51;
             this.dgvCheckList.RowTemplate.Height = 40;
             this.dgvCheckList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCheckList.Size = new System.Drawing.Size(1542, 179);
