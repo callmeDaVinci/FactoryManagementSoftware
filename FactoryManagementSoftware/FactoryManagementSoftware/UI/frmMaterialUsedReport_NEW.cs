@@ -111,6 +111,8 @@ namespace FactoryManagementSoftware.UI
         private DataTable dt_DeliveredData;
         private DataTable dt_ItemForecast;
         bool loaded = false;
+        bool showColorRate = false;
+
         bool custChanging = false;
         #endregion
 
@@ -250,6 +252,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerOutQty, typeof(int));
             dt.Columns.Add(text.Header_ItemWeight_G, typeof(float));
             dt.Columns.Add(text.Header_MaterialUsed_KG_Piece, typeof(float));
+            dt.Columns.Add(text.Header_ColorRate, typeof(float));
             dt.Columns.Add(text.Header_Wastage, typeof(float));
             dt.Columns.Add(text.Header_MaterialUsedWithWastage, typeof(float));
             dt.Columns.Add(text.Header_TotalMaterialUsed_KG_Piece, typeof(float));
@@ -344,6 +347,7 @@ namespace FactoryManagementSoftware.UI
 
             dt.Columns.Add(text.Header_ItemWeight_G, typeof(float));
             dt.Columns.Add(text.Header_MaterialUsed_KG_Piece, typeof(float));
+            dt.Columns.Add(text.Header_ColorRate, typeof(float));
             dt.Columns.Add(text.Header_Wastage, typeof(float));
             dt.Columns.Add(text.Header_MaterialUsedWithWastage, typeof(float));
             dt.Columns.Add(text.Header_TotalMaterialUsed_KG_Piece, typeof(float));
@@ -363,8 +367,9 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_Parent].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
             dgv.Columns[text.Header_MatType].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
             dgv.Columns[text.Header_MatCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+            dgv.Columns[text.Header_PartCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 
-            if(cmbReportType.Text.Equals(reportType_Forecast) && cbSummary.Checked)
+            if (cmbReportType.Text.Equals(reportType_Forecast) && cbSummary.Checked)
             {
                 string month = null;
 
@@ -444,6 +449,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_ItemWeight_G].Visible = false;
 
 
+
                 dgv.Columns[header_TotalOut].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 //dgv.Columns[header_TotalOut].DefaultHeaderCellType
                 dgv.Columns[header_TotalOut].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
@@ -453,6 +459,8 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_Bal].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
 
             }
+
+            dgv.Columns[text.Header_ColorRate].Visible = showColorRate;
 
             dgv.Columns[text.Header_PartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[text.Header_PartCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -472,6 +480,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerOutQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[text.Header_ItemWeight_G].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[text.Header_ColorRate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[text.Header_MaterialUsed_KG_Piece].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[text.Header_Wastage].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[text.Header_MaterialUsedWithWastage].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -1058,12 +1067,20 @@ namespace FactoryManagementSoftware.UI
                                         }
 
                                         float itemWeight = partWeight + runnerWeight;
+
                                         #endregion
 
                                         float wastage = Convert.ToSingle(matRow[dalItem.ItemWastage]); // tool.getItemWastageAllowedFromDataTable(dt_Item, matCode);
 
                                         float wastageAdd = reference_Value * wastage;
+
                                         int MatUsedWithWastage = (int)Math.Ceiling(reference_Value + wastageAdd);
+
+                                        if(matCat == text.Cat_MB)
+                                        {
+
+                                        }
+
                                         totalMatUsed += MatUsedWithWastage;
 
                                         #region New Test: with parent code/name
@@ -1168,6 +1185,7 @@ namespace FactoryManagementSoftware.UI
                                         }
 
                                         float itemWeight = partWeight + runnerWeight;
+                                        float colorRate = float.TryParse(partRow[dalItem.ItemMBRate].ToString(), out colorRate) ? colorRate : 0;
 
                                         float wastage = partRow[dalItem.ItemWastage] == DBNull.Value ? 0 : Convert.ToSingle(partRow[dalItem.ItemWastage]);
 
@@ -1175,7 +1193,14 @@ namespace FactoryManagementSoftware.UI
                                         dt_DeliveredData.Rows.Clear();
                                         float deliveredQty = GetForecastQty(custName, itemCode, dt_JoinforChecking, dt_PartTrfHist, "11", "2021");
 
+                                        
                                         float matUsedInKG = deliveredQty * itemWeight / 1000;
+
+                                        if (matCat == text.Cat_MB || matCat == text.Cat_Pigment)
+                                        {
+                                            matUsedInKG = deliveredQty * itemWeight * colorRate / 1000;
+                                        }
+
                                         totalMatUsed += (float)Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
 
 
@@ -1204,6 +1229,11 @@ namespace FactoryManagementSoftware.UI
 
                                                 matUsedInKG = qty * itemWeight / 1000;
 
+                                                if (matCat == text.Cat_MB || matCat == text.Cat_Pigment)
+                                                {
+                                                    matUsedInKG = qty * itemWeight * colorRate / 1000;
+                                                }
+
                                                 row_DGVSouce[text.Header_Index] = index;
                                                 row_DGVSouce[text.Header_MatType] = matCat;
                                                 row_DGVSouce[text.Header_MatCode] = matCode;
@@ -1213,6 +1243,7 @@ namespace FactoryManagementSoftware.UI
                                                 row_DGVSouce[text.Header_Parent] = parent;
                                                 row_DGVSouce[text.Header_ItemWeight_G] = itemWeight;
                                                 row_DGVSouce[text.Header_Wastage] = wastage;
+                                                row_DGVSouce[text.Header_ColorRate] = colorRate;
                                                 row_DGVSouce[headerOutQty] = Math.Round(qty, 2);
                                                 row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = Math.Round(matUsedInKG, 2);
                                                 row_DGVSouce[text.Header_MaterialUsedWithWastage] = Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
@@ -1242,7 +1273,11 @@ namespace FactoryManagementSoftware.UI
             }
 
             //last row 
-            string printedMatCode2 = dt_MatUsed.Rows[dgvRowIndex - 1][text.Header_MatCode].ToString();
+            string printedMatCode2 = "";
+
+            if (dgvRowIndex - 1 >= 0)
+            printedMatCode2 = dt_MatUsed.Rows[dgvRowIndex - 1][text.Header_MatCode].ToString();
+
             if (dgvRowIndex - 1 >= 0 && !string.IsNullOrEmpty(printedMatCode2))
             {
                 dt_MatUsed.Rows[dgvRowIndex - 1][text.Header_TotalMaterialUsed_KG_Piece] = Math.Round(totalMatUsed, 2);
@@ -1310,6 +1345,7 @@ namespace FactoryManagementSoftware.UI
                 float TotalOrderedQty = 0;
                 float OrderedQty = 0;
                 float matUsedInKG = 0;
+                float ColorRate = float.TryParse(row[text.Header_ColorRate].ToString(), out ColorRate) ? ColorRate : 0;
 
                 if (string.IsNullOrEmpty(itemCode))
                 {
@@ -1324,8 +1360,6 @@ namespace FactoryManagementSoftware.UI
                         {
                             joinQty = Convert.ToSingle(join["join_qty"]);
                             break;
-                            //string parentCode = join["parent_code"].ToString();
-                            //DeliveredQty += joinQty * DeliveredToCustomerQty(customer, parentCode, dt_Join, dt_ToCustomer);
                         }
                     }
                 }
@@ -1357,7 +1391,14 @@ namespace FactoryManagementSoftware.UI
                                 //calculate material used
                                 matUsedInKG = OrderedQty * itemWeight / 1000;
 
-                                if(matType.Equals(text.Cat_SubMat))
+                                if (matType.Equals(text.Cat_MB) || matType.Equals(text.Cat_Pigment))
+                                {
+                                    matUsedInKG = OrderedQty * itemWeight * ColorRate/ 1000;
+
+                                }
+
+
+                                if (matType.Equals(text.Cat_SubMat))
                                 {
                                     row[month] = Math.Round(OrderedQty + OrderedQty * wastage, 0);
                                 }
@@ -1395,6 +1436,12 @@ namespace FactoryManagementSoftware.UI
                                     //calculate material used
                                     matUsedInKG = OrderedQty * itemWeight / 1000;
 
+                                    if (matType.Equals(text.Cat_MB) || matType.Equals(text.Cat_Pigment))
+                                    {
+                                        matUsedInKG = OrderedQty * itemWeight * ColorRate / 1000;
+
+                                    }
+
                                     if (matType.Equals(text.Cat_SubMat))
                                     {
                                         row[month] = Math.Round(OrderedQty + OrderedQty * wastage, 0);
@@ -1430,6 +1477,12 @@ namespace FactoryManagementSoftware.UI
                                     //calculate material used
                                     matUsedInKG = OrderedQty * itemWeight / 1000;
 
+                                    if (matType.Equals(text.Cat_MB) || matType.Equals(text.Cat_Pigment))
+                                    {
+                                        matUsedInKG = OrderedQty * itemWeight * ColorRate / 1000;
+
+                                    }
+
                                     if (matType.Equals(text.Cat_SubMat))
                                     {
                                         row[month] = Math.Round(OrderedQty + OrderedQty * wastage, 0);
@@ -1464,6 +1517,12 @@ namespace FactoryManagementSoftware.UI
 
                                     //calculate material used
                                     matUsedInKG = OrderedQty * itemWeight / 1000;
+
+                                    if (matType.Equals(text.Cat_MB) || matType.Equals(text.Cat_Pigment))
+                                    {
+                                        matUsedInKG = OrderedQty * itemWeight * ColorRate / 1000;
+
+                                    }
 
                                     if (matType.Equals(text.Cat_SubMat))
                                     {
@@ -2041,7 +2100,7 @@ namespace FactoryManagementSoftware.UI
                                         else
                                         {
                                             partWeight = float.TryParse(partRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
-                                            runnerWeight = float.TryParse(partRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
+                                            runnerWeight = float.TryParse(partRow[dalItem.ItemProRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
 
                                             if (partWeight == 0)
                                             {
@@ -2062,13 +2121,25 @@ namespace FactoryManagementSoftware.UI
                                         }
 
                                         float itemWeight = partWeight + runnerWeight;
+                                        
 
                                         float wastage = partRow[dalItem.ItemWastage] == DBNull.Value ? 0 : Convert.ToSingle(partRow[dalItem.ItemWastage]);
 
                                         //Get delivered out data
                                         dt_DeliveredData.Rows.Clear();
                                         float deliveredQty = DeliveredToCustomerQty(custName, itemCode, dt_JoinforChecking, dt_PartTrfHist);
+
                                         float matUsedInKG = deliveredQty * itemWeight / 1000;
+
+                                        float ColorRate = float.TryParse(partRow[dalItem.ItemMBRate].ToString(), out ColorRate) ? ColorRate : 0;
+
+                                        if (matCat == text.Cat_MB || matCat == text.Cat_Pigment)
+                                        {
+                                            matUsedInKG = deliveredQty * itemWeight * ColorRate / 1000;
+                                            showColorRate = true;
+
+                                        }
+
                                         totalMatUsed += (float)Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
 
 
@@ -2096,6 +2167,14 @@ namespace FactoryManagementSoftware.UI
 
                                                 matUsedInKG = qty * itemWeight / 1000;
 
+                                                if (matCat == text.Cat_MB || matCat == text.Cat_Pigment)
+                                                {
+                                                    matUsedInKG = qty * itemWeight * ColorRate / 1000;
+                                                    showColorRate = true;
+
+                                                }
+
+
                                                 row_DGVSouce[text.Header_Index] = index;
                                                 row_DGVSouce[text.Header_MatType] = matCat;
                                                 row_DGVSouce[text.Header_MatCode] = matCode;
@@ -2105,6 +2184,7 @@ namespace FactoryManagementSoftware.UI
                                                 row_DGVSouce[text.Header_Parent] = parent;
                                                 row_DGVSouce[text.Header_ItemWeight_G] = itemWeight;
                                                 row_DGVSouce[text.Header_Wastage] = wastage;
+                                                row_DGVSouce[text.Header_ColorRate] = ColorRate;
                                                 row_DGVSouce[headerOutQty] = Math.Round(qty, 2);
                                                 row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = Math.Round(matUsedInKG, 2);
                                                 row_DGVSouce[text.Header_MaterialUsedWithWastage] = Math.Round(matUsedInKG + matUsedInKG * wastage, 2);
@@ -2589,6 +2669,8 @@ namespace FactoryManagementSoftware.UI
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            showColorRate = false;
+
             if (cmbCustomer.SelectedIndex == -1)
             {
                 MessageBox.Show("Please select a customer.");
@@ -2606,6 +2688,8 @@ namespace FactoryManagementSoftware.UI
 
         private void btnFilterApply_Click(object sender, EventArgs e)
         {
+            showColorRate = false;
+
             if (cmbCustomer.SelectedIndex == -1)
             {
                 MessageBox.Show("Please select a customer.");
