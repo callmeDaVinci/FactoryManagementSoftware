@@ -982,6 +982,12 @@ namespace FactoryManagementSoftware.Module
 
             Text text = new Text();
 
+            DT_PRODUCT_FORECAST_SUMMARY = null;
+            DT_MATERIAL_FORECAST_SUMMARY = null;
+            dt_ItemForecast = null;
+            DT_PART_TRANSFER = null;
+            DT_STOCK_LIST = null;
+
             balForecastBLL = u;
 
             string from = u.Date_From.ToString("yyyy/MM/dd");

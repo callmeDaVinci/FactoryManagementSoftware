@@ -1097,6 +1097,13 @@ namespace FactoryManagementSoftware.UI
 
             frmLoading.ShowLoadingScreen();
 
+
+            DT_PRODUCT_FORECAST_SUMMARY = null;
+            DT_MATERIAL_FORECAST_SUMMARY = null;
+            dt_ItemForecast = null;
+            DT_PART_TRANSFER = null;
+            DT_STOCK_LIST = null;
+
             dgvAlertSummary.DataSource = null;
 
             //dt_DeliveredData = Product_SummaryDataTable();
@@ -2623,6 +2630,8 @@ namespace FactoryManagementSoftware.UI
             {
                 MainFilterOnly(true);
 
+               
+
                 GetSummaryForecastMatUsedData();
 
                 //BalForecastBLL balForecastBLL = new BalForecastBLL();
@@ -2646,7 +2655,7 @@ namespace FactoryManagementSoftware.UI
                 //balForecastBLL.Year_From = yearStart;
                 //balForecastBLL.Year_To = yearEnd;
 
-                //balForecastBLL.Item_Type = text.Cat_Part;
+                //balForecastBLL.Item_Type =cmbItemType.Text;
 
                 //balForecastBLL.Deduct_Delivered = cbDeductDeliveredQty.Checked;
                 //balForecastBLL.Deduct_Stock = cbDeductUsedStock.Checked;
