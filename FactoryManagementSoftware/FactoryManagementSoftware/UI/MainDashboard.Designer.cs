@@ -64,8 +64,6 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.oldVersionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newVersionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -90,7 +88,8 @@
             this.usernameToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(1348, 28);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(1797, 28);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "MenuStrip";
             this.menuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip_ItemClicked);
@@ -231,9 +230,6 @@
             // 
             // orderToolStripMenuItem1
             // 
-            this.orderToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.oldVersionToolStripMenuItem,
-            this.newVersionToolStripMenuItem});
             this.orderToolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.orderToolStripMenuItem1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.orderToolStripMenuItem1.Name = "orderToolStripMenuItem1";
@@ -244,24 +240,27 @@
             // 
             // forecastToolStripMenuItem
             // 
+            this.forecastToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.forecastToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.forecastToolStripMenuItem.Name = "forecastToolStripMenuItem";
-            this.forecastToolStripMenuItem.Size = new System.Drawing.Size(93, 24);
+            this.forecastToolStripMenuItem.Size = new System.Drawing.Size(88, 24);
             this.forecastToolStripMenuItem.Text = "FORECAST";
             this.forecastToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.forecastToolStripMenuItem.Click += new System.EventHandler(this.forecastToolStripMenuItem_Click);
             // 
             // pMMAToolStripMenuItem
             // 
+            this.pMMAToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.pMMAToolStripMenuItem.Name = "pMMAToolStripMenuItem";
-            this.pMMAToolStripMenuItem.Size = new System.Drawing.Size(67, 24);
+            this.pMMAToolStripMenuItem.Size = new System.Drawing.Size(66, 24);
             this.pMMAToolStripMenuItem.Text = "PMMA";
             this.pMMAToolStripMenuItem.Click += new System.EventHandler(this.pMMAToolStripMenuItem_Click);
             // 
             // sBBToolStripMenuItem
             // 
+            this.sBBToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.sBBToolStripMenuItem.Name = "sBBToolStripMenuItem";
-            this.sBBToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
+            this.sBBToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.sBBToolStripMenuItem.Text = "SBB";
             this.sBBToolStripMenuItem.Click += new System.EventHandler(this.sPPToolStripMenuItem_Click);
             // 
@@ -274,9 +273,10 @@
             this.materialUsedReportToolStripMenuItem,
             this.productionReportToolStripMenuItem,
             this.sBBDeliveredReportToolStripMenuItem});
+            this.reportToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.reportToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
-            this.reportToolStripMenuItem.Size = new System.Drawing.Size(75, 24);
+            this.reportToolStripMenuItem.Size = new System.Drawing.Size(71, 24);
             this.reportToolStripMenuItem.Text = "REPORT";
             this.reportToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.reportToolStripMenuItem.Click += new System.EventHandler(this.reportToolStripMenuItem_Click);
@@ -284,47 +284,48 @@
             // stockReportToolStripMenuItem
             // 
             this.stockReportToolStripMenuItem.Name = "stockReportToolStripMenuItem";
-            this.stockReportToolStripMenuItem.Size = new System.Drawing.Size(235, 26);
+            this.stockReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.stockReportToolStripMenuItem.Text = "Stock Report";
             this.stockReportToolStripMenuItem.Click += new System.EventHandler(this.stockReportToolStripMenuItem_Click);
             // 
             // deliveryReportToolStripMenuItem
             // 
             this.deliveryReportToolStripMenuItem.Name = "deliveryReportToolStripMenuItem";
-            this.deliveryReportToolStripMenuItem.Size = new System.Drawing.Size(235, 26);
+            this.deliveryReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.deliveryReportToolStripMenuItem.Text = "In Out Report";
             this.deliveryReportToolStripMenuItem.Click += new System.EventHandler(this.inOutReportToolStripMenuItem_Click);
             // 
             // forecastReportToolStripMenuItem
             // 
             this.forecastReportToolStripMenuItem.Name = "forecastReportToolStripMenuItem";
-            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(235, 26);
+            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.forecastReportToolStripMenuItem.Text = "Forecast Report";
             this.forecastReportToolStripMenuItem.Click += new System.EventHandler(this.forecastReportToolStripMenuItem_Click);
             // 
             // materialUsedReportToolStripMenuItem
             // 
             this.materialUsedReportToolStripMenuItem.Name = "materialUsedReportToolStripMenuItem";
-            this.materialUsedReportToolStripMenuItem.Size = new System.Drawing.Size(235, 26);
+            this.materialUsedReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.materialUsedReportToolStripMenuItem.Text = "Material Used Report";
             this.materialUsedReportToolStripMenuItem.Click += new System.EventHandler(this.materialUsedReportToolStripMenuItem_Click);
             // 
             // productionReportToolStripMenuItem
             // 
             this.productionReportToolStripMenuItem.Name = "productionReportToolStripMenuItem";
-            this.productionReportToolStripMenuItem.Size = new System.Drawing.Size(235, 26);
+            this.productionReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.productionReportToolStripMenuItem.Text = "Production Report";
             this.productionReportToolStripMenuItem.Click += new System.EventHandler(this.productionReportToolStripMenuItem_Click);
             // 
             // sBBDeliveredReportToolStripMenuItem
             // 
             this.sBBDeliveredReportToolStripMenuItem.Name = "sBBDeliveredReportToolStripMenuItem";
-            this.sBBDeliveredReportToolStripMenuItem.Size = new System.Drawing.Size(235, 26);
+            this.sBBDeliveredReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.sBBDeliveredReportToolStripMenuItem.Text = "SBB Delivered Report";
             this.sBBDeliveredReportToolStripMenuItem.Click += new System.EventHandler(this.sBBDeliveredReportToolStripMenuItem_Click);
             // 
             // pOToolStripMenuItem
             // 
+            this.pOToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.pOToolStripMenuItem.Name = "pOToolStripMenuItem";
             this.pOToolStripMenuItem.Size = new System.Drawing.Size(42, 24);
             this.pOToolStripMenuItem.Text = "PO";
@@ -344,10 +345,10 @@
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 695);
+            this.statusStrip.Location = new System.Drawing.Point(0, 861);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip.Size = new System.Drawing.Size(1348, 26);
+            this.statusStrip.Size = new System.Drawing.Size(1797, 26);
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "StatusStrip";
             // 
@@ -366,33 +367,19 @@
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
-            // oldVersionToolStripMenuItem
-            // 
-            this.oldVersionToolStripMenuItem.Name = "oldVersionToolStripMenuItem";
-            this.oldVersionToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.oldVersionToolStripMenuItem.Text = "Old Version";
-            this.oldVersionToolStripMenuItem.Click += new System.EventHandler(this.oldVersionToolStripMenuItem_Click_1);
-            // 
-            // newVersionToolStripMenuItem
-            // 
-            this.newVersionToolStripMenuItem.Name = "newVersionToolStripMenuItem";
-            this.newVersionToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.newVersionToolStripMenuItem.Text = "*New Version";
-            this.newVersionToolStripMenuItem.Click += new System.EventHandler(this.newVersionToolStripMenuItem_Click);
-            // 
             // MainDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
-            this.ClientSize = new System.Drawing.Size(1348, 721);
+            this.ClientSize = new System.Drawing.Size(1797, 887);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainDashboard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SAFETY PLASTICS";
@@ -445,8 +432,6 @@
         private System.Windows.Forms.ToolStripMenuItem newItemListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iTEMToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem usernameToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem oldVersionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newVersionToolStripMenuItem;
     }
 }
 

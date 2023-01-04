@@ -1245,76 +1245,6 @@ namespace FactoryManagementSoftware.UI
 
                 LoadCartonSetting();
 
-                #region GET PACKAGING DATA
-                //get packaging data
-                //foreach (DataRow row in dt_JoinInfo.Rows)
-                //{
-                //    string parentCode = row[dalJoin.JoinParent].ToString();
-
-                //    if (parentCode == itemCode)
-                //    {
-                //        string childCode = row[dalJoin.JoinChild].ToString();
-
-                //        foreach (DataRow rowItem in dt_ItemInfo.Rows)
-                //        {
-                //            if (rowItem[dalItem.ItemCode].ToString().Equals(childCode))
-                //            {
-                //                string cat = rowItem[dalItem.ItemCat].ToString();
-
-                //                if (cat.Equals(text.Cat_Carton) || cat.Equals(text.Cat_Packaging))
-                //                {
-                //                    string packagingName = rowItem[dalItem.ItemName].ToString();
-                //                    string packagingCode = rowItem[dalItem.ItemCode].ToString();
-                //                    string packagingQty = row[dalJoin.JoinMax].ToString();
-
-                //                    txtPackingMaxQty.Text = packagingQty;
-                //                    cmbPackingName.Text = packagingName;
-                //                    cmbPackingCode.Text = packagingCode;
-
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //    }
-
-                //}
-                #endregion
-
-                #region OLD GET PACKAGING DATA
-                ////get packaging data
-                //foreach (DataRow row in dt_JoinInfo.Rows)
-                //{
-                //    string parentCode = row[dalJoin.JoinParent].ToString();
-
-                //    if (parentCode == itemCode)
-                //    {
-                //        string childCode = row[dalJoin.JoinChild].ToString();
-
-                //        foreach (DataRow rowItem in dt_ItemInfo.Rows)
-                //        {
-                //            if (rowItem[dalItem.ItemCode].ToString().Equals(childCode))
-                //            {
-                //                string cat = rowItem[dalItem.ItemCat].ToString();
-
-                //                if (cat.Equals(text.Cat_Carton) || cat.Equals(text.Cat_Packaging))
-                //                {
-                //                    string packagingName = rowItem[dalItem.ItemName].ToString();
-                //                    string packagingCode = rowItem[dalItem.ItemCode].ToString();
-                //                    string packagingQty = row[dalJoin.JoinMax].ToString();
-
-                //                    txtPackingMaxQty.Text = packagingQty;
-                //                    cmbPackingName.Text = packagingName;
-                //                    cmbPackingCode.Text = packagingCode;
-
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //    }
-
-                //}
-                #endregion
-
                 txtOut.Text ="0";
                 txtIn.Text = "0";
 
@@ -3316,6 +3246,46 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
               
+            }
+
+            return balance;
+        }
+
+        private int GetLastMeter(DataTable dt, string planID)
+        {
+            int balance = 0;
+
+            DateTime date = DateTime.MaxValue;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                bool active = Convert.ToBoolean(row[dalProRecord.Active]);
+                if (planID == row[dalProRecord.PlanID].ToString() && active)
+                {
+                    DateTime proDate = Convert.ToDateTime(row[dalProRecord.ProDate]);
+                    int balanceLeft = int.TryParse(row[dalProRecord.CurrentShiftBalance].ToString(), out balanceLeft) ? balanceLeft : 0;
+
+                    if (date == DateTime.MaxValue)
+                    {
+                        date = proDate;
+                        balance = balanceLeft;
+                    }
+                    else if (proDate > date)
+                    {
+                        date = proDate;
+                        balance = balanceLeft;
+                    }
+                    else if (proDate == date)
+                    {
+                        string shift = row[dalProRecord.Shift].ToString();
+
+                        if (shift == text.Shift_Night)
+                        {
+                            balance = balanceLeft;
+                        }
+                    }
+                }
+
             }
 
             return balance;

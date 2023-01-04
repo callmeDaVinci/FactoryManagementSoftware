@@ -214,7 +214,9 @@ namespace FactoryManagementSoftware.Module
         #region Database String
          //<add name = "connstrng" connectionString="SERVER=DESKTOP-MFUKGH2;DATABASE=Factory;USER ID=stock;PASSWORD=stock"/>
 
-        public string DB_Semenyih { get; } = "SERVER=DESKTOP-MFUKGH2;DATABASE=Factory;USER ID=stock;PASSWORD=stock";
+        public string DB_Semenyih { get; } = "SERVER=ADMIN001;DATABASE=Factory;USER ID=StockAdmin;PASSWORD=stock";
+
+        //public string DB_Semenyih { get; } = "SERVER=DESKTOP-MFUKGH2;DATABASE=Factory;USER ID=stock;PASSWORD=stock";
         public string DB_OUG { get; } = "SERVER=192.168.0.149;DATABASE=Factory;USER ID=stock;PASSWORD=stock";
         public string DB_JunPC { get; } = @"Data Source=.\SQLEXPRESS01;Initial Catalog=Factory;Integrated Security=True";
 
@@ -263,6 +265,9 @@ namespace FactoryManagementSoftware.Module
         public string Header_IndexMarking { get; } = "#Marking";
 
         public string Header_Index { get; } = "#";
+
+        public string Header_Fac { get; } = "FAC.";
+
         public string Header_ParentOrProduct { get; } = "PARENT/PRODUCT";
 
         public string Header_DirectUseOn { get; } = "DIRECT USE ON (PARENT)";
@@ -272,6 +277,11 @@ namespace FactoryManagementSoftware.Module
         public string Header_PartCode { get; } = "PART CODE";
         public string Header_ItemCode { get; } = "ITEM CODE";
         public string Header_ItemName { get; } = "ITEM NAME";
+
+        public string Header_ItemDescription { get; } = "ITEM DESCRIPTION";
+        public string Header_Stocktake { get; } = "STOCKTAKE";
+
+
         public string Header_JoinQty { get; } = "JOIN QTY";
         public string Header_JoinMax { get; } = "JOIN MAX";
         public string Header_JoinMin { get; } = "JOIN MIN";

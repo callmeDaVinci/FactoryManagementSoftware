@@ -377,7 +377,26 @@ namespace FactoryManagementSoftware.UI
         }
         private void orderToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-           
+            if (!NewOrdFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmOrderAlert_NEW ord = new frmOrderAlert_NEW
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                ord.Show();
+                NewOrdFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmOrderAlert_NEW>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmOrderAlert_NEW>().First().BringToFront();
+                }
+            }
         }
 
         private void stockToolStripMenuItem_Click(object sender, EventArgs e)

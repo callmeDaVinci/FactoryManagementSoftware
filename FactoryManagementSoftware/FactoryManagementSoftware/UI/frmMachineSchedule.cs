@@ -13,6 +13,11 @@ using DataTable = System.Data.DataTable;
 using Font = System.Drawing.Font;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Configuration;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
+using System.Reflection;
+using Excel = Microsoft.Office.Interop.Excel;
+using CrystalDecisions.Shared;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -146,6 +151,14 @@ namespace FactoryManagementSoftware.UI
         private bool fromDailyRecord = false;
         private bool ChangePlanToAction = false;
 
+        private bool requestingStocktake_Part;
+        private bool requestingStocktake_RawMat;
+        private bool requestingStocktake_ColorMat;
+
+        private DataTable DT_STOCKTAKE_PART;
+        private DataTable DT_STOCKTAKE_RAWMAT;
+        private DataTable DT_STOCKTAKE_COLORMAT;
+
         #endregion
 
         #region UI Setting
@@ -205,6 +218,21 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerNote, typeof(string));
             dt.Columns.Add(headerProductionPurpose, typeof(string));
 
+
+            return dt;
+        }
+
+        private DataTable NewStocktakeTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(text.Header_Fac, typeof(string));
+
+            dt.Columns.Add(text.Header_ItemDescription, typeof(string));
+
+            dt.Columns.Add(text.Header_Stocktake, typeof(string));
+            dt.Columns.Add(text.Header_Remark, typeof(string));
 
             return dt;
         }
@@ -765,181 +793,849 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                try
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                frmMacScheduleExcelDownload frm = new frmMacScheduleExcelDownload();
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.ShowDialog();
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+
+                if(frmMacScheduleExcelDownload.settingApplied)
                 {
-                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    bool requestingMacSchedule = frmMacScheduleExcelDownload.RequestingMachineSchedule;
 
-                    SaveFileDialog sfd = new SaveFileDialog();
-                    string path = @"D:\StockAssistant\Document\MouldChangeReport";
-                    Directory.CreateDirectory(path);
-                    sfd.InitialDirectory = path;
-                    sfd.Filter = "Excel Documents (*.xls)|*.xls";
-                    sfd.FileName = setFileName();
-
-                    if (sfd.ShowDialog() == DialogResult.OK)
+                    if(requestingMacSchedule)
                     {
-                        tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
-                        // Copy DataGridView results to clipboard
-                        copyAlltoClipboard();
-                        Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                        object misValue = System.Reflection.Missing.Value;
-                        Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
-                        xlexcel.PrintCommunication = false;
-                        xlexcel.ScreenUpdating = false;
-                        xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
-                        Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
-
-                        xlexcel.Calculation = XlCalculation.xlCalculationManual;
-                        Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                        DateTime dateNow = DateTime.Now;
-                        xlWorkSheet.Name = "MOULD CHANGE PLAN ";
-
-
-                        #region Save data to Sheet
-
-                        string title = "MOULD CHANGE PLAN " + dateNow.ToString("dd/MM/yyyy");
-
-                        xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 " + title;
-
-                        string date = dateNow.ToString("dd/MM/yyyy hh:mm:ss");
-                        //Header and Footer setup
-                        xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + dateNow.ToString("dd/MM/yyyy");
-                        xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
-                        xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + " At " + date;
-
-                        //Page setup
-                        xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
-                        xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
-
-
-                        xlWorkSheet.PageSetup.Zoom = false;
-                        xlWorkSheet.PageSetup.CenterHorizontally = true;
-
-                        xlWorkSheet.PageSetup.FitToPagesWide = 1;
-                        xlWorkSheet.PageSetup.FitToPagesTall = false;
-
-                        double pointToCMRate = 0.035;
-                        xlWorkSheet.PageSetup.TopMargin = 1.5 / pointToCMRate;
-                        xlWorkSheet.PageSetup.BottomMargin = 1.0 / pointToCMRate;
-                        xlWorkSheet.PageSetup.HeaderMargin = 1.0 / pointToCMRate;
-                        xlWorkSheet.PageSetup.FooterMargin = 1.0 / pointToCMRate;
-                        xlWorkSheet.PageSetup.LeftMargin = 0 / pointToCMRate;
-                        xlWorkSheet.PageSetup.RightMargin = 0 / pointToCMRate;
-
-                        xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
-
-                        xlexcel.PrintCommunication = true;
-                        xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
-                        // Paste clipboard results to worksheet range
-                        xlWorkSheet.Select();
-                        Range CR = (Range)xlWorkSheet.Cells[1, 1];
-                        CR.Select();
-                        xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
-
-                        //content edit
-                        Range tRange = xlWorkSheet.UsedRange;
-                        tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
-                        tRange.Borders.Weight = XlBorderWeight.xlThin;
-                        tRange.Font.Size = 12;
-                        tRange.Font.Name = "Calibri";
-                        tRange.EntireColumn.AutoFit();
-                        tRange.EntireRow.AutoFit();
-
-                        tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
-
-                        #endregion
-
-                        DataTable dt_test = (DataTable)dgvSchedule.DataSource;
-
-                        //int row = dgvSchedule.RowCount - 1;
-                        //int col = dgvSchedule.ColumnCount - 1;
-
-                        //MessageBox.Show("row: " + row + " col: " + col);
-                        if (true)//cmbSubType.Text.Equals("PMMA")
+                        try
                         {
-                            for (int i = 0; i <= dgvSchedule.RowCount - 1; i++)
+                            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                            SaveFileDialog sfd = new SaveFileDialog();
+                            string path = @"D:\StockAssistant\Document\MouldChangeReport";
+                            Directory.CreateDirectory(path);
+                            sfd.InitialDirectory = path;
+                            sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                            sfd.FileName = setFileName();
+
+                            if (sfd.ShowDialog() == DialogResult.OK)
                             {
-                                for (int j = 0; j <= dgvSchedule.ColumnCount - 1; j++)
+                                tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+                                // Copy DataGridView results to clipboard
+                                copyAlltoClipboard();
+                                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                                object misValue = System.Reflection.Missing.Value;
+                                Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
+                                xlexcel.PrintCommunication = false;
+                                xlexcel.ScreenUpdating = false;
+                                xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
+                                Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+
+                                xlexcel.Calculation = XlCalculation.xlCalculationManual;
+                                Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+                                DateTime dateNow = DateTime.Now;
+                                xlWorkSheet.Name = "MOULD CHANGE PLAN ";
+
+
+                                #region Save data to Sheet
+
+                                string title = "MOULD CHANGE PLAN " + dateNow.ToString("dd/MM/yyyy");
+
+                                xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 " + title;
+
+                                string date = dateNow.ToString("dd/MM/yyyy hh:mm:ss");
+                                //Header and Footer setup
+                                xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + dateNow.ToString("dd/MM/yyyy");
+                                xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
+                                xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + " At " + date;
+
+                                //Page setup
+                                xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+                                xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
+
+
+                                xlWorkSheet.PageSetup.Zoom = false;
+                                xlWorkSheet.PageSetup.CenterHorizontally = true;
+
+                                xlWorkSheet.PageSetup.FitToPagesWide = 1;
+                                xlWorkSheet.PageSetup.FitToPagesTall = false;
+
+                                double pointToCMRate = 0.035;
+                                xlWorkSheet.PageSetup.TopMargin = 1.5 / pointToCMRate;
+                                xlWorkSheet.PageSetup.BottomMargin = 1.0 / pointToCMRate;
+                                xlWorkSheet.PageSetup.HeaderMargin = 1.0 / pointToCMRate;
+                                xlWorkSheet.PageSetup.FooterMargin = 1.0 / pointToCMRate;
+                                xlWorkSheet.PageSetup.LeftMargin = 0 / pointToCMRate;
+                                xlWorkSheet.PageSetup.RightMargin = 0 / pointToCMRate;
+
+                                xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+
+                                xlexcel.PrintCommunication = true;
+                                xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+                                // Paste clipboard results to worksheet range
+                                xlWorkSheet.Select();
+                                Range CR = (Range)xlWorkSheet.Cells[1, 1];
+                                CR.Select();
+                                xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+
+                                //content edit
+                                Range tRange = xlWorkSheet.UsedRange;
+                                tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
+                                tRange.Borders.Weight = XlBorderWeight.xlMedium;
+                                tRange.Font.Size = 12;
+                                tRange.Font.Name = "Calibri";
+                                tRange.EntireColumn.AutoFit();
+                                tRange.EntireRow.AutoFit();
+
+                                tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
+
+                                #endregion
+
+                                DataTable dt_test = (DataTable)dgvSchedule.DataSource;
+
+                                //int row = dgvSchedule.RowCount - 1;
+                                //int col = dgvSchedule.ColumnCount - 1;
+
+                                //MessageBox.Show("row: " + row + " col: " + col);
+                                if (true)//cmbSubType.Text.Equals("PMMA")
                                 {
-                                    Range range = (Range)xlWorkSheet.Cells[i + 2, j + 1];
-                                    range.Rows.RowHeight = 30;
-                                    range.Font.Color = ColorTranslator.ToOle(dgvSchedule.Rows[i].Cells[j].InheritedStyle.ForeColor);
+                                    for (int i = 0; i <= dgvSchedule.RowCount - 1; i++)
+                                    {
+                                        for (int j = 0; j <= dgvSchedule.ColumnCount - 1; j++)
+                                        {
+                                            Range range = (Range)xlWorkSheet.Cells[i + 2, j + 1];
+                                            range.Rows.RowHeight = 30;
+                                            range.Font.Color = ColorTranslator.ToOle(dgvSchedule.Rows[i].Cells[j].InheritedStyle.ForeColor);
 
-                                    if (j == 3 || j == 6 || j == 7 || j == 9 || j == 12 || j == 15 || j == 11 || j == 14)
-                                    {
-                                        range.Cells.Font.Bold = true;
-                                        range.Font.Size = 16;
-                                        range.Cells.Font.Color = ColorTranslator.ToOle(Color.Black);
-                                    }
+                                            if (j == 3 || j == 6 || j == 7 || j == 9 || j == 12 || j == 15 || j == 11 || j == 14)
+                                            {
+                                                range.Cells.Font.Bold = true;
+                                                range.Font.Size = 16;
+                                                range.Cells.Font.Color = ColorTranslator.ToOle(Color.Black);
+                                            }
 
-                                    if (j == 4 || j == 5)
-                                    {
-                                        range.ColumnWidth = 10;
-                                    }
+                                            if (j == 4 || j == 5)
+                                            {
+                                                range.ColumnWidth = 10;
+                                            }
 
-                                    if (j == 6 || j == 7 || j == 11 || j == 14 || j == 16)
-                                    {
-                                        range.Cells.HorizontalAlignment = XlHAlign.xlHAlignLeft;
-                                        range.Cells.VerticalAlignment = XlVAlign.xlVAlignCenter;
-                                    }
-                                    else
-                                    {
-                                        range.Cells.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                                        range.Cells.VerticalAlignment = XlVAlign.xlVAlignCenter;
-                                    }
+                                            if (j == 6 || j == 7 || j == 11 || j == 14 || j == 16)
+                                            {
+                                                range.Cells.HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                                                range.Cells.VerticalAlignment = XlVAlign.xlVAlignCenter;
+                                            }
+                                            else
+                                            {
+                                                range.Cells.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                                                range.Cells.VerticalAlignment = XlVAlign.xlVAlignCenter;
+                                            }
 
-                                    if (dgvSchedule.Rows[i].Cells[j].InheritedStyle.BackColor == Color.Gainsboro)
-                                    {
-                                        range.Interior.Color = Color.White;
-                                        range.Rows.RowHeight = 40;
-                                    }
-                                    else if (dgvSchedule.Rows[i].Cells[j].InheritedStyle.BackColor == Color.FromArgb(64, 64, 64))
-                                    {
-                                        range.Rows.RowHeight = 4;
-                                        range.Interior.Color = Color.Black;
-                                    }
-                                    else
-                                    {
-                                        range.Interior.Color = ColorTranslator.ToOle(dgvSchedule.Rows[i].Cells[j].InheritedStyle.BackColor);
-                                        range.Rows.RowHeight = 40;
+                                            if (dgvSchedule.Rows[i].Cells[j].InheritedStyle.BackColor == Color.Gainsboro)
+                                            {
+                                                range.Interior.Color = Color.White;
+                                                range.Rows.RowHeight = 40;
+                                            }
+                                            else if (dgvSchedule.Rows[i].Cells[j].InheritedStyle.BackColor == Color.FromArgb(64, 64, 64))
+                                            {
+                                                range.Rows.RowHeight = 4;
+                                                range.Interior.Color = Color.Black;
+                                            }
+                                            else
+                                            {
+                                                range.Interior.Color = ColorTranslator.ToOle(dgvSchedule.Rows[i].Cells[j].InheritedStyle.BackColor);
+                                                range.Rows.RowHeight = 40;
+                                            }
+                                        }
                                     }
                                 }
+
+                                //Range header2 = (Range)xlWorkSheet.Cells[1, 1];
+                                //header2.Interior.Color = Color.Gold;
+
+                                //Save the excel file under the captured location from the SaveFileDialog
+                                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
+                                    misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                                xlexcel.DisplayAlerts = true;
+
+                                xlWorkBook.Close(true, misValue, misValue);
+                                xlexcel.Quit();
+
+                                releaseObject(xlWorkSheet);
+                                releaseObject(xlWorkBook);
+                                releaseObject(xlexcel);
+
+                                // Clear Clipboard and DataGridView selection
+                                Clipboard.Clear();
+                                dgvSchedule.ClearSelection();
+
+                                // Open the newly saved excel file
+                                if (File.Exists(sfd.FileName))
+                                    System.Diagnostics.Process.Start(sfd.FileName);
+                            }
+
+                            Cursor = Cursors.Arrow; // change cursor to normal type
+                        }
+                        catch (Exception ex)
+                        {
+                            tool.saveToTextAndMessageToUser(ex);
+                            Cursor = Cursors.Arrow; // change cursor to normal type
+                        }
+                    }
+                    else//export Stocktake List
+                    {
+                        requestingStocktake_Part = frmMacScheduleExcelDownload.RequestingStocktake_Part;
+                        requestingStocktake_RawMat = frmMacScheduleExcelDownload.RequestingStocktake_RawMat;
+                        requestingStocktake_ColorMat = frmMacScheduleExcelDownload.RequestingStocktake_ColorMat;
+
+
+                        DataTable dt_Main = (DataTable)dgvSchedule.DataSource;
+                        GetStocktakeData(dt_Main);
+
+
+                        //export to excel
+                        NewExcel();
+
+                    }
+
+                }
+               
+            }
+            
+        }
+
+        private void GetStocktakeData(DataTable dt_Main)
+        {
+            DT_STOCKTAKE_PART = NewStocktakeTable();
+            DT_STOCKTAKE_RAWMAT = NewStocktakeTable();
+            DT_STOCKTAKE_COLORMAT = NewStocktakeTable();
+
+            if(dt_Main != null)
+            {
+                foreach (DataRow row in dt_Main.Rows)
+                {
+                    string ItemName = row[headerPartName].ToString();
+                    string ItemCode = row[headerPartCode].ToString();
+                    string RawMat = row[headerMaterial].ToString();
+                    string ColorMat = row[headerColorMaterial].ToString();
+
+                    string Fac = row[headerFactory].ToString();
+
+                    //add Part to Table
+                    if (requestingStocktake_Part && !string.IsNullOrEmpty(ItemName) && !string.IsNullOrEmpty(ItemCode))
+                    {
+                        bool itemDuplicated = false;
+
+                        foreach (DataRow partRow in DT_STOCKTAKE_PART.Rows)
+                        {
+                            if ((ItemName + " (" + ItemCode + ")").Equals(partRow[text.Header_ItemDescription].ToString()) && Fac.Equals(partRow[text.Header_Fac].ToString()))
+                            {
+                                itemDuplicated = true;
+                                break;
                             }
                         }
 
-                        //Range header2 = (Range)xlWorkSheet.Cells[1, 1];
-                        //header2.Interior.Color = Color.Gold;
+                        if (!itemDuplicated)
+                        {
+                            DataRow newPartRow = DT_STOCKTAKE_PART.NewRow();
 
-                        //Save the excel file under the captured location from the SaveFileDialog
-                        xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
-                            misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                        xlexcel.DisplayAlerts = true;
+                            newPartRow[text.Header_Fac] = Fac;
+                            newPartRow[text.Header_ItemDescription] = ItemName + " (" + ItemCode + ")";
 
-                        xlWorkBook.Close(true, misValue, misValue);
-                        xlexcel.Quit();
+                            DT_STOCKTAKE_PART.Rows.Add(newPartRow);
+                        }
 
-                        releaseObject(xlWorkSheet);
-                        releaseObject(xlWorkBook);
-                        releaseObject(xlexcel);
+                      
 
-                        // Clear Clipboard and DataGridView selection
-                        Clipboard.Clear();
-                        dgvSchedule.ClearSelection();
-
-                        // Open the newly saved excel file
-                        if (File.Exists(sfd.FileName))
-                            System.Diagnostics.Process.Start(sfd.FileName);
                     }
 
-                    Cursor = Cursors.Arrow; // change cursor to normal type
+                    //TPE TSL H50 + H80 = TPE TSL H80 & TPE TSL H50
+                    if (requestingStocktake_RawMat && !string.IsNullOrEmpty(RawMat))
+                    {
+                        bool itemDuplicated = false;
+
+                        if (RawMat.Equals("TPE TSL H50 + H80"))
+                        {
+                            foreach (DataRow RawMatRaw in DT_STOCKTAKE_RAWMAT.Rows)
+                            {
+                                if ("TPE TSL H80".Equals(RawMatRaw[text.Header_ItemDescription].ToString()) && Fac.Equals(RawMatRaw[text.Header_Fac].ToString()))
+                                {
+                                    itemDuplicated = true;
+                                    break;
+                                }
+                            }
+
+                            if (!itemDuplicated)
+                            {
+                                DataRow newRawMatRow = DT_STOCKTAKE_RAWMAT.NewRow();
+
+                                newRawMatRow[text.Header_Fac] = Fac;
+                                newRawMatRow[text.Header_ItemDescription] = "TPE TSL H80";
+
+                                DT_STOCKTAKE_RAWMAT.Rows.Add(newRawMatRow);
+                                itemDuplicated = false;
+                            }
+
+
+                            foreach (DataRow RawMatRaw in DT_STOCKTAKE_RAWMAT.Rows)
+                            {
+                                if ("TPE TSL H50".Equals(RawMatRaw[text.Header_ItemDescription].ToString()) && Fac.Equals(RawMatRaw[text.Header_Fac].ToString()))
+                                {
+                                    itemDuplicated = true;
+                                    break;
+                                }
+                            }
+
+                            if (!itemDuplicated)
+                            {
+                                DataRow newRawMatRow = DT_STOCKTAKE_RAWMAT.NewRow();
+
+                                newRawMatRow[text.Header_Fac] = Fac;
+                                newRawMatRow[text.Header_ItemDescription] = "TPE TSL H50";
+
+                                DT_STOCKTAKE_RAWMAT.Rows.Add(newRawMatRow);
+                                itemDuplicated = false;
+                            }
+                           
+                        }
+                        else
+                        {
+                            foreach (DataRow RawMatRaw in DT_STOCKTAKE_RAWMAT.Rows)
+                            {
+                                if (RawMat.Equals(RawMatRaw[text.Header_ItemDescription].ToString()) && Fac.Equals(RawMatRaw[text.Header_Fac].ToString()))
+                                {
+                                    itemDuplicated = true;
+                                    break;
+                                }
+                            }
+
+                            if (!itemDuplicated)
+                            {
+                                DataRow newRawMatRow = DT_STOCKTAKE_RAWMAT.NewRow();
+
+                                newRawMatRow[text.Header_Fac] = Fac;
+                                newRawMatRow[text.Header_ItemDescription] = RawMat;
+
+                                DT_STOCKTAKE_RAWMAT.Rows.Add(newRawMatRow);
+                            }
+
+                            
+                        }
+                    }
+
+                    //color filter Out: NATURAL, COMPOUND
+                    if (requestingStocktake_ColorMat && !string.IsNullOrEmpty(ColorMat) && ColorMat != "NATURAL" && ColorMat != "COMPOUND")
+                    {
+                        bool itemDuplicated = false;
+
+                        foreach(DataRow colorRaw in DT_STOCKTAKE_COLORMAT.Rows)
+                        {
+                            if (ColorMat.Equals(colorRaw[text.Header_ItemDescription].ToString()) && Fac.Equals(colorRaw[text.Header_Fac].ToString()))
+                            {
+                                itemDuplicated = true;
+                                break;
+                            }
+                        }
+
+                        if(!itemDuplicated)
+                        {
+                            DataRow newColorMatRow = DT_STOCKTAKE_COLORMAT.NewRow();
+
+                            newColorMatRow[text.Header_Fac] = Fac;
+                            newColorMatRow[text.Header_ItemDescription] = ColorMat;
+
+                            DT_STOCKTAKE_COLORMAT.Rows.Add(newColorMatRow);
+                        }
+                     
+                    }
                 }
-                catch (Exception ex)
-                {
-                    tool.saveToTextAndMessageToUser(ex);
-                    Cursor = Cursors.Arrow; // change cursor to normal type
-                }
+
+                DT_STOCKTAKE_PART.DefaultView.Sort = text.Header_Fac + " ASC," + text.Header_ItemDescription + " ASC";
+                DT_STOCKTAKE_PART = DT_STOCKTAKE_PART.DefaultView.ToTable();
+
+                DT_STOCKTAKE_RAWMAT.DefaultView.Sort = text.Header_Fac + " ASC," + text.Header_ItemDescription + " ASC";
+                DT_STOCKTAKE_RAWMAT = DT_STOCKTAKE_RAWMAT.DefaultView.ToTable();
+
+                DT_STOCKTAKE_COLORMAT.DefaultView.Sort = text.Header_Fac + " ASC," + text.Header_ItemDescription + " ASC";
+                DT_STOCKTAKE_COLORMAT = DT_STOCKTAKE_COLORMAT.DefaultView.ToTable();
+
+                DT_STOCKTAKE_PART = tool.NEW_RearrangeIndex(DT_STOCKTAKE_PART, text.Header_Index);
+
+                DT_STOCKTAKE_RAWMAT = tool.NEW_RearrangeIndex(DT_STOCKTAKE_RAWMAT, text.Header_Index);
+
+                DT_STOCKTAKE_COLORMAT = tool.NEW_RearrangeIndex(DT_STOCKTAKE_COLORMAT, text.Header_Index);
+
+
+
             }
-            
+        }
+
+        private void ExcelPageSetup(Worksheet xlWorkSheet)
+        {
+            //Page setup
+            xlWorkSheet.PageSetup.PaperSize = XlPaperSize.xlPaperA4;
+            xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
+            xlWorkSheet.PageSetup.Zoom = false;
+            xlWorkSheet.PageSetup.CenterHorizontally = true;
+            //xlWorkSheet.PageSetup.FitToPagesWide = 1;
+            xlWorkSheet.PageSetup.FitToPagesTall = 1;
+            xlWorkSheet.PageSetup.FitToPagesWide = 1;
+
+            double pointToCMRate = 0.035;
+            xlWorkSheet.PageSetup.TopMargin = 0.5 / pointToCMRate;
+            xlWorkSheet.PageSetup.BottomMargin = 0.5 / pointToCMRate;
+            xlWorkSheet.PageSetup.HeaderMargin = 0.4 / pointToCMRate;
+            xlWorkSheet.PageSetup.FooterMargin = 0.4 / pointToCMRate;
+            xlWorkSheet.PageSetup.LeftMargin = 0.7 / pointToCMRate;
+            xlWorkSheet.PageSetup.RightMargin = 0.7 / pointToCMRate;
+
+            //xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
+
+            xlWorkSheet.PageSetup.PrintArea = "a1:g25";
+
+
+        }
+
+
+        private void ExcelMergeandAlign(Worksheet xlWorkSheet, string RangeString, XlHAlign hl, XlVAlign va)
+        {
+            Range range = xlWorkSheet.get_Range(RangeString).Cells;
+            range.Merge();
+
+            range.HorizontalAlignment = hl;
+            range.VerticalAlignment = va;
+        }
+
+        private void ExcelColumnWidth(Worksheet xlWorkSheet, string RangeString, double colWidth)
+        {
+            Range range = xlWorkSheet.get_Range(RangeString).Cells;
+            range.ColumnWidth = colWidth;
+        }
+
+        private void ExcelRowHeight(Worksheet xlWorkSheet, string RangeString, double rowHeight)
+        {
+            Range range = xlWorkSheet.get_Range(RangeString).Cells;
+            range.RowHeight = rowHeight;
+        }
+
+        private void InsertToSheet(Worksheet xlWorkSheet, string area, string value)
+        {
+            Range DataInsertArea = xlWorkSheet.get_Range(area).Cells;
+            DataInsertArea.Value = value;
+
+        }
+
+        private void NewInitialDOFormat(Worksheet xlWorkSheet)
+        {
+            #region Sheet Setting
+
+            string sheetWidth = "a1:g1";
+            string Area_Sheet = "a1:g25";
+            string Area_FormCode = "f1:g1";
+            string Area_SheetTitle = "a2:g2";
+            string Area_Header = "a3:g3";
+            string Area_StockCountQty= "d3:e3";
+
+            string Area_Data = "a4:g23";
+
+            string Area_CountedInfo = "a25:c25";
+            string Area_CountedBy = "a25:b25";
+            string Area_CountedDate = "c25:c25";
+
+            string Area_VerifedInfo = "e25:g25";
+            string Area_VerifedBy = "e25:e25";
+            string Area_VerifedDate = "f25:g25";
+            string Area_Signature = "a25:g25";
+
+            string Row_FormCode = "a1";
+            string Row_SheetTitle = "a2";
+            string Row_Header = "a3";
+            string Row_Data = "a4:g23";
+            string Row_SpaceBetweenDataAndSignature = "a24";
+            string Row_Signature = "a25";
+
+           
+            string Col_Index = "a1";
+            string Col_Location = "b1";
+            string Col_ItemDescription = "c1";
+            string Col_StockCountQty_1 = "d1";
+            string Col_StockCountQty_2 = "e1";
+            string Col_SystemQty = "f1";
+            string Col_Diffenrence = "g1";
+
+
+
+            XlHAlign H_alignLeft = XlHAlign.xlHAlignLeft;
+            XlHAlign H_alignRight = XlHAlign.xlHAlignRight;
+            XlHAlign H_alignCenter = XlHAlign.xlHAlignCenter;
+
+            XlVAlign V_alignTop = XlVAlign.xlVAlignTop;
+            XlVAlign V_alignBottom = XlVAlign.xlVAlignBottom;
+            XlVAlign V_alignCenter = XlVAlign.xlVAlignCenter;
+
+            ExcelMergeandAlign(xlWorkSheet, "a3", H_alignCenter, V_alignCenter);
+            ExcelMergeandAlign(xlWorkSheet, "b3", H_alignCenter, V_alignCenter);
+            ExcelMergeandAlign(xlWorkSheet, "c3", H_alignCenter, V_alignCenter);
+            ExcelMergeandAlign(xlWorkSheet, "f3", H_alignCenter, V_alignCenter);
+            ExcelMergeandAlign(xlWorkSheet, "g3", H_alignCenter, V_alignCenter);
+
+
+            ExcelMergeandAlign(xlWorkSheet, Area_FormCode, H_alignRight, V_alignCenter);
+            ExcelMergeandAlign(xlWorkSheet, Area_SheetTitle, H_alignCenter, V_alignCenter);
+
+            ExcelMergeandAlign(xlWorkSheet, Area_StockCountQty, H_alignCenter, V_alignCenter);
+
+            ExcelMergeandAlign(xlWorkSheet, Area_CountedBy, H_alignLeft, V_alignTop);
+            ExcelMergeandAlign(xlWorkSheet, Area_CountedDate, H_alignCenter, V_alignTop);
+
+            ExcelMergeandAlign(xlWorkSheet, Area_VerifedBy, H_alignLeft, V_alignTop);
+            ExcelMergeandAlign(xlWorkSheet, Area_VerifedDate, H_alignCenter, V_alignTop);
+
+            ExcelRowHeight(xlWorkSheet, Row_FormCode, 19.6);
+            ExcelRowHeight(xlWorkSheet, Row_SheetTitle, 31.6);
+            ExcelRowHeight(xlWorkSheet, Row_Header, 30.4);
+            ExcelRowHeight(xlWorkSheet, Row_Data, 31);
+            ExcelRowHeight(xlWorkSheet, Row_SpaceBetweenDataAndSignature, 12.4);
+            ExcelRowHeight(xlWorkSheet, Row_Signature, 73.6);
+
+            ExcelColumnWidth(xlWorkSheet, Col_Index, 5.2);
+            ExcelColumnWidth(xlWorkSheet, Col_Location, 9.63);
+            ExcelColumnWidth(xlWorkSheet, Col_ItemDescription, 24.13);
+            ExcelColumnWidth(xlWorkSheet, Col_StockCountQty_1, 30.38);
+            ExcelColumnWidth(xlWorkSheet, Col_StockCountQty_2, 17.38);
+            ExcelColumnWidth(xlWorkSheet, Col_SystemQty, 11.4);
+            ExcelColumnWidth(xlWorkSheet, Col_Diffenrence, 10.2);
+
+            Range SheetFormat = xlWorkSheet.get_Range(Area_Sheet).Cells;
+            SheetFormat.Interior.Color = Color.White;
+            SheetFormat.Font.Name = "Segoe UI";
+            SheetFormat.Font.Size = 9;
+            SheetFormat.Font.Color = Color.DarkBlue;
+            xlWorkSheet.PageSetup.PrintArea = Area_Sheet;
+
+            Color GrayLineColor = Color.DarkGray;
+
+           
+
+
+            SheetFormat = xlWorkSheet.get_Range(Area_CountedInfo).Cells;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlMedium;
+
+
+            SheetFormat = xlWorkSheet.get_Range(Area_VerifedInfo).Cells;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlMedium;
+
+
+            SheetFormat = xlWorkSheet.get_Range(Area_SheetTitle).Cells;
+            SheetFormat.Value = "PHYSICAL STOCK COUNT SHEET";
+            SheetFormat.Font.Size = 12;
+
+            SheetFormat = xlWorkSheet.get_Range(Area_FormCode).Cells;
+            SheetFormat.Value = "FORM CODE : WHSC00101";
+            SheetFormat.Font.Size = 8;
+            SheetFormat.Font.Italic = true;
+
+            SheetFormat = xlWorkSheet.get_Range("a3").Cells;
+            SheetFormat.Value = "#";
+            SheetFormat.Font.Bold = true;
+
+            SheetFormat = xlWorkSheet.get_Range("b3").Cells;
+            SheetFormat.Value = "Location";
+            SheetFormat.Font.Bold = true;
+
+            SheetFormat = xlWorkSheet.get_Range("c3").Cells;
+            SheetFormat.Value = "Item Description";
+            SheetFormat.Font.Bold = true;
+
+            SheetFormat = xlWorkSheet.get_Range("d3").Cells;
+            SheetFormat.Value = "Stock Count Qty";
+            SheetFormat.Font.Bold = true;
+
+            SheetFormat = xlWorkSheet.get_Range("f3").Cells;
+            SheetFormat.Value = "System Qty";
+            SheetFormat.Font.Bold = true;
+
+            SheetFormat = xlWorkSheet.get_Range("g3").Cells;
+            SheetFormat.Value = "Difference";
+            SheetFormat.Font.Bold = true;
+
+            SheetFormat = xlWorkSheet.get_Range(Area_CountedBy).Cells;
+            SheetFormat.Value = "Counted By";
+            SheetFormat.Font.Bold = true;
+
+            SheetFormat = xlWorkSheet.get_Range(Area_CountedDate).Cells;
+            SheetFormat.Value = "Date";
+            SheetFormat.Font.Bold = true;
+
+            SheetFormat = xlWorkSheet.get_Range(Area_VerifedBy).Cells;
+            SheetFormat.Value = "Verifed By";
+            SheetFormat.Font.Bold = true;
+
+            SheetFormat = xlWorkSheet.get_Range(Area_VerifedDate).Cells;
+            SheetFormat.Value = "Date";
+            SheetFormat.Font.Bold = true;
+
+
+            #endregion
+
+            #region Item List
+
+            int TotalRows = 20;
+            int itemRowOffset = 3;
+
+            string indexColStart = "a";
+            string indexColEnd = ":a";
+
+            string LocationColStart = "b";
+            string LocationColEnd = ":b";
+
+            string ItemDescriptionColStart = "c";
+            string ItemDescriptionColEnd = ":c";
+
+            string StockCountQtyColStart = "d";
+            string StockCountQtyColEnd = ":e";
+
+            string SystemQtyColStart = "f";
+            string SystemQtyColEnd = ":f";
+
+            string DifferenceColStart = "g";
+            string DifferenceColEnd = ":g";
+
+
+            for (int i = 0; i <= TotalRows; i++)
+            {
+                string area = indexColStart + (itemRowOffset + i).ToString() + indexColEnd + (itemRowOffset + i).ToString();
+
+                ExcelMergeandAlign(xlWorkSheet, area, H_alignCenter, V_alignCenter);
+
+                SheetFormat = xlWorkSheet.get_Range(area).Cells;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Color = GrayLineColor;
+
+                area = LocationColStart + (itemRowOffset + i).ToString() + LocationColEnd + (itemRowOffset + i).ToString();
+
+                ExcelMergeandAlign(xlWorkSheet, area, H_alignCenter, V_alignCenter);
+
+                SheetFormat = xlWorkSheet.get_Range(area).Cells;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Color = GrayLineColor;
+
+                area = ItemDescriptionColStart + (itemRowOffset + i).ToString() + ItemDescriptionColEnd + (itemRowOffset + i).ToString();
+
+                ExcelMergeandAlign(xlWorkSheet, area, H_alignCenter, V_alignCenter);
+
+                SheetFormat = xlWorkSheet.get_Range(area).Cells;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Color = GrayLineColor;
+
+                area = StockCountQtyColStart + (itemRowOffset + i).ToString() + StockCountQtyColEnd + (itemRowOffset + i).ToString();
+
+                ExcelMergeandAlign(xlWorkSheet, area, H_alignCenter, V_alignCenter);
+
+                SheetFormat = xlWorkSheet.get_Range(area).Cells;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Color = GrayLineColor;
+
+                area = SystemQtyColStart + (itemRowOffset + i).ToString() + SystemQtyColEnd + (itemRowOffset + i).ToString();
+
+                ExcelMergeandAlign(xlWorkSheet, area, H_alignCenter, V_alignCenter);
+
+                SheetFormat = xlWorkSheet.get_Range(area).Cells;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Color = GrayLineColor;
+
+                area = DifferenceColStart + (itemRowOffset + i).ToString() + DifferenceColEnd + (itemRowOffset + i).ToString();
+
+                ExcelMergeandAlign(xlWorkSheet, area, H_alignCenter, V_alignCenter);
+
+                SheetFormat = xlWorkSheet.get_Range(area).Cells;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = GrayLineColor;
+                SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Color = GrayLineColor;
+
+            }
+
+            SheetFormat = xlWorkSheet.get_Range("a3:g3").Cells;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat = xlWorkSheet.get_Range("a3:g23").Cells;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Weight = XlBorderWeight.xlMedium;
+
+            SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Color = GrayLineColor;
+            SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlMedium;
+            #endregion
+        }
+
+        private void NewExcel()
+        {
+            #region export excel
+
+            if (requestingStocktake_Part || requestingStocktake_RawMat || requestingStocktake_ColorMat)
+            {
+                #region Excel Saving Setting
+
+                string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+
+                string path = @"D:\StockAssistant\Document\OUG Stock Count";
+
+                Directory.CreateDirectory(path);
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.InitialDirectory = path;
+
+                string title = "PhysicalStockCountSheet";
+                DateTime currentDate = DateTime.Now;
+
+                sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                sfd.FileName = title + "_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
+
+                #endregion
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    #region Excel Setting
+
+                    frmLoading.ShowLoadingScreen();
+                    tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                    object misValue = Missing.Value;
+
+                    Excel.Application xlexcel = new Excel.Application
+                    {
+                        PrintCommunication = false,
+                        ScreenUpdating = false,
+                        DisplayAlerts = false // Without this you will get two confirm overwrite prompts
+                    };
+
+                    Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+
+                    xlexcel.StandardFont = "Segoe UI";
+                    xlexcel.StandardFontSize = 9;
+
+                    xlexcel.Calculation = XlCalculation.xlCalculationManual;
+                    xlexcel.PrintCommunication = false;
+
+                    int sheetNo = 0;
+                    int pageNo = 1;
+                    int rowNo = 0;
+
+                    Worksheet xlWorkSheet = xlWorkBook.ActiveSheet as Worksheet;
+                    //xlWorkSheet.PageSetup.PrintArea
+
+                    if (sheetNo > 0)
+                    {
+                        xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
+
+                    }
+
+                    sheetNo++;
+
+                    xlWorkSheet.Name = text.Cat_Part;
+
+                    xlexcel.PrintCommunication = true;
+                    ExcelPageSetup(xlWorkSheet);
+
+                    xlexcel.PrintCommunication = true;
+
+                    xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+
+
+                    NewInitialDOFormat(xlWorkSheet);
+
+                    #endregion
+
+                    int indexNo = 1;
+                    string previousPO = "";
+
+                    //tool.historyRecord(text.DO_Exported, text.GetDOExportDetail(openFile, printFile, printPreview), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(DONo));
+
+                    pageNo = 1;
+                    rowNo = 0;
+
+                    if (sheetNo > 0)
+                    {
+                        xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
+                       misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+
+               
+                    }
+
+                    frmLoading.CloseForm();
+                    Focus();
+
+                    // Open the newly saved excel file
+
+                    if (File.Exists(sfd.FileName))
+                    {
+                        Excel.Application excel = new Excel.Application();
+                        excel.Visible = true;
+                        excel.DisplayAlerts = false;
+                        Workbook wb = excel.Workbooks.Open(sfd.FileName, ReadOnly: false, Notify: false);
+                        excel.DisplayAlerts = true;
+                    }
+
+
+                    xlexcel.DisplayAlerts = true;
+
+                    xlWorkBook.Close(true, misValue, misValue);
+                    xlexcel.Quit();
+
+                    releaseObject(xlWorkSheet);
+
+                    releaseObject(xlWorkBook);
+                    releaseObject(xlexcel);
+                }
+
+            }
+            #endregion
         }
 
         private void ChangeTransferRecordProductionPlanIDRemark(string planID, string newPlanID)

@@ -588,6 +588,22 @@ namespace FactoryManagementSoftware.Module
 
             return dataTable;
         }
+
+        public DataTable NEW_RearrangeIndex(DataTable dataTable, string headerName)
+        {
+            int index = 1;
+
+            if (dataTable != null)
+            {
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    row[headerName] = index ++;
+                }
+            }
+
+            return dataTable;
+        }
+
         private float DeliveredToCustomerQty(string itemCode, DateTime dateFrom, DateTime dateTo)
         {
             Text text = new Text();

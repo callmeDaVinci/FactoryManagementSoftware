@@ -1470,7 +1470,7 @@ namespace FactoryManagementSoftware.UI
             if (parentItemCode.Substring(0, 3) == text.Inspection_Pass && cmbTrfFromCategory.Text.Equals(text.Assembly))
             {
                 //EQUAL ITEM ONLY
-                if (parentItemCode[7].ToString() == "E" && parentItemCode[8].ToString() != "C")
+                if (parentItemCode[7].ToString() == "E" && parentItemCode[8].ToString() != "C" && parentItemCode[10].ToString() != "9")
 
                 {
                     DataTable dtSPP = dalJoin.loadChildList(parentItemCode);

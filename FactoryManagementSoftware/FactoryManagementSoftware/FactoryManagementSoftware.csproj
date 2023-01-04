@@ -24,10 +24,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
-    <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
+    <InstallUrl>\\DESKTOP-MFUKGH2\Server\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
+    <UpdateUrl>\\DESKTOP-MFUKGH2\Server\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>443</ApplicationRevision>
+    <ApplicationRevision>445</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -53,10 +53,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>F5F1163ED9C851E79B45A40B6EF590AE48650BC1</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>ECE56C413BCBC556D843972DA3DA08F9347AAF2B</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>FactoryManagementSoftware_3_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>FactoryManagementSoftware_4_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -209,6 +209,12 @@
     <Compile Include="DAL\trfHistDAL.cs" />
     <Compile Include="DAL\userDAL.cs" />
     <Compile Include="DAL\Utilities.cs" />
+    <Compile Include="UI\frmMacScheduleExcelDownload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMacScheduleExcelDownload.Designer.cs">
+      <DependentUpon>frmMacScheduleExcelDownload.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmInOut_NEW.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -965,6 +971,9 @@
     <Compile Include="UI\NewInOutReport.Designer.cs">
       <DependentUpon>NewInOutReport.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\frmMacScheduleExcelDownload.resx">
+      <DependentUpon>frmMacScheduleExcelDownload.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmInOut_NEW.resx">
       <DependentUpon>frmInOut_NEW.cs</DependentUpon>
     </EmbeddedResource>
@@ -1353,6 +1362,7 @@
     <None Include="FactoryManagementSoftware_1_TemporaryKey.pfx" />
     <None Include="FactoryManagementSoftware_2_TemporaryKey.pfx" />
     <None Include="FactoryManagementSoftware_3_TemporaryKey.pfx" />
+    <None Include="FactoryManagementSoftware_4_TemporaryKey.pfx" />
     <None Include="FactoryManagementSoftware_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
