@@ -724,6 +724,62 @@ namespace FactoryManagementSoftware.UI
                 if (dt_MaterialList.Rows.Count > 0)
                 {
 
+                    DataTable DB_PendingOrder = dalOrd.PendingOrderSelect();
+
+                    //DataTable DB_Item = dalItem.Select();
+
+                    //DB_PendingOrder.DefaultView.Sort = "ord_item_code" + " ASC";
+                    //DB_PendingOrder = DB_PendingOrder.DefaultView.ToTable();
+
+                    //foreach(DataRow row in DB_Item.Rows)
+                    //{
+                    //    string itemCode = row[dalItem.ItemCode].ToString();
+
+                    //    float PendingOrder = 0;
+
+                    //    bool itemFound = false;
+
+                    //    foreach(DataRow orderRow in DB_PendingOrder.Rows)
+                    //    {
+                    //        if(orderRow["ord_item_code"].ToString() == itemCode)
+                    //        {
+                    //            float orderQty = float.TryParse(orderRow["ord_pending"].ToString(), out orderQty) ? orderQty : 0;
+
+                    //            PendingOrder += orderQty;
+
+                    //            itemFound = true;
+                    //        }
+                    //    }
+
+                    //    itemBLL uItem = new itemBLL();
+
+                    //    uItem.item_code = itemCode;
+                    //    uItem.item_updtd_date = DateTime.Now;
+                    //    uItem.item_updtd_by = MainDashboard.USER_ID;
+                    //    uItem.item_ord = PendingOrder;
+
+                    //    //Updating data into database
+                    //    bool success = dalItem.ordUpdate(uItem);
+                    //}
+                   
+
+                    foreach (DataRow row in dt_MaterialList.Rows)
+                    {
+                        //update pending order qty
+
+                        string itemCode = row[text.Header_PartCode].ToString();
+
+                        if (cbZeroStockType.Checked)
+                        {
+                            row[text.Header_PendingOrder] = tool.GetZeroCostPendingOrder(DB_PendingOrder, itemCode);
+                        }
+                        else
+                        {
+                            row[text.Header_PendingOrder] = tool.GetPurchasePendingOrder(DB_PendingOrder, itemCode);
+                        }
+
+                    }
+
                     dt_MaterialList.DefaultView.Sort = text.Header_PartName + " ASC";
                     dt_MaterialList = dt_MaterialList.DefaultView.ToTable();
 
@@ -2630,44 +2686,7 @@ namespace FactoryManagementSoftware.UI
             {
                 MainFilterOnly(true);
 
-               
-
                 GetSummaryForecastMatUsedData();
-
-                //BalForecastBLL balForecastBLL = new BalForecastBLL();
-
-
-
-                //int monthStart = Convert.ToInt32(cmbMonthFrom.Text);
-                //int monthEnd = Convert.ToInt32(cmbMonthTo.Text);
-
-                //int yearStart = Convert.ToInt32(cmbYearFrom.Text);
-                //int yearEnd = Convert.ToInt32(cmbYearTo.Text);
-
-                //balForecastBLL.Cust_ID = tool.getCustID(cmbCustomer.Text);
-                //balForecastBLL.Cust_Name = cmbCustomer.Text;
-
-                //balForecastBLL.Date_From = dtpFrom.Value;
-                //balForecastBLL.Date_To = dtpTo.Value;
-
-                //balForecastBLL.Month_From = monthStart;
-                //balForecastBLL.Month_To = monthEnd;
-                //balForecastBLL.Year_From = yearStart;
-                //balForecastBLL.Year_To = yearEnd;
-
-                //balForecastBLL.Item_Type =cmbItemType.Text;
-
-                //balForecastBLL.Deduct_Delivered = cbDeductDeliveredQty.Checked;
-                //balForecastBLL.Deduct_Stock = cbDeductUsedStock.Checked;
-                //balForecastBLL.ZeroCost_Material = cbZeroCostOnly.Checked;
-                //balForecastBLL.ZeroCost_Stock = cbZeroStockType.Checked;
-
-
-                //DT_MATERIAL_FORECAST_SUMMARY = tool.GetSummaryForecastMatUsedData(balForecastBLL);
-
-                //dgvAlertSummary.DataSource = DT_MATERIAL_FORECAST_SUMMARY;
-                //dgvUIEdit(dgvAlertSummary);
-                //dgvAlertSummary.ClearSelection();
 
             }
         }
