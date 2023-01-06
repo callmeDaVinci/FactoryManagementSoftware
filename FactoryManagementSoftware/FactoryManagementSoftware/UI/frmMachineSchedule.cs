@@ -1039,7 +1039,7 @@ namespace FactoryManagementSoftware.UI
                             DataRow newPartRow = DT_STOCKTAKE_PART.NewRow();
 
                             newPartRow[text.Header_Fac] = Fac;
-                            newPartRow[text.Header_ItemDescription] = ItemName + " (" + ItemCode + ")";
+                            newPartRow[text.Header_ItemDescription] = ItemName + "\n" + " (" + ItemCode + ")";
 
                             DT_STOCKTAKE_PART.Rows.Add(newPartRow);
                         }
@@ -1299,7 +1299,7 @@ namespace FactoryManagementSoftware.UI
 
             ExcelColumnWidth(xlWorkSheet, Col_Index, 5.2);
             ExcelColumnWidth(xlWorkSheet, Col_Location, 9.63);
-            ExcelColumnWidth(xlWorkSheet, Col_ItemDescription, 24.13);
+            ExcelColumnWidth(xlWorkSheet, Col_ItemDescription, 33.5);
             ExcelColumnWidth(xlWorkSheet, Col_StockCountQty_1, 30.38);
             ExcelColumnWidth(xlWorkSheet, Col_StockCountQty_2, 17.38);
             ExcelColumnWidth(xlWorkSheet, Col_SystemQty, 11.4);
@@ -1445,13 +1445,14 @@ namespace FactoryManagementSoftware.UI
 
                 area = ItemDescriptionColStart + (itemRowOffset + i).ToString() + ItemDescriptionColEnd + (itemRowOffset + i).ToString();
 
-                ExcelMergeandAlign(xlWorkSheet, area, H_alignCenter, V_alignCenter);
+                ExcelMergeandAlign(xlWorkSheet, area, H_alignLeft, V_alignCenter);
 
                 SheetFormat = xlWorkSheet.get_Range(area).Cells;
                 SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Color = GrayLineColor;
                 SheetFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = GrayLineColor;
                 SheetFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = GrayLineColor;
                 SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Color = GrayLineColor;
+
 
                 area = StockCountQtyColStart + (itemRowOffset + i).ToString() + StockCountQtyColEnd + (itemRowOffset + i).ToString();
 
@@ -1510,6 +1511,15 @@ namespace FactoryManagementSoftware.UI
 
             SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Color = GrayLineColor;
             SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlMedium;
+
+            //CellStyle style = cell.Style;
+            //style.ShrinkToFit = true;
+
+            SheetFormat.ShrinkToFit = true;
+
+            SheetFormat = xlWorkSheet.get_Range("c4:c23").Cells;
+            SheetFormat.WrapText = true;
+
             #endregion
         }
 
@@ -1563,22 +1573,12 @@ namespace FactoryManagementSoftware.UI
                     xlexcel.Calculation = XlCalculation.xlCalculationManual;
                     xlexcel.PrintCommunication = false;
 
-                    int sheetNo = 0;
                     int pageNo = 1;
+                    int sheetNo = 0;
                     int rowNo = 0;
 
                     Worksheet xlWorkSheet = xlWorkBook.ActiveSheet as Worksheet;
                     //xlWorkSheet.PageSetup.PrintArea
-
-                    if (sheetNo > 0)
-                    {
-                        xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
-
-                    }
-
-                    sheetNo++;
-
-                    xlWorkSheet.Name = text.Cat_Part;
 
                     xlexcel.PrintCommunication = true;
                     ExcelPageSetup(xlWorkSheet);
@@ -1592,27 +1592,217 @@ namespace FactoryManagementSoftware.UI
 
                     #endregion
 
-                    int indexNo = 1;
-                    string previousPO = "";
-
-                    //tool.historyRecord(text.DO_Exported, text.GetDOExportDetail(openFile, printFile, printPreview), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(DONo));
-
-                    pageNo = 1;
+                    sheetNo = 0;
                     rowNo = 0;
+
+                    int rowStart = 4;
+                    int rowEnd = 23;
+                    int rowMax = rowEnd - rowStart + 1;
+
+                    string col_Index = "a";
+                    string col_Location = "b";
+                    string col_ItemDescription = "c";
+                    string colStart_StockCountQty = "d";
+                    string colEnd_StockCountQty = "e";
+                    string col_SystemQty = "f";
+                    string col_Difference = "g";
+
+                    string areaPageData = "t10:w10";
+
+                    int dataRowInsertedCount = 0;
+
+                    //check if data can combine in one sheet
+                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    //8467ms
+
+                    if(requestingStocktake_Part)
+                    {
+                        sheetNo++;
+
+                        pageNo = 1;
+                        xlWorkSheet.Name = text.Cat_Part;
+                        int index = 1;
+
+                        foreach(DataRow row in DT_STOCKTAKE_PART.Rows)
+                        {
+                            string fac = row[text.Header_Fac].ToString();
+                            string itemDescription = row[text.Header_ItemDescription].ToString();
+
+                            InsertToSheet(xlWorkSheet, col_Index + rowStart + ":" + col_Index + rowStart, index.ToString());
+                            InsertToSheet(xlWorkSheet, col_Location + rowStart + ":" + col_Location + rowStart, fac);
+                            InsertToSheet(xlWorkSheet, col_ItemDescription + rowStart + ":" + col_ItemDescription + rowStart, itemDescription);
+
+                            rowStart++;
+                            index++;
+                            dataRowInsertedCount++;
+
+                            if(dataRowInsertedCount == rowMax)
+                            {
+                                //reset and create new sheet
+                                sheetNo++;
+
+                                xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
+
+                                xlexcel.PrintCommunication = true;
+                                ExcelPageSetup(xlWorkSheet);
+
+                                xlexcel.PrintCommunication = true;
+
+                                xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+
+                                NewInitialDOFormat(xlWorkSheet);
+
+                                pageNo++;
+                                xlWorkSheet.Name = text.Cat_Part + " (" + pageNo + ")";
+                                rowStart = 4;
+                                dataRowInsertedCount = 0;
+                            }
+
+
+                        }
+                    }
+
+                    if (requestingStocktake_RawMat)
+                    {
+                        sheetNo++;
+                        rowStart = 4;
+                        dataRowInsertedCount = 0;
+
+                        if (sheetNo > 1)
+                        {
+                            xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
+
+                            xlexcel.PrintCommunication = true;
+                            ExcelPageSetup(xlWorkSheet);
+
+                            xlexcel.PrintCommunication = true;
+
+                            xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+
+                            NewInitialDOFormat(xlWorkSheet);
+                        }
+
+                        pageNo = 1;
+                        xlWorkSheet.Name = text.Cat_RawMat;
+                        int index = 1;
+
+                        foreach (DataRow row in DT_STOCKTAKE_RAWMAT.Rows)
+                        {
+                            string fac = row[text.Header_Fac].ToString();
+                            string itemDescription = row[text.Header_ItemDescription].ToString();
+
+                            InsertToSheet(xlWorkSheet, col_Index + rowStart + ":" + col_Index + rowStart, index.ToString());
+                            InsertToSheet(xlWorkSheet, col_Location + rowStart + ":" + col_Location + rowStart, fac);
+                            InsertToSheet(xlWorkSheet, col_ItemDescription + rowStart + ":" + col_ItemDescription + rowStart, itemDescription);
+
+                            rowStart++;
+                            index++;
+                            dataRowInsertedCount++;
+
+                            if (dataRowInsertedCount == rowMax)
+                            {
+                                //reset and create new sheet
+                                sheetNo++;
+
+                                xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
+
+                                xlexcel.PrintCommunication = true;
+                                ExcelPageSetup(xlWorkSheet);
+
+                                xlexcel.PrintCommunication = true;
+
+                                xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+
+                                NewInitialDOFormat(xlWorkSheet);
+
+                                pageNo++;
+                                xlWorkSheet.Name = text.Cat_RawMat + " (" + pageNo + ")";
+                                rowStart = 4;
+                                dataRowInsertedCount = 0;
+                            }
+
+
+                        }
+                    }
+
+                    if (requestingStocktake_ColorMat)
+                    {
+                        sheetNo++;
+                        rowStart = 4;
+                        dataRowInsertedCount = 0;
+
+                        if (sheetNo > 1)
+                        {
+                            xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
+
+                            xlexcel.PrintCommunication = true;
+                            ExcelPageSetup(xlWorkSheet);
+
+                            xlexcel.PrintCommunication = true;
+
+                            xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+
+                            NewInitialDOFormat(xlWorkSheet);
+                        }
+
+                        pageNo = 1;
+                        xlWorkSheet.Name = text.Cat_ColorMat;
+                        int index = 1;
+
+                        foreach (DataRow row in DT_STOCKTAKE_COLORMAT.Rows)
+                        {
+                            string fac = row[text.Header_Fac].ToString();
+                            string itemDescription = row[text.Header_ItemDescription].ToString();
+
+                            InsertToSheet(xlWorkSheet, col_Index + rowStart + ":" + col_Index + rowStart, index.ToString());
+                            InsertToSheet(xlWorkSheet, col_Location + rowStart + ":" + col_Location + rowStart, fac);
+                            InsertToSheet(xlWorkSheet, col_ItemDescription + rowStart + ":" + col_ItemDescription + rowStart, itemDescription);
+
+                            rowStart++;
+                            index++;
+                            dataRowInsertedCount++;
+
+                            if (dataRowInsertedCount == rowMax)
+                            {
+                                //reset and create new sheet
+                                sheetNo++;
+
+                                xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
+
+                                xlexcel.PrintCommunication = true;
+                                ExcelPageSetup(xlWorkSheet);
+
+                                xlexcel.PrintCommunication = true;
+
+                                xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+
+                                NewInitialDOFormat(xlWorkSheet);
+
+                                pageNo++;
+                                xlWorkSheet.Name = text.Cat_ColorMat + " (" + pageNo + ")";
+                                rowStart = 4;
+                                dataRowInsertedCount = 0;
+                            }
+
+
+                        }
+
+
+                    }
+
+
 
                     if (sheetNo > 0)
                     {
                         xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
                        misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-
-               
                     }
 
                     frmLoading.CloseForm();
                     Focus();
 
+                    #region open saved file
                     // Open the newly saved excel file
-
                     if (File.Exists(sfd.FileName))
                     {
                         Excel.Application excel = new Excel.Application();
@@ -1632,6 +1822,7 @@ namespace FactoryManagementSoftware.UI
 
                     releaseObject(xlWorkBook);
                     releaseObject(xlexcel);
+                    #endregion
                 }
 
             }

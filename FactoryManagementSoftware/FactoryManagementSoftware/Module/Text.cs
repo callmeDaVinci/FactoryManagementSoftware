@@ -247,6 +247,8 @@ namespace FactoryManagementSoftware.Module
 
         public string Cat_RawMat { get; } = "RAW Material";
         public string Cat_MB { get; } = "Master Batch";
+        public string Cat_ColorMat { get; } = "Color Material";
+
         public string Cat_Pigment { get; } = "Pigment";
         public string Cat_Part { get; } = "Part";
         public string Cat_Carton { get; } = "Carton";
