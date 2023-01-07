@@ -18,6 +18,8 @@ using Syncfusion.XlsIO.Implementation.XmlSerialization;
 using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
 using CrystalDecisions.Shared;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -429,8 +431,10 @@ namespace FactoryManagementSoftware.UI
             DateTime startEarliest = DateTime.MinValue, endLatest = DateTime.MinValue;
 
             string Keywords = txtSearch.Text;
+            bool GetCompletedPlanOnly = !cbPending.Checked && !cbRunning.Checked && !cbWarning.Checked && !cbCancelled.Checked && cbCompleted.Checked;
 
-            if(ChangePlanToAction)
+
+            if (ChangePlanToAction)
             {
                 txtSearch.Text = ITEM_CODE;
 
@@ -521,11 +525,14 @@ namespace FactoryManagementSoftware.UI
                 DateTime from = dtpFrom.Value;
                 DateTime to = dtpTo.Value;
 
-                if(!((start.Date >= from.Date && start.Date <= to.Date) || (end.Date >= from.Date && end.Date <= to.Date)))
+                if(!GetCompletedPlanOnly && !((start.Date >= from.Date && start.Date <= to.Date) || (end.Date >= from.Date && end.Date <= to.Date)))
                 {
                     match = false;
                 }
-
+                else if(GetCompletedPlanOnly && !(end.Date >= from.Date && end.Date <= to.Date))
+                {
+                    match = false;
+                }
                 #endregion
 
                 #region Location Filtering
@@ -628,14 +635,17 @@ namespace FactoryManagementSoftware.UI
 
             if (dt_Schedule.Rows.Count > 0)
             {
-                if(startEarliest != DateTime.MinValue)
+                if(!GetCompletedPlanOnly)
                 {
-                    dtpFrom.Value = startEarliest;
-                }
+                    if (startEarliest != DateTime.MinValue)
+                    {
+                        dtpFrom.Value = startEarliest;
+                    }
 
-                if (endLatest != DateTime.MinValue)
-                {
-                    dtpTo.Value = endLatest;
+                    if (endLatest != DateTime.MinValue)
+                    {
+                        dtpTo.Value = endLatest;
+                    }
                 }
 
                 dgvSchedule.DataSource = dt_Schedule;
@@ -1222,18 +1232,19 @@ namespace FactoryManagementSoftware.UI
             Range DataInsertArea = xlWorkSheet.get_Range(area).Cells;
             DataInsertArea.Value = value;
 
+            if(area == "a2:g2")
+            DataInsertArea.Characters[34, 44].Font.Bold = 1;
         }
 
         private void NewInitialDOFormat(Worksheet xlWorkSheet)
         {
             #region Sheet Setting
 
-            string sheetWidth = "a1:g1";
             string Area_Sheet = "a1:g25";
-            string Area_FormCode = "f1:g1";
+            string Area_FormCode = "A1:C1";
             string Area_SheetTitle = "a2:g2";
-            string Area_Header = "a3:g3";
             string Area_StockCountQty= "d3:e3";
+            string Area_PageNo= "g1:g1";
 
             string Area_Data = "a4:g23";
 
@@ -1241,9 +1252,9 @@ namespace FactoryManagementSoftware.UI
             string Area_CountedBy = "a25:b25";
             string Area_CountedDate = "c25:c25";
 
-            string Area_VerifedInfo = "e25:g25";
-            string Area_VerifedBy = "e25:e25";
-            string Area_VerifedDate = "f25:g25";
+            string Area_VerifiedInfo = "e25:g25";
+            string Area_VerifiedBy = "e25:e25";
+            string Area_VerifiedDate = "f25:g25";
             string Area_Signature = "a25:g25";
 
             string Row_FormCode = "a1";
@@ -1279,7 +1290,8 @@ namespace FactoryManagementSoftware.UI
             ExcelMergeandAlign(xlWorkSheet, "g3", H_alignCenter, V_alignCenter);
 
 
-            ExcelMergeandAlign(xlWorkSheet, Area_FormCode, H_alignRight, V_alignCenter);
+            ExcelMergeandAlign(xlWorkSheet, Area_FormCode, H_alignLeft, V_alignCenter);
+            ExcelMergeandAlign(xlWorkSheet, Area_PageNo, H_alignRight, V_alignCenter);
             ExcelMergeandAlign(xlWorkSheet, Area_SheetTitle, H_alignCenter, V_alignCenter);
 
             ExcelMergeandAlign(xlWorkSheet, Area_StockCountQty, H_alignCenter, V_alignCenter);
@@ -1287,8 +1299,8 @@ namespace FactoryManagementSoftware.UI
             ExcelMergeandAlign(xlWorkSheet, Area_CountedBy, H_alignLeft, V_alignTop);
             ExcelMergeandAlign(xlWorkSheet, Area_CountedDate, H_alignCenter, V_alignTop);
 
-            ExcelMergeandAlign(xlWorkSheet, Area_VerifedBy, H_alignLeft, V_alignTop);
-            ExcelMergeandAlign(xlWorkSheet, Area_VerifedDate, H_alignCenter, V_alignTop);
+            ExcelMergeandAlign(xlWorkSheet, Area_VerifiedBy, H_alignLeft, V_alignTop);
+            ExcelMergeandAlign(xlWorkSheet, Area_VerifiedDate, H_alignCenter, V_alignTop);
 
             ExcelRowHeight(xlWorkSheet, Row_FormCode, 19.6);
             ExcelRowHeight(xlWorkSheet, Row_SheetTitle, 31.6);
@@ -1309,7 +1321,8 @@ namespace FactoryManagementSoftware.UI
             SheetFormat.Interior.Color = Color.White;
             SheetFormat.Font.Name = "Segoe UI";
             SheetFormat.Font.Size = 9;
-            SheetFormat.Font.Color = Color.DarkBlue;
+            //SheetFormat.Font.Color = Color.DarkBlue;
+            SheetFormat.Font.Color = Color.Black;
             xlWorkSheet.PageSetup.PrintArea = Area_Sheet;
 
             Color GrayLineColor = Color.DarkGray;
@@ -1331,7 +1344,7 @@ namespace FactoryManagementSoftware.UI
             SheetFormat.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlMedium;
 
 
-            SheetFormat = xlWorkSheet.get_Range(Area_VerifedInfo).Cells;
+            SheetFormat = xlWorkSheet.get_Range(Area_VerifiedInfo).Cells;
             SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Color = GrayLineColor;
             SheetFormat.Borders[XlBordersIndex.xlEdgeTop].Weight = XlBorderWeight.xlMedium;
 
@@ -1386,11 +1399,11 @@ namespace FactoryManagementSoftware.UI
             SheetFormat.Value = "Date";
             SheetFormat.Font.Bold = true;
 
-            SheetFormat = xlWorkSheet.get_Range(Area_VerifedBy).Cells;
-            SheetFormat.Value = "Verifed By";
+            SheetFormat = xlWorkSheet.get_Range(Area_VerifiedBy).Cells;
+            SheetFormat.Value = "Verified By";
             SheetFormat.Font.Bold = true;
 
-            SheetFormat = xlWorkSheet.get_Range(Area_VerifedDate).Cells;
+            SheetFormat = xlWorkSheet.get_Range(Area_VerifiedDate).Cells;
             SheetFormat.Value = "Date";
             SheetFormat.Font.Bold = true;
 
@@ -1540,7 +1553,10 @@ namespace FactoryManagementSoftware.UI
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.InitialDirectory = path;
 
-                string title = "PhysicalStockCountSheet";
+                DateTime dateFrom = dtpFrom.Value;
+                DateTime dateTo = dtpTo.Value;
+
+                string title = "StockCountSheet_ProductionEnd (" + dateFrom.Date.ToString("ddMM") + "~" + dateTo.Date.ToString("ddMM") + ")";
                 DateTime currentDate = DateTime.Now;
 
                 sfd.Filter = "Excel Documents (*.xls)|*.xls";
@@ -1607,15 +1623,22 @@ namespace FactoryManagementSoftware.UI
                     string col_SystemQty = "f";
                     string col_Difference = "g";
 
+                    string Area_PageNo = "g1:g1";
+
                     string areaPageData = "t10:w10";
 
+                    string Area_SheetTitle = "a2:g2";
                     int dataRowInsertedCount = 0;
+
+
+                    string FormTitle = "STOCK COUNT SHEET_PRODUCTION END ("  + dateFrom.Date.ToString("dd/MM") + "~" + dateTo.Date.ToString("dd/MM") + " )_";
+
 
                     //check if data can combine in one sheet
                     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     //8467ms
 
-                    if(requestingStocktake_Part)
+                    if (requestingStocktake_Part)
                     {
                         sheetNo++;
 
@@ -1623,7 +1646,12 @@ namespace FactoryManagementSoftware.UI
                         xlWorkSheet.Name = text.Cat_Part;
                         int index = 1;
 
-                        foreach(DataRow row in DT_STOCKTAKE_PART.Rows)
+                        InsertToSheet(xlWorkSheet, Area_PageNo, "PG. " + pageNo.ToString());
+
+                        InsertToSheet(xlWorkSheet, Area_SheetTitle, FormTitle + text.Cat_Part);
+
+
+                        foreach (DataRow row in DT_STOCKTAKE_PART.Rows)
                         {
                             string fac = row[text.Header_Fac].ToString();
                             string itemDescription = row[text.Header_ItemDescription].ToString();
@@ -1656,6 +1684,10 @@ namespace FactoryManagementSoftware.UI
                                 xlWorkSheet.Name = text.Cat_Part + " (" + pageNo + ")";
                                 rowStart = 4;
                                 dataRowInsertedCount = 0;
+
+                                InsertToSheet(xlWorkSheet, Area_SheetTitle, FormTitle + text.Cat_Part);
+                                InsertToSheet(xlWorkSheet, Area_PageNo, "PG. " + pageNo.ToString());
+
                             }
 
 
@@ -1685,6 +1717,9 @@ namespace FactoryManagementSoftware.UI
                         pageNo = 1;
                         xlWorkSheet.Name = text.Cat_RawMat;
                         int index = 1;
+                        InsertToSheet(xlWorkSheet, Area_PageNo, "PG. " + pageNo.ToString());
+                        InsertToSheet(xlWorkSheet, Area_SheetTitle, FormTitle + text.Cat_RawMat);
+
 
                         foreach (DataRow row in DT_STOCKTAKE_RAWMAT.Rows)
                         {
@@ -1719,6 +1754,10 @@ namespace FactoryManagementSoftware.UI
                                 xlWorkSheet.Name = text.Cat_RawMat + " (" + pageNo + ")";
                                 rowStart = 4;
                                 dataRowInsertedCount = 0;
+                                InsertToSheet(xlWorkSheet, Area_PageNo, "PG. " + pageNo.ToString());
+                                InsertToSheet(xlWorkSheet, Area_SheetTitle, FormTitle + text.Cat_RawMat);
+
+
                             }
 
 
@@ -1748,6 +1787,8 @@ namespace FactoryManagementSoftware.UI
                         pageNo = 1;
                         xlWorkSheet.Name = text.Cat_ColorMat;
                         int index = 1;
+                        InsertToSheet(xlWorkSheet, Area_PageNo, "PG. " + pageNo.ToString());
+                        InsertToSheet(xlWorkSheet, Area_SheetTitle, FormTitle + text.Cat_ColorMat);
 
                         foreach (DataRow row in DT_STOCKTAKE_COLORMAT.Rows)
                         {
@@ -1782,6 +1823,9 @@ namespace FactoryManagementSoftware.UI
                                 xlWorkSheet.Name = text.Cat_ColorMat + " (" + pageNo + ")";
                                 rowStart = 4;
                                 dataRowInsertedCount = 0;
+                                InsertToSheet(xlWorkSheet, Area_PageNo, "PG. " + pageNo.ToString());
+                                InsertToSheet(xlWorkSheet, Area_SheetTitle, FormTitle + text.Cat_ColorMat);
+
                             }
 
 
@@ -1974,6 +2018,17 @@ namespace FactoryManagementSoftware.UI
 
         private void dtpFrom_ValueChanged(object sender, EventArgs e)
         {
+            DateTime DateFrom = dtpFrom.Value;
+
+            bool GetCompletedPlanOnly = !cbPending.Checked && !cbRunning.Checked && !cbWarning.Checked && !cbCancelled.Checked && cbCompleted.Checked;
+            bool isMonday = DateFrom.DayOfWeek == DayOfWeek.Monday;
+
+            if(GetCompletedPlanOnly && isMonday)
+            {
+                //set date End on Saturday
+                dtpTo.Value = DateFrom.AddDays(5);
+            }
+
 
         }
 
@@ -2941,5 +2996,15 @@ namespace FactoryManagementSoftware.UI
             HideFilter(filterHide);
         }
 
+        private void cbCompleted_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbCompleted.Checked)
+            {
+                cbPending.Checked = false;
+                cbRunning.Checked = false;
+                cbWarning.Checked = false;
+                cbCancelled.Checked = false;
+            }
+        }
     }
 }
