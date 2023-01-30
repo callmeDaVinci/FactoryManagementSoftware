@@ -526,7 +526,7 @@ namespace FactoryManagementSoftware.UI
                 dgvItemUIEdit(dgv);
                 dgv.ClearSelection();
             }
-           // itemListLoaded = true;
+           itemListLoaded = true;
         }
 
         private void loadTransferList(string itemCode)
@@ -544,7 +544,9 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    dt = daltrfHist.codeLikeSearch(itemCode);
+                    
+                    //dt = daltrfHist.codeLikeSearch(itemCode);
+                    dt = daltrfHist.codeSearch(itemCode);
                 }
 
             }
@@ -1105,15 +1107,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItem_MouseClick(object sender, MouseEventArgs e)
         {
-            //var ht = dgvItem.HitTest(e.X, e.Y);
-
-            //if (ht.Type == DataGridViewHitTestType.None)
-            //{
-            //    ////clicked on grey area
-            //    //dgvItem.ClearSelection();              
-            //    //refreshDataList();
-            //    //txtSearch.Clear();
-            //}
+            
           
         }
 

@@ -17,7 +17,6 @@ using System.Configuration;
 using Syncfusion.XlsIO.Implementation.XmlSerialization;
 using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
-using CrystalDecisions.Shared;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 

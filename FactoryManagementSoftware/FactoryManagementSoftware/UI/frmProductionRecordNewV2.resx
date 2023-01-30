@@ -121,13 +121,13 @@
     <value>17, 57</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>35</value>
+    <value>38</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnSaveAndStock.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAADekAAAgICAYAAADkVNukAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAA/7JJREFUeF7s3cuO40iyqF03ku//gJxplBNNNBAQEASd39jt/fdle2VlRsbFXFoL
+        vAAADrwBlbxySQAA/7JJREFUeF7s3cuO40iyqF03ku//gJxplBNNNBAQEASd39jt/fdle2VlRsbFXFoL
         +GDcB2f3ri6Pi8RwyhsAAAAAAABQ09LaKbsf5f+4//P/FQAAAAAAAAAAAAAAAAD4qTXiLcf/+8+2iGtO
         AAAAAAAAAAAAAAAAAGBkjTjn+K+H8/63tcWPnAAAAAAAAAAAAAAAAADAYWntlGP4UN6oaO3R/3cAAAAA
         AAAAAAAAAAAA4GXtS2v3nMOH8f6utcUt554BAAAAAAAAAAAAAAAAwOvYIq45hg/f/W75n3XJCQAAAAAA
@@ -2070,5 +2070,8 @@
   </metadata>
   <metadata name="errorProvider10.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>331, 90</value>
+  </metadata>
+  <metadata name="errorProvider11.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>494, 90</value>
   </metadata>
 </root>

@@ -1201,6 +1201,7 @@ namespace FactoryManagementSoftware.UI
                 LoadParentList(itemCode);
 
                 int macID = Convert.ToInt32(dgvItemList.Rows[selectedItem].Cells[header_Machine].Value.ToString());
+                txtMac.Text = macID.ToString();
 
                 lotNo = tool.GetNextLotNo(dt_Mac, macID);
                 int lotNoFromDGV = GetLastestLotNoFromDGV();
@@ -1209,12 +1210,8 @@ namespace FactoryManagementSoftware.UI
                 {
                     lotNo = lotNoFromDGV;
                 }
-              
-                //if(lotNoFromDGV != -1 && lotNo - lotNoFromDGV > 1)
-                //{
-                //    lotNo = lotNoFromDGV + 1;
-                //}
 
+                
                 txtProLotNo.Text = SetAlphabetToProLotNo(macID, lotNo);
                 lblCustomer.Text = "";
                 lblPartName.Text = itemName;
@@ -1247,6 +1244,7 @@ namespace FactoryManagementSoftware.UI
 
                 txtOut.Text ="0";
                 txtIn.Text = "0";
+                txtActualTotalReject.Text = "";
 
                 //get balance of last shift
                 txtBalanceOfLastShift.Text = GetLatestBalanceLeft(dalProRecord.Select(), planID).ToString();
@@ -1400,7 +1398,7 @@ namespace FactoryManagementSoftware.UI
                 cmbPackingName.SelectedIndex = -1;
                 cmbPackingCode.SelectedIndex = -1;
 
-                AlertMessage = "Carton data not found!\nPlease add a main carton to this item at:\n1. Item Group Edit";
+                //AlertMessage = "Carton data not found!\nPlease add a main carton to this item at:\n1. Item Group Edit";
             }
 
             //check if more than 1 main carton
@@ -1663,7 +1661,8 @@ namespace FactoryManagementSoftware.UI
                         //cmbPackingCode.Text = row[dalProRecord.PackagingCode].ToString();
                         //txtPackingMaxQty.Text = row[dalProRecord.PackagingQty].ToString();
 
-                        //txtTotalReject.Text = row[dalProRecord.ProLotNo].ToString();
+                        txtActualTotalReject.Text = row[dalProRecord.TotalActualReject].ToString();
+
                         // txtRejectPercentage.Text = row[dalProRecord.ProLotNo].ToString();
                     }
 
@@ -1976,6 +1975,7 @@ namespace FactoryManagementSoftware.UI
 
                 string planID = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
                 int sheetID = int.TryParse(txtSheetID.Text, out sheetID)? sheetID : -1;
+                int macNo = int.TryParse(txtMac.Text, out macNo) ? macNo : -1;
 
                 string Shift = text.Shift_Night;
                 string PackagingCode = cmbPackingCode.Text;
@@ -1991,10 +1991,13 @@ namespace FactoryManagementSoftware.UI
                 int fullBox = Convert.ToInt32(txtFullBox.Text);
                 int TotalStockIn = Convert.ToInt32(txtTotalProduce.Text);
                 int TotalReject = Convert.ToInt32(txtTotalReject.Text);
+                int TotalActualReject =  int.TryParse(txtActualTotalReject.Text, out TotalActualReject) ? TotalActualReject : 0;
+
                 double RejectPercentage = Convert.ToDouble(txtRejectPercentage.Text);
                 string ParentStockIn = cmbParentList.Text;
                 string note = txtNote.Text ;
                 string itemCode = lblPartCode.Text;
+
                 lotNo = GetINTOnlyFromLotNo(txtProLotNo.Text);
 
                 DateTime updateTime = DateTime.Now;
@@ -2010,6 +2013,7 @@ namespace FactoryManagementSoftware.UI
                 uProRecord.shift = Shift;
                 uProRecord.packaging_code = PackagingCode;
                 uProRecord.packaging_qty = PackagingQty;
+                uProRecord.mac_no = macNo;
                 uProRecord.production_lot_no = lotNo.ToString();
                 uProRecord.raw_mat_lot_no = txtRawMatLotNo.Text;
                 uProRecord.color_mat_lot_no = txtColorMatLotNo.Text;
@@ -2040,6 +2044,7 @@ namespace FactoryManagementSoftware.UI
                 uProRecord.full_box = fullBox;
                 uProRecord.total_produced = TotalStockIn;
                 uProRecord.total_reject = TotalReject;
+                uProRecord.total_actual_reject = TotalActualReject;
                 uProRecord.reject_percentage = RejectPercentage;
                 uProRecord.updated_date = updateTime;
                 uProRecord.updated_by = userID;
@@ -5050,6 +5055,49 @@ namespace FactoryManagementSoftware.UI
         private void txtFullBox_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("click test");
+        }
+
+        private void txtActualTotalReject_TextChanged(object sender, EventArgs e)
+        {
+            CalculateActualTotalRejectAndPercentage();
+        }
+
+        private void CalculateActualTotalRejectAndPercentage()
+        {
+            int availableQty = int.TryParse(txtAvailableQty.Text, out availableQty) ? availableQty : 0;
+            int totalActualReject = int.TryParse(txtActualTotalReject.Text, out totalActualReject) ? totalActualReject : 0;
+
+            string rejectPercentageString = "NULL";
+
+            if (availableQty <= 0)
+            {
+                rejectPercentageString = "NULL";
+            }
+            else
+            {
+                decimal rejectPercentage = (decimal)totalActualReject / availableQty * 100;
+
+                rejectPercentage = Decimal.Round(rejectPercentage, 2);
+
+                rejectPercentageString = rejectPercentage.ToString();
+            }
+
+            txtActualRejectPercentage.Text = rejectPercentageString;
+
+            if (txtActualTotalReject.Text != txtTotalReject.Text)
+            {
+                errorProvider11.SetError(lblActualRejectQty, "Reject Qty not Tally!");
+            }
+            else
+            {
+                errorProvider11.Clear();
+            }
+
+        }
+
+        private void txtActualRejectPercentage_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

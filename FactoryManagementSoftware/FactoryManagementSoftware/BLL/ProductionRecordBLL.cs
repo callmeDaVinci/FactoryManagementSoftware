@@ -11,6 +11,7 @@ namespace FactoryManagementSoftware.BLL
 
         public DateTime production_date { get; set; }
         public string shift { get; set; }
+        public int mac_no { get; set; }
         public string production_lot_no { get; set; }
         public string raw_mat_lot_no { get; set; }
         public string color_mat_lot_no { get; set; }
@@ -23,6 +24,7 @@ namespace FactoryManagementSoftware.BLL
         public int full_box { get; set; }
         public int total_produced { get; set; }
         public int total_reject { get; set; }
+        public int total_actual_reject { get; set; }
         public double reject_percentage { get; set; }
         public DateTime updated_date { get; set; }
         public int updated_by { get; set; }

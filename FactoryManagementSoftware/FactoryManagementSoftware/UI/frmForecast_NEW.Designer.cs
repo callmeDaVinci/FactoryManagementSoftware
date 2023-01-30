@@ -37,6 +37,7 @@
             this.lblYearFromReset = new System.Windows.Forms.Label();
             this.cmbYearFrom = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbShowTerminatedItem = new System.Windows.Forms.CheckBox();
             this.lblMonthToReset = new System.Windows.Forms.Label();
             this.cmbMonthTo = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -69,7 +70,6 @@
             this.tlpForecast = new System.Windows.Forms.TableLayoutPanel();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.cbShowTerminatedItem = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecast)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -88,7 +88,7 @@
             this.label1.Location = new System.Drawing.Point(630, 35);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(103, 19);
+            this.label1.Size = new System.Drawing.Size(96, 17);
             this.label1.TabIndex = 137;
             this.label1.Text = "MONTH FROM";
             // 
@@ -127,7 +127,7 @@
             this.label2.Location = new System.Drawing.Point(479, 35);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 19);
+            this.label2.Size = new System.Drawing.Size(78, 17);
             this.label2.TabIndex = 139;
             this.label2.Text = "YEAR FROM";
             // 
@@ -140,7 +140,7 @@
             this.lblYearFromReset.Location = new System.Drawing.Point(562, 35);
             this.lblYearFromReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblYearFromReset.Name = "lblYearFromReset";
-            this.lblYearFromReset.Size = new System.Drawing.Size(49, 19);
+            this.lblYearFromReset.Size = new System.Drawing.Size(45, 17);
             this.lblYearFromReset.TabIndex = 141;
             this.lblYearFromReset.Text = "CLEAR";
             this.lblYearFromReset.Click += new System.EventHandler(this.lblYearReset_Click);
@@ -190,6 +190,18 @@
             this.groupBox1.Text = "FILTER";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // cbShowTerminatedItem
+            // 
+            this.cbShowTerminatedItem.AutoSize = true;
+            this.cbShowTerminatedItem.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbShowTerminatedItem.Location = new System.Drawing.Point(1144, 58);
+            this.cbShowTerminatedItem.Margin = new System.Windows.Forms.Padding(4);
+            this.cbShowTerminatedItem.Name = "cbShowTerminatedItem";
+            this.cbShowTerminatedItem.Size = new System.Drawing.Size(159, 21);
+            this.cbShowTerminatedItem.TabIndex = 164;
+            this.cbShowTerminatedItem.Text = "Show Terminated Item";
+            this.cbShowTerminatedItem.UseVisualStyleBackColor = true;
+            // 
             // lblMonthToReset
             // 
             this.lblMonthToReset.AutoSize = true;
@@ -199,7 +211,7 @@
             this.lblMonthToReset.Location = new System.Drawing.Point(1067, 35);
             this.lblMonthToReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMonthToReset.Name = "lblMonthToReset";
-            this.lblMonthToReset.Size = new System.Drawing.Size(49, 19);
+            this.lblMonthToReset.Size = new System.Drawing.Size(45, 17);
             this.lblMonthToReset.TabIndex = 154;
             this.lblMonthToReset.Text = "CLEAR";
             this.lblMonthToReset.Click += new System.EventHandler(this.lblMonthToReset_Click);
@@ -223,7 +235,7 @@
             this.label4.Location = new System.Drawing.Point(956, 35);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(81, 19);
+            this.label4.Size = new System.Drawing.Size(76, 17);
             this.label4.TabIndex = 149;
             this.label4.Text = "MONTH TO";
             // 
@@ -248,7 +260,7 @@
             this.lblYearToReset.Location = new System.Drawing.Point(894, 35);
             this.lblYearToReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblYearToReset.Name = "lblYearToReset";
-            this.lblYearToReset.Size = new System.Drawing.Size(49, 19);
+            this.lblYearToReset.Size = new System.Drawing.Size(45, 17);
             this.lblYearToReset.TabIndex = 153;
             this.lblYearToReset.Text = "CLEAR";
             this.lblYearToReset.Click += new System.EventHandler(this.lblYearToReset_Click);
@@ -260,7 +272,7 @@
             this.label11.Location = new System.Drawing.Point(811, 35);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(62, 19);
+            this.label11.Size = new System.Drawing.Size(58, 17);
             this.label11.TabIndex = 151;
             this.label11.Text = "YEAR TO";
             // 
@@ -301,7 +313,7 @@
             this.lblPartCodeReset.Location = new System.Drawing.Point(411, 35);
             this.lblPartCodeReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPartCodeReset.Name = "lblPartCodeReset";
-            this.lblPartCodeReset.Size = new System.Drawing.Size(49, 19);
+            this.lblPartCodeReset.Size = new System.Drawing.Size(45, 17);
             this.lblPartCodeReset.TabIndex = 148;
             this.lblPartCodeReset.Text = "CLEAR";
             this.lblPartCodeReset.Click += new System.EventHandler(this.lblPartCodeReset_Click);
@@ -313,7 +325,7 @@
             this.label7.Location = new System.Drawing.Point(259, 35);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(80, 19);
+            this.label7.Size = new System.Drawing.Size(74, 17);
             this.label7.TabIndex = 146;
             this.label7.Text = "PART CODE";
             // 
@@ -338,7 +350,7 @@
             this.lblPartNameReset.Location = new System.Drawing.Point(199, 35);
             this.lblPartNameReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPartNameReset.Name = "lblPartNameReset";
-            this.lblPartNameReset.Size = new System.Drawing.Size(49, 19);
+            this.lblPartNameReset.Size = new System.Drawing.Size(45, 17);
             this.lblPartNameReset.TabIndex = 145;
             this.lblPartNameReset.Text = "CLEAR";
             this.lblPartNameReset.Click += new System.EventHandler(this.lblPartNameReset_Click);
@@ -350,7 +362,7 @@
             this.label5.Location = new System.Drawing.Point(8, 35);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(82, 19);
+            this.label5.Size = new System.Drawing.Size(77, 17);
             this.label5.TabIndex = 143;
             this.label5.Text = "PART NAME";
             // 
@@ -363,7 +375,7 @@
             this.lblMonthFromReset.Location = new System.Drawing.Point(741, 35);
             this.lblMonthFromReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMonthFromReset.Name = "lblMonthFromReset";
-            this.lblMonthFromReset.Size = new System.Drawing.Size(49, 19);
+            this.lblMonthFromReset.Size = new System.Drawing.Size(45, 17);
             this.lblMonthFromReset.TabIndex = 142;
             this.lblMonthFromReset.Text = "CLEAR";
             this.lblMonthFromReset.Click += new System.EventHandler(this.lblMonthReset_Click);
@@ -386,10 +398,10 @@
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(4, 5);
+            this.label8.Location = new System.Drawing.Point(4, 7);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(80, 19);
+            this.label8.Size = new System.Drawing.Size(75, 17);
             this.label8.TabIndex = 149;
             this.label8.Text = "CUSTOMER";
             // 
@@ -435,6 +447,7 @@
             this.dgvForecast.Name = "dgvForecast";
             this.dgvForecast.ReadOnly = true;
             this.dgvForecast.RowHeadersVisible = false;
+            this.dgvForecast.RowHeadersWidth = 51;
             this.dgvForecast.RowTemplate.Height = 60;
             this.dgvForecast.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvForecast.Size = new System.Drawing.Size(1542, 554);
@@ -469,10 +482,10 @@
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(4, 14);
+            this.label10.Location = new System.Drawing.Point(4, 15);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(103, 19);
+            this.label10.Size = new System.Drawing.Size(96, 17);
             this.label10.TabIndex = 153;
             this.label10.Text = "FORECAST LIST";
             // 
@@ -646,18 +659,6 @@
             // errorProvider2
             // 
             this.errorProvider2.ContainerControl = this;
-            // 
-            // cbShowTerminatedItem
-            // 
-            this.cbShowTerminatedItem.AutoSize = true;
-            this.cbShowTerminatedItem.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbShowTerminatedItem.Location = new System.Drawing.Point(1144, 58);
-            this.cbShowTerminatedItem.Margin = new System.Windows.Forms.Padding(4);
-            this.cbShowTerminatedItem.Name = "cbShowTerminatedItem";
-            this.cbShowTerminatedItem.Size = new System.Drawing.Size(168, 23);
-            this.cbShowTerminatedItem.TabIndex = 164;
-            this.cbShowTerminatedItem.Text = "Show Terminated Item";
-            this.cbShowTerminatedItem.UseVisualStyleBackColor = true;
             // 
             // frmForecast_NEW
             // 

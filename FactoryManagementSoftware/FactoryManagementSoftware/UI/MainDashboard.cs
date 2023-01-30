@@ -5,7 +5,6 @@ using System.Configuration;
 using System.Linq;
 using System.Windows.Forms;
 using FactoryManagementSoftware.BLL;
-using FactoryManagementSoftware.DAL;
 using System.Data;
 
 namespace FactoryManagementSoftware.UI

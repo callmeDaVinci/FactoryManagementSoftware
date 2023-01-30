@@ -279,6 +279,9 @@ namespace FactoryManagementSoftware.Module
         public string Header_PartCode { get; } = "PART CODE";
         public string Header_ItemCode { get; } = "ITEM CODE";
         public string Header_ItemName { get; } = "ITEM NAME";
+        public string Header_CountedQty { get; } = "COUNTED QTY";
+        public string Header_SystemQty { get; } = "SYSTEM QTY";
+        public string Header_Difference{ get; } = "DIFFERENCE";
 
         public string Header_ItemDescription { get; } = "ITEM DESCRIPTION";
         public string Header_Stocktake { get; } = "STOCKTAKE";

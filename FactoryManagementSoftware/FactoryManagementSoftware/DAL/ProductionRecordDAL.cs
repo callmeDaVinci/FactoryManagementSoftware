@@ -14,6 +14,7 @@ namespace FactoryManagementSoftware.DAL
         public string ProDate { get; } = "production_date";
         public string Shift { get; } = "shift";
         public string ProLotNo { get; } = "production_lot_no";
+        public string MacNo { get; } = "mac_no";
         public string RawMatLotNo { get; } = "raw_mat_lot_no";
         public string ColorMatLotNo { get; } = "color_mat_lot_no";
         public string MeterStart { get; } = "meter_start";
@@ -23,6 +24,7 @@ namespace FactoryManagementSoftware.DAL
         public string FullBox { get; } = "full_box";
         public string TotalProduced { get; } = "total_produced";
         public string TotalReject { get; } = "total_reject";
+        public string TotalActualReject { get; } = "total_actual_reject";
         public string RejectPercentage { get; } = "reject_percentage";
         public string UpdatedDate { get; } = "updated_date";
         public string UpdatedBy { get; } = "updated_by";
@@ -427,6 +429,7 @@ namespace FactoryManagementSoftware.DAL
                             + ProDate + ","
                             + Shift + ","
                             + ProLotNo + ","
+                            + MacNo + ","
                             + RawMatLotNo + ","
                             + ColorMatLotNo + ","
                             + MeterStart + ","
@@ -436,6 +439,7 @@ namespace FactoryManagementSoftware.DAL
                             + FullBox + ","
                             + TotalProduced + ","
                             + TotalReject + ","
+                            + TotalActualReject + ","
                             + UpdatedDate + ","
                             + UpdatedBy + ","
                             + Active + ","
@@ -449,6 +453,7 @@ namespace FactoryManagementSoftware.DAL
                             "@production_date," +
                             "@shift," +
                             "@production_lot_no," +
+                            "@mac_no," +
                             "@raw_mat_lot_no," +
                             "@color_mat_lot_no," +
                             "@meter_start," +
@@ -458,6 +463,7 @@ namespace FactoryManagementSoftware.DAL
                             "@full_box," +
                             "@total_produced," +
                             "@total_reject," +
+                            "@total_actual_reject," +
                             "@updated_date," +
                              "@updated_by," +
                             "@active," +
@@ -474,6 +480,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@production_date", u.production_date);
                 cmd.Parameters.AddWithValue("@shift", u.shift);
                 cmd.Parameters.AddWithValue("@production_lot_no", u.production_lot_no);
+                cmd.Parameters.AddWithValue("@mac_no", u.mac_no);
                 cmd.Parameters.AddWithValue("@raw_mat_lot_no", u.raw_mat_lot_no);
                 cmd.Parameters.AddWithValue("@color_mat_lot_no", u.color_mat_lot_no);
                 cmd.Parameters.AddWithValue("@meter_start", u.meter_start);
@@ -483,6 +490,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@full_box", u.full_box);
                 cmd.Parameters.AddWithValue("@total_produced", u.total_produced);
                 cmd.Parameters.AddWithValue("@total_reject", u.total_reject);
+                cmd.Parameters.AddWithValue("@total_actual_reject", u.total_actual_reject);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
                 cmd.Parameters.AddWithValue("@active", u.active);
@@ -748,6 +756,7 @@ namespace FactoryManagementSoftware.DAL
                             + ProDate + "=@production_date,"
                             + Shift + "=@shift,"
                             + ProLotNo + "=@production_lot_no,"
+                            + MacNo + "=@mac_no,"
                             + RawMatLotNo + "=@raw_mat_lot_no,"
                             + ColorMatLotNo + "=@color_mat_lot_no,"
                             + MeterStart + "=@meter_start,"
@@ -757,6 +766,7 @@ namespace FactoryManagementSoftware.DAL
                             + FullBox + "=@full_box,"
                             + TotalProduced + "=@total_produced,"
                             + TotalReject + "=@total_reject,"
+                            + TotalActualReject + "=@total_actual_reject,"
                             + Active + "=@active,"
                             + PackagingCode + "=@packaging_code,"
                             + PackagingQty + "=@packaging_qty,"
@@ -775,6 +785,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@production_date", u.production_date);
                 cmd.Parameters.AddWithValue("@shift", u.shift);
                 cmd.Parameters.AddWithValue("@production_lot_no", u.production_lot_no);
+                cmd.Parameters.AddWithValue("@mac_no", u.mac_no);
                 cmd.Parameters.AddWithValue("@raw_mat_lot_no", u.raw_mat_lot_no);
                 cmd.Parameters.AddWithValue("@color_mat_lot_no", u.color_mat_lot_no);
                 cmd.Parameters.AddWithValue("@meter_start", u.meter_start);
@@ -784,6 +795,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@full_box", u.full_box);
                 cmd.Parameters.AddWithValue("@total_produced", u.total_produced);
                 cmd.Parameters.AddWithValue("@total_reject", u.total_reject);
+                cmd.Parameters.AddWithValue("@total_actual_reject", u.total_actual_reject);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
                 cmd.Parameters.AddWithValue("@active", u.active);

@@ -1038,7 +1038,13 @@ namespace FactoryManagementSoftware.UI
             //CalTotalRecycleMat();
 
             float totalRawMat = txtMatBeforeWastage.Text == "" ? 0 : Convert.ToSingle(txtMatBeforeWastage.Text);
+
             float totalRecycleMat = txtRecycleKG.Text == "" ? 0 : Convert.ToSingle(txtRecycleKG.Text);
+
+            if(!cbRecycleUse.Checked)
+            {
+                totalRecycleMat = 0;
+            }
 
             float totalMatBeforeWastage = totalRawMat + totalRecycleMat;
 

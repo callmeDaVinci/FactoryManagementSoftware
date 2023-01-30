@@ -7,7 +7,7 @@
     <ProjectGuid>{9E7F30F9-4A96-4D46-ADE4-4E0822E7A066}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>FactoryManagementSoftware</RootNamespace>
-    <AssemblyName>FactoryManagementSoftware</AssemblyName>
+    <AssemblyName>Safety ERP System</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -27,7 +27,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>449</ApplicationRevision>
+    <ApplicationRevision>459</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -67,11 +67,11 @@
   <PropertyGroup>
     <ApplicationIcon>Picture2 %281%29.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
-    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -209,6 +209,12 @@
     <Compile Include="DAL\trfHistDAL.cs" />
     <Compile Include="DAL\userDAL.cs" />
     <Compile Include="DAL\Utilities.cs" />
+    <Compile Include="UI\FinexExcelUpload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FinexExcelUpload.Designer.cs">
+      <DependentUpon>FinexExcelUpload.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmMacScheduleExcelDownload.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -291,11 +297,11 @@
     <Compile Include="UI\FinexWill.Designer.cs">
       <DependentUpon>FinexWill.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\FinexDataUpload.cs">
+    <Compile Include="UI\ExcelUpload.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\FinexDataUpload.Designer.cs">
-      <DependentUpon>FinexDataUpload.cs</DependentUpon>
+    <Compile Include="UI\ExcelUpload.Designer.cs">
+      <DependentUpon>ExcelUpload.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmFinex.cs">
       <SubType>Form</SubType>
@@ -971,6 +977,9 @@
     <Compile Include="UI\NewInOutReport.Designer.cs">
       <DependentUpon>NewInOutReport.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UI\FinexExcelUpload.resx">
+      <DependentUpon>FinexExcelUpload.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMacScheduleExcelDownload.resx">
       <DependentUpon>frmMacScheduleExcelDownload.cs</DependentUpon>
     </EmbeddedResource>
@@ -985,6 +994,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmCartonSetting.resx">
       <DependentUpon>frmCartonSetting.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItemGroupList.resx">
       <DependentUpon>frmItemGroupList.cs</DependentUpon>
@@ -1010,8 +1020,8 @@
     <EmbeddedResource Include="UI\FinexWill.resx">
       <DependentUpon>FinexWill.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\FinexDataUpload.resx">
-      <DependentUpon>FinexDataUpload.cs</DependentUpon>
+    <EmbeddedResource Include="UI\ExcelUpload.resx">
+      <DependentUpon>ExcelUpload.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmFinex.resx">
       <DependentUpon>frmFinex.cs</DependentUpon>
@@ -1024,33 +1034,43 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmActionLog.resx">
       <DependentUpon>frmActionLog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmAddItem.resx">
       <DependentUpon>frmAddItem.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmCat.resx">
       <DependentUpon>frmCat.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmChangeDate.resx">
       <DependentUpon>frmChangeDate.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmChildStockOutRecord.resx">
       <DependentUpon>frmChildStockOutRecord.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmCustomMessageBox.resx">
       <DependentUpon>frmCustomMessageBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDailyJobSheet.resx">
       <DependentUpon>frmDailyJobSheet.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDeliveryDate.resx">
       <DependentUpon>frmDeliveryDate.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDeliverySchedule.resx">
       <DependentUpon>frmDeliverySchedule.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDialog.resx">
       <DependentUpon>frmDialog.cs</DependentUpon>
@@ -1135,9 +1155,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmCust.resx">
       <DependentUpon>frmCust.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmData.resx">
       <DependentUpon>frmData.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmFac.resx">
       <DependentUpon>frmFac.cs</DependentUpon>
@@ -1430,6 +1452,8 @@
     <Content Include="ee4dce1061f3f616224767ad58cb2fc751b8d2dc.ico" />
     <Content Include="Image\icons8-back-to-64.png" />
     <Content Include="Image\icons8_available_updates_96_deQ_icon.ico" />
+    <Content Include="SBB logo.ico" />
+    <Content Include="website tiny logo.ico" />
     <None Include="Image\safety-logo.png" />
     <Content Include="Image\safety_SYA_icon.ico" />
     <Content Include="Image\x_icon_png_1543129_VTC_icon.ico" />
@@ -1521,6 +1545,7 @@
     <None Include="Resources\icons8-exit-full-screen-64.png" />
     <None Include="Resources\icons8-toggle-full-screen-50.png" />
     <Content Include="Safety logo final.ico" />
+    <Content Include="SBB logo WHITE.ico" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
