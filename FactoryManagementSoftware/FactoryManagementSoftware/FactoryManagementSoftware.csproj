@@ -27,7 +27,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>459</ApplicationRevision>
+    <ApplicationRevision>463</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -65,7 +65,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Picture2 %281%29.ico</ApplicationIcon>
+    <ApplicationIcon>sp logo 2023.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -209,11 +209,11 @@
     <Compile Include="DAL\trfHistDAL.cs" />
     <Compile Include="DAL\userDAL.cs" />
     <Compile Include="DAL\Utilities.cs" />
-    <Compile Include="UI\FinexExcelUpload.cs">
+    <Compile Include="UI\ExcelUpload.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\FinexExcelUpload.Designer.cs">
-      <DependentUpon>FinexExcelUpload.cs</DependentUpon>
+    <Compile Include="UI\ExcelUpload.Designer.cs">
+      <DependentUpon>ExcelUpload.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmMacScheduleExcelDownload.cs">
       <SubType>Form</SubType>
@@ -296,12 +296,6 @@
     </Compile>
     <Compile Include="UI\FinexWill.Designer.cs">
       <DependentUpon>FinexWill.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\ExcelUpload.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\ExcelUpload.Designer.cs">
-      <DependentUpon>ExcelUpload.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmFinex.cs">
       <SubType>Form</SubType>
@@ -977,8 +971,8 @@
     <Compile Include="UI\NewInOutReport.Designer.cs">
       <DependentUpon>NewInOutReport.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="UI\FinexExcelUpload.resx">
-      <DependentUpon>FinexExcelUpload.cs</DependentUpon>
+    <EmbeddedResource Include="UI\ExcelUpload.resx">
+      <DependentUpon>ExcelUpload.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMacScheduleExcelDownload.resx">
       <DependentUpon>frmMacScheduleExcelDownload.cs</DependentUpon>
@@ -1019,9 +1013,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FinexWill.resx">
       <DependentUpon>FinexWill.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ExcelUpload.resx">
-      <DependentUpon>ExcelUpload.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmFinex.resx">
       <DependentUpon>frmFinex.cs</DependentUpon>
@@ -1453,6 +1444,7 @@
     <Content Include="Image\icons8-back-to-64.png" />
     <Content Include="Image\icons8_available_updates_96_deQ_icon.ico" />
     <Content Include="SBB logo.ico" />
+    <Content Include="sp logo 2023.ico" />
     <Content Include="website tiny logo.ico" />
     <None Include="Image\safety-logo.png" />
     <Content Include="Image\safety_SYA_icon.ico" />

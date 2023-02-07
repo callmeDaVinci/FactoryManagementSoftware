@@ -55,6 +55,26 @@ namespace FactoryManagementSoftware.UI
         //CALL FROM Stock Check LIST
         string stockTallyLocation;
 
+        public frmInOutEdit(DataTable dt, bool frmStockCheck, bool frmStockCheck2)
+        {
+            InitializeComponent();
+
+            // 0 0 = stock count Tally
+
+            myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+            //#############################################################################################################################################
+            //dtpTrfDate.Value = date;
+            dtpTrfDate.Value = DateTime.Today.AddDays(-1);
+            //dtpTrfDate.Value = DateTime.Today.AddDays(-30);
+
+            createDGV();
+
+            dt_StockTallyList = dt;
+
+            callForStockTally = true;
+            TrfSuccess = false;
+        }
+
         public frmInOutEdit(DataTable dt, bool frmStockCheck, bool frmStockCheck2, string stockLocation)
         {
             InitializeComponent();
@@ -69,7 +89,7 @@ namespace FactoryManagementSoftware.UI
 
             createDGV();
 
-            dt_StockCheckList = dt;
+            dt_StockTallyList = dt;
 
             callFromStockCheckList = true;
             TrfSuccess = false;
@@ -212,6 +232,7 @@ namespace FactoryManagementSoftware.UI
         private bool callFromMatChecklist = false;
         private bool callFromDOlist = false;
         private bool callFromStockCheckList = false;
+        private bool callForStockTally = false;
         private bool callFromMatlist = false;
         private bool callFromProductionRecord = false;
         private bool isInpectionItem = false;
@@ -219,7 +240,7 @@ namespace FactoryManagementSoftware.UI
 
         static public DataTable dt_MatChecklist;
         private DataTable dt_DOItem;
-        private DataTable dt_StockCheckList;
+        private DataTable dt_StockTallyList;
         private DataTable dt_MatDeliveryList;
         private DataTable dt_Fac;
         static public DataTable dt_ProductionRecord;
@@ -546,13 +567,17 @@ namespace FactoryManagementSoftware.UI
             }
             else if (callFromStockCheckList)
             {
-                StockAdjustToDGV(dt_StockCheckList);
+                StockAdjustToDGV(dt_StockTallyList);
+            }
+            else if (callForStockTally)
+            {
+                StockTally(dt_StockTallyList);
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
-        private void loadItemCategoryData()
+        private void loadItemCategoryData()                
         {
             DataTable dtItemCat = dalItemCat.Select();
             DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
@@ -2830,6 +2855,98 @@ namespace FactoryManagementSoftware.UI
             dgv.ClearSelection();
 
         }
+
+        private string CheckIfFactoryExist(DataTable dt_Fac,string facNameToCheck)
+        {
+            facNameToCheck = facNameToCheck.Replace(" ", "").ToUpper();
+
+            foreach (DataRow row in dt_Fac.Rows)
+            {
+                string fac = row["fac_name"].ToString();
+
+                string tmp = fac.Replace(" ", "").ToUpper();
+
+                if (tmp.Equals(facNameToCheck))
+                {
+                    return fac;
+                }
+            }
+
+            return facNameToCheck;
+        }
+
+        private void StockTally(DataTable dt)
+        {
+            DataGridView dgv = dgvTransfer;
+            DataTable dt_ItemInfo = dalItem.Select();
+            DataTable dt_Fac = dalFac.SelectASC();
+
+            int n;
+
+            string header_ItemCode = "CODE";
+            string header_ItemName = "NAME";
+
+            string header_StockDiff = "STOCK DIFF.";
+
+
+            foreach (DataRow row in dt.Rows)
+            {
+                decimal stockDiff = decimal.TryParse(row[text.Header_Difference].ToString(), out stockDiff) ? stockDiff : 0;
+
+                if (stockDiff != 0)
+                {
+                    n = dgv.Rows.Add();
+                    index = n + 1;
+                    string itemCode = row[text.Header_ItemCode].ToString();
+                    string itemName = row[text.Header_ItemName].ToString();
+                    string facName = row[text.Header_Fac].ToString();
+
+                    //check if fac. name exist
+                    facName = CheckIfFactoryExist(dt_Fac, facName);
+
+                    string itemCat = tool.getItemCatFromDataTable(dt_ItemInfo, itemCode); //text.Cat_Part;
+
+                    dgv.Rows[n].Cells[IndexColumnName].Value = index;
+
+                    dgv.Rows[n].Cells[DateColumnName].Value = DateTime.Today.ToShortDateString();
+                    dgv.Rows[n].Cells[CatColumnName].Value = itemCat;
+                    dgv.Rows[n].Cells[CodeColumnName].Value = itemCode;
+                    dgv.Rows[n].Cells[NameColumnName].Value = itemName;
+
+                    if (stockDiff < 0)
+                    {
+                        dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
+                        dgv.Rows[n].Cells[FromColumnName].Value = facName;
+
+                        dgv.Rows[n].Cells[ToCatColumnName].Value = text.Other;
+                        dgv.Rows[n].Cells[ToColumnName].Value = "";
+
+                        dgv.Rows[n].Cells[QtyColumnName].Value = stockDiff * -1;
+                    }
+                    else
+                    {
+                        dgv.Rows[n].Cells[FromCatColumnName].Value = text.Other;
+                        dgv.Rows[n].Cells[FromColumnName].Value = "";
+
+                        dgv.Rows[n].Cells[ToCatColumnName].Value = text.Factory;
+                        dgv.Rows[n].Cells[ToColumnName].Value = facName;
+                        dgv.Rows[n].Cells[QtyColumnName].Value = stockDiff;
+
+                    }
+
+
+
+                    dgv.Rows[n].Cells[UnitColumnName].Value = text.Unit_Piece;
+                    dgv.Rows[n].Cells[NoteColumnName].Value = "[STOCK COUNT TALLY]";
+                }
+
+
+
+            }
+            dgv.ClearSelection();
+
+        }
+
         private void addMatPartToDGV(DataTable dt)
         {
             DataGridView dgv = dgvTransfer;

@@ -917,6 +917,14 @@ namespace FactoryManagementSoftware.UI
                                 runnerWeight = float.TryParse(item[dalItem.ItemProRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
                             }
 
+                            if (partWeight <= 0)
+                            {
+                                float Cavity = float.TryParse(item[dalItem.ItemCavity].ToString(), out Cavity) ? Cavity : 1;
+
+                                partWeight = float.TryParse(item[dalItem.ItemProPWShot].ToString(), out partWeight) ? partWeight : 0 / Cavity;
+                                runnerWeight = float.TryParse(item[dalItem.ItemProRWShot].ToString(), out runnerWeight) ? runnerWeight : 0 / Cavity;
+                            }
+
                             float itemWeight = partWeight + runnerWeight;
 
                             float wastage = item[dalItem.ItemWastage] == DBNull.Value ? 0 : Convert.ToSingle(item[dalItem.ItemWastage]);
@@ -1384,6 +1392,14 @@ namespace FactoryManagementSoftware.UI
                     {
                         partWeight = float.TryParse(ProductRow[dalItem.ItemProPWPcs].ToString(), out partWeight) ? partWeight : 0;
                         runnerWeight = float.TryParse(ProductRow[dalItem.ItemProRWPcs].ToString(), out runnerWeight) ? runnerWeight : 0;
+                    }
+
+                    if (partWeight <= 0)
+                    {
+                        float Cavity = float.TryParse(ProductRow[dalItem.ItemCavity].ToString(), out Cavity) ? Cavity : 1;
+
+                        partWeight = float.TryParse(ProductRow[dalItem.ItemProPWShot].ToString(), out partWeight) ? partWeight : 0 /Cavity;
+                        runnerWeight = float.TryParse(ProductRow[dalItem.ItemProRWShot].ToString(), out runnerWeight) ? runnerWeight : 0 / Cavity;
                     }
 
                     float itemWeight = partWeight + runnerWeight;

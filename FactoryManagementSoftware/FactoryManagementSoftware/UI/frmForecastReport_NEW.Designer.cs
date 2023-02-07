@@ -342,7 +342,7 @@
             this.dgvForecastReport.RowHeadersVisible = false;
             this.dgvForecastReport.RowHeadersWidth = 51;
             this.dgvForecastReport.RowTemplate.Height = 60;
-            this.dgvForecastReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvForecastReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvForecastReport.Size = new System.Drawing.Size(1539, 436);
             this.dgvForecastReport.TabIndex = 152;
             this.dgvForecastReport.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvForecastReport_CellFormatting);

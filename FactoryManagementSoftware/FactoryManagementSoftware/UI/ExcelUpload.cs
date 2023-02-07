@@ -12,22 +12,23 @@ using Microsoft.Office.Interop.Word;
 using DataTable = System.Data.DataTable;
 using Font = System.Drawing.Font;
 using System.Linq;
-
+using FactoryManagementSoftware.DAL;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ExplorerBar;
+using System.Security.Cryptography.X509Certificates;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class FinexExcelUpload : Form
+    public partial class ExcelUpload : Form
     {
         Tool tool = new Tool();
         Text text = new Text();
-
-
+        facStockDAL dalStock = new facStockDAL();
+        itemDAL dalItem = new itemDAL();
 
         #region Data String
 
         private string path = null;
         private string excelName = null;
-        private int rowCount = 0;
 
         //table header
         private string HEADER_INDEX = "#";
@@ -38,125 +39,17 @@ namespace FactoryManagementSoftware.UI
         private string HEADER_INFORMATION = "INFORMATION";
         private string HEADER_DESCRIPTION = "DESCRIPTION";
 
-        //category
-        private string PRIMARYKEY_TIMESTAMP = "TIMESTAMP";
-
-        private string PART_EP = "(EP)";
-      
-        private string PART_A = "(A)";
-        private string PART_A_TESTATOR = "TESTATOR";
-
-        private string PART_B1 = "(B1)";
-        private string PART_B2 = "(B2)";
-        private string PART_B1_EXECUTOR_1 = "EXECUTOR 1";
-        private string PART_B2_EXECUTOR_2 = "EXECUTOR 2";
-
-        private string PART_C0 = "(C0)";
-        private string PART_C1 = "(C1)";
-        private string PART_C2 = "(C2)";
-        private string PART_C3 = "(C3)";
-        private string PART_C4 = "(C4)";
-        private string PART_C5 = "(C5)";
-        private string PART_C6 = "(C6)";
-
-        private string PART_C0_TOTAL_BENEFICIARIES = "TOTAL BENEFICIARIES";
-        private string PART_C1_BENEFICIARY_1 = "BENEFICIARY 1";
-        private string PART_C2_BENEFICIARY_2 = "BENEFICIARY 2";
-        private string PART_C3_BENEFICIARY_3 = "BENEFICIARY 3";
-        private string PART_C4_BENEFICIARY_4 = "BENEFICIARY 4";
-        private string PART_C5_BENEFICIARY_5 = "BENEFICIARY 5";
-
-        private string PART_C1_0 = "(C1.0)";
-        private string PART_C1_1 = "(C1.1)";
-        private string PART_C1_2 = "(C1.2)";
-        private string PART_C1_3 = "(C1.3)";
-        private string PART_C1_4 = "(C1.4)";
-        private string PART_C1_5 = "(C1.5)";
-
-        private string PART_C1_0_TOTAL_BENEFICIARIES = "TOTAL SUBSTITUTE BENEFICIARIES";
-        private string PART_C1_1_BENEFICIARY_1 = "SUBSTITUTE BENEFICIARY 1";
-        private string PART_C1_2_BENEFICIARY_2 = "SUBSTITUTE BENEFICIARY 2";
-        private string PART_C1_3_BENEFICIARY_3 = "SUBSTITUTE BENEFICIARY 3";
-        private string PART_C1_4_BENEFICIARY_4 = "SUBSTITUTE BENEFICIARY 4";
-        private string PART_C1_5_BENEFICIARY_5 = "SUBSTITUTE BENEFICIARY 5";
-
-        private string PART_D1 = "(D1)";
-        private string PART_D2 = "(D2)";
-        private string PART_D1_GUARDIAN_1 = "GUARDIAN 1";
-        private string PART_D2_GUARDIAN_2 = "GUARDIAN 2";
-
-        private string PART_E1 = "(E1)";
-        private string PART_E2 = "(E2)";
-        private string PART_E3 = "(E3)";
-        private string PART_E1_PROPERTIES_1 = "IMMOVABLE PROPERTIES 1";
-        private string PART_E2_PROPERTIES_2 = "IMMOVABLE PROPERTIES 2";
-        private string PART_E3_PROPERTIES_3 = "IMMOVABLE PROPERTIES 3";
-
-        //private string PART_F1 = "(F1)";
-        //private string PART_F2 = "(F2)";
-        //private string PART_F3 = "(F3)";
-        //private string PART_F4 = "(F4)";
-        //private string PART_F1_FUNDING_WIFE = "FUNDING: WIFE";
-        //private string PART_F2_FUNDING_CHILDREN = "FUNDING: CHILDREN";
-        //private string PART_F3_FUNDING_PARENTS = "FUNDING: PARENTS";
-        //private string PART_F4_FUNDING_GUARDIAN = "FUNDING: GUARDIAN";
-
-        private string PART_G1 = "(G1)";
-        private string PART_G2 = "(G2)";
-        private string PART_G1_INSURANCE_1 = "INSURANCE 1";
-        private string PART_G2_INSURANCE_2 = "INSURANCE 2";
-
-        //private string PART_H1 = "(H1)";
-        private string PART_H2 = "(H2)";
-        private string PART_H3 = "(H3)";
-        private string PART_H2_RELIGION = "FINAL RESTING PLACE: RELIGION";
-        private string PART_H3_METHOD = "FINAL RESTING PLACE: METHOD";
-
-        private string PART_J1 = "(J1)";
-        private string PART_J2 = "(J2)";
-
-
-        //Data
-        private string HEADER_FULLNAME = "FULL NAME";
-        private string HEADER__IC = "NRIC";
-        private string HEADER__BIRTHDAY = "BIRTHDAY";
-        private string HEADER__HP = "HANDPHONE NO.";
-        private string HEADER__EMAIL = "EMAIL";
-        private string HEADER__ADDRESS = "ADDRESS";
-        private string HEADER__MARITAL = "MARITAL STATUS";
-        private string HEADER__RELIGION = "RELIGION";
-        private string HEADER__SPECIALFAMILYCONDITION = "SPECIAL FAMILY CONDITION";
-        private string HEADER__RELATIONSHIP = "RELATIONSHIP";
-        private string HEADER__TOTAL_BENEFICIARIES = "TOTAL BENEFICIARIES";
-        private string HEADER__SHARE_PERCENTAGE = "SHARE";
-        private string HEADER__PROPERTY_ADDRESS = "ADDRESS OF THE PROPERTY";
-        private string HEADER__TITLE_DETAILS = "TITLE DETAILS";
-        private string HEADER__OWNERSHIP = "OWNERSHIP";
-        private string HEADER__PROPERTY_BENEFICIARIES = "BENEFICIARIES";
-        private string HEADER__HOUSEHOLD_EXPENSES = "HOUSEHOLD EXPENSES";
-        private string HEADER__GUARDIAN_ALLOWANCE = "GUARDIAN'S MONTHLY ALLOWANCE";
-        private string HEADER__INSURANCE_COMPANY = "INSURANCE COMPANY";
-        private string HEADER__INSURANCE_POLICY_NO = "POLICY NUMBER";
-        private string HEADER__RESTING_METHOD = "METHOD";
-        private string HEADER__ASSETS = "ASSETS";
-        private string HEADER__STATE = "STATE";
-        private string HEADER__POSTCODE = "POSTCODE";
-
-        private string HEADER_PLANNER_IN_CHARGE = "PLANNER-IN-CHARGE";
-        private string HEADER_CONTACT = "CONTACT";
-        private string HEADER_EP_Code = "PLANNER CODE";
-        private string HEADER_EP_PACKAGE = "PACKAGE";
-        private string HEADER_DEATH_OF_MAIN_BENEFICIARY = "DEATH OF MAIN BENEFICIARY";
-        private string HEADER_ADDITIONAL_INSTRUCTIONS = "ADDITIONAL INSTRUCTIONS";
-
         #endregion
 
         DataTable dt_DataSource;
 
-        public FinexExcelUpload()
+        DataTable DT_FAC_STOCK;
+
+        public ExcelUpload()
         {
             InitializeComponent();
-            
+
+            DT_FAC_STOCK = dalStock.Select();
         }
 
         #region New Table Setting
@@ -171,6 +64,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_CountedQty, typeof(decimal));
             dt.Columns.Add(text.Header_SystemQty, typeof(decimal));
             dt.Columns.Add(text.Header_Difference, typeof(decimal));
+            dt.Columns.Add(text.Header_Fac, typeof(string));
 
             return dt;
         }
@@ -212,16 +106,7 @@ namespace FactoryManagementSoftware.UI
             //dgv.Columns[header_Stock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             //dgv.Columns[header_ItemCode].Visible = false;
 
-            if(dgv == dgvDetail)
-            {
-                dgv.Columns[HEADER_INFORMATION].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-                dgv.Columns[HEADER_DESCRIPTION].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-                dgv.Columns[HEADER_INDEX].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgv.Columns[HEADER_INFORMATION].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[HEADER_DESCRIPTION].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            }
-            else if(dgv == dgvList)
+            if(dgv == dgvList)
             {
                 dgv.Columns[text.Header_ItemCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
@@ -259,7 +144,6 @@ namespace FactoryManagementSoftware.UI
             {
                 frmLoading.ShowLoadingScreen();
                 ReadExcel(path);
-                btnWill.Visible = false;
                 frmLoading.CloseForm();
             }
             else
@@ -268,10 +152,49 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        public void ReadExcel(string Path)
+        private decimal GetFacStock(string itemCode, string FacName)
+        {
+            decimal facStock = -1;
+
+            if(itemCode == "CONNECTOR LEFT 492/489")
+            {
+                float checkpoint = 1;
+            }
+
+            if(DT_FAC_STOCK != null)
+            {
+                foreach(DataRow row in DT_FAC_STOCK.Rows) 
+                {
+                    string DB_FacName = row["fac_name"].ToString().ToUpper().Replace(" ", "");
+                    FacName = FacName.ToUpper().Replace(" ", "");
+
+                    string DB_ItemCode = row[dalItem.ItemCode].ToString().ToUpper().Replace(" ", "");
+                    itemCode = itemCode.ToUpper().Replace(" ", "");
+
+                    //if (row[dalItem.ItemCode].ToString().Equals(itemCode) && row["fac_name"].ToString().ToUpper().Equals(FacName.ToUpper()))
+                    //{
+                    //    //stock_qty
+                    //    facStock = decimal.TryParse(row["stock_qty"].ToString(), out decimal i) ? i : 0;
+                    //    break;
+                    //}
+
+                    if (DB_ItemCode.Equals(itemCode) && DB_FacName.Equals(FacName))
+                    {
+                        //stock_qty
+                        facStock = decimal.TryParse(row["stock_qty"].ToString(), out decimal i) ? i : 0;
+                        break;
+                    }
+
+                }
+            }
+
+            return facStock;
+        }
+
+        private void ReadExcel(string Path)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            rowCount = 0;
+
 
             Excel.Application xlApp;
             Excel.Workbook xlWorkBook;
@@ -322,12 +245,16 @@ namespace FactoryManagementSoftware.UI
                 DataRow dtRow;
 
 
-                for (row = headerRow + 1; row <= totalRow; row++)
+                for (row = headerRow + 1; row <= 200; row++)
                 {
                     dtRow = dt_DataSource.NewRow();
                     //dtRow[text.Header_Index] = index++;
+                    string itemCode = "";
+                    string facName = "";
+                    decimal CountedQty = 0;
+                    decimal SystemQty = 0;
 
-                    for (col = 1; col <= totalCol; col++)
+                    for (col = 1; col <= 10; col++)
                     {
                         string header = Convert.ToString((range.Cells[headerRow, col] as Excel.Range).Value2);
 
@@ -345,6 +272,9 @@ namespace FactoryManagementSoftware.UI
                             else if (header.Contains(text.Header_ItemCode))
                             {
                                 string data = Convert.ToString(value);
+
+                                itemCode = data;
+
                                 dtRow[text.Header_ItemCode] = data;
 
                                 //get system stock qty by item code
@@ -359,9 +289,24 @@ namespace FactoryManagementSoftware.UI
                             else if (header.Contains(text.Header_CountedQty))
                             {
                                 string data = Convert.ToString(value);
-                                dtRow[text.Header_CountedQty] = decimal.TryParse(data, out decimal i) ? i : 0;
+                                CountedQty = decimal.TryParse(data, out decimal i) ? i : 0;
+                                dtRow[text.Header_CountedQty] = CountedQty;
                             }
-                            
+                            else if (header.Contains(text.Header_Fac))
+                            {
+                                string data = Convert.ToString(value);
+                                facName = data;
+                                dtRow[text.Header_Fac] = data;
+                            }
+
+                            if(!string.IsNullOrEmpty(itemCode) && !string.IsNullOrEmpty(facName))
+                            {
+                                SystemQty = GetFacStock(itemCode, facName);
+                                dtRow[text.Header_SystemQty] = SystemQty;
+
+                                dtRow[text.Header_Difference] = CountedQty - SystemQty;
+
+                            }
 
                         }
 
@@ -396,7 +341,6 @@ namespace FactoryManagementSoftware.UI
         private void LoadDataToList()
         {
             dgvList.DataSource = null;
-            dgvDetail.DataSource = null;
 
             //DataTable dt = NewMainTestatorTable();
             //DataRow dtRow;
@@ -969,114 +913,7 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void LoadDetail(int rowIndex)
-        {
-            btnWill.Visible = false;
-
-            if (rowIndex >= 0)
-            {
-                DataGridView dgv = dgvList;
-
-                string index = dgv.Rows[rowIndex].Cells[HEADER_INDEX].Value.ToString();
-                string TimeStamp = dgv.Rows[rowIndex].Cells[HEADER_TIMESTAMP].Value.ToString();
-                string Testator = dgv.Rows[rowIndex].Cells[HEADER_TESTATOR].Value.ToString();
-
-
-                dgvDetail.DataSource = null;
-
-                if (dt_DataSource != null && dt_DataSource.Rows.Count > 0)
-                {
-                    DataTable dt = NewWillDetailTable();
-                    DataRow detailRow;
-
-                    int indexNo = 1;
-                    foreach (DataRow row in dt_DataSource.Rows)
-                    {
-                        string source_Index = row[HEADER_INDEX].ToString();
-                        string source_TimeStamp = row[HEADER_TIMESTAMP].ToString();
-                        string source_Testator = row[PART_A + PART_A_TESTATOR + " " + HEADER_FULLNAME].ToString();
-
-                        bool dataMatched = source_Index == index;
-                        dataMatched &= TimeStamp == source_TimeStamp;
-                        dataMatched &= Testator == source_Testator;
-
-                        if(dataMatched)
-                        {
-                            int sourceRowIndex = dt_DataSource.Rows.IndexOf(row);
-
-                            for(int col = 0; col < dt_DataSource.Columns.Count; col ++)
-                            {
-                                detailRow = dt.NewRow();
-                                detailRow[HEADER_INDEX] = indexNo++;
-
-                                detailRow[HEADER_INFORMATION] = dt_DataSource.Columns[col].ColumnName;
-                                detailRow[HEADER_DESCRIPTION] = dt_DataSource.Rows[sourceRowIndex][col].ToString() ;
-
-                                dt.Rows.Add(detailRow);
-                            }
-                            
-                        }
-                       
-
-                    }
-
-                    if(dt != null && dt.Rows.Count > 0)
-                    {
-                        btnWill.Visible = true;
-                    }
-                    else
-                    {
-                        btnWill.Visible = false;
-                    }
-
-                    dgvDetail.DataSource = dt;
-                    DgvUIEdit(dgvDetail);
-                    dgvDetail.ClearSelection();
-                }
-            }
-        }
-
-        private void dgvTestatorList_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            LoadDetail(e.RowIndex);
-        }
-
-        private void dgvTestatorList_SelectionChanged(object sender, EventArgs e)
-        {
-            //int rowIndex = -1;
-            //DataGridView dgv = dgvTestatorList;
-
-            //if (dgv.SelectedRows.Count <= 0 || dgv.CurrentRow == null)
-            //{
-            //    rowIndex = -1;
-            //}
-            //else
-            //{
-            //    rowIndex = dgv.CurrentRow.Index;
-
-            //    LoadDetail(rowIndex);
-            //}
-        }
-
-        private void btnWill_Click(object sender, EventArgs e)
-        {
-            
-            DataTable dt = (DataTable)dgvDetail.DataSource;
-
-            if (dt != null && dt.Rows.Count > 0)
-            {              FinexWill frm = new FinexWill(dt)
-                {
-                    StartPosition = FormStartPosition.CenterScreen
-                };
-
-                frm.ShowDialog();
-            }
-            else
-            {
-                MessageBox.Show("Detail data not found.");
-            }
-        }
-
+      
         private void FinexDataUpload_Load(object sender, EventArgs e)
         {
             //#region Testing Shortcut
@@ -1112,41 +949,27 @@ namespace FactoryManagementSoftware.UI
             //#endregion
         }
 
-        private void dgvDetail_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            DataGridView dgv = dgvDetail;
-
-            int col = e.ColumnIndex;
-            int row = e.RowIndex;
-
-            lblSubList.Text = "COL: " + col + " ROW: " + row;
-
-            if (e.RowIndex != -1 && e.ColumnIndex != -1)
-            {
-                
-
-                if(dgv.Columns[col].Name.Contains(HEADER_DESCRIPTION))
-                {
-                    dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
-                    dgv.Rows[row].Cells[col].Selected = true;
-                    dgv.ReadOnly = false;
-                }
-                else
-                {
-                    dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                    dgv.Rows[row].Cells[col].Selected = true;
-                    dgv.ReadOnly = true;
-
-                }
-
-            }
-        }
+       
 
         private void FinexDataUpload_FormClosed(object sender, FormClosedEventArgs e)
         {
             // Application.Exit();
             frmLogIn frm = new frmLogIn("Emmeline");
             frm.Show();
+        }
+
+        private void btnStockTally_Click(object sender, EventArgs e)
+        {
+            frmInOutEdit frm = new frmInOutEdit(dt_DataSource, false, false);
+
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//Item Edit
+
+
+            if (frmInOutEdit.TrfSuccess)
+            {
+                MessageBox.Show("Stock tally successfully!");
+            }
         }
     }
 }

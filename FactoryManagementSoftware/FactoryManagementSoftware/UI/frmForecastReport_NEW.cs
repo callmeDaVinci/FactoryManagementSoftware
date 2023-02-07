@@ -854,7 +854,7 @@ namespace FactoryManagementSoftware.UI
             dgv.DataSource = SearchForecastData();
             //dgv.DataSource = NewSearchForecastDataForSummary();
             
-            dgv.Columns.Remove(headerRowReference);
+            //dgv.Columns.Remove(headerRowReference);
 
             ColorData();
 
@@ -1286,20 +1286,29 @@ namespace FactoryManagementSoftware.UI
                 if (itemCode == _ItemCode)
                 {
                     itemFound = true;
+                    string status = row[dalPlanning.planStatus].ToString();
 
-                    if (produceStart >= start && produceStart <= end)
+                    int TargetQty = int.TryParse(row[dalPlanning.targetQty].ToString(), out TargetQty) ? TargetQty : 0;
+
+                    int producedQty = int.TryParse(row[dalPlanning.planProduced].ToString(), out producedQty) ? producedQty : 0;
+
+                    int ToProduceQty = TargetQty - producedQty;
+
+                    if(ToProduceQty < 0)
                     {
-                        string status = row[dalPlanning.planStatus].ToString();
-                        int produceQty = int.TryParse(row[dalPlanning.targetQty].ToString(), out produceQty) ? produceQty : 0;
+                        ToProduceQty = 0;
+                    }
 
-                        if (status == text.planning_status_running || status == text.planning_status_pending)
-                        {
-                            toProduce += produceQty;
-                        }
-                        else if (status == text.planning_status_completed)
-                        {
-                            produced += produceQty;
-                        }
+                    if (produceStart >= start && produceStart <= end && status == text.planning_status_completed)
+                    {
+                        produced += producedQty;
+                    }
+
+                    if (status == text.planning_status_running || status == text.planning_status_pending)
+                    {
+                        toProduce += ToProduceQty;
+                        produced += producedQty;
+
                     }
                 }
 
@@ -1310,34 +1319,34 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            produced = 0;
+            //produced = 0;
 
-            itemFound = false;
+            //itemFound = false;
 
-            DataRow[] rowProductionRecord = dt_ProRecord.Select(dalItem.ItemCode + " = '" + _ItemCode + "'");
+            //DataRow[] rowProductionRecord = dt_ProRecord.Select(dalItem.ItemCode + " = '" + _ItemCode + "'");
 
-            foreach (DataRow row in rowProductionRecord)
-            {
-                DateTime proDate = Convert.ToDateTime(row[dalProRecord.ProDate]).Date;
+            //foreach (DataRow row in rowProductionRecord)
+            //{
+            //    DateTime proDate = Convert.ToDateTime(row[dalProRecord.ProDate]).Date;
 
-                string itemCode = row[dalItem.ItemCode].ToString();
+            //    string itemCode = row[dalItem.ItemCode].ToString();
 
-                int totalProduced = int.TryParse(row[dalProRecord.TotalProduced].ToString(), out totalProduced) ? totalProduced : 0;
+            //    int totalProduced = int.TryParse(row[dalProRecord.TotalProduced].ToString(), out totalProduced) ? totalProduced : 0;
 
-                if (itemCode == _ItemCode)
-                {
-                    itemFound = true;
+            //    if (itemCode == _ItemCode)
+            //    {
+            //        itemFound = true;
 
-                    if (proDate >= start && proDate <= end)
-                    {
-                        produced += totalProduced;
-                    }
-                }
-                else if (itemFound)
-                {
-                    break;
-                }
-            }
+            //        if (proDate >= start && proDate <= end)
+            //        {
+            //            produced += totalProduced;
+            //        }
+            //    }
+            //    else if (itemFound)
+            //    {
+            //        break;
+            //    }
+            //}
 
             return Tuple.Create(toProduce, produced);
         }
@@ -2506,7 +2515,7 @@ namespace FactoryManagementSoftware.UI
                     int assembly = row[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemAssemblyCheck]);
                     int production = row[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemProductionCheck]);
 
-                    if(uData.part_code == "V48KBW000")
+                    if(uData.part_code == "R 120 141 288 38")
                     {
                         float checkpoint = 1;
                     }
@@ -4421,6 +4430,8 @@ namespace FactoryManagementSoftware.UI
                 {
                     try
                     {
+                        dgvForecastReport.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
                         if(SummaryMode)
                         {
                             #region Summary Excel
@@ -4990,6 +5001,7 @@ namespace FactoryManagementSoftware.UI
                             #endregion
                         }
 
+
                     }
                     catch (Exception ex)
                     {
@@ -4998,6 +5010,8 @@ namespace FactoryManagementSoftware.UI
                     finally
                     {
                         frmLoading.CloseForm();
+
+                        dgvForecastReport.SelectionMode = DataGridViewSelectionMode.CellSelect;
 
                         btnExcel.Enabled = true;
                         btnFullReport.Enabled = true;

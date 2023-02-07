@@ -1387,11 +1387,10 @@
             this.dgvCheckList.Location = new System.Drawing.Point(2, 44);
             this.dgvCheckList.Margin = new System.Windows.Forms.Padding(2);
             this.dgvCheckList.Name = "dgvCheckList";
-            this.dgvCheckList.ReadOnly = true;
             this.dgvCheckList.RowHeadersVisible = false;
             this.dgvCheckList.RowHeadersWidth = 51;
             this.dgvCheckList.RowTemplate.Height = 40;
-            this.dgvCheckList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvCheckList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvCheckList.Size = new System.Drawing.Size(1542, 179);
             this.dgvCheckList.TabIndex = 107;
             this.dgvCheckList.DataSourceChanged += new System.EventHandler(this.dgvCheckList_DataSourceChanged);
