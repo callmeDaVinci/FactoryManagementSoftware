@@ -14,7 +14,7 @@ namespace FactoryManagementSoftware.BLL
         public DateTime plan_updated_date { get; set; }
         public int plan_updated_by { get; set; }
         public string plan_status { get; set; }
-        public string plan_note { get; set; }
+        public string plan_remark { get; set; }
 
         public string part_name { get; set; }
         public string part_code { get; set; }

@@ -11978,7 +11978,7 @@ namespace FactoryManagementSoftware.Module
                         }
                     }
 
-                    if (childCat != text.Cat_Packaging && childCat != text.Cat_Carton)
+                    if (childCat != text.Cat_Packaging && childCat != text.Cat_Carton && childCat != text.Cat_PolyBag)
                         return true;
                 }
             }

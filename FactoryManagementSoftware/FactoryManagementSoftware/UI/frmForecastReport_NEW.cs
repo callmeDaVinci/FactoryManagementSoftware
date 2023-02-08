@@ -285,68 +285,72 @@ namespace FactoryManagementSoftware.UI
 
         private void DgvForecastReportUIEdit(DataGridView dgv)
         {
-            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            if(dgv != null)
+            {
+                dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
-            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[headerIndex].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+                dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[headerIndex].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            if (dgv.Columns.Contains(headerPartWeight))
-                dgv.Columns[headerPartWeight].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                if (dgv.Columns.Contains(headerPartWeight))
+                    dgv.Columns[headerPartWeight].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            //dgv.Columns[headerPlannedQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerToProduce].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerProduced].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerReadyStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                //dgv.Columns[headerPlannedQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[headerToProduce].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[headerProduced].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[headerReadyStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-            if (dgv.Columns.Contains(headerPartWeight))
-                dgv.Columns[headerEstimate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                if (dgv.Columns.Contains(headerPartWeight))
+                    dgv.Columns[headerEstimate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-            dgv.Columns[headerForecast1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerOut].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerOutStd].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerBal1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerForecast2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerBal2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[headerForecast3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[headerForecast1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[headerOut].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[headerOutStd].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[headerBal1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[headerForecast2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[headerBal2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[headerForecast3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-            dgv.Columns[headerPartCode].Frozen = true;
+                dgv.Columns[headerPartCode].Frozen = true;
 
-            dgv.Columns[headerBal1].HeaderCell.Style.BackColor = Color.LightYellow;
-            dgv.Columns[headerBal1].DefaultCellStyle.BackColor = Color.LightYellow;
-            dgv.Columns[headerBal1].HeaderCell.Style.ForeColor = Color.Red;
+                dgv.Columns[headerBal1].HeaderCell.Style.BackColor = Color.LightYellow;
+                dgv.Columns[headerBal1].DefaultCellStyle.BackColor = Color.LightYellow;
+                dgv.Columns[headerBal1].HeaderCell.Style.ForeColor = Color.Red;
 
-            dgv.Columns[headerForecast2].HeaderCell.Style.BackColor = Color.PeachPuff;
-            dgv.Columns[headerForecast2].DefaultCellStyle.BackColor = Color.PeachPuff;
+                dgv.Columns[headerForecast2].HeaderCell.Style.BackColor = Color.PeachPuff;
+                dgv.Columns[headerForecast2].DefaultCellStyle.BackColor = Color.PeachPuff;
 
-            dgv.Columns[headerBal2].HeaderCell.Style.BackColor = Color.PeachPuff;
-            dgv.Columns[headerBal2].DefaultCellStyle.BackColor = Color.PeachPuff;
-            dgv.Columns[headerBal2].HeaderCell.Style.ForeColor = Color.Red;
+                dgv.Columns[headerBal2].HeaderCell.Style.BackColor = Color.PeachPuff;
+                dgv.Columns[headerBal2].DefaultCellStyle.BackColor = Color.PeachPuff;
+                dgv.Columns[headerBal2].HeaderCell.Style.ForeColor = Color.Red;
 
-            dgv.Columns[headerReadyStock].HeaderCell.Style.BackColor = Color.Pink;
-            dgv.Columns[headerReadyStock].DefaultCellStyle.BackColor = Color.Pink;
+                dgv.Columns[headerReadyStock].HeaderCell.Style.BackColor = Color.Pink;
+                dgv.Columns[headerReadyStock].DefaultCellStyle.BackColor = Color.Pink;
 
-            dgv.Columns[headerEstimate].HeaderCell.Style.BackColor = Color.LightCyan;
-            dgv.Columns[headerEstimate].DefaultCellStyle.BackColor = Color.LightCyan;
+                dgv.Columns[headerEstimate].HeaderCell.Style.BackColor = Color.LightCyan;
+                dgv.Columns[headerEstimate].DefaultCellStyle.BackColor = Color.LightCyan;
 
-            dgv.Columns[headerForecast1].HeaderCell.Style.BackColor = Color.LightYellow;
-            dgv.Columns[headerForecast1].DefaultCellStyle.BackColor = Color.LightYellow;
+                dgv.Columns[headerForecast1].HeaderCell.Style.BackColor = Color.LightYellow;
+                dgv.Columns[headerForecast1].DefaultCellStyle.BackColor = Color.LightYellow;
 
-            dgv.Columns[headerOut].HeaderCell.Style.BackColor = Color.LightYellow;
-            dgv.Columns[headerOut].DefaultCellStyle.BackColor = Color.LightYellow;
+                dgv.Columns[headerOut].HeaderCell.Style.BackColor = Color.LightYellow;
+                dgv.Columns[headerOut].DefaultCellStyle.BackColor = Color.LightYellow;
 
-            dgv.Columns[headerOutStd].HeaderCell.Style.BackColor = Color.LightYellow;
-            dgv.Columns[headerOutStd].DefaultCellStyle.BackColor = Color.LightYellow;
+                dgv.Columns[headerOutStd].HeaderCell.Style.BackColor = Color.LightYellow;
+                dgv.Columns[headerOutStd].DefaultCellStyle.BackColor = Color.LightYellow;
 
-            dgv.Columns[headerBal1].HeaderCell.Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-            dgv.Columns[headerBal1].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                dgv.Columns[headerBal1].HeaderCell.Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+                dgv.Columns[headerBal1].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
 
-            dgv.Columns[headerBal2].HeaderCell.Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-            dgv.Columns[headerBal2].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                dgv.Columns[headerBal2].HeaderCell.Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+                dgv.Columns[headerBal2].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
 
-            dgv.Columns[headerProduced].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Strikeout);
+                dgv.Columns[headerProduced].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Strikeout);
 
-            dgv.EnableHeadersVisualStyles = false;
+                dgv.EnableHeadersVisualStyles = false;
+            }
+          
         }
 
         private void DgvForecastSummaryReportUIEdit(DataGridView dgv)
@@ -439,85 +443,89 @@ namespace FactoryManagementSoftware.UI
             Font _BalFont = new Font(dgvForecastReport.Font, FontStyle.Underline | FontStyle.Italic | FontStyle.Bold);
             Font _NeededFont = new Font(dgvForecastReport.Font, FontStyle.Italic);
 
-            for (int i = 0; i < dt.Rows.Count; i++)
+            if(dt != null)
             {
-                string parentColor = dt.Rows[i][headerParentColor].ToString();
-                string backColor = dt.Rows[i][headerBackColor].ToString();
-                string type = dt.Rows[i][headerType].ToString();
-                string balType = dt.Rows[i][headerBalType].ToString();
-
-                //change parent color
-                if (parentColor.Equals(AssemblyMarking))
+                for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    dgv.Rows[i].Cells[headerPartName].Style.ForeColor = Color.FromName(parentColor);
-                    dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+                    string parentColor = dt.Rows[i][headerParentColor].ToString();
+                    string backColor = dt.Rows[i][headerBackColor].ToString();
+                    string type = dt.Rows[i][headerType].ToString();
+                    string balType = dt.Rows[i][headerBalType].ToString();
 
-                    dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = AssemblyColor;
-                    dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
-                }
-                else if (parentColor.Equals(ProductionMarking))
-                {
-                    dgv.Rows[i].Cells[headerPartName].Style.ForeColor = ProductionColor;
-                    dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
-
-                    dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = ProductionColor;
-                    dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
-                }
-                else if (parentColor.Equals(ProductionAndAssemblyMarking))
-                {
-                    dgv.Rows[i].Cells[headerPartName].Style.ForeColor = ProductionAndAssemblyColor;
-                    dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
-
-                    dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = ProductionAndAssemblyColor;
-                    dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
-                }
-                else if (parentColor.Equals(InspectionMarking))
-                {
-                    dgv.Rows[i].Cells[headerPartName].Style.ForeColor = InspectionColor;
-                    dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
-
-                    dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = InspectionColor;
-                    dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
-                }
-
-                if (!string.IsNullOrEmpty(backColor))
-                {
-                    dgv.Rows[i].Cells[headerPartName].Style.BackColor = Color.FromName(backColor);
-                    dgv.Rows[i].Cells[headerPartCode].Style.BackColor = Color.FromName(backColor);
-                    dgv.Rows[i].Cells[headerForecast1].Style.BackColor = Color.FromName(backColor);
-                    dgv.Rows[i].Cells[headerForecast2].Style.BackColor = Color.FromName(backColor);
-                    dgv.Rows[i].Cells[headerForecast3].Style.BackColor = Color.FromName(backColor);
-                    dgv.Rows[i].Cells[headerOut].Style.BackColor = Color.FromName(backColor);
-                    dgv.Rows[i].Cells[headerOutStd].Style.BackColor = Color.FromName(backColor);
-                    dgv.Rows[i].Cells[headerBal1].Style.BackColor = Color.FromName(backColor);
-                    dgv.Rows[i].Cells[headerBal2].Style.BackColor = Color.FromName(backColor);
-
-                    if(dgv.Columns.Contains(headerBal3))
+                    //change parent color
+                    if (parentColor.Equals(AssemblyMarking))
                     {
-                        dgv.Rows[i].Cells[headerBal3].Style.BackColor = Color.FromName(backColor);
+                        dgv.Rows[i].Cells[headerPartName].Style.ForeColor = Color.FromName(parentColor);
+                        dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+
+                        dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = AssemblyColor;
+                        dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
+                    }
+                    else if (parentColor.Equals(ProductionMarking))
+                    {
+                        dgv.Rows[i].Cells[headerPartName].Style.ForeColor = ProductionColor;
+                        dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+
+                        dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = ProductionColor;
+                        dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
+                    }
+                    else if (parentColor.Equals(ProductionAndAssemblyMarking))
+                    {
+                        dgv.Rows[i].Cells[headerPartName].Style.ForeColor = ProductionAndAssemblyColor;
+                        dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+
+                        dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = ProductionAndAssemblyColor;
+                        dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
+                    }
+                    else if (parentColor.Equals(InspectionMarking))
+                    {
+                        dgv.Rows[i].Cells[headerPartName].Style.ForeColor = InspectionColor;
+                        dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+
+                        dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = InspectionColor;
+                        dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
                     }
 
-                }
-
-                if (type.Equals(typeChild))
-                {
-                    dgv.Rows[i].Cells[headerForecast1].Style.Font = _NeededFont;
-                    dgv.Rows[i].Cells[headerForecast2].Style.Font = _NeededFont;
-                    dgv.Rows[i].Cells[headerForecast3].Style.Font = _NeededFont;
-                }
-
-                if (balType.Equals(balType_Total))
-                {
-                    dgv.Rows[i].Cells[headerBal1].Style.Font = _BalFont;
-                    dgv.Rows[i].Cells[headerBal2].Style.Font = _BalFont;
-
-                    if (dgv.Columns.Contains(headerBal3))
+                    if (!string.IsNullOrEmpty(backColor))
                     {
-                        dgv.Rows[i].Cells[headerBal3].Style.Font = _BalFont;
+                        dgv.Rows[i].Cells[headerPartName].Style.BackColor = Color.FromName(backColor);
+                        dgv.Rows[i].Cells[headerPartCode].Style.BackColor = Color.FromName(backColor);
+                        dgv.Rows[i].Cells[headerForecast1].Style.BackColor = Color.FromName(backColor);
+                        dgv.Rows[i].Cells[headerForecast2].Style.BackColor = Color.FromName(backColor);
+                        dgv.Rows[i].Cells[headerForecast3].Style.BackColor = Color.FromName(backColor);
+                        dgv.Rows[i].Cells[headerOut].Style.BackColor = Color.FromName(backColor);
+                        dgv.Rows[i].Cells[headerOutStd].Style.BackColor = Color.FromName(backColor);
+                        dgv.Rows[i].Cells[headerBal1].Style.BackColor = Color.FromName(backColor);
+                        dgv.Rows[i].Cells[headerBal2].Style.BackColor = Color.FromName(backColor);
+
+                        if (dgv.Columns.Contains(headerBal3))
+                        {
+                            dgv.Rows[i].Cells[headerBal3].Style.BackColor = Color.FromName(backColor);
+                        }
+
                     }
 
+                    if (type.Equals(typeChild))
+                    {
+                        dgv.Rows[i].Cells[headerForecast1].Style.Font = _NeededFont;
+                        dgv.Rows[i].Cells[headerForecast2].Style.Font = _NeededFont;
+                        dgv.Rows[i].Cells[headerForecast3].Style.Font = _NeededFont;
+                    }
+
+                    if (balType.Equals(balType_Total))
+                    {
+                        dgv.Rows[i].Cells[headerBal1].Style.Font = _BalFont;
+                        dgv.Rows[i].Cells[headerBal2].Style.Font = _BalFont;
+
+                        if (dgv.Columns.Contains(headerBal3))
+                        {
+                            dgv.Rows[i].Cells[headerBal3].Style.Font = _BalFont;
+                        }
+
+                    }
                 }
             }
+           
 
         }
 
@@ -855,24 +863,27 @@ namespace FactoryManagementSoftware.UI
             //dgv.DataSource = NewSearchForecastDataForSummary();
             
             //dgv.Columns.Remove(headerRowReference);
+            if(dgv.DataSource != null)
+            {
+                ColorData();
 
-            ColorData();
+                DgvForecastReportUIEdit(dgvForecastReport);
+                //delete column
+                dgvForecastReport.Columns.Remove(headerItemType);
+                dgvForecastReport.Columns.Remove(headerParentColor);
+                dgvForecastReport.Columns.Remove(headerType);
+                dgvForecastReport.Columns.Remove(headerBackColor);
+                dgvForecastReport.Columns.Remove(headerBalType);
+                dgvForecastReport.Columns.Remove(headerForecastType);
 
-            DgvForecastReportUIEdit(dgvForecastReport);
-            //delete column
-            dgvForecastReport.Columns.Remove(headerItemType);
-            dgvForecastReport.Columns.Remove(headerParentColor);
-            dgvForecastReport.Columns.Remove(headerType);
-            dgvForecastReport.Columns.Remove(headerBackColor);
-            dgvForecastReport.Columns.Remove(headerBalType);
-            dgvForecastReport.Columns.Remove(headerForecastType);
+                dgvForecastReport.ClearSelection();
+                dgvForecastReport.ResumeLayout();
 
-            dgvForecastReport.ClearSelection();
-            dgvForecastReport.ResumeLayout();
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
-            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-
-            dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+                dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+            }
+           
 
 
             frmLoading.CloseForm();

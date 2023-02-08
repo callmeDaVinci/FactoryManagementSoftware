@@ -1700,7 +1700,7 @@ namespace FactoryManagementSoftware.DAL
             float number = Convert.ToSingle(ordQty);
             uItem.item_code = itemCode;
             uItem.item_updtd_date = DateTime.Now;
-            uItem.item_updtd_by = MainDashboard.USER_ID; ;
+            uItem.item_updtd_by = MainDashboard.USER_ID;
             uItem.item_ord = getOrderQty(itemCode) + number;
 
             //Updating data into database
@@ -1715,7 +1715,7 @@ namespace FactoryManagementSoftware.DAL
 
             uItem.item_code = itemCode;
             uItem.item_updtd_date = DateTime.Now;
-            uItem.item_updtd_by = MainDashboard.USER_ID; ;
+            uItem.item_updtd_by = MainDashboard.USER_ID; 
             uItem.item_ord = getOrderQty(itemCode) + ordQty;
 
             //Updating data into database
@@ -1735,7 +1735,10 @@ namespace FactoryManagementSoftware.DAL
                 uItem.item_code = itemCode;
                 uItem.item_updtd_date = DateTime.Now;
                 uItem.item_updtd_by = MainDashboard.USER_ID;
-                uItem.item_ord = getOrderQty(itemCode) - number;
+
+                float orderQty = getOrderQty(itemCode) - number;
+
+                uItem.item_ord = orderQty;
 
                 //Updating data into database
                 success = ordUpdate(uItem);

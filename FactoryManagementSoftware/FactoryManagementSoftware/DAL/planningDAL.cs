@@ -250,7 +250,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@plan_added_date", u.plan_added_date);
                 cmd.Parameters.AddWithValue("@plan_added_by", u.plan_added_by);
                 cmd.Parameters.AddWithValue("@plan_status", u.plan_status);
-                cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_remark);
                 cmd.Parameters.AddWithValue("@plan_ct", u.plan_ct);
                 cmd.Parameters.AddWithValue("@plan_pw", u.plan_pw);
                 cmd.Parameters.AddWithValue("@plan_rw", u.plan_rw);
@@ -556,6 +556,53 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool remarkUpdate(PlanningBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_plan SET
+                                plan_note=@plan_note,
+                                plan_updated_date=@plan_updated_date,
+                                plan_updated_by=@plan_updated_by
+                                WHERE plan_id=@plan_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_remark);
+                cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
+                cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         public bool statusAndRecordingUpdate(PlanningBLL u)
         {
             bool isSuccess = false;
@@ -624,7 +671,7 @@ namespace FactoryManagementSoftware.DAL
 
                 cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
                 cmd.Parameters.AddWithValue("@family_with", u.family_with);
-                cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_remark);
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
 
@@ -676,7 +723,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@family_with", u.family_with);
                 cmd.Parameters.AddWithValue("@production_start_date", u.production_start_date);
                 cmd.Parameters.AddWithValue("@production_end_date", u.production_end_date);
-                cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_remark);
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
 
@@ -729,7 +776,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@family_with", u.family_with);
                 cmd.Parameters.AddWithValue("@production_start_date", u.production_start_date);
                 cmd.Parameters.AddWithValue("@production_end_date", u.production_end_date);
-                cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_remark);
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
                 cmd.Parameters.AddWithValue("@recording", u.recording);

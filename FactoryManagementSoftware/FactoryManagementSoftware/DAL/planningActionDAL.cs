@@ -247,6 +247,40 @@ namespace FactoryManagementSoftware.DAL
         }
 
         //production plan status change
+        public bool planningRemarkChange(PlanningBLL u, string oldNote)
+        {
+            bool success = dalPlanning.remarkUpdate(u);
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to change production plan's remark!");
+                tool.historyRecord(text.System, "Failed to change production plan's remark!", DateTime.Now, MainDashboard.USER_ID);
+            }         
+            else
+            {
+                tool.historyRecord(text.plan_remark_change, "PLAN's remark " + u.plan_id + ": " + oldNote + " --> "+u.plan_remark, DateTime.Now, MainDashboard.USER_ID);
+
+                uPlanningAction.planning_id = u.plan_id;
+                uPlanningAction.added_date = u.plan_updated_date;
+                uPlanningAction.added_by = u.plan_updated_by ;
+                uPlanningAction.action = text.plan_remark_change;
+                uPlanningAction.action_detail = "";
+                uPlanningAction.action_from = oldNote;
+                uPlanningAction.action_to = u.plan_remark;
+                uPlanningAction.note = "";
+
+                bool actionSaveSuccess = Insert(uPlanningAction);
+
+                if (!actionSaveSuccess)
+                {
+                    MessageBox.Show("Failed to save planning action data (planningActionDAL_planningStatusChange)");
+                    tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningStatusChange)", DateTime.Now, MainDashboard.USER_ID);
+                }
+            }
+
+            return success;
+        }
+
         public bool planningStatusChange(PlanningBLL u, string oldStatus)
         {
             bool success;
@@ -264,14 +298,14 @@ namespace FactoryManagementSoftware.DAL
             {
                 MessageBox.Show("Failed to change production plan's status!");
                 tool.historyRecord(text.System, "Failed to change production plan's status!", DateTime.Now, MainDashboard.USER_ID);
-            }         
+            }
             else
             {
-                tool.historyRecord(text.plan_status_change, "PLAN ID " + u.plan_id + ": " + oldStatus +" --> "+u.plan_status, DateTime.Now, MainDashboard.USER_ID);
+                tool.historyRecord(text.plan_status_change, "PLAN ID " + u.plan_id + ": " + oldStatus + " --> " + u.plan_status, DateTime.Now, MainDashboard.USER_ID);
 
                 uPlanningAction.planning_id = u.plan_id;
                 uPlanningAction.added_date = u.plan_updated_date;
-                uPlanningAction.added_by = u.plan_updated_by ;
+                uPlanningAction.added_by = u.plan_updated_by;
                 uPlanningAction.action = text.plan_status_change;
                 uPlanningAction.action_detail = "";
                 uPlanningAction.action_from = oldStatus;
@@ -289,6 +323,7 @@ namespace FactoryManagementSoftware.DAL
 
             return success;
         }
+
 
         //production plan schedule and pro day change
         public bool planningScheduleAndProDayChange(PlanningBLL u, string oldProDay, string oldProHour, string oldProHourPerDay, string oldStart, string oldEnd)

@@ -17,8 +17,17 @@ using System.Configuration;
 using Syncfusion.XlsIO.Implementation.XmlSerialization;
 using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
+
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
+using TextBox = System.Windows.Forms.TextBox;
+using Microsoft.Office.Interop.Word;
+using Task = System.Threading.Tasks.Task;
+using XlHAlign = Microsoft.Office.Interop.Excel.XlHAlign;
+using XlVAlign = Microsoft.Office.Interop.Excel.XlVAlign;
+using Range = Microsoft.Office.Interop.Excel.Range;
+using XlBorderWeight = Microsoft.Office.Interop.Excel.XlBorderWeight;
+using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -49,7 +58,7 @@ namespace FactoryManagementSoftware.UI
             
             InitializeComponent();
             InitializeData();
-
+            dgvSchedule.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             btnPlan.Hide();
             //btnExcel.Hide();
             btnMatList.Hide();
@@ -145,6 +154,11 @@ namespace FactoryManagementSoftware.UI
         readonly string headerStatus = "STATUS";
 
         private string startDateChecking = null;
+
+        private string CELL_EDITING_OLD_VALUE = "";
+        private string CELL_EDITING_NEW_VALUE = "";
+
+        private bool CELL_VALUE_CHANGED = false;
 
         private bool loaded = false;
         private bool ableLoadData = true;
@@ -693,6 +707,9 @@ namespace FactoryManagementSoftware.UI
             loadMachine();
             cmbFactory.SelectedIndex = 0;
             loadScheduleData();
+
+            dgvSchedule.SelectionMode = DataGridViewSelectionMode.CellSelect ;
+
         }
 
         #endregion
@@ -730,6 +747,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
+            dgvSchedule.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
             if (fromDailyRecord && MessageBox.Show("Are you sure you want to add this item to the list?", "Message",
                                                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -819,6 +837,7 @@ namespace FactoryManagementSoftware.UI
                         try
                         {
                             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
 
                             SaveFileDialog sfd = new SaveFileDialog();
                             string path = @"D:\StockAssistant\Document\MouldChangeReport";
@@ -982,6 +1001,8 @@ namespace FactoryManagementSoftware.UI
                                     System.Diagnostics.Process.Start(sfd.FileName);
                             }
 
+                            dgvSchedule.SelectionMode = DataGridViewSelectionMode.CellSelect;
+
                             Cursor = Cursors.Arrow; // change cursor to normal type
                         }
                         catch (Exception ex)
@@ -989,6 +1010,8 @@ namespace FactoryManagementSoftware.UI
                             tool.saveToTextAndMessageToUser(ex);
                             Cursor = Cursors.Arrow; // change cursor to normal type
                         }
+
+
                     }
                     else//export Stocktake List
                     {
@@ -1009,7 +1032,10 @@ namespace FactoryManagementSoftware.UI
                 }
                
             }
-            
+
+            dgvSchedule.SelectionMode = DataGridViewSelectionMode.CellSelect ;
+
+
         }
 
         private void GetStocktakeData(DataTable dt_Main)
@@ -2568,6 +2594,23 @@ namespace FactoryManagementSoftware.UI
             return statusChanged;
         }
 
+        private void planNoteUpdate(int planID)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            uPlanning.plan_id = planID;
+            uPlanning.plan_remark = CELL_EDITING_NEW_VALUE;
+            uPlanning.plan_updated_date = DateTime.Now;
+            uPlanning.plan_updated_by = MainDashboard.USER_ID;
+
+            dalPlanningAction.planningRemarkChange(uPlanning, CELL_EDITING_OLD_VALUE);
+
+            CELL_EDITING_OLD_VALUE = "";
+            CELL_EDITING_NEW_VALUE = "";
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
         private bool planPending(int planID, string presentStatus)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -2631,7 +2674,7 @@ namespace FactoryManagementSoftware.UI
                             newProDay = Convert.ToInt32(totalHour / newHourPerDay);
                             newProHour = totalHour - newProDay * newHourPerDay;
 
-                            if(newProHour < 0)
+                            if (newProHour < 0)
                             {
                                 newProHour = 0;
                             }
@@ -3004,6 +3047,91 @@ namespace FactoryManagementSoftware.UI
                 cbWarning.Checked = false;
                 cbCancelled.Checked = false;
             }
+        }
+
+        private void Column1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            //{
+            //    e.Handled = true;
+            //}
+
+        }
+
+        private void Column2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+
+        }
+
+        private void dgvSchedule_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            try
+            {
+                CELL_VALUE_CHANGED = false;
+                CELL_EDITING_OLD_VALUE = "";
+
+                DataGridView dgv = dgvSchedule;
+
+                e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
+                e.Control.KeyPress -= new KeyPressEventHandler(Column2_KeyPress);
+
+                int colIndex = dgv.CurrentCell.ColumnIndex;
+                int rowIndex = dgv.CurrentCell.RowIndex;
+
+                if (dgv.Columns[colIndex].Name.Contains(headerNote)) //Desired Column
+                {
+                    CELL_EDITING_OLD_VALUE = dgv.Rows[rowIndex].Cells[colIndex].Value.ToString();
+
+                    TextBox tb = e.Control as TextBox;
+
+                    if (tb != null)
+                    {
+                        tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
+                    }
+                }
+                else
+                {
+                    TextBox tb = e.Control as TextBox;
+
+                    if (tb != null)
+                    {
+                        tb.KeyPress += new KeyPressEventHandler(Column2_KeyPress);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
+        private void dgvSchedule_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if(CELL_VALUE_CHANGED)
+            {
+                DialogResult dialogResult = MessageBox.Show("Do you want to save changes?", "Message",
+                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    int planID = int.TryParse(dgvSchedule.Rows[e.RowIndex].Cells[headerID].Value.ToString(), out planID) ? planID : 0;
+
+                    planNoteUpdate(planID);
+                }
+            }
+        }
+
+        private void dgvSchedule_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            CELL_VALUE_CHANGED = true;
+
+            DataGridView dgv = dgvSchedule;
+
+            CELL_EDITING_NEW_VALUE = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+
+           
         }
     }
 }

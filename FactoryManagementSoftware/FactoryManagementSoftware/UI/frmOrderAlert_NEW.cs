@@ -60,29 +60,9 @@ namespace FactoryManagementSoftware.UI
         readonly string headerReceived = "RECEIVED";
         readonly string headerUnit = "UNIT";
         readonly string headerStatus = "STATUS";
-        //readonly string headerIndex = "#";
         readonly string headerType = "TYPE";
-        //readonly string headerMat = "MATERIAL";
         readonly string headerCode = "CODE";
         readonly string headerName = "NAME";
-        //readonly string headerMB = "MB";
-        //readonly string headerMBRate = "MB RATE";
-        //readonly string headerWeight = "WEIGHT";
-        //readonly string headerWastage = "WASTAGE RATE";
-        //private string readyStockHeaderText = "READY STOCK";
-        //readonly string headerReadyStock = "READY STOCK";
-        //readonly string headerZeroCostStock = "ZERO COST STOCK";
-        //private string headerBalanceZero = "FORECAST BAL 0";
-        //private string headerBalanceOne = "FORECAST BAL 1";
-        //private string headerBalanceTwo = "FORECAST BAL 2";
-        //private string headerBalanceThree = "FORECAST BAL 3";
-        //private string headerBalanceFour = "FORECAST BALANCE 4";
-        //readonly string headerPendingOrder = "PENDING ORDER";
-
-        //readonly string headerForecast1 = "FORECAST 1";
-        //readonly string headerForecast2 = "FORECAST 2";
-        //readonly string headerForecast3 = "FORECAST 3";
-        //readonly string headerForecast4 = "FORECAST 4";
 
         private string textMoreFilters = "MORE FILTERS ...";
         private string textHideFilters = "HIDE FILTERS";
@@ -91,26 +71,6 @@ namespace FactoryManagementSoftware.UI
         private string header_Stock = "STOCK";
         private string header_Bal = "BAL.";
         private string header_Unit = "UNIT";
-
-        //private string Unit_KG = "KG";
-        //private string Unit_PCS = "PCS";
-
-        //private string text.str_Forecast = " FORECAST";
-        //private string string_StillNeed = " STILL NEED";
-        //private string text.str_Delivered = " DELIVERED";
-        //private string text.str_EstBalance = " EST. BAL.";
-
-        //private string ForecastType_DeductStock = " (FORECAST-STOCK)";
-        //private string ForecastType_FORECAST = " FORECAST";
-
-
-        //readonly string reportType_Delivered = "DELIVERED";
-        //readonly string reportType_ReadyStock = "READY STOCK";
-        //readonly string reportType_Forecast = "FORECAST";
-
-        //readonly string reportTitle_ActualUsed = "MATERIAL USED REPORT";
-        //readonly string reportTitle_Forecast = "MATERIAL USED REPORT";
-        //readonly string reportTitle_ReadyStock = "MATERIAL USED REPORT";
 
         readonly string BTN_SHOW_MATERIAL_FOREACST = "SHOW MATERIAL FORECAST";
         readonly string BTN_HIDE_MATERIAL_FORECAST = "HIDE MATERIAL FORECAST";
@@ -272,6 +232,8 @@ namespace FactoryManagementSoftware.UI
             }
 
             dt.Columns.Add(text.Header_PendingOrder, typeof(string));
+            dt.Columns.Add(text.Header_PendingOrder_ZeroCost, typeof(string));
+            dt.Columns.Add(text.Header_PendingOrder_Purchase, typeof(string));
 
             return dt;
         }
@@ -334,6 +296,8 @@ namespace FactoryManagementSoftware.UI
             }
 
             dt.Columns.Add(text.Header_PendingOrder, typeof(string));
+            dt.Columns.Add(text.Header_PendingOrder_ZeroCost, typeof(string));
+            dt.Columns.Add(text.Header_PendingOrder_Purchase, typeof(string));
             dt.Columns.Add(text.Header_Unit, typeof(string));
 
             return dt;
@@ -546,14 +510,23 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
+                dgv.Columns[text.Header_PendingOrder].Visible = false;
+
                 dgv.Columns[text.Header_Unit].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
                 dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                dgv.Columns[text.Header_PendingOrder].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                //dgv.Columns[text.Header_PendingOrder].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[text.Header_PendingOrder_Purchase].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[text.Header_PendingOrder_ZeroCost].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 dgv.Columns[text.Header_ReadyStock].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-                dgv.Columns[text.Header_PendingOrder].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
+
+                //dgv.Columns[text.Header_PendingOrder].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
+
+                dgv.Columns[text.Header_PendingOrder_Purchase].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic | FontStyle.Bold);
+
+                dgv.Columns[text.Header_PendingOrder_ZeroCost].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
 
                 dgv.Columns[text.Header_PartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
@@ -726,42 +699,6 @@ namespace FactoryManagementSoftware.UI
 
                     DataTable DB_PendingOrder = dalOrd.PendingOrderSelect();
 
-                    //DataTable DB_Item = dalItem.Select();
-
-                    //DB_PendingOrder.DefaultView.Sort = "ord_item_code" + " ASC";
-                    //DB_PendingOrder = DB_PendingOrder.DefaultView.ToTable();
-
-                    //foreach(DataRow row in DB_Item.Rows)
-                    //{
-                    //    string itemCode = row[dalItem.ItemCode].ToString();
-
-                    //    float PendingOrder = 0;
-
-                    //    bool itemFound = false;
-
-                    //    foreach(DataRow orderRow in DB_PendingOrder.Rows)
-                    //    {
-                    //        if(orderRow["ord_item_code"].ToString() == itemCode)
-                    //        {
-                    //            float orderQty = float.TryParse(orderRow["ord_pending"].ToString(), out orderQty) ? orderQty : 0;
-
-                    //            PendingOrder += orderQty;
-
-                    //            itemFound = true;
-                    //        }
-                    //    }
-
-                    //    itemBLL uItem = new itemBLL();
-
-                    //    uItem.item_code = itemCode;
-                    //    uItem.item_updtd_date = DateTime.Now;
-                    //    uItem.item_updtd_by = MainDashboard.USER_ID;
-                    //    uItem.item_ord = PendingOrder;
-
-                    //    //Updating data into database
-                    //    bool success = dalItem.ordUpdate(uItem);
-                    //}
-                   
 
                     foreach (DataRow row in dt_MaterialList.Rows)
                     {
@@ -769,14 +706,33 @@ namespace FactoryManagementSoftware.UI
 
                         string itemCode = row[text.Header_PartCode].ToString();
 
+                        float pendingOrder_ZeroCost = tool.GetZeroCostPendingOrder(DB_PendingOrder, itemCode);
+                        float pendingOrder_Purchase = tool.GetPurchasePendingOrder(DB_PendingOrder, itemCode);
+
+                        float totalOrder = pendingOrder_ZeroCost + pendingOrder_Purchase;
+
+                        row[text.Header_PendingOrder_ZeroCost] = pendingOrder_ZeroCost;
+                        row[text.Header_PendingOrder_Purchase] = pendingOrder_Purchase;
+
                         if (cbZeroStockType.Checked)
                         {
-                            row[text.Header_PendingOrder] = tool.GetZeroCostPendingOrder(DB_PendingOrder, itemCode);
+                            row[text.Header_PendingOrder] = pendingOrder_ZeroCost;
                         }
                         else
                         {
-                            row[text.Header_PendingOrder] = tool.GetPurchasePendingOrder(DB_PendingOrder, itemCode);
+                            row[text.Header_PendingOrder] = pendingOrder_Purchase;
                         }
+
+
+                        itemBLL uItem = new itemBLL();
+
+                        uItem.item_code = itemCode;
+                        uItem.item_updtd_date = DateTime.Now;
+                        uItem.item_updtd_by = MainDashboard.USER_ID;
+                        uItem.item_ord = totalOrder;
+
+                        //Updating data into database
+                       dalItem.ordUpdate(uItem);
 
                     }
 
@@ -2894,6 +2850,7 @@ namespace FactoryManagementSoftware.UI
 
                     my_menu.Items.Add(text.Str_MoreDetail).Name = text.Str_MoreDetail;
                     my_menu.Items.Add(text.Str_OrderRequest).Name = text.Str_OrderRequest;
+                    my_menu.Items.Add(text.Str_OrderRecordSearch).Name = text.Str_OrderRecordSearch;
 
                     contextMenuStrip1 = my_menu;
 
@@ -3381,8 +3338,22 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
-            Cursor = Cursors.Arrow; // change cursor to normal type
+            else if (itemClicked.Equals(text.Str_OrderRecordSearch))
+            {
+                if (rowIndex >= 0)
+                {
+                    string itemCode = dgvAlertSummary.Rows[rowIndex].Cells[text.Header_PartCode].Value.ToString();
 
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                    txtOrdSearch.Text = itemCode;
+
+                    Cursor = Cursors.Arrow; // change cursor to normal type
+
+                }
+            }
+            Cursor = Cursors.Arrow; // change cursor to normal type
+            
         }
 
         private void cmbStatusSearch_SelectedIndexChanged(object sender, EventArgs e)

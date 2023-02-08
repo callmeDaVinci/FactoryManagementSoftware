@@ -174,6 +174,7 @@ namespace FactoryManagementSoftware.Module
 
         public string plan_schedule_change { get; } = "PLAN SCHEDULE CHANGE";
         public string plan_status_change { get; } = "PLAN STATUS CHANGE";
+        public string plan_remark_change { get; } = "PLAN REMARK CHANGE";
         public string plan_family_with_change { get; } = "PLAN FAMILY CHANGE";
         public string plan_proday_change { get; } = "PLAN PRODUCTION DAY CHANGE";
         public string plan_prohour_change { get; } = "PLAN PRODUCTION HOUR CHANGE";
@@ -306,6 +307,12 @@ namespace FactoryManagementSoftware.Module
         public string Header_ProductStock { get; } = "PRODUCT STOCK";
 
         public string Header_PendingOrder { get; } = "PENDING ORDER";
+
+        public string Header_PendingOrder_ZeroCost { get; } = "PENDING ORDER (ZERO COST)";
+        public string Header_PendingOrder_Purchase { get; } = "PENDING ORDER (PURCHASE)";
+
+
+
         public string Header_Unit { get; } = "UNIT";
 
 
@@ -384,6 +391,7 @@ namespace FactoryManagementSoftware.Module
 
         public string Str_MoreDetail { get; } = "More Details";
         public string Str_OrderRequest { get; } = "Order Request";
+        public string Str_OrderRecordSearch { get; } = "Search Order Record";
 
         public string str_Forecast { get; } = " FORECAST";
         public string str_Delivered { get; } = " DELIVERED";

@@ -539,8 +539,6 @@
             // 
             this.cbRemoveNoOrderItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbRemoveNoOrderItem.AutoSize = true;
-            this.cbRemoveNoOrderItem.Checked = true;
-            this.cbRemoveNoOrderItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbRemoveNoOrderItem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbRemoveNoOrderItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbRemoveNoOrderItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;

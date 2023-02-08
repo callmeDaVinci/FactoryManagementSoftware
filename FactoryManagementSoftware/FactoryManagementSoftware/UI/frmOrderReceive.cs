@@ -117,7 +117,7 @@ namespace FactoryManagementSoftware.UI
         {
             bool result = true;
             float receivedNumber = Convert.ToSingle(txtQty.Text);
-
+            overReceivedQty = 0;
             if (string.IsNullOrEmpty(txtQty.Text))
             {
                 result = false;

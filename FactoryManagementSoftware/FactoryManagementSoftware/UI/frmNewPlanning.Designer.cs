@@ -246,13 +246,14 @@
             // 
             this.cbEditMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbEditMode.AutoSize = true;
+            this.cbEditMode.BackColor = System.Drawing.Color.Transparent;
             this.cbEditMode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbEditMode.Location = new System.Drawing.Point(191, 3);
             this.cbEditMode.Name = "cbEditMode";
             this.cbEditMode.Size = new System.Drawing.Size(98, 21);
             this.cbEditMode.TabIndex = 101;
             this.cbEditMode.Text = "EDIT MODE";
-            this.cbEditMode.UseVisualStyleBackColor = true;
+            this.cbEditMode.UseVisualStyleBackColor = false;
             this.cbEditMode.CheckedChanged += new System.EventHandler(this.cbEditMode_CheckedChanged);
             // 
             // tableLayoutPanel3
