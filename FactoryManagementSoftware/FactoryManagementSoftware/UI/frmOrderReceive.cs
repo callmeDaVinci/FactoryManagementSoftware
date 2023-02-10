@@ -152,11 +152,11 @@ namespace FactoryManagementSoftware.UI
                 errorProvider1.SetError(lblQty, "Receive qty cannot below the 1");
             }
 
-            if (string.IsNullOrEmpty(txtLotNO.Text))
-            {
-                result = false;
-                errorProvider2.SetError(lblLotNo, "Lot Number Required");
-            }
+            //if (string.IsNullOrEmpty(txtLotNO.Text))
+            //{
+            //    result = false;
+            //    errorProvider2.SetError(lblLotNo, "Lot Number Required");
+            //}
 
             return result;
         }
@@ -367,7 +367,19 @@ namespace FactoryManagementSoftware.UI
                     from = cmbSubFrom.Text;
                 }
 
-                dalOrderAction.orderReceive(orderID, transferRecord("Passed"),txtQty.Text, from, cmbTo.Text, txtLotNO.Text);
+                string note = txtDONumber.Text;
+
+                if(!string.IsNullOrEmpty(note))
+                {
+                    note = "D/O: " + note;
+                }
+
+                if (!string.IsNullOrEmpty(txtLotNO.Text))
+                {
+                    note = "Lot No: " + txtLotNO.Text;
+                }
+
+                dalOrderAction.orderReceive(orderID, transferRecord("Passed"),txtQty.Text, from, cmbTo.Text, note);
                 
             }
 

@@ -46,11 +46,12 @@
             this.dgvUserHistory.Name = "dgvUserHistory";
             this.dgvUserHistory.ReadOnly = true;
             this.dgvUserHistory.RowHeadersVisible = false;
+            this.dgvUserHistory.RowHeadersWidth = 51;
             this.dgvUserHistory.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvUserHistory.RowTemplate.Height = 40;
             this.dgvUserHistory.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvUserHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvUserHistory.Size = new System.Drawing.Size(1100, 660);
+            this.dgvUserHistory.Size = new System.Drawing.Size(1311, 739);
             this.dgvUserHistory.TabIndex = 40;
             this.dgvUserHistory.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUserHistory_CellContentClick);
             // 
@@ -58,7 +59,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1100, 660);
+            this.ClientSize = new System.Drawing.Size(1311, 739);
             this.Controls.Add(this.dgvUserHistory);
             this.Name = "frmUserActionHistory";
             this.Text = "frmUserActionHistory";

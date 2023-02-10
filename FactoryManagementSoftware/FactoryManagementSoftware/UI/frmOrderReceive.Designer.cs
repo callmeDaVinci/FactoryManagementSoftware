@@ -45,7 +45,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label7 = new System.Windows.Forms.Label();
             this.txtUnit = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.dtpTrfDate = new System.Windows.Forms.DateTimePicker();
@@ -65,6 +64,9 @@
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
+            this.txtDONumber = new System.Windows.Forms.TextBox();
+            this.lblDONumber = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.tableLayoutPanel12.SuspendLayout();
@@ -81,6 +83,7 @@
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel15.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -164,10 +167,10 @@
             this.btnApprove.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnApprove.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnApprove.ForeColor = System.Drawing.Color.White;
-            this.btnApprove.Location = new System.Drawing.Point(178, 1);
+            this.btnApprove.Location = new System.Drawing.Point(221, 1);
             this.btnApprove.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.btnApprove.Name = "btnApprove";
-            this.btnApprove.Size = new System.Drawing.Size(248, 36);
+            this.btnApprove.Size = new System.Drawing.Size(205, 36);
             this.btnApprove.TabIndex = 126;
             this.btnApprove.Text = "STOCK IN";
             this.btnApprove.UseVisualStyleBackColor = false;
@@ -184,7 +187,7 @@
             this.btnCancel.Location = new System.Drawing.Point(2, 1);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(164, 36);
+            this.btnCancel.Size = new System.Drawing.Size(205, 36);
             this.btnCancel.TabIndex = 125;
             this.btnCancel.Text = "CANCEL";
             this.btnCancel.UseVisualStyleBackColor = false;
@@ -194,10 +197,10 @@
             // 
             this.txtLotNO.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtLotNO.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.txtLotNO.Location = new System.Drawing.Point(2, 43);
+            this.txtLotNO.Location = new System.Drawing.Point(219, 2);
             this.txtLotNO.Margin = new System.Windows.Forms.Padding(2);
             this.txtLotNO.Name = "txtLotNO";
-            this.txtLotNO.Size = new System.Drawing.Size(424, 25);
+            this.txtLotNO.Size = new System.Drawing.Size(203, 25);
             this.txtLotNO.TabIndex = 128;
             this.txtLotNO.TextChanged += new System.EventHandler(this.txtLotNO_TextChanged);
             // 
@@ -205,7 +208,7 @@
             // 
             this.lblLotNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLotNo.AutoSize = true;
-            this.lblLotNo.Location = new System.Drawing.Point(2, 18);
+            this.lblLotNo.Location = new System.Drawing.Point(219, 18);
             this.lblLotNo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblLotNo.Name = "lblLotNo";
             this.lblLotNo.Size = new System.Drawing.Size(58, 19);
@@ -267,18 +270,6 @@
             // errorProvider2
             // 
             this.errorProvider2.ContainerControl = this;
-            // 
-            // label7
-            // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(217, 20);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(205, 17);
-            this.label7.TabIndex = 133;
-            this.label7.Text = "Input \"NULL\" if don\'t have LOT NO";
             // 
             // txtUnit
             // 
@@ -385,8 +376,8 @@
             // 
             this.tableLayoutPanel13.ColumnCount = 1;
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel13.Controls.Add(this.tableLayoutPanel15, 0, 1);
             this.tableLayoutPanel13.Controls.Add(this.tableLayoutPanel14, 0, 0);
-            this.tableLayoutPanel13.Controls.Add(this.txtLotNO, 0, 1);
             this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel13.Location = new System.Drawing.Point(2, 462);
             this.tableLayoutPanel13.Margin = new System.Windows.Forms.Padding(2);
@@ -399,11 +390,12 @@
             // 
             // tableLayoutPanel14
             // 
-            this.tableLayoutPanel14.ColumnCount = 2;
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 237F));
-            this.tableLayoutPanel14.Controls.Add(this.lblLotNo, 0, 0);
-            this.tableLayoutPanel14.Controls.Add(this.label7, 1, 0);
+            this.tableLayoutPanel14.ColumnCount = 3;
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel14.Controls.Add(this.lblDONumber, 0, 0);
+            this.tableLayoutPanel14.Controls.Add(this.lblLotNo, 2, 0);
             this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel14.Location = new System.Drawing.Point(2, 2);
             this.tableLayoutPanel14.Margin = new System.Windows.Forms.Padding(2);
@@ -482,9 +474,9 @@
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 3;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Controls.Add(this.btnApprove, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.btnCancel, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -577,6 +569,44 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(428, 76);
             this.tableLayoutPanel5.TabIndex = 119;
             // 
+            // tableLayoutPanel15
+            // 
+            this.tableLayoutPanel15.ColumnCount = 3;
+            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel15.Controls.Add(this.txtDONumber, 0, 0);
+            this.tableLayoutPanel15.Controls.Add(this.txtLotNO, 2, 0);
+            this.tableLayoutPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel15.Location = new System.Drawing.Point(2, 43);
+            this.tableLayoutPanel15.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel15.Name = "tableLayoutPanel15";
+            this.tableLayoutPanel15.RowCount = 1;
+            this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(424, 31);
+            this.tableLayoutPanel15.TabIndex = 143;
+            // 
+            // txtDONumber
+            // 
+            this.txtDONumber.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDONumber.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.txtDONumber.Location = new System.Drawing.Point(2, 2);
+            this.txtDONumber.Margin = new System.Windows.Forms.Padding(2);
+            this.txtDONumber.Name = "txtDONumber";
+            this.txtDONumber.Size = new System.Drawing.Size(203, 25);
+            this.txtDONumber.TabIndex = 140;
+            // 
+            // lblDONumber
+            // 
+            this.lblDONumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblDONumber.AutoSize = true;
+            this.lblDONumber.Location = new System.Drawing.Point(2, 18);
+            this.lblDONumber.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblDONumber.Name = "lblDONumber";
+            this.lblDONumber.Size = new System.Drawing.Size(60, 19);
+            this.lblDONumber.TabIndex = 140;
+            this.lblDONumber.Text = "D/O NO";
+            // 
             // frmOrderReceive
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -597,7 +627,6 @@
             this.tableLayoutPanel12.ResumeLayout(false);
             this.tableLayoutPanel11.ResumeLayout(false);
             this.tableLayoutPanel13.ResumeLayout(false);
-            this.tableLayoutPanel13.PerformLayout();
             this.tableLayoutPanel14.ResumeLayout(false);
             this.tableLayoutPanel14.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -617,6 +646,8 @@
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.tableLayoutPanel15.ResumeLayout(false);
+            this.tableLayoutPanel15.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -639,7 +670,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ErrorProvider errorProvider2;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtUnit;
         private System.Windows.Forms.DateTimePicker dtpTrfDate;
@@ -659,5 +689,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
+        private System.Windows.Forms.TextBox txtDONumber;
+        private System.Windows.Forms.Label lblDONumber;
     }
 }

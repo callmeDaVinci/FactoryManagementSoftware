@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Globalization;
 using System.Linq;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -367,6 +368,8 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerPartCode] = itemCode;
                         dt_Row[headerPartName] = itemName;
 
+                        DateTime date = DateTime.MaxValue;
+
                         for (int i = 0; i < forecastMonthQty; i++)
                         {
                             //get month and year
@@ -375,7 +378,7 @@ namespace FactoryManagementSoftware.UI
                             string headerText = dt_Data.Columns[3 + i].ColumnName;
                             int year = Convert.ToInt32(getYear(headerText));
                             int month = DateTime.Parse("1." + getMonthName(headerText) + " 2008").Month;
-                            DateTime date = DateTime.MaxValue;
+
                             //search data
                             DataRow data = tool.getItemForecastDataRow(dt_ItemForecast, itemCode, year, month);
 
@@ -383,9 +386,11 @@ namespace FactoryManagementSoftware.UI
                             {
                                 dt_Row[3 + i] = data[dalItemForecast.ForecastQty];
 
-                                if (date == DateTime.MaxValue || date < Convert.ToDateTime(data[dalItemForecast.UpdatedDate]))
+                                DateTime UpdatedDate = Convert.ToDateTime(data[dalItemForecast.UpdatedDate]);
+
+                                if (date == DateTime.MaxValue || date < UpdatedDate)
                                 {
-                                    date = Convert.ToDateTime(data[dalItemForecast.UpdatedDate]);
+                                    date = UpdatedDate;
                                     dt_Row[headerUpdatedDate] = data[dalItemForecast.UpdatedDate];
 
                                     int updatedID = int.TryParse(data[dalItemForecast.UpdatedBy].ToString(), out updatedID) ? updatedID : 0;
@@ -851,6 +856,134 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        public void historyRecord(string customer, string yearFrom, string monthFrom, string yearTo, string monthTo ,string itemcode, string itemname)
+        {
+            //save history
+            historyDAL dalHistory = new historyDAL();
+
+            DataTable DB_History = dalHistory.ForecastEditHistorySelect();
+
+            DataTable dt = DB_History.Clone();
+
+            int yearFrom_INT = int.TryParse(yearFrom, out yearFrom_INT) ? yearFrom_INT : 0;
+            int yearTo_INT = int.TryParse(yearTo, out yearTo_INT) ? yearTo_INT : 0;
+            int monthFrom_INT = int.TryParse(monthFrom, out monthFrom_INT) ? monthFrom_INT : 0;
+            int monthTo_INT = int.TryParse(monthTo, out monthTo_INT) ? monthTo_INT : 0;
+
+            DateTime Start = DateTime.Parse(1 + monthFrom + yearFrom);
+            DateTime End = DateTime.Parse(1 + monthTo + yearTo);
+
+            if (DB_History != null)
+            {
+                foreach(DataRow row in DB_History.Rows)
+                {
+                    string historyDetail = row[dalHistory.HistoryDetail].ToString();
+
+                    //get month and year and customer data
+                    string historyCustomer = "";
+                    string historyItem = "";
+                    string historyMonthAndYear = "";
+                    string historyMonth = "";
+                    string historyYear = "";
+
+                    bool gettingCustomerInfo = false;
+                    bool gettingMonthAndYearInfo = false;
+                    bool gettingItemInfo = false;
+
+                    DateTime HistoryDate = DateTime.MaxValue;
+
+
+                    for (int i = 0; i < historyDetail.Length; i++) 
+                    {
+                        if (historyDetail[i].ToString() == ":")
+                        {
+                            gettingItemInfo = false;
+                        }
+
+                        if (gettingItemInfo)
+                        {
+                            historyItem += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == "]")
+                        {
+                            gettingMonthAndYearInfo = false;
+                            gettingItemInfo = true;
+                        }
+
+                        if (gettingMonthAndYearInfo)
+                        {
+                            historyMonthAndYear += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == "_")
+                        {
+                            gettingCustomerInfo = false;
+                            gettingMonthAndYearInfo = true;
+                        }
+
+                        if (gettingCustomerInfo)
+                        {
+                            historyCustomer += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == "[") 
+                        {
+                            gettingCustomerInfo = true;
+                        }
+                    }
+
+                    if(historyMonthAndYear.Length > 4)
+                    {
+                        for (int i = historyMonthAndYear.Length - 4; i < historyMonthAndYear.Length; i++)
+                        {
+                            historyYear += historyMonthAndYear[i].ToString();
+                        }
+
+                        historyMonth = historyMonthAndYear.Replace(historyYear, "");
+                        HistoryDate = DateTime.TryParse(1.ToString() + "/" + historyMonth + "/" +historyYear, out DateTime test)? test : DateTime.MaxValue;
+
+                    }
+
+
+
+
+                    //date inspection
+                    bool dataMatched = true;
+
+                    dataMatched = historyItem.Contains(itemcode)? dataMatched : false;
+                    dataMatched = historyCustomer == customer ? dataMatched : false;
+
+
+                    dataMatched = HistoryDate >= Start && HistoryDate <= End ? dataMatched : false;
+
+                    dataMatched = HistoryDate == DateTime.MaxValue ? false : dataMatched;
+
+
+                    if (dataMatched)
+                    {
+                        dt.Rows.Add(row.ItemArray);
+                    }
+                }
+
+                if (dt.Rows.Count > 0)
+                {
+                    frmUserActionHistory frm = new frmUserActionHistory(dt,true);
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.ShowDialog();//Item Edit
+                }
+                else
+                {
+                    MessageBox.Show("History not found.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("History not found.");
+            }
+        }
+
+
         private void dgvForecast_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             string newForecast = dgvForecast.Rows[currentRow].Cells[currentColumn].Value.ToString();
@@ -917,6 +1050,14 @@ namespace FactoryManagementSoftware.UI
         private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void dgvForecast_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string itemCode = dgvForecast.Rows[e.RowIndex].Cells[headerPartCode].Value.ToString();
+            string itemName = dgvForecast.Rows[e.RowIndex].Cells[headerPartName].Value.ToString();
+
+            historyRecord(cmbCustomer.Text, cmbYearFrom.Text, cmbMonthFrom.Text, cmbYearTo.Text, cmbMonthTo.Text,itemCode,itemName);
         }
 
         private void dgvForecast_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)

@@ -35,9 +35,20 @@ namespace FactoryManagementSoftware.UI
             dgvUserHistory.ClearSelection();
         }
 
+        public frmUserActionHistory(DataTable dt, bool fromForecast)
+        {
+            InitializeComponent();
+            FROM_FORECAST = true;
+
+            //AddColumns(dgvUserHistory);
+            LoadUserHistoryList(dt);
+            dgvUserHistory.ClearSelection();
+        }
+
         Tool tool = new Tool();
         historyDAL dalHistory = new historyDAL();
         userDAL dalUser = new userDAL();
+        bool FROM_FORECAST = false;
 
         DataGridViewAutoSizeColumnMode Fill = DataGridViewAutoSizeColumnMode.Fill;
         DataGridViewAutoSizeColumnMode DisplayedCells = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -98,12 +109,19 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[dalHistory.HistoryAction].HeaderText = "Action";
             dgv.Columns[dalHistory.HistoryDetail].HeaderText = "Detail";
 
+            if(FROM_FORECAST)
+            {
+                dgv.Columns[dalHistory.HistoryPageName].Visible = false;
+                dgv.Columns[dalHistory.HistoryDataID].Visible = false;
+
+            }
+
             dgv.Columns[dalHistory.HistoryID].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[dalHistory.HistoryDate].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[dalHistory.HistoryBy].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[dalHistory.HistoryBy].Visible = false;
-            dgv.Columns[dalHistory.HistoryAction].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[dalHistory.HistoryDetail].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[dalHistory.HistoryAction].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[dalHistory.HistoryDetail].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
         }
 
        

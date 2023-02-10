@@ -167,6 +167,7 @@ namespace FactoryManagementSoftware.Module
         public string planning_status_delayed { get; } = "DELAYED";//yellow
         public string planning_status_completed { get; } = "COMPLETED";//white
         public string planning_Family_mould_Remark { get; } = "[FAMILY MOULD]";
+        public string planning_Material_Summary { get; } = "Material Summary";
 
         //PLANNING ACTION HISTORY////////////////////////////////////////////////////////////////////////////
         public string plan_Added { get; } = "PLAN ADD";
@@ -670,6 +671,7 @@ namespace FactoryManagementSoftware.Module
             return detail;
 
         }
+
         public string getForecastEditString(itemForecastBLL u)
         {
             string customer = "null";

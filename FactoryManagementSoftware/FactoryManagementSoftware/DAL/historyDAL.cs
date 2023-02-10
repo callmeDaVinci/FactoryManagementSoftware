@@ -1,9 +1,12 @@
 ﻿using FactoryManagementSoftware.BLL;
+using FactoryManagementSoftware.Module;
+using Microsoft.Office.Interop.Word;
 using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using DataTable = System.Data.DataTable;
 
 namespace FactoryManagementSoftware.DAL
 {
@@ -52,6 +55,50 @@ namespace FactoryManagementSoftware.DAL
             DataTable sortedDt = dt.DefaultView.ToTable();
 
             return sortedDt;
+        }
+
+        public DataTable ForecastEditHistorySelect()
+        {
+            Text text = new Text();
+
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            try
+            {
+                //sql query to get data from database
+
+                String sql = "SELECT * FROM tbl_history WHERE history_action LIKE '%" + text.ForecastEdit + "%'";
+
+                //String sql = "SELECT item_cat,item_code, item_name,item_ord,item_qty FROM tbl_item WHERE item_code LIKE '%" + keywords + "%'OR item_name LIKE '%" + keywords + "%'";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                //cmd.Parameters.AddWithValue("@ForecastEdit", text.ForecastEdit);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
         }
 
         #endregion
