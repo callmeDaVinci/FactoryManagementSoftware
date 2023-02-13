@@ -46,14 +46,14 @@ namespace FactoryManagementSoftware.UI
         enum ColorSet
         {
             Gold = 0,
-            Cyan,
-            Aquamarine,
-            Orange,
-            Yellow,
-            //MediumSpringGreen,
-            Lavender,
-            LightGray,
-            LightBlue
+            //Cyan,
+            //Aquamarine,
+            //Orange,
+            //Yellow,
+            ////MediumSpringGreen,
+            //Lavender,
+            //LightGray,
+            //LightBlue
             //Bisque,
             //Chartreuse,
             //CornflowerBlue,
@@ -66,6 +66,28 @@ namespace FactoryManagementSoftware.UI
             //Thistle,
         }
 
+        //enum ColorSet
+        //{
+        //    Gold = 0,
+        //    Cyan,
+        //    Aquamarine,
+        //    Orange,
+        //    Yellow,
+        //    //MediumSpringGreen,
+        //    Lavender,
+        //    LightGray,
+        //    LightBlue
+        //    //Bisque,
+        //    //Chartreuse,
+        //    //CornflowerBlue,
+        //    //MediumTurquoise,
+        //    //MediumAquamarine,
+        //    //LightSalmon,
+        //    //DeepSkyBlue,
+        //    //SkyBlue,
+        //    //Tan,
+        //    //Thistle,
+        //}
         private List<int> Row_Index_Found;
 
         int CURRENT_ROW_JUMP = 0;
@@ -294,7 +316,7 @@ namespace FactoryManagementSoftware.UI
         {
             if(dgv != null)
             {
-                dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 
                 dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
                 dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -347,13 +369,19 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[headerOutStd].HeaderCell.Style.BackColor = Color.LightYellow;
                 dgv.Columns[headerOutStd].DefaultCellStyle.BackColor = Color.LightYellow;
 
-                dgv.Columns[headerBal1].HeaderCell.Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-                dgv.Columns[headerBal1].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                dgv.Columns[headerRowReference].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
-                dgv.Columns[headerBal2].HeaderCell.Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-                dgv.Columns[headerBal2].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                dgv.Columns[headerPartCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+                dgv.Columns[headerRawMat].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+                dgv.Columns[headerColorMat].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
 
-                dgv.Columns[headerProduced].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Strikeout);
+                dgv.Columns[headerBal1].HeaderCell.Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+                dgv.Columns[headerBal1].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+
+                dgv.Columns[headerBal2].HeaderCell.Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+                dgv.Columns[headerBal2].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+
+                dgv.Columns[headerProduced].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Strikeout);
 
                 dgv.EnableHeadersVisualStyles = false;
             }
@@ -362,7 +390,7 @@ namespace FactoryManagementSoftware.UI
 
         private void DgvForecastSummaryReportUIEdit(DataGridView dgv)
         {
-            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -393,8 +421,8 @@ namespace FactoryManagementSoftware.UI
             {
                 dgv.Columns[headerBal3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-                dgv.Columns[headerBal3].HeaderCell.Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-                dgv.Columns[headerBal3].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                dgv.Columns[headerBal3].HeaderCell.Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+                dgv.Columns[headerBal3].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
 
                 dgv.Columns[headerReadyStock].HeaderCell.Style.BackColor = Color.Aquamarine;
                 dgv.Columns[headerReadyStock].DefaultCellStyle.BackColor = Color.Aquamarine;
@@ -415,8 +443,8 @@ namespace FactoryManagementSoftware.UI
                 {
                     dgv.Columns[headerBal4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
-                    dgv.Columns[headerBal4].HeaderCell.Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-                    dgv.Columns[headerBal4].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                    dgv.Columns[headerBal4].HeaderCell.Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+                    dgv.Columns[headerBal4].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
 
                     dgv.Columns[headerBal4].HeaderCell.Style.BackColor = Color.LightYellow;
                     dgv.Columns[headerBal4].DefaultCellStyle.BackColor = Color.LightYellow;
@@ -429,11 +457,11 @@ namespace FactoryManagementSoftware.UI
             }
          
 
-            dgv.Columns[headerBal1].HeaderCell.Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-            dgv.Columns[headerBal1].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgv.Columns[headerBal1].HeaderCell.Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+            dgv.Columns[headerBal1].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
 
-            dgv.Columns[headerBal2].HeaderCell.Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-            dgv.Columns[headerBal2].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgv.Columns[headerBal2].HeaderCell.Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+            dgv.Columns[headerBal2].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
 
             //dgv.Columns[headerProduced].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Strikeout);
 
@@ -493,22 +521,46 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
                     }
 
-                    if (!string.IsNullOrEmpty(backColor))
+                    if (!string.IsNullOrEmpty(backColor) && cbRepeatedColorMode.Checked)
                     {
-                        dgv.Rows[i].Cells[headerPartName].Style.BackColor = Color.FromName(backColor);
-                        dgv.Rows[i].Cells[headerPartCode].Style.BackColor = Color.FromName(backColor);
-                        dgv.Rows[i].Cells[headerForecast1].Style.BackColor = Color.FromName(backColor);
-                        dgv.Rows[i].Cells[headerForecast2].Style.BackColor = Color.FromName(backColor);
-                        dgv.Rows[i].Cells[headerForecast3].Style.BackColor = Color.FromName(backColor);
-                        dgv.Rows[i].Cells[headerOut].Style.BackColor = Color.FromName(backColor);
-                        dgv.Rows[i].Cells[headerOutStd].Style.BackColor = Color.FromName(backColor);
-                        dgv.Rows[i].Cells[headerBal1].Style.BackColor = Color.FromName(backColor);
-                        dgv.Rows[i].Cells[headerBal2].Style.BackColor = Color.FromName(backColor);
-
-                        if (dgv.Columns.Contains(headerBal3))
+                        if (balType.Equals(balType_Total))
                         {
-                            dgv.Rows[i].Cells[headerBal3].Style.BackColor = Color.FromName(backColor);
+                            dgv.Rows[i].Cells[headerPartName].Style.BackColor = Color.FromName(backColor);
+                            dgv.Rows[i].Cells[headerPartCode].Style.BackColor = Color.FromName(backColor);
+                            dgv.Rows[i].Cells[headerForecast1].Style.BackColor = Color.FromName(backColor);
+                            dgv.Rows[i].Cells[headerForecast2].Style.BackColor = Color.FromName(backColor);
+                            dgv.Rows[i].Cells[headerForecast3].Style.BackColor = Color.FromName(backColor);
+                            dgv.Rows[i].Cells[headerOut].Style.BackColor = Color.FromName(backColor);
+                            dgv.Rows[i].Cells[headerOutStd].Style.BackColor = Color.FromName(backColor);
+                            dgv.Rows[i].Cells[headerBal1].Style.BackColor = Color.FromName(backColor);
+                            dgv.Rows[i].Cells[headerBal2].Style.BackColor = Color.FromName(backColor);
+
+                            if (dgv.Columns.Contains(headerBal3))
+                            {
+                                dgv.Rows[i].Cells[headerBal3].Style.BackColor = Color.FromName(backColor);
+                            }
                         }
+                        else
+                        {
+                            Color repeatedRow = Color.LightGray;
+
+                            dgv.Rows[i].Cells[headerPartName].Style.BackColor = repeatedRow;
+                            dgv.Rows[i].Cells[headerPartCode].Style.BackColor = repeatedRow;
+                            dgv.Rows[i].Cells[headerForecast1].Style.BackColor = repeatedRow;
+                            dgv.Rows[i].Cells[headerForecast2].Style.BackColor = repeatedRow;
+                            dgv.Rows[i].Cells[headerForecast3].Style.BackColor = repeatedRow;
+                            dgv.Rows[i].Cells[headerOut].Style.BackColor = repeatedRow;
+                            dgv.Rows[i].Cells[headerOutStd].Style.BackColor = repeatedRow;
+                            dgv.Rows[i].Cells[headerBal1].Style.BackColor = repeatedRow;
+                            dgv.Rows[i].Cells[headerBal2].Style.BackColor = repeatedRow;
+
+                            if (dgv.Columns.Contains(headerBal3))
+                            {
+                                dgv.Rows[i].Cells[headerBal3].Style.BackColor = repeatedRow;
+                            }
+                        }
+                            
+                        
 
                     }
 
@@ -731,7 +783,7 @@ namespace FactoryManagementSoftware.UI
 
             if (text == textSearchFilter)
             {
-                tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 257f);
+                tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 200f);
 
                 dgvForecastReport.ResumeLayout();
 
@@ -853,7 +905,6 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 ShowFullForecastReport();
-                //OldLoadForecastData();
             }
         }
 
@@ -936,6 +987,12 @@ namespace FactoryManagementSoftware.UI
                     return;
                 }
             }
+
+            if(CURRENT_ROW_JUMP != 0)
+            {
+                dgvForecastReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
+
+            }
         }
 
         private void BackToPreviousRow()
@@ -962,7 +1019,12 @@ namespace FactoryManagementSoftware.UI
                
                 }
 
-          
+
+            if (CURRENT_ROW_JUMP != 0)
+            {
+                dgvForecastReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
+
+            }
         }
 
         private void ShowFullForecastReport()
@@ -973,16 +1035,27 @@ namespace FactoryManagementSoftware.UI
             frmLoading.ShowLoadingScreen();
 
             DataGridView dgv = dgvForecastReport;
+            //13022023 Speed Test 1 --------------------------------------------------------------------------------------------------
 
             dgv.DataSource = SearchForecastData();
             //dgv.DataSource = NewSearchForecastDataForSummary();
-            
-            //dgv.Columns.Remove(headerRowReference);
-            if(dgv.DataSource != null)
-            {
-                ColorData();
 
-                DgvForecastReportUIEdit(dgvForecastReport);
+            //dgv.Columns.Remove(headerRowReference);
+
+            //13022023 Speed Test 1 End(ms): (1) 2541, (2) 2747
+
+            if (dgv.DataSource != null)
+            {
+                //13022023 Speed Test 2 --------------------------------------------------------------------------------------------------
+                ColorData();
+                //13022023 (1) 6881 , (2) 7136
+
+                DgvForecastReportUIEdit(dgvForecastReport);//7098ms,7088ms,6612ms
+
+
+                //13022023 Speed Test 2 End(ms): (1) 527, (2) 570
+
+
                 //delete column
                 dgvForecastReport.Columns.Remove(headerItemType);
                 dgvForecastReport.Columns.Remove(headerParentColor);
@@ -996,12 +1069,12 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
-                dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+                dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);//996ms,1308ms,845ms
             }
            
 
 
-            frmLoading.CloseForm();
+            frmLoading.CloseForm();//568ms,515ms,531ms
         }
 
         private void ShowSummaryForecastReport()
@@ -1128,8 +1201,11 @@ namespace FactoryManagementSoftware.UI
 
         private void frmForecastReport_NEW_Load(object sender, EventArgs e)
         {
-            dt_MacSchedule = dalPlanning.SelectOrderByItem();//269ms
-            dt_ProRecord = dalProRecord.SelectWithItemInfoSortByItem();//965ms
+            dt_MacSchedule = dalPlanning.SelectOrderByItem();
+
+            //482ms
+            //dt_ProRecord = dalProRecord.SelectWithItemInfoSortByItem();
+            //5248ms
 
             dgvForecastReport.SuspendLayout();
 
@@ -2573,6 +2649,8 @@ namespace FactoryManagementSoftware.UI
 
         private DataTable SearchForecastData()
         {
+            #region pre setting
+
             Cursor = Cursors.WaitCursor;
 
             lblForecastType.Text = ReportType_Full;
@@ -2598,8 +2676,9 @@ namespace FactoryManagementSoftware.UI
             string customer = cmbCustomer.Text;
             DataTable dt_Data = NewForecastReportTable();
 
-            //check if the keywords has value or not
-            if (!string.IsNullOrEmpty(customer))
+            #endregion
+
+            if (!string.IsNullOrEmpty(customer))//29ms
             {
                 DataRow dt_Row;
 
@@ -2611,23 +2690,33 @@ namespace FactoryManagementSoftware.UI
 
                 DataTable dt_ItemForecast = dalItemForecast.Select(tool.getCustID(customer).ToString());
 
-                DataTable dt_TrfHist = dalTrfHist.rangeItemToCustomerSearch(customer);//349
+                //DataTable dt_TrfHist = dalTrfHist.rangeItemToCustomerSearch(customer);
+                
+                //speed test 1 start ------------------------------------------------------------------------------------
+                DateTime DateToday = DateTime.Now;
 
-                //string from = dtpOutFrom.Value.ToString("yyyy/MM/dd");
-                //string to = dtpOutTo.Value.ToString("yyyy/MM/dd");
-                //string PMMA = tool.getCustName(1);
+                int year = DateToday.Year - 1;
+
+                DateTime LastYear = DateTime.Parse("1/1/" + year);
+
+                string From = LastYear.ToString("yyyy/MM/dd");
+                string To = DateToday.ToString("yyyy/MM/dd");
+
+                DataTable dt_TrfHist = dalTrfHist.ItemDeliveredRecordSearch(customer, From, To);
 
                 //DataTable dt_TrfHist = dalTrfHist.rangeItemToCustomerTransferDataOnlySearch(PMMA, from, to);
 
-                DataTable dt_PMMADate = dalPmmaDate.Select();
+                DataTable dt_PMMADate = dalPmmaDate.Select();//437ms
 
-                DataTable dt_Estimate = dalTrfHist.ItemToCustomerAllTimeSearch(cmbCustomer.Text);//326
+                //DataTable dt_Estimate = dalTrfHist.ItemToCustomerAllTimeSearch(cmbCustomer.Text);
 
                 //dt_MacSchedule = dalPlanning.Select();
 
+                //speed test 1 end-----------------------------------------------------------------------------------------132ms
                 dt_Join = dalJoin.SelectAll();
                 dt_Item = dalItem.Select();
                 //dt_ProRecord = dalProRecord.SelectWithItemInfo();
+                //1516ms
 
                 int index = 1;
 
@@ -2645,10 +2734,7 @@ namespace FactoryManagementSoftware.UI
                     int assembly = row[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemAssemblyCheck]);
                     int production = row[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemProductionCheck]);
 
-                    if(uData.part_code == "R 120 141 288 38")
-                    {
-                        float checkpoint = 1;
-                    }
+                   
                     bool gotNotPackagingChild = tool.ifGotNotPackagingChild(uData.part_code, dt_Join, dt_Item);
 
                     if (!gotNotPackagingChild)//assembly == 0 && production == 0
@@ -2673,7 +2759,7 @@ namespace FactoryManagementSoftware.UI
                         uData.forecast3 = GetForecastQty(dt_ItemForecast, uData.part_code, 3);
 
                         uData.estimate = GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, dt_PMMADate);
-                        uData.estimate = CalculateEstimateOrder(dt_PMMADate, dt_Estimate, uData.part_code, customer);
+                        uData.estimate = CalculateEstimateOrder(dt_PMMADate, dt_TrfHist, uData.part_code, customer);
 
                         if (GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, dt_PMMADate) == 0)
                         {
@@ -2818,7 +2904,7 @@ namespace FactoryManagementSoftware.UI
                         }
 
                         //uData.estimate = GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, dt_PMMADate);
-                        uData.estimate = CalculateEstimateOrder(dt_PMMADate, dt_Estimate, uData.part_code, customer);
+                        uData.estimate = CalculateEstimateOrder(dt_PMMADate, dt_TrfHist, uData.part_code, customer);
 
                         if (GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, dt_PMMADate) == 0)
                         {
@@ -2954,10 +3040,10 @@ namespace FactoryManagementSoftware.UI
                 
             }
 
-            if (dt_Data.Rows.Count > 0)
+            if (dt_Data.Rows.Count > 0)//4716ms
             {
                 //check repeated data: normal-slow speed
-                dt_Data = CalRepeatedData(dt_Data);//6582
+                dt_Data = CalRepeatedData(dt_Data);
 
                 //item search:fast speed
                 dt_Data = ItemSearch(dt_Data);
@@ -2990,32 +3076,6 @@ namespace FactoryManagementSoftware.UI
                         }
                     }
                 }
-
-
-                //dgvForecastReport.DataSource = dtMasterData;
-                //dgvForecastReport.Columns.Remove(headerRowReference);
-
-                //ColorData();
-
-                //DgvForecastReportUIEdit(dgvForecastReport);
-                ////delete column
-                //dgvForecastReport.Columns.Remove(headerItemType);
-                //dgvForecastReport.Columns.Remove(headerParentColor);
-                //dgvForecastReport.Columns.Remove(headerType);
-                //dgvForecastReport.Columns.Remove(headerBackColor);
-                //dgvForecastReport.Columns.Remove(headerBalType);
-                //dgvForecastReport.Columns.Remove(headerForecastType);
-
-
-
-                //dgvForecastReport.ClearSelection();
-                //dgvForecastReport.ResumeLayout();
-
-
-
-                //dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-
-                //dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
             }
             else
             {

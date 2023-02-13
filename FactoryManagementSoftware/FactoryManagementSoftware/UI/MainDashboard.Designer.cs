@@ -64,6 +64,8 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.iNOUTREPORTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fORECASTREPORTToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -85,7 +87,9 @@
             this.sBBToolStripMenuItem,
             this.reportToolStripMenuItem,
             this.pOToolStripMenuItem,
-            this.usernameToolStripMenuItem});
+            this.usernameToolStripMenuItem,
+            this.iNOUTREPORTToolStripMenuItem,
+            this.fORECASTREPORTToolStripMenuItem1});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -243,8 +247,8 @@
             this.forecastToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.forecastToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.forecastToolStripMenuItem.Name = "forecastToolStripMenuItem";
-            this.forecastToolStripMenuItem.Size = new System.Drawing.Size(88, 23);
-            this.forecastToolStripMenuItem.Text = "FORECAST";
+            this.forecastToolStripMenuItem.Size = new System.Drawing.Size(120, 23);
+            this.forecastToolStripMenuItem.Text = "PO / FORECAST";
             this.forecastToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.forecastToolStripMenuItem.Click += new System.EventHandler(this.forecastToolStripMenuItem_Click);
             // 
@@ -284,42 +288,42 @@
             // stockReportToolStripMenuItem
             // 
             this.stockReportToolStripMenuItem.Name = "stockReportToolStripMenuItem";
-            this.stockReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this.stockReportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.stockReportToolStripMenuItem.Text = "Stock Report";
             this.stockReportToolStripMenuItem.Click += new System.EventHandler(this.stockReportToolStripMenuItem_Click);
             // 
             // deliveryReportToolStripMenuItem
             // 
             this.deliveryReportToolStripMenuItem.Name = "deliveryReportToolStripMenuItem";
-            this.deliveryReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this.deliveryReportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.deliveryReportToolStripMenuItem.Text = "In Out Report";
             this.deliveryReportToolStripMenuItem.Click += new System.EventHandler(this.inOutReportToolStripMenuItem_Click);
             // 
             // forecastReportToolStripMenuItem
             // 
             this.forecastReportToolStripMenuItem.Name = "forecastReportToolStripMenuItem";
-            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.forecastReportToolStripMenuItem.Text = "Forecast Report";
             this.forecastReportToolStripMenuItem.Click += new System.EventHandler(this.forecastReportToolStripMenuItem_Click);
             // 
             // materialUsedReportToolStripMenuItem
             // 
             this.materialUsedReportToolStripMenuItem.Name = "materialUsedReportToolStripMenuItem";
-            this.materialUsedReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this.materialUsedReportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.materialUsedReportToolStripMenuItem.Text = "Material Used Report";
             this.materialUsedReportToolStripMenuItem.Click += new System.EventHandler(this.materialUsedReportToolStripMenuItem_Click);
             // 
             // productionReportToolStripMenuItem
             // 
             this.productionReportToolStripMenuItem.Name = "productionReportToolStripMenuItem";
-            this.productionReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this.productionReportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.productionReportToolStripMenuItem.Text = "Production Report";
             this.productionReportToolStripMenuItem.Click += new System.EventHandler(this.productionReportToolStripMenuItem_Click);
             // 
             // sBBDeliveredReportToolStripMenuItem
             // 
             this.sBBDeliveredReportToolStripMenuItem.Name = "sBBDeliveredReportToolStripMenuItem";
-            this.sBBDeliveredReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
+            this.sBBDeliveredReportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.sBBDeliveredReportToolStripMenuItem.Text = "SBB Delivered Report";
             this.sBBDeliveredReportToolStripMenuItem.Click += new System.EventHandler(this.sBBDeliveredReportToolStripMenuItem_Click);
             // 
@@ -366,6 +370,22 @@
             // 
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
+            // 
+            // iNOUTREPORTToolStripMenuItem
+            // 
+            this.iNOUTREPORTToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.iNOUTREPORTToolStripMenuItem.Name = "iNOUTREPORTToolStripMenuItem";
+            this.iNOUTREPORTToolStripMenuItem.Size = new System.Drawing.Size(122, 23);
+            this.iNOUTREPORTToolStripMenuItem.Text = "IN/OUT REPORT";
+            this.iNOUTREPORTToolStripMenuItem.Click += new System.EventHandler(this.inOutReportToolStripMenuItem_Click);
+            // 
+            // fORECASTREPORTToolStripMenuItem1
+            // 
+            this.fORECASTREPORTToolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.fORECASTREPORTToolStripMenuItem1.Name = "fORECASTREPORTToolStripMenuItem1";
+            this.fORECASTREPORTToolStripMenuItem1.Size = new System.Drawing.Size(140, 23);
+            this.fORECASTREPORTToolStripMenuItem1.Text = "FORECAST REPORT";
+            this.fORECASTREPORTToolStripMenuItem1.Click += new System.EventHandler(this.forecastReportToolStripMenuItem_Click);
             // 
             // MainDashboard
             // 
@@ -432,6 +452,8 @@
         private System.Windows.Forms.ToolStripMenuItem newItemListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iTEMToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem usernameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem iNOUTREPORTToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fORECASTREPORTToolStripMenuItem1;
     }
 }
 

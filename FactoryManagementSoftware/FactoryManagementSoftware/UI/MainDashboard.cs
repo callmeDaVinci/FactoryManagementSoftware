@@ -284,12 +284,16 @@ namespace FactoryManagementSoftware.UI
         {
             if (!forecastReportInputFormOpen)
             {
+                frmLoading.ShowLoadingScreen();
+
                 frmForecastReport_NEW frm = new frmForecastReport_NEW();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
                 frm.Show();
                 forecastReportInputFormOpen = true;
+                frmLoading.CloseForm();
+
             }
             else
             {
@@ -610,7 +614,8 @@ namespace FactoryManagementSoftware.UI
         {
             if (!InOutReportFormOpen)
             {
-                //frmInOutReport frm = new frmInOutReport();
+                frmLoading.ShowLoadingScreen();
+
                 frmInOutReport_NEW frm = new frmInOutReport_NEW();
                 frm.MdiParent = this;
                 
@@ -619,6 +624,8 @@ namespace FactoryManagementSoftware.UI
                 frm.WindowState = FormWindowState.Maximized;
                 frm.Show();
                 InOutReportFormOpen = true;
+                frmLoading.CloseForm();
+
             }
             else
             {
