@@ -224,9 +224,29 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_chevron_down_16 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-chevron-down-16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_chevron_left_100 {
             get {
                 object obj = ResourceManager.GetObject("icons8-chevron-left-100", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_chevron_up_16 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-chevron-up-16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -427,6 +447,16 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap icons8_exit_full_screen_64 {
             get {
                 object obj = ResourceManager.GetObject("icons8-exit-full-screen-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_expand_arrow_16 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-expand-arrow-16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -757,6 +787,36 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap icons8_uninstalling_updates_100 {
             get {
                 object obj = ResourceManager.GetObject("icons8-uninstalling-updates-100", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_up_16 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-up-16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_up_24 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-up-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_up_32 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-up-32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

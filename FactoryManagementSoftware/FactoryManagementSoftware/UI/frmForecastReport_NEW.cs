@@ -14,6 +14,7 @@ using System.Linq;
 using Font = System.Drawing.Font;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -64,6 +65,12 @@ namespace FactoryManagementSoftware.UI
             //Tan,
             //Thistle,
         }
+
+        private List<int> Row_Index_Found;
+
+        int CURRENT_ROW_JUMP = 0;
+
+        private string textRowFound = " row(s) found";
 
         private string textSearchFilter = "SEARCH FILTER";
         private string textHideFilter = "HIDE FILTER";
@@ -850,6 +857,114 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void ItemSearchUIReset()
+        {
+            CURRENT_ROW_JUMP = 0;
+            lblSearchInfo.Text = "";
+            Row_Index_Found = new List<int>();
+
+            btnPreviousSearchResult.Enabled = false;
+            btnNextSearchResult.Enabled = false;
+        }
+        private void ItemSearch()
+        {
+            frmLoading.ShowLoadingScreen();
+
+            ItemSearchUIReset();
+
+             DataGridView dgv = dgvForecastReport;
+
+            DataTable dgv_List = (DataTable) dgv.DataSource;
+            string Searching_Text = txtNameSearch.Text.ToUpper();
+
+            
+            int itemFoundCount = 0;
+
+
+            //search data and row jump
+            if (dgv_List != null && !string.IsNullOrEmpty(Searching_Text))
+               foreach (DataRow row in dgv_List.Rows)
+                {
+                    //dt_Row[headerPartCode] = uData.part_code;
+                    //dt_Row[headerPartName] = uData.part_name;
+                    string itemCode = row[headerPartCode].ToString().ToUpper();
+                    string itemName = row[headerPartName].ToString().ToUpper();
+
+                    if(itemCode.Contains(Searching_Text) || itemName.Contains(Searching_Text))
+                    {
+                        int rowIndex = dgv_List.Rows.IndexOf(row);
+
+                        Row_Index_Found.Add(rowIndex);
+                    }
+
+                }
+
+            //remove duplicate data
+            Row_Index_Found = Row_Index_Found.Distinct().ToList();
+
+            itemFoundCount = Row_Index_Found.Count;
+
+            lblSearchInfo.Text = itemFoundCount + textRowFound;
+
+            if(itemFoundCount > 0)
+            {
+                JumpToNextRow();
+                btnPreviousSearchResult.Enabled = false;
+                btnNextSearchResult.Enabled = true;
+            }
+
+            frmLoading.CloseForm();
+        }
+
+        private void JumpToNextRow()
+        {
+            var last = Row_Index_Found.Last();
+
+            foreach(var i in Row_Index_Found)
+            {
+                if(i > CURRENT_ROW_JUMP)
+                {
+                    CURRENT_ROW_JUMP = i;
+                    dgvForecastReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
+                    btnPreviousSearchResult.Enabled = true;
+
+                    //check if last row
+                    btnNextSearchResult.Enabled = !(i == last);
+
+                    lblResultNo.Text = "#" + (Row_Index_Found.IndexOf(i)+1).ToString();
+
+                    return;
+                }
+            }
+        }
+
+        private void BackToPreviousRow()
+        {
+            var first = Row_Index_Found.First();
+
+            if(Row_Index_Found.Count - 1 >= 0)
+                for (int i = Row_Index_Found.Count - 1 ; i >= 0 ; i--)
+                {
+                    if (Row_Index_Found[i] < CURRENT_ROW_JUMP)
+                    {
+                        CURRENT_ROW_JUMP = Row_Index_Found[i];
+                        dgvForecastReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
+
+                        //check if first row
+                        btnPreviousSearchResult.Enabled = !(CURRENT_ROW_JUMP == first);
+
+                        btnNextSearchResult.Enabled = true;
+
+                        lblResultNo.Text = "#" + (i+1).ToString();
+
+                        return;
+                    }
+               
+                }
+
+          
+        }
+
         private void ShowFullForecastReport()
         {
 
@@ -996,8 +1111,12 @@ namespace FactoryManagementSoftware.UI
         private void timer1_Tick(object sender, EventArgs e)
         {
             timer1.Stop();
+
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            dgvForecastReport.DataSource = null;
+
+            ItemSearch();
+
+            //dgvForecastReport.DataSource = null;
 
             Cursor = Cursors.Arrow; // change cursor to normal type
 
@@ -3544,7 +3663,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt_Copy;
             int parentIndex = -1;
 
-            if (string.IsNullOrEmpty(keywords))
+            if (string.IsNullOrEmpty(keywords) || keywords.Equals("Search"))
             {
                 dt_Copy = dt.Copy();
             }
@@ -5564,6 +5683,37 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 tool.loadCustomerWithoutOtherToComboBox(cmbCustomer);
+
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            JumpToNextRow();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            BackToPreviousRow();
+        }
+
+        private void txtNameSearch_Enter(object sender, EventArgs e)
+        {
+            if (txtNameSearch.Text == "Search")
+            {
+                txtNameSearch.Text = "";
+                txtNameSearch.ForeColor = SystemColors.WindowText;
+            }
+        }
+
+        private void txtNameSearch_Leave(object sender, EventArgs e)
+        {
+            if (txtNameSearch.Text.Length == 0)
+            {
+                txtNameSearch.Text = "Search";
+                txtNameSearch.ForeColor = SystemColors.GrayText;
+
+                ItemSearchUIReset();
 
             }
         }

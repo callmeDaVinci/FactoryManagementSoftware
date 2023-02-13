@@ -1443,6 +1443,12 @@
     <Content Include="ee4dce1061f3f616224767ad58cb2fc751b8d2dc.ico" />
     <Content Include="Image\icons8-back-to-64.png" />
     <Content Include="Image\icons8_available_updates_96_deQ_icon.ico" />
+    <None Include="Resources\icons8-up-32.png" />
+    <None Include="Resources\icons8-up-24.png" />
+    <None Include="Resources\icons8-up-16.png" />
+    <None Include="Resources\icons8-expand-arrow-16.png" />
+    <None Include="Resources\icons8-chevron-up-16.png" />
+    <None Include="Resources\icons8-chevron-down-16.png" />
     <Content Include="SBB logo.ico" />
     <Content Include="sp logo 2023.ico" />
     <Content Include="website tiny logo.ico" />

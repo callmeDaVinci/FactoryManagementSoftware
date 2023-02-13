@@ -69,7 +69,10 @@ namespace FactoryManagementSoftware.UI
             if (loadingForm != null)
             {
                 if (!loadingForm.IsHandleCreated)
+                {
                     loadingForm.CreateControl();
+                    Thread.Sleep(100);
+                }
 
                 loadingForm.Invoke(new CloseDelegate(CloseFormInternal));
             }
