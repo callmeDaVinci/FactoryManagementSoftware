@@ -384,6 +384,8 @@ namespace FactoryManagementSoftware.Module
         public string Cmb_All { get; } = "ALL";
 
 
+        public string Header_GotNotPackagingChild { get; } = "GotNotPackagingChild";
+
         public string Header_AddedDate { get; } = "ADDED DATE";
         public string Header_AddedBy { get; } = "ADDED BY";
 

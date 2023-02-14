@@ -98,7 +98,7 @@ namespace FactoryManagementSoftware.UI
         private string textHideFilter = "HIDE FILTER";
 
         readonly string headerToDo = "TO DO";
-        readonly string headerParentColor = "PARENT COLOR";
+        readonly string headerParentColor = "SPECIAL TYPE";
         readonly string headerBackColor = "BACK COLOR";
         readonly string headerForecastType = "FORECAST TYPE";
         readonly string headerBalType = "BAL TYPE";
@@ -140,14 +140,20 @@ namespace FactoryManagementSoftware.UI
         readonly string headerMonthlyOut = "MONTHLY OUT";
 
         readonly Color AssemblyColor = Color.Blue;
-        readonly Color ProductionColor = Color.Green;
+        readonly Color InsertMouldingColor = Color.Green;
         readonly Color ProductionAndAssemblyColor = Color.Purple;
         readonly Color InspectionColor = Color.Peru;
 
-        readonly string AssemblyMarking = "Blue";
-        readonly string InspectionMarking = "Peru";
-        readonly string ProductionMarking = "Green";
-        readonly string ProductionAndAssemblyMarking = "Purple";
+        readonly string AssemblyMarking = "Assembly Set";
+        readonly string InspectionMarking = "Inspection";
+        readonly string InsertMoldingMarking = "Insert Molding";
+        readonly string AssemblyAfterProductionMarking = "Assembly After Pro.";
+
+        readonly string AssemblyMarking_Color = "Blue";
+        readonly string InspectionMarking_Color = "Peru";
+        readonly string InjectionMarking_Color = "Green";
+        readonly string AssemblyAfterProductionMarking_Color = "Purple";
+
         readonly string typeSingle = "SINGLE";
         readonly string typeParent= "PARENT";
         readonly string typeChild = "CHILD";
@@ -224,7 +230,6 @@ namespace FactoryManagementSoftware.UI
             headerBal3 = "BAL";
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(headerParentColor, typeof(string));
             dt.Columns.Add(headerBackColor, typeof(string));
             dt.Columns.Add(headerForecastType, typeof(string));
             dt.Columns.Add(headerBalType, typeof(string));
@@ -233,6 +238,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerItemType, typeof(string));
             dt.Columns.Add(headerIndex, typeof(float));
             dt.Columns.Add(headerRawMat, typeof(string));
+            dt.Columns.Add(headerParentColor, typeof(string));
             dt.Columns.Add(headerPartName, typeof(string));
             dt.Columns.Add(headerPartCode, typeof(string));
             dt.Columns.Add(headerColorMat, typeof(string));
@@ -381,6 +387,8 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[headerBal2].HeaderCell.Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
                 dgv.Columns[headerBal2].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
 
+                dgv.Columns[headerParentColor].HeaderCell.Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+
                 dgv.Columns[headerProduced].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Strikeout);
 
                 dgv.EnableHeadersVisualStyles = false;
@@ -475,8 +483,8 @@ namespace FactoryManagementSoftware.UI
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
             Font _ParentFont = new Font(dgvForecastReport.Font, FontStyle.Underline);
-            Font _BalFont = new Font(dgvForecastReport.Font, FontStyle.Underline | FontStyle.Italic | FontStyle.Bold);
-            Font _NeededFont = new Font(dgvForecastReport.Font, FontStyle.Italic);
+            //Font _BalFont = new Font(dgvForecastReport.Font, FontStyle.Underline | FontStyle.Italic | FontStyle.Bold);
+            //Font _NeededFont = new Font(dgvForecastReport.Font, FontStyle.Italic);
 
             if(dt != null)
             {
@@ -484,42 +492,47 @@ namespace FactoryManagementSoftware.UI
                 {
                     string parentColor = dt.Rows[i][headerParentColor].ToString();
                     string backColor = dt.Rows[i][headerBackColor].ToString();
-                    string type = dt.Rows[i][headerType].ToString();
+                   // string type = dt.Rows[i][headerType].ToString();
                     string balType = dt.Rows[i][headerBalType].ToString();
 
                     //change parent color
-                    if (parentColor.Equals(AssemblyMarking))
-                    {
-                        dgv.Rows[i].Cells[headerPartName].Style.ForeColor = Color.FromName(parentColor);
-                        dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
 
-                        dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = AssemblyColor;
-                        dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
-                    }
-                    else if (parentColor.Equals(ProductionMarking))
+                    if(cbSpecialTypeColorMode.Checked)
                     {
-                        dgv.Rows[i].Cells[headerPartName].Style.ForeColor = ProductionColor;
-                        dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+                        if (parentColor.Equals(AssemblyMarking))
+                        {
+                            dgv.Rows[i].Cells[headerPartName].Style.ForeColor = AssemblyColor;
+                            dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
 
-                        dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = ProductionColor;
-                        dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
-                    }
-                    else if (parentColor.Equals(ProductionAndAssemblyMarking))
-                    {
-                        dgv.Rows[i].Cells[headerPartName].Style.ForeColor = ProductionAndAssemblyColor;
-                        dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+                            //dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = AssemblyColor;
+                            //dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
+                        }
+                        else if (parentColor.Equals(InsertMoldingMarking))
+                        {
+                            dgv.Rows[i].Cells[headerPartName].Style.ForeColor = InsertMouldingColor;
+                            dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
 
-                        dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = ProductionAndAssemblyColor;
-                        dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
-                    }
-                    else if (parentColor.Equals(InspectionMarking))
-                    {
-                        dgv.Rows[i].Cells[headerPartName].Style.ForeColor = InspectionColor;
-                        dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+                            //dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = ProductionColor;
+                            //dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
+                        }
+                        else if (parentColor.Equals(AssemblyAfterProductionMarking))
+                        {
+                            dgv.Rows[i].Cells[headerPartName].Style.ForeColor = ProductionAndAssemblyColor;
+                            dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
 
-                        dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = InspectionColor;
-                        dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
+                            //dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = ProductionAndAssemblyColor;
+                            //dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
+                        }
+                        else if (parentColor.Equals(InspectionMarking))
+                        {
+                            dgv.Rows[i].Cells[headerPartName].Style.ForeColor = InspectionColor;
+                            dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+
+                            //dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = InspectionColor;
+                            //dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
+                        }
                     }
+                 
 
                     if (!string.IsNullOrEmpty(backColor) && cbRepeatedColorMode.Checked)
                     {
@@ -559,29 +572,26 @@ namespace FactoryManagementSoftware.UI
                                 dgv.Rows[i].Cells[headerBal3].Style.BackColor = repeatedRow;
                             }
                         }
-                            
-                        
-
                     }
 
-                    if (type.Equals(typeChild))
-                    {
-                        dgv.Rows[i].Cells[headerForecast1].Style.Font = _NeededFont;
-                        dgv.Rows[i].Cells[headerForecast2].Style.Font = _NeededFont;
-                        dgv.Rows[i].Cells[headerForecast3].Style.Font = _NeededFont;
-                    }
+                    //if (type.Equals(typeChild))
+                    //{
+                    //    dgv.Rows[i].Cells[headerForecast1].Style.Font = _NeededFont;
+                    //    dgv.Rows[i].Cells[headerForecast2].Style.Font = _NeededFont;
+                    //    dgv.Rows[i].Cells[headerForecast3].Style.Font = _NeededFont;
+                    //}
 
-                    if (balType.Equals(balType_Total))
-                    {
-                        dgv.Rows[i].Cells[headerBal1].Style.Font = _BalFont;
-                        dgv.Rows[i].Cells[headerBal2].Style.Font = _BalFont;
+                    //if (balType.Equals(balType_Total))
+                    //{
+                    //    dgv.Rows[i].Cells[headerBal1].Style.Font = _BalFont;
+                    //    dgv.Rows[i].Cells[headerBal2].Style.Font = _BalFont;
 
-                        if (dgv.Columns.Contains(headerBal3))
-                        {
-                            dgv.Rows[i].Cells[headerBal3].Style.Font = _BalFont;
-                        }
+                    //    if (dgv.Columns.Contains(headerBal3))
+                    //    {
+                    //        dgv.Rows[i].Cells[headerBal3].Style.Font = _BalFont;
+                    //    }
 
-                    }
+                    //}
                 }
             }
            
@@ -615,15 +625,15 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = AssemblyColor;
                     dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
                 }
-                else if (parentColor.Equals(ProductionMarking))
+                else if (parentColor.Equals(InsertMoldingMarking))
                 {
-                    dgv.Rows[i].Cells[headerPartName].Style.ForeColor = ProductionColor;
+                    dgv.Rows[i].Cells[headerPartName].Style.ForeColor = InsertMouldingColor;
                     dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
 
-                    dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = ProductionColor;
+                    dgv.Rows[i].Cells[headerPartCode].Style.ForeColor = InsertMouldingColor;
                     dgv.Rows[i].Cells[headerPartCode].Style.Font = _ParentFont;
                 }
-                else if (parentColor.Equals(ProductionAndAssemblyMarking))
+                else if (parentColor.Equals(AssemblyAfterProductionMarking))
                 {
                     dgv.Rows[i].Cells[headerPartName].Style.ForeColor = ProductionAndAssemblyColor;
                     dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
@@ -1035,30 +1045,32 @@ namespace FactoryManagementSoftware.UI
             frmLoading.ShowLoadingScreen();
 
             DataGridView dgv = dgvForecastReport;
-            //13022023 Speed Test 1 --------------------------------------------------------------------------------------------------
+
 
             dgv.DataSource = SearchForecastData();
             //dgv.DataSource = NewSearchForecastDataForSummary();
 
             //dgv.Columns.Remove(headerRowReference);
 
-            //13022023 Speed Test 1 End(ms): (1) 2541, (2) 2747
-
+            //13022023 (ms): (1) 2541, (2) 2747
+            //14022023 (ms) : (1) 2598, (2) 2290, (3) 2357
             if (dgv.DataSource != null)
             {
-                //13022023 Speed Test 2 --------------------------------------------------------------------------------------------------
+
                 ColorData();
-                //13022023 (1) 6881 , (2) 7136
-
-                DgvForecastReportUIEdit(dgvForecastReport);//7098ms,7088ms,6612ms
-
-
-                //13022023 Speed Test 2 End(ms): (1) 527, (2) 570
+                //13022023 (ms) : (1) 6881 , (2) 7136
+                //14022023 (ms) : (1) 763, (2) 777, (3) 1147
+                DgvForecastReportUIEdit(dgvForecastReport);
 
 
+                //13022023 (ms) : (1) 527, (2) 570
+                //14022023 (ms) : (1) 683,
                 //delete column
                 dgvForecastReport.Columns.Remove(headerItemType);
-                dgvForecastReport.Columns.Remove(headerParentColor);
+
+                if (cbSpecialTypeColorMode.Checked)
+                    dgvForecastReport.Columns.Remove(headerParentColor);
+
                 dgvForecastReport.Columns.Remove(headerType);
                 dgvForecastReport.Columns.Remove(headerBackColor);
                 dgvForecastReport.Columns.Remove(headerBalType);
@@ -1069,7 +1081,11 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
-                dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);//996ms,1308ms,845ms
+                //14022023 (ms) : 465,
+                dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+
+
+                //14022023(ms) : 571
             }
            
 
@@ -1388,6 +1404,12 @@ namespace FactoryManagementSoftware.UI
             int monthNow = DateTime.Now.Month;
             int yearNow = DateTime.Now.Year;
 
+
+            if(_ItemCode == "V76P9L000")
+            {
+                float checkpoint = 1;
+            }
+
             foreach (DataRow row in dt_trfToCustomer.Rows)
             {
                 string trfResult = row[dalTrfHist.TrfResult].ToString();
@@ -1395,6 +1417,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (trfResult == "Passed" && _ItemCode == itemCode)
                 {
+
                     double trfQty = double.TryParse(row[dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : 0;
                     DateTime trfDate = DateTime.TryParse(row[dalTrfHist.TrfDate].ToString(), out trfDate) ? trfDate : DateTime.MaxValue;
 
@@ -1464,7 +1487,10 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                estimateOrder = (int)Math.Round(totalTrfOutQty / dividedQty/100, 0) * 100; // round up to nearest 100
+                estimateOrder = (int)Math.Round(totalTrfOutQty / dividedQty/100, 0) * 100;
+
+                if(estimateOrder == 0)
+                estimateOrder = (int)Math.Round(totalTrfOutQty / dividedQty, 0) ;
             }
 
             return estimateOrder;
@@ -1481,9 +1507,48 @@ namespace FactoryManagementSoftware.UI
 
             bool itemFound = false;
 
-            DataRow[] rowSchedule = dt_MacSechedule.Select(dalPlanning.partCode + " = '"+ _ItemCode + "'");
+           DataRow[] rowSchedule = dt_MacSechedule.Select(dalPlanning.partCode + " = '"+ _ItemCode + "'");
 
+            //foreach (DataRow row in dt_MacSechedule.Rows)
+            //{
+            //    string itemCode = row[dalPlanning.partCode].ToString();
+            //    DateTime produceStart = DateTime.TryParse(row[dalPlanning.productionStartDate].ToString(), out produceStart) ? produceStart : DateTime.MaxValue;
 
+            //    if (itemCode == _ItemCode)
+            //    {
+            //        itemFound = true;
+            //        string status = row[dalPlanning.planStatus].ToString();
+
+            //        int TargetQty = int.TryParse(row[dalPlanning.targetQty].ToString(), out TargetQty) ? TargetQty : 0;
+
+            //        int producedQty = int.TryParse(row[dalPlanning.planProduced].ToString(), out producedQty) ? producedQty : 0;
+
+            //        int ToProduceQty = TargetQty - producedQty;
+
+            //        if (ToProduceQty < 0)
+            //        {
+            //            ToProduceQty = 0;
+            //        }
+
+            //        if (produceStart >= start && produceStart <= end && status == text.planning_status_completed)
+            //        {
+            //            produced += producedQty;
+            //        }
+
+            //        if (status == text.planning_status_running || status == text.planning_status_pending)
+            //        {
+            //            toProduce += ToProduceQty;
+            //            produced += producedQty;
+
+            //        }
+            //    }
+
+            //    else if (itemFound)
+            //    {
+            //        break;
+            //    }
+
+            //}
             foreach (DataRow row in rowSchedule)
             {
                 string itemCode = row[dalPlanning.partCode].ToString();
@@ -1500,7 +1565,7 @@ namespace FactoryManagementSoftware.UI
 
                     int ToProduceQty = TargetQty - producedQty;
 
-                    if(ToProduceQty < 0)
+                    if (ToProduceQty < 0)
                     {
                         ToProduceQty = 0;
                     }
@@ -1525,34 +1590,6 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            //produced = 0;
-
-            //itemFound = false;
-
-            //DataRow[] rowProductionRecord = dt_ProRecord.Select(dalItem.ItemCode + " = '" + _ItemCode + "'");
-
-            //foreach (DataRow row in rowProductionRecord)
-            //{
-            //    DateTime proDate = Convert.ToDateTime(row[dalProRecord.ProDate]).Date;
-
-            //    string itemCode = row[dalItem.ItemCode].ToString();
-
-            //    int totalProduced = int.TryParse(row[dalProRecord.TotalProduced].ToString(), out totalProduced) ? totalProduced : 0;
-
-            //    if (itemCode == _ItemCode)
-            //    {
-            //        itemFound = true;
-
-            //        if (proDate >= start && proDate <= end)
-            //        {
-            //            produced += totalProduced;
-            //        }
-            //    }
-            //    else if (itemFound)
-            //    {
-            //        break;
-            //    }
-            //}
 
             return Tuple.Create(toProduce, produced);
         }
@@ -2724,8 +2761,11 @@ namespace FactoryManagementSoftware.UI
 
                 dt = dt.DefaultView.ToTable();
 
+                dt.Columns.Add(text.Header_GotNotPackagingChild);
+                //^^^502ms^^^
+
                 #region load single part
-                //normal speed
+                
 
                 foreach (DataRow row in dt.Rows)
                 {
@@ -2733,9 +2773,10 @@ namespace FactoryManagementSoftware.UI
 
                     int assembly = row[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemAssemblyCheck]);
                     int production = row[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemProductionCheck]);
-
                    
                     bool gotNotPackagingChild = tool.ifGotNotPackagingChild(uData.part_code, dt_Join, dt_Item);
+
+                    row[text.Header_GotNotPackagingChild] = gotNotPackagingChild;
 
                     if (!gotNotPackagingChild)//assembly == 0 && production == 0
                     {
@@ -2754,11 +2795,17 @@ namespace FactoryManagementSoftware.UI
                         uData.toProduce = result.Item1;
                         uData.Produced = result.Item2;
 
-                        uData.forecast1 = GetForecastQty(dt_ItemForecast, uData.part_code, 1);
-                        uData.forecast2 = GetForecastQty(dt_ItemForecast, uData.part_code, 2);
-                        uData.forecast3 = GetForecastQty(dt_ItemForecast, uData.part_code, 3);
+                        //uData.forecast1 = GetForecastQty(dt_ItemForecast, uData.part_code, 1);
+                        //uData.forecast2 = GetForecastQty(dt_ItemForecast, uData.part_code, 2);
+                        //uData.forecast3 = GetForecastQty(dt_ItemForecast, uData.part_code, 3);
 
-                        uData.estimate = GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, dt_PMMADate);
+                        var forecastData = GetThreeMonthsForecastQty(dt_ItemForecast, uData.part_code, 1, 2, 3);
+                        uData.forecast1 = forecastData.Item1;
+                        uData.forecast2 = forecastData.Item2;
+                        uData.forecast3 = forecastData.Item3;
+                      
+
+                        //uData.estimate = GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, dt_PMMADate);
                         uData.estimate = CalculateEstimateOrder(dt_PMMADate, dt_TrfHist, uData.part_code, customer);
 
                         if (GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, dt_PMMADate) == 0)
@@ -2862,9 +2909,11 @@ namespace FactoryManagementSoftware.UI
                         }
 
                     }
+                   
                 }
 
                 #endregion
+                //^^^755ms,793ms^^^
 
                 #region load assembly part
 
@@ -2875,8 +2924,12 @@ namespace FactoryManagementSoftware.UI
                     int assembly = row[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemAssemblyCheck]);
                     int production = row[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemProductionCheck]);
 
+                    bool gotNotPackagingChild = bool.TryParse(row[text.Header_GotNotPackagingChild].ToString(), out bool GotChild) ? GotChild : false;
+
+                    //bool gotNotPackagingChild = tool.ifGotNotPackagingChild(uData.part_code, dt_Join, dt_Item);
+
                     //check if got child part also
-                    if ((assembly == 1 || production == 1) && tool.ifGotChild2(uData.part_code, dt_Join))
+                    if ((assembly == 1 || production == 1) && gotNotPackagingChild)//tool.ifGotChild2(uData.part_code, dt_Join)
                     {
                         uData.index = index;
                         uData.part_name = row[dalItem.ItemName].ToString();
@@ -2893,9 +2946,19 @@ namespace FactoryManagementSoftware.UI
                         uData.toProduce = result.Item1;
                         uData.Produced = result.Item2;
 
-                        uData.forecast1 = GetForecastQty(dt_ItemForecast, uData.part_code, 1);
-                        uData.forecast2 = GetForecastQty(dt_ItemForecast, uData.part_code, 2);
-                        uData.forecast3 = GetForecastQty(dt_ItemForecast, uData.part_code, 3);
+                        //uData.forecast1 = GetForecastQty(dt_ItemForecast, uData.part_code, 1);
+                        //uData.forecast2 = GetForecastQty(dt_ItemForecast, uData.part_code, 2);
+                        //uData.forecast3 = GetForecastQty(dt_ItemForecast, uData.part_code, 3);
+
+                        var forecastData = GetThreeMonthsForecastQty(dt_ItemForecast, uData.part_code, 1, 2, 3);
+                        uData.forecast1 = forecastData.Item1;
+                        uData.forecast2 = forecastData.Item2;
+                        uData.forecast3 = forecastData.Item3;
+
+                        //if(f1 != uData.forecast1 || f2 != uData.forecast2 || f3!= uData.forecast3)
+                        //{
+                        //    float checkpoint = 1;
+                        //}
 
                         if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked))
                         {
@@ -3005,11 +3068,11 @@ namespace FactoryManagementSoftware.UI
                         }
                         else if (assembly == 0 && production == 1)
                         {
-                            dt_Row[headerParentColor] = ProductionMarking;
+                            dt_Row[headerParentColor] = InsertMoldingMarking;
                         }
                         else if (assembly == 1 && production == 1)
                         {
-                            dt_Row[headerParentColor] = ProductionAndAssemblyMarking;
+                            dt_Row[headerParentColor] = AssemblyAfterProductionMarking;
                         }
 
                         if (uData.part_code.Substring(0, 3) == text.Inspection_Pass)
@@ -3036,8 +3099,8 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 #endregion
+                //2061ms,1295ms
 
-                
             }
 
             if (dt_Data.Rows.Count > 0)//4716ms
@@ -3473,11 +3536,11 @@ namespace FactoryManagementSoftware.UI
                         }
                         else if (assembly == 0 && production == 1)
                         {
-                            dt_Row[headerParentColor] = ProductionMarking;
+                            dt_Row[headerParentColor] = InsertMoldingMarking;
                         }
                         else if (assembly == 1 && production == 1)
                         {
-                            dt_Row[headerParentColor] = ProductionAndAssemblyMarking;
+                            dt_Row[headerParentColor] = AssemblyAfterProductionMarking;
                         }
 
 
@@ -4090,6 +4153,10 @@ namespace FactoryManagementSoftware.UI
                 {
                     string childCode = row[dalJoin.JoinChild].ToString();
 
+                    if(childCode == "C84KXQ100")
+                    {
+                        float checkpoint = 1;
+                    }
 
                     DataRow row_Item = tool.getDataRowFromDataTable(dt_Item, childCode);
 
@@ -4260,11 +4327,11 @@ namespace FactoryManagementSoftware.UI
                         }
                         else if (assembly == 0 && production == 1 && gotChild)
                         {
-                            dt_Row[headerParentColor] = ProductionMarking;
+                            dt_Row[headerParentColor] = InsertMoldingMarking;
                         }
                         else if (assembly == 1 && production == 1 && gotChild)
                         {
-                            dt_Row[headerParentColor] = ProductionAndAssemblyMarking;
+                            dt_Row[headerParentColor] = AssemblyAfterProductionMarking;
                         }
 
                         dt_Data.Rows.Add(dt_Row);
@@ -4281,6 +4348,44 @@ namespace FactoryManagementSoftware.UI
                 }
 
             }
+        }
+
+        private Tuple<float,float,float> GetThreeMonthsForecastQty(DataTable dt_ItemForecast, string itemCode, int forecastNum_1, int forecastNum_2, int forecastNum_3)
+        {
+            string monthString = cmbForecastFrom.Text;
+
+            int month_1 = DateTime.ParseExact(monthString, "MMMM", CultureInfo.CurrentCulture).Month;
+            int year_1 = DateTime.Now.Year;
+
+            month_1 += forecastNum_1 - 1;
+
+            if (month_1 > 12)
+            {
+                month_1 -= 12;
+                year_1++;
+            }
+
+            int month_2 = month_1 + 1;
+            int year_2 = year_1;
+
+            if (month_2 > 12)
+            {
+                month_2 -= 12;
+                year_2++;
+            }
+
+            int month_3 = month_2 + 1;
+            int year_3 = year_2;
+
+            if (month_3 > 12)
+            {
+                month_3 -= 12;
+                year_3++;
+            }
+
+            var forecastData = tool.getItemForecast(dt_ItemForecast, itemCode,  year_1,  month_1,  year_2,  month_2,  year_3,  month_3);
+
+            return Tuple.Create(forecastData.Item1, forecastData.Item2, forecastData.Item3);
         }
 
         private float GetForecastQty(DataTable dt_ItemForecast, string itemCode, int forecastNum)
@@ -4857,12 +4962,12 @@ namespace FactoryManagementSoftware.UI
                                         rangeName.Font.Underline = true;
                                         rangeCode.Font.Underline = true;
                                     }
-                                    else if (parentColor.Equals(ProductionMarking))
+                                    else if (parentColor.Equals(InsertMoldingMarking))
                                     {
                                         rangeName.Font.Underline = true;
                                         rangeCode.Font.Underline = true;
                                     }
-                                    else if (parentColor.Equals(ProductionAndAssemblyMarking))
+                                    else if (parentColor.Equals(AssemblyAfterProductionMarking))
                                     {
                                         rangeName.Font.Underline = true;
                                         rangeCode.Font.Underline = true;
@@ -5130,12 +5235,12 @@ namespace FactoryManagementSoftware.UI
                                         rangeName.Font.Underline = true;
                                         rangeCode.Font.Underline = true;
                                     }
-                                    else if (parentColor.Equals(ProductionMarking))
+                                    else if (parentColor.Equals(InsertMoldingMarking))
                                     {
                                         rangeName.Font.Underline = true;
                                         rangeCode.Font.Underline = true;
                                     }
-                                    else if (parentColor.Equals(ProductionAndAssemblyMarking))
+                                    else if (parentColor.Equals(AssemblyAfterProductionMarking))
                                     {
                                         rangeName.Font.Underline = true;
                                         rangeCode.Font.Underline = true;
@@ -5513,12 +5618,12 @@ namespace FactoryManagementSoftware.UI
                             rangeName.Font.Underline = true;
                             rangeCode.Font.Underline = true;
                         }
-                        else if (parentColor.Equals(ProductionMarking))
+                        else if (parentColor.Equals(InsertMoldingMarking))
                         {
                             rangeName.Font.Underline = true;
                             rangeCode.Font.Underline = true;
                         }
-                        else if (parentColor.Equals(ProductionAndAssemblyMarking))
+                        else if (parentColor.Equals(AssemblyAfterProductionMarking))
                         {
                             rangeName.Font.Underline = true;
                             rangeCode.Font.Underline = true;
