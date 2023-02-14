@@ -211,6 +211,20 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[header_ItemName].MinimumWidth = 300;
             dgv.Columns[header_Total].Frozen = true;
+
+            dgv.Columns[header_ItemName].MinimumWidth = 300;
+
+            if(dgv.Columns.Contains(header_Type))
+            dgv.Columns[header_Type].Visible = false;
+
+            if (dgv.Columns.Contains(header_LastDelivered))
+                dgv.Columns[header_LastDelivered].Visible = false;
+
+            if (dgv.Columns.Contains(header_Material))
+                dgv.Columns[header_Material].Visible = false;
+
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+
         }
 
         private void dgvInOutReport_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -235,23 +249,19 @@ namespace FactoryManagementSoftware.UI
                 matched = matched && colName != header_Type;
                 inOutType = dgv.Rows[row].Cells[header_Type].Value.ToString();
 
-                if (inOutType == inOutType_In)
+                if (dgv.Rows[row].Cells[header_ItemCode].Value == DBNull.Value)
                 {
-                    //dgv.Rows[row].Cells[header_Type].Style.BackColor = Color.LightGreen;
+                    dgv.Rows[row].DefaultCellStyle.BackColor = Color.FromArgb(245, 247, 255);
+
+                    dgv.Rows[row].Height = 35;
                 }
-                else if (inOutType == inOutType_Out)
-                {
-                    //dgv.Rows[row].Cells[header_Type].Style.BackColor = Color.LightPink;
-                }
-                else
-                {
-                    //dgv.Rows[row].Cells[header_Type].Style.BackColor = Color.White;
-                }
+
+               
             }
 
             if (matched)
             {
-                dgv.Columns[col].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+                dgv.Columns[col].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 double qty = double.TryParse(dgv.Rows[row].Cells[col].Value.ToString(), out qty) ? qty : -1;
                 string test = dgv.Rows[row].Cells[col].Value.ToString();
                 if (qty > 0 || !string.IsNullOrEmpty(test))
@@ -267,6 +277,9 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
+                    if(dgv.Rows[row].Cells[header_ItemCode].Value == DBNull.Value)
+                        dgv.Rows[row].Cells[col].Style.BackColor = Color.FromArgb(245, 247, 255);
+                    else
                     dgv.Rows[row].Cells[col].Style.BackColor = Color.White;
                 }
             }
@@ -495,6 +508,17 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void DefaultFilterSetting()
+        {
+            cmbInOutType.Text = inOutType_InOut;
+            cmbDateType.Text = dateType_Monthly;
+
+            cmbMonthFrom.Text = "1";
+            cmbYearFrom.Text = (DateTime.Now.Year - 1).ToString();
+            cmbMonthTo.Text = DateTime.Now.Month.ToString();
+            cmbYearTo.Text = DateTime.Now.Year.ToString();
+        }
+
         private void frmInOutReport_NEW_Load(object sender, EventArgs e)
         {
             dgvInOutReport.SuspendLayout();
@@ -508,6 +532,31 @@ namespace FactoryManagementSoftware.UI
             cmbItemType.Text = tool.getCustName(1);
 
             loaded = true;
+
+            DefaultFilterSetting();
+        }
+
+        private DataTable RemoveTerminatedItem(DataTable dt)
+        {
+            //"(TERMINATED)"
+            DataTable dt_NEW = dt.Copy();
+
+            dt_NEW.AcceptChanges();
+            foreach (DataRow row in dt_NEW.Rows)
+            {
+                // If this row is offensive then
+                string itemName = row[dalItem.ItemName].ToString();
+
+                if (itemName.Contains(text.Cat_Terminated))
+                {
+                    row.Delete();
+                }
+
+            }
+            dt_NEW.AcceptChanges();
+
+            return dt_NEW;
+
         }
 
         private void LoadInOutData()
@@ -515,13 +564,18 @@ namespace FactoryManagementSoftware.UI
             if (Validation())
             {
                 #region Pre Setting
+
                 frmLoading.ShowLoadingScreen();
+
                 DataGridView dgv = dgvInOutReport;
+
                 DataTable dt = NewInOutTable();
+
                 DataTable dt_ItemList;
+
                 DataTable dt_TrfHist;
 
-                DataTable dt_SalesReport;
+                //DataTable dt_SalesReport;
 
                 dt_Fac = dalFac.SelectDESC();
                 dt_PMMADate = dalPMMADate.Select();
@@ -568,7 +622,13 @@ namespace FactoryManagementSoftware.UI
                 }
                 #endregion
 
+
+                if (!cbIncludeTerminated.Checked)
+                    dt_ItemList = RemoveTerminatedItem(dt_ItemList);
+
+
                 #region get start and end date
+
                 string start;
                 string end;
                 int monthStart = -1, monthEnd = -1, yearStart = -1, yearEnd = -1;
@@ -675,6 +735,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 #endregion
 
+                //406ms^^^
                 #region print data
                 int index = 1;
                 int qtyPerBag = 0;
@@ -688,6 +749,8 @@ namespace FactoryManagementSoftware.UI
                 bool dataPrinted = false;
                 DataRow row_In = dt.NewRow(), row_Out = dt.NewRow();
 
+                string PMMA = tool.getCustName(1);
+
                 bool itemFound = false;
                 DataTable dt_SppCustomer = dalSPP.CustomerWithoutRemovedDataSelect();
 
@@ -695,6 +758,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     if(itemType == "SPP")
                     qtyPerBag = int.TryParse(itemRow[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+
 
                     itemFound = false;
                     dataPrinted = false;
@@ -813,7 +877,7 @@ namespace FactoryManagementSoftware.UI
                             }
                             else
                             {
-                                if (itemType == tool.getCustName(1) && dateType != dateType_Daily)
+                                if (itemType == PMMA && dateType != dateType_Daily)
                                 {
                                     DateTime pmmaDate = tool.GetPMMAMonthAndYear(trfDate, dt_PMMADate);
 
@@ -926,11 +990,6 @@ namespace FactoryManagementSoftware.UI
                             else if ((inOutType == inOutType_Out || inOutType == inOutType_InOut) && trfOut)
                             {
                                 dataPrinted = true;
-
-                                //if(itemCode == "(OK) CFEE 50")
-                                //{
-                                //    float eadssad = 0;
-                                //}
 
                                 totalTrfOutQty += trfQty;
 
@@ -1147,97 +1206,100 @@ namespace FactoryManagementSoftware.UI
                 }
                 #endregion
 
-                DataRow row_TotalIn = dt.NewRow();
-                DataRow row_TotalOut = dt.NewRow();
+                #region TOTAL
 
-                row_TotalIn[header_ItemName] = text_TotalInForAll;
-                row_TotalOut[header_ItemName] = text_TotalOutForAll;
-               
+                //DataRow row_TotalIn = dt.NewRow();
+                //DataRow row_TotalOut = dt.NewRow();
 
-                for (int col = 0; col < dt.Columns.Count; col ++)
-                {
-                    int totalInInPcs = 0;
-                    int totalInInBag = 0;
-                    int totalOutInPcs = 0;
-                    int totalOutInBag = 0;
+                //row_TotalIn[header_ItemName] = text_TotalInForAll;
+                //row_TotalOut[header_ItemName] = text_TotalOutForAll;
 
-                    string headerName = dt.Columns[col].ColumnName;
+                //15034ms ^^^
 
-                    if(int.TryParse(headerName[0].ToString(), out int k) || headerName == header_Total)
-                    {
-                        for (int row = 0; row < dt.Rows.Count; row++)
-                        {
+                //for (int col = 0; col < dt.Columns.Count; col ++)
+                //{
+                //    int totalInInPcs = 0;
+                //    int totalInInBag = 0;
+                //    int totalOutInPcs = 0;
+                //    int totalOutInBag = 0;
 
-                            string rowString = dt.Rows[row][col].ToString();
+                //    string headerName = dt.Columns[col].ColumnName;
 
-                            bool PcsGet = false;
+                //    if(int.TryParse(headerName[0].ToString(), out int k) || headerName == header_Total)
+                //    {
+                //        for (int row = 0; row < dt.Rows.Count; row++)
+                //        {
 
-                            string PcsString = "";
-                            string BagString = "";
+                //            string rowString = dt.Rows[row][col].ToString();
 
-                            for (int i = 0; i < rowString.Length; i++)
-                            {
-                                string charString = rowString[i].ToString();
-                                if (int.TryParse(charString, out int x))
-                                {
-                                    if (!PcsGet)
-                                    {
-                                        PcsString += charString;
-                                    }
-                                    else
-                                    {
-                                        BagString += charString;
-                                    }
-                                }
-                                else if (charString == " ")
-                                {
-                                    if (!PcsGet)
-                                    {
-                                        PcsGet = true;
-                                    }
+                //            bool PcsGet = false;
 
-                                }
-                            }
+                //            string PcsString = "";
+                //            string BagString = "";
 
-                            int PcsInt = int.TryParse(PcsString, out PcsInt) ? PcsInt : 0;
-                            int BagInt = int.TryParse(BagString, out BagInt) ? BagInt : 0;
+                //            for (int i = 0; i < rowString.Length; i++)
+                //            {
+                //                string charString = rowString[i].ToString();
+                //                if (int.TryParse(charString, out int x))
+                //                {
+                //                    if (!PcsGet)
+                //                    {
+                //                        PcsString += charString;
+                //                    }
+                //                    else
+                //                    {
+                //                        BagString += charString;
+                //                    }
+                //                }
+                //                else if (charString == " ")
+                //                {
+                //                    if (!PcsGet)
+                //                    {
+                //                        PcsGet = true;
+                //                    }
+
+                //                }
+                //            }
+
+                //            int PcsInt = int.TryParse(PcsString, out PcsInt) ? PcsInt : 0;
+                //            int BagInt = int.TryParse(BagString, out BagInt) ? BagInt : 0;
 
 
-                            if(cmbInOutType.Text == inOutType_In)
-                            {
-                                totalInInPcs += PcsInt;
-                                totalInInBag += BagInt;
-                            }
-                            else if(cmbInOutType.Text == inOutType_Out)
-                            {
-                                totalOutInPcs += PcsInt;
-                                totalOutInBag += BagInt;
-                            }
-                            else if(cmbInOutType.Text == inOutType_InOut && dt.Columns.Contains(header_Type))
-                            {
-                                string InOutType = dt.Rows[row][header_Type].ToString();
+                //            if(cmbInOutType.Text == inOutType_In)
+                //            {
+                //                totalInInPcs += PcsInt;
+                //                totalInInBag += BagInt;
+                //            }
+                //            else if(cmbInOutType.Text == inOutType_Out)
+                //            {
+                //                totalOutInPcs += PcsInt;
+                //                totalOutInBag += BagInt;
+                //            }
+                //            else if(cmbInOutType.Text == inOutType_InOut && dt.Columns.Contains(header_Type))
+                //            {
+                //                string InOutType = dt.Rows[row][header_Type].ToString();
 
-                                if (InOutType == inOutType_In)
-                                {
-                                    totalInInPcs += PcsInt;
-                                    totalInInBag += BagInt;
-                                }
-                                else if (InOutType == inOutType_Out)
-                                {
-                                    totalOutInPcs += PcsInt;
-                                    totalOutInBag += BagInt;
-                                }
-                            }
-                        }
+                //                if (InOutType == inOutType_In)
+                //                {
+                //                    totalInInPcs += PcsInt;
+                //                    totalInInBag += BagInt;
+                //                }
+                //                else if (InOutType == inOutType_Out)
+                //                {
+                //                    totalOutInPcs += PcsInt;
+                //                    totalOutInBag += BagInt;
+                //                }
+                //            }
+                //        }
 
-                        row_TotalIn[headerName] = totalInInPcs + " ( " + totalInInBag + " BAGS)";
-                        row_TotalOut[headerName] = totalOutInPcs + " ( " + totalOutInBag + " BAGS)";
-                    }
-                   
-                }
+                //        row_TotalIn[headerName] = totalInInPcs + " ( " + totalInInBag + " BAGS)";
+                //        row_TotalOut[headerName] = totalOutInPcs + " ( " + totalOutInBag + " BAGS)";
+                //    }
 
-               
-                //bind data to datagridview
+                //}
+
+                #endregion
+
                 if (dt.Rows.Count > 0)
                 {
                     string itemCode = dt.Rows[dt.Rows.Count - 1][header_ItemCode].ToString();
@@ -1249,22 +1311,22 @@ namespace FactoryManagementSoftware.UI
                     dt.AcceptChanges();
 
 
-                    if (cmbInOutType.Text == inOutType_In)
-                    {
-                        dt.Rows.Add(row_TotalIn);
-                    }
-                    else if (cmbInOutType.Text == inOutType_Out)
-                    {
-                        dt.Rows.Add(row_TotalOut);
-                    }
-                    else if (cmbInOutType.Text == inOutType_InOut)
-                    {
-                        row_TotalIn[header_Type] = inOutType_In;
-                        row_TotalOut[header_Type] = inOutType_Out;
+                    //if (cmbInOutType.Text == inOutType_In)
+                    //{
+                    //    dt.Rows.Add(row_TotalIn);
+                    //}
+                    //else if (cmbInOutType.Text == inOutType_Out)
+                    //{
+                    //    dt.Rows.Add(row_TotalOut);
+                    //}
+                    //else if (cmbInOutType.Text == inOutType_InOut)
+                    //{
+                    //    row_TotalIn[header_Type] = inOutType_In;
+                    //    row_TotalOut[header_Type] = inOutType_Out;
 
-                        dt.Rows.Add(row_TotalIn);
-                        dt.Rows.Add(row_TotalOut);
-                    }
+                    //    dt.Rows.Add(row_TotalIn);
+                    //    dt.Rows.Add(row_TotalOut);
+                    //}
 
                     
                 }
@@ -2009,6 +2071,11 @@ namespace FactoryManagementSoftware.UI
                 cmbMonthTo.Text = DateTime.Now.Month.ToString();
                 cmbYearTo.Text = DateTime.Now.Year.ToString();
             }
+        }
+
+        private void txtItemSearch_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

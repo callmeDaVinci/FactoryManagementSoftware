@@ -779,6 +779,20 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[row].Cells[col].Style.ForeColor = Color.Black;
                 }
             }
+            else if (dgv.Columns[col].Name == headerForecast1 || dgv.Columns[col].Name == headerForecast2 || dgv.Columns[col].Name == headerForecast3)
+            {
+                float forecast = dgv.Rows[row].Cells[col].Value == DBNull.Value ? -1 : 0;
+
+                if (forecast == -1)
+                {
+                    //dgv.Rows[row].Cells[col].Value = "NO FORECAST/ORDER";
+                    dgv.Rows[row].Cells[col].Style.BackColor = Color.Gray;
+                }
+                else
+                {
+                    dgv.Rows[row].Cells[col].Style.BackColor = Color.White;
+                }
+            }
         }
 
         #endregion
@@ -2817,21 +2831,26 @@ namespace FactoryManagementSoftware.UI
 
                         uData.outStd = uData.forecast1 - uData.deliveredOut;
 
-                        if (!customer.Equals("PMMA"))
-                        {
-                            uData.outStd = uData.estimate - uData.deliveredOut;
+                        //if (!customer.Equals("PMMA"))
+                        //{
+                        //    uData.outStd = uData.estimate - uData.deliveredOut;
 
-                        }
+                        //}
+
                         if (uData.forecast1 == -1)
                         {
-                            if (customer.Equals("PMMA"))
-                            {
-                                uData.outStd = 0;
-                            }
-                            else
-                            {
-                                uData.outStd = uData.estimate - uData.deliveredOut;
-                            }
+                            //uData.outStd = uData.estimate - uData.deliveredOut;
+
+                            uData.outStd = 0;
+
+                            //if (customer.Equals("PMMA"))
+                            //{
+                            //    uData.outStd = 0;
+                            //}
+                            //else
+                            //{
+                            //    uData.outStd = uData.estimate - uData.deliveredOut;
+                            //}
                         }
                         else if (uData.forecast1 > -1)
                         {
@@ -2849,14 +2868,15 @@ namespace FactoryManagementSoftware.UI
 
                         if (uData.forecast2 == -1)
                         {
-                            if (customer.Equals("PMMA"))
-                            {
-                                uData.bal2 = uData.bal1;
-                            }
-                            else
-                            {
-                                uData.bal2 = uData.bal1 - uData.estimate;
-                            }
+                            uData.bal2 = uData.bal1 - uData.estimate;
+                            //if (customer.Equals("PMMA"))
+                            //{
+                            //    uData.bal2 = uData.bal1;
+                            //}
+                            //else
+                            //{
+                            //    uData.bal2 = uData.bal1 - uData.estimate;
+                            //}
                         }
                         else if (uData.forecast2 > -1)
                         {
@@ -2978,21 +2998,24 @@ namespace FactoryManagementSoftware.UI
 
                         uData.outStd = uData.forecast1 - uData.deliveredOut;
 
-                        if (!customer.Equals("PMMA"))
-                        {
-                            uData.outStd = uData.estimate - uData.deliveredOut;
-                        }
+                        //if (!customer.Equals("PMMA"))
+                        //{
+                        //    uData.outStd = uData.estimate - uData.deliveredOut;
+                        //}
 
                         if (uData.forecast1 == -1)
                         {
-                            if (customer.Equals("PMMA"))
-                            {
-                                uData.outStd = 0;
-                            }
-                            else
-                            {
-                                uData.outStd = uData.estimate - uData.deliveredOut;
-                            }
+                            uData.outStd = 0;
+
+                            //uData.outStd = uData.estimate - uData.deliveredOut;
+                            //if (customer.Equals("PMMA"))
+                            //{
+                            //    uData.outStd = 0;
+                            //}
+                            //else
+                            //{
+                            //    uData.outStd = uData.estimate - uData.deliveredOut;
+                            //}
                         }
                         else if (uData.forecast1 > -1)
                         {
@@ -3010,14 +3033,16 @@ namespace FactoryManagementSoftware.UI
 
                         if (uData.forecast2 == -1)
                         {
-                            if (customer.Equals("PMMA"))
-                            {
-                                uData.bal2 = uData.bal1;
-                            }
-                            else
-                            {
-                                uData.bal2 = uData.bal1 - uData.estimate;
-                            }
+                            uData.bal2 = uData.bal1 - uData.estimate;
+
+                            //if (customer.Equals("PMMA"))
+                            //{
+                            //    uData.bal2 = uData.bal1;
+                            //}
+                            //else
+                            //{
+                            //    uData.bal2 = uData.bal1 - uData.estimate;
+                            //}
                         }
                         else if (uData.forecast2 > -1)
                         {
@@ -3089,6 +3114,10 @@ namespace FactoryManagementSoftware.UI
                             dt_Data.Rows.Add(dt_Row);
                             index++;
 
+                            if(uData.part_code == "V84KM4400")
+                            {
+                                float checkpoint = 1;
+                            }
                             //load child
                             LoadChild(dt_Data, uData, 0.1f);
                         }
@@ -3324,14 +3353,15 @@ namespace FactoryManagementSoftware.UI
 
                         if (uData.forecast2 == -1)
                         {
-                            if (customer.Equals("PMMA"))
-                            {
-                                uData.bal2 = uData.bal1;
-                            }
-                            else
-                            {
-                                uData.bal2 = uData.bal1 - uData.estimate;
-                            }
+                            uData.bal2 = uData.bal1 - uData.estimate;
+                            //if (customer.Equals("PMMA"))
+                            //{
+                            //    uData.bal2 = uData.bal1;
+                            //}
+                            //else
+                            //{
+                            //    uData.bal2 = uData.bal1 - uData.estimate;
+                            //}
                         }
                         else if (uData.forecast2 > -1)
                         {
@@ -3476,14 +3506,15 @@ namespace FactoryManagementSoftware.UI
 
                         if (uData.forecast2 == -1)
                         {
-                            if (customer.Equals("PMMA"))
-                            {
-                                uData.bal2 = uData.bal1;
-                            }
-                            else
-                            {
-                                uData.bal2 = uData.bal1 - uData.estimate;
-                            }
+                            uData.bal2 = uData.bal1 - uData.estimate;
+                            //if (customer.Equals("PMMA"))
+                            //{
+                            //    uData.bal2 = uData.bal1;
+                            //}
+                            //else
+                            //{
+                            //    uData.bal2 = uData.bal1 - uData.estimate;
+                            //}
                         }
                         else if (uData.forecast2 > -1)
                         {
@@ -4044,17 +4075,17 @@ namespace FactoryManagementSoftware.UI
 
                 if(forecast1 < 0)
                 {
-                    dt.Rows[i][headerForecast1] = 0;
+                    dt.Rows[i][headerForecast1] = DBNull.Value;
                 }
 
                 if (forecast2 < 0)
                 {
-                    dt.Rows[i][headerForecast2] = 0;
+                    dt.Rows[i][headerForecast2] = DBNull.Value;
                 }
 
                 if (forecast3 < 0)
                 {
-                    dt.Rows[i][headerForecast3] = 0;
+                    dt.Rows[i][headerForecast3] = DBNull.Value;
                 }
 
                 double totalNeeded1 = 0;
@@ -4153,10 +4184,6 @@ namespace FactoryManagementSoftware.UI
                 {
                     string childCode = row[dalJoin.JoinChild].ToString();
 
-                    if(childCode == "C84KXQ100")
-                    {
-                        float checkpoint = 1;
-                    }
 
                     DataRow row_Item = tool.getDataRowFromDataTable(dt_Item, childCode);
 
@@ -4167,10 +4194,8 @@ namespace FactoryManagementSoftware.UI
                     if (itemMatch)
                     {
                        
-
                         float joinQty = float.TryParse(row[dalJoin.JoinQty].ToString(), out float i) ? Convert.ToSingle(row[dalJoin.JoinQty].ToString()) : 1;
 
-                        
 
                         dt_Row = dt_Data.NewRow();
 
@@ -5881,6 +5906,11 @@ namespace FactoryManagementSoftware.UI
                 ItemSearchUIReset();
 
             }
+        }
+
+        private void dgvForecastReport_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
         }
     }
 

@@ -55,6 +55,7 @@
             this.lblUpdatedTime = new System.Windows.Forms.Label();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.gbFilter = new System.Windows.Forms.GroupBox();
+            this.cbIncludeTerminated = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblCurrentMonth2 = new System.Windows.Forms.Label();
             this.lblMonthFromReset = new System.Windows.Forms.Label();
@@ -176,10 +177,10 @@
             this.lblInOutType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblInOutType.AutoSize = true;
             this.lblInOutType.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInOutType.Location = new System.Drawing.Point(4, 16);
+            this.lblInOutType.Location = new System.Drawing.Point(4, 18);
             this.lblInOutType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblInOutType.Name = "lblInOutType";
-            this.lblInOutType.Size = new System.Drawing.Size(90, 19);
+            this.lblInOutType.Size = new System.Drawing.Size(84, 17);
             this.lblInOutType.TabIndex = 167;
             this.lblInOutType.Text = "IN/OUT TYPE";
             // 
@@ -218,10 +219,10 @@
             this.lblDateType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDateType.AutoSize = true;
             this.lblDateType.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateType.Location = new System.Drawing.Point(4, 16);
+            this.lblDateType.Location = new System.Drawing.Point(4, 18);
             this.lblDateType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDateType.Name = "lblDateType";
-            this.lblDateType.Size = new System.Drawing.Size(75, 19);
+            this.lblDateType.Size = new System.Drawing.Size(70, 17);
             this.lblDateType.TabIndex = 167;
             this.lblDateType.Text = "DATE TYPE";
             // 
@@ -281,9 +282,9 @@
             this.cbPart.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbPart.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbPart.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbPart.Location = new System.Drawing.Point(3, 3);
+            this.cbPart.Location = new System.Drawing.Point(3, 4);
             this.cbPart.Name = "cbPart";
-            this.cbPart.Size = new System.Drawing.Size(61, 22);
+            this.cbPart.Size = new System.Drawing.Size(58, 21);
             this.cbPart.TabIndex = 157;
             this.cbPart.Text = "PART";
             this.cbPart.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -298,9 +299,9 @@
             this.cbMaterial.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbMaterial.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbMaterial.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbMaterial.Location = new System.Drawing.Point(140, 3);
+            this.cbMaterial.Location = new System.Drawing.Point(140, 4);
             this.cbMaterial.Name = "cbMaterial";
-            this.cbMaterial.Size = new System.Drawing.Size(94, 22);
+            this.cbMaterial.Size = new System.Drawing.Size(88, 21);
             this.cbMaterial.TabIndex = 156;
             this.cbMaterial.Text = "MATERIAL";
             this.cbMaterial.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -378,7 +379,8 @@
             this.dgvInOutReport.AllowUserToDeleteRows = false;
             this.dgvInOutReport.AllowUserToOrderColumns = true;
             this.dgvInOutReport.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.dgvInOutReport.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.dgvInOutReport.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.dgvInOutReport.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -404,6 +406,7 @@
             this.dgvInOutReport.Name = "dgvInOutReport";
             this.dgvInOutReport.ReadOnly = true;
             this.dgvInOutReport.RowHeadersVisible = false;
+            this.dgvInOutReport.RowHeadersWidth = 51;
             this.dgvInOutReport.RowTemplate.Height = 50;
             this.dgvInOutReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvInOutReport.Size = new System.Drawing.Size(1542, 530);
@@ -436,10 +439,10 @@
             this.lblReportTitle.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblReportTitle.AutoSize = true;
             this.lblReportTitle.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblReportTitle.Location = new System.Drawing.Point(4, 10);
+            this.lblReportTitle.Location = new System.Drawing.Point(4, 11);
             this.lblReportTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblReportTitle.Name = "lblReportTitle";
-            this.lblReportTitle.Size = new System.Drawing.Size(107, 19);
+            this.lblReportTitle.Size = new System.Drawing.Size(101, 17);
             this.lblReportTitle.TabIndex = 153;
             this.lblReportTitle.Text = "IN OUT REPORT";
             // 
@@ -505,6 +508,7 @@
             // 
             this.gbFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbFilter.Controls.Add(this.cbIncludeTerminated);
             this.gbFilter.Controls.Add(this.groupBox1);
             this.gbFilter.Controls.Add(this.gbItemType);
             this.gbFilter.Controls.Add(this.gbDatePeriod);
@@ -518,6 +522,22 @@
             this.gbFilter.TabStop = false;
             this.gbFilter.Text = "FILTER";
             // 
+            // cbIncludeTerminated
+            // 
+            this.cbIncludeTerminated.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbIncludeTerminated.AutoSize = true;
+            this.cbIncludeTerminated.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbIncludeTerminated.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbIncludeTerminated.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbIncludeTerminated.Location = new System.Drawing.Point(1160, 24);
+            this.cbIncludeTerminated.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
+            this.cbIncludeTerminated.Name = "cbIncludeTerminated";
+            this.cbIncludeTerminated.Size = new System.Drawing.Size(169, 21);
+            this.cbIncludeTerminated.TabIndex = 168;
+            this.cbIncludeTerminated.Text = "Include Terminated Item";
+            this.cbIncludeTerminated.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbIncludeTerminated.UseVisualStyleBackColor = true;
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.lblCurrentMonth2);
@@ -526,6 +546,7 @@
             this.groupBox1.Controls.Add(this.cmbMonthTo);
             this.groupBox1.Controls.Add(this.lblYearTo);
             this.groupBox1.Controls.Add(this.cmbYearTo);
+            this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(284, 24);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(256, 115);
@@ -542,7 +563,7 @@
             this.lblCurrentMonth2.Location = new System.Drawing.Point(17, 82);
             this.lblCurrentMonth2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCurrentMonth2.Name = "lblCurrentMonth2";
-            this.lblCurrentMonth2.Size = new System.Drawing.Size(98, 19);
+            this.lblCurrentMonth2.Size = new System.Drawing.Size(90, 17);
             this.lblCurrentMonth2.TabIndex = 168;
             this.lblCurrentMonth2.Text = "current month";
             this.lblCurrentMonth2.Click += new System.EventHandler(this.lblCurrentMonth2_Click);
@@ -556,7 +577,7 @@
             this.lblMonthFromReset.Location = new System.Drawing.Point(189, 82);
             this.lblMonthFromReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMonthFromReset.Name = "lblMonthFromReset";
-            this.lblMonthFromReset.Size = new System.Drawing.Size(37, 19);
+            this.lblMonthFromReset.Size = new System.Drawing.Size(36, 17);
             this.lblMonthFromReset.TabIndex = 157;
             this.lblMonthFromReset.Text = "clear";
             this.lblMonthFromReset.Click += new System.EventHandler(this.lblMonthFromReset_Click);
@@ -568,7 +589,7 @@
             this.lblMonthTo.Location = new System.Drawing.Point(17, 30);
             this.lblMonthTo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMonthTo.Name = "lblMonthTo";
-            this.lblMonthTo.Size = new System.Drawing.Size(60, 19);
+            this.lblMonthTo.Size = new System.Drawing.Size(56, 17);
             this.lblMonthTo.TabIndex = 153;
             this.lblMonthTo.Text = "MONTH";
             // 
@@ -579,7 +600,7 @@
             this.cmbMonthTo.Location = new System.Drawing.Point(21, 53);
             this.cmbMonthTo.Margin = new System.Windows.Forms.Padding(4);
             this.cmbMonthTo.Name = "cmbMonthTo";
-            this.cmbMonthTo.Size = new System.Drawing.Size(91, 25);
+            this.cmbMonthTo.Size = new System.Drawing.Size(91, 20);
             this.cmbMonthTo.TabIndex = 154;
             this.cmbMonthTo.SelectedIndexChanged += new System.EventHandler(this.cmbMonthTo_SelectedIndexChanged);
             // 
@@ -590,7 +611,7 @@
             this.lblYearTo.Location = new System.Drawing.Point(120, 30);
             this.lblYearTo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblYearTo.Name = "lblYearTo";
-            this.lblYearTo.Size = new System.Drawing.Size(41, 19);
+            this.lblYearTo.Size = new System.Drawing.Size(38, 17);
             this.lblYearTo.TabIndex = 155;
             this.lblYearTo.Text = "YEAR";
             // 
@@ -603,13 +624,14 @@
             this.cmbYearTo.Location = new System.Drawing.Point(120, 53);
             this.cmbYearTo.Margin = new System.Windows.Forms.Padding(4);
             this.cmbYearTo.Name = "cmbYearTo";
-            this.cmbYearTo.Size = new System.Drawing.Size(106, 25);
+            this.cmbYearTo.Size = new System.Drawing.Size(106, 20);
             this.cmbYearTo.TabIndex = 156;
             this.cmbYearTo.SelectedIndexChanged += new System.EventHandler(this.cmbYearTo_SelectedIndexChanged);
             // 
             // gbItemType
             // 
             this.gbItemType.Controls.Add(this.txtItemSearch);
+            this.gbItemType.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbItemType.Location = new System.Drawing.Point(844, 24);
             this.gbItemType.Name = "gbItemType";
             this.gbItemType.Size = new System.Drawing.Size(296, 115);
@@ -621,8 +643,9 @@
             // 
             this.txtItemSearch.Location = new System.Drawing.Point(17, 53);
             this.txtItemSearch.Name = "txtItemSearch";
-            this.txtItemSearch.Size = new System.Drawing.Size(257, 25);
+            this.txtItemSearch.Size = new System.Drawing.Size(257, 21);
             this.txtItemSearch.TabIndex = 0;
+            this.txtItemSearch.TextChanged += new System.EventHandler(this.txtItemSearch_TextChanged);
             // 
             // gbDatePeriod
             // 
@@ -631,6 +654,7 @@
             this.gbDatePeriod.Controls.Add(this.dtpFrom);
             this.gbDatePeriod.Controls.Add(this.lblDateTo);
             this.gbDatePeriod.Controls.Add(this.lblDateFrom);
+            this.gbDatePeriod.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbDatePeriod.Location = new System.Drawing.Point(556, 24);
             this.gbDatePeriod.Name = "gbDatePeriod";
             this.gbDatePeriod.Size = new System.Drawing.Size(273, 115);
@@ -647,7 +671,7 @@
             this.lblChangeDate.Location = new System.Drawing.Point(167, 82);
             this.lblChangeDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblChangeDate.Name = "lblChangeDate";
-            this.lblChangeDate.Size = new System.Drawing.Size(84, 19);
+            this.lblChangeDate.Size = new System.Drawing.Size(80, 17);
             this.lblChangeDate.TabIndex = 165;
             this.lblChangeDate.Text = "change date";
             this.lblChangeDate.Visible = false;
@@ -657,7 +681,7 @@
             this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpTo.Location = new System.Drawing.Point(138, 54);
             this.dtpTo.Name = "dtpTo";
-            this.dtpTo.Size = new System.Drawing.Size(113, 25);
+            this.dtpTo.Size = new System.Drawing.Size(113, 21);
             this.dtpTo.TabIndex = 154;
             this.dtpTo.ValueChanged += new System.EventHandler(this.dtpTo_ValueChanged);
             // 
@@ -666,7 +690,7 @@
             this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpFrom.Location = new System.Drawing.Point(19, 54);
             this.dtpFrom.Name = "dtpFrom";
-            this.dtpFrom.Size = new System.Drawing.Size(113, 25);
+            this.dtpFrom.Size = new System.Drawing.Size(113, 21);
             this.dtpFrom.TabIndex = 153;
             this.dtpFrom.ValueChanged += new System.EventHandler(this.dtpFrom_ValueChanged);
             // 
@@ -677,7 +701,7 @@
             this.lblDateTo.Location = new System.Drawing.Point(134, 33);
             this.lblDateTo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDateTo.Name = "lblDateTo";
-            this.lblDateTo.Size = new System.Drawing.Size(26, 19);
+            this.lblDateTo.Size = new System.Drawing.Size(24, 17);
             this.lblDateTo.TabIndex = 150;
             this.lblDateTo.Text = "TO";
             // 
@@ -688,7 +712,7 @@
             this.lblDateFrom.Location = new System.Drawing.Point(15, 32);
             this.lblDateFrom.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDateFrom.Name = "lblDateFrom";
-            this.lblDateFrom.Size = new System.Drawing.Size(48, 19);
+            this.lblDateFrom.Size = new System.Drawing.Size(44, 17);
             this.lblDateFrom.TabIndex = 148;
             this.lblDateFrom.Text = "FROM";
             // 
@@ -699,6 +723,7 @@
             this.gbMonthYear.Controls.Add(this.cmbMonthFrom);
             this.gbMonthYear.Controls.Add(this.lblYearFrom);
             this.gbMonthYear.Controls.Add(this.cmbYearFrom);
+            this.gbMonthYear.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbMonthYear.Location = new System.Drawing.Point(14, 24);
             this.gbMonthYear.Name = "gbMonthYear";
             this.gbMonthYear.Size = new System.Drawing.Size(256, 115);
@@ -715,7 +740,7 @@
             this.lblCurrentMonth.Location = new System.Drawing.Point(17, 82);
             this.lblCurrentMonth.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCurrentMonth.Name = "lblCurrentMonth";
-            this.lblCurrentMonth.Size = new System.Drawing.Size(98, 19);
+            this.lblCurrentMonth.Size = new System.Drawing.Size(90, 17);
             this.lblCurrentMonth.TabIndex = 167;
             this.lblCurrentMonth.Text = "current month";
             this.lblCurrentMonth.Click += new System.EventHandler(this.lblCurrentMonth_Click);
@@ -727,7 +752,7 @@
             this.lblMonthFrom.Location = new System.Drawing.Point(17, 30);
             this.lblMonthFrom.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblMonthFrom.Name = "lblMonthFrom";
-            this.lblMonthFrom.Size = new System.Drawing.Size(60, 19);
+            this.lblMonthFrom.Size = new System.Drawing.Size(56, 17);
             this.lblMonthFrom.TabIndex = 153;
             this.lblMonthFrom.Text = "MONTH";
             // 
@@ -738,7 +763,7 @@
             this.cmbMonthFrom.Location = new System.Drawing.Point(21, 53);
             this.cmbMonthFrom.Margin = new System.Windows.Forms.Padding(4);
             this.cmbMonthFrom.Name = "cmbMonthFrom";
-            this.cmbMonthFrom.Size = new System.Drawing.Size(91, 25);
+            this.cmbMonthFrom.Size = new System.Drawing.Size(91, 20);
             this.cmbMonthFrom.TabIndex = 154;
             this.cmbMonthFrom.SelectedIndexChanged += new System.EventHandler(this.cmbMonthFrom_SelectedIndexChanged);
             // 
@@ -749,7 +774,7 @@
             this.lblYearFrom.Location = new System.Drawing.Point(120, 30);
             this.lblYearFrom.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblYearFrom.Name = "lblYearFrom";
-            this.lblYearFrom.Size = new System.Drawing.Size(41, 19);
+            this.lblYearFrom.Size = new System.Drawing.Size(38, 17);
             this.lblYearFrom.TabIndex = 155;
             this.lblYearFrom.Text = "YEAR";
             // 
@@ -762,7 +787,7 @@
             this.cmbYearFrom.Location = new System.Drawing.Point(120, 53);
             this.cmbYearFrom.Margin = new System.Windows.Forms.Padding(4);
             this.cmbYearFrom.Name = "cmbYearFrom";
-            this.cmbYearFrom.Size = new System.Drawing.Size(106, 25);
+            this.cmbYearFrom.Size = new System.Drawing.Size(106, 20);
             this.cmbYearFrom.TabIndex = 156;
             this.cmbYearFrom.SelectedIndexChanged += new System.EventHandler(this.cmbYearFrom_SelectedIndexChanged);
             // 
@@ -772,7 +797,7 @@
             this.btnFilterApply.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFilterApply.ForeColor = System.Drawing.Color.White;
-            this.btnFilterApply.Location = new System.Drawing.Point(1147, 101);
+            this.btnFilterApply.Location = new System.Drawing.Point(1160, 103);
             this.btnFilterApply.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.Size = new System.Drawing.Size(124, 36);
@@ -821,7 +846,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1582, 853);
             this.Controls.Add(this.tlpForecastReport);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -846,6 +871,7 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.gbFilter.ResumeLayout(false);
+            this.gbFilter.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.gbItemType.ResumeLayout(false);
@@ -924,5 +950,6 @@
         private System.Windows.Forms.ErrorProvider errorProvider8;
         private System.Windows.Forms.ErrorProvider errorProvider9;
         private System.Windows.Forms.Label lblCurrentMonth2;
+        private System.Windows.Forms.CheckBox cbIncludeTerminated;
     }
 }

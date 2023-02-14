@@ -444,6 +444,10 @@ namespace FactoryManagementSoftware.UI
 
         private void loadScheduleData()
         {
+            lblTotalPlannedToUse.Text = "";
+            lblTotalUsed.Text = "";
+            lblTotalToUse.Text = "";
+
             #region Search Filtering
             DataTable dt;
             DateTime startEarliest = DateTime.MinValue, endLatest = DateTime.MinValue;
@@ -702,12 +706,146 @@ namespace FactoryManagementSoftware.UI
 
             dt = dalPlanning.SelectActivePlanning();
 
-            if(dt != null)
-            foreach(DataRow row in dt.Rows)
-            {
+            float TotalMatPlannedToUse = 0;
+            float TotalMatUsed = 0;
+            float TotalMatToUse = 0;
 
-            }
+            bool rawType = false;
+            bool colorType = false;
+
+            int planCounter = 0;
+
+            if (dt != null)
+                foreach(DataRow row in dt.Rows)
+                {
+                    string rawMat = row[dalPlanning.materialCode].ToString();
+                    string colorMat = row[dalPlanning.colorMaterialCode].ToString();
+                    float matQty = 0;
+                    float ableProduce = float.TryParse(row[dalPlanning.ableQty].ToString(), out float i) ? i : 0;
+                    float ProducedQty = float.TryParse(row[dalPlanning.planProduced].ToString(), out i) ? i : 0;
+
+                    if (Material.Equals(rawMat))
+                    {
+                        float MatBag = float.TryParse(row[dalPlanning.materialBagQty].ToString(), out i) ? i : 0;
+                        matQty = MatBag * 25;
+
+                       
+
+                        float toProduceQty = ableProduce - ProducedQty;
+
+                        if(toProduceQty < 0)
+                        {
+                            toProduceQty = 0;
+                        }
+
+                        float matused_perPcs = matQty / ableProduce;
+
+                        float matUsed = matused_perPcs * ProducedQty;
+                        float matToUse = matused_perPcs * toProduceQty;
+
+                        TotalMatUsed += matUsed;
+                        TotalMatToUse += matToUse;
+
+                        rawType = true;
+
+                        planCounter++;
+
+                    }
+                    else if(Material.Equals(colorMat))
+                    {
+                        matQty = float.TryParse(row[dalPlanning.colorMaterialQty].ToString(), out  i) ? i : 0;
+
+
+                        float toProduceQty = ableProduce - ProducedQty;
+
+                        if (toProduceQty < 0)
+                        {
+                            toProduceQty = 0;
+                        }
+
+                        float matused_perPcs = matQty / ableProduce;
+
+                        float matUsed = matused_perPcs * ProducedQty;
+                        float matToUse = matused_perPcs * toProduceQty;
+
+                        TotalMatUsed += matUsed;
+                        TotalMatToUse += matToUse;
+
+                        colorType = true;
+
+                        planCounter++;
+
+                    }
+
+
+                    TotalMatPlannedToUse += matQty;
+
+                }
+
+            lblTotalPlannedToUse.Text = "Total Planned ( " + planCounter +" ) To Use : " + TotalMatPlannedToUse + " kg  ( " + TotalMatPlannedToUse/25 + " bag(s)  )";
+            lblTotalUsed.Text = "Total Mat. Used : " + TotalMatUsed + " kg  ( " + TotalMatUsed / 25 + " bag(s)  )";
+            lblTotalToUse.Text = "Total Mat. To Use : " + TotalMatToUse + " kg  ( " + TotalMatToUse / 25 + " bag(s)  )";
+
+            MatSummaryColoring(dgvSchedule,Material, rawType, colorType);
         }
+
+        private void MatSummaryColoring(DataGridView dgv , string materialCode, bool rawMode, bool colorMode)
+        {
+            dgv.SuspendLayout();
+
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                int rowIndex = dt.Rows.IndexOf(row);
+
+                string matCode_DGV = "" ;
+                string headerName = "";
+
+                if (rawMode)
+                {
+                    headerName = headerMaterial;
+
+                }
+                else if(colorMode)
+                {
+                    headerName = headerColorMaterial;
+                }
+
+                matCode_DGV = row[headerName].ToString();
+
+                if(matCode_DGV == materialCode)
+                {
+                    dgv.Rows[rowIndex].Cells[headerName].Style.BackColor = Color.OrangeRed;
+
+                    if(rawMode)
+                    {
+                        dgv.Rows[rowIndex].Cells[headerColorMaterial].Style.BackColor = Color.Gainsboro;
+                    }
+                    else if(colorMode)
+                    {
+                        dgv.Rows[rowIndex].Cells[headerMaterial].Style.BackColor = Color.Gainsboro;
+
+                    }
+                }
+                else
+                {
+                    if(string.IsNullOrEmpty(row[headerPartCode].ToString()))
+                    {
+                        dgv.Rows[rowIndex].Cells[headerMaterial].Style.BackColor = Color.FromArgb(64,64,64);
+                        dgv.Rows[rowIndex].Cells[headerColorMaterial].Style.BackColor = Color.FromArgb(64,64,64);
+                    }
+                    else
+                    {
+                        dgv.Rows[rowIndex].Cells[headerMaterial].Style.BackColor = Color.Gainsboro;
+                        dgv.Rows[rowIndex].Cells[headerColorMaterial].Style.BackColor = Color.Gainsboro;
+                    }
+                }
+            }
+
+            dgv.ResumeLayout();
+        }
+
 
         private bool checkIfFamilyMould(int planID, int planIDtoCompare)
         {
@@ -744,6 +882,11 @@ namespace FactoryManagementSoftware.UI
         private void frmMachineSchedule_Load(object sender, EventArgs e)
         {
             dgvSchedule.ClearSelection();
+
+            lblTotalPlannedToUse.Text = "";
+            lblTotalUsed.Text = "";
+            lblTotalToUse.Text = "";
+
             loaded = true;
             loadMachine();
             cmbFactory.SelectedIndex = 0;
@@ -2372,6 +2515,9 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = (DataTable)dgv.DataSource;
 
+            lblTotalPlannedToUse.Text = "";
+            lblTotalUsed.Text = "";
+            lblTotalToUse.Text = "";
 
             foreach (DataRow row in dt.Rows)
             {
@@ -2394,10 +2540,15 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].Height = 10;
                     }
 
+                    dgv.Rows[rowIndex].Cells[headerMaterial].Style.BackColor = Color.FromArgb(64, 64, 64);
+                    dgv.Rows[rowIndex].Cells[headerColorMaterial].Style.BackColor = Color.FromArgb(64, 64, 64);
+
                 }
                 else
                 {
-                   // dgv.Rows[rowIndex].Height = 50;
+                    // dgv.Rows[rowIndex].Height = 50;
+                    dgv.Rows[rowIndex].Cells[headerMaterial].Style.BackColor = Color.Gainsboro;
+                    dgv.Rows[rowIndex].Cells[headerColorMaterial].Style.BackColor = Color.Gainsboro;
                 }
 
 
@@ -2948,14 +3099,15 @@ namespace FactoryManagementSoftware.UI
             {
                 editSchedule(rowIndex);
             }
-            else if (itemClicked.Equals(text.planning_Material_Summary))
-            {
-                CalculationMaterialSummary(cellValue);
-            }
             //loadScheduleData();
             //dgvSchedule.ClearSelection();
 
             ListCellFormatting(dgvSchedule);
+
+            if (itemClicked.Equals(text.planning_Material_Summary))
+            {
+                CalculationMaterialSummary(cellValue);
+            }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
             dgvSchedule.ResumeLayout();
@@ -3209,6 +3361,28 @@ namespace FactoryManagementSoftware.UI
             CELL_EDITING_NEW_VALUE = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
 
            
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+            dtpTo.Value = DateTime.Now;
+        }
+
+        private void dgvSchedule_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex != -1)
+            {
+                string headerName = dgvSchedule.Columns[e.ColumnIndex].Name;
+
+                if(headerName == headerMaterial || headerName == headerColorMaterial)
+                {
+                    string cellValue = dgvSchedule.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    CalculationMaterialSummary(cellValue);
+                }
+
+            
+
+            }
         }
     }
 }
