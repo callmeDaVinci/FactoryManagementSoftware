@@ -447,6 +447,7 @@ namespace FactoryManagementSoftware.UI
             lblTotalPlannedToUse.Text = "";
             lblTotalUsed.Text = "";
             lblTotalToUse.Text = "";
+            lblMatStock.Text = "";
 
             #region Search Filtering
             DataTable dt;
@@ -702,90 +703,117 @@ namespace FactoryManagementSoftware.UI
 
         private void loadMaterialSummary(string Material)
         {
-            DataTable dt;
-
-            dt = dalPlanning.SelectActivePlanning();
+           
 
             float TotalMatPlannedToUse = 0;
             float TotalMatUsed = 0;
             float TotalMatToUse = 0;
+            float stock = 0;
 
             bool rawType = false;
             bool colorType = false;
 
             int planCounter = 0;
 
-            if (dt != null)
-                foreach(DataRow row in dt.Rows)
-                {
-                    string rawMat = row[dalPlanning.materialCode].ToString();
-                    string colorMat = row[dalPlanning.colorMaterialCode].ToString();
-                    float matQty = 0;
-                    float ableProduce = float.TryParse(row[dalPlanning.ableQty].ToString(), out float i) ? i : 0;
-                    float ProducedQty = float.TryParse(row[dalPlanning.planProduced].ToString(), out i) ? i : 0;
+            #region Hide
+            DataTable dt;
 
-                    if (Material.Equals(rawMat))
-                    {
-                        float MatBag = float.TryParse(row[dalPlanning.materialBagQty].ToString(), out i) ? i : 0;
-                        matQty = MatBag * 25;
+            //dt = dalPlanning.SelectActivePlanning();
+            //if (dt != null)
+            //    foreach(DataRow row in dt.Rows)
+            //    {
+            //        string rawMat = row[dalPlanning.materialCode].ToString();
+            //        string colorMat = row[dalPlanning.colorMaterialCode].ToString();
+            //        float matQty = 0;
+            //        float ableProduce = float.TryParse(row[dalPlanning.ableQty].ToString(), out float i) ? i : 0;
+            //        float ProducedQty = float.TryParse(row[dalPlanning.planProduced].ToString(), out i) ? i : 0;
+
+            //        if (Material.Equals(rawMat))
+            //        {
+            //            float MatBag = float.TryParse(row[dalPlanning.materialBagQty].ToString(), out i) ? i : 0;
+            //            matQty = MatBag * 25;
 
                        
 
-                        float toProduceQty = ableProduce - ProducedQty;
+            //            float toProduceQty = ableProduce - ProducedQty;
 
-                        if(toProduceQty < 0)
-                        {
-                            toProduceQty = 0;
-                        }
+            //            if(toProduceQty < 0)
+            //            {
+            //                toProduceQty = 0;
+            //            }
 
-                        float matused_perPcs = matQty / ableProduce;
+            //            float matused_perPcs = matQty / ableProduce;
 
-                        float matUsed = matused_perPcs * ProducedQty;
-                        float matToUse = matused_perPcs * toProduceQty;
+            //            float matUsed = matused_perPcs * ProducedQty;
+            //            float matToUse = matused_perPcs * toProduceQty;
 
-                        TotalMatUsed += matUsed;
-                        TotalMatToUse += matToUse;
+            //            TotalMatUsed += matUsed;
+            //            TotalMatToUse += matToUse;
 
-                        rawType = true;
+            //            rawType = true;
 
-                        planCounter++;
+            //            planCounter++;
 
-                    }
-                    else if(Material.Equals(colorMat))
-                    {
-                        matQty = float.TryParse(row[dalPlanning.colorMaterialQty].ToString(), out  i) ? i : 0;
-
-
-                        float toProduceQty = ableProduce - ProducedQty;
-
-                        if (toProduceQty < 0)
-                        {
-                            toProduceQty = 0;
-                        }
-
-                        float matused_perPcs = matQty / ableProduce;
-
-                        float matUsed = matused_perPcs * ProducedQty;
-                        float matToUse = matused_perPcs * toProduceQty;
-
-                        TotalMatUsed += matUsed;
-                        TotalMatToUse += matToUse;
-
-                        colorType = true;
-
-                        planCounter++;
-
-                    }
+            //        }
+            //        else if(Material.Equals(colorMat))
+            //        {
+            //            matQty = float.TryParse(row[dalPlanning.colorMaterialQty].ToString(), out  i) ? i : 0;
 
 
-                    TotalMatPlannedToUse += matQty;
+            //            float toProduceQty = ableProduce - ProducedQty;
 
-                }
+            //            if (toProduceQty < 0)
+            //            {
+            //                toProduceQty = 0;
+            //            }
 
-            lblTotalPlannedToUse.Text = "Total Planned ( " + planCounter +" ) To Use : " + TotalMatPlannedToUse + " kg  ( " + TotalMatPlannedToUse/25 + " bag(s)  )";
-            lblTotalUsed.Text = "Total Mat. Used : " + TotalMatUsed + " kg  ( " + TotalMatUsed / 25 + " bag(s)  )";
-            lblTotalToUse.Text = "Total Mat. To Use : " + TotalMatToUse + " kg  ( " + TotalMatToUse / 25 + " bag(s)  )";
+            //            float matused_perPcs = matQty / ableProduce;
 
+            //            float matUsed = matused_perPcs * ProducedQty;
+            //            float matToUse = matused_perPcs * toProduceQty;
+
+            //            TotalMatUsed += matUsed;
+            //            TotalMatToUse += matToUse;
+
+            //            colorType = true;
+
+            //            planCounter++;
+
+            //        }
+
+
+            //        TotalMatPlannedToUse += matQty;
+
+            //    }
+
+            #endregion
+
+            var matSummary = tool.loadMaterialPlanningSummary(Material);
+            planCounter = matSummary.Item1;
+            TotalMatPlannedToUse = matSummary.Item2;
+            TotalMatUsed = matSummary.Item3;
+            TotalMatToUse = matSummary.Item4;
+            stock = matSummary.Item5;
+            rawType = matSummary.Item6;
+            colorType = matSummary.Item7;
+
+            lblTotalPlannedToUse.Text = "Total Planned ( " + planCounter +" ) To Use : " + TotalMatPlannedToUse.ToString("0.###") + " kg  ( " + (TotalMatPlannedToUse/25).ToString("0.###") + " bag(s)  )";
+            lblTotalUsed.Text = "Total Mat. Used : " + TotalMatUsed.ToString("0.###") + " kg  ( " + (TotalMatUsed / 25).ToString("0.###") + " bag(s)  )";
+            lblTotalToUse.Text = "Total Mat. To Use : " + TotalMatToUse.ToString("0.###") + " kg  ( " + (TotalMatToUse / 25).ToString("0.###") + " bag(s)  )";
+
+            //get stock qty
+
+            lblMatStock.Text = "Stock : " + stock.ToString("0.###") + " kg  ( " + (stock / 25).ToString("0.###") + " bag(s)  )";
+
+            if(stock < TotalMatPlannedToUse)
+            {
+                lblMatStock.ForeColor = Color.Red;
+            }
+            else
+            {
+                lblMatStock.ForeColor = Color.Green;
+
+            }
             MatSummaryColoring(dgvSchedule,Material, rawType, colorType);
         }
 
@@ -886,6 +914,7 @@ namespace FactoryManagementSoftware.UI
             lblTotalPlannedToUse.Text = "";
             lblTotalUsed.Text = "";
             lblTotalToUse.Text = "";
+            lblMatStock.Text = "";
 
             loaded = true;
             loadMachine();
@@ -2518,6 +2547,7 @@ namespace FactoryManagementSoftware.UI
             lblTotalPlannedToUse.Text = "";
             lblTotalUsed.Text = "";
             lblTotalToUse.Text = "";
+            lblMatStock.Text = "";
 
             foreach (DataRow row in dt.Rows)
             {

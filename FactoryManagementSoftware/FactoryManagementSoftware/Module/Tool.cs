@@ -991,6 +991,92 @@ namespace FactoryManagementSoftware.Module
                 }
         }
 
+        public Tuple<int,float,float,float,float,bool,bool> loadMaterialPlanningSummary(string Material)
+        {
+            DataTable dt;
+
+            dt = dalPlanning.SelectActivePlanning();
+
+            float TotalMatPlannedToUse = 0;
+            float TotalMatUsed = 0;
+            float TotalMatToUse = 0;
+            int planCounter = 0;
+
+            bool rawType = false;
+            bool colorType = false;
+
+            if (dt != null)
+                foreach (DataRow row in dt.Rows)
+                {
+                    string rawMat = row[dalPlanning.materialCode].ToString();
+                    string colorMat = row[dalPlanning.colorMaterialCode].ToString();
+                    float matQty = 0;
+                    float ableProduce = float.TryParse(row[dalPlanning.ableQty].ToString(), out float i) ? i : 0;
+                    float ProducedQty = float.TryParse(row[dalPlanning.planProduced].ToString(), out i) ? i : 0;
+
+                    if (Material.Equals(rawMat))
+                    {
+                        float MatBag = float.TryParse(row[dalPlanning.materialBagQty].ToString(), out i) ? i : 0;
+                        matQty = MatBag * 25;
+
+
+
+                        float toProduceQty = ableProduce - ProducedQty;
+
+                        if (toProduceQty < 0)
+                        {
+                            toProduceQty = 0;
+                        }
+
+                        float matused_perPcs = matQty / ableProduce;
+
+                        float matUsed = matused_perPcs * ProducedQty;
+                        float matToUse = matused_perPcs * toProduceQty;
+
+                        TotalMatUsed += matUsed;
+                        TotalMatToUse += matToUse;
+
+                        rawType = true;
+
+                        planCounter++;
+
+                    }
+                    else if (Material.Equals(colorMat))
+                    {
+                        matQty = float.TryParse(row[dalPlanning.colorMaterialQty].ToString(), out i) ? i : 0;
+
+
+                        float toProduceQty = ableProduce - ProducedQty;
+
+                        if (toProduceQty < 0)
+                        {
+                            toProduceQty = 0;
+                        }
+
+                        float matused_perPcs = matQty / ableProduce;
+
+                        float matUsed = matused_perPcs * ProducedQty;
+                        float matToUse = matused_perPcs * toProduceQty;
+
+                        TotalMatUsed += matUsed;
+                        TotalMatToUse += matToUse;
+
+                        colorType = true;
+
+                        planCounter++;
+
+                    }
+
+
+                    TotalMatPlannedToUse += matQty;
+
+                }
+
+            //get stock qty
+            float stock = getStockQtyFromDataTable(dalItem.Select(), Material);
+
+            return Tuple.Create(planCounter, TotalMatPlannedToUse, TotalMatUsed, TotalMatToUse, stock,rawType,colorType);
+        }
 
         public DataTable GetSummaryForecastMatUsedData(BalForecastBLL u)
         {

@@ -15,6 +15,8 @@ using Font = System.Drawing.Font;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Application = System.Windows.Forms.Application;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -90,7 +92,7 @@ namespace FactoryManagementSoftware.UI
         //}
         private List<int> Row_Index_Found;
 
-        int CURRENT_ROW_JUMP = 0;
+        int CURRENT_ROW_JUMP = -1;
 
         private string textRowFound = " row(s) found";
 
@@ -857,6 +859,10 @@ namespace FactoryManagementSoftware.UI
             custChanging = true;
             dgvForecastReport.DataSource = null;
 
+            txtItemSearch.Text = "Search";
+            txtItemSearch.ForeColor = SystemColors.GrayText;
+            ItemSearchUIReset();
+
             if (cmbCustomer.SelectedIndex != -1)
             {
                 getStartandEndDate();
@@ -934,7 +940,7 @@ namespace FactoryManagementSoftware.UI
 
         private void ItemSearchUIReset()
         {
-            CURRENT_ROW_JUMP = 0;
+            CURRENT_ROW_JUMP = -1;
             lblSearchInfo.Text = "";
             Row_Index_Found = new List<int>();
 
@@ -943,52 +949,52 @@ namespace FactoryManagementSoftware.UI
         }
         private void ItemSearch()
         {
-            frmLoading.ShowLoadingScreen();
 
             ItemSearchUIReset();
+            string Searching_Text = txtItemSearch.Text.ToUpper();
 
-             DataGridView dgv = dgvForecastReport;
+            if(Searching_Text != "SEARCH" )
+            {
+                DataGridView dgv = dgvForecastReport;
 
-            DataTable dgv_List = (DataTable) dgv.DataSource;
-            string Searching_Text = txtNameSearch.Text.ToUpper();
+                DataTable dgv_List = (DataTable)dgv.DataSource;
 
-            
-            int itemFoundCount = 0;
+                int itemFoundCount = 0;
 
-
-            //search data and row jump
-            if (dgv_List != null && !string.IsNullOrEmpty(Searching_Text))
-               foreach (DataRow row in dgv_List.Rows)
-                {
-                    //dt_Row[headerPartCode] = uData.part_code;
-                    //dt_Row[headerPartName] = uData.part_name;
-                    string itemCode = row[headerPartCode].ToString().ToUpper();
-                    string itemName = row[headerPartName].ToString().ToUpper();
-
-                    if(itemCode.Contains(Searching_Text) || itemName.Contains(Searching_Text))
+                //search data and row jump
+                if (dgv_List != null && !string.IsNullOrEmpty(Searching_Text))
+                    foreach (DataRow row in dgv_List.Rows)
                     {
-                        int rowIndex = dgv_List.Rows.IndexOf(row);
+                        //dt_Row[headerPartCode] = uData.part_code;
+                        //dt_Row[headerPartName] = uData.part_name;
+                        string itemCode = row[headerPartCode].ToString().ToUpper();
+                        string itemName = row[headerPartName].ToString().ToUpper();
 
-                        Row_Index_Found.Add(rowIndex);
+                        if (itemCode.Contains(Searching_Text) || itemName.Contains(Searching_Text))
+                        {
+                            int rowIndex = dgv_List.Rows.IndexOf(row);
+
+                            Row_Index_Found.Add(rowIndex);
+                        }
+
                     }
 
+                //remove duplicate data
+                Row_Index_Found = Row_Index_Found.Distinct().ToList();
+
+                itemFoundCount = Row_Index_Found.Count;
+
+                lblSearchInfo.Text = itemFoundCount + textRowFound;
+
+                if (itemFoundCount > 0)
+                {
+                    JumpToNextRow();
+                    btnPreviousSearchResult.Enabled = false;
+                    btnNextSearchResult.Enabled = true;
                 }
 
-            //remove duplicate data
-            Row_Index_Found = Row_Index_Found.Distinct().ToList();
-
-            itemFoundCount = Row_Index_Found.Count;
-
-            lblSearchInfo.Text = itemFoundCount + textRowFound;
-
-            if(itemFoundCount > 0)
-            {
-                JumpToNextRow();
-                btnPreviousSearchResult.Enabled = false;
-                btnNextSearchResult.Enabled = true;
             }
 
-            frmLoading.CloseForm();
         }
 
         private void JumpToNextRow()
@@ -1012,7 +1018,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            if(CURRENT_ROW_JUMP != 0)
+            if(CURRENT_ROW_JUMP != -1)
             {
                 dgvForecastReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
 
@@ -1044,7 +1050,7 @@ namespace FactoryManagementSoftware.UI
                 }
 
 
-            if (CURRENT_ROW_JUMP != 0)
+            if (CURRENT_ROW_JUMP != -1)
             {
                 dgvForecastReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
 
@@ -1419,7 +1425,7 @@ namespace FactoryManagementSoftware.UI
             int yearNow = DateTime.Now.Year;
 
 
-            if(_ItemCode == "V76P9L000")
+            if(_ItemCode == "V51KM4100")
             {
                 float checkpoint = 1;
             }
@@ -2751,7 +2757,7 @@ namespace FactoryManagementSoftware.UI
                 DateTime LastYear = DateTime.Parse("1/1/" + year);
 
                 string From = LastYear.ToString("yyyy/MM/dd");
-                string To = DateToday.ToString("yyyy/MM/dd");
+                string To = DateToday.AddMonths(1).ToString("yyyy/MM/dd");
 
                 DataTable dt_TrfHist = dalTrfHist.ItemDeliveredRecordSearch(customer, From, To);
 
@@ -2791,6 +2797,12 @@ namespace FactoryManagementSoftware.UI
                     bool gotNotPackagingChild = tool.ifGotNotPackagingChild(uData.part_code, dt_Join, dt_Item);
 
                     row[text.Header_GotNotPackagingChild] = gotNotPackagingChild;
+
+
+                    if(uData.part_code == "V51KM4100")
+                    {
+                        float checkpoint = 1;
+                    }
 
                     if (!gotNotPackagingChild)//assembly == 0 && production == 0
                     {
@@ -3813,7 +3825,7 @@ namespace FactoryManagementSoftware.UI
 
         private DataTable ItemSearch(DataTable dt)
         {
-            string keywords = txtNameSearch.Text;
+            string keywords = txtItemSearch.Text;
             DataTable dt_Copy;
             int parentIndex = -1;
 
@@ -5889,19 +5901,19 @@ namespace FactoryManagementSoftware.UI
 
         private void txtNameSearch_Enter(object sender, EventArgs e)
         {
-            if (txtNameSearch.Text == "Search")
+            if (txtItemSearch.Text == text.Search_DefaultTest)
             {
-                txtNameSearch.Text = "";
-                txtNameSearch.ForeColor = SystemColors.WindowText;
+                txtItemSearch.Text = "";
+                txtItemSearch.ForeColor = SystemColors.WindowText;
             }
         }
 
         private void txtNameSearch_Leave(object sender, EventArgs e)
         {
-            if (txtNameSearch.Text.Length == 0)
+            if (txtItemSearch.Text.Length == 0)
             {
-                txtNameSearch.Text = "Search";
-                txtNameSearch.ForeColor = SystemColors.GrayText;
+                txtItemSearch.Text = text.Search_DefaultTest;
+                txtItemSearch.ForeColor = SystemColors.GrayText;
 
                 ItemSearchUIReset();
 
@@ -5910,7 +5922,74 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvForecastReport_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
+            DataGridView dgv = dgvForecastReport;
+            //handle the row selection on right click
+            if (e.Button == MouseButtons.Right && e.RowIndex > -1 )
+            {
+                ContextMenuStrip my_menu = new ContextMenuStrip();
+                dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                // Can leave these here - doesn't hurt
+                dgv.Rows[e.RowIndex].Selected = true;
+                dgv.Focus();
+                int rowIndex = dgv.CurrentCell.RowIndex;
+                int colIndex = dgv.CurrentCell.ColumnIndex;
+
+                string currentHeader = dgv.Columns[colIndex].Name;
+
+                try
+                {
+                    my_menu.Items.Add(text.DeliveredSummary).Name = text.DeliveredSummary;
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                    contextMenuStrip1 = my_menu;
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            DataGridView dgv = dgvForecastReport;
+
+            dgv.SuspendLayout();
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            string itemClicked = e.ClickedItem.Name.ToString();
+
+            string itemCode = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[headerPartCode].Value.ToString();
+            string customer = cmbCustomer.Text;
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            contextMenuStrip1.Hide();
+
+            if (itemClicked.Equals(text.DeliveredSummary))
+            {
+                frmLoading.ShowLoadingScreen();
+
+                frmInOutReport_NEW frm = new frmInOutReport_NEW(itemCode, customer);
+
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Normal;
+                frm.Size = new Size(1700, 450);
+                frm.Show();
+
+                frmLoading.CloseForm();
+            }
+           
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+            dgv.ResumeLayout();
         }
     }
 

@@ -513,6 +513,9 @@ namespace FactoryManagementSoftware.Module
 
         #endregion
 
+        public string Search_DefaultTest { get; } = "Search";
+        public string DeliveredSummary { get; } = "Delivered Summary";
+
         public string DO_CustOwnDO { get; } = "*USE CUSTOMER OWN D/O";
 
 

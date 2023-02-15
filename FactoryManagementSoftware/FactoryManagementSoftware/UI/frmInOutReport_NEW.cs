@@ -17,6 +17,7 @@ using Font = System.Drawing.Font;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -31,6 +32,22 @@ namespace FactoryManagementSoftware.UI
             LoadDateTypeCMBData(cmbDateType);
         }
 
+        private bool itemSearchMode = false;
+        private string itemSearch_ItemCode = "Search";
+        private string itemSearch_Customer = "";
+        public frmInOutReport_NEW(string itemCode, string customer)
+        {
+            InitializeComponent();
+            tool.DoubleBuffered(dgvInOutReport, true);
+            tool.loadCustomerToComboBox(cmbItemType);
+            LoadInOutTypeCMBData(cmbInOutType);
+            LoadDateTypeCMBData(cmbDateType);
+
+            itemSearchMode = true;
+            itemSearch_ItemCode = itemCode;
+            itemSearch_Customer = customer;
+
+        }
         #region Variable, Object, Class
 
         private string textMoreFilters = "MORE FILTERS ...";
@@ -530,10 +547,20 @@ namespace FactoryManagementSoftware.UI
             btnFilter.Text = textMoreFilters;
 
             cmbItemType.Text = tool.getCustName(1);
-
             loaded = true;
-
             DefaultFilterSetting();
+
+            if(itemSearchMode)
+            {
+                loaded = false;
+                txtItemSearch.Text = itemSearch_ItemCode;
+                txtItemSearch.ForeColor = SystemColors.WindowText;
+                cmbItemType.Text = itemSearch_Customer;
+                loaded = true;
+
+                LoadInOutData();
+            }
+
         }
 
         private DataTable RemoveTerminatedItem(DataTable dt)
@@ -807,6 +834,11 @@ namespace FactoryManagementSoftware.UI
 
                     //set datarow info
 
+                    if (itemCode == "V51KM4100")
+                    {
+                        var checkpoint = 1;
+                    }
+
                     foreach (DataRow trfRow in dt_TrfHist.Rows)
                     {
                         string trfItemCode = trfRow[dalItem.ItemCode].ToString();
@@ -814,10 +846,15 @@ namespace FactoryManagementSoftware.UI
                         string trfFrom = trfRow[dalTrfHist.TrfFrom].ToString();
                         string trfTo = trfRow[dalTrfHist.TrfTo].ToString();
                         
+                        //if(trfItemCode == "V51KM4100")
+                        //{
+                        //    var checkpoint = 1;
+                        //}
                      
+
                         itemSearchMatched = itemName.Contains(itemSearch.ToUpper()) || itemCode.Contains(itemSearch.ToUpper());
 
-                        if (string.IsNullOrEmpty(itemSearch))
+                        if (string.IsNullOrEmpty(itemSearch) || itemSearch.ToUpper() == text.Search_DefaultTest.ToUpper())
                         {
                             itemSearchMatched = true;
 
@@ -903,6 +940,9 @@ namespace FactoryManagementSoftware.UI
                             //check in out type
                             trfIn = CheckIfTrfIn(trfFrom, trfTo);
                             trfOut = CheckIfTrfOut(trfFrom, trfTo);
+
+                            if(cbDeliveredOnly.Checked)
+                            trfOut = trfTo == itemType;
 
                             if ((inOutType == inOutType_In || inOutType == inOutType_InOut) && trfIn)
                             {
@@ -1411,6 +1451,8 @@ namespace FactoryManagementSoftware.UI
             if (cbMaterial.Checked)
             {
                 cbPart.Checked = false;
+                cbDeliveredOnly.Checked = false;
+
                 tool.LoadMaterialToComboBox(cmbItemType);
             }
             else
@@ -1427,11 +1469,14 @@ namespace FactoryManagementSoftware.UI
             if (cbPart.Checked)
             {
                 cbMaterial.Checked = false;
+                cbDeliveredOnly.Checked = true;
                 tool.loadCustomerToComboBox(cmbItemType);
             }
             else
             {
                 cbMaterial.Checked = true;
+                cbDeliveredOnly.Checked = false;
+
             }
         }
 
@@ -2075,7 +2120,187 @@ namespace FactoryManagementSoftware.UI
 
         private void txtItemSearch_TextChanged(object sender, EventArgs e)
         {
+            if(loaded)
+            {
+                timer1.Stop();
+                timer1.Start();
+            }
+          
+        }
 
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            ItemSearch();
+
+            //dgvForecastReport.DataSource = null;
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void txtItemSearch_Leave(object sender, EventArgs e)
+        {
+            if (txtItemSearch.Text.Length == 0)
+            {
+                txtItemSearch.Text = "Search";
+                txtItemSearch.ForeColor = SystemColors.GrayText;
+
+                ItemSearchUIReset();
+
+            }
+        }
+
+        private void txtItemSearch_Enter(object sender, EventArgs e)
+        {
+            if (txtItemSearch.Text == text.Search_DefaultTest)
+            {
+                txtItemSearch.Text = "";
+                txtItemSearch.ForeColor = SystemColors.WindowText;
+            }
+        }
+
+        int CURRENT_ROW_JUMP = -1;
+        private List<int> Row_Index_Found;
+        private string textRowFound = " row(s) found";
+
+        private void ItemSearchUIReset()
+        {
+            CURRENT_ROW_JUMP = -1;
+            lblSearchInfo.Text = "";
+            Row_Index_Found = new List<int>();
+
+            btnPreviousSearchResult.Enabled = false;
+            btnNextSearchResult.Enabled = false;
+        }
+        private void ItemSearch()
+        {
+
+            ItemSearchUIReset();
+            string Searching_Text = txtItemSearch.Text.ToUpper();
+
+            if (Searching_Text != text.Search_DefaultTest.ToUpper())
+            {
+                DataGridView dgv = dgvInOutReport;
+
+                DataTable dgv_List = (DataTable)dgv.DataSource;
+
+                int itemFoundCount = 0;
+
+                string previousIndex = "";
+
+                //search data and row jump
+                if (dgv_List != null && !string.IsNullOrEmpty(Searching_Text))
+                    foreach (DataRow row in dgv_List.Rows)
+                    {
+                        //dt_Row[headerPartCode] = uData.part_code;
+                        //dt_Row[headerPartName] = uData.part_name;
+                        string itemCode = row[header_ItemCode].ToString().ToUpper();
+                        string itemName = row[header_ItemName].ToString().ToUpper();
+                        string index = row[header_Index].ToString().ToUpper();
+
+                        if (itemCode.Contains(Searching_Text) || itemName.Contains(Searching_Text))
+                        {
+                            if(previousIndex != index)
+                            {
+                                int rowIndex = dgv_List.Rows.IndexOf(row);
+
+                                Row_Index_Found.Add(rowIndex);
+                            }
+
+                            previousIndex = index;
+                        }
+
+                    }
+
+                //remove duplicate data
+                Row_Index_Found = Row_Index_Found.Distinct().ToList();
+
+                itemFoundCount = Row_Index_Found.Count;
+
+                lblSearchInfo.Text = itemFoundCount + textRowFound;
+
+                if (itemFoundCount > 0)
+                {
+                    JumpToNextRow();
+                    btnPreviousSearchResult.Enabled = false;
+                    btnNextSearchResult.Enabled = true;
+                }
+
+            }
+
+        }
+
+        private void JumpToNextRow()
+        {
+            var last = Row_Index_Found.Last();
+
+            foreach (var i in Row_Index_Found)
+            {
+                if (i > CURRENT_ROW_JUMP)
+                {
+                    CURRENT_ROW_JUMP = i;
+                    dgvInOutReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
+                    btnPreviousSearchResult.Enabled = true;
+
+                    //check if last row
+                    btnNextSearchResult.Enabled = !(i == last);
+
+                    lblResultNo.Text = "#" + (Row_Index_Found.IndexOf(i) + 1).ToString();
+
+                    return;
+                }
+            }
+
+            if (CURRENT_ROW_JUMP != -1)
+            {
+                dgvInOutReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
+
+            }
+        }
+
+        private void BackToPreviousRow()
+        {
+            var first = Row_Index_Found.First();
+
+            if (Row_Index_Found.Count - 1 >= 0)
+                for (int i = Row_Index_Found.Count - 1; i >= 0; i--)
+                {
+                    if (Row_Index_Found[i] < CURRENT_ROW_JUMP)
+                    {
+                        CURRENT_ROW_JUMP = Row_Index_Found[i];
+                        dgvInOutReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
+
+                        //check if first row
+                        btnPreviousSearchResult.Enabled = !(CURRENT_ROW_JUMP == first);
+
+                        btnNextSearchResult.Enabled = true;
+
+                        lblResultNo.Text = "#" + (i + 1).ToString();
+
+                        return;
+                    }
+
+                }
+
+
+            if (CURRENT_ROW_JUMP != -1)
+            {
+                dgvInOutReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
+
+            }
+        }
+
+        private void btnPreviousSearchResult_Click(object sender, EventArgs e)
+        {
+            BackToPreviousRow();
+        }
+
+        private void btnNextSearchResult_Click(object sender, EventArgs e)
+        {
+            JumpToNextRow();
         }
     }
 }

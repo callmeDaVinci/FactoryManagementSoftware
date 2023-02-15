@@ -51,8 +51,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.dtpTo = new System.Windows.Forms.DateTimePicker();
+            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.dtpTo = new System.Windows.Forms.DateTimePicker();
             this.dtpFrom = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -69,14 +71,13 @@
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpMainSchedule = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblMatStock = new System.Windows.Forms.Label();
+            this.lblTotalPlannedToUse = new System.Windows.Forms.Label();
+            this.lblTotalUsed = new System.Windows.Forms.Label();
+            this.lblTotalToUse = new System.Windows.Forms.Label();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.lblTotalToUse = new System.Windows.Forms.Label();
-            this.lblTotalUsed = new System.Windows.Forms.Label();
-            this.lblTotalPlannedToUse = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSchedule)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -87,6 +88,7 @@
             this.tableLayoutPanel4.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel9.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpButton.SuspendLayout();
@@ -94,7 +96,6 @@
             this.tlpMainSchedule.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
-            this.tableLayoutPanel9.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgvSchedule
@@ -433,17 +434,36 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(399, 64);
             this.tableLayoutPanel3.TabIndex = 115;
             // 
-            // dtpTo
+            // tableLayoutPanel9
             // 
-            this.dtpTo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.dtpTo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dtpTo.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpTo.Location = new System.Drawing.Point(207, 33);
-            this.dtpTo.Name = "dtpTo";
-            this.dtpTo.Size = new System.Drawing.Size(189, 25);
-            this.dtpTo.TabIndex = 1;
-            this.dtpTo.ValueChanged += new System.EventHandler(this.dtpTo_ValueChanged);
+            this.tableLayoutPanel9.ColumnCount = 2;
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 21.89781F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 78.10219F));
+            this.tableLayoutPanel9.Controls.Add(this.label6, 1, 0);
+            this.tableLayoutPanel9.Controls.Add(this.label3, 0, 0);
+            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(204, 0);
+            this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
+            this.tableLayoutPanel9.RowCount = 1;
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(195, 30);
+            this.tableLayoutPanel9.TabIndex = 169;
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 7F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))));
+            this.label6.ForeColor = System.Drawing.Color.Blue;
+            this.label6.Location = new System.Drawing.Point(153, 12);
+            this.label6.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(39, 15);
+            this.label6.TabIndex = 169;
+            this.label6.Text = "Today";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // label3
             // 
@@ -455,6 +475,18 @@
             this.label3.Size = new System.Drawing.Size(21, 13);
             this.label3.TabIndex = 117;
             this.label3.Text = "TO";
+            // 
+            // dtpTo
+            // 
+            this.dtpTo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.dtpTo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dtpTo.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpTo.Location = new System.Drawing.Point(207, 33);
+            this.dtpTo.Name = "dtpTo";
+            this.dtpTo.Size = new System.Drawing.Size(189, 25);
+            this.dtpTo.TabIndex = 1;
+            this.dtpTo.ValueChanged += new System.EventHandler(this.dtpTo_ValueChanged);
             // 
             // dtpFrom
             // 
@@ -694,12 +726,14 @@
             // 
             // tableLayoutPanel10
             // 
-            this.tableLayoutPanel10.ColumnCount = 5;
+            this.tableLayoutPanel10.ColumnCount = 6;
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
+            this.tableLayoutPanel10.Controls.Add(this.lblMatStock, 5, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblTotalPlannedToUse, 2, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblTotalUsed, 3, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblTotalToUse, 4, 0);
@@ -712,6 +746,58 @@
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel10.Size = new System.Drawing.Size(1547, 34);
             this.tableLayoutPanel10.TabIndex = 119;
+            // 
+            // lblMatStock
+            // 
+            this.lblMatStock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblMatStock.AutoSize = true;
+            this.lblMatStock.Font = new System.Drawing.Font("Segoe UI Semibold", 7.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMatStock.ForeColor = System.Drawing.Color.Black;
+            this.lblMatStock.Location = new System.Drawing.Point(1250, 16);
+            this.lblMatStock.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.lblMatStock.Name = "lblMatStock";
+            this.lblMatStock.Size = new System.Drawing.Size(41, 15);
+            this.lblMatStock.TabIndex = 170;
+            this.lblMatStock.Text = "Stock: ";
+            // 
+            // lblTotalPlannedToUse
+            // 
+            this.lblTotalPlannedToUse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTotalPlannedToUse.AutoSize = true;
+            this.lblTotalPlannedToUse.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalPlannedToUse.ForeColor = System.Drawing.Color.Black;
+            this.lblTotalPlannedToUse.Location = new System.Drawing.Point(350, 16);
+            this.lblTotalPlannedToUse.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.lblTotalPlannedToUse.Name = "lblTotalPlannedToUse";
+            this.lblTotalPlannedToUse.Size = new System.Drawing.Size(120, 15);
+            this.lblTotalPlannedToUse.TabIndex = 171;
+            this.lblTotalPlannedToUse.Text = "Total Planned To Use:";
+            // 
+            // lblTotalUsed
+            // 
+            this.lblTotalUsed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTotalUsed.AutoSize = true;
+            this.lblTotalUsed.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalUsed.ForeColor = System.Drawing.Color.Black;
+            this.lblTotalUsed.Location = new System.Drawing.Point(650, 16);
+            this.lblTotalUsed.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.lblTotalUsed.Name = "lblTotalUsed";
+            this.lblTotalUsed.Size = new System.Drawing.Size(68, 15);
+            this.lblTotalUsed.TabIndex = 170;
+            this.lblTotalUsed.Text = "Total Used: ";
+            // 
+            // lblTotalToUse
+            // 
+            this.lblTotalToUse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTotalToUse.AutoSize = true;
+            this.lblTotalToUse.Font = new System.Drawing.Font("Segoe UI Semibold", 7.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalToUse.ForeColor = System.Drawing.Color.Black;
+            this.lblTotalToUse.Location = new System.Drawing.Point(950, 16);
+            this.lblTotalToUse.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.lblTotalToUse.Name = "lblTotalToUse";
+            this.lblTotalToUse.Size = new System.Drawing.Size(80, 15);
+            this.lblTotalToUse.TabIndex = 169;
+            this.lblTotalToUse.Text = "Total To Use: ";
             // 
             // btnRefresh
             // 
@@ -751,76 +837,6 @@
             this.tableLayoutPanel7.Size = new System.Drawing.Size(1583, 853);
             this.tableLayoutPanel7.TabIndex = 168;
             // 
-            // tableLayoutPanel9
-            // 
-            this.tableLayoutPanel9.ColumnCount = 2;
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 21.89781F));
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 78.10219F));
-            this.tableLayoutPanel9.Controls.Add(this.label6, 1, 0);
-            this.tableLayoutPanel9.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(204, 0);
-            this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
-            this.tableLayoutPanel9.RowCount = 1;
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(195, 30);
-            this.tableLayoutPanel9.TabIndex = 169;
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 7F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))));
-            this.label6.ForeColor = System.Drawing.Color.Blue;
-            this.label6.Location = new System.Drawing.Point(153, 12);
-            this.label6.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(39, 15);
-            this.label6.TabIndex = 169;
-            this.label6.Text = "Today";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
-            // 
-            // lblTotalToUse
-            // 
-            this.lblTotalToUse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTotalToUse.AutoSize = true;
-            this.lblTotalToUse.Font = new System.Drawing.Font("Segoe UI Semibold", 7.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalToUse.ForeColor = System.Drawing.Color.Black;
-            this.lblTotalToUse.Location = new System.Drawing.Point(1250, 14);
-            this.lblTotalToUse.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.lblTotalToUse.Name = "lblTotalToUse";
-            this.lblTotalToUse.Size = new System.Drawing.Size(88, 17);
-            this.lblTotalToUse.TabIndex = 169;
-            this.lblTotalToUse.Text = "Total To Use: ";
-            // 
-            // lblTotalUsed
-            // 
-            this.lblTotalUsed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTotalUsed.AutoSize = true;
-            this.lblTotalUsed.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalUsed.ForeColor = System.Drawing.Color.Black;
-            this.lblTotalUsed.Location = new System.Drawing.Point(950, 14);
-            this.lblTotalUsed.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.lblTotalUsed.Name = "lblTotalUsed";
-            this.lblTotalUsed.Size = new System.Drawing.Size(74, 17);
-            this.lblTotalUsed.TabIndex = 170;
-            this.lblTotalUsed.Text = "Total Used: ";
-            // 
-            // lblTotalPlannedToUse
-            // 
-            this.lblTotalPlannedToUse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTotalPlannedToUse.AutoSize = true;
-            this.lblTotalPlannedToUse.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalPlannedToUse.ForeColor = System.Drawing.Color.Black;
-            this.lblTotalPlannedToUse.Location = new System.Drawing.Point(650, 14);
-            this.lblTotalPlannedToUse.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.lblTotalPlannedToUse.Name = "lblTotalPlannedToUse";
-            this.lblTotalPlannedToUse.Size = new System.Drawing.Size(129, 17);
-            this.lblTotalPlannedToUse.TabIndex = 171;
-            this.lblTotalPlannedToUse.Text = "Total Planned To Use:";
-            // 
             // frmMachineSchedule
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -848,6 +864,8 @@
             this.groupBox4.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.tableLayoutPanel9.ResumeLayout(false);
+            this.tableLayoutPanel9.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
@@ -858,8 +876,6 @@
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
-            this.tableLayoutPanel9.ResumeLayout(false);
-            this.tableLayoutPanel9.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -913,5 +929,6 @@
         private System.Windows.Forms.Label lblTotalPlannedToUse;
         private System.Windows.Forms.Label lblTotalUsed;
         private System.Windows.Forms.Label lblTotalToUse;
+        private System.Windows.Forms.Label lblMatStock;
     }
 }

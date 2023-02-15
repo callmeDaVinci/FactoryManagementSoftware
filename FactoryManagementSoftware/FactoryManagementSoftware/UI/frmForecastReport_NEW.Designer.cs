@@ -38,7 +38,7 @@
             this.lblResultNo = new System.Windows.Forms.Label();
             this.lblSearchInfo = new System.Windows.Forms.Label();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.txtNameSearch = new System.Windows.Forms.TextBox();
+            this.txtItemSearch = new System.Windows.Forms.TextBox();
             this.btnPreviousSearchResult = new System.Windows.Forms.Button();
             this.btnNextSearchResult = new System.Windows.Forms.Button();
             this.btnExcelAll = new System.Windows.Forms.Button();
@@ -97,6 +97,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tlpForecastReport.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -185,8 +186,8 @@
             // tableLayoutPanel9
             // 
             this.tableLayoutPanel9.ColumnCount = 2;
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 223F));
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel9.Controls.Add(this.lblResultNo, 1, 0);
             this.tableLayoutPanel9.Controls.Add(this.lblSearchInfo, 0, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -224,10 +225,10 @@
             // tableLayoutPanel8
             // 
             this.tableLayoutPanel8.ColumnCount = 3;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 220F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel8.Controls.Add(this.txtNameSearch, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.txtItemSearch, 0, 0);
             this.tableLayoutPanel8.Controls.Add(this.btnPreviousSearchResult, 1, 0);
             this.tableLayoutPanel8.Controls.Add(this.btnNextSearchResult, 2, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -239,21 +240,21 @@
             this.tableLayoutPanel8.Size = new System.Drawing.Size(300, 36);
             this.tableLayoutPanel8.TabIndex = 167;
             // 
-            // txtNameSearch
+            // txtItemSearch
             // 
-            this.txtNameSearch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtNameSearch.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.txtNameSearch.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.txtNameSearch.Location = new System.Drawing.Point(2, 2);
-            this.txtNameSearch.Margin = new System.Windows.Forms.Padding(2);
-            this.txtNameSearch.Name = "txtNameSearch";
-            this.txtNameSearch.Size = new System.Drawing.Size(216, 25);
-            this.txtNameSearch.TabIndex = 155;
-            this.txtNameSearch.Text = "Search";
-            this.txtNameSearch.TextChanged += new System.EventHandler(this.txtNameSearch_TextChanged);
-            this.txtNameSearch.Enter += new System.EventHandler(this.txtNameSearch_Enter);
-            this.txtNameSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNameSearch_KeyDown);
-            this.txtNameSearch.Leave += new System.EventHandler(this.txtNameSearch_Leave);
+            this.txtItemSearch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtItemSearch.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.txtItemSearch.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.txtItemSearch.Location = new System.Drawing.Point(2, 2);
+            this.txtItemSearch.Margin = new System.Windows.Forms.Padding(2);
+            this.txtItemSearch.Name = "txtItemSearch";
+            this.txtItemSearch.Size = new System.Drawing.Size(216, 25);
+            this.txtItemSearch.TabIndex = 155;
+            this.txtItemSearch.Text = "Search";
+            this.txtItemSearch.TextChanged += new System.EventHandler(this.txtNameSearch_TextChanged);
+            this.txtItemSearch.Enter += new System.EventHandler(this.txtNameSearch_Enter);
+            this.txtItemSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNameSearch_KeyDown);
+            this.txtItemSearch.Leave += new System.EventHandler(this.txtNameSearch_Leave);
             // 
             // btnPreviousSearchResult
             // 
@@ -1152,6 +1153,12 @@
             this.tableLayoutPanel10.Size = new System.Drawing.Size(1348, 721);
             this.tableLayoutPanel10.TabIndex = 168;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
             // frmForecastReport_NEW
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -1227,7 +1234,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtAlertLevel;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtNameSearch;
+        private System.Windows.Forms.TextBox txtItemSearch;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.DateTimePicker dtpOutTo;
         private System.Windows.Forms.DateTimePicker dtpOutFrom;
@@ -1270,5 +1277,6 @@
         private System.Windows.Forms.CheckBox cbRepeatedColorMode;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox cbSpecialTypeColorMode;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }
