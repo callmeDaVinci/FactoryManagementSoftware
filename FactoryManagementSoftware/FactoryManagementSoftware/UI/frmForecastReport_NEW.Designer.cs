@@ -98,6 +98,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cbRemoveNoDeliveredItem = new System.Windows.Forms.CheckBox();
             this.tlpForecastReport.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -476,15 +477,17 @@
             this.dgvForecastReport.Location = new System.Drawing.Point(3, 331);
             this.dgvForecastReport.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.dgvForecastReport.Name = "dgvForecastReport";
-            this.dgvForecastReport.ReadOnly = true;
             this.dgvForecastReport.RowHeadersVisible = false;
             this.dgvForecastReport.RowHeadersWidth = 51;
             this.dgvForecastReport.RowTemplate.Height = 60;
             this.dgvForecastReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvForecastReport.Size = new System.Drawing.Size(1312, 359);
             this.dgvForecastReport.TabIndex = 152;
+            this.dgvForecastReport.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecastReport_CellEndEdit);
             this.dgvForecastReport.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvForecastReport_CellFormatting);
             this.dgvForecastReport.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvForecastReport_CellMouseDown);
+            this.dgvForecastReport.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecastReport_CellValueChanged);
+            this.dgvForecastReport.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvForecastReport_EditingControlShowing);
             // 
             // tableLayoutPanel4
             // 
@@ -598,7 +601,7 @@
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 189F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 228F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 196F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 259F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 16F));
             this.tableLayoutPanel6.Controls.Add(this.groupBox4, 5, 0);
@@ -622,12 +625,12 @@
             this.groupBox4.Controls.Add(this.cbRepeatedColorMode);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold);
-            this.groupBox4.Location = new System.Drawing.Point(1044, 2);
+            this.groupBox4.Location = new System.Drawing.Point(1107, 2);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox4.MinimumSize = new System.Drawing.Size(101, 85);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox4.Size = new System.Drawing.Size(264, 170);
+            this.groupBox4.Size = new System.Drawing.Size(201, 170);
             this.groupBox4.TabIndex = 169;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "LOADING SPEED";
@@ -670,10 +673,11 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.cbRemoveNoDeliveredItem);
             this.groupBox6.Controls.Add(this.cbIncludeTerminated);
             this.groupBox6.Controls.Add(this.cbIncludeProInfo);
-            this.groupBox6.Controls.Add(this.cbWithSubMat);
             this.groupBox6.Controls.Add(this.cbRemoveNoOrderItem);
+            this.groupBox6.Controls.Add(this.cbWithSubMat);
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold);
             this.groupBox6.Location = new System.Drawing.Point(848, 2);
@@ -681,7 +685,7 @@
             this.groupBox6.MinimumSize = new System.Drawing.Size(101, 85);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox6.Size = new System.Drawing.Size(192, 170);
+            this.groupBox6.Size = new System.Drawing.Size(255, 170);
             this.groupBox6.TabIndex = 166;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "OTHER";
@@ -693,7 +697,7 @@
             this.cbIncludeTerminated.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbIncludeTerminated.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbIncludeTerminated.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbIncludeTerminated.Location = new System.Drawing.Point(11, 58);
+            this.cbIncludeTerminated.Location = new System.Drawing.Point(11, 24);
             this.cbIncludeTerminated.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbIncludeTerminated.Name = "cbIncludeTerminated";
             this.cbIncludeTerminated.Size = new System.Drawing.Size(169, 21);
@@ -710,12 +714,12 @@
             this.cbIncludeProInfo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbIncludeProInfo.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbIncludeProInfo.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbIncludeProInfo.Location = new System.Drawing.Point(11, 121);
+            this.cbIncludeProInfo.Location = new System.Drawing.Point(11, 54);
             this.cbIncludeProInfo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbIncludeProInfo.Name = "cbIncludeProInfo";
             this.cbIncludeProInfo.Size = new System.Drawing.Size(121, 21);
             this.cbIncludeProInfo.TabIndex = 166;
-            this.cbIncludeProInfo.Text = "include Pro Info";
+            this.cbIncludeProInfo.Text = "Include Pro Info";
             this.cbIncludeProInfo.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbIncludeProInfo.UseVisualStyleBackColor = true;
             this.cbIncludeProInfo.CheckedChanged += new System.EventHandler(this.cbIncludeProInfo_CheckedChanged);
@@ -726,7 +730,7 @@
             this.cbWithSubMat.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbWithSubMat.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbWithSubMat.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbWithSubMat.Location = new System.Drawing.Point(11, 24);
+            this.cbWithSubMat.Location = new System.Drawing.Point(11, 84);
             this.cbWithSubMat.Margin = new System.Windows.Forms.Padding(2);
             this.cbWithSubMat.Name = "cbWithSubMat";
             this.cbWithSubMat.Size = new System.Drawing.Size(145, 21);
@@ -743,7 +747,7 @@
             this.cbRemoveNoOrderItem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbRemoveNoOrderItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbRemoveNoOrderItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRemoveNoOrderItem.Location = new System.Drawing.Point(11, 88);
+            this.cbRemoveNoOrderItem.Location = new System.Drawing.Point(11, 114);
             this.cbRemoveNoOrderItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbRemoveNoOrderItem.Name = "cbRemoveNoOrderItem";
             this.cbRemoveNoOrderItem.Size = new System.Drawing.Size(181, 21);
@@ -1149,7 +1153,7 @@
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 721F));
             this.tableLayoutPanel10.Size = new System.Drawing.Size(1348, 721);
             this.tableLayoutPanel10.TabIndex = 168;
             // 
@@ -1158,6 +1162,23 @@
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // cbRemoveNoDeliveredItem
+            // 
+            this.cbRemoveNoDeliveredItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbRemoveNoDeliveredItem.AutoSize = true;
+            this.cbRemoveNoDeliveredItem.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbRemoveNoDeliveredItem.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbRemoveNoDeliveredItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbRemoveNoDeliveredItem.Location = new System.Drawing.Point(11, 146);
+            this.cbRemoveNoDeliveredItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
+            this.cbRemoveNoDeliveredItem.Name = "cbRemoveNoDeliveredItem";
+            this.cbRemoveNoDeliveredItem.Size = new System.Drawing.Size(228, 19);
+            this.cbRemoveNoDeliveredItem.TabIndex = 168;
+            this.cbRemoveNoDeliveredItem.Text = "Remove No Delivered(6 Months) Item";
+            this.cbRemoveNoDeliveredItem.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbRemoveNoDeliveredItem.UseVisualStyleBackColor = true;
+            this.cbRemoveNoDeliveredItem.CheckedChanged += new System.EventHandler(this.cbRemoveNoDeliveredItem_CheckedChanged);
             // 
             // frmForecastReport_NEW
             // 
@@ -1278,5 +1299,6 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox cbSpecialTypeColorMode;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.CheckBox cbRemoveNoDeliveredItem;
     }
 }

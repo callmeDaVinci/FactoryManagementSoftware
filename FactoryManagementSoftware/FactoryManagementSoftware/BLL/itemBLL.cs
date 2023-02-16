@@ -13,6 +13,7 @@ namespace FactoryManagementSoftware.BLL
         public string item_recycle { get; set; } = null;
         public string item_name { get; set; }
         public string item_code { get; set; }
+        public string item_remark { get; set; }
         public string item_color { get; set; } = null;
         public int item_quo_ton { get; set; } = 0;//quotation ton
         public int item_best_ton { get; set; } = 0;

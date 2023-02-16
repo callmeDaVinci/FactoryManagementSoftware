@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application = System.Windows.Forms.Application;
+using TextBox = System.Windows.Forms.TextBox;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -93,6 +94,10 @@ namespace FactoryManagementSoftware.UI
         private List<int> Row_Index_Found;
 
         int CURRENT_ROW_JUMP = -1;
+        private string CELL_EDITING_OLD_VALUE = "";
+        private string CELL_EDITING_NEW_VALUE = "";
+
+        private bool CELL_VALUE_CHANGED = false;
 
         private string textRowFound = " row(s) found";
 
@@ -109,6 +114,7 @@ namespace FactoryManagementSoftware.UI
         readonly string headerIndex = "#";
         readonly string headerType = "TYPE";
         readonly string headerRowReference = "REPEATED ROW";
+        readonly string headerItemRemark = "REMARK";
 
         readonly string headerItemType = "ITEM TYPE";
         readonly string headerRawMat = "RAW MATERIAL";
@@ -317,6 +323,9 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerForecast2, typeof(float));
             dt.Columns.Add(headerBal2, typeof(float));
             dt.Columns.Add(headerForecast3, typeof(float));
+
+            dt.Columns.Add(headerItemRemark, typeof(string));
+
             return dt;
         }
 
@@ -348,6 +357,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[headerForecast2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[headerBal2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[headerForecast3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[headerItemRemark].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
                 dgv.Columns[headerPartCode].Frozen = true;
 
@@ -392,6 +402,10 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[headerParentColor].HeaderCell.Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
 
                 dgv.Columns[headerProduced].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Strikeout);
+
+                dgv.Columns[headerItemRemark].HeaderCell.Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+
+                dgv.Columns[headerRowReference].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
                 dgv.EnableHeadersVisualStyles = false;
             }
@@ -1516,6 +1530,114 @@ namespace FactoryManagementSoftware.UI
             return estimateOrder;
         }
 
+        private Tuple<int,bool> CalculateEstimateOrderAndCheckActive(DataTable dt_PMMADate, DataTable dt_trfToCustomer, string _ItemCode, string _Customer)
+        {
+            int estimateOrder = 0;
+            bool NoDeliveredPastSixMonths = true;
+
+            int preMonth = 0, preYear = 0, dividedQty = 0;
+            double singleOutQty = 0, totalTrfOutQty = 0;
+
+            int monthNow = DateTime.Now.Month;
+            int yearNow = DateTime.Now.Year;
+
+            int monthSixMonthAgo = DateTime.Now.AddMonths(-6).Month;
+
+
+            if (_ItemCode == "V51KM4100")
+            {
+                float checkpoint = 1;
+            }
+
+            foreach (DataRow row in dt_trfToCustomer.Rows)
+            {
+                string trfResult = row[dalTrfHist.TrfResult].ToString();
+                string itemCode = row[dalTrfHist.TrfItemCode].ToString();
+
+                if (trfResult == "Passed" && _ItemCode == itemCode)
+                {
+
+                    double trfQty = double.TryParse(row[dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : 0;
+                    DateTime trfDate = DateTime.TryParse(row[dalTrfHist.TrfDate].ToString(), out trfDate) ? trfDate : DateTime.MaxValue;
+
+                    int month = 0;
+                    int year = 0;
+
+                    if (trfDate == DateTime.MaxValue)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        if (_Customer == "PMMA")
+                        {
+                            //day = trfDate.Day;
+                            //month = trfDate.Month;
+                            //year = trfDate.Year;
+
+                            DateTime pmmaDate = tool.GetPMMAMonthAndYear(trfDate, dt_PMMADate);
+
+                            if (pmmaDate != DateTime.MaxValue)
+                            {
+                                month = pmmaDate.Month;
+                                year = pmmaDate.Year;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            month = trfDate.Month;
+                            year = trfDate.Year;
+                        }
+
+                        if (month != monthNow || year != yearNow)
+                        {
+                            totalTrfOutQty += trfQty;
+                        }
+
+                        if(month > monthSixMonthAgo)
+                        {
+                            NoDeliveredPastSixMonths = false;
+                        }
+
+                        if (preMonth != 0 && preYear != 0 && preMonth == month && preYear == year)
+                        {
+                            singleOutQty += trfQty;
+                        }
+                        else
+                        {
+                            singleOutQty = trfQty;
+                            preMonth = month;
+                            preYear = year;
+
+                            if (month != monthNow || year != yearNow)
+                            {
+                                dividedQty++;
+                            }
+
+                        }
+
+                    }
+                }
+            }
+
+            if (totalTrfOutQty == 0 || dividedQty == 0)
+            {
+                estimateOrder = 0;
+            }
+            else
+            {
+                estimateOrder = (int)Math.Round(totalTrfOutQty / dividedQty / 100, 0) * 100;
+
+                if (estimateOrder == 0)
+                    estimateOrder = (int)Math.Round(totalTrfOutQty / dividedQty, 0);
+            }
+
+            return Tuple.Create(estimateOrder, NoDeliveredPastSixMonths);
+        }
 
 
         private Tuple<int, int> GetProduceQty(string _ItemCode, DataTable dt_MacSechedule)
@@ -2739,11 +2861,11 @@ namespace FactoryManagementSoftware.UI
             {
                 DataRow dt_Row;
 
-                DataTable dt = dalItemCust.custSearch(customer);
+                DataTable dt_Item_Cust = dalItemCust.custSearch(customer);
 
                 //filter out terminated item
                 if (!cbIncludeTerminated.Checked)
-                    dt = RemoveTerminatedItem(dt);
+                    dt_Item_Cust = RemoveTerminatedItem(dt_Item_Cust);
 
                 DataTable dt_ItemForecast = dalItemForecast.Select(tool.getCustID(customer).ToString());
 
@@ -2777,19 +2899,21 @@ namespace FactoryManagementSoftware.UI
 
                 int index = 1;
 
-                dt.DefaultView.Sort = "item_name ASC";
+                dt_Item_Cust.DefaultView.Sort = "item_name ASC";
 
-                dt = dt.DefaultView.ToTable();
+                dt_Item_Cust = dt_Item_Cust.DefaultView.ToTable();
 
-                dt.Columns.Add(text.Header_GotNotPackagingChild);
+                dt_Item_Cust.Columns.Add(text.Header_GotNotPackagingChild);
                 //^^^502ms^^^
 
                 #region load single part
                 
 
-                foreach (DataRow row in dt.Rows)
+                foreach (DataRow row in dt_Item_Cust.Rows)
                 {
                     uData.part_code = row[dalItem.ItemCode].ToString();
+
+                    uData.item_remark = row[dalItem.ItemRemark].ToString();
 
                     int assembly = row[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemAssemblyCheck]);
                     int production = row[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemProductionCheck]);
@@ -2829,10 +2953,15 @@ namespace FactoryManagementSoftware.UI
                         uData.forecast1 = forecastData.Item1;
                         uData.forecast2 = forecastData.Item2;
                         uData.forecast3 = forecastData.Item3;
-                      
+
 
                         //uData.estimate = GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, dt_PMMADate);
-                        uData.estimate = CalculateEstimateOrder(dt_PMMADate, dt_TrfHist, uData.part_code, customer);
+                        //uData.estimate = CalculateEstimateOrder(dt_PMMADate, dt_TrfHist, uData.part_code, customer);
+
+                        var estimate = CalculateEstimateOrderAndCheckActive(dt_PMMADate, dt_TrfHist, uData.part_code, customer);
+
+                        uData.estimate = estimate.Item1;
+                        bool NoDeliveredPast6Months = estimate.Item2;
 
                         if (GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, dt_PMMADate) == 0)
                         {
@@ -2913,6 +3042,7 @@ namespace FactoryManagementSoftware.UI
                             dt_Row[headerProduced] = uData.Produced;
                         }
 
+                        dt_Row[headerItemRemark] = uData.item_remark;
                         dt_Row[headerIndex] = uData.index;
                         dt_Row[headerType] = typeSingle;
                         dt_Row[headerBalType] = balType_Unique;
@@ -2934,7 +3064,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerForecast2] = uData.forecast2;
                         dt_Row[headerForecast3] = uData.forecast3;
 
-                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked))
+                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked) || uData.deliveredOut > 0 || !(NoDeliveredPast6Months && (cbRemoveNoDeliveredItem.Checked || cbRemoveNoOrderItem.Checked)))
                         {
                             dt_Data.Rows.Add(dt_Row);
                             index++;
@@ -2949,9 +3079,10 @@ namespace FactoryManagementSoftware.UI
 
                 #region load assembly part
 
-                foreach (DataRow row in dt.Rows)
+                foreach (DataRow row in dt_Item_Cust.Rows)
                 {
                     uData.part_code = row[dalItem.ItemCode].ToString();
+                    uData.item_remark = row[dalItem.ItemRemark].ToString();
 
                     int assembly = row[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemAssemblyCheck]);
                     int production = row[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemProductionCheck]);
@@ -2992,14 +3123,19 @@ namespace FactoryManagementSoftware.UI
                         //    float checkpoint = 1;
                         //}
 
-                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked))
+                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked) || uData.deliveredOut > 0)
                         {
                             dt_Row = dt_Data.NewRow();
                             dt_Data.Rows.Add(dt_Row);
                         }
 
                         //uData.estimate = GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, dt_PMMADate);
-                        uData.estimate = CalculateEstimateOrder(dt_PMMADate, dt_TrfHist, uData.part_code, customer);
+                        //uData.estimate = CalculateEstimateOrder(dt_PMMADate, dt_TrfHist, uData.part_code, customer);
+
+                        var estimate = CalculateEstimateOrderAndCheckActive(dt_PMMADate, dt_TrfHist, uData.part_code, customer);
+
+                        uData.estimate = estimate.Item1;
+                        bool NoDeliveredPast6Months = estimate.Item2;
 
                         if (GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, dt_PMMADate) == 0)
                         {
@@ -3078,6 +3214,7 @@ namespace FactoryManagementSoftware.UI
                             dt_Row[headerProduced] = uData.Produced;
                         }
 
+                        dt_Row[headerItemRemark] = uData.item_remark;
                         dt_Row[headerIndex] = uData.index;
                         dt_Row[headerItemType] = row[dalItem.ItemCat].ToString();
                         dt_Row[headerType] = typeParent;
@@ -3117,19 +3254,13 @@ namespace FactoryManagementSoftware.UI
                             dt_Row[headerParentColor] = InspectionMarking;
                         }
 
-                        if (uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked)
-                        {
 
-                        }
-                        else
+                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked) || uData.deliveredOut > 0 || !(NoDeliveredPast6Months && (cbRemoveNoDeliveredItem.Checked || cbRemoveNoOrderItem.Checked)))
                         {
                             dt_Data.Rows.Add(dt_Row);
                             index++;
 
-                            if(uData.part_code == "V84KM4400")
-                            {
-                                float checkpoint = 1;
-                            }
+                            
                             //load child
                             LoadChild(dt_Data, uData, 0.1f);
                         }
@@ -3419,7 +3550,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerForecast2] = uData.forecast2;
                         dt_Row[headerForecast3] = uData.forecast3;
 
-                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked))
+                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked) || uData.deliveredOut > 0)
                         {
                             dt_Data.Rows.Add(dt_Row);
                             index++;
@@ -3467,7 +3598,7 @@ namespace FactoryManagementSoftware.UI
                         uData.forecast2 = GetForecastQty(dt_ItemForecast, uData.part_code, 2);
                         uData.forecast3 = GetForecastQty(dt_ItemForecast, uData.part_code, 3);
 
-                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked))
+                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked) || uData.deliveredOut > 0)
                         {
                             dt_Row = dt_Data.NewRow();
                             dt_Data.Rows.Add(dt_Row);
@@ -3587,7 +3718,7 @@ namespace FactoryManagementSoftware.UI
                         }
 
 
-                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked))
+                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked) || uData.deliveredOut > 0)
                         {
                             dt_Data.Rows.Add(dt_Row);
                             index++;
@@ -4214,6 +4345,7 @@ namespace FactoryManagementSoftware.UI
                         uChildData.part_code = row_Item[dalItem.ItemCode].ToString();
 
                         uChildData.index = index;
+                        uChildData.item_remark = row_Item[dalItem.ItemRemark].ToString();
                         uChildData.part_name = row_Item[dalItem.ItemName].ToString();
                         uChildData.color_mat = row_Item[dalItem.ItemMBatch].ToString();
                         uChildData.color = row_Item[dalItem.ItemColor].ToString();
@@ -4331,6 +4463,8 @@ namespace FactoryManagementSoftware.UI
                         {
                             dt_Row[headerProduced] = uChildData.Produced;
                         }
+
+                        dt_Row[headerItemRemark] = uChildData.item_remark;
 
                         dt_Row[headerIndex] = uChildData.index;
                         dt_Row[headerType] = typeChild;
@@ -5764,6 +5898,11 @@ namespace FactoryManagementSoftware.UI
         {
             dgvForecastReport.DataSource = null;
 
+            if(cbRemoveNoOrderItem.Checked)
+            {
+                cbRemoveNoDeliveredItem.Checked = true;
+            }
+
         }
 
         private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
@@ -5990,6 +6129,117 @@ namespace FactoryManagementSoftware.UI
 
             Cursor = Cursors.Arrow; // change cursor to normal type
             dgv.ResumeLayout();
+        }
+
+        private void cbRemoveNoDeliveredItem_CheckedChanged(object sender, EventArgs e)
+        {
+            dgvForecastReport.DataSource = null;
+
+            if (cbRemoveNoDeliveredItem.Checked)
+            {
+                cbRemoveNoOrderItem.Checked = true;
+            }
+
+        }
+        private void Column1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            //{
+            //    e.Handled = true;
+            //}
+
+        }
+
+        private void Column2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+
+        }
+
+        private void dgvForecastReport_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            try
+            {
+                CELL_VALUE_CHANGED = false;
+                CELL_EDITING_OLD_VALUE = "";
+
+                DataGridView dgv = dgvForecastReport;
+
+                e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
+                e.Control.KeyPress -= new KeyPressEventHandler(Column2_KeyPress);
+
+                int colIndex = dgv.CurrentCell.ColumnIndex;
+                int rowIndex = dgv.CurrentCell.RowIndex;
+
+                if (dgv.Columns[colIndex].Name.Contains(headerItemRemark)) //Desired Column
+                {
+                    CELL_EDITING_OLD_VALUE = dgv.Rows[rowIndex].Cells[colIndex].Value.ToString();
+
+                    TextBox tb = e.Control as TextBox;
+
+                    if (tb != null)
+                    {
+                        tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
+                    }
+                }
+                else
+                {
+                    TextBox tb = e.Control as TextBox;
+
+                    if (tb != null)
+                    {
+                        tb.KeyPress += new KeyPressEventHandler(Column2_KeyPress);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
+        private void dgvForecastReport_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (CELL_VALUE_CHANGED)
+            {
+                DialogResult dialogResult = MessageBox.Show("Do you want to save changes?", "Message",
+                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                    string itemCode = dgvForecastReport.Rows[e.RowIndex].Cells[headerPartCode].Value.ToString();
+
+                    itemBLL uItem = new itemBLL();
+
+                    uItem.item_code = itemCode;
+                    uItem.item_remark = CELL_EDITING_NEW_VALUE;
+                    uItem.item_updtd_date = DateTime.Now;
+                    uItem.item_updtd_by = MainDashboard.USER_ID;
+
+
+                    if (!dalItem.ItemRemarkUpdate(uItem))
+                    {
+                        MessageBox.Show("Failed to update item remark!");
+                    }
+
+                    CELL_EDITING_OLD_VALUE = "";
+                    CELL_EDITING_NEW_VALUE = "";
+
+                    Cursor = Cursors.Arrow; // change cursor to normal type
+
+                }
+            }
+        }
+
+        private void dgvForecastReport_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            CELL_VALUE_CHANGED = true;
+
+            DataGridView dgv = dgvForecastReport;
+
+            CELL_EDITING_NEW_VALUE = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
         }
     }
 

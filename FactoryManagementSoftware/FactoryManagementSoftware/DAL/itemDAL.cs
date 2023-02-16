@@ -17,6 +17,8 @@ namespace FactoryManagementSoftware.DAL
         public string ItemRecycleMat { get; } = "item_recycle";
         public string ItemName { get; } = "item_name";
         public string ItemCode { get; } = "item_code";
+        public string ItemRemark { get; } = "item_remark";
+        public string ItemCustRemark { get; } = "item_cust_remark";
         public string ItemColor { get; } = "item_color";
         public string ItemRawRatio { get; } = "raw_ratio";
         public string ItemRecycleRatio { get; } = "recycle_ratio";
@@ -951,7 +953,6 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Update data in Database
-
         public bool Update(itemBLL u)
         {
             bool isSuccess = false;
@@ -1017,7 +1018,6 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
-
         public bool NewUpdate(itemBLL u)
         {
             bool isSuccess = false;
@@ -1110,7 +1110,6 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
-
         public bool ItemMasterList_ItemUpdate(itemBLL u)
         {
             bool isSuccess = false;
@@ -1218,7 +1217,6 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
-
         public bool SBBItemUpdate(itemBLL u)
         {
             bool isSuccess = false;
@@ -1331,6 +1329,53 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool ItemRemarkUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemRemark + "=@item_remark,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_remark", u.item_remark);
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         public bool SPPUpdate(itemBLL u)
         {
             bool isSuccess = false;

@@ -27,7 +27,15 @@ namespace FactoryManagementSoftware.DAL
                             tbl_item.item_code, 
                             tbl_item.item_name, 
                             tbl_item.item_material,
+                            tbl_item.item_unit,
                             tbl_item.item_qty,
+                            tbl_item.item_ord,
+                            tbl_item.item_capacity,
+                            tbl_item.item_pro_pw_shot,
+                            tbl_item.item_pro_rw_shot,
+                            tbl_item.item_cat,
+                            tbl_item.item_mb_rate,
+                            tbl_item.item_mb,
                             tbl_item.item_assembly,
                             tbl_item.item_production,
                             tbl_item.item_part_weight,
@@ -37,6 +45,7 @@ namespace FactoryManagementSoftware.DAL
                             tbl_item_cust.forecast_one,
                             tbl_item_cust.forecast_two,
                             tbl_item_cust.forecast_three,
+                            tbl_item_cust.item_cust_remark,
                             tbl_item_cust.item_cust_added_date, 
                             tbl_item_cust.item_cust_added_by 
                             FROM ((tbl_item_cust 

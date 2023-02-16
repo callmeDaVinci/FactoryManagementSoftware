@@ -1075,6 +1075,12 @@ namespace FactoryManagementSoftware.Module
             //get stock qty
             float stock = getStockQtyFromDataTable(dalItem.Select(), Material);
 
+            TotalMatPlannedToUse = (float)Math.Floor(TotalMatPlannedToUse * 1000) / 1000;
+            TotalMatUsed = (float)Math.Floor(TotalMatUsed * 1000) / 1000;
+            TotalMatToUse = (float)Math.Floor(TotalMatToUse * 1000) / 1000;
+            stock = (float)Math.Floor(stock * 1000) / 1000;
+
+
             return Tuple.Create(planCounter, TotalMatPlannedToUse, TotalMatUsed, TotalMatToUse, stock,rawType,colorType);
         }
 
@@ -3831,12 +3837,18 @@ namespace FactoryManagementSoftware.Module
         public float matPlanGetQty(DataTable matPlan_data, string matCode)
         {
             float qty = 0;
+            Text text = new Text();
+
             if (matPlan_data.Rows.Count > 0)
             {
                 foreach (DataRow row in matPlan_data.Rows)
                 {
                     string mat_code = row[dalMatPlan.MatCode].ToString();
                     bool active = Convert.ToBoolean(row[dalMatPlan.Active]);
+
+                    string planStatus = row[dalPlanning.planStatus].ToString();
+
+                    active = planStatus.Equals(text.planning_status_running) || planStatus.Equals(text.planning_status_pending);
 
                     if (mat_code.Equals(matCode) && active)
                     {

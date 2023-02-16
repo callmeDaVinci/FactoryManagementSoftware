@@ -17,6 +17,7 @@ namespace FactoryManagementSoftware.BLL
         public float pw_per_shot { get; set; }
         public float rw_per_shot { get; set; }
         public float cavity { get; set; }
+        public string item_remark { get; set; }
         public float ready_stock { get; set; }
         public float estimate { get; set; }
         public float deliveredOut { get; set; }

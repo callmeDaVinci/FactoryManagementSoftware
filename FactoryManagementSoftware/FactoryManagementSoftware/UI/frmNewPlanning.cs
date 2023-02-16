@@ -54,7 +54,7 @@ namespace FactoryManagementSoftware.UI
         static public readonly string headerName = "NAME";
         static public readonly string headerShort = "SHORT";
         readonly string headerStock = "CURRENT STOCK";
-        readonly string headerPlanningUsed = "PLANNED TO USE";
+        readonly string headerPlanningUsed = "MAT. TO USE";
         readonly string headerAvaiableQty = "AVAIABLE QTY";
         static public  readonly string headerQtyNeedForThisPlanning = "QTY NEED FOR THIS PLANNING";
         
@@ -83,6 +83,8 @@ namespace FactoryManagementSoftware.UI
         string headerBal1 = "BAL";
         string headerBal2 = "BAL";
         string headerBal3 = "BAL";
+        private int Total_Qty_Produced_From_Recycle = 0;
+
 
         #endregion
 
@@ -1086,52 +1088,68 @@ namespace FactoryManagementSoftware.UI
 
         private void CalTotalRecycleMat()
         {
-            float totalRecycleMat = txtMatAfterWastage.Text == "" ? 0 : Convert.ToSingle(txtMatAfterWastage.Text);
-            totalRecycleMat *= 1000;
+            Total_Qty_Produced_From_Recycle = 0;
 
-            float partWeightPerShot = txtPartWeight.Text == "" ? 1 : Convert.ToSingle(txtPartWeight.Text);
-            float runnerWeightPerShot = txtRunnerWeight.Text == "" ? 1 : Convert.ToSingle(txtRunnerWeight.Text);
+            float totalRecycleMat = 0;
 
-            float totalWeightPerShot = partWeightPerShot + runnerWeightPerShot;
-
-            if (totalWeightPerShot == 0)
+            if (cbRecycleUse.Checked)
             {
-                totalWeightPerShot = 1;
-            }
+                totalRecycleMat = txtMatAfterWastage.Text == "" ? 0 : Convert.ToSingle(txtMatAfterWastage.Text) * 1000;
 
-            if (partWeightPerShot != 0 && runnerWeightPerShot != 0)
-            {
-                totalRecycleMat = runnerRecycleCalculate(totalRecycleMat / (totalWeightPerShot) * runnerWeightPerShot);
-                
-            }
-            else
-            {
-                totalRecycleMat = 0;
-            }
+                float partWeightPerShot = txtPartWeight.Text == "" ? 1 : Convert.ToSingle(txtPartWeight.Text);
+                float runnerWeightPerShot = txtRunnerWeight.Text == "" ? 1 : Convert.ToSingle(txtRunnerWeight.Text);
 
-            if(totalRecycleMat != 0)
-            {
-                totalRecycleMat /= 1000;
+                float totalWeightPerShot = partWeightPerShot + runnerWeightPerShot;
+
+                if (totalWeightPerShot == 0)
+                {
+                    totalWeightPerShot = 1;
+                }
+
+                if (partWeightPerShot != 0 && runnerWeightPerShot != 0)
+                {
+                    float totalShot = (float)Math.Floor(totalRecycleMat / totalWeightPerShot);
+
+                    totalRecycleMat = runnerRecycleCalculate(totalShot * runnerWeightPerShot);
+
+                }
+                else
+                {
+                    totalRecycleMat = 0;
+                }
+
+                if (totalRecycleMat != 0)
+                {
+                    totalRecycleMat /= 1000;
+                }
             }
 
             txtRecycleKG.Text = totalRecycleMat.ToString("0.###");
+            txtRecycleProduceQty.Text = Total_Qty_Produced_From_Recycle.ToString();
         }
 
         private float runnerRecycleCalculate(float runnerLeft)
         {
             float partWeightPerShot = txtPartWeight.Text == "" ? 1 : Convert.ToSingle(txtPartWeight.Text);
             float runnerWeightPerShot = txtRunnerWeight.Text == "" ? 1 : Convert.ToSingle(txtRunnerWeight.Text);
+            float totalWeightPerShot = partWeightPerShot + runnerWeightPerShot;
 
-            if (runnerLeft > (partWeightPerShot+runnerWeightPerShot))
+            if (runnerLeft > (totalWeightPerShot))
             {
-                return Convert.ToSingle(Math.Floor(runnerRecycleCalculate(runnerLeft / (partWeightPerShot + runnerWeightPerShot) * runnerWeightPerShot) + runnerLeft));
+                float totalShot = (float)Math.Floor(runnerLeft / totalWeightPerShot);
+
+                int cavity = int.TryParse(txtCavity.Text, out cavity) ? cavity : 0;
+
+                Total_Qty_Produced_From_Recycle += (int)totalShot * cavity;
+
+                return Convert.ToSingle(Math.Floor(runnerRecycleCalculate(totalShot * runnerWeightPerShot) + runnerLeft));
             }
             else
             {
                 return 0;
             }
-            
         }
+
 
         private void CalColorMatAndTotalRawMatBeforeWastage()
         {
@@ -2064,7 +2082,25 @@ namespace FactoryManagementSoftware.UI
 
         private void cbRecycleUse_CheckedChanged(object sender, EventArgs e)
         {
-            CalTotalMatAfterWastage();
+            if(cbRecycleUse.Checked)
+            {
+                if (loaded)
+                {
+                    CalTotalRecycleMat();
+                    CalTotalMatAfterWastage();
+
+                   
+                }
+            }
+            else
+            {
+                txtRecycleKG.Text = "0";
+                txtRecycleProduceQty.Text = "0";
+
+                CalTotalMatAfterWastage();
+                calculateAbleToProduce();
+            }
+
         }
 
         private void CalRawMatAfterWastage()
@@ -2699,11 +2735,23 @@ namespace FactoryManagementSoftware.UI
             //add raw material to list
             if (!string.IsNullOrEmpty(rawMaterialCode))
             {
-                currentStock = dalItem.getStockQty(rawMaterialCode);
+                //currentStock = dalItem.getStockQty(rawMaterialCode);
 
 
-                planningUsed = tool.matPlanGetQty(dt, rawMaterialCode);
-                availableQty = currentStock - planningUsed;
+                //planningUsed = tool.matPlanGetQty(dt, rawMaterialCode);
+
+                var matSummary = tool.loadMaterialPlanningSummary(rawMaterialCode);
+                int planCounter = matSummary.Item1;
+                planningUsed = matSummary.Item2;
+                float TotalMatUsed = matSummary.Item3;
+                float TotalMatToUse = matSummary.Item4;
+                currentStock = matSummary.Item5;
+                bool rawType = matSummary.Item6;
+                bool colorType = matSummary.Item7;
+
+              
+
+                availableQty = currentStock - TotalMatToUse;
 
                 if (txtMatBagQty.Text != "" && txtMatBagKG.Text != "")
                 {
@@ -2725,7 +2773,7 @@ namespace FactoryManagementSoftware.UI
                 row_dtMat[headerName] = dalItem.getItemName(rawMaterialCode);
 
                 row_dtMat[headerStock] = currentStock;
-                row_dtMat[headerPlanningUsed] = planningUsed;
+                row_dtMat[headerPlanningUsed] = TotalMatToUse;
                 row_dtMat[headerAvaiableQty] = availableQty;
 
                 row_dtMat[headerQtyNeedForThisPlanning] = totalMaterial;
@@ -2746,12 +2794,23 @@ namespace FactoryManagementSoftware.UI
             //add color material to list
             if (!string.IsNullOrEmpty(colorMaterialCode))
             {
-                currentStock = dalItem.getStockQty(colorMaterialCode);
+                //currentStock = dalItem.getStockQty(colorMaterialCode);
 
-                planningUsed = tool.matPlanGetQty(dt, colorMaterialCode);
+                //planningUsed = tool.matPlanGetQty(dt, colorMaterialCode);
 
-                availableQty = currentStock - planningUsed;
+                //availableQty = currentStock - planningUsed;
 
+                var matSummary = tool.loadMaterialPlanningSummary(rawMaterialCode);
+                int planCounter = matSummary.Item1;
+                planningUsed = matSummary.Item2;
+                float TotalMatUsed = matSummary.Item3;
+                float TotalMatToUse = matSummary.Item4;
+                currentStock = matSummary.Item5;
+                bool rawType = matSummary.Item6;
+                bool colorType = matSummary.Item7;
+
+
+                availableQty = currentStock - TotalMatToUse;
 
                 if (txtColorMatPlannedQty.Text != "")
                 {
@@ -2773,7 +2832,7 @@ namespace FactoryManagementSoftware.UI
                 row_dtMat[headerName] = dalItem.getItemName(colorMaterialCode);
 
                 row_dtMat[headerStock] = currentStock;
-                row_dtMat[headerPlanningUsed] = planningUsed;
+                row_dtMat[headerPlanningUsed] = TotalMatToUse;
                 row_dtMat[headerAvaiableQty] = availableQty;
 
                 row_dtMat[headerQtyNeedForThisPlanning] = totalMaterial;
@@ -3338,10 +3397,18 @@ namespace FactoryManagementSoftware.UI
             float runnerWeightPerShot = txtRunnerWeight.Text == "" || txtRunnerWeight.Text == "0" ? 1 : Convert.ToSingle(txtRunnerWeight.Text);
             int cavity = txtCavity.Text == "" ? 0 : Convert.ToInt32(txtCavity.Text);
 
-
             int TotalShot = Convert.ToInt32(Math.Floor(totalMaterial * 1000 / (partWeightPerShot + runnerWeightPerShot)));
+            
 
-            txtAbleToProduceQty.Text = (TotalShot * cavity).ToString();
+            float TotalNewMaterialIncludedColor = float.TryParse(txtMatAfterWastage.Text, out float x) ? x : 0;
+
+            int TotalProducedFromRecycle = int.TryParse(txtRecycleProduceQty.Text, out int i) ? i : 0;
+
+            int TotalShotFromNewMaterial = (int)(float)Math.Floor(TotalNewMaterialIncludedColor * 1000 / (partWeightPerShot + runnerWeightPerShot));
+
+            //txtAbleToProduceQty.Text = (TotalShot * cavity).ToString();
+
+            txtAbleToProduceQty.Text = (TotalShotFromNewMaterial * cavity + TotalProducedFromRecycle).ToString();
         }
 
         private void txtTotalMat_TextChanged(object sender, EventArgs e)
