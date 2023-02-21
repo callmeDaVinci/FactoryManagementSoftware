@@ -2800,7 +2800,7 @@ namespace FactoryManagementSoftware.UI
 
                 //availableQty = currentStock - planningUsed;
 
-                var matSummary = tool.loadMaterialPlanningSummary(rawMaterialCode);
+                var matSummary = tool.loadMaterialPlanningSummary(colorMaterialCode);
                 int planCounter = matSummary.Item1;
                 planningUsed = matSummary.Item2;
                 float TotalMatUsed = matSummary.Item3;

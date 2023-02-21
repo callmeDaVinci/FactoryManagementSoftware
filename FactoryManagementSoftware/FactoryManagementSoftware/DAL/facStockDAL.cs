@@ -306,6 +306,42 @@ namespace FactoryManagementSoftware.DAL
             return qty;
         }
 
+        public bool PendingPackingStockUpdate(string facID, string itemCode, float qty, string unit)
+        {
+            bool result = true;
+
+            uStock.stock_item_code = itemCode;
+            uStock.stock_fac_id = Convert.ToInt32(facID);
+            uStock.stock_qty = qty;
+            uStock.stock_unit = unit;
+            uStock.stock_updtd_date = DateTime.Now;
+            uStock.stock_updtd_by = MainDashboard.USER_ID;
+
+            if (IfExists(itemCode, facID))
+            {
+                //Updating data into database
+                if (!Update(uStock))
+                {
+                    //failed to update user
+                    result = false;
+                    MessageBox.Show("Failed to updated stock");
+                }
+            }
+            else
+            {
+                //Inserting Data into Database
+                //If the data is successfully inserted then the value of success will be true else false
+                if (!Insert(uStock))
+                {
+                    //Failed to insert data
+                    result = false;
+                    MessageBox.Show("Failed to add new stock");
+                }
+            }
+            dalItem.updateTotalStock(itemCode);
+            return result;
+        }
+
         public bool facStockIn(string facID, string itemCode, float qty, string unit)
         {
             bool result = true;

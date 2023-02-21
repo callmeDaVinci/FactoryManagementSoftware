@@ -28,6 +28,7 @@ using XlVAlign = Microsoft.Office.Interop.Excel.XlVAlign;
 using Range = Microsoft.Office.Interop.Excel.Range;
 using XlBorderWeight = Microsoft.Office.Interop.Excel.XlBorderWeight;
 using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
+using System.Drawing.Imaging;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -371,8 +372,31 @@ namespace FactoryManagementSoftware.UI
 
         private void InitializeData()
         {
-            tool.loadFactoryAndAllExceptStore(cmbFactory);
+            tool.loadOUGProductionFactory(cmbFactory);
             ResetData();
+        }
+
+        private void loadMachine_NEW()
+        {
+            if (cmbFactory.SelectedIndex != -1)
+            {
+                string fac = cmbFactory.Text;
+
+                if (string.IsNullOrEmpty(fac))
+                {
+                    tool.loadMacIDToComboBox(cmbMachine);
+                    cmbMachine.SelectedIndex = -1;
+                }
+                else if (fac.Equals("All"))
+                {
+                    tool.loadMacIDToComboBox(cmbMachine);
+                    cmbMachine.SelectedIndex = -1;
+                }
+                else
+                {
+                    tool.loadMacIDByFactoryToComboBox(cmbMachine, fac);
+                }
+            }
         }
 
         private void loadMachine()
@@ -442,6 +466,16 @@ namespace FactoryManagementSoftware.UI
             return sortedDt;
         }
 
+        private void MatSummaryReset()
+        {
+            lblTotalPlannedToUse.Text = "";
+            lblTotalUsed.Text = "";
+            lblTotalToUse.Text = "";
+            lblMatStock.Text = "";
+
+            MatSummaryColoring(dgvSchedule,"",  true, true);
+
+        }
         private void loadScheduleData()
         {
             lblTotalPlannedToUse.Text = "";
@@ -694,6 +728,8 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
+                //Idle Search
+
                 dgvSchedule.DataSource = dt_Schedule;
                 dgvScheduleUIEdit(dgvSchedule);
                 ListCellFormatting(dgvSchedule);
@@ -703,8 +739,6 @@ namespace FactoryManagementSoftware.UI
 
         private void loadMaterialSummary(string Material)
         {
-           
-
             float TotalMatPlannedToUse = 0;
             float TotalMatUsed = 0;
             float TotalMatToUse = 0;
@@ -823,45 +857,16 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = (DataTable)dgv.DataSource;
 
-            foreach (DataRow row in dt.Rows)
+            if(rawMode && colorMode)
             {
-                int rowIndex = dt.Rows.IndexOf(row);
-
-                string matCode_DGV = "" ;
-                string headerName = "";
-
-                if (rawMode)
+                foreach (DataRow row in dt.Rows)
                 {
-                    headerName = headerMaterial;
+                    int rowIndex = dt.Rows.IndexOf(row);
 
-                }
-                else if(colorMode)
-                {
-                    headerName = headerColorMaterial;
-                }
-
-                matCode_DGV = row[headerName].ToString();
-
-                if(matCode_DGV == materialCode)
-                {
-                    dgv.Rows[rowIndex].Cells[headerName].Style.BackColor = Color.OrangeRed;
-
-                    if(rawMode)
+                    if (string.IsNullOrEmpty(row[headerPartCode].ToString()))
                     {
-                        dgv.Rows[rowIndex].Cells[headerColorMaterial].Style.BackColor = Color.Gainsboro;
-                    }
-                    else if(colorMode)
-                    {
-                        dgv.Rows[rowIndex].Cells[headerMaterial].Style.BackColor = Color.Gainsboro;
-
-                    }
-                }
-                else
-                {
-                    if(string.IsNullOrEmpty(row[headerPartCode].ToString()))
-                    {
-                        dgv.Rows[rowIndex].Cells[headerMaterial].Style.BackColor = Color.FromArgb(64,64,64);
-                        dgv.Rows[rowIndex].Cells[headerColorMaterial].Style.BackColor = Color.FromArgb(64,64,64);
+                        dgv.Rows[rowIndex].Cells[headerMaterial].Style.BackColor = Color.FromArgb(64, 64, 64);
+                        dgv.Rows[rowIndex].Cells[headerColorMaterial].Style.BackColor = Color.FromArgb(64, 64, 64);
                     }
                     else
                     {
@@ -870,6 +875,57 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
             }
+            else
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    int rowIndex = dt.Rows.IndexOf(row);
+
+                    string matCode_DGV = "";
+                    string headerName = "";
+
+                    if (rawMode)
+                    {
+                        headerName = headerMaterial;
+
+                    }
+                    else if (colorMode)
+                    {
+                        headerName = headerColorMaterial;
+                    }
+
+                    matCode_DGV = row[headerName].ToString();
+
+                    if (matCode_DGV == materialCode)
+                    {
+                        dgv.Rows[rowIndex].Cells[headerName].Style.BackColor = Color.OrangeRed;
+
+                        if (rawMode)
+                        {
+                            dgv.Rows[rowIndex].Cells[headerColorMaterial].Style.BackColor = Color.Gainsboro;
+                        }
+                        else if (colorMode)
+                        {
+                            dgv.Rows[rowIndex].Cells[headerMaterial].Style.BackColor = Color.Gainsboro;
+
+                        }
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(row[headerPartCode].ToString()))
+                        {
+                            dgv.Rows[rowIndex].Cells[headerMaterial].Style.BackColor = Color.FromArgb(64, 64, 64);
+                            dgv.Rows[rowIndex].Cells[headerColorMaterial].Style.BackColor = Color.FromArgb(64, 64, 64);
+                        }
+                        else
+                        {
+                            dgv.Rows[rowIndex].Cells[headerMaterial].Style.BackColor = Color.Gainsboro;
+                            dgv.Rows[rowIndex].Cells[headerColorMaterial].Style.BackColor = Color.Gainsboro;
+                        }
+                    }
+                }
+            }
+            
 
             dgv.ResumeLayout();
         }
@@ -3407,9 +3463,20 @@ namespace FactoryManagementSoftware.UI
                 if(headerName == headerMaterial || headerName == headerColorMaterial)
                 {
                     string cellValue = dgvSchedule.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                    CalculationMaterialSummary(cellValue);
-                }
 
+                    if(!string.IsNullOrEmpty(cellValue))
+                        CalculationMaterialSummary(cellValue);
+                    else
+                    {
+                        MatSummaryReset();
+
+                    }
+                }
+                else
+                {
+                    //reset
+                    MatSummaryReset();
+                }
             
 
             }

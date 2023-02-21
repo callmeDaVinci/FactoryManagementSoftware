@@ -964,8 +964,12 @@ namespace FactoryManagementSoftware.UI
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            timer1.Stop();
-            timer1.Start();
+            if(formLoaded)
+            {
+                timer1.Stop();
+                timer1.Start();
+            }
+          
 
             //if (!string.IsNullOrEmpty(txtSearch.Text))
             //{
@@ -1271,6 +1275,8 @@ namespace FactoryManagementSoftware.UI
                         my_menu.Items.Add("Redo").Name = "Redo";
                     }
 
+                    my_menu.Items.Add(text.Jump).Name = text.Jump;
+
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
                     my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
@@ -1294,38 +1300,64 @@ namespace FactoryManagementSoftware.UI
                 int rowIndex = dgvTrf.CurrentCell.RowIndex;
                 bool fromOrder = daltrfHist.ifFromOrder(Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfID].Value.ToString()));
 
-                if (dgvItem.SelectedRows.Count <= 0)
+                if (e.ClickedItem.Name.ToString().Equals(text.Jump))
                 {
-                    editingItemCode = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfItemCode].Value.ToString();
-                }
+                    string trfID = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfID].Value.ToString();
 
-                if (!fromOrder)
-                {
-                    if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Undo"))
-                    {
-                        //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
-                        if (!undo(rowIndex))
-                        {
-                            MessageBox.Show("Failed to undo");
-                        }
-                    }
-                    else if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Redo"))
-                    {
-                        //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
-                        if (!redo(rowIndex))
-                        {
-                            MessageBox.Show("Failed to redo") ;
-                        }
-                    }
+                    txtJumpID.Text = trfID;
+
+                    formLoaded = false;
+
+                    txtSearch.Text = "Search";
+                    txtSearch.ForeColor = SystemColors.GrayText;
+
+                    cmbSearchCat.Text = text.Cmb_All;
+
+                    refreshDataList();
+
+                    formLoaded = true;
+
+                    JumpToSelectedTrfIDRow();
                 }
                 else
                 {
-                    MessageBox.Show("Please go to the ORDER PAGE to change the record");
+                    if (dgvItem.SelectedRows.Count <= 0)
+                    {
+                        editingItemCode = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfItemCode].Value.ToString();
+                    }
+
+                    if (!fromOrder)
+                    {
+                        if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Undo"))
+                        {
+                            //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+                            if (!undo(rowIndex))
+                            {
+                                MessageBox.Show("Failed to undo");
+                            }
+                        }
+                        else if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Redo"))
+                        {
+                            //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+                            if (!redo(rowIndex))
+                            {
+                                MessageBox.Show("Failed to redo");
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please go to the ORDER PAGE to change the record");
+                    }
+
+
+
+                    string itemCode = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfItemCode].Value.ToString();
+
+                    loadStockList(itemCode);
+                    calTotalStock(itemCode);
                 }
-               
-                string itemCode = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfItemCode].Value.ToString();
-                loadStockList(itemCode);
-                calTotalStock(itemCode);
                
                 //listPaintAndKeepSelected(dgvItem);
                 Cursor = Cursors.Arrow; // change cursor to normal type
@@ -2144,6 +2176,8 @@ namespace FactoryManagementSoftware.UI
 
         private void JumpToSelectedTrfIDRow()
         {
+           
+
             int searchingID = int.TryParse(txtJumpID.Text, out searchingID) ? searchingID : -1;
 
             if (searchingID > 0)
@@ -2177,9 +2211,7 @@ namespace FactoryManagementSoftware.UI
 
         private void button2_Click(object sender, EventArgs e)
         {
-
             JumpToSelectedTrfIDRow();
-
         }
 
         private void txtJumpID_KeyUp(object sender, KeyEventArgs e)

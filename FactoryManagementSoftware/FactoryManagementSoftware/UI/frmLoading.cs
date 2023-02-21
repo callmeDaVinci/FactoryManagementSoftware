@@ -75,6 +75,8 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 loadingForm.Invoke(new CloseDelegate(CloseFormInternal));
+
+                loadingForm = null;
             }
             
             

@@ -1086,7 +1086,7 @@ namespace FactoryManagementSoftware.UI
 
                         string childItemCat = dtItem.Rows[0][dalItem.ItemCat].ToString();
 
-                        if (!MainCarton)//!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging)
+                        if (childItemCat == text.Cat_Part || childItemCat == text.Cat_SubMat)//!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging)
                         {
                             if (dalItem.checkIfAssembly(childItemCode) && dalItem.checkIfProduction(childItemCode))
                             {
@@ -1251,7 +1251,7 @@ namespace FactoryManagementSoftware.UI
 
                         string childItemCat = dtItem.Rows[0][dalItem.ItemCat].ToString();
 
-                        if (!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging))
+                        if (!callFromProductionRecord || (childItemCat == text.Cat_Part && childItemCat == text.Cat_Packaging))
                         {
                             if (dalItem.checkIfAssembly(childItemCode) && dalItem.checkIfProduction(childItemCode))
                             {
@@ -2264,7 +2264,7 @@ namespace FactoryManagementSoftware.UI
 
             if (cmbTrfFromCategory.Text.Equals("Factory"))
             {
-                DataTable dt = dalFac.SelectDESC();
+                DataTable dt = dalFac.NewSelectDESC();
                 loadLocationData(dt, cmbTrfFrom, "fac_name");
 
             }
@@ -2306,7 +2306,7 @@ namespace FactoryManagementSoftware.UI
             errorProvider5.Clear();
             if (cmbTrfToCategory.Text.Equals("Factory"))
             {
-                DataTable dt = dalFac.SelectDESC();
+                DataTable dt = dalFac.NewSelectDESC();
                 loadLocationData(dt, cmbTrfTo, "fac_name");
 
             }
@@ -2633,7 +2633,7 @@ namespace FactoryManagementSoftware.UI
                 else
                     dgv.Rows[n].Cells[NoteColumnName].Value = note;
 
-                if (tool.ifGotChildIncludedPackaging(itemCode))
+                if (tool.ifGotChildExcludePackaging(itemCode))
                 {
                     if (shift == "MBO" || shift == "NBO")
                     {

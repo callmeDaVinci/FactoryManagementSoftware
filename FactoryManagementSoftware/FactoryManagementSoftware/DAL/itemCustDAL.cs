@@ -11,6 +11,8 @@ namespace FactoryManagementSoftware.DAL
     {
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
         public string CustID { get; } = "cust_id";
+        public string CustName { get; } = "cust_name";
+
 
         #region Select Data from Database
 
@@ -23,32 +25,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = @"SELECT tbl_cust.cust_name, 
-                            tbl_item.item_code, 
-                            tbl_item.item_name, 
-                            tbl_item.item_material,
-                            tbl_item.item_unit,
-                            tbl_item.item_qty,
-                            tbl_item.item_ord,
-                            tbl_item.item_capacity,
-                            tbl_item.item_pro_pw_shot,
-                            tbl_item.item_pro_rw_shot,
-                            tbl_item.item_cat,
-                            tbl_item.item_mb_rate,
-                            tbl_item.item_mb,
-                            tbl_item.item_assembly,
-                            tbl_item.item_production,
-                            tbl_item.item_part_weight,
-                            tbl_item.item_runner_weight,
-                            tbl_item.item_wastage_allowed,
-                            tbl_item_cust.forecast_current_month,
-                            tbl_item_cust.forecast_one,
-                            tbl_item_cust.forecast_two,
-                            tbl_item_cust.forecast_three,
-                            tbl_item_cust.item_cust_remark,
-                            tbl_item_cust.item_cust_added_date, 
-                            tbl_item_cust.item_cust_added_by 
-                            FROM ((tbl_item_cust 
+                String sql = @"SELECT * FROM ((tbl_item_cust 
                             INNER JOIN tbl_item 
                             ON tbl_item_cust.item_code = tbl_item.item_code)
                             INNER JOIN tbl_cust 

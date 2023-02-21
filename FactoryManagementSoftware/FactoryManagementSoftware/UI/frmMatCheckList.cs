@@ -54,7 +54,7 @@ namespace FactoryManagementSoftware.UI
 
         readonly string headerTotalCollect = "TOTAL COLLECT (KG/PIECE)";
 
-        private bool switchToDeliverPage = false;
+        private bool switchToDeliveryList = false;
         private bool itemChecking = false;
 
         static public string MatTrfDate;
@@ -464,7 +464,7 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow row in dt_MatPlan.Rows)
             {
                 bool active = Convert.ToBoolean(row[dalMatPlan.Active]);
-                from = row[dalMatPlan.MatFrom].ToString();
+                from = row[dalMatPlan.MatFrom].ToString();  
                 string partCode = row[dalPlan.partCode].ToString();
                 preparingQty = float.TryParse(row[dalMatPlan.Prepare].ToString(), out float i) ? Convert.ToSingle(row[dalMatPlan.Prepare].ToString()) : 0;
                 
@@ -548,10 +548,14 @@ namespace FactoryManagementSoftware.UI
 
         private void SwitchPage()
         {
-            if(switchToDeliverPage)
+            frmLoading.ShowLoadingScreen();
+
+            if(switchToDeliveryList)
             {
                 btnItemCheck.Visible = true;
-               
+
+                lblListTitle.Text = "DELIVERY LIST";
+
                 btnTrfChecklist.ForeColor = Color.Black;
                 btnDeliverChecklist.ForeColor = Color.FromArgb(52, 139, 209);
 
@@ -564,7 +568,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if(dgvDeliver.DataSource != null)
+                lblListTitle.Text = "PICKING LIST";
+
+                if (dgvDeliver.DataSource != null)
                 dgvDeliver.Columns[headerCheck].Visible = false;
 
                 btnItemCheck.Visible = false;
@@ -588,19 +594,22 @@ namespace FactoryManagementSoftware.UI
                 dgvTransfer.ResumeLayout();
                 LoadTransferData();
             }
-            
+
+            frmLoading.CloseForm();
+
+
         }
 
         private void btnTransfer_Click(object sender, EventArgs e)
         {
-            switchToDeliverPage = false;
+            switchToDeliveryList = false;
             SwitchPage();
             
         }
 
         private void btnDeliver_Click(object sender, EventArgs e)
         {
-            switchToDeliverPage = true;
+            switchToDeliveryList = true;
             SwitchPage();
         }
 
@@ -856,7 +865,7 @@ namespace FactoryManagementSoftware.UI
             string fileName = "Test.xls";
 
             DateTime currentDate = DateTime.Now;
-            if (!switchToDeliverPage)
+            if (!switchToDeliveryList)
             {
                 fileName = "TransferChecklist_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
             }
@@ -887,7 +896,7 @@ namespace FactoryManagementSoftware.UI
                     Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                     tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
 
-                    if (switchToDeliverPage)
+                    if (switchToDeliveryList)
                     {
                         dgv = dgvDeliver;
                     }
@@ -910,7 +919,7 @@ namespace FactoryManagementSoftware.UI
                     xlexcel.Calculation = XlCalculation.xlCalculationManual;
                     Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
-                    if (switchToDeliverPage)
+                    if (switchToDeliveryList)
                     {
                         xlWorkSheet.Name = "DELIVERY CHECKLIST";
                         xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri\"&16 DELIVERY CHECKLIST";
@@ -1001,7 +1010,7 @@ namespace FactoryManagementSoftware.UI
                                 //range.Rows.RowHeight = 30;
                                 range.Font.Color = ColorTranslator.ToOle(dgv.Rows[i].Cells[j].InheritedStyle.ForeColor);
 
-                                if(switchToDeliverPage)
+                                if(switchToDeliveryList)
                                 {
                                     if(j == 9)
                                     {
@@ -1103,7 +1112,7 @@ namespace FactoryManagementSoftware.UI
 
             finally
             {
-                if (switchToDeliverPage && !itemChecking)
+                if (switchToDeliveryList && !itemChecking)
                 {
                     dgvDeliver.Columns[headerCheck].Visible = false;
                     dgvDeliver.Columns[headerReceivedBy].Visible = false;
@@ -1119,7 +1128,7 @@ namespace FactoryManagementSoftware.UI
             DataObject dataObj;
             DataGridView dgv;
 
-            if (switchToDeliverPage)
+            if (switchToDeliveryList)
             {
                 dgv = dgvDeliver;
                 dgv.Columns[headerCheck].Visible = true;
@@ -1139,7 +1148,7 @@ namespace FactoryManagementSoftware.UI
 
         private void copyAlltoClipboard(DataGridView dgv)
         {
-            if(switchToDeliverPage)
+            if(switchToDeliveryList)
             {
                 dgv.Columns[headerCheck].Visible = true;
                 dgv.Columns[headerReceivedBy].Visible = true;

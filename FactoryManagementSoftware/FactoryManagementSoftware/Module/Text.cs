@@ -383,6 +383,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_WastageAllowed_Percentage { get; } = "MAT. WASTAGE ALLOWED (%)";
         public string Cmb_All { get; } = "ALL";
 
+        public string Jump { get; } = "Jump";
 
         public string Header_GotNotPackagingChild { get; } = "GotNotPackagingChild";
 

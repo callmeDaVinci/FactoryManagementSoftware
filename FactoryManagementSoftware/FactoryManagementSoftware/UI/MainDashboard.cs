@@ -696,16 +696,20 @@ namespace FactoryManagementSoftware.UI
 
         private void dAILYToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmLoading.ShowLoadingScreen();
+
             if (!NewDailyJobSheetFormOpen)
             {
+                frmLoading.ShowLoadingScreen();
+
                 frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
                 frm.Show();
                 NewDailyJobSheetFormOpen = true;
-               
+
+                frmLoading.CloseForm();
+
             }
             else
             {
@@ -713,9 +717,9 @@ namespace FactoryManagementSoftware.UI
                 {
                     Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
                 }
+
             }
 
-            frmLoading.CloseForm();
         }
 
         private void reportToolStripMenuItem_Click(object sender, EventArgs e)

@@ -2486,6 +2486,34 @@ namespace FactoryManagementSoftware.Module
 
         }
 
+        public void loadOUGProductionFactory(ComboBox cmb)
+        {
+            DataTable dt = dalFac.SelectDESC();
+            DataTable lacationTable = dt.DefaultView.ToTable(true, "fac_name", "oug_production");
+           
+
+            for (int i = lacationTable.Rows.Count - 1; i >= 0; i--)
+            {
+                DataRow dr = lacationTable.Rows[i];
+                bool productionFactory = bool.TryParse(dr["oug_production"].ToString(), out bool proFac) ? proFac : false;
+
+                if (!productionFactory)
+                {
+                    dr.Delete();
+                }
+
+            }
+
+            lacationTable.Rows.Add("All");
+            lacationTable.DefaultView.Sort = "fac_name ASC";
+            lacationTable.AcceptChanges();
+
+            //lacationTable.DefaultView.Sort = columnName+" ASC";
+            cmb.DataSource = lacationTable;
+            cmb.DisplayMember = "fac_name";
+            cmb.SelectedIndex = 0;
+
+        }
         public void loadMacIDByFactoryToComboBox(ComboBox cmb, string facName)
         {
             DataTable dt = dalMac.SelectByFactory(facName);
@@ -2494,7 +2522,16 @@ namespace FactoryManagementSoftware.Module
             cmb.DataSource = distinctTable;
             cmb.DisplayMember = "mac_id";
             cmb.SelectedIndex = -1;
+        }
 
+        public void loadOUGMacIDToComboBox(ComboBox cmb, string facName)
+        {
+            DataTable dt = dalMac.SelectByFactory(facName);
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "mac_id");
+            distinctTable.DefaultView.Sort = "mac_id ASC";
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "mac_id";
+            cmb.SelectedIndex = -1;
         }
 
         public void loadSBBMacIDByFactoryToComboBox(ComboBox cmb, string facName)
@@ -2512,6 +2549,17 @@ namespace FactoryManagementSoftware.Module
         }
 
         public void loadMacIDToComboBox(ComboBox cmb)
+        {
+            DataTable dt = dalMac.Select();
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "mac_id");
+            distinctTable.DefaultView.Sort = "mac_id ASC";
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "mac_id";
+            cmb.SelectedIndex = -1;
+
+        }
+
+        public void loadOUGMacIDToComboBox(ComboBox cmb)
         {
             DataTable dt = dalMac.Select();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "mac_id");

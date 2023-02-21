@@ -163,6 +163,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
+            dt.Columns.Add(text.Header_Customer, typeof(string));
             dt.Columns.Add(text.Header_IndexMarking, typeof(int));
             dt.Columns.Add(text.Header_Index, typeof(int));
             dt.Columns.Add(text.Header_ParentIndex, typeof(int));
@@ -1158,8 +1159,8 @@ namespace FactoryManagementSoftware.UI
                 dt_ItemForecast = dalItemForecast.Select(tool.getCustID(custName).ToString());
 
                 PMMACustomer = cmbCustomer.Text.Equals(tool.getCustName(1));
-
             }
+
 
             DT_PART_TRANSFER = dt_PartTrfHist.Copy();
 
@@ -1238,6 +1239,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     DataRow newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
 
+                    string CustName = ProductRow[dalItemCust.CustName].ToString();
                     string ProductCode = ProductRow[dalItem.ItemCode].ToString();
                     string ProductName = ProductRow[dalItem.ItemName].ToString();
                     string itemUnit = ProductRow[dalItem.ItemUnit].ToString();
@@ -1249,6 +1251,7 @@ namespace FactoryManagementSoftware.UI
                     float Required = 0;
                     float Insufficient = 0;
 
+                    newRow[text.Header_Customer] = CustName;
                     newRow[text.Header_Index] = index;
                     newRow[text.Header_ParentIndex] = 0;
                     newRow[text.Header_GroupLevel] = 1;

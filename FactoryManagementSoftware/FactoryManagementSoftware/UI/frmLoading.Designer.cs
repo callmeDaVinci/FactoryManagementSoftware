@@ -38,12 +38,13 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(3, 48);
+            this.progressBar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.progressBar1.Location = new System.Drawing.Point(15, 50);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(15, 5, 15, 10);
             this.progressBar1.MarqueeAnimationSpeed = 25;
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(343, 27);
+            this.progressBar1.Size = new System.Drawing.Size(319, 30);
             this.progressBar1.Step = 5;
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 1;
@@ -59,11 +60,12 @@
             // 
             this.lblLoadingText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLoadingText.AutoSize = true;
-            this.lblLoadingText.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLoadingText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblLoadingText.Location = new System.Drawing.Point(3, 26);
+            this.lblLoadingText.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLoadingText.ForeColor = System.Drawing.Color.DimGray;
+            this.lblLoadingText.Location = new System.Drawing.Point(15, 28);
+            this.lblLoadingText.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
             this.lblLoadingText.Name = "lblLoadingText";
-            this.lblLoadingText.Size = new System.Drawing.Size(93, 19);
+            this.lblLoadingText.Size = new System.Drawing.Size(85, 17);
             this.lblLoadingText.TabIndex = 2;
             this.lblLoadingText.Text = "Loading... (0s)";
             // 

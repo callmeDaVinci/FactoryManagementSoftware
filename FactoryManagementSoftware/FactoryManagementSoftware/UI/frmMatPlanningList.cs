@@ -184,6 +184,8 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerTransferPending, typeof(float));
             dt.Columns.Add(headerPrepare, typeof(float));
             dt.Columns.Add(headerFrom, typeof(string));
+            dt.Columns.Add(text.Header_Unit, typeof(string));
+
             //dt.Columns.Add(headerTransferCheck, typeof(bool));
 
             return dt;
@@ -196,7 +198,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerPlanID].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerFac].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerMac].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[headerItem].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            //dgv.Columns[headerItem].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[headerPlanToUse].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerStillNeed].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[headerStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -238,6 +240,13 @@ namespace FactoryManagementSoftware.UI
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
             dgv.Columns[headerFrom].MinimumWidth = 200;
+
+            dgv.Columns[headerItem].MinimumWidth = 250;
+
+            dgv.Columns[headerItem].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+            dgv.Columns[headerItem].Frozen = true;
+
 
         }
 
@@ -609,7 +618,7 @@ namespace FactoryManagementSoftware.UI
                         row_dtMat[headerPlanID] = row[dalMatPlan.PlanID];
                         row_dtMat[headerFac] = facName;
                         row_dtMat[headerMac] = row[dalPlan.machineID];
-                        row_dtMat[headerItem] = tool.getItemNameFromDataTable(dt_ItemInfo, partCode) + "(" + partCode + ")";
+                        row_dtMat[headerItem] = tool.getItemNameFromDataTable(dt_ItemInfo, partCode) + " (" + partCode + ")";
                         row_dtMat[headerStart] = row[dalPlan.productionStartDate];
                         row_dtMat[headerEnd] = row[dalPlan.productionEndDate];
 

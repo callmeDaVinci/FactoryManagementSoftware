@@ -59,6 +59,7 @@
             this.cbFilterPigment = new System.Windows.Forms.CheckBox();
             this.cbFilterRawMaterial = new System.Windows.Forms.CheckBox();
             this.cbFilterMasterBatch = new System.Windows.Forms.CheckBox();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpHeaderButton.SuspendLayout();
             this.tlpMaterialList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMatListByPlan)).BeginInit();
@@ -67,6 +68,7 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnPrepare
@@ -77,10 +79,10 @@
             this.btnPrepare.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnPrepare.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPrepare.ForeColor = System.Drawing.Color.Black;
-            this.btnPrepare.Location = new System.Drawing.Point(1252, 23);
+            this.btnPrepare.Location = new System.Drawing.Point(1070, 33);
             this.btnPrepare.Margin = new System.Windows.Forms.Padding(4, 1, 0, 1);
             this.btnPrepare.Name = "btnPrepare";
-            this.btnPrepare.Size = new System.Drawing.Size(140, 40);
+            this.btnPrepare.Size = new System.Drawing.Size(120, 36);
             this.btnPrepare.TabIndex = 132;
             this.btnPrepare.Text = "PREPARE";
             this.btnPrepare.UseVisualStyleBackColor = false;
@@ -94,10 +96,10 @@
             this.btnCheckList.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCheckList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCheckList.ForeColor = System.Drawing.Color.White;
-            this.btnCheckList.Location = new System.Drawing.Point(1103, 23);
+            this.btnCheckList.Location = new System.Drawing.Point(940, 33);
             this.btnCheckList.Margin = new System.Windows.Forms.Padding(4, 2, 0, 1);
             this.btnCheckList.Name = "btnCheckList";
-            this.btnCheckList.Size = new System.Drawing.Size(140, 40);
+            this.btnCheckList.Size = new System.Drawing.Size(120, 36);
             this.btnCheckList.TabIndex = 135;
             this.btnCheckList.Text = "CHECK LIST";
             this.btnCheckList.UseVisualStyleBackColor = false;
@@ -105,12 +107,13 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(0, 0);
-            this.label2.Margin = new System.Windows.Forms.Padding(0, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(0, 34);
+            this.label2.Margin = new System.Windows.Forms.Padding(0, 0, 4, 3);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(103, 38);
+            this.label2.Size = new System.Drawing.Size(136, 13);
             this.label2.TabIndex = 136;
             this.label2.Text = "MATERIAL REQUIRED LIST";
             // 
@@ -122,10 +125,10 @@
             this.btnByPlan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnByPlan.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnByPlan.ForeColor = System.Drawing.Color.Black;
-            this.btnByPlan.Location = new System.Drawing.Point(197, 23);
+            this.btnByPlan.Location = new System.Drawing.Point(173, 33);
             this.btnByPlan.Margin = new System.Windows.Forms.Padding(0, 1, 4, 1);
             this.btnByPlan.Name = "btnByPlan";
-            this.btnByPlan.Size = new System.Drawing.Size(140, 40);
+            this.btnByPlan.Size = new System.Drawing.Size(120, 36);
             this.btnByPlan.TabIndex = 137;
             this.btnByPlan.Text = "SORT BY PLAN";
             this.btnByPlan.UseVisualStyleBackColor = false;
@@ -139,10 +142,10 @@
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(1402, 1);
+            this.btnSave.Location = new System.Drawing.Point(1200, 1);
             this.btnSave.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(140, 35);
+            this.btnSave.Size = new System.Drawing.Size(120, 36);
             this.btnSave.TabIndex = 138;
             this.btnSave.Text = "SAVE";
             this.btnSave.UseVisualStyleBackColor = false;
@@ -157,10 +160,10 @@
             this.btnByMat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnByMat.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnByMat.ForeColor = System.Drawing.Color.Black;
-            this.btnByMat.Location = new System.Drawing.Point(47, 23);
+            this.btnByMat.Location = new System.Drawing.Point(47, 33);
             this.btnByMat.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.btnByMat.Name = "btnByMat";
-            this.btnByMat.Size = new System.Drawing.Size(140, 40);
+            this.btnByMat.Size = new System.Drawing.Size(120, 36);
             this.btnByMat.TabIndex = 142;
             this.btnByMat.Text = "SORT BY MATERIAL";
             this.btnByMat.UseVisualStyleBackColor = false;
@@ -175,7 +178,7 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(2, 24);
+            this.button2.Location = new System.Drawing.Point(2, 30);
             this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(38, 38);
@@ -191,7 +194,7 @@
             this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefresh.ForeColor = System.Drawing.Color.White;
-            this.btnRefresh.Location = new System.Drawing.Point(120, 2);
+            this.btnRefresh.Location = new System.Drawing.Point(158, 2);
             this.btnRefresh.Margin = new System.Windows.Forms.Padding(8, 2, 2, 2);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(36, 36);
@@ -205,7 +208,7 @@
             this.label7.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(3, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(73, 12);
+            this.label7.Size = new System.Drawing.Size(60, 11);
             this.label7.TabIndex = 144;
             this.label7.Text = "LAST UPDATED:";
             // 
@@ -215,7 +218,7 @@
             this.lblUpdatedTime.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUpdatedTime.Location = new System.Drawing.Point(3, 20);
             this.lblUpdatedTime.Name = "lblUpdatedTime";
-            this.lblUpdatedTime.Size = new System.Drawing.Size(125, 12);
+            this.lblUpdatedTime.Size = new System.Drawing.Size(99, 11);
             this.lblUpdatedTime.TabIndex = 143;
             this.lblUpdatedTime.Text = "SHOW DATA FOR THE PAST";
             // 
@@ -223,12 +226,12 @@
             // 
             this.tlpHeaderButton.ColumnCount = 7;
             this.tlpHeaderButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 43F));
-            this.tlpHeaderButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 154F));
-            this.tlpHeaderButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 154F));
+            this.tlpHeaderButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this.tlpHeaderButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.tlpHeaderButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpHeaderButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 171F));
-            this.tlpHeaderButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 149F));
-            this.tlpHeaderButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tlpHeaderButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this.tlpHeaderButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this.tlpHeaderButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.tlpHeaderButton.Controls.Add(this.btnAddMat, 6, 0);
             this.tlpHeaderButton.Controls.Add(this.btnByMat, 1, 0);
             this.tlpHeaderButton.Controls.Add(this.btnByPlan, 2, 0);
@@ -237,13 +240,12 @@
             this.tlpHeaderButton.Controls.Add(this.button2, 0, 0);
             this.tlpHeaderButton.Controls.Add(this.lblFilter, 3, 0);
             this.tlpHeaderButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpHeaderButton.Location = new System.Drawing.Point(20, 3);
-            this.tlpHeaderButton.Margin = new System.Windows.Forms.Padding(20, 3, 20, 3);
+            this.tlpHeaderButton.Location = new System.Drawing.Point(0, 0);
+            this.tlpHeaderButton.Margin = new System.Windows.Forms.Padding(0);
             this.tlpHeaderButton.Name = "tlpHeaderButton";
             this.tlpHeaderButton.RowCount = 1;
             this.tlpHeaderButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpHeaderButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 44F));
-            this.tlpHeaderButton.Size = new System.Drawing.Size(1542, 64);
+            this.tlpHeaderButton.Size = new System.Drawing.Size(1320, 70);
             this.tlpHeaderButton.TabIndex = 145;
             this.tlpHeaderButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tlpHeaderButton_MouseClick);
             // 
@@ -254,10 +256,10 @@
             this.btnAddMat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddMat.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddMat.ForeColor = System.Drawing.Color.Black;
-            this.btnAddMat.Location = new System.Drawing.Point(1402, 23);
+            this.btnAddMat.Location = new System.Drawing.Point(1200, 33);
             this.btnAddMat.Margin = new System.Windows.Forms.Padding(4, 1, 0, 1);
             this.btnAddMat.Name = "btnAddMat";
-            this.btnAddMat.Size = new System.Drawing.Size(140, 40);
+            this.btnAddMat.Size = new System.Drawing.Size(120, 36);
             this.btnAddMat.TabIndex = 146;
             this.btnAddMat.Text = "ADD MATERIAL";
             this.btnAddMat.UseVisualStyleBackColor = false;
@@ -270,10 +272,10 @@
             this.lblFilter.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblFilter.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblFilter.ForeColor = System.Drawing.Color.Blue;
-            this.lblFilter.Location = new System.Drawing.Point(354, 40);
+            this.lblFilter.Location = new System.Drawing.Point(306, 52);
             this.lblFilter.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
             this.lblFilter.Name = "lblFilter";
-            this.lblFilter.Size = new System.Drawing.Size(91, 19);
+            this.lblFilter.Size = new System.Drawing.Size(74, 13);
             this.lblFilter.TabIndex = 147;
             this.lblFilter.Text = "MORE FILTER";
             this.lblFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -287,12 +289,12 @@
             this.tlpMaterialList.Controls.Add(this.dgvMatListByPlan, 1, 0);
             this.tlpMaterialList.Controls.Add(this.dgvMatListByMat, 0, 0);
             this.tlpMaterialList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpMaterialList.Location = new System.Drawing.Point(20, 230);
-            this.tlpMaterialList.Margin = new System.Windows.Forms.Padding(20, 10, 20, 20);
+            this.tlpMaterialList.Location = new System.Drawing.Point(0, 220);
+            this.tlpMaterialList.Margin = new System.Windows.Forms.Padding(0);
             this.tlpMaterialList.Name = "tlpMaterialList";
             this.tlpMaterialList.RowCount = 1;
             this.tlpMaterialList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpMaterialList.Size = new System.Drawing.Size(1542, 603);
+            this.tlpMaterialList.Size = new System.Drawing.Size(1320, 495);
             this.tlpMaterialList.TabIndex = 146;
             // 
             // dgvMatListByPlan
@@ -315,14 +317,14 @@
             this.dgvMatListByPlan.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvMatListByPlan.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMatListByPlan.GridColor = System.Drawing.Color.White;
-            this.dgvMatListByPlan.Location = new System.Drawing.Point(771, 0);
+            this.dgvMatListByPlan.Location = new System.Drawing.Point(660, 0);
             this.dgvMatListByPlan.Margin = new System.Windows.Forms.Padding(0);
             this.dgvMatListByPlan.Name = "dgvMatListByPlan";
             this.dgvMatListByPlan.ReadOnly = true;
             this.dgvMatListByPlan.RowHeadersVisible = false;
             this.dgvMatListByPlan.RowTemplate.Height = 40;
             this.dgvMatListByPlan.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMatListByPlan.Size = new System.Drawing.Size(771, 603);
+            this.dgvMatListByPlan.Size = new System.Drawing.Size(660, 495);
             this.dgvMatListByPlan.TabIndex = 136;
             this.dgvMatListByPlan.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMatList_CellFormatting);
             this.dgvMatListByPlan.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvMatListByPlan_CellMouseClick);
@@ -358,7 +360,7 @@
             this.dgvMatListByMat.RowHeadersVisible = false;
             this.dgvMatListByMat.RowTemplate.Height = 40;
             this.dgvMatListByMat.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMatListByMat.Size = new System.Drawing.Size(771, 603);
+            this.dgvMatListByMat.Size = new System.Drawing.Size(660, 495);
             this.dgvMatListByMat.TabIndex = 111;
             this.dgvMatListByMat.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMatList_CellEndEdit);
             this.dgvMatListByMat.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMatList_CellEnter);
@@ -385,35 +387,35 @@
             this.tableLayoutPanel1.Controls.Add(this.tlpHeaderButton, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(20, 20, 3, 3);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(15, 15);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(15);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1582, 853);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1320, 715);
             this.tableLayoutPanel1.TabIndex = 147;
             // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 4;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 51F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.tableLayoutPanel3.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel2, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.btnRefresh, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.btnSave, 3, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(20, 173);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(20, 3, 20, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 170);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(1542, 44);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1320, 50);
             this.tableLayoutPanel3.TabIndex = 149;
             // 
             // tableLayoutPanel2
@@ -423,12 +425,12 @@
             this.tableLayoutPanel2.Controls.Add(this.label7, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblUpdatedTime, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(166, 3);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(203, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1223, 38);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(984, 44);
             this.tableLayoutPanel2.TabIndex = 148;
             // 
             // groupBox1
@@ -441,11 +443,11 @@
             this.groupBox1.Controls.Add(this.cbFilterRawMaterial);
             this.groupBox1.Controls.Add(this.cbFilterMasterBatch);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.groupBox1.Location = new System.Drawing.Point(20, 73);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(20, 3, 20, 6);
+            this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Italic);
+            this.groupBox1.Location = new System.Drawing.Point(0, 70);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1542, 91);
+            this.groupBox1.Size = new System.Drawing.Size(1320, 100);
             this.groupBox1.TabIndex = 150;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "FILTER";
@@ -456,10 +458,10 @@
             this.btnFilterApply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFilterApply.ForeColor = System.Drawing.Color.Black;
-            this.btnFilterApply.Location = new System.Drawing.Point(684, 29);
+            this.btnFilterApply.Location = new System.Drawing.Point(347, 33);
             this.btnFilterApply.Margin = new System.Windows.Forms.Padding(4, 1, 0, 1);
             this.btnFilterApply.Name = "btnFilterApply";
-            this.btnFilterApply.Size = new System.Drawing.Size(140, 40);
+            this.btnFilterApply.Size = new System.Drawing.Size(120, 36);
             this.btnFilterApply.TabIndex = 148;
             this.btnFilterApply.Text = "APPLY";
             this.btnFilterApply.UseVisualStyleBackColor = false;
@@ -468,9 +470,10 @@
             // cbFilterCarton
             // 
             this.cbFilterCarton.AutoSize = true;
-            this.cbFilterCarton.Location = new System.Drawing.Point(572, 39);
+            this.cbFilterCarton.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbFilterCarton.Location = new System.Drawing.Point(120, 52);
             this.cbFilterCarton.Name = "cbFilterCarton";
-            this.cbFilterCarton.Size = new System.Drawing.Size(73, 23);
+            this.cbFilterCarton.Size = new System.Drawing.Size(61, 17);
             this.cbFilterCarton.TabIndex = 11;
             this.cbFilterCarton.Text = "Carton";
             this.cbFilterCarton.UseVisualStyleBackColor = true;
@@ -481,9 +484,10 @@
             this.cbFilterPart.AutoSize = true;
             this.cbFilterPart.Checked = true;
             this.cbFilterPart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbFilterPart.Location = new System.Drawing.Point(358, 39);
+            this.cbFilterPart.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbFilterPart.Location = new System.Drawing.Point(222, 29);
             this.cbFilterPart.Name = "cbFilterPart";
-            this.cbFilterPart.Size = new System.Drawing.Size(56, 23);
+            this.cbFilterPart.Size = new System.Drawing.Size(46, 17);
             this.cbFilterPart.TabIndex = 10;
             this.cbFilterPart.Text = "Part";
             this.cbFilterPart.UseVisualStyleBackColor = true;
@@ -494,9 +498,10 @@
             this.cbFilterSubMaterial.AutoSize = true;
             this.cbFilterSubMaterial.Checked = true;
             this.cbFilterSubMaterial.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbFilterSubMaterial.Location = new System.Drawing.Point(444, 39);
+            this.cbFilterSubMaterial.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbFilterSubMaterial.Location = new System.Drawing.Point(222, 52);
             this.cbFilterSubMaterial.Name = "cbFilterSubMaterial";
-            this.cbFilterSubMaterial.Size = new System.Drawing.Size(108, 23);
+            this.cbFilterSubMaterial.Size = new System.Drawing.Size(91, 17);
             this.cbFilterSubMaterial.TabIndex = 9;
             this.cbFilterSubMaterial.Text = "Sub Material";
             this.cbFilterSubMaterial.UseVisualStyleBackColor = true;
@@ -507,9 +512,10 @@
             this.cbFilterPigment.AutoSize = true;
             this.cbFilterPigment.Checked = true;
             this.cbFilterPigment.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbFilterPigment.Location = new System.Drawing.Point(255, 39);
+            this.cbFilterPigment.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbFilterPigment.Location = new System.Drawing.Point(120, 29);
             this.cbFilterPigment.Name = "cbFilterPigment";
-            this.cbFilterPigment.Size = new System.Drawing.Size(82, 23);
+            this.cbFilterPigment.Size = new System.Drawing.Size(68, 17);
             this.cbFilterPigment.TabIndex = 8;
             this.cbFilterPigment.Text = "Pigment";
             this.cbFilterPigment.UseVisualStyleBackColor = true;
@@ -520,9 +526,10 @@
             this.cbFilterRawMaterial.AutoSize = true;
             this.cbFilterRawMaterial.Checked = true;
             this.cbFilterRawMaterial.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbFilterRawMaterial.Location = new System.Drawing.Point(6, 39);
+            this.cbFilterRawMaterial.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbFilterRawMaterial.Location = new System.Drawing.Point(16, 29);
             this.cbFilterRawMaterial.Name = "cbFilterRawMaterial";
-            this.cbFilterRawMaterial.Size = new System.Drawing.Size(110, 23);
+            this.cbFilterRawMaterial.Size = new System.Drawing.Size(93, 17);
             this.cbFilterRawMaterial.TabIndex = 7;
             this.cbFilterRawMaterial.Text = "Raw Material";
             this.cbFilterRawMaterial.UseVisualStyleBackColor = true;
@@ -533,21 +540,36 @@
             this.cbFilterMasterBatch.AutoSize = true;
             this.cbFilterMasterBatch.Checked = true;
             this.cbFilterMasterBatch.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbFilterMasterBatch.Location = new System.Drawing.Point(122, 39);
+            this.cbFilterMasterBatch.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbFilterMasterBatch.Location = new System.Drawing.Point(17, 52);
             this.cbFilterMasterBatch.Name = "cbFilterMasterBatch";
-            this.cbFilterMasterBatch.Size = new System.Drawing.Size(112, 23);
+            this.cbFilterMasterBatch.Size = new System.Drawing.Size(92, 17);
             this.cbFilterMasterBatch.TabIndex = 6;
             this.cbFilterMasterBatch.Text = "Master Batch";
             this.cbFilterMasterBatch.UseVisualStyleBackColor = true;
             this.cbFilterMasterBatch.CheckedChanged += new System.EventHandler(this.cbFilterMasterBatch_CheckedChanged_1);
             // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 1;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel1, 0, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 1;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(1350, 745);
+            this.tableLayoutPanel7.TabIndex = 169;
+            // 
             // frmMatPlanningList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1582, 853);
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.ClientSize = new System.Drawing.Size(1350, 745);
+            this.Controls.Add(this.tableLayoutPanel7);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmMatPlanningList";
@@ -568,6 +590,7 @@
             this.tableLayoutPanel2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tableLayoutPanel7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -601,5 +624,6 @@
         private System.Windows.Forms.CheckBox cbFilterPigment;
         private System.Windows.Forms.CheckBox cbFilterRawMaterial;
         private System.Windows.Forms.Button btnFilterApply;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
     }
 }

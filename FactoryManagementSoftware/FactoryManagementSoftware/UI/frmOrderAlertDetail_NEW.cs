@@ -123,6 +123,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = new DataTable();
 
             //to hide
+
             dt.Columns.Add(text.Header_IndexMarking, typeof(int));
             dt.Columns.Add(text.Header_ParentIndex, typeof(int));
             dt.Columns.Add(text.Header_GroupLevel, typeof(int));
@@ -137,6 +138,8 @@ namespace FactoryManagementSoftware.UI
 
 
             //to show
+            dt.Columns.Add(text.Header_Customer, typeof(string));
+
             dt.Columns.Add(text.Header_Index, typeof(int));
 
             dt.Columns.Add(text.Header_ItemNameAndCode, typeof(string));
@@ -292,7 +295,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void dgvUIFullDetailEdit(DataGridView dgv)
+        private void dgvFullDetailUIEdit(DataGridView dgv)
         {
             if (dgv == dgvMaterialForecastInfo)
             {
@@ -346,24 +349,23 @@ namespace FactoryManagementSoftware.UI
                
                 if (PageLoaded)
                 {
-                    dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                    dgv.DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
                     //dgv.Columns[text.Header_PartName].DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 8F, FontStyle.Bold);
 
                     dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                    dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+                    dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 
                     dgv.Columns[text.Header_ReadyStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                     dgv.Columns[text.Header_GroupLevel].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
+                    #region Hide Column
 
                     dgv.Columns[text.Header_IndexMarking].Visible = false;
                     dgv.Columns[text.Header_ParentIndex].Visible = false;
                     dgv.Columns[text.Header_Index].Visible = false;
-                    //dgv.Columns[text.Header_GroupLevel].Visible = false;
                     dgv.Columns[text.Header_JoinWastage].Visible = false;
-                    //dgv.Columns[text.Header_PartCode].Visible = false;
                     dgv.Columns[text.Header_PartName].Visible = false;
                     dgv.Columns[text.Header_PartWeight_G].Visible = false;
                     dgv.Columns[text.Header_RunnerWeight_G].Visible = false;
@@ -371,6 +373,7 @@ namespace FactoryManagementSoftware.UI
                     dgv.Columns[text.Header_JoinMax].Visible = false;
                     dgv.Columns[text.Header_JoinMin].Visible = false;
 
+                    #endregion
 
                     string MatType = tool.getItemCat(MAT_CODE);
 
@@ -397,21 +400,27 @@ namespace FactoryManagementSoftware.UI
 
                     }
 
-
-
                     dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
                     dgv.Columns[text.Header_WastageAllowed_Percentage].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                    dgv.Columns[text.Header_Unit].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+                    dgv.Columns[text.Header_Unit].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
                     dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                     dgv.Columns[text.Header_ItemNameAndCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                     dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                    dgv.Columns[text.Header_Customer].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
                     dgv.Columns[text.Header_PartCode].Width = 1;
+
+                    dgv.Columns[text.Header_Customer].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    dgv.Columns[text.Header_ItemNameAndCode].MinimumWidth = 250;
+
+                    dgv.Columns[text.Header_PartCode].Visible = false;
+
+
 
                 }
 
@@ -918,7 +927,7 @@ namespace FactoryManagementSoftware.UI
             return IndexFound;
         }
 
-        private bool CheckIfItemExist(DataTable dt, string itemCode)
+        private bool CheckIfItemExist(DataTable dt, string itemCode, string custName)
         {
             bool ItemFound = false;
 
@@ -926,7 +935,7 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataRow row in dt.Rows)
                 {
-                    if (row[text.Header_PartCode].ToString() == itemCode)
+                    if (row[text.Header_PartCode].ToString() == itemCode && row[text.Header_Customer].ToString() == custName)
                     {
                         ItemFound = true;
                         break;
@@ -958,6 +967,8 @@ namespace FactoryManagementSoftware.UI
                             #region print data 
                             DataRow newRow = DT_FULLDETAIL.NewRow();
 
+                            string custName = row[text.Header_Customer].ToString();
+
                             string itemCode = row[text.Header_PartCode].ToString();
                             string itemName = row[text.Header_PartName].ToString();
 
@@ -971,6 +982,7 @@ namespace FactoryManagementSoftware.UI
 
                             newRow[text.Header_ParentIndex] = row[text.Header_ParentIndex];
                             newRow[text.Header_GroupLevel] = row[text.Header_GroupLevel];
+                            newRow[text.Header_Customer] = custName;
                             newRow[text.Header_PartCode] = itemCode;
                             newRow[text.Header_PartName] = itemName;
                             newRow[text.Header_PartWeight_G] = row[text.Header_PartWeight_G];
@@ -984,7 +996,7 @@ namespace FactoryManagementSoftware.UI
 
                             newRow[text.Header_ItemNameAndCode] = LevelSpacing(GroupLevel) + itemName + " (" + itemCode + ")";
 
-                            if(!CheckIfItemExist(DT_FULLDETAIL,itemCode))
+                            if(!CheckIfItemExist(DT_FULLDETAIL,itemCode,custName))
                             {
                                 newRow[text.Header_ReadyStock] = row[text.Header_ReadyStock];
                             }
@@ -1164,7 +1176,6 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-               
 
                 BalCalculation(month);
 
@@ -1174,7 +1185,7 @@ namespace FactoryManagementSoftware.UI
                 FullDetailUIEdit();
 
                 dgvMaterialForecastInfo.DataSource = DT_FULLDETAIL;
-                dgvUIFullDetailEdit(dgvMaterialForecastInfo);
+                dgvFullDetailUIEdit(dgvMaterialForecastInfo);
                 dgvMaterialForecastInfo.ClearSelection();
             }
         }
@@ -1289,7 +1300,7 @@ namespace FactoryManagementSoftware.UI
                 if (Insufficient < 0)
                 {
                     dgv.Rows[row].Cells[col].Style.ForeColor = Color.Red;
-                    dgv.Rows[row].Cells[col].Style.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+                    dgv.Rows[row].Cells[col].Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
 
                 }
                 else
@@ -1308,7 +1319,7 @@ namespace FactoryManagementSoftware.UI
                 if (Required > 0)
                 {
                     dgv.Rows[row].Cells[col].Style.ForeColor = Color.Red;
-                    dgv.Rows[row].Cells[col].Style.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+                    dgv.Rows[row].Cells[col].Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
 
                 }
                 else
@@ -1327,7 +1338,7 @@ namespace FactoryManagementSoftware.UI
                 if (Bal < 0)
                 {
                     dgv.Rows[row].Cells[col].Style.ForeColor = Color.Red;
-                    dgv.Rows[row].Cells[col].Style.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+                    dgv.Rows[row].Cells[col].Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
 
                 }
                 else
@@ -1346,7 +1357,7 @@ namespace FactoryManagementSoftware.UI
                 if (Level == 1)
                 {
                     dgv.Rows[row].DefaultCellStyle.BackColor = Color.FromArgb(253, 203, 110);
-                    dgv.Rows[row].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+                    dgv.Rows[row].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
 
 
                 }
@@ -1361,25 +1372,25 @@ namespace FactoryManagementSoftware.UI
                 {
                     dgv.Rows[row].DefaultCellStyle.BackColor = Color.White;
                     dgv.Rows[row].Height = 50;
-                    dgv.Rows[row].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                    dgv.Rows[row].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
 
                 }
             }
 
-            if (colName.Equals(text.Header_PartCode))
+            if (colName.Equals(text.Header_ItemNameAndCode))
             {
                 string ItemCode = dgv.Rows[row].Cells[col].Value.ToString();
 
-                if (ItemCode == HIGHLIGHTED_ITEM)
+                if (ItemCode.Contains(HIGHLIGHTED_ITEM))
                 {
                     DataRowView drv = (DataRowView)cmbMonthYear.SelectedItem;
                     String month = drv[text.Header_Month].ToString();
 
                     dgv.Rows[row].Cells[text.Header_ItemNameAndCode].Style.ForeColor = Color.FromArgb(52, 139, 209);
-                    dgv.Rows[row].Cells[text.Header_ItemNameAndCode].Style.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+                    dgv.Rows[row].Cells[text.Header_ItemNameAndCode].Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
 
                     dgv.Rows[row].Cells[month + text.str_RequiredQty].Style.ForeColor = Color.FromArgb(52, 139, 209);
-                    dgv.Rows[row].Cells[month + text.str_RequiredQty].Style.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+                    dgv.Rows[row].Cells[month + text.str_RequiredQty].Style.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
                 }
                
             }

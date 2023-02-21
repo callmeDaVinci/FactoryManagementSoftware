@@ -62,6 +62,45 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable SelectMacAndFactory(string FacName)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                //String sql = "SELECT * FROM tbl_mac WHERE mac_location = @FacName ORDER BY mac_id ASC ";
+                //for executing command
+
+                String sql = @"SELECT tbl_item.item_name as NAME FROM tbl_item
+                            INNER JOIN tbl_spp_category 
+                            ON (tbl_item.category_tbl_code = tbl_spp_category.tbl_code )";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@FacName", FacName);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable SelectByFactory(string FacName)
         {
             //static methodd to connect database
