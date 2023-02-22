@@ -13,6 +13,7 @@ using FactoryManagementSoftware.Properties;
 using System.ComponentModel;
 using System.Threading;
 using System.Configuration;
+using Font = System.Drawing.Font;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -84,7 +85,6 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
             InitializeComponent();
-            progressBar1.Hide();
             lblUpdatedTime.Text = DateTime.Now.ToLongTimeString();
             dt_Stock = NewStockTable();
 
@@ -112,11 +112,13 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = new DataTable();
 
             dt.Columns.Add(headerIndex, typeof(float));
-            dt.Columns.Add(headerName, typeof(string));
+            dt.Columns.Add(text.Header_Category, typeof(string));
             dt.Columns.Add(headerCode, typeof(string));
+            dt.Columns.Add(headerName, typeof(string));
 
             //add factory columns
             DataTable dt_Fac = dalFac.SelectASC();
+            DataTable dt_Fac = dalFac.NewSelectASC();
 
             string facName = string.Empty;
 
@@ -155,13 +157,30 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvStockUIEdit(DataGridView dgv)
         {
-            dgv.Columns[headerIndex].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
-            dgv.Columns[headerCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+           
+            dgv.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+
+            //dgv.Columns[headerCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[headerName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            //dgv.Columns[headerParentColor].Visible = false;
-            //dgv.Columns[headerRepeat].Visible = false;
+
+            dgv.Columns[headerCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgv.Columns[headerName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dgv.Columns[headerCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgv.Columns[text.Header_Category].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgv.Columns[headerTotal].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dgv.Columns[headerTotal].MinimumWidth = 100;
+
+
+
         }
         #endregion
 
@@ -171,6 +190,9 @@ namespace FactoryManagementSoftware.UI
         {
             loadTypeData();
             tool.DoubleBuffered(dgvNewStock, true);
+            cmbType.Text = text.Cmb_All;
+
+
             dgvNewStock.ClearSelection();
 
         }
@@ -183,6 +205,7 @@ namespace FactoryManagementSoftware.UI
         private void loadTypeData()
         {
             cmbType.Items.Clear();
+            cmbType.Items.Add(text.Cmb_All);
             cmbType.Items.Add(CMBPartHeader);
             cmbType.Items.Add(CMBMaterialHeader);
         }
@@ -283,7 +306,7 @@ namespace FactoryManagementSoftware.UI
                 //dt_Stock.DefaultView.Sort = headerIndex+" ASC";
                 dgvNewStock.DataSource = dt_StockRemovedFlag;
                 dgvStockUIEdit(dgvNewStock);
-                dgvNewStock.AlternatingRowsDefaultCellStyle.BackColor = Color.Lavender;
+                //dgvNewStock.AlternatingRowsDefaultCellStyle.BackColor = Color.Lavender;
                 //colorData(dgvNewStock, dt_Stock);
                 dgvNewStock.ClearSelection();
             }
@@ -291,6 +314,69 @@ namespace FactoryManagementSoftware.UI
             return gotData;
         }
 
+        private bool LoadAllStockData()
+        {
+            public_IndexNO = 1;
+            public_SubIndexNO = 0;
+            public_SecondSubIndexNO = 0;
+
+            bool gotData = true;
+            dt_Stock.Clear();
+
+            DataTable DB_Item = dalItem.Select();
+            //DB_Item.DefaultView.Sort = "item_name ASC";
+            //DB_Item = DB_Item.DefaultView.ToTable();
+
+            DataTable dt_ItemInfo = dalItem.Select();
+            DataTable dt_AllStockData = dalStock.Select();
+            DataTable dt_StockData;
+
+            dt_PublicItemInfo = dt_ItemInfo;
+
+            if (DB_Item.Rows.Count <= 0)
+            {
+                gotData = false;
+            }
+            else
+            {
+                //load material data
+                foreach (DataRow item in DB_Item.Rows)
+                {
+                    string itemCode = item[dalItem.ItemCode].ToString();
+                    string itemName = item[dalItem.ItemName].ToString();
+                    string itemCat = item[dalItem.ItemCat].ToString();
+
+                    float readyStock = Convert.ToSingle(item["item_qty"]);
+
+                    readyStock = (float)Math.Round(readyStock * 100f) / 100f;
+
+                    dt_StockData = tool.getStockDataTableFromDataTable(dt_AllStockData, itemCode);
+
+                    NewaddRowtoDataTable(dt_StockData, itemCat, itemCode, itemName, readyStock);
+
+                    public_IndexNO++;
+                }
+            }
+
+            dt_PublicItemInfo = dalItem.Select();
+            dgvNewStock.DataSource = null;
+
+            DataTable dt_StockRemovedFlag;
+
+            if (dt_Stock.Rows.Count > 0)
+            {
+                dt_StockRemovedFlag = dt_Stock.Copy();
+                dt_StockRemovedFlag.Columns.Remove(headerParentColor);
+                dt_StockRemovedFlag.Columns.Remove(headerRepeat);
+
+                dgvNewStock.DataSource = dt_StockRemovedFlag;
+                dgvStockUIEdit(dgvNewStock);
+                //dgvNewStock.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 247, 255);
+                dgvNewStock.ClearSelection();
+            }
+
+            return gotData;
+        }
         private void dataInsertToStockDGV(DataGridView dgv, DataRow row, int n, string indexNo)
         {
             float readyStock = Convert.ToSingle(row["item_qty"]);
@@ -358,17 +444,14 @@ namespace FactoryManagementSoftware.UI
             return false;
         }
 
-        private void addRowtoDataTable(DataTable dt_StockData, string itemCode, string itemName, float stockQty)
+        private void NewaddRowtoDataTable(DataTable dt_StockData, string itemCat, string itemCode, string itemName, float stockQty)
         {          
             DataRow dtStock_row;
 
-            if(itemCode == "POM M90-44" || itemCode == "ACETAL POM M90-44")
-            {
-                float test = 0;
-            }
-
             dtStock_row = dt_Stock.NewRow();
             dtStock_row[headerIndex] = public_IndexNO + public_SubIndexNO/10 + public_SecondSubIndexNO/100;
+            dtStock_row[text.Header_Category] = itemCat;
+
             dtStock_row[headerName] = itemName;
             dtStock_row[headerCode] = itemCode;
             dtStock_row[headerTotal] = stockQty;
@@ -436,6 +519,79 @@ namespace FactoryManagementSoftware.UI
            
         }
 
+        private void addRowtoDataTable(DataTable dt_StockData, string itemCode, string itemName, float stockQty)
+        {
+            DataRow dtStock_row;
+
+            dtStock_row = dt_Stock.NewRow();
+            dtStock_row[headerIndex] = public_IndexNO + public_SubIndexNO / 10 + public_SecondSubIndexNO / 100;
+
+            dtStock_row[headerName] = itemName;
+            dtStock_row[headerCode] = itemCode;
+            dtStock_row[headerTotal] = stockQty;
+            string factoryName = "";
+
+            if (dt_StockData.Rows.Count > 0)
+            {
+                foreach (DataRow stock in dt_StockData.Rows)
+                {
+                    factoryName = stock[tool.headerFacName].ToString();
+
+                    if (factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)//MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC
+                    {
+                        float qty = Convert.ToSingle(stock[tool.headerReadyStock]);
+                        qty = (float)Math.Round(qty * 100f) / 100f;
+
+                        dtStock_row[factoryName] = qty;
+                        dtStock_row[headerUnit] = stock[tool.headerUnit].ToString();
+                    }
+
+                }
+            }
+
+            factoryName = "";
+            if (ifGotChild(itemCode))
+            {
+                DataRow dt_Row = tool.getDataRowFromDataTable(dt_PublicItemInfo, itemCode);
+
+                int assembly = Convert.ToInt16(dt_Row[dalItem.ItemAssemblyCheck]);
+                int production = Convert.ToInt16(dt_Row[dalItem.ItemProductionCheck]);
+
+                if (assembly == 1 && production == 1)
+                {
+                    dtStock_row[headerParentColor] = ProductionAndAssemblyColor;
+                }
+                else if (assembly != 1 && production == 1)
+                {
+                    dtStock_row[headerParentColor] = ProductionColor;
+                }
+                else if (assembly == 1 && production != 1)
+                {
+                    dtStock_row[headerParentColor] = AssemblyColor;
+                }
+
+                if (itemCode.Substring(0, 3) == text.Inspection_Pass)
+                {
+                    dtStock_row[headerParentColor] = InspectionColor;
+                }
+            }
+
+            //check if repeat
+            if (ifRepeat(itemCode) && (factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC))
+            {
+                dtStock_row[headerRepeat] = 1;
+
+                if (cbShowDuplicateData.Checked)
+                    dt_Stock.Rows.Add(dtStock_row);
+            }
+            else if (factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)
+            {
+                dtStock_row[headerRepeat] = 0;
+                dt_Stock.Rows.Add(dtStock_row);
+            }
+
+
+        }
 
         private bool LoadPartStockData()
         {
@@ -608,7 +764,7 @@ namespace FactoryManagementSoftware.UI
                 dt_StockRemovedFlag.Columns.Remove(headerRepeat);
 
                 //dt_Stock.DefaultView.Sort = headerIndex+" ASC";
-                dgvNewStock.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
+               // dgvNewStock.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
                 dgvNewStock.DataSource = dt_StockRemovedFlag;
                 dgvStockUIEdit(dgvNewStock);
                 colorData(dgvNewStock,dt_Stock);
@@ -617,6 +773,7 @@ namespace FactoryManagementSoftware.UI
 
             return gotData;
         }
+
 
         private DataTable calculateOldStock(DataTable dt)
         {
@@ -882,9 +1039,23 @@ namespace FactoryManagementSoftware.UI
                 dgvNewStock.DataSource = null;
                 //dgvNewStock.Rows.Clear();
                 //dgvNewStock.Refresh();
-
-                if (cmbType.Text.Equals(CMBPartHeader))
+                if (cmbType.Text.Equals(text.Cmb_All))
                 {
+                    cbIncludeSubMat.Checked = false;
+                    cbIncludeSubMat.Visible = false;
+
+                    cbShowDuplicateData.Visible = false;
+                    cbShowDuplicateData.Checked = false;
+
+                    errorProvider1.Clear();
+                    cmbSubType.DataSource = null;
+                    cmbSubType.Enabled = false;
+
+                }
+                else if (cmbType.Text.Equals(CMBPartHeader))
+                {
+                    cmbSubType.Enabled = true;
+
                     tool.loadCustomerToComboBox(cmbSubType);
                     cbIncludeSubMat.Checked = false;
                     cbIncludeSubMat.Visible = true;
@@ -892,6 +1063,8 @@ namespace FactoryManagementSoftware.UI
                 }
                 else if (cmbType.Text.Equals(CMBMaterialHeader))
                 {
+                    cmbSubType.Enabled = true;
+
                     loadMaterialToComboBox(cmbSubType);
                     cbIncludeSubMat.Checked = false;
                     cbIncludeSubMat.Visible = false;
@@ -939,14 +1112,15 @@ namespace FactoryManagementSoftware.UI
 
         void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            // Access Main UI Thread here
-            progressBar1.Value = e.ProgressPercentage;
         }
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
-            bgWorker.DoWork += BackgroundWorkerDoWork;
-            bgWorker.ProgressChanged += BackgroundWorkerProgressChanged;
+
+
+            dgvNewStock.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            frmLoading.ShowLoadingScreen();
 
             if(dgvNewStock.DataSource == null)
             {
@@ -969,7 +1143,6 @@ namespace FactoryManagementSoftware.UI
 
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
-                        progressBar1.Show();
                         tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
 
                         // Copy DataGridView results to clipboard
@@ -984,7 +1157,16 @@ namespace FactoryManagementSoftware.UI
 
                         xlexcel.Calculation = XlCalculation.xlCalculationManual;
                         Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                        xlWorkSheet.Name = cmbSubType.Text;
+
+                        string subType = cmbSubType.Text;
+
+                        if (!string.IsNullOrEmpty(subType) || cmbType.Text == text.Cmb_All)
+                        {
+                            subType = "ALL"; 
+                        }
+                        xlWorkSheet.Name = subType;
+
+                       
 
                         #region Save data to Sheet
 
@@ -1003,7 +1185,7 @@ namespace FactoryManagementSoftware.UI
                             dataDate += " " + lblUpdatedTime.Text;
                         }
                         //Header and Footer setup
-                        xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + cmbSubType.Text + subMaterialIncluded + "_" + dataDate;
+                        xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri,Bold\"&11 " + subType + subMaterialIncluded + "_" + dataDate;
                         xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 STOCK LIST";
                         xlWorkSheet.PageSetup.RightHeader = "&\"Calibri,Bold\"&11 PG -&P";
                         xlWorkSheet.PageSetup.CenterFooter = "Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + " On " + DateTime.Now;
@@ -1040,84 +1222,73 @@ namespace FactoryManagementSoftware.UI
                         tRange.Rows[1].interior.color = Color.FromArgb(237, 237, 237);
 
                         #endregion
-                        if (true)//cmbSubType.Text.Equals("PMMA")
-                        {
-                            for (int i = 0; i <= dgvNewStock.RowCount - 2; i++)
-                            {
-                                for (int j = 0; j <= dgvNewStock.ColumnCount - 1; j++)
-                                {
-                                    Range range = (Range)xlWorkSheet.Cells[i + 2, j + 1];
 
-                                    if (i == 0)
-                                    {
-                                        Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
-                                        header.Interior.Color = ColorTranslator.ToOle(dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor);
+                        #region Coloring
+                        //for (int i = 0; i <= dgvNewStock.RowCount - 2; i++)
+                        //{
+                        //    for (int j = 0; j <= dgvNewStock.ColumnCount - 1; j++)
+                        //    {
+                        //        Range range = (Range)xlWorkSheet.Cells[i + 2, j + 1];
 
-                                        header = (Range)xlWorkSheet.Cells[1, 10];
-                                        header.Font.Color = Color.Blue;
+                        //        if (i == 0)
+                        //        {
+                        //            Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                        //            header.Interior.Color = ColorTranslator.ToOle(dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor);
 
-                                        header = (Range)xlWorkSheet.Cells[1, 14];
-                                        header.Font.Color = Color.Red;
+                        //            header = (Range)xlWorkSheet.Cells[1, 10];
+                        //            header.Font.Color = Color.Blue;
 
-                                        header = (Range)xlWorkSheet.Cells[1, 16];
-                                        header.Font.Color = Color.Red;
+                        //            header = (Range)xlWorkSheet.Cells[1, 14];
+                        //            header.Font.Color = Color.Red;
 
-
-                                    }
-
-                                    if (dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor == SystemColors.Window)
-                                    {
-                                        range.Interior.Color = ColorTranslator.ToOle(Color.White);
-                                        if (i == 0)
-                                        {
-                                            Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
-                                            header.Interior.Color = ColorTranslator.ToOle(Color.White);
-                                        }
-                                    }
-                                    else if (dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor == Color.Black)
-                                    {
-                                        range.Rows.RowHeight = 3;
-                                        range.Interior.Color = ColorTranslator.ToOle(dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor);
-                                        if (i == 0)
-                                        {
-                                            Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
-                                            header.Interior.Color = ColorTranslator.ToOle(dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        range.Interior.Color = ColorTranslator.ToOle(dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor);
-
-                                        if (i == 0)
-                                        {
-                                            Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
-                                            header.Interior.Color = ColorTranslator.ToOle(dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor);
-                                        }
-                                    }
-                                    range.Font.Color = dgvNewStock.Rows[i].Cells[j].Style.ForeColor;
-                                    if (dgvNewStock.Rows[i].Cells[j].Style.ForeColor == Color.Blue)
-                                    {
-                                        Range header = (Range)xlWorkSheet.Cells[i + 2, 2];
-                                        header.Font.Underline = true;
-
-                                        header = (Range)xlWorkSheet.Cells[i + 2, 3];
-                                        header.Font.Underline = true;
-                                    }
-
-                                }
-
-                                Int32 percentage = ((i + 1) * 100) / (dgvNewStock.RowCount - 1);
-                                if (percentage >= 100)
-                                {
-                                    percentage = 100;
-                                }
-                                bgWorker.ReportProgress(percentage);
-                            }
-                        }
+                        //            header = (Range)xlWorkSheet.Cells[1, 16];
+                        //            header.Font.Color = Color.Red;
 
 
-                        bgWorker.ReportProgress(100);
-                        System.Threading.Thread.Sleep(1000);
+                        //        }
+
+                        //        if (dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor == SystemColors.Window)
+                        //        {
+                        //            range.Interior.Color = ColorTranslator.ToOle(Color.White);
+                        //            if (i == 0)
+                        //            {
+                        //                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                        //                header.Interior.Color = ColorTranslator.ToOle(Color.White);
+                        //            }
+                        //        }
+                        //        else if (dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor == Color.Black)
+                        //        {
+                        //            range.Rows.RowHeight = 3;
+                        //            range.Interior.Color = ColorTranslator.ToOle(dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor);
+                        //            if (i == 0)
+                        //            {
+                        //                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                        //                header.Interior.Color = ColorTranslator.ToOle(dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor);
+                        //            }
+                        //        }
+                        //        else
+                        //        {
+                        //            range.Interior.Color = ColorTranslator.ToOle(dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor);
+
+                        //            if (i == 0)
+                        //            {
+                        //                Range header = (Range)xlWorkSheet.Cells[i + 1, j + 1];
+                        //                header.Interior.Color = ColorTranslator.ToOle(dgvNewStock.Rows[i].Cells[j].InheritedStyle.BackColor);
+                        //            }
+                        //        }
+                        //        range.Font.Color = dgvNewStock.Rows[i].Cells[j].Style.ForeColor;
+                        //        if (dgvNewStock.Rows[i].Cells[j].Style.ForeColor == Color.Blue)
+                        //        {
+                        //            Range header = (Range)xlWorkSheet.Cells[i + 2, 2];
+                        //            header.Font.Underline = true;
+
+                        //            header = (Range)xlWorkSheet.Cells[i + 2, 3];
+                        //            header.Font.Underline = true;
+                        //        }
+
+                        //    }
+                        //}
+                        #endregion
 
                         //Save the excel file under the captured location from the SaveFileDialog
                         xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
@@ -1141,7 +1312,6 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     Cursor = Cursors.Arrow; // change cursor to normal type
-                    dgvNewStock.SelectionMode = DataGridViewSelectionMode.CellSelect;
                 }
                 catch (Exception ex)
                 {
@@ -1149,11 +1319,14 @@ namespace FactoryManagementSoftware.UI
                 }
                 finally
                 {
-                    progressBar1.Visible = false;
                     Cursor = Cursors.Arrow; // change cursor to normal type
                 }
             }
-           
+
+            frmLoading.CloseForm();
+
+            dgvNewStock.SelectionMode = DataGridViewSelectionMode.CellSelect;
+
         }
 
         private void copyAlltoClipboard()
@@ -1201,7 +1374,6 @@ namespace FactoryManagementSoftware.UI
 
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    progressBar1.Show();
                     tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
 
                     string path = Path.GetFullPath(sfd.FileName);
@@ -1244,7 +1416,6 @@ namespace FactoryManagementSoftware.UI
             }
             finally
             {
-                progressBar1.Visible = false;
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
         }
@@ -1443,7 +1614,7 @@ namespace FactoryManagementSoftware.UI
                 errorProvider1.SetError(lblType, "Item Type Required");
             }
 
-            if (string.IsNullOrEmpty(cmbSubType.Text))
+            if (string.IsNullOrEmpty(cmbSubType.Text) && cmbType.Text != text.Cmb_All)
             {
                 result = false;
                 errorProvider2.SetError(lblSubType, "Item Sub Type Required");
@@ -1461,7 +1632,12 @@ namespace FactoryManagementSoftware.UI
                 lblUpdatedTime.Text = DateTime.Now.ToLongTimeString();
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-                if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
+
+                if (cmbType.Text.Equals(text.Cmb_All))
+                {
+                    LoadAllStockData();
+                }
+                else if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
                 {
                     LoadPartStockData();
                 }
@@ -1469,6 +1645,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     newLoadMaterialStockData();
                 }
+
 
                 Cursor = Cursors.Arrow; // change cursor to normal type
 
@@ -1519,65 +1696,29 @@ namespace FactoryManagementSoftware.UI
             int row = e.RowIndex;
             int col = e.ColumnIndex;
 
-            if (dgv.Columns[col].Name == headerCode)
+            bool facHeader = true;
+
+            facHeader &= dgv.Columns[col].Name != headerCode;
+            facHeader &= dgv.Columns[col].Name != headerName;
+            facHeader &= dgv.Columns[col].Name != headerIndex;
+            facHeader &= dgv.Columns[col].Name != text.Header_Category;
+            facHeader &= dgv.Columns[col].Name != headerUnit;
+
+            if (facHeader)
             {
-                //if (dgv.Rows[row].Cells[col].Value != DBNull.Value && dgv.Rows[row].Cells[headerParentColor].Value != DBNull.Value)
-                //{
-                //    string color = dgv.Rows[row].Cells[headerParentColor].Value.ToString();
+                float num =  float.TryParse(dgv.Rows[row].Cells[col].Value.ToString(), out num)? num : 0;
 
-                //    if(dgv.Rows[row].Cells[headerRepeat].Value != DBNull.Value)
-                //    {
-                //        int repeat = Convert.ToInt16(dgv.Rows[row].Cells[headerRepeat].Value);
-
-                //        if (repeat == 1)
-                //        {
-                //            dgv.Rows[row].DefaultCellStyle.BackColor = Color.Lavender;
-                //        }
-                //    }
-                    
-
-                //    if (color.Equals(ProductionAndAssemblyColor))
-                //    {
-                //        dgv.Rows[row].Cells[col].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
-                //        dgv.Rows[row].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
-
-                //    }
-                //    else if (color.Equals(ProductionColor))
-                //    {
-                //        dgv.Rows[row].Cells[col].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
-                //        dgv.Rows[row].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
-
-                //    }
-                //    else if (color.Equals(AssemblyColor))
-                //    {
-                //        dgv.Rows[row].Cells[col].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
-                //        dgv.Rows[row].Cells[headerName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new System.Drawing.Font(dgv.Font, FontStyle.Underline | FontStyle.Bold) };
-                //    }
-                //}
-
-               
-            }
-
-            else if (dgv.Columns[col].Name != headerIndex && dgv.Columns[col].Name != headerName && dgv.Columns[col].Name != headerUnit)
-            {
-                if (dgv.Rows[row].Cells[col].Value != null)
+                if (num < 0)
                 {
-                    if (!string.IsNullOrEmpty(dgv.Rows[row].Cells[col].Value.ToString()))
-                    {
-                        float num = dgv.Rows[row].Cells[col].Value == DBNull.Value ? 0 : Convert.ToSingle(dgv.Rows[row].Cells[col].Value.ToString());
-                        if (num < 0)
-                        {
-                            dgv.Rows[row].Cells[col].Style.ForeColor = Color.Red;
-                        }
-                        else
-                        {
-                            dgv.Rows[row].Cells[col].Style.ForeColor = Color.Black;
-                        }
-                    }
+                    dgv.Rows[row].Cells[col].Style.ForeColor = Color.Red;
                 }
-            }
+                else
+                {
+                    dgv.Rows[row].Cells[col].Style.ForeColor = Color.Black;
+                }
 
-      
+            }
+           
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
@@ -1607,20 +1748,24 @@ namespace FactoryManagementSoftware.UI
         {
             int rowIndex = e.RowIndex;
 
-            string itemCode = dgvNewStock.Rows[rowIndex].Cells[headerCode].Value == DBNull.Value? null: dgvNewStock.Rows[rowIndex].Cells[headerCode].Value.ToString();
-
-            if(itemCode != null)
+            if(rowIndex < 0)
             {
-                DateTime now = DateTime.Now;
-                string startDate = Convert.ToDateTime(dtpEndDate.Value).AddDays(1).ToString("yyyy/MM/dd");
-                string endDate = DateTime.Now.ToString("yyyy/MM/dd");
+                string itemCode = dgvNewStock.Rows[rowIndex].Cells[headerCode].Value == DBNull.Value ? null : dgvNewStock.Rows[rowIndex].Cells[headerCode].Value.ToString();
 
-                DataTable dt_TrfHist = dalTrfHist.rangeTrfSearch(itemCode, startDate, endDate);
+                if (itemCode != null)
+                {
+                    DateTime now = DateTime.Now;
+                    string startDate = Convert.ToDateTime(dtpEndDate.Value).AddDays(1).ToString("yyyy/MM/dd");
+                    string endDate = DateTime.Now.ToString("yyyy/MM/dd");
 
-                
-                frmStockReverseDetail frm = new frmStockReverseDetail(dt_TrfHist,itemCode, dalItem.getStockQty(itemCode), startDate,endDate);
-                frm.Show();
+                    DataTable dt_TrfHist = dalTrfHist.rangeTrfSearch(itemCode, startDate, endDate);
+
+
+                    frmStockReverseDetail frm = new frmStockReverseDetail(dt_TrfHist, itemCode, dalItem.getStockQty(itemCode), startDate, endDate);
+                    frm.Show();
+                }
             }
+          
 
            
         }

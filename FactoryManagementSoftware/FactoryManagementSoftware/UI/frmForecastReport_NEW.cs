@@ -1032,6 +1032,8 @@ namespace FactoryManagementSoftware.UI
                 if(i > CURRENT_ROW_JUMP)
                 {
                     CURRENT_ROW_JUMP = i;
+
+
                     dgvForecastReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
                     btnPreviousSearchResult.Enabled = true;
 

@@ -704,7 +704,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     cmbTrfToCategory.SelectedIndex = 0;
 
-                    if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+                    if (cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
                     {
                         //cmbTrfTo.Text = text.Factory_Semenyih;
                         cmbTrfTo.Text =semenyihSystem ? text.Factory_Semenyih : text.Factory_2;
@@ -799,7 +799,7 @@ namespace FactoryManagementSoftware.UI
                 dt.Rows.Add(text.Unit_Piece);
                 dt.Rows.Add(text.Unit_Meter);
 
-                if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass )
+                if (cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass )
                 {
                     dt.Rows.Add(text.Unit_Bag);
                     lblStdPacking.Visible = true;
@@ -829,7 +829,7 @@ namespace FactoryManagementSoftware.UI
             cmbTrfQtyUnit.DisplayMember = "item_unit";
             cmbTrfQtyUnit.SelectedIndex = -1;
 
-            if ( !string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+            if ( !string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
             {
                 cmbTrfQtyUnit.Text = text.Unit_Bag;
             }
@@ -2234,7 +2234,7 @@ namespace FactoryManagementSoftware.UI
 
             if(!cbFreeze.Checked)
             {
-                if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+                if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
                 {
                     unitDataSource();
                     cmbTrfQtyUnit.Text = text.Unit_Bag;
@@ -2246,7 +2246,7 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
-            else if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+            else if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Length > 3 &&  cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
             {
                 cmbTrfQtyUnit.Text = text.Unit_Bag;
                 GetStdPacking();
@@ -2257,7 +2257,7 @@ namespace FactoryManagementSoftware.UI
         {
             errorProvider4.Clear();
 
-            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Length >3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
             {
                 unitDataSource();
             }
@@ -2279,7 +2279,7 @@ namespace FactoryManagementSoftware.UI
                 cmbTrfFrom.DataSource = null;
                 cmbTrfToCategory.SelectedIndex = 0;
 
-                if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+                if (cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
                 {
                     cmbTrfTo.Text = text.Factory_Semenyih;
                     //cmbTrfTo.SelectedIndex = 5;
@@ -2312,7 +2312,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (cmbTrfToCategory.Text.Equals("Customer"))
             {
-                if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+                if (cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
                 {
                     DataTable dt = dalData.CustomerWithoutRemovedDataSelect();
                     loadLocationData(dt, cmbTrfTo, dalData.ShortName);
@@ -2392,7 +2392,7 @@ namespace FactoryManagementSoftware.UI
             string trfQty = txtTrfQty.Text;
             string note = "";
 
-            if (cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+            if (cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
             {
                 if(unit == text.Unit_Bag)
                 {

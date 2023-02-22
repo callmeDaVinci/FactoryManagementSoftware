@@ -26,10 +26,10 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = @" SELECT tbl_item.item_code,tbl_item.item_name,tbl_fac.fac_name, tbl_stock.stock_qty,tbl_stock.stock_unit 
+                String sql = @" SELECT * 
                                 FROM((tbl_stock 
                                 INNER JOIN tbl_item 
-                                ON tbl_item.item_code = tbl_stock.stock_item_code ) 
+                                ON tbl_item.item_code = tbl_stock.stock_item_code) 
                                 INNER JOIN tbl_fac 
                                 ON tbl_stock.stock_fac_id = tbl_fac.fac_id)";
 

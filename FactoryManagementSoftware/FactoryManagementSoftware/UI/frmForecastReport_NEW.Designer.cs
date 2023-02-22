@@ -60,8 +60,12 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbRepeatedColorMode = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.cbShowProDayNeeded = new System.Windows.Forms.CheckBox();
+            this.cbSpecialTypeColorMode = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cbRepeatedColorMode = new System.Windows.Forms.CheckBox();
+            this.txtNodeliveredMonths = new System.Windows.Forms.TextBox();
             this.cbRemoveNoDeliveredItem = new System.Windows.Forms.CheckBox();
             this.cbIncludeTerminated = new System.Windows.Forms.CheckBox();
             this.cbIncludeProInfo = new System.Windows.Forms.CheckBox();
@@ -97,10 +101,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.txtNodeliveredMonths = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cbSpecialTypeColorMode = new System.Windows.Forms.CheckBox();
-            this.cbShowProDayNeeded = new System.Windows.Forms.CheckBox();
             this.tlpForecastReport.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -602,7 +602,7 @@
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 189F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 228F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 259F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 464F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 16F));
             this.tableLayoutPanel6.Controls.Add(this.groupBox6, 4, 0);
             this.tableLayoutPanel6.Controls.Add(this.groupBox1, 3, 0);
@@ -617,24 +617,6 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(1310, 174);
             this.tableLayoutPanel6.TabIndex = 165;
-            // 
-            // cbRepeatedColorMode
-            // 
-            this.cbRepeatedColorMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbRepeatedColorMode.AutoSize = true;
-            this.cbRepeatedColorMode.Checked = true;
-            this.cbRepeatedColorMode.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbRepeatedColorMode.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbRepeatedColorMode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbRepeatedColorMode.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRepeatedColorMode.Location = new System.Drawing.Point(232, 24);
-            this.cbRepeatedColorMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
-            this.cbRepeatedColorMode.Name = "cbRepeatedColorMode";
-            this.cbRepeatedColorMode.Size = new System.Drawing.Size(169, 21);
-            this.cbRepeatedColorMode.TabIndex = 168;
-            this.cbRepeatedColorMode.Text = "Repeated Row Coloring";
-            this.cbRepeatedColorMode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRepeatedColorMode.UseVisualStyleBackColor = true;
             // 
             // groupBox6
             // 
@@ -659,6 +641,81 @@
             this.groupBox6.TabIndex = 166;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "OTHER";
+            // 
+            // cbShowProDayNeeded
+            // 
+            this.cbShowProDayNeeded.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbShowProDayNeeded.AutoSize = true;
+            this.cbShowProDayNeeded.Checked = true;
+            this.cbShowProDayNeeded.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbShowProDayNeeded.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbShowProDayNeeded.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbShowProDayNeeded.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbShowProDayNeeded.Location = new System.Drawing.Point(232, 84);
+            this.cbShowProDayNeeded.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
+            this.cbShowProDayNeeded.Name = "cbShowProDayNeeded";
+            this.cbShowProDayNeeded.Size = new System.Drawing.Size(165, 21);
+            this.cbShowProDayNeeded.TabIndex = 170;
+            this.cbShowProDayNeeded.Text = "Show Pro. Day Needed";
+            this.cbShowProDayNeeded.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbShowProDayNeeded.UseVisualStyleBackColor = true;
+            // 
+            // cbSpecialTypeColorMode
+            // 
+            this.cbSpecialTypeColorMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbSpecialTypeColorMode.AutoSize = true;
+            this.cbSpecialTypeColorMode.Checked = true;
+            this.cbSpecialTypeColorMode.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSpecialTypeColorMode.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbSpecialTypeColorMode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSpecialTypeColorMode.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbSpecialTypeColorMode.Location = new System.Drawing.Point(232, 54);
+            this.cbSpecialTypeColorMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
+            this.cbSpecialTypeColorMode.Name = "cbSpecialTypeColorMode";
+            this.cbSpecialTypeColorMode.Size = new System.Drawing.Size(156, 21);
+            this.cbSpecialTypeColorMode.TabIndex = 169;
+            this.cbSpecialTypeColorMode.Text = "Special Type Coloring";
+            this.cbSpecialTypeColorMode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbSpecialTypeColorMode.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(197, 149);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(38, 12);
+            this.label5.TabIndex = 169;
+            this.label5.Text = "months";
+            // 
+            // cbRepeatedColorMode
+            // 
+            this.cbRepeatedColorMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbRepeatedColorMode.AutoSize = true;
+            this.cbRepeatedColorMode.Checked = true;
+            this.cbRepeatedColorMode.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbRepeatedColorMode.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbRepeatedColorMode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbRepeatedColorMode.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbRepeatedColorMode.Location = new System.Drawing.Point(232, 24);
+            this.cbRepeatedColorMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
+            this.cbRepeatedColorMode.Name = "cbRepeatedColorMode";
+            this.cbRepeatedColorMode.Size = new System.Drawing.Size(169, 21);
+            this.cbRepeatedColorMode.TabIndex = 168;
+            this.cbRepeatedColorMode.Text = "Repeated Row Coloring";
+            this.cbRepeatedColorMode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbRepeatedColorMode.UseVisualStyleBackColor = true;
+            // 
+            // txtNodeliveredMonths
+            // 
+            this.txtNodeliveredMonths.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.txtNodeliveredMonths.Location = new System.Drawing.Point(154, 144);
+            this.txtNodeliveredMonths.Margin = new System.Windows.Forms.Padding(2);
+            this.txtNodeliveredMonths.Name = "txtNodeliveredMonths";
+            this.txtNodeliveredMonths.Size = new System.Drawing.Size(38, 21);
+            this.txtNodeliveredMonths.TabIndex = 169;
+            this.txtNodeliveredMonths.Text = "3";
+            this.txtNodeliveredMonths.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // cbRemoveNoDeliveredItem
             // 
@@ -1160,63 +1217,6 @@
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // txtNodeliveredMonths
-            // 
-            this.txtNodeliveredMonths.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.txtNodeliveredMonths.Location = new System.Drawing.Point(154, 144);
-            this.txtNodeliveredMonths.Margin = new System.Windows.Forms.Padding(2);
-            this.txtNodeliveredMonths.Name = "txtNodeliveredMonths";
-            this.txtNodeliveredMonths.Size = new System.Drawing.Size(38, 21);
-            this.txtNodeliveredMonths.TabIndex = 169;
-            this.txtNodeliveredMonths.Text = "3";
-            this.txtNodeliveredMonths.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(197, 149);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 12);
-            this.label5.TabIndex = 169;
-            this.label5.Text = "months";
-            // 
-            // cbSpecialTypeColorMode
-            // 
-            this.cbSpecialTypeColorMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbSpecialTypeColorMode.AutoSize = true;
-            this.cbSpecialTypeColorMode.Checked = true;
-            this.cbSpecialTypeColorMode.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbSpecialTypeColorMode.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbSpecialTypeColorMode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbSpecialTypeColorMode.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbSpecialTypeColorMode.Location = new System.Drawing.Point(232, 54);
-            this.cbSpecialTypeColorMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
-            this.cbSpecialTypeColorMode.Name = "cbSpecialTypeColorMode";
-            this.cbSpecialTypeColorMode.Size = new System.Drawing.Size(156, 21);
-            this.cbSpecialTypeColorMode.TabIndex = 169;
-            this.cbSpecialTypeColorMode.Text = "Special Type Coloring";
-            this.cbSpecialTypeColorMode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbSpecialTypeColorMode.UseVisualStyleBackColor = true;
-            // 
-            // cbShowProDayNeeded
-            // 
-            this.cbShowProDayNeeded.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbShowProDayNeeded.AutoSize = true;
-            this.cbShowProDayNeeded.Checked = true;
-            this.cbShowProDayNeeded.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbShowProDayNeeded.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbShowProDayNeeded.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbShowProDayNeeded.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowProDayNeeded.Location = new System.Drawing.Point(232, 84);
-            this.cbShowProDayNeeded.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
-            this.cbShowProDayNeeded.Name = "cbShowProDayNeeded";
-            this.cbShowProDayNeeded.Size = new System.Drawing.Size(165, 21);
-            this.cbShowProDayNeeded.TabIndex = 170;
-            this.cbShowProDayNeeded.Text = "Show Pro. Day Needed";
-            this.cbShowProDayNeeded.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowProDayNeeded.UseVisualStyleBackColor = true;
             // 
             // frmForecastReport_NEW
             // 

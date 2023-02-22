@@ -10,6 +10,10 @@ namespace FactoryManagementSoftware.DAL
     class facDAL
     {
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+        public string FacActive { get; } = "active";
+        public string FacName { get; } = "fac_name";
+        public string StockUnit { get; } = "stock_unit";
+        public string StockQty { get; } = "stock_qty";
 
         #region Select Data from Database
         public DataTable SelectDESC()
@@ -46,6 +50,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+
         public DataTable NewSelectDESC()
         {
             //static methodd to connect database
@@ -55,7 +60,43 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = "SELECT * FROM tbl_fac WHERE active = 1 ORDER BY fac_id DESC";
+                //String sql = "SELECT * FROM tbl_fac ORDER BY fac_id DESC";
+               String sql = "SELECT * FROM tbl_fac WHERE active = 1 ORDER BY fac_id DESC";
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable NewSelectASC()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                //String sql = "SELECT * FROM tbl_fac ORDER BY fac_id DESC";
+                String sql = "SELECT * FROM tbl_fac WHERE active = 1 ORDER BY fac_id ASC";
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database

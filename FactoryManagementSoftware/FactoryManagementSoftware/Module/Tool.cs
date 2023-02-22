@@ -4542,23 +4542,23 @@ namespace FactoryManagementSoftware.Module
                 {
                     if (row[dalItem.ItemCode].ToString().Equals(itemCode))
                     {
-                        float stockQty = 0;
+                        bool active = bool.TryParse(row[dalFac.FacActive].ToString(), out active) ? active : false;
 
-                        if(!(row["stock_qty"] is null))
+                        if(active)
                         {
-                            stockQty = Convert.ToSingle(row["stock_qty"]);
-                        }
-                        
-                        dtStock_row = dt_Stock.NewRow();
-                        dtStock_row[headerIndex] = index;
-                        dtStock_row[headerName] = row["item_name"].ToString();
-                        dtStock_row[headerCode] = row["item_code"].ToString();
-                        dtStock_row[headerFacName] = row["fac_name"].ToString();
-                        dtStock_row[headerReadyStock] = stockQty;
-                        dtStock_row[headerUnit] = row["stock_unit"].ToString();
+                            float stockQty = float.TryParse(row[dalFac.StockQty].ToString(), out stockQty) ? stockQty : 0;
 
-                        dt_Stock.Rows.Add(dtStock_row);
-                        index++;
+                            dtStock_row = dt_Stock.NewRow();
+                            dtStock_row[headerIndex] = index;
+                            dtStock_row[headerName] = row[dalItem.ItemName].ToString();
+                            dtStock_row[headerCode] = row[dalItem.ItemCode].ToString();
+                            dtStock_row[headerFacName] = row[dalFac.FacName].ToString();
+                            dtStock_row[headerReadyStock] = stockQty;
+                            dtStock_row[headerUnit] = row[dalFac.StockUnit].ToString();
+
+                            dt_Stock.Rows.Add(dtStock_row);
+                            index++;
+                        }
                     }
                 }
             }
