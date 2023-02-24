@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.tlpForecastReport = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -61,6 +61,7 @@
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.cbIncludeMacRecord = new System.Windows.Forms.CheckBox();
             this.cbShowProDayNeeded = new System.Windows.Forms.CheckBox();
             this.cbSpecialTypeColorMode = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -465,14 +466,14 @@
             this.dgvForecastReport.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecastReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 8F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 8F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvForecastReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvForecastReport.GridColor = System.Drawing.Color.White;
             this.dgvForecastReport.Location = new System.Drawing.Point(3, 331);
@@ -620,6 +621,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.cbIncludeMacRecord);
             this.groupBox6.Controls.Add(this.cbShowProDayNeeded);
             this.groupBox6.Controls.Add(this.cbSpecialTypeColorMode);
             this.groupBox6.Controls.Add(this.label5);
@@ -641,6 +643,24 @@
             this.groupBox6.TabIndex = 166;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "OTHER";
+            // 
+            // cbIncludeMacRecord
+            // 
+            this.cbIncludeMacRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbIncludeMacRecord.AutoSize = true;
+            this.cbIncludeMacRecord.Checked = true;
+            this.cbIncludeMacRecord.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbIncludeMacRecord.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbIncludeMacRecord.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbIncludeMacRecord.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbIncludeMacRecord.Location = new System.Drawing.Point(232, 114);
+            this.cbIncludeMacRecord.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
+            this.cbIncludeMacRecord.Name = "cbIncludeMacRecord";
+            this.cbIncludeMacRecord.Size = new System.Drawing.Size(149, 21);
+            this.cbIncludeMacRecord.TabIndex = 171;
+            this.cbIncludeMacRecord.Text = "Include Mac. Record";
+            this.cbIncludeMacRecord.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbIncludeMacRecord.UseVisualStyleBackColor = true;
             // 
             // cbShowProDayNeeded
             // 
@@ -972,11 +992,11 @@
             // 
             this.lblCurrentMonth.AutoSize = true;
             this.lblCurrentMonth.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblCurrentMonth.Font = new System.Drawing.Font("Segoe UI", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCurrentMonth.Font = new System.Drawing.Font("Segoe UI", 7F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))));
             this.lblCurrentMonth.ForeColor = System.Drawing.Color.Blue;
-            this.lblCurrentMonth.Location = new System.Drawing.Point(72, 22);
+            this.lblCurrentMonth.Location = new System.Drawing.Point(61, 23);
             this.lblCurrentMonth.Name = "lblCurrentMonth";
-            this.lblCurrentMonth.Size = new System.Drawing.Size(90, 17);
+            this.lblCurrentMonth.Size = new System.Drawing.Size(84, 15);
             this.lblCurrentMonth.TabIndex = 166;
             this.lblCurrentMonth.Text = "Current Month";
             this.lblCurrentMonth.Visible = false;
@@ -992,7 +1012,7 @@
             this.cmbForecastTo.FormattingEnabled = true;
             this.cmbForecastTo.Location = new System.Drawing.Point(47, 70);
             this.cmbForecastTo.Name = "cmbForecastTo";
-            this.cmbForecastTo.Size = new System.Drawing.Size(115, 20);
+            this.cmbForecastTo.Size = new System.Drawing.Size(98, 20);
             this.cmbForecastTo.TabIndex = 151;
             this.cmbForecastTo.SelectedIndexChanged += new System.EventHandler(this.cmbForecastTo_SelectedIndexChanged);
             // 
@@ -1015,7 +1035,7 @@
             this.cmbForecastFrom.FormattingEnabled = true;
             this.cmbForecastFrom.Location = new System.Drawing.Point(47, 40);
             this.cmbForecastFrom.Name = "cmbForecastFrom";
-            this.cmbForecastFrom.Size = new System.Drawing.Size(115, 20);
+            this.cmbForecastFrom.Size = new System.Drawing.Size(98, 20);
             this.cmbForecastFrom.TabIndex = 149;
             this.cmbForecastFrom.SelectedIndexChanged += new System.EventHandler(this.cmbForecastFrom_SelectedIndexChanged);
             // 
@@ -1338,5 +1358,6 @@
         private System.Windows.Forms.TextBox txtNodeliveredMonths;
         private System.Windows.Forms.CheckBox cbShowProDayNeeded;
         private System.Windows.Forms.CheckBox cbSpecialTypeColorMode;
+        private System.Windows.Forms.CheckBox cbIncludeMacRecord;
     }
 }

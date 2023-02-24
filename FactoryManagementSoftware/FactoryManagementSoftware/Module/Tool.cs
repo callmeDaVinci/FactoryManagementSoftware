@@ -2649,6 +2649,37 @@ namespace FactoryManagementSoftware.Module
             cmb.SelectedIndex = -1;
         }
 
+        public void loadMainCustomerAndAllToComboBox(ComboBox cmb)
+        {
+            DataTable dt = dalCust.FullSelect();
+
+
+            foreach (DataRow row in dt.Rows)
+            {
+                bool mainCustomer = bool.TryParse(row["cust_main"].ToString(), out bool i) ? i : false;
+
+                if (!mainCustomer || row["cust_name"].ToString().Equals("OTHER"))
+                {
+                    row.Delete();
+                }
+            }
+
+            dt.AcceptChanges();
+
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
+
+            //distinctTable.Rows.Add(new Text().Cmb_All);
+
+            distinctTable.DefaultView.Sort = "cust_name ASC";
+
+            distinctTable.AcceptChanges();
+
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "cust_name";
+            cmb.Text = getCustName(1);
+            //cmb.SelectedIndex = -1;
+        }
+
         public void loadMainCustomerToComboBox(ComboBox cmb)
         {
             DataTable dt = dalCust.FullSelect();
@@ -2675,6 +2706,30 @@ namespace FactoryManagementSoftware.Module
             cmb.DisplayMember = "cust_name";
             cmb.Text = getCustName(1);
             //cmb.SelectedIndex = -1;
+        }
+
+        public void loadCustomerAndALLWithoutOtherToComboBox(ComboBox cmb)
+        {
+            DataTable dt = dalCust.FullSelect();
+            DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
+
+            //distinctTable.Rows.Add(new Text().Cmb_All);
+
+            distinctTable.DefaultView.Sort = "cust_name ASC";
+
+            distinctTable.AcceptChanges();
+            foreach (DataRow row in distinctTable.Rows)
+            {
+                if (row["cust_name"].ToString().Equals("OTHER"))
+                {
+                    row.Delete();
+                }
+            }
+            distinctTable.AcceptChanges();
+
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "cust_name";
+            cmb.SelectedIndex = -1;
         }
 
         public void loadCustomerWithoutOtherToComboBox(ComboBox cmb)

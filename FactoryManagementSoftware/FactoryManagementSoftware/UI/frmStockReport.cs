@@ -117,7 +117,6 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerName, typeof(string));
 
             //add factory columns
-            DataTable dt_Fac = dalFac.SelectASC();
             DataTable dt_Fac = dalFac.NewSelectASC();
 
             string facName = string.Empty;

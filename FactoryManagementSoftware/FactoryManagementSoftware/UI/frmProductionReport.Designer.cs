@@ -130,6 +130,7 @@
             this.dgvProductionRecord.Name = "dgvProductionRecord";
             this.dgvProductionRecord.ReadOnly = true;
             this.dgvProductionRecord.RowHeadersVisible = false;
+            this.dgvProductionRecord.RowHeadersWidth = 51;
             this.dgvProductionRecord.RowTemplate.Height = 40;
             this.dgvProductionRecord.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvProductionRecord.Size = new System.Drawing.Size(911, 404);
@@ -170,6 +171,7 @@
             this.dgvMoreDetail.Name = "dgvMoreDetail";
             this.dgvMoreDetail.ReadOnly = true;
             this.dgvMoreDetail.RowHeadersVisible = false;
+            this.dgvMoreDetail.RowHeadersWidth = 51;
             this.dgvMoreDetail.RowTemplate.Height = 40;
             this.dgvMoreDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMoreDetail.Size = new System.Drawing.Size(387, 404);
@@ -180,10 +182,10 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(928, 25);
+            this.label2.Location = new System.Drawing.Point(928, 27);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(95, 19);
+            this.label2.Size = new System.Drawing.Size(88, 17);
             this.label2.TabIndex = 157;
             this.label2.Text = "MORE DETAIL";
             // 
@@ -229,10 +231,10 @@
             this.lblDateFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDateFrom.AutoSize = true;
             this.lblDateFrom.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateFrom.Location = new System.Drawing.Point(4, 10);
+            this.lblDateFrom.Location = new System.Drawing.Point(4, 12);
             this.lblDateFrom.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDateFrom.Name = "lblDateFrom";
-            this.lblDateFrom.Size = new System.Drawing.Size(84, 19);
+            this.lblDateFrom.Size = new System.Drawing.Size(78, 17);
             this.lblDateFrom.TabIndex = 167;
             this.lblDateFrom.Text = "DATE FROM";
             // 
@@ -267,10 +269,10 @@
             this.lblDateTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDateTo.AutoSize = true;
             this.lblDateTo.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateTo.Location = new System.Drawing.Point(4, 10);
+            this.lblDateTo.Location = new System.Drawing.Point(4, 12);
             this.lblDateTo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDateTo.Name = "lblDateTo";
-            this.lblDateTo.Size = new System.Drawing.Size(62, 19);
+            this.lblDateTo.Size = new System.Drawing.Size(58, 17);
             this.lblDateTo.TabIndex = 167;
             this.lblDateTo.Text = "DATE TO";
             // 
@@ -340,10 +342,10 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(2, 12);
+            this.label1.Location = new System.Drawing.Point(2, 13);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(154, 19);
+            this.label1.Size = new System.Drawing.Size(143, 17);
             this.label1.TabIndex = 166;
             this.label1.Text = "PRODUCTION RECORD";
             // 
@@ -474,7 +476,7 @@
             this.cbShowColorMat.AutoSize = true;
             this.cbShowColorMat.Location = new System.Drawing.Point(3, 63);
             this.cbShowColorMat.Name = "cbShowColorMat";
-            this.cbShowColorMat.Size = new System.Drawing.Size(189, 19);
+            this.cbShowColorMat.Size = new System.Drawing.Size(176, 19);
             this.cbShowColorMat.TabIndex = 2;
             this.cbShowColorMat.Text = "SHOW COLOR MATERIAL";
             this.cbShowColorMat.UseVisualStyleBackColor = true;
@@ -496,7 +498,7 @@
             this.cbShowRawMat.AutoSize = true;
             this.cbShowRawMat.Location = new System.Drawing.Point(3, 33);
             this.cbShowRawMat.Name = "cbShowRawMat";
-            this.cbShowRawMat.Size = new System.Drawing.Size(172, 19);
+            this.cbShowRawMat.Size = new System.Drawing.Size(161, 19);
             this.cbShowRawMat.TabIndex = 1;
             this.cbShowRawMat.Text = "SHOW RAW MATERIAL";
             this.cbShowRawMat.UseVisualStyleBackColor = true;
@@ -558,10 +560,10 @@
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(4, 0);
+            this.label6.Location = new System.Drawing.Point(4, 2);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(48, 19);
+            this.label6.Size = new System.Drawing.Size(45, 17);
             this.label6.TabIndex = 164;
             this.label6.Text = "NAME";
             // 
@@ -572,10 +574,10 @@
             this.lblPartCodeReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblPartCodeReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPartCodeReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblPartCodeReset.Location = new System.Drawing.Point(481, 0);
+            this.lblPartCodeReset.Location = new System.Drawing.Point(485, 2);
             this.lblPartCodeReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPartCodeReset.Name = "lblPartCodeReset";
-            this.lblPartCodeReset.Size = new System.Drawing.Size(49, 19);
+            this.lblPartCodeReset.Size = new System.Drawing.Size(45, 17);
             this.lblPartCodeReset.TabIndex = 169;
             this.lblPartCodeReset.Text = "CLEAR";
             this.lblPartCodeReset.Click += new System.EventHandler(this.lblPartCodeReset_Click);
@@ -587,10 +589,10 @@
             this.lblPartNameReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblPartNameReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPartNameReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblPartNameReset.Location = new System.Drawing.Point(209, 0);
+            this.lblPartNameReset.Location = new System.Drawing.Point(213, 2);
             this.lblPartNameReset.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPartNameReset.Name = "lblPartNameReset";
-            this.lblPartNameReset.Size = new System.Drawing.Size(49, 19);
+            this.lblPartNameReset.Size = new System.Drawing.Size(45, 17);
             this.lblPartNameReset.TabIndex = 166;
             this.lblPartNameReset.Text = "CLEAR";
             this.lblPartNameReset.Click += new System.EventHandler(this.lblPartNameReset_Click);
@@ -600,10 +602,10 @@
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(276, 0);
+            this.label7.Location = new System.Drawing.Point(276, 2);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(46, 19);
+            this.label7.Size = new System.Drawing.Size(42, 17);
             this.label7.TabIndex = 167;
             this.label7.Text = "CODE";
             // 
@@ -688,10 +690,10 @@
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(117, 6);
+            this.label4.Location = new System.Drawing.Point(117, 8);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(71, 19);
+            this.label4.Size = new System.Drawing.Size(65, 17);
             this.label4.TabIndex = 157;
             this.label4.Text = "MACHINE";
             // 
@@ -700,10 +702,10 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(4, 6);
+            this.label3.Location = new System.Drawing.Point(4, 8);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 19);
+            this.label3.Size = new System.Drawing.Size(60, 17);
             this.label3.TabIndex = 156;
             this.label3.Text = "FACTORY";
             // 

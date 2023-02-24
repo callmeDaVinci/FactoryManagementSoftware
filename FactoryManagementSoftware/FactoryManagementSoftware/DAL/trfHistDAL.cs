@@ -1469,6 +1469,53 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable ItemDeliveredRecordSearch(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                            INNER JOIN tbl_cust
+                            ON tbl_trf_hist.trf_hist_to=tbl_cust.cust_name
+                            WHERE tbl_trf_hist.trf_hist_trf_date
+                            BETWEEN @start 
+                            AND @end
+                            ORDER BY tbl_trf_hist.trf_hist_item_code ASC , tbl_trf_hist.trf_hist_trf_date ASC";
+
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable ItemDeliveredRecordSearch(string customer , string start, string end)
         {
             //static methodd to connect database

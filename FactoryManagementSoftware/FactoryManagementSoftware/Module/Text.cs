@@ -516,6 +516,7 @@ namespace FactoryManagementSoftware.Module
 
         public string Search_DefaultTest { get; } = "Search";
         public string DeliveredSummary { get; } = "Delivered Summary";
+        public string ProductionHistory { get; } = "Production History";
 
         public string DO_CustOwnDO { get; } = "*USE CUSTOMER OWN D/O";
 

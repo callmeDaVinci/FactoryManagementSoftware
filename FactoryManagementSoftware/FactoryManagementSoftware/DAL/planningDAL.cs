@@ -179,6 +179,47 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable SelectCompletedOrRunningPlan()
+        {
+            Text text = new Text();
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_plan 
+                                INNER JOIN tbl_mac ON tbl_plan.machine_id = tbl_mac.mac_id 
+                                WHERE tbl_plan.plan_status=@planning_status_running OR tbl_plan.plan_status=@planning_status_completed OR tbl_plan.plan_status=@planning_status_pending
+                                ORDER BY tbl_plan.part_code ASC";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@planning_status_running", text.planning_status_running);
+                cmd.Parameters.AddWithValue("@planning_status_pending", text.planning_status_pending);
+                cmd.Parameters.AddWithValue("@planning_status_completed", text.planning_status_completed);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
         public DataTable lastRecordSelect()
         {
             //static methodd to connect database

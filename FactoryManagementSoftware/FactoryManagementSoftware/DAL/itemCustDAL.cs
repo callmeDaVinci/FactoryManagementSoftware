@@ -25,14 +25,59 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = @"SELECT * FROM ((tbl_item_cust 
+                String sql = @"SELECT * FROM 
+                            ((tbl_item_cust 
                             INNER JOIN tbl_item 
                             ON tbl_item_cust.item_code = tbl_item.item_code)
                             INNER JOIN tbl_cust 
                             ON tbl_item_cust.cust_id = tbl_cust.cust_id) ORDER BY tbl_cust.cust_name ASC, tbl_item.item_name ASC";
 
+
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SelectAllExcludedOTHER()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM 
+                            ((tbl_item_cust 
+                            INNER JOIN tbl_item 
+                            ON tbl_item_cust.item_code = tbl_item.item_code)
+                            INNER JOIN tbl_cust 
+                            ON tbl_item_cust.cust_id = tbl_cust.cust_id) 
+                            WHERE NOT tbl_cust.cust_name = @OTHER
+                            ORDER BY tbl_item.item_name ASC, tbl_cust.cust_name ASC";
+
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@OTHER", "OTHER");
+
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open

@@ -54,6 +54,23 @@ namespace FactoryManagementSoftware.UI
             HideFilter(filterHide);
         }
 
+        public frmMachineSchedule(string itemCode)
+        {
+            InitializeComponent();
+            InitializeData();
+
+            btnPlan.Hide();
+            btnMatList.Hide();
+            btnExcel.Hide();
+
+            txtSearch.Text = itemCode;
+
+            tool.DoubleBuffered(dgvSchedule, true);
+            HideFilter(filterHide);
+
+            ItemProductionHistoryChecking = true;
+        }
+
         public frmMachineSchedule(bool _fromDailyJobRecord)
         {
             
@@ -166,6 +183,7 @@ namespace FactoryManagementSoftware.UI
         private bool ableLoadData = true;
         private bool filterHide = true;
         private bool fromDailyRecord = false;
+        private bool ItemProductionHistoryChecking = false;
         private bool ChangePlanToAction = false;
 
         private bool requestingStocktake_Part;
@@ -975,6 +993,16 @@ namespace FactoryManagementSoftware.UI
             loaded = true;
             loadMachine();
             cmbFactory.SelectedIndex = 0;
+
+            if (ItemProductionHistoryChecking)
+            {
+                cbCompleted.Checked = true;
+                cbPending.Checked = true;
+
+                dtpFrom.Value = new DateTime(2019, 01, 01);
+                dtpTo.Value = DateTime.Today;
+            }
+
             loadScheduleData();
 
             if(fromDailyRecord)
@@ -987,6 +1015,8 @@ namespace FactoryManagementSoftware.UI
                 dgvSchedule.SelectionMode = DataGridViewSelectionMode.CellSelect;
 
             }
+
+           
 
         }
 
@@ -2313,10 +2343,6 @@ namespace FactoryManagementSoftware.UI
         {
             string keyword = txtSearch.Text;
 
-            if (!string.IsNullOrEmpty(keyword))
-            {
-
-            }
         }
 
         private void dtpFrom_ValueChanged(object sender, EventArgs e)
