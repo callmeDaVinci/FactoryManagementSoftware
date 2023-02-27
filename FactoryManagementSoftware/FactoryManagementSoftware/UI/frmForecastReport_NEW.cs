@@ -1036,6 +1036,29 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private int FindParentIndex(int rowIndexSearching)
+        {
+            int parentIndex = rowIndexSearching;
+
+            DataTable dt = (DataTable)dgvForecastReport.DataSource;
+
+            string itemType = dt.Rows[rowIndexSearching][headerType].ToString();
+
+            if(dt != null && itemType != typeSingle && itemType != typeParent)
+            {
+                for (int i = rowIndexSearching; i >= 0; i--)
+                {
+                    itemType = dt.Rows[i][headerType].ToString();
+
+                    if (itemType == typeParent)
+                    {
+                        return i;
+                    }
+                }
+            }
+
+            return parentIndex;
+        }
         private void JumpToNextRow()
         {
             var last = Row_Index_Found.Last();
@@ -1047,7 +1070,12 @@ namespace FactoryManagementSoftware.UI
                     CURRENT_ROW_JUMP = i;
 
 
-                    dgvForecastReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
+                    dgvForecastReport.FirstDisplayedScrollingRowIndex = FindParentIndex(CURRENT_ROW_JUMP);
+
+                    dgvForecastReport.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode].Selected = true;
+                    dgvForecastReport.CurrentCell = dgvForecastReport.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode];
+
+
                     btnPreviousSearchResult.Enabled = true;
 
                     //check if last row
@@ -1061,7 +1089,9 @@ namespace FactoryManagementSoftware.UI
 
             if(CURRENT_ROW_JUMP != -1)
             {
-                dgvForecastReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
+                dgvForecastReport.FirstDisplayedScrollingRowIndex = FindParentIndex(CURRENT_ROW_JUMP);
+                dgvForecastReport.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode].Selected = true;
+                dgvForecastReport.CurrentCell = dgvForecastReport.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode];
 
             }
         }
@@ -1076,7 +1106,9 @@ namespace FactoryManagementSoftware.UI
                     if (Row_Index_Found[i] < CURRENT_ROW_JUMP)
                     {
                         CURRENT_ROW_JUMP = Row_Index_Found[i];
-                        dgvForecastReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
+                        dgvForecastReport.FirstDisplayedScrollingRowIndex = FindParentIndex(CURRENT_ROW_JUMP);
+                        dgvForecastReport.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode].Selected = true;
+                        dgvForecastReport.CurrentCell = dgvForecastReport.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode];
 
                         //check if first row
                         btnPreviousSearchResult.Enabled = !(CURRENT_ROW_JUMP == first);
@@ -1093,8 +1125,9 @@ namespace FactoryManagementSoftware.UI
 
             if (CURRENT_ROW_JUMP != -1)
             {
-                dgvForecastReport.FirstDisplayedScrollingRowIndex = CURRENT_ROW_JUMP;
-
+                dgvForecastReport.FirstDisplayedScrollingRowIndex = FindParentIndex(CURRENT_ROW_JUMP);
+                dgvForecastReport.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode].Selected = true;
+                dgvForecastReport.CurrentCell = dgvForecastReport.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode];
             }
         }
 
@@ -1107,24 +1140,14 @@ namespace FactoryManagementSoftware.UI
             DataGridView dgv = dgvForecastReport;
 
             dgv.DataSource = SearchAllCustomerForecastData();
-            //dgv.DataSource = NewSearchForecastDataForSummary();
+           
 
-            //dgv.Columns.Remove(headerRowReference);
-
-            //13022023 (ms): (1) 2541, (2) 2747
-            //14022023 (ms) : (1) 2598, (2) 2290, (3) 2357
             if (dgv.DataSource != null)
             {
-
                 ColorData();
-                //13022023 (ms) : (1) 6881 , (2) 7136
-                //14022023 (ms) : (1) 763, (2) 777, (3) 1147
+
                 DgvForecastReportUIEdit(dgvForecastReport);
 
-
-                //13022023 (ms) : (1) 527, (2) 570
-                //14022023 (ms) : (1) 683,
-                //delete column
                 dgvForecastReport.Columns.Remove(headerItemType);
 
                 if (cbSpecialTypeColorMode.Checked)
@@ -1140,16 +1163,10 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
-                //14022023 (ms) : 465,
                 dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
-
-
-                //14022023(ms) : 571
             }
 
-
-
-            frmLoading.CloseForm();//568ms,515ms,531ms
+            frmLoading.CloseForm();
         }
 
         private void ShowDetailForecastReport()
@@ -1643,8 +1660,14 @@ namespace FactoryManagementSoftware.UI
             {
                 string trfResult = row[dalTrfHist.TrfResult].ToString();
                 string itemCode = row[dalTrfHist.TrfItemCode].ToString();
+                string DB_Customer = row[dalTrfHist.TrfTo].ToString();
 
-                if (trfResult == "Passed" && _ItemCode == itemCode)
+                if (itemCode == "R 120 140 959 22")
+                {
+                    var checkpoint = 1;
+                }
+
+                if (trfResult == "Passed" && _ItemCode == itemCode && DB_Customer == _Customer)
                 {
 
                     double trfQty = double.TryParse(row[dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : 0;
@@ -3015,7 +3038,8 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in dt_Item_Cust.Rows)
             {
-                uData.customer = row[dalItemCust.CustName].ToString();
+                uData.customer_name = row[dalItemCust.CustName].ToString();
+                uData.cust_id = row[dalItemCust.CustID].ToString();
 
                 uData.part_code = row[dalItem.ItemCode].ToString();
 
@@ -3045,27 +3069,24 @@ namespace FactoryManagementSoftware.UI
                     uData.toProduce = result.Item1;
                     uData.Produced = result.Item2;
 
-                    var forecastData = GetThreeMonthsForecastQty(dt_ItemForecast, uData.part_code, 1, 2, 3);
+                    var forecastData = GetCustomerThreeMonthsForecastQty(dt_ItemForecast, uData.cust_id, uData.part_code, 1, 2, 3);
                     uData.forecast1 = forecastData.Item1;
                     uData.forecast2 = forecastData.Item2;
                     uData.forecast3 = forecastData.Item3;
 
-                    var estimate = CalculateEstimateOrderAndCheckActive(DT_PMMA_DATE, dt_TrfHist, uData.part_code, uData.customer);
+                    var estimate = CalculateEstimateOrderAndCheckActive(DT_PMMA_DATE, dt_TrfHist, uData.part_code, uData.customer_name);
 
                     uData.estimate = estimate.Item1;
                     bool NoDeliveredPast6Months = estimate.Item2;
 
-                    if (GetMaxOut(uData.part_code, uData.customer, 6, dt_TrfHist, DT_PMMA_DATE) == 0)
+                    if (GetMaxOut(uData.part_code, uData.customer_name, 6, dt_TrfHist, DT_PMMA_DATE) == 0)
                     {
                         uData.estimate = 0;
                     }
 
-                    if(uData.part_code == "R 120 141 020 38")
-                    {
-                        var checkpoint = 1;
-                    }
+                    
 
-                    uData.deliveredOut = GetMaxOut(uData.part_code, uData.customer, 0, dt_TrfHist, DT_PMMA_DATE);
+                    uData.deliveredOut = GetMaxOut(uData.part_code, uData.customer_name, 0, dt_TrfHist, DT_PMMA_DATE);
 
                     uData.outStd = uData.forecast1 - uData.deliveredOut;
 
@@ -3090,7 +3111,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (uData.forecast2 == -1)
                     {
-                        uData.bal2 = uData.bal1 - uData.estimate;
+                        uData.bal2 = uData.bal1 - (cbDeductEstimate.Checked? uData.estimate : 0) ;
 
                     }
                     else if (uData.forecast2 > -1)
@@ -3102,7 +3123,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (uData.forecast3 == -1)
                     {
-                        uData.bal3 = uData.bal2 - uData.estimate;
+                        uData.bal3 = uData.bal2 - (cbDeductEstimate.Checked ? uData.estimate : 0);
 
                     }
                     else if (uData.forecast3 > -1)
@@ -3130,7 +3151,7 @@ namespace FactoryManagementSoftware.UI
 
                     dt_Row[headerItemRemark] = uData.item_remark;
                     dt_Row[headerIndex] = uData.index;
-                    dt_Row[text.Header_Customer] = uData.customer;
+                    dt_Row[text.Header_Customer] = uData.customer_name;
                     dt_Row[headerType] = typeSingle;
                     dt_Row[headerBalType] = balType_Unique;
                     dt_Row[headerItemType] = row[dalItem.ItemCat].ToString();
@@ -3169,7 +3190,8 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in dt_Item_Cust.Rows)
             {
-                uData.customer = row[dalItemCust.CustName].ToString();
+                uData.customer_name = row[dalItemCust.CustName].ToString();
+                uData.cust_id = row[dalItemCust.CustID].ToString();
 
                 uData.part_code = row[dalItem.ItemCode].ToString();
                 uData.item_remark = row[dalItem.ItemRemark].ToString();
@@ -3199,12 +3221,12 @@ namespace FactoryManagementSoftware.UI
                     uData.toProduce = result.Item1;
                     uData.Produced = result.Item2;
 
-                    var forecastData = GetThreeMonthsForecastQty(dt_ItemForecast, uData.part_code, 1, 2, 3);
+                    var forecastData = GetCustomerThreeMonthsForecastQty(dt_ItemForecast, uData.cust_id, uData.part_code, 1, 2, 3);
                     uData.forecast1 = forecastData.Item1;
                     uData.forecast2 = forecastData.Item2;
                     uData.forecast3 = forecastData.Item3;
 
-                    var estimate = CalculateEstimateOrderAndCheckActive(DT_PMMA_DATE, dt_TrfHist, uData.part_code, uData.customer);
+                    var estimate = CalculateEstimateOrderAndCheckActive(DT_PMMA_DATE, dt_TrfHist, uData.part_code, uData.customer_name);
 
                     uData.estimate = estimate.Item1;
                     bool NoDeliveredPast6Months = estimate.Item2;
@@ -3216,12 +3238,13 @@ namespace FactoryManagementSoftware.UI
 
 
 
-                    if (GetMaxOut(uData.part_code, uData.customer, 6, dt_TrfHist, DT_PMMA_DATE) == 0)
+                    if (GetMaxOut(uData.part_code, uData.customer_name, 6, dt_TrfHist, DT_PMMA_DATE) == 0)
                     {
                         uData.estimate = 0;
                     }
 
-                    uData.deliveredOut = GetMaxOut(uData.part_code, uData.customer, 0, dt_TrfHist, DT_PMMA_DATE);
+
+                    uData.deliveredOut = GetMaxOut(uData.part_code, uData.customer_name, 0, dt_TrfHist, DT_PMMA_DATE);
 
                     uData.outStd = uData.forecast1 - uData.deliveredOut;
 
@@ -3246,7 +3269,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (uData.forecast2 == -1)
                     {
-                        uData.bal2 = uData.bal1 - uData.estimate;
+                        uData.bal2 = uData.bal1 - (cbDeductEstimate.Checked ? uData.estimate : 0);
 
                     }
                     else if (uData.forecast2 > -1)
@@ -3258,7 +3281,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (uData.forecast3 == -1)
                     {
-                        uData.bal3 = uData.bal2 - uData.estimate;
+                        uData.bal3 = uData.bal2 - (cbDeductEstimate.Checked ? uData.estimate : 0);
 
                     }
                     else if (uData.forecast3 > -1)
@@ -3285,7 +3308,7 @@ namespace FactoryManagementSoftware.UI
 
                     dt_Row[headerItemRemark] = uData.item_remark;
                     dt_Row[headerIndex] = uData.index;
-                    dt_Row[text.Header_Customer] = uData.customer;
+                    dt_Row[text.Header_Customer] = uData.customer_name;
                     dt_Row[headerItemType] = row[dalItem.ItemCat].ToString();
                     dt_Row[headerType] = typeParent;
                     dt_Row[headerBalType] = balType_Unique;
@@ -3349,7 +3372,7 @@ namespace FactoryManagementSoftware.UI
 
             if (dt_Data.Rows.Count > 0)//4716ms
             {
-                dt_Data = CalRepeatedData(dt_Data);
+                dt_Data = CalAllCustomerRepeatedData(dt_Data);
 
                 dt_Data = ItemSearch(dt_Data);
 
@@ -3682,7 +3705,7 @@ namespace FactoryManagementSoftware.UI
 
                         if (uData.forecast2 == -1)
                         {
-                            uData.bal2 = uData.bal1 - uData.estimate;
+                            uData.bal2 = uData.bal1 - (cbDeductEstimate.Checked ? uData.estimate : 0);
                           
                         }
                         else if (uData.forecast2 > -1)
@@ -3694,7 +3717,7 @@ namespace FactoryManagementSoftware.UI
 
                         if (uData.forecast3 == -1)
                         {
-                            uData.bal3 = uData.bal2 - uData.estimate;
+                            uData.bal3 = uData.bal2 - (cbDeductEstimate.Checked ? uData.estimate : 0);
 
                         }
                         else if (uData.forecast3 > -1)
@@ -3837,7 +3860,7 @@ namespace FactoryManagementSoftware.UI
 
                         if (uData.forecast2 == -1)
                         {
-                            uData.bal2 = uData.bal1 - uData.estimate;
+                            uData.bal2 = uData.bal1 - (cbDeductEstimate.Checked ? uData.estimate : 0);
 
                         }
                         else if (uData.forecast2 > -1)
@@ -3849,7 +3872,7 @@ namespace FactoryManagementSoftware.UI
 
                         if (uData.forecast3 == -1)
                         {
-                            uData.bal3 = uData.bal2 - uData.estimate;
+                            uData.bal3 = uData.bal2 - (cbDeductEstimate.Checked ? uData.estimate : 0);
 
                         }
                         else if (uData.forecast3 > -1)
@@ -4873,6 +4896,311 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private DataTable CalAllCustomerRepeatedData(DataTable dt)
+        {
+            double totalNeeded1 = 0;
+            double totalNeeded2 = 0;
+            double totalNeeded3 = 0;
+
+            bool colorChange = false;
+            int colorOrder = 0;
+
+            for (int i = 0; i < dt.Rows.Count - 1; i++)
+            {
+                totalNeeded1 = 0;
+                totalNeeded2 = 0;
+                totalNeeded3 = 0;
+                string rowReference = "(" + dt.Rows[i][headerIndex].ToString() + ")";
+                int repeatedCount = 1;
+
+                string firstItemCustomer = dt.Rows[i][text.Header_Customer].ToString();
+                string firstItem = dt.Rows[i][headerPartCode].ToString();
+                double firstBal1 = double.TryParse(dt.Rows[i][headerBal1].ToString(), out firstBal1) ? firstBal1 : -0.001;
+                double firstBal2 = double.TryParse(dt.Rows[i][headerBal2].ToString(), out firstBal2) ? firstBal2 : -0.001;
+                double firstBal3 = double.TryParse(dt.Rows[i][headerBal3].ToString(), out firstBal3) ? firstBal3 : -0.001;
+
+                string firstParentColor = dt.Rows[i][headerParentColor].ToString();
+
+                string type_FirstItem = dt.Rows[i][headerType].ToString();
+
+                if (!(type_FirstItem.Equals(typeSingle) || type_FirstItem.Equals(typeParent)))
+                {
+                    dt.Rows[i][headerForecastType] = forecastType_Needed;
+                }
+                else
+                {
+                    dt.Rows[i][headerForecastType] = forecastType_Forecast;
+                }
+
+                if (!string.IsNullOrEmpty(firstItem) && firstBal1 != -0.001)
+                {
+                    for (int j = i + 1; j < dt.Rows.Count; j++)
+                    {
+                        string nextItemCustomer = dt.Rows[j][text.Header_Customer].ToString();
+                        string nextItem = dt.Rows[j][headerPartCode].ToString();
+                        string index = dt.Rows[j][headerIndex].ToString();
+
+
+
+                        if (nextItem.Equals(firstItem))
+                        {
+                            if (index == "54")
+                            {
+                                var checkpoint = 1;
+                            }
+
+                            repeatedCount++;
+
+                            rowReference += " (" + dt.Rows[j][headerIndex].ToString() + ")";
+
+                            double nextNeededQty1 = double.TryParse(dt.Rows[j][headerForecast1].ToString(), out nextNeededQty1) ? nextNeededQty1 : 0;
+                            double nextNeededQty2 = double.TryParse(dt.Rows[j][headerForecast2].ToString(), out nextNeededQty2) ? nextNeededQty2 : 0;
+                            double nextNeededQty3 = double.TryParse(dt.Rows[j][headerForecast3].ToString(), out nextNeededQty3) ? nextNeededQty3 : 0;
+
+                            double nextOutQty = double.TryParse(dt.Rows[j][headerOut].ToString(), out nextOutQty) ? nextOutQty : 0;
+                            double nextOutStanding = double.TryParse(dt.Rows[j][headerOutStd].ToString(), out nextOutStanding) ? nextOutStanding : 0;
+                            double nextEstimate = double.TryParse(dt.Rows[j][headerEstimate].ToString(), out nextEstimate) ? nextEstimate : 0;
+
+
+                            nextOutStanding = nextOutStanding > 0 ? nextOutStanding : 0;
+                            nextNeededQty1 = nextNeededQty1 > 0 ? nextNeededQty1 : 0;
+                            nextNeededQty2 = nextNeededQty2 > 0 ? nextNeededQty2 : 0;
+                            nextNeededQty3 = nextNeededQty3 > 0 ? nextNeededQty3 : 0;
+
+                            if(nextOutStanding > 0)
+                                nextNeededQty1 = nextOutStanding;
+
+                            string type_NextItem = dt.Rows[j][headerType].ToString();
+
+                            if (!type_NextItem.Equals(typeParent))
+                            {
+                                dt.Rows[j][headerBal1] = DBNull.Value;
+                                dt.Rows[j][headerBal2] = DBNull.Value;
+                                dt.Rows[j][headerBal3] = DBNull.Value;
+                            }
+                            else
+                            {
+                                double nextItem_Stock = double.TryParse(dt.Rows[j][headerReadyStock].ToString(), out nextItem_Stock) ? nextItem_Stock : 0;
+
+                                nextNeededQty1 = double.TryParse(dt.Rows[j][headerBal1].ToString(), out nextNeededQty1) ? nextNeededQty1 : 0;
+                                nextNeededQty2 = double.TryParse(dt.Rows[j][headerBal2].ToString(), out nextNeededQty2) ? nextNeededQty2 : 0;
+                                nextNeededQty3 = double.TryParse(dt.Rows[j][headerBal3].ToString(), out nextNeededQty3) ? nextNeededQty3 : 0;
+
+
+                                nextNeededQty3 -= nextNeededQty2;
+                                nextNeededQty2 -= nextNeededQty1;
+                                nextNeededQty1 -= nextItem_Stock;
+
+                                nextNeededQty1 = nextNeededQty1 < 0 ? nextNeededQty1 * -1 : 0;
+                                nextNeededQty2 = nextNeededQty2 < 0 ? nextNeededQty2 * -1 : 0;
+                                nextNeededQty3 = nextNeededQty3 < 0 ? nextNeededQty3 * -1 : 0;
+
+                            }
+
+
+
+                            totalNeeded1 += nextNeededQty1;
+                            totalNeeded2 += nextNeededQty2;
+                            totalNeeded3 += nextNeededQty3;
+
+                            dt.Rows[i][headerBackColor] = (ColorSet)colorOrder;
+                            dt.Rows[j][headerBackColor] = (ColorSet)colorOrder;
+                            dt.Rows[j][headerBalType] = balType_Repeated;
+                            colorChange = true;
+                        }
+                    }
+
+
+
+                    if (colorChange)
+                    {
+                        if (totalNeeded1 < 0)
+                        {
+                            totalNeeded1 = 0;
+                        }
+
+                        if (totalNeeded2 < 0)
+                        {
+                            totalNeeded2 = 0;
+                        }
+
+                        if (totalNeeded3 < 0)
+                        {
+                            totalNeeded3 = 0;
+                        }
+
+                        dt.Rows[i][headerBal1] = firstBal1 - totalNeeded1;
+                        dt.Rows[i][headerBal2] = firstBal2 - totalNeeded1 - totalNeeded2;
+                        dt.Rows[i][headerBal3] = firstBal3 - totalNeeded1 - totalNeeded2 - totalNeeded3;
+
+                        dt.Rows[i][headerBalType] = balType_Total;
+                        dt.Rows[i][headerRowReference] = rowReference;
+                        colorOrder++;
+
+                        if (colorOrder > Enum.GetValues(typeof(ColorSet)).Cast<int>().Max())
+                        {
+                            colorOrder = 0;
+
+                        }
+                        colorChange = false;
+                    }
+
+
+
+                }
+            }
+
+            dt = RepeatedRowReferenceRemark(dt);
+
+            return AllCustomerChildBalChecking(dt);
+
+
+        }
+
+        private DataTable AllCustomerChildBalChecking(DataTable dt)
+        {
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+
+                double forecast1 = double.TryParse(dt.Rows[i][headerForecast1].ToString(), out forecast1) ? forecast1 : 0;
+                double forecast2 = double.TryParse(dt.Rows[i][headerForecast2].ToString(), out forecast2) ? forecast2 : 0;
+                double forecast3 = double.TryParse(dt.Rows[i][headerForecast3].ToString(), out forecast3) ? forecast3 : 0;
+
+                if (forecast1 < 0)
+                {
+                    dt.Rows[i][headerForecast1] = DBNull.Value;
+                }
+
+                if (forecast2 < 0)
+                {
+                    dt.Rows[i][headerForecast2] = DBNull.Value;
+                }
+
+                if (forecast3 < 0)
+                {
+                    dt.Rows[i][headerForecast3] = DBNull.Value;
+                }
+
+                double totalNeeded1 = 0;
+                double totalNeeded2 = 0;
+                double totalNeeded3 = 0;
+
+                string itemCode = dt.Rows[i][headerPartCode].ToString();
+                string itemType = dt.Rows[i][headerType].ToString();
+                string balType = dt.Rows[i][headerBalType].ToString();
+                string ForecastType = dt.Rows[i][headerForecastType].ToString();
+                double itemStock = double.TryParse(dt.Rows[i][headerReadyStock].ToString(), out itemStock) ? itemStock : 0;
+
+                //loop and find "TOTAL"  and not parent item
+                if (itemType != typeParent && !ForecastType.Equals(forecastType_Forecast) && balType.Equals(balType_Total))
+                {
+                    bool itemBalToChange = false;
+
+                    //load Joint Data Table and find Parent(s)
+                    foreach (DataRow row in DT_JOIN.Rows)
+                    {
+                        string childCode = row[dalJoin.JoinChild].ToString();
+
+                        if (childCode.Equals(itemCode))
+                        {
+
+                            if (childCode == "A41K150K0")
+                            {
+                                var checkpoint = 0;
+                            }
+
+                            string parentCode = row[dalJoin.JoinParent].ToString();
+
+                            float joinQty = float.TryParse(row[dalJoin.JoinQty].ToString(), out float f) ? f : 1;
+
+                            for (int j = 0; j < dt.Rows.Count; j++)
+                            {
+                                string seachingItemCode = dt.Rows[j][headerPartCode].ToString();
+                                string seachingbalType = dt.Rows[j][headerBalType].ToString();
+                                string seachingItemType = dt.Rows[j][headerType].ToString();
+
+
+                                //Find Parent Item With "Total"
+                                if (seachingItemCode.Equals(parentCode) && (seachingItemType.Equals(typeParent) || (seachingbalType.Equals(balType_Total) && seachingItemType.Equals(typeChild))))
+                                {
+                                    double nextNeededQty1 = double.TryParse(dt.Rows[j][headerBal1].ToString(), out nextNeededQty1) ? nextNeededQty1 : 0;
+                                    double nextNeededQty2 = double.TryParse(dt.Rows[j][headerBal2].ToString(), out nextNeededQty2) ? nextNeededQty2 : 0;
+                                    double nextNeededQty3 = double.TryParse(dt.Rows[j][headerBal3].ToString(), out nextNeededQty3) ? nextNeededQty3 : 0;
+
+                                    //Sum Up balance, and calculate total needed for Child (if balance>=0, needed for child =0; if balance <0, needed for child = bal*-1)
+                                    totalNeeded1 += nextNeededQty1 < 0 ? nextNeededQty1 * -1 * joinQty : 0;
+                                    totalNeeded2 += nextNeededQty2 < 0 ? nextNeededQty2 * -1 * joinQty : 0;
+                                    totalNeeded3 += nextNeededQty3 < 0 ? nextNeededQty3 * -1 * joinQty : 0;
+
+                                    itemBalToChange = true;
+                                    break;
+                                }
+
+                            }
+
+
+                        }
+                    }
+
+                    for (int j = i + 1; j < dt.Rows.Count; j++)
+                    {
+                        string seachingItemCode = dt.Rows[j][headerPartCode].ToString();
+                        string seachingbalType = dt.Rows[j][headerBalType].ToString();
+                        string seachingItemType = dt.Rows[j][headerType].ToString();
+
+                        //Find Parent Item With "Total"
+                        if (seachingItemCode.Equals(itemCode) && seachingItemType.Equals(typeParent) && !seachingbalType.Equals(balType_Total))
+                        {
+                            double nextNeededQty1 = double.TryParse(dt.Rows[j][headerBal1].ToString(), out nextNeededQty1) ? nextNeededQty1 : 0;
+                            double nextNeededQty2 = double.TryParse(dt.Rows[j][headerBal2].ToString(), out nextNeededQty2) ? nextNeededQty2 : 0;
+                            double nextNeededQty3 = double.TryParse(dt.Rows[j][headerBal3].ToString(), out nextNeededQty3) ? nextNeededQty3 : 0;
+
+                            //Sum Up balance, and calculate total needed for Child (if balance>=0, needed for child =0; if balance <0, needed for child = bal*-1)
+                            totalNeeded1 += nextNeededQty1 < 0 ? nextNeededQty1 * -1 : 0;
+                            totalNeeded2 += nextNeededQty2 < 0 ? nextNeededQty2 * -1 : 0;
+                            totalNeeded3 += nextNeededQty3 < 0 ? nextNeededQty3 * -1 : 0;
+
+                            itemBalToChange = true;
+                        }
+
+                    }
+
+                    if (itemBalToChange)
+                    {
+                        if (totalNeeded1 % 1 > 0)
+                        {
+                            totalNeeded1 = (float)Math.Round(totalNeeded1 * 100f) / 100f;
+                        }
+
+                        if (totalNeeded2 % 1 > 0)
+                        {
+                            totalNeeded2 = (float)Math.Round(totalNeeded2 * 100f) / 100f;
+
+                        }
+
+                        if (totalNeeded3 % 1 > 0)
+                        {
+                            totalNeeded3 = (float)Math.Round(totalNeeded3 * 100f) / 100f;
+
+                        }
+
+
+                        dt.Rows[i][headerBal1] = itemStock - totalNeeded1;
+                        dt.Rows[i][headerBal2] = itemStock - totalNeeded2;
+                        dt.Rows[i][headerBal3] = itemStock - totalNeeded3;
+                    }
+
+                }
+
+
+
+
+            }
+
+            return dt;
+        }
+
         private DataTable CalRepeatedData(DataTable dt)
         {
             double totalNeeded1 = 0;
@@ -5028,11 +5356,6 @@ namespace FactoryManagementSoftware.UI
             
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-
-                if(i == 132)
-                {
-
-                }
 
                 double forecast1 = double.TryParse(dt.Rows[i][headerForecast1].ToString(), out forecast1) ? forecast1 : 0;
                 double forecast2 = double.TryParse(dt.Rows[i][headerForecast2].ToString(), out forecast2) ? forecast2 : 0;
@@ -5434,6 +5757,43 @@ namespace FactoryManagementSoftware.UI
             return Tuple.Create(forecastData.Item1, forecastData.Item2, forecastData.Item3);
         }
 
+        private Tuple<float, float, float> GetCustomerThreeMonthsForecastQty(DataTable dt_ItemForecast, string Customer,  string itemCode, int forecastNum_1, int forecastNum_2, int forecastNum_3)
+        {
+            string monthString = cmbForecastFrom.Text;
+
+            int month_1 = DateTime.ParseExact(monthString, "MMMM", CultureInfo.CurrentCulture).Month;
+            int year_1 = DateTime.Now.Year;
+
+            month_1 += forecastNum_1 - 1;
+
+            if (month_1 > 12)
+            {
+                month_1 -= 12;
+                year_1++;
+            }
+
+            int month_2 = month_1 + 1;
+            int year_2 = year_1;
+
+            if (month_2 > 12)
+            {
+                month_2 -= 12;
+                year_2++;
+            }
+
+            int month_3 = month_2 + 1;
+            int year_3 = year_2;
+
+            if (month_3 > 12)
+            {
+                month_3 -= 12;
+                year_3++;
+            }
+
+            var forecastData = tool.getCustomerItemForecast(dt_ItemForecast, Customer, itemCode, year_1, month_1, year_2, month_2, year_3, month_3);
+
+            return Tuple.Create(forecastData.Item1, forecastData.Item2, forecastData.Item3);
+        }
         private float GetForecastQty(DataTable dt_ItemForecast, string itemCode, int forecastNum)
         {
             string monthString = cmbForecastFrom.Text;
@@ -5476,8 +5836,10 @@ namespace FactoryManagementSoftware.UI
 
                     foreach (DataRow row in dt_TrfHist.Rows)
                     {
+                        string DB_Customer = row[dalTrfHist.TrfTo].ToString();
+
                         string item = row[dalTrfHist.TrfItemCode].ToString();
-                        if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                        if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode) && DB_Customer.Equals(customer))
                         {
                             DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
                             //string cust = row[dalTrfHist.TrfTo].ToString();
@@ -5526,8 +5888,10 @@ namespace FactoryManagementSoftware.UI
 
                         foreach (DataRow row in dt_TrfHist.Rows)
                         {
+                            string DB_Customer = row[dalTrfHist.TrfTo].ToString();
+
                             string item = row[dalTrfHist.TrfItemCode].ToString();
-                            if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                            if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode) && DB_Customer.Equals(customer))
                             {
                                 DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
 
@@ -5558,7 +5922,8 @@ namespace FactoryManagementSoftware.UI
                     foreach (DataRow row in dt_TrfHist.Rows)
                     {
                         string item = row[dalTrfHist.TrfItemCode].ToString();
-                        if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                        string DB_Customer = row[dalTrfHist.TrfTo].ToString();
+                        if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode) && DB_Customer.Equals(customer))
                         {
                             DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
 
@@ -6161,7 +6526,7 @@ namespace FactoryManagementSoftware.UI
                                 int forecast3Index = dgv.Columns[headerForecast3].Index;
 
                                 //Range FirstRow = (Range)xlWorkSheet.Application.Rows[1, Type.Missing];
-                                Range FirstRow = xlWorkSheet.get_Range("a1:o1").Cells;
+                                Range FirstRow = xlWorkSheet.get_Range("a1:u1").Cells;
                                 FirstRow.WrapText = true;
                                 FirstRow.Font.Size = 6;
                                 FirstRow.Font.Name = "Calibri";
@@ -6177,8 +6542,17 @@ namespace FactoryManagementSoftware.UI
                                 int Index = dgv.Columns[headerIndex].Index;
                                 int weightIndex = dgv.Columns[headerPartWeight].Index;
 
+                                int customerIndex = -1;
+
+                                if(cmbCustomer.Text == text.Cmb_All)
+                                {
+                                    customerIndex = dgv.Columns[text.Header_Customer].Index;
+                                    xlWorkSheet.Cells[1, customerIndex + 1].ColumnWidth = 10;
+                                }
+
                                 int bal1Index = dgv.Columns[headerBal1].Index;
                                 int bal2Index = dgv.Columns[headerBal2].Index;
+                                int bal3Index = dgv.Columns[headerBal3].Index;
 
                                 int nameIndex = dgv.Columns[headerPartName].Index;
                                 int codeIndex = dgv.Columns[headerPartCode].Index;
@@ -6199,6 +6573,7 @@ namespace FactoryManagementSoftware.UI
                                 xlWorkSheet.Cells[1, forecast3Index + 1].ColumnWidth = 8;
                                 xlWorkSheet.Cells[1, bal1Index + 1].ColumnWidth = 8;
                                 xlWorkSheet.Cells[1, bal2Index + 1].ColumnWidth = 8;
+                                xlWorkSheet.Cells[1, bal3Index + 1].ColumnWidth = 8;
                                 tRange.EntireColumn.AutoFit();
 
                                 xlWorkSheet.Cells[1, stockIndex + 1].Interior.Color = ColorTranslator.ToOle(dgv.Rows[1].Cells[stockIndex].InheritedStyle.BackColor);
@@ -6209,10 +6584,13 @@ namespace FactoryManagementSoftware.UI
                                 xlWorkSheet.Cells[1, forecast2Index + 1].Interior.Color = ColorTranslator.ToOle(dgv.Rows[1].Cells[forecast2Index].InheritedStyle.BackColor);
                                 xlWorkSheet.Cells[1, bal1Index + 1].Interior.Color = ColorTranslator.ToOle(dgv.Rows[1].Cells[bal1Index].InheritedStyle.BackColor);
                                 xlWorkSheet.Cells[1, bal2Index + 1].Interior.Color = ColorTranslator.ToOle(dgv.Rows[1].Cells[bal2Index].InheritedStyle.BackColor);
+                                xlWorkSheet.Cells[1, bal3Index + 1].Interior.Color = ColorTranslator.ToOle(dgv.Rows[1].Cells[bal3Index].InheritedStyle.BackColor);
                                 xlWorkSheet.Cells[1, bal1Index + 1].Font.Color = Color.Red;
                                 xlWorkSheet.Cells[1, bal2Index + 1].Font.Color = Color.Red;
+                                xlWorkSheet.Cells[1, bal3Index + 1].Font.Color = Color.Red;
                                 xlWorkSheet.Cells[1, bal1Index + 1].Font.Bold = true;
                                 xlWorkSheet.Cells[1, bal2Index + 1].Font.Bold = true;
+                                xlWorkSheet.Cells[1, bal3Index + 1].Font.Bold = true;
 
                                 for (int i = 0; i <= dtMasterData.Rows.Count - 1; i++)
                                 {
@@ -6246,6 +6624,9 @@ namespace FactoryManagementSoftware.UI
                                     Range rangeBal2 = (Range)xlWorkSheet.Cells[i + 2, bal2Index + 1];
                                     rangeBal2.Font.Color = ColorTranslator.ToOle(dgv.Rows[i].Cells[bal2Index].InheritedStyle.ForeColor);
 
+                                    Range rangeBal3 = (Range)xlWorkSheet.Cells[i + 2, bal3Index + 1];
+                                    rangeBal3.Font.Color = ColorTranslator.ToOle(dgv.Rows[i].Cells[bal3Index].InheritedStyle.ForeColor);
+
                                     string itemCode = dgv.Rows[i].Cells[headerPartCode].Value.ToString();
 
                                     //color empty space
@@ -6274,6 +6655,7 @@ namespace FactoryManagementSoftware.UI
 
                                         rangeBal1.Interior.Color = ColorTranslator.ToOle(dgv.Rows[i].Cells[bal1Index].InheritedStyle.BackColor);
                                         rangeBal2.Interior.Color = ColorTranslator.ToOle(dgv.Rows[i].Cells[bal2Index].InheritedStyle.BackColor);
+                                        rangeBal3.Interior.Color = ColorTranslator.ToOle(dgv.Rows[i].Cells[bal3Index].InheritedStyle.BackColor);
 
                                         rangeOut.Interior.Color = ColorTranslator.ToOle(dgv.Rows[i].Cells[outIndex].InheritedStyle.BackColor);
                                         rangeOutStd.Interior.Color = ColorTranslator.ToOle(dgv.Rows[i].Cells[outStdIndex].InheritedStyle.BackColor);
@@ -6316,6 +6698,10 @@ namespace FactoryManagementSoftware.UI
                                         rangeBal2.Font.Bold = true;
                                         rangeBal2.Font.Italic = true;
                                         rangeBal2.Font.Underline = true;
+
+                                        rangeBal3.Font.Bold = true;
+                                        rangeBal3.Font.Italic = true;
+                                        rangeBal3.Font.Underline = true;
                                         //dgv.Rows[i].Cells[headerBal1].Style.Font = _BalFont;
                                         //dgv.Rows[i].Cells[headerBal2].Style.Font = _BalFont;
                                     }
@@ -6323,6 +6709,7 @@ namespace FactoryManagementSoftware.UI
                                     {
                                         rangeBal1.Font.Bold = true;
                                         rangeBal2.Font.Bold = true;
+                                        rangeBal3.Font.Bold = true;
                                     }
 
                                 }
@@ -6999,6 +7386,12 @@ namespace FactoryManagementSoftware.UI
             if (itemClicked.Equals(text.DeliveredSummary))
             {
                 frmLoading.ShowLoadingScreen();
+
+                if(cmbCustomer.Text == text.Cmb_All)
+                {
+                    customer = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[text.Header_Customer].Value.ToString();
+
+                }
 
                 frmInOutReport_NEW frm = new frmInOutReport_NEW(itemCode, customer);
 

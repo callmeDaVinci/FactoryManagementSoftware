@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.tlpForecastReport = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -102,6 +102,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cbDeductEstimate = new System.Windows.Forms.CheckBox();
             this.tlpForecastReport.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -466,14 +467,14 @@
             this.dgvForecastReport.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecastReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 8F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvForecastReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvForecastReport.GridColor = System.Drawing.Color.White;
             this.dgvForecastReport.Location = new System.Drawing.Point(3, 331);
@@ -621,6 +622,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.cbDeductEstimate);
             this.groupBox6.Controls.Add(this.cbIncludeMacRecord);
             this.groupBox6.Controls.Add(this.cbShowProDayNeeded);
             this.groupBox6.Controls.Add(this.cbSpecialTypeColorMode);
@@ -653,7 +655,7 @@
             this.cbIncludeMacRecord.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbIncludeMacRecord.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbIncludeMacRecord.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbIncludeMacRecord.Location = new System.Drawing.Point(232, 114);
+            this.cbIncludeMacRecord.Location = new System.Drawing.Point(258, 114);
             this.cbIncludeMacRecord.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbIncludeMacRecord.Name = "cbIncludeMacRecord";
             this.cbIncludeMacRecord.Size = new System.Drawing.Size(149, 21);
@@ -671,7 +673,7 @@
             this.cbShowProDayNeeded.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbShowProDayNeeded.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbShowProDayNeeded.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowProDayNeeded.Location = new System.Drawing.Point(232, 84);
+            this.cbShowProDayNeeded.Location = new System.Drawing.Point(258, 84);
             this.cbShowProDayNeeded.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbShowProDayNeeded.Name = "cbShowProDayNeeded";
             this.cbShowProDayNeeded.Size = new System.Drawing.Size(165, 21);
@@ -689,7 +691,7 @@
             this.cbSpecialTypeColorMode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbSpecialTypeColorMode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbSpecialTypeColorMode.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbSpecialTypeColorMode.Location = new System.Drawing.Point(232, 54);
+            this.cbSpecialTypeColorMode.Location = new System.Drawing.Point(258, 54);
             this.cbSpecialTypeColorMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbSpecialTypeColorMode.Name = "cbSpecialTypeColorMode";
             this.cbSpecialTypeColorMode.Size = new System.Drawing.Size(156, 21);
@@ -717,7 +719,7 @@
             this.cbRepeatedColorMode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbRepeatedColorMode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbRepeatedColorMode.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRepeatedColorMode.Location = new System.Drawing.Point(232, 24);
+            this.cbRepeatedColorMode.Location = new System.Drawing.Point(258, 24);
             this.cbRepeatedColorMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbRepeatedColorMode.Name = "cbRepeatedColorMode";
             this.cbRepeatedColorMode.Size = new System.Drawing.Size(169, 21);
@@ -1238,6 +1240,24 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // cbDeductEstimate
+            // 
+            this.cbDeductEstimate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbDeductEstimate.AutoSize = true;
+            this.cbDeductEstimate.Checked = true;
+            this.cbDeductEstimate.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDeductEstimate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbDeductEstimate.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbDeductEstimate.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeductEstimate.Location = new System.Drawing.Point(258, 146);
+            this.cbDeductEstimate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
+            this.cbDeductEstimate.Name = "cbDeductEstimate";
+            this.cbDeductEstimate.Size = new System.Drawing.Size(191, 19);
+            this.cbDeductEstimate.TabIndex = 172;
+            this.cbDeductEstimate.Text = "Deduct Estimate If No Forecast";
+            this.cbDeductEstimate.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeductEstimate.UseVisualStyleBackColor = true;
+            // 
             // frmForecastReport_NEW
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -1359,5 +1379,6 @@
         private System.Windows.Forms.CheckBox cbShowProDayNeeded;
         private System.Windows.Forms.CheckBox cbSpecialTypeColorMode;
         private System.Windows.Forms.CheckBox cbIncludeMacRecord;
+        private System.Windows.Forms.CheckBox cbDeductEstimate;
     }
 }

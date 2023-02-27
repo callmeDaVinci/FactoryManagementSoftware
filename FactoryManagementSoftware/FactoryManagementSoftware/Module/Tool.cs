@@ -2668,7 +2668,7 @@ namespace FactoryManagementSoftware.Module
 
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
 
-            //distinctTable.Rows.Add(new Text().Cmb_All);
+            distinctTable.Rows.Add(new Text().Cmb_All);
 
             distinctTable.DefaultView.Sort = "cust_name ASC";
 
@@ -2713,7 +2713,7 @@ namespace FactoryManagementSoftware.Module
             DataTable dt = dalCust.FullSelect();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
 
-            //distinctTable.Rows.Add(new Text().Cmb_All);
+            distinctTable.Rows.Add(new Text().Cmb_All);
 
             distinctTable.DefaultView.Sort = "cust_name ASC";
 
@@ -3766,6 +3766,52 @@ namespace FactoryManagementSoftware.Module
 
         }
 
+        public Tuple<float, float, float> getCustomerItemForecast(DataTable dt, string CustomerID, string itemCode, int year_1, int month_1, int year_2, int month_2, int year_3, int month_3)
+        {
+            float forecast_1 = -1;
+            float forecast_2 = -1;
+            float forecast_3 = -1;
+
+            bool forecast_1_Found = false;
+            bool forecast_2_Found = false;
+            bool forecast_3_Found = false;
+
+            itemForecastDAL dalItemForecast = new itemForecastDAL();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string DB_CustomerID = row[dalItemForecast.CustID].ToString();
+
+                string code = row[dalItemForecast.ItemCode].ToString();
+                int yearData = Convert.ToInt32(row[dalItemForecast.ForecastYear].ToString());
+                int monthData = Convert.ToInt32(row[dalItemForecast.ForecastMonth].ToString());
+                float forecast = float.TryParse(row[dalItemForecast.ForecastQty].ToString(), out float i) ? i : -1;
+
+                if (DB_CustomerID == CustomerID &&  code == itemCode && yearData == year_1 && monthData == month_1)
+                {
+                    forecast_1 = forecast;
+                    forecast_1_Found = true;
+                }
+                else if (DB_CustomerID == CustomerID && code == itemCode && yearData == year_2 && monthData == month_2)
+                {
+                    forecast_2 = forecast;
+                    forecast_2_Found = true;
+                }
+                else if (DB_CustomerID == CustomerID && code == itemCode && yearData == year_3 && monthData == month_3)
+                {
+                    forecast_3 = forecast;
+                    forecast_3_Found = true;
+                }
+
+                if (forecast_1_Found && forecast_2_Found && forecast_3_Found)
+                {
+                    break;
+                }
+            }
+
+            return Tuple.Create(forecast_1, forecast_2, forecast_3);
+
+        }
         public int GetLatestTrfID()
         {
             int ID = -1;

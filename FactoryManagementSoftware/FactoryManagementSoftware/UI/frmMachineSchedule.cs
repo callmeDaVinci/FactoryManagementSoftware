@@ -3319,9 +3319,11 @@ namespace FactoryManagementSoftware.UI
             if(e.RowIndex != -1)
             {
                 string planID = dgvSchedule.Rows[e.RowIndex].Cells[headerID].Value.ToString();
-
-                //MessageBox.Show("Plan ID: "+planID);
-                if (planID != null)
+                int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+                //handle the row selection on right click
+               
+                    //MessageBox.Show("Plan ID: "+planID);
+                    if (planID != null && userPermission >= MainDashboard.ACTION_LVL_THREE)
                 {
                     frmPlanningActionHistory frm = new frmPlanningActionHistory(Convert.ToInt32(planID));
                     frm.StartPosition = FormStartPosition.CenterScreen;

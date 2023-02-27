@@ -93,7 +93,7 @@ namespace FactoryManagementSoftware.UI
                 forecastToolStripMenuItem.Visible = false;
                 adminToolStripMenuItem.Visible = false;
                 orderToolStripMenuItem1.Visible = true;
-                productionToolStripMenuItem.Visible = false;
+                productionToolStripMenuItem.Visible = true;
             }
 
 

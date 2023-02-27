@@ -10,7 +10,8 @@ namespace FactoryManagementSoftware.BLL
     {
         public double index { get; set; }
         public string raw_mat { get; set; }
-        public string customer { get; set; }
+        public string customer_name { get; set; }
+        public string cust_id { get; set; }
         public string part_code { get; set; }
         public string part_name { get; set; }
         public string color_mat { get; set; }
