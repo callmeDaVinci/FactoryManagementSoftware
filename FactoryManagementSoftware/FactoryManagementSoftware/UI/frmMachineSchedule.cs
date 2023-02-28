@@ -857,7 +857,7 @@ namespace FactoryManagementSoftware.UI
 
             lblMatStock.Text = "Stock : " + stock.ToString("0.###") + " kg  ( " + (stock / 25).ToString("0.###") + " bag(s)  )";
 
-            if(stock < TotalMatPlannedToUse)
+            if(stock < TotalMatToUse)
             {
                 lblMatStock.ForeColor = Color.Red;
             }

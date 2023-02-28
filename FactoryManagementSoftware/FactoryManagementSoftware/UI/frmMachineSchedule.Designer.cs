@@ -72,10 +72,10 @@
             this.tlpMainSchedule = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.lblMatStock = new System.Windows.Forms.Label();
-            this.lblTotalPlannedToUse = new System.Windows.Forms.Label();
             this.lblTotalUsed = new System.Windows.Forms.Label();
             this.lblTotalToUse = new System.Windows.Forms.Label();
             this.btnRefresh = new System.Windows.Forms.Button();
+            this.lblTotalPlannedToUse = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSchedule)).BeginInit();
@@ -734,11 +734,11 @@
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tableLayoutPanel10.Controls.Add(this.lblMatStock, 5, 0);
-            this.tableLayoutPanel10.Controls.Add(this.lblTotalPlannedToUse, 2, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblTotalUsed, 3, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblTotalToUse, 4, 0);
             this.tableLayoutPanel10.Controls.Add(this.btnRefresh, 1, 0);
             this.tableLayoutPanel10.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel10.Controls.Add(this.lblTotalPlannedToUse, 2, 0);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 213);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
@@ -759,19 +759,6 @@
             this.lblMatStock.Size = new System.Drawing.Size(41, 15);
             this.lblMatStock.TabIndex = 170;
             this.lblMatStock.Text = "Stock: ";
-            // 
-            // lblTotalPlannedToUse
-            // 
-            this.lblTotalPlannedToUse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTotalPlannedToUse.AutoSize = true;
-            this.lblTotalPlannedToUse.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalPlannedToUse.ForeColor = System.Drawing.Color.Black;
-            this.lblTotalPlannedToUse.Location = new System.Drawing.Point(117, 16);
-            this.lblTotalPlannedToUse.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.lblTotalPlannedToUse.Name = "lblTotalPlannedToUse";
-            this.lblTotalPlannedToUse.Size = new System.Drawing.Size(120, 15);
-            this.lblTotalPlannedToUse.TabIndex = 171;
-            this.lblTotalPlannedToUse.Text = "Total Planned To Use:";
             // 
             // lblTotalUsed
             // 
@@ -816,6 +803,19 @@
             this.btnRefresh.TabIndex = 118;
             this.btnRefresh.UseVisualStyleBackColor = false;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // lblTotalPlannedToUse
+            // 
+            this.lblTotalPlannedToUse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTotalPlannedToUse.AutoSize = true;
+            this.lblTotalPlannedToUse.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalPlannedToUse.ForeColor = System.Drawing.Color.Black;
+            this.lblTotalPlannedToUse.Location = new System.Drawing.Point(117, 16);
+            this.lblTotalPlannedToUse.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.lblTotalPlannedToUse.Name = "lblTotalPlannedToUse";
+            this.lblTotalPlannedToUse.Size = new System.Drawing.Size(120, 15);
+            this.lblTotalPlannedToUse.TabIndex = 171;
+            this.lblTotalPlannedToUse.Text = "Total Planned To Use:";
             // 
             // contextMenuStrip1
             // 

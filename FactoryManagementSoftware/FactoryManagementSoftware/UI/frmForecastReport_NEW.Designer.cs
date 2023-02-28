@@ -61,6 +61,7 @@
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.cbDeductEstimate = new System.Windows.Forms.CheckBox();
             this.cbIncludeMacRecord = new System.Windows.Forms.CheckBox();
             this.cbShowProDayNeeded = new System.Windows.Forms.CheckBox();
             this.cbSpecialTypeColorMode = new System.Windows.Forms.CheckBox();
@@ -78,8 +79,6 @@
             this.cbShowToProduceItem = new System.Windows.Forms.CheckBox();
             this.cbSortByBalance = new System.Windows.Forms.CheckBox();
             this.cbSortByToDOType = new System.Windows.Forms.CheckBox();
-            this.cbShowRawMaterial = new System.Windows.Forms.CheckBox();
-            this.cbShowInsufficientOnly = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblCurrentMonth = new System.Windows.Forms.Label();
             this.cmbForecastTo = new System.Windows.Forms.ComboBox();
@@ -102,7 +101,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cbDeductEstimate = new System.Windows.Forms.CheckBox();
+            this.cbShowInsufficientOnly = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tlpForecastReport.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -137,8 +137,8 @@
             this.tlpForecastReport.Name = "tlpForecastReport";
             this.tlpForecastReport.RowCount = 4;
             this.tlpForecastReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tlpForecastReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tlpForecastReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tlpForecastReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 220F));
+            this.tlpForecastReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tlpForecastReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpForecastReport.Size = new System.Drawing.Size(1318, 691);
             this.tlpForecastReport.TabIndex = 164;
@@ -477,14 +477,14 @@
             this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvForecastReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvForecastReport.GridColor = System.Drawing.Color.White;
-            this.dgvForecastReport.Location = new System.Drawing.Point(3, 331);
+            this.dgvForecastReport.Location = new System.Drawing.Point(3, 337);
             this.dgvForecastReport.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.dgvForecastReport.Name = "dgvForecastReport";
             this.dgvForecastReport.RowHeadersVisible = false;
             this.dgvForecastReport.RowHeadersWidth = 51;
             this.dgvForecastReport.RowTemplate.Height = 60;
             this.dgvForecastReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvForecastReport.Size = new System.Drawing.Size(1312, 359);
+            this.dgvForecastReport.Size = new System.Drawing.Size(1312, 353);
             this.dgvForecastReport.TabIndex = 152;
             this.dgvForecastReport.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecastReport_CellEndEdit);
             this.dgvForecastReport.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvForecastReport_CellFormatting);
@@ -503,12 +503,12 @@
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel3, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.btnRefresh, 2, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(2, 282);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(2, 302);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1314, 46);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1314, 32);
             this.tableLayoutPanel4.TabIndex = 162;
             // 
             // lblForecastType
@@ -516,11 +516,12 @@
             this.lblForecastType.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblForecastType.AutoSize = true;
             this.lblForecastType.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblForecastType.Location = new System.Drawing.Point(3, 14);
+            this.lblForecastType.Location = new System.Drawing.Point(3, 7);
             this.lblForecastType.Name = "lblForecastType";
             this.lblForecastType.Size = new System.Drawing.Size(125, 17);
             this.lblForecastType.TabIndex = 153;
             this.lblForecastType.Text = "FORECAST REPORT";
+            this.lblForecastType.Click += new System.EventHandler(this.lblForecastType_Click);
             // 
             // tableLayoutPanel3
             // 
@@ -536,7 +537,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 12F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(110, 42);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(110, 28);
             this.tableLayoutPanel3.TabIndex = 161;
             // 
             // lblLastUpdated
@@ -574,7 +575,7 @@
             this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefresh.ForeColor = System.Drawing.Color.White;
-            this.btnRefresh.Location = new System.Drawing.Point(285, 9);
+            this.btnRefresh.Location = new System.Drawing.Point(285, 2);
             this.btnRefresh.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(28, 27);
@@ -592,7 +593,7 @@
             this.gbFilter.Margin = new System.Windows.Forms.Padding(2);
             this.gbFilter.Name = "gbFilter";
             this.gbFilter.Padding = new System.Windows.Forms.Padding(2);
-            this.gbFilter.Size = new System.Drawing.Size(1314, 196);
+            this.gbFilter.Size = new System.Drawing.Size(1314, 216);
             this.gbFilter.TabIndex = 144;
             this.gbFilter.TabStop = false;
             this.gbFilter.Text = "FILTER";
@@ -617,7 +618,7 @@
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(1310, 174);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(1310, 194);
             this.tableLayoutPanel6.TabIndex = 165;
             // 
             // groupBox6
@@ -641,21 +642,37 @@
             this.groupBox6.MinimumSize = new System.Drawing.Size(101, 85);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox6.Size = new System.Drawing.Size(460, 170);
+            this.groupBox6.Size = new System.Drawing.Size(460, 190);
             this.groupBox6.TabIndex = 166;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "OTHER";
             // 
+            // cbDeductEstimate
+            // 
+            this.cbDeductEstimate.AutoSize = true;
+            this.cbDeductEstimate.Checked = true;
+            this.cbDeductEstimate.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDeductEstimate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbDeductEstimate.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbDeductEstimate.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeductEstimate.Location = new System.Drawing.Point(258, 141);
+            this.cbDeductEstimate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
+            this.cbDeductEstimate.Name = "cbDeductEstimate";
+            this.cbDeductEstimate.Size = new System.Drawing.Size(191, 19);
+            this.cbDeductEstimate.TabIndex = 172;
+            this.cbDeductEstimate.Text = "Deduct Estimate If No Forecast";
+            this.cbDeductEstimate.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeductEstimate.UseVisualStyleBackColor = true;
+            // 
             // cbIncludeMacRecord
             // 
-            this.cbIncludeMacRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbIncludeMacRecord.AutoSize = true;
             this.cbIncludeMacRecord.Checked = true;
             this.cbIncludeMacRecord.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbIncludeMacRecord.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbIncludeMacRecord.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbIncludeMacRecord.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbIncludeMacRecord.Location = new System.Drawing.Point(258, 114);
+            this.cbIncludeMacRecord.Location = new System.Drawing.Point(258, 109);
             this.cbIncludeMacRecord.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbIncludeMacRecord.Name = "cbIncludeMacRecord";
             this.cbIncludeMacRecord.Size = new System.Drawing.Size(149, 21);
@@ -666,7 +683,6 @@
             // 
             // cbShowProDayNeeded
             // 
-            this.cbShowProDayNeeded.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbShowProDayNeeded.AutoSize = true;
             this.cbShowProDayNeeded.Checked = true;
             this.cbShowProDayNeeded.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -684,7 +700,6 @@
             // 
             // cbSpecialTypeColorMode
             // 
-            this.cbSpecialTypeColorMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbSpecialTypeColorMode.AutoSize = true;
             this.cbSpecialTypeColorMode.Checked = true;
             this.cbSpecialTypeColorMode.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -704,7 +719,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(197, 149);
+            this.label5.Location = new System.Drawing.Point(197, 141);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(38, 12);
             this.label5.TabIndex = 169;
@@ -712,14 +727,13 @@
             // 
             // cbRepeatedColorMode
             // 
-            this.cbRepeatedColorMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbRepeatedColorMode.AutoSize = true;
             this.cbRepeatedColorMode.Checked = true;
             this.cbRepeatedColorMode.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbRepeatedColorMode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbRepeatedColorMode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbRepeatedColorMode.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRepeatedColorMode.Location = new System.Drawing.Point(258, 24);
+            this.cbRepeatedColorMode.Location = new System.Drawing.Point(258, 25);
             this.cbRepeatedColorMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbRepeatedColorMode.Name = "cbRepeatedColorMode";
             this.cbRepeatedColorMode.Size = new System.Drawing.Size(169, 21);
@@ -731,7 +745,7 @@
             // txtNodeliveredMonths
             // 
             this.txtNodeliveredMonths.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.txtNodeliveredMonths.Location = new System.Drawing.Point(154, 144);
+            this.txtNodeliveredMonths.Location = new System.Drawing.Point(154, 139);
             this.txtNodeliveredMonths.Margin = new System.Windows.Forms.Padding(2);
             this.txtNodeliveredMonths.Name = "txtNodeliveredMonths";
             this.txtNodeliveredMonths.Size = new System.Drawing.Size(38, 21);
@@ -741,14 +755,13 @@
             // 
             // cbRemoveNoDeliveredItem
             // 
-            this.cbRemoveNoDeliveredItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbRemoveNoDeliveredItem.AutoSize = true;
             this.cbRemoveNoDeliveredItem.Checked = true;
             this.cbRemoveNoDeliveredItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbRemoveNoDeliveredItem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbRemoveNoDeliveredItem.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbRemoveNoDeliveredItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRemoveNoDeliveredItem.Location = new System.Drawing.Point(11, 146);
+            this.cbRemoveNoDeliveredItem.Location = new System.Drawing.Point(11, 139);
             this.cbRemoveNoDeliveredItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbRemoveNoDeliveredItem.Name = "cbRemoveNoDeliveredItem";
             this.cbRemoveNoDeliveredItem.Size = new System.Drawing.Size(143, 19);
@@ -760,12 +773,11 @@
             // 
             // cbIncludeTerminated
             // 
-            this.cbIncludeTerminated.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbIncludeTerminated.AutoSize = true;
             this.cbIncludeTerminated.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbIncludeTerminated.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbIncludeTerminated.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbIncludeTerminated.Location = new System.Drawing.Point(11, 24);
+            this.cbIncludeTerminated.Location = new System.Drawing.Point(11, 25);
             this.cbIncludeTerminated.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbIncludeTerminated.Name = "cbIncludeTerminated";
             this.cbIncludeTerminated.Size = new System.Drawing.Size(169, 21);
@@ -777,7 +789,6 @@
             // 
             // cbIncludeProInfo
             // 
-            this.cbIncludeProInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbIncludeProInfo.AutoSize = true;
             this.cbIncludeProInfo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbIncludeProInfo.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -794,14 +805,13 @@
             // 
             // cbRemoveNoOrderItem
             // 
-            this.cbRemoveNoOrderItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbRemoveNoOrderItem.AutoSize = true;
             this.cbRemoveNoOrderItem.Checked = true;
             this.cbRemoveNoOrderItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbRemoveNoOrderItem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbRemoveNoOrderItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbRemoveNoOrderItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRemoveNoOrderItem.Location = new System.Drawing.Point(11, 114);
+            this.cbRemoveNoOrderItem.Location = new System.Drawing.Point(11, 109);
             this.cbRemoveNoOrderItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbRemoveNoOrderItem.Name = "cbRemoveNoOrderItem";
             this.cbRemoveNoOrderItem.Size = new System.Drawing.Size(181, 21);
@@ -829,13 +839,12 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbShowInsufficientOnly);
             this.groupBox1.Controls.Add(this.cbShowToOrderItem);
             this.groupBox1.Controls.Add(this.cbShowToAssemblyItem);
             this.groupBox1.Controls.Add(this.cbShowToProduceItem);
             this.groupBox1.Controls.Add(this.cbSortByBalance);
             this.groupBox1.Controls.Add(this.cbSortByToDOType);
-            this.groupBox1.Controls.Add(this.cbShowRawMaterial);
-            this.groupBox1.Controls.Add(this.cbShowInsufficientOnly);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold);
             this.groupBox1.Location = new System.Drawing.Point(620, 2);
@@ -843,7 +852,7 @@
             this.groupBox1.MinimumSize = new System.Drawing.Size(101, 85);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(224, 170);
+            this.groupBox1.Size = new System.Drawing.Size(224, 190);
             this.groupBox1.TabIndex = 165;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "SUMMARY LIST";
@@ -856,7 +865,7 @@
             this.cbShowToOrderItem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbShowToOrderItem.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbShowToOrderItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowToOrderItem.Location = new System.Drawing.Point(14, 121);
+            this.cbShowToOrderItem.Location = new System.Drawing.Point(14, 134);
             this.cbShowToOrderItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbShowToOrderItem.Name = "cbShowToOrderItem";
             this.cbShowToOrderItem.Size = new System.Drawing.Size(138, 19);
@@ -874,7 +883,7 @@
             this.cbShowToAssemblyItem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbShowToAssemblyItem.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbShowToAssemblyItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowToAssemblyItem.Location = new System.Drawing.Point(14, 101);
+            this.cbShowToAssemblyItem.Location = new System.Drawing.Point(14, 106);
             this.cbShowToAssemblyItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbShowToAssemblyItem.Name = "cbShowToAssemblyItem";
             this.cbShowToAssemblyItem.Size = new System.Drawing.Size(159, 19);
@@ -910,7 +919,7 @@
             this.cbSortByBalance.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbSortByBalance.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbSortByBalance.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbSortByBalance.Location = new System.Drawing.Point(14, 58);
+            this.cbSortByBalance.Location = new System.Drawing.Point(14, 50);
             this.cbSortByBalance.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbSortByBalance.Name = "cbSortByBalance";
             this.cbSortByBalance.Size = new System.Drawing.Size(110, 19);
@@ -928,7 +937,7 @@
             this.cbSortByToDOType.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbSortByToDOType.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbSortByToDOType.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbSortByToDOType.Location = new System.Drawing.Point(14, 38);
+            this.cbSortByToDOType.Location = new System.Drawing.Point(14, 25);
             this.cbSortByToDOType.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbSortByToDOType.Name = "cbSortByToDOType";
             this.cbSortByToDOType.Size = new System.Drawing.Size(128, 19);
@@ -937,40 +946,6 @@
             this.cbSortByToDOType.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbSortByToDOType.UseVisualStyleBackColor = true;
             this.cbSortByToDOType.CheckedChanged += new System.EventHandler(this.cbSortByToDOType_CheckedChanged);
-            // 
-            // cbShowRawMaterial
-            // 
-            this.cbShowRawMaterial.AutoSize = true;
-            this.cbShowRawMaterial.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbShowRawMaterial.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbShowRawMaterial.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowRawMaterial.Location = new System.Drawing.Point(14, 144);
-            this.cbShowRawMaterial.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
-            this.cbShowRawMaterial.Name = "cbShowRawMaterial";
-            this.cbShowRawMaterial.Size = new System.Drawing.Size(129, 19);
-            this.cbShowRawMaterial.TabIndex = 167;
-            this.cbShowRawMaterial.Text = "Show Raw Material";
-            this.cbShowRawMaterial.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowRawMaterial.UseVisualStyleBackColor = true;
-            this.cbShowRawMaterial.CheckedChanged += new System.EventHandler(this.cbShowRawMaterial_CheckedChanged);
-            // 
-            // cbShowInsufficientOnly
-            // 
-            this.cbShowInsufficientOnly.AutoSize = true;
-            this.cbShowInsufficientOnly.Checked = true;
-            this.cbShowInsufficientOnly.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbShowInsufficientOnly.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbShowInsufficientOnly.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbShowInsufficientOnly.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowInsufficientOnly.Location = new System.Drawing.Point(14, 18);
-            this.cbShowInsufficientOnly.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
-            this.cbShowInsufficientOnly.Name = "cbShowInsufficientOnly";
-            this.cbShowInsufficientOnly.Size = new System.Drawing.Size(175, 19);
-            this.cbShowInsufficientOnly.TabIndex = 167;
-            this.cbShowInsufficientOnly.Text = "Show Insufficient Item Only";
-            this.cbShowInsufficientOnly.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowInsufficientOnly.UseVisualStyleBackColor = true;
-            this.cbShowInsufficientOnly.CheckedChanged += new System.EventHandler(this.cbShowInsufficientOnly_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -985,7 +960,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(177, 170);
+            this.groupBox2.Size = new System.Drawing.Size(177, 190);
             this.groupBox2.TabIndex = 151;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "FORECAST PERIOD";
@@ -1053,6 +1028,7 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.checkBox1);
             this.groupBox5.Controls.Add(this.cbDescending);
             this.groupBox5.Controls.Add(this.cmbSoryBy);
             this.groupBox5.Controls.Add(this.label2);
@@ -1065,7 +1041,7 @@
             this.groupBox5.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox5.Size = new System.Drawing.Size(244, 170);
+            this.groupBox5.Size = new System.Drawing.Size(244, 190);
             this.groupBox5.TabIndex = 154;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "SORTING";
@@ -1153,7 +1129,7 @@
             this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox3.Size = new System.Drawing.Size(185, 170);
+            this.groupBox3.Size = new System.Drawing.Size(185, 190);
             this.groupBox3.TabIndex = 152;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "OUTGOING PERIOD";
@@ -1240,23 +1216,39 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // cbDeductEstimate
+            // cbShowInsufficientOnly
             // 
-            this.cbDeductEstimate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbDeductEstimate.AutoSize = true;
-            this.cbDeductEstimate.Checked = true;
-            this.cbDeductEstimate.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDeductEstimate.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbDeductEstimate.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbDeductEstimate.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbDeductEstimate.Location = new System.Drawing.Point(258, 146);
-            this.cbDeductEstimate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
-            this.cbDeductEstimate.Name = "cbDeductEstimate";
-            this.cbDeductEstimate.Size = new System.Drawing.Size(191, 19);
-            this.cbDeductEstimate.TabIndex = 172;
-            this.cbDeductEstimate.Text = "Deduct Estimate If No Forecast";
-            this.cbDeductEstimate.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbDeductEstimate.UseVisualStyleBackColor = true;
+            this.cbShowInsufficientOnly.AutoSize = true;
+            this.cbShowInsufficientOnly.Checked = true;
+            this.cbShowInsufficientOnly.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbShowInsufficientOnly.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbShowInsufficientOnly.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbShowInsufficientOnly.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbShowInsufficientOnly.Location = new System.Drawing.Point(14, 160);
+            this.cbShowInsufficientOnly.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
+            this.cbShowInsufficientOnly.Name = "cbShowInsufficientOnly";
+            this.cbShowInsufficientOnly.Size = new System.Drawing.Size(148, 19);
+            this.cbShowInsufficientOnly.TabIndex = 171;
+            this.cbShowInsufficientOnly.Text = "Show Insufficient Only";
+            this.cbShowInsufficientOnly.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbShowInsufficientOnly.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.checkBox1.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.checkBox1.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.checkBox1.Location = new System.Drawing.Point(12, 134);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(148, 19);
+            this.checkBox1.TabIndex = 172;
+            this.checkBox1.Text = "Show Insufficient Only";
+            this.checkBox1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // frmForecastReport_NEW
             // 
@@ -1352,8 +1344,6 @@
         private System.Windows.Forms.CheckBox cbIncludeProInfo;
         private System.Windows.Forms.CheckBox cbRemoveNoOrderItem;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox cbShowInsufficientOnly;
-        private System.Windows.Forms.CheckBox cbShowRawMaterial;
         private System.Windows.Forms.CheckBox cbSortByBalance;
         private System.Windows.Forms.CheckBox cbSortByToDOType;
         private System.Windows.Forms.CheckBox cbShowToProduceItem;
@@ -1380,5 +1370,7 @@
         private System.Windows.Forms.CheckBox cbSpecialTypeColorMode;
         private System.Windows.Forms.CheckBox cbIncludeMacRecord;
         private System.Windows.Forms.CheckBox cbDeductEstimate;
+        private System.Windows.Forms.CheckBox cbShowInsufficientOnly;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

@@ -2676,8 +2676,8 @@ namespace FactoryManagementSoftware.Module
 
             cmb.DataSource = distinctTable;
             cmb.DisplayMember = "cust_name";
-            cmb.Text = getCustName(1);
-            //cmb.SelectedIndex = -1;
+            //cmb.Text = getCustName(1);
+            cmb.SelectedIndex = -1;
         }
 
         public void loadMainCustomerToComboBox(ComboBox cmb)

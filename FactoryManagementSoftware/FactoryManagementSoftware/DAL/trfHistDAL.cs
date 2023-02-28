@@ -2211,7 +2211,7 @@ namespace FactoryManagementSoftware.DAL
                             WHERE tbl_trf_hist.trf_hist_trf_date 
                             BETWEEN @start 
                             AND @end 
-                            AND tbl_trf_hist.trf_hist_to=@customer   ORDER BY tbl_item.item_name ASC, tbl_trf_hist.trf_hist_item_code ASC, tbl_trf_hist.trf_hist_trf_date ASC";
+                            AND tbl_trf_hist.trf_hist_to=@customer ORDER BY tbl_item.item_name ASC, tbl_trf_hist.trf_hist_item_code ASC, tbl_trf_hist.trf_hist_trf_date ASC";
 
                     SqlCommand cmd = new SqlCommand(sql, conn);
 

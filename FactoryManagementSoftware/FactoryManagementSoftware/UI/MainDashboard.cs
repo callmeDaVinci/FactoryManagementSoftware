@@ -687,7 +687,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (Application.OpenForms.OfType<frmMachineSchedule>().Count() == 1)
+                if (Application.OpenForms.OfType<frmMachineSchedule>().Count() >= 1)
                 {
                     Application.OpenForms.OfType<frmMachineSchedule>().First().BringToFront();
                 }
