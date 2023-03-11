@@ -2186,6 +2186,8 @@ namespace FactoryManagementSoftware.UI
 
                     }
 
+                    frmLoading.CloseForm();
+
                     MessageBox.Show("Data saved!");
                     //CheckIfBalanceClear();
 

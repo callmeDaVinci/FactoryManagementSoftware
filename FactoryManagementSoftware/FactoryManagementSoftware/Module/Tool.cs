@@ -12355,7 +12355,7 @@ namespace FactoryManagementSoftware.Module
                     foreach (DataRow row in dtJoin.Rows)
                     {
                         string childCat = getItemCat(row[dalJoin.JoinChild].ToString());
-                        if (childCat == text.Cat_Part || childCat == text.Cat_SubMat) //childCat == text.Cat_Part || childCat == text.Cat_SubMat
+                        if (childCat == text.Cat_Part || childCat == text.Cat_SubMat)
                         {
                             return true;
                         }
@@ -12363,7 +12363,6 @@ namespace FactoryManagementSoftware.Module
                 }
             }
            
-
             return result;
         }
 

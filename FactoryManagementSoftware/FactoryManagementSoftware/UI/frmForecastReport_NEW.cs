@@ -4245,7 +4245,7 @@ namespace FactoryManagementSoftware.UI
 
 
                                 //Find Parent Item With "Total"
-                                if (seachingItemCode.Equals(parentCode) && (seachingItemType.Equals(typeParent) || (seachingbalType.Equals(balType_Total) && seachingItemType.Equals(typeChild))))
+                                if (seachingItemCode.Equals(parentCode) && (seachingItemType.Equals(typeParent) || ((seachingbalType.Equals(balType_Total) || seachingbalType.Equals(balType_Unique)) && seachingItemType.Equals(typeChild))))
                                 {
                                     double nextNeededQty1 = double.TryParse(dt.Rows[j][headerBal1].ToString(), out nextNeededQty1) ? nextNeededQty1 : 0;
                                     double nextNeededQty2 = double.TryParse(dt.Rows[j][headerBal2].ToString(), out nextNeededQty2) ? nextNeededQty2 : 0;

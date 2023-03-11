@@ -403,7 +403,7 @@ namespace FactoryManagementSoftware.UI
                     dgvRowIndex++;
                 }
 
-                if (matCat == text.Cat_SubMat)
+                if (matCat != text.Cat_RawMat && matCat != text.Cat_MB && matCat != text.Cat_Pigment)
                 {
                     //foreach all join list (for sub material)
                     foreach (DataRow joinRow in dt_Join.Rows)
@@ -418,8 +418,6 @@ namespace FactoryManagementSoftware.UI
 
                                 if (ifPMMAItem(parentCode, dt_JoinforChecking, dt_PMMAItem))
                                 {
-
-                                
                                     string parentName = joinRow["parent_name"].ToString();
 
                                     //Get delivered out data

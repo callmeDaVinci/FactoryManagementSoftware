@@ -967,30 +967,6 @@ namespace FactoryManagementSoftware.UI
 
                         if(!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging))
                         {
-                            if (dalItem.checkIfAssembly(childItemCode) && dalItem.checkIfProduction(childItemCode))
-                            {
-                                if (dalItem.checkIfAssembly(parentItemCode) && dalItem.checkIfProduction(parentItemCode))
-                                {
-                                    //n = dgv.Rows.Add();
-                                    //index++;
-
-                                    //dgv.Rows[n].Cells[IndexColumnName].Value = index;
-                                    //dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
-                                    //dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
-                                    //dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
-                                    //dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
-                                    //dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
-                                    //dgv.Rows[n].Cells[FromCatColumnName].Value = "Production";
-                                    //dgv.Rows[n].Cells[FromColumnName].Value = "";
-                                    //dgv.Rows[n].Cells[ToCatColumnName].Value = "Factory";
-                                    //dgv.Rows[n].Cells[ToColumnName].Value = factoryName;
-                                    //dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
-                                    //dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
-                                    //dgv.Rows[n].Cells[NoteColumnName].Value = note+"Sub Part in";
-                                }
-
-                            }
-
                             n = dgv.Rows.Add();
                             index++;
 
@@ -1086,37 +1062,8 @@ namespace FactoryManagementSoftware.UI
 
                         string childItemCat = dtItem.Rows[0][dalItem.ItemCat].ToString();
 
-                        if (childItemCat == text.Cat_Part || childItemCat == text.Cat_SubMat)//!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging)
+                        if (childItemCat != text.Cat_PolyBag)//!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging)
                         {
-                            if (dalItem.checkIfAssembly(childItemCode) && dalItem.checkIfProduction(childItemCode))
-                            {
-                                if (dalItem.checkIfAssembly(parentItemCode) && dalItem.checkIfProduction(parentItemCode))
-                                {
-                                    //n = dgv.Rows.Add();
-                                    //index++;
-
-                                    //dgv.Rows[n].Cells[IndexColumnName].Value = index;
-                                    //dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
-                                    //dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
-                                    //dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
-                                    //dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
-                                    //dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
-                                    //dgv.Rows[n].Cells[FromCatColumnName].Value = "Production";
-                                    //dgv.Rows[n].Cells[FromColumnName].Value = "";
-                                    //dgv.Rows[n].Cells[ToCatColumnName].Value = "Factory";
-                                    //dgv.Rows[n].Cells[ToColumnName].Value = factoryName;
-                                    //dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
-                                    //dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
-
-                                    //if(childItemCat == text.Cat_Carton || childItemCat == text.Cat_Packaging)
-                                    //{
-                                    //    dgv.Rows[n].Cells[NoteColumnName].Value = note + "packaging material";
-                                    //}
-                                    //else
-                                    //    dgv.Rows[n].Cells[NoteColumnName].Value = note + "Sub Part in";
-                                }
-
-                            }
                             bool itemDuplicate = false;
 
                             DataTable dt_DGV = (DataTable) dgv.DataSource;
@@ -1251,51 +1198,8 @@ namespace FactoryManagementSoftware.UI
 
                         string childItemCat = dtItem.Rows[0][dalItem.ItemCat].ToString();
 
-                        if (!callFromProductionRecord || (childItemCat == text.Cat_Part && childItemCat == text.Cat_Packaging))
+                        if (!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging))
                         {
-                            if (dalItem.checkIfAssembly(childItemCode) && dalItem.checkIfProduction(childItemCode))
-                            {
-                                if (dalItem.checkIfAssembly(parentItemCode) && dalItem.checkIfProduction(parentItemCode))
-                                {
-                                    //n = dgv.Rows.Add();
-                                    //index++;
-
-                                    //dgv.Rows[n].Cells[IndexColumnName].Value = index;
-                                    //dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
-                                    //dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
-                                    //dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
-                                    //dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
-                                    //dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
-                                    //dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
-                                    //dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
-                                    //dgv.Rows[n].Cells[ToCatColumnName].Value = text.Other;
-                                    //dgv.Rows[n].Cells[ToColumnName].Value = "";
-                                    //dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
-                                    //dgv.Rows[n].Cells[UnitColumnName].Value = "piece";
-                                    //dgv.Rows[n].Cells[NoteColumnName].Value = note + "Sub Part Out";
-
-                                    //facStockDAL dalFacStock = new facStockDAL();
-                                    //float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
-
-                                    //float transferQty = 0;
-                                    //if (callFromProductionRecord)
-                                    //{
-                                    //    transferQty = qty;
-                                    //}
-                                    //else
-                                    //{
-                                    //    transferQty = Convert.ToSingle(txtTrfQty.Text);
-                                    //}
-
-                                    //if (facStock - transferQty < 0)
-                                    //{
-                                    //    dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                                    //    dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
-                                    //}
-                                }
-
-                            }
-
                             n = dgv.Rows.Add();
                             index++;
 
@@ -2481,8 +2385,6 @@ namespace FactoryManagementSoftware.UI
 
                 if (tool.ifGotChild(cmbTrfItemCode.Text))
                 {
-                    
-                    
                     if (string.IsNullOrEmpty(cmbTrfTo.Text))
                     {
                         factoryName = cmbTrfToCategory.Text;
@@ -2633,7 +2535,7 @@ namespace FactoryManagementSoftware.UI
                 else
                     dgv.Rows[n].Cells[NoteColumnName].Value = note;
 
-                if (tool.ifGotChildExcludePackaging(itemCode))
+                if (tool.ifGotChildIncludedPackaging(itemCode))
                 {
                     if (shift == "MBO" || shift == "NBO")
                     {
