@@ -328,11 +328,11 @@ namespace FactoryManagementSoftware.UI
             bool passed = true;
             if (cmbItemType.SelectedIndex == -1)
             {
-                if(cbPart.Checked)
-                errorProvider1.SetError(cbPart, "Please select a item type.");
+                if(cbDeliveredItems.Checked)
+                errorProvider1.SetError(cbDeliveredItems, "Please select a customer.");
 
                 else
-                    errorProvider1.SetError(cbMaterial, "Please select a item type.");
+                    errorProvider1.SetError(cbMaterial, "Please select a material type.");
 
                 passed = false;
             }
@@ -502,7 +502,7 @@ namespace FactoryManagementSoftware.UI
                     int month = int.TryParse(cmbMonthFrom.Text, out month) ? month : DateTime.Now.Month;
                     int year = int.TryParse(cmbYearFrom.Text, out year) ? year : DateTime.Now.Year;
 
-                    if (cbPart.Checked)
+                    if (cbDeliveredItems.Checked)
                     {
                         if (cmbItemType.Text.Equals(tool.getCustName(1)))
                         {
@@ -553,12 +553,25 @@ namespace FactoryManagementSoftware.UI
             if(itemSearchMode)
             {
                 loaded = false;
-                txtItemSearch.Text = itemSearch_ItemCode;
-                txtItemSearch.ForeColor = SystemColors.WindowText;
-                cmbItemType.Text = itemSearch_Customer;
+
+                if(string.IsNullOrEmpty(itemSearch_Customer))
+                {
+                    txtItemSearch.Text = itemSearch_ItemCode;
+                    txtItemSearch.ForeColor = SystemColors.WindowText;
+
+                    cbMaterial.Checked = true;
+                    cmbItemType.Text = tool.getItemCat(itemSearch_ItemCode);
+                }
+                else
+                {
+                    txtItemSearch.Text = itemSearch_ItemCode;
+                    txtItemSearch.ForeColor = SystemColors.WindowText;
+                    cmbItemType.Text = itemSearch_Customer;
+                }
+              
                 loaded = true;
 
-                LoadInOutData();
+                LoadInOutData(itemSearch_ItemCode);
             }
 
         }
@@ -649,10 +662,8 @@ namespace FactoryManagementSoftware.UI
                 }
                 #endregion
 
-
                 if (!cbIncludeTerminated.Checked)
                     dt_ItemList = RemoveTerminatedItem(dt_ItemList);
-
 
                 #region get start and end date
 
@@ -731,7 +742,6 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-
                     //load part item
                     if (inOutType == inOutType_In)
                     {
@@ -823,7 +833,7 @@ namespace FactoryManagementSoftware.UI
 
                     string itemCustOrCat = null;
 
-                    if (cbPart.Checked)
+                    if (cbDeliveredItems.Checked)
                     {
                         itemCustOrCat = itemRow["cust_name"].ToString();
                     }
@@ -851,10 +861,9 @@ namespace FactoryManagementSoftware.UI
                         //    var checkpoint = 1;
                         //}
                      
+                        itemSearchMatched = itemName.ToUpper().Contains(itemSearch.ToUpper()) || itemCode.ToUpper().Contains(itemSearch.ToUpper());
 
-                        itemSearchMatched = itemName.Contains(itemSearch.ToUpper()) || itemCode.Contains(itemSearch.ToUpper());
-
-                        if (string.IsNullOrEmpty(itemSearch) || itemSearch.ToUpper() == text.Search_DefaultTest.ToUpper())
+                        if (string.IsNullOrEmpty(itemSearch) || itemSearch.ToUpper() == text.Search_DefaultText.ToUpper())
                         {
                             itemSearchMatched = true;
 
@@ -941,7 +950,7 @@ namespace FactoryManagementSoftware.UI
                             trfIn = CheckIfTrfIn(trfFrom, trfTo);
                             trfOut = CheckIfTrfOut(trfFrom, trfTo);
 
-                            if(cbDeliveredOnly.Checked)
+                            if(cbDeliveredItems.Checked)
                             trfOut = trfTo == itemType;
 
                             if ((inOutType == inOutType_In || inOutType == inOutType_InOut) && trfIn)
@@ -1349,26 +1358,776 @@ namespace FactoryManagementSoftware.UI
                         dt.Rows.Remove(dt.Rows[dt.Rows.Count - 1]);
                     }
                     dt.AcceptChanges();
-
-
-                    //if (cmbInOutType.Text == inOutType_In)
-                    //{
-                    //    dt.Rows.Add(row_TotalIn);
-                    //}
-                    //else if (cmbInOutType.Text == inOutType_Out)
-                    //{
-                    //    dt.Rows.Add(row_TotalOut);
-                    //}
-                    //else if (cmbInOutType.Text == inOutType_InOut)
-                    //{
-                    //    row_TotalIn[header_Type] = inOutType_In;
-                    //    row_TotalOut[header_Type] = inOutType_Out;
-
-                    //    dt.Rows.Add(row_TotalIn);
-                    //    dt.Rows.Add(row_TotalOut);
-                    //}
-
                     
+                }
+
+                dgv.DataSource = dt;
+                dgv.ClearSelection();
+                frmLoading.CloseForm();
+            }
+        }
+
+        private void LoadInOutData(string ITEM_SEARCHING)
+        {
+            if (Validation())
+            {
+                #region Pre Setting
+
+                frmLoading.ShowLoadingScreen();
+
+                DataGridView dgv = dgvInOutReport;
+
+                DataTable dt = NewInOutTable();
+
+                DataTable dt_ItemList;
+
+                DataTable dt_TrfHist;
+
+                //DataTable dt_SalesReport;
+
+                dt_Fac = dalFac.SelectDESC();
+                dt_PMMADate = dalPMMADate.Select();
+
+                string inOutType = cmbInOutType.Text;
+                string dateType = cmbDateType.Text;
+                string itemType = cmbItemType.Text;
+                string itemSearch = txtItemSearch.Text;
+                bool isMaterialItem = cbMaterial.Checked;
+
+                btnRefresh.Visible = true;
+                lblLastUpdated.Visible = true;
+                lblUpdatedTime.Visible = true;
+
+                lblUpdatedTime.Text = DateTime.Now.ToString();
+                #endregion
+
+                #region load item list
+                if (isMaterialItem)
+                {
+                    //load material item
+                    dt_ItemList = dalItem.catItemSearch(ITEM_SEARCHING, itemType);
+
+                }
+                else
+                {
+                    //load customer's item
+                    if (itemType.ToUpper().Equals("ALL"))
+                    {
+                        dt_ItemList = dalItemCust.Select();//load all customer's item list
+                    }
+                    else
+                    {
+                        if (itemType == "SPP")
+                        {
+                            dt_ItemList = dalItemCust.SPPCustSearch(itemType);
+                        }
+                        else
+                        {
+                            dt_ItemList = dalItemCust.custSearch(itemType);
+                        }
+
+
+                    }
+                }
+                #endregion
+
+                if (!cbIncludeTerminated.Checked)
+                    dt_ItemList = RemoveTerminatedItem(dt_ItemList);
+
+                #region get start and end date
+
+                string start;
+                string end;
+                int monthStart = -1, monthEnd = -1, yearStart = -1, yearEnd = -1;
+
+                if (dateType == dateType_Daily)
+                {
+                    start = dtpFrom.Value.ToString("yyyy/MM/dd");
+                    end = dtpTo.Value.ToString("yyyy/MM/dd");
+                }
+                else if (dateType == dateType_Monthly)
+                {
+                    monthStart = Convert.ToInt32(cmbMonthFrom.Text);
+                    monthEnd = int.TryParse(cmbMonthTo.Text, out monthEnd) ? monthEnd : monthStart;
+
+                    yearStart = Convert.ToInt32(cmbYearFrom.Text);
+                    yearEnd = int.TryParse(cmbYearTo.Text, out yearEnd) ? yearEnd : yearStart;
+
+                    if (itemType == tool.getCustName(1))
+                    {
+                        start = tool.GetPMMAStartDate(monthStart, yearStart, dt_PMMADate).ToString("yyyy/MM/dd");
+                        end = tool.GetPMMAEndDate(monthEnd, yearEnd, dt_PMMADate).ToString("yyyy/MM/dd");
+                    }
+                    else
+                    {
+                        start = new DateTime(yearStart, monthStart, 1).ToString("yyyy/MM/dd");
+                        end = new DateTime(yearEnd, monthEnd, DateTime.DaysInMonth(yearEnd, monthEnd)).ToString("yyyy/MM/dd");
+                    }
+                }
+                else if (dateType == dateType_Yearly)
+                {
+                    yearStart = Convert.ToInt32(cmbYearFrom.Text);
+                    yearEnd = int.TryParse(cmbYearTo.Text, out yearEnd) ? yearEnd : yearStart;
+
+                    start = new DateTime(yearStart, 1, 1).ToString("yyyy/MM/dd");
+                    end = new DateTime(yearEnd, 12, 31).ToString("yyyy/MM/dd");
+
+                    if (itemType == tool.getCustName(1))
+                    {
+                        start = tool.GetPMMAStartDate(1, yearStart, dt_PMMADate).ToString("yyyy/MM/dd");
+                        end = tool.GetPMMAEndDate(12, yearEnd, dt_PMMADate).ToString("yyyy/MM/dd");
+                    }
+                    else
+                    {
+                        start = new DateTime(yearStart, 1, 1).ToString("yyyy/MM/dd");
+                        end = new DateTime(yearEnd, 12, 31).ToString("yyyy/MM/dd");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Date invalid!");
+                    return;
+                }
+                #endregion
+
+                #region load transfer history
+
+                if (isMaterialItem)
+                {
+                    //load material item
+                    if (inOutType == inOutType_Out)
+                    {
+                        dt_TrfHist = dalTrfHist.MaterialInOutSearch(start, end, itemType);
+                    }
+                    else if (inOutType == inOutType_In || inOutType == inOutType_InOut)
+                    {
+                        dt_TrfHist = dalTrfHist.MaterialInOutSearch(start, end, itemType);
+                    }
+                    else
+                    {
+                        MessageBox.Show("In Out type invaild.");
+                        return;
+                    }
+                }
+                else
+                {
+                    //load part item
+                    if (inOutType == inOutType_In)
+                    {
+                        //dt_TrfHist = dalTrfHist.ItemInSearch(start, end);
+                        dt_TrfHist = dalTrfHist.ItemInSearch(start, end, itemType);
+                    }
+                    else if (inOutType == inOutType_Out)
+                    {
+                        if (itemType == "SPP")
+                        {
+                            dt_TrfHist = dalTrfHist.SPPItemToCustomerSearch(start, end, itemType);
+                        }
+                        else
+                        {
+                            dt_TrfHist = dalTrfHist.ItemToCustomerSearch(start, end, itemType);
+                        }
+                    }
+                    else if (inOutType == inOutType_InOut)
+                    {
+                        dt_TrfHist = dalTrfHist.ItemInOutSearch(start, end, itemType);
+                    }
+                    else
+                    {
+                        MessageBox.Show("In Out type invaild.");
+                        return;
+                    }
+
+                }
+                #endregion
+
+                //406ms^^^
+                #region print data
+                int index = 1;
+                int qtyPerBag = 0;
+                double singleTrfQty = 0;
+                double totalTrfInQty = 0;
+                double totalTrfOutQty = 0;
+                double singleInQty = 0;
+                double singleOutQty = 0;
+                bool trfIn = false;
+                bool trfOut = false;
+                bool dataPrinted = false;
+                DataRow row_In = dt.NewRow(), row_Out = dt.NewRow();
+
+                string PMMA = tool.getCustName(1);
+
+                bool itemFound = false;
+                DataTable dt_SppCustomer = dalSPP.CustomerWithoutRemovedDataSelect();
+
+                foreach (DataRow itemRow in dt_ItemList.Rows)
+                {
+                    if (itemType == "SPP")
+                        qtyPerBag = int.TryParse(itemRow[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+
+
+                    itemFound = false;
+                    dataPrinted = false;
+                    row_In = dt.NewRow();
+                    row_Out = dt.NewRow();
+                    bool itemSearchMatched = false;
+                    //singleTrfQty = 0;
+
+                    singleInQty = 0;
+                    singleOutQty = 0;
+
+                    totalTrfInQty = 0;
+                    totalTrfOutQty = 0;
+
+                    string itemCode = itemRow[dalItem.ItemCode].ToString();
+                    string itemName = itemRow[dalItem.ItemName].ToString();
+                    string itemMaterial = itemRow[dalItem.ItemMaterial].ToString();
+                    string itemStock = itemRow[dalItem.ItemStock].ToString();
+
+                    if (qtyPerBag > 0)
+                    {
+                        int stockInPcs = int.TryParse(itemStock, out stockInPcs) ? stockInPcs : 0;
+
+                        if (stockInPcs > 0)
+                        {
+                            itemStock += " ( " + stockInPcs / qtyPerBag + " BAGS)";
+                        }
+                    }
+
+                    DateTime lastDelivered = DateTime.MaxValue;
+
+                    int preDay = 0;
+                    int preMonth = 0;
+                    int preYear = 0;
+
+                    string itemCustOrCat = null;
+
+                    if (cbDeliveredItems.Checked)
+                    {
+                        itemCustOrCat = itemRow["cust_name"].ToString();
+                    }
+                    else
+                    {
+                        itemCustOrCat = itemRow[dalItem.ItemCat].ToString();
+                    }
+
+                    //set datarow info
+
+                    if (itemCode == "V51KM4100")
+                    {
+                        var checkpoint = 1;
+                    }
+
+                    foreach (DataRow trfRow in dt_TrfHist.Rows)
+                    {
+                        string trfItemCode = trfRow[dalItem.ItemCode].ToString();
+                        string passed = trfRow[dalTrfHist.TrfResult].ToString();
+                        string trfFrom = trfRow[dalTrfHist.TrfFrom].ToString();
+                        string trfTo = trfRow[dalTrfHist.TrfTo].ToString();
+
+                        //if(trfItemCode == "V51KM4100")
+                        //{
+                        //    var checkpoint = 1;
+                        //}
+
+                        itemSearchMatched = itemName.ToUpper().Contains(itemSearch.ToUpper()) || itemCode.ToUpper().Contains(itemSearch.ToUpper());
+
+                        if (string.IsNullOrEmpty(itemSearch) || itemSearch.ToUpper() == text.Search_DefaultText.ToUpper())
+                        {
+                            itemSearchMatched = true;
+
+                        }
+
+                        if (passed != "Passed")
+                        {
+                            itemSearchMatched = false;
+                            trfRow.Delete();
+                            continue;
+                        }
+
+                        bool listedCustomer = true;
+
+                        //if(trfTo == "WEIHUA" && itemCode == "(OK) CFEE 50")
+                        //{
+                        //    float nameTest = 0;
+                        //}
+
+                        if (itemType == "SPP")
+                        {
+                            foreach (DataRow row in dt_SppCustomer.Rows)
+                            {
+                                string fullName = row[dalSPP.FullName].ToString();
+                                string shortName = row[dalSPP.ShortName].ToString();
+
+                                if (trfTo == fullName || trfTo == shortName || trfTo == "SPP" || trfTo == "OTHER" || trfTo == "WEIHUA")
+                                {
+                                    listedCustomer = true;
+                                    break;
+                                }
+
+                                listedCustomer = false;
+                            }
+                        }
+
+                        if (trfItemCode == itemCode && (listedCustomer || itemType != "SPP")) //&& (inOutType != inOutType_InOut || inOutType != inOutType_Out)
+                        {
+                            itemFound = true;
+
+                            double trfQty = double.TryParse(trfRow[dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : 0;
+
+                            trfQty = Math.Round(trfQty, 2);
+
+
+                            DateTime trfDate = DateTime.TryParse(trfRow[dalTrfHist.TrfDate].ToString(), out trfDate) ? trfDate : DateTime.MaxValue;
+                            //bool matched = false;
+
+                            lastDelivered = trfDate;
+                            int day = 0;
+                            int month = 0;
+                            int year = 0;
+
+                            if (trfDate == DateTime.MaxValue)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                if (itemType == PMMA && dateType != dateType_Daily)
+                                {
+                                    DateTime pmmaDate = tool.GetPMMAMonthAndYear(trfDate, dt_PMMADate);
+
+                                    if (pmmaDate != DateTime.MaxValue)
+                                    {
+                                        month = pmmaDate.Month;
+                                        year = pmmaDate.Year;
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
+                                }
+                                else
+                                {
+                                    day = trfDate.Day;
+                                    month = trfDate.Month;
+                                    year = trfDate.Year;
+                                }
+
+                            }
+
+                            //check in out type
+                            trfIn = CheckIfTrfIn(trfFrom, trfTo);
+                            trfOut = CheckIfTrfOut(trfFrom, trfTo);
+
+                            if (cbDeliveredItems.Checked)
+                                trfOut = trfTo == itemType;
+
+                            if ((inOutType == inOutType_In || inOutType == inOutType_InOut) && trfIn)
+                            {
+                                dataPrinted = true;
+                                totalTrfInQty += trfQty;
+
+                                if (dateType == dateType_Daily)
+                                {
+                                    if (preDay != 0 && preMonth != 0 && preYear != 0 && preDay == day && preMonth == month && preYear == year)
+                                    {
+                                        singleInQty += trfQty;
+                                    }
+                                    else
+                                    {
+                                        singleInQty = trfQty;
+                                        singleOutQty = 0;
+                                        preDay = day;
+                                        preMonth = month;
+                                        preYear = year;
+                                    }
+
+                                    int bagQty = 0;
+
+                                    if (qtyPerBag != 0)
+                                    {
+                                        bagQty = (int)singleInQty / qtyPerBag;
+                                        row_Out[trfDate.ToString("dd/MM yy")] = singleInQty + " ( " + bagQty + " BAGS)";
+                                    }
+                                    else
+                                        row_In[trfDate.ToString("dd/MM yy")] = singleInQty;
+                                }
+
+                                else if (dateType == dateType_Monthly)
+                                {
+                                    if (preMonth != 0 && preYear != 0 && preMonth == month && preYear == year)
+                                    {
+                                        singleInQty += trfQty;
+                                    }
+                                    else
+                                    {
+                                        singleInQty = trfQty;
+
+                                        singleOutQty = 0;
+                                        preMonth = month;
+                                        preYear = year;
+                                    }
+
+                                    int bagQty = 0;
+
+                                    if (qtyPerBag != 0)
+                                    {
+                                        bagQty = (int)singleInQty / qtyPerBag;
+                                        row_In[month + "/" + year] = singleInQty + " ( " + bagQty + " BAGS)";
+                                    }
+                                    else
+                                        row_In[month + "/" + year] = singleInQty;
+                                }
+
+                                else if (dateType == dateType_Yearly)
+                                {
+                                    if (preYear != 0 && preYear == year)
+                                    {
+                                        singleInQty += trfQty;
+                                    }
+                                    else
+                                    {
+                                        singleInQty = trfQty;
+                                        singleOutQty = 0;
+                                        preYear = year;
+                                    }
+
+                                    int bagQty = 0;
+
+                                    if (qtyPerBag != 0)
+                                    {
+                                        bagQty = (int)singleInQty / qtyPerBag;
+                                        row_In[year.ToString()] = singleInQty + " ( " + bagQty + " BAGS)";
+                                    }
+                                    else
+                                        row_In[year.ToString()] = singleInQty;
+                                }
+
+                            }
+
+                            else if ((inOutType == inOutType_Out || inOutType == inOutType_InOut) && trfOut)
+                            {
+                                dataPrinted = true;
+
+                                totalTrfOutQty += trfQty;
+
+                                if (dateType == dateType_Daily)
+                                {
+                                    if (preDay != 0 && preMonth != 0 && preYear != 0 && preDay == day && preMonth == month && preYear == year)
+                                    {
+                                        singleOutQty += trfQty;
+
+                                    }
+                                    else
+                                    {
+                                        singleOutQty = trfQty;
+                                        singleInQty = 0;
+                                        preDay = day;
+                                        preMonth = month;
+                                        preYear = year;
+                                    }
+
+                                    int bagQty = 0;
+                                    if (qtyPerBag != 0)
+                                    {
+                                        bagQty = (int)singleOutQty / qtyPerBag;
+                                        row_Out[trfDate.ToString("dd/MM yy")] = singleOutQty + " ( " + bagQty + " BAGS)";
+
+
+                                    }
+                                    else
+                                    {
+                                        row_Out[trfDate.ToString("dd/MM yy")] = singleOutQty;
+                                    }
+
+
+                                }
+
+                                else if (dateType == dateType_Monthly)
+                                {
+                                    if (preMonth != 0 && preYear != 0 && preMonth == month && preYear == year)
+                                    {
+                                        singleOutQty += trfQty;
+                                    }
+                                    else
+                                    {
+                                        singleOutQty = trfQty;
+                                        singleInQty = 0;
+                                        preMonth = month;
+                                        preYear = year;
+                                    }
+
+                                    int bagQty = 0;
+                                    if (qtyPerBag != 0)
+                                    {
+                                        bagQty = (int)singleOutQty / qtyPerBag;
+                                        row_Out[month + "/" + year] = singleOutQty + " ( " + bagQty + " BAGS)";
+                                    }
+                                    else
+                                    {
+                                        row_Out[month + "/" + year] = singleOutQty;
+                                    }
+
+
+                                }
+
+                                else if (dateType == dateType_Yearly)
+                                {
+                                    if (preYear != 0 && preYear == year)
+                                    {
+                                        singleOutQty += trfQty;
+                                    }
+                                    else
+                                    {
+                                        singleOutQty = trfQty;
+                                        singleInQty = 0;
+                                        preYear = year;
+                                    }
+
+                                    int bagQty = 0;
+                                    if (qtyPerBag != 0)
+                                    {
+                                        bagQty = (int)singleOutQty / qtyPerBag;
+                                        row_Out[year.ToString()] = singleOutQty + " ( " + bagQty + " BAGS)";
+                                    }
+                                    else
+                                    {
+                                        row_Out[year.ToString()] = singleOutQty;
+                                    }
+
+                                }
+                            }
+
+                            if (dataPrinted)
+                            {
+                                trfRow.Delete();
+
+                            }
+                        }
+                        else
+                        {
+                            if (trfItemCode != itemCode && itemFound)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    dt_TrfHist.AcceptChanges();
+
+                    if (itemSearchMatched)
+                    {
+                        //print datarow to datatable
+                        if (inOutType == inOutType_In)
+                        {
+                            if (itemType.ToUpper().Equals("ALL"))
+                            {
+                                row_In[header_Customer] = itemCustOrCat;
+                            }
+
+                            totalTrfInQty = Math.Round(totalTrfInQty, 2);
+
+                            row_In[header_Index] = index;
+                            row_In[header_ItemCode] = itemCode;
+                            row_In[header_ItemName] = itemName;
+                            row_In[header_Total] = totalTrfInQty;
+                            row_In[header_Stock] = itemStock;
+                            dt.Rows.Add(row_In);
+                            index++;
+                        }
+
+                        else if (inOutType == inOutType_Out)
+                        {
+                            if (itemType.ToUpper().Equals("ALL"))
+                            {
+                                row_Out[header_Customer] = itemCustOrCat;
+                            }
+
+                            totalTrfOutQty = Math.Round(totalTrfOutQty, 2);
+
+                            row_Out[header_Index] = index;
+                            row_Out[header_ItemCode] = itemCode;
+                            row_Out[header_ItemName] = itemName;
+
+                            if (lastDelivered != DateTime.MaxValue)
+                            {
+                                row_Out[header_LastDelivered] = lastDelivered.ToShortDateString();
+                                lastDelivered = DateTime.MaxValue;
+                            }
+                            row_Out[header_Material] = itemMaterial;
+                            row_Out[header_Stock] = itemStock;
+
+                            int bagQty = 0;
+
+                            if (qtyPerBag != 0)
+                            {
+                                bagQty = (int)totalTrfOutQty / qtyPerBag;
+                                row_Out[header_Total] = totalTrfOutQty + " ( " + bagQty + " BAGS)";
+                            }
+                            else
+                            {
+                                row_Out[header_Total] = totalTrfOutQty;
+                            }
+
+                            dt.Rows.Add(row_Out);
+                            index++;
+                        }
+                        else if (inOutType == inOutType_InOut)
+                        {
+                            if (itemType.ToUpper().Equals("ALL"))
+                            {
+                                row_In[header_Customer] = itemCustOrCat;
+                                row_Out[header_Customer] = itemCustOrCat;
+                            }
+
+                            totalTrfInQty = Math.Round(totalTrfInQty, 2);
+                            totalTrfOutQty = Math.Round(totalTrfOutQty, 2);
+
+                            row_In[header_Index] = index;
+                            row_In[header_ItemCode] = itemCode;
+                            row_In[header_ItemName] = itemName;
+                            //row_In[header_Total] = totalTrfInQty;
+                            row_In[header_Stock] = itemStock;
+
+                            int bagQty = 0;
+
+                            if (qtyPerBag != 0)
+                            {
+                                bagQty = (int)totalTrfInQty / qtyPerBag;
+                                row_In[header_Total] = totalTrfInQty + " ( " + bagQty + " BAGS)";
+
+                                bagQty = (int)totalTrfOutQty / qtyPerBag;
+                                row_Out[header_Total] = totalTrfOutQty + " ( " + bagQty + " BAGS)";
+                            }
+                            else
+                            {
+                                row_In[header_Total] = totalTrfInQty;
+                                row_Out[header_Total] = totalTrfOutQty;
+                            }
+
+                            row_Out[header_Index] = index;
+                            row_Out[header_ItemCode] = itemCode;
+                            row_Out[header_ItemName] = itemName;
+                            //row_Out[header_Total] = totalTrfOutQty;
+                            row_Out[header_Stock] = itemStock;
+
+                            row_In[header_Type] = inOutType_In;
+                            row_Out[header_Type] = inOutType_Out;
+                            dt.Rows.Add(row_In);
+                            dt.Rows.Add(row_Out);
+                            index++;
+
+                            dt.Rows.Add(dt.NewRow());
+                        }
+                    }
+
+                }
+                #endregion
+
+                #region TOTAL
+
+                //DataRow row_TotalIn = dt.NewRow();
+                //DataRow row_TotalOut = dt.NewRow();
+
+                //row_TotalIn[header_ItemName] = text_TotalInForAll;
+                //row_TotalOut[header_ItemName] = text_TotalOutForAll;
+
+                //15034ms ^^^
+
+                //for (int col = 0; col < dt.Columns.Count; col ++)
+                //{
+                //    int totalInInPcs = 0;
+                //    int totalInInBag = 0;
+                //    int totalOutInPcs = 0;
+                //    int totalOutInBag = 0;
+
+                //    string headerName = dt.Columns[col].ColumnName;
+
+                //    if(int.TryParse(headerName[0].ToString(), out int k) || headerName == header_Total)
+                //    {
+                //        for (int row = 0; row < dt.Rows.Count; row++)
+                //        {
+
+                //            string rowString = dt.Rows[row][col].ToString();
+
+                //            bool PcsGet = false;
+
+                //            string PcsString = "";
+                //            string BagString = "";
+
+                //            for (int i = 0; i < rowString.Length; i++)
+                //            {
+                //                string charString = rowString[i].ToString();
+                //                if (int.TryParse(charString, out int x))
+                //                {
+                //                    if (!PcsGet)
+                //                    {
+                //                        PcsString += charString;
+                //                    }
+                //                    else
+                //                    {
+                //                        BagString += charString;
+                //                    }
+                //                }
+                //                else if (charString == " ")
+                //                {
+                //                    if (!PcsGet)
+                //                    {
+                //                        PcsGet = true;
+                //                    }
+
+                //                }
+                //            }
+
+                //            int PcsInt = int.TryParse(PcsString, out PcsInt) ? PcsInt : 0;
+                //            int BagInt = int.TryParse(BagString, out BagInt) ? BagInt : 0;
+
+
+                //            if(cmbInOutType.Text == inOutType_In)
+                //            {
+                //                totalInInPcs += PcsInt;
+                //                totalInInBag += BagInt;
+                //            }
+                //            else if(cmbInOutType.Text == inOutType_Out)
+                //            {
+                //                totalOutInPcs += PcsInt;
+                //                totalOutInBag += BagInt;
+                //            }
+                //            else if(cmbInOutType.Text == inOutType_InOut && dt.Columns.Contains(header_Type))
+                //            {
+                //                string InOutType = dt.Rows[row][header_Type].ToString();
+
+                //                if (InOutType == inOutType_In)
+                //                {
+                //                    totalInInPcs += PcsInt;
+                //                    totalInInBag += BagInt;
+                //                }
+                //                else if (InOutType == inOutType_Out)
+                //                {
+                //                    totalOutInPcs += PcsInt;
+                //                    totalOutInBag += BagInt;
+                //                }
+                //            }
+                //        }
+
+                //        row_TotalIn[headerName] = totalInInPcs + " ( " + totalInInBag + " BAGS)";
+                //        row_TotalOut[headerName] = totalOutInPcs + " ( " + totalOutInBag + " BAGS)";
+                //    }
+
+                //}
+
+                #endregion
+
+                if (dt.Rows.Count > 0)
+                {
+                    string itemCode = dt.Rows[dt.Rows.Count - 1][header_ItemCode].ToString();
+
+                    if (string.IsNullOrEmpty(itemCode))
+                    {
+                        dt.Rows.Remove(dt.Rows[dt.Rows.Count - 1]);
+                    }
+                    dt.AcceptChanges();
+
                 }
 
                 dgv.DataSource = dt;
@@ -1450,32 +2209,33 @@ namespace FactoryManagementSoftware.UI
 
             if (cbMaterial.Checked)
             {
-                cbPart.Checked = false;
-                cbDeliveredOnly.Checked = false;
+                cbDeliveredItems.Checked = false;
 
-                tool.LoadMaterialToComboBox(cmbItemType);
+                tool.LoadMaterialIncludedPartToComboBox(cmbItemType);
+
+                //tool.LoadMaterialToComboBox(cmbItemType);
             }
             else
             {
-                cbPart.Checked = true;
+                cbDeliveredItems.Checked = true;
             }
         }
 
-        private void cbPart_CheckedChanged(object sender, EventArgs e)
+        private void cbDeliveredItems_CheckedChanged(object sender, EventArgs e)
         {
             ResetUI();
             cmbItemType.DataSource = null;
 
-            if (cbPart.Checked)
+            if (cbDeliveredItems.Checked)
             {
                 cbMaterial.Checked = false;
-                cbDeliveredOnly.Checked = true;
+                cbDeliveredItems.Checked = true;
                 tool.loadCustomerToComboBox(cmbItemType);
             }
             else
             {
                 cbMaterial.Checked = true;
-                cbDeliveredOnly.Checked = false;
+                cbDeliveredItems.Checked = false;
 
             }
         }
@@ -1723,7 +2483,7 @@ namespace FactoryManagementSoftware.UI
         {
             ResetUI();
             getStartandEndDate();
-            if(loaded && cbPart.Checked)
+            if(loaded && cbDeliveredItems.Checked)
             {
                 if (cmbItemType.Text.Equals(tool.getCustName(1)))
                 {
@@ -1882,7 +2642,6 @@ namespace FactoryManagementSoftware.UI
 
 
         #endregion
-
 
         #region export to excel
 
@@ -2155,7 +2914,7 @@ namespace FactoryManagementSoftware.UI
 
         private void txtItemSearch_Enter(object sender, EventArgs e)
         {
-            if (txtItemSearch.Text == text.Search_DefaultTest)
+            if (txtItemSearch.Text == text.Search_DefaultText)
             {
                 txtItemSearch.Text = "";
                 txtItemSearch.ForeColor = SystemColors.WindowText;
@@ -2181,7 +2940,7 @@ namespace FactoryManagementSoftware.UI
             ItemSearchUIReset();
             string Searching_Text = txtItemSearch.Text.ToUpper();
 
-            if (Searching_Text != text.Search_DefaultTest.ToUpper())
+            if (Searching_Text != text.Search_DefaultText.ToUpper())
             {
                 DataGridView dgv = dgvInOutReport;
 
@@ -2201,7 +2960,7 @@ namespace FactoryManagementSoftware.UI
                         string itemName = row[header_ItemName].ToString().ToUpper();
                         string index = row[header_Index].ToString().ToUpper();
 
-                        if (itemCode.Contains(Searching_Text) || itemName.Contains(Searching_Text))
+                        if (itemCode.ToUpper().Contains(Searching_Text) || itemName.ToUpper().Contains(Searching_Text))
                         {
                             if(previousIndex != index)
                             {

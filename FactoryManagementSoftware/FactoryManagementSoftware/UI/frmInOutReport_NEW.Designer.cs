@@ -33,6 +33,9 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpForecastReport = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnExcel = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnFilter = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnSearch = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.lblInOutType = new System.Windows.Forms.Label();
             this.cmbInOutType = new System.Windows.Forms.ComboBox();
@@ -41,13 +44,9 @@
             this.cmbDateType = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbDeliveredOnly = new System.Windows.Forms.CheckBox();
-            this.cbPart = new System.Windows.Forms.CheckBox();
+            this.cbDeliveredItems = new System.Windows.Forms.CheckBox();
             this.cbMaterial = new System.Windows.Forms.CheckBox();
             this.cmbItemType = new System.Windows.Forms.ComboBox();
-            this.btnExcel = new System.Windows.Forms.Button();
-            this.btnFilter = new System.Windows.Forms.Button();
-            this.btnSearch = new System.Windows.Forms.Button();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.lblResultNo = new System.Windows.Forms.Label();
@@ -64,6 +63,7 @@
             this.lblUpdatedTime = new System.Windows.Forms.Label();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.gbFilter = new System.Windows.Forms.GroupBox();
+            this.btnFilterApply = new Guna.UI.WinForms.GunaGradientButton();
             this.cbIncludeTerminated = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblCurrentMonth2 = new System.Windows.Forms.Label();
@@ -84,7 +84,6 @@
             this.cmbMonthFrom = new System.Windows.Forms.ComboBox();
             this.lblYearFrom = new System.Windows.Forms.Label();
             this.cmbYearFrom = new System.Windows.Forms.ComboBox();
-            this.btnFilterApply = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
@@ -154,12 +153,12 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel7, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel6, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnExcel, 7, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnFilter, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnSearch, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel7, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel6, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel8, 6, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
@@ -168,6 +167,101 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1310, 76);
             this.tableLayoutPanel2.TabIndex = 160;
+            // 
+            // btnExcel
+            // 
+            this.btnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExcel.AnimationHoverSpeed = 0.07F;
+            this.btnExcel.AnimationSpeed = 0.03F;
+            this.btnExcel.BackColor = System.Drawing.Color.Transparent;
+            this.btnExcel.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.btnExcel.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.btnExcel.BorderColor = System.Drawing.Color.Black;
+            this.btnExcel.BorderSize = 1;
+            this.btnExcel.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnExcel.FocusedColor = System.Drawing.Color.Empty;
+            this.btnExcel.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.btnExcel.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnExcel.Image = null;
+            this.btnExcel.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnExcel.Location = new System.Drawing.Point(1180, 37);
+            this.btnExcel.Name = "btnExcel";
+            this.btnExcel.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnExcel.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnExcel.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnExcel.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnExcel.OnHoverImage = null;
+            this.btnExcel.OnPressedColor = System.Drawing.Color.Black;
+            this.btnExcel.Radius = 2;
+            this.btnExcel.Size = new System.Drawing.Size(127, 36);
+            this.btnExcel.TabIndex = 168;
+            this.btnExcel.Text = "EXCEL";
+            this.btnExcel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
+            // 
+            // btnFilter
+            // 
+            this.btnFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFilter.AnimationHoverSpeed = 0.07F;
+            this.btnFilter.AnimationSpeed = 0.03F;
+            this.btnFilter.BackColor = System.Drawing.Color.Transparent;
+            this.btnFilter.BaseColor1 = System.Drawing.Color.White;
+            this.btnFilter.BaseColor2 = System.Drawing.Color.White;
+            this.btnFilter.BorderColor = System.Drawing.Color.Black;
+            this.btnFilter.BorderSize = 1;
+            this.btnFilter.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnFilter.FocusedColor = System.Drawing.Color.Empty;
+            this.btnFilter.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.btnFilter.ForeColor = System.Drawing.Color.Black;
+            this.btnFilter.Image = null;
+            this.btnFilter.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnFilter.Location = new System.Drawing.Point(736, 37);
+            this.btnFilter.Name = "btnFilter";
+            this.btnFilter.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnFilter.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnFilter.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnFilter.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnFilter.OnHoverImage = null;
+            this.btnFilter.OnPressedColor = System.Drawing.Color.Black;
+            this.btnFilter.Radius = 2;
+            this.btnFilter.Size = new System.Drawing.Size(128, 36);
+            this.btnFilter.TabIndex = 168;
+            this.btnFilter.Text = "MORE FILTERS ...";
+            this.btnFilter.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearch.AnimationHoverSpeed = 0.07F;
+            this.btnSearch.AnimationSpeed = 0.03F;
+            this.btnSearch.BackColor = System.Drawing.Color.Transparent;
+            this.btnSearch.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnSearch.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(160)))), ((int)(((byte)(209)))));
+            this.btnSearch.BorderColor = System.Drawing.Color.Black;
+            this.btnSearch.BorderSize = 1;
+            this.btnSearch.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnSearch.FocusedColor = System.Drawing.Color.Empty;
+            this.btnSearch.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.btnSearch.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnSearch.Image = null;
+            this.btnSearch.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnSearch.Location = new System.Drawing.Point(602, 37);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnSearch.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnSearch.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnSearch.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnSearch.OnHoverImage = null;
+            this.btnSearch.OnPressedColor = System.Drawing.Color.Black;
+            this.btnSearch.Radius = 2;
+            this.btnSearch.Size = new System.Drawing.Size(128, 36);
+            this.btnSearch.TabIndex = 167;
+            this.btnSearch.Text = "SEARCH";
+            this.btnSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // tableLayoutPanel7
             // 
@@ -272,13 +366,11 @@
             // 
             // tableLayoutPanel5
             // 
-            this.tableLayoutPanel5.ColumnCount = 3;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 67F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 133F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Controls.Add(this.cbDeliveredOnly, 1, 0);
-            this.tableLayoutPanel5.Controls.Add(this.cbPart, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.cbMaterial, 2, 0);
+            this.tableLayoutPanel5.ColumnCount = 2;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Controls.Add(this.cbDeliveredItems, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.cbMaterial, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
@@ -288,42 +380,24 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(281, 34);
             this.tableLayoutPanel5.TabIndex = 165;
             // 
-            // cbDeliveredOnly
+            // cbDeliveredItems
             // 
-            this.cbDeliveredOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbDeliveredOnly.AutoSize = true;
-            this.cbDeliveredOnly.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbDeliveredOnly.Checked = true;
-            this.cbDeliveredOnly.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDeliveredOnly.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbDeliveredOnly.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbDeliveredOnly.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbDeliveredOnly.Location = new System.Drawing.Point(70, 12);
-            this.cbDeliveredOnly.Name = "cbDeliveredOnly";
-            this.cbDeliveredOnly.Size = new System.Drawing.Size(106, 19);
-            this.cbDeliveredOnly.TabIndex = 167;
-            this.cbDeliveredOnly.Text = "Delivered Only";
-            this.cbDeliveredOnly.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbDeliveredOnly.UseVisualStyleBackColor = true;
-            // 
-            // cbPart
-            // 
-            this.cbPart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbPart.AutoSize = true;
-            this.cbPart.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbPart.Checked = true;
-            this.cbPart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbPart.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbPart.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbPart.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbPart.Location = new System.Drawing.Point(3, 12);
-            this.cbPart.Name = "cbPart";
-            this.cbPart.Size = new System.Drawing.Size(50, 19);
-            this.cbPart.TabIndex = 157;
-            this.cbPart.Text = "Part";
-            this.cbPart.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbPart.UseVisualStyleBackColor = true;
-            this.cbPart.CheckedChanged += new System.EventHandler(this.cbPart_CheckedChanged);
+            this.cbDeliveredItems.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbDeliveredItems.AutoSize = true;
+            this.cbDeliveredItems.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeliveredItems.Checked = true;
+            this.cbDeliveredItems.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDeliveredItems.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbDeliveredItems.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbDeliveredItems.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeliveredItems.Location = new System.Drawing.Point(3, 12);
+            this.cbDeliveredItems.Name = "cbDeliveredItems";
+            this.cbDeliveredItems.Size = new System.Drawing.Size(110, 19);
+            this.cbDeliveredItems.TabIndex = 167;
+            this.cbDeliveredItems.Text = "Delivered items";
+            this.cbDeliveredItems.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbDeliveredItems.UseVisualStyleBackColor = true;
+            this.cbDeliveredItems.CheckedChanged += new System.EventHandler(this.cbDeliveredItems_CheckedChanged);
             // 
             // cbMaterial
             // 
@@ -333,11 +407,11 @@
             this.cbMaterial.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbMaterial.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbMaterial.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbMaterial.Location = new System.Drawing.Point(203, 12);
+            this.cbMaterial.Location = new System.Drawing.Point(143, 12);
             this.cbMaterial.Name = "cbMaterial";
-            this.cbMaterial.Size = new System.Drawing.Size(72, 19);
+            this.cbMaterial.Size = new System.Drawing.Size(129, 19);
             this.cbMaterial.TabIndex = 156;
-            this.cbMaterial.Text = "Material";
+            this.cbMaterial.Text = "Material/Child Part";
             this.cbMaterial.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbMaterial.UseVisualStyleBackColor = true;
             this.cbMaterial.CheckedChanged += new System.EventHandler(this.cbMaterial_CheckedChanged);
@@ -357,56 +431,6 @@
             this.cmbItemType.Size = new System.Drawing.Size(273, 25);
             this.cmbItemType.TabIndex = 150;
             this.cmbItemType.SelectedIndexChanged += new System.EventHandler(this.cmbItemType_SelectedIndexChanged);
-            // 
-            // btnExcel
-            // 
-            this.btnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExcel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
-            this.btnExcel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnExcel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnExcel.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExcel.ForeColor = System.Drawing.Color.White;
-            this.btnExcel.Location = new System.Drawing.Point(1183, 39);
-            this.btnExcel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.btnExcel.Name = "btnExcel";
-            this.btnExcel.Size = new System.Drawing.Size(124, 36);
-            this.btnExcel.TabIndex = 157;
-            this.btnExcel.Text = "EXCEL";
-            this.btnExcel.UseVisualStyleBackColor = false;
-            this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
-            // 
-            // btnFilter
-            // 
-            this.btnFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnFilter.BackColor = System.Drawing.Color.White;
-            this.btnFilter.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFilter.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFilter.ForeColor = System.Drawing.Color.Black;
-            this.btnFilter.Location = new System.Drawing.Point(736, 39);
-            this.btnFilter.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.btnFilter.Name = "btnFilter";
-            this.btnFilter.Size = new System.Drawing.Size(125, 36);
-            this.btnFilter.TabIndex = 151;
-            this.btnFilter.Text = "MORE FILTERS ...";
-            this.btnFilter.UseVisualStyleBackColor = false;
-            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnSearch.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(603, 39);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(124, 36);
-            this.btnSearch.TabIndex = 142;
-            this.btnSearch.Text = "SEARCH";
-            this.btnSearch.UseVisualStyleBackColor = false;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // tableLayoutPanel8
             // 
@@ -663,11 +687,11 @@
             // 
             // gbFilter
             // 
+            this.gbFilter.Controls.Add(this.btnFilterApply);
             this.gbFilter.Controls.Add(this.cbIncludeTerminated);
             this.gbFilter.Controls.Add(this.groupBox1);
             this.gbFilter.Controls.Add(this.gbDatePeriod);
             this.gbFilter.Controls.Add(this.gbMonthYear);
-            this.gbFilter.Controls.Add(this.btnFilterApply);
             this.gbFilter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbFilter.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbFilter.Location = new System.Drawing.Point(3, 85);
@@ -676,6 +700,36 @@
             this.gbFilter.TabIndex = 144;
             this.gbFilter.TabStop = false;
             this.gbFilter.Text = "FILTER";
+            // 
+            // btnFilterApply
+            // 
+            this.btnFilterApply.AnimationHoverSpeed = 0.07F;
+            this.btnFilterApply.AnimationSpeed = 0.03F;
+            this.btnFilterApply.BackColor = System.Drawing.Color.Transparent;
+            this.btnFilterApply.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnFilterApply.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(160)))), ((int)(((byte)(209)))));
+            this.btnFilterApply.BorderColor = System.Drawing.Color.Black;
+            this.btnFilterApply.BorderSize = 1;
+            this.btnFilterApply.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnFilterApply.FocusedColor = System.Drawing.Color.Empty;
+            this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.btnFilterApply.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnFilterApply.Image = null;
+            this.btnFilterApply.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnFilterApply.Location = new System.Drawing.Point(844, 103);
+            this.btnFilterApply.Name = "btnFilterApply";
+            this.btnFilterApply.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnFilterApply.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnFilterApply.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnFilterApply.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnFilterApply.OnHoverImage = null;
+            this.btnFilterApply.OnPressedColor = System.Drawing.Color.Black;
+            this.btnFilterApply.Radius = 2;
+            this.btnFilterApply.Size = new System.Drawing.Size(169, 36);
+            this.btnFilterApply.TabIndex = 168;
+            this.btnFilterApply.Text = "APPLY";
+            this.btnFilterApply.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnFilterApply.Click += new System.EventHandler(this.btnFilterApply_Click);
             // 
             // cbIncludeTerminated
             // 
@@ -927,21 +981,6 @@
             this.cmbYearFrom.TabIndex = 156;
             this.cmbYearFrom.SelectedIndexChanged += new System.EventHandler(this.cmbYearFrom_SelectedIndexChanged);
             // 
-            // btnFilterApply
-            // 
-            this.btnFilterApply.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.btnFilterApply.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFilterApply.ForeColor = System.Drawing.Color.White;
-            this.btnFilterApply.Location = new System.Drawing.Point(858, 96);
-            this.btnFilterApply.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
-            this.btnFilterApply.Name = "btnFilterApply";
-            this.btnFilterApply.Size = new System.Drawing.Size(124, 36);
-            this.btnFilterApply.TabIndex = 145;
-            this.btnFilterApply.Text = "APPLY";
-            this.btnFilterApply.UseVisualStyleBackColor = false;
-            this.btnFilterApply.Click += new System.EventHandler(this.btnFilterApply_Click);
-            // 
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
@@ -1049,12 +1088,8 @@
         private System.Windows.Forms.ComboBox cmbDateType;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private System.Windows.Forms.CheckBox cbPart;
         private System.Windows.Forms.CheckBox cbMaterial;
         private System.Windows.Forms.ComboBox cmbItemType;
-        private System.Windows.Forms.Button btnExcel;
-        private System.Windows.Forms.Button btnFilter;
-        private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.DataGridView dgvInOutReport;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label lblReportTitle;
@@ -1074,7 +1109,6 @@
         private System.Windows.Forms.ComboBox cmbMonthFrom;
         private System.Windows.Forms.Label lblYearFrom;
         private System.Windows.Forms.ComboBox cmbYearFrom;
-        private System.Windows.Forms.Button btnFilterApply;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lblMonthTo;
         private System.Windows.Forms.ComboBox cmbMonthTo;
@@ -1094,7 +1128,7 @@
         private System.Windows.Forms.ErrorProvider errorProvider9;
         private System.Windows.Forms.Label lblCurrentMonth2;
         private System.Windows.Forms.CheckBox cbIncludeTerminated;
-        private System.Windows.Forms.CheckBox cbDeliveredOnly;
+        private System.Windows.Forms.CheckBox cbDeliveredItems;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
         private System.Windows.Forms.Label lblResultNo;
@@ -1103,5 +1137,9 @@
         private System.Windows.Forms.Button btnPreviousSearchResult;
         private System.Windows.Forms.Button btnNextSearchResult;
         private System.Windows.Forms.Timer timer1;
+        private Guna.UI.WinForms.GunaGradientButton btnSearch;
+        private Guna.UI.WinForms.GunaGradientButton btnFilter;
+        private Guna.UI.WinForms.GunaGradientButton btnExcel;
+        private Guna.UI.WinForms.GunaGradientButton btnFilterApply;
     }
 }

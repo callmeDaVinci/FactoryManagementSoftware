@@ -2941,7 +2941,20 @@ namespace FactoryManagementSoftware.Module
             cmb.DataSource = distinctTable;
             cmb.DisplayMember = "item_cat_name";
             cmb.SelectedIndex = -1;
+        }
 
+        public void LoadMaterialIncludedPartToComboBox(ComboBox cmb)
+        {
+            DataTable dtItemCat = dalItemCat.Select();
+
+            DataTable distinctTable = dtItemCat.DefaultView.ToTable(true, "item_cat_name");
+
+            distinctTable.DefaultView.Sort = "item_cat_name ASC";
+          
+            distinctTable.AcceptChanges();
+            cmb.DataSource = distinctTable;
+            cmb.DisplayMember = "item_cat_name";
+            cmb.SelectedIndex = -1;
         }
 
         public void LoadMaterialAndAllToComboBox(ComboBox cmb)

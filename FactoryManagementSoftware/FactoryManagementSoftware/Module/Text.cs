@@ -514,7 +514,7 @@ namespace FactoryManagementSoftware.Module
 
         #endregion
 
-        public string Search_DefaultTest { get; } = "Search";
+        public string Search_DefaultText { get; } = "Search";
         public string DeliveredSummary { get; } = "Delivered Summary";
         public string ProductionHistory { get; } = "Production History";
 

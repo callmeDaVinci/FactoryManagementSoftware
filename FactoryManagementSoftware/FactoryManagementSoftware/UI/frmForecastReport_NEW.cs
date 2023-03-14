@@ -24,6 +24,7 @@ using XlVAlign = Microsoft.Office.Interop.Excel.XlVAlign;
 using XlBorderWeight = Microsoft.Office.Interop.Excel.XlBorderWeight;
 using XlHAlign = Microsoft.Office.Interop.Excel.XlHAlign;
 using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -46,6 +47,8 @@ namespace FactoryManagementSoftware.UI
                 tool.loadCustomerAndALLWithoutOtherToComboBox(cmbCustomer);
 
             }
+
+            cmbCustomer.SelectedIndex = 0;
 
             InitializeFilterData();
         }
@@ -1046,7 +1049,7 @@ namespace FactoryManagementSoftware.UI
                         string itemCode = row[headerPartCode].ToString().ToUpper();
                         string itemName = row[headerPartName].ToString().ToUpper();
 
-                        if (itemCode.Contains(Searching_Text) || itemName.Contains(Searching_Text))
+                        if (itemCode.ToUpper().Contains(Searching_Text) || itemName.ToUpper().Contains(Searching_Text))
                         {
                             int rowIndex = dgv_List.Rows.IndexOf(row);
 
@@ -1694,7 +1697,7 @@ namespace FactoryManagementSoftware.UI
         private Tuple<int,bool> CalculateEstimateOrderAndCheckActive(DataTable DT_PMMA_DATE, DataTable dt_trfToCustomer, string _ItemCode, string _Customer)
         {
             int estimateOrder = 0;
-            bool NoDeliveredPastSixMonths = true;
+            bool NonActiveItem = true;
 
             int preMonth = 0, preYear = 0, dividedQty = 0;
             double singleOutQty = 0, totalTrfOutQty = 0;
@@ -1705,9 +1708,13 @@ namespace FactoryManagementSoftware.UI
             int monthnoDeliverd = int.TryParse(txtNodeliveredMonths.Text, out int i) ? i : 0;
 
             int MonthAgo = DateTime.Now.AddMonths(monthnoDeliverd * -1).Month;
+            int YearAgo = DateTime.Now.AddMonths(monthnoDeliverd * -1).Year;
 
 
-            
+            if(_ItemCode == "R 120 141 004 36")
+            {
+                var checkpoint = 1;
+            }
 
             foreach (DataRow row in dt_trfToCustomer.Rows)
             {
@@ -1715,10 +1722,7 @@ namespace FactoryManagementSoftware.UI
                 string itemCode = row[dalTrfHist.TrfItemCode].ToString();
                 string DB_Customer = row[dalTrfHist.TrfTo].ToString();
 
-                if (itemCode == "R 120 140 959 22")
-                {
-                    var checkpoint = 1;
-                }
+               
 
                 if (trfResult == "Passed" && _ItemCode == itemCode && DB_Customer == _Customer)
                 {
@@ -1764,9 +1768,12 @@ namespace FactoryManagementSoftware.UI
                             totalTrfOutQty += trfQty;
                         }
 
-                        if(month > MonthAgo)
+                        DateTime TransferDate = new DateTime(Convert.ToInt32(year),Convert.ToInt32(month),1);
+                        DateTime ActiveMinmumDate = new DateTime(Convert.ToInt32(YearAgo),Convert.ToInt32(MonthAgo),1);
+
+                        if (TransferDate >= ActiveMinmumDate)
                         {
-                            NoDeliveredPastSixMonths = false;
+                            NonActiveItem = false;
                         }
 
                         if (preMonth != 0 && preYear != 0 && preMonth == month && preYear == year)
@@ -1790,7 +1797,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            if (totalTrfOutQty == 0 || dividedQty == 0)
+            if (totalTrfOutQty == 0 || dividedQty <= 2)
             {
                 estimateOrder = 0;
             }
@@ -1802,7 +1809,7 @@ namespace FactoryManagementSoftware.UI
                     estimateOrder = (int)Math.Round(totalTrfOutQty / dividedQty, 0);
             }
 
-            return Tuple.Create(estimateOrder, NoDeliveredPastSixMonths);
+            return Tuple.Create(estimateOrder, NonActiveItem);
         }
 
 
@@ -1813,7 +1820,7 @@ namespace FactoryManagementSoftware.UI
             DateTime start = dtpOutFrom.Value;
             DateTime end = dtpOutTo.Value;
 
-            bool itemFound = false;
+            //bool itemFound = false;
 
            DataRow[] rowSchedule = dt_MacSechedule.Select(dalPlanning.partCode + " = '"+ _ItemCode + "'");
 
@@ -1824,7 +1831,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (itemCode == _ItemCode)
                 {
-                    itemFound = true;
+                    //itemFound = true;
                     string status = row[dalPlanning.planStatus].ToString();
 
                     int TargetQty = int.TryParse(row[dalPlanning.targetQty].ToString(), out TargetQty) ? TargetQty : 0;
@@ -1851,10 +1858,10 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-                else if (itemFound)
-                {
-                    break;
-                }
+                //else if (itemFound)
+                //{
+                //    break;
+                //}
 
             }
 
@@ -2155,6 +2162,11 @@ namespace FactoryManagementSoftware.UI
                 uData.cust_id = row[dalItemCust.CustID].ToString();
 
                 uData.part_code = row[dalItem.ItemCode].ToString();
+
+                if(uData.part_code == "R 120 141 004 36")
+                {
+                    var checkpoint = 1;
+                }
 
                 uData.item_remark = row[dalItem.ItemRemark].ToString();
 
@@ -4038,6 +4050,12 @@ namespace FactoryManagementSoftware.UI
 
                 string firstItemCustomer = dt.Rows[i][text.Header_Customer].ToString();
                 string firstItem = dt.Rows[i][headerPartCode].ToString();
+
+                if(firstItem == "R 120 141 044 82")
+                {
+                    var checkpoint = 1;
+                }
+
                 double firstBal1 = double.TryParse(dt.Rows[i][headerBal1].ToString(), out firstBal1) ? firstBal1 : -0.001;
                 double firstBal2 = double.TryParse(dt.Rows[i][headerBal2].ToString(), out firstBal2) ? firstBal2 : -0.001;
                 double firstBal3 = double.TryParse(dt.Rows[i][headerBal3].ToString(), out firstBal3) ? firstBal3 : -0.001;
@@ -4067,11 +4085,6 @@ namespace FactoryManagementSoftware.UI
 
                         if (nextItem.Equals(firstItem))
                         {
-                            if (index == "54")
-                            {
-                                var checkpoint = 1;
-                            }
-
                             repeatedCount++;
 
                             rowReference += " (" + dt.Rows[j][headerIndex].ToString() + ")";
@@ -4090,8 +4103,14 @@ namespace FactoryManagementSoftware.UI
                             nextNeededQty2 = nextNeededQty2 > 0 ? nextNeededQty2 : 0;
                             nextNeededQty3 = nextNeededQty3 > 0 ? nextNeededQty3 : 0;
 
-                            if(nextOutStanding > 0)
+                            if(nextOutStanding > 0 || nextOutQty >= nextNeededQty1)
                                 nextNeededQty1 = nextOutStanding;
+
+                            if(nextEstimate > 0)
+                            {
+                                nextNeededQty2 = nextNeededQty2 > 0 ? nextNeededQty2 : nextEstimate;
+                                nextNeededQty3 = nextNeededQty3 > 0 ? nextNeededQty3 : nextEstimate;
+                            }
 
                             string type_NextItem = dt.Rows[j][headerType].ToString();
 
@@ -5221,6 +5240,33 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
+        private void EditNextLineRemarkForExcelExport(DataGridView dgv, bool removeNextLine)
+        {
+            if(dgv.Columns.Contains(text.Header_Remark))
+            {
+
+                DataTable dt = (DataTable)dgv.DataSource;
+                
+                foreach(DataRow row in dt.Rows)
+                {
+                    string remark = row[text.Header_Remark].ToString();
+
+                    if(removeNextLine)
+                    {
+                        remark = remark.Replace("\n", "_");
+                    }
+                    else
+                    {
+                        remark = remark.Replace("_", "\n");
+
+                    }
+
+                    row[text.Header_Remark] = remark;
+
+                }
+            }
+        }
+
         #region export to excel
 
         static void OpenCSVWithExcel(string path)
@@ -5230,6 +5276,7 @@ namespace FactoryManagementSoftware.UI
 
             ExcelApp.Visible = true;
         }
+
 
         private string setFileName()
         {
@@ -5578,13 +5625,13 @@ namespace FactoryManagementSoftware.UI
                         {
                             #region Excel 
 
+
                             Cursor = Cursors.WaitCursor;
 
                             btnExcel.Enabled = false;
 
                             btnFullReport.Enabled = false;
                             btnRefresh.Enabled = false;
-
 
 
                             SaveFileDialog sfd = new SaveFileDialog();
@@ -5597,6 +5644,8 @@ namespace FactoryManagementSoftware.UI
                             if (sfd.ShowDialog() == DialogResult.OK)
                             {
                                 tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+
+                                EditNextLineRemarkForExcelExport(dgvForecastReport, true);
 
                                 // Copy DataGridView results to clipboard
                                 copyAlltoClipboard();
@@ -5861,6 +5910,9 @@ namespace FactoryManagementSoftware.UI
                                 //if (File.Exists(sfd.FileName))
                                 //    System.Diagnostics.Process.Start(sfd.FileName);
                                 OpenCSVWithExcel(sfd.FileName);
+
+                                EditNextLineRemarkForExcelExport(dgvForecastReport, false);
+
                             }
 
                             #endregion
@@ -6448,7 +6500,7 @@ namespace FactoryManagementSoftware.UI
 
         private void txtNameSearch_Enter(object sender, EventArgs e)
         {
-            if (txtItemSearch.Text == text.Search_DefaultTest)
+            if (txtItemSearch.Text == text.Search_DefaultText)
             {
                 txtItemSearch.Text = "";
                 txtItemSearch.ForeColor = SystemColors.WindowText;
@@ -6459,7 +6511,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (txtItemSearch.Text.Length == 0)
             {
-                txtItemSearch.Text = text.Search_DefaultTest;
+                txtItemSearch.Text = text.Search_DefaultText;
                 txtItemSearch.ForeColor = SystemColors.GrayText;
 
                 ItemSearchUIReset();
