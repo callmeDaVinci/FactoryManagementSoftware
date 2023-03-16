@@ -399,6 +399,7 @@
             this.cmbCustomer.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbCustomer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCustomer.Enabled = false;
             this.cmbCustomer.FormattingEnabled = true;
             this.cmbCustomer.Location = new System.Drawing.Point(4, 41);
             this.cmbCustomer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 4);

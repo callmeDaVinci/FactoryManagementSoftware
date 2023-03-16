@@ -12274,14 +12274,22 @@ namespace FactoryManagementSoftware.Module
 
                     string childCat = "";
 
-                    foreach (DataRow row in dt_Item.Rows)
+                    if(dt_Join.Columns.Contains(new itemDAL().ItemCat))
                     {
-                        if (row[dalItem.ItemCode].ToString().Equals(childCode))
+                        childCat = join[new itemDAL().ItemCat].ToString();
+                    }
+                    else
+                    {
+                        foreach (DataRow row in dt_Item.Rows)
                         {
-                            childCat = row["item_cat"].ToString();
-                            break;
+                            if (row[dalItem.ItemCode].ToString().Equals(childCode))
+                            {
+                                childCat = row["item_cat"].ToString();
+                                break;
+                            }
                         }
                     }
+                   
 
                     if (childCat != text.Cat_Packaging && childCat != text.Cat_Carton && childCat != text.Cat_PolyBag)
                         return true;
