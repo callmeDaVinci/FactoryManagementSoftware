@@ -386,6 +386,9 @@ namespace FactoryManagementSoftware.Module
         public string Jump { get; } = "Jump";
 
         public string Header_GotNotPackagingChild { get; } = "GotNotPackagingChild";
+        public string Header_Forecast_1 { get; } = "Forecast 1";
+        public string Header_Forecast_2 { get; } = "Forecast 2";
+        public string Header_Forecast_3 { get; } = "Forecast 3";
 
         public string Header_AddedDate { get; } = "ADDED DATE";
         public string Header_AddedBy { get; } = "ADDED BY";
