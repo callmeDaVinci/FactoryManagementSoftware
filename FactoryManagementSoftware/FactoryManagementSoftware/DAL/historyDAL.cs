@@ -70,7 +70,7 @@ namespace FactoryManagementSoftware.DAL
             {
                 //sql query to get data from database
 
-                String sql = "SELECT * FROM tbl_history WHERE history_action LIKE '%" + text.ForecastEdit + "%'";
+                String sql = "SELECT * FROM tbl_history WHERE history_action LIKE '%" + text.ForecastEdit + "%' OR history_action LIKE '%" + text.ForecastInsert + "%'";
 
                 //String sql = "SELECT item_cat,item_code, item_name,item_ord,item_qty FROM tbl_item WHERE item_code LIKE '%" + keywords + "%'OR item_name LIKE '%" + keywords + "%'";
 

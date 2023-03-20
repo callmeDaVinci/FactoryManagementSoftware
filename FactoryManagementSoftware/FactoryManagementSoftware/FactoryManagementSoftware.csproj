@@ -237,6 +237,12 @@
     <Compile Include="UI\ExcelUpload.Designer.cs">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmForecastEditRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmForecastEditRecord.Designer.cs">
+      <DependentUpon>frmForecastEditRecord.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmMacScheduleExcelDownload.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -995,6 +1001,9 @@
     </Compile>
     <EmbeddedResource Include="UI\ExcelUpload.resx">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmForecastEditRecord.resx">
+      <DependentUpon>frmForecastEditRecord.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMacScheduleExcelDownload.resx">
       <DependentUpon>frmMacScheduleExcelDownload.cs</DependentUpon>

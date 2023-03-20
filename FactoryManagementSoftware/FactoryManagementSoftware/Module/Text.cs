@@ -107,6 +107,9 @@ namespace FactoryManagementSoftware.Module
         public string OrderActionEdit { get; } = "OrderActionEdit";
         public string OrderActionUndo { get; } = "OrderActionUndo";
 
+        public string DataAdded { get; } = "Data Added";
+        public string DataUpdated { get; } = "Data Updated";
+
         public string ForecastEdit { get; } = "ForecastEdit";
         public string ForecastInsert { get; } = "ForecastInsert";
         public string ForecastReport { get; } = "ForecastReport";
@@ -276,6 +279,7 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_DirectUseOn { get; } = "DIRECT USE ON (PARENT)";
         public string Header_GroupLevel { get; } = "LEVEL";
+        public string Header_ID { get; } = "ID";
         public string Header_Customer { get; } = "CUSTOMER";
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
         public string Header_PartCode { get; } = "PART CODE";
@@ -360,7 +364,9 @@ namespace FactoryManagementSoftware.Module
         public string Header_BestTon { get; } = "BEST TON";
         public string Header_ProTon { get; } = "MACHINE TON";
         public string Header_ColorMaterial { get; } = "COLOR MATERIAL";
-        public string Header_Month { get; } = "Month";
+        public string Header_Month { get; } = "MONTH";
+        public string Header_OldValue { get; } = "OLD VALUE";
+        public string Header_NewValue { get; } = "NEW VALUE";
 
         public string Header_ColorRate { get; } = "COLOR MATERIAL RATE (%)";
 
@@ -390,8 +396,10 @@ namespace FactoryManagementSoftware.Module
         public string Header_Forecast_2 { get; } = "Forecast 2";
         public string Header_Forecast_3 { get; } = "Forecast 3";
 
+        public string Header_Date { get; } = "DATE";
         public string Header_AddedDate { get; } = "ADDED DATE";
         public string Header_AddedBy { get; } = "ADDED BY";
+        public string Header_EditedBy { get; } = "EDITED BY";
 
         public string Header_UpdatedDate { get; } = "UPDATED DATE";
         public string Header_UpdatedBy { get; } = "UPDATED BY";
@@ -520,6 +528,7 @@ namespace FactoryManagementSoftware.Module
         public string Search_DefaultText { get; } = "Search";
         public string DeliveredSummary { get; } = "Delivered Summary";
         public string ProductionHistory { get; } = "Production History";
+        public string ForecastRecord { get; } = "Forecast Record";
 
         public string DO_CustOwnDO { get; } = "*USE CUSTOMER OWN D/O";
 

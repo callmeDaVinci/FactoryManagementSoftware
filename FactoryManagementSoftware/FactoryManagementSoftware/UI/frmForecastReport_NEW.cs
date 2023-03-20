@@ -363,8 +363,8 @@ namespace FactoryManagementSoftware.UI
                     dgv.Columns[headerPartWeight].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 //dgv.Columns[headerPlannedQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgv.Columns[headerToProduce].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgv.Columns[headerProduced].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[headerToProduce].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[headerProduced].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[headerReadyStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
                 if (dgv.Columns.Contains(headerPartWeight))
@@ -379,6 +379,9 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[headerForecast3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[headerBal3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[headerItemRemark].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+                if (dgv.Columns.Contains(text.Header_Customer))
+                    dgv.Columns[text.Header_Customer].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 dgv.Columns[headerPartCode].Frozen = true;
 
@@ -418,8 +421,16 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[headerRowReference].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
                 dgv.Columns[headerPartCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
-                dgv.Columns[headerRawMat].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
-                dgv.Columns[headerColorMat].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+                dgv.Columns[headerPartName].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+                dgv.Columns[headerRawMat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                dgv.Columns[headerColorMat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+
+                dgv.Columns[text.Header_Customer].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+                dgv.Columns[headerPartWeight].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+                //dgv.Columns[headerProduced].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+                dgv.Columns[headerToProduce].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+                dgv.Columns[headerEstimate].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+
 
                 dgv.Columns[headerBal1].HeaderCell.Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
                 dgv.Columns[headerBal1].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
@@ -432,7 +443,7 @@ namespace FactoryManagementSoftware.UI
 
                 //dgv.Columns[headerParentColor].HeaderCell.Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
 
-                dgv.Columns[headerProduced].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Strikeout);
+                dgv.Columns[headerProduced].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Strikeout);
 
                 dgv.Columns[headerItemRemark].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
 
@@ -2240,7 +2251,13 @@ namespace FactoryManagementSoftware.UI
                         uData.color = row[dalItem.ItemColor].ToString();
                         uData.raw_mat = row[dalItem.ItemMaterial].ToString();
                         uData.pw_per_shot = row[dalItem.ItemProPWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProPWShot]);
+
+                        //uData.pw_per_shot = (float) Decimal.Round((decimal) uData.pw_per_shot, 2);
+
                         uData.rw_per_shot = row[dalItem.ItemProRWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProRWShot]);
+
+                        //uData.rw_per_shot = (float) Decimal.Round((decimal) uData.rw_per_shot, 2);
+
                         uData.cavity = row[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row[dalItem.ItemCavity]);
                         uData.cavity = uData.cavity == 0 ? 1 : uData.cavity;
                         uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
@@ -2322,7 +2339,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerPartCode] = uData.part_code;
                         dt_Row[headerPartName] = uData.part_name;
                         dt_Row[headerColorMat] = uData.color_mat;
-                        dt_Row[headerPartWeight] = uData.pw_per_shot / uData.cavity + " (" + (uData.rw_per_shot / uData.cavity) + ")";
+                        dt_Row[headerPartWeight] = (uData.pw_per_shot / uData.cavity).ToString("0.##") + " (" + (uData.rw_per_shot / uData.cavity).ToString("0.##") + ")";
                         dt_Row[headerReadyStock] = uData.ready_stock;
                         dt_Row[headerEstimate] = uData.estimate;
                         dt_Row[headerOut] = uData.deliveredOut;
@@ -2464,7 +2481,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerPartCode] = uData.part_code;
                         dt_Row[headerPartName] = uData.part_name;
                         dt_Row[headerColorMat] = uData.color_mat;
-                        dt_Row[headerPartWeight] = uData.pw_per_shot / uData.cavity + " (" + (uData.rw_per_shot / uData.cavity) + ")";
+                        dt_Row[headerPartWeight] = (uData.pw_per_shot / uData.cavity).ToString("0.##") + " (" + (uData.rw_per_shot / uData.cavity).ToString("0.##") + ")";
                         dt_Row[headerReadyStock] = uData.ready_stock;
                         dt_Row[headerEstimate] = uData.estimate;
                         dt_Row[headerOut] = uData.deliveredOut;
@@ -4826,7 +4843,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerPartCode] = uChildData.part_code;
                         dt_Row[headerPartName] = uChildData.part_name;
                         dt_Row[headerColorMat] = uChildData.color_mat;
-                        dt_Row[headerPartWeight] = uChildData.pw_per_shot / uChildData.cavity + " (" + (uChildData.rw_per_shot / uChildData.cavity) + ")";
+                        dt_Row[headerPartWeight] = (uChildData.pw_per_shot / uChildData.cavity).ToString("0.##") + " (" + (uChildData.rw_per_shot / uChildData.cavity).ToString("0.##") + ")";
 
 
                         dt_Row[headerReadyStock] = uChildData.ready_stock;
@@ -6577,6 +6594,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     my_menu.Items.Add(text.DeliveredSummary).Name = text.DeliveredSummary;
                     my_menu.Items.Add(text.ProductionHistory).Name = text.ProductionHistory;
+                    my_menu.Items.Add(text.ForecastRecord).Name = text.ForecastRecord;
 
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
@@ -6641,9 +6659,251 @@ namespace FactoryManagementSoftware.UI
 
                 frmLoading.CloseForm();
             }
+            else if(itemClicked.Equals(text.ForecastRecord))
+            {
+                if(cmbCustomer.Text == text.Cmb_All && dgv.Columns.Contains(text.Header_Customer))
+                {
+                    customer = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[text.Header_Customer].Value.ToString();
+                }
+
+                ForecastEditRecord(customer, itemCode);
+            }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
             dgv.ResumeLayout();
+        }
+
+        public void ForecastEditRecord(string customer, string itemcode)
+        {
+            historyDAL dalHistory = new historyDAL();
+
+            DataTable DB_History = dalHistory.ForecastEditHistorySelect();
+
+            if (DB_History != null)
+            {
+                //DataTable dt = DB_History.Clone();
+
+                DataTable dt = new DataTable();
+
+                dt.Columns.Add(text.Header_ID, typeof(string));
+                dt.Columns.Add(text.Header_Date, typeof(DateTime));
+                dt.Columns.Add(text.Header_Description, typeof(string));
+                dt.Columns.Add(text.Header_EditedBy, typeof(string));
+                dt.Columns.Add(text.Header_Customer, typeof(string));
+                dt.Columns.Add(text.Header_Month, typeof(string));
+                dt.Columns.Add(text.Header_OldValue, typeof(string));
+                dt.Columns.Add(text.Header_NewValue, typeof(string));
+
+                
+                int monthFrom_INT = int.TryParse(cmbForecastFrom.Text, out monthFrom_INT) ? monthFrom_INT : 0;
+                int monthTo_INT = int.TryParse(cmbForecastTo.Text, out monthTo_INT) ? monthTo_INT : 0;
+
+                int yearFrom_INT = DateTime.Now.Year;
+
+                int yearTo_INT = monthTo_INT < monthFrom_INT ? yearFrom_INT++ : yearFrom_INT;
+
+                DateTime Start = DateTime.Parse(1 + cmbForecastFrom.Text + yearFrom_INT);
+                DateTime End = DateTime.Parse(1 + cmbForecastTo.Text + yearTo_INT);
+
+                foreach (DataRow row in DB_History.Rows)
+                {
+                    string historyDetail = row[dalHistory.HistoryDetail].ToString();
+
+                    //get month and year and customer data
+                    string historyCustomer = "";
+                    string historyItem = "";
+                    string historyMonthAndYear = "";
+                    string historyMonth = "";
+                    string historyYear = "";
+
+                    string value = "";
+                    string oldValue = "";
+                    string newValue = "";
+
+                    bool gettingCustomerInfo = false;
+                    bool gettingMonthAndYearInfo = false;
+                    bool gettingItemInfo = false;
+                    bool gettingValueInfo = false;
+
+                    DateTime HistoryDate = DateTime.MaxValue;
+
+
+                    for (int i = 0; i < historyDetail.Length; i++)
+                    {
+                        if (gettingValueInfo)
+                        {
+                            value += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == ":")
+                        {
+                            gettingItemInfo = false;
+                            gettingValueInfo = true;
+                        }
+
+                        if (gettingItemInfo)
+                        {
+                            historyItem += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == "]")
+                        {
+                            gettingMonthAndYearInfo = false;
+                            gettingItemInfo = true;
+                        }
+
+                        if (gettingMonthAndYearInfo)
+                        {
+                            historyMonthAndYear += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == "_")
+                        {
+                            gettingCustomerInfo = false;
+                            gettingMonthAndYearInfo = true;
+                        }
+
+                        if (gettingCustomerInfo)
+                        {
+                            historyCustomer += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == "[")
+                        {
+                            gettingCustomerInfo = true;
+                        }
+                    }
+
+                    if (historyMonthAndYear.Length > 4)
+                    {
+                        for (int i = historyMonthAndYear.Length - 4; i < historyMonthAndYear.Length; i++)
+                        {
+                            historyYear += historyMonthAndYear[i].ToString();
+                        }
+
+                        historyMonth = historyMonthAndYear.Replace(historyYear, "");
+                        HistoryDate = DateTime.TryParse(1.ToString() + "/" + historyMonth + "/" + historyYear, out DateTime test) ? test : DateTime.MaxValue;
+
+                    }
+
+                    //date inspection
+                    bool dataMatched = true;
+
+                    dataMatched = historyItem.Contains(itemcode) ? dataMatched : false;
+                    dataMatched = historyCustomer == customer ? dataMatched : false;
+
+
+                    dataMatched = HistoryDate >= Start && HistoryDate <= End ? dataMatched : false;
+
+                    dataMatched = HistoryDate == DateTime.MaxValue ? false : dataMatched;
+
+
+                    if (dataMatched)
+                    {
+                        DataRow newRow = dt.NewRow();
+
+                        newRow[text.Header_ID] = row[dalHistory.HistoryID].ToString();
+                        newRow[text.Header_Date] = DateTime.TryParse(row[dalHistory.HistoryDate].ToString(), out DateTime Date) ? Date : DateTime.MaxValue;
+
+                        string Desciption = "";
+                        string HistoryAction = row[dalHistory.HistoryAction].ToString();
+
+                        if (HistoryAction.Contains(text.ForecastEdit))
+                        {
+                            Desciption = text.DataUpdated;
+                        }
+                        else if (HistoryAction.Contains(text.ForecastInsert))
+                        {
+                            Desciption = text.DataAdded;
+                        }
+
+                        newRow[text.Header_Description] = Desciption;
+                        newRow[text.Header_EditedBy] = new userDAL().getUsername(int.TryParse(row[dalHistory.HistoryBy].ToString(), out int userId) ? userId : 0);
+                        newRow[text.Header_Customer] = historyCustomer;
+                        newRow[text.Header_Month] = HistoryDate.ToString("MM/yyyy");
+
+                        value = value.Replace(" ", "");
+
+                        if (value.Contains("->"))
+                        {
+                            bool newValueFound = false;
+
+                            for (int i = 0; i < value.Length; i++)
+                            {
+                                if (newValueFound)
+                                {
+                                    newValue += value[i].ToString();
+                                }
+                                else if (value[i].ToString() != ("-") && value[i].ToString() != (">"))
+                                {
+                                    oldValue += value[i].ToString();
+
+                                }
+
+                                if (value[i].ToString().Equals(">"))
+                                {
+                                    newValueFound = true;
+                                }
+
+
+                            }
+                        }
+                        else
+                        {
+                            newValue = value;
+                            oldValue = "NA";
+                        }
+
+
+                        newRow[text.Header_OldValue] = oldValue;
+                        newRow[text.Header_NewValue] = newValue;
+
+                        dt.Rows.Add(newRow);
+                    }
+                }
+
+                if (dt.Rows.Count > 0)
+                {
+                    dt.DefaultView.Sort = text.Header_Month + " ASC," + text.Header_Date + " DESC";
+                    dt = dt.DefaultView.ToTable();
+
+                    DataTable dt_ForecastEditRecord = dt.Clone();
+
+                    string previousMonth = "";
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string month = row[text.Header_Month].ToString();
+
+                        DateTime Month_DateTime = DateTime.TryParse(month, out Month_DateTime) ? Month_DateTime : DateTime.MaxValue;
+
+                        row[text.Header_Month] = Month_DateTime.ToString("MMM-yy");
+
+                        if (!string.IsNullOrEmpty(previousMonth) && previousMonth != month)
+                        {
+                            //insert empty row
+                            dt_ForecastEditRecord.Rows.Add(dt_ForecastEditRecord.NewRow());
+                        }
+
+
+                        dt_ForecastEditRecord.Rows.Add(row.ItemArray);
+                        previousMonth = month;
+
+                    }
+
+                    frmForecastEditRecord frm = new frmForecastEditRecord(dt_ForecastEditRecord);
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("History not found.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("History not found.");
+            }
         }
 
         private void cbRemoveNoDeliveredItem_CheckedChanged(object sender, EventArgs e)

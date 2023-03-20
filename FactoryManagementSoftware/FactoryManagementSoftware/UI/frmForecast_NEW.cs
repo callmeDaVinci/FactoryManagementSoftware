@@ -983,7 +983,235 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        public void NewForecastEditRecord(string customer, string yearFrom, string monthFrom, string yearTo, string monthTo, string itemcode)
+        {
+            historyDAL dalHistory = new historyDAL();
 
+            DataTable DB_History = dalHistory.ForecastEditHistorySelect();
+
+            if (DB_History != null)
+            {
+                //DataTable dt = DB_History.Clone();
+
+                DataTable dt = new DataTable();
+
+                dt.Columns.Add(text.Header_ID, typeof(string));
+                dt.Columns.Add(text.Header_Date, typeof(DateTime));
+                dt.Columns.Add(text.Header_Description, typeof(string));
+                dt.Columns.Add(text.Header_EditedBy, typeof(string));
+                dt.Columns.Add(text.Header_Customer, typeof(string));
+                dt.Columns.Add(text.Header_Month, typeof(string));
+                dt.Columns.Add(text.Header_OldValue, typeof(string));
+                dt.Columns.Add(text.Header_NewValue, typeof(string));
+
+                int yearFrom_INT = int.TryParse(yearFrom, out yearFrom_INT) ? yearFrom_INT : 0;
+                int yearTo_INT = int.TryParse(yearTo, out yearTo_INT) ? yearTo_INT : 0;
+                int monthFrom_INT = int.TryParse(monthFrom, out monthFrom_INT) ? monthFrom_INT : 0;
+                int monthTo_INT = int.TryParse(monthTo, out monthTo_INT) ? monthTo_INT : 0;
+
+                DateTime Start = DateTime.Parse(1 + monthFrom + yearFrom);
+                DateTime End = DateTime.Parse(1 + monthTo + yearTo);
+
+                foreach (DataRow row in DB_History.Rows)
+                {
+                    string historyDetail = row[dalHistory.HistoryDetail].ToString();
+
+                    //get month and year and customer data
+                    string historyCustomer = "";
+                    string historyItem = "";
+                    string historyMonthAndYear = "";
+                    string historyMonth = "";
+                    string historyYear = "";
+
+                    string value = "";
+                    string oldValue = "";
+                    string newValue = "";
+
+                    bool gettingCustomerInfo = false;
+                    bool gettingMonthAndYearInfo = false;
+                    bool gettingItemInfo = false;
+                    bool gettingValueInfo = false;
+
+                    DateTime HistoryDate = DateTime.MaxValue;
+
+
+                    for (int i = 0; i < historyDetail.Length; i++)
+                    {
+                        if (gettingValueInfo)
+                        {
+                            value += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == ":")
+                        {
+                            gettingItemInfo = false;
+                            gettingValueInfo = true;
+                        }
+
+                        if (gettingItemInfo)
+                        {
+                            historyItem += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == "]")
+                        {
+                            gettingMonthAndYearInfo = false;
+                            gettingItemInfo = true;
+                        }
+
+                        if (gettingMonthAndYearInfo)
+                        {
+                            historyMonthAndYear += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == "_")
+                        {
+                            gettingCustomerInfo = false;
+                            gettingMonthAndYearInfo = true;
+                        }
+
+                        if (gettingCustomerInfo)
+                        {
+                            historyCustomer += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == "[")
+                        {
+                            gettingCustomerInfo = true;
+                        }
+                    }
+
+                    if (historyMonthAndYear.Length > 4)
+                    {
+                        for (int i = historyMonthAndYear.Length - 4; i < historyMonthAndYear.Length; i++)
+                        {
+                            historyYear += historyMonthAndYear[i].ToString();
+                        }
+
+                        historyMonth = historyMonthAndYear.Replace(historyYear, "");
+                        HistoryDate = DateTime.TryParse(1.ToString() + "/" + historyMonth + "/" + historyYear, out DateTime test) ? test : DateTime.MaxValue;
+
+                    }
+
+                    //date inspection
+                    bool dataMatched = true;
+
+                    dataMatched = historyItem.Contains(itemcode) ? dataMatched : false;
+                    dataMatched = historyCustomer == customer ? dataMatched : false;
+
+
+                    dataMatched = HistoryDate >= Start && HistoryDate <= End ? dataMatched : false;
+
+                    dataMatched = HistoryDate == DateTime.MaxValue ? false : dataMatched;
+
+
+                    if (dataMatched)
+                    {
+                        DataRow newRow = dt.NewRow();
+
+                        newRow[text.Header_ID] = row[dalHistory.HistoryID].ToString();
+                        newRow[text.Header_Date] = DateTime.TryParse(row[dalHistory.HistoryDate].ToString(), out DateTime Date) ? Date : DateTime.MaxValue;
+
+                        string Desciption = "";
+                        string HistoryAction = row[dalHistory.HistoryAction].ToString();
+
+                        if(HistoryAction.Contains(text.ForecastEdit))
+                        {
+                            Desciption = text.DataUpdated;
+                        }
+                        else if (HistoryAction.Contains(text.ForecastInsert))
+                        {
+                            Desciption = text.DataAdded;
+                        }
+
+                        newRow[text.Header_Description] = Desciption; 
+                        newRow[text.Header_EditedBy] = new userDAL().getUsername(int.TryParse(row[dalHistory.HistoryBy].ToString(), out int userId)? userId : 0);
+                        newRow[text.Header_Customer] = historyCustomer;
+                        newRow[text.Header_Month] = HistoryDate.ToString("MM/yyyy");
+
+                        value = value.Replace(" ", "");
+
+                        if (value.Contains("->"))
+                        {
+                            bool newValueFound = false;
+
+                            for(int i = 0; i < value.Length; i++)
+                            {
+                                if(newValueFound)
+                                {
+                                    newValue += value[i].ToString();
+                                }
+                                else if(value[i].ToString() != ("-") && value[i].ToString() != (">"))
+                                {
+                                    oldValue += value[i].ToString();
+
+                                }
+
+                                if (value[i].ToString().Equals(">"))
+                                {
+                                    newValueFound= true;
+                                }
+
+
+                            }
+                        }
+                        else
+                        {
+                            newValue = value;
+                            oldValue = "NA";
+                        }
+
+
+                        newRow[text.Header_OldValue] = oldValue;
+                        newRow[text.Header_NewValue] = newValue;
+
+                        dt.Rows.Add(newRow);
+                    }
+                }
+
+                if (dt.Rows.Count > 0)
+                {
+                    dt.DefaultView.Sort = text.Header_Month + " ASC," + text.Header_Date + " DESC";
+                    dt = dt.DefaultView.ToTable();
+
+                    DataTable dt_ForecastEditRecord = dt.Clone();
+
+                    string previousMonth = "";
+
+                    foreach(DataRow row in dt.Rows)
+                    {
+                        string month = row[text.Header_Month].ToString();
+
+                        DateTime Month_DateTime = DateTime.TryParse(month, out Month_DateTime) ? Month_DateTime : DateTime.MaxValue;
+
+                        row[text.Header_Month] = Month_DateTime.ToString("MMM-yy");
+
+                        if (!string.IsNullOrEmpty(previousMonth) && previousMonth != month)
+                        {
+                            //insert empty row
+                            dt_ForecastEditRecord.Rows.Add(dt_ForecastEditRecord.NewRow());
+                        }
+
+
+                        dt_ForecastEditRecord.Rows.Add(row.ItemArray);
+                        previousMonth = month;
+
+                    }
+
+                    frmForecastEditRecord frm = new frmForecastEditRecord(dt_ForecastEditRecord);
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("History not found.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("History not found.");
+            }
+        }
         private void dgvForecast_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             string newForecast = dgvForecast.Rows[currentRow].Cells[currentColumn].Value.ToString();
@@ -1057,7 +1285,8 @@ namespace FactoryManagementSoftware.UI
             string itemCode = dgvForecast.Rows[e.RowIndex].Cells[headerPartCode].Value.ToString();
             string itemName = dgvForecast.Rows[e.RowIndex].Cells[headerPartName].Value.ToString();
 
-            historyRecord(cmbCustomer.Text, cmbYearFrom.Text, cmbMonthFrom.Text, cmbYearTo.Text, cmbMonthTo.Text,itemCode,itemName);
+            NewForecastEditRecord(cmbCustomer.Text, cmbYearFrom.Text, cmbMonthFrom.Text, cmbYearTo.Text, cmbMonthTo.Text,itemCode);
+            //historyRecord(cmbCustomer.Text, cmbYearFrom.Text, cmbMonthFrom.Text, cmbYearTo.Text, cmbMonthTo.Text,itemCode,itemName);
         }
 
         private void dgvForecast_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
