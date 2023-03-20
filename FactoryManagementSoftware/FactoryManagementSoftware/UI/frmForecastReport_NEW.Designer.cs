@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.tlpForecastReport = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -456,14 +456,14 @@
             this.dgvForecastReport.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecastReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 8F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvForecastReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvForecastReport.GridColor = System.Drawing.Color.White;
             this.dgvForecastReport.Location = new System.Drawing.Point(3, 337);
@@ -989,7 +989,7 @@
             this.cmbForecastTo.Enabled = false;
             this.cmbForecastTo.Font = new System.Drawing.Font("Segoe UI", 6F);
             this.cmbForecastTo.FormattingEnabled = true;
-            this.cmbForecastTo.Location = new System.Drawing.Point(47, 70);
+            this.cmbForecastTo.Location = new System.Drawing.Point(51, 68);
             this.cmbForecastTo.Name = "cmbForecastTo";
             this.cmbForecastTo.Size = new System.Drawing.Size(98, 20);
             this.cmbForecastTo.TabIndex = 151;
@@ -1012,7 +1012,7 @@
             this.cmbForecastFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbForecastFrom.Font = new System.Drawing.Font("Segoe UI", 6F);
             this.cmbForecastFrom.FormattingEnabled = true;
-            this.cmbForecastFrom.Location = new System.Drawing.Point(47, 40);
+            this.cmbForecastFrom.Location = new System.Drawing.Point(51, 40);
             this.cmbForecastFrom.Name = "cmbForecastFrom";
             this.cmbForecastFrom.Size = new System.Drawing.Size(98, 20);
             this.cmbForecastFrom.TabIndex = 149;
@@ -1193,7 +1193,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(26, 70);
+            this.label7.Location = new System.Drawing.Point(24, 70);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(24, 17);
             this.label7.TabIndex = 150;
@@ -1203,7 +1203,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(11, 40);
+            this.label11.Location = new System.Drawing.Point(9, 40);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(44, 17);
             this.label11.TabIndex = 148;

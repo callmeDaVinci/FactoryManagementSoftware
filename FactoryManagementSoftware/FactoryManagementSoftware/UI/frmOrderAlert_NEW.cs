@@ -630,7 +630,7 @@ namespace FactoryManagementSoftware.UI
 
             return dataTable;
         }
-        private float DeliveredToCustomerQty(string itemCode, DateTime dateFrom, DateTime dateTo)
+        private float DeliveredToCustomerQty(string custID, string itemCode, DateTime dateFrom, DateTime dateTo)
         {
             float DeliveredQty = 0;
 
@@ -641,6 +641,8 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow trfHistRow in DT_PART_TRANSFER.Rows)
             {
                 string result = trfHistRow[dalTrfHist.TrfResult].ToString();
+                string custID_DB = trfHistRow[dalItemCust.CustID].ToString();
+
                 DateTime trfDate = DateTime.TryParse(trfHistRow[dalTrfHist.TrfDate].ToString(), out trfDate) ? trfDate : DateTime.MaxValue;
 
                 bool dateMatched = trfDate >= dateFrom;
@@ -651,7 +653,7 @@ namespace FactoryManagementSoftware.UI
                     break;
                 }
 
-                if (itemCode == trfHistRow[dalTrfHist.TrfItemCode].ToString() && result == text.Passed && dateMatched)
+                if (custID_DB == custID && itemCode == trfHistRow[dalTrfHist.TrfItemCode].ToString() && result == text.Passed && dateMatched)
                 {
                     itemFound = true;
 
@@ -987,9 +989,10 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private float getItemForecast(string itemCode, int year, int month)
+        private Tuple<float,string> getItemForecast(string itemCode, int year, int month)
         {
             float forecast = -1;
+            string custID = "";
 
             dt_ItemForecast.AcceptChanges();
 
@@ -999,6 +1002,7 @@ namespace FactoryManagementSoftware.UI
                 int yearData = Convert.ToInt32(row[dalItemForecast.ForecastYear].ToString());
                 int monthData = Convert.ToInt32(row[dalItemForecast.ForecastMonth].ToString());
                 bool itemMatch = code == itemCode && yearData == year && monthData == month;
+                custID = row[dalItemForecast.CustID].ToString();
 
                 if (itemMatch)
                 {
@@ -1010,7 +1014,7 @@ namespace FactoryManagementSoftware.UI
 
             dt_ItemForecast.AcceptChanges();
 
-            return forecast;
+            return Tuple.Create(forecast,custID);
         }
 
         private void ForecastDataFilter(int yearFrom, int yearTo)
@@ -1301,13 +1305,16 @@ namespace FactoryManagementSoftware.UI
 
                         if (colFound)
                         {
-                            Forecast = getItemForecast(ProductCode, i, j);
+                            var result = getItemForecast(ProductCode, i, j);
+
+                            Forecast = result.Item1;
+                            string custID = result.Item2;
 
                             Forecast = Forecast < 0 ? 0 : Forecast;
 
                             if (cbDeductDeliveredQty.Checked)
                             {
-                                Delivered = DeliveredToCustomerQty(ProductCode, dateFrom, dateTo);
+                                Delivered = DeliveredToCustomerQty(custID, ProductCode, dateFrom, dateTo);
                                 newRow[MonthlyDelivered] = Delivered;
                             }
 
