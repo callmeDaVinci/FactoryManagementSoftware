@@ -2284,6 +2284,37 @@ namespace FactoryManagementSoftware.UI
             loaded = true;
         }
 
+        private float LoadPendingReceiveOrder(string keywords)
+        {
+            float pendingOrderQty = 0;
+
+            if (keywords != null)
+            {
+                DataTable dt;
+
+                dt = new ordDAL().PendingOrderSelect(keywords);
+
+                foreach (DataRow ord in dt.Rows)
+                {
+                    string ordStatus = ord["ord_status"].ToString();
+                    string itemCode = ord["ord_item_code"].ToString();
+
+                    if (ordStatus.Equals(status_Pending) && itemCode == keywords)
+                    {
+                        float ordQty = float.TryParse(ord["ord_qty"].ToString(), out ordQty) ? ordQty : 0;
+                        float ordReceived = float.TryParse(ord["ord_received"].ToString(), out ordReceived) ? ordReceived : 0;
+
+                        float ordPending = ordQty - ordReceived;
+
+                        ordPending = ordPending < 0 ? 0 : ordPending;
+
+                        pendingOrderQty += ordPending;
+                    }
+                }
+            }
+            return pendingOrderQty;
+        }
+
         private void refreshOrderRecord(int orderID)
         {
             //dgvOrderAlert.Rows.Clear();
@@ -2951,7 +2982,8 @@ namespace FactoryManagementSoftware.UI
                     frm.StartPosition = FormStartPosition.CenterScreen;
                     frm.ShowDialog();
 
-                    if (frmOrderApprove.orderApproved)//if order approved from approve form, then change order status from requesting to pending
+
+                    if (orderApproved)//if order approved from approve form, then change order status from requesting to pending
                     {
                         dalItem.orderAdd(itemCode, frmOrderApprove.FINAL_ORDER_QTY);//add order qty to item
                         refreshOrderRecord(orderID);
@@ -3061,6 +3093,13 @@ namespace FactoryManagementSoftware.UI
             float received = Convert.ToSingle(dgvOrder.Rows[rowIndex].Cells[headerReceived].Value);
             string pending = dgvOrder.Rows[rowIndex].Cells[headerPending].Value.ToString();
             string type = dgvOrder.Rows[rowIndex].Cells[headerType].Value == DBNull.Value ? "PURCHASE" : dgvOrder.Rows[rowIndex].Cells[headerType].Value.ToString();
+
+            float oldOrderRecord = dalItem.getOrderQty(itemCode);
+
+            if(oldOrderRecord < 0)
+            {
+                LoadPendingReceiveOrder(itemCode);
+            }
 
             if (received > 0)//if have received record under this order ,then need to return this item from stock before cancel this order
             {

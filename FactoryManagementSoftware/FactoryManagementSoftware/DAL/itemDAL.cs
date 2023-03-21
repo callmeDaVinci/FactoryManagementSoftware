@@ -1746,7 +1746,16 @@ namespace FactoryManagementSoftware.DAL
             uItem.item_code = itemCode;
             uItem.item_updtd_date = DateTime.Now;
             uItem.item_updtd_by = MainDashboard.USER_ID;
-            uItem.item_ord = getOrderQty(itemCode) + number;
+
+            float oldOrderRecord = getOrderQty(itemCode);
+
+            if (oldOrderRecord < 0 || (oldOrderRecord + number) < 0)
+            {
+                oldOrderRecord = LoadPendingReceiveOrder(itemCode);
+
+            }
+
+            uItem.item_ord = oldOrderRecord + number;
 
             //Updating data into database
             bool success = ordUpdate(uItem);
@@ -1760,8 +1769,19 @@ namespace FactoryManagementSoftware.DAL
 
             uItem.item_code = itemCode;
             uItem.item_updtd_date = DateTime.Now;
-            uItem.item_updtd_by = MainDashboard.USER_ID; 
-            uItem.item_ord = getOrderQty(itemCode) + ordQty;
+            uItem.item_updtd_by = MainDashboard.USER_ID;
+
+            float oldOrderRecord = getOrderQty(itemCode);
+
+            if (oldOrderRecord < 0 || (oldOrderRecord + ordQty) < 0)
+            {
+                oldOrderRecord = LoadPendingReceiveOrder(itemCode);
+
+            }
+
+            uItem.item_ord = oldOrderRecord + ordQty;
+
+
 
             //Updating data into database
             bool success = ordUpdate(uItem);
@@ -1781,9 +1801,15 @@ namespace FactoryManagementSoftware.DAL
                 uItem.item_updtd_date = DateTime.Now;
                 uItem.item_updtd_by = MainDashboard.USER_ID;
 
-                float orderQty = getOrderQty(itemCode) - number;
+                float oldOrderRecord = getOrderQty(itemCode);
 
-                uItem.item_ord = orderQty;
+                if (oldOrderRecord < 0 || (oldOrderRecord - number) < 0)
+                {
+                    oldOrderRecord = LoadPendingReceiveOrder(itemCode);
+
+                }
+
+                uItem.item_ord = oldOrderRecord - number;
 
                 //Updating data into database
                 success = ordUpdate(uItem);
@@ -1800,13 +1826,52 @@ namespace FactoryManagementSoftware.DAL
             uItem.item_code = itemCode;
             uItem.item_updtd_date = DateTime.Now;
             uItem.item_updtd_by = MainDashboard.USER_ID;
-            uItem.item_ord = getOrderQty(itemCode) - ordQty;
+
+            float oldOrderRecord = getOrderQty(itemCode);
+
+            if(oldOrderRecord < 0 || (oldOrderRecord - ordQty) < 0)
+            {
+                oldOrderRecord = LoadPendingReceiveOrder(itemCode);
+
+            }
+
+            uItem.item_ord = oldOrderRecord - ordQty;
 
             //Updating data into database
             bool success = ordUpdate(uItem);
 
             return success;
 
+        }
+
+        private float LoadPendingReceiveOrder(string keywords)
+        {
+            float pendingOrderQty = 0;
+
+            if (keywords != null)
+            {
+                DataTable dt;
+
+                dt = new ordDAL().PendingOrderSelect(keywords);
+
+                foreach (DataRow ord in dt.Rows)
+                {
+                    string itemCode = ord["ord_item_code"].ToString();
+
+                    if (itemCode == keywords)
+                    {
+                        float ordQty = float.TryParse(ord["ord_qty"].ToString(), out ordQty) ? ordQty : 0;
+                        float ordReceived = float.TryParse(ord["ord_received"].ToString(), out ordReceived) ? ordReceived : 0;
+
+                        float ordPending = ordQty - ordReceived;
+
+                        ordPending = ordPending < 0 ? 0 : ordPending;
+
+                        pendingOrderQty += ordPending;
+                    }
+                }
+            }
+            return pendingOrderQty;
         }
 
         public bool stockAdd(string itemCode, string stockQty)

@@ -118,6 +118,44 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
+        public DataTable PendingOrderSelect(string itemCode)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_ord INNER JOIN tbl_item ON tbl_ord.ord_item_code = tbl_item.item_code WHERE tbl_item.item_code =@itemCode AND tbl_ord.ord_status=@ord_status";
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@ord_status", "PENDING");
+                cmd.Parameters.AddWithValue("@itemCode", itemCode);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable lastRecordSelect()
         {
             //static methodd to connect database

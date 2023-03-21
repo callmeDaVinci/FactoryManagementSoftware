@@ -103,7 +103,9 @@ namespace FactoryManagementSoftware.UI
                 cmbSubFrom.SelectedIndex = -1;
             }
 
-            DataTable dt = dalFac.SelectDESC();
+                
+            DataTable dt = dalFac.NewSelectASC();
+            //DataTable dt = dalFac.SelectDESC();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "fac_name");
             cmbTo.DataSource = distinctTable;
             cmbTo.DisplayMember = "fac_name";

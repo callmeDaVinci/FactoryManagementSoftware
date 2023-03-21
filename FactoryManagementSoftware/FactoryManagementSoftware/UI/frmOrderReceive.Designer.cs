@@ -53,7 +53,10 @@
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
+            this.txtDONumber = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblDONumber = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -64,14 +67,12 @@
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
-            this.txtDONumber = new System.Windows.Forms.TextBox();
-            this.lblDONumber = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.tableLayoutPanel12.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
+            this.tableLayoutPanel15.SuspendLayout();
             this.tableLayoutPanel14.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
@@ -83,7 +84,6 @@
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
-            this.tableLayoutPanel15.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -388,6 +388,33 @@
             this.tableLayoutPanel13.Size = new System.Drawing.Size(428, 76);
             this.tableLayoutPanel13.TabIndex = 140;
             // 
+            // tableLayoutPanel15
+            // 
+            this.tableLayoutPanel15.ColumnCount = 3;
+            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel15.Controls.Add(this.txtDONumber, 0, 0);
+            this.tableLayoutPanel15.Controls.Add(this.txtLotNO, 2, 0);
+            this.tableLayoutPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel15.Location = new System.Drawing.Point(2, 43);
+            this.tableLayoutPanel15.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel15.Name = "tableLayoutPanel15";
+            this.tableLayoutPanel15.RowCount = 1;
+            this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(424, 31);
+            this.tableLayoutPanel15.TabIndex = 143;
+            // 
+            // txtDONumber
+            // 
+            this.txtDONumber.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDONumber.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.txtDONumber.Location = new System.Drawing.Point(2, 2);
+            this.txtDONumber.Margin = new System.Windows.Forms.Padding(2);
+            this.txtDONumber.Name = "txtDONumber";
+            this.txtDONumber.Size = new System.Drawing.Size(203, 25);
+            this.txtDONumber.TabIndex = 140;
+            // 
             // tableLayoutPanel14
             // 
             this.tableLayoutPanel14.ColumnCount = 3;
@@ -404,6 +431,17 @@
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel14.Size = new System.Drawing.Size(424, 37);
             this.tableLayoutPanel14.TabIndex = 142;
+            // 
+            // lblDONumber
+            // 
+            this.lblDONumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblDONumber.AutoSize = true;
+            this.lblDONumber.Location = new System.Drawing.Point(2, 18);
+            this.lblDONumber.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblDONumber.Name = "lblDONumber";
+            this.lblDONumber.Size = new System.Drawing.Size(60, 19);
+            this.lblDONumber.TabIndex = 140;
+            this.lblDONumber.Text = "D/O NO";
             // 
             // tableLayoutPanel2
             // 
@@ -569,44 +607,6 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(428, 76);
             this.tableLayoutPanel5.TabIndex = 119;
             // 
-            // tableLayoutPanel15
-            // 
-            this.tableLayoutPanel15.ColumnCount = 3;
-            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel15.Controls.Add(this.txtDONumber, 0, 0);
-            this.tableLayoutPanel15.Controls.Add(this.txtLotNO, 2, 0);
-            this.tableLayoutPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel15.Location = new System.Drawing.Point(2, 43);
-            this.tableLayoutPanel15.Margin = new System.Windows.Forms.Padding(2);
-            this.tableLayoutPanel15.Name = "tableLayoutPanel15";
-            this.tableLayoutPanel15.RowCount = 1;
-            this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel15.Size = new System.Drawing.Size(424, 31);
-            this.tableLayoutPanel15.TabIndex = 143;
-            // 
-            // txtDONumber
-            // 
-            this.txtDONumber.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDONumber.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.txtDONumber.Location = new System.Drawing.Point(2, 2);
-            this.txtDONumber.Margin = new System.Windows.Forms.Padding(2);
-            this.txtDONumber.Name = "txtDONumber";
-            this.txtDONumber.Size = new System.Drawing.Size(203, 25);
-            this.txtDONumber.TabIndex = 140;
-            // 
-            // lblDONumber
-            // 
-            this.lblDONumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblDONumber.AutoSize = true;
-            this.lblDONumber.Location = new System.Drawing.Point(2, 18);
-            this.lblDONumber.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblDONumber.Name = "lblDONumber";
-            this.lblDONumber.Size = new System.Drawing.Size(60, 19);
-            this.lblDONumber.TabIndex = 140;
-            this.lblDONumber.Text = "D/O NO";
-            // 
             // frmOrderReceive
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -627,6 +627,8 @@
             this.tableLayoutPanel12.ResumeLayout(false);
             this.tableLayoutPanel11.ResumeLayout(false);
             this.tableLayoutPanel13.ResumeLayout(false);
+            this.tableLayoutPanel15.ResumeLayout(false);
+            this.tableLayoutPanel15.PerformLayout();
             this.tableLayoutPanel14.ResumeLayout(false);
             this.tableLayoutPanel14.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -646,8 +648,6 @@
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
-            this.tableLayoutPanel15.ResumeLayout(false);
-            this.tableLayoutPanel15.PerformLayout();
             this.ResumeLayout(false);
 
         }
