@@ -18,16 +18,7 @@ namespace FactoryManagementSoftware.UI
             AutoScroll = true;
             userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
             txtPlanID.Visible = true;
-            //if (userPermission >= MainDashboard.ACTION_LVL_FOUR)
-            //{
-            //    lblRemoveCompleted.Show();
-            //    lblClearList.Show();
-            //}
-            //else
-            //{
-            //    lblRemoveCompleted.Hide();
-            //    lblClearList.Hide();
-            //}
+         
 
             loadPackingData();
             CreateMeterReadingData();
@@ -39,7 +30,6 @@ namespace FactoryManagementSoftware.UI
             dt_ItemInfo = dalItem.Select();
             dt_JoinInfo = dalJoin.SelectAll();
             dt_Mac = dalMac.Select();
-
         }
 
         Text text = new Text();
@@ -379,11 +369,13 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadItemListData()
         {
-            dt_ProductionRecord = dalProRecord.Select();
+            dt_ProductionRecord = dalProRecord.SelectActiveDailyJobRecordOnly();
+            
             DataGridView dgv = dgvItemList;
             DataTable dt = NewItemListTable();
 
-            dt_Plan = dalPlan.Select();
+            //dt_Plan = dalPlan.Select();
+            dt_Plan = dalPlan.SelectRecordingPlan();
 
             foreach (DataRow row in dt_Plan.Rows)
             {
@@ -457,26 +449,19 @@ namespace FactoryManagementSoftware.UI
                 DateTime previousDate = DateTime.MaxValue;
                 int totalProducedQty = 0;
                 int totalStockIn = 0;
-
                 string itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
                 string planID = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PlanID].Value.ToString();
-                
-                DataTable transferData = dalTrf.codeLikeSearch(itemCode);
+                DataTable transferData = dalTrf.codeLikeSearch(itemCode);//88ms
 
                 foreach (DataRow row in dt.Rows)
                 {
                     DateTime proDate = Convert.ToDateTime(row[header_ProductionDate].ToString());
                     int producedQty = int.TryParse(row[header_ProducedQty].ToString(), out producedQty) ? producedQty : 0;
-                    
 
                     if(previousDate == DateTime.MaxValue)
                     {
                         previousDate = proDate;
-
                         totalProducedQty += producedQty;
-
-                        
-
                     }
                     else if(previousDate == proDate)
                     {
@@ -484,35 +469,15 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        //search transfer table
-                        
-                        
-                        //change color
                         foreach(DataGridViewRow dgvRow in dgvRecordHistory.Rows)
                         {
                             if(previousDate == Convert.ToDateTime(dgvRow.Cells[header_ProductionDate].Value.ToString()))
                             {
-
                                 //check if parent
                                 string sheetID = dgvRow.Cells[header_SheetID].Value.ToString();
 
                                 itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
-                                transferData = dalTrf.codeLikeSearch(itemCode);
-
-                                //foreach (DataRow rowPR in dt_ProductionRecord.Rows)
-                                //{
-                                //    if(sheetID == rowPR[dalProRecord.SheetID].ToString())
-                                //    {
-                                //        string parentCode = rowPR[dalProRecord.ParentCode].ToString();
-
-                                //        if(!string.IsNullOrEmpty(parentCode))
-                                //        {
-                                //            itemCode = parentCode;
-                                //            transferData = dalTrf.codeSearch(itemCode);
-                                //        }
-                                //        break;
-                                //    }
-                                //}
+                               // transferData = dalTrf.codeLikeSearch(itemCode);
 
                                 int trfQty = tool.TotalProductionStockInInOneDay(transferData, itemCode, previousDate, planID, dgvRow.Cells[header_Shift].Value.ToString());
                                
@@ -540,6 +505,7 @@ namespace FactoryManagementSoftware.UI
                     }
 
                 }
+                //^575ms > 122ms(21/3)
 
                 //change last row color
                 foreach (DataGridViewRow dgvRow in dgvRecordHistory.Rows)
@@ -550,22 +516,7 @@ namespace FactoryManagementSoftware.UI
                         string sheetID = dgvRow.Cells[header_SheetID].Value.ToString();
 
                         itemCode = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
-                        transferData = dalTrf.codeLikeSearch(itemCode);
-
-                        //foreach (DataRow rowPR in dt_ProductionRecord.Rows)
-                        //{
-                        //    if (sheetID == rowPR[dalProRecord.SheetID].ToString())
-                        //    {
-                        //        string parentCode = rowPR[dalProRecord.ParentCode].ToString();
-
-                        //        if (!string.IsNullOrEmpty(parentCode))
-                        //        {
-                        //            itemCode = parentCode;
-                        //            transferData = dalTrf.codeSearch(itemCode);
-                        //        }
-                        //        break;
-                        //    }
-                        //}
+                        //transferData = dalTrf.codeLikeSearch(itemCode);
 
                         int trfQty_ = tool.TotalProductionStockInInOneDay(transferData, itemCode, previousDate, planID, dgvRow.Cells[header_Shift].Value.ToString());
 
@@ -590,7 +541,7 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-               
+               //^148ms > 36ms(21/3)
                 txtTotalStockInRecord.Text = totalStockIn.ToString();
             }
 
@@ -2967,7 +2918,7 @@ namespace FactoryManagementSoftware.UI
             loaded = false;
            // btnShowDailyRecord.Visible = false;
             AddNewSheetUI(false);
-            LoadItemListData();
+            LoadItemListData();//1329ms
             ShowProductionListUI();
             uProRecord.active = true;
             dgvItemList.ClearSelection();
@@ -3247,7 +3198,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (loaded)
             {
-                Cursor = Cursors.WaitCursor;
+                //Cursor = Cursors.WaitCursor;
                 if (!dataSaved)
                 {
                     DialogResult dialogResult = MessageBox.Show(text.Message_DataNotSaved, "Message",
@@ -3276,7 +3227,7 @@ namespace FactoryManagementSoftware.UI
                     AddNewSheetUI(false);
 
                     //load record history
-                    LoadDailyRecord();
+                    LoadDailyRecord();//989ms >392ms(21/3)
                     ClearInfo();
                     dgvRecordHistory.ClearSelection();
 
@@ -3285,7 +3236,7 @@ namespace FactoryManagementSoftware.UI
                 }
               
               
-                Cursor = Cursors.Arrow;
+                //Cursor = Cursors.Arrow;
             }
         }
         private void dgvItemList_SelectionChanged(object sender, EventArgs e)
@@ -4534,8 +4485,8 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItemList_DoubleClick(object sender, EventArgs e)
         {
-            ProductionListRowSelected();
-            ShowDailyRecordUI();
+            //ProductionListRowSelected();
+            ShowDailyRecordUI();//877ms > 311ms (21/3)
         }
 
         private void txtOut_TextChanged(object sender, EventArgs e)
@@ -4763,6 +4714,11 @@ namespace FactoryManagementSoftware.UI
         }
 
         private void txtActualRejectPercentage_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvItemList_Scroll(object sender, ScrollEventArgs e)
         {
 
         }

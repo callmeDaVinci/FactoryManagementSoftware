@@ -40,6 +40,8 @@
             this.lblSearchInfo = new System.Windows.Forms.Label();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.txtItemSearch = new System.Windows.Forms.TextBox();
+            this.btnPreviousSearchResult = new System.Windows.Forms.Button();
+            this.btnNextSearchResult = new System.Windows.Forms.Button();
             this.btnExcelAll = new System.Windows.Forms.Button();
             this.btnSummary = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -56,6 +58,7 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblLastUpdated = new System.Windows.Forms.Label();
             this.lblUpdatedTime = new System.Windows.Forms.Label();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -102,9 +105,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnPreviousSearchResult = new System.Windows.Forms.Button();
-            this.btnNextSearchResult = new System.Windows.Forms.Button();
-            this.btnRefresh = new System.Windows.Forms.Button();
             this.tlpForecastReport.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -281,6 +281,40 @@
             this.txtItemSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNameSearch_KeyDown);
             this.txtItemSearch.Leave += new System.EventHandler(this.txtNameSearch_Leave);
             // 
+            // btnPreviousSearchResult
+            // 
+            this.btnPreviousSearchResult.BackColor = System.Drawing.Color.White;
+            this.btnPreviousSearchResult.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPreviousSearchResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnPreviousSearchResult.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPreviousSearchResult.Font = new System.Drawing.Font("Segoe UI", 20F);
+            this.btnPreviousSearchResult.ForeColor = System.Drawing.Color.Black;
+            this.btnPreviousSearchResult.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_chevron_up_16;
+            this.btnPreviousSearchResult.Location = new System.Drawing.Point(224, 0);
+            this.btnPreviousSearchResult.Margin = new System.Windows.Forms.Padding(4, 0, 4, 1);
+            this.btnPreviousSearchResult.Name = "btnPreviousSearchResult";
+            this.btnPreviousSearchResult.Size = new System.Drawing.Size(32, 35);
+            this.btnPreviousSearchResult.TabIndex = 167;
+            this.btnPreviousSearchResult.UseVisualStyleBackColor = false;
+            this.btnPreviousSearchResult.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // btnNextSearchResult
+            // 
+            this.btnNextSearchResult.BackColor = System.Drawing.Color.White;
+            this.btnNextSearchResult.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNextSearchResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnNextSearchResult.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNextSearchResult.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.btnNextSearchResult.ForeColor = System.Drawing.Color.Black;
+            this.btnNextSearchResult.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_chevron_down_16;
+            this.btnNextSearchResult.Location = new System.Drawing.Point(264, 0);
+            this.btnNextSearchResult.Margin = new System.Windows.Forms.Padding(4, 0, 4, 1);
+            this.btnNextSearchResult.Name = "btnNextSearchResult";
+            this.btnNextSearchResult.Size = new System.Drawing.Size(32, 35);
+            this.btnNextSearchResult.TabIndex = 166;
+            this.btnNextSearchResult.UseVisualStyleBackColor = false;
+            this.btnNextSearchResult.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // btnExcelAll
             // 
             this.btnExcelAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -386,7 +420,6 @@
             this.cmbCustomer.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbCustomer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCustomer.Enabled = false;
             this.cmbCustomer.FormattingEnabled = true;
             this.cmbCustomer.Location = new System.Drawing.Point(4, 41);
             this.cmbCustomer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 4);
@@ -554,6 +587,25 @@
             this.lblUpdatedTime.TabIndex = 155;
             this.lblUpdatedTime.Text = "SHOW DATA FOR THE PAST";
             this.lblUpdatedTime.Visible = false;
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
+            this.btnRefresh.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_refresh_480;
+            this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefresh.ForeColor = System.Drawing.Color.White;
+            this.btnRefresh.Location = new System.Drawing.Point(285, 2);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(28, 27);
+            this.btnRefresh.TabIndex = 154;
+            this.btnRefresh.UseVisualStyleBackColor = false;
+            this.btnRefresh.Visible = false;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // gbFilter
             // 
@@ -1234,59 +1286,6 @@
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // btnPreviousSearchResult
-            // 
-            this.btnPreviousSearchResult.BackColor = System.Drawing.Color.White;
-            this.btnPreviousSearchResult.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPreviousSearchResult.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnPreviousSearchResult.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPreviousSearchResult.Font = new System.Drawing.Font("Segoe UI", 20F);
-            this.btnPreviousSearchResult.ForeColor = System.Drawing.Color.Black;
-            this.btnPreviousSearchResult.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_chevron_up_16;
-            this.btnPreviousSearchResult.Location = new System.Drawing.Point(224, 0);
-            this.btnPreviousSearchResult.Margin = new System.Windows.Forms.Padding(4, 0, 4, 1);
-            this.btnPreviousSearchResult.Name = "btnPreviousSearchResult";
-            this.btnPreviousSearchResult.Size = new System.Drawing.Size(32, 35);
-            this.btnPreviousSearchResult.TabIndex = 167;
-            this.btnPreviousSearchResult.UseVisualStyleBackColor = false;
-            this.btnPreviousSearchResult.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // btnNextSearchResult
-            // 
-            this.btnNextSearchResult.BackColor = System.Drawing.Color.White;
-            this.btnNextSearchResult.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnNextSearchResult.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnNextSearchResult.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNextSearchResult.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.btnNextSearchResult.ForeColor = System.Drawing.Color.Black;
-            this.btnNextSearchResult.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_chevron_down_16;
-            this.btnNextSearchResult.Location = new System.Drawing.Point(264, 0);
-            this.btnNextSearchResult.Margin = new System.Windows.Forms.Padding(4, 0, 4, 1);
-            this.btnNextSearchResult.Name = "btnNextSearchResult";
-            this.btnNextSearchResult.Size = new System.Drawing.Size(32, 35);
-            this.btnNextSearchResult.TabIndex = 166;
-            this.btnNextSearchResult.UseVisualStyleBackColor = false;
-            this.btnNextSearchResult.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
-            this.btnRefresh.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_refresh_480;
-            this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefresh.ForeColor = System.Drawing.Color.White;
-            this.btnRefresh.Location = new System.Drawing.Point(285, 2);
-            this.btnRefresh.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(28, 27);
-            this.btnRefresh.TabIndex = 154;
-            this.btnRefresh.UseVisualStyleBackColor = false;
-            this.btnRefresh.Visible = false;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // frmForecastReport_NEW
             // 

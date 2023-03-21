@@ -381,7 +381,10 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[headerItemRemark].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
                 if (dgv.Columns.Contains(text.Header_Customer))
+                {
                     dgv.Columns[text.Header_Customer].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    dgv.Columns[text.Header_Customer].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+                }
 
                 dgv.Columns[headerPartCode].Frozen = true;
 
@@ -425,7 +428,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[headerRawMat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
                 dgv.Columns[headerColorMat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
-                dgv.Columns[text.Header_Customer].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+               
                 dgv.Columns[headerPartWeight].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
                 //dgv.Columns[headerProduced].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
                 dgv.Columns[headerToProduce].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
@@ -1013,7 +1016,14 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                ShowDetailForecastReport();
+                NewFullForecastReport();
+
+                if (!(txtItemSearch.Text.Length == 0 || txtItemSearch.Text == text.Search_DefaultText))
+                {
+                    lblSearchClear.Visible = true;
+                    ItemSearch();
+                }
+                //ShowDetailForecastReport();
 
             }
         }
@@ -1182,7 +1192,7 @@ namespace FactoryManagementSoftware.UI
 
             DataGridView dgv = dgvForecastReport;
 
-            dgv.DataSource = SearchAllCustomerForecastData();//9562ms-->3464ms (16/3) -> 2537ms (17/3)
+            dgv.DataSource = FullDetailForecastData();//9562ms-->3464ms (16/3) -> 2537ms (17/3)
            
 
             if (dgv.DataSource != null)
@@ -1223,35 +1233,21 @@ namespace FactoryManagementSoftware.UI
             frmLoading.CloseForm();
         }
 
-        private void ShowDetailForecastReport()
+        private void NewFullForecastReport()
         {
-
             SummaryMode = false;
-      
+
             frmLoading.ShowLoadingScreen();
 
             DataGridView dgv = dgvForecastReport;
 
+            dgv.DataSource = FullDetailForecastData();//9562ms-->3464ms (16/3) -> 2537ms (17/3)
 
-            dgv.DataSource = SearchForecastData();
-            //dgv.DataSource = NewSearchForecastDataForSummary();
 
-            //dgv.Columns.Remove(headerRowReference);
-
-            //13022023 (ms): (1) 2541, (2) 2747
-            //14022023 (ms) : (1) 2598, (2) 2290, (3) 2357
             if (dgv.DataSource != null)
             {
+                ColorData();//720ms (16/3)
 
-                ColorData();
-                //13022023 (ms) : (1) 6881 , (2) 7136
-                //14022023 (ms) : (1) 763, (2) 777, (3) 1147
-                DgvForecastReportUIEdit(dgvForecastReport);
-
-
-                //13022023 (ms) : (1) 527, (2) 570
-                //14022023 (ms) : (1) 683,
-                //delete column
                 dgvForecastReport.Columns.Remove(headerItemType);
 
                 if (cbSpecialTypeColorMode.Checked)
@@ -1262,20 +1258,43 @@ namespace FactoryManagementSoftware.UI
                 dgvForecastReport.Columns.Remove(headerBalType);
                 dgvForecastReport.Columns.Remove(headerForecastType);
 
-                dgvForecastReport.ClearSelection();
+                DgvForecastReportUIEdit(dgvForecastReport); //973ms (16/3)
+
                 dgvForecastReport.ResumeLayout();
 
-                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                dgvForecastReport.ClearSelection();
 
-                //14022023 (ms) : 465,
-                dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; //693ms (16/3)
 
-
-                //14022023(ms) : 571
+                dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable); //781 ms (16/3)
             }
-           
 
+            frmLoading.CloseForm();
+        }
 
+        private void ShowDetailForecastReport()
+        {
+            SummaryMode = false;
+            frmLoading.ShowLoadingScreen();
+            DataGridView dgv = dgvForecastReport;
+            dgv.DataSource = SearchForecastData();
+     
+            if (dgv.DataSource != null)
+            {
+                ColorData();
+                DgvForecastReportUIEdit(dgvForecastReport);
+                dgvForecastReport.Columns.Remove(headerItemType);
+                if (cbSpecialTypeColorMode.Checked)
+                    dgvForecastReport.Columns.Remove(headerParentColor);
+                dgvForecastReport.Columns.Remove(headerType);
+                dgvForecastReport.Columns.Remove(headerBackColor);
+                dgvForecastReport.Columns.Remove(headerBalType);
+                dgvForecastReport.Columns.Remove(headerForecastType);
+                dgvForecastReport.ClearSelection();
+                dgvForecastReport.ResumeLayout();
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+            }
             frmLoading.CloseForm();//568ms,515ms,531ms
         }
 
@@ -1288,13 +1307,15 @@ namespace FactoryManagementSoftware.UI
             DataTable dt;
             DataGridView dgv = dgvForecastReport;
 
-            if (cmbCustomer.Text == text.Cmb_All)
-                 dt = SearchAllCustomerForecastData();
-            else
-            {
-                dt = SearchForecastData();//3804
+            //if (cmbCustomer.Text == text.Cmb_All)
+            //     dt = SearchAllCustomerForecastData();
+            //else
+            //{
+            //    dt = SearchForecastData();//3804
 
-            }
+            //}
+
+            dt = FullDetailForecastData();
 
             dt_SummaryList = LoadSummaryList(dt);
 
@@ -2150,7 +2171,7 @@ namespace FactoryManagementSoftware.UI
         }
 
 
-        private DataTable SearchAllCustomerForecastData()
+        private DataTable FullDetailForecastData()
         {
             #region Setting 1
 
@@ -2183,12 +2204,6 @@ namespace FactoryManagementSoftware.UI
             #region Setting 2
             DataRow dt_Row;
 
-           // DataTable dt_Item_Cust = dalItemCust.SelectAllExcludedOTHER();
-
-            //filter out terminated item
-            //if (!cbIncludeTerminated.Checked)
-            //    dt_Item_Cust = RemoveTerminatedItem(dt_Item_Cust);
-
             var getForecastPeriod = getMonthYearPeriod();
 
             DataTable dt_ItemForecast = dalItemForecast.SelectWithRange(getForecastPeriod.Item1, getForecastPeriod.Item2, getForecastPeriod.Item3, getForecastPeriod.Item4);
@@ -2207,8 +2222,6 @@ namespace FactoryManagementSoftware.UI
             DataTable DT_PMMA_DATE = dalPmmaDate.Select();
 
             int index = 1;
-
-            //dt_Item_Cust.Columns.Add(text.Header_GotNotPackagingChild);
 
             #endregion
 
@@ -2331,7 +2344,10 @@ namespace FactoryManagementSoftware.UI
 
                         dt_Row[headerItemRemark] = uData.item_remark;
                         dt_Row[headerIndex] = uData.index;
+
+                        if(dt_Data.Columns.Contains(text.Header_Customer))
                         dt_Row[text.Header_Customer] = uData.customer_name;
+
                         dt_Row[headerType] = typeSingle;
                         dt_Row[headerBalType] = balType_Unique;
                         dt_Row[headerItemType] = row[dalItem.ItemCat].ToString();
@@ -2473,7 +2489,10 @@ namespace FactoryManagementSoftware.UI
 
                         dt_Row[headerItemRemark] = uData.item_remark;
                         dt_Row[headerIndex] = uData.index;
-                        dt_Row[text.Header_Customer] = uData.customer_name;
+
+                        if (dt_Data.Columns.Contains(text.Header_Customer))
+                            dt_Row[text.Header_Customer] = uData.customer_name;
+
                         dt_Row[headerItemType] = row[dalItem.ItemCat].ToString();
                         dt_Row[headerType] = typeParent;
                         dt_Row[headerBalType] = balType_Unique;
@@ -3312,8 +3331,6 @@ namespace FactoryManagementSoftware.UI
             btnExcel.Enabled = false;
             btnExcelAll.Enabled = false;
 
-           
-
             DataGridView dgv = dgvForecastReport;
 
             alertLevel = float.TryParse(txtAlertLevel.Text, out alertLevel) ? alertLevel : 0;
@@ -4081,19 +4098,20 @@ namespace FactoryManagementSoftware.UI
                 string rowReference = "(" + dt.Rows[i][headerIndex].ToString() + ")";
                 int repeatedCount = 1;
 
-                string firstItemCustomer = dt.Rows[i][text.Header_Customer].ToString();
-                string firstItem = dt.Rows[i][headerPartCode].ToString();
+                //string firstItemCustomer = "Single Customer Mode";
 
-                if(firstItem == "R 120 141 044 82")
-                {
-                    var checkpoint = 1;
-                }
+                //if (dt.Columns.Contains(text.Header_Customer))
+                //{
+                //    firstItemCustomer = dt.Rows[i][text.Header_Customer].ToString();
+                //}
+                    
+                string firstItem = dt.Rows[i][headerPartCode].ToString();
 
                 double firstBal1 = double.TryParse(dt.Rows[i][headerBal1].ToString(), out firstBal1) ? firstBal1 : -0.001;
                 double firstBal2 = double.TryParse(dt.Rows[i][headerBal2].ToString(), out firstBal2) ? firstBal2 : -0.001;
                 double firstBal3 = double.TryParse(dt.Rows[i][headerBal3].ToString(), out firstBal3) ? firstBal3 : -0.001;
 
-                string firstParentColor = dt.Rows[i][headerParentColor].ToString();
+                //string firstParentColor = dt.Rows[i][headerParentColor].ToString();
 
                 string type_FirstItem = dt.Rows[i][headerType].ToString();
 
@@ -4110,9 +4128,9 @@ namespace FactoryManagementSoftware.UI
                 {
                     for (int j = i + 1; j < dt.Rows.Count; j++)
                     {
-                        string nextItemCustomer = dt.Rows[j][text.Header_Customer].ToString();
+                        //string nextItemCustomer = dt.Rows[j][text.Header_Customer].ToString();
                         string nextItem = dt.Rows[j][headerPartCode].ToString();
-                        string index = dt.Rows[j][headerIndex].ToString();
+                        //string index = dt.Rows[j][headerIndex].ToString();
 
 
 

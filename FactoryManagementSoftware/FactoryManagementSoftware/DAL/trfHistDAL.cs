@@ -1616,12 +1616,22 @@ namespace FactoryManagementSoftware.DAL
             {
                 //sql query to get data from database
                 String sql = @"SELECT * FROM tbl_trf_hist 
-                                INNER JOIN tbl_item
+                            INNER JOIN tbl_item
                             ON tbl_trf_hist.trf_hist_item_code=tbl_item.item_code
+                            INNER JOIN tbl_cust
+                            ON tbl_trf_hist.trf_hist_to=tbl_cust.cust_name
                             WHERE tbl_trf_hist.trf_hist_trf_date 
                             BETWEEN @start 
                             AND @end 
                             AND tbl_trf_hist.trf_hist_to=@customer  ORDER BY tbl_trf_hist.trf_hist_item_code ASC , tbl_trf_hist.trf_hist_trf_date ASC";
+
+                //String sql = @"SELECT * FROM tbl_trf_hist 
+                //            INNER JOIN tbl_cust
+                //            ON tbl_trf_hist.trf_hist_to=tbl_cust.cust_name
+                //            WHERE tbl_trf_hist.trf_hist_trf_date 
+                //            BETWEEN @start AND @end 
+                //            AND tbl_trf_hist.trf_result =@Passed
+                //            ORDER BY tbl_cust.cust_name ASC, tbl_trf_hist.trf_hist_item_code ASC, tbl_trf_hist.trf_hist_trf_date ASC";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
