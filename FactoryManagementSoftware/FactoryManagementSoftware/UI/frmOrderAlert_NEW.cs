@@ -235,6 +235,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_PendingOrder, typeof(string));
             dt.Columns.Add(text.Header_PendingOrder_ZeroCost, typeof(string));
             dt.Columns.Add(text.Header_PendingOrder_Purchase, typeof(string));
+            dt.Columns.Add(text.Header_Order_Requesting, typeof(string));
 
             return dt;
         }
@@ -299,6 +300,8 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_PendingOrder, typeof(string));
             dt.Columns.Add(text.Header_PendingOrder_ZeroCost, typeof(string));
             dt.Columns.Add(text.Header_PendingOrder_Purchase, typeof(string));
+            dt.Columns.Add(text.Header_Order_Requesting, typeof(string));
+
             dt.Columns.Add(text.Header_Unit, typeof(string));
 
             return dt;
@@ -520,6 +523,7 @@ namespace FactoryManagementSoftware.UI
                 //dgv.Columns[text.Header_PendingOrder].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_PendingOrder_Purchase].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_PendingOrder_ZeroCost].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[text.Header_Order_Requesting].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 dgv.Columns[text.Header_ReadyStock].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 
@@ -528,6 +532,8 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_PendingOrder_Purchase].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic | FontStyle.Bold);
 
                 dgv.Columns[text.Header_PendingOrder_ZeroCost].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
+
+                dgv.Columns[text.Header_Order_Requesting].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
                 dgv.Columns[text.Header_PartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
@@ -701,6 +707,7 @@ namespace FactoryManagementSoftware.UI
                 {
 
                     DataTable DB_PendingOrder = dalOrd.PendingOrderSelect();
+                    DataTable DB_RequestingOrder = dalOrd.RequestingOrderSelect();
 
 
                     foreach (DataRow row in dt_MaterialList.Rows)
@@ -716,6 +723,9 @@ namespace FactoryManagementSoftware.UI
 
                         row[text.Header_PendingOrder_ZeroCost] = pendingOrder_ZeroCost;
                         row[text.Header_PendingOrder_Purchase] = pendingOrder_Purchase;
+
+                        //float order_Requesting = tool.GetRequestingOrder(DB_PendingOrder, itemCode);
+                        row[text.Header_Order_Requesting] = tool.GetRequestingOrder(DB_RequestingOrder, itemCode);
 
                         if (cbZeroStockType.Checked)
                         {
@@ -880,8 +890,11 @@ namespace FactoryManagementSoftware.UI
                             {
                                 float Cavity = float.TryParse(item[dalItem.ItemCavity].ToString(), out Cavity) ? Cavity : 1;
 
-                                partWeight = float.TryParse(item[dalItem.ItemProPWShot].ToString(), out partWeight) ? partWeight : 0 / Cavity;
-                                runnerWeight = float.TryParse(item[dalItem.ItemProRWShot].ToString(), out runnerWeight) ? runnerWeight : 0 / Cavity;
+                                if (Cavity > 0)
+                                {
+                                    partWeight = (float.TryParse(item[dalItem.ItemProPWShot].ToString(), out partWeight) ? partWeight : 0) / Cavity;
+                                    runnerWeight = (float.TryParse(item[dalItem.ItemProRWShot].ToString(), out runnerWeight) ? runnerWeight : 0) / Cavity;
+                                }
                             }
 
                             float itemWeight = partWeight + runnerWeight;
@@ -1364,8 +1377,12 @@ namespace FactoryManagementSoftware.UI
                     {
                         float Cavity = float.TryParse(ProductRow[dalItem.ItemCavity].ToString(), out Cavity) ? Cavity : 1;
 
-                        partWeight = float.TryParse(ProductRow[dalItem.ItemProPWShot].ToString(), out partWeight) ? partWeight : 0 /Cavity;
-                        runnerWeight = float.TryParse(ProductRow[dalItem.ItemProRWShot].ToString(), out runnerWeight) ? runnerWeight : 0 / Cavity;
+                        if(Cavity > 0)
+                        {
+                            partWeight = (float.TryParse(ProductRow[dalItem.ItemProPWShot].ToString(), out partWeight) ? partWeight : 0) / Cavity;
+                            runnerWeight = (float.TryParse(ProductRow[dalItem.ItemProRWShot].ToString(), out runnerWeight) ? runnerWeight : 0) / Cavity;
+                        }
+                       
                     }
 
                     float itemWeight = partWeight + runnerWeight;

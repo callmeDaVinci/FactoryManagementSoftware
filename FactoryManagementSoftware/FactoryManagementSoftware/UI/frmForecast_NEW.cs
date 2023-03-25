@@ -990,7 +990,7 @@ namespace FactoryManagementSoftware.UI
             DataTable DB_History = dalHistory.ForecastEditHistorySelect();
 
             if (DB_History != null)
-            {
+            { 
                 //DataTable dt = DB_History.Clone();
 
                 DataTable dt = new DataTable();
@@ -1198,7 +1198,7 @@ namespace FactoryManagementSoftware.UI
 
                     }
 
-                    frmForecastEditRecord frm = new frmForecastEditRecord(dt_ForecastEditRecord);
+                    frmForecastEditRecord frm = new frmForecastEditRecord(dt_ForecastEditRecord, itemcode);
                     frm.StartPosition = FormStartPosition.CenterScreen;
                     frm.ShowDialog();
                 }

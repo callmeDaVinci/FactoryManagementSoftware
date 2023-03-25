@@ -315,6 +315,7 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_PendingOrder_ZeroCost { get; } = "PENDING ORDER (ZERO COST)";
         public string Header_PendingOrder_Purchase { get; } = "PENDING ORDER (PURCHASE)";
+        public string Header_Order_Requesting { get; } = "ORDER REQUESTING";
 
 
 

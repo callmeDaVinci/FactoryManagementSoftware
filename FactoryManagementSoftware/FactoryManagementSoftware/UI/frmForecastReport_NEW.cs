@@ -25,6 +25,7 @@ using XlBorderWeight = Microsoft.Office.Interop.Excel.XlBorderWeight;
 using XlHAlign = Microsoft.Office.Interop.Excel.XlHAlign;
 using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
 using Syncfusion.XlsIO.Implementation.XmlSerialization;
+using System.Runtime.CompilerServices;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -111,6 +112,10 @@ namespace FactoryManagementSoftware.UI
 
         private string textSearchFilter = "SEARCH FILTER";
         private string textHideFilter = "HIDE FILTER";
+
+        private string textHideProPlanningFilter = "HIDE PRO PLANNING FILTER";
+        private string textShoweProPlanningFilter = "PRO PLANNING FILTER";
+
 
         readonly string headerToDo = "TO DO";
         readonly string headerParentColor = "SPECIAL TYPE";
@@ -229,6 +234,8 @@ namespace FactoryManagementSoftware.UI
         DataTable DT_MACHINE_SCHEDULE_COPY = new DataTable();
         DataTable DT_PMMA_DATE = new DataTable();
         DataTable DT_ITEM_CUST = new DataTable();
+
+        DataTable DT_FORECAST_REPORT = new DataTable();
 
         ProductionRecordDAL dalProRecord = new ProductionRecordDAL();
         DataTable dt_ProRecord = new DataTable();
@@ -873,6 +880,28 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void ShowProductionPlanningFilter(bool ShowFilter)
+        {
+            dgvForecastReport.SuspendLayout();
+
+            if (ShowFilter)
+            {
+                tlpForecastReport.RowStyles[2] = new RowStyle(SizeType.Absolute, 150f);
+
+                dgvForecastReport.ResumeLayout();
+
+                lblProductionPlanningMode.Text = textHideProPlanningFilter;
+            }
+            else
+            {
+                tlpForecastReport.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+
+                dgvForecastReport.ResumeLayout();
+
+                lblProductionPlanningMode.Text = textShoweProPlanningFilter;
+            }
+        }
+
         private void LoadSummaryBalMonth(ComboBox cmb)
         {
             cmb.DataSource = null;
@@ -944,6 +973,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             custChanging = false;
+            lblProductionPlanningMode.Visible = false;
 
         }
 
@@ -1004,16 +1034,6 @@ namespace FactoryManagementSoftware.UI
             {
                 MessageBox.Show("Please select a customer.");
             }
-            else if(cmbCustomer.Text.Equals(text.Cmb_All))
-            {
-                ShowAllCustomerForecastReport();
-
-                if (!(txtItemSearch.Text.Length == 0 || txtItemSearch.Text == text.Search_DefaultText))
-                {
-                    lblSearchClear.Visible = true;
-                    ItemSearch();
-                }
-            }
             else
             {
                 NewFullForecastReport();
@@ -1023,9 +1043,35 @@ namespace FactoryManagementSoftware.UI
                     lblSearchClear.Visible = true;
                     ItemSearch();
                 }
-                //ShowDetailForecastReport();
 
+                if(dgvForecastReport.DataSource != null)
+                lblProductionPlanningMode.Visible = true;
             }
+            //else if(cmbCustomer.Text.Equals(text.Cmb_All))
+            //{
+            //    //ShowAllCustomerForecastReport();
+            //    NewFullForecastReport();
+
+            //    if (!(txtItemSearch.Text.Length == 0 || txtItemSearch.Text == text.Search_DefaultText))
+            //    {
+            //        lblSearchClear.Visible = true;
+            //        ItemSearch();
+            //    }
+
+
+            //}
+            //else
+            //{
+            //    NewFullForecastReport();
+
+            //    if (!(txtItemSearch.Text.Length == 0 || txtItemSearch.Text == text.Search_DefaultText))
+            //    {
+            //        lblSearchClear.Visible = true;
+            //        ItemSearch();
+            //    }
+            //    //ShowDetailForecastReport();
+
+            //}
         }
 
         private void ItemSearchUIReset()
@@ -1476,6 +1522,7 @@ namespace FactoryManagementSoftware.UI
             dgvForecastReport.SuspendLayout();
 
             tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+            tlpForecastReport.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
 
             dgvForecastReport.ResumeLayout();
 
@@ -1776,10 +1823,23 @@ namespace FactoryManagementSoftware.UI
                             totalTrfOutQty += trfQty;
                         }
 
-                        if(month == selectedCurentMonth && year == yearNow)
+                        
+
+                        if (_Customer == "PMMA")
                         {
-                            deliveredQtyThisMonth += trfQty;
+                            if (month == selectedCurentMonth && year == yearNow)
+                            {
+                                deliveredQtyThisMonth += trfQty;
+                            }
                         }
+                        else
+                        {
+                            if (trfDate >= dtpOutFrom.Value && trfDate <= dtpOutTo.Value)
+                            {
+                                deliveredQtyThisMonth += trfQty;
+                            }
+                        }
+                       
 
                         DateTime TransferDate = new DateTime(Convert.ToInt32(year),Convert.ToInt32(month),1);
                         DateTime ActiveMinmumDate = new DateTime(Convert.ToInt32(YearAgo),Convert.ToInt32(MonthAgo),1);
@@ -6909,7 +6969,7 @@ namespace FactoryManagementSoftware.UI
 
                     }
 
-                    frmForecastEditRecord frm = new frmForecastEditRecord(dt_ForecastEditRecord);
+                    frmForecastEditRecord frm = new frmForecastEditRecord(dt_ForecastEditRecord, itemcode);
                     frm.StartPosition = FormStartPosition.CenterScreen;
                     frm.ShowDialog();
                 }
@@ -7165,6 +7225,148 @@ namespace FactoryManagementSoftware.UI
             }
 
 
+        }
+
+        private void lblProductionPlanningMode_Click(object sender, EventArgs e)
+        {
+            ShowProductionPlanningFilter(lblProductionPlanningMode.Text.Equals(textShoweProPlanningFilter));
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnProPlanningFilterApply_Click(object sender, EventArgs e)
+        {
+            ProPlanningDataFilter();
+        }
+
+        private bool CheckForCommonElements(string str1, string str2)
+        {
+            str1 = str1.Replace("，",",");
+            str2 = str2.Replace("，",",");
+
+            string[] elements1 = str1.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            string[] elements2 = str2.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+
+            HashSet<string> set1 = new HashSet<string>(elements1);
+            HashSet<string> set2 = new HashSet<string>(elements2);
+
+            return set1.Intersect(set2).Any();
+        }
+
+        private string ExtractMachineInfo(string remark)
+        {
+            remark = remark.Replace(" ", "");
+            remark = remark.ToUpper();
+
+            string keyword = "MAC:";
+
+            string MacInfo = "";
+
+            int index = remark.IndexOf(keyword);
+
+            if (index != -1)
+            {
+                MacInfo =  remark.Substring(index + keyword.Length);
+
+                MacInfo = MacInfo.Replace(";", "");
+
+            }
+
+            return MacInfo;
+        }
+
+
+        private void ProPlanningDataFilter()
+        {
+
+            if(DT_FORECAST_REPORT.Rows.Count > 0)
+            {
+
+            }
+            else
+            {
+                DT_FORECAST_REPORT = (DataTable)dgvForecastReport.DataSource;
+
+            }
+
+
+            DataTable dt_ProPlanningFilteredData = DT_FORECAST_REPORT.Clone();
+
+            //get machine filter data
+            string machineSearching = txtMacSearching.Text;
+            string rawMatSearching = txtRawMatSearching.Text;
+            string colorMatSearching = txtColorMatSearching.Text;
+
+
+            foreach (DataRow row in DT_FORECAST_REPORT.Rows)
+            {
+                bool dataMatched = true;
+
+                string remark = row[text.Header_Remark].ToString();
+                string itemName = row[headerPartName].ToString();
+                string rawMat = row[headerRawMat].ToString();
+                string colorMatInfo = row[headerColorMat].ToString();
+
+                string macInfo = ExtractMachineInfo(remark);
+
+                bool hasCommonElements = CheckForCommonElements(machineSearching, macInfo);
+
+                if(!hasCommonElements && !string.IsNullOrEmpty(machineSearching))
+                {
+                    dataMatched = false;
+                }
+
+                if (!rawMat.ToUpper().Contains(rawMatSearching.ToUpper()) && !string.IsNullOrEmpty(rawMatSearching))
+                {
+                    dataMatched = false;
+                }
+
+                if (!colorMatInfo.ToUpper().Contains(colorMatSearching.ToUpper()) && !string.IsNullOrEmpty(colorMatSearching))
+                {
+                    dataMatched = false;
+                }
+
+                if (dataMatched)
+                {
+                    //MessageBox.Show(itemName + " The two strings have common elements.");
+
+                    dt_ProPlanningFilteredData.Rows.Add(row.ItemArray);
+
+                }
+            }
+
+            DataGridView dgv = dgvForecastReport;
+
+            dgv.DataSource = dt_ProPlanningFilteredData;
+
+            if (dgv.DataSource != null)
+            {
+                ColorData();
+
+                DgvForecastReportUIEdit(dgvForecastReport);
+
+                dgvForecastReport.Columns.Remove(headerItemType);
+
+                if (cbSpecialTypeColorMode.Checked)
+                    dgvForecastReport.Columns.Remove(headerParentColor);
+
+                dgvForecastReport.Columns.Remove(headerType);
+                dgvForecastReport.Columns.Remove(headerBackColor);
+                dgvForecastReport.Columns.Remove(headerBalType);
+                dgvForecastReport.Columns.Remove(headerForecastType);
+                dgvForecastReport.ClearSelection();
+                dgvForecastReport.ResumeLayout();
+                
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            }
+
+            //get raw material filter data
+
+            //get color material filter data
         }
     }
 

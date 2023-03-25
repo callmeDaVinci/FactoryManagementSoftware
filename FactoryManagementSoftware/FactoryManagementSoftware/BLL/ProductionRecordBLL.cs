@@ -25,6 +25,7 @@ namespace FactoryManagementSoftware.BLL
         public int total_produced { get; set; }
         public int total_reject { get; set; }
         public int total_actual_reject { get; set; }
+        public double actual_reject_percentage { get; set; }
         public double reject_percentage { get; set; }
         public DateTime updated_date { get; set; }
         public int updated_by { get; set; }

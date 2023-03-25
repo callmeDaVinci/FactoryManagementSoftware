@@ -19,9 +19,11 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
         }
 
-        public frmForecastEditRecord(DataTable dt)
+        public frmForecastEditRecord(DataTable dt, string itemCode)
         {
             InitializeComponent();
+
+            lblPart.Text =new Tool().getItemName(itemCode) + " (" + itemCode + ")";
 
             tool.DoubleBuffered(dgvForecastRecord, true);
             dgvForecastRecord.DataSource = dt;

@@ -4605,6 +4605,34 @@ namespace FactoryManagementSoftware.Module
             return totalPending;
         }
 
+        public float GetRequestingOrder(DataTable dt, string itemCode)
+        {
+            string statusSearch = "REQUESTING";
+
+            dt.DefaultView.Sort = "ord_added_date DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            float TotalReuqesting = 0;
+
+            foreach (DataRow ord in sortedDt.Rows)
+            {
+                //string orderType = ord["ord_type"].ToString();
+                if (ord["ord_status"].ToString().Equals(statusSearch) && itemCode == ord[dalItem.ItemCode].ToString())
+                {
+
+                    int orderID = Convert.ToInt32(ord["ord_id"].ToString());
+
+                    if (orderID > 8)
+                    {
+                        float OrderRequesting = float.TryParse(ord["ord_qty"].ToString(), out OrderRequesting) ? OrderRequesting : 0;
+                        TotalReuqesting += OrderRequesting;
+                    }
+                }
+            }
+
+            return TotalReuqesting;
+        }
+
         public float getOrderQtyFromDataTable(DataTable dt, string itemCode)
         {
             float orderQty = 0;

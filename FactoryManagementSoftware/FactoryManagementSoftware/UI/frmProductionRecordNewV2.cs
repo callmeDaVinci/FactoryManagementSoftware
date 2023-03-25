@@ -17,7 +17,7 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
             AutoScroll = true;
             userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
-            txtPlanID.Visible = true;
+            lblPlanID.Visible = true;
          
 
             loadPackingData();
@@ -1168,6 +1168,13 @@ namespace FactoryManagementSoftware.UI
                 lblCustomer.Text = "";
                 lblPartName.Text = itemName;
                 lblPartCode.Text = itemCode;
+                lblPlanID.Text = planID;
+
+                int cycleTime = int.TryParse(lblCycleTime.Text, out cycleTime) ? cycleTime : 0;
+
+                int IdealHourlyShot = cycleTime > 0 ? 3600 / cycleTime : 0;
+
+                txtIdealHourlyShotQty.Text = IdealHourlyShot > 0 ? IdealHourlyShot.ToString() : "ERROR";
 
                 foreach (DataRow row in dt_ItemInfo.Rows)
                 {
@@ -1176,18 +1183,22 @@ namespace FactoryManagementSoftware.UI
                         float partWeight = float.TryParse(row[dalItem.ItemProPWShot].ToString(), out float i) ? Convert.ToSingle(row[dalItem.ItemProPWShot].ToString()) : -1;
                         float runnerWeight = float.TryParse(row[dalItem.ItemProRWShot].ToString(), out float k) ? Convert.ToSingle(row[dalItem.ItemProRWShot].ToString()) : -1;
 
-                        txtPlanID.Text = planID;
+                        lblPlanID.Text = planID;
                         txtSheetID.Text = string_NewSheet;
                         lblPW.Text = partWeight.ToString("0.##");
                         lblRW.Text = runnerWeight.ToString("0.##");
                         lblCavity.Text = row[dalItem.ItemCavity] == DBNull.Value ? "" : row[dalItem.ItemCavity].ToString();
+                        lblCycleTime.Text = row[dalItem.ItemProCTTo] == DBNull.Value ? "" : row[dalItem.ItemProCTTo].ToString();
                         lblRawMat.Text = row[dalItem.ItemMaterial] == DBNull.Value ? "" : row[dalItem.ItemMaterial].ToString();
-                        lblColorMat.Text = row[dalItem.ItemMBatch] == DBNull.Value ? "" : row[dalItem.ItemMBatch].ToString();
+                        string colorMat = row[dalItem.ItemMBatch] == DBNull.Value ? "" : row[dalItem.ItemMBatch].ToString();
 
                         float colorRate = row[dalItem.ItemMBRate] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemMBRate]);
-                        lblColorUsage.Text = (colorRate * 100).ToString("0.##");
+
+                        string colorUsage = (colorRate * 100).ToString("0.##");
+                        lblColorMat.Text = colorMat + " (" + colorUsage + " %)" ;
+
                     }
-                       
+
                 }
 
                 //GetPackagingDataForNewSheet(itemCode);
@@ -1508,16 +1519,23 @@ namespace FactoryManagementSoftware.UI
                         float partWeight = float.TryParse(row[dalItem.ItemProPWShot].ToString(), out float i) ? Convert.ToSingle(row[dalItem.ItemProPWShot].ToString()) : -1;
                         float runnerWeight = float.TryParse(row[dalItem.ItemProRWShot].ToString(), out float k) ? Convert.ToSingle(row[dalItem.ItemProRWShot].ToString()) : -1;
 
-                        txtPlanID.Text = planID;
+                        lblPlanID.Text = planID;
                       
                         lblPW.Text = partWeight.ToString("0.##");
                         lblRW.Text = runnerWeight.ToString("0.##");
                         lblCavity.Text = row[dalItem.ItemCavity] == DBNull.Value ? "" : row[dalItem.ItemCavity].ToString();
+                        lblCycleTime.Text = row[dalItem.ItemProCTTo] == DBNull.Value ? "" : row[dalItem.ItemProCTTo].ToString();
+
                         lblRawMat.Text = row[dalItem.ItemMaterial] == DBNull.Value ? "" : row[dalItem.ItemMaterial].ToString();
-                        lblColorMat.Text = row[dalItem.ItemMBatch] == DBNull.Value ? "" : row[dalItem.ItemMBatch].ToString();
+
+                        string colorMat = row[dalItem.ItemMBatch] == DBNull.Value ? "" : row[dalItem.ItemMBatch].ToString();
 
                         float colorRate = row[dalItem.ItemMBRate] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemMBRate]);
-                        lblColorUsage.Text = (colorRate * 100).ToString("0.##");
+                        string colorUsage = (colorRate * 100).ToString("0.##");
+
+                        lblColorMat.Text = colorMat + " ( " + colorUsage + "%)";
+
+
                     }
 
                 }
@@ -1527,6 +1545,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        
         private void LoadExistingSheetData()
         {
             sheetLoaded = false;
@@ -1551,8 +1570,14 @@ namespace FactoryManagementSoftware.UI
 
                 lblPartName.Text = itemName;
                 lblPartCode.Text = itemCode;
-                txtPlanID.Text = planID;
+                lblPlanID.Text = planID;
                 txtSheetID.Text = sheetID;
+
+                int cycleTime = int.TryParse(lblCycleTime.Text, out cycleTime) ? cycleTime : 0;
+
+                int IdealHourlyShot = cycleTime > 0 ? 3600 / cycleTime : 0;
+
+                txtIdealHourlyShotQty.Text = IdealHourlyShot > 0 ? IdealHourlyShot.ToString() : "ERROR";
 
                 if (shift == "MORNING")
                 {
@@ -1562,6 +1587,8 @@ namespace FactoryManagementSoftware.UI
                 {
                     cbNight.Checked = true;
                 }
+
+                string totalRejectQty = "";
 
                 foreach (DataRow row in dt_ProductionRecord.Rows)
                 {
@@ -1574,12 +1601,17 @@ namespace FactoryManagementSoftware.UI
                         lblRW.Text = runnerWeight.ToString("0.##");
 
                         lblCavity.Text = row[dalPlan.planCavity] == DBNull.Value ? "" : row[dalPlan.planCavity].ToString();
+                        lblCycleTime.Text = row[dalPlan.planCT] == DBNull.Value ? "" : row[dalPlan.planCT].ToString();
+
                         lblRawMat.Text = row[dalPlan.materialCode] == DBNull.Value ? "" : row[dalPlan.materialCode].ToString();
-                        lblColorMat.Text = row[dalPlan.colorMaterialCode] == DBNull.Value ? "" : row[dalPlan.colorMaterialCode].ToString();
+                        string colorMat = row[dalPlan.colorMaterialCode] == DBNull.Value ? "" : row[dalPlan.colorMaterialCode].ToString();
 
 
                         float colorRate = row[dalPlan.colorMaterialUsage] == DBNull.Value ? 0 : Convert.ToSingle(row[dalPlan.colorMaterialUsage]);
-                        lblColorUsage.Text = colorRate.ToString("0.##");
+                        string colorUsage = colorRate.ToString("0.##");
+
+                        lblColorMat.Text = colorMat + " ( " + colorUsage + "%)";
+
 
                         dtpProDate.Value = Convert.ToDateTime(row[dalProRecord.ProDate].ToString());
 
@@ -1609,13 +1641,18 @@ namespace FactoryManagementSoftware.UI
                         txtNote.Text = row[dalProRecord.Note].ToString();
                         txtPackingMaxQty.Text = row[dalProRecord.PackagingQty].ToString();
 
+                        txtMac.Text = macID.ToString();
+
                         //cmbPackingName.Text = tool.getItemName(row[dalProRecord.PackagingCode].ToString());
                         //cmbPackingCode.Text = row[dalProRecord.PackagingCode].ToString();
                         //txtPackingMaxQty.Text = row[dalProRecord.PackagingQty].ToString();
 
-                        txtActualTotalReject.Text = row[dalProRecord.TotalActualReject].ToString();
+                        totalRejectQty = row[dalProRecord.TotalActualReject].ToString();
+                        //txtActualTotalReject.Text = row[dalProRecord.TotalActualReject].ToString();
 
                         // txtRejectPercentage.Text = row[dalProRecord.ProLotNo].ToString();
+
+                        break;
                     }
 
                 }
@@ -1624,42 +1661,9 @@ namespace FactoryManagementSoftware.UI
 
                 CalculateHourlyShot();
 
-                //get packaging data
-                //LoadPackagingList(Convert.ToInt32(sheetID));
                 LoadCartonSetting();
 
-                //foreach (DataRow row in dt_JoinInfo.Rows)
-                //{
-                //    string parentCode = row[dalJoin.JoinParent].ToString();
-
-                //    if (parentCode == itemCode)
-                //    {
-                //        string childCode = row[dalJoin.JoinChild].ToString();
-
-                //        foreach (DataRow rowItem in dt_ItemInfo.Rows)
-                //        {
-                //            if (rowItem[dalItem.ItemCode].ToString().Equals(childCode))
-                //            {
-                //                string cat = rowItem[dalItem.ItemCat].ToString();
-
-                //                if (cat.Equals(text.Cat_Carton) || cat.Equals(text.Cat_Packaging))
-                //                {
-                //                    string packagingName = rowItem[dalItem.ItemName].ToString();
-                //                    string packagingCode = rowItem[dalItem.ItemCode].ToString();
-                //                    string packagingQty = row[dalJoin.JoinMax].ToString();
-
-                //                    txtPackingMaxQty.Text = packagingQty;
-                //                    cmbPackingName.Text = packagingName;
-                //                    cmbPackingCode.Text = packagingCode;
-
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //    }
-
-                //}
-
+                txtActualTotalReject.Text = totalRejectQty;
             }
 
             sheetLoaded = true;
@@ -1673,7 +1677,9 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = dalProRecord.MeterRecordSelect(uProRecord);
             DataTable dt_Meter = (DataTable)dgvMeterReading.DataSource;
 
-            foreach(DataRow row in dt.Rows)
+            
+
+            foreach (DataRow row in dt.Rows)
             {
                 string timeFromDB = Convert.ToDateTime(row[dalProRecord.ProTime]).ToShortTimeString();
 
@@ -1984,7 +1990,7 @@ namespace FactoryManagementSoftware.UI
                 string ParentStockIn = cmbParentList.Text;
                 string note = txtNote.Text ;
                 string itemCode = lblPartCode.Text;
-
+                
                 lotNo = GetINTOnlyFromLotNo(txtProLotNo.Text);
 
                 DateTime updateTime = DateTime.Now;
@@ -3181,7 +3187,7 @@ namespace FactoryManagementSoftware.UI
 
         private void ClearInfo()
         {
-            txtPlanID.Clear();
+            lblPlanID.Clear();
             lblCustomer.Text = "";
             lblPartName.Text = "";
             lblPartCode.Text = "";
@@ -3189,9 +3195,8 @@ namespace FactoryManagementSoftware.UI
             lblRW.Text = "";
             lblRawMat.Text = "";
             lblCavity.Text = "";
+            lblCycleTime.Text = "";
             lblColorMat.Text = "";
-            lblColorUsage.Text = "";
-
         }
 
         private void ProductionListRowSelected()
@@ -3376,44 +3381,49 @@ namespace FactoryManagementSoftware.UI
 
         private void CalculateHourlyShot()
         {
-            if(true)
+            int meterStart = 0;
+            int totalShot = 0;
+            int dividend = 0;
+
+            if (string.IsNullOrEmpty(txtMeterStart.Text))
             {
-                int meterStart = 0;
+                errorProvider5.Clear();
+                errorProvider5.SetError(lblMeterStartAt, "Please input meter start value");
+            }
+            else
+            {
+                meterStart = int.TryParse(txtMeterStart.Text, out meterStart) ? meterStart : 0;
+            }
 
-                if (string.IsNullOrEmpty(txtMeterStart.Text))
-                {
-                    errorProvider5.Clear();
-                    errorProvider5.SetError(lblMeterStartAt, "Please input meter start value");
-                }
-                else
-                {
-                    meterStart = int.TryParse(txtMeterStart.Text, out meterStart) ? meterStart : 0;
-                }
+            DataTable dt = (DataTable)dgvMeterReading.DataSource;
 
-                DataTable dt = (DataTable)dgvMeterReading.DataSource;
-
-                if (dt != null)
+            if (dt != null)
+            {
+                foreach (DataRow row in dt.Rows)
                 {
-                    foreach (DataRow row in dt.Rows)
+                    int meterReading = int.TryParse(row[header_MeterReading].ToString(), out meterReading) ? meterReading : -1;
+
+                    if (meterReading != -1)
                     {
-                        int meterReading = int.TryParse(row[header_MeterReading].ToString(), out meterReading) ? meterReading : -1;
+                        int hourlyShot = meterReading - meterStart;
+                        row[header_Hourly] = hourlyShot;
 
-                        if (meterReading != -1)
-                        {
-                            row[header_Hourly] = meterReading - meterStart;
-                            meterStart = meterReading;
-                        }
-                        else
-                        {
-                            row[header_Hourly] = 0;
-                        }
+                        meterStart = meterReading;
+                        totalShot += hourlyShot;
+                        dividend++;
+                    }
+                    else
+                    {
+                        row[header_Hourly] = 0;
                     }
                 }
-
-
-                CalculateTotalShot();
             }
-            
+
+            //CalculateTotalShot();
+            txtTotalShot.Text = totalShot.ToString();
+            int avgHourlyShot = dividend > 0 ? totalShot / dividend : 0;
+
+            txtActualAvgHourlyShotQty.Text = avgHourlyShot.ToString();
 
         }
 
@@ -4687,11 +4697,7 @@ namespace FactoryManagementSoftware.UI
 
             string rejectPercentageString = "NULL";
 
-            if (availableQty <= 0)
-            {
-                rejectPercentageString = "NULL";
-            }
-            else
+            if (availableQty > 0)
             {
                 decimal rejectPercentage = (decimal)totalActualReject / availableQty * 100;
 
