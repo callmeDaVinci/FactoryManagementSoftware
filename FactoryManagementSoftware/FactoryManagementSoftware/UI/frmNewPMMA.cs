@@ -689,7 +689,7 @@ namespace FactoryManagementSoftware.UI
 
         private float getOpenStockFromLastMonthBal(string matCode,DataTable dt)
         {
-            float openStock = -1;
+            float openStock = 0;
            
             if (dt.Rows.Count > 0)
             {
@@ -711,7 +711,7 @@ namespace FactoryManagementSoftware.UI
 
         private float getOpenStock(string matCode, DataTable dt)
         {
-            float openStock = -1;
+            float openStock = 0;
 
             if (dt.Rows.Count > 0)
             {

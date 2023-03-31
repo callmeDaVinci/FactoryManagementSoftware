@@ -1026,8 +1026,8 @@ namespace FactoryManagementSoftware.UI
         private void btnSearch_Click(object sender, EventArgs e)
         {
             dgvForecastReport.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            ProPlanningSearchReset();
 
-            
             DT_ITEM = dalItem.Select();
 
             if (cmbCustomer.SelectedIndex == -1)
@@ -1287,7 +1287,8 @@ namespace FactoryManagementSoftware.UI
 
             DataGridView dgv = dgvForecastReport;
 
-            dgv.DataSource = FullDetailForecastData();//9562ms-->3464ms (16/3) -> 2537ms (17/3)
+            DT_FORECAST_REPORT = FullDetailForecastData();//9562ms-->3464ms (16/3) -> 2537ms (17/3)
+            dgv.DataSource = DT_FORECAST_REPORT;
 
 
             if (dgv.DataSource != null)
@@ -1350,7 +1351,6 @@ namespace FactoryManagementSoftware.UI
 
             frmLoading.ShowLoadingScreen();
 
-            DataTable dt;
             DataGridView dgv = dgvForecastReport;
 
             //if (cmbCustomer.Text == text.Cmb_All)
@@ -1361,16 +1361,18 @@ namespace FactoryManagementSoftware.UI
 
             //}
 
-            dt = FullDetailForecastData();
+            DT_FORECAST_REPORT = FullDetailForecastData();
 
-            dt_SummaryList = LoadSummaryList(dt);
+            dt_SummaryList = LoadSummaryList(DT_FORECAST_REPORT);
+
+            DT_FORECAST_REPORT = dt_SummaryList;
 
             #region Load Data To Datagridview
 
             dgvForecastReport.DataSource = dt_SummaryList;
 
             dgvForecastReport.Columns.Remove(headerRowReference);
-            dgvForecastReport.Columns.Remove(headerColorMat);
+            //dgvForecastReport.Columns.Remove(headerColorMat);
             dgvForecastReport.Columns.Remove(headerPartWeight);
 
             ColorSummaryData();//2075
@@ -4763,6 +4765,11 @@ namespace FactoryManagementSoftware.UI
                 {
                     string childCode = row[dalJoin.JoinChild].ToString();
 
+                    if(childCode == "V01CAR000")
+                    {
+                        var checkpoint = 1;
+                    }
+
                     DataRow row_Item = tool.getDataRowFromDataTable(DT_ITEM, childCode);
 
                     bool itemMatch = row_Item[dalItem.ItemCat].ToString().Equals(text.Cat_Part);
@@ -4892,7 +4899,7 @@ namespace FactoryManagementSoftware.UI
 
                         if (!uChildData.color.Equals(uChildData.color_mat) && !string.IsNullOrEmpty(uChildData.color_mat))
                         {
-                            uChildData.color_mat += " (" + uParentData.color + ")";
+                            uChildData.color_mat += " (" + uChildData.color + ")";
                         }
 
                         dt_Row = dt_Data.NewRow();
@@ -6515,7 +6522,14 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
+                txtItemSearch.Text = text.Search_DefaultText;
+                txtItemSearch.ForeColor = SystemColors.GrayText;
+                ItemSearchUIReset();
+
+                ProPlanningSearchReset();
                 ShowSummaryForecastReport();
+                if (dgvForecastReport.DataSource != null)
+                    lblProductionPlanningMode.Visible = true;
             }
         }
 
@@ -7237,6 +7251,13 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private void ProPlanningSearchReset()
+        {
+            txtMacSearching.Text = "";
+            txtMacSearching.Text = "";
+            txtColorMatSearching.Text = "";
+        }
+
         private void btnProPlanningFilterApply_Click(object sender, EventArgs e)
         {
             ProPlanningDataFilter();
@@ -7341,6 +7362,8 @@ namespace FactoryManagementSoftware.UI
 
             DataGridView dgv = dgvForecastReport;
 
+            dgv.DataSource = null;
+
             dgv.DataSource = dt_ProPlanningFilteredData;
 
             if (dgv.DataSource != null)
@@ -7367,6 +7390,23 @@ namespace FactoryManagementSoftware.UI
             //get raw material filter data
 
             //get color material filter data
+        }
+
+        private void label9_Click_1(object sender, EventArgs e)
+        {
+            txtMacSearching.Text = "";
+        }
+
+        private void label15_Click(object sender, EventArgs e)
+        {
+            txtRawMatSearching.Text = "";
+
+        }
+
+        private void label18_Click(object sender, EventArgs e)
+        {
+            txtColorMatSearching.Text = "";
+
         }
     }
 
