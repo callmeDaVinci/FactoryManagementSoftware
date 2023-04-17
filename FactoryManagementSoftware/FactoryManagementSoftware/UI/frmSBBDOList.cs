@@ -4473,6 +4473,10 @@ namespace FactoryManagementSoftware.UI
             {
                 type_ShortName = text.PolyORing_Short;
             }
+            else if (type == text.Type_ClampSaddle)
+            {
+                type_ShortName = text.ClampSaddle_Short;
+            }
 
             return type_ShortName;
         }

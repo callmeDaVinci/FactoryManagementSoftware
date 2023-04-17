@@ -8,14 +8,16 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
+using Microsoft.VisualBasic.Devices;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmNewPlanning : Form
+    public partial class frmPlanningVer2 : Form
     {
         #region Variable Declare
         itemDAL dalItem = new itemDAL();
@@ -43,6 +45,7 @@ namespace FactoryManagementSoftware.UI
 
         DataTable dt_Join;
         DataTable dt_Item;
+        DataTable DT_PART_NAME = new DataTable();
 
         readonly string headerCheck = "FOR";
         readonly string headerDescription = "DESCRIPTION";
@@ -88,7 +91,7 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        public frmNewPlanning()
+        public frmPlanningVer2()
         {
             InitializeComponent();
 
@@ -102,7 +105,7 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        public frmNewPlanning(string itemName, string itemCode)
+        public frmPlanningVer2(string itemName, string itemCode)
         {
             InitializeComponent();
 
@@ -119,7 +122,7 @@ namespace FactoryManagementSoftware.UI
             code = itemCode;
         }
 
-        public frmNewPlanning(int planID)
+        public frmPlanningVer2(int planID)
         {
             InitializeComponent();
 
@@ -154,24 +157,27 @@ namespace FactoryManagementSoftware.UI
 
             if (!string.IsNullOrEmpty(keywords))
             {
-                DataTable dt = dalItem.CatSearch(keywords);
-                DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
-                distinctTable.DefaultView.Sort = "item_name ASC";
-                cmbPartName.DataSource = distinctTable;
-                cmbPartName.DisplayMember = "item_name";
-                cmbPartName.ValueMember = "item_name";
+                DT_PART_NAME = dalItem.CatSearch(keywords);
+                DT_PART_NAME = DT_PART_NAME.DefaultView.ToTable(true, "item_name");
+                DT_PART_NAME.DefaultView.Sort = "item_name ASC";
 
-                if (string.IsNullOrEmpty(cmbPartName.Text))
-                {
-                    cmbPartCode.DataSource = null;
-                }
-            }
-            else
-            {
-                cmbPartName.DataSource = null;
-            }
+                //cmbPartName.DataSource = DT_PART_NAME;
+                //cmbPartName.DisplayMember = "item_name";
+                //cmbPartName.ValueMember = "item_name";
 
-            cmbPartName.SelectedIndex = -1;
+                //if (string.IsNullOrEmpty(cmbPartName.Text))
+                //{
+                //    cmbPartCode.DataSource = null;
+                //}
+            }
+            //else
+            //{
+            //    cmbPartName.DataSource = null;
+            //}
+
+            //cmbPartName.SelectedIndex = -1;
+
+            cmbPartCode.DataSource = null;
 
             loadHabitData();
 
@@ -183,24 +189,30 @@ namespace FactoryManagementSoftware.UI
 
             if (!string.IsNullOrEmpty(keywords))
             {
-                DataTable dt = dalItem.CatSearch(keywords);
-                DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
-                distinctTable.DefaultView.Sort = "item_name ASC";
-                cmbPartName.DataSource = distinctTable;
-                cmbPartName.DisplayMember = "item_name";
-                cmbPartName.ValueMember = "item_name";
+                //DataTable dt = dalItem.CatSearch(keywords);
+                //DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
+                //distinctTable.DefaultView.Sort = "item_name ASC";
+                DT_PART_NAME = dalItem.CatSearch(keywords);
+                DT_PART_NAME = DT_PART_NAME.DefaultView.ToTable(true, "item_name");
+                DT_PART_NAME.DefaultView.Sort = "item_name ASC";
 
-                if (string.IsNullOrEmpty(cmbPartName.Text))
-                {
-                    cmbPartCode.DataSource = null;
-                }
-            }
-            else
-            {
-                cmbPartName.DataSource = null;
-            }
+                //cmbPartName.DataSource = distinctTable;
+                //cmbPartName.DisplayMember = "item_name";
+                //cmbPartName.ValueMember = "item_name";
 
-            cmbPartName.SelectedIndex = -1;
+                //if (string.IsNullOrEmpty(cmbPartName.Text))
+                //{
+                //    cmbPartCode.DataSource = null;
+                //}
+            }
+            //else
+            //{
+            //    cmbPartName.DataSource = null;
+            //}
+
+           // cmbPartName.SelectedIndex = -1;
+
+            cmbPartCode.DataSource = null;
 
             loadHabitData();
 
@@ -1966,38 +1978,40 @@ namespace FactoryManagementSoftware.UI
         private void frmPlanning_Load(object sender, EventArgs e)
         {
             CalTotalRecycleMat();
-            ActiveControl = cmbPartName;
+            ActiveControl = txtPartName;
 
             dt_Join = dalJoin.SelectAll();
             dt_Item = dalItem.Select();
-   
 
+
+            hideResults();
 
             if (name != null)
             {
-                cmbPartName.Text = name;
+                txtPartName.Text = name;
                 cmbPartCode.Text = code;
             }
+            
             loaded = true;
         }
 
-        private void cmbPartName_SelectedIndexChanged(object sender, EventArgs e)
+        private void PartCodeUpdate()
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            
+
             errorProvider1.Clear();
-            string keywords = cmbPartName.Text;
+            string keywords = txtPartName.Text;
 
             if (!string.IsNullOrEmpty(keywords))
             {
                 ableToLoadData = false;
                 DataTable dt = dalItem.nameSearch(keywords);
 
-                foreach(DataRow row in dt.Rows)
+                foreach (DataRow row in dt.Rows)
                 {
                     string itemCat = row[dalItem.ItemCat].ToString();
 
-                    if(!itemCat.Equals(text.Cat_Part))
+                    if (!itemCat.Equals(text.Cat_Part))
                     {
                         row.Delete();
                     }
@@ -2013,7 +2027,7 @@ namespace FactoryManagementSoftware.UI
 
                 int count = cmbPartCode.Items.Count;
 
-                if(count == 1)
+                if (count == 1)
                 {
                     cmbPartCode.SelectedIndex = 0;
                 }
@@ -2026,58 +2040,73 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
+        private void cmbPartName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
+        }
+
         private void cmbPartCode_SelectedIndexChanged(object sender, EventArgs e)
         {
             
-            materialChecked = false;
-            dgvCheckList.DataSource = null;
-            errorProvider2.Clear();
-            
-            if (ableToLoadData)
+            if (cmbPartCode.DataSource != null)
             {
-                dgvForecast.DataSource = null;
-                cmbMatCode.SelectedIndex = -1;
-                txtTargetQty.Clear();
-                txtMatBagQty.Clear();
-                cmbColorMatCode.SelectedIndex = -1;
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                materialChecked = false;
+                dgvCheckList.DataSource = null;
+                errorProvider2.Clear();
+
+                if (ableToLoadData)
+                {
+                    dgvForecast.DataSource = null;
+                    cmbMatCode.SelectedIndex = -1;
+                    txtTargetQty.Clear();
+                    txtMatBagQty.Clear();
+                    cmbColorMatCode.SelectedIndex = -1;
 
 
-                if (dalItem.checkIfAssembly(cmbPartCode.Text) && !dalItem.checkIfProduction(cmbPartCode.Text) && tool.ifGotChildExcludePackaging(cmbPartCode.Text))
-                {
-                    MessageBox.Show(cmbPartCode.Text + " " + cmbPartName.Text + " is a assembly part!");
-                }
-                else
-                {
-                    frmLoading.ShowLoadingScreen();
-                    LoadPartInfo();
-                    partInfoEdited = false;
+                    if (dalItem.checkIfAssembly(cmbPartCode.Text) && !dalItem.checkIfProduction(cmbPartCode.Text) && tool.ifGotChildExcludePackaging(cmbPartCode.Text))
+                    {
+                        MessageBox.Show(cmbPartCode.Text + " " + txtPartName.Text + " is a assembly part!");
+                    }
+                    else
+                    {
+                        //frmLoading.ShowLoadingScreen();
+                        LoadPartInfo();
+                        partInfoEdited = false;
 
-                    //CalTotalMatAfterWastage();
+                        //CalTotalMatAfterWastage();
+                    }
+                    //AddDataToForecastTable();
+                    NEW_AddDataToForecastTable();
+                    try
+                    {
+
+                    }
+
+                    catch (Exception ex)
+                    {
+                        tool.saveToTextAndMessageToUser(ex);
+                    }
+                    finally
+                    {
+                        //frmLoading.CloseForm();
+                        txtMatBagQty.Focus();
+                    }
                 }
-                //AddDataToForecastTable();
-                NEW_AddDataToForecastTable();
-                try
+                if (!cbEditMode.Checked)
                 {
-                    
+                    btnPartInfoSave.Visible = false;
                 }
-             
-                catch (Exception ex)
-                {
-                    tool.saveToTextAndMessageToUser(ex);
-                }
-                finally
-                {
-                    frmLoading.CloseForm();
-                    txtMatBagQty.Focus();
-                }
+
+                btnRawMatUpdate.Visible = false;
+                btnColorMatUpdate.Visible = false;
+
+                Cursor = Cursors.Arrow;
             }
-            if(!cbEditMode.Checked)
-            {
-                btnPartInfoSave.Visible = false;
-            }
 
-            btnRawMatUpdate.Visible = false;
-            btnColorMatUpdate.Visible = false;
+          
+
         }
 
         private void cbRecycleUse_CheckedChanged(object sender, EventArgs e)
@@ -2847,7 +2876,7 @@ namespace FactoryManagementSoftware.UI
             if (!string.IsNullOrEmpty(itemCode))
             {
                 //check if got child
-                if (tool.ifGotChild(itemCode))
+                if (tool.ifGotChildIncludedPackaging(itemCode))
                 {
                     //loop child list
                     DataTable dtJoin = dalJoin.loadChildList(itemCode);
@@ -2858,16 +2887,46 @@ namespace FactoryManagementSoftware.UI
                     foreach(DataRow row in dtJoin.Rows)
                     {
                         childCode = row[dalJoin.JoinChild].ToString();
-                        joinQty = row[dalJoin.JoinQty] == DBNull.Value? 0 : Convert.ToSingle(row[dalJoin.JoinQty]);
+
+                        //joinQty = row[dalJoin.JoinQty] == DBNull.Value? 0 : Convert.ToSingle(row[dalJoin.JoinQty]);
+
+                        joinQty = float.TryParse(row[dalJoin.JoinQty].ToString(), out float i) ? i : 1;
 
                         currentStock = dalItem.getStockQty(childCode);
+
                         ////////////////////////////////////////////////////////////////////////////////////////////////////
                         //waiting to get planning used qty from database
                         planningUsed = tool.matPlanGetQty(dt, childCode);
                         availableQty = currentStock - planningUsed;
 
+                        #region Max/Min
+
+                        float childQty = targetQty;
+
+                        int joinMax = int.TryParse(row[dalJoin.JoinMax].ToString(), out int j) ? j : 1;
+                        int JoinMin = int.TryParse(row[dalJoin.JoinMin].ToString(), out int k) ? k : 1;
+
+                        joinMax = joinMax <= 0 ? 1 : joinMax;
+                        JoinMin = JoinMin <= 0 ? 1 : JoinMin;
+
+                        int ParentQty = Convert.ToInt32(targetQty);
+
+                        int fullQty = ParentQty / joinMax;
+
+                        int notFullQty = ParentQty % joinMax;
+
+                        childQty = fullQty * joinQty;
+
+                        if (notFullQty >= JoinMin)
+                        {
+                            childQty += joinQty;
+                        }
+
+                        #endregion
+
                         //calculate total material need
-                        totalMaterial = joinQty * targetQty;
+                        totalMaterial = childQty;
+                        //totalMaterial = joinQty * targetQty;
 
                         qtyShort = availableQty - totalMaterial;
 
@@ -2943,7 +3002,7 @@ namespace FactoryManagementSoftware.UI
         {
             bool result = true;
 
-            if (string.IsNullOrEmpty(cmbPartName.Text))
+            if (string.IsNullOrEmpty(txtPartName.Text))
             {
                 result = false;
                 errorProvider1.SetError(lblPartName, "Part Name Required");
@@ -2988,7 +3047,7 @@ namespace FactoryManagementSoftware.UI
         private void getPlanningData()
         {
             uPlanning.plan_id = -1;
-            uPlanning.part_name = cmbPartName.Text;
+            uPlanning.part_name = txtPartName.Text;
             uPlanning.part_code = cmbPartCode.Text;
 
             uPlanning.plan_cavity = txtCavity.Text;
@@ -3976,9 +4035,82 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void tableLayoutPanel18_Paint(object sender, PaintEventArgs e)
+        void showResultUIChange()
         {
+            tlpPartInfo.RowStyles[2] = new RowStyle(SizeType.Percent, 100f);
+            tlpPartInfo.RowStyles[3] = new RowStyle(SizeType.Percent, 0f);
+            tlpPartInfo.RowStyles[4] = new RowStyle(SizeType.Percent, 0f);
+            tlpPartInfo.RowStyles[5] = new RowStyle(SizeType.Percent, 0f);
+            tlpPartInfo.RowStyles[6] = new RowStyle(SizeType.Percent, 0f);
 
+            listBox1.Visible = true;
+        }
+
+        void hideResults()
+        {
+            listBox1.Visible = false;
+
+            tlpPartInfo.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+            tlpPartInfo.RowStyles[3] = new RowStyle(SizeType.Absolute, 30f);
+            tlpPartInfo.RowStyles[4] = new RowStyle(SizeType.Absolute, 40f);
+            tlpPartInfo.RowStyles[5] = new RowStyle(SizeType.Absolute, 200f);
+            tlpPartInfo.RowStyles[6] = new RowStyle(SizeType.Percent, 100f);
+        }
+
+        private void txtPartName_TextChanged(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+            cmbPartCode.DataSource = null;
+            dgvForecast.DataSource = null;
+
+            if (txtPartName.Text.Length == 0)
+            {
+                hideResults();
+                return;
+            }
+
+            string keyword = txtPartName.Text.ToUpper();
+
+            DataTable dt_Filtered = DT_PART_NAME.Clone();
+
+            foreach (DataRow row in DT_PART_NAME.Rows)
+            {
+                string partName = row[dalItem.ItemName].ToString().ToUpper();
+
+                bool terminatedItem = partName.Contains(text.Terminated.ToUpper());
+
+                if (partName.ToUpper().Contains(keyword) && !terminatedItem)
+                {
+                    dt_Filtered.ImportRow(row);
+
+                }
+            }
+
+            if(dt_Filtered != null && dt_Filtered.Rows.Count > 0)
+            {
+                dt_Filtered.DefaultView.Sort = dalItem.ItemName + " ASC";
+                dt_Filtered = dt_Filtered.DefaultView.ToTable();
+
+                foreach (DataRow row in dt_Filtered.Rows)
+                {
+                    string partName = row[dalItem.ItemName].ToString().ToUpper();
+                    listBox1.Items.Add(partName);
+                }
+
+                showResultUIChange();
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtPartName.Text = listBox1.Items[listBox1.SelectedIndex].ToString();
+            hideResults();
+            PartCodeUpdate();
+        }
+
+        private void listBox1_Leave(object sender, EventArgs e)
+        {
+            hideResults();
         }
     }
 }

@@ -854,7 +854,7 @@ namespace FactoryManagementSoftware.UI
                 foreach(DataRow row in dt_ProductionRecord.Rows)
                 {
                     bool active = Convert.ToBoolean(row[dalProRecord.Active].ToString());
-                    if(planID == row[dalProRecord.PlanID].ToString() && active)
+                    if(planID == row[dalProRecord.JobNo].ToString() && active)
                     {
                         dt_Row = dt.NewRow();
 
@@ -2590,7 +2590,7 @@ namespace FactoryManagementSoftware.UI
             foreach(DataRow row in dt.Rows)
             {
                 bool active = Convert.ToBoolean(row[dalProRecord.Active]);
-                if(planID == row[dalProRecord.PlanID].ToString() && active)
+                if(planID == row[dalProRecord.JobNo].ToString() && active)
                 {
                     DateTime proDate = Convert.ToDateTime(row[dalProRecord.ProDate]);
                     int balanceLeft = int.TryParse(row[dalProRecord.CurrentShiftBalance].ToString(), out balanceLeft) ? balanceLeft : 0;

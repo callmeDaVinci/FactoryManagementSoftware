@@ -190,7 +190,7 @@
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(469, 212);
+            this.groupBox1.Size = new System.Drawing.Size(469, 178);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "1. ITEM";
@@ -220,7 +220,7 @@
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel18.Size = new System.Drawing.Size(463, 188);
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(463, 154);
             this.tableLayoutPanel18.TabIndex = 33;
             this.tableLayoutPanel18.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel18_Paint);
             // 
@@ -278,7 +278,7 @@
             this.tableLayoutPanel26.RowCount = 2;
             this.tableLayoutPanel26.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel26.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel26.Size = new System.Drawing.Size(227, 68);
+            this.tableLayoutPanel26.Size = new System.Drawing.Size(227, 34);
             this.tableLayoutPanel26.TabIndex = 115;
             // 
             // btnPartInfoSave
@@ -561,7 +561,7 @@
             this.gbMaterialNeeded.ForeColor = System.Drawing.Color.Black;
             this.gbMaterialNeeded.Location = new System.Drawing.Point(3, 127);
             this.gbMaterialNeeded.Name = "gbMaterialNeeded";
-            this.gbMaterialNeeded.Size = new System.Drawing.Size(933, 463);
+            this.gbMaterialNeeded.Size = new System.Drawing.Size(933, 365);
             this.gbMaterialNeeded.TabIndex = 1;
             this.gbMaterialNeeded.TabStop = false;
             this.gbMaterialNeeded.Text = "MATERIAL";
@@ -581,7 +581,7 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 197F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(927, 439);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(927, 341);
             this.tableLayoutPanel5.TabIndex = 112;
             // 
             // dataGridView2
@@ -599,9 +599,10 @@
             this.dataGridView2.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersVisible = false;
+            this.dataGridView2.RowHeadersWidth = 51;
             this.dataGridView2.RowTemplate.Height = 40;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(923, 208);
+            this.dataGridView2.Size = new System.Drawing.Size(923, 110);
             this.dataGridView2.TabIndex = 111;
             // 
             // label1
@@ -1307,7 +1308,7 @@
             this.groupBox5.Location = new System.Drawing.Point(472, 0);
             this.groupBox5.Margin = new System.Windows.Forms.Padding(0);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(473, 212);
+            this.groupBox5.Size = new System.Drawing.Size(473, 178);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "ITEM RECORD (current + last 3 months)";
@@ -1324,7 +1325,7 @@
             this.tableLayoutPanel15.RowCount = 2;
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 147F));
-            this.tableLayoutPanel15.Size = new System.Drawing.Size(467, 188);
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(467, 154);
             this.tableLayoutPanel15.TabIndex = 107;
             // 
             // tableLayoutPanel8
@@ -1382,7 +1383,7 @@
             this.tableLayoutPanel22.Name = "tableLayoutPanel22";
             this.tableLayoutPanel22.RowCount = 1;
             this.tableLayoutPanel22.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel22.Size = new System.Drawing.Size(467, 161);
+            this.tableLayoutPanel22.Size = new System.Drawing.Size(467, 147);
             this.tableLayoutPanel22.TabIndex = 107;
             // 
             // dgvAssemblyRecord
@@ -1401,9 +1402,10 @@
             this.dgvAssemblyRecord.Name = "dgvAssemblyRecord";
             this.dgvAssemblyRecord.ReadOnly = true;
             this.dgvAssemblyRecord.RowHeadersVisible = false;
+            this.dgvAssemblyRecord.RowHeadersWidth = 51;
             this.dgvAssemblyRecord.RowTemplate.Height = 40;
             this.dgvAssemblyRecord.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAssemblyRecord.Size = new System.Drawing.Size(225, 157);
+            this.dgvAssemblyRecord.Size = new System.Drawing.Size(225, 143);
             this.dgvAssemblyRecord.TabIndex = 107;
             // 
             // dgvProductionRecord
@@ -1422,9 +1424,10 @@
             this.dgvProductionRecord.Name = "dgvProductionRecord";
             this.dgvProductionRecord.ReadOnly = true;
             this.dgvProductionRecord.RowHeadersVisible = false;
+            this.dgvProductionRecord.RowHeadersWidth = 51;
             this.dgvProductionRecord.RowTemplate.Height = 40;
             this.dgvProductionRecord.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvProductionRecord.Size = new System.Drawing.Size(224, 157);
+            this.dgvProductionRecord.Size = new System.Drawing.Size(224, 143);
             this.dgvProductionRecord.TabIndex = 106;
             this.dgvProductionRecord.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecast_CellClick);
             this.dgvProductionRecord.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecast_CellContentClick);
@@ -1550,10 +1553,10 @@
             // 
             this.groupBox8.Controls.Add(this.tableLayoutPanel11);
             this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox8.Location = new System.Drawing.Point(0, 212);
+            this.groupBox8.Location = new System.Drawing.Point(0, 178);
             this.groupBox8.Margin = new System.Windows.Forms.Padding(0);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(945, 617);
+            this.groupBox8.Size = new System.Drawing.Size(945, 519);
             this.groupBox8.TabIndex = 104;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "2. REQUIREMENT";
@@ -1570,7 +1573,7 @@
             this.tableLayoutPanel11.RowCount = 2;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 124F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(939, 593);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(939, 495);
             this.tableLayoutPanel11.TabIndex = 107;
             // 
             // tableLayoutPanel7
@@ -1618,7 +1621,7 @@
             this.tableLayoutPanel29.Name = "tableLayoutPanel29";
             this.tableLayoutPanel29.RowCount = 1;
             this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel29.Size = new System.Drawing.Size(945, 212);
+            this.tableLayoutPanel29.Size = new System.Drawing.Size(945, 178);
             this.tableLayoutPanel29.TabIndex = 108;
             // 
             // tableLayoutPanel28
@@ -1634,7 +1637,7 @@
             this.tableLayoutPanel28.RowCount = 2;
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.57298F));
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 74.42702F));
-            this.tableLayoutPanel28.Size = new System.Drawing.Size(945, 829);
+            this.tableLayoutPanel28.Size = new System.Drawing.Size(945, 697);
             this.tableLayoutPanel28.TabIndex = 109;
             // 
             // tableLayoutPanel1
@@ -1651,7 +1654,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1558, 829);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1324, 697);
             this.tableLayoutPanel1.TabIndex = 110;
             // 
             // groupBox10
@@ -1660,7 +1663,7 @@
             this.groupBox10.Location = new System.Drawing.Point(950, 0);
             this.groupBox10.Margin = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(608, 829);
+            this.groupBox10.Size = new System.Drawing.Size(374, 697);
             this.groupBox10.TabIndex = 111;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "3. MACHINE && SCHEDULE";
@@ -1672,7 +1675,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1582, 853);
+            this.ClientSize = new System.Drawing.Size(1348, 721);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "frmSBBProductionPlanningNew";

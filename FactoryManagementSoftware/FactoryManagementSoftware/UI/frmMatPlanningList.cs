@@ -59,27 +59,29 @@ namespace FactoryManagementSoftware.UI
         readonly string ContextJoinMaterial = "Join Material";
         readonly string ContextAddMaterial = "Add Material";
 
-        readonly string headerType = "TYPE";
-        readonly string headerMatCode = "MATERIAL";
-        readonly string headerPlanID = "PLAN";
-        readonly string headerFac = "FAC.";
-        readonly string headerStart = "START";
-        readonly string headerEnd = "END";
-        readonly string headerMac = "MAC.";
-        readonly string headerFrom = "FROM";
-        readonly string headerTransferPending = "TRANSFER PENDING (KG/PIECE)";
-        readonly string headerItem= "PLAN FOR";
-        readonly string headerPlanToUse = "PLAN TO USE QTY";
-        readonly string headerStatus = "STATUS";
-        readonly string headerBalance = "BALANCE";
-        readonly string headerTransfering = "TRANSFERING";
-        readonly string headerUnuse = "UNUSE";
+        readonly string headerType = "Type";
+        readonly string headerMatCode = "Material";
+        readonly string headerPlanID = "Plan";
+        readonly string headerFac = "Factory";
+        readonly string headerStart = "Start";
+        readonly string headerEnd = "End";
+        readonly string headerMac = "Machine";
+        readonly string headerFrom = "From";
+        readonly string headerTransferPending = "Transfer Pending";
+        readonly string headerItem= "Plan For";
+        readonly string headerPlanToUse = "Total Mat. Required";
+        readonly string headerMatUsed = "Mat. Used";
+        readonly string headerStatus = "Status";
+        readonly string headerBalance = "Balance";
+        readonly string headerTransfering = "Transferring";
+        readonly string headerUnuse = "Unuse";
 
-        readonly string headerStillNeed = "STILL NEED (KG/PIECE)";
-        readonly string headerStock = "FAC. STOCK (KG/PIECE)";
-        readonly string headerTransferred = "TRANSFERRED (KG/PIECE)";
-        //readonly string headerTransferCheck = "TRANSFER CHECK";
-        readonly string headerPrepare = "PREPARING... (KG/PIECE)";
+        readonly string headerStillNeed = "Mat. Still Needed";
+        readonly string headerStock = "Fac. Stock";
+        readonly string headerTransferred = "Transferred";
+
+        readonly string headerPrepare = "Preparing";
+
         readonly string sortByMat = "Material";
         readonly string sortByFac= "Factory";
         readonly string sortByMac = "Machine";
@@ -174,12 +176,18 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerItem, typeof(string));
             dt.Columns.Add(headerStart, typeof(DateTime));
             dt.Columns.Add(headerEnd, typeof(DateTime));
+
+            //Total Mat. Required
             dt.Columns.Add(headerPlanToUse, typeof(float));
-            
+
+            //Total Mat. Used
+            dt.Columns.Add(headerMatUsed, typeof(float));
+
+            //Total Mat. Still Needed
             dt.Columns.Add(headerStillNeed, typeof(float));
+
             dt.Columns.Add(headerStock, typeof(float));
 
-            //dt.Columns.Add(headerTransfered, typeof(float));
             dt.Columns.Add(headerTransferred, typeof(float));
             dt.Columns.Add(headerTransferPending, typeof(float));
             dt.Columns.Add(headerPrepare, typeof(float));
@@ -500,9 +508,6 @@ namespace FactoryManagementSoftware.UI
             {
                 DatabaseRefresh();
             }
-            //DataTable dt_ItemInfo = dalItem.Select();
-            //DataTable dt_MatPlan = dalMatPlan.Select();
-            //DataTable dt_Stock = dalStock.Select();
 
             float stillNeed = 0;
             float remainingStock = 0;

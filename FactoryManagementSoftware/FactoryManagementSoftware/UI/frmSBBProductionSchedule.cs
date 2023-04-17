@@ -578,7 +578,7 @@ namespace FactoryManagementSoftware.UI
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-            frmNewPlanning frm = new frmNewPlanning();
+            frmPlanningNEW frm = new frmPlanningNEW();
 
             // frmPlanning frm = new frmPlanning();
             frm.StartPosition = FormStartPosition.CenterScreen;

@@ -4519,5 +4519,10 @@ namespace FactoryManagementSoftware.UI
         {
 
         }
+
+        private void guna2GradientPanel5_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

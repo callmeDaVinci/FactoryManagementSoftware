@@ -753,14 +753,14 @@ namespace FactoryManagementSoftware.UI
         {
             if (!SBBFormOpen)
             {
-                frmLoading.ShowLoadingScreen();
+                //frmLoading.ShowLoadingScreen();
                 frmSBB frm = new frmSBB();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
                 frm.Show();
                 SBBFormOpen = true;
-                frmLoading.CloseForm();
+                //frmLoading.CloseForm();
             }
             else
             {
@@ -768,6 +768,15 @@ namespace FactoryManagementSoftware.UI
                 {
                     Application.OpenForms.OfType<frmSBB>().First().BringToFront();
                 }
+
+                //frmLoading.ShowLoadingScreen();
+                //frmSBB frm = new frmSBB();
+                //frm.MdiParent = this;
+                //frm.StartPosition = FormStartPosition.CenterScreen;
+                //frm.WindowState = FormWindowState.Maximized;
+                //frm.Show();
+                //SBBFormOpen = true;
+                //frmLoading.CloseForm();
             }
 
             //if (Application.OpenForms.OfType<frmSBB>().Count() == 1)

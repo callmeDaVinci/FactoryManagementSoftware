@@ -10,7 +10,7 @@ namespace FactoryManagementSoftware.DAL
     {
         #region data string name getter
         public string SheetID { get; } = "sheet_id";
-        public string PlanID { get; } = "plan_id";
+        public string JobNo { get; } = "plan_id";
         public string ProDate { get; } = "production_date";
         public string Shift { get; } = "shift";
         public string ProLotNo { get; } = "production_lot_no";
@@ -467,7 +467,7 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 String sql = @"INSERT INTO tbl_production_record 
-                            (" + PlanID + ","
+                            (" + JobNo + ","
                             + ProDate + ","
                             + Shift + ","
                             + ProLotNo + ","
@@ -794,7 +794,7 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"UPDATE tbl_production_record 
                             SET "
-                            + PlanID + "=@plan_id,"
+                            + JobNo + "=@plan_id,"
                             + ProDate + "=@production_date,"
                             + Shift + "=@shift,"
                             + ProLotNo + "=@production_lot_no,"
@@ -1030,7 +1030,7 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"UPDATE tbl_production_record 
                             SET "
-                            + PlanID + "=@new_plan_id,"
+                            + JobNo + "=@new_plan_id,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
                             " WHERE plan_id=@old_plan_id";

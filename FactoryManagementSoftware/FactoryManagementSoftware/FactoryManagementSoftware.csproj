@@ -29,7 +29,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>501</ApplicationRevision>
+    <ApplicationRevision>508</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -283,6 +283,12 @@
     <Compile Include="Module\ExcelTool.cs" />
     <Compile Include="Module\Tool.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="UI\frmPlanningVer2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmPlanningVer2.Designer.cs">
+      <DependentUpon>frmPlanningVer2.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmOrderAlertDetail_NEW.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -735,11 +741,11 @@
     <Compile Include="UI\frmOrderReceive.Designer.cs">
       <DependentUpon>frmOrderReceive.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmNewPlanning.cs">
+    <Compile Include="UI\frmPlanningNEW.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmNewPlanning.Designer.cs">
-      <DependentUpon>frmNewPlanning.cs</DependentUpon>
+    <Compile Include="UI\frmPlanningNEW.Designer.cs">
+      <DependentUpon>frmPlanningNEW.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmPlanning.cs">
       <SubType>Form</SubType>
@@ -1024,6 +1030,9 @@
     <EmbeddedResource Include="UI\frmItemGroupList.resx">
       <DependentUpon>frmItemGroupList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmPlanningVer2.resx">
+      <DependentUpon>frmPlanningVer2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderAlertDetail_NEW.resx">
       <DependentUpon>frmOrderAlertDetail_NEW.cs</DependentUpon>
     </EmbeddedResource>
@@ -1271,8 +1280,8 @@
     <EmbeddedResource Include="UI\frmOrderReceive.resx">
       <DependentUpon>frmOrderReceive.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmNewPlanning.resx">
-      <DependentUpon>frmNewPlanning.cs</DependentUpon>
+    <EmbeddedResource Include="UI\frmPlanningNEW.resx">
+      <DependentUpon>frmPlanningNEW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPlanning.resx">
       <DependentUpon>frmPlanning.cs</DependentUpon>

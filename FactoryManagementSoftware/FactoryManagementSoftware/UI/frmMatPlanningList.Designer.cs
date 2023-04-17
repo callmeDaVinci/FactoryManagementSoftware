@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnPrepare = new System.Windows.Forms.Button();
             this.btnCheckList = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -110,10 +110,10 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(0, 34);
+            this.label2.Location = new System.Drawing.Point(0, 13);
             this.label2.Margin = new System.Windows.Forms.Padding(0, 0, 4, 3);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(136, 13);
+            this.label2.Size = new System.Drawing.Size(135, 34);
             this.label2.TabIndex = 136;
             this.label2.Text = "MATERIAL REQUIRED LIST";
             // 
@@ -158,7 +158,7 @@
             this.btnByMat.BackColor = System.Drawing.Color.White;
             this.btnByMat.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnByMat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnByMat.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnByMat.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.btnByMat.ForeColor = System.Drawing.Color.Black;
             this.btnByMat.Location = new System.Drawing.Point(47, 33);
             this.btnByMat.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
@@ -208,7 +208,7 @@
             this.label7.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(3, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(60, 11);
+            this.label7.Size = new System.Drawing.Size(73, 12);
             this.label7.TabIndex = 144;
             this.label7.Text = "LAST UPDATED:";
             // 
@@ -218,7 +218,7 @@
             this.lblUpdatedTime.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUpdatedTime.Location = new System.Drawing.Point(3, 20);
             this.lblUpdatedTime.Name = "lblUpdatedTime";
-            this.lblUpdatedTime.Size = new System.Drawing.Size(99, 11);
+            this.lblUpdatedTime.Size = new System.Drawing.Size(125, 12);
             this.lblUpdatedTime.TabIndex = 143;
             this.lblUpdatedTime.Text = "SHOW DATA FOR THE PAST";
             // 
@@ -272,10 +272,10 @@
             this.lblFilter.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblFilter.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblFilter.ForeColor = System.Drawing.Color.Blue;
-            this.lblFilter.Location = new System.Drawing.Point(306, 52);
+            this.lblFilter.Location = new System.Drawing.Point(306, 48);
             this.lblFilter.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
             this.lblFilter.Name = "lblFilter";
-            this.lblFilter.Size = new System.Drawing.Size(74, 13);
+            this.lblFilter.Size = new System.Drawing.Size(85, 17);
             this.lblFilter.TabIndex = 147;
             this.lblFilter.Text = "MORE FILTER";
             this.lblFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -307,14 +307,14 @@
             this.dgvMatListByPlan.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvMatListByPlan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMatListByPlan.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMatListByPlan.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMatListByPlan.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgvMatListByPlan.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMatListByPlan.GridColor = System.Drawing.Color.White;
             this.dgvMatListByPlan.Location = new System.Drawing.Point(660, 0);
@@ -322,6 +322,7 @@
             this.dgvMatListByPlan.Name = "dgvMatListByPlan";
             this.dgvMatListByPlan.ReadOnly = true;
             this.dgvMatListByPlan.RowHeadersVisible = false;
+            this.dgvMatListByPlan.RowHeadersWidth = 51;
             this.dgvMatListByPlan.RowTemplate.Height = 40;
             this.dgvMatListByPlan.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMatListByPlan.Size = new System.Drawing.Size(660, 495);
@@ -342,22 +343,22 @@
             this.dgvMatListByMat.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvMatListByMat.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMatListByMat.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMatListByMat.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMatListByMat.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvMatListByMat.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMatListByMat.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvMatListByMat.Location = new System.Drawing.Point(0, 0);
             this.dgvMatListByMat.Margin = new System.Windows.Forms.Padding(0);
-            this.dgvMatListByMat.MultiSelect = false;
             this.dgvMatListByMat.Name = "dgvMatListByMat";
             this.dgvMatListByMat.ReadOnly = true;
             this.dgvMatListByMat.RowHeadersVisible = false;
+            this.dgvMatListByMat.RowHeadersWidth = 51;
             this.dgvMatListByMat.RowTemplate.Height = 40;
             this.dgvMatListByMat.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMatListByMat.Size = new System.Drawing.Size(660, 495);
@@ -458,7 +459,7 @@
             this.btnFilterApply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFilterApply.ForeColor = System.Drawing.Color.Black;
-            this.btnFilterApply.Location = new System.Drawing.Point(347, 33);
+            this.btnFilterApply.Location = new System.Drawing.Point(468, 37);
             this.btnFilterApply.Margin = new System.Windows.Forms.Padding(4, 1, 0, 1);
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.Size = new System.Drawing.Size(120, 36);
@@ -470,10 +471,12 @@
             // cbFilterCarton
             // 
             this.cbFilterCarton.AutoSize = true;
+            this.cbFilterCarton.Checked = true;
+            this.cbFilterCarton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbFilterCarton.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbFilterCarton.Location = new System.Drawing.Point(120, 52);
+            this.cbFilterCarton.Location = new System.Drawing.Point(173, 52);
             this.cbFilterCarton.Name = "cbFilterCarton";
-            this.cbFilterCarton.Size = new System.Drawing.Size(61, 17);
+            this.cbFilterCarton.Size = new System.Drawing.Size(69, 21);
             this.cbFilterCarton.TabIndex = 11;
             this.cbFilterCarton.Text = "Carton";
             this.cbFilterCarton.UseVisualStyleBackColor = true;
@@ -485,11 +488,11 @@
             this.cbFilterPart.Checked = true;
             this.cbFilterPart.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbFilterPart.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbFilterPart.Location = new System.Drawing.Point(222, 29);
+            this.cbFilterPart.Location = new System.Drawing.Point(309, 29);
             this.cbFilterPart.Name = "cbFilterPart";
-            this.cbFilterPart.Size = new System.Drawing.Size(46, 17);
+            this.cbFilterPart.Size = new System.Drawing.Size(79, 21);
             this.cbFilterPart.TabIndex = 10;
-            this.cbFilterPart.Text = "Part";
+            this.cbFilterPart.Text = "Sub Part";
             this.cbFilterPart.UseVisualStyleBackColor = true;
             this.cbFilterPart.CheckedChanged += new System.EventHandler(this.cbFilterPart_CheckedChanged_1);
             // 
@@ -499,9 +502,9 @@
             this.cbFilterSubMaterial.Checked = true;
             this.cbFilterSubMaterial.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbFilterSubMaterial.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbFilterSubMaterial.Location = new System.Drawing.Point(222, 52);
+            this.cbFilterSubMaterial.Location = new System.Drawing.Point(309, 56);
             this.cbFilterSubMaterial.Name = "cbFilterSubMaterial";
-            this.cbFilterSubMaterial.Size = new System.Drawing.Size(91, 17);
+            this.cbFilterSubMaterial.Size = new System.Drawing.Size(104, 21);
             this.cbFilterSubMaterial.TabIndex = 9;
             this.cbFilterSubMaterial.Text = "Sub Material";
             this.cbFilterSubMaterial.UseVisualStyleBackColor = true;
@@ -513,9 +516,9 @@
             this.cbFilterPigment.Checked = true;
             this.cbFilterPigment.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbFilterPigment.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbFilterPigment.Location = new System.Drawing.Point(120, 29);
+            this.cbFilterPigment.Location = new System.Drawing.Point(173, 29);
             this.cbFilterPigment.Name = "cbFilterPigment";
-            this.cbFilterPigment.Size = new System.Drawing.Size(68, 17);
+            this.cbFilterPigment.Size = new System.Drawing.Size(77, 21);
             this.cbFilterPigment.TabIndex = 8;
             this.cbFilterPigment.Text = "Pigment";
             this.cbFilterPigment.UseVisualStyleBackColor = true;
@@ -529,7 +532,7 @@
             this.cbFilterRawMaterial.Font = new System.Drawing.Font("Segoe UI", 7.8F);
             this.cbFilterRawMaterial.Location = new System.Drawing.Point(16, 29);
             this.cbFilterRawMaterial.Name = "cbFilterRawMaterial";
-            this.cbFilterRawMaterial.Size = new System.Drawing.Size(93, 17);
+            this.cbFilterRawMaterial.Size = new System.Drawing.Size(106, 21);
             this.cbFilterRawMaterial.TabIndex = 7;
             this.cbFilterRawMaterial.Text = "Raw Material";
             this.cbFilterRawMaterial.UseVisualStyleBackColor = true;
@@ -543,7 +546,7 @@
             this.cbFilterMasterBatch.Font = new System.Drawing.Font("Segoe UI", 7.8F);
             this.cbFilterMasterBatch.Location = new System.Drawing.Point(17, 52);
             this.cbFilterMasterBatch.Name = "cbFilterMasterBatch";
-            this.cbFilterMasterBatch.Size = new System.Drawing.Size(92, 17);
+            this.cbFilterMasterBatch.Size = new System.Drawing.Size(106, 21);
             this.cbFilterMasterBatch.TabIndex = 6;
             this.cbFilterMasterBatch.Text = "Master Batch";
             this.cbFilterMasterBatch.UseVisualStyleBackColor = true;
@@ -565,7 +568,7 @@
             // 
             // frmMatPlanningList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1350, 745);

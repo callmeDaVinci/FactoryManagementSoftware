@@ -201,7 +201,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_From = "FROM";
         readonly string header_To = "TO";
         readonly string header_Qty = "QTY";
-        readonly private string header_PlanID = "PLAN ID";
+        readonly private string header_JobNo = "JOB NO.";
 
         readonly string header_DOTblCode = "D/O TABLE CODE";
         readonly string header_DONo = "D/O #";
@@ -730,52 +730,56 @@ namespace FactoryManagementSoftware.UI
 
         private void loadLocationData(DataTable dt, ComboBox cmb, string columnName)
         {
-            DataTable lacationTable = dt.DefaultView.ToTable(true, columnName);
-
-            if(columnName == "fac_name")
+            if(dt!=null && dt.Columns.Contains(columnName))
             {
-                //<add name="connstrng" connectionString="Data Source=.\SQLEXPRESS01;Initial Catalog=Factory;Integrated Security=True"/>
-                //myconnstrng == "SERVER=192.168.1.102;DATABASE=Factory;USER ID=stock;PASSWORD=stock"
-                if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)
+                DataTable lacationTable = dt.DefaultView.ToTable(true, columnName);
+
+                if (columnName == "fac_name")
                 {
-                    //Semenyih
-                    cmb.DataSource = null;
-                    cmb.Items.Clear();
-                    //cmb.DisplayMember = columnName;
+                    //<add name="connstrng" connectionString="Data Source=.\SQLEXPRESS01;Initial Catalog=Factory;Integrated Security=True"/>
+                    //myconnstrng == "SERVER=192.168.1.102;DATABASE=Factory;USER ID=stock;PASSWORD=stock"
+                    if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)
+                    {
+                        //Semenyih
+                        cmb.DataSource = null;
+                        cmb.Items.Clear();
+                        //cmb.DisplayMember = columnName;
 
 
-                    cmb.Items.Add(text.Factory_Semenyih);
-                    cmb.Items.Add(text.Factory_Bina);
-                    cmb.Items.Add(text.Factory_2);
+                        cmb.Items.Add(text.Factory_Semenyih);
+                        cmb.Items.Add(text.Factory_Bina);
+                        cmb.Items.Add(text.Factory_2);
+                    }
+                    else
+                    {
+                        //for (int i = lacationTable.Rows.Count - 1; i >= 0; i--)
+                        //{
+                        //    DataRow dr = lacationTable.Rows[i];
+
+                        //    if (dr[columnName].ToString() == text.Factory_Semenyih)
+                        //        dr.Delete();
+
+                        //}
+
+                        lacationTable.AcceptChanges();
+
+                        lacationTable.DefaultView.Sort = columnName + " ASC";
+                        cmb.DataSource = lacationTable;
+                        cmb.DisplayMember = columnName;
+                        cmb.Text = text.Factory_2;
+
+                    }
                 }
                 else
                 {
-                    //for (int i = lacationTable.Rows.Count - 1; i >= 0; i--)
-                    //{
-                    //    DataRow dr = lacationTable.Rows[i];
-
-                    //    if (dr[columnName].ToString() == text.Factory_Semenyih)
-                    //        dr.Delete();
-
-                    //}
-
-                    lacationTable.AcceptChanges();
-
                     lacationTable.DefaultView.Sort = columnName + " ASC";
                     cmb.DataSource = lacationTable;
                     cmb.DisplayMember = columnName;
-                    cmb.Text = text.Factory_2;
-
                 }
+
             }
-            else
-            {
-                lacationTable.DefaultView.Sort = columnName + " ASC";
-                cmb.DataSource = lacationTable;
-                cmb.DisplayMember = columnName;
-            }
-            
-           
+
+
         }
 
         private void unitDataSource()
@@ -2437,7 +2441,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt_ItemInfo = dalItem.Select();
             int n;
 
-            string ProDate = null, itemCat = null, itemCode = null, itemName = null, fromCat = null, from = null, to = null, proQty = null, planID = null, unit = null, shift = null;
+            string ProDate = null, itemCat = null, itemCode = null, itemName = null, fromCat = null, from = null, to = null, proQty = null, JobNo = null, unit = null, shift = null;
 
             foreach (DataRow row in dt.Rows)
             {
@@ -2453,7 +2457,7 @@ namespace FactoryManagementSoftware.UI
                 from = row[header_From].ToString();
                 to = row[header_To].ToString();
                 proQty = row[header_Qty].ToString();
-                planID = row[header_PlanID].ToString();
+                JobNo = row[header_JobNo].ToString();
                 shift = row[header_Shift].ToString();
 
                 dtpTrfDate.Text = ProDate;
@@ -2514,17 +2518,17 @@ namespace FactoryManagementSoftware.UI
 
                 if(shift == "M" || shift == "N")
                 {
-                    note = "[Plan " + planID + "(" + shift + ")]";
+                    note = "[Plan " + JobNo + "(" + shift + ")]";
                 }
                 else if (shift == "MB" || shift == "NB")
                 {
 
-                    note = "[Plan " + planID + "(" + shift.Substring(0, 1) + ") " + text.Note_BalanceStockIn + "]";
+                    note = "[Plan " + JobNo + "(" + shift.Substring(0, 1) + ") " + text.Note_BalanceStockIn + "]";
                 }
                 else if (shift == "MBO" || shift == "NBO")
                 {
 
-                    note = "[Plan " + planID + "(" + shift.Substring(0, 1) + ") "+ text.Note_OldBalanceStockOut +"]";
+                    note = "[Plan " + JobNo + "(" + shift.Substring(0, 1) + ") "+ text.Note_OldBalanceStockOut +"]";
                 }
 
                 if(itemCat == text.Cat_Carton || itemCat == text.Cat_Packaging)

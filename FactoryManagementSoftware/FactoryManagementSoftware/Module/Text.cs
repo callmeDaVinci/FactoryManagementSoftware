@@ -456,6 +456,9 @@ namespace FactoryManagementSoftware.Module
 
         public string PolyORing_Short { get; } = "OR";
 
+        public string ClampSaddle_Short { get; } = "CS";
+
+
         #endregion
 
         #region SPP/SBB CATEGORY
@@ -494,6 +497,7 @@ namespace FactoryManagementSoftware.Module
         public string Type_PolyReducingBush { get; } = "POLY R.Bush";
 
         public string Type_PolyORing { get; } = "POLY O RING";
+        public string Type_ClampSaddle { get; } = "CLAMP SADDLE";
 
 
 
@@ -530,6 +534,7 @@ namespace FactoryManagementSoftware.Module
         public string DeliveredSummary { get; } = "Delivered Summary";
         public string ProductionHistory { get; } = "Production History";
         public string ForecastRecord { get; } = "Forecast Record";
+        public string JobPlanning { get; } = "Job Planning";
 
         public string DO_CustOwnDO { get; } = "*USE CUSTOMER OWN D/O";
 

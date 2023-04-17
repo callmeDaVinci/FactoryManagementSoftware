@@ -144,7 +144,7 @@ namespace FactoryManagementSoftware.UI
         private string ITEM_CODE = "";
         private string buttionAction = "";
         int userPermission = -1;
-        readonly string headerID = "PLAN";
+        readonly string headerJobNo = "JOB NO";
         readonly string headerStartDate = "START";
         readonly string headerEndDate = "ESTIMATE END";
         //readonly string headerProductionDay = "PRODUCTION DAY";
@@ -221,7 +221,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(headerID, typeof(int));
+            dt.Columns.Add(headerJobNo, typeof(int));
             dt.Columns.Add(headerStatus, typeof(string));
             
             dt.Columns.Add(headerFactory, typeof(string));
@@ -312,7 +312,7 @@ namespace FactoryManagementSoftware.UI
             //dgv.Columns[headerNote].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
 
-            dgv.Columns[headerID].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerJobNo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerStartDate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerEndDate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerFactory].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -336,7 +336,7 @@ namespace FactoryManagementSoftware.UI
             //dgv.Columns[headerProductionDay].DefaultCellStyle.ForeColor = Color.White;
 
             dgv.Columns[headerFactory].DefaultCellStyle.ForeColor = normalColor;
-            dgv.Columns[headerID].DefaultCellStyle.ForeColor = normalColor;
+            dgv.Columns[headerJobNo].DefaultCellStyle.ForeColor = normalColor;
             //dgv.Columns[headerID].Visible = false;
 
             //int colorR = 192;
@@ -692,7 +692,7 @@ namespace FactoryManagementSoftware.UI
 
                     row_Schedule = dt_Schedule.NewRow();
 
-                    row_Schedule[headerID] = row[dalPlanning.planID];
+                    row_Schedule[headerJobNo] = row[dalPlanning.planID];
                     row_Schedule[headerStartDate] = row[dalPlanning.productionStartDate];
                     row_Schedule[headerEndDate] = row[dalPlanning.productionEndDate];
 
@@ -1028,7 +1028,7 @@ namespace FactoryManagementSoftware.UI
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-            frmNewPlanning frm = new frmNewPlanning();
+            frmPlanningNEW frm = new frmPlanningNEW();
 
             // frmPlanning frm = new frmPlanning();
             frm.StartPosition = FormStartPosition.CenterScreen;
@@ -1063,7 +1063,7 @@ namespace FactoryManagementSoftware.UI
                 bool success = false;
                 foreach(DataGridViewRow row in dgvSchedule.SelectedRows)
                 {
-                    string planID = row.Cells[headerID].Value.ToString();
+                    string planID = row.Cells[headerJobNo].Value.ToString();
                     int planID_INT = -1;
 
                     if(!string.IsNullOrEmpty(planID) && int.TryParse(planID, out planID_INT))
@@ -1086,7 +1086,7 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataGridViewRow row in dgvSchedule.SelectedRows)
                 {
-                    string planID = row.Cells[headerID].Value.ToString();
+                    string planID = row.Cells[headerJobNo].Value.ToString();
                     string itemCode = row.Cells[headerPartCode].Value.ToString();
 
                     int planID_INT = -1;
@@ -2682,8 +2682,8 @@ namespace FactoryManagementSoftware.UI
                                 int otherMacID = Convert.ToInt32(dgv.Rows[i].Cells[headerMachine].Value);
                                 if (startDate == otherStart && macID == otherMacID)
                                 {
-                                    int planID = Convert.ToInt32(row[headerID].ToString());
-                                    int otherPlanID = Convert.ToInt32(dgv.Rows[i].Cells[headerID].Value);
+                                    int planID = Convert.ToInt32(row[headerJobNo].ToString());
+                                    int otherPlanID = Convert.ToInt32(dgv.Rows[i].Cells[headerJobNo].Value);
 
                                     if (checkIfFamilyMould(planID, otherPlanID))
                                     {
@@ -2812,7 +2812,7 @@ namespace FactoryManagementSoftware.UI
         {
             bool statusChanged = false;
 
-            uPlanning.plan_id = (int)dgvSchedule.Rows[rowIndex].Cells[headerID].Value;
+            uPlanning.plan_id = (int)dgvSchedule.Rows[rowIndex].Cells[headerJobNo].Value;
             uPlanning.machine_id = (int)dgvSchedule.Rows[rowIndex].Cells[headerMachine].Value;
             uPlanning.production_start_date = (DateTime)dgvSchedule.Rows[rowIndex].Cells[headerStartDate].Value;
             uPlanning.production_end_date = (DateTime)dgvSchedule.Rows[rowIndex].Cells[headerEndDate].Value;
@@ -3108,7 +3108,7 @@ namespace FactoryManagementSoftware.UI
             int rowIndex = dgv.CurrentCell.RowIndex;
             int colIndex = dgv.CurrentCell.ColumnIndex;
 
-            int planID = Convert.ToInt32(dgv.Rows[rowIndex].Cells[headerID].Value);
+            int planID = Convert.ToInt32(dgv.Rows[rowIndex].Cells[headerJobNo].Value);
 
             int macID = Convert.ToInt32(dgv.Rows[rowIndex].Cells[headerMachine].Value);
 
@@ -3227,7 +3227,7 @@ namespace FactoryManagementSoftware.UI
 
         private void editSchedule(int rowIndex)
         {
-            uPlanning.plan_id = (int)dgvSchedule.Rows[rowIndex].Cells[headerID].Value;
+            uPlanning.plan_id = (int)dgvSchedule.Rows[rowIndex].Cells[headerJobNo].Value;
             uPlanning.machine_id = (int)dgvSchedule.Rows[rowIndex].Cells[headerMachine].Value;
             uPlanning.production_start_date = (DateTime)dgvSchedule.Rows[rowIndex].Cells[headerStartDate].Value;
             uPlanning.production_end_date = (DateTime)dgvSchedule.Rows[rowIndex].Cells[headerEndDate].Value;
@@ -3318,7 +3318,7 @@ namespace FactoryManagementSoftware.UI
         {
             if(e.RowIndex != -1)
             {
-                string planID = dgvSchedule.Rows[e.RowIndex].Cells[headerID].Value.ToString();
+                string planID = dgvSchedule.Rows[e.RowIndex].Cells[headerJobNo].Value.ToString();
                 int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
                 //handle the row selection on right click
                
@@ -3459,7 +3459,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    int planID = int.TryParse(dgvSchedule.Rows[e.RowIndex].Cells[headerID].Value.ToString(), out planID) ? planID : 0;
+                    int planID = int.TryParse(dgvSchedule.Rows[e.RowIndex].Cells[headerJobNo].Value.ToString(), out planID) ? planID : 0;
 
                     planNoteUpdate(planID);
                 }

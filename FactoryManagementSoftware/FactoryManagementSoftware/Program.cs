@@ -26,7 +26,7 @@ namespace FactoryManagementSoftware
            
            //Application.Run(new frmItemEdit_NEW());
 
-           //Application.Run(new frmMatPlanningList());
+           //Application.Run(new frmPlanningVer2());
 
            Application.Run(new MainDashboard(1));
 
