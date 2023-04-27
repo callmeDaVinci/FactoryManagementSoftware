@@ -79,6 +79,9 @@ namespace FactoryManagementSoftware.UI
             loadItemCategoryData();
 
             cmbItemCat.Text = category;
+
+            loadItemNameData();
+
             cmbItemName.Text = itemName;
             cmbItemCode.Text = itemCode;
 

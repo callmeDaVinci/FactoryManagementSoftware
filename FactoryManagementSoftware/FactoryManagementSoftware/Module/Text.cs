@@ -190,6 +190,11 @@ namespace FactoryManagementSoftware.Module
         public string habit_belongTo_PlanningPage { get; } = "PLANNING PAGE";
         public string habit_planning_HourPerDay { get; } = "PLANNING: HOUR PER DAY";
         public string habit_planning_Wastage { get; } = "PLANNING: MATERIAL WASTAGE %";
+        public string habit_belongTo_ForecastReport { get; } = "FORECAST REPORT PAGE";
+        public string habit_ForecastReport_OutFrom { get; } = "FORECAST REPORT: OUT FROM";
+        public string habit_ForecastReport_OutTo { get; } = "FORECAST REPORT: OUT To";
+
+
         #endregion
 
         #region Location
@@ -535,6 +540,7 @@ namespace FactoryManagementSoftware.Module
         public string ProductionHistory { get; } = "Production History";
         public string ForecastRecord { get; } = "Forecast Record";
         public string JobPlanning { get; } = "Job Planning";
+        public string StockLocation { get; } = "Stock Location";
 
         public string DO_CustOwnDO { get; } = "*USE CUSTOMER OWN D/O";
 

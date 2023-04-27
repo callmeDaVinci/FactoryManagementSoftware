@@ -726,6 +726,7 @@ namespace FactoryManagementSoftware.UI
 
                         //float order_Requesting = tool.GetRequestingOrder(DB_PendingOrder, itemCode);
                         row[text.Header_Order_Requesting] = tool.GetRequestingOrder(DB_RequestingOrder, itemCode);
+                        
 
                         if (cbZeroStockType.Checked)
                         {
@@ -3397,6 +3398,9 @@ namespace FactoryManagementSoftware.UI
                     {
                         Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                         resetForm();
+
+                        dgvAlertSummary.Rows[rowIndex].Cells[text.Header_Order_Requesting].Value = tool.GetRequestingOrder(dalOrd.RequestingOrderSelect(), itemCode);
+
                         frmOrderRequest.orderSuccess = false;
                         Cursor = Cursors.Arrow; // change cursor to normal type
                     }

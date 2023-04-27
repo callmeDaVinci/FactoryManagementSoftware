@@ -26,6 +26,7 @@ using XlHAlign = Microsoft.Office.Interop.Excel.XlHAlign;
 using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
 using Syncfusion.XlsIO.Implementation.XmlSerialization;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -221,6 +222,8 @@ namespace FactoryManagementSoftware.UI
         userDAL dalUser = new userDAL();
         planningDAL dalPlanning = new planningDAL();
         dataTrfBLL uData = new dataTrfBLL();
+        habitDAL dalHabit = new habitDAL();
+        habitBLL uHabit = new habitBLL();
 
         Tool tool = new Tool();
 
@@ -1788,6 +1791,8 @@ namespace FactoryManagementSoftware.UI
 
             int MonthAgo = DateTime.Now.AddMonths(inactiveMonthsThreshold * -1).Month;
             int YearAgo = DateTime.Now.AddMonths(inactiveMonthsThreshold * -1).Year;
+            DateTime ActiveMinmumDate = new DateTime(Convert.ToInt32(YearAgo), Convert.ToInt32(MonthAgo), 1);
+
 
             foreach (DataRow row in dt_trfToCustomer.Rows)
             {
@@ -1812,11 +1817,14 @@ namespace FactoryManagementSoftware.UI
                     {
                         if (_Customer == "PMMA")
                         {
-
-                            //if (trfDate >= PMMA_START_DATE && trfDate <= PMMA_END_DATE)
-                            //{
-                            //    deliveredQtyThisMonth += trfQty;
-                            //}
+                            if (trfDate >= dtpPMMAOutFrom.Value && trfDate <= dtpPMMAOutTo.Value)
+                            {
+                                deliveredQtyThisMonth += trfQty;
+                            }
+                            else
+                            {
+                                totalTrfOutQty += trfQty;
+                            }
 
                             DateTime pmmaDate = tool.GetPMMAMonthAndYear(trfDate, DT_PMMA_DATE);
 
@@ -1824,6 +1832,11 @@ namespace FactoryManagementSoftware.UI
                             {
                                 month = pmmaDate.Month;
                                 year = pmmaDate.Year;
+
+                                //if (month == selectedCurentMonth && year == yearNow)
+                                //{
+                                //    deliveredQtyThisMonth += trfQty;
+                                //}
                             }
                             else
                             {
@@ -1832,35 +1845,21 @@ namespace FactoryManagementSoftware.UI
                         }
                         else
                         {
+                            if (trfDate >= dtpOutFrom.Value && trfDate <= dtpOutTo.Value)
+                            {
+                                deliveredQtyThisMonth += trfQty;
+                            }
+                            else
+                            {
+                                totalTrfOutQty += trfQty;
+                            }
+
                             month = trfDate.Month;
                             year = trfDate.Year;
                         }
 
-                        if (month != monthNow || year != yearNow)
-                        {
-                            totalTrfOutQty += trfQty;
-                        }
-
-                        
-
-                        if (_Customer == "PMMA")
-                        {
-                            if (month == selectedCurentMonth && year == yearNow)
-                            {
-                                deliveredQtyThisMonth += trfQty;
-                            }
-                        }
-                        else
-                        {
-                            if (trfDate >= dtpPMMAOutFrom.Value && trfDate <= dtpPMMAOutTo.Value)
-                            {
-                                deliveredQtyThisMonth += trfQty;
-                            }
-                        }
-                       
 
                         DateTime TransferDate = new DateTime(Convert.ToInt32(year),Convert.ToInt32(month),1);
-                        DateTime ActiveMinmumDate = new DateTime(Convert.ToInt32(YearAgo),Convert.ToInt32(MonthAgo),1);
 
                         if (TransferDate >= ActiveMinmumDate)
                         {
@@ -1907,8 +1906,12 @@ namespace FactoryManagementSoftware.UI
         {
             int toProduce = 0, produced = 0;
            
-            DateTime start = dtpPMMAOutFrom.Value;
-            DateTime end = dtpPMMAOutTo.Value;
+            //DateTime start = dtpPMMAOutFrom.Value;
+            //DateTime end = dtpPMMAOutTo.Value;
+
+            DateTime now = DateTime.Now;
+            var start = new DateTime(now.Year, now.Month, 1);
+            var end = start.AddMonths(1).AddDays(-1);
 
             bool itemFound = false;
 
@@ -2251,7 +2254,7 @@ namespace FactoryManagementSoftware.UI
 
         private DataTable FullDetailForecastData()
         {
-            #region Setting 1
+            #region Setting
 
             Cursor = Cursors.WaitCursor;
 
@@ -2275,11 +2278,6 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt_Data = NewForecastReportTable();
 
-            #endregion
-
-            #region Load Data
-
-            #region Setting 2
             DataRow dt_Row;
 
             var getForecastPeriod = getMonthYearPeriod();
@@ -2290,10 +2288,10 @@ namespace FactoryManagementSoftware.UI
             int year = DateToday.Year - 1;
             DateTime LastYear = DateTime.Parse("1/1/" + year);
 
-            string From = LastYear.ToString("yyyy/MM/dd");
-            string To = DateToday.AddMonths(1).ToString("yyyy/MM/dd");
+            string deliveredHistory_From = LastYear.ToString("yyyy/MM/dd");
+            string deliveredHistory_To = DateToday.AddMonths(1).ToString("yyyy/MM/dd");
 
-            DataTable dt_TrfHist = dalTrfHist.ItemDeliveredRecordSearch(From, To);
+            DataTable dt_TrfHist = dalTrfHist.ItemDeliveredRecordSearch(deliveredHistory_From, deliveredHistory_To);
 
             dt_TrfHist = RemoveOtherFromTransferRecord(dt_TrfHist);
 
@@ -2303,18 +2301,17 @@ namespace FactoryManagementSoftware.UI
 
             #endregion
 
-            //^^ 274ms (17/3)
-            
-            #region load single part
+            #region Load Data
 
+            #region load single part
+            //308ms 
             foreach (DataRow row in DT_ITEM_CUST.Rows)
             {
-                uData.part_code = row[dalItem.ItemCode].ToString();
-
                 bool gotNotPackagingChild = bool.TryParse(row[text.Header_GotNotPackagingChild].ToString(), out bool GotChild) ? GotChild : false;
 
                 if (!gotNotPackagingChild)
                 {
+                    uData.part_code = row[dalItem.ItemCode].ToString();
                     uData.customer_name = row[dalItemCust.CustName].ToString();
                     uData.cust_id = row[dalItemCust.CustID].ToString();
 
@@ -4477,463 +4474,6 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private DataTable NewSearchForecastDataForSummary()
-        {
-
-            #region pre Setting
-
-            Cursor = Cursors.WaitCursor;
-
-            lblForecastType.Text = ReportType_Full;
-
-            btnFullReport.Enabled = false;
-            btnSummary.Enabled = false;
-            btnRefresh.Enabled = false;
-            btnExcel.Enabled = false;
-            btnExcelAll.Enabled = false;
-
-            DataGridView dgv = dgvForecastReport;
-
-            alertLevel = float.TryParse(txtAlertLevel.Text, out alertLevel) ? alertLevel : 0;
-            dgvForecastReport.SuspendLayout();
-            lblLastUpdated.Visible = true;
-            lblUpdatedTime.Visible = true;
-
-            lblUpdatedTime.Text = DateTime.Now.ToString();
-            dgvForecastReport.DataSource = null;
-
-
-            string customer = cmbCustomer.Text;
-            DataTable dt_Data = NewForecastReportTable();
-
-            #endregion
-
-            //check if the keywords has value or not
-            if (!string.IsNullOrEmpty(customer))
-            {
-                #region Loading DB
-
-                DataRow dt_Row;
-
-                DataTable dt = dalItemCust.custSearch(customer);
-
-                //filter out terminated item
-                if (!cbIncludeTerminated.Checked)
-                    dt = RemoveTerminatedItem(dt);
-
-                DataTable dt_ItemForecast = dalItemForecast.Select(tool.getCustID(customer).ToString());
-
-                //DataTable dt_TrfHist = dalTrfHist.rangeItemToCustomerSearch(customer);//349
-
-                string from = dtpPMMAOutFrom.Value.ToString("yyyy/MM/dd");
-                string to = dtpPMMAOutTo.Value.ToString("yyyy/MM/dd");
-                string PMMA = tool.getCustName(1);
-
-                DataTable dt_TrfHist = dalTrfHist.rangeItemToCustomerTransferDataOnlySearch(PMMA, from, to);
-
-                DataTable DT_PMMA_DATE = dalPmmaDate.Select();
-
-               // DataTable dt_Estimate = dalTrfHist.ItemToCustomerAllTimeSearch(cmbCustomer.Text);//318
-
-                
-                //dt_MacSchedule.DefaultView.Sort = dalPlanning.partCode + " ASC";
-                //dt_MacSchedule = dt_MacSchedule.DefaultView.ToTable();
-                
-                //DT_JOIN = dalJoin.SelectAll();
-
-
-                //DT_ITEM = dalItem.Select();
-
-                
-                //dt_ProRecord.DefaultView.Sort = "item_code ASC";//222ms
-                //dt_ProRecord = dt_ProRecord.DefaultView.ToTable();
-
-                int index = 1;
-
-                dt.DefaultView.Sort = "item_name ASC";
-
-                
-                dt = dt.DefaultView.ToTable();
-
-                #endregion
-
-                //^ 2173ms 
-                dt.AcceptChanges();
-                foreach (DataRow row in dt.Rows)
-                {
-                    uData.part_code = row[dalItem.ItemCode].ToString();
-
-                    int assembly = row[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemAssemblyCheck]);
-                    int production = row[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemProductionCheck]);
-
-                    bool gotNotPackagingChild = tool.ifGotNotPackagingChild(uData.part_code, DT_JOIN, DT_ITEM);
-
-                    #region load single part
-
-                    if (!gotNotPackagingChild)
-                    {
-                        uData.index = index;
-                        uData.part_name = row[dalItem.ItemName].ToString();
-                        uData.color_mat = row[dalItem.ItemMBatch].ToString();
-                        uData.color = row[dalItem.ItemColor].ToString();
-                        uData.raw_mat = row[dalItem.ItemMaterial].ToString();
-                        uData.pw_per_shot = row[dalItem.ItemProPWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProPWShot]);
-                        uData.rw_per_shot = row[dalItem.ItemProRWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProRWShot]);
-                        uData.cavity = row[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row[dalItem.ItemCavity]);
-                        uData.cavity = uData.cavity == 0 ? 1 : uData.cavity;
-                        uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
-
-                        var result = GetProduceQty(uData.part_code, DT_MACHINE_SCHEDULE);
-
-                        uData.toProduce = result.Item1;
-                        uData.Produced = result.Item2;
-
-                        uData.forecast1 = GetForecastQty(dt_ItemForecast, uData.part_code, 1);
-                        uData.forecast2 = GetForecastQty(dt_ItemForecast, uData.part_code, 2);
-                        uData.forecast3 = GetForecastQty(dt_ItemForecast, uData.part_code, 3);
-
-                        //uData.estimate = CalculateEstimateOrder(DT_PMMA_DATE, dt_Estimate, uData.part_code, customer);
-
-                        //if (GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, DT_PMMA_DATE) == 0)
-                        //{
-                        //    uData.estimate = 0;
-                        //}
-
-                        if(uData.part_code == "V48KBW000")
-                        {
-                            float checkpoint = 1;
-                        }
-
-                        uData.deliveredOut = GetMaxOut(uData.part_code, customer, 0, dt_TrfHist, DT_PMMA_DATE);
-
-                        uData.outStd = uData.forecast1 - uData.deliveredOut;
-
-                        if (!customer.Equals("PMMA"))
-                        {
-                            uData.outStd = uData.estimate - uData.deliveredOut;
-
-                        }
-                        if (uData.forecast1 == -1)
-                        {
-                            if (customer.Equals("PMMA"))
-                            {
-                                uData.outStd = 0;
-                            }
-                            else
-                            {
-                                uData.outStd = uData.estimate - uData.deliveredOut;
-                            }
-                        }
-                        else if (uData.forecast1 > -1)
-                        {
-                            uData.outStd = uData.forecast1 - uData.deliveredOut;
-                        }
-
-                        uData.bal1 = uData.ready_stock;
-
-                        if (uData.outStd >= 0)
-                        {
-                            uData.bal1 = uData.ready_stock - uData.outStd;
-                        }
-
-                        uData.bal2 = uData.bal1 - uData.forecast2;
-
-                        if (uData.forecast2 == -1)
-                        {
-                            uData.bal2 = uData.bal1 - uData.estimate;
-                            //if (customer.Equals("PMMA"))
-                            //{
-                            //    uData.bal2 = uData.bal1;
-                            //}
-                            //else
-                            //{
-                            //    uData.bal2 = uData.bal1 - uData.estimate;
-                            //}
-                        }
-                        else if (uData.forecast2 > -1)
-                        {
-                            uData.bal2 = uData.bal1 - uData.forecast2;
-                        }
-
-
-                        if (!uData.color.Equals(uData.color_mat) && !string.IsNullOrEmpty(uData.color_mat))
-                        {
-                            uData.color_mat += " (" + uData.color + ")";
-                        }
-
-                        dt_Row = dt_Data.NewRow();
-
-                        if (uData.toProduce > 0)
-                        {
-                            dt_Row[headerToProduce] = uData.toProduce;
-                        }
-
-                        if (uData.Produced > 0)
-                        {
-                            dt_Row[headerProduced] = uData.Produced;
-                        }
-
-                        dt_Row[headerIndex] = uData.index;
-                        dt_Row[headerType] = typeSingle;
-                        dt_Row[headerBalType] = balType_Unique;
-                        dt_Row[headerItemType] = row[dalItem.ItemCat].ToString();
-                        dt_Row[headerRawMat] = uData.raw_mat;
-                        dt_Row[headerPartCode] = uData.part_code;
-                        dt_Row[headerPartName] = uData.part_name;
-                        dt_Row[headerColorMat] = uData.color_mat;
-                        dt_Row[headerPartWeight] = uData.pw_per_shot / uData.cavity + " (" + (uData.rw_per_shot / uData.cavity) + ")";
-                        dt_Row[headerReadyStock] = uData.ready_stock;
-                        dt_Row[headerEstimate] = uData.estimate;
-                        dt_Row[headerOut] = uData.deliveredOut;
-                        dt_Row[headerOutStd] = uData.outStd;
-
-                        dt_Row[headerBal1] = uData.bal1;
-                        dt_Row[headerBal2] = uData.bal2;
-
-                        dt_Row[headerForecast1] = uData.forecast1;
-                        dt_Row[headerForecast2] = uData.forecast2;
-                        dt_Row[headerForecast3] = uData.forecast3;
-
-                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked) || uData.deliveredOut > 0)
-                        {
-                            dt_Data.Rows.Add(dt_Row);
-                            index++;
-
-                            row.Delete();
-                        }
-
-                    }
-                   
-                    #endregion
-                }
-
-                dt.AcceptChanges();
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    uData.part_code = row[dalItem.ItemCode].ToString();
-
-                    int assembly = row[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemAssemblyCheck]);
-                    int production = row[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemProductionCheck]);
-
-                    bool gotNotPackagingChild = tool.ifGotNotPackagingChild(uData.part_code, DT_JOIN, DT_ITEM);
-
-
-                    #region load assembly part
-
-                    if (gotNotPackagingChild)
-                    {
-                        uData.index = index;
-                        uData.part_name = row[dalItem.ItemName].ToString();
-                        uData.color_mat = row[dalItem.ItemMBatch].ToString();
-                        uData.color = row[dalItem.ItemColor].ToString();
-                        uData.raw_mat = row[dalItem.ItemMaterial].ToString();
-                        uData.pw_per_shot = row[dalItem.ItemProPWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProPWShot]);
-                        uData.rw_per_shot = row[dalItem.ItemProRWShot] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemProRWShot]);
-                        uData.cavity = row[dalItem.ItemCavity] == DBNull.Value ? 1 : Convert.ToSingle(row[dalItem.ItemCavity]);
-                        uData.cavity = uData.cavity == 0 ? 1 : uData.cavity;
-                        uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
-
-                        var result = GetProduceQty(uData.part_code, DT_MACHINE_SCHEDULE);
-                        uData.toProduce = result.Item1;
-                        uData.Produced = result.Item2;
-
-                        uData.forecast1 = GetForecastQty(dt_ItemForecast, uData.part_code, 1);
-                        uData.forecast2 = GetForecastQty(dt_ItemForecast, uData.part_code, 2);
-                        uData.forecast3 = GetForecastQty(dt_ItemForecast, uData.part_code, 3);
-
-                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked) || uData.deliveredOut > 0)
-                        {
-                            dt_Row = dt_Data.NewRow();
-                            dt_Data.Rows.Add(dt_Row);
-                        }
-
-                        //uData.estimate = CalculateEstimateOrder(DT_PMMA_DATE, dt_Estimate, uData.part_code, customer);
-
-                        //if (GetMaxOut(uData.part_code, customer, 6, dt_TrfHist, DT_PMMA_DATE) == 0)
-                        //{
-                        //    uData.estimate = 0;
-                        //}
-
-                        uData.deliveredOut = GetMaxOut(uData.part_code, customer, 0, dt_TrfHist, DT_PMMA_DATE);
-
-                        uData.outStd = uData.forecast1 - uData.deliveredOut;
-
-                        #region Balance Calculation
-
-                        if (!customer.Equals("PMMA"))
-                        {
-                            uData.outStd = uData.estimate - uData.deliveredOut;
-                        }
-
-                        if (uData.forecast1 == -1)
-                        {
-                            if (customer.Equals("PMMA"))
-                            {
-                                uData.outStd = 0;
-                            }
-                            else
-                            {
-                                uData.outStd = uData.estimate - uData.deliveredOut;
-                            }
-                        }
-                        else if (uData.forecast1 > -1)
-                        {
-                            uData.outStd = uData.forecast1 - uData.deliveredOut;
-                        }
-
-                        uData.bal1 = uData.ready_stock;
-
-                        if (uData.outStd >= 0)
-                        {
-                            uData.bal1 = uData.ready_stock - uData.outStd;
-                        }
-
-                        uData.bal2 = uData.bal1 - uData.forecast2;
-
-                        if (uData.forecast2 == -1)
-                        {
-                            uData.bal2 = uData.bal1 - uData.estimate;
-                            //if (customer.Equals("PMMA"))
-                            //{
-                            //    uData.bal2 = uData.bal1;
-                            //}
-                            //else
-                            //{
-                            //    uData.bal2 = uData.bal1 - uData.estimate;
-                            //}
-                        }
-                        else if (uData.forecast2 > -1)
-                        {
-                            uData.bal2 = uData.bal1 - uData.forecast2;
-                        }
-
-                        #endregion 
-
-                        if (!uData.color.Equals(uData.color_mat) && !string.IsNullOrEmpty(uData.color_mat))
-                        {
-                            uData.color_mat += " (" + uData.color + ")";
-                        }
-
-                        dt_Row = dt_Data.NewRow();
-
-                        if (uData.toProduce > 0)
-                        {
-                            dt_Row[headerToProduce] = uData.toProduce;
-                        }
-
-                        if (uData.Produced > 0)
-                        {
-                            dt_Row[headerProduced] = uData.Produced;
-                        }
-
-                        dt_Row[headerIndex] = uData.index;
-                        dt_Row[headerItemType] = row[dalItem.ItemCat].ToString();
-                        dt_Row[headerType] = typeParent;
-                        dt_Row[headerBalType] = balType_Unique;
-                        dt_Row[headerRawMat] = uData.raw_mat;
-                        dt_Row[headerPartCode] = uData.part_code;
-                        dt_Row[headerPartName] = uData.part_name;
-                        dt_Row[headerColorMat] = uData.color_mat;
-                        dt_Row[headerPartWeight] = uData.pw_per_shot / uData.cavity + " (" + (uData.rw_per_shot / uData.cavity) + ")";
-                        dt_Row[headerReadyStock] = uData.ready_stock;
-                        dt_Row[headerEstimate] = uData.estimate;
-                        dt_Row[headerOut] = uData.deliveredOut;
-                        dt_Row[headerOutStd] = uData.outStd;
-
-                        dt_Row[headerBal1] = uData.bal1;
-                        dt_Row[headerBal2] = uData.bal2;
-
-                        dt_Row[headerForecast1] = uData.forecast1;
-                        dt_Row[headerForecast2] = uData.forecast2;
-                        dt_Row[headerForecast3] = uData.forecast3;
-
-                        if (assembly == 1 && production == 0)
-                        {
-                            dt_Row[headerParentColor] = AssemblyMarking;
-                        }
-                        else if (assembly == 0 && production == 1)
-                        {
-                            dt_Row[headerParentColor] = InsertMoldingMarking;
-                        }
-                        else if (assembly == 1 && production == 1)
-                        {
-                            dt_Row[headerParentColor] = AssemblyAfterProductionMarking;
-                        }
-
-
-                        if (!(uData.forecast1 <= 0 && uData.forecast2 <= 0 && uData.forecast3 <= 0 && cbRemoveNoOrderItem.Checked) || uData.deliveredOut > 0)
-                        {
-                            dt_Data.Rows.Add(dt_Row);
-                            index++;
-
-                            //load child
-                            LoadChild(dt_Data, uData, 0.1f);
-                        }
-                    }
-
-                    #endregion
-
-                }
-            }
-
-            //^ 14639ms--> 11000ms -->1712ms
-            if (dt_Data.Rows.Count > 0)
-            {
-                dt_Data = CalRepeatedData(dt_Data);
-
-                //dt_Data = CalRepeatedData(dt_Data);
-
-                //item search:fast speed
-                dt_Data = ItemSearch(dt_Data);
-
-                dtMasterData = Sorting(dt_Data);
-
-                if (cbIncludeProInfo.Checked)
-                {
-                    foreach (DataRow row in dtMasterData.Rows)
-                    {
-                        string itemCode = row[headerPartCode].ToString();
-
-                        foreach (DataRow itemRow in DT_ITEM.Rows)
-                        {
-                            if (itemCode.Equals(itemRow[dalItem.ItemCode].ToString()))
-                            {
-                                row[headerQuoTon] = itemRow[dalItem.ItemQuoTon].ToString();
-                                row[headerProTon] = itemRow[dalItem.ItemProTon].ToString();
-                                row[headerCavity] = itemRow[dalItem.ItemCavity].ToString();
-                                row[headerQuoCT] = itemRow[dalItem.ItemQuoCT].ToString();
-                                row[headerProCT] = itemRow[dalItem.ItemProCTTo].ToString();
-                                row[headerPWPerShot] = itemRow[dalItem.ItemProPWShot].ToString();
-                                row[headerRWPerShot] = itemRow[dalItem.ItemProRWShot].ToString();
-
-                                break;
-
-                                //row[headerTotalOut] = uData.color_mat;
-                                //row[headerMonthlyOut] = uData.color_mat;
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                dtMasterData = null;
-            }
-
-           
-
-            btnFullReport.Enabled = true;
-            btnSummary.Enabled = true;
-            btnRefresh.Enabled = true;
-            btnExcel.Enabled = true;
-            btnExcelAll.Enabled = true;
-
-            Cursor = Cursors.Arrow;
-
-            return dtMasterData;
-
-        }
 
         private DataTable Sorting(DataTable dt)
         {
@@ -6271,8 +5811,8 @@ namespace FactoryManagementSoftware.UI
             {
                 if (pastMonthQty <= 0)
                 {
-                    DateTime start = dtpPMMAOutFrom.Value;
-                    DateTime end = dtpPMMAOutTo.Value;
+                    DateTime start = dtpOutFrom.Value;
+                    DateTime end = dtpOutTo.Value;
 
                     foreach (DataRow row in dt_TrfHist.Rows)
                     {
@@ -6447,8 +5987,49 @@ namespace FactoryManagementSoftware.UI
 
                 if (!cmbCustomer.Text.Equals(tool.getCustName(1)))
                 {
-                    dtpOutFrom.Value = new DateTime(year, month, 1);
-                    dtpOutTo.Value = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+                    //check if habit exist
+                    string oldOutPeriod_From = "";
+                    string oldOutPeriod_To = "";
+
+                    string habitName_1 = text.habit_ForecastReport_OutFrom + "(" + monthString + year + ")";
+                    string habitName_2 = text.habit_ForecastReport_OutTo + "(" + monthString + year + ")";
+
+                    DataTable dt = dalHabit.HabitSearch(text.habit_belongTo_ForecastReport, habitName_1, habitName_2);
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        if (row[dalHabit.HabitName].ToString() == habitName_1)
+                        {
+                            oldOutPeriod_From = row[dalHabit.HabitData].ToString();
+
+                        }
+                        else if (row[dalHabit.HabitName].ToString() == habitName_2)
+                        {
+                            oldOutPeriod_To = row[dalHabit.HabitData].ToString();
+                        }
+                    }
+
+                    dtpOutFrom.Value = DateTime.TryParse(oldOutPeriod_From, out DateTime outFrom) ? outFrom : new DateTime(year, month, 1);
+                    dtpOutTo.Value = DateTime.TryParse(oldOutPeriod_To, out DateTime outTo) ? outTo : new DateTime(year, month, DateTime.DaysInMonth(year, month));
+
+                    //if (string.IsNullOrEmpty(oldOutPeriod_From))
+                    //{
+                    //    dtpOutFrom.Value = new DateTime(year, month, 1);
+                    //}
+                    //else
+                    //{
+                        
+
+                    //}
+
+                    //if (string.IsNullOrEmpty(oldOutPeriod_To))
+                    //{
+                    //    dtpOutTo.Value = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+                    //}
+                    //else
+                    //{
+
+                    //}
 
                     dtpOutFrom.Enabled = true;
                     dtpOutTo.Enabled = true;
@@ -6660,7 +6241,7 @@ namespace FactoryManagementSoftware.UI
                                 xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri\"&8 " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"); ;
                                 xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri\"&12 (" + cmbCustomer.Text + ") FORECAST SUMMARY REPORT";
                                 xlWorkSheet.PageSetup.RightHeader = "&\"Calibri\"&8 PG -&P";
-                                xlWorkSheet.PageSetup.CenterFooter = "&\"Calibri\"&8 Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + ", OUT PEROID FROM:" + dtpPMMAOutFrom.Text + " TO:" + dtpPMMAOutTo.Text;
+                                xlWorkSheet.PageSetup.CenterFooter = "&\"Calibri\"&8 Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + ", PMMA OUT PEROID FROM:" + dtpPMMAOutFrom.Text + " TO:" + dtpPMMAOutTo.Text + ", OTHER CUSTOMER OUT PEROID FROM:" + dtpOutFrom.Text + " TO:" + dtpOutTo.Text;
                                 //xlWorkSheet.PageSetup.LeftFooter = "&\"Calibri\"&8 *Produced: was produced within this month.\n-1: No data found in database.";
 
 
@@ -6963,7 +6544,7 @@ namespace FactoryManagementSoftware.UI
                                 xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri\"&8 " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"); ;
                                 xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri\"&12 (" + cmbCustomer.Text + ") FORECAST REPORT";
                                 xlWorkSheet.PageSetup.RightHeader = "&\"Calibri\"&8 PG -&P";
-                                xlWorkSheet.PageSetup.CenterFooter = "&\"Calibri\"&8 Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + ", OUT PEROID FROM:" + dtpPMMAOutFrom.Text + " TO:" + dtpPMMAOutTo.Text;
+                                xlWorkSheet.PageSetup.CenterFooter = "&\"Calibri\"&8 Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + ", PMMA OUT PEROID FROM:" + dtpPMMAOutFrom.Text + " TO:" + dtpPMMAOutTo.Text + ", OTHER CUSTOMER OUT PEROID FROM:" + dtpOutFrom.Text + " TO:" + dtpOutTo.Text;
                                 //xlWorkSheet.PageSetup.LeftFooter = "&\"Calibri\"&8 *Produced: was produced within this month.\n-1: No data found in database.";
 
 
@@ -7374,7 +6955,7 @@ namespace FactoryManagementSoftware.UI
                     xlWorkSheet.PageSetup.LeftHeader = "&\"Calibri\"&8 " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"); 
                     xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri\"&12 (" + cmbCustomer.Text + ") READY STOCK VERSUS FORECAST";
                     xlWorkSheet.PageSetup.RightHeader = "&\"Calibri\"&8 PG -&P";
-                    xlWorkSheet.PageSetup.CenterFooter = "&\"Calibri\"&8 Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + ", OUT PEROID FROM:" + dtpPMMAOutFrom.Text + " TO:" + dtpPMMAOutTo.Text;
+                    xlWorkSheet.PageSetup.CenterFooter = "&\"Calibri\"&8 Printed By " + dalUser.getUsername(MainDashboard.USER_ID) + ", PMMA OUT PEROID FROM:" + dtpPMMAOutFrom.Text + " TO:" + dtpPMMAOutTo.Text + ", OTHER CUSTOMER OUT PEROID FROM:" + dtpOutFrom.Text + " TO:" + dtpOutTo.Text;
                     xlWorkSheet.PageSetup.LeftFooter = "&\"Calibri\"&8 *Produced: was produced within this month.\n-1: No data found in database.";
 
 
@@ -7845,15 +7426,24 @@ namespace FactoryManagementSoftware.UI
 
                 try
                 {
-                    my_menu.Items.Add(text.DeliveredSummary).Name = text.DeliveredSummary;
-                    my_menu.Items.Add(text.ProductionHistory).Name = text.ProductionHistory;
-                    my_menu.Items.Add(text.ForecastRecord).Name = text.ForecastRecord;
-                    my_menu.Items.Add(text.JobPlanning).Name = text.JobPlanning;
+                    if(currentHeader == headerReadyStock)
+                    {
+                        ShowStockLocation(dgv.Rows[rowIndex].Cells[headerPartCode].Value.ToString());
+                    }
+                    else
+                    {
+                        my_menu.Items.Add(text.DeliveredSummary).Name = text.DeliveredSummary;
+                        my_menu.Items.Add(text.ProductionHistory).Name = text.ProductionHistory;
+                        my_menu.Items.Add(text.ForecastRecord).Name = text.ForecastRecord;
+                        my_menu.Items.Add(text.JobPlanning).Name = text.JobPlanning;
+                        //my_menu.Items.Add(text.StockLocation).Name = text.StockLocation;
 
-                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+                        my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
-                    contextMenuStrip1 = my_menu;
-                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
+                        contextMenuStrip1 = my_menu;
+                        my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
+                    }
+                    
 
 
                 }
@@ -7864,6 +7454,61 @@ namespace FactoryManagementSoftware.UI
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void ShowStockLocation(string itemCode)
+        {
+            ContextMenuStrip my_menu = new ContextMenuStrip();
+
+            facStockDAL dalStock = new facStockDAL();
+
+            my_menu.Items.Add(itemCode + "     " + tool.getItemNameFromDataTable(DT_ITEM, itemCode)).Name = itemCode;
+            my_menu.Items.Add("").Name = itemCode;
+
+            DataTable dt = dalStock.Select(itemCode);
+
+            float TotalStock = 0;
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow stock in dt.Rows)
+                {
+                    string fac = stock["fac_name"].ToString();
+                    float qty = float.TryParse(stock["stock_qty"].ToString(), out float x) ? x : 0;
+
+                    TotalStock += qty;
+
+                    if (qty > 0)
+                    {
+                        int length = fac.Length;
+                        if ((10 - length) >= 0)
+                        {
+                            for (int i = 1; i <= (10 - length); i++)
+                            {
+                                fac += " ";
+                            }
+                        }
+
+                        my_menu.Items.Add(fac + " " + qty.ToString("0.##")).Name = fac;
+
+                    }
+
+                }
+
+
+                my_menu.Items.Add("---------------------").Name = "Line1";
+                my_menu.Items.Add("Total" + "       " + TotalStock.ToString("0.##")).Name = "Total";
+                my_menu.Items.Add("---------------------").Name = "Line2";
+            }
+            else
+            {
+                string fac = "null";
+                string qty = "null";
+
+                my_menu.Items.Add(fac + "   " + qty).Name = fac;
+            }
+
+            my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
         }
 
         private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -7933,6 +7578,10 @@ namespace FactoryManagementSoftware.UI
                 //frm.Size = new Size(1700, 450);
                 frm.Show();
 
+            }
+            else if (itemClicked.Equals(text.StockLocation))
+            {
+                ShowStockLocation(itemCode);
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
@@ -8023,7 +7672,7 @@ namespace FactoryManagementSoftware.UI
                             historyMonthAndYear += historyDetail[i].ToString();
                         }
 
-                        if (historyDetail[i].ToString() == "_")
+                        if (gettingCustomerInfo && historyDetail[i].ToString() == "_")
                         {
                             gettingCustomerInfo = false;
                             gettingMonthAndYearInfo = true;
@@ -8056,6 +7705,12 @@ namespace FactoryManagementSoftware.UI
                     bool dataMatched = true;
 
                     dataMatched = historyItem.Contains(itemcode) ? dataMatched : false;
+
+                    if(dataMatched)
+                    {
+                        var checkpoint = 0;
+                    }
+
                     dataMatched = historyCustomer == customer ? dataMatched : false;
 
 
@@ -8580,6 +8235,88 @@ namespace FactoryManagementSoftware.UI
         private void label18_Click(object sender, EventArgs e)
         {
             txtColorMatSearching.Text = "";
+
+        }
+
+        private void OtherCustomerOutPeriodSave()
+        {
+            if(loaded)
+            {
+                string habitData_1 = dtpOutFrom.Value.ToString();
+                string habitData_2 = dtpOutTo.Value.ToString();
+
+                string monthString = cmbForecastFrom.Text;
+
+                int month = DateTime.ParseExact(monthString, "MMMM", CultureInfo.CurrentCulture).Month;
+                int year = DateTime.Now.Year;
+
+                //check old data
+                string oldOutPeriod_From = "";
+                string oldOutPeriod_To = "";
+
+                string habitName_1 = text.habit_ForecastReport_OutFrom + "(" + monthString + year + ")";
+                string habitName_2 = text.habit_ForecastReport_OutTo + "(" + monthString + year + ")";
+
+                DataTable dt = dalHabit.HabitSearch(text.habit_belongTo_ForecastReport, habitName_1, habitName_2);
+
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[dalHabit.HabitName].ToString() == habitName_1)
+                    {
+                        oldOutPeriod_From = row[dalHabit.HabitData].ToString();
+
+                    }
+                    else if (row[dalHabit.HabitName].ToString() == habitName_2)
+                    {
+                        oldOutPeriod_To = row[dalHabit.HabitData].ToString();
+                    }
+                }
+                bool success = true;
+
+                if (oldOutPeriod_From != habitData_1)
+                {
+                    //save habit
+                    uHabit.belong_to = text.habit_belongTo_ForecastReport;
+                    uHabit.habit_name = habitName_1;
+                    uHabit.habit_data = habitData_1;
+                    uHabit.added_date = DateTime.Now;
+                    uHabit.added_by = MainDashboard.USER_ID;
+
+                    success = dalHabit.HabitInsertAndHistoryRecord(uHabit);
+                }
+
+                if (oldOutPeriod_To != habitData_2)
+                {
+                    //save habit
+                    uHabit.belong_to = text.habit_belongTo_ForecastReport;
+                    uHabit.habit_name = habitName_2;
+                    uHabit.habit_data = habitData_2;
+                    uHabit.added_date = DateTime.Now;
+                    uHabit.added_by = MainDashboard.USER_ID;
+
+                    success = dalHabit.HabitInsertAndHistoryRecord(uHabit);
+                }
+
+                //MessageBox.Show("Out period for other customer changed!");
+               
+            }
+           
+
+            
+        }
+
+        private void dtpOutFrom_ValueChanged_1(object sender, EventArgs e)
+        {
+            dgvForecastReport.DataSource = null;
+            OtherCustomerOutPeriodSave();
+
+        }
+
+        private void dtpOutTo_ValueChanged_1(object sender, EventArgs e)
+        {
+            dgvForecastReport.DataSource = null;
+            OtherCustomerOutPeriodSave();
 
         }
     }
