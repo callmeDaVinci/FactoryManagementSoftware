@@ -155,25 +155,17 @@ namespace FactoryManagementSoftware.UI
 
             if (!string.IsNullOrEmpty(keywords))
             {
-                DT_PART_NAME = dalItem.CatSearch(keywords);
-                DT_PART_NAME = DT_PART_NAME.DefaultView.ToTable(true, "item_name");
-                DT_PART_NAME.DefaultView.Sort = "item_name ASC";
+                InitialNameTextBox();
 
-                cmbPartName.DataSource = DT_PART_NAME;
-                cmbPartName.DisplayMember = "item_name";
-                cmbPartName.ValueMember = "item_name";
-
-                if (string.IsNullOrEmpty(cmbPartName.Text))
+                if (string.IsNullOrEmpty(ctbPartName.Text))
                 {
                     cmbPartCode.DataSource = null;
                 }
             }
             else
             {
-                cmbPartName.DataSource = null;
+                ctbPartName.Values = null;
             }
-
-            cmbPartName.SelectedIndex = -1;
 
             loadHabitData();
 
@@ -185,24 +177,17 @@ namespace FactoryManagementSoftware.UI
 
             if (!string.IsNullOrEmpty(keywords))
             {
-                DataTable dt = dalItem.CatSearch(keywords);
-                DataTable distinctTable = dt.DefaultView.ToTable(true, "item_name");
-                distinctTable.DefaultView.Sort = "item_name ASC";
-                cmbPartName.DataSource = distinctTable;
-                cmbPartName.DisplayMember = "item_name";
-                cmbPartName.ValueMember = "item_name";
+                InitialNameTextBox();
 
-                if (string.IsNullOrEmpty(cmbPartName.Text))
+                if (string.IsNullOrEmpty(ctbPartName.Text))
                 {
                     cmbPartCode.DataSource = null;
                 }
             }
             else
             {
-                cmbPartName.DataSource = null;
+                ctbPartName.Values = null;
             }
-
-            cmbPartName.SelectedIndex = -1;
 
             loadHabitData();
 
@@ -2072,67 +2057,42 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
+        private void InitialNameTextBox()
+        {
+            string keywords = "Part";
+
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                DataTable dt = dalItem.CatSearch(keywords);
+                dt = dt.DefaultView.ToTable(true, "item_name");
+                dt.DefaultView.Sort = "item_name ASC";
+
+                string[] stringArray = new string[dt.Rows.Count];
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    stringArray[i] = dt.Rows[i][0].ToString();
+                }
+
+                ctbPartName.Values = stringArray;
+            }
+            
+        }
         private void frmPlanning_Load(object sender, EventArgs e)
         {
             CalTotalRecycleMat();
-            ActiveControl = cmbPartName;
+            ActiveControl = ctbPartName;
 
             dt_Join = dalJoin.SelectAll();
             dt_Item = dalItem.Select();
    
-
-
             if (name != null)
             {
-                cmbPartName.Text = name;
+                ctbPartName.Text = name;
                 cmbPartCode.Text = code;
             }
             loaded = true;
-        }
 
-        private void cmbPartName_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            
-            errorProvider1.Clear();
-            string keywords = cmbPartName.Text;
-
-            if (!string.IsNullOrEmpty(keywords))
-            {
-                ableToLoadData = false;
-                DataTable dt = dalItem.nameSearch(keywords);
-
-                foreach(DataRow row in dt.Rows)
-                {
-                    string itemCat = row[dalItem.ItemCat].ToString();
-
-                    if(!itemCat.Equals(text.Cat_Part))
-                    {
-                        row.Delete();
-                    }
-                }
-
-                dt.AcceptChanges();
-
-                cmbPartCode.DataSource = dt;
-                cmbPartCode.DisplayMember = "item_code";
-                cmbPartCode.ValueMember = "item_code";
-                cmbPartCode.SelectedIndex = -1;
-                ableToLoadData = true;
-
-                int count = cmbPartCode.Items.Count;
-
-                if(count == 1)
-                {
-                    cmbPartCode.SelectedIndex = 0;
-                }
-            }
-            else
-            {
-                cmbPartCode.DataSource = null;
-            }
-
-            Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
         private void cmbPartCode_SelectedIndexChanged(object sender, EventArgs e)
@@ -2153,7 +2113,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (dalItem.checkIfAssembly(cmbPartCode.Text) && !dalItem.checkIfProduction(cmbPartCode.Text) && tool.ifGotChildExcludePackaging(cmbPartCode.Text))
                 {
-                    MessageBox.Show(cmbPartCode.Text + " " + cmbPartName.Text + " is a assembly part!");
+                    MessageBox.Show(cmbPartCode.Text + " " + ctbPartName.Text + " is a assembly part!");
                 }
                 else
                 {
@@ -3082,7 +3042,7 @@ namespace FactoryManagementSoftware.UI
         {
             bool result = true;
 
-            if (string.IsNullOrEmpty(cmbPartName.Text))
+            if (string.IsNullOrEmpty(ctbPartName.Text))
             {
                 result = false;
                 errorProvider1.SetError(lblPartName, "Part Name Required");
@@ -3127,7 +3087,7 @@ namespace FactoryManagementSoftware.UI
         private void getPlanningData()
         {
             uPlanning.plan_id = -1;
-            uPlanning.part_name = cmbPartName.Text;
+            uPlanning.part_name = ctbPartName.Text;
             uPlanning.part_code = cmbPartCode.Text;
 
             uPlanning.plan_cavity = txtCavity.Text;
@@ -4119,20 +4079,6 @@ namespace FactoryManagementSoftware.UI
         {
 
         }
-        private void FilterSuggestions(string keyword)
-        {
-            var filteredSuggestions = DT_PART_NAME.Clone();
-
-            foreach (DataRow row in DT_PART_NAME.Rows)
-            {
-                if (row["item_name"].ToString().IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    filteredSuggestions.ImportRow(row);
-                }
-            }
-
-            cmbPartName.DataSource = filteredSuggestions;
-        }
 
         private void cmbPartName_TextChanged(object sender, EventArgs e)
         {
@@ -4143,7 +4089,49 @@ namespace FactoryManagementSoftware.UI
         private List<string> _allItems;
         private AutoCompleteStringCollection _filteredItems;
 
+        private void ctbPartName_TextChanged(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-       
+            errorProvider1.Clear();
+            string keywords = ctbPartName.Text;
+
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                ableToLoadData = false;
+                DataTable dt = dalItem.nameSearch(keywords);
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string itemCat = row[dalItem.ItemCat].ToString();
+
+                    if (!itemCat.Equals(text.Cat_Part))
+                    {
+                        row.Delete();
+                    }
+                }
+
+                dt.AcceptChanges();
+
+                cmbPartCode.DataSource = dt;
+                cmbPartCode.DisplayMember = "item_code";
+                cmbPartCode.ValueMember = "item_code";
+                cmbPartCode.SelectedIndex = -1;
+                ableToLoadData = true;
+
+                int count = cmbPartCode.Items.Count;
+
+                if (count == 1)
+                {
+                    cmbPartCode.SelectedIndex = 0;
+                }
+            }
+            else
+            {
+                cmbPartCode.DataSource = null;
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
     }
 }

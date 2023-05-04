@@ -5966,7 +5966,7 @@ namespace FactoryManagementSoftware.UI
                             year++;
                         }
 
-                        cmbForecastFrom.Text = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
+                        //cmbForecastFrom.Text = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
                     }
                     else
                     {

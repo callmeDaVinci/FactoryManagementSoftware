@@ -734,7 +734,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (data.Equals(dalItem.ItemMBatch))
             {
-                dataName = text.Header_ColorMaterial;
+                dataName = text.Header_ColorMat;
             }
             else if (data.Equals(dalItem.ItemColor))
             {

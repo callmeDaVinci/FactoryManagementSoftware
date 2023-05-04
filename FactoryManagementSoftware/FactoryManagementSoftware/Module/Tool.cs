@@ -2236,7 +2236,7 @@ namespace FactoryManagementSoftware.Module
                 }
             }
 
-            return DateTime.MaxValue;
+            return trfDate;
         }
 
         public DateTime GetPMMAStartDate(int month, int year, DataTable dt)

@@ -279,6 +279,22 @@ namespace FactoryManagementSoftware.Module
         public string Header_Index { get; } = "#";
 
         public string Header_Fac { get; } = "FAC.";
+        public string Header_Mac{ get; } = "MAC.";
+        public string Header_DateFrom{ get; } = "FROM";
+        public string Header_DateTo{ get; } = "TO";
+        public string Header_JobNo{ get; } = "JOB No.";
+        public string Header_SheetID{ get; } = "SHEET ID";
+        public string Header_Shift{ get; } = "SHIFT";
+        public string Header_TotalProduced { get; } = "PRODUCED QTY (QC PASSED)";
+        public string Header_TotalReject { get; } = "REJECTED QTY";
+        public string Header_RejectRate { get; } = "REJECTED %";
+        public string Header_MaxOutput { get; } = "MAX OUTPUT";
+        public string Header_YieldRate { get; } = "YIELD %";
+        public string Header_IdealHourlyShot { get; } = "IDEAL HOURLY SHOT";
+        public string Header_AvgHourlyShot { get; } = "AVG HOURLY SHOT";
+
+        public string Header_EfficiencyRate { get; } = "EFFICIENCY %";
+        public string Header_TotalStockIn { get; } = "STOCK IN QTY";
 
         public string Header_ParentOrProduct { get; } = "PARENT/PRODUCT";
 
@@ -336,6 +352,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_Type { get; } = "TYPE";
         public string Header_MatType { get; } = "MAT. TYPE";
         public string Header_Mat { get; } = "MATERIAL";
+        public string Header_RawMat { get; } = "RAW MATERIAL";
         public string Header_MatCode { get; } = "MAT. CODE";
         public string Header_MatName { get; } = "MAT. NAME";
         public string Header_Color { get; } = "COLOR";
@@ -369,7 +386,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_QuoTon { get; } = "QUOTATION TON";
         public string Header_BestTon { get; } = "BEST TON";
         public string Header_ProTon { get; } = "MACHINE TON";
-        public string Header_ColorMaterial { get; } = "COLOR MATERIAL";
+        public string Header_ColorMat { get; } = "COLOR MATERIAL";
         public string Header_Month { get; } = "MONTH";
         public string Header_OldValue { get; } = "OLD VALUE";
         public string Header_NewValue { get; } = "NEW VALUE";
@@ -534,6 +551,13 @@ namespace FactoryManagementSoftware.Module
         public string Delivery_Removed { get; } = "REMOVED";
 
         #endregion
+
+        public string ReportType_ByJobNo { get; } = "By Job No.";
+        public string ReportType_ByDateAndShift { get; } = "By Date and Shift";
+        public string ReportType_NoShow { get; } = "No Show";
+        public string ReportType_SheetList { get; } = "Sheet List";
+        public string ReportType_SheetData { get; } = "Sheet Data";
+
 
         public string Search_DefaultText { get; } = "Search";
         public string DeliveredSummary { get; } = "Delivered Summary";

@@ -201,6 +201,9 @@
     <Compile Include="BLL\trfCatBLL.cs" />
     <Compile Include="BLL\trfHistBLL.cs" />
     <Compile Include="BLL\userBLL.cs" />
+    <Compile Include="CustomTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DAL\childTrfHistDAL.cs" />
     <Compile Include="DAL\custDAL.cs" />
     <Compile Include="DAL\dataDAL.cs" />
@@ -318,6 +321,12 @@
     </Compile>
     <Compile Include="UI\frmProductionRecordNewV2.Designer.cs">
       <DependentUpon>frmProductionRecordNewV2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmProductionReportV2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmProductionReportV2.Designer.cs">
+      <DependentUpon>frmProductionReportV2.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmSBBSalesReport.cs">
       <SubType>Form</SubType>
@@ -1005,6 +1014,9 @@
     <Compile Include="UI\NewInOutReport.Designer.cs">
       <DependentUpon>NewInOutReport.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="CustomTextBox.resx">
+      <DependentUpon>CustomTextBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\ExcelUpload.resx">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
     </EmbeddedResource>
@@ -1047,6 +1059,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmProductionRecordNewV2.resx">
       <DependentUpon>frmProductionRecordNewV2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmProductionReportV2.resx">
+      <DependentUpon>frmProductionReportV2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBSalesReport.resx">
       <DependentUpon>frmSBBSalesReport.cs</DependentUpon>

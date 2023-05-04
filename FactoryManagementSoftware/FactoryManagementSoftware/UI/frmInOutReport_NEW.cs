@@ -1700,6 +1700,11 @@ namespace FactoryManagementSoftware.UI
                                     {
                                         month = pmmaDate.Month;
                                         year = pmmaDate.Year;
+
+                                        //if(month >= 6 && year > 2022)
+                                        //{
+                                        //    var checkpoint = 1;
+                                        //}
                                     }
                                     else
                                     {
@@ -1711,9 +1716,19 @@ namespace FactoryManagementSoftware.UI
                                     day = trfDate.Day;
                                     month = trfDate.Month;
                                     year = trfDate.Year;
+
+                                    //if (month >= 6 && year > 2022)
+                                    //{
+                                    //    var checkpoint = 1;
+                                    //}
                                 }
 
                             }
+
+                            //if (month >= 6 && year > 2022)
+                            //{
+                            //    var checkpoint = 1;
+                            //}
 
                             //check in out type
                             trfIn = CheckIfTrfIn(trfFrom, trfTo);
