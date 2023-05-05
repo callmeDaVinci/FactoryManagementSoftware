@@ -295,6 +295,7 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_EfficiencyRate { get; } = "EFFICIENCY %";
         public string Header_TotalStockIn { get; } = "STOCK IN QTY";
+        public string Header_TargetQty { get; } = "TARGET QTY";
 
         public string Header_ParentOrProduct { get; } = "PARENT/PRODUCT";
 
@@ -559,6 +560,7 @@ namespace FactoryManagementSoftware.Module
         public string ReportType_SheetData { get; } = "Sheet Data";
 
 
+        public string ViewJobSheetRecord { get; } = "View Job Sheet Record";
         public string Search_DefaultText { get; } = "Search";
         public string DeliveredSummary { get; } = "Delivered Summary";
         public string ProductionHistory { get; } = "Production History";

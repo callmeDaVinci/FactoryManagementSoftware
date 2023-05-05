@@ -732,7 +732,7 @@ namespace FactoryManagementSoftware.UI
             if (!ProductionReportFormOpen)
             {
                 frmLoading.ShowLoadingScreen();
-                frmProductionReport frm = new frmProductionReport();
+                frmProductionReportV2 frm = new frmProductionReportV2();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
@@ -742,9 +742,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (Application.OpenForms.OfType<frmProductionReport>().Count() == 1)
+                if (Application.OpenForms.OfType<frmProductionReportV2>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmProductionReport>().First().BringToFront();
+                    Application.OpenForms.OfType<frmProductionReportV2>().First().BringToFront();
                 }
             }
         }
@@ -871,50 +871,6 @@ namespace FactoryManagementSoftware.UI
                 if (Application.OpenForms.OfType<frmOUGPOList>().Count() == 1)
                 {
                     Application.OpenForms.OfType<frmOUGPOList>().First().BringToFront();
-                }
-            }
-        }
-
-        private void nEWToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!DailyJobSheetFormOpen)
-            {
-                frmLoading.ShowLoadingScreen();
-                frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
-                frm.MdiParent = this;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
-                frm.Show();
-                NewDailyJobSheetFormOpen = true;
-                frmLoading.CloseForm();
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
-                {
-                    Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
-                }
-            }
-        }
-
-        private void oLDVERSIONToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!DailyJobSheetFormOpen)
-            {
-                frmLoading.ShowLoadingScreen();
-                frmProductionRecordNew frm = new frmProductionRecordNew();
-                frm.MdiParent = this;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
-                frm.Show();
-                DailyJobSheetFormOpen = true;
-                frmLoading.CloseForm();
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmProductionRecordNew>().Count() == 1)
-                {
-                    Application.OpenForms.OfType<frmProductionRecordNew>().First().BringToFront();
                 }
             }
         }

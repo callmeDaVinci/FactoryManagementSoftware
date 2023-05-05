@@ -16,6 +16,7 @@ using System.Linq;
 using Microsoft.Office.Interop.Word;
 using System.Web.UI.WebControls;
 using System.Reflection;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -113,7 +114,7 @@ namespace FactoryManagementSoftware.UI
 
             cmb.DataSource = dt;
             cmb.DisplayMember = text.Header_Type;
-            cmb.SelectedIndex = 0;
+            cmb.SelectedIndex = 1;
         }
 
         private void loadSubListType(ComboBox cmb)
@@ -955,12 +956,15 @@ namespace FactoryManagementSoftware.UI
         {
             decimal avgHourlyShot = 0;
             int productionHour = 0;
+            DateTime EarliestTime = DateTime.MaxValue;
+            DateTime LatestTime = DateTime.MaxValue;
 
             int rowCount = DT_METERRECORD != null ? DT_METERRECORD.Rows.Count : 0;
 
             if (DT_METERRECORD != null && rowCount > 0)
             {
                 bool sheetFound = false;
+                
 
                 int rowIndex = BinarySearch(DT_METERRECORD, sheetID);
 
@@ -972,11 +976,21 @@ namespace FactoryManagementSoftware.UI
 
                         if (sheetID_DB == sheetID)
                         {
+                            DateTime proDate = DateTime.TryParse(DT_METERRECORD.Rows[i][dalProRecord.ProTime].ToString(), out proDate) ? proDate : DateTime.MaxValue;
                             int proMeter = int.TryParse(DT_METERRECORD.Rows[i][dalProRecord.ProMeterReading].ToString(), out proMeter) ? proMeter : 0;
 
                             if (proMeter > 0)
                                 productionHour++;
 
+                            if(LatestTime == DateTime.MaxValue || proDate > LatestTime)
+                            {
+                                LatestTime = proDate;
+                            }
+
+                            if (EarliestTime == DateTime.MaxValue || proDate < EarliestTime)
+                            {
+                                EarliestTime = proDate;
+                            }
 
                             if (!sheetFound)
                             {
@@ -998,6 +1012,99 @@ namespace FactoryManagementSoftware.UI
             return avgHourlyShot;
         }
 
+        private void dgvUIEdit(DataGridView dgv)
+        {
+            if (dgv == dgvMainList)
+            {
+                dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+
+                dgv.Columns[text.Header_PartName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[text.Header_PartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+                dgv.Columns[text.Header_PartCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+                //dgv.Columns[text.Header_PartName].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+
+                dgv.Columns[text.Header_PartCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+
+                if(cmbReportType.Text == text.ReportType_ByJobNo)
+                {
+                    dgv.Columns[text.Header_Note].Visible = false;
+                }
+
+                if (dgv.Columns.Contains(text.Header_Shift))
+                {
+                    dgv.Columns[text.Header_Shift].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_SheetID))
+                {
+                    dgv.Columns[text.Header_SheetID].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+
+                }
+
+
+                if (dgv.Columns.Contains(text.Header_DateFrom))
+                {
+                    dgv.Columns[text.Header_DateFrom].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_DateTo))
+                {
+                    dgv.Columns[text.Header_DateTo].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_Date))
+                {
+                    dgv.Columns[text.Header_Date].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+
+                }
+
+                dgv.Columns[text.Header_JobNo].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+                dgv.Columns[text.Header_Index].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                dgv.Columns[text.Header_Fac].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                dgv.Columns[text.Header_Mac].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+
+                dgv.Columns[text.Header_Note].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                dgv.Columns[text.Header_Note].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[text.Header_Note].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+                dgv.Columns[text.Header_PartCode].Frozen = true;
+
+            }
+
+        }
+
+        private void CellSelectedSumUp(DataGridView dgv)
+        {
+            decimal Sum = 0;
+
+            if(dgv != null)
+            {
+                for(int i = 0; i < dgv.Rows.Count; i++)
+                {
+                    for(int j = 0; j < dgv.Columns.Count; j++)
+                    {
+                        bool cellSelected = dgv.Rows[i].Cells[j].Selected;
+
+                        if (cellSelected)
+                        {
+                            decimal data = decimal.TryParse(dgv.Rows[i].Cells[j].Value.ToString(), out data) ? data : 0;
+
+                            Sum += decimal.Round(data,2);
+
+                        }
+                    }
+                }
+            }
+         
+            lblSelectedCellSum.Text = "Selected Cell Sum :" + Sum.ToString();
+        }
         private void NewLoadProductionRecord()
         {
             #region Setting
@@ -1006,12 +1113,7 @@ namespace FactoryManagementSoftware.UI
 
             frmLoading.ShowLoadingScreen();
 
-            recordLoaded = false;
-
-
-            dgvMainList.DataSource = null;
-            dgvSubList.DataSource = null;
-
+            ClearAllDGVData();
 
             string keywords = txtItemSearch.Text;
 
@@ -1110,10 +1212,14 @@ namespace FactoryManagementSoftware.UI
                 DateTime dateFrom = dtpFrom.Value.Date;
                 DateTime dateTo = dtpTo.Value.Date;
 
-                if (proDate < dateFrom || proDate > dateTo)
+                if(!cbAllTime.Checked)
                 {
-                    dataMatched = false;
+                    if (proDate < dateFrom || proDate > dateTo)
+                    {
+                        dataMatched = false;
+                    }
                 }
+               
                 #endregion
 
                 #region filter item
@@ -1129,6 +1235,19 @@ namespace FactoryManagementSoftware.UI
                     }
 
 
+                }
+
+
+                #endregion
+
+                #region filter Job No
+
+                if (cbKeywordSearchByJobNo.Checked && !string.IsNullOrEmpty(keywords))
+                {
+                    if (keywords != jobNo.ToString())
+                    {
+                        dataMatched = false;
+                    }
                 }
 
 
@@ -1220,18 +1339,24 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            #region show only 1 row for each plan
+            #region view by Job No
 
             if (cmbReportType.Text == text.ReportType_ByJobNo)
             {
                 DataTable dt_FilterDuplicatePlan = NewProductionRecordTable();
 
                 string previousJobNo = null;
-                int totalStockIn = 0;
+                int totalProduced = 0;
+                int totalReject = 0;
+                int maxOutput = 0;
+                decimal avgHourlyShot = 0;
+                int IdealHourlyShot = 0;
 
                 //sorting dt by planID and date
                 dt.DefaultView.Sort = text.Header_JobNo + " ASC";
                 dt = dt.DefaultView.ToTable();
+
+                int avgCount = 1;
 
                 foreach (DataRow row in dt.Rows)
                 {
@@ -1239,38 +1364,45 @@ namespace FactoryManagementSoftware.UI
 
                     if (previousJobNo == row[text.Header_JobNo].ToString())
                     {
-                        totalStockIn += Convert.ToInt32(row[text.Header_TotalProduced].ToString());
+                        totalProduced += Convert.ToInt32(row[text.Header_TotalProduced].ToString());
+                        totalReject += Convert.ToInt32(row[text.Header_TotalReject].ToString());
+                        maxOutput += Convert.ToInt32(row[text.Header_MaxOutput].ToString());
+                        avgHourlyShot += Convert.ToDecimal(row[text.Header_AvgHourlyShot].ToString());
+                        avgCount++;
 
+                        IdealHourlyShot = Convert.ToInt32(row[text.Header_IdealHourlyShot].ToString());
+
+                        decimal rejectRate = decimal.Round((decimal)totalReject / (decimal)maxOutput * 100, 2);
+                        var yieldRate = 100 - rejectRate;
                         dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_DateFrom] = proDate;
-                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_TotalProduced] = totalStockIn;
+                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_TotalProduced] = totalProduced;
+                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_TotalReject] = totalReject;
+                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_RejectRate] = rejectRate;
+                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_YieldRate] = yieldRate;
+
+                        decimal ActualAvgHourlyShot = decimal.Round(avgHourlyShot / avgCount,0);
+
+                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_AvgHourlyShot] = ActualAvgHourlyShot;
+                        var efficiencyRate = IdealHourlyShot > 0 ? decimal.Round(ActualAvgHourlyShot / IdealHourlyShot * 100, 2) : -1;
+                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_EfficiencyRate] = efficiencyRate;
+
                     }
                     else
                     {
+                       
+
+                        avgCount = 1;
+
                         previousJobNo = row[text.Header_JobNo].ToString();
-                        totalStockIn = Convert.ToInt32(row[text.Header_TotalProduced].ToString());
+                        totalProduced = Convert.ToInt32(row[text.Header_TotalProduced].ToString());
+                        totalReject = Convert.ToInt32(row[text.Header_TotalReject].ToString());
+                        maxOutput = Convert.ToInt32(row[text.Header_MaxOutput].ToString());
+                        avgHourlyShot = Convert.ToDecimal(row[text.Header_AvgHourlyShot].ToString());
 
                         dt_FilterDuplicatePlan.ImportRow(row);
                     }
 
-                    //if(previousPlanID == null)
-                    //{
-                    //    previousPlanID = row[header_PlanID].ToString();
-                    //    totalStockIn = Convert.ToInt32(row[header_StockIn].ToString());
-
-                    //    dt_FilterDuplicatePlan.Rows.Add(row);
-                    //}
-                    //else if(previousPlanID == row[header_PlanID].ToString())
-                    //{
-                    //    totalStockIn += Convert.ToInt32(row[header_StockIn].ToString());
-                    //    dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][header_StockIn] = totalStockIn;
-                    //}
-                    //else
-                    //{
-                    //    previousPlanID = row[header_PlanID].ToString();
-                    //    totalStockIn = Convert.ToInt32(row[header_StockIn].ToString());
-
-                    //    dt_FilterDuplicatePlan.Rows.Add(row);
-                    //}
+                  
 
                 }
 
@@ -1291,8 +1423,9 @@ namespace FactoryManagementSoftware.UI
             #endregion
 
             dgvMainList.DataSource = dt;
+            dgvUIEdit(dgvMainList);
             dgvMainList.ClearSelection();
-
+            lblSelectedCellSum.Text = "";
             recordLoaded = true;
 
             ShowFilterOption(false);
@@ -1350,47 +1483,10 @@ namespace FactoryManagementSoftware.UI
             recordLoaded = false;
             dgvMainList.DataSource = null;
             dgvSubList.DataSource = null;
+            lblSelectedCellSum.Text = "";
         }
 
-        private void cmbPartName_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ClearAllDGVData();
-            if (ableLoadCodeData)
-            {
-                string keywords = txtItemSearch.Text;
-
-                if (!string.IsNullOrEmpty(keywords))
-                {
-                    DataTable dt = dalItem.nameSearch(keywords);
-                    DataTable dtItemCode = dt.DefaultView.ToTable(true, "item_code");
-
-                    dtItemCode.DefaultView.Sort = "item_code ASC";
-                    //cmbPartCode.DataSource = dtItemCode;
-                    //cmbPartCode.DisplayMember = "item_code";
-
-                    if(dtItemCode.Rows.Count > 1)
-                    {
-                        //cmbPartCode.SelectedIndex = -1;
-                    }
-                    
-                }
-                else
-                {
-                    //cmbPartCode.DataSource = null;
-
-                }
-            }
-        }
-
-        private void lblPartNameReset_Click(object sender, EventArgs e)
-        {
-            //cmbPartName.SelectedIndex = -1;
-        }
-
-        private void lblPartCodeReset_Click(object sender, EventArgs e)
-        {
-            //cmbPartCode.SelectedIndex = -1;
-        }
+       
 
         private void dtpFrom_ValueChanged(object sender, EventArgs e)
         {
@@ -1403,6 +1499,9 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("date from cannot later than date to.");
                 dtpFrom.Value = to;
             }
+
+            ClearAllDGVData();
+
         }
 
         private void dtpTo_ValueChanged(object sender, EventArgs e)
@@ -1512,6 +1611,11 @@ namespace FactoryManagementSoftware.UI
 
                 cbKeywordSearchByJobNo.Checked = !cbKeywordSearchByItem.Checked;
 
+                if(cbKeywordSearchByItem.Checked)
+                {
+                    cbAllTime.Checked = false;
+                }
+
                 SearchByChanging = false;
             }
         }
@@ -1520,11 +1624,16 @@ namespace FactoryManagementSoftware.UI
         {
             dtpFrom.Enabled = !cbAllTime.Checked;
             dtpTo.Enabled = !cbAllTime.Checked;
+            ClearAllDGVData();
+
         }
 
         private void cmbReportType_SelectedIndexChanged(object sender, EventArgs e)
         {
             loadSubListType(cmbSubListType);
+
+            if (formLoaded)
+                ClearAllDGVData();
         }
 
         private void cmbSubListType_SelectedIndexChanged(object sender, EventArgs e)
@@ -1571,7 +1680,113 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[row].Cells[col].Style.ForeColor = Color.Black;
                 }
             }
-         
+            else if (dgv.Columns[col].Name == text.Header_EfficiencyRate)
+            {
+                decimal efficiencyAlert = decimal.TryParse(txtEfficiencyAlert.Text, out efficiencyAlert) ? efficiencyAlert : 0;
+                decimal efficiencyRate = decimal.TryParse(dgv.Rows[row].Cells[col].Value.ToString(), out efficiencyRate) ? efficiencyRate : 0;
+
+                if (efficiencyRate < efficiencyAlert)
+                {
+                    dgv.Rows[row].Cells[col].Style.ForeColor = Color.Red;
+                }
+                else
+                {
+                    dgv.Rows[row].Cells[col].Style.ForeColor = Color.Black;
+                }
+            }
+
+        }
+
+        private void txtItemSearch_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvMainList_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+           // CellSelectedSumUp(dgvMainList);
+        }
+
+        private void dgvMainList_MouseClick(object sender, MouseEventArgs e)
+        {
+            CellSelectedSumUp(dgvMainList);
+
+        }
+
+        private void dgvMainList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            DataGridView dgv = dgvMainList;
+            //handle the row selection on right click
+            if (e.Button == MouseButtons.Right && e.RowIndex > -1)
+            {
+                ContextMenuStrip my_menu = new ContextMenuStrip();
+                dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                // Can leave these here - doesn't hurt
+                dgv.Rows[e.RowIndex].Selected = true;
+                dgv.Focus();
+                int rowIndex = dgv.CurrentCell.RowIndex;
+                int colIndex = dgv.CurrentCell.ColumnIndex;
+
+                string currentHeader = dgv.Columns[colIndex].Name;
+
+                try
+                {
+                    my_menu.Items.Add(text.ViewJobSheetRecord).Name = text.ViewJobSheetRecord;
+                    
+                    //my_menu.Items.Add(text.StockLocation).Name = text.StockLocation;
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                    contextMenuStrip1 = my_menu;
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            DataGridView dgv = dgvMainList;
+
+            dgv.SuspendLayout();
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            string itemClicked = e.ClickedItem.Name.ToString();
+
+            string itemCode = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[text.Header_PartCode].Value.ToString();
+            string jobNo = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[text.Header_JobNo].Value.ToString();
+            string sheetNo = "";
+
+            if(dgv.Columns.Contains(text.Header_SheetID))
+                 sheetNo = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[text.Header_SheetID].Value.ToString();
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            contextMenuStrip1.Hide();
+
+            if (itemClicked.Equals(text.ViewJobSheetRecord))
+            {
+                frmJobSheetViewMode frm = new frmJobSheetViewMode(jobNo, sheetNo, itemCode);
+
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Normal;
+                frm.Size = new Size(1366, 800);
+                frm.Show();
+
+                frmLoading.CloseForm();
+            }
+          
+            Cursor = Cursors.Arrow; // change cursor to normal type
+            dgv.ResumeLayout();
         }
     }
 }

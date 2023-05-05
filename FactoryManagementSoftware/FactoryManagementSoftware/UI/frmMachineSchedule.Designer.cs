@@ -42,7 +42,7 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.cbItem = new System.Windows.Forms.CheckBox();
-            this.cbPlanningID = new System.Windows.Forms.CheckBox();
+            this.cbSearchByJobNo = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.cmbMachine = new System.Windows.Forms.ComboBox();
@@ -278,7 +278,7 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.Controls.Add(this.cbItem, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.cbPlanningID, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.cbSearchByJobNo, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
@@ -304,19 +304,19 @@
             this.cbItem.UseVisualStyleBackColor = true;
             this.cbItem.CheckedChanged += new System.EventHandler(this.cbItem_CheckedChanged);
             // 
-            // cbPlanningID
+            // cbSearchByJobNo
             // 
-            this.cbPlanningID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbPlanningID.AutoSize = true;
-            this.cbPlanningID.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbPlanningID.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbPlanningID.Location = new System.Drawing.Point(128, 8);
-            this.cbPlanningID.Name = "cbPlanningID";
-            this.cbPlanningID.Size = new System.Drawing.Size(70, 19);
-            this.cbPlanningID.TabIndex = 117;
-            this.cbPlanningID.Text = "JOB NO";
-            this.cbPlanningID.UseVisualStyleBackColor = true;
-            this.cbPlanningID.CheckedChanged += new System.EventHandler(this.cbPlanningID_CheckedChanged);
+            this.cbSearchByJobNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbSearchByJobNo.AutoSize = true;
+            this.cbSearchByJobNo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbSearchByJobNo.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbSearchByJobNo.Location = new System.Drawing.Point(128, 8);
+            this.cbSearchByJobNo.Name = "cbSearchByJobNo";
+            this.cbSearchByJobNo.Size = new System.Drawing.Size(70, 19);
+            this.cbSearchByJobNo.TabIndex = 117;
+            this.cbSearchByJobNo.Text = "JOB NO";
+            this.cbSearchByJobNo.UseVisualStyleBackColor = true;
+            this.cbSearchByJobNo.CheckedChanged += new System.EventHandler(this.cbPlanningID_CheckedChanged);
             // 
             // groupBox3
             // 
@@ -899,7 +899,7 @@
         public System.Windows.Forms.ComboBox cmbMachine;
         private System.Windows.Forms.ComboBox cmbFactory;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox cbPlanningID;
+        private System.Windows.Forms.CheckBox cbSearchByJobNo;
         private System.Windows.Forms.CheckBox cbItem;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label lblResetAll;

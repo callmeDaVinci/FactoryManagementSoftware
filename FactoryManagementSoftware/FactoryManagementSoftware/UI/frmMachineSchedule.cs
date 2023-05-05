@@ -116,7 +116,7 @@ namespace FactoryManagementSoftware.UI
 
                 cbCompleted.Checked = true;
                 cbCancelled.Checked = true;
-                cbPlanningID.Checked = true;
+                cbSearchByJobNo.Checked = true;
                 cbItem.Checked = false;
             }
 
@@ -516,7 +516,7 @@ namespace FactoryManagementSoftware.UI
                 Keywords = ITEM_CODE;
 
                 cbItem.Checked = true;
-                cbPlanningID.Checked = false;
+                cbSearchByJobNo.Checked = false;
                 cbPending.Checked = true;
                 cbCancelled.Checked = true;
                 cbCompleted.Checked = true;
@@ -568,35 +568,39 @@ namespace FactoryManagementSoftware.UI
 
                 string status = row[dalPlanning.planStatus].ToString();
 
-                if(string.IsNullOrEmpty(status))
+                if (!(cbSearchByJobNo.Checked && !string.IsNullOrEmpty(Keywords)))
                 {
-                    match = false;
-                }
+                    if (string.IsNullOrEmpty(status))
+                    {
+                        match = false;
+                    }
 
-                if(!cbPending.Checked &&status.Equals(text.planning_status_pending))
-                {
-                    match = false;
-                }
+                    if (!cbPending.Checked && status.Equals(text.planning_status_pending))
+                    {
+                        match = false;
+                    }
 
-                if (!cbRunning.Checked && status.Equals(text.planning_status_running))
-                {
-                    match = false;
-                }
+                    if (!cbRunning.Checked && status.Equals(text.planning_status_running))
+                    {
+                        match = false;
+                    }
 
-                if (!cbWarning.Checked && status.Equals(text.planning_status_warning))
-                {
-                    match = false;
-                }
+                    if (!cbWarning.Checked && status.Equals(text.planning_status_warning))
+                    {
+                        match = false;
+                    }
 
-                if (!cbCancelled.Checked && status.Equals(text.planning_status_cancelled))
-                {
-                    match = false;
-                }
+                    if (!cbCancelled.Checked && status.Equals(text.planning_status_cancelled))
+                    {
+                        match = false;
+                    }
 
-                if (!cbCompleted.Checked && status.Equals(text.planning_status_completed))
-                {
-                    match = false;
+                    if (!cbCompleted.Checked && status.Equals(text.planning_status_completed))
+                    {
+                        match = false;
+                    }
                 }
+                    
 
                 #endregion
 
@@ -608,14 +612,18 @@ namespace FactoryManagementSoftware.UI
                 DateTime from = dtpFrom.Value;
                 DateTime to = dtpTo.Value;
 
-                if(!GetCompletedPlanOnly && !((start.Date >= from.Date && start.Date <= to.Date) || (end.Date >= from.Date && end.Date <= to.Date)))
+                if (!(cbSearchByJobNo.Checked && !string.IsNullOrEmpty(Keywords)))
                 {
-                    match = false;
+                    if (!GetCompletedPlanOnly && !((start.Date >= from.Date && start.Date <= to.Date) || (end.Date >= from.Date && end.Date <= to.Date)))
+                    {
+                        match = false;
+                    }
+                    else if (GetCompletedPlanOnly && !(end.Date >= from.Date && end.Date <= to.Date))
+                    {
+                        match = false;
+                    }
                 }
-                else if(GetCompletedPlanOnly && !(end.Date >= from.Date && end.Date <= to.Date))
-                {
-                    match = false;
-                }
+            
                 #endregion
 
                 #region Location Filtering
@@ -2327,13 +2335,13 @@ namespace FactoryManagementSoftware.UI
         {
             if (cbItem.Checked)
             {
-                cbPlanningID.Checked = false;
+                cbSearchByJobNo.Checked = false;
             }
         }
 
         private void cbPlanningID_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbPlanningID.Checked)
+            if (cbSearchByJobNo.Checked)
             {
                 cbItem.Checked = false;
             }
@@ -2447,7 +2455,7 @@ namespace FactoryManagementSoftware.UI
 
         private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (cbPlanningID.Checked)
+            if (cbSearchByJobNo.Checked)
             {
                 if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
                 {

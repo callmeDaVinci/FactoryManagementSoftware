@@ -57,6 +57,7 @@ namespace FactoryManagementSoftware.UI
         DataTable dt_Mac;
         // DataTable dt_Trf;
 
+
         private DateTime OLD_PRO_DATE = DateTime.MaxValue;
 
         int userPermission = -1;
@@ -146,12 +147,14 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
+            dt.Columns.Add(header_JobNo, typeof(int));
             dt.Columns.Add(header_Machine, typeof(int));
             dt.Columns.Add(header_Factory, typeof(string));
             dt.Columns.Add(header_PartName, typeof(string));
             dt.Columns.Add(header_PartCode, typeof(string));
             dt.Columns.Add(header_Status, typeof(string));
-            dt.Columns.Add(header_JobNo, typeof(int));
+            dt.Columns.Add(text.Header_TargetQty, typeof(int));
+            dt.Columns.Add(text.Header_TotalProduced, typeof(int));
 
             return dt;
         }
@@ -221,6 +224,9 @@ namespace FactoryManagementSoftware.UI
         {
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+
+            dgv.Columns[header_PartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
             dgv.Columns[header_Machine].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_Factory].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_JobNo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -409,6 +415,8 @@ namespace FactoryManagementSoftware.UI
                     dt_Row[header_PartName] = row[dalItem.ItemName];
                     dt_Row[header_PartCode] = row[dalItem.ItemCode];
                     dt_Row[header_Status] = row[dalPlan.planStatus];
+                    dt_Row[text.Header_TargetQty] = row[dalPlan.targetQty];
+                    dt_Row[text.Header_TotalProduced] = row[dalPlan.planProduced];
 
                     dt.Rows.Add(dt_Row);
                 }
@@ -978,6 +986,9 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 txtTotalProducedRecord.Text = totalProducedQty.ToString();
+                txtTargetQty.Text = dgvItemList.Rows[itemRow].Cells[text.Header_TargetQty].Value.ToString();
+
+                ProducedVSTargetQty();
                 //update total produced
                 uPlan.plan_id = Convert.ToInt32(JobNo);
                 uPlan.plan_produced = totalProducedQty;
@@ -1151,6 +1162,8 @@ namespace FactoryManagementSoftware.UI
                 string itemCode = dgvItemList.Rows[selectedItem].Cells[header_PartCode].Value.ToString();
                 string JobNo = dgvItemList.Rows[selectedItem].Cells[header_JobNo].Value.ToString();
 
+                string targetQty = dgvItemList.Rows[selectedItem].Cells[text.Header_TargetQty].Value.ToString();
+
                 LoadParentList(itemCode);
 
                 int macID = Convert.ToInt32(dgvItemList.Rows[selectedItem].Cells[header_Machine].Value.ToString());
@@ -1175,6 +1188,7 @@ namespace FactoryManagementSoftware.UI
                 lblPartName.Text = itemName;
                 lblPartCode.Text = itemCode;
                 lblJobNo.Text = JobNo;
+                txtTargetQty.Text = targetQty;
 
                 int cycleTime = int.TryParse(lblCycleTime.Text, out cycleTime) ? cycleTime : 0;
 
@@ -1507,25 +1521,26 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                string itemName = dgvItemList.Rows[selectedItem].Cells[header_PartName].Value.ToString();
-                string itemCode = dgvItemList.Rows[selectedItem].Cells[header_PartCode].Value.ToString();
-                string planID = dgvItemList.Rows[selectedItem].Cells[header_JobNo].Value.ToString();
-
+                string partName = dgvItemList.Rows[selectedItem].Cells[header_PartName].Value.ToString();
+                string partCode = dgvItemList.Rows[selectedItem].Cells[header_PartCode].Value.ToString();
+                string jobNo = dgvItemList.Rows[selectedItem].Cells[header_JobNo].Value.ToString();
+                string targetQty = dgvItemList.Rows[selectedItem].Cells[text.Header_TargetQty].Value.ToString();
 
                 lblCustomer.Text = "";
-                lblPartName.Text = itemName;
-                lblPartCode.Text = itemCode;
+                lblPartName.Text = partName;
+                lblPartCode.Text = partCode;
+                txtTargetQty.Text = targetQty;
 
-                lblPlanUpdatedDate.Text = GetStatusUpdatedDate(planID).ToString();
+                lblPlanUpdatedDate.Text = GetStatusUpdatedDate(jobNo).ToString();
 
                 foreach (DataRow row in dt_ItemInfo.Rows)
                 {
-                    if (row[dalItem.ItemCode].ToString().Equals(itemCode))
+                    if (row[dalItem.ItemCode].ToString().Equals(partCode))
                     {
                         float partWeight = float.TryParse(row[dalItem.ItemProPWShot].ToString(), out float i) ? Convert.ToSingle(row[dalItem.ItemProPWShot].ToString()) : -1;
                         float runnerWeight = float.TryParse(row[dalItem.ItemProRWShot].ToString(), out float k) ? Convert.ToSingle(row[dalItem.ItemProRWShot].ToString()) : -1;
 
-                        lblJobNo.Text = planID;
+                        lblJobNo.Text = jobNo;
                       
                         lblPW.Text = partWeight.ToString("0.##");
                         lblRW.Text = runnerWeight.ToString("0.##");
@@ -1569,6 +1584,7 @@ namespace FactoryManagementSoftware.UI
                 string jobNo = dgvItemList.Rows[selectedItem].Cells[header_JobNo].Value.ToString();
                 string sheetID = dgvRecordHistory.Rows[selectedDailyRecord].Cells[header_SheetID].Value.ToString();
                 string shift = dgvRecordHistory.Rows[selectedDailyRecord].Cells[header_Shift].Value.ToString();
+                string targetQty = dgvItemList.Rows[selectedItem].Cells[text.Header_TargetQty].Value.ToString();
 
                 LoadParentList(itemCode);
                 uProRecord.sheet_id = Convert.ToInt32(sheetID);
@@ -1578,6 +1594,7 @@ namespace FactoryManagementSoftware.UI
                 lblPartCode.Text = itemCode;
                 lblJobNo.Text = jobNo;
                 txtSheetID.Text = sheetID;
+                txtTargetQty.Text = targetQty;
 
                 int cycleTime = int.TryParse(lblCycleTime.Text, out cycleTime) ? cycleTime : 0;
 
@@ -2945,6 +2962,7 @@ namespace FactoryManagementSoftware.UI
             lblCheckBy.Text = "";
             lblCheckDate.Text = "";
             txtTotalProducedRecord.Text = "";
+            ProducedVSTargetQty();
             txtTotalStockInRecord.Text = "";
             cbChecked.Checked = false;
             loaded = true;
@@ -2953,7 +2971,7 @@ namespace FactoryManagementSoftware.UI
         private void frmProductionRecord_Load(object sender, EventArgs e)
         {
             LoadPage();
-           
+
         }
 
         private void txtMeterStart_TextChanged(object sender, EventArgs e)
@@ -3202,6 +3220,8 @@ namespace FactoryManagementSoftware.UI
             lblJobNo.Text = "";
             lblCustomer.Text = "";
             lblPartName.Text = "";
+            txtTargetQty.Text = "";
+
             lblPartCode.Text = "";
             lblPW.Text = "";
             lblRW.Text = "";
@@ -3211,7 +3231,7 @@ namespace FactoryManagementSoftware.UI
             lblColorMat.Text = "";
         }
 
-        private void ProductionListRowSelected()
+        private void JobSelected()
         {
             if (loaded)
             {
@@ -3258,7 +3278,7 @@ namespace FactoryManagementSoftware.UI
         }
         private void dgvItemList_SelectionChanged(object sender, EventArgs e)
         {
-            ProductionListRowSelected();
+            JobSelected();
         }
 
         private void dgvRecordHistory_SelectionChanged(object sender, EventArgs e)
@@ -4270,6 +4290,21 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[row].Cells[header_PartCode].Style.BackColor = Color.White;
                 }
             }
+            else if (dgv.Columns[col].Name == text.Header_TotalProduced)
+            {
+                int producedQty = int.TryParse(dgv.Rows[row].Cells[text.Header_TotalProduced].Value.ToString(), out producedQty)? producedQty : 0;
+                int targetQty = int.TryParse(dgv.Rows[row].Cells[text.Header_TargetQty].Value.ToString(), out targetQty) ? targetQty : 0;
+
+                if (producedQty >= targetQty)
+                {
+                    dgv.Rows[row].Cells[text.Header_TotalProduced].Style.BackColor = Color.LightGreen;
+                }
+                else
+                {
+                    dgv.Rows[row].Cells[text.Header_TotalProduced].Style.BackColor = Color.White;
+
+                }
+            }
         }
 
         private void lblIn_DoubleClick(object sender, EventArgs e)
@@ -4739,6 +4774,28 @@ namespace FactoryManagementSoftware.UI
         private void dgvItemList_Scroll(object sender, ScrollEventArgs e)
         {
 
+        }
+
+        private void ProducedVSTargetQty()
+        {
+            int totalProduced = int.TryParse(txtTotalProducedRecord.Text, out int x) ? x : 0;
+
+            int targetQty = int.TryParse(txtTargetQty.Text, out x) ? x : 0;
+
+            if (totalProduced >= targetQty)
+            {
+                txtTotalProducedRecord.BackColor = Color.LightGreen;
+            }
+            else
+            {
+                txtTotalProducedRecord.BackColor = Color.White;
+
+            }
+        }
+        private void txtTotalProducedRecord_TextChanged_1(object sender, EventArgs e)
+        {
+
+            ProducedVSTargetQty();
         }
     }
 }
