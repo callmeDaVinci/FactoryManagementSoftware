@@ -285,7 +285,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_JobNo{ get; } = "JOB No.";
         public string Header_SheetID{ get; } = "SHEET ID";
         public string Header_Shift{ get; } = "SHIFT";
-        public string Header_TotalProduced { get; } = "PRODUCED QTY (QC PASSED)";
+        public string Header_QCPassedQty { get; } = "QC PASSED QTY";
         public string Header_TotalReject { get; } = "REJECTED QTY";
         public string Header_RejectRate { get; } = "REJECTED %";
         public string Header_MaxOutput { get; } = "MAX OUTPUT";

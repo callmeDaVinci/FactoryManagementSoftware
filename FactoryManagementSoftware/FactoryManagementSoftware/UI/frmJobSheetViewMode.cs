@@ -32,7 +32,7 @@ namespace FactoryManagementSoftware.UI
             dt_ItemInfo = dalItem.Search(itemCode);
 
             dt_JoinInfo = dalJoin.SelectAll();
-            dt_ProductionRecord = dalProRecord.SelectActiveDailyJobRecordOnly();
+            dt_ProductionRecord = dalProRecord.Select();
             dt_Mac = dalMac.Select();
         }
 
@@ -458,11 +458,11 @@ namespace FactoryManagementSoftware.UI
 
             if (totalProduced >= targetQty)
             {
-                txtTotalProducedRecord.BackColor = Color.LightGreen;
+                txtTargetQty.BackColor = Color.LightGreen;
             }
             else
             {
-                txtTotalProducedRecord.BackColor = Color.White;
+                txtTargetQty.BackColor = Color.White;
 
             }
         }
@@ -473,7 +473,7 @@ namespace FactoryManagementSoftware.UI
 
             //btnShowDailyRecord.Visible = true;
             string JobNo = ReportViewMode_JobNo;
-            string planStatus = ReportViewMode_JobStatus;
+
             macID = int.TryParse(ReportViewMode_Mac, out int i) ? i:-1 ;
 
             DataTable dt = NewSheetRecordTable();
@@ -521,8 +521,6 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
-
-
 
             txtTotalProducedRecord.Text = totalProducedQty.ToString();
             //update total produced
@@ -1376,10 +1374,28 @@ namespace FactoryManagementSoftware.UI
             LoadJobInfo();
             LoadDailyRecord();
 
-            
+            if (!string.IsNullOrEmpty(ReportViewMode_SheetID) && dgvRecordHistory != null)
+            {
+                for (int i = 0; i < dgvRecordHistory.Rows.Count; i++)
+                {
+                    string sheetID = dgvRecordHistory.Rows[i].Cells[header_SheetID].Value.ToString();
 
-            LoadExistingSheetData(ReportViewMode_SheetID);
-            
+                    if (sheetID == ReportViewMode_SheetID)
+                    {
+                        dgvRecordHistory.Rows[i].Selected = true;
+                        dgvRecordHistory.CurrentCell = dgvRecordHistory.Rows[i].Cells[header_SheetID];
+                        break;
+                    }
+                }
+
+                LoadExistingSheetData(ReportViewMode_SheetID);
+            }
+            else
+            {
+                dgvRecordHistory.ClearSelection();
+            }
+
+
         }
 
         private void txtMeterStart_TextChanged(object sender, EventArgs e)
@@ -1984,24 +2000,20 @@ namespace FactoryManagementSoftware.UI
             //lotNo = int.TryParse(txtProLotNo.Text, out lotNo) ? lotNo : 0;
         }
 
-        private string SetAlphabetToProLotNo(int macID, int lotNo)
-        {
-            return tool.GetAlphabet(macID - 1) + " - " + lotNo;
-        }
-
+       
         private void txtProLotNo_Leave(object sender, EventArgs e)
         {
 
-            JOB_NO = int.TryParse(txtJobNo.Text, out JOB_NO) ? JOB_NO : 0;
+            //JOB_NO = int.TryParse(txtJobNo.Text, out JOB_NO) ? JOB_NO : 0;
 
-            txtJobNo.Text = SetAlphabetToProLotNo(macID, JOB_NO);
+            //txtJobNo.Text = SetAlphabetToProLotNo(macID, JOB_NO);
             //txtProLotNo.Text = tool.GetAlphabet(macID-1) + " - " + lotNo;
         }
 
         private void txtProLotNo_Enter(object sender, EventArgs e)
         {
-            if(!string.IsNullOrEmpty(txtJobNo.Text))
-            txtJobNo.Text = JOB_NO.ToString();
+            //if(!string.IsNullOrEmpty(txtJobNo.Text))
+            //txtJobNo.Text = JOB_NO.ToString();
         }
 
         private void dgvRecordHistory_Click(object sender, EventArgs e)
@@ -2375,20 +2387,8 @@ namespace FactoryManagementSoftware.UI
 
         private void frmJobSheetViewMode_Shown(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(ReportViewMode_SheetID) && dgvRecordHistory != null)
-            {
-                for (int i = 0; i < dgvRecordHistory.Rows.Count; i++)
-                {
-                    string sheetID = dgvRecordHistory.Rows[i].Cells[header_SheetID].Value.ToString();
+            dgvRecordHistory.Focus();
 
-                    if (sheetID == ReportViewMode_SheetID)
-                    {
-                        dgvRecordHistory.Rows[i].Selected = true;
-                        dgvRecordHistory.CurrentCell = dgvRecordHistory.Rows[i].Cells[header_SheetID];
-                        break;
-                    }
-                }
-            }
         }
     }
 }

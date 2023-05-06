@@ -165,23 +165,16 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_PartName, typeof(string));
             dt.Columns.Add(text.Header_PartCode, typeof(string));
 
+            dt.Columns.Add(text.Header_RawMat, typeof(string));
+            dt.Columns.Add(text.Header_ColorMat, typeof(string));
+
             dt.Columns.Add(text.Header_MaxOutput, typeof(int));
 
-            dt.Columns.Add(text.Header_TotalProduced, typeof(int));
+            dt.Columns.Add(text.Header_QCPassedQty, typeof(int));
            //dt.Columns.Add(text.Header_TotalStockIn, typeof(int));
             
             dt.Columns.Add(text.Header_TotalReject, typeof(int));
             dt.Columns.Add(text.Header_RejectRate, typeof(decimal));
-
-            if (cbShowRawMat.Checked)
-            {
-                dt.Columns.Add(text.Header_RawMat, typeof(string));
-            }
-
-            if (cbShowColorMat.Checked)
-            {
-                dt.Columns.Add(text.Header_ColorMat, typeof(string));
-            }
 
             dt.Columns.Add(text.Header_YieldRate, typeof(decimal));
 
@@ -1016,23 +1009,19 @@ namespace FactoryManagementSoftware.UI
         {
             if (dgv == dgvMainList)
             {
-                dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 
+                //header,List
+                dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
                 dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
 
+                #region default columns
                 dgv.Columns[text.Header_PartName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[text.Header_PartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
                 dgv.Columns[text.Header_PartCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-
-                //dgv.Columns[text.Header_PartName].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-
                 dgv.Columns[text.Header_PartCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+                dgv.Columns[text.Header_PartCode].Frozen = true;
 
-                if(cmbReportType.Text == text.ReportType_ByJobNo)
-                {
-                    dgv.Columns[text.Header_Note].Visible = false;
-                }
 
                 if (dgv.Columns.Contains(text.Header_Shift))
                 {
@@ -1045,7 +1034,6 @@ namespace FactoryManagementSoftware.UI
                     dgv.Columns[text.Header_SheetID].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
 
                 }
-
 
                 if (dgv.Columns.Contains(text.Header_DateFrom))
                 {
@@ -1067,17 +1055,235 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Columns[text.Header_JobNo].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
                 dgv.Columns[text.Header_Index].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-                dgv.Columns[text.Header_Fac].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-                dgv.Columns[text.Header_Mac].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 
-                dgv.Columns[text.Header_Note].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-                dgv.Columns[text.Header_Note].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[text.Header_Note].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                #endregion
 
-                dgv.Columns[text.Header_PartCode].Frozen = true;
+                #region Optional Columns
+
+                if (dgv.Columns.Contains(text.Header_Mac))
+                {
+                    if(cbMachine.Checked)
+                    {
+                        dgv.Columns[text.Header_Mac].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                    }
+                    else
+                    {
+                        dgv.Columns[text.Header_Mac].Visible = cbMachine.Checked;
+                    }
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_Fac))
+                {
+                    if (cbFactory.Checked)
+                    {
+                        dgv.Columns[text.Header_Fac].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                    }
+                    else
+                    {
+                        dgv.Columns[text.Header_Fac].Visible = cbFactory.Checked;
+                    }
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_RawMat))
+                {
+                    if (cbShowRawMat.Checked)
+                    {
+                        dgv.Columns[text.Header_RawMat].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                        dgv.Columns[text.Header_RawMat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                    }
+                    else
+                    {
+                        dgv.Columns[text.Header_RawMat].Visible = cbShowRawMat.Checked;
+                    }
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_ColorMat))
+                {
+                    if (cbShowColorMat.Checked)
+                    {
+                        dgv.Columns[text.Header_ColorMat].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                        dgv.Columns[text.Header_ColorMat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                    }
+                    else
+                    {
+                        dgv.Columns[text.Header_ColorMat].Visible = cbShowColorMat.Checked;
+                    }
+
+                }
+                if (dgv.Columns.Contains(text.Header_MaxOutput))
+                {
+                    if (cbMaxOutput.Checked)
+                    {
+
+                    }
+                    else
+                    {
+                        dgv.Columns[text.Header_MaxOutput].Visible = cbMaxOutput.Checked;
+                    }
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_QCPassedQty))
+                {
+                    if (!cbQCPassedQty.Checked)
+                    {
+                        dgv.Columns[text.Header_QCPassedQty].Visible = cbQCPassedQty.Checked;
+                    }
+                    else
+                    {
+                        
+                    }
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_TotalReject))
+                {
+                    if (!cbRejectedQty.Checked)
+                    {
+                        dgv.Columns[text.Header_TotalReject].Visible = cbRejectedQty.Checked;
+                    }
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_RejectRate))
+                {
+                    if (!cbRejectedRate.Checked)
+                    {
+                        dgv.Columns[text.Header_RejectRate].Visible = cbRejectedRate.Checked;
+                    }
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_YieldRate))
+                {
+                    if (!cbYieldRate.Checked)
+                    {
+                        dgv.Columns[text.Header_YieldRate].Visible = cbYieldRate.Checked;
+                    }
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_IdealHourlyShot))
+                {
+                    if (!cbIdealHourlyShot.Checked)
+                    {
+                        dgv.Columns[text.Header_IdealHourlyShot].Visible = cbIdealHourlyShot.Checked;
+                    }
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_AvgHourlyShot))
+                {
+                    if (!cbAVGHourlyShot.Checked)
+                    {
+                        dgv.Columns[text.Header_AvgHourlyShot].Visible = cbAVGHourlyShot.Checked;
+                    }
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_EfficiencyRate))
+                {
+                    if (!cbEfficiencyRate.Checked)
+                    {
+                        dgv.Columns[text.Header_EfficiencyRate].Visible = cbEfficiencyRate.Checked;
+                    }
+
+                }
+
+
+                if (cmbReportType.Text == text.ReportType_ByJobNo || !cbNote.Checked)
+                {
+                    dgv.Columns[text.Header_Note].Visible = false;
+                }
+                else
+                {
+                    dgv.Columns[text.Header_Note].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                    dgv.Columns[text.Header_Note].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                    dgv.Columns[text.Header_Note].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                }
+
+                #endregion
+
 
             }
 
+        }
+
+        private void MainListColumnsToDisplaySetting(DataGridView dgv)
+        {
+            if(dgv != null )
+            {
+                if (dgv.Columns.Contains(text.Header_Mac))
+                {
+                    dgv.Columns[text.Header_Mac].Visible = cbMachine.Checked;
+                }
+
+                if (dgv.Columns.Contains(text.Header_Fac))
+                {
+                    dgv.Columns[text.Header_Fac].Visible = cbFactory.Checked;
+                }
+
+                if (dgv.Columns.Contains(text.Header_RawMat))
+                {
+                    dgv.Columns[text.Header_RawMat].Visible = cbShowRawMat.Checked;
+                }
+
+                if (dgv.Columns.Contains(text.Header_ColorMat))
+                {
+                    dgv.Columns[text.Header_ColorMat].Visible = cbShowColorMat.Checked;
+
+                }
+                if (dgv.Columns.Contains(text.Header_MaxOutput))
+                {
+                    dgv.Columns[text.Header_MaxOutput].Visible = cbMaxOutput.Checked;
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_QCPassedQty))
+                {
+                    dgv.Columns[text.Header_QCPassedQty].Visible = cbQCPassedQty.Checked;
+
+                }
+
+                if (dgv.Columns.Contains(text.Header_TotalReject))
+                {
+                    dgv.Columns[text.Header_TotalReject].Visible = cbRejectedQty.Checked;
+                }
+
+                if (dgv.Columns.Contains(text.Header_RejectRate))
+                {
+                    dgv.Columns[text.Header_RejectRate].Visible = cbRejectedRate.Checked;
+                }
+
+                if (dgv.Columns.Contains(text.Header_YieldRate))
+                {
+                    dgv.Columns[text.Header_YieldRate].Visible = cbYieldRate.Checked;
+                }
+
+                if (dgv.Columns.Contains(text.Header_IdealHourlyShot))
+                {
+                    dgv.Columns[text.Header_IdealHourlyShot].Visible = cbIdealHourlyShot.Checked;
+                }
+
+                if (dgv.Columns.Contains(text.Header_AvgHourlyShot))
+                {
+                    dgv.Columns[text.Header_AvgHourlyShot].Visible = cbAVGHourlyShot.Checked;
+                }
+
+                if (dgv.Columns.Contains(text.Header_EfficiencyRate))
+                {
+                    dgv.Columns[text.Header_EfficiencyRate].Visible = cbEfficiencyRate.Checked;
+                }
+
+                if (dgv.Columns.Contains(text.Header_Note))
+                {
+                    dgv.Columns[text.Header_Note].Visible = cbNote.Checked;
+                }
+            }
+        
         }
 
         private void CellSelectedSumUp(DataGridView dgv)
@@ -1203,8 +1409,8 @@ namespace FactoryManagementSoftware.UI
                 decimal rejectRate =  decimal.Round( (decimal) totalReject / (decimal) MaxOutput * 100,2);
                 var yieldRate = 100 - rejectRate;
 
-                string rawMat = row[dalItem.ItemMaterial].ToString();
-                string colorMat = row[dalItem.ItemMBatch].ToString();
+                string rawMat = row[dalPlan.materialCode].ToString();
+                string colorMat = row[dalPlan.colorMaterialCode].ToString();
 
                 bool dataMatched = true;
 
@@ -1304,7 +1510,7 @@ namespace FactoryManagementSoftware.UI
                     dt_Row[text.Header_PartCode] = itemCode;
 
                     dt_Row[text.Header_MaxOutput] = MaxOutput;
-                    dt_Row[text.Header_TotalProduced] = totalProduced;
+                    dt_Row[text.Header_QCPassedQty] = totalProduced;
 
                     dt_Row[text.Header_TotalReject] = totalReject;
                     dt_Row[text.Header_RejectRate] = rejectRate;
@@ -1321,18 +1527,9 @@ namespace FactoryManagementSoftware.UI
                     }
                     dt_Row[text.Header_Note] = note;
 
+                    dt_Row[text.Header_RawMat] = rawMat;
 
-
-                    if (cbShowRawMat.Checked)
-                    {
-                        dt_Row[text.Header_Mat] = rawMat;
-                    }
-
-                    if (cbShowColorMat.Checked)
-                    {
-                        dt_Row[text.Header_ColorMat] = colorMat;
-                    }
-
+                    dt_Row[text.Header_ColorMat] = colorMat;
 
                     dt.Rows.Add(dt_Row);
                     index++;
@@ -1364,7 +1561,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (previousJobNo == row[text.Header_JobNo].ToString())
                     {
-                        totalProduced += Convert.ToInt32(row[text.Header_TotalProduced].ToString());
+                        totalProduced += Convert.ToInt32(row[text.Header_QCPassedQty].ToString());
                         totalReject += Convert.ToInt32(row[text.Header_TotalReject].ToString());
                         maxOutput += Convert.ToInt32(row[text.Header_MaxOutput].ToString());
                         avgHourlyShot += Convert.ToDecimal(row[text.Header_AvgHourlyShot].ToString());
@@ -1375,7 +1572,7 @@ namespace FactoryManagementSoftware.UI
                         decimal rejectRate = decimal.Round((decimal)totalReject / (decimal)maxOutput * 100, 2);
                         var yieldRate = 100 - rejectRate;
                         dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_DateFrom] = proDate;
-                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_TotalProduced] = totalProduced;
+                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_QCPassedQty] = totalProduced;
                         dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_TotalReject] = totalReject;
                         dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_RejectRate] = rejectRate;
                         dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_YieldRate] = yieldRate;
@@ -1394,7 +1591,7 @@ namespace FactoryManagementSoftware.UI
                         avgCount = 1;
 
                         previousJobNo = row[text.Header_JobNo].ToString();
-                        totalProduced = Convert.ToInt32(row[text.Header_TotalProduced].ToString());
+                        totalProduced = Convert.ToInt32(row[text.Header_QCPassedQty].ToString());
                         totalReject = Convert.ToInt32(row[text.Header_TotalReject].ToString());
                         maxOutput = Convert.ToInt32(row[text.Header_MaxOutput].ToString());
                         avgHourlyShot = Convert.ToDecimal(row[text.Header_AvgHourlyShot].ToString());
@@ -1578,12 +1775,14 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
 
+            dgvMainList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
             dgvMainList.SelectAll();
             excelTool.ExportToExcel(text.Report_Type_Production, (DataTable) dgvMainList.DataSource, dgvMainList.GetClipboardContent());
 
 
             Cursor = Cursors.Arrow; // change cursor to normal type
+            dgvMainList.SelectionMode = DataGridViewSelectionMode.CellSelect;
 
         }
 
@@ -1630,6 +1829,8 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbReportType_SelectedIndexChanged(object sender, EventArgs e)
         {
+            cbNote.Visible = cmbReportType.Text == text.ReportType_ByDateAndShift;
+
             loadSubListType(cmbSubListType);
 
             if (formLoaded)
@@ -1787,6 +1988,11 @@ namespace FactoryManagementSoftware.UI
           
             Cursor = Cursors.Arrow; // change cursor to normal type
             dgv.ResumeLayout();
+        }
+
+        private void MainListColumnToDisplaySettingChanged(object sender, EventArgs e)
+        {
+            MainListColumnsToDisplaySetting(dgvMainList);
         }
     }
 }

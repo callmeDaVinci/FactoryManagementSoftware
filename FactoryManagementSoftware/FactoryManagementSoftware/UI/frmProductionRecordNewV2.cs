@@ -154,7 +154,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_PartCode, typeof(string));
             dt.Columns.Add(header_Status, typeof(string));
             dt.Columns.Add(text.Header_TargetQty, typeof(int));
-            dt.Columns.Add(text.Header_TotalProduced, typeof(int));
+            dt.Columns.Add(text.Header_QCPassedQty, typeof(int));
 
             return dt;
         }
@@ -416,7 +416,7 @@ namespace FactoryManagementSoftware.UI
                     dt_Row[header_PartCode] = row[dalItem.ItemCode];
                     dt_Row[header_Status] = row[dalPlan.planStatus];
                     dt_Row[text.Header_TargetQty] = row[dalPlan.targetQty];
-                    dt_Row[text.Header_TotalProduced] = row[dalPlan.planProduced];
+                    dt_Row[text.Header_QCPassedQty] = row[dalPlan.planProduced];
 
                     dt.Rows.Add(dt_Row);
                 }
@@ -4290,18 +4290,18 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[row].Cells[header_PartCode].Style.BackColor = Color.White;
                 }
             }
-            else if (dgv.Columns[col].Name == text.Header_TotalProduced)
+            else if (dgv.Columns[col].Name == text.Header_QCPassedQty)
             {
-                int producedQty = int.TryParse(dgv.Rows[row].Cells[text.Header_TotalProduced].Value.ToString(), out producedQty)? producedQty : 0;
+                int producedQty = int.TryParse(dgv.Rows[row].Cells[text.Header_QCPassedQty].Value.ToString(), out producedQty)? producedQty : 0;
                 int targetQty = int.TryParse(dgv.Rows[row].Cells[text.Header_TargetQty].Value.ToString(), out targetQty) ? targetQty : 0;
 
                 if (producedQty >= targetQty)
                 {
-                    dgv.Rows[row].Cells[text.Header_TotalProduced].Style.BackColor = Color.LightGreen;
+                    dgv.Rows[row].Cells[text.Header_TargetQty].Style.BackColor = Color.LightGreen;
                 }
                 else
                 {
-                    dgv.Rows[row].Cells[text.Header_TotalProduced].Style.BackColor = Color.White;
+                    dgv.Rows[row].Cells[text.Header_TargetQty].Style.BackColor = Color.White;
 
                 }
             }
@@ -4784,11 +4784,11 @@ namespace FactoryManagementSoftware.UI
 
             if (totalProduced >= targetQty)
             {
-                txtTotalProducedRecord.BackColor = Color.LightGreen;
+                txtTargetQty.BackColor = Color.LightGreen;
             }
             else
             {
-                txtTotalProducedRecord.BackColor = Color.White;
+                txtTargetQty.BackColor = Color.White;
 
             }
         }
