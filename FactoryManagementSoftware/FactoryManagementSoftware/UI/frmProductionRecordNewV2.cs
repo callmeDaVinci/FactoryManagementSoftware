@@ -7,6 +7,7 @@ using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using iTextSharp.text.pdf;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -202,22 +203,48 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_MeterReading, typeof(double));
             dt.Columns.Add(header_Hourly, typeof(double));
 
+            dt.Columns.Add(text.Header_DefectRemark, typeof(string));
+            dt.Columns.Add(text.Header_QtyReject, typeof(int));
+
+
+
             return dt;
         }
 
         private void dgvMeterStyleEdit(DataGridView dgv)
         {
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-            dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+
             dgv.Columns[header_Time].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[header_Operator].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_MeterReading].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_Hourly].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            dgv.Columns[header_Operator].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[header_Operator].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
             dgv.Columns[header_Operator].DefaultCellStyle.BackColor = SystemColors.Info;
             dgv.Columns[header_MeterReading].DefaultCellStyle.BackColor = SystemColors.Info;
+
+            for(int i = 0; i < dgv.ColumnCount; i++)
+            {
+                string colName = dgv.Columns[i].Name;
+
+                if(colName.Contains(text.Header_DefectRemark))
+                {
+                    dgv.Columns[colName].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                    dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                    dgv.Columns[colName].ReadOnly = true;
+                }
+                else if (colName.Contains(text.Header_QtyReject))
+                {
+                    dgv.Columns[colName].DefaultCellStyle.BackColor = SystemColors.Info;
+                    dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                }
+            }
+
+            dgv.Columns[header_Time].Frozen = true;
+
         }
 
         private void dgvItemListStyleEdit(DataGridView dgv)
@@ -239,7 +266,7 @@ namespace FactoryManagementSoftware.UI
         private void dgvSheetRecordStyleEdit(DataGridView dgv)
         {
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-            dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
             dgv.Columns[header_SheetID].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_ProductionDate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_Shift].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -248,6 +275,11 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[header_UpdatedBy].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_TotalProduced].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[header_StockIn].DefaultCellStyle.BackColor = SystemColors.Info;
+
+            dgv.Columns[header_JobNo].Visible = false;
+            dgv.Columns[header_TotalProduced].Visible = false;
+            dgv.Columns[header_TotalStockIn].Visible = false;
+
         }
 
         private void ClearAllError()
@@ -3355,19 +3387,33 @@ namespace FactoryManagementSoftware.UI
             
         }
 
+        bool CellEditingMode = false;
+
         private void dgvMeterReading_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             e.Control.KeyPress -= new KeyPressEventHandler(ColumnMeter_KeyPress);
             e.Control.KeyPress -= new KeyPressEventHandler(Column2_KeyPress);
+            e.Control.KeyPress -= new KeyPressEventHandler(ColumnOperator_KeyPress);
 
+            int col = dgvMeterReading.CurrentCell.ColumnIndex;
+            string colName = dgvMeterReading.Columns[col].Name;
 
-            if (dgvMeterReading.CurrentCell.ColumnIndex == 2)//meter
+            if (colName.Contains(header_MeterReading) || colName.Contains(text.Header_QtyReject) )//meter or reject qty
             {
                 TextBox tb = e.Control as TextBox;
 
                 if (tb != null)
                 {
                     tb.KeyPress += new KeyPressEventHandler(ColumnMeter_KeyPress);
+                }
+            }
+            else if (colName.Contains(header_Operator) || CellEditingMode)
+            {
+                TextBox tb = e.Control as TextBox;
+
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(ColumnOperator_KeyPress);
                 }
             }
             else if(dgvMeterReading.CurrentCell.ColumnIndex != 1)
@@ -3383,7 +3429,7 @@ namespace FactoryManagementSoftware.UI
 
         private void ColumnOperator_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            if (!char.IsControl(e.KeyChar) && !char.IsLetterOrDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -3405,10 +3451,106 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private void AddDefectColumntoMeterReadingTable(DataGridView dgv, int rowIndex, int colIndex)
+        {
+            if(dgv != null)
+            {
+                int defectColumnNo = 1;
+
+                for(int col = 0; col < dgv.Columns.Count; col++)
+                {
+                    string colName = dgv.Columns[col].Name;
+
+                    if(colName.Contains(text.Header_DefectRemark))
+                    {
+                        string DefectNo = colName.Replace(text.Header_DefectRemark, "");
+
+                        string qtyReject_ColName = text.Header_QtyReject + DefectNo;
+
+                        if(string.IsNullOrEmpty(DefectNo))
+                        {
+                           
+                        }
+                        else
+                        {
+                            DefectNo = DefectNo.Replace("_", "");
+
+                            int DefectNo_INT = int.TryParse(DefectNo, out DefectNo_INT) ? DefectNo_INT : -1;
+
+                            defectColumnNo = DefectNo_INT > defectColumnNo ? DefectNo_INT : defectColumnNo;
+                        }
+
+                    }
+                }
+
+                DataTable dt = (DataTable)dgv.DataSource;
+
+                if(dt.Columns.Contains(text.Header_DefectRemark))
+                {
+                    dt.Columns[text.Header_DefectRemark].ColumnName = text.Header_DefectRemark + "_1";
+                    dt.Columns[text.Header_QtyReject].ColumnName = text.Header_QtyReject + "_1";
+                }
+
+                defectColumnNo++;
+
+                dt.Columns.Add(text.Header_DefectRemark+"_"+defectColumnNo, typeof(string));
+                dt.Columns.Add(text.Header_QtyReject + "_" + defectColumnNo, typeof(int));
+
+                dgvMeterStyleEdit(dgv);
+                dgv.CurrentCell = dgv.Rows[rowIndex].Cells[colIndex];
+            }
+        }
+
         private void dgvMeterReading_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             //calculate hourly
-            CalculateHourlyShot();
+            DataGridView dgv = dgvMeterReading;
+
+            int rowIndex = dgv.CurrentCell.RowIndex;
+            int colIndex = dgv.CurrentCell.ColumnIndex;
+
+            string colName = dgv.Columns[colIndex].Name;
+
+            if(colName.Contains(header_MeterReading))
+            {
+                CalculateHourlyShot();
+            }
+            else if (colName.Contains(text.Header_DefectRemark))
+            {
+                CellEditingMode = false;
+                dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.White;
+                dgv.Rows[rowIndex].Cells[colIndex].ReadOnly = true;
+            }
+            else if (colName.Contains(text.Header_QtyReject))
+            {
+                SumTotalActualReject();
+            }
+            
+        }
+        private void SumTotalActualReject()
+        {
+            int totalReject = 0;
+
+            DataGridView dgv = dgvMeterReading;
+
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            for (int col = 0; col < dt.Columns.Count; col++)
+            {
+                string colName = dgv.Columns[col].Name;
+
+                if (colName.Contains(text.Header_QtyReject))
+                {
+                    for(int row = 0; row < dt.Rows.Count; row ++)
+                    {
+                        totalReject += int.TryParse(dt.Rows[row][col].ToString(), out int qtyReject) ? qtyReject : 0;
+
+                    }
+                }
+            
+            }
+
+            txtActualTotalReject.Text = totalReject.ToString();
         }
 
         private void CalculateHourlyShot()
@@ -4797,5 +4939,96 @@ namespace FactoryManagementSoftware.UI
 
             ProducedVSTargetQty();
         }
+
+        private void dgvMeterReading_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            DataGridView dgv = dgvMeterReading;
+
+            dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            // Can leave these here - doesn't hurt
+            dgv.Rows[e.RowIndex].Selected = true;
+            dgv.Focus();
+            int rowIndex = dgv.CurrentCell.RowIndex;
+            int colIndex = dgv.CurrentCell.ColumnIndex;
+            string currentHeader = dgv.Columns[colIndex].Name;
+
+            //handle the row selection on right click
+            if (e.Button == MouseButtons.Right && e.RowIndex > -1 && currentHeader.Contains(text.Header_DefectRemark))
+            {
+                ContextMenuStrip my_menu = new ContextMenuStrip();
+
+                try
+                {
+                    my_menu.Items.Add("DefectRemark_1").Name = "DefectRemark_1";
+                    my_menu.Items.Add("DefectRemark_2").Name = "DefectRemark_2";
+                    my_menu.Items.Add("Other").Name = "Other";
+                    my_menu.Items.Add("").Name = "";
+
+                    my_menu.Items.Add("Clear").Name = "Clear";
+                    my_menu.Items.Add("Add More Defect Column").Name = "Add More Defect Column";
+
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                    contextMenuStrip1 = my_menu;
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+       
+        private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            DataGridView dgv = dgvMeterReading;
+
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            int rowIndex = dgv.CurrentCell.RowIndex;
+            int colIndex = dgv.CurrentCell.ColumnIndex;
+
+            string itemClicked = e.ClickedItem.Name.ToString();
+
+            string data = dgv.Rows[rowIndex].Cells[colIndex].Value.ToString();
+
+            
+            if (itemClicked.Equals("Clear"))
+            {
+                dgv.Rows[rowIndex].Cells[colIndex].Value = "";
+
+            }
+            else if (itemClicked.Equals("Other"))
+            {
+                dgv.Rows[rowIndex].Cells[colIndex].Value = "";
+
+                //edit mode
+                CellEditingMode = true;
+                dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = SystemColors.Info;
+                dgv.Rows[rowIndex].Cells[colIndex].ReadOnly = false;
+                dgv.BeginEdit(true);
+            }
+            else if(itemClicked.Equals("Add More Defect Column"))
+            {
+                AddDefectColumntoMeterReadingTable(dgv,rowIndex,colIndex);
+
+            }
+            else
+            {
+                dgv.Rows[rowIndex].Cells[colIndex].Value = itemClicked;
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+            dgv.ResumeLayout();
+        }
+
     }
 }

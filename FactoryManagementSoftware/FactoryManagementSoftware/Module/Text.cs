@@ -296,6 +296,9 @@ namespace FactoryManagementSoftware.Module
         public string Header_EfficiencyRate { get; } = "EFFICIENCY %";
         public string Header_TotalStockIn { get; } = "STOCK IN QTY";
         public string Header_TargetQty { get; } = "TARGET QTY";
+        public string Header_DefectRemark { get; } = "DEFECT REMARK";
+        public string Header_QtyReject { get; } = "QTY REJECT";
+
 
         public string Header_ParentOrProduct { get; } = "PARENT/PRODUCT";
 
