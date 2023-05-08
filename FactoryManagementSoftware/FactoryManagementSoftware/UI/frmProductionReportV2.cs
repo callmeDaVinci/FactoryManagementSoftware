@@ -17,6 +17,8 @@ using Microsoft.Office.Interop.Word;
 using System.Web.UI.WebControls;
 using System.Reflection;
 using Syncfusion.XlsIO.Implementation.XmlSerialization;
+using iTextSharp.text.pdf;
+using MathNet.Numerics.Distributions;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -945,6 +947,38 @@ namespace FactoryManagementSoftware.UI
             return firstOccurrence;
         }
 
+        private int BinarySearch(DataTable sortedTable, string targetColumn , int target)
+        {
+            int left = 0;
+            int right = sortedTable.Rows.Count - 1;
+            int firstOccurrence = -1;
+
+            //sortedTable.DefaultView.Sort = targetColumn + " ASC";
+            //sortedTable = sortedTable.DefaultView.ToTable();
+
+            while (left <= right)
+            {
+                int middle = left + (right - left) / 2;
+                int middleValue = Convert.ToInt32(sortedTable.Rows[middle][targetColumn]);
+
+                if (middleValue == target)
+                {
+                    firstOccurrence = middle;
+                    right = middle - 1; // Continue searching to the left for the first occurrence
+                }
+                else if (middleValue < target)
+                {
+                    left = middle + 1;
+                }
+                else
+                {
+                    right = middle - 1;
+                }
+            }
+
+            return firstOccurrence;
+        }
+
         private decimal calculateAvgHourlyShot(int sheetID, int totalMeterRun)
         {
             decimal avgHourlyShot = 0;
@@ -1005,6 +1039,49 @@ namespace FactoryManagementSoftware.UI
             return avgHourlyShot;
         }
 
+        private bool ifJobProductionDateFallWithinTargetPeriod(int jobNo, DateTime dateFrom, DateTime dateTo)
+        {
+            bool withinTargetPeriod = false;
+
+            int rowCount = DT_JOBSHEETRECORD != null ? DT_JOBSHEETRECORD.Rows.Count : 0;
+
+            if (DT_JOBSHEETRECORD != null && rowCount > 0)
+            {
+                bool jobFound = false;
+
+                int rowIndex = BinarySearch(DT_JOBSHEETRECORD, dalPlan.planID, jobNo);
+
+                if (rowIndex > -1)
+                {
+                    for (int i = rowIndex; i < rowCount; i++)
+                    {
+                        int jobNo_DB = int.TryParse(DT_JOBSHEETRECORD.Rows[i][dalPlan.planID].ToString(), out jobNo_DB) ? jobNo_DB : -1;
+
+                        if (jobNo_DB == jobNo)
+                        {
+                            DateTime proDate = DateTime.TryParse(DT_JOBSHEETRECORD.Rows[i][dalProRecord.ProDate].ToString(), out proDate) ? proDate : DateTime.MaxValue;
+                            if (proDate >= dateFrom && proDate <= dateTo)
+                            {
+                                return true;
+                            }
+
+                            if (!jobFound)
+                            {
+                                jobFound = true;
+                            }
+
+                        }
+                        else if (jobFound)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+            return withinTargetPeriod;
+        }
         private void dgvUIEdit(DataGridView dgv)
         {
             if (dgv == dgvMainList)
@@ -1288,9 +1365,11 @@ namespace FactoryManagementSoftware.UI
 
         private void CellSelectedSumUp(DataGridView dgv)
         {
+            decimal Average = 0;
             decimal Sum = 0;
+            int Count = 0;
 
-            if(dgv != null)
+            if (dgv != null)
             {
                 for(int i = 0; i < dgv.Rows.Count; i++)
                 {
@@ -1298,18 +1377,54 @@ namespace FactoryManagementSoftware.UI
                     {
                         bool cellSelected = dgv.Rows[i].Cells[j].Selected;
 
-                        if (cellSelected)
+                        //if (cellSelected)
+                        //{
+                        //    decimal data = decimal.TryParse(dgv.Rows[i].Cells[j].Value.ToString(), out data) ? data : 0;
+
+                        //    Sum += decimal.Round(data, 2);
+
+                        //    Count++;
+
+                        //}
+
+                        if (dgv.SelectionMode != DataGridViewSelectionMode.FullColumnSelect)
                         {
-                            decimal data = decimal.TryParse(dgv.Rows[i].Cells[j].Value.ToString(), out data) ? data : 0;
+                            cellSelected = dgv.Rows[i].Cells[j].Selected;
 
-                            Sum += decimal.Round(data,2);
+                            if (cellSelected)
+                            {
+                                decimal data = decimal.TryParse(dgv.Rows[i].Cells[j].Value.ToString(), out data) ? data : 0;
 
+                                Sum += decimal.Round(data, 2);
+
+                                Count++;
+
+                            }
                         }
+                        else if (dgv.SelectionMode == DataGridViewSelectionMode.FullColumnSelect)
+                        {
+                            cellSelected = dgv.Columns[j].Selected;
+
+                            if (cellSelected)
+                            {
+                                decimal data = decimal.TryParse(dgv.Rows[i].Cells[j].Value.ToString(), out data) ? data : 0;
+
+                                Sum += decimal.Round(data, 2);
+
+                                Count++;
+
+                            }
+                        }
+
+
                     }
                 }
             }
-         
-            lblSelectedCellSum.Text = "Selected Cell Sum :" + Sum.ToString();
+
+            if(Count > 0)
+            Average = decimal.Round(Sum/Count, 2);
+
+            lblSelectedCellSum.Text = "Average: " + Average.ToString() + "   Count: " + Count.ToString() + "   Sum: " + Sum.ToString();
         }
         private void NewLoadProductionRecord()
         {
@@ -1330,7 +1445,7 @@ namespace FactoryManagementSoftware.UI
 
             keywords = keywords.ToUpper();
 
-            if (!string.IsNullOrEmpty(keywords) && cbKeywordSearchByJobNo.Checked)
+            if (!string.IsNullOrEmpty(keywords) && cbKeywordSearchByJobNo.Checked && !cbDateFromStrict.Checked && !cbDateToStrict.Checked)
             {
                 cbAllTime.Checked = true;
             }
@@ -1338,6 +1453,9 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = NewProductionRecordTable();
 
             DT_JOBSHEETRECORD = dalProRecord.SelectWithItemInfo();//1483ms
+
+            DT_JOBSHEETRECORD.DefaultView.Sort = dalPlan.planID + " ASC, " + dalProRecord.SheetID + " ASC";
+            DT_JOBSHEETRECORD = DT_JOBSHEETRECORD.DefaultView.ToTable();
 
             DT_METERRECORD = dalProRecord.MeterRecordSelect();
 
@@ -1415,14 +1533,36 @@ namespace FactoryManagementSoftware.UI
                 bool dataMatched = true;
 
                 #region filter date
-                DateTime dateFrom = dtpFrom.Value.Date;
-                DateTime dateTo = dtpTo.Value.Date;
 
-                if(!cbAllTime.Checked)
+                if (!cbAllTime.Checked)
                 {
+                    DateTime dateFrom = dtpFrom.Value.Date;
+                    DateTime dateTo = dtpTo.Value.Date;
+
                     if (proDate < dateFrom || proDate > dateTo)
                     {
-                        dataMatched = false;
+                        if(cbDateFromStrict.Checked && proDate < dateFrom)
+                        {
+                            dataMatched = false;
+                        }
+                        else if (cbDateToStrict.Checked && proDate > dateTo)
+                        {
+                            dataMatched = false;
+                        }
+                        else
+                        {
+                            int jobIndexCheck = BinarySearch(dt, text.Header_JobNo, jobNo);
+
+                            if (jobIndexCheck == -1)
+                            {
+                                if (!ifJobProductionDateFallWithinTargetPeriod(jobNo, dateFrom, dateTo))
+                                {
+                                    dataMatched = false;
+
+                                }
+                            }
+                        }
+                           
                     }
                 }
                
@@ -1495,8 +1635,8 @@ namespace FactoryManagementSoftware.UI
 
                     if (cmbReportType.Text == text.ReportType_ByJobNo)
                     {
-                        dt_Row[text.Header_DateTo] = proDate;
                         dt_Row[text.Header_DateFrom] = proDate;
+                        dt_Row[text.Header_DateTo] = proDate;
                     }
                     else
                     {
@@ -1543,25 +1683,25 @@ namespace FactoryManagementSoftware.UI
                 DataTable dt_FilterDuplicatePlan = NewProductionRecordTable();
 
                 string previousJobNo = null;
-                int totalProduced = 0;
+                int qcPassedQty = 0;
                 int totalReject = 0;
                 int maxOutput = 0;
                 decimal avgHourlyShot = 0;
                 int IdealHourlyShot = 0;
 
                 //sorting dt by planID and date
-                dt.DefaultView.Sort = text.Header_JobNo + " ASC";
-                dt = dt.DefaultView.ToTable();
+                //dt.DefaultView.Sort = text.Header_JobNo + " ASC";
+                //dt = dt.DefaultView.ToTable();
 
                 int avgCount = 1;
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    DateTime proDate = Convert.ToDateTime(row[text.Header_DateTo]);
+                    DateTime proDate = Convert.ToDateTime(row[text.Header_DateFrom]);
 
                     if (previousJobNo == row[text.Header_JobNo].ToString())
                     {
-                        totalProduced += Convert.ToInt32(row[text.Header_QCPassedQty].ToString());
+                        qcPassedQty += Convert.ToInt32(row[text.Header_QCPassedQty].ToString());
                         totalReject += Convert.ToInt32(row[text.Header_TotalReject].ToString());
                         maxOutput += Convert.ToInt32(row[text.Header_MaxOutput].ToString());
                         avgHourlyShot += Convert.ToDecimal(row[text.Header_AvgHourlyShot].ToString());
@@ -1571,11 +1711,13 @@ namespace FactoryManagementSoftware.UI
 
                         decimal rejectRate = decimal.Round((decimal)totalReject / (decimal)maxOutput * 100, 2);
                         var yieldRate = 100 - rejectRate;
-                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_DateFrom] = proDate;
-                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_QCPassedQty] = totalProduced;
+                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_DateTo] = proDate;
+                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_QCPassedQty] = qcPassedQty;
                         dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_TotalReject] = totalReject;
                         dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_RejectRate] = rejectRate;
                         dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_YieldRate] = yieldRate;
+
+                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_MaxOutput] = maxOutput;
 
                         decimal ActualAvgHourlyShot = decimal.Round(avgHourlyShot / avgCount,0);
 
@@ -1591,7 +1733,7 @@ namespace FactoryManagementSoftware.UI
                         avgCount = 1;
 
                         previousJobNo = row[text.Header_JobNo].ToString();
-                        totalProduced = Convert.ToInt32(row[text.Header_QCPassedQty].ToString());
+                        qcPassedQty = Convert.ToInt32(row[text.Header_QCPassedQty].ToString());
                         totalReject = Convert.ToInt32(row[text.Header_TotalReject].ToString());
                         maxOutput = Convert.ToInt32(row[text.Header_MaxOutput].ToString());
                         avgHourlyShot = Convert.ToDecimal(row[text.Header_AvgHourlyShot].ToString());
@@ -1618,9 +1760,13 @@ namespace FactoryManagementSoftware.UI
             }
 
             #endregion
-
+            dgvMainList.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvMainList.MultiSelect = true;
             dgvMainList.DataSource = dt;
             dgvUIEdit(dgvMainList);
+
+            dgvMainList.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+
             dgvMainList.ClearSelection();
             lblSelectedCellSum.Text = "";
             recordLoaded = true;
@@ -1829,7 +1975,19 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbReportType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            cbNote.Visible = cmbReportType.Text == text.ReportType_ByDateAndShift;
+            bool byDateandShiftType = cmbReportType.Text == text.ReportType_ByDateAndShift;
+            cbNote.Visible = byDateandShiftType;
+
+            //cbDateFromStrict.Enabled = byDateandShiftType;
+            //cbDateToStrict.Enabled = byDateandShiftType;
+
+            if (!byDateandShiftType)
+            {
+                cbDateFromStrict.Checked = false;
+                cbDateToStrict.Checked = false;
+
+
+            }
 
             loadSubListType(cmbSubListType);
 
@@ -1905,12 +2063,32 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMainList_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-           // CellSelectedSumUp(dgvMainList);
+            if (e.RowIndex != -1)
+            {
+                DataGridView dgv = dgvMainList;
+                int col = e.ColumnIndex;
+                int row = e.RowIndex;
+
+                if (dgvMainList.SelectionMode != DataGridViewSelectionMode.CellSelect)
+                {
+                    dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
+                    dgvMainList.MultiSelect = true;
+                }
+
+                dgv.Rows[row].Cells[col].Selected = true;
+
+                CellSelectedSumUp(dgv);
+            }
+
         }
 
         private void dgvMainList_MouseClick(object sender, MouseEventArgs e)
         {
-            CellSelectedSumUp(dgvMainList);
+            if (dgvMainList.SelectionMode != DataGridViewSelectionMode.FullColumnSelect)
+            {
+                CellSelectedSumUp(dgvMainList);
+            }
+
 
         }
 
@@ -1981,7 +2159,7 @@ namespace FactoryManagementSoftware.UI
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Normal;
                 frm.Size = new Size(1366, 800);
-                frm.Show();
+                frm.ShowDialog();
 
                 frmLoading.CloseForm();
             }
@@ -1993,6 +2171,104 @@ namespace FactoryManagementSoftware.UI
         private void MainListColumnToDisplaySettingChanged(object sender, EventArgs e)
         {
             MainListColumnsToDisplaySetting(dgvMainList);
+        }
+
+       
+        private void dgvMainList_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex == -1)
+            {
+                DataGridView dgv = dgvMainList;
+                int col = e.ColumnIndex;
+
+                if(dgvMainList.SelectionMode != DataGridViewSelectionMode.FullColumnSelect)
+                {
+                    //dgv.Rows[1].Cells[col].Selected = true;
+
+                    dgvMainList.SelectionMode = DataGridViewSelectionMode.FullColumnSelect;
+                }
+
+                dgv.Columns[col].Selected = true;
+
+                CellSelectedSumUp(dgv);
+            }
+        }
+
+        private void dgvMainList_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            
+
+        }
+
+        private void dgvSorting(DataGridView dgv, string columns)
+        {
+            if(dgv != null)
+            {
+                DataTable dt_DGV = (DataTable)dgv.DataSource;
+
+                DataTable dt_Sorted = dt_DGV.Copy();
+
+                int totalRow = dt_DGV.Rows.Count;
+
+                dt_Sorted.DefaultView.Sort = columns + " ASC";
+                dt_Sorted = dt_Sorted.DefaultView.ToTable();
+
+                if(dt_Sorted.Rows.Count > 1)
+                {
+                    string data_Original = dt_DGV.Rows[0][columns].ToString(); 
+                    string data_Sorted = dt_Sorted.Rows[0][columns].ToString();
+
+                    if(data_Original == data_Sorted)
+                    {
+                        dt_Sorted.DefaultView.Sort = columns + " DESC";
+                        dt_Sorted = dt_Sorted.DefaultView.ToTable();
+                    }
+
+                }
+
+                dgv.DataSource = dt_Sorted;
+                dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+            }
+        }
+
+        private void dgvMainList_ColumnHeaderMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex == -1)
+            {
+                DataGridView dgv = dgvMainList;
+                int col = e.ColumnIndex;
+
+                dgvSorting(dgv, dgv.Columns[col].Name);
+
+                //dgv.Rows[1].Cells[col].Selected = true;
+
+                //if (dgvMainList.SelectionMode != DataGridViewSelectionMode.FullColumnSelect)
+                //{
+                //    dgvMainList.SelectionMode = DataGridViewSelectionMode.FullColumnSelect;
+                //}
+
+                dgv.ClearSelection();
+                dgv.Columns[col].Selected = true;
+
+                //CellSelectedSumUp(dgv);
+            }
+
+        }
+
+        private void cbDateFromStrict_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbAllTime.Checked && cbDateFromStrict.Checked)
+            {
+                cbAllTime.Checked = false;
+            }
+        }
+
+        private void cbDateToStrict_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbAllTime.Checked && cbDateToStrict.Checked)
+            {
+                cbAllTime.Checked = false;
+            }
         }
     }
 }
