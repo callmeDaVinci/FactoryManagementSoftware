@@ -38,6 +38,8 @@ namespace FactoryManagementSoftware.BLL
         public DateTime time { get; set; }
         public string production_operator { get; set; }
         public int meter_reading { get; set; }
+        public string defect_remark { get; set; }
+        public int reject_qty { get; set; }
         public string parent_code { get; set; }
         public int parent_qty { get; set; }
         public string note { get; set; }

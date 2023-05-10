@@ -37,6 +37,9 @@ namespace FactoryManagementSoftware.DAL
 
         public string ParentQty { get; } = "parent_qty";
 
+        public string DefectRemark { get; } = "defect_remark";
+        public string RejectQty { get; } = "reject_qty";
+
         public string ProTime { get; } = "time";
         public string ProOperator { get; } = "operator";
         public string ProMeterReading { get; } = "meter_reading";
@@ -363,6 +366,49 @@ namespace FactoryManagementSoftware.DAL
 
         }
 
+        public DataTable DefectRemarkRecordSelect(ProductionRecordBLL u)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_production_defect_remark
+                               WHERE sheet_id = @sheet_id";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+
+                cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);
+
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+
+        }
+
         public DataTable PackagingRecordSelect(int sheetID)
         {
             //static methodd to connect database
@@ -635,6 +681,58 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@time", u.time);
                 cmd.Parameters.AddWithValue("@production_operator", u.production_operator);
                 cmd.Parameters.AddWithValue("@meter_reading", u.meter_reading);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertSheetDefectRemark(ProductionRecordBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_production_defect_remark
+                            (" + SheetID + ","
+                            + ProTime + ","
+                            + DefectRemark + ","
+                            + RejectQty + ") VALUES" +
+                            "(@sheet_id," +
+                            "@time," +
+                            "@defect_remark," +
+                            "@reject_qty)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);
+                cmd.Parameters.AddWithValue("@time", u.time);
+                cmd.Parameters.AddWithValue("@defect_remark", u.defect_remark);
+                cmd.Parameters.AddWithValue("@reject_qty", u.reject_qty);
 
                 conn.Open();
 
@@ -1124,6 +1222,45 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 String sql = "DELETE FROM tbl_production_meter_reading WHERE sheet_id=@sheet_id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool DeleteDefectData(ProductionRecordBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "DELETE FROM tbl_production_defect_remark WHERE sheet_id=@sheet_id";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);

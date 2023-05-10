@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using FactoryManagementSoftware.BLL;
@@ -252,7 +253,7 @@ namespace FactoryManagementSoftware.UI
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
-            dgv.Columns[header_PartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[header_PartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
             dgv.Columns[header_Machine].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_Factory].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -388,6 +389,8 @@ namespace FactoryManagementSoftware.UI
 
                     btnNewSheet.Visible = false;
                     dgvMeterReading.ResumeLayout();
+
+                    ShowDailyRecordUI();
                 }
                     
             }
@@ -1736,9 +1739,9 @@ namespace FactoryManagementSoftware.UI
             CreateMeterReadingData();
             uProRecord.sheet_id = sheedID;
             DataTable dt = dalProRecord.MeterRecordSelect(uProRecord);
-            DataTable dt_Meter = (DataTable)dgvMeterReading.DataSource;
+            DataTable dt_DefectRemark = dalProRecord.DefectRemarkRecordSelect(uProRecord);
+            DataTable dt_Meter = (DataTable) dgvMeterReading.DataSource;
 
-            
 
             foreach (DataRow row in dt.Rows)
             {
@@ -1760,8 +1763,211 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
             }
+
+
+            foreach (DataRow row in dt_DefectRemark.Rows)
+            {
+                string timeFromDB = Convert.ToDateTime(row[dalProRecord.ProTime]).ToShortTimeString();
+
+                foreach (DataRow dgvRow in dt_Meter.Rows)
+                {
+                    int defectColumnNo = 1;
+
+                    string timeFromDGV = Convert.ToDateTime(dgvRow[header_Time]).ToShortTimeString();
+
+                    if (timeFromDB == timeFromDGV)
+                    {
+                        string defectRemark_ColToInsert = "";
+                        string QtyReject_ColToInsert = "";
+
+                        foreach (DataColumn dgvCol in dt_Meter.Columns)
+                        {
+                            string colName = dgvCol.ColumnName;
+                            if(colName.Contains(text.Header_DefectRemark))
+                            {
+                                string DefectNo = colName.Replace(text.Header_DefectRemark, "");
+
+                                string qtyReject_ColName = text.Header_QtyReject + DefectNo;
+
+                                if (!string.IsNullOrEmpty(DefectNo))
+                                {
+                                    DefectNo = DefectNo.Replace("_", "");
+
+                                    int DefectNo_INT = int.TryParse(DefectNo, out DefectNo_INT) ? DefectNo_INT : -1;
+
+                                    defectColumnNo = DefectNo_INT > defectColumnNo ? DefectNo_INT : defectColumnNo;
+                                }
+                               
+                                string defectRemarkData = dgvRow[colName].ToString();
+
+                                if(string.IsNullOrEmpty(defectRemarkData))
+                                {
+                                    defectRemark_ColToInsert = colName;
+                                    QtyReject_ColToInsert = text.Header_QtyReject + colName.Replace(text.Header_DefectRemark, "");
+                                    break;
+                                }
+
+                            }
+                        }
+
+                        
+
+                        if (string.IsNullOrEmpty(defectRemark_ColToInsert))
+                        {
+                            //add new columns
+                            if (dt_Meter.Columns.Contains(text.Header_DefectRemark))
+                            {
+                                dt_Meter.Columns[text.Header_DefectRemark].ColumnName = text.Header_DefectRemark + "_1";
+                                dt_Meter.Columns[text.Header_QtyReject].ColumnName = text.Header_QtyReject + "_1";
+
+                                defectRemark_ColToInsert = text.Header_DefectRemark + "_2";
+                                QtyReject_ColToInsert = text.Header_QtyReject + "_2";
+                                dt_Meter.Columns.Add(defectRemark_ColToInsert, typeof(string));
+                                dt_Meter.Columns.Add(QtyReject_ColToInsert, typeof(int));
+                            }
+                            else
+                            {
+                                defectColumnNo++;
+
+                                defectRemark_ColToInsert = text.Header_DefectRemark + "_" + defectColumnNo;
+                                QtyReject_ColToInsert = text.Header_QtyReject + "_" + defectColumnNo;
+
+                                dt_Meter.Columns.Add(defectRemark_ColToInsert, typeof(string));
+                                dt_Meter.Columns.Add(QtyReject_ColToInsert, typeof(int));
+                            }
+                        }
+
+                        string defectRemark = row[dalProRecord.DefectRemark].ToString();
+                        string rejectQty = row[dalProRecord.RejectQty].ToString();
+
+                        dgvRow[defectRemark_ColToInsert] = defectRemark;
+                        dgvRow[QtyReject_ColToInsert] = rejectQty;
+
+
+
+                        break;
+                    }
+                }
+
+              
+            }
+
+            dgvMeterStyleEdit(dgvMeterReading);
         }
 
+        private void NewLoadMeterReadingData(int sheedID)
+        {
+            CreateMeterReadingData();
+            uProRecord.sheet_id = sheedID;
+            DataTable dt = dalProRecord.MeterRecordSelect(uProRecord);
+            DataTable dt_DefectRemark = dalProRecord.DefectRemarkRecordSelect(uProRecord);
+            DataTable dt_Meter = (DataTable)dgvMeterReading.DataSource;
+
+            foreach (DataRow dgvRow in dt_Meter.Rows)
+            {
+                string timeFromDGV = Convert.ToDateTime(dgvRow[header_Time]).ToShortTimeString();
+                int defectColumnNo = 1;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string timeFromDB = Convert.ToDateTime(row[dalProRecord.ProTime]).ToShortTimeString();
+
+                    if (timeFromDB == timeFromDGV)
+                    {
+                        string proOperator = row[dalProRecord.ProOperator].ToString();
+                        string proMeter = row[dalProRecord.ProMeterReading].ToString();
+
+                        dgvRow[header_Operator] = proOperator;
+                        dgvRow[header_MeterReading] = proMeter;
+
+                        break;
+                    }
+
+                }
+
+                foreach (DataRow row in dt_DefectRemark.Rows)
+                {
+                    string timeFromDB = Convert.ToDateTime(row[dalProRecord.ProTime]).ToShortTimeString();
+
+                    if (timeFromDB == timeFromDGV)
+                    {
+                        string defectRemark_ColToInsert = "";
+                        string QtyReject_ColToInsert = "";
+
+                        foreach (DataColumn dgvCol in dt_Meter.Columns)
+                        {
+                            string colName = dgvCol.ColumnName;
+
+                            if (colName.Contains(text.Header_DefectRemark))
+                            {
+                                string DefectNo = colName.Replace(text.Header_DefectRemark, "");
+
+                                string qtyReject_ColName = text.Header_QtyReject + DefectNo;
+
+                                if (!string.IsNullOrEmpty(DefectNo))
+                                {
+                                    DefectNo = DefectNo.Replace("_", "");
+
+                                    int DefectNo_INT = int.TryParse(DefectNo, out DefectNo_INT) ? DefectNo_INT : -1;
+
+                                    defectColumnNo = DefectNo_INT > defectColumnNo ? DefectNo_INT : defectColumnNo;
+                                }
+
+                                string defectRemarkData = dgvRow[colName].ToString();
+
+                                if (string.IsNullOrEmpty(defectRemarkData))
+                                {
+                                    defectRemark_ColToInsert = colName;
+                                    QtyReject_ColToInsert = text.Header_QtyReject + colName.Replace(text.Header_DefectRemark, "");
+                                    break;
+                                }
+
+                            }
+                        }
+
+                        if (string.IsNullOrEmpty(defectRemark_ColToInsert))
+                        {
+                            //add new columns
+                            if (dt_Meter.Columns.Contains(text.Header_DefectRemark))
+                            {
+                                dt_Meter.Columns[text.Header_DefectRemark].ColumnName = text.Header_DefectRemark + "_1";
+                                dt_Meter.Columns[text.Header_QtyReject].ColumnName = text.Header_QtyReject + "_1";
+
+                                defectRemark_ColToInsert = text.Header_DefectRemark + "_2";
+                                QtyReject_ColToInsert = text.Header_QtyReject + "_2";
+                                dt_Meter.Columns.Add(defectRemark_ColToInsert, typeof(string));
+                                dt_Meter.Columns.Add(QtyReject_ColToInsert, typeof(int));
+                            }
+                            else
+                            {
+                                defectColumnNo++;
+
+                                defectRemark_ColToInsert = text.Header_DefectRemark + "_" + defectColumnNo;
+                                QtyReject_ColToInsert = text.Header_QtyReject + "_" + defectColumnNo;
+
+                                dt_Meter.Columns.Add(defectRemark_ColToInsert, typeof(string));
+                                dt_Meter.Columns.Add(QtyReject_ColToInsert, typeof(int));
+                            }
+                        }
+
+                        string defectRemark = row[dalProRecord.DefectRemark].ToString();
+                        string rejectQty = row[dalProRecord.RejectQty].ToString();
+
+                        dgvRow[defectRemark_ColToInsert] = defectRemark;
+                        dgvRow[QtyReject_ColToInsert] = rejectQty;
+
+
+
+                        break;
+                    }
+
+
+                }
+
+            }
+
+            dgvMeterStyleEdit(dgvMeterReading);
+        }
         private void CreateMeterReadingData()
         {
             DataTable dt = NewMeterReadingTable();
@@ -2145,6 +2351,7 @@ namespace FactoryManagementSoftware.UI
                     //remove old meter data
                     //remove data under same sheet id
                     dalProRecord.DeleteMeterData(uProRecord);
+                    dalProRecord.DeleteDefectData(uProRecord);
 
                     //insert new meter data
                     DataTable dt_Meter = (DataTable)dgvMeterReading.DataSource;
@@ -2164,6 +2371,32 @@ namespace FactoryManagementSoftware.UI
                             if (!dalProRecord.InsertSheetMeter(uProRecord))
                             {
                                 break;
+                            }
+                        }
+
+                        foreach(DataColumn col in dt_Meter.Columns)
+                        {
+                            string colName = col.ColumnName;
+
+                            if(colName.Contains(text.Header_DefectRemark))
+                            {
+                                string qtyRejectColName = text.Header_QtyReject + colName.Replace(text.Header_DefectRemark, "");
+
+                                string defectRemarkData = row[colName].ToString();
+                                int qtyReject = int.TryParse(row[qtyRejectColName].ToString(), out qtyReject) ? qtyReject : -1;
+
+                               
+                                if(qtyReject > -1 && !string.IsNullOrEmpty(defectRemarkData))
+                                {
+                                    uProRecord.defect_remark = defectRemarkData;
+                                    uProRecord.reject_qty = qtyReject;
+
+                                    if (!dalProRecord.InsertSheetDefectRemark(uProRecord))
+                                    {
+                                        MessageBox.Show("Defect Remark and Qty Reject cannot be saved!");
+                                    }
+                                    
+                                }
                             }
                         }
                         
@@ -3028,11 +3261,15 @@ namespace FactoryManagementSoftware.UI
             tlpList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 0);
             tlpList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100);
 
-            tlpStockInCheck.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100);
-            tlpStockInCheck.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 100f);
-            tlpStockInCheck.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 95f);
-            tlpStockInCheck.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 95f);
-            tlpStockInCheck.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 40f);
+            tlpMainPanel.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100);
+            tlpMainPanel.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 950);
+
+
+            tlpTotalProducedTotalStockIn.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100);
+            tlpTotalProducedTotalStockIn.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 100f);
+            tlpTotalProducedTotalStockIn.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 95f);
+            tlpTotalProducedTotalStockIn.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 95f);
+            tlpTotalProducedTotalStockIn.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 40f);
 
         }
 
@@ -3041,6 +3278,9 @@ namespace FactoryManagementSoftware.UI
 
             tlpList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0);
             tlpList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100);
+
+            tlpMainPanel.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100);
+            tlpMainPanel.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 400);
         }
 
         private void txtTotalStockIn_TextChanged(object sender, EventArgs e)
@@ -3396,9 +3636,10 @@ namespace FactoryManagementSoftware.UI
             e.Control.KeyPress -= new KeyPressEventHandler(ColumnOperator_KeyPress);
 
             int col = dgvMeterReading.CurrentCell.ColumnIndex;
+            int row = dgvMeterReading.CurrentCell.RowIndex;
             string colName = dgvMeterReading.Columns[col].Name;
 
-            if (colName.Contains(header_MeterReading) || colName.Contains(text.Header_QtyReject) )//meter or reject qty
+            if (colName.Contains(header_MeterReading))
             {
                 TextBox tb = e.Control as TextBox;
 
@@ -3406,6 +3647,40 @@ namespace FactoryManagementSoftware.UI
                 {
                     tb.KeyPress += new KeyPressEventHandler(ColumnMeter_KeyPress);
                 }
+            }
+            else if(colName.Contains(text.Header_QtyReject))
+            {
+                //check if defect remark empty
+                string DefectRemarkColumnName = text.Header_DefectRemark +  colName.Replace(text.Header_QtyReject, "");
+
+                string DefectData = "";
+
+                if(dgvMeterReading.Columns.Contains(DefectRemarkColumnName))
+                {
+                    DefectData = dgvMeterReading.Rows[row].Cells[DefectRemarkColumnName].Value.ToString();
+                }
+
+                if(string.IsNullOrEmpty(DefectData))
+                {
+                    TextBox tb = e.Control as TextBox;
+
+                    if (tb != null)
+                    {
+                        tb.KeyPress += new KeyPressEventHandler(Column2_KeyPress);
+                    }
+
+                    MessageBox.Show("Please select a Defect Remark!");
+                }
+                else
+                {
+                    TextBox tb = e.Control as TextBox;
+
+                    if (tb != null)
+                    {
+                        tb.KeyPress += new KeyPressEventHandler(ColumnMeter_KeyPress);
+                    }
+                }
+
             }
             else if (colName.Contains(header_Operator) || CellEditingMode)
             {
@@ -3499,6 +3774,55 @@ namespace FactoryManagementSoftware.UI
                 dgvMeterStyleEdit(dgv);
                 dgv.CurrentCell = dgv.Rows[rowIndex].Cells[colIndex];
             }
+        }
+
+        private void AddDefectColumntoMeterReadingTable(DataTable dt)
+        {
+            //if (dgv != null)
+            //{
+            //    int defectColumnNo = 1;
+
+            //    for (int col = 0; col < dgv.Columns.Count; col++)
+            //    {
+            //        string colName = dgv.Columns[col].Name;
+
+            //        if (colName.Contains(text.Header_DefectRemark))
+            //        {
+            //            string DefectNo = colName.Replace(text.Header_DefectRemark, "");
+
+            //            string qtyReject_ColName = text.Header_QtyReject + DefectNo;
+
+            //            if (string.IsNullOrEmpty(DefectNo))
+            //            {
+
+            //            }
+            //            else
+            //            {
+            //                DefectNo = DefectNo.Replace("_", "");
+
+            //                int DefectNo_INT = int.TryParse(DefectNo, out DefectNo_INT) ? DefectNo_INT : -1;
+
+            //                defectColumnNo = DefectNo_INT > defectColumnNo ? DefectNo_INT : defectColumnNo;
+            //            }
+
+            //        }
+            //    }
+
+            //    DataTable dt = (DataTable)dgv.DataSource;
+
+            //    if (dt.Columns.Contains(text.Header_DefectRemark))
+            //    {
+            //        dt.Columns[text.Header_DefectRemark].ColumnName = text.Header_DefectRemark + "_1";
+            //        dt.Columns[text.Header_QtyReject].ColumnName = text.Header_QtyReject + "_1";
+            //    }
+
+            //    defectColumnNo++;
+
+            //    dt.Columns.Add(text.Header_DefectRemark + "_" + defectColumnNo, typeof(string));
+            //    dt.Columns.Add(text.Header_QtyReject + "_" + defectColumnNo, typeof(int));
+
+                
+            //}
         }
 
         private void dgvMeterReading_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -4961,9 +5285,22 @@ namespace FactoryManagementSoftware.UI
 
                 try
                 {
-                    my_menu.Items.Add("DefectRemark_1").Name = "DefectRemark_1";
-                    my_menu.Items.Add("DefectRemark_2").Name = "DefectRemark_2";
-                    my_menu.Items.Add("Other").Name = "Other";
+                    my_menu.Items.Add(text.Defect_Short).Name = text.Defect_Short;
+                    my_menu.Items.Add(text.Defect_Flashing).Name = text.Defect_Flashing;
+                    my_menu.Items.Add(text.Defect_Dirty).Name = text.Defect_Dirty;
+                    my_menu.Items.Add(text.Defect_Black_White_Dot).Name = text.Defect_Black_White_Dot;
+                    my_menu.Items.Add(text.Defect_Oily).Name = text.Defect_Oily;
+                    my_menu.Items.Add(text.Defect_Bubble).Name = text.Defect_Bubble;
+                    my_menu.Items.Add(text.Defect_Wavy).Name = text.Defect_Wavy;
+                    my_menu.Items.Add(text.Defect_Burn_Mark).Name = text.Defect_Burn_Mark;
+                    my_menu.Items.Add(text.Defect_Sink_Mark).Name = text.Defect_Sink_Mark;
+                    my_menu.Items.Add(text.Defect_Colour_Out).Name = text.Defect_Colour_Out;
+                    my_menu.Items.Add(text.Defect_Hardness).Name = text.Defect_Hardness;
+                    my_menu.Items.Add(text.Defect_Scratches).Name = text.Defect_Scratches;
+                    my_menu.Items.Add(text.Defect_Flow_Mark).Name = text.Defect_Flow_Mark;
+                    my_menu.Items.Add(text.Defect_Silver_White_Mark).Name = text.Defect_Silver_White_Mark;
+
+                    my_menu.Items.Add("15. Other").Name = "15. Other";
                     my_menu.Items.Add("").Name = "";
 
                     my_menu.Items.Add("Clear").Name = "Clear";
@@ -5005,8 +5342,13 @@ namespace FactoryManagementSoftware.UI
             {
                 dgv.Rows[rowIndex].Cells[colIndex].Value = "";
 
+                //string qtyRejectColName = text.Header_QtyReject + dgv.Columns[colIndex].Name.Replace(text.Header_DefectRemark,"");
+                dgv.Rows[rowIndex].Cells[colIndex + 1].Value = 0;
+
+                SumTotalActualReject();
+
             }
-            else if (itemClicked.Equals("Other"))
+            else if (itemClicked.Equals("15. Other"))
             {
                 dgv.Rows[rowIndex].Cells[colIndex].Value = "";
 
@@ -5023,7 +5365,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                dgv.Rows[rowIndex].Cells[colIndex].Value = itemClicked;
+                string defectRemark = new String(itemClicked.Where(c => c != '.' && (c < '0' || c > '9')).ToArray());
+
+                dgv.Rows[rowIndex].Cells[colIndex].Value = defectRemark;
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type

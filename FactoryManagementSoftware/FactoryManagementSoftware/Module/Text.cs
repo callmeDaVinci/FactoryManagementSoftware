@@ -197,6 +197,25 @@ namespace FactoryManagementSoftware.Module
 
         #endregion
 
+        #region Defect Remark
+        public string Defect_Short { get; } = "1. Short";
+        public string Defect_Flashing { get; } = "2. Flashing";
+        public string Defect_Dirty { get; } = "3. Dirty";
+        public string Defect_Black_White_Dot { get; } = "4. Black/White Dot";
+        public string Defect_Oily { get; } = "5. Oily";
+        public string Defect_Bubble { get; } = "6. Bubble";
+        public string Defect_Wavy { get; } = "7. Wavy";
+        public string Defect_Burn_Mark { get; } = "8. Burn Mark";
+        public string Defect_Sink_Mark { get; } = "9. Sink Mark";
+        public string Defect_Colour_Out { get; } = "10. Colour Out";
+        public string Defect_Hardness { get; } = "11. Hardness";
+        public string Defect_Scratches { get; } = "12. Scratches";
+        public string Defect_Flow_Mark { get; } = "13. Flow Mark";
+        public string Defect_Silver_White_Mark { get; } = "14. Silver/White Mark";
+
+        #endregion
+
+
         #region Location
 
         public string Factory { get; } = "Factory";
