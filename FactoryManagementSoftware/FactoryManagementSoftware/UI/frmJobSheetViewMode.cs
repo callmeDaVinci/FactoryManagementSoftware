@@ -213,22 +213,45 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_MeterReading, typeof(double));
             dt.Columns.Add(header_Hourly, typeof(double));
 
+            dt.Columns.Add(text.Header_DefectRemark, typeof(string));
+            dt.Columns.Add(text.Header_QtyReject, typeof(int));
+
             return dt;
         }
 
         private void dgvMeterStyleEdit(DataGridView dgv)
         {
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-            dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+
             dgv.Columns[header_Time].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[header_Operator].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_MeterReading].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_Hourly].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            dgv.Columns[header_Operator].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[header_Operator].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
             dgv.Columns[header_Operator].DefaultCellStyle.BackColor = SystemColors.Info;
             dgv.Columns[header_MeterReading].DefaultCellStyle.BackColor = SystemColors.Info;
+
+            for (int i = 0; i < dgv.ColumnCount; i++)
+            {
+                string colName = dgv.Columns[i].Name;
+
+                if (colName.Contains(text.Header_DefectRemark))
+                {
+                    dgv.Columns[colName].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                    dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                    dgv.Columns[colName].ReadOnly = true;
+                }
+                else if (colName.Contains(text.Header_QtyReject))
+                {
+                    dgv.Columns[colName].DefaultCellStyle.BackColor = SystemColors.Info;
+                    dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                }
+            }
+
+            dgv.Columns[header_Time].Frozen = true;
         }
 
         private void dgvItemListStyleEdit(DataGridView dgv)
@@ -247,7 +270,7 @@ namespace FactoryManagementSoftware.UI
         private void dgvSheetRecordStyleEdit(DataGridView dgv)
         {
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-            dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
             dgv.Columns[header_SheetID].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_ProductionDate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_Shift].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -256,6 +279,10 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[header_UpdatedBy].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_TotalProduced].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgv.Columns[header_StockIn].DefaultCellStyle.BackColor = SystemColors.Info;
+
+            dgv.Columns[header_JobNo].Visible = false;
+            dgv.Columns[header_TotalProduced].Visible = false;
+            dgv.Columns[header_TotalStockIn].Visible = false;
         }
 
         private void ClearAllError()
@@ -1239,9 +1266,8 @@ namespace FactoryManagementSoftware.UI
             CreateMeterReadingData();
             uProRecord.sheet_id = sheedID;
             DataTable dt = dalProRecord.MeterRecordSelect(uProRecord);
+            DataTable dt_DefectRemark = dalProRecord.DefectRemarkRecordSelect(uProRecord);
             DataTable dt_Meter = (DataTable)dgvMeterReading.DataSource;
-
-            
 
             foreach (DataRow row in dt.Rows)
             {
@@ -1263,6 +1289,96 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
             }
+
+            foreach (DataRow row in dt_DefectRemark.Rows)
+            {
+                string timeFromDB = Convert.ToDateTime(row[dalProRecord.ProTime]).ToShortTimeString();
+
+                foreach (DataRow dgvRow in dt_Meter.Rows)
+                {
+                    int defectColumnNo = 1;
+
+                    string timeFromDGV = Convert.ToDateTime(dgvRow[header_Time]).ToShortTimeString();
+
+                    if (timeFromDB == timeFromDGV)
+                    {
+                        string defectRemark_ColToInsert = "";
+                        string QtyReject_ColToInsert = "";
+
+                        foreach (DataColumn dgvCol in dt_Meter.Columns)
+                        {
+                            string colName = dgvCol.ColumnName;
+                            if (colName.Contains(text.Header_DefectRemark))
+                            {
+                                string DefectNo = colName.Replace(text.Header_DefectRemark, "");
+
+                                string qtyReject_ColName = text.Header_QtyReject + DefectNo;
+
+                                if (!string.IsNullOrEmpty(DefectNo))
+                                {
+                                    DefectNo = DefectNo.Replace("_", "");
+
+                                    int DefectNo_INT = int.TryParse(DefectNo, out DefectNo_INT) ? DefectNo_INT : -1;
+
+                                    defectColumnNo = DefectNo_INT > defectColumnNo ? DefectNo_INT : defectColumnNo;
+                                }
+
+                                string defectRemarkData = dgvRow[colName].ToString();
+
+                                if (string.IsNullOrEmpty(defectRemarkData))
+                                {
+                                    defectRemark_ColToInsert = colName;
+                                    QtyReject_ColToInsert = text.Header_QtyReject + colName.Replace(text.Header_DefectRemark, "");
+                                    break;
+                                }
+
+                            }
+                        }
+
+
+
+                        if (string.IsNullOrEmpty(defectRemark_ColToInsert))
+                        {
+                            //add new columns
+                            if (dt_Meter.Columns.Contains(text.Header_DefectRemark))
+                            {
+                                dt_Meter.Columns[text.Header_DefectRemark].ColumnName = text.Header_DefectRemark + "_1";
+                                dt_Meter.Columns[text.Header_QtyReject].ColumnName = text.Header_QtyReject + "_1";
+
+                                defectRemark_ColToInsert = text.Header_DefectRemark + "_2";
+                                QtyReject_ColToInsert = text.Header_QtyReject + "_2";
+                                dt_Meter.Columns.Add(defectRemark_ColToInsert, typeof(string));
+                                dt_Meter.Columns.Add(QtyReject_ColToInsert, typeof(int));
+                            }
+                            else
+                            {
+                                defectColumnNo++;
+
+                                defectRemark_ColToInsert = text.Header_DefectRemark + "_" + defectColumnNo;
+                                QtyReject_ColToInsert = text.Header_QtyReject + "_" + defectColumnNo;
+
+                                dt_Meter.Columns.Add(defectRemark_ColToInsert, typeof(string));
+                                dt_Meter.Columns.Add(QtyReject_ColToInsert, typeof(int));
+                            }
+                        }
+
+                        string defectRemark = row[dalProRecord.DefectRemark].ToString();
+                        string rejectQty = row[dalProRecord.RejectQty].ToString();
+
+                        dgvRow[defectRemark_ColToInsert] = defectRemark;
+                        dgvRow[QtyReject_ColToInsert] = rejectQty;
+
+
+
+                        break;
+                    }
+                }
+
+
+            }
+
+            dgvMeterStyleEdit(dgvMeterReading);
+
         }
 
         private void CreateMeterReadingData()

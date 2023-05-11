@@ -1742,7 +1742,6 @@ namespace FactoryManagementSoftware.UI
             DataTable dt_DefectRemark = dalProRecord.DefectRemarkRecordSelect(uProRecord);
             DataTable dt_Meter = (DataTable) dgvMeterReading.DataSource;
 
-
             foreach (DataRow row in dt.Rows)
             {
                 string timeFromDB = Convert.ToDateTime(row[dalProRecord.ProTime]).ToShortTimeString();

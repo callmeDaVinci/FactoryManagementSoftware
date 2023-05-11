@@ -26,11 +26,11 @@ namespace FactoryManagementSoftware
            
            //Application.Run(new frmItemEdit_NEW());
 
-           //Application.Run(new frmProductionRecordNewV2());
+           //Application.Run(new frmProductionReportV2());
 
-           Application.Run(new MainDashboard(1));
+           //Application.Run(new MainDashboard(1));
 
-           //Application.Run(new frmLogIn());
+           Application.Run(new frmLogIn());
 
         }
 

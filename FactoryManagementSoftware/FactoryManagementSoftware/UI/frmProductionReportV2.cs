@@ -19,6 +19,7 @@ using System.Reflection;
 using Syncfusion.XlsIO.Implementation.XmlSerialization;
 using iTextSharp.text.pdf;
 using MathNet.Numerics.Distributions;
+using System.Collections.Generic;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -40,6 +41,8 @@ namespace FactoryManagementSoftware.UI
         Tool tool = new Tool();
         Text text = new Text();
         ExcelTool excelTool = new ExcelTool();
+        joinDAL dalJoin = new joinDAL();
+        itemCustDAL dalItemCust = new itemCustDAL();
 
         private string textMoreFilters = "MORE FILTERS";
         private string textHideFilters = "HIDE FILTERS";
@@ -82,6 +85,8 @@ namespace FactoryManagementSoftware.UI
 
         DataTable DT_JOBSHEETRECORD;
         DataTable DT_METERRECORD;
+        DataTable DT_ITEM_CUST;
+        DataTable DT_JOIN;
 
         #endregion
 
@@ -1426,6 +1431,86 @@ namespace FactoryManagementSoftware.UI
 
             lblSelectedCellSum.Text = "Average: " + Average.ToString() + "   Count: " + Count.ToString() + "   Sum: " + Sum.ToString();
         }
+
+        private bool ItemOrParentBelongCustomer(string childCode, string custID)
+        {
+            bool customerMatched = false;
+
+            if (itemBelongsToCustomer(custID, childCode))
+            {
+                return true;
+            }
+
+            foreach (DataRow row in DT_JOIN.Rows)
+            {
+                string childCode_DB = row[dalJoin.JoinChild].ToString();
+
+                if(childCode_DB == childCode)
+                {
+                    string parentCode = row[dalJoin.JoinParent].ToString();
+
+                    if(ItemOrParentBelongCustomer(parentCode, custID))
+                    {
+                        return true;
+                    }
+                    
+                }
+            }
+
+            return customerMatched;
+        }
+
+        private bool itemBelongsToCustomer(string custID, string itemCode)
+        {
+            //int custID_INT = int.TryParse(custID, out custID_INT) ? custID_INT : -1;
+
+            // Assuming "CustomerId" and "ItemCode" are column names in your DataTable
+            string expression = $"cust_id = '{custID}' AND item_code = '{itemCode}'";
+
+            DataRow[] foundRows = DT_ITEM_CUST.Select(expression);
+
+            // If any rows were found, the item belongs to the customer
+            return foundRows.Length > 0;
+        }
+
+        private void CustomerFilter(string custID)
+        {
+            DT_JOBSHEETRECORD.DefaultView.Sort = dalPlan.partCode + " ASC";
+            DT_JOBSHEETRECORD = DT_JOBSHEETRECORD.DefaultView.ToTable();
+
+            string previousItemCode = "";
+
+            bool itemToKeep = false;
+
+            DT_JOBSHEETRECORD.AcceptChanges();
+            foreach (DataRow row in DT_JOBSHEETRECORD.Rows)
+            {
+                string itemCode = row[dalPlan.partCode].ToString();
+
+                if(itemCode.Equals("V76PBW000"))
+                {
+                    var checkpoint = 1;
+                }
+
+                if(previousItemCode != itemCode)
+                {
+                    previousItemCode = itemCode;
+
+                    itemToKeep = ItemOrParentBelongCustomer(itemCode, custID);
+
+                }
+               
+                if(!itemToKeep)
+                {
+                    row.Delete();
+                }
+              
+            }
+            DT_JOBSHEETRECORD.AcceptChanges();
+
+        }
+
+
         private void NewLoadProductionRecord()
         {
             #region Setting
@@ -1454,8 +1539,7 @@ namespace FactoryManagementSoftware.UI
 
             DT_JOBSHEETRECORD = dalProRecord.SelectWithItemInfo();//1483ms
 
-            DT_JOBSHEETRECORD.DefaultView.Sort = dalPlan.planID + " ASC, " + dalProRecord.SheetID + " ASC";
-            DT_JOBSHEETRECORD = DT_JOBSHEETRECORD.DefaultView.ToTable();
+           
 
             DT_METERRECORD = dalProRecord.MeterRecordSelect();
 
@@ -1464,7 +1548,32 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt_Mac = dalMac.Select();
 
-           
+            //customer filter
+            string customer = cmbCustomer.Text;
+
+            if(!string.IsNullOrEmpty(customer) && customer.ToUpper() != text.Cmb_All)
+            {
+                int customerSelectedIdex = cmbCustomer.SelectedIndex;
+                DataTable dt_CMB_Customer = (DataTable)cmbCustomer.DataSource;
+
+                string custID = "";
+
+                if(dt_CMB_Customer.Columns.Contains(dalItemCust.CustID))
+                {
+                    custID = dt_CMB_Customer.Rows[customerSelectedIdex][dalItemCust.CustID].ToString();
+                }
+
+
+                DT_JOIN = dalJoin.SelectAll();
+                DT_ITEM_CUST = dalItemCust.SelectAll();
+
+                CustomerFilter(custID);
+
+            }
+
+
+            DT_JOBSHEETRECORD.DefaultView.Sort = dalPlan.planID + " ASC, " + dalProRecord.SheetID + " ASC";
+            DT_JOBSHEETRECORD = DT_JOBSHEETRECORD.DefaultView.ToTable();
 
             int index = 1;
 
@@ -1790,6 +1899,8 @@ namespace FactoryManagementSoftware.UI
             ShowOrHideSubList(false);
 
             formLoaded = true;
+
+            LoadCustomerSelection(cmbCustomer);
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -2158,7 +2269,7 @@ namespace FactoryManagementSoftware.UI
 
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Normal;
-                frm.Size = new Size(1366, 800);
+                frm.Size = new Size(1650, 900);
                 frm.ShowDialog();
 
                 frmLoading.CloseForm();
@@ -2269,6 +2380,30 @@ namespace FactoryManagementSoftware.UI
             {
                 cbAllTime.Checked = false;
             }
+        }
+
+        private void LoadCustomerSelection(ComboBox cmb)
+        {
+
+            if (formLoaded)
+            {
+                if (cbMainCustomerOnly.Checked)
+                {
+                    tool.loadMainCustomerAndAllToComboBox(cmb);
+                }
+                else
+                {
+                    tool.loadCustomerAndALLWithoutOtherToComboBox(cmb);
+
+                }
+
+                cmb.Text = text.Cmb_All;
+            }
+
+        }
+        private void cbMainCustomerOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadCustomerSelection(cmbCustomer);
         }
     }
 }

@@ -2669,15 +2669,18 @@ namespace FactoryManagementSoftware.Module
 
             dt.AcceptChanges();
 
-            DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
+            DataRow newRow = dt.NewRow();
+            newRow["cust_name"] = new Text().Cmb_All;
 
-            distinctTable.Rows.Add(new Text().Cmb_All);
+            dt.Rows.Add(newRow);
 
-            distinctTable.DefaultView.Sort = "cust_name ASC";
+            //distinctTable.Rows.Add(new Text().Cmb_All);
 
-            distinctTable.AcceptChanges();
+            dt.DefaultView.Sort = "cust_name ASC";
 
-            cmb.DataSource = distinctTable;
+            dt = dt.DefaultView.ToTable();
+
+            cmb.DataSource = dt;
             cmb.DisplayMember = "cust_name";
             //cmb.Text = getCustName(1);
             cmb.SelectedIndex = -1;
@@ -2714,23 +2717,40 @@ namespace FactoryManagementSoftware.Module
         public void loadCustomerAndALLWithoutOtherToComboBox(ComboBox cmb)
         {
             DataTable dt = dalCust.FullSelect();
-            DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
 
-            distinctTable.Rows.Add(new Text().Cmb_All);
+            //DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
 
-            distinctTable.DefaultView.Sort = "cust_name ASC";
+            DataRow newRow = dt.NewRow();
+            newRow["cust_name"] = new Text().Cmb_All;
 
-            distinctTable.AcceptChanges();
-            foreach (DataRow row in distinctTable.Rows)
+            dt.Rows.Add(newRow);
+
+            //distinctTable.Rows.Add(new Text().Cmb_All);
+
+            dt.DefaultView.Sort = "cust_name ASC";
+
+            dt = dt.DefaultView.ToTable();
+
+            //distinctTable.Rows.Add(new Text().Cmb_All);
+
+            //distinctTable.DefaultView.Sort = "cust_name ASC";
+
+            //distinctTable.AcceptChanges();
+
+            dt.AcceptChanges();
+
+            foreach (DataRow row in dt.Rows)
             {
                 if (row["cust_name"].ToString().Equals("OTHER"))
                 {
                     row.Delete();
+                    break;
                 }
             }
-            distinctTable.AcceptChanges();
 
-            cmb.DataSource = distinctTable;
+            dt.AcceptChanges();
+
+            cmb.DataSource = dt;
             cmb.DisplayMember = "cust_name";
             cmb.SelectedIndex = -1;
         }
