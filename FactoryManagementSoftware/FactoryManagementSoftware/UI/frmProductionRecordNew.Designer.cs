@@ -244,6 +244,7 @@
             this.dgvItemList.Name = "dgvItemList";
             this.dgvItemList.ReadOnly = true;
             this.dgvItemList.RowHeadersVisible = false;
+            this.dgvItemList.RowHeadersWidth = 51;
             this.dgvItemList.RowTemplate.Height = 40;
             this.dgvItemList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvItemList.Size = new System.Drawing.Size(288, 545);
@@ -286,6 +287,7 @@
             this.dgvRecordHistory.Name = "dgvRecordHistory";
             this.dgvRecordHistory.ReadOnly = true;
             this.dgvRecordHistory.RowHeadersVisible = false;
+            this.dgvRecordHistory.RowHeadersWidth = 51;
             this.dgvRecordHistory.RowTemplate.Height = 40;
             this.dgvRecordHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvRecordHistory.Size = new System.Drawing.Size(283, 354);
@@ -302,10 +304,10 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(43, 20);
+            this.label1.Location = new System.Drawing.Point(43, 22);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1, 19);
+            this.label1.Size = new System.Drawing.Size(1, 17);
             this.label1.TabIndex = 162;
             this.label1.Text = "PRODUCTION LIST";
             // 
@@ -314,9 +316,9 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(3, 11);
+            this.label2.Location = new System.Drawing.Point(3, 13);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(195, 19);
+            this.label2.Size = new System.Drawing.Size(179, 17);
             this.label2.TabIndex = 163;
             this.label2.Text = "PRODUCTION DAILY RECORD";
             // 
@@ -414,6 +416,7 @@
             this.dgvMeterReading.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.dgvMeterReading.Name = "dgvMeterReading";
             this.dgvMeterReading.RowHeadersVisible = false;
+            this.dgvMeterReading.RowHeadersWidth = 51;
             this.dgvMeterReading.RowTemplate.Height = 32;
             this.dgvMeterReading.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvMeterReading.Size = new System.Drawing.Size(401, 430);
@@ -1316,9 +1319,9 @@
             this.label20.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(103, 7);
+            this.label20.Location = new System.Drawing.Point(103, 8);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(38, 19);
+            this.label20.Size = new System.Drawing.Size(35, 17);
             this.label20.TabIndex = 271;
             this.label20.Text = "PCS/";
             // 
@@ -1868,7 +1871,7 @@
             this.cbChecked.Location = new System.Drawing.Point(30, 23);
             this.cbChecked.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.cbChecked.Name = "cbChecked";
-            this.cbChecked.Size = new System.Drawing.Size(21, 23);
+            this.cbChecked.Size = new System.Drawing.Size(21, 21);
             this.cbChecked.TabIndex = 311;
             this.cbChecked.Text = "CHECKED";
             this.cbChecked.UseVisualStyleBackColor = true;

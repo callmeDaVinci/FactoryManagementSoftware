@@ -76,6 +76,14 @@ namespace FactoryManagementSoftware.DAL
         public string ItemSize3 { get; } = "size_tbl_code_3";
         public string TypeTblCode { get; } = "type_tbl_code";
         public string CategoryTblCode { get; } = "category_tbl_code";
+        public string TblCode { get; } = "tbl_code";
+        public string MouldCode { get; } = "mould_code";
+        public string ItemCavity2 { get; } = "item_cavity";
+        public string MouldCT { get; } = "mould_ct";
+        public string ItemPWShot { get; } = "item_pw_shot";
+        public string ItemRWShot { get; } = "item_rw_shot";
+        public string MouldDefaultSelection { get; } = "default_selection";
+
 
         #endregion
 
@@ -123,6 +131,38 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable MouldItemSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_mould_item ORDER BY item_code ASC";
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
         public DataTable SPPSelect()
         {
             //static methodd to connect database

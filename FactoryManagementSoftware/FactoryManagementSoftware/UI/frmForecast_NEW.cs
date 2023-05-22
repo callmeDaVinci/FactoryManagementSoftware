@@ -1265,9 +1265,6 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
-
-
-
         }
 
         private void frmForecast_NEW_FormClosed(object sender, FormClosedEventArgs e)

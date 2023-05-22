@@ -29,7 +29,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>511</ApplicationRevision>
+    <ApplicationRevision>513</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -286,6 +286,18 @@
     <Compile Include="Module\ExcelTool.cs" />
     <Compile Include="Module\Tool.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="UI\frmItemAndMouldConfiguration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmItemAndMouldConfiguration.Designer.cs">
+      <DependentUpon>frmItemAndMouldConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmPlanningNEWV2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmPlanningNEWV2.Designer.cs">
+      <DependentUpon>frmPlanningNEWV2.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmPlanningVer2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1047,6 +1059,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItemGroupList.resx">
       <DependentUpon>frmItemGroupList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmItemAndMouldConfiguration.resx">
+      <DependentUpon>frmItemAndMouldConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmPlanningNEWV2.resx">
+      <DependentUpon>frmPlanningNEWV2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPlanningVer2.resx">
       <DependentUpon>frmPlanningVer2.cs</DependentUpon>

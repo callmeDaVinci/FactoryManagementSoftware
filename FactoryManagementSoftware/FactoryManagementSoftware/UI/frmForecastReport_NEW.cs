@@ -7594,6 +7594,8 @@ namespace FactoryManagementSoftware.UI
 
             DataTable DB_History = dalHistory.ForecastEditHistorySelect();
 
+            string itemName = tool.getItemNameFromDataTable(DT_ITEM, itemcode);
+
             if (DB_History != null)
             {
                 //DataTable dt = DB_History.Clone();
@@ -7701,15 +7703,53 @@ namespace FactoryManagementSoftware.UI
 
                     }
 
+
+                    string historyItemNameRemoved = historyItem.Replace(itemName,"");
+                    string historyItemCode = "";
+
+                    if(historyItemNameRemoved.Replace(" ","") =="()" && itemcode == itemName)
+                    {
+                        historyItemCode = itemcode;
+                    }
+                    else
+                    {
+                        bool gettingCodeInfo = false;
+                        for (int i = 0; i < historyItemNameRemoved.Length - 1; i++)
+                        {
+                            if (gettingCodeInfo)
+                            {
+                                historyItemCode += historyItemNameRemoved[i].ToString();
+                            }
+
+                            if (historyItemNameRemoved[i].ToString() == "(")
+                            {
+                                gettingCodeInfo = true;
+                            }
+
+                        }
+                    }
+                   
+
                     //date inspection
                     bool dataMatched = true;
 
-                    dataMatched = historyItem.Contains(itemcode) ? dataMatched : false;
+                    //dataMatched = historyItem.Contains(itemcode) ? dataMatched : false;
 
-                    if(dataMatched)
+                    if(historyItem.Contains("CABINET BEAT STUD(TABLE DRAWER)"))
                     {
                         var checkpoint = 0;
                     }
+
+                    dataMatched = historyItemCode == itemcode ? dataMatched : false;
+
+                    //if (row[dalHistory.HistoryID].ToString() == "344618")
+                    //{
+                    //    var checkpoint = 0;
+                    //}
+                    //if (dataMatched)
+                    //{
+                    //    var checkpoint = 0;
+                    //}
 
                     dataMatched = historyCustomer == customer ? dataMatched : false;
 

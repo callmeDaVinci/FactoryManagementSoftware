@@ -232,7 +232,7 @@ namespace FactoryManagementSoftware.UI
 
                 if(colName.Contains(text.Header_DefectRemark))
                 {
-                    dgv.Columns[colName].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                    dgv.Columns[colName].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
                     dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                     dgv.Columns[colName].ReadOnly = true;
                 }
@@ -3261,14 +3261,14 @@ namespace FactoryManagementSoftware.UI
             tlpList.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100);
 
             tlpMainPanel.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100);
-            tlpMainPanel.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 950);
+            tlpMainPanel.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 850);
 
 
             tlpTotalProducedTotalStockIn.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100);
             tlpTotalProducedTotalStockIn.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 100f);
             tlpTotalProducedTotalStockIn.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 95f);
             tlpTotalProducedTotalStockIn.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 95f);
-            tlpTotalProducedTotalStockIn.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 40f);
+            tlpTotalProducedTotalStockIn.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 70f);
 
         }
 

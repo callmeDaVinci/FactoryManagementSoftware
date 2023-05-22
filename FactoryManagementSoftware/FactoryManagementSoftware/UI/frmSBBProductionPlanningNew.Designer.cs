@@ -1552,7 +1552,6 @@
             // groupBox8
             // 
             this.groupBox8.Controls.Add(this.tableLayoutPanel11);
-            this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox8.Location = new System.Drawing.Point(0, 178);
             this.groupBox8.Margin = new System.Windows.Forms.Padding(0);
             this.groupBox8.Name = "groupBox8";
