@@ -14,6 +14,7 @@ using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using Microsoft.ReportingServices.Interfaces;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -44,13 +45,14 @@ namespace FactoryManagementSoftware.UI
 
         private DataTable DT_ITEM;
         private DataTable DT_MOULD_ITEM;
+        bool CMB_CODE_READY = false;
 
         #endregion
 
         #region LastInventoryZeroDate
 
-        public string Name { get; set; }
-        public DataTable PurchaseData { get; set; }
+        public new string Name { get; set; }
+       
 
         public static DateTime CalculateZeroInventoryDate(DataTable dt, string customerName)
         {
@@ -119,7 +121,7 @@ namespace FactoryManagementSoftware.UI
 
         public frmPlanningNEWV2()
         {
-            Testing();
+            //Testing();
             InitializeComponent();
             InitialSetting();
 
@@ -134,6 +136,7 @@ namespace FactoryManagementSoftware.UI
         private void ctbPartName_TextChanged(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            CMB_CODE_READY = false;
 
             errorProvider1.Clear();
             string keywords = txtPartName.Text;
@@ -154,17 +157,27 @@ namespace FactoryManagementSoftware.UI
 
                 dt.AcceptChanges();
 
+
                 cmbPartCode.DataSource = dt;
                 cmbPartCode.DisplayMember = "item_code";
                 cmbPartCode.ValueMember = "item_code";
-                cmbPartCode.SelectedIndex = -1;
+
+               
 
                 int count = cmbPartCode.Items.Count;
+                cmbPartCode.SelectedIndex = -1;
 
                 if (count == 1)
                 {
-                    cmbPartCode.SelectedIndex = 0;
+                    //cmbPartCode.SelectedIndex = 0;
+                    
                 }
+                else
+                {
+                   
+                }
+                CMB_CODE_READY = true;
+
             }
             else
             {
@@ -174,9 +187,13 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
+        private void CmbPartCode_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+        }
+
         private void cmbPartCode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            LoadMouldList(cmbPartCode.Text);
         }
 
         #region UI/UX
@@ -212,39 +229,53 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadMouldList(string itemCode)
         {
-            if(DT_MOULD_ITEM == null)
+            dgvMouldList.DataSource = null;
+
+            if(!string.IsNullOrEmpty(itemCode) && CMB_CODE_READY)
             {
-                DT_MOULD_ITEM = dalItem.MouldItemSelect();
-            }
-
-            bool itemFound = true;
-
-            //DataTable dt_MouldList = NewMouldListDataTable();
-
-            foreach(DataRow row in DT_MOULD_ITEM.Rows)
-            {
-                if (row[dalItem.ItemCode].ToString().Equals(itemCode))
+                if (DT_MOULD_ITEM == null)
                 {
-                    if(!itemFound)
-                    {
-                        itemFound = true;
-                    }
+                    DT_MOULD_ITEM = dalItem.MouldItemSelect();
+                }
 
+                bool itemFound = false;
+
+                //DataTable dt_MouldList = NewMouldListDataTable();
+
+                foreach (DataRow row in DT_MOULD_ITEM.Rows)
+                {
+                    if (row[dalItem.ItemCode].ToString().Equals(itemCode))
+                    {
+                        if (!itemFound)
+                        {
+                            itemFound = true;
+                        }
+
+
+                    }
+                }
+
+                if (itemFound)
+                {
+                    //dgvMouldList UI formatting
+
+                }
+                else
+                {
+                    CMB_CODE_READY = false;
+
+                    //System.Threading.Thread.Sleep(1000);
+                    MessageBox.Show("Item Mould List not found!\nPlease create a mould data for this item.");
+                    //call item & mould configuration form
+                    frmItemAndMouldConfiguration frm = new frmItemAndMouldConfiguration(itemCode,0);
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.ShowDialog();
+                    //if data updated, DT_MOULD_ITEM = dalItem.MouldItemSelect();
+                    //LoadMouldList(string itemCode)
 
                 }
             }
-
-            if(itemFound)
-            {
-                //dgvMouldList UI formatting
-
-            }
-            else
-            {
-                //call item & mould configuration form
-                //if data updated, DT_MOULD_ITEM = dalItem.MouldItemSelect();
-                //LoadMouldList(string itemCode)
-            }
+           
         }
 
         private void InitialNameTextBox()
@@ -280,6 +311,47 @@ namespace FactoryManagementSoftware.UI
         private void btnBackToPartInfo_Click(object sender, EventArgs e)
         {
             BackToPartInfo();
+        }
+
+        private void cmbPartCode_DisplayMemberChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void cmbPartCode_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            //if(!CMB_CODE_READY)
+            //{
+            //    LoadMouldList(cmbPartCode.Text);
+            //}
+        }
+
+        private void cmbPartCode_DataSourceChanged(object sender, EventArgs e)
+        {
+            //int count = cmbPartCode.Items.Count;
+            //cmbPartCode.SelectedIndex = -1;
+            //if (count == 1)
+            //{
+            //    //cmbPartCode.SelectedIndex = 0;
+
+            //}
+        }
+
+        private void frmPlanningNEWV2_Shown(object sender, EventArgs e)
+        {
+            txtPartName.Focus();
+        }
+
+        private void txtPartName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+            {
+                //cmbPartCode.DroppedDown = true;
+                //cmbPartCode.Focus();
+
+                //CMB_CODE_READY = true;
+
+            }
         }
     }
 }

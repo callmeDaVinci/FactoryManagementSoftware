@@ -709,7 +709,7 @@
             this.cbFollowPacketQty.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbFollowPacketQty.Location = new System.Drawing.Point(20, 48);
             this.cbFollowPacketQty.Name = "cbFollowPacketQty";
-            this.cbFollowPacketQty.Size = new System.Drawing.Size(100, 23);
+            this.cbFollowPacketQty.Size = new System.Drawing.Size(94, 21);
             this.cbFollowPacketQty.TabIndex = 82;
             this.cbFollowPacketQty.Text = "Packet QTY";
             this.cbFollowPacketQty.UseVisualStyleBackColor = true;
@@ -720,7 +720,7 @@
             this.cbFollowBagQty.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbFollowBagQty.Location = new System.Drawing.Point(126, 48);
             this.cbFollowBagQty.Name = "cbFollowBagQty";
-            this.cbFollowBagQty.Size = new System.Drawing.Size(83, 23);
+            this.cbFollowBagQty.Size = new System.Drawing.Size(79, 21);
             this.cbFollowBagQty.TabIndex = 83;
             this.cbFollowBagQty.Text = "Bag QTY";
             this.cbFollowBagQty.UseVisualStyleBackColor = true;
@@ -731,7 +731,7 @@
             this.cbRemoveItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbRemoveItem.Location = new System.Drawing.Point(226, 80);
             this.cbRemoveItem.Name = "cbRemoveItem";
-            this.cbRemoveItem.Size = new System.Drawing.Size(86, 23);
+            this.cbRemoveItem.Size = new System.Drawing.Size(82, 21);
             this.cbRemoveItem.TabIndex = 84;
             this.cbRemoveItem.Text = "REMOVE";
             this.cbRemoveItem.UseVisualStyleBackColor = true;

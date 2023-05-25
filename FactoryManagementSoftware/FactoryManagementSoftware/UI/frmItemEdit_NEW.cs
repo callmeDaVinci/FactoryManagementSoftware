@@ -1314,7 +1314,8 @@ namespace FactoryManagementSoftware.UI
 
         private void textBox8_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
             {
                 e.Handled = true;
             }

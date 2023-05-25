@@ -938,83 +938,89 @@ namespace FactoryManagementSoftware.UI
                 {
                     float childQty = 0;
 
-                    float joinQty = float.TryParse(Join["join_qty"].ToString(), out float i) ? Convert.ToSingle(Join["join_qty"].ToString()) : 1;
-                    int joinMax = int.TryParse(Join[dalJoin.JoinMax].ToString(), out int j) ? Convert.ToInt32(Join[dalJoin.JoinMax].ToString()) : 1;
-                    int JoinMin = int.TryParse(Join[dalJoin.JoinMin].ToString(), out int k) ? Convert.ToInt32(Join[dalJoin.JoinMin].ToString()) : 1;
+                    bool toStockOut = bool.TryParse(Join[dalJoin.JoinStockOut].ToString(), out toStockOut) ? toStockOut : true;
 
-                    joinMax = joinMax <= 0 ? 1 : joinMax;
-                    JoinMin = JoinMin <= 0 ? 1 : JoinMin;
-
-                    int ParentQty = Convert.ToInt32(qty);
-
-                    int fullQty = ParentQty / joinMax;
-
-                    int notFullQty = ParentQty % joinMax;
-
-                    childQty = fullQty * joinQty;
-
-                    if (notFullQty >= JoinMin)
+                    if(toStockOut)
                     {
-                        childQty += joinQty;
+                        float joinQty = float.TryParse(Join["join_qty"].ToString(), out float i) ? Convert.ToSingle(Join["join_qty"].ToString()) : 1;
+                        int joinMax = int.TryParse(Join[dalJoin.JoinMax].ToString(), out int j) ? Convert.ToInt32(Join[dalJoin.JoinMax].ToString()) : 1;
+                        int JoinMin = int.TryParse(Join[dalJoin.JoinMin].ToString(), out int k) ? Convert.ToInt32(Join[dalJoin.JoinMin].ToString()) : 1;
 
-                    }
-                    //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
-                    childItemCode = Join["join_child_code"].ToString();
-                    DataTable dtItem = dalItem.codeSearch(childItemCode);
-                    //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
+                        joinMax = joinMax <= 0 ? 1 : joinMax;
+                        JoinMin = JoinMin <= 0 ? 1 : JoinMin;
 
-                    if (dtItem.Rows.Count > 0)
-                    {
-                        DataGridView dgv = dgvTransfer;
+                        int ParentQty = Convert.ToInt32(qty);
 
-                        string childItemCat = dtItem.Rows[0][dalItem.ItemCat].ToString();
+                        int fullQty = ParentQty / joinMax;
 
-                        if(!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging))
+                        int notFullQty = ParentQty % joinMax;
+
+                        childQty = fullQty * joinQty;
+
+                        if (notFullQty >= JoinMin)
                         {
-                            n = dgv.Rows.Add();
-                            index++;
+                            childQty += joinQty;
 
-                            dgv.Rows[n].Cells[IndexColumnName].Value = index;
-                            dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
-                            dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
-                            dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
-                            dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
-                            dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
-                            dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
-                            dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
-                            dgv.Rows[n].Cells[ToCatColumnName].Value = text.Production;
-                            dgv.Rows[n].Cells[ToColumnName].Value = "";
-                            dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
-                            dgv.Rows[n].Cells[UnitColumnName].Value = text.Unit_Piece;
-                            dgv.Rows[n].Cells[NoteColumnName].Value = note+"Sub Part out";
-
-                            if (childItemCode.Equals("V76KM4000 0.360"))
-                            {
-                                //dgv.Rows[n].Cells[QtyColumnName].Value = childQty * 0.36;
-                                dgv.Rows[n].Cells[UnitColumnName].Value = "meter";
-                            }
-
-                            facStockDAL dalFacStock = new facStockDAL();
-                            float facStock = dalFacStock.getQty(childItemCode,tool.getFactoryID(factoryName).ToString());
-
-                            float transferQty = 0;
-                            if (callFromProductionRecord)
-                            {
-                                transferQty = qty;
-                            }
-                            else
-                            {
-                                transferQty = Convert.ToSingle(txtTrfQty.Text);
-                            }
-
-                            if (facStock - transferQty < 0)
-                            {
-                                dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                                dgv.Rows[n].Cells[NoteColumnName].Value = note+"AFTER BAL=" + (facStock - transferQty);
-                            }
                         }
-                      
+                        //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
+                        childItemCode = Join["join_child_code"].ToString();
+                        DataTable dtItem = dalItem.codeSearch(childItemCode);
+                        //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
+
+                        if (dtItem.Rows.Count > 0)
+                        {
+                            DataGridView dgv = dgvTransfer;
+
+                            string childItemCat = dtItem.Rows[0][dalItem.ItemCat].ToString();
+
+                            if (true) //!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging)
+                            {
+                                n = dgv.Rows.Add();
+                                index++;
+
+                                dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                                dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
+                                dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
+                                dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
+                                dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
+                                dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
+                                dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
+                                dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
+                                dgv.Rows[n].Cells[ToCatColumnName].Value = text.Production;
+                                dgv.Rows[n].Cells[ToColumnName].Value = "";
+                                dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
+                                dgv.Rows[n].Cells[UnitColumnName].Value = text.Unit_Piece;
+                                dgv.Rows[n].Cells[NoteColumnName].Value = note + "Sub Part out";
+
+                                if (childItemCode.Equals("V76KM4000 0.360"))
+                                {
+                                    //dgv.Rows[n].Cells[QtyColumnName].Value = childQty * 0.36;
+                                    dgv.Rows[n].Cells[UnitColumnName].Value = "meter";
+                                }
+
+                                facStockDAL dalFacStock = new facStockDAL();
+                                float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
+
+                                float transferQty = 0;
+                                if (callFromProductionRecord)
+                                {
+                                    transferQty = qty;
+                                }
+                                else
+                                {
+                                    transferQty = Convert.ToSingle(txtTrfQty.Text);
+                                }
+
+                                if (facStock - transferQty < 0)
+                                {
+                                    dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                                    dgv.Rows[n].Cells[NoteColumnName].Value = note + "AFTER BAL=" + (facStock - transferQty);
+                                }
+                            }
+
+                        }
                     }
+                   
                 }
             }
 
@@ -1032,126 +1038,133 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataRow Join in dtJoin.Rows)
                 {
-                    float childQty = 0;
+                    bool toStockOut = bool.TryParse(Join[dalJoin.JoinStockOut].ToString(), out toStockOut) ? toStockOut : true;
 
-                    float joinQty = float.TryParse(Join["join_qty"].ToString(), out float i) ? Convert.ToSingle(Join["join_qty"].ToString()) : 1;
-                    int joinMax = int.TryParse(Join[dalJoin.JoinMax].ToString(), out int j) ? Convert.ToInt32(Join[dalJoin.JoinMax].ToString()) : 1;
-                    int JoinMin = int.TryParse(Join[dalJoin.JoinMin].ToString(), out int k) ? Convert.ToInt32(Join[dalJoin.JoinMin].ToString()) : 1;
-                    bool MainCarton = bool.TryParse(Join[dalJoin.JoinMainCarton].ToString(), out MainCarton) ? MainCarton : false;
-
-                    joinMax = joinMax <= 0 ? 1 : joinMax;
-                    JoinMin = JoinMin <= 0 ? 1 : JoinMin;
-
-                    int ParentQty = Convert.ToInt32(qty);
-
-                    int fullQty = ParentQty / joinMax;
-
-                    int notFullQty = ParentQty % joinMax;
-
-                    childQty = fullQty * joinQty;
-
-                    if (notFullQty >= JoinMin)
+                    if (toStockOut)
                     {
-                        childQty += joinQty;
+                        float childQty = 0;
 
-                    }
-                    //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
-                    childItemCode = Join["join_child_code"].ToString();
-                    DataTable dtItem = dalItem.codeSearch(childItemCode);
-                    //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
+                        float joinQty = float.TryParse(Join["join_qty"].ToString(), out float i) ? Convert.ToSingle(Join["join_qty"].ToString()) : 1;
+                        int joinMax = int.TryParse(Join[dalJoin.JoinMax].ToString(), out int j) ? Convert.ToInt32(Join[dalJoin.JoinMax].ToString()) : 1;
+                        int JoinMin = int.TryParse(Join[dalJoin.JoinMin].ToString(), out int k) ? Convert.ToInt32(Join[dalJoin.JoinMin].ToString()) : 1;
+                        bool MainCarton = bool.TryParse(Join[dalJoin.JoinMainCarton].ToString(), out MainCarton) ? MainCarton : false;
 
-                    if (dtItem.Rows.Count > 0)
-                    {
-                        DataGridView dgv = dgvTransfer;
+                        joinMax = joinMax <= 0 ? 1 : joinMax;
+                        JoinMin = JoinMin <= 0 ? 1 : JoinMin;
 
-                        string childItemCat = dtItem.Rows[0][dalItem.ItemCat].ToString();
+                        int ParentQty = Convert.ToInt32(qty);
 
-                        if (childItemCat != text.Cat_PolyBag)//!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging)
+                        int fullQty = ParentQty / joinMax;
+
+                        int notFullQty = ParentQty % joinMax;
+
+                        childQty = fullQty * joinQty;
+
+                        if (notFullQty >= JoinMin)
                         {
-                            bool itemDuplicate = false;
+                            childQty += joinQty;
 
-                            DataTable dt_DGV = (DataTable) dgv.DataSource;
+                        }
+                        //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
+                        childItemCode = Join["join_child_code"].ToString();
+                        DataTable dtItem = dalItem.codeSearch(childItemCode);
+                        //childQty = childQty * Convert.ToSingle(Join["join_qty"].ToString());
 
-                            if(dgv.Rows.Count > 0)
-                            foreach (DataGridViewRow row in dgv.Rows)
+                        if (dtItem.Rows.Count > 0)
+                        {
+                            DataGridView dgv = dgvTransfer;
+
+                            string childItemCat = dtItem.Rows[0][dalItem.ItemCat].ToString();
+
+                            if (childItemCat != text.Cat_PolyBag)//!callFromProductionRecord || (childItemCat != text.Cat_Carton && childItemCat != text.Cat_Packaging)
                             {
-                                float DGVQty = float.TryParse(row.Cells[QtyColumnName].Value.ToString(), out float x) ? x : 0;
+                                bool itemDuplicate = false;
 
-                                    
-                                if (childItemCode == row.Cells[CodeColumnName].Value.ToString() && childQty == DGVQty && tool.getItemCat(childItemCode) != text.Cat_Part)
+                                DataTable dt_DGV = (DataTable)dgv.DataSource;
+
+                                if (dgv.Rows.Count > 0)
+                                    foreach (DataGridViewRow row in dgv.Rows)
+                                    {
+                                        float DGVQty = float.TryParse(row.Cells[QtyColumnName].Value.ToString(), out float x) ? x : 0;
+
+
+                                        if (childItemCode == row.Cells[CodeColumnName].Value.ToString() && childQty == DGVQty && tool.getItemCat(childItemCode) != text.Cat_Part)
+                                        {
+                                            itemDuplicate = true;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            itemDuplicate = false;
+
+                                        }
+                                    }
+
+                                bool ContainerPackaging = false;
+
+                                if (childItemCode.Length >= 4 && childItemCode.Substring(0, 3) == "CTR")
                                 {
-                                    itemDuplicate = true;
-                                    break;
+                                    ContainerPackaging = true;
                                 }
-                                else
+
+                                if (!itemDuplicate && !ContainerPackaging)
                                 {
-                                    itemDuplicate = false;
+                                    n = dgv.Rows.Add();
+                                    index++;
 
-                                }
-                            }
-
-                            bool ContainerPackaging = false;
-
-                            if(childItemCode.Length >= 4 && childItemCode.Substring(0, 3) == "CTR")
-                            {
-                                ContainerPackaging = true;
-                            }
-
-                            if (!itemDuplicate && !ContainerPackaging)
-                            {
-                                n = dgv.Rows.Add();
-                                index++;
-
-                                dgv.Rows[n].Cells[IndexColumnName].Value = index;
-                                dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
-                                dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
-                                dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
-                                dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
-                                dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
-                                dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
-                                dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
-                                dgv.Rows[n].Cells[ToCatColumnName].Value = outTo;
-                                dgv.Rows[n].Cells[ToColumnName].Value = "";
-                                dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
-                                dgv.Rows[n].Cells[UnitColumnName].Value = text.Unit_Piece;
-                                dgv.Rows[n].Cells[NoteColumnName].Value = note + "Sub Part out";
-
-                                if (childItemCat == text.Cat_Carton || childItemCat == text.Cat_Packaging)
-                                {
-                                    dgv.Rows[n].Cells[NoteColumnName].Value = note + "packaging material";
-                                }
-                                else
+                                    dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                                    dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
+                                    dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
+                                    dgv.Rows[n].Cells[CatColumnName].Value = dtItem.Rows[0][dalItem.ItemCat].ToString();
+                                    dgv.Rows[n].Cells[CodeColumnName].Value = childItemCode;
+                                    dgv.Rows[n].Cells[NameColumnName].Value = dtItem.Rows[0][dalItem.ItemName].ToString();
+                                    dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
+                                    dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
+                                    dgv.Rows[n].Cells[ToCatColumnName].Value = outTo;
+                                    dgv.Rows[n].Cells[ToColumnName].Value = "";
+                                    dgv.Rows[n].Cells[QtyColumnName].Value = childQty;
+                                    dgv.Rows[n].Cells[UnitColumnName].Value = text.Unit_Piece;
                                     dgv.Rows[n].Cells[NoteColumnName].Value = note + "Sub Part out";
 
-                                if (childItemCode.Equals("V76KM4000 0.360"))
-                                {
-                                    //dgv.Rows[n].Cells[QtyColumnName].Value = childQty * 0.36;
-                                    dgv.Rows[n].Cells[UnitColumnName].Value = "meter";
+                                    if (childItemCat == text.Cat_Carton || childItemCat == text.Cat_Packaging)
+                                    {
+                                        dgv.Rows[n].Cells[NoteColumnName].Value = note + "packaging material";
+                                    }
+                                    else
+                                        dgv.Rows[n].Cells[NoteColumnName].Value = note + "Sub Part out";
+
+                                    if (childItemCode.Equals("V76KM4000 0.360"))
+                                    {
+                                        //dgv.Rows[n].Cells[QtyColumnName].Value = childQty * 0.36;
+                                        dgv.Rows[n].Cells[UnitColumnName].Value = "meter";
+                                    }
+
+                                    facStockDAL dalFacStock = new facStockDAL();
+                                    float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
+
+                                    float transferQty = 0;
+                                    if (callFromProductionRecord)
+                                    {
+                                        transferQty = childQty;
+                                    }
+                                    else
+                                    {
+                                        transferQty = Convert.ToSingle(txtTrfQty.Text);
+                                    }
+
+                                    if (facStock - transferQty < 0)
+                                    {
+                                        dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                                        dgv.Rows[n].Cells[NoteColumnName].Value = note + "AFTER BAL=" + (facStock - transferQty);
+                                    }
                                 }
 
-                                facStockDAL dalFacStock = new facStockDAL();
-                                float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
-
-                                float transferQty = 0;
-                                if (callFromProductionRecord)
-                                {
-                                    transferQty = childQty;
-                                }
-                                else
-                                {
-                                    transferQty = Convert.ToSingle(txtTrfQty.Text);
-                                }
-
-                                if (facStock - transferQty < 0)
-                                {
-                                    dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                                    dgv.Rows[n].Cells[NoteColumnName].Value = note + "AFTER BAL=" + (facStock - transferQty);
-                                }
                             }
-                            
-                        }
 
+                        }
                     }
+                        
+                   
                 }
             }
 
@@ -2387,7 +2400,7 @@ namespace FactoryManagementSoftware.UI
                  dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
                 string factoryName = "";
 
-                if (tool.ifGotChild(cmbTrfItemCode.Text))
+                if (tool.ifGotChildIncludedPackaging(cmbTrfItemCode.Text))
                 {
                     if (string.IsNullOrEmpty(cmbTrfTo.Text))
                     {
@@ -2418,7 +2431,7 @@ namespace FactoryManagementSoftware.UI
                     factoryName = cmbTrfTo.Text;
                 }
 
-                if (tool.ifGotChild(cmbTrfItemCode.Text)) //&& dalItem.checkIfProduction(cmbTrfItemCode.Text)
+                if (tool.ifGotChildIncludedPackaging(cmbTrfItemCode.Text)) //&& dalItem.checkIfProduction(cmbTrfItemCode.Text)
                 {
                     if (!dgvEdit)
                         productionChildStockOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text), -1,"");

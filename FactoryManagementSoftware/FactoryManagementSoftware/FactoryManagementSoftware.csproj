@@ -29,7 +29,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>513</ApplicationRevision>
+    <ApplicationRevision>514</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -1531,6 +1531,8 @@
     <None Include="Resources\icons8-expand-arrow-16.png" />
     <None Include="Resources\icons8-chevron-up-16.png" />
     <None Include="Resources\icons8-chevron-down-16.png" />
+    <None Include="Resources\icons8-less-than-25.png" />
+    <None Include="Resources\icons8-more-than-25.png" />
     <Content Include="SBB logo.ico" />
     <Content Include="sp logo 2023.ico" />
     <Content Include="website tiny logo.ico" />

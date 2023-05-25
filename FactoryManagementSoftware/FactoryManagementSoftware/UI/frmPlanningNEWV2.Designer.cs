@@ -362,6 +362,7 @@
             this.txtPartName.TabIndex = 107;
             this.txtPartName.Values = null;
             this.txtPartName.TextChanged += new System.EventHandler(this.ctbPartName_TextChanged);
+            this.txtPartName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPartName_KeyDown);
             // 
             // lblPartCode
             // 
@@ -397,6 +398,9 @@
             this.cmbPartCode.Size = new System.Drawing.Size(384, 23);
             this.cmbPartCode.TabIndex = 2;
             this.cmbPartCode.SelectedIndexChanged += new System.EventHandler(this.cmbPartCode_SelectedIndexChanged);
+            this.cmbPartCode.SelectionChangeCommitted += new System.EventHandler(this.cmbPartCode_SelectionChangeCommitted);
+            this.cmbPartCode.DataSourceChanged += new System.EventHandler(this.cmbPartCode_DataSourceChanged);
+            this.cmbPartCode.DisplayMemberChanged += new System.EventHandler(this.cmbPartCode_DisplayMemberChanged);
             // 
             // groupBox5
             // 
@@ -1540,6 +1544,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Injection Job Planning";
             this.Load += new System.EventHandler(this.frmPlanning_Load);
+            this.Shown += new System.EventHandler(this.frmPlanningNEWV2_Shown);
             this.groupBox1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

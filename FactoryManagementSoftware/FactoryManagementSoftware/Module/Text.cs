@@ -34,6 +34,10 @@ namespace FactoryManagementSoftware.Module
         public string Activate { get; } = "Activate";
 
         public string TransferHistory { get; } = "Transfer History";
+        public string AddingItem { get; } = "Add Item";
+        public string AddingNewMould { get; } = "Add New Mould";
+        public string AddingExistingMould { get; } = "Add Existing Mould";
+        public string AutoSearchFamilyItem { get; } = "Auto Search Family Item";
 
 
         public string LogIn { get; } = "LogIn";
@@ -328,6 +332,8 @@ namespace FactoryManagementSoftware.Module
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
         public string Header_PartCode { get; } = "PART CODE";
         public string Header_ItemCode { get; } = "ITEM CODE";
+        public string Header_MouldCode { get; } = "MOULD CODE";
+        public string Header_MouldDescription{ get; } = "MOULD DESCRIPTION";
         public string Header_ItemName { get; } = "ITEM NAME";
         public string Header_CountedQty { get; } = "COUNTED QTY";
         public string Header_SystemQty { get; } = "SYSTEM QTY";
@@ -434,6 +440,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_Wastage { get; } = "WASTAGE";
         public string Header_WastageAllowed_Percentage { get; } = "MAT. WASTAGE ALLOWED (%)";
         public string Cmb_All { get; } = "ALL";
+        public string All_Item { get; } = "ALL ITEM";
 
         public string Jump { get; } = "Jump";
 
@@ -583,6 +590,8 @@ namespace FactoryManagementSoftware.Module
 
 
         public string ViewJobSheetRecord { get; } = "View Job Sheet Record";
+        public string EditMode_Open { get; } = "Edit Mode";
+        public string EditMode_Close { get; } = "Close Edit Mode";
         public string Search_DefaultText { get; } = "Search";
         public string DeliveredSummary { get; } = "Delivered Summary";
         public string ProductionHistory { get; } = "Production History";

@@ -564,9 +564,29 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_less_than_25 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-less-than-25", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_minus_96 {
             get {
                 object obj = ResourceManager.GetObject("icons8-minus-96", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_more_than_25 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-more-than-25", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
