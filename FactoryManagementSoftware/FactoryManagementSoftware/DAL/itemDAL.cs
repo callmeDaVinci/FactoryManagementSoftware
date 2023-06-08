@@ -17,6 +17,7 @@ namespace FactoryManagementSoftware.DAL
         public string ItemRecycleMat { get; } = "item_recycle";
         public string ItemName { get; } = "item_name";
         public string ItemCode { get; } = "item_code";
+        public string ItemCodePresent { get; } = "item_code_present";
         public string ItemRemark { get; } = "item_remark";
         public string ItemCustRemark { get; } = "item_cust_remark";
         public string ItemColor { get; } = "item_color";
@@ -59,6 +60,9 @@ namespace FactoryManagementSoftware.DAL
         public string ItemUpdateDate { get; } = "item_updtd_date";
         public string ItemUpdateBy { get; } = "item_updtd_by";
 
+        public string UpdatedDate { get; } = "updated_date";
+        public string UpdatedBy { get; } = "updated_by";
+
         public string ItemWastage { get; } = "item_wastage_allowed";
 
         public string ItemCurrentMonth { get; } = "item_current_month";
@@ -78,11 +82,13 @@ namespace FactoryManagementSoftware.DAL
         public string CategoryTblCode { get; } = "category_tbl_code";
         public string TblCode { get; } = "tbl_code";
         public string MouldCode { get; } = "mould_code";
-        public string ItemCavity2 { get; } = "item_cavity";
+        public string CombinationCode { get; } = "combination_code";
+        public string MouldCavity { get; } = "mould_cavity";
         public string MouldCT { get; } = "mould_ct";
         public string ItemPWShot { get; } = "item_pw_shot";
         public string ItemRWShot { get; } = "item_rw_shot";
         public string MouldDefaultSelection { get; } = "default_selection";
+        public string Removed { get; } = "removed";
 
 
         #endregion
@@ -141,6 +147,44 @@ namespace FactoryManagementSoftware.DAL
             {
                 //sql query to get data from database
                 String sql = "SELECT * FROM tbl_mould_item ORDER BY item_code ASC";
+                //String sql = "SELECT * FROM tbl_mould_item WHERE (removed IS NULL OR removed = FALSE) ORDER BY item_code ASC";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable MouldItemNonRemovedSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                //String sql = "SELECT * FROM tbl_mould_item ORDER BY item_code ASC";
+                string sql = "SELECT * FROM tbl_mould_item WHERE (removed IS NULL OR removed = 0) ORDER BY item_code ASC";
+
+
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 //getting data from database
@@ -774,6 +818,160 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool MouldInsert(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_item 
+                            (" + ItemCat + ","
+                            + ItemCode + ","
+                            + ItemCodePresent + ","
+                            + ItemName + ","
+                            + ItemQuoTon + ","
+                            + ItemBestTon + ","
+                            + ItemProTon + ","
+                            + ItemQuoCT + ","
+                            + ItemProCTFrom + ","
+                            + ItemProCTTo + ","
+                            + ItemCavity + ","
+                            + ItemProPWShot + ","
+                            + ItemProRWShot + ","
+                            + ItemAddDate + ","
+                            + ItemAddBy + ") VALUES" +
+                            "(@item_cat," +
+                            "@item_code," +
+                            "@item_code_present," +
+                            "@item_name," +
+                            "@item_quo_ton," +
+                            "@item_best_ton," +
+                            "@item_pro_ton," +
+                            "@item_quo_ct," +
+                            "@item_pro_ct_from," +
+                            "@item_pro_ct_to," +
+                            "@item_capacity," +
+                            "@item_pro_pw_shot," +
+                            "@item_pro_rw_shot," +
+                            "@item_added_date," +
+                            "@item_added_by)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_cat", u.item_cat);
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_code_present", u.item_code_present);
+                cmd.Parameters.AddWithValue("@item_name", u.item_name);
+                cmd.Parameters.AddWithValue("@item_quo_ton", u.item_quo_ton);
+                cmd.Parameters.AddWithValue("@item_best_ton", u.item_best_ton);
+                cmd.Parameters.AddWithValue("@item_pro_ton", u.item_pro_ton);
+                cmd.Parameters.AddWithValue("@item_quo_ct", u.item_quo_ct);
+                cmd.Parameters.AddWithValue("@item_pro_ct_from", u.item_pro_ct_from);
+                cmd.Parameters.AddWithValue("@item_pro_ct_to", u.item_pro_ct_to);
+                cmd.Parameters.AddWithValue("@item_capacity", u.item_cavity);
+                cmd.Parameters.AddWithValue("@item_pro_pw_shot", u.item_pro_pw_shot);
+                cmd.Parameters.AddWithValue("@item_pro_rw_shot", u.item_pro_rw_shot);
+               
+                cmd.Parameters.AddWithValue("@item_added_date", u.item_added_date);
+                cmd.Parameters.AddWithValue("@item_added_by", u.item_added_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+        public bool MouldItemInsert(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_mould_item 
+                            (" + MouldCode + ","
+                            + CombinationCode + ","
+                            + ItemCode + ","
+                            + MouldCavity + ","
+                            + MouldCT + ","
+                            + ItemPWShot + ","
+                            + ItemRWShot + ","
+                            + MouldDefaultSelection + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ") VALUES" +
+                            "(@mould_code," +
+                            "@combination_code," +
+                            "@item_code," +
+                            "@mould_cavity," +
+                            "@mould_ct," +
+                            "@item_pw_shot," +
+                            "@item_rw_shot," +
+                            "@MouldDefaultSelection," +
+                            "@updated_date," +
+                            "@updated_by)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@mould_code", u.mould_code);
+                cmd.Parameters.AddWithValue("@combination_code", u.combination_code);
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@mould_cavity", u.mould_cavity);
+                cmd.Parameters.AddWithValue("@mould_ct", u.mould_ct);
+                cmd.Parameters.AddWithValue("@item_pw_shot", u.item_pw_shot);
+                cmd.Parameters.AddWithValue("@item_rw_shot", u.item_rw_shot);
+                cmd.Parameters.AddWithValue("@MouldDefaultSelection", u.MouldDefaultSelection);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         public bool ItemMasterList_ItemAdd(itemBLL u)
         {
             bool isSuccess = false;
@@ -1124,6 +1322,240 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_production", u.item_production);
                 cmd.Parameters.AddWithValue("@item_unit", u.item_unit);
                 cmd.Parameters.AddWithValue("@unit_to_pcs_rate", u.unit_to_pcs_rate);
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool MouldUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemCodePresent + "=@item_code_present,"
+                            + ItemName + "=@item_name,"
+                            + ItemProTon + "=@item_pro_ton,"
+                            + ItemProCTTo + "=@item_pro_ct_to,"
+                            + ItemCavity + "=@item_cavity,"
+                            + ItemProPWShot + "=@item_pro_pw_shot,"
+                            + ItemProRWShot + "=@item_pro_rw_shot,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_code_present", u.item_code_present);
+                cmd.Parameters.AddWithValue("@item_name", u.item_name);
+             
+                cmd.Parameters.AddWithValue("@item_pro_ton", u.item_pro_ton);
+               
+                cmd.Parameters.AddWithValue("@item_pro_ct_to", u.item_pro_ct_to);
+
+                cmd.Parameters.AddWithValue("@item_cavity", u.item_cavity);
+
+                cmd.Parameters.AddWithValue("@item_pro_pw_shot", u.item_pro_pw_shot);
+                cmd.Parameters.AddWithValue("@item_pro_rw_shot", u.item_pro_rw_shot);
+
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool MouldItemUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_mould_item 
+                            SET "
+                            + MouldCode + "=@mould_code,"
+                            + ItemCode + "=@item_code,"
+                            + MouldCavity + "=@mould_cavity,"
+                            + MouldCT + "=@mould_ct,"
+                            + ItemPWShot + "=@item_pw_shot,"
+                            + ItemRWShot + "=@item_rw_shot,"
+                            + MouldDefaultSelection + "=@MouldDefaultSelection,"
+                            + Removed + "=@removed,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@tbl_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
+                cmd.Parameters.AddWithValue("@mould_code", u.mould_code);
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@mould_cavity", u.mould_cavity);
+                cmd.Parameters.AddWithValue("@mould_ct", u.mould_ct);
+                cmd.Parameters.AddWithValue("@item_pw_shot", u.item_pw_shot);
+                cmd.Parameters.AddWithValue("@item_rw_shot", u.item_rw_shot);
+                cmd.Parameters.AddWithValue("@MouldDefaultSelection", u.MouldDefaultSelection);
+                cmd.Parameters.AddWithValue("@removed", u.removed);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool MouldItemProInfoUpdateByCombinationCode(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_mould_item 
+                            SET "
+                            + MouldCavity + "=@mould_cavity,"
+                            + MouldCT + "=@mould_ct,"
+                            + ItemPWShot + "=@item_pw_shot,"
+                            + ItemRWShot + "=@item_rw_shot,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE combination_code=@combination_code AND mould_code=@mould_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@combination_code", u.combination_code);
+                cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
+                cmd.Parameters.AddWithValue("@mould_code", u.mould_code);
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@mould_cavity", u.mould_cavity);
+                cmd.Parameters.AddWithValue("@mould_ct", u.mould_ct);
+                cmd.Parameters.AddWithValue("@item_pw_shot", u.item_pw_shot);
+                cmd.Parameters.AddWithValue("@item_rw_shot", u.item_rw_shot);
+                cmd.Parameters.AddWithValue("@MouldDefaultSelection", u.MouldDefaultSelection);
+                cmd.Parameters.AddWithValue("@removed", u.removed);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool MouldItemDefaultUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_mould_item 
+                            SET "
+                            + MouldCode + "=@mould_code,"
+                            + ItemCode + "=@item_code,"
+                            + MouldDefaultSelection + "=@MouldDefaultSelection,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@tbl_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
+                cmd.Parameters.AddWithValue("@mould_code", u.mould_code);
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@MouldDefaultSelection", u.MouldDefaultSelection);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();
@@ -2247,6 +2679,54 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Delete data from Database
+
+        public bool MouldItemRemove(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_mould_item 
+                            SET "
+                            + Removed + "=@removed,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE tbl_code=@tbl_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
+                cmd.Parameters.AddWithValue("@removed", u.removed);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         public bool Delete(itemBLL u)
         {
             bool isSuccess = false;

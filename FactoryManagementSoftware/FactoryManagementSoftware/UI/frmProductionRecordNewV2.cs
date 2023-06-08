@@ -225,8 +225,10 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[header_Operator].DefaultCellStyle.BackColor = SystemColors.Info;
             dgv.Columns[header_MeterReading].DefaultCellStyle.BackColor = SystemColors.Info;
+            dgv.Columns[header_MeterReading].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            dgv.Columns[header_Hourly].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
-            for(int i = 0; i < dgv.ColumnCount; i++)
+            for (int i = 0; i < dgv.ColumnCount; i++)
             {
                 string colName = dgv.Columns[i].Name;
 
@@ -239,6 +241,8 @@ namespace FactoryManagementSoftware.UI
                 else if (colName.Contains(text.Header_QtyReject))
                 {
                     dgv.Columns[colName].DefaultCellStyle.BackColor = SystemColors.Info;
+                    dgv.Columns[colName].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+
                     dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 }

@@ -405,7 +405,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (matCat != text.Cat_RawMat && matCat != text.Cat_MB && matCat != text.Cat_Pigment)
                 {
-                    //foreach all join list (for sub material)
+                    //foreach all join list (for not raw/color material)
                     foreach (DataRow joinRow in dt_Join.Rows)
                     {
                         if (joinRow.RowState != DataRowState.Deleted)
@@ -415,6 +415,14 @@ namespace FactoryManagementSoftware.UI
                             if (childCode == matCode)
                             {
                                 string parentCode = joinRow["parent_code"].ToString();
+
+                                float joinMax = float.TryParse(joinRow[dalJoin.JoinMax].ToString(), out joinMax) ? joinMax : 1;
+                                float joinQty = float.TryParse(joinRow[dalJoin.JoinQty].ToString(), out joinQty) ? joinQty : 0;
+                                float joinWastage = float.TryParse(joinRow[dalJoin.JoinWastage].ToString(), out joinWastage) ? joinWastage : 0;
+
+                               
+
+
 
                                 if (ifPMMAItem(parentCode, dt_JoinforChecking, dt_PMMAItem))
                                 {
@@ -433,11 +441,16 @@ namespace FactoryManagementSoftware.UI
 
                                     //float matUsedInKG = deliveredQty * itemWeight / 1000;
                                     float wastage = tool.getItemWastageAllowedFromDataTable(dt_Item, matCode);
+
+                                    if(matCat == text.Cat_Carton)
+                                    {
+                                        wastage = 0;
+                                    }
+
                                     //int MatUsedWithWastage = (int)Math.Ceiling(deliveredQty + deliveredQty * wastage);
 
-                                    float wastageAdd = deliveredQty * wastage;
-                                    int MatUsedWithWastage = (int)Math.Ceiling(deliveredQty + wastageAdd);
-                                    totalMatUsed += MatUsedWithWastage;
+                                    //float wastageAdd = deliveredQty * wastage;
+                                    //int MatUsedWithWastage = (int)Math.Ceiling(deliveredQty + wastageAdd);
 
                                     #region New Test: with parent code/name
                                     foreach (DataRow row in dt_DeliveredData.Rows)
@@ -447,6 +460,25 @@ namespace FactoryManagementSoftware.UI
 
                                         float qty = Convert.ToSingle(row[text.Header_Delivered]);
                                         string parent = DeliveredName + "(" + DeliveredCode + ")";
+
+                                        joinMax = joinMax <= 0 ? 1 : joinMax;
+
+                                        float childQty = 0;
+
+                                        if (matCat == text.Cat_Part)
+                                        {
+                                            childQty = qty / joinMax * joinQty;
+
+                                        }
+                                        else
+                                        {
+                                            childQty = (float)Math.Ceiling(qty / joinMax * joinQty );
+
+                                        }
+
+                                        int childQtywithWastage = (int)Math.Ceiling(childQty * (1 + wastage)); ;
+                                        totalMatUsed += childQtywithWastage;
+
 
                                         if ((DeliveredName != null && DeliveredCode != null) || (deliveredQty == 0 && parentCode == DeliveredCode))
                                         {
@@ -458,8 +490,8 @@ namespace FactoryManagementSoftware.UI
 
                                             //matUsedInKG = qty * itemWeight / 1000;
 
-                                            wastageAdd = qty * wastage;
-                                            MatUsedWithWastage = (int)Math.Ceiling(qty + wastageAdd);
+                                            //wastageAdd = qty * wastage;
+                                            //MatUsedWithWastage = (int)Math.Ceiling(qty + wastageAdd);
 
                                             row_DGVSouce = dt_MatUsed.NewRow();
                                             row_DGVSouce[text.Header_Index] = index;
@@ -471,8 +503,8 @@ namespace FactoryManagementSoftware.UI
                                             row_DGVSouce[text.Header_ItemWeight_G] = itemWeight;
                                             row_DGVSouce[text.Header_Wastage] = wastage;
                                             row_DGVSouce[text.Header_Delivered] = Math.Round(qty, 2);
-                                            row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = qty;
-                                            row_DGVSouce[text.Header_MaterialUsedWithWastage] = MatUsedWithWastage;
+                                            row_DGVSouce[text.Header_MaterialUsed_KG_Piece] = childQty;
+                                            row_DGVSouce[text.Header_MaterialUsedWithWastage] = childQtywithWastage;
 
                                             dt_MatUsed.Rows.Add(row_DGVSouce);
                                             dgvRowIndex++;

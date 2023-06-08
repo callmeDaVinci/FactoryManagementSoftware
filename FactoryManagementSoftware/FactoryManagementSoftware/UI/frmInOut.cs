@@ -1300,6 +1300,8 @@ namespace FactoryManagementSoftware.UI
                 int rowIndex = dgvTrf.CurrentCell.RowIndex;
                 bool fromOrder = daltrfHist.ifFromOrder(Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfID].Value.ToString()));
 
+                fromOrder = false;
+
                 if (e.ClickedItem.Name.ToString().Equals(text.Jump))
                 {
                     string trfID = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfID].Value.ToString();

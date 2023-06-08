@@ -35,6 +35,7 @@ namespace FactoryManagementSoftware.Module
 
         public string TransferHistory { get; } = "Transfer History";
         public string AddingItem { get; } = "Add Item";
+        public string RemoveItem { get; } = "Remove Item";
         public string AddingNewMould { get; } = "Add New Mould";
         public string AddingExistingMould { get; } = "Add Existing Mould";
         public string AutoSearchFamilyItem { get; } = "Auto Search Family Item";
@@ -333,6 +334,8 @@ namespace FactoryManagementSoftware.Module
         public string Header_PartCode { get; } = "PART CODE";
         public string Header_ItemCode { get; } = "ITEM CODE";
         public string Header_MouldCode { get; } = "MOULD CODE";
+        public string Header_MouldSelection { get; } = "MOULD SELECTION";
+        public string Header_ItemSelection { get; } = "ITEM SELECTION";
         public string Header_MouldDescription{ get; } = "MOULD DESCRIPTION";
         public string Header_ItemName { get; } = "ITEM NAME";
         public string Header_CountedQty { get; } = "COUNTED QTY";

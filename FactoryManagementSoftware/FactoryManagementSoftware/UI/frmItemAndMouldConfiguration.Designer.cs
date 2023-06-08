@@ -65,16 +65,16 @@
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(1304, 623);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(1094, 607);
             this.tableLayoutPanel10.TabIndex = 114;
             this.tableLayoutPanel10.Click += new System.EventHandler(this.tableLayoutPanel10_Click);
             // 
             // tlpMain
             // 
             this.tlpMain.ColumnCount = 3;
-            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65F));
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.tlpMain.Controls.Add(this.tableLayoutPanel1, 0, 0);
             this.tlpMain.Controls.Add(this.tableLayoutPanel25, 2, 0);
             this.tlpMain.Controls.Add(this.tlpLeftRight, 1, 0);
@@ -84,7 +84,7 @@
             this.tlpMain.Name = "tlpMain";
             this.tlpMain.RowCount = 1;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMain.Size = new System.Drawing.Size(1264, 583);
+            this.tlpMain.Size = new System.Drawing.Size(1054, 567);
             this.tlpMain.TabIndex = 111;
             // 
             // tableLayoutPanel1
@@ -99,7 +99,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(425, 577);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(403, 561);
             this.tableLayoutPanel1.TabIndex = 183;
             this.tableLayoutPanel1.Click += new System.EventHandler(this.tableLayoutPanel1_Click);
             // 
@@ -134,7 +134,7 @@
             this.dgvSuggestionList.RowHeadersWidth = 51;
             this.dgvSuggestionList.RowTemplate.Height = 40;
             this.dgvSuggestionList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSuggestionList.Size = new System.Drawing.Size(421, 543);
+            this.dgvSuggestionList.Size = new System.Drawing.Size(399, 527);
             this.dgvSuggestionList.TabIndex = 183;
             this.dgvSuggestionList.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSuggestionList_CellMouseClick);
             this.dgvSuggestionList.SelectionChanged += new System.EventHandler(this.dgvSuggestionList_SelectionChanged);
@@ -148,14 +148,14 @@
             this.tableLayoutPanel25.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel25.Controls.Add(this.tlpButton, 0, 2);
             this.tableLayoutPanel25.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel25.Location = new System.Drawing.Point(464, 3);
+            this.tableLayoutPanel25.Location = new System.Drawing.Point(442, 3);
             this.tableLayoutPanel25.Name = "tableLayoutPanel25";
             this.tableLayoutPanel25.RowCount = 3;
             this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel25.Size = new System.Drawing.Size(797, 577);
+            this.tableLayoutPanel25.Size = new System.Drawing.Size(609, 561);
             this.tableLayoutPanel25.TabIndex = 182;
             this.tableLayoutPanel25.Click += new System.EventHandler(this.tableLayoutPanel25_Click);
             // 
@@ -170,25 +170,30 @@
             this.dgvMouldList.Cursor = System.Windows.Forms.Cursors.Hand;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7F);
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F);
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvMouldList.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvMouldList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvMouldList.GridColor = System.Drawing.SystemColors.Control;
+            this.dgvMouldList.GridColor = System.Drawing.Color.DimGray;
             this.dgvMouldList.Location = new System.Drawing.Point(2, 32);
             this.dgvMouldList.Margin = new System.Windows.Forms.Padding(2);
             this.dgvMouldList.Name = "dgvMouldList";
             this.dgvMouldList.ReadOnly = true;
             this.dgvMouldList.RowHeadersVisible = false;
             this.dgvMouldList.RowHeadersWidth = 51;
-            this.dgvMouldList.RowTemplate.Height = 40;
+            this.dgvMouldList.RowTemplate.Height = 50;
             this.dgvMouldList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMouldList.Size = new System.Drawing.Size(793, 493);
+            this.dgvMouldList.Size = new System.Drawing.Size(605, 477);
             this.dgvMouldList.TabIndex = 184;
+            this.dgvMouldList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMouldList_CellClick);
+            this.dgvMouldList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMouldList_CellFormatting);
             this.dgvMouldList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvMouldList_CellMouseDown);
+            this.dgvMouldList.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMouldList_CellValueChanged);
+            this.dgvMouldList.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvMouldList_DataBindingComplete);
+            this.dgvMouldList.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvMouldList_EditingControlShowing);
             this.dgvMouldList.SelectionChanged += new System.EventHandler(this.dgvMouldList_SelectionChanged);
             this.dgvMouldList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvMouldList_MouseClick);
             // 
@@ -214,12 +219,12 @@
             this.tlpButton.Controls.Add(this.btnSave, 3, 0);
             this.tlpButton.Controls.Add(this.btnCancel, 1, 0);
             this.tlpButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpButton.Location = new System.Drawing.Point(0, 527);
+            this.tlpButton.Location = new System.Drawing.Point(0, 511);
             this.tlpButton.Margin = new System.Windows.Forms.Padding(0);
             this.tlpButton.Name = "tlpButton";
             this.tlpButton.RowCount = 1;
             this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpButton.Size = new System.Drawing.Size(797, 50);
+            this.tlpButton.Size = new System.Drawing.Size(609, 50);
             this.tlpButton.TabIndex = 183;
             this.tlpButton.Click += new System.EventHandler(this.tlpButton_Click);
             // 
@@ -240,7 +245,7 @@
             this.btnSave.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnSave.Image = null;
             this.btnSave.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnSave.Location = new System.Drawing.Point(697, 20);
+            this.btnSave.Location = new System.Drawing.Point(509, 20);
             this.btnSave.Margin = new System.Windows.Forms.Padding(0);
             this.btnSave.Name = "btnSave";
             this.btnSave.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -255,6 +260,7 @@
             this.btnSave.Text = "SAVE";
             this.btnSave.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnSave.Visible = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCancel
             // 
@@ -272,7 +278,7 @@
             this.btnCancel.ForeColor = System.Drawing.Color.Black;
             this.btnCancel.Image = null;
             this.btnCancel.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnCancel.Location = new System.Drawing.Point(592, 20);
+            this.btnCancel.Location = new System.Drawing.Point(404, 20);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(0);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -295,7 +301,7 @@
             this.tlpLeftRight.Controls.Add(this.btnMoveRight, 0, 1);
             this.tlpLeftRight.Controls.Add(this.btnMoveLeft, 0, 3);
             this.tlpLeftRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpLeftRight.Location = new System.Drawing.Point(431, 0);
+            this.tlpLeftRight.Location = new System.Drawing.Point(409, 0);
             this.tlpLeftRight.Margin = new System.Windows.Forms.Padding(0);
             this.tlpLeftRight.Name = "tlpLeftRight";
             this.tlpLeftRight.RowCount = 5;
@@ -304,7 +310,7 @@
             this.tlpLeftRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.tlpLeftRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tlpLeftRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpLeftRight.Size = new System.Drawing.Size(30, 583);
+            this.tlpLeftRight.Size = new System.Drawing.Size(30, 567);
             this.tlpLeftRight.TabIndex = 184;
             this.tlpLeftRight.Click += new System.EventHandler(this.tableLayoutPanel2_Click);
             // 
@@ -325,7 +331,7 @@
             this.btnMoveRight.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_more_than_25;
             this.btnMoveRight.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnMoveRight.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnMoveRight.Location = new System.Drawing.Point(2, 259);
+            this.btnMoveRight.Location = new System.Drawing.Point(2, 251);
             this.btnMoveRight.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.btnMoveRight.Name = "btnMoveRight";
             this.btnMoveRight.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -357,7 +363,7 @@
             this.btnMoveLeft.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_less_than_25;
             this.btnMoveLeft.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnMoveLeft.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnMoveLeft.Location = new System.Drawing.Point(2, 299);
+            this.btnMoveLeft.Location = new System.Drawing.Point(2, 291);
             this.btnMoveLeft.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.btnMoveLeft.Name = "btnMoveLeft";
             this.btnMoveLeft.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -378,12 +384,12 @@
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 32);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // frmItemAndMouldConfiguration
             // 
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(1304, 623);
+            this.ClientSize = new System.Drawing.Size(1094, 607);
             this.Controls.Add(this.tableLayoutPanel10);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F);
             this.Name = "frmItemAndMouldConfiguration";

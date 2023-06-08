@@ -29,7 +29,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>514</ApplicationRevision>
+    <ApplicationRevision>516</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -291,6 +291,12 @@
     </Compile>
     <Compile Include="UI\frmItemAndMouldConfiguration.Designer.cs">
       <DependentUpon>frmItemAndMouldConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmItemSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmItemSearch.Designer.cs">
+      <DependentUpon>frmItemSearch.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmPlanningNEWV2.cs">
       <SubType>Form</SubType>
@@ -1062,6 +1068,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItemAndMouldConfiguration.resx">
       <DependentUpon>frmItemAndMouldConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmItemSearch.resx">
+      <DependentUpon>frmItemSearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPlanningNEWV2.resx">
       <DependentUpon>frmPlanningNEWV2.cs</DependentUpon>
