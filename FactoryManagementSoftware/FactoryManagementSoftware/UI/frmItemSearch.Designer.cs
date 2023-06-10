@@ -110,7 +110,7 @@
             this.tableLayoutPanel26.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel26.Controls.Add(this.btnMouldSelected, 3, 0);
             this.tableLayoutPanel26.Controls.Add(this.btnCancelPartInfoEdit, 1, 0);
-            this.tableLayoutPanel26.Location = new System.Drawing.Point(14, 356);
+            this.tableLayoutPanel26.Location = new System.Drawing.Point(10, 345);
             this.tableLayoutPanel26.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel26.Name = "tableLayoutPanel26";
             this.tableLayoutPanel26.RowCount = 1;
@@ -191,7 +191,7 @@
             this.txtPartName.Location = new System.Drawing.Point(60, 20);
             this.txtPartName.Name = "txtPartName";
             this.txtPartName.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtPartName.Size = new System.Drawing.Size(320, 23);
+            this.txtPartName.Size = new System.Drawing.Size(320, 20);
             this.txtPartName.TabIndex = 107;
             this.txtPartName.Values = null;
             this.txtPartName.TextChanged += new System.EventHandler(this.ctbPartName_TextChanged);
@@ -203,7 +203,7 @@
             this.lblPartCode.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblPartCode.Location = new System.Drawing.Point(11, 52);
             this.lblPartCode.Name = "lblPartCode";
-            this.lblPartCode.Size = new System.Drawing.Size(38, 15);
+            this.lblPartCode.Size = new System.Drawing.Size(31, 12);
             this.lblPartCode.TabIndex = 2;
             this.lblPartCode.Text = "CODE";
             // 
@@ -213,7 +213,7 @@
             this.lblPartName.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblPartName.Location = new System.Drawing.Point(8, 20);
             this.lblPartName.Name = "lblPartName";
-            this.lblPartName.Size = new System.Drawing.Size(41, 15);
+            this.lblPartName.Size = new System.Drawing.Size(32, 12);
             this.lblPartName.TabIndex = 0;
             this.lblPartName.Text = "NAME";
             // 
@@ -228,12 +228,8 @@
             this.cmbPartCode.FormattingEnabled = true;
             this.cmbPartCode.Location = new System.Drawing.Point(60, 52);
             this.cmbPartCode.Name = "cmbPartCode";
-            this.cmbPartCode.Size = new System.Drawing.Size(320, 23);
+            this.cmbPartCode.Size = new System.Drawing.Size(320, 20);
             this.cmbPartCode.TabIndex = 2;
-            this.cmbPartCode.SelectedIndexChanged += new System.EventHandler(this.cmbPartCode_SelectedIndexChanged);
-            this.cmbPartCode.SelectionChangeCommitted += new System.EventHandler(this.cmbPartCode_SelectionChangeCommitted);
-            this.cmbPartCode.DataSourceChanged += new System.EventHandler(this.cmbPartCode_DataSourceChanged);
-            this.cmbPartCode.DisplayMemberChanged += new System.EventHandler(this.cmbPartCode_DisplayMemberChanged);
             // 
             // tableLayoutPanel10
             // 
@@ -257,7 +253,7 @@
             // 
             // frmItemSearch
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));

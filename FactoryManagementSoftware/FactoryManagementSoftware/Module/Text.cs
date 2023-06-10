@@ -311,6 +311,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_Shift{ get; } = "SHIFT";
         public string Header_QCPassedQty { get; } = "QC PASSED QTY";
         public string Header_TotalReject { get; } = "REJECTED QTY";
+
         public string Header_RejectRate { get; } = "REJECTED %";
         public string Header_MaxOutput { get; } = "MAX OUTPUT";
         public string Header_YieldRate { get; } = "YIELD %";
@@ -320,6 +321,9 @@ namespace FactoryManagementSoftware.Module
         public string Header_EfficiencyRate { get; } = "EFFICIENCY %";
         public string Header_TotalStockIn { get; } = "STOCK IN QTY";
         public string Header_TargetQty { get; } = "TARGET QTY";
+        public string Header_CavityMatchedQty { get; } = "CAVITY-MATCHED QTY";
+
+
         public string Header_DefectRemark { get; } = "DEFECT REMARK";
         public string Header_QtyReject { get; } = "QTY REJECT";
 

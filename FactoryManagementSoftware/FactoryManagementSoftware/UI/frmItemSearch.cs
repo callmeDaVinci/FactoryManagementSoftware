@@ -59,6 +59,17 @@ namespace FactoryManagementSoftware.UI
             InitialSetting();
         }
 
+        public frmItemSearch(string itemType)
+        {
+            ITEM_TYPE = itemType;
+            DT_ITEM = dalItem.CatSearch(itemType);
+
+            ITEM_CODE_SELECTED = "";
+
+            InitializeComponent();
+            InitialSetting();
+        }
+
         public frmItemSearch(DataTable dt, string itemType)
         {
             ITEM_TYPE = itemType;
@@ -125,7 +136,11 @@ namespace FactoryManagementSoftware.UI
                         cmbPartCode.SelectedIndex = 0;
 
                     }
-                   
+                    else
+                    {
+                        cmbPartCode.DroppedDown = true;
+                    }
+
                     CMB_CODE_READY = true;
                 }
                
@@ -137,11 +152,6 @@ namespace FactoryManagementSoftware.UI
         }
 
      
-
-        private void cmbPartCode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
-        }
 
         #region UI/UX
 
@@ -185,21 +195,6 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        private void cmbPartCode_DisplayMemberChanged(object sender, EventArgs e)
-        {
-           
-        }
-
-        private void cmbPartCode_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cmbPartCode_DataSourceChanged(object sender, EventArgs e)
-        {
-            
-        }
-
         private void frmPlanningNEWV2_Shown(object sender, EventArgs e)
         {
             txtPartName.Focus();
@@ -209,7 +204,8 @@ namespace FactoryManagementSoftware.UI
         {
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
             {
-                cmbPartCode.DroppedDown = true;
+
+                //cmbPartCode.DroppedDown = true;
                 //cmbPartCode.Focus();
 
                 //CMB_CODE_READY = true;
