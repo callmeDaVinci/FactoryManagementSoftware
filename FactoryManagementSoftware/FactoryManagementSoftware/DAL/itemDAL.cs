@@ -1960,6 +1960,61 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool UpdateItemProductionInfo(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemProCTTo + "=@item_pro_ct_to,"
+                            + ItemCavity + "=@item_capacity,"
+                            + ItemProPWShot + "=@item_pro_pw_shot,"
+                            + ItemProRWShot + "=@item_pro_rw_shot,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_pro_ct_to", u.item_pro_ct_to);
+                cmd.Parameters.AddWithValue("@item_capacity", u.item_cavity);
+
+                cmd.Parameters.AddWithValue("@item_pro_pw_shot", u.item_pro_pw_shot);
+                cmd.Parameters.AddWithValue("@item_pro_rw_shot", u.item_pro_rw_shot);
+
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         public bool ItemMatUpdate(itemBLL u)
         {
             bool isSuccess = false;
@@ -2520,7 +2575,6 @@ namespace FactoryManagementSoftware.DAL
                         cavity = row[ItemCavity] == DBNull.Value ? "" : row[ItemCavity].ToString();
                         proCT = row[ItemProCTTo] == DBNull.Value ? "" : row[ItemProCTTo].ToString();
                         quoCT = row[ItemQuoCT] == DBNull.Value ? "" : row[ItemQuoCT].ToString();
-                        
 
                         quoTon = row[ItemQuoTon] == DBNull.Value ? "" : row[ItemQuoTon].ToString();
                         proTon = row[ItemProTon] == DBNull.Value ? "" : row[ItemProTon].ToString();
@@ -2582,6 +2636,68 @@ namespace FactoryManagementSoftware.DAL
             return success;
         }
 
+        public bool updateItemProductionInfoAndHistoryRecord(itemBLL u)
+        {
+
+            //get old data
+            string itemCode = u.item_code;
+            string PWPerShot = null, RWPerShot = null, cavity = null, proCT = null;
+
+            DataTable dt = codeSearch(itemCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[ItemCat].ToString().Equals("Part"))
+                    {
+                        PWPerShot = row[ItemProPWShot] == DBNull.Value ? "" : row[ItemProPWShot].ToString();
+                        RWPerShot = row[ItemProRWShot] == DBNull.Value ? "" : row[ItemProRWShot].ToString();
+                        cavity = row[ItemCavity] == DBNull.Value ? "" : row[ItemCavity].ToString();
+                        proCT = row[ItemProCTTo] == DBNull.Value ? "" : row[ItemProCTTo].ToString();
+                    }
+                }
+            }
+
+            //update
+            bool success = UpdateItemProductionInfo(u);
+            Tool tool = new Tool();
+            Text text = new Text();
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to update part info!");
+                tool.historyRecord(text.System, "Failed to update part info!", DateTime.Now, MainDashboard.USER_ID);
+            }
+            else
+            {
+                #region History Record
+
+                if (!PWPerShot.Equals(u.item_pro_pw_shot.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Part Weight(pro shot) : " + PWPerShot + " -->" + u.item_pro_pw_shot, DateTime.Now, MainDashboard.USER_ID);
+                }
+
+                if (!RWPerShot.Equals(u.item_pro_rw_shot.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Runner Weight(pro shot) : " + RWPerShot + " -->" + u.item_pro_rw_shot, DateTime.Now, MainDashboard.USER_ID);
+                }
+
+                if (!cavity.Equals(u.item_cavity.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "Cavity : " + cavity + " -->" + u.item_cavity, DateTime.Now, MainDashboard.USER_ID);
+                }
+
+                if (!proCT.Equals(u.item_pro_ct_to.ToString()))
+                {
+                    tool.historyRecord(text.ItemEdit, u.item_name + "(" + u.item_code + ")_" + "PRO CT(MAX) : " + proCT + " -->" + u.item_pro_ct_to, DateTime.Now, MainDashboard.USER_ID);
+                }
+              
+                #endregion
+            }
+
+            return success;
+        }
         public bool rawMatUpdateAndHistoryRecord(itemBLL u)
         {
 

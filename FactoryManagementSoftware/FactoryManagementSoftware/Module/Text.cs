@@ -394,6 +394,9 @@ namespace FactoryManagementSoftware.Module
         public string Header_Color { get; } = "COLOR";
 
         public string Header_ItemWeight_KG { get; } = "ITEM WEIGHT(KG)";
+        public string Header_KG { get; } = "KG";
+        public string Header_BAG { get; } = "BAG";
+        public string Header_KGPERBAG { get; } = "KG/BAG";
 
         public string Header_RunnerWeight_G { get; } = "RUNNER WEIGHT(G)";
         public string Header_PartWeight_G { get; } = "PART WEIGHT(G)";

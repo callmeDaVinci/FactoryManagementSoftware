@@ -134,7 +134,7 @@
             this.stock_qty.MinimumWidth = 6;
             this.stock_qty.Name = "stock_qty";
             this.stock_qty.ReadOnly = true;
-            this.stock_qty.Width = 69;
+            this.stock_qty.Width = 59;
             // 
             // dgvItem
             // 
@@ -186,7 +186,7 @@
             this.txtSearch.ForeColor = System.Drawing.SystemColors.WindowFrame;
             this.txtSearch.Location = new System.Drawing.Point(-119, 4);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(1, 30);
+            this.txtSearch.Size = new System.Drawing.Size(1, 25);
             this.txtSearch.TabIndex = 60;
             this.txtSearch.Text = "Search";
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
@@ -199,9 +199,9 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(20)))), ((int)(((byte)(31)))));
-            this.label2.Location = new System.Drawing.Point(-366, 7);
+            this.label2.Location = new System.Drawing.Point(-366, 11);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(151, 17);
+            this.label2.Size = new System.Drawing.Size(130, 13);
             this.label2.TabIndex = 61;
             this.label2.Text = "QTY FOR EACH FACTORY";
             // 
@@ -211,9 +211,9 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label3.Location = new System.Drawing.Point(3, 20);
+            this.label3.Location = new System.Drawing.Point(3, 24);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(101, 17);
+            this.label3.Size = new System.Drawing.Size(87, 13);
             this.label3.TabIndex = 62;
             this.label3.Text = "Transfer Record";
             // 
@@ -300,7 +300,7 @@
             this.cmbSearchCat.FormattingEnabled = true;
             this.cmbSearchCat.Location = new System.Drawing.Point(3, 4);
             this.cmbSearchCat.Name = "cmbSearchCat";
-            this.cmbSearchCat.Size = new System.Drawing.Size(1, 31);
+            this.cmbSearchCat.Size = new System.Drawing.Size(1, 25);
             this.cmbSearchCat.TabIndex = 70;
             this.cmbSearchCat.SelectedIndexChanged += new System.EventHandler(this.cmbSearchCat_SelectedIndexChanged);
             // 
@@ -326,9 +326,9 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label5.Location = new System.Drawing.Point(3, 7);
+            this.label5.Location = new System.Drawing.Point(3, 11);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(1, 17);
+            this.label5.Size = new System.Drawing.Size(1, 13);
             this.label5.TabIndex = 74;
             this.label5.Text = "ITEM INFORMATION";
             // 
@@ -339,9 +339,9 @@
             this.cmbTransHistDate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTransHistDate.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbTransHistDate.FormattingEnabled = true;
-            this.cmbTransHistDate.Location = new System.Drawing.Point(1120, 9);
+            this.cmbTransHistDate.Location = new System.Drawing.Point(1120, 13);
             this.cmbTransHistDate.Name = "cmbTransHistDate";
-            this.cmbTransHistDate.Size = new System.Drawing.Size(48, 25);
+            this.cmbTransHistDate.Size = new System.Drawing.Size(48, 20);
             this.cmbTransHistDate.TabIndex = 76;
             this.cmbTransHistDate.SelectedIndexChanged += new System.EventHandler(this.cmbTransHistDate_SelectedIndexChanged);
             // 
@@ -350,9 +350,9 @@
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(947, 20);
+            this.label4.Location = new System.Drawing.Point(969, 24);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(167, 17);
+            this.label4.Size = new System.Drawing.Size(145, 13);
             this.label4.TabIndex = 77;
             this.label4.Text = "SHOW DATA FOR THE PAST";
             // 
@@ -361,9 +361,9 @@
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(1179, 20);
+            this.label6.Location = new System.Drawing.Point(1185, 24);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(38, 17);
+            this.label6.Size = new System.Drawing.Size(32, 13);
             this.label6.TabIndex = 78;
             this.label6.Text = "DAYS";
             // 
@@ -373,7 +373,7 @@
             this.lblUpdatedTime.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblUpdatedTime.Location = new System.Drawing.Point(3, 0);
             this.lblUpdatedTime.Name = "lblUpdatedTime";
-            this.lblUpdatedTime.Size = new System.Drawing.Size(151, 1);
+            this.lblUpdatedTime.Size = new System.Drawing.Size(125, 1);
             this.lblUpdatedTime.TabIndex = 83;
             this.lblUpdatedTime.Text = "SHOW DATA FOR THE PAST";
             this.lblUpdatedTime.Click += new System.EventHandler(this.lblUpdatedTime_Click);
@@ -384,7 +384,7 @@
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label7.Location = new System.Drawing.Point(3, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(89, 1);
+            this.label7.Size = new System.Drawing.Size(73, 1);
             this.label7.TabIndex = 84;
             this.label7.Text = "LAST UPDATED:";
             this.label7.Click += new System.EventHandler(this.label7_Click);
@@ -602,9 +602,9 @@
             this.txtJumpID.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.txtJumpID.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtJumpID.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.txtJumpID.Location = new System.Drawing.Point(779, 8);
+            this.txtJumpID.Location = new System.Drawing.Point(779, 9);
             this.txtJumpID.Name = "txtJumpID";
-            this.txtJumpID.Size = new System.Drawing.Size(94, 21);
+            this.txtJumpID.Size = new System.Drawing.Size(94, 18);
             this.txtJumpID.TabIndex = 89;
             this.txtJumpID.Text = "transfer id";
             this.txtJumpID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -654,7 +654,7 @@
             // 
             // frmInOut_NEW
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(1348, 721);
