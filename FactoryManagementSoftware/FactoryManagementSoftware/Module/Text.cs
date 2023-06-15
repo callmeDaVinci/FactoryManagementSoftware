@@ -321,7 +321,8 @@ namespace FactoryManagementSoftware.Module
         public string Header_EfficiencyRate { get; } = "EFFICIENCY %";
         public string Header_TotalStockIn { get; } = "STOCK IN QTY";
         public string Header_TargetQty { get; } = "TARGET QTY";
-        public string Header_CavityMatchedQty { get; } = "CAVITY-MATCHED QTY";
+        public string Header_Qty { get; } = "QUANTITY";
+        public string Header_AutoQtyAdjustment { get; } = "AUTO-QTY ADJUSTMENT";
 
 
         public string Header_DefectRemark { get; } = "DEFECT REMARK";

@@ -17,6 +17,7 @@ using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using Microsoft.ReportingServices.Interfaces;
+using Syncfusion.XlsIO;
 using Syncfusion.XlsIO.Implementation.XmlSerialization;
 using Syncfusion.XlsIO.Parser.Biff_Records;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -60,78 +61,11 @@ namespace FactoryManagementSoftware.UI
         readonly private string BTN_INFO_SAVE_CONFIRM_MOULD = "INFO SAVE & MOULD CONFIRM";
         readonly private string BTN_CONFIRM_MOULD = "MOULD CONFIRM";
 
+
+        private int MIN_SHOT = 0;
+
         private bool PRO_INFO_CHANGE = false;
         #endregion
-
-        #region LastInventoryZeroDate
-
-        public new string Name { get; set; }
-       
-
-        public static DateTime CalculateZeroInventoryDate(DataTable dt, string customerName)
-        {
-            var customerRows = dt.Select($"Customer = '{customerName}'")
-         .OrderBy(row => row["ReceiveDate"]).ToList();
-
-            DateTime zeroInventoryDate = (DateTime)customerRows[0]["ReceiveDate"];
-            int remainingInventory = (int)customerRows[0]["Quantity"];
-
-            for (int i = 1; i < customerRows.Count; i++)
-            {
-                DateTime nextReceiveDate = (DateTime)customerRows[i]["ReceiveDate"];
-                int daysDifference = (nextReceiveDate - zeroInventoryDate).Days;
-
-                if (remainingInventory - daysDifference <= 0)
-                {
-                    zeroInventoryDate = nextReceiveDate;
-                    remainingInventory = (int)customerRows[i]["Quantity"];
-                }
-                else
-                {
-                    remainingInventory = remainingInventory - daysDifference + (int)customerRows[i]["Quantity"];
-                    zeroInventoryDate = zeroInventoryDate.AddDays(daysDifference);
-                }
-            }
-
-            zeroInventoryDate = zeroInventoryDate.AddDays(remainingInventory - 1);
-
-            return zeroInventoryDate;
-        }
-
-
-        private void Testing()
-        {
-            DataTable dt = new DataTable("PurchaseData");
-
-            dt.Columns.Add("Customer", typeof(string));
-            dt.Columns.Add("Quantity", typeof(int));
-            dt.Columns.Add("ReceiveDate", typeof(DateTime));
-
-            dt.Rows.Add("Customer1", 10, new DateTime(2023, 5, 1));
-            dt.Rows.Add("Customer1", 10, new DateTime(2023, 5, 5));
-            dt.Rows.Add("Customer1", 10, new DateTime(2023, 6, 1));
-
-            dt.Rows.Add("Customer2", 10, new DateTime(2023, 5, 1));
-            dt.Rows.Add("Customer2", 10, new DateTime(2023, 5, 1));
-            dt.Rows.Add("Customer2", 10, new DateTime(2023, 6, 1));
-
-            dt.Rows.Add("Customer3", 10, new DateTime(2023, 5, 1));
-
-            dt.Rows.Add("Customer4", 10, new DateTime(2023, 5, 1));
-            dt.Rows.Add("Customer4", 10, new DateTime(2023, 5, 1));
-            dt.Rows.Add("Customer4", 10, new DateTime(2023, 5, 15));
-
-
-            string toFollowUpDate = CalculateZeroInventoryDate(dt, "Customer1").ToString("dd/MMM/yyyy");
-
-            string toFollowUpDate2 = CalculateZeroInventoryDate(dt, "Customer2").ToString("dd/MMM/yyyy");
-            string toFollowUpDate3 = CalculateZeroInventoryDate(dt, "Customer3").ToString("dd/MMM/yyyy");
-            string toFollowUpDate4 = CalculateZeroInventoryDate(dt, "Customer4").ToString("dd/MMM/yyyy");
-
-
-        }
-        #endregion
-
 
         public frmPlanningVer2dot1()
         {
@@ -162,7 +96,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_ProPwShot, typeof(string));
             dt.Columns.Add(text.Header_ProRwShot, typeof(string));
             dt.Columns.Add(text.Header_TargetQty, typeof(int));
-            dt.Columns.Add(text.Header_CavityMatchedQty, typeof(int));
+            dt.Columns.Add(text.Header_AutoQtyAdjustment, typeof(int));
 
             return dt;
         }
@@ -202,12 +136,25 @@ namespace FactoryManagementSoftware.UI
 
             return dt;
         }
+
+        private DataTable NewMatSummaryList()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(text.Header_Description, typeof(string));
+            dt.Columns.Add(text.Header_Qty, typeof(string));
+            dt.Columns.Add(text.Header_Remark, typeof(string));
+
+            return dt;
+        }
         #region UI/UX
 
         private void InitialSetting()
         {
             ShowBtnItemSave(false);
             StepsUIUpdate(1);
+            MIN_SHOT = 0;
         }
 
         private void btnSaveProductionInfoAndMouldConfirmMode(bool active)
@@ -370,7 +317,7 @@ namespace FactoryManagementSoftware.UI
             
         }
 
-        private void LoadMaterialList(string itemCode)
+        private void LoadSingleMaterialList(string itemCode)
         {
             if (DT_ITEM == null)
             {
@@ -435,6 +382,97 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
+        }
+
+        private void TotalMaterialCalculation()
+        {
+            #region info from user
+            bool RunnerRecycle = true;
+            bool RawMat_RoundUpToBag = true;
+
+            double colorRatio = 0.01;
+            double newMatWastage = 0.05;
+            double recycleWastage = 0;
+            double KGperBag = 25;
+
+            int minShots = 100;
+
+            double PW_Shot = 4;
+            double RW_Shot = 6;
+
+            //double PW_Shot = double.TryParse(txtPWPerShot.Text, out PW_Shot) ? PW_Shot : 0;
+            //double RW_Shot = double.TryParse(txtRWPerShot.Text, out RW_Shot) ? RW_Shot : 0;
+
+            double TotalWeight_Shot = PW_Shot + RW_Shot;
+
+            colorRatio = colorRatio >= 1 ? colorRatio /= 100 : colorRatio;
+            newMatWastage = newMatWastage >= 1 ? newMatWastage /= 100 : newMatWastage;
+            recycleWastage = recycleWastage >= 1 ? recycleWastage /= 100 : recycleWastage;
+            #endregion
+
+            #region Calculation
+
+            //TO:DO Calculate the below result
+            double TotalNewRawMat = 0;
+            double TotalNewColorMat = 0;
+            double TotalMat = 0;
+
+            int maxShots = minShots;
+
+            double TotalRecycleMat = 0;
+            int extraShotGetFromRecycle = 0;
+
+            if (RunnerRecycle)
+            {
+                TotalRecycleMat = (minShots - 1) * RW_Shot * (1 - recycleWastage);
+
+                extraShotGetFromRecycle = (int)Math.Floor(TotalRecycleMat / TotalWeight_Shot);
+
+                maxShots += extraShotGetFromRecycle;
+            }
+
+            TotalMat = minShots * TotalWeight_Shot;
+
+            double TotalNewMat = 0;
+            
+            TotalNewMat  = TotalMat - TotalRecycleMat;
+
+            //TotalNewMat = TotalNewRawMat + TotalNewRawMat * colorRatio
+            TotalNewRawMat = TotalNewMat / (1 + colorRatio);
+            TotalNewColorMat = TotalNewRawMat * colorRatio;
+
+            double Prepare_RawMat = TotalNewRawMat * (1 + newMatWastage);
+            double Prepare_ColorMat = Prepare_RawMat * colorRatio;
+
+            maxShots = (int) Math.Floor(TotalMat / TotalWeight_Shot);
+
+            if (RawMat_RoundUpToBag)
+            {
+                Prepare_RawMat = Math.Ceiling(Prepare_RawMat/ 1000 / KGperBag) * KGperBag * 1000;
+
+                Prepare_ColorMat = Prepare_RawMat * colorRatio;
+
+                double RoundUp_Pro_RawMat = Prepare_RawMat * ( 1 - newMatWastage );
+
+                double RoundUp_Pro_ColorMat = RoundUp_Pro_RawMat * colorRatio;
+
+                double Total_RoundUp_Pro_New_Mat = RoundUp_Pro_RawMat + RoundUp_Pro_ColorMat;
+
+                maxShots = (int) Math.Floor(Total_RoundUp_Pro_New_Mat / TotalWeight_Shot);
+
+                if (RunnerRecycle)
+                {
+                    TotalRecycleMat = (maxShots - 1) * RW_Shot * (1 - recycleWastage);
+
+                    extraShotGetFromRecycle = (int)Math.Floor(TotalRecycleMat / TotalWeight_Shot);
+
+                    maxShots += extraShotGetFromRecycle;
+                }
+
+                TotalMat = Prepare_RawMat + Prepare_ColorMat + TotalRecycleMat;
+            }
+
+            #endregion
         }
 
         private void AddItemToList(string itemCode)
@@ -585,7 +623,7 @@ namespace FactoryManagementSoftware.UI
                         cycleTime = ct;
                     }
 
-                    int targetQty = int.TryParse(row[text.Header_CavityMatchedQty].ToString(), out targetQty) ? targetQty : 0;
+                    int targetQty = int.TryParse(row[text.Header_AutoQtyAdjustment].ToString(), out targetQty) ? targetQty : 0;
 
                     if(cavity > 0)
                     {
@@ -602,13 +640,13 @@ namespace FactoryManagementSoftware.UI
                 txtCycleTime.Text = cycleTime.ToString("0");
                 txtPWPerShot.Text = partWeightPerShot.ToString("0.##");
                 txtRWPerShot.Text = runnerWeightPerShot.ToString("0.##");
-                txtTotalShot.Text = totalShot.ToString();
+                MIN_SHOT = (int)totalShot;
+
+
 
             }
 
         }
-
-
         private void LoadProductionInfoToField(DataRow[] existingRows)
         {
             txtCavity.Text = existingRows[0][dalItem.MouldCavity].ToString();
@@ -616,7 +654,6 @@ namespace FactoryManagementSoftware.UI
             txtPWPerShot.Text = existingRows[0][dalItem.ItemPWShot].ToString();
             txtRWPerShot.Text = existingRows[0][dalItem.ItemRWShot].ToString();
 
-            btnItemConfirm.Visible = true;
 
         }
 
@@ -626,7 +663,7 @@ namespace FactoryManagementSoftware.UI
             txtCycleTime.Text = "";
             txtPWPerShot.Text = "";
             txtRWPerShot.Text = "";
-            txtTotalShot.Text = "";
+            MIN_SHOT = 0;
         }
 
         private void LoadDB()
@@ -818,7 +855,6 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItemList_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            btnItemConfirm.Visible = dgvItemList?.Rows.Count > 0;
             //foreach (DataGridViewRow row in dgvItemList.Rows)
             //{
             //    //DataGridViewCheckBoxCell checkBoxCell = row.Cells[text.Header_MouldSelection] as DataGridViewCheckBoxCell;
@@ -924,38 +960,38 @@ namespace FactoryManagementSoftware.UI
                     }
 
 
-                    row[text.Header_CavityMatchedQty] = (int) cavityMatchedQty;
+                    row[text.Header_AutoQtyAdjustment] = (int) cavityMatchedQty;
                 }
 
-                txtTotalShot.Text = totalShot.ToString("0");
+                MIN_SHOT = (int) totalShot;
             }
         }
 
         private void StepsUIUpdate(int step)
         {
-            // reset all fonts to normal
-            ResetFonts();
+            //// reset all fonts to normal
+            //ResetFonts();
 
-            Font focusFont = new Font("Segoe UI", 8F, FontStyle.Bold);
-            // update the font for the current step
-            switch (step)
-            {
-                case 1:
-                    gbItem.Font = focusFont;
-                    break;
-                case 2:
-                    gbRawColorMat.Font = focusFont;
-                    break;
-                case 3:
-                    gbTime.Font = focusFont;
-                    break;
-                case 4:
-                    gbStockCheck.Font = focusFont;
-                    break;
-                case 5:
-                    gbMachineSchedule.Font = focusFont;
-                    break;
-            }
+            //Font focusFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            //// update the font for the current step
+            //switch (step)
+            //{
+            //    case 1:
+            //        gbItem.Font = focusFont;
+            //        break;
+            //    case 2:
+            //        gbRawColorMat.Font = focusFont;
+            //        break;
+            //    case 3:
+            //        gbTime.Font = focusFont;
+            //        break;
+            //    case 4:
+            //        gbStockCheck.Font = focusFont;
+            //        break;
+            //    case 5:
+            //        gbMachineSchedule.Font = focusFont;
+            //        break;
+            //}
         }
 
         private void ResetFonts()
@@ -1320,49 +1356,10 @@ namespace FactoryManagementSoftware.UI
             {
                 string itemCode = dgvItemList.Rows[dgvItemList.Rows.Count - 1].Cells[text.Header_ItemCode].Value.ToString();
 
-                LoadMaterialList(itemCode);
+                LoadSingleMaterialList(itemCode);
             }
         }
-        private void btnItemConfirmed_Click(object sender, EventArgs e)
-        {
-            int totalShot = int.TryParse(txtTotalShot.Text, out totalShot) ? totalShot : 0;
-
-            if(totalShot <= 0)
-            {
-                MessageBox.Show("Total shot cannot be 0, please change the Target Qty in the Item List.");
-            }
-            else
-            {
-                if(PRO_INFO_CHANGE && btnItemInfoSave.Visible)
-                {
-                    SaveItemProductionInfo("Unsaved data has been found.Would you like to save it ?");
-                }
-
-                Step2_MaterialSetting();
-            }
-
-            //if(btnItemConfirm.Text == BTN_INFO_SAVE_CONFIRM_MOULD)
-            //{
-            //    //SAVE PRODUCTION INFO
-            //    //SEARCH IF SELECTED ITEMS AND COMBINATION CODE EXIST
-            //    //IF NOT, CREATE A NEW COMBINATION CODE
-            //    SaveProductionInfo();
-
-            //}
-
-            //btnSaveProductionInfoAndMouldConfirmMode(false);
-            //btnItemConfirm.Visible = false;
-
-            ////MOULD Selected
-            ////step 2: monthly balance estimation, production history (included machine no)
-            //MessageBox.Show("Step 2");
-
-            ////step 3: process to production requirement steps
-            ////raw material
-            ////color material
-            ////
-        }
-
+      
         private void label7_Click(object sender, EventArgs e)
         {
             AddItem();

@@ -165,6 +165,7 @@ namespace FactoryManagementSoftware.UI
         
         //readonly string headerColor = "COLOR";
         readonly string headerColorMaterial = "COLOR MATERIAL";
+        readonly string headerColorMaterialCode = "COLOR MATERIAL CODE";
         //readonly string headerColorMaterialUsage = "USAGE %";
         readonly string headerColorMaterialQty = "QTY (KG)";
 
@@ -245,6 +246,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerRecycle, typeof(int));
 
             //dt.Columns.Add(headerColor, typeof(string));
+            dt.Columns.Add(headerColorMaterialCode, typeof(string));
             dt.Columns.Add(headerColorMaterial, typeof(string));
             //dt.Columns.Add(headerColorMaterialUsage, typeof(int));
             dt.Columns.Add(headerColorMaterialQty, typeof(float));
@@ -310,6 +312,7 @@ namespace FactoryManagementSoftware.UI
             //dgv.Columns[headerMaterial].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             //dgv.Columns[headerColorMaterial].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             //dgv.Columns[headerNote].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgv.Columns[headerColorMaterialCode].Visible = false;
 
 
             dgv.Columns[headerJobNo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -500,6 +503,7 @@ namespace FactoryManagementSoftware.UI
             lblTotalUsed.Text = "";
             lblTotalToUse.Text = "";
             lblMatStock.Text = "";
+            DataTable dt_item = dalItem.Select();
 
             #region Search Filtering
             DataTable dt;
@@ -724,8 +728,14 @@ namespace FactoryManagementSoftware.UI
                     row_Schedule[headerMaterialBag] = row[dalPlanning.materialBagQty];
                     row_Schedule[headerRecycle] = row[dalPlanning.materialRecycleUse];
 
+                    string colorMatCode = row[dalPlanning.colorMaterialCode].ToString();
+                    string colorMatName = tool.getItemNameFromDataTable(dt_item, colorMatCode);
+
+                    colorMatName = string.IsNullOrEmpty(colorMatName) ? colorMatCode : colorMatName;
+
                     //row_Schedule[headerColor] = row[dalItem.ItemColor];
-                    row_Schedule[headerColorMaterial] = row[dalPlanning.colorMaterialCode];
+                    row_Schedule[headerColorMaterialCode] = colorMatCode;
+                    row_Schedule[headerColorMaterial] = colorMatName;
                     row_Schedule[headerColorMaterialQty] = row[dalPlanning.colorMaterialQty];
 
                     row_Schedule[headerNote] = row[dalPlanning.planNote];
@@ -1367,7 +1377,7 @@ namespace FactoryManagementSoftware.UI
                     string ItemName = row[headerPartName].ToString();
                     string ItemCode = row[headerPartCode].ToString();
                     string RawMat = row[headerMaterial].ToString();
-                    string ColorMat = row[headerColorMaterial].ToString();
+                    string ColorMat = row[headerColorMaterialCode].ToString();
 
                     string Fac = row[headerFactory].ToString();
 
@@ -3226,6 +3236,14 @@ namespace FactoryManagementSoftware.UI
 
             if (itemClicked.Equals(text.planning_Material_Summary))
             {
+                string headerName = dgv.Columns[colIndex].Name;
+
+                if(headerName == headerColorMaterial)
+                {
+                    cellValue = dgv.Rows[rowIndex].Cells[headerColorMaterialCode].Value.ToString();
+
+                }
+
                 CalculationMaterialSummary(cellValue);
             }
 
@@ -3496,9 +3514,14 @@ namespace FactoryManagementSoftware.UI
             {
                 string headerName = dgvSchedule.Columns[e.ColumnIndex].Name;
 
-                if(headerName == headerMaterial || headerName == headerColorMaterial)
+                if(headerName == headerMaterial || headerName == headerColorMaterial || headerName == headerColorMaterialCode)
                 {
                     string cellValue = dgvSchedule.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+
+                    if(headerName == headerColorMaterial)
+                    {
+                        cellValue = dgvSchedule.Rows[e.RowIndex].Cells[headerColorMaterialCode].Value.ToString();
+                    }
 
                     if(!string.IsNullOrEmpty(cellValue))
                         CalculationMaterialSummary(cellValue);
