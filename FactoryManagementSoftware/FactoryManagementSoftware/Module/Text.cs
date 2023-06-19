@@ -366,6 +366,8 @@ namespace FactoryManagementSoftware.Module
         public string Header_DirectOut_KG_Piece { get; } = "DIRECT OUT(KG/PIECE)";
         public string Header_BalStock { get; } = "BAL. STOCK";
         public string Header_ReadyStock { get; } = "READY STOCK";
+        public string Header_ReservedForOtherJobs { get; } = "RESERVED FOR OTHER JOBS";
+        public string Header_RequiredForCurrentJob { get; } = "REQUIRED FOR CURRENT JOB";
         public string Header_ParentStock { get; } = "PARENT STOCK";
         public string Header_ProductStock { get; } = "PRODUCT STOCK";
 

@@ -10,6 +10,7 @@ using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using Syncfusion.XlsIO.Implementation.XmlSerialization;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ExplorerBar;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -126,6 +127,23 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
+        private DataTable NewMatCheckTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(text.Header_Type, typeof(string));
+            dt.Columns.Add(text.Header_ItemDescription, typeof(string));
+            dt.Columns.Add(text.Header_ItemCode, typeof(string));
+            dt.Columns.Add(text.Header_ItemName, typeof(string));
+            dt.Columns.Add(text.Header_ReadyStock, typeof(float));
+            dt.Columns.Add(text.Header_ReservedForOtherJobs, typeof(float));
+            dt.Columns.Add(text.Header_RequiredForCurrentJob, typeof(float));
+            dt.Columns.Add(text.Header_BalStock, typeof(float));
+
+            return dt;
+
+        }
         private DataTable NewMatSummaryList()
         {
             DataTable dt = new DataTable();
@@ -235,7 +253,7 @@ namespace FactoryManagementSoftware.UI
 
                 int itemListRowHeight = dgv.ColumnHeadersHeight + dgv.Rows.Cast<DataGridViewRow>().Sum(r => r.Height);
                    
-                if(itemListRowHeight <192)
+                if(itemListRowHeight <150)
                 {
                     tlpItemSelection.RowStyles[1].SizeType = SizeType.Absolute;
                     tlpItemSelection.RowStyles[1].Height = itemListRowHeight;
@@ -350,10 +368,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            if(index == 1)
-            {
-                btnItemInfoSave.Visible = false;
-            }    
+            
         }
 
         private void loadRawMaterialList()
@@ -443,6 +458,8 @@ namespace FactoryManagementSoftware.UI
             dgvMaterialSummary.DataSource = null;
 
         }
+
+        #region Calculation
         private void FromMaxShotToTimeNeededCalculation()
         {
             int cycleTime_PerShot_sec = int.TryParse(txtCycleTime.Text, out cycleTime_PerShot_sec) ? cycleTime_PerShot_sec : 0;
@@ -507,19 +524,21 @@ namespace FactoryManagementSoftware.UI
 
                 }
 
-              
-
                 colorRatio_percentage = colorRatio_percentage >= 1 ? colorRatio_percentage /= 100 : colorRatio_percentage;
                 newMatWastage = newMatWastage >= 1 ? newMatWastage /= 100 : newMatWastage;
                 recycleWastage = recycleWastage >= 1 ? recycleWastage /= 100 : recycleWastage;
+
                 #endregion
 
                 #region Calculation
 
                 //TO:DO Calculate the below result
-                double TotalNewRawMat = 0;
-                double TotalNewColorMat = 0;
-                double TotalMat = 0;
+
+                double TotalNewRawMat_g = 0;
+                double TotalNewColorMat_g = 0;
+
+                double TotalMinMatNeeded_g = 0;
+                double TotalMaxMatProNeeded_g = 0;
 
                 int maxShots = minShots;
 
@@ -531,38 +550,47 @@ namespace FactoryManagementSoftware.UI
                     TotalRecycleMat = (minShots - 1) * RW_Shot_g * (1 - recycleWastage);
 
                     extraShotGetFromRecycle = (int)Math.Floor(TotalRecycleMat / TotalWeight_Shot_g);
-
-                    maxShots += extraShotGetFromRecycle;
                 }
 
-                TotalMat = minShots * TotalWeight_Shot_g;
+                TotalMinMatNeeded_g = minShots * TotalWeight_Shot_g;
 
-                double TotalNewMat = 0;
+                double TotalNewMat = TotalMinMatNeeded_g - TotalRecycleMat;
 
-                TotalNewMat = TotalMat - TotalRecycleMat;
+                TotalNewRawMat_g = TotalNewMat / (1 + colorRatio_percentage);
+                TotalNewColorMat_g = TotalNewRawMat_g * colorRatio_percentage;
 
-                //TotalNewMat = TotalNewRawMat + TotalNewRawMat * colorRatio
-                TotalNewRawMat = TotalNewMat / (1 + colorRatio_percentage);
-                TotalNewColorMat = TotalNewRawMat * colorRatio_percentage;
+                if(TotalNewMat > ( TotalNewRawMat_g + TotalNewColorMat_g))
+                {
+                    MessageBox.Show("total new mat > new raw + new color");
+                }
 
-                double Prepare_RawMat_g = TotalNewRawMat * (1 + newMatWastage);
-                double Prepare_ColorMat = Prepare_RawMat_g * colorRatio_percentage;
+                TotalNewMat = TotalNewRawMat_g + TotalNewColorMat_g;
 
-                maxShots = (int)Math.Floor(TotalMat / TotalWeight_Shot_g);
+                TotalMaxMatProNeeded_g = TotalNewMat + TotalRecycleMat;
+
+                maxShots = (int)Math.Floor(TotalMaxMatProNeeded_g / TotalWeight_Shot_g);
+
+                double Prepare_RawMat_g = TotalNewRawMat_g * (1 + newMatWastage);
+                double Prepare_ColorMat_g = Prepare_RawMat_g * colorRatio_percentage;
 
                 if (RawMat_RoundUpToBag)
                 {
-                    Prepare_RawMat_g = Math.Ceiling(Prepare_RawMat_g / 1000 / MaterialperBag_KG) * MaterialperBag_KG * 1000;
+                    double RawMatRoundUpQty = Math.Ceiling(Prepare_RawMat_g / 1000 / MaterialperBag_KG) * MaterialperBag_KG * 1000;
 
-                    Prepare_ColorMat = Prepare_RawMat_g * colorRatio_percentage;
+                    RawMatRoundUpQty = RawMatRoundUpQty - Prepare_RawMat_g;
 
-                    double RoundUp_Pro_RawMat = Prepare_RawMat_g * (1 - newMatWastage);
+                    Prepare_RawMat_g += RawMatRoundUpQty;
+
+                    Prepare_ColorMat_g = Prepare_RawMat_g * colorRatio_percentage;
+
+                    double RoundUp_Pro_RawMat = RawMatRoundUpQty * (1 - newMatWastage) + TotalNewRawMat_g;
 
                     double RoundUp_Pro_ColorMat = RoundUp_Pro_RawMat * colorRatio_percentage;
 
+                    
                     double Total_RoundUp_Pro_New_Mat = RoundUp_Pro_RawMat + RoundUp_Pro_ColorMat;
 
-                    maxShots = (int)Math.Floor(Total_RoundUp_Pro_New_Mat / TotalWeight_Shot_g);
+                    maxShots += (int)Math.Floor(RawMatRoundUpQty * (1 - newMatWastage) / TotalWeight_Shot_g);
 
                     if (RunnerRecycle)
                     {
@@ -573,7 +601,13 @@ namespace FactoryManagementSoftware.UI
                         maxShots += extraShotGetFromRecycle;
                     }
 
-                    TotalMat = Prepare_RawMat_g + Prepare_ColorMat + TotalRecycleMat;
+                    TotalMaxMatProNeeded_g = Total_RoundUp_Pro_New_Mat + TotalRecycleMat;
+                }
+
+
+                if (maxShots < minShots)
+                {
+                    MessageBox.Show(" MaxShot < MinShot");
                 }
 
                 #endregion
@@ -591,7 +625,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (dt_ColorMat?.Rows.Count > 0 && dt_ColorMat.Columns.Contains(text.Header_KG))
                 {
-                    dt_ColorMat.Rows[0][text.Header_KG] = Prepare_ColorMat/1000;
+                    dt_ColorMat.Rows[0][text.Header_KG] = Prepare_ColorMat_g/1000;
                 }
 
                 int Max_CycleTime_sec = maxShots * cycleTime_PerShot_sec;
@@ -626,6 +660,8 @@ namespace FactoryManagementSoftware.UI
 
            
         }
+
+        #endregion
 
         private void AddItemToList(string itemCode)
         {
@@ -688,7 +724,6 @@ namespace FactoryManagementSoftware.UI
                     dgvUIEdit(dgvItemList);
                     ItemListCellFormatting(dgvItemList);
 
-
                     LoadSummary_ProductionInfo();
 
                     dgvReadOnlyModeUpdate(dgvItemList, dgvItemList.Rows.Count - 1, dgvItemList.Columns[text.Header_TargetQty].Index);
@@ -702,6 +737,25 @@ namespace FactoryManagementSoftware.UI
 
             PRO_INFO_LOADING = false;
             LoadSingleMaterialList(itemCode);
+
+            string ItemListTitle = "Item List";
+
+            if(dgvItemList?.Rows.Count > 0)
+            {
+                int itemCount = dgvItemList.Rows.Count;
+
+                if(itemCount > 1)
+                {
+                    ItemListTitle += " (" + itemCount + " Items)";
+                }
+                else
+                {
+                    ItemListTitle += " (" + itemCount + " Item)";
+
+                }
+            }
+
+            lblItemListTitle.Text = ItemListTitle;
 
             //dgvItemList.FirstDisplayedScrollingRowIndex = 0;
 
@@ -721,6 +775,7 @@ namespace FactoryManagementSoftware.UI
                 throw new ArgumentOutOfRangeException("rowIndex", "The row index provided is out of range.");
             }
         }
+
         private DataRow CreateNewItemRow(DataRow row, int index)
         {
             DataRow newRow = DT_ITEM_LIST.NewRow();
@@ -823,6 +878,211 @@ namespace FactoryManagementSoftware.UI
 
             FromMinShotToTotalMaterialCalculation();
 
+        }
+
+        private void LoadMatCheckList()
+        {
+            frmLoading.ShowLoadingScreen();
+
+            DataTable dt_MAT = NewMatCheckTable();
+            DataTable dt = dalmatPlan.Select();
+            int index = 1;
+            float currentStock, planningUsed, availableQty, totalMaterial = 0, StockBal = 0;
+
+            dgvStockCheck.DataSource = dt_MAT;
+
+            if (dgvItemList?.Rows.Count > 0)
+            {
+                //add raw material to list
+                if (dgvRawMatList?.Rows.Count > 0)
+                {
+                    foreach(DataGridViewRow row in dgvRawMatList.Rows)
+                    {
+                        string matCode = row.Cells[text.Header_ItemCode].Value.ToString();
+                        string matDescription = row.Cells[text.Header_ItemDescription].Value.ToString();
+
+                        var matSummary = tool.loadMaterialPlanningSummary(matCode);
+                        int planCounter = matSummary.Item1;
+                        planningUsed = matSummary.Item2;
+                        float TotalMatUsed = matSummary.Item3;
+                        float TotalMatToUse = matSummary.Item4;
+                        currentStock = matSummary.Item5;
+                        bool rawType = matSummary.Item6;
+                        bool colorType = matSummary.Item7;
+
+                        availableQty = currentStock - TotalMatToUse;
+
+                        totalMaterial = float.TryParse(row.Cells[text.Header_KG].Value.ToString(), out totalMaterial)? totalMaterial : 0;
+
+                        StockBal = availableQty - totalMaterial;
+                       
+                        DataRow row_dtMat = dt_MAT.NewRow();
+
+                        row_dtMat[text.Header_Index] = index;
+
+                        
+                        row_dtMat[text.Header_Type] = text.Cat_RawMat;
+                        row_dtMat[text.Header_ItemCode] = matCode;
+                        row_dtMat[text.Header_ItemDescription] = matDescription;
+
+                        row_dtMat[text.Header_ReadyStock] = currentStock;
+                        row_dtMat[text.Header_ReservedForOtherJobs] = TotalMatToUse;
+
+                        row_dtMat[text.Header_RequiredForCurrentJob] = totalMaterial;
+                        row_dtMat[text.Header_BalStock] = StockBal;
+
+                        dt_MAT.Rows.Add(row_dtMat);
+                        index++;
+                    }
+                }
+
+                //add color material to list
+                if (dgvColorMatList?.Rows.Count > 0)
+                {
+                    foreach (DataGridViewRow row in dgvColorMatList.Rows)
+                    {
+                        string matCode = row.Cells[text.Header_ItemCode].Value.ToString();
+                        string matDescription = row.Cells[text.Header_ItemDescription].Value.ToString();
+
+                        var matSummary = tool.loadMaterialPlanningSummary(matCode);
+                        int planCounter = matSummary.Item1;
+                        planningUsed = matSummary.Item2;
+                        float TotalMatUsed = matSummary.Item3;
+                        float TotalMatToUse = matSummary.Item4;
+                        currentStock = matSummary.Item5;
+                        bool rawType = matSummary.Item6;
+                        bool colorType = matSummary.Item7;
+
+                        availableQty = currentStock - TotalMatToUse;
+
+                        totalMaterial = float.TryParse(row.Cells[text.Header_KG].Value.ToString(), out totalMaterial) ? totalMaterial : 0;
+
+                        StockBal = availableQty - totalMaterial;
+
+                        DataRow row_dtMat = dt_MAT.NewRow();
+
+                        row_dtMat[text.Header_Index] = index;
+
+                        row_dtMat[text.Header_Type] = tool.getItemCatFromDataTable(DT_ITEM, matCode);
+                        row_dtMat[text.Header_ItemCode] = matCode;
+                        row_dtMat[text.Header_ItemDescription] = matDescription;
+
+                        row_dtMat[text.Header_ReadyStock] = currentStock;
+                        row_dtMat[text.Header_ReservedForOtherJobs] = TotalMatToUse;
+
+                        row_dtMat[text.Header_RequiredForCurrentJob] = totalMaterial;
+                        row_dtMat[text.Header_BalStock] = StockBal;
+
+                        dt_MAT.Rows.Add(row_dtMat);
+                        index++;
+                    }
+                }
+
+                foreach (DataGridViewRow row in dgvItemList.Rows)
+                {
+                    string itemCode = row.Cells[text.Header_ItemCode].Value.ToString();
+                    string itemDescription = row.Cells[text.Header_ItemDescription].Value.ToString();
+
+                    //add child material
+                    if (!string.IsNullOrEmpty(itemCode))
+                    {
+                        //check if got child
+                        if (tool.ifGotChildIncludedPackaging(itemCode))
+                        {
+                            //loop child list
+                            DataTable dtJoin = dalJoin.loadChildList(itemCode);
+                            string childCode;
+                            float targetQty = float.TryParse(row.Cells[text.Header_AutoQtyAdjustment].Value.ToString(), out targetQty)? targetQty : 0;
+                            float joinQty = 0;
+
+                            foreach (DataRow JoinRow in dtJoin.Rows)
+                            {
+                                childCode = JoinRow[dalJoin.JoinChild].ToString();
+
+                                //joinQty = row[dalJoin.JoinQty] == DBNull.Value? 0 : Convert.ToSingle(row[dalJoin.JoinQty]);
+
+                                joinQty = float.TryParse(JoinRow[dalJoin.JoinQty].ToString(), out float i) ? i : 1;
+
+                                currentStock = dalItem.getStockQty(childCode);
+
+                                ////////////////////////////////////////////////////////////////////////////////////////////////////
+                                //waiting to get planning used qty from database
+                                planningUsed = tool.matPlanGetQty(dt, childCode);
+                                availableQty = currentStock - planningUsed;
+
+                                #region Max/Min
+
+                                float childQty = targetQty;
+
+                                int joinMax = int.TryParse(JoinRow[dalJoin.JoinMax].ToString(), out int j) ? j : 1;
+                                int JoinMin = int.TryParse(JoinRow[dalJoin.JoinMin].ToString(), out int k) ? k : 1;
+
+                                joinMax = joinMax <= 0 ? 1 : joinMax;
+                                JoinMin = JoinMin <= 0 ? 1 : JoinMin;
+
+                                int ParentQty = Convert.ToInt32(targetQty);
+
+                                int fullQty = ParentQty / joinMax;
+
+                                int notFullQty = ParentQty % joinMax;
+
+                                childQty = fullQty * joinQty;
+
+                                if (notFullQty >= JoinMin)
+                                {
+                                    childQty += joinQty;
+                                }
+
+                                #endregion
+
+                                //calculate total material need
+                                totalMaterial = childQty;
+                                //totalMaterial = joinQty * targetQty;
+
+                                StockBal = availableQty - totalMaterial;
+
+                                DataRow row_dtMat = dt_MAT.NewRow();
+
+                                row_dtMat[text.Header_Index] = index;
+
+                                string childName = tool.getItemNameFromDataTable(DT_ITEM,childCode);
+                                string childDescription = childName + " (" + childCode + ")";
+
+                                row_dtMat[text.Header_Type] = tool.getCatNameFromDataTable(DT_ITEM, childCode);
+                                row_dtMat[text.Header_ItemCode] = childCode;
+                                row_dtMat[text.Header_ItemName] = childName;
+                                row_dtMat[text.Header_ItemDescription] = childDescription;
+                                row_dtMat[text.Header_ReadyStock] = currentStock;
+                                row_dtMat[text.Header_ReservedForOtherJobs] = planningUsed;
+
+                                row_dtMat[text.Header_RequiredForCurrentJob] = totalMaterial;
+
+                                row_dtMat[text.Header_BalStock] = StockBal;
+
+
+                                dt_MAT.Rows.Add(row_dtMat);
+                                index++;
+                            }
+
+                        }
+                    }
+                }
+                   
+            }
+
+            //add datatable to datagridview if got data
+            if (dt_MAT.Rows.Count > 0)
+            {
+                dgvStockCheck.DataSource = dt_MAT;
+                dgvUIEdit(dgvStockCheck);
+                dgvStockCheck.ClearSelection();
+            }
+            else
+            {
+                MessageBox.Show("No data for material check list.\n Please check the material for this planning or continue process to next step.");
+            }
+
+            frmLoading.CloseForm();
         }
 
         private void LoadDB()
@@ -1346,8 +1606,6 @@ namespace FactoryManagementSoftware.UI
 
         private void ShowBtnItemSave(bool show)
         {
-            btnItemInfoSave.Visible = show;
-            PRO_INFO_CHANGE = show;
         }
         private void ProductionInfo_TextChanged(object sender, EventArgs e)
         {
@@ -1585,7 +1843,6 @@ namespace FactoryManagementSoftware.UI
                             {
                                 MessageBox.Show("Data saved!");
                                 PRO_INFO_CHANGE = false;
-                                btnItemInfoSave.Visible = false;
 
                                 break;
                             }
@@ -1646,6 +1903,21 @@ namespace FactoryManagementSoftware.UI
         private void txtHrsPerDay_Leave(object sender, EventArgs e)
         {
            
+        }
+
+        private void gunaGradientButton2_Click(object sender, EventArgs e)
+        {
+            AddItem();
+        }
+
+        private void gunaGradientButton2_Click_1(object sender, EventArgs e)
+        {
+            LoadMatCheckList();
+        }
+
+        private void btnAddColorMat_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
