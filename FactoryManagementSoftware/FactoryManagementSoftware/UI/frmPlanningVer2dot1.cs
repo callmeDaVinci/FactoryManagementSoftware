@@ -165,6 +165,7 @@ namespace FactoryManagementSoftware.UI
 
             //hide setting
             ShowOrHideSetting(labelButton_HideSettings);
+            RightPanelInitialSetting(0);
         }
 
         private void ShowOrHideSetting(string LabelButton)
@@ -190,6 +191,40 @@ namespace FactoryManagementSoftware.UI
 
             }
         }
+
+        private void RightPanelInitialSetting(int step)
+        {
+            if (step == 0) //panel initial 
+            {
+                tlpRightPanel.RowStyles[0] = new RowStyle(SizeType.Percent, 50f);
+                tlpRightPanel.RowStyles[1] = new RowStyle(SizeType.Percent, 50f);
+
+                tlpStockCheckPanel.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
+                tlpStockCheckPanel.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+
+                tlpMachineSelection.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
+                tlpMachineSelection.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMachineSelection.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+
+            }
+            else if (step == 1) //show stock check data
+            {
+                tlpRightPanel.RowStyles[0] = new RowStyle(SizeType.Percent, 50f);
+                tlpRightPanel.RowStyles[1] = new RowStyle(SizeType.Percent, 50f);
+
+                tlpStockCheckPanel.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+                tlpStockCheckPanel.RowStyles[2] = new RowStyle(SizeType.Percent, 100f);
+            }
+            else if (step == 2) //show machine selection
+            {
+                tlpRightPanel.RowStyles[0] = new RowStyle(SizeType.Absolute, 150f);
+                tlpRightPanel.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
+
+                tlpStockCheckPanel.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
+                tlpStockCheckPanel.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+            }
+        }
+
         private void btnSaveProductionInfoAndMouldConfirmMode(bool active)
         {
 
@@ -756,7 +791,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             lblItemListTitle.Text = ItemListTitle;
-
+            RightPanelInitialSetting(0);
             //dgvItemList.FirstDisplayedScrollingRowIndex = 0;
 
         }
@@ -1913,11 +1948,26 @@ namespace FactoryManagementSoftware.UI
         private void gunaGradientButton2_Click_1(object sender, EventArgs e)
         {
             LoadMatCheckList();
+            RightPanelInitialSetting(1);
         }
 
         private void btnAddColorMat_Click(object sender, EventArgs e)
         {
 
+        }
+
+        bool MATERIAL_STOCK_CHECK = true;
+
+        private void gunaGradientButton8_Click(object sender, EventArgs e)
+        {
+            if(MATERIAL_STOCK_CHECK)
+            {
+                RightPanelInitialSetting(2);
+            }
+            else
+            {
+
+            }
         }
     }
 }
