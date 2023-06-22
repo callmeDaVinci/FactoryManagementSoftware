@@ -2315,6 +2315,7 @@ namespace FactoryManagementSoftware.UI
                     uData.customer_name = row[dalItemCust.CustName].ToString();
                     uData.cust_id = row[dalItemCust.CustID].ToString();
 
+
                     var forecastData = GetCustomerThreeMonthsForecastQty(dt_ItemForecast, uData.cust_id, uData.part_code, 1, 2, 3);
                     uData.forecast1 = forecastData.Item1;
                     uData.forecast2 = forecastData.Item2;

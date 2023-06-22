@@ -320,9 +320,9 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_EfficiencyRate { get; } = "EFFICIENCY %";
         public string Header_TotalStockIn { get; } = "STOCK IN QTY";
-        public string Header_TargetQty { get; } = "TARGET QTY";
+        public string Header_TargetQty { get; } = "Target Qty";
         public string Header_Qty { get; } = "QUANTITY";
-        public string Header_AutoQtyAdjustment { get; } = "AUTO-QTY ADJUSTMENT";
+        public string Header_AutoQtyAdjustment { get; } = "Auto-Qty Adjustment";
 
 
         public string Header_DefectRemark { get; } = "DEFECT REMARK";
@@ -338,16 +338,16 @@ namespace FactoryManagementSoftware.Module
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
         public string Header_PartCode { get; } = "PART CODE";
         public string Header_ItemCode { get; } = "ITEM CODE";
-        public string Header_MouldCode { get; } = "MOULD CODE";
-        public string Header_MouldSelection { get; } = "MOULD SELECTION";
-        public string Header_ItemSelection { get; } = "ITEM SELECTION";
-        public string Header_MouldDescription{ get; } = "MOULD DESCRIPTION";
+        public string Header_MouldCode { get; } = "Mould Code";
+        public string Header_MouldSelection { get; } = "Mould Selection";
+        public string Header_ItemSelection { get; } = "Item Selection";
+        public string Header_MouldDescription{ get; } = "Mould Description";
         public string Header_ItemName { get; } = "ITEM NAME";
         public string Header_CountedQty { get; } = "COUNTED QTY";
         public string Header_SystemQty { get; } = "SYSTEM QTY";
         public string Header_Difference{ get; } = "DIFFERENCE";
 
-        public string Header_ItemDescription { get; } = "ITEM DESCRIPTION";
+        public string Header_ItemDescription { get; } = "Item Description";
         public string Header_Stocktake { get; } = "STOCKTAKE";
 
 
@@ -364,10 +364,10 @@ namespace FactoryManagementSoftware.Module
         public string Header_In_KG_Piece { get; } = "IN(KG/PIECE)";
         public string Header_Used_KG_Piece { get; } = "USED(KG/PIECE)";
         public string Header_DirectOut_KG_Piece { get; } = "DIRECT OUT(KG/PIECE)";
-        public string Header_BalStock { get; } = "BAL. STOCK";
-        public string Header_ReadyStock { get; } = "READY STOCK";
-        public string Header_ReservedForOtherJobs { get; } = "RESERVED FOR OTHER JOBS";
-        public string Header_RequiredForCurrentJob { get; } = "REQUIRED FOR CURRENT JOB";
+        public string Header_BalStock { get; } = "Bal. Stock";
+        public string Header_ReadyStock { get; } = "Ready Stock";
+        public string Header_ReservedForOtherJobs { get; } = "Reserved For Other Jobs";
+        public string Header_RequiredForCurrentJob { get; } = "Required For Current Job";
         public string Header_ParentStock { get; } = "PARENT STOCK";
         public string Header_ProductStock { get; } = "PRODUCT STOCK";
 
@@ -384,7 +384,7 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_Percentage { get; } = "%";
         public string Header_Adjust { get; } = "ADJUST";
-        public string Header_Remark { get; } = "REMARK";
+        public string Header_Remark { get; } = "Remark";
         public string Header_Note { get; } = "NOTE";
         public string Header_Category { get; } = "CATEGORY";
         public string Header_Status { get; } = "STATUS";
@@ -394,12 +394,12 @@ namespace FactoryManagementSoftware.Module
         public string Header_RawMat { get; } = "RAW MATERIAL";
         public string Header_MatCode { get; } = "MAT. CODE";
         public string Header_MatName { get; } = "MAT. NAME";
-        public string Header_Color { get; } = "COLOR";
+        public string Header_Color { get; } = "Color";
 
         public string Header_ItemWeight_KG { get; } = "ITEM WEIGHT(KG)";
-        public string Header_KG { get; } = "KG";
-        public string Header_BAG { get; } = "BAG";
-        public string Header_KGPERBAG { get; } = "KG/BAG";
+        public string Header_KG { get; } = "kg";
+        public string Header_BAG { get; } = "Bag";
+        public string Header_KGPERBAG { get; } = "kg/Bag";
 
         public string Header_RunnerWeight_G { get; } = "RUNNER WEIGHT(G)";
         public string Header_PartWeight_G { get; } = "PART WEIGHT(G)";
@@ -427,7 +427,7 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_QuoTon { get; } = "QUOTATION TON";
         public string Header_BestTon { get; } = "BEST TON";
-        public string Header_ProTon { get; } = "MACHINE TON";
+        public string Header_ProTon { get; } = "Mac. Ton";
         public string Header_ColorMat { get; } = "COLOR MATERIAL";
         public string Header_Month { get; } = "MONTH";
         public string Header_OldValue { get; } = "OLD VALUE";
@@ -436,7 +436,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_ColorRate { get; } = "COLOR MATERIAL RATE (%)";
 
         public string Header_QuoCT { get; } = "QUOTATION CYCLE TIME";
-        public string Header_ProCT { get; } = "PRODUCTION CYCLE TIME";
+        public string Header_ProCT { get; } = "Pro. Cycle Time";
 
         public string Header_QuoPwPcs { get; } = "QUOTATION PART WEIGHT PER PCS (g)";
         public string Header_QuoRwPcs { get; } = "QUOTATION RUNNER WEIGHT PER PCS (g)";
@@ -444,10 +444,10 @@ namespace FactoryManagementSoftware.Module
         public string Header_ProPwPcs { get; } = "PART WEIGHT PER PCS (g)";
         public string Header_ProRwPcs { get; } = "RUNNER WEIGHT PER PCS (g)";
 
-        public string Header_ProPwShot { get; } = "PART WEIGHT PER SHOT (g)";
-        public string Header_ProRwShot { get; } = "RUNNER WEIGHT PER SHOT (g)";
+        public string Header_ProPwShot { get; } = "Part Weight Per Shot (g)";
+        public string Header_ProRwShot { get; } = "Ruuner Weight Per Shot (g)";
 
-        public string Header_Cavity { get; } = "CAVITY";
+        public string Header_Cavity { get; } = "Cavity";
         public string Header_Cooling { get; } = "COOLING TIME (s)";
 
         public string Header_Wastage { get; } = "WASTAGE";
