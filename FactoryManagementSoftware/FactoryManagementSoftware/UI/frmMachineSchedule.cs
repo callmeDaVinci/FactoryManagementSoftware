@@ -393,7 +393,7 @@ namespace FactoryManagementSoftware.UI
 
         private void InitializeData()
         {
-            tool.loadOUGProductionFactory(cmbFactory);
+            tool.loadProductionFactory(cmbFactory);
             ResetData();
         }
 

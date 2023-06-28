@@ -11,7 +11,10 @@ namespace FactoryManagementSoftware.DAL
     {
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
         public string FacActive { get; } = "active";
+        public string FacProduction { get; } = "fac_production";
+        public string FacOUG { get; } = "location_oug";
         public string FacName { get; } = "fac_name";
+        public string FacID { get; } = "fac_id";
         public string StockUnit { get; } = "stock_unit";
         public string StockQty { get; } = "stock_qty";
 

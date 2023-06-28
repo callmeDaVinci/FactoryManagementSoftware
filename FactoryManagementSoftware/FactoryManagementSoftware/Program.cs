@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,11 +23,11 @@ namespace FactoryManagementSoftware
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-           //Application.Run(new frmSBBMould());
-           
-           //Application.Run(new frmItemEdit_NEW());
+            //Application.Run(new frmSBBMould());
 
-           Application.Run(new frmPlanningVer2dot1());
+            //Application.Run(new frmItemEdit_NEW());
+
+           Application.Run(new frmPlanningVer2dot1("R 120 141 375 96-OLD",1));
 
            //Application.Run(new MainDashboard(1));
 

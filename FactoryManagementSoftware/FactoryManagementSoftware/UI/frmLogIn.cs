@@ -110,6 +110,7 @@ namespace FactoryManagementSoftware.UI
                 //}
 
                 int userID = dalUser.userLogin(username, password);
+
                 if (userID != -1)
                 {
                     int userPermission = dalUser.getPermissionLevel(userID);

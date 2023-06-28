@@ -15,6 +15,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Accord.MachineLearning;
 using Accord.Math;
 using Accord.Statistics;
+using System.Configuration;
 
 namespace FactoryManagementSoftware.Module
 {
@@ -2489,34 +2490,73 @@ namespace FactoryManagementSoftware.Module
 
         }
 
-        public void loadOUGProductionFactory(ComboBox cmb)
+        public void loadProductionFactory(ComboBox cmb)
         {
-            DataTable dt = dalFac.SelectDESC();
-            DataTable lacationTable = dt.DefaultView.ToTable(true, "fac_name", "oug_production");
-           
+            Text text = new Text();
 
-            for (int i = lacationTable.Rows.Count - 1; i >= 0; i--)
+            string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+
+            bool Location_OUG = false, Location_Semenyih = false;
+
+            if (myconnstrng == text.DB_Semenyih)
             {
-                DataRow dr = lacationTable.Rows[i];
-                bool productionFactory = bool.TryParse(dr["oug_production"].ToString(), out bool proFac) ? proFac : false;
+                Location_Semenyih = true;
+            }
+            else if(myconnstrng == text.DB_OUG)
+            {
+                Location_OUG = true;
+            }
+            else
+            {
+                frmLocationSelect frm = new frmLocationSelect();
 
-                if (!productionFactory)
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Normal;
+                frm.ShowDialog();
+
+                Location_OUG = frmLocationSelect.OUG_SELECTED;
+                Location_Semenyih = frmLocationSelect.SEMENYIH_SELECTED;
+            }
+
+
+            DataTable dt = dalFac.SelectDESC();
+           
+            for (int i = dt.Rows.Count - 1; i >= 0; i--)
+            {
+                DataRow dr = dt.Rows[i];
+
+                bool productionFactory = bool.TryParse(dr[dalFac.FacProduction].ToString(), out bool proFac) ? proFac : false;
+                bool location_oug = bool.TryParse(dr[dalFac.FacOUG].ToString(), out location_oug) ? location_oug : false;
+                bool active = bool.TryParse(dr[dalFac.FacActive].ToString(), out active) ? active : false;
+
+                if(!active || !productionFactory)
                 {
                     dr.Delete();
                 }
-
+                else
+                {
+                    if (Location_OUG && !Location_Semenyih && !location_oug)
+                    {
+                        dr.Delete();
+                    }
+                    else if (Location_Semenyih && !Location_OUG && location_oug)
+                    {
+                        dr.Delete();
+                    }
+                }
             }
 
+            DataTable lacationTable = dt.DefaultView.ToTable(true,  dalFac.FacName, dalFac.FacID, dalFac.FacProduction);
+
             lacationTable.Rows.Add("All");
-            lacationTable.DefaultView.Sort = "fac_name ASC";
+            lacationTable.DefaultView.Sort = dalFac.FacName + " ASC";
             lacationTable.AcceptChanges();
 
-            //lacationTable.DefaultView.Sort = columnName+" ASC";
             cmb.DataSource = lacationTable;
-            cmb.DisplayMember = "fac_name";
+            cmb.DisplayMember = dalFac.FacName;
             cmb.SelectedIndex = 0;
-
         }
+
         public void loadMacIDByFactoryToComboBox(ComboBox cmb, string facName)
         {
             DataTable dt = dalMac.SelectByFactory(facName);

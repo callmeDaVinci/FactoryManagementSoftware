@@ -190,12 +190,13 @@ namespace FactoryManagementSoftware.DAL
                                 INNER JOIN tbl_item
                                 ON tbl_plan.part_code = tbl_item.item_code
                                 INNER JOIN tbl_mac ON tbl_plan.machine_id = tbl_mac.mac_id 
-                                WHERE tbl_plan.plan_status=@planning_status_running OR tbl_plan.plan_status=@planning_status_pending";
+                                WHERE tbl_plan.plan_status=@planning_status_running OR tbl_plan.plan_status=@planning_status_pending OR tbl_plan.plan_status=@planning_status_draft";
 
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@planning_status_running", text.planning_status_running);
                 cmd.Parameters.AddWithValue("@planning_status_pending", text.planning_status_pending);
+                cmd.Parameters.AddWithValue("@planning_status_draft", text.planning_status_draft);
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open

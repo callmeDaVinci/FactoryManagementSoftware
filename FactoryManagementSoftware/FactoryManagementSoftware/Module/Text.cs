@@ -171,6 +171,8 @@ namespace FactoryManagementSoftware.Module
         public string planning_status_pending { get; } = "PENDING";//blue
         public string planning_status_cancelled { get; } = "CANCELLED";//white
         public string planning_status_warning { get; } = "WARNING";//red
+        public string planning_status_draft { get; } = "DRAFT";
+        public string planning_status_new_draft { get; } = "NEW DRAFT";
         public string planning_status_running { get; } = "RUNNING";//green
         public string planning_status_delayed { get; } = "DELAYED";//yellow
         public string planning_status_completed { get; } = "COMPLETED";//white
@@ -249,11 +251,14 @@ namespace FactoryManagementSoftware.Module
          //<add name = "connstrng" connectionString="SERVER=DESKTOP-MFUKGH2;DATABASE=Factory;USER ID=stock;PASSWORD=stock"/>
 
         public string DB_Semenyih { get; } = "SERVER=ADMIN001;DATABASE=Factory;USER ID=StockAdmin;PASSWORD=stock";
+        //SERVER=ADMIN001;DATABASE=Factory;USER ID=StockAdmin;PASSWORD=stock
 
         //public string DB_Semenyih { get; } = "SERVER=DESKTOP-MFUKGH2;DATABASE=Factory;USER ID=stock;PASSWORD=stock";
         public string DB_OUG { get; } = "SERVER=192.168.0.149;DATABASE=Factory;USER ID=stock;PASSWORD=stock";
-        public string DB_JunPC { get; } = @"Data Source=.\SQLEXPRESS01;Initial Catalog=Factory;Integrated Security=True";
+        //SERVER=192.168.0.149;DATABASE=Factory;USER ID=stock;PASSWORD=stock
 
+        public string DB_JunPC { get; } = @"Data Source=.\SQLEXPRESS01;Initial Catalog=Factory;Integrated Security=True";
+        //Data Source=.\SQLEXPRESS01;Initial Catalog=Factory;Integrated Security=True
 
 
         #endregion
@@ -303,7 +308,14 @@ namespace FactoryManagementSoftware.Module
         public string Header_Index { get; } = "#";
 
         public string Header_Fac { get; } = "FAC.";
+        public string Header_FacID { get; } = "FAC. ID";
         public string Header_Mac{ get; } = "MAC.";
+        public string Header_MacID{ get; } = "MAC. ID";
+        public string Header_MacName{ get; } = "MAC.";
+        public string Header_DateStart { get; } = "START";
+        public string Header_EstDateEnd { get; } = "EST. END";
+        public string Header_EstMacFreeDate { get; } = "EST. MACHINE FREE DATE";
+
         public string Header_DateFrom{ get; } = "FROM";
         public string Header_DateTo{ get; } = "TO";
         public string Header_JobNo{ get; } = "JOB No.";
@@ -429,6 +441,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_BestTon { get; } = "BEST TON";
         public string Header_ProTon { get; } = "Mac. Ton";
         public string Header_ColorMat { get; } = "COLOR MATERIAL";
+        public string Header_ColorMatCode { get; } = "COLOR MATERIAL CODE";
         public string Header_Month { get; } = "MONTH";
         public string Header_OldValue { get; } = "OLD VALUE";
         public string Header_NewValue { get; } = "NEW VALUE";
@@ -446,6 +459,11 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_ProPwShot { get; } = "Part Weight Per Shot (g)";
         public string Header_ProRwShot { get; } = "Ruuner Weight Per Shot (g)";
+
+        public string Header_FamilyWithJobNo { get; } = "FAMILY WITH";
+        public string Header_ProductionDay { get; } = "PRO DAY";
+        public string Header_ProductionHour { get; } = "PRO HOUR";
+        public string Header_ProductionHourPerDay { get; } = "PRO HOUR PER DAY";
 
         public string Header_Cavity { get; } = "Cavity";
         public string Header_Cooling { get; } = "COOLING TIME (s)";

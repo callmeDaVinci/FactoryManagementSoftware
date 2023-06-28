@@ -246,6 +246,12 @@
     <Compile Include="UI\frmForecastEditRecord.Designer.cs">
       <DependentUpon>frmForecastEditRecord.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmLocationSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmLocationSelect.Designer.cs">
+      <DependentUpon>frmLocationSelect.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmMacScheduleExcelDownload.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1052,6 +1058,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmForecastEditRecord.resx">
       <DependentUpon>frmForecastEditRecord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmLocationSelect.resx">
+      <DependentUpon>frmLocationSelect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMacScheduleExcelDownload.resx">
       <DependentUpon>frmMacScheduleExcelDownload.cs</DependentUpon>

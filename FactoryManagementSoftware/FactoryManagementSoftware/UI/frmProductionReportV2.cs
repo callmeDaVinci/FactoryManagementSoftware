@@ -93,7 +93,7 @@ namespace FactoryManagementSoftware.UI
         private void InitializeFilterData()
         {
             loadReportType(cmbReportType);
-            tool.loadOUGProductionFactory(cmbFac);
+            tool.loadProductionFactory(cmbFac);
 
             loadMachine(cmbMac);
 
