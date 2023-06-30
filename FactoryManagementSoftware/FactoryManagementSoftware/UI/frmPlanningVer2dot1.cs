@@ -358,12 +358,16 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void NextToMachineSelection()
+        private void JobAdding()
         {
-            btnNextToMachineSelection.Visible = false;
-
-            tlpMainPanel.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 0f);
-            tlpMainPanel.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100f);
+            if(DATE_COLLISION_FOUND)
+            {
+                MessageBox.Show("New Draft Job date conflict detected.\nPlease adjust the dates to prevent overlap before adding the job.");
+            }
+            else
+            {
+                //job adding
+            }
         }
 
         private void BackToPartInfo()
@@ -1450,9 +1454,9 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        private void btnNextToMachineSelection_Click(object sender, EventArgs e)
+        private void btnJobAdd_Click(object sender, EventArgs e)
         {
-            NextToMachineSelection();
+            JobAdding();
         }
 
         private void AddItem()
@@ -1578,6 +1582,7 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].Cells[text.Header_ItemDescription].Style.BackColor = Color.Yellow;
 
                     }
+
                     if (string.IsNullOrEmpty(macID))
                     {
                         dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(245, 247, 255);
@@ -1586,8 +1591,8 @@ namespace FactoryManagementSoftware.UI
                     else
                     {
                         dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.White;
-
-                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.White;
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.White;
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.White;
 
                         // Check if macID is used before and bold the font
                         int macID_INT = int.TryParse(macID, out macID_INT) ? macID_INT : 0;
@@ -1608,10 +1613,14 @@ namespace FactoryManagementSoftware.UI
                     else if (status == text.planning_status_draft)
                     {
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = SystemColors.Info;
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = SystemColors.Info;
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = SystemColors.Info;
                     }
                     else if (status == text.planning_status_new_draft)
                     {
                         dgv.Rows[rowIndex].DefaultCellStyle.BackColor = SystemColors.Info;
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = SystemColors.Info;
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = SystemColors.Info;
                         //dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = SystemColors.Info;
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
 
@@ -1619,6 +1628,8 @@ namespace FactoryManagementSoftware.UI
                     else if (status == text.planning_status_idle)
                     {
                         dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightGray;
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.LightGray;
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.LightGray;
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.ForeColor = Color.Red;
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
 
@@ -1630,6 +1641,7 @@ namespace FactoryManagementSoftware.UI
 
                 }
 
+                CheckMachineProductionDateCollision();
                 dgv.ResumeLayout();
             }
 
@@ -2617,6 +2629,8 @@ namespace FactoryManagementSoftware.UI
 
             dtpEstimateEndDate.Value = Start.AddDays(day);
 
+            NewDraftProductionDateUpdate();
+
         }
         private void MachineSelectionSettingInitial()
         {
@@ -2629,6 +2643,129 @@ namespace FactoryManagementSoftware.UI
             StartDateInitial();
 
         }
+
+        private void AutoAdjustDates(DataGridView dgvMacSchedule)
+        {
+            // Dictionary to hold last end date for each machine
+            Dictionary<int, DateTime> machineEndDates = new Dictionary<int, DateTime>();
+
+            foreach (DataGridViewRow row in dgvMacSchedule.Rows)
+            {
+                if (row.Cells["macID"].Value != null && row.Cells["start date"].Value != null && row.Cells["est end"].Value != null)
+                {
+                    int macID = Convert.ToInt32(row.Cells["macID"].Value);
+                    DateTime startDate = Convert.ToDateTime(row.Cells["start date"].Value);
+                    DateTime endDate = Convert.ToDateTime(row.Cells["est end"].Value);
+
+                    // If the machine is already in the dictionary, check if the current job's start date is before the last end date
+                    if (machineEndDates.ContainsKey(macID) && startDate < machineEndDates[macID])
+                    {
+                        // There is an overlap, adjust the start date to be the last end date plus one day
+                        DateTime newStartDate = machineEndDates[macID].AddDays(1);
+                        row.Cells["start date"].Value = newStartDate;
+
+                        // Recalculate the end date based on the new start date
+                        // This will depend on your logic for calculating the end date
+                        // For now I'll assume the job duration is the same
+                        TimeSpan jobDuration = endDate - startDate;
+                        DateTime newEndDate = newStartDate + jobDuration;
+                        row.Cells["est end"].Value = newEndDate;
+
+                        // Update the end date in the dictionary
+                        machineEndDates[macID] = newEndDate;
+                    }
+                    else
+                    {
+                        // No overlap, just add or update the machine's end date in the dictionary
+                        machineEndDates[macID] = endDate;
+                    }
+                }
+            }
+
+            // Refresh the DataGridView to show the updated dates
+            dgvMacSchedule.Refresh();
+        }
+
+        private bool DATE_COLLISION_FOUND = false;
+        private bool CheckMachineProductionDateCollision()
+        {
+    
+            string currentMacID = null;
+            string LastFamilyWith = null;
+            DateTime LastRow_EndDate = DateTime.MaxValue;
+
+            bool DateCollisionFound = false;
+
+            foreach (DataGridViewRow row in dgvMacSchedule.Rows)
+            {
+                string MacID = row.Cells[text.Header_MacID].Value.ToString();
+                string FamilyWith = row.Cells[text.Header_FamilyWithJobNo].Value.ToString();
+                string status   = row.Cells[text.Header_Status].Value.ToString();
+
+                DateTime Date_Start = DateTime.TryParse(row.Cells[text.Header_DateStart].Value.ToString(), out Date_Start) ? Date_Start : DateTime.MaxValue;
+                DateTime Date_End = DateTime.TryParse(row.Cells[text.Header_EstDateEnd].Value.ToString(), out Date_End) ? Date_End : DateTime.MaxValue;
+
+                if (!string.IsNullOrEmpty(MacID))
+                {
+                    if (currentMacID != MacID)
+                    {
+                        currentMacID = MacID;
+                        LastRow_EndDate = Date_End;
+                    }
+                    else
+                    {
+                        if(Date_Start < LastRow_EndDate && LastRow_EndDate != DateTime.MaxValue && (LastFamilyWith != FamilyWith || string.IsNullOrEmpty(FamilyWith)))
+                        {
+                            row.Cells[text.Header_DateStart].Style.BackColor = Color.Red;
+                            DateCollisionFound = true;
+
+                            //if(status == text.planning_status_new_draft)
+                            //{
+                            //    DATE_COLLISION_FOUND = true;
+                            //}
+
+                            if (Date_End < LastRow_EndDate)
+                            {
+                                row.Cells[text.Header_EstDateEnd].Style.BackColor = Color.Red;
+
+                                if (status == text.planning_status_new_draft)
+                                {
+                                    DATE_COLLISION_FOUND = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            LastRow_EndDate = Date_End;
+                        }
+                     
+                    }
+
+                    if (Date_End < Date_Start && Date_Start != DateTime.MaxValue)
+                    {
+                        row.Cells[text.Header_DateStart].Style.BackColor = Color.Red;
+                        row.Cells[text.Header_EstDateEnd].Style.BackColor = Color.Red;
+                        DateCollisionFound = true;
+
+                        //if (status == text.planning_status_new_draft)
+                        //{
+                        //    DATE_COLLISION_FOUND = true;
+                        //}
+                    }
+                
+
+                   
+                    LastFamilyWith = FamilyWith;
+                }
+               
+            }
+
+            DATE_COLLISION_FOUND = DateCollisionFound;
+            btnAdjustCollisionDateBySystem.Visible = DateCollisionFound;
+
+            return DateCollisionFound;
+        }
+
 
         private void LoadMachineSchedule()
         {
@@ -3099,6 +3236,38 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private bool NEWDRAFT_DATE_UPDATING = false;
+
+        private void NewDraftProductionDateUpdate()
+        {
+            if(dgvMacSchedule?.Rows.Count > 0 && !NEWDRAFT_DATE_UPDATING)
+            {
+                NEWDRAFT_DATE_UPDATING = true;
+
+                DataTable dt = (DataTable)dgvMacSchedule.DataSource;
+
+                DateTime start = dtpStartDate.Value.Date;
+                DateTime end = dtpEstimateEndDate.Value.Date;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string status = row[text.Header_Status].ToString();
+
+                    if(status == text.planning_status_new_draft)
+                    {
+                        row[text.Header_DateStart] = start;
+                        row[text.Header_EstDateEnd] = end;
+                    }
+                }
+
+                MacScheduleListCellFormatting(dgvMacSchedule);
+
+                NEWDRAFT_DATE_UPDATING = false;
+            }
+
+
+        }
+
         private void dtpStartDate_ValueChanged(object sender, EventArgs e)
         {
             EstEndDateUpdate();
@@ -3144,7 +3313,7 @@ namespace FactoryManagementSoftware.UI
             if (hitTestInfo.RowIndex != -1)
             {
                 dgvMacSchedule.Rows[hitTestInfo.RowIndex].Selected = true;
-                lblMachineSelectionRemark.Text = hitTestInfo.RowIndex.ToString();
+                //lblMachineSelectionRemark.Text = hitTestInfo.RowIndex.ToString();
 
                 string status = dgvMacSchedule.Rows[hitTestInfo.RowIndex].Cells[text.Header_Status].Value.ToString();
 
@@ -3218,8 +3387,8 @@ namespace FactoryManagementSoftware.UI
                 
                 rowIndexToDrop = NEWrowIndexToDrop + 1;
 
-                lblStartDate.Text = rowIndexFromMouseDown.ToString();
-                lblEndDate.Text = rowIndexToDrop.ToString(); 
+                //lblStartDate.Text = rowIndexFromMouseDown.ToString();
+                //lblEndDate.Text = rowIndexToDrop.ToString(); 
 
                 dt.Rows.InsertAt(MAC_SCHEDULE_ROW_TO_DROP, rowIndexToDrop);
 
@@ -3244,6 +3413,14 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-       
+        private void dtpEstimateEndDate_ValueChanged(object sender, EventArgs e)
+        {
+            NewDraftProductionDateUpdate();
+        }
+
+        private void btnAdjustCollisionDateBySystem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

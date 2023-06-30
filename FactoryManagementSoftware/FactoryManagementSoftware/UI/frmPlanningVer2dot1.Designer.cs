@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle53 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle54 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle55 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle56 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
@@ -122,7 +122,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tlpRightPanel = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnNextToMachineSelection = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnAdjustCollisionDateBySystem = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnJobAdd = new Guna.UI.WinForms.GunaGradientButton();
             this.gunaGradientButton5 = new Guna.UI.WinForms.GunaGradientButton();
             this.gbStockCheck = new System.Windows.Forms.GroupBox();
             this.tlpStockCheckPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -810,14 +811,14 @@
             this.dgvRawMatList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvRawMatList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvRawMatList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle52.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle52.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle52.Font = new System.Drawing.Font("Segoe UI", 6F);
-            dataGridViewCellStyle52.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle52.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle52.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle52.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRawMatList.DefaultCellStyle = dataGridViewCellStyle52;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 6F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRawMatList.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvRawMatList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRawMatList.GridColor = System.Drawing.SystemColors.Control;
             this.dgvRawMatList.Location = new System.Drawing.Point(3, 33);
@@ -839,14 +840,14 @@
             this.dgvColorMatList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvColorMatList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvColorMatList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle53.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle53.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle53.Font = new System.Drawing.Font("Segoe UI", 6F);
-            dataGridViewCellStyle53.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle53.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle53.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle53.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvColorMatList.DefaultCellStyle = dataGridViewCellStyle53;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 6F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvColorMatList.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvColorMatList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvColorMatList.GridColor = System.Drawing.SystemColors.Control;
             this.dgvColorMatList.Location = new System.Drawing.Point(3, 145);
@@ -897,14 +898,14 @@
             this.dgvMaterialSummary.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvMaterialSummary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMaterialSummary.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle54.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle54.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle54.Font = new System.Drawing.Font("Segoe UI", 6F);
-            dataGridViewCellStyle54.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle54.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle54.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle54.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMaterialSummary.DefaultCellStyle = dataGridViewCellStyle54;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 6F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMaterialSummary.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvMaterialSummary.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMaterialSummary.GridColor = System.Drawing.SystemColors.Control;
             this.dgvMaterialSummary.Location = new System.Drawing.Point(5, 32);
@@ -1228,14 +1229,14 @@
             this.dgvItemList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle55.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle55.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle55.Font = new System.Drawing.Font("Segoe UI", 6F);
-            dataGridViewCellStyle55.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle55.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle55.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle55.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItemList.DefaultCellStyle = dataGridViewCellStyle55;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 6F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItemList.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvItemList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvItemList.GridColor = System.Drawing.SystemColors.Control;
             this.dgvItemList.Location = new System.Drawing.Point(5, 32);
@@ -1684,13 +1685,15 @@
             // 
             // tableLayoutPanel5
             // 
-            this.tableLayoutPanel5.ColumnCount = 4;
+            this.tableLayoutPanel5.ColumnCount = 5;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 103F));
-            this.tableLayoutPanel5.Controls.Add(this.btnNextToMachineSelection, 3, 0);
-            this.tableLayoutPanel5.Controls.Add(this.gunaGradientButton5, 1, 0);
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.btnAdjustCollisionDateBySystem, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnJobAdd, 4, 0);
+            this.tableLayoutPanel5.Controls.Add(this.gunaGradientButton5, 2, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 640);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
@@ -1700,38 +1703,72 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(644, 41);
             this.tableLayoutPanel5.TabIndex = 183;
             // 
-            // btnNextToMachineSelection
+            // btnAdjustCollisionDateBySystem
             // 
-            this.btnNextToMachineSelection.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnAdjustCollisionDateBySystem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNextToMachineSelection.AnimationHoverSpeed = 0.07F;
-            this.btnNextToMachineSelection.AnimationSpeed = 0.03F;
-            this.btnNextToMachineSelection.BackColor = System.Drawing.Color.Transparent;
-            this.btnNextToMachineSelection.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.btnNextToMachineSelection.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(160)))), ((int)(((byte)(209)))));
-            this.btnNextToMachineSelection.BorderColor = System.Drawing.Color.Black;
-            this.btnNextToMachineSelection.BorderSize = 1;
-            this.btnNextToMachineSelection.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnNextToMachineSelection.FocusedColor = System.Drawing.Color.Empty;
-            this.btnNextToMachineSelection.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.btnNextToMachineSelection.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnNextToMachineSelection.Image = null;
-            this.btnNextToMachineSelection.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnNextToMachineSelection.Location = new System.Drawing.Point(541, 11);
-            this.btnNextToMachineSelection.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.btnNextToMachineSelection.Name = "btnNextToMachineSelection";
-            this.btnNextToMachineSelection.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnNextToMachineSelection.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnNextToMachineSelection.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnNextToMachineSelection.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnNextToMachineSelection.OnHoverImage = null;
-            this.btnNextToMachineSelection.OnPressedColor = System.Drawing.Color.Black;
-            this.btnNextToMachineSelection.Radius = 2;
-            this.btnNextToMachineSelection.Size = new System.Drawing.Size(100, 30);
-            this.btnNextToMachineSelection.TabIndex = 180;
-            this.btnNextToMachineSelection.Text = "JOB ADD";
-            this.btnNextToMachineSelection.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnNextToMachineSelection.Click += new System.EventHandler(this.btnNextToMachineSelection_Click);
+            this.btnAdjustCollisionDateBySystem.AnimationHoverSpeed = 0.07F;
+            this.btnAdjustCollisionDateBySystem.AnimationSpeed = 0.03F;
+            this.btnAdjustCollisionDateBySystem.BackColor = System.Drawing.Color.Transparent;
+            this.btnAdjustCollisionDateBySystem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(112)))), ((int)(((byte)(154)))));
+            this.btnAdjustCollisionDateBySystem.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(225)))), ((int)(((byte)(64)))));
+            this.btnAdjustCollisionDateBySystem.BorderColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.BorderSize = 1;
+            this.btnAdjustCollisionDateBySystem.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnAdjustCollisionDateBySystem.FocusedColor = System.Drawing.Color.Empty;
+            this.btnAdjustCollisionDateBySystem.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdjustCollisionDateBySystem.ForeColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.Image = null;
+            this.btnAdjustCollisionDateBySystem.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnAdjustCollisionDateBySystem.Location = new System.Drawing.Point(0, 11);
+            this.btnAdjustCollisionDateBySystem.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.btnAdjustCollisionDateBySystem.Name = "btnAdjustCollisionDateBySystem";
+            this.btnAdjustCollisionDateBySystem.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnAdjustCollisionDateBySystem.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnAdjustCollisionDateBySystem.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnAdjustCollisionDateBySystem.OnHoverImage = null;
+            this.btnAdjustCollisionDateBySystem.OnPressedColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.Radius = 2;
+            this.btnAdjustCollisionDateBySystem.Size = new System.Drawing.Size(421, 30);
+            this.btnAdjustCollisionDateBySystem.TabIndex = 181;
+            this.btnAdjustCollisionDateBySystem.Text = "ADJUST COLLISION DATE BY SYSTEM";
+            this.btnAdjustCollisionDateBySystem.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnAdjustCollisionDateBySystem.Visible = false;
+            this.btnAdjustCollisionDateBySystem.Click += new System.EventHandler(this.btnAdjustCollisionDateBySystem_Click);
+            // 
+            // btnJobAdd
+            // 
+            this.btnJobAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnJobAdd.AnimationHoverSpeed = 0.07F;
+            this.btnJobAdd.AnimationSpeed = 0.03F;
+            this.btnJobAdd.BackColor = System.Drawing.Color.Transparent;
+            this.btnJobAdd.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnJobAdd.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(160)))), ((int)(((byte)(209)))));
+            this.btnJobAdd.BorderColor = System.Drawing.Color.Black;
+            this.btnJobAdd.BorderSize = 1;
+            this.btnJobAdd.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnJobAdd.FocusedColor = System.Drawing.Color.Empty;
+            this.btnJobAdd.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.btnJobAdd.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnJobAdd.Image = null;
+            this.btnJobAdd.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnJobAdd.Location = new System.Drawing.Point(544, 11);
+            this.btnJobAdd.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.btnJobAdd.Name = "btnJobAdd";
+            this.btnJobAdd.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnJobAdd.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnJobAdd.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnJobAdd.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnJobAdd.OnHoverImage = null;
+            this.btnJobAdd.OnPressedColor = System.Drawing.Color.Black;
+            this.btnJobAdd.Radius = 2;
+            this.btnJobAdd.Size = new System.Drawing.Size(97, 30);
+            this.btnJobAdd.TabIndex = 180;
+            this.btnJobAdd.Text = "JOB ADD";
+            this.btnJobAdd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnJobAdd.Click += new System.EventHandler(this.btnJobAdd_Click);
             // 
             // gunaGradientButton5
             // 
@@ -1750,7 +1787,7 @@
             this.gunaGradientButton5.ForeColor = System.Drawing.Color.Black;
             this.gunaGradientButton5.Image = null;
             this.gunaGradientButton5.ImageSize = new System.Drawing.Size(20, 20);
-            this.gunaGradientButton5.Location = new System.Drawing.Point(431, 11);
+            this.gunaGradientButton5.Location = new System.Drawing.Point(434, 11);
             this.gunaGradientButton5.Margin = new System.Windows.Forms.Padding(0);
             this.gunaGradientButton5.Name = "gunaGradientButton5";
             this.gunaGradientButton5.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -1944,14 +1981,14 @@
             this.dgvStockCheck.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvStockCheck.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStockCheck.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle56.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle56.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle56.Font = new System.Drawing.Font("Segoe UI", 6F);
-            dataGridViewCellStyle56.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle56.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle56.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle56.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStockCheck.DefaultCellStyle = dataGridViewCellStyle56;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 6F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStockCheck.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvStockCheck.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvStockCheck.GridColor = System.Drawing.SystemColors.Control;
             this.dgvStockCheck.Location = new System.Drawing.Point(3, 163);
@@ -2215,6 +2252,7 @@
             this.dtpEstimateEndDate.Name = "dtpEstimateEndDate";
             this.dtpEstimateEndDate.Size = new System.Drawing.Size(202, 23);
             this.dtpEstimateEndDate.TabIndex = 16;
+            this.dtpEstimateEndDate.ValueChanged += new System.EventHandler(this.dtpEstimateEndDate_ValueChanged);
             // 
             // tableLayoutPanel17
             // 
@@ -2353,14 +2391,14 @@
             this.dgvMacSchedule.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvMacSchedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMacSchedule.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle50.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle50.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle50.Font = new System.Drawing.Font("Segoe UI", 6F);
-            dataGridViewCellStyle50.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle50.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle50.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle50.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMacSchedule.DefaultCellStyle = dataGridViewCellStyle50;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 6F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMacSchedule.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvMacSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMacSchedule.GridColor = System.Drawing.SystemColors.Control;
             this.dgvMacSchedule.Location = new System.Drawing.Point(10, 253);
@@ -2368,14 +2406,14 @@
             this.dgvMacSchedule.MultiSelect = false;
             this.dgvMacSchedule.Name = "dgvMacSchedule";
             this.dgvMacSchedule.ReadOnly = true;
-            dataGridViewCellStyle51.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle51.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle51.Font = new System.Drawing.Font("Segoe UI", 6F);
-            dataGridViewCellStyle51.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle51.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle51.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle51.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMacSchedule.RowHeadersDefaultCellStyle = dataGridViewCellStyle51;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 6F);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMacSchedule.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvMacSchedule.RowHeadersVisible = false;
             this.dgvMacSchedule.RowHeadersWidth = 51;
             this.dgvMacSchedule.RowTemplate.Height = 50;
@@ -2500,7 +2538,7 @@
         private System.Windows.Forms.TableLayoutPanel tlpMainPanel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.TableLayoutPanel tlpMaterialSelection;
-        private Guna.UI.WinForms.GunaGradientButton btnNextToMachineSelection;
+        private Guna.UI.WinForms.GunaGradientButton btnJobAdd;
         private Guna.UI.WinForms.GunaGradientButton gunaGradientButton5;
         private System.Windows.Forms.GroupBox gbStockCheck;
         private System.Windows.Forms.TableLayoutPanel tlpStockCheckPanel;
@@ -2616,5 +2654,6 @@
         private System.Windows.Forms.TextBox txtRawMat;
         private System.Windows.Forms.TextBox txtRecycleMat;
         private System.Windows.Forms.Label label21;
+        private Guna.UI.WinForms.GunaGradientButton btnAdjustCollisionDateBySystem;
     }
 }
