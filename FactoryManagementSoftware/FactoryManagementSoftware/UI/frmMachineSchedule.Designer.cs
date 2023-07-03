@@ -737,8 +737,8 @@
             this.tableLayoutPanel10.Controls.Add(this.lblTotalUsed, 3, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblTotalToUse, 4, 0);
             this.tableLayoutPanel10.Controls.Add(this.btnRefresh, 1, 0);
-            this.tableLayoutPanel10.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblTotalPlannedToUse, 2, 0);
+            this.tableLayoutPanel10.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 213);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";

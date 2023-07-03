@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -142,6 +143,9 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_Color, typeof(string));
             dt.Columns.Add(text.Header_Remark, typeof(string));
 
+            dt.Columns.Add(text.Header_Ori_Status, typeof(string));
+            dt.Columns.Add(text.Header_Ori_DateStart, typeof(DateTime));
+            dt.Columns.Add(text.Header_Ori_EstDateEnd, typeof(DateTime));
             dt.Columns.Add(text.Header_JobNo, typeof(int));
             dt.Columns.Add(text.Header_FacID, typeof(string));
             dt.Columns.Add(text.Header_MacID, typeof(int));
@@ -307,6 +311,7 @@ namespace FactoryManagementSoftware.UI
                 tlpMachineSelection.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
                 tlpMachineSelection.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
                 tlpMachineSelection.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMachineSelection.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
 
                 dgvStockCheck.DataSource = null;
                 dgvMacSchedule.DataSource = null;
@@ -333,6 +338,8 @@ namespace FactoryManagementSoftware.UI
                 tlpMachineSelection.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
                 tlpMachineSelection.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
                 tlpMachineSelection.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+                tlpMachineSelection.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
+
 
                 dgvMacSchedule.DataSource = null;
             }
@@ -354,7 +361,10 @@ namespace FactoryManagementSoftware.UI
 
                 tlpMachineSelection.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
                 tlpMachineSelection.RowStyles[1] = new RowStyle(SizeType.Absolute, 150f);
-                tlpMachineSelection.RowStyles[2] = new RowStyle(SizeType.Percent, 100f);
+                tlpMachineSelection.RowStyles[2] = new RowStyle(SizeType.Absolute, 30);
+                tlpMachineSelection.RowStyles[3] = new RowStyle(SizeType.Percent, 100f);
+
+
             }
         }
 
@@ -567,6 +577,9 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_ItemName].Visible = false;
                 dgv.Columns[text.Header_MacID].Visible = false;
                 dgv.Columns[text.Header_FacID].Visible = false;
+                dgv.Columns[text.Header_Ori_Status].Visible = false;
+                dgv.Columns[text.Header_Ori_DateStart].Visible = false;
+                dgv.Columns[text.Header_Ori_EstDateEnd].Visible = false;
                 //dgv.Columns[text.Header_Remark].Visible = false;
                 dgv.Columns[text.Header_ColorMatCode].Visible = false;
                 dgv.Columns[text.Header_JobNo].Visible = false;
@@ -617,6 +630,10 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadSingleMaterialList()
         {
+            txtRawMat.Text = "0";
+            txtColorMat.Text = "0";
+            txtRecycleMat.Text = "0";
+
             if (dgvItemList?.Rows.Count > 0)
             {
                 string itemCode = dgvItemList.Rows[0].Cells[text.Header_ItemCode].Value.ToString();
@@ -985,6 +1002,195 @@ namespace FactoryManagementSoftware.UI
             }
 
 
+        }
+
+        private void FromMinShotToMaxShot()
+        {
+            if (MIN_SHOT > 0)
+            {
+                #region info from user
+
+                int minShots = MIN_SHOT;
+
+                bool RunnerRecycle = cbRunnerRecycle.Checked;
+                bool RawMat_RoundUpToBag = cbRoundUpToBag.Checked;
+
+                int cycleTime_PerShot_sec = int.TryParse(txtCycleTime.Text, out cycleTime_PerShot_sec) ? cycleTime_PerShot_sec : 0;
+                int cavity_PerShot_pcs = int.TryParse(txtCavity.Text, out cavity_PerShot_pcs) ? cavity_PerShot_pcs : 0;
+
+                double PW_Shot_g = double.TryParse(txtPWPerShot.Text, out PW_Shot_g) ? PW_Shot_g : 0;
+                double RW_Shot_g = double.TryParse(txtRWPerShot.Text, out RW_Shot_g) ? RW_Shot_g : 0;
+
+                double TotalWeight_Shot_g = PW_Shot_g + RW_Shot_g;
+
+                double colorRatio_percentage = 0;
+
+                DataTable dt_ColorMat = (DataTable)dgvColorMatList.DataSource;
+
+                if (dt_ColorMat?.Rows.Count > 0 && dt_ColorMat.Columns.Contains(text.Header_Percentage))
+                {
+                    colorRatio_percentage = double.TryParse(dt_ColorMat.Rows[0][text.Header_Percentage].ToString(), out colorRatio_percentage) ? colorRatio_percentage : 0;
+                }
+
+                double newMatWastage = double.TryParse(txtMatWastage.Text, out newMatWastage) ? newMatWastage : 0;
+
+                double recycleWastage = 0;
+
+                double MaterialperBag_KG = 25;
+
+                DataTable dt_RawMat = (DataTable)dgvRawMatList.DataSource;
+
+                if (dt_RawMat?.Rows.Count > 0 && dt_RawMat.Columns.Contains(text.Header_KGPERBAG))
+                {
+                    MaterialperBag_KG = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out MaterialperBag_KG) ? MaterialperBag_KG : 25;
+
+                }
+
+                colorRatio_percentage = colorRatio_percentage >= 1 ? colorRatio_percentage /= 100 : colorRatio_percentage;
+                newMatWastage = newMatWastage >= 1 ? newMatWastage /= 100 : newMatWastage;
+                recycleWastage = recycleWastage >= 1 ? recycleWastage /= 100 : recycleWastage;
+
+                #endregion
+
+                #region Calculation
+
+                //TO:DO Calculate the below result
+
+                double TotalNewRawMat_g = 0;
+                double TotalNewColorMat_g = 0;
+
+                double TotalMinMatNeeded_g = 0;
+                double TotalMaxMatProNeeded_g = 0;
+
+                int maxShots = minShots;
+
+                double TotalRecycleMat = 0;
+                int extraShotGetFromRecycle = 0;
+
+                if (RunnerRecycle)
+                {
+                    TotalRecycleMat = (minShots - 1) * RW_Shot_g * (1 - recycleWastage);
+
+                    extraShotGetFromRecycle = (int)Math.Floor(TotalRecycleMat / TotalWeight_Shot_g);
+                }
+
+                TotalMinMatNeeded_g = minShots * TotalWeight_Shot_g;
+
+                double TotalNewMat = TotalMinMatNeeded_g - TotalRecycleMat;
+
+                TotalNewRawMat_g = TotalNewMat / (1 + colorRatio_percentage);
+                TotalNewColorMat_g = TotalNewRawMat_g * colorRatio_percentage;
+
+                if (TotalNewMat > (TotalNewRawMat_g + TotalNewColorMat_g))
+                {
+                    TotalNewRawMat_g = TotalNewMat - TotalNewColorMat_g;
+                }
+                else
+                {
+                    TotalNewMat = TotalNewRawMat_g + TotalNewColorMat_g;
+
+                }
+
+                TotalMaxMatProNeeded_g = TotalNewMat + TotalRecycleMat;
+
+                maxShots = (int)Math.Floor(TotalMaxMatProNeeded_g / TotalWeight_Shot_g);
+
+                double Prepare_RawMat_g = TotalNewRawMat_g * (1 + newMatWastage);
+                double Prepare_ColorMat_g = Prepare_RawMat_g * colorRatio_percentage;
+
+                if (RawMat_RoundUpToBag)
+                {
+                    double RawMatRoundUpQty = Math.Ceiling(Prepare_RawMat_g / 1000 / MaterialperBag_KG) * MaterialperBag_KG * 1000;
+
+                    RawMatRoundUpQty = RawMatRoundUpQty - Prepare_RawMat_g;
+
+                    Prepare_RawMat_g += RawMatRoundUpQty;
+
+                    Prepare_ColorMat_g = Prepare_RawMat_g * colorRatio_percentage;
+
+                    double RoundUp_Pro_RawMat = RawMatRoundUpQty * (1 - newMatWastage) + TotalNewRawMat_g;
+
+                    double RoundUp_Pro_ColorMat = RoundUp_Pro_RawMat * colorRatio_percentage;
+
+
+                    double Total_RoundUp_Pro_New_Mat = RoundUp_Pro_RawMat + RoundUp_Pro_ColorMat;
+
+                    maxShots += (int)Math.Floor(RawMatRoundUpQty * (1 - newMatWastage) / TotalWeight_Shot_g);
+
+                    if (RunnerRecycle)
+                    {
+                        TotalRecycleMat = (maxShots - 1) * RW_Shot_g * (1 - recycleWastage);
+
+                        extraShotGetFromRecycle = (int)Math.Floor(TotalRecycleMat / TotalWeight_Shot_g);
+
+                        maxShots += extraShotGetFromRecycle;
+                    }
+
+                    TotalMaxMatProNeeded_g = Total_RoundUp_Pro_New_Mat + TotalRecycleMat;
+                }
+
+
+                if (maxShots < minShots)
+                {
+                    MessageBox.Show(" MaxShot < MinShot");
+                }
+
+                #endregion
+
+                #region Fill in data
+
+                txtRawMat.Text = (Prepare_RawMat_g / 1000).ToString();
+                txtColorMat.Text = (Prepare_ColorMat_g / 1000).ToString();
+                txtRecycleMat.Text = (TotalRecycleMat / 1000).ToString();
+
+                if (dt_RawMat?.Rows.Count > 0)
+                {
+                    double kgPerBag = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out kgPerBag) ? kgPerBag : 0;
+
+                    dt_RawMat.Rows[0][text.Header_KG] = Prepare_RawMat_g / 1000;
+                    dt_RawMat.Rows[0][text.Header_BAG] = (int)(Prepare_RawMat_g / 1000 / kgPerBag);
+
+                }
+
+                if (dt_ColorMat?.Rows.Count > 0 && dt_ColorMat.Columns.Contains(text.Header_KG))
+                {
+                    dt_ColorMat.Rows[0][text.Header_KG] = Prepare_ColorMat_g / 1000;
+                }
+
+                int Max_CycleTime_sec = maxShots * cycleTime_PerShot_sec;
+                gbTime.Text = TimePanelTitle + " (" + Max_CycleTime_sec + " s )";
+
+                double workingHrsPerday = double.TryParse(txtHrsPerDay.Text, out workingHrsPerday) ? workingHrsPerday : 22;
+
+
+                int totalDays = (int)(Max_CycleTime_sec / 60 / 60 / workingHrsPerday);
+
+                double balHrs = (double)Max_CycleTime_sec / 60 / 60 - (totalDays * workingHrsPerday);
+
+                lblDays.Text = DayLabelTitle + (totalDays > 1 ? "s" : "") + " (" + workingHrsPerday + "hrs)";
+
+                txtDaysNeeded.Text = totalDays.ToString();
+                txtbalHours.Text = balHrs.ToString("0.##");
+
+                int Max_Qty_pcs = maxShots * cavity_PerShot_pcs;
+                txtMaxQty.Text = Max_Qty_pcs.ToString();
+                txtMaxShot.Text = maxShots.ToString();
+
+                //dgvMaterialSummary.DataSource = null;
+
+                #endregion
+            }
+            else
+            {
+                //reset field
+                ClearPannelSummaryInfo();
+
+            }
+
+        }
+        private double CalculateMinMaterialNeeded_Gram(int minShot, double totalWeightPerShot, double wastage)
+        {
+            return (double) minShot * totalWeightPerShot * (1 + wastage);
         }
 
         #endregion
@@ -1608,6 +1814,8 @@ namespace FactoryManagementSoftware.UI
                     {
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = Color.LightGreen;
                         //dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+                        dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+
 
                     }
                     else if (status == text.planning_status_draft)
@@ -1615,6 +1823,9 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = SystemColors.Info;
                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = SystemColors.Info;
                         dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = SystemColors.Info;
+
+                        dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+
                     }
                     else if (status == text.planning_status_new_draft)
                     {
@@ -1634,9 +1845,17 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
 
                     }
+                    else if (status == text.planning_status_to_update)
+                    {
+      
+                        dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
+
+                    }
                     else
                     {
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.ForeColor = Color.Black;
+                        dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+
                     }
 
                 }
@@ -2595,42 +2814,51 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private bool ProDateChanging = false;
+
         private void EstEndDateUpdate()
         {
-            DateTime Start = dtpStartDate.Value;
-
-            int day = int.TryParse(txtDaysNeeded.Text, out day) ? day : 0;
-
-            double balHours = double.TryParse(txtbalHours.Text, out balHours) ? balHours : 0;
-
-            if (balHours > 0)
+            if(!ProDateChanging)
             {
-                day++;
-            }
-            if (day < 2)
-            {
-                day = 0;
-            }
-            else
-            {
-                day--;
-            }
+                ProDateChanging = true;
+                DateTime Start = dtpStartDate.Value;
 
-            if (!cbIncludeSunday.Checked)
-            {
-                for (var date = Start; date <= Start.AddDays(day); date = date.AddDays(1))
-                {
-                    if (date.DayOfWeek == DayOfWeek.Sunday)
-                    {
-                        day++;
-                    }
-                }
+                //int day = int.TryParse(txtDaysNeeded.Text, out day) ? day : 0;
+
+                //double balHours = double.TryParse(txtbalHours.Text, out balHours) ? balHours : 0;
+
+                //if (balHours > 0)
+                //{
+                //    day++;
+                //}
+                //if (day < 2)
+                //{
+                //    day = 0;
+                //}
+                //else
+                //{
+                //    day--;
+                //}
+
+                //if (!cbIncludeSunday.Checked)
+                //{
+                //    for (var date = Start; date <= Start.AddDays(day); date = date.AddDays(1))
+                //    {
+                //        if (date.DayOfWeek == DayOfWeek.Sunday)
+                //        {
+                //            day++;
+                //        }
+                //    }
+                //}
+
+                //dtpEstimateEndDate.Value = Start.AddDays(day);
+
+                dtpEstimateEndDate.Value = CalculateNewDraftEndDate(Start);
+
+                NewDraftProductionDateUpdate();
+
+                ProDateChanging = false;
             }
-
-            dtpEstimateEndDate.Value = Start.AddDays(day);
-
-            NewDraftProductionDateUpdate();
-
         }
         private void MachineSelectionSettingInitial()
         {
@@ -2848,9 +3076,12 @@ namespace FactoryManagementSoftware.UI
                     row_Schedule = dt_Schedule.NewRow();
 
                     row_Schedule[text.Header_Status] = status;
+                    row_Schedule[text.Header_Ori_Status] = status;
                     row_Schedule[text.Header_JobNo] = row[dalPlanning.planID];
                     row_Schedule[text.Header_DateStart] = start;
                     row_Schedule[text.Header_EstDateEnd] = end;
+                    row_Schedule[text.Header_Ori_DateStart] = start;
+                    row_Schedule[text.Header_Ori_EstDateEnd] = end;
 
                     row_Schedule[text.Header_Fac] = factory;
                     row_Schedule[text.Header_FacID] = factoryID;
@@ -2882,6 +3113,11 @@ namespace FactoryManagementSoftware.UI
                     row_Schedule[text.Header_ColorMat] = colorMatName;
                     row_Schedule[text.Header_Color] = row[dalItem.ItemColor];
 
+                    //pro time info
+                    row_Schedule[text.Header_ProductionDay] = row[dalPlan.productionDay];
+                    row_Schedule[text.Header_ProductionHour] = row[dalPlan.productionHour];
+                    row_Schedule[text.Header_ProductionHourPerDay] = row[dalPlan.productionHourPerDay];
+
                     dt_Schedule.Rows.Add(row_Schedule);
                 }
 
@@ -2889,7 +3125,6 @@ namespace FactoryManagementSoftware.UI
 
             dgvMacSchedule.DataSource = null;
 
-            //To - Do
             //Idle machine adding
             foreach (var machine in MachineList)
             {
@@ -3304,7 +3539,12 @@ namespace FactoryManagementSoftware.UI
                 BLOCK_CMB_AUTO_UPDATING = false;
             }
         }
+
+        #region Drag & Drop
+
         private DataRow MAC_SCHEDULE_ROW_TO_DROP;
+        private string OLD_MACHINE_ID = null;
+
         private void dgvMacShedule_MouseDown(object sender, MouseEventArgs e)
         {
             DataGridView.HitTestInfo hitTestInfo = dgvMacSchedule.HitTest(e.X, e.Y);
@@ -3316,9 +3556,11 @@ namespace FactoryManagementSoftware.UI
                 //lblMachineSelectionRemark.Text = hitTestInfo.RowIndex.ToString();
 
                 string status = dgvMacSchedule.Rows[hitTestInfo.RowIndex].Cells[text.Header_Status].Value.ToString();
-
+                
                 if (status == text.planning_status_new_draft)
                 {
+                    OLD_MACHINE_ID = dgvMacSchedule.Rows[hitTestInfo.RowIndex].Cells[text.Header_MacID].Value.ToString();
+
                     rowIndexFromMouseDown = hitTestInfo.RowIndex;
                     DataTable dt = (DataTable)dgvMacSchedule.DataSource;
 
@@ -3333,9 +3575,6 @@ namespace FactoryManagementSoftware.UI
 
                     ChangeCMBLocationAndMachine();
                 }
-
-
-
             }
         }
 
@@ -3390,12 +3629,76 @@ namespace FactoryManagementSoftware.UI
                 //lblStartDate.Text = rowIndexFromMouseDown.ToString();
                 //lblEndDate.Text = rowIndexToDrop.ToString(); 
 
+                //check if Family Mould Row, if family mould = row++ to next non family mould
+                //To-DO: 
+
+                string familyWithID = null;
+                int rowIndexOffSet = 0;
+
+                foreach(DataRow row in dt.Rows)
+                {
+                    int rowIndex = dt.Rows.IndexOf(row);
+
+                    int familyWith = int.TryParse(row[text.Header_FamilyWithJobNo].ToString(), out familyWith)? familyWith : 0;
+                    string itemDescription = row[text.Header_ItemDescription].ToString();
+                    string jobNo = row[text.Header_JobNo].ToString();
+
+                    if (rowIndex == rowIndexToDrop && familyWith > 0)
+                    {
+                        familyWithID = familyWith.ToString();
+
+                        rowIndexOffSet++;
+                    }
+                    else if(familyWithID == familyWith.ToString() && familyWith > 0 && familyWithID != null)
+                    {
+                        rowIndexOffSet++;
+                    }
+                }
+
+                int dtRowCount = dt.Rows.Count;
+
+                rowIndexToDrop += rowIndexOffSet;
+
                 dt.Rows.InsertAt(MAC_SCHEDULE_ROW_TO_DROP, rowIndexToDrop);
+
+                //if (rowIndexToDrop > dt.Rows.Count)
+                //{
+                //    dt.Rows.Add(MAC_SCHEDULE_ROW_TO_DROP);
+
+                //}
+                //else
+                //{
+                //    dt.Rows.InsertAt(MAC_SCHEDULE_ROW_TO_DROP, rowIndexToDrop);
+
+                //}
+
+                if (OLD_MACHINE_ID != null)
+                ResetOldMachineJobDate(OLD_MACHINE_ID);
 
                 MacScheduleListCellFormatting(dgvMacSchedule);
                 rowIndexOfItemUnderMouseToDrop = rowIndexToDrop;
 
 
+            }
+        }
+
+        private void ResetOldMachineJobDate(string machineID)
+        {
+            if(dgvMacSchedule?.Rows.Count > 0)
+            {
+                DataTable dt = (DataTable)dgvMacSchedule.DataSource;
+
+                foreach(DataRow row in dt.Rows)
+                {
+                    string status = row[text.Header_Status].ToString();
+
+                    if (row[text.Header_MacID].ToString() == machineID && status != text.planning_status_new_draft)
+                    {
+                        row[text.Header_DateStart] = row[text.Header_Ori_DateStart];
+                        row[text.Header_EstDateEnd] = row[text.Header_Ori_EstDateEnd];
+                        row[text.Header_Status] = row[text.Header_Ori_Status];
+                    }
+                }
             }
         }
 
@@ -3413,14 +3716,244 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        #endregion
+
         private void dtpEstimateEndDate_ValueChanged(object sender, EventArgs e)
         {
             NewDraftProductionDateUpdate();
         }
 
+        #region Date Adjustment
+        private int TotalSundaysBetween(DateTime startDate, DateTime endDate)
+        {
+            int totalSundays = 0;
+
+            if(endDate < startDate)
+            {
+                DateTime tmp = startDate;
+                startDate = endDate;
+                endDate = tmp;
+            }
+
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+            {
+                if (date.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    totalSundays++;
+                }
+            }
+
+            return totalSundays;
+        }
+
+        private int TotalDaysBetween(DateTime startDate, DateTime endDate)
+        {
+            int totalDays = 0;
+
+            if (endDate < startDate)
+            {
+                DateTime tmp = startDate;
+                startDate = endDate;
+                endDate = tmp;
+            }
+
+            TimeSpan span = endDate - startDate;
+
+            return (int)span.TotalDays + 1;// adding 1 to make it inclusive
+        }
+
+        private DateTime CalculateEndDate(DateTime startDate, int totalDays, bool includeSunday)
+        {
+            DateTime endDate = startDate;
+            int dayCount = 0;
+
+            totalDays = totalDays < 0 ? 0 : totalDays;
+
+            while (dayCount < totalDays)
+            {
+                endDate = endDate.AddDays(1);
+
+                // If the day is a Sunday and Sundays should not be included, skip it.
+                if (endDate.DayOfWeek == DayOfWeek.Sunday && !includeSunday)
+                    continue;
+
+                dayCount++;
+            }
+
+            return endDate;
+        }
+
+        private DateTime CalculateNewDraftEndDate(DateTime Start)
+        {
+            int day = int.TryParse(txtDaysNeeded.Text, out day) ? day : 0;
+
+            double balHours = double.TryParse(txtbalHours.Text, out balHours) ? balHours : 0;
+
+            if (balHours > 0)
+            {
+                day++;
+            }
+            if (day < 2)
+            {
+                day = 0;
+            }
+            else
+            {
+                day--;
+            }
+
+            if (!cbIncludeSunday.Checked)
+            {
+                for (var date = Start; date <= Start.AddDays(day); date = date.AddDays(1))
+                {
+                    if (date.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        day++;
+                    }
+                }
+            }
+
+            DateTime End  = Start.AddDays(day);
+
+            return End;
+        }
+
+        private void AutoAdjustCollisionDate()
+        {
+            if(dgvMacSchedule?.Rows.Count > 0)
+            {
+                string currentMacID = null;
+                string LastFamilyWith = null;
+                DateTime LastRow_EndDate = DateTime.MaxValue;
+
+                DataTable dt = (DataTable)dgvMacSchedule.DataSource;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string MacID = row[text.Header_MacID].ToString();
+                    string FamilyWith = row[text.Header_FamilyWithJobNo].ToString();
+                    string status = row[text.Header_Status].ToString();
+
+                  
+
+                    bool startError = false;
+                    bool endError = false;
+
+                    DateTime Date_Start = DateTime.TryParse(row[text.Header_DateStart].ToString(), out Date_Start) ? Date_Start : DateTime.MaxValue;
+                    DateTime Date_End = DateTime.TryParse(row[text.Header_EstDateEnd].ToString(), out Date_End) ? Date_End : DateTime.MaxValue;
+
+                    if (!string.IsNullOrEmpty(MacID))
+                    {
+                        if (currentMacID != MacID)
+                        {
+                            currentMacID = MacID;
+                            LastRow_EndDate = Date_End;
+                        }
+                        else
+                        {
+                            if (Date_Start < LastRow_EndDate && LastRow_EndDate != DateTime.MaxValue && (LastFamilyWith != FamilyWith || string.IsNullOrEmpty(FamilyWith)))
+                            {
+                                startError = true;
+                            }
+                            else
+                            {
+                                LastRow_EndDate = Date_End;
+                            }
+
+                        }
+
+                        if (Date_End < Date_Start && Date_Start != DateTime.MaxValue)
+                        {
+                            endError = true;
+                          
+                        }
+
+                        if( startError || endError)
+                        {
+                            if (status != text.planning_status_new_draft)
+                            {
+                                int proDay = int.TryParse(row[text.Header_ProductionDay].ToString(), out proDay) ? proDay : 0;
+                                int proHourPerDay = int.TryParse(row[text.Header_ProductionHourPerDay].ToString(), out proHourPerDay) ? proHourPerDay : 0;
+                                double proBalHour = double.TryParse(row[text.Header_ProductionHour].ToString(), out proBalHour) ? proBalHour : 0;
+
+                                bool includedSunday = cbIncludeSunday.Checked;
+                                int actualProDay = proDay + (proHourPerDay > 0 ? 1 : 0);
+
+                                int daysBetween = TotalDaysBetween(Date_Start, Date_End);
+                                int SundaysBetween = TotalSundaysBetween(Date_Start, Date_End);
+
+                                if (SundaysBetween > 0)
+                                {
+                                    if (daysBetween - SundaysBetween == actualProDay)
+                                    {
+                                        includedSunday = false;
+                                    }
+                                    else if (daysBetween == actualProDay)
+                                    {
+                                        includedSunday = true;
+                                    }
+                                }
+
+                                if (startError)
+                                {
+                                    Date_Start = CalculateEndDate(LastRow_EndDate, 1, includedSunday);
+                                }
+
+
+                                Date_End = CalculateEndDate(Date_Start, actualProDay - 1, includedSunday);
+
+
+                                row[text.Header_Status] = text.planning_status_to_update;
+                            }
+                              
+                            else
+                            {
+                                ProDateChanging = true;
+
+                                if (startError)
+                                {
+                                    Date_Start = CalculateEndDate(LastRow_EndDate, 1, cbIncludeSunday.Checked);
+                                }
+
+                                Date_End = CalculateNewDraftEndDate(Date_Start);
+
+                                dtpStartDate.Value = Date_Start;
+                                dtpEstimateEndDate.Value = Date_End;
+
+                                ProDateChanging = false;
+                            }
+
+                            row[text.Header_DateStart] = Date_Start;
+                            row[text.Header_EstDateEnd] = Date_End;
+
+                            LastRow_EndDate = Date_End;
+                        }
+
+                        LastFamilyWith = FamilyWith;
+                    }
+
+                }
+
+                MacScheduleListCellFormatting(dgvMacSchedule);
+                DATE_COLLISION_FOUND = false;
+                btnAdjustCollisionDateBySystem.Visible = false;
+            }
+           else
+            {
+                MessageBox.Show("Data not found.");
+            }
+        }
         private void btnAdjustCollisionDateBySystem_Click(object sender, EventArgs e)
         {
+            AutoAdjustCollisionDate();
+        }
 
+        #endregion
+
+        private void btnMacScheduleReload_Click(object sender, EventArgs e)
+        {
+            MachineSelectionSettingInitial();
+            LoadMachineSchedule();
         }
     }
 }

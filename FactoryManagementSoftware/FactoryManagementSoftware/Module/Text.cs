@@ -173,6 +173,7 @@ namespace FactoryManagementSoftware.Module
         public string planning_status_warning { get; } = "WARNING";//red
         public string planning_status_draft { get; } = "DRAFT";
         public string planning_status_new_draft { get; } = "NEW DRAFT";
+        public string planning_status_to_update { get; } = "TO UPDATE";
         public string planning_status_running { get; } = "RUNNING";//green
         public string planning_status_delayed { get; } = "DELAYED";//yellow
         public string planning_status_completed { get; } = "COMPLETED";//white
@@ -312,7 +313,9 @@ namespace FactoryManagementSoftware.Module
         public string Header_Mac{ get; } = "MAC.";
         public string Header_MacID{ get; } = "MAC. ID";
         public string Header_MacName{ get; } = "MAC.";
+        public string Header_Ori_DateStart { get; } = "ORI. START";
         public string Header_DateStart { get; } = "START";
+        public string Header_Ori_EstDateEnd { get; } = "ORI. EST. END";
         public string Header_EstDateEnd { get; } = "EST. END";
         public string Header_EstMacFreeDate { get; } = "EST. MACHINE FREE DATE";
 
@@ -400,6 +403,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_Note { get; } = "NOTE";
         public string Header_Category { get; } = "CATEGORY";
         public string Header_Status { get; } = "STATUS";
+        public string Header_Ori_Status { get; } = "ORI. STATUS";
         public string Header_Type { get; } = "TYPE";
         public string Header_MatType { get; } = "MAT. TYPE";
         public string Header_Mat { get; } = "MATERIAL";
