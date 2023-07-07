@@ -246,6 +246,12 @@
     <Compile Include="UI\frmForecastEditRecord.Designer.cs">
       <DependentUpon>frmForecastEditRecord.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmJobPurposeEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmJobPurposeEdit.Designer.cs">
+      <DependentUpon>frmJobPurposeEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmLocationSelect.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -303,6 +309,12 @@
     </Compile>
     <Compile Include="UI\frmItemSearch.Designer.cs">
       <DependentUpon>frmItemSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmJobSummary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmJobSummary.Designer.cs">
+      <DependentUpon>frmJobSummary.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmPlanningVer2dot1.cs">
       <SubType>Form</SubType>
@@ -1059,6 +1071,9 @@
     <EmbeddedResource Include="UI\frmForecastEditRecord.resx">
       <DependentUpon>frmForecastEditRecord.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmJobPurposeEdit.resx">
+      <DependentUpon>frmJobPurposeEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmLocationSelect.resx">
       <DependentUpon>frmLocationSelect.cs</DependentUpon>
     </EmbeddedResource>
@@ -1086,6 +1101,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItemSearch.resx">
       <DependentUpon>frmItemSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmJobSummary.resx">
+      <DependentUpon>frmJobSummary.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPlanningVer2dot1.resx">
       <DependentUpon>frmPlanningVer2dot1.cs</DependentUpon>

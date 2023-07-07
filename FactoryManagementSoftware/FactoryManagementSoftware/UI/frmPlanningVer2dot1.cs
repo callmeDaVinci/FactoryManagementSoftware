@@ -17,6 +17,8 @@ using Accord.Statistics.Running;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
+using iTextSharp.text.pdf;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -69,7 +71,11 @@ namespace FactoryManagementSoftware.UI
         private bool PRO_INFO_CHANGE = false;
 
         private string CALL_WITH_ITEM_CODE = null;
+        private string CALL_WITH_JOB_NO = null;
         private int CALL_WITH_TARGET_QTY = -1;
+
+        private bool JOB_ADDING_MODE = true;
+        private bool JOB_EDITING_MODE = false;
         #endregion
 
         public frmPlanningVer2dot1()
@@ -79,6 +85,9 @@ namespace FactoryManagementSoftware.UI
             InitialSetting();
 
             LoadDB();
+
+            JOB_ADDING_MODE = true;
+            JOB_EDITING_MODE = false;
         }
 
         public frmPlanningVer2dot1(string itemCode)
@@ -89,6 +98,37 @@ namespace FactoryManagementSoftware.UI
 
             LoadDB();
             CALL_WITH_ITEM_CODE = itemCode;
+
+            JOB_ADDING_MODE = true;
+            JOB_EDITING_MODE = false;
+        }
+
+        public frmPlanningVer2dot1(string reference, bool jobEdit)
+        {
+            //Testing();
+            InitializeComponent();
+            InitialSetting();
+
+            LoadDB();
+            
+            if(jobEdit)
+            {
+                CALL_WITH_JOB_NO = reference;
+                CALL_WITH_ITEM_CODE = "";
+
+                JOB_ADDING_MODE = false;
+                JOB_EDITING_MODE = true;
+            }
+            else
+            {
+                CALL_WITH_ITEM_CODE = reference;
+                CALL_WITH_JOB_NO = "";
+
+                JOB_ADDING_MODE = true;
+                JOB_EDITING_MODE = false;
+            }
+
+            
         }
 
         public frmPlanningVer2dot1(string itemCode, int targetQty)
@@ -101,11 +141,9 @@ namespace FactoryManagementSoftware.UI
 
             CALL_WITH_ITEM_CODE = itemCode;
             CALL_WITH_TARGET_QTY = targetQty;
-        }
 
-        private void frmPlanning_Load(object sender, EventArgs e)
-        {
-           
+            JOB_ADDING_MODE = true;
+            JOB_EDITING_MODE = false;
         }
 
         private void AutoLoadPageWithItemCode()
@@ -177,6 +215,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_ProRwShot, typeof(string));
             dt.Columns.Add(text.Header_TargetQty, typeof(int));
             dt.Columns.Add(text.Header_AutoQtyAdjustment, typeof(int));
+            dt.Columns.Add(text.Header_Job_Purpose, typeof(string));
 
             return dt;
         }
@@ -267,7 +306,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (LabelButton == labelButton_ShowSettings)
             {
-                tlpLeftPanel.RowStyles[0] = new RowStyle(SizeType.Absolute, 200f);
+                tlpLeftPanel.RowStyles[0] = new RowStyle(SizeType.Absolute, 150f);
 
                 tlpSettings.RowStyles[0] = new RowStyle(SizeType.Absolute, 30f);
                 tlpSettings.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
@@ -368,24 +407,221 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void JobAdding()
+        private bool Validation()
         {
-            if(DATE_COLLISION_FOUND)
+            if (DATE_COLLISION_FOUND)
             {
                 MessageBox.Show("New Draft Job date conflict detected.\nPlease adjust the dates to prevent overlap before adding the job.");
+
+                return false;
             }
-            else
-            {
-                //job adding
-            }
+            getPlanningData();
+
+            return true;
         }
 
-        private void BackToPartInfo()
-        {
-            //btnNextToMachineSelection.Visible = true;
+        static public bool dataSaved = false;
+        planningActionDAL dalPlanningAction = new planningActionDAL();
+        matPlanBLL uMatPlan = new matPlanBLL();
+        matPlanDAL dalMatPlan = new matPlanDAL();
 
-            //tlpMainPanel.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
-            //tlpMainPanel.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0f);
+        private void getPlanningData()
+        {
+            //common///////////////////
+            DateTime dateTimeNow = DateTime.Now; //plan_added_date
+            int userID = MainDashboard.USER_ID; //plan_added_by
+
+            //material_code
+            //material_bag_qty
+            //material_recycle_use
+            //color_material_code
+            //color_material_usage
+            //color_material_qty
+            //production_day
+            //production_hour
+            //production_hour_per_day
+            //production_start_date
+            //production_end_date
+            //machine_id
+            //family_with
+
+
+            //get from summary///////////////////
+            //plan status : plan_status
+            //plan note : plan_note
+
+            //get from job requirement: item List///////////////////
+            //plan_ct
+            //plan_pw
+            //plan_rw
+            //plan_cavity
+            //part_code
+            //production_purpose
+            //production_target_qty
+            //production_able_produce_qty
+
+        }
+        private void JobAdding()
+        {
+            if(Validation())
+            {
+                //job adding
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                //open purpose page
+                frmJobSummary frm = new frmJobSummary();
+
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Normal;
+                frm.ShowDialog();
+
+                //try
+                //{
+                //    //save planning data
+
+                //    DateTime date = DateTime.Now;
+                //    string note = txtNote.Text;
+
+                //    uPlanning.plan_status = text.planning_status_pending;
+
+                //    //check material short
+                //    uPlanning.plan_remark = note + MatShortRemark();
+                //    uPlanning.machine_id = Convert.ToInt32(cmbID.Text);
+                //    uPlanning.production_start_date = dtpStartDate.Value;
+                //    uPlanning.production_end_date = dtpEstimateEndDate.Value;
+                //    uPlanning.plan_added_date = date;
+                //    uPlanning.plan_added_by = MainDashboard.USER_ID;
+
+                //    bool familyMould = false;
+
+                //    DataTable dt_Item_To_Add = null;
+
+                //    if (dgvItemList?.Rows.Count >= 0)
+                //    {
+                //        dt_Item_To_Add = (DataTable)dgvItemList.DataSource;
+
+                //        if (dgvItemList.Rows.Count >= 1)
+                //            familyMould = true;
+
+                //        foreach (DataRow row in dt_Item_To_Add.Rows)
+                //        {
+                //            //get job info
+                //            //job adding
+                //            //material list adding
+                //            //family mould remark
+                //            //history record
+                //            getPlanningData();
+
+                //            if (!dalPlanningAction.planningAdd(uPlanning))
+                //            {
+                //                //Failed to insert data
+                //                MessageBox.Show("Failed to save planning data (frmPlanningApply_398)");
+                //                tool.historyRecord(text.System, "Failed to save planning data (frmPlanningApply_398)", date, MainDashboard.USER_ID);
+                //            }
+                //            else
+                //            {
+                //                dataSaved = true;
+                //                tool.historyRecord(text.System, "Planning Data Saved", date, MainDashboard.USER_ID);
+
+                //                #region update family mould info
+                //                if (frmMacScheduleAdjust.ToRunPlanFamilyWith != -1)
+                //                {
+                //                    //check selected plan familywith data
+                //                    int familyWith = tool.getFamilyWithData(frmMacScheduleAdjust.ToRunPlanFamilyWith);
+
+                //                    //if = -1, get selected plan id
+                //                    if (familyWith == -1)
+                //                    {
+                //                        //update selected plan familyWith and remark data
+
+                //                        familyWith = frmMacScheduleAdjust.ToRunPlanFamilyWith;
+
+                //                        DataTable dt_Mac = dalPlanning.macIDSearch(cmbID.Text.ToString());
+                //                        DataRow oldData = tool.getDataRowFromDataTableByPlanID(dt_Mac, familyWith.ToString());
+
+                //                        string oldNote = oldData[dalPlanning.planNote].ToString();
+
+                //                        PlanningBLL updateFamily = new PlanningBLL();
+                //                        updateFamily.plan_id = familyWith;
+                //                        updateFamily.plan_remark = text.planning_Family_mould_Remark + oldNote;
+                //                        updateFamily.family_with = familyWith;
+                //                        updateFamily.plan_updated_date = DateTime.Now;
+                //                        updateFamily.plan_updated_by = MainDashboard.USER_ID;
+
+
+                //                        dalPlanningAction.planningFamilyWithChange(updateFamily, "-1");
+                //                    }
+
+
+                //                    if (familyWith == 0)
+                //                    {
+                //                        uPlanning.family_with = -1;
+                //                    }
+                //                    else
+                //                    {
+                //                        uPlanning.family_with = familyWith;
+                //                    }
+
+                //                    uPlanning.plan_remark = text.planning_Family_mould_Remark;
+
+                //                }
+
+                //                #endregion
+
+                //                DataTable dt_mat = (DataTable)dgvStockCheck.DataSource;
+
+                //                if (dt_mat.Rows.Count > 0)
+                //                {
+                //                    //get planID for this planning
+                //                    int planID = dalPlanning.getLastInsertedPlanID();
+
+                //                    if (planID != -1)
+                //                    {
+                //                        foreach (DataRow row in dt_mat.Rows)
+                //                        {
+                //                            string matCode = row[text.Header_ItemCode].ToString();
+                //                            float planToUse = float.TryParse(row[text.Header_RequiredForCurrentJob].ToString(), out planToUse) ? planToUse : 0;
+
+                //                            uMatPlan.mat_code = matCode;
+                //                            uMatPlan.plan_id = planID;
+                //                            uMatPlan.plan_to_use = planToUse;
+                //                            uMatPlan.mat_used = 0;
+                //                            uMatPlan.active = true;
+                //                            uMatPlan.mat_note = "";
+                //                            uMatPlan.updated_date = date;
+                //                            uMatPlan.updated_by = MainDashboard.USER_ID;
+
+                //                            //tool.matPlanAddQty(dt, matCode, planToUse);
+
+                //                            if (!dalMatPlan.Insert(uMatPlan))
+                //                            {
+                //                                //MessageBox.Show("Failed to insert material plan data.");
+                //                                tool.historyRecord(text.System, "Failed to insert material plan data.", date, MainDashboard.USER_ID);
+                //                            }
+                //                        }
+                //                    }
+                //                    else
+                //                    {
+                //                        MessageBox.Show("Plan ID not found! Cannot save material plan data.");
+                //                        tool.historyRecord(text.System, "Plan ID not found! Cannot save material plan data.", date, MainDashboard.USER_ID);
+                //                    }
+
+                //                }
+                //            }
+
+                //        }
+                //    }
+                //}
+
+                //catch (Exception ex)
+                //{
+
+                //    tool.saveToTextAndMessageToUser(ex);
+                //}
+
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
         }
 
         private void dgvUIEdit(DataGridView dgv)
@@ -403,18 +639,20 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
                 dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
+                dgv.Columns[text.Header_Job_Purpose].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
                 dgv.Columns[text.Header_Cavity].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
                 dgv.Columns[text.Header_ProTon].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
                 dgv.Columns[text.Header_ProCT].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
                 dgv.Columns[text.Header_ProPwShot].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
                 dgv.Columns[text.Header_ProRwShot].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+                dgv.Columns[text.Header_Job_Purpose].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
                 dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
                 dgv.Columns[text.Header_MouldCode].Width = smallColumnWidth;
                 dgv.Columns[text.Header_Cavity].Width = smallColumnWidth;
+                dgv.Columns[text.Header_AutoQtyAdjustment].Width = smallColumnWidth;
                 //dgv.Columns[text.Header_MouldSelection].Width = ProductionInfoColumnWidth;
                 //dgv.Columns[text.Header_ItemSelection].Width = ProductionInfoColumnWidth;
                 //dgv.Columns[text.Header_MouldCode].Width = ProductionInfoColumnWidth;
@@ -818,210 +1056,242 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void FromMinShotToTotalMaterialCalculation()
-        {
-            if (MIN_SHOT > 0)
-            {
-                #region info from user
+        #region old FromMinShot to Material Calculation
+        //private void FromMinShotToTotalMaterialCalculation()
+        //{
+        //    if (MIN_SHOT > 0)
+        //    {
+        //        #region info from user
 
-                int minShots = MIN_SHOT;
+        //        int minShots = MIN_SHOT;
 
-                bool RunnerRecycle = cbRunnerRecycle.Checked;
-                bool RawMat_RoundUpToBag = cbRoundUpToBag.Checked;
+        //        bool RunnerRecycle = cbRunnerRecycle.Checked;
+        //        bool RawMat_RoundUpToBag = cbRoundUpToBag.Checked;
 
-                int cycleTime_PerShot_sec = int.TryParse(txtCycleTime.Text, out cycleTime_PerShot_sec) ? cycleTime_PerShot_sec : 0;
-                int cavity_PerShot_pcs = int.TryParse(txtCavity.Text, out cavity_PerShot_pcs) ? cavity_PerShot_pcs : 0;
+        //        int cycleTime_PerShot_sec = int.TryParse(txtCycleTime.Text, out cycleTime_PerShot_sec) ? cycleTime_PerShot_sec : 0;
+        //        int cavity_PerShot_pcs = int.TryParse(txtCavity.Text, out cavity_PerShot_pcs) ? cavity_PerShot_pcs : 0;
 
-                double PW_Shot_g = double.TryParse(txtPWPerShot.Text, out PW_Shot_g) ? PW_Shot_g : 0;
-                double RW_Shot_g = double.TryParse(txtRWPerShot.Text, out RW_Shot_g) ? RW_Shot_g : 0;
+        //        double PW_Shot_g = double.TryParse(txtPWPerShot.Text, out PW_Shot_g) ? PW_Shot_g : 0;
+        //        double RW_Shot_g = double.TryParse(txtRWPerShot.Text, out RW_Shot_g) ? RW_Shot_g : 0;
 
-                double TotalWeight_Shot_g = PW_Shot_g + RW_Shot_g;
+        //        double TotalWeight_Shot_g = PW_Shot_g + RW_Shot_g;
 
-                double colorRatio_percentage = 0;
+        //        double colorRatio_percentage = 0;
 
-                DataTable dt_ColorMat = (DataTable)dgvColorMatList.DataSource;
+        //        DataTable dt_ColorMat = (DataTable)dgvColorMatList.DataSource;
 
-                if (dt_ColorMat?.Rows.Count > 0 && dt_ColorMat.Columns.Contains(text.Header_Percentage))
-                {
-                    colorRatio_percentage = double.TryParse(dt_ColorMat.Rows[0][text.Header_Percentage].ToString(), out colorRatio_percentage) ? colorRatio_percentage : 0;
-                }
+        //        if (dt_ColorMat?.Rows.Count > 0 && dt_ColorMat.Columns.Contains(text.Header_Percentage))
+        //        {
+        //            colorRatio_percentage = double.TryParse(dt_ColorMat.Rows[0][text.Header_Percentage].ToString(), out colorRatio_percentage) ? colorRatio_percentage : 0;
+        //        }
 
-                double newMatWastage = double.TryParse(txtMatWastage.Text, out newMatWastage) ? newMatWastage : 0;
+        //        double newMatWastage = double.TryParse(txtMatWastage.Text, out newMatWastage) ? newMatWastage : 0;
 
-                double recycleWastage = 0;
+        //        double recycleWastage = 0;
 
-                double MaterialperBag_KG = 25;
+        //        double MaterialperBag_KG = 25;
 
-                DataTable dt_RawMat = (DataTable)dgvRawMatList.DataSource;
+        //        DataTable dt_RawMat = (DataTable)dgvRawMatList.DataSource;
 
-                if (dt_RawMat?.Rows.Count > 0 && dt_RawMat.Columns.Contains(text.Header_KGPERBAG))
-                {
-                    MaterialperBag_KG = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out MaterialperBag_KG) ? MaterialperBag_KG : 25;
+        //        if (dt_RawMat?.Rows.Count > 0 && dt_RawMat.Columns.Contains(text.Header_KGPERBAG))
+        //        {
+        //            MaterialperBag_KG = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out MaterialperBag_KG) ? MaterialperBag_KG : 25;
 
-                }
+        //        }
 
-                colorRatio_percentage = colorRatio_percentage >= 1 ? colorRatio_percentage /= 100 : colorRatio_percentage;
-                newMatWastage = newMatWastage >= 1 ? newMatWastage /= 100 : newMatWastage;
-                recycleWastage = recycleWastage >= 1 ? recycleWastage /= 100 : recycleWastage;
+        //        colorRatio_percentage = colorRatio_percentage >= 1 ? colorRatio_percentage /= 100 : colorRatio_percentage;
+        //        newMatWastage = newMatWastage >= 1 ? newMatWastage /= 100 : newMatWastage;
+        //        recycleWastage = recycleWastage >= 1 ? recycleWastage /= 100 : recycleWastage;
 
-                #endregion
+        //        #endregion
 
-                #region Calculation
+        //        #region Calculation
 
-                //TO:DO Calculate the below result
+        //        //TO:DO Calculate the below result
 
-                double TotalNewRawMat_g = 0;
-                double TotalNewColorMat_g = 0;
+        //        double TotalNewRawMat_g = 0;
+        //        double TotalNewColorMat_g = 0;
 
-                double TotalMinMatNeeded_g = 0;
-                double TotalMaxMatProNeeded_g = 0;
+        //        double TotalMinMatNeeded_g = 0;
+        //        double TotalMaxMatProNeeded_g = 0;
 
-                int maxShots = minShots;
+        //        int maxShots = minShots;
 
-                double TotalRecycleMat = 0;
-                int extraShotGetFromRecycle = 0;
+        //        double TotalRecycleMat = 0;
+        //        int extraShotGetFromRecycle = 0;
 
-                if (RunnerRecycle)
-                {
-                    TotalRecycleMat = (minShots - 1) * RW_Shot_g * (1 - recycleWastage);
+        //        if (RunnerRecycle)
+        //        {
+        //            TotalRecycleMat = (minShots - 1) * RW_Shot_g * (1 - recycleWastage);
 
-                    extraShotGetFromRecycle = (int)Math.Floor(TotalRecycleMat / TotalWeight_Shot_g);
-                }
+        //            extraShotGetFromRecycle = (int)Math.Floor(TotalRecycleMat / TotalWeight_Shot_g);
+        //        }
 
-                TotalMinMatNeeded_g = minShots * TotalWeight_Shot_g;
+        //        TotalMinMatNeeded_g = minShots * TotalWeight_Shot_g;
 
-                double TotalNewMat = TotalMinMatNeeded_g - TotalRecycleMat;
+        //        double TotalNewMat = TotalMinMatNeeded_g - TotalRecycleMat;
 
-                TotalNewRawMat_g = TotalNewMat / (1 + colorRatio_percentage);
-                TotalNewColorMat_g = TotalNewRawMat_g * colorRatio_percentage;
+        //        TotalNewRawMat_g = TotalNewMat / (1 + colorRatio_percentage);
+        //        TotalNewColorMat_g = TotalNewRawMat_g * colorRatio_percentage;
 
-                if (TotalNewMat > (TotalNewRawMat_g + TotalNewColorMat_g))
-                {
-                    TotalNewRawMat_g = TotalNewMat - TotalNewColorMat_g;
-                }
-                else
-                {
-                    TotalNewMat = TotalNewRawMat_g + TotalNewColorMat_g;
+        //        if (TotalNewMat > (TotalNewRawMat_g + TotalNewColorMat_g))
+        //        {
+        //            TotalNewRawMat_g = TotalNewMat - TotalNewColorMat_g;
+        //        }
+        //        else
+        //        {
+        //            TotalNewMat = TotalNewRawMat_g + TotalNewColorMat_g;
 
-                }
+        //        }
 
-                TotalMaxMatProNeeded_g = TotalNewMat + TotalRecycleMat;
+        //        TotalMaxMatProNeeded_g = TotalNewMat + TotalRecycleMat;
 
-                maxShots = (int)Math.Floor(TotalMaxMatProNeeded_g / TotalWeight_Shot_g);
+        //        maxShots = (int)Math.Floor(TotalMaxMatProNeeded_g / TotalWeight_Shot_g);
 
-                double Prepare_RawMat_g = TotalNewRawMat_g * (1 + newMatWastage);
-                double Prepare_ColorMat_g = Prepare_RawMat_g * colorRatio_percentage;
+        //        double Prepare_RawMat_g = TotalNewRawMat_g * (1 + newMatWastage);
+        //        double Prepare_ColorMat_g = Prepare_RawMat_g * colorRatio_percentage;
 
-                if (RawMat_RoundUpToBag)
-                {
-                    double RawMatRoundUpQty = Math.Ceiling(Prepare_RawMat_g / 1000 / MaterialperBag_KG) * MaterialperBag_KG * 1000;
+        //        if (RawMat_RoundUpToBag)
+        //        {
+        //            double RawMatRoundUpQty = Math.Ceiling(Prepare_RawMat_g / 1000 / MaterialperBag_KG) * MaterialperBag_KG * 1000;
 
-                    RawMatRoundUpQty = RawMatRoundUpQty - Prepare_RawMat_g;
+        //            RawMatRoundUpQty = RawMatRoundUpQty - Prepare_RawMat_g;
 
-                    Prepare_RawMat_g += RawMatRoundUpQty;
+        //            Prepare_RawMat_g += RawMatRoundUpQty;
 
-                    Prepare_ColorMat_g = Prepare_RawMat_g * colorRatio_percentage;
+        //            Prepare_ColorMat_g = Prepare_RawMat_g * colorRatio_percentage;
 
-                    double RoundUp_Pro_RawMat = RawMatRoundUpQty * (1 - newMatWastage) + TotalNewRawMat_g;
+        //            double RoundUp_Pro_RawMat = RawMatRoundUpQty * (1 - newMatWastage) + TotalNewRawMat_g;
 
-                    double RoundUp_Pro_ColorMat = RoundUp_Pro_RawMat * colorRatio_percentage;
+        //            double RoundUp_Pro_ColorMat = RoundUp_Pro_RawMat * colorRatio_percentage;
 
 
-                    double Total_RoundUp_Pro_New_Mat = RoundUp_Pro_RawMat + RoundUp_Pro_ColorMat;
+        //            double Total_RoundUp_Pro_New_Mat = RoundUp_Pro_RawMat + RoundUp_Pro_ColorMat;
 
-                    maxShots += (int)Math.Floor(RawMatRoundUpQty * (1 - newMatWastage) / TotalWeight_Shot_g);
+        //            maxShots += (int)Math.Floor(RawMatRoundUpQty * (1 - newMatWastage) / TotalWeight_Shot_g);
 
-                    if (RunnerRecycle)
-                    {
-                        TotalRecycleMat = (maxShots - 1) * RW_Shot_g * (1 - recycleWastage);
+        //            if (RunnerRecycle)
+        //            {
+        //                TotalRecycleMat = (maxShots - 1) * RW_Shot_g * (1 - recycleWastage);
 
-                        extraShotGetFromRecycle = (int)Math.Floor(TotalRecycleMat / TotalWeight_Shot_g);
+        //                extraShotGetFromRecycle = (int)Math.Floor(TotalRecycleMat / TotalWeight_Shot_g);
 
-                        maxShots += extraShotGetFromRecycle;
-                    }
+        //                maxShots += extraShotGetFromRecycle;
+        //            }
 
-                    TotalMaxMatProNeeded_g = Total_RoundUp_Pro_New_Mat + TotalRecycleMat;
-                }
+        //            TotalMaxMatProNeeded_g = Total_RoundUp_Pro_New_Mat + TotalRecycleMat;
+        //        }
 
 
-                if (maxShots < minShots)
-                {
-                    MessageBox.Show(" MaxShot < MinShot");
-                }
+        //        if (maxShots < minShots)
+        //        {
+        //            MessageBox.Show(" MaxShot < MinShot");
+        //        }
 
-                #endregion
+        //        #endregion
 
-                #region Fill in data
+        //        #region Fill in data
 
-                txtRawMat.Text = (Prepare_RawMat_g / 1000).ToString();
-                txtColorMat.Text = (Prepare_ColorMat_g / 1000).ToString();
-                txtRecycleMat.Text = (TotalRecycleMat / 1000).ToString();
+        //        txtRawMat.Text = (Prepare_RawMat_g / 1000).ToString();
+        //        txtColorMat.Text = (Prepare_ColorMat_g / 1000).ToString();
+        //        txtRecycleMat.Text = (TotalRecycleMat / 1000).ToString();
 
-                if (dt_RawMat?.Rows.Count > 0)
-                {
-                    double kgPerBag = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out kgPerBag) ? kgPerBag : 0;
+        //        if (dt_RawMat?.Rows.Count > 0)
+        //        {
+        //            double kgPerBag = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out kgPerBag) ? kgPerBag : 0;
 
-                    dt_RawMat.Rows[0][text.Header_KG] = Prepare_RawMat_g / 1000;
-                    dt_RawMat.Rows[0][text.Header_BAG] = (int)(Prepare_RawMat_g / 1000 / kgPerBag);
+        //            dt_RawMat.Rows[0][text.Header_KG] = Prepare_RawMat_g / 1000;
+        //            dt_RawMat.Rows[0][text.Header_BAG] = (int)(Prepare_RawMat_g / 1000 / kgPerBag);
 
-                }
+        //        }
 
-                if (dt_ColorMat?.Rows.Count > 0 && dt_ColorMat.Columns.Contains(text.Header_KG))
-                {
-                    dt_ColorMat.Rows[0][text.Header_KG] = Prepare_ColorMat_g / 1000;
-                }
+        //        if (dt_ColorMat?.Rows.Count > 0 && dt_ColorMat.Columns.Contains(text.Header_KG))
+        //        {
+        //            dt_ColorMat.Rows[0][text.Header_KG] = Prepare_ColorMat_g / 1000;
+        //        }
 
-                int Max_CycleTime_sec = maxShots * cycleTime_PerShot_sec;
-                gbTime.Text = TimePanelTitle + " (" + Max_CycleTime_sec + " s )";
+        //        int Max_CycleTime_sec = maxShots * cycleTime_PerShot_sec;
+        //        gbTime.Text = TimePanelTitle + " (" + Max_CycleTime_sec + " s )";
 
-                double workingHrsPerday = double.TryParse(txtHrsPerDay.Text, out workingHrsPerday) ? workingHrsPerday : 22;
+        //        double workingHrsPerday = double.TryParse(txtHrsPerDay.Text, out workingHrsPerday) ? workingHrsPerday : 22;
 
 
-                int totalDays = (int)(Max_CycleTime_sec / 60 / 60 / workingHrsPerday);
+        //        int totalDays = (int)(Max_CycleTime_sec / 60 / 60 / workingHrsPerday);
 
-                double balHrs = (double)Max_CycleTime_sec / 60 / 60 - (totalDays * workingHrsPerday);
+        //        double balHrs = (double)Max_CycleTime_sec / 60 / 60 - (totalDays * workingHrsPerday);
 
-                lblDays.Text = DayLabelTitle + (totalDays > 1 ? "s" : "") + " (" + workingHrsPerday + "hrs)";
+        //        lblDays.Text = DayLabelTitle + (totalDays > 1 ? "s" : "") + " (" + workingHrsPerday + "hrs)";
 
-                txtDaysNeeded.Text = totalDays.ToString();
-                txtbalHours.Text = balHrs.ToString("0.##");
+        //        txtDaysNeeded.Text = totalDays.ToString();
+        //        txtbalHours.Text = balHrs.ToString("0.##");
 
-                int Max_Qty_pcs = maxShots * cavity_PerShot_pcs;
-                txtMaxQty.Text = Max_Qty_pcs.ToString();
-                txtMaxShot.Text = maxShots.ToString();
+        //        int Max_Qty_pcs = maxShots * cavity_PerShot_pcs;
+        //        txtMaxQty.Text = Max_Qty_pcs.ToString();
+        //        txtMaxShot.Text = maxShots.ToString();
 
-                //dgvMaterialSummary.DataSource = null;
+        //        //dgvMaterialSummary.DataSource = null;
 
-                #endregion
-            }
-            else
-            {
-                //reset field
-                ClearPannelSummaryInfo();
+        //        #endregion
+        //    }
+        //    else
+        //    {
+        //        //reset field
+        //        ClearPannelSummaryInfo();
 
-            }
+        //    }
 
 
-        }
+        //}
+        #endregion
 
         private void FromMinShotToMaxShot()
         {
             if (MIN_SHOT > 0)
             {
-                #region info from user
+                #region Step 1: get Min Shots
 
+                //min shots calculate from user's target qty (minShot = target qty/ mould cavity), done at other stage and save it into MIN_SHOT
                 int minShots = MIN_SHOT;
 
-                bool RunnerRecycle = cbRunnerRecycle.Checked;
-                bool RawMat_RoundUpToBag = cbRoundUpToBag.Checked;
+                #endregion
 
-                int cycleTime_PerShot_sec = int.TryParse(txtCycleTime.Text, out cycleTime_PerShot_sec) ? cycleTime_PerShot_sec : 0;
-                int cavity_PerShot_pcs = int.TryParse(txtCavity.Text, out cavity_PerShot_pcs) ? cavity_PerShot_pcs : 0;
+                #region Step 2: get Min Material Needed
 
+                //part weight per shot in gram
                 double PW_Shot_g = double.TryParse(txtPWPerShot.Text, out PW_Shot_g) ? PW_Shot_g : 0;
+
+                //runner weight per shot in gram
                 double RW_Shot_g = double.TryParse(txtRWPerShot.Text, out RW_Shot_g) ? RW_Shot_g : 0;
 
+                // new material wastage percentage
+                double newMatWastage = double.TryParse(txtMatWastage.Text, out newMatWastage) ? newMatWastage : 0;
+
+                //if user key in 1%, we convert to 0.01, else if user key in 0.01, then we direct use 0.01 to do calculation
+                newMatWastage = newMatWastage < 1 ? newMatWastage : newMatWastage / 100;
+
+                //total material weight needed per shot
                 double TotalWeight_Shot_g = PW_Shot_g + RW_Shot_g;
+
+                //calculate min material needed base on user's target min shots, and add wastage material to ensure production have enough material to met the min shots target
+                double minMaterialNeeded_g = CalculateMinMaterialNeeded_Gram(minShots, TotalWeight_Shot_g, newMatWastage);
+
+                #endregion
+
+                #region Step 3: get Max Material Needed & Max Shots
+        
+                int maxShots = minShots;
+
+                bool RawMat_RoundUpToBag = cbRoundUpToBag.Checked;
+
+                double maxMaterialNeeded_g = minMaterialNeeded_g;
+                double MaterialperBag_KG = 25;
+
+                DataTable dt_RawMat = (DataTable)dgvRawMatList.DataSource;
+
+                if (dt_RawMat?.Rows.Count > 0 && dt_RawMat.Columns.Contains(text.Header_KGPERBAG))
+                {
+                    MaterialperBag_KG = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out MaterialperBag_KG) ? MaterialperBag_KG : 25;
+                }
 
                 double colorRatio_percentage = 0;
 
@@ -1032,153 +1302,130 @@ namespace FactoryManagementSoftware.UI
                     colorRatio_percentage = double.TryParse(dt_ColorMat.Rows[0][text.Header_Percentage].ToString(), out colorRatio_percentage) ? colorRatio_percentage : 0;
                 }
 
-                double newMatWastage = double.TryParse(txtMatWastage.Text, out newMatWastage) ? newMatWastage : 0;
+                colorRatio_percentage = colorRatio_percentage < 1 ? colorRatio_percentage : colorRatio_percentage / 100;
 
-                double recycleWastage = 0;
+                // rawMat + rawMat * ColorRatio = minMaterialNeeded
+                // rawMat (1+ColorRatio) = minMaterialNeeded
+                // rawMat = minMaterialNeeded / (1+ColorRatio)
+                // R = T / (1 + P)
+                double new_RawMat_g = minMaterialNeeded_g / (1 + colorRatio_percentage);
+                double new_ColorMat_g = new_RawMat_g * colorRatio_percentage;
 
-                double MaterialperBag_KG = 25;
+                //if(new_RawMat_g + new_ColorMat_g != minMaterialNeeded_g)
+                //{
+                //    MessageBox.Show("Min New Raw Mat Calculation Error:\nnew_RawMat_g + new_ColorMat_g != minMaterialNeeded_g");
+                //}
 
-                DataTable dt_RawMat = (DataTable)dgvRawMatList.DataSource;
-
-                if (dt_RawMat?.Rows.Count > 0 && dt_RawMat.Columns.Contains(text.Header_KGPERBAG))
-                {
-                    MaterialperBag_KG = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out MaterialperBag_KG) ? MaterialperBag_KG : 25;
-
-                }
-
-                colorRatio_percentage = colorRatio_percentage >= 1 ? colorRatio_percentage /= 100 : colorRatio_percentage;
-                newMatWastage = newMatWastage >= 1 ? newMatWastage /= 100 : newMatWastage;
-                recycleWastage = recycleWastage >= 1 ? recycleWastage /= 100 : recycleWastage;
-
-                #endregion
-
-                #region Calculation
-
-                //TO:DO Calculate the below result
-
-                double TotalNewRawMat_g = 0;
-                double TotalNewColorMat_g = 0;
-
-                double TotalMinMatNeeded_g = 0;
-                double TotalMaxMatProNeeded_g = 0;
-
-                int maxShots = minShots;
-
-                double TotalRecycleMat = 0;
-                int extraShotGetFromRecycle = 0;
-
-                if (RunnerRecycle)
-                {
-                    TotalRecycleMat = (minShots - 1) * RW_Shot_g * (1 - recycleWastage);
-
-                    extraShotGetFromRecycle = (int)Math.Floor(TotalRecycleMat / TotalWeight_Shot_g);
-                }
-
-                TotalMinMatNeeded_g = minShots * TotalWeight_Shot_g;
-
-                double TotalNewMat = TotalMinMatNeeded_g - TotalRecycleMat;
-
-                TotalNewRawMat_g = TotalNewMat / (1 + colorRatio_percentage);
-                TotalNewColorMat_g = TotalNewRawMat_g * colorRatio_percentage;
-
-                if (TotalNewMat > (TotalNewRawMat_g + TotalNewColorMat_g))
-                {
-                    TotalNewRawMat_g = TotalNewMat - TotalNewColorMat_g;
-                }
-                else
-                {
-                    TotalNewMat = TotalNewRawMat_g + TotalNewColorMat_g;
-
-                }
-
-                TotalMaxMatProNeeded_g = TotalNewMat + TotalRecycleMat;
-
-                maxShots = (int)Math.Floor(TotalMaxMatProNeeded_g / TotalWeight_Shot_g);
-
-                double Prepare_RawMat_g = TotalNewRawMat_g * (1 + newMatWastage);
-                double Prepare_ColorMat_g = Prepare_RawMat_g * colorRatio_percentage;
+                int extraShot_fromRoundUp = 0;
 
                 if (RawMat_RoundUpToBag)
                 {
-                    double RawMatRoundUpQty = Math.Ceiling(Prepare_RawMat_g / 1000 / MaterialperBag_KG) * MaterialperBag_KG * 1000;
+                    //Round Up Raw Mat to nearlest max bag qty
+                    new_RawMat_g = Math.Ceiling(new_RawMat_g / 1000 / MaterialperBag_KG) * MaterialperBag_KG * 1000;
 
-                    RawMatRoundUpQty = RawMatRoundUpQty - Prepare_RawMat_g;
+                    new_ColorMat_g = new_RawMat_g * colorRatio_percentage;
 
-                    Prepare_RawMat_g += RawMatRoundUpQty;
+                    maxMaterialNeeded_g = new_RawMat_g + new_ColorMat_g;
+                
+                    //calculate extra shot can get from the round up material qty, need to apply wastage, since the minMaterialNeeded already deduct wastage,
+                    //so at this stage only deduct the wastage from the extra material.
+                    extraShot_fromRoundUp = (int)Math.Floor((maxMaterialNeeded_g - minMaterialNeeded_g) * (1 - newMatWastage) / TotalWeight_Shot_g);
 
-                    Prepare_ColorMat_g = Prepare_RawMat_g * colorRatio_percentage;
-
-                    double RoundUp_Pro_RawMat = RawMatRoundUpQty * (1 - newMatWastage) + TotalNewRawMat_g;
-
-                    double RoundUp_Pro_ColorMat = RoundUp_Pro_RawMat * colorRatio_percentage;
-
-
-                    double Total_RoundUp_Pro_New_Mat = RoundUp_Pro_RawMat + RoundUp_Pro_ColorMat;
-
-                    maxShots += (int)Math.Floor(RawMatRoundUpQty * (1 - newMatWastage) / TotalWeight_Shot_g);
-
-                    if (RunnerRecycle)
-                    {
-                        TotalRecycleMat = (maxShots - 1) * RW_Shot_g * (1 - recycleWastage);
-
-                        extraShotGetFromRecycle = (int)Math.Floor(TotalRecycleMat / TotalWeight_Shot_g);
-
-                        maxShots += extraShotGetFromRecycle;
-                    }
-
-                    TotalMaxMatProNeeded_g = Total_RoundUp_Pro_New_Mat + TotalRecycleMat;
+                    maxShots = minShots + extraShot_fromRoundUp;
                 }
 
+                bool RunnerRecycle = cbRunnerRecycle.Checked;
 
-                if (maxShots < minShots)
+                double recycleWastage = 0;
+                recycleWastage = recycleWastage < 1 ? recycleWastage : recycleWastage / 100;
+
+                int total_ExtraShotsFromRecycle = 0;
+                double total_RecycleMat_g = 0;
+
+                if (RunnerRecycle)
                 {
-                    MessageBox.Show(" MaxShot < MinShot");
+                    // total runner material from max shots
+                    double totalRunner_g = RW_Shot_g * maxShots;
+                    double effectiveRunner_g = totalRunner_g;
+
+                    total_RecycleMat_g += effectiveRunner_g;
+
+                    // loop until the recyclable runner is less than the total weight required for a single shot
+                    while (effectiveRunner_g / TotalWeight_Shot_g >= 1)
+                    {
+                        // calculate runner that can be recycled after considering wastage
+                        double recyclableRunner_g = effectiveRunner_g * (1 - recycleWastage);
+
+                        //total_RecycleMat_g += recyclableRunner_g;
+
+                        // calculate extra shots from the recyclable runner material
+                        // consider both part weight and runner weight for each shot when calculating extra shots
+                        int extraShotsFromRecycle = (int)Math.Floor(recyclableRunner_g / TotalWeight_Shot_g);
+
+                        total_ExtraShotsFromRecycle += extraShotsFromRecycle;
+
+                        // the effective runner for the next iteration is the runner generated from the extra shots
+                        effectiveRunner_g = RW_Shot_g * extraShotsFromRecycle;
+
+                        total_RecycleMat_g += effectiveRunner_g;
+                    }
+
+                    // add the extra shots from recycle to the max shots
+                    maxShots += total_ExtraShotsFromRecycle;
+
                 }
 
                 #endregion
 
-                #region Fill in data
+                #region Step 4: Production Time Calculation
 
-                txtRawMat.Text = (Prepare_RawMat_g / 1000).ToString();
-                txtColorMat.Text = (Prepare_ColorMat_g / 1000).ToString();
-                txtRecycleMat.Text = (TotalRecycleMat / 1000).ToString();
-
-                if (dt_RawMat?.Rows.Count > 0)
-                {
-                    double kgPerBag = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out kgPerBag) ? kgPerBag : 0;
-
-                    dt_RawMat.Rows[0][text.Header_KG] = Prepare_RawMat_g / 1000;
-                    dt_RawMat.Rows[0][text.Header_BAG] = (int)(Prepare_RawMat_g / 1000 / kgPerBag);
-
-                }
-
-                if (dt_ColorMat?.Rows.Count > 0 && dt_ColorMat.Columns.Contains(text.Header_KG))
-                {
-                    dt_ColorMat.Rows[0][text.Header_KG] = Prepare_ColorMat_g / 1000;
-                }
+                int cycleTime_PerShot_sec = int.TryParse(txtCycleTime.Text, out cycleTime_PerShot_sec) ? cycleTime_PerShot_sec : 0;
+                int cavity_PerShot_pcs = int.TryParse(txtCavity.Text, out cavity_PerShot_pcs) ? cavity_PerShot_pcs : 0;
 
                 int Max_CycleTime_sec = maxShots * cycleTime_PerShot_sec;
-                gbTime.Text = TimePanelTitle + " (" + Max_CycleTime_sec + " s )";
+
+                double pro_TotalHours = Max_CycleTime_sec / 3600;
 
                 double workingHrsPerday = double.TryParse(txtHrsPerDay.Text, out workingHrsPerday) ? workingHrsPerday : 22;
 
+                int totalDays = (int)(pro_TotalHours / workingHrsPerday);
 
-                int totalDays = (int)(Max_CycleTime_sec / 60 / 60 / workingHrsPerday);
+                double balHrs = (double)pro_TotalHours - (totalDays * workingHrsPerday);
 
-                double balHrs = (double)Max_CycleTime_sec / 60 / 60 - (totalDays * workingHrsPerday);
+                #endregion
 
+                #region Step 5: Fill In Data
+
+                //Production Time
+                gbTime.Text = TimePanelTitle + " (" + Max_CycleTime_sec + " s )";
                 lblDays.Text = DayLabelTitle + (totalDays > 1 ? "s" : "") + " (" + workingHrsPerday + "hrs)";
-
                 txtDaysNeeded.Text = totalDays.ToString();
                 txtbalHours.Text = balHrs.ToString("0.##");
 
+                //Max Capacity
                 int Max_Qty_pcs = maxShots * cavity_PerShot_pcs;
                 txtMaxQty.Text = Max_Qty_pcs.ToString();
                 txtMaxShot.Text = maxShots.ToString();
 
-                //dgvMaterialSummary.DataSource = null;
+                //Material Summary
+                txtRawMat.Text = (new_RawMat_g / 1000).ToString();
+                txtColorMat.Text = (new_ColorMat_g / 1000).ToString();
+                txtRecycleMat.Text = (total_RecycleMat_g / 1000).ToString();
+
+                if (dt_RawMat?.Rows.Count > 0)
+                {
+                    double kgPerBag = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out kgPerBag) ? kgPerBag : 0;
+                    dt_RawMat.Rows[0][text.Header_KG] = new_RawMat_g / 1000;
+                    dt_RawMat.Rows[0][text.Header_BAG] = (int)(new_RawMat_g / 1000 / kgPerBag);
+                }
+
+                if (dt_ColorMat?.Rows.Count > 0 && dt_ColorMat.Columns.Contains(text.Header_KG))
+                {
+                    dt_ColorMat.Rows[0][text.Header_KG] = new_ColorMat_g / 1000;
+                }
 
                 #endregion
+
             }
             else
             {
@@ -1186,8 +1433,8 @@ namespace FactoryManagementSoftware.UI
                 ClearPannelSummaryInfo();
 
             }
-
         }
+
         private double CalculateMinMaterialNeeded_Gram(int minShot, double totalWeightPerShot, double wastage)
         {
             return (double) minShot * totalWeightPerShot * (1 + wastage);
@@ -1303,7 +1550,44 @@ namespace FactoryManagementSoftware.UI
                 IndexReset(dgvItemList);
 
                 LoadSingleMaterialList();
-                FromMinShotToTotalMaterialCalculation();
+                FromMinShotToMaxShot();
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("rowIndex", "The row index provided is out of range.");
+            }
+        }
+
+        private string JOB_PURPOSE = "";
+
+        private void EditJobPurpose(DataGridView dgv, int rowIndex)
+        {
+            if (rowIndex >= 0 && rowIndex < dgv.Rows.Count) // Ensure the index is within the valid range
+            {
+                JOB_PURPOSE = "";
+                //check if item column exist
+
+                //get item code
+                string itemCode = dgv.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
+                string itemName = dgv.Rows[rowIndex].Cells[text.Header_ItemName].Value.ToString();
+
+                //open purpose page
+                frmJobPurposeEdit frm = new frmJobPurposeEdit(itemCode, itemName);
+
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Normal;
+                frm.ShowDialog();
+
+
+                if (frmJobPurposeEdit.JOB_PURPOSE != "")
+                {
+                    JOB_PURPOSE = frmJobPurposeEdit.JOB_PURPOSE;
+
+                    dgv.Rows[rowIndex].Cells[text.Header_Job_Purpose].Value = JOB_PURPOSE;
+                    dgv.Rows[rowIndex].Cells[text.Header_Job_Purpose].Style.BackColor = Color.White;
+                }
+
+                dgv.ClearSelection();
             }
             else
             {
@@ -1389,7 +1673,7 @@ namespace FactoryManagementSoftware.UI
                 txtRWPerShot.Text = runnerWeightPerShot.ToString("0.##");
                 MIN_SHOT = totalShot;
 
-                FromMinShotToTotalMaterialCalculation();
+                FromMinShotToMaxShot();
 
             }
 
@@ -1744,11 +2028,13 @@ namespace FactoryManagementSoftware.UI
                 dgv.SuspendLayout();
 
                 DataTable dt = (DataTable)dgv.DataSource;
+
                 foreach (DataRow row in dt.Rows)
                 {
                     int rowIndex = dt.Rows.IndexOf(row);
 
                     string itemDescription = row[text.Header_ItemDescription].ToString();
+                    string jobPurpose = row[text.Header_Job_Purpose].ToString();
 
 
                     //default back color
@@ -1758,6 +2044,11 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[rowIndex].Cells[text.Header_Cavity].Style.BackColor = SystemColors.Info;
                     dgv.Rows[rowIndex].Cells[text.Header_ProPwShot].Style.BackColor = SystemColors.Info;
                     dgv.Rows[rowIndex].Cells[text.Header_TargetQty].Style.BackColor = SystemColors.Info;
+
+                    if(string.IsNullOrEmpty(jobPurpose))
+                    {
+                        dgv.Rows[rowIndex].Cells[text.Header_Job_Purpose].Style.BackColor = Color.Red;
+                    }
 
                 }
 
@@ -2060,7 +2351,7 @@ namespace FactoryManagementSoftware.UI
 
                 MIN_SHOT = (int)totalShot;
 
-                FromMinShotToTotalMaterialCalculation();
+                FromMinShotToMaxShot();
 
             }
         }
@@ -2220,6 +2511,7 @@ namespace FactoryManagementSoftware.UI
                 try
                 {
                     my_menu.Items.Add(text.RemoveItem).Name = text.RemoveItem;
+                    my_menu.Items.Add(text.JobPurpose).Name = text.JobPurpose;
 
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
@@ -2254,6 +2546,10 @@ namespace FactoryManagementSoftware.UI
             if (itemClicked.Equals(text.RemoveItem))
             {
                 RemoveItemFromList(dgv, rowIndex);
+            }
+            else if (itemClicked.Equals(text.JobPurpose))
+            {
+                EditJobPurpose(dgv, rowIndex);
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
@@ -2558,17 +2854,17 @@ namespace FactoryManagementSoftware.UI
 
         private void cbRunnerRecycle_CheckedChanged(object sender, EventArgs e)
         {
-            FromMinShotToTotalMaterialCalculation();
+            FromMinShotToMaxShot();
         }
 
         private void cbRoundUpToBag_CheckedChanged(object sender, EventArgs e)
         {
-            FromMinShotToTotalMaterialCalculation();
+            FromMinShotToMaxShot();
         }
 
         private void txtMatWastage_TextChanged(object sender, EventArgs e)
         {
-            FromMinShotToTotalMaterialCalculation();
+            FromMinShotToMaxShot();
         }
 
         private void txtHrsPerDay_TextChanged(object sender, EventArgs e)
@@ -2653,7 +2949,6 @@ namespace FactoryManagementSoftware.UI
                 dgv.ResumeLayout();
             }
         }
-
 
         private void txtMaxShot_TextChanged(object sender, EventArgs e)
         {
@@ -2872,48 +3167,6 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void AutoAdjustDates(DataGridView dgvMacSchedule)
-        {
-            // Dictionary to hold last end date for each machine
-            Dictionary<int, DateTime> machineEndDates = new Dictionary<int, DateTime>();
-
-            foreach (DataGridViewRow row in dgvMacSchedule.Rows)
-            {
-                if (row.Cells["macID"].Value != null && row.Cells["start date"].Value != null && row.Cells["est end"].Value != null)
-                {
-                    int macID = Convert.ToInt32(row.Cells["macID"].Value);
-                    DateTime startDate = Convert.ToDateTime(row.Cells["start date"].Value);
-                    DateTime endDate = Convert.ToDateTime(row.Cells["est end"].Value);
-
-                    // If the machine is already in the dictionary, check if the current job's start date is before the last end date
-                    if (machineEndDates.ContainsKey(macID) && startDate < machineEndDates[macID])
-                    {
-                        // There is an overlap, adjust the start date to be the last end date plus one day
-                        DateTime newStartDate = machineEndDates[macID].AddDays(1);
-                        row.Cells["start date"].Value = newStartDate;
-
-                        // Recalculate the end date based on the new start date
-                        // This will depend on your logic for calculating the end date
-                        // For now I'll assume the job duration is the same
-                        TimeSpan jobDuration = endDate - startDate;
-                        DateTime newEndDate = newStartDate + jobDuration;
-                        row.Cells["est end"].Value = newEndDate;
-
-                        // Update the end date in the dictionary
-                        machineEndDates[macID] = newEndDate;
-                    }
-                    else
-                    {
-                        // No overlap, just add or update the machine's end date in the dictionary
-                        machineEndDates[macID] = endDate;
-                    }
-                }
-            }
-
-            // Refresh the DataGridView to show the updated dates
-            dgvMacSchedule.Refresh();
-        }
-
         private bool DATE_COLLISION_FOUND = false;
         private bool CheckMachineProductionDateCollision()
         {
@@ -2993,7 +3246,6 @@ namespace FactoryManagementSoftware.UI
 
             return DateCollisionFound;
         }
-
 
         private void LoadMachineSchedule()
         {
@@ -3245,11 +3497,6 @@ namespace FactoryManagementSoftware.UI
             machineSelectionMode();
         }
 
-        private void gunaGradientButton3_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnMatStockCheck2_Click(object sender, EventArgs e)
         {
             int maxShot = int.TryParse(txtMaxShot.Text, out maxShot) ? maxShot : 0;
@@ -3445,8 +3692,6 @@ namespace FactoryManagementSoftware.UI
             dgvMacSchedule.DataSource = dt_MacSchedule;
             MacScheduleListCellFormatting(dgvMacSchedule);
         }
-
-
 
         private void cmbMacID_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -3943,6 +4188,7 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("Data not found.");
             }
         }
+
         private void btnAdjustCollisionDateBySystem_Click(object sender, EventArgs e)
         {
             AutoAdjustCollisionDate();
@@ -3954,6 +4200,16 @@ namespace FactoryManagementSoftware.UI
         {
             MachineSelectionSettingInitial();
             LoadMachineSchedule();
+        }
+
+        private void tlpMachineSelection_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label17_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

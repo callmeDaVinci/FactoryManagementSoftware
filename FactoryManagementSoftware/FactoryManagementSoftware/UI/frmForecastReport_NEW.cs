@@ -1266,6 +1266,7 @@ namespace FactoryManagementSoftware.UI
             DataGridView dgv = dgvForecastReport;
 
             DT_FORECAST_REPORT = FullDetailForecastData();//9562ms-->3464ms (16/3) -> 2537ms (17/3)
+
             dgv.DataSource = DT_FORECAST_REPORT;
 
 

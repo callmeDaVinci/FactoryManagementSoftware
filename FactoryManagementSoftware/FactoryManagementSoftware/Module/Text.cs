@@ -36,6 +36,7 @@ namespace FactoryManagementSoftware.Module
         public string TransferHistory { get; } = "Transfer History";
         public string AddingItem { get; } = "Add Item";
         public string RemoveItem { get; } = "Remove Item";
+        public string JobPurpose { get; } = "Job Purpose";
         public string AddingNewMould { get; } = "Add New Mould";
         public string AddingExistingMould { get; } = "Add Existing Mould";
         public string AutoSearchFamilyItem { get; } = "Auto Search Family Item";
@@ -338,6 +339,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_TargetQty { get; } = "Target Qty";
         public string Header_Qty { get; } = "QUANTITY";
         public string Header_AutoQtyAdjustment { get; } = "Auto-Qty Adjustment";
+        public string Header_Job_Purpose { get; } = "Job Purpose";
 
 
         public string Header_DefectRemark { get; } = "DEFECT REMARK";
@@ -356,6 +358,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_MouldCode { get; } = "Mould Code";
         public string Header_MouldSelection { get; } = "Mould Selection";
         public string Header_ItemSelection { get; } = "Item Selection";
+        public string Header_Selection { get; } = "Selection";
         public string Header_MouldDescription{ get; } = "Mould Description";
         public string Header_ItemName { get; } = "ITEM NAME";
         public string Header_CountedQty { get; } = "COUNTED QTY";
