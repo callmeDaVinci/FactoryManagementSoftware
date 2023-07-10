@@ -22,22 +22,34 @@ namespace FactoryManagementSoftware.BLL
         public string quo_ton { get; set; }
         public string plan_ct { get; set; }
         public string plan_pw { get; set; }
+        public string plan_item_pw { get; set; }
+        public string plan_item_cavity { get; set; }
+        public string plan_pw_shot { get; set; }
         public string plan_rw { get; set; }
+        public string plan_rw_shot { get; set; }
         public string plan_cavity { get; set; }
 
         public string material_code { get; set; }
         public string material_bag_kg { get; set; }
         public string material_bag_qty { get; set; }
         public string material_recycle_use { get; set; }
-        
+        public string plan_mould_code { get; set; }
+        public string plan_mould_ton { get; set; }
+
+        public string recycle_material_qty_kg { get; set; }
+        public string raw_material_qty { get; set; }
+        public string raw_material_qty_kg { get; set; }
+
         public string color_material_code { get; set; }
         public string color_material_usage { get; set; }
         public string color_material_qty { get; set; }
+        public string color_material_qty_kg { get; set; }
 
         public string production_purpose { get; set; }
         public string production_Old_target_qty { get; set; }
         public string production_target_qty { get; set; }
         public string production_able_produce_qty { get; set; }
+        public string production_max_shot{ get; set; }
         public string production_day { get; set; }
         public string production_hour_per_day { get; set; }
         public string production_hour { get; set; }
@@ -47,10 +59,16 @@ namespace FactoryManagementSoftware.BLL
         public int plan_produced { get; set; }
 
         public int machine_id { get; set; }
+        public int machine_location { get; set; }
+        public string machine_location_string { get; set; }
         public int family_with { get; set; } = -1;
         public bool recording { get; set; }
 
         public bool Checked { get; set; }
+
+        public bool use_recycle { get; set; }
+        public bool raw_round_up_to_bag { get; set; }
+
         public DateTime CheckedDate { get; set; }
         public int CheckedBy { get; set; }
 

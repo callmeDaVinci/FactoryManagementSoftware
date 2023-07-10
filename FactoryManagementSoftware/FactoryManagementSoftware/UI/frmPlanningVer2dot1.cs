@@ -224,8 +224,10 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(text.Header_ItemSelection, typeof(bool));
+            dt.Columns.Add(text.Header_Selection, typeof(bool));
             dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(text.Header_Ratio, typeof(double));
+
             dt.Columns.Add(text.Header_ItemDescription, typeof(string));
             dt.Columns.Add(text.Header_ItemCode, typeof(string));
             dt.Columns.Add(text.Header_ItemName, typeof(string));
@@ -243,7 +245,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(text.Header_ItemSelection, typeof(bool));
+            dt.Columns.Add(text.Header_Selection, typeof(bool));
             dt.Columns.Add(text.Header_Index, typeof(int));
             dt.Columns.Add(text.Header_ItemDescription, typeof(string));
             dt.Columns.Add(text.Header_Color, typeof(string));
@@ -407,15 +409,209 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private DataTable DT_SUMMARY_ITEM = null;
+        private DataTable DT_SUMMARY_RAW = null;
+        private DataTable DT_SUMMARY_COLOR = null;
+        private DataTable DT_SUMMARY_STOCKCHECK = null;
+        private DataTable DT_SUMMARY_MAC_SCHEDULE = null;
+        private PlanningBLL BLL_JOB_SUMMARY = new PlanningBLL();
+        private facDAL dalFac = new facDAL();
         private bool Validation()
         {
+            BLL_JOB_SUMMARY = new PlanningBLL();
+            DT_SUMMARY_ITEM = null;
+            DT_SUMMARY_RAW = null;
+            DT_SUMMARY_COLOR = null;
+            DT_SUMMARY_STOCKCHECK = null;
+            DT_SUMMARY_MAC_SCHEDULE = null;
+
+            if (dgvItemList?.Rows.Count > 0)
+            {
+                DT_SUMMARY_ITEM = (DataTable)dgvItemList.DataSource;
+
+
+                foreach (DataRow row in DT_SUMMARY_ITEM.Rows)
+                {
+                    string purpose = row[text.Header_Job_Purpose].ToString();
+
+                    BLL_JOB_SUMMARY.plan_mould_code = row[text.Header_MouldCode].ToString();
+                    BLL_JOB_SUMMARY.plan_mould_ton = row[text.Header_ProTon].ToString();
+
+                    if (string.IsNullOrEmpty(purpose))
+                    {
+                        MessageBox.Show("One of the items 'Job Purpose' was not found.\nPlease right-click on the Item List to set a job purpose for each item");
+
+                        return false;
+                    }
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Item not found.\nPlease add at least one(1) item before adding the job.");
+
+                return false;
+            }
+
+            if (dgvRawMatList?.Rows.Count > 0)
+            {
+                DT_SUMMARY_RAW = (DataTable)dgvRawMatList.DataSource;
+
+                bool selected = false;
+
+                foreach(DataRow row in DT_SUMMARY_RAW.Rows)
+                {
+                    bool selection = bool.TryParse(row[text.Header_Selection].ToString(), out selection) ? selection : false;
+
+                    if(selection)
+                    {
+                        selected = true;
+                        break;
+                    }
+                }
+
+                if(!selected)
+                {
+                    MessageBox.Show("Please select at least one(1) raw material before adding the job.");
+
+                    return false;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Raw material not found.\nPlease add and select at least one(1) raw material before adding the job.");
+
+                return false;
+            }
+
+            if (dgvColorMatList?.Rows.Count > 0)
+            {
+                DT_SUMMARY_COLOR = (DataTable)dgvColorMatList.DataSource;
+            }
+
+            if (dgvStockCheck?.Rows.Count > 0)
+            {
+                DT_SUMMARY_STOCKCHECK = (DataTable)dgvStockCheck.DataSource;
+            }
+
+            if (dgvMacSchedule?.Rows.Count > 0)
+            {
+                DT_SUMMARY_MAC_SCHEDULE = (DataTable)dgvMacSchedule.DataSource;
+            }
+
+            int totalCavity = int.TryParse(txtCavity.Text, out totalCavity) ? totalCavity : 0;
+
+            if(totalCavity == 0)
+            {
+                MessageBox.Show("Mould Cavity cannot be 0.");
+
+                return false;
+            }
+
+            int proCycleTime = int.TryParse(txtCycleTime.Text, out proCycleTime) ? proCycleTime : 0;
+
+            if (proCycleTime == 0)
+            {
+                MessageBox.Show("Mould Cycle Time cannot be 0.");
+
+                return false;
+            }
+
+            double totalPWPerShot = double.TryParse(txtPWPerShot.Text, out totalPWPerShot) ? totalPWPerShot : 0;
+            double totalRWPerShot = double.TryParse(txtRWPerShot.Text, out totalRWPerShot) ? totalRWPerShot : 0;
+
+            if (totalPWPerShot + totalRWPerShot == 0)
+            {
+                MessageBox.Show("Total weight per shot cannot be 0.");
+
+                return false;
+            }
+
+            int proDay = int.TryParse(txtDaysNeeded.Text, out proDay) ? proDay : 0;
+            double proBalHrs= double.TryParse(txtbalHours.Text, out proBalHrs) ? proBalHrs : 0;
+            int hrsPerDay = int.TryParse(txtHrsPerDay.Text, out hrsPerDay) ? hrsPerDay : 0;
+
+            int maxShot = int.TryParse(txtMaxShot.Text, out maxShot) ? maxShot : 0;
+
+            if (maxShot == 0)
+            {
+                MessageBox.Show("Mould Max Shot cannot be 0.");
+
+                return false;
+            }
+
+
+            double totalRaw_kg = double.TryParse(txtRawMat.Text, out totalRaw_kg) ? totalRaw_kg : 0;
+            double totalColor_kg = double.TryParse(txtColorMat.Text, out totalColor_kg) ? totalColor_kg : 0;
+            double totalRecycle_kg = double.TryParse(txtRecycleMat.Text, out totalRecycle_kg) ? totalRecycle_kg : 0;
+
+            if (totalRaw_kg + totalColor_kg + totalRecycle_kg == 0)
+            {
+                MessageBox.Show("Material cannot be 0.");
+
+                return false;
+            }
+
+            DateTime proStart = dtpStartDate.Value;
+            DateTime proEnd = dtpEstimateEndDate.Value;
+
+            int macID = 0;
+
+            if(cmbMac.SelectedIndex > -1)
+            {
+                DataRowView drv = (DataRowView)cmbMac.SelectedItem;
+                macID = int.TryParse(drv[dalMac.MacID].ToString(), out macID) ? macID : 0;
+            }
+
+            if (macID == 0)
+            {
+                MessageBox.Show("Please select a machine for this job.");
+
+                return false;
+            }
+
+
+            int facID = 0;
+            string facName = cmbMacLocation.Text;
+
+            if (cmbMacLocation.SelectedIndex > -1)
+            {
+                DataRowView drv = (DataRowView)cmbMacLocation.SelectedItem;
+                facID = int.TryParse(drv[dalFac.FacID].ToString(), out facID) ? facID : 0;
+            }
+
+            BLL_JOB_SUMMARY.plan_cavity = totalCavity.ToString();
+            BLL_JOB_SUMMARY.plan_ct = proCycleTime.ToString();
+            BLL_JOB_SUMMARY.plan_pw_shot = totalPWPerShot.ToString();
+            BLL_JOB_SUMMARY.plan_pw = totalPWPerShot.ToString();
+            BLL_JOB_SUMMARY.plan_rw_shot = totalRWPerShot.ToString();
+            BLL_JOB_SUMMARY.plan_rw = totalRWPerShot.ToString();
+            BLL_JOB_SUMMARY.production_day = proDay.ToString();
+            BLL_JOB_SUMMARY.production_hour = proBalHrs.ToString();
+            BLL_JOB_SUMMARY.production_hour_per_day = hrsPerDay.ToString();
+            BLL_JOB_SUMMARY.production_max_shot = maxShot.ToString();
+            BLL_JOB_SUMMARY.raw_material_qty_kg = totalRaw_kg.ToString();
+            BLL_JOB_SUMMARY.raw_material_qty = totalRaw_kg.ToString();
+            BLL_JOB_SUMMARY.color_material_qty_kg = totalColor_kg.ToString();
+            BLL_JOB_SUMMARY.color_material_qty = totalColor_kg.ToString();
+            BLL_JOB_SUMMARY.recycle_material_qty_kg = totalRecycle_kg.ToString();
+            BLL_JOB_SUMMARY.material_recycle_use = totalRecycle_kg.ToString();
+            BLL_JOB_SUMMARY.production_start_date = proStart.Date;
+            BLL_JOB_SUMMARY.production_end_date = proEnd.Date;
+            BLL_JOB_SUMMARY.machine_id = macID;
+            BLL_JOB_SUMMARY.machine_location_string = facName;
+            BLL_JOB_SUMMARY.machine_location = facID;
+
+            BLL_JOB_SUMMARY.raw_round_up_to_bag = cbRoundUpToBag.Checked;
+            BLL_JOB_SUMMARY.use_recycle = cbRunnerRecycle.Checked;
+
+
             if (DATE_COLLISION_FOUND)
             {
                 MessageBox.Show("New Draft Job date conflict detected.\nPlease adjust the dates to prevent overlap before adding the job.");
 
                 return false;
             }
-            getPlanningData();
 
             return true;
         }
@@ -465,11 +661,8 @@ namespace FactoryManagementSoftware.UI
         {
             if(Validation())
             {
-                //job adding
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-
                 //open purpose page
-                frmJobSummary frm = new frmJobSummary();
+                frmJobSummary frm = new frmJobSummary(DT_SUMMARY_ITEM, DT_SUMMARY_RAW, DT_SUMMARY_COLOR, DT_SUMMARY_STOCKCHECK, DT_SUMMARY_MAC_SCHEDULE, BLL_JOB_SUMMARY);
 
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Normal;
@@ -620,7 +813,6 @@ namespace FactoryManagementSoftware.UI
                 //}
 
 
-                Cursor = Cursors.Arrow; // change cursor to normal type
             }
         }
 
@@ -698,7 +890,7 @@ namespace FactoryManagementSoftware.UI
 
 
 
-                dgv.Columns[text.Header_ItemSelection].Width = smallColumnWidth;
+                dgv.Columns[text.Header_Selection].Width = smallColumnWidth;
                 dgv.Columns[text.Header_Index].Width = smallColumnWidth;
                 dgv.Columns[text.Header_KG].Width = smallColumnWidth;
                 dgv.Columns[text.Header_KGPERBAG].Width = smallColumnWidth;
@@ -735,7 +927,7 @@ namespace FactoryManagementSoftware.UI
 
                 int columnWidth = 60;
 
-                dgv.Columns[text.Header_ItemSelection].Width = columnWidth;
+                dgv.Columns[text.Header_Selection].Width = columnWidth;
                 dgv.Columns[text.Header_Index].Width = columnWidth;
                 dgv.Columns[text.Header_KG].Width = columnWidth;
                 dgv.Columns[text.Header_Percentage].Width = columnWidth;
@@ -781,18 +973,18 @@ namespace FactoryManagementSoftware.UI
             else if (dgv == dgvMacSchedule)
             {
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 6.5F, FontStyle.Italic);
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
                 dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 dgv.Columns[text.Header_RawMat].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[text.Header_RawMat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+                dgv.Columns[text.Header_RawMat].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
                 dgv.Columns[text.Header_RawMat].MinimumWidth = 100;
                 dgv.Columns[text.Header_RawMat].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
                 dgv.Columns[text.Header_ColorMat].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[text.Header_ColorMat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
+                dgv.Columns[text.Header_ColorMat].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
                 dgv.Columns[text.Header_ColorMat].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 dgv.Columns[text.Header_ColorMat].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
@@ -896,7 +1088,7 @@ namespace FactoryManagementSoftware.UI
 
                         var newRawRow = dt_RawMat.NewRow();
 
-                        newRawRow[text.Header_ItemSelection] = true;
+                        newRawRow[text.Header_Selection] = true;
                         newRawRow[text.Header_Index] = rawIndex++;
                         newRawRow[text.Header_ItemDescription] = rawMaterial;
                         newRawRow[text.Header_ItemCode] = rawMaterial;
@@ -921,7 +1113,7 @@ namespace FactoryManagementSoftware.UI
                         colorRate = decimal.Round(colorRate, 0);
 
                         var newColorRow = dt_ColorMat.NewRow();
-                        newColorRow[text.Header_ItemSelection] = true;
+                        newColorRow[text.Header_Selection] = true;
                         newColorRow[text.Header_Index] = colorIndex++;
                         newColorRow[text.Header_ItemDescription] = colorMaterial;
                         newColorRow[text.Header_ItemCode] = colorMaterial;
@@ -971,7 +1163,7 @@ namespace FactoryManagementSoftware.UI
 
                     var newRawRow = dt_RawMat.NewRow();
 
-                    newRawRow[text.Header_ItemSelection] = true;
+                    newRawRow[text.Header_Selection] = true;
                     newRawRow[text.Header_Index] = rawIndex++;
                     newRawRow[text.Header_ItemDescription] = rawMaterial;
                     newRawRow[text.Header_ItemCode] = rawMaterial;
@@ -996,7 +1188,7 @@ namespace FactoryManagementSoftware.UI
                     colorRate = decimal.Round(colorRate, 0);
 
                     var newColorRow = dt_ColorMat.NewRow();
-                    newColorRow[text.Header_ItemSelection] = true;
+                    newColorRow[text.Header_Selection] = true;
                     newColorRow[text.Header_Index] = colorIndex++;
                     newColorRow[text.Header_ItemDescription] = colorMaterial;
                     newColorRow[text.Header_ItemCode] = colorMaterial;
@@ -1615,6 +1807,10 @@ namespace FactoryManagementSoftware.UI
             newRow[text.Header_ProPwShot] = row[dalItem.ItemProPWShot].ToString();
             newRow[text.Header_ProRwShot] = row[dalItem.ItemProRWShot].ToString();
 
+            if(DT_ITEM_LIST.Rows.Count > 0 )
+            {
+                newRow[text.Header_Job_Purpose] = DT_ITEM_LIST.Rows[0][text.Header_Job_Purpose].ToString();
+            }
            
             return newRow;
         }
@@ -2258,21 +2454,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItemList_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            //    if (e.ColumnIndex == dgvItemList.Columns[text.Header_MouldSelection].Index &&
-            //e.RowIndex >= 0 &&
-            //dgvItemList.Rows[e.RowIndex].Cells[text.Header_ItemDescription].Value.ToString().Contains(text.All_Item) == false)
-            //    {
-            //        e.PaintBackground(e.CellBounds, true);
-            //        e.Handled = true;
-            //    }
 
-            //    if (e.ColumnIndex == dgvItemList.Columns[text.Header_ItemSelection].Index &&
-            //e.RowIndex >= 0 &&
-            //string.IsNullOrEmpty(dgvItemList.Rows[e.RowIndex].Cells[text.Header_ItemDescription].Value.ToString()))
-            //    {
-            //        e.PaintBackground(e.CellBounds, true);
-            //        e.Handled = true;
-            //    }
         }
 
         private void dgvReadOnlyModeUpdate(DataGridView dgv, int rowIndex, int colIndex)
@@ -2320,10 +2502,13 @@ namespace FactoryManagementSoftware.UI
         }
         private bool userInitiatedChange = true;
 
+        private bool autoMaxQtyUpdating = false;
+
         private void refreshCavityMatchedQty()
         {
-            if (dgvItemList?.Rows.Count > 0)
+            if (dgvItemList?.Rows.Count > 0 && !autoMaxQtyUpdating)
             {
+                autoMaxQtyUpdating = true;
                 DT_ITEM_LIST = (DataTable)dgvItemList.DataSource;
 
                 decimal totalShot = 0;
@@ -2353,8 +2538,37 @@ namespace FactoryManagementSoftware.UI
 
                 FromMinShotToMaxShot();
 
+                autoMaxQtyUpdating = true;
             }
         }
+
+        private void updateItemMaxQty()
+        {
+            autoMaxQtyUpdating = true;
+
+            if (dgvItemList?.Rows.Count > 0)
+            {
+                DT_ITEM_LIST = (DataTable)dgvItemList.DataSource;
+
+                int maxShot = int.TryParse(txtMaxShot.Text, out maxShot) ? maxShot : 0;
+
+
+                foreach (DataRow row in DT_ITEM_LIST.Rows)
+                {
+                    int cavity = int.TryParse(row[text.Header_Cavity].ToString(), out cavity) ? cavity : 0;
+
+                    int maxQty = cavity * maxShot;
+
+                    row[text.Header_AutoQtyAdjustment] = maxQty;
+
+
+                }
+            }
+
+            autoMaxQtyUpdating = false;
+
+        }
+
 
         private void StepsUIUpdate(int step)
         {
@@ -2479,12 +2693,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMouldList_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            //// If the clicked column is "Mould Selection" or "Item Selection".
-            //if (e.ColumnIndex == dgvItemList.Columns[text.Header_ItemSelection].Index)
-            //{
-            //    // Commit the edit immediately for the checkbox cell.
-            //    dgvItemList.CommitEdit(DataGridViewDataErrorContexts.Commit);
-            //}
+         
         }
 
         private void dgvMouldList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -2643,125 +2852,9 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void SaveProductionInfo()
-        {
-            //DT_MOULD_ITEM = dalItem.MouldItemNonRemovedSelect();
+    
 
-            //DataTable dt_MouldList = (DataTable) dgvItemList.DataSource;
 
-            //List<Tuple<string, string>> selectedItems = new List<Tuple<string, string>>();
-
-            //foreach (DataRow row in dt_MouldList.Rows)
-            //{
-            //    bool itemSelected = bool.TryParse(row[text.Header_ItemSelection].ToString(), out bool parsedSelection) ? parsedSelection : false;
-
-            //    if (itemSelected)
-            //    {
-            //        string itemCode = row.Field<string>(text.Header_ItemCode);
-            //        string itemDescription = row[text.Header_ItemDescription].ToString();
-            //        string mouldCode = row[text.Header_MouldCode].ToString();
-
-            //        uItem.mould_code = mouldCode;
-            //        uItem.item_code = itemCode;
-
-            //        if (!itemDescription.Contains(text.All_Item))
-            //            selectedItems.Add(new Tuple<string, string>(mouldCode, itemCode));
-            //    }
-            //}
-
-            //if (selectedItems.Select(x => x.Item1).Distinct().Count() > 1 && selectedItems.Count > 1)
-            //{
-            //    throw new Exception("All selected items must have the same mould code");
-            //}
-
-            ////update unique production info data
-            //uItem.updated_date = DateTime.Now;
-            //uItem.updated_by = MainDashboard.USER_ID;
-            //uItem.item_updtd_date = uItem.updated_date;
-            //uItem.item_updtd_by = uItem.updated_by;
-            //uItem.item_added_date = uItem.updated_date;
-            //uItem.item_added_by = uItem.updated_by;
-            //uItem.removed = false;
-
-            //uItem.mould_cavity = int.TryParse(txtCavity.Text, out int y) ? y : 0;
-            //uItem.mould_ct = int.TryParse(txtCycleTime.Text, out y) ? y : 0;
-            //uItem.item_pw_shot = float.TryParse(txtPWPerShot.Text, out float k) ? k : 0;
-            //uItem.item_rw_shot = float.TryParse(txtRWPerShot.Text, out k) ? k : 0;
-
-            //uItem.MouldDefaultSelection = true;
-            //uItem.combination_code = 0;
-
-            //if (selectedItems.Count == 1)
-            //{
-            //    UpsertUniqueMouldItemData(uItem);
-
-            //}
-            //else if (selectedItems.Count > 1)
-            //{
-            //    bool foundCombination = false;
-
-            //    foreach (var combination in DT_MOULD_ITEM.AsEnumerable()
-            //                                                        .Where(r => r.Field<string>(dalItem.MouldCode) == uItem.mould_code && r.Field<int>(dalItem.CombinationCode) != 0)
-            //                                                        .GroupBy(r => r.Field<int>(dalItem.CombinationCode)))
-            //    {
-            //        var itemsInCombination = combination.Select(r => r.Field<string>(dalItem.ItemCode)).ToArray();
-            //        var selectedItemCodes = selectedItems.Select(i => i.Item2).ToArray();
-
-            //        if (!selectedItemCodes.Except(itemsInCombination).Any() && !itemsInCombination.Except(selectedItemCodes).Any())
-            //        {
-            //            uItem.combination_code = combination.Key;
-            //            foundCombination = true;
-            //            dalItem.MouldItemProInfoUpdateByCombinationCode(uItem);
-            //            break;
-            //        }
-            //    }
-
-            //    if (!foundCombination)
-            //    {
-            //        // If we haven't found a combination, generate a new combination code
-            //        var maxCombinationCode = DT_MOULD_ITEM.AsEnumerable()
-            //                                              .Where(r => r.Field<string>("mould_code") == uItem.mould_code)
-            //                                              .Max(r => r.Field<int>("combination_code"));
-
-            //        uItem.combination_code = maxCombinationCode + 1;
-
-            //        // Call insert method here
-            //        InsertNewCombinationGroup(uItem, selectedItems);
-            //    }
-
-            //}
-            //else
-            //{
-            //    ClearProductionInfo();
-
-            //}
-
-            //DT_MOULD_ITEM = dalItem.MouldItemNonRemovedSelect();
-        }
-
-        private void Step2_MaterialSetting()
-        {
-            dgvItemList.ClearSelection();
-
-            StepsUIUpdate(2);
-            if (dgvItemList?.Rows.Count == 1)
-            {
-                string itemCode = dgvItemList.Rows[dgvItemList.Rows.Count - 1].Cells[text.Header_ItemCode].Value.ToString();
-
-                LoadSingleMaterialList(itemCode);
-            }
-        }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-            AddItem();
-
-        }
-
-        private void label7_DoubleClick(object sender, EventArgs e)
-        {
-            AddItem();
-        }
 
         bool listReadOnlyModeChanging = false;
 
@@ -2953,6 +3046,7 @@ namespace FactoryManagementSoftware.UI
         private void txtMaxShot_TextChanged(object sender, EventArgs e)
         {
             RightPanelInitialSetting(0);
+            updateItemMaxQty();
         }
 
         private List<int> MacHistoryList = new List<int>();
@@ -3349,7 +3443,7 @@ namespace FactoryManagementSoftware.UI
                     string itemCode = row[dalItem.ItemCode].ToString();
                     string itemName = row[dalItem.ItemName].ToString();
 
-                    row_Schedule[text.Header_ItemDescription] = itemName + " (" + itemCode + ")";
+                    row_Schedule[text.Header_ItemDescription] = itemName + "\n(" + itemCode + ")";
                     row_Schedule[text.Header_ItemName] = itemName;
                     row_Schedule[text.Header_ItemCode] = itemCode;
 

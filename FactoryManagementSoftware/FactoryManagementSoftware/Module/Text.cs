@@ -454,6 +454,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_NewValue { get; } = "NEW VALUE";
 
         public string Header_ColorRate { get; } = "COLOR MATERIAL RATE (%)";
+        public string Header_Ratio { get; } = "Ratio (%)";
 
         public string Header_QuoCT { get; } = "QUOTATION CYCLE TIME";
         public string Header_ProCT { get; } = "Pro. Cycle Time";

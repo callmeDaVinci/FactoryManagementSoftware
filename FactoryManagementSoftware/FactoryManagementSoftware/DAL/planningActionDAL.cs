@@ -211,8 +211,8 @@ namespace FactoryManagementSoftware.DAL
 
             if (!success)
             {
-                MessageBox.Show("Failed to add new production plan!");
-                tool.historyRecord(text.System, "Failed to add new production plan!", DateTime.Now, MainDashboard.USER_ID);
+                MessageBox.Show("Failed to add new production job!");
+                tool.historyRecord(text.System, "Failed to add new production job!", DateTime.Now, MainDashboard.USER_ID);
             }
             else
             {
@@ -244,6 +244,51 @@ namespace FactoryManagementSoftware.DAL
             }
 
             return success;
+        }
+
+        public int NewplanningAdd(PlanningBLL u)
+        {
+            bool success = dalPlanning.Insert(u);
+
+            int jobID = 0;
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to add new production job!");
+                tool.historyRecord(text.System, "Failed to add new production job!", DateTime.Now, MainDashboard.USER_ID);
+            }
+            else
+            {
+                tool.historyRecord(text.plan_Added, text.getNewPlanningDetail(u), DateTime.Now, MainDashboard.USER_ID);
+
+                //get the last record from tbl_planning
+                DataTable lastRecord = dalPlanning.lastRecordSelect();
+
+                foreach (DataRow row in lastRecord.Rows)
+                {
+                    jobID = Convert.ToInt32(row[dalPlanning.planID]);
+
+                    uPlanningAction.planning_id = Convert.ToInt32(row[dalPlanning.planID]);
+                    uPlanningAction.added_date = Convert.ToDateTime(row[dalPlanning.planAddedDate]);
+                    uPlanningAction.added_by = Convert.ToInt32(row[dalPlanning.planAddedBy]); ;
+                    uPlanningAction.action = text.plan_Added;
+                    uPlanningAction.action_detail = text.getNewPlanningDetail(u);
+                    uPlanningAction.action_from = "";
+                    uPlanningAction.action_to = "";
+                    uPlanningAction.note = row[dalPlanning.planNote].ToString() + " [Cavity: " + row[dalPlanning.planCavity].ToString() + "; PW(shot): " + row[dalPlanning.planPW].ToString() + " ;RW(shot): " + row[dalPlanning.planRW].ToString() + "]";
+
+                    bool actionSaveSuccess = Insert(uPlanningAction);
+
+                    if (!actionSaveSuccess)
+                    {
+                        MessageBox.Show("Failed to save planning action data (planningActionDAL_planningAdd)");
+                        tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningAdd)", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+
+            }
+
+            return jobID;
         }
 
         //production plan status change
