@@ -2474,6 +2474,7 @@ namespace FactoryManagementSoftware.UI
                 shift = row[header_Shift].ToString();
 
                 dtpTrfDate.Text = ProDate;
+
                 if (itemCat == text.Cat_SubMat || itemCat == text.Cat_Part || itemCat == text.Cat_Carton || itemCat == text.Cat_Packaging)
                 {
                     unit = text.Unit_Piece;
@@ -2535,7 +2536,6 @@ namespace FactoryManagementSoftware.UI
                 }
                 else if (shift == "MB" || shift == "NB")
                 {
-
                     note = "[Plan " + JobNo + "(" + shift.Substring(0, 1) + ") " + text.Note_BalanceStockIn + "]";
                 }
                 else if (shift == "MBO" || shift == "NBO")
@@ -2551,6 +2551,20 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                     dgv.Rows[n].Cells[NoteColumnName].Value = note;
+
+                if (cmbTrfFromCategory.Text.Equals("Factory"))
+                {
+                    facStockDAL dalFacStock = new facStockDAL();
+                    float facStock = dalFacStock.getQty(itemCode, tool.getFactoryID(from).ToString());
+                    float transferQty = Convert.ToSingle(qty);
+
+                    if (facStock - transferQty < 0 && from != to)
+                    {
+                        //#############################################################################################################################################
+                        dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                        dgv.Rows[n].Cells[NoteColumnName].Value += " (AFTER BAL:" + (facStock - transferQty).ToString() + ")";
+                    }
+                }
 
                 if (tool.ifGotChildIncludedPackaging(itemCode))
                 {
@@ -2575,8 +2589,6 @@ namespace FactoryManagementSoftware.UI
                         
                 }
             }
-
-            
 
             dgv.ClearSelection();
             //dgv.Rows[n].Selected = true;

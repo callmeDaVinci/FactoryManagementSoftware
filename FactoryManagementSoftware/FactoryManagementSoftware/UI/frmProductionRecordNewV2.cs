@@ -1550,8 +1550,21 @@ namespace FactoryManagementSoftware.UI
             return UpdatedDate;
         }
 
+        private string RAW_MAT_CODE = "";
+        private string COLOR_MAT_CODE = "";
+        private float COLOR_MAT_RATE = 0;
+        private float PW_PER_SHOT = 0;
+        private float RW_PER_SHOT = 0;
+
         private void LoadPlanInfo()
         {
+              
+            RAW_MAT_CODE = "";
+            COLOR_MAT_CODE = "";
+            COLOR_MAT_RATE = 0;
+            PW_PER_SHOT = 0;
+            RW_PER_SHOT = 0;
+
             int selectedItem = dgvItemList.CurrentCell.RowIndex;
 
             if (selectedItem <= -1)
@@ -1576,25 +1589,32 @@ namespace FactoryManagementSoftware.UI
                 {
                     if (row[dalItem.ItemCode].ToString().Equals(partCode))
                     {
-                        float partWeight = float.TryParse(row[dalItem.ItemProPWShot].ToString(), out float i) ? Convert.ToSingle(row[dalItem.ItemProPWShot].ToString()) : -1;
-                        float runnerWeight = float.TryParse(row[dalItem.ItemProRWShot].ToString(), out float k) ? Convert.ToSingle(row[dalItem.ItemProRWShot].ToString()) : -1;
+                        float pwPerShot = float.TryParse(row[dalItem.ItemProPWShot].ToString(), out float i) ? i : 0;
+                        float rwPerShot = float.TryParse(row[dalItem.ItemProRWShot].ToString(), out float k) ? k : 0;
+
+                        PW_PER_SHOT = pwPerShot;
+                        RW_PER_SHOT = rwPerShot;
 
                         lblJobNo.Text = jobNo;
                       
-                        lblPW.Text = partWeight.ToString("0.##");
-                        lblRW.Text = runnerWeight.ToString("0.##");
+                        lblPW.Text = pwPerShot.ToString("0.##");
+                        lblRW.Text = rwPerShot.ToString("0.##");
+
                         lblCavity.Text = row[dalItem.ItemCavity] == DBNull.Value ? "" : row[dalItem.ItemCavity].ToString();
                         lblCycleTime.Text = row[dalItem.ItemProCTTo] == DBNull.Value ? "" : row[dalItem.ItemProCTTo].ToString();
 
                         lblRawMat.Text = row[dalItem.ItemMaterial] == DBNull.Value ? "" : row[dalItem.ItemMaterial].ToString();
+                        RAW_MAT_CODE = lblRawMat.Text;
 
                         string colorMat = row[dalItem.ItemMBatch] == DBNull.Value ? "" : row[dalItem.ItemMBatch].ToString();
+                        COLOR_MAT_CODE = colorMat;
 
                         float colorRate = row[dalItem.ItemMBRate] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemMBRate]);
                         string colorUsage = (colorRate * 100).ToString("0.##");
 
-                        lblColorMat.Text = colorMat + " ( " + colorUsage + "%)";
+                        COLOR_MAT_RATE = colorRate >= 1? colorRate/100: colorRate;
 
+                        lblColorMat.Text = colorMat + " ( " + colorUsage + "%)";
 
                     }
 
@@ -2458,6 +2478,18 @@ namespace FactoryManagementSoftware.UI
             return success;
         }
 
+        private bool SearchItem(DataTable dt, string itemCode, string colName)
+        {
+            foreach(DataRow row in dt.Rows)
+            {
+                if (row[colName].ToString() == itemCode)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         private void NewSaveAndStock()
         {
             bool OKToProcess = true;
@@ -2490,6 +2522,9 @@ namespace FactoryManagementSoftware.UI
 
                 string planStatus = dgvItemList.Rows[selectedItem].Cells[header_Status].Value.ToString();
                 int balance = int.TryParse(txtBalanceOfThisShift.Text, out balance) ? balance : 0;
+
+                int totalShot = int.TryParse(txtTotalShot.Text, out totalShot) ? totalShot : 0;
+
 
                 if (DT_CARTON != null && DT_CARTON.Rows.Count >= 2)
                 {
@@ -2592,10 +2627,8 @@ namespace FactoryManagementSoftware.UI
                 if (!string.IsNullOrEmpty(lblPartCode.Text))
                 {
                     string ProductionOrAssembly = text.Production;
-                    //get itemCode
-                    //get join qty
-                    //get stock in qty
                     string StockInItemCode = lblPartCode.Text;
+
 
                     if (!string.IsNullOrEmpty(cmbParentList.Text))
                     {
@@ -2701,7 +2734,6 @@ namespace FactoryManagementSoftware.UI
                         totalStockIn = totalStockIn / (int)joinQty;
                     }
 
-
                     if (totalStockIn > 0)
                     {
                         dt_Row = dt.NewRow();
@@ -2726,7 +2758,6 @@ namespace FactoryManagementSoftware.UI
 
                         dt.Rows.Add(dt_Row);
                     }
-
 
                     if (directStockIn > 0)
                     {
@@ -2791,6 +2822,73 @@ namespace FactoryManagementSoftware.UI
                         }
 
                         dt.Rows.Add(dt_Row);
+                    }
+
+                    if(totalShot > 0)
+                    {
+                        float totalWeightPerShot = PW_PER_SHOT + RW_PER_SHOT;
+                        float totalweightProduced_kg = totalWeightPerShot * totalShot / 1000;
+
+                        float raw_Material_Used_kg = totalweightProduced_kg / (1 + COLOR_MAT_RATE);
+
+                        float color_Material_Used_kg = raw_Material_Used_kg * COLOR_MAT_RATE;
+
+                        if (!string.IsNullOrEmpty(RAW_MAT_CODE) && SearchItem(dt_ItemInfo, RAW_MAT_CODE, dalItem.ItemCode))
+                        {
+                            dt_Row = dt.NewRow();
+                            dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                            dt_Row[header_ItemCode] = RAW_MAT_CODE;
+                            dt_Row[header_Cat] = text.Cat_RawMat;
+
+                            dt_Row[header_From] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+                            dt_Row[header_To] = text.Production;
+
+
+                            dt_Row[header_Qty] = raw_Material_Used_kg;
+
+                            dt_Row[header_JobNo] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_JobNo].Value.ToString();
+
+                            if (cbMorning.Checked)
+                            {
+                                dt_Row[header_Shift] = "M";
+                            }
+                            else if (cbNight.Checked)
+                            {
+                                dt_Row[header_Shift] = "N";
+                            }
+
+                            dt.Rows.Add(dt_Row);
+                        }
+
+                        if (!string.IsNullOrEmpty(COLOR_MAT_CODE) && SearchItem(dt_ItemInfo, COLOR_MAT_CODE, dalItem.ItemCode))
+                        {
+                            dt_Row = dt.NewRow();
+                            dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+
+                            dt_Row[header_ItemCode] = COLOR_MAT_CODE;
+
+                            dt_Row[header_Cat] = tool.getCatNameFromDataTable(dt_ItemInfo, COLOR_MAT_CODE);
+
+                            dt_Row[header_From] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+                            dt_Row[header_To] = text.Production;
+
+
+                            dt_Row[header_Qty] = color_Material_Used_kg;
+
+                            dt_Row[header_JobNo] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_JobNo].Value.ToString();
+
+                            if (cbMorning.Checked)
+                            {
+                                dt_Row[header_Shift] = "M";
+                            }
+                            else if (cbNight.Checked)
+                            {
+                                dt_Row[header_Shift] = "N";
+                            }
+
+                            dt.Rows.Add(dt_Row);
+                        }
+
                     }
                 }
 
