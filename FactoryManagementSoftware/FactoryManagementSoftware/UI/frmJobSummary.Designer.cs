@@ -52,6 +52,58 @@
             this.lblMouldTotalRWPerShot = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.tlpMouldAndItem = new System.Windows.Forms.TableLayoutPanel();
+            this.panelDividerbtmItem4 = new System.Windows.Forms.Panel();
+            this.panelDividerMidItem4 = new System.Windows.Forms.Panel();
+            this.panelDividerbtmItem3 = new System.Windows.Forms.Panel();
+            this.panelDividerMidItem3 = new System.Windows.Forms.Panel();
+            this.panelDividerUpItem3 = new System.Windows.Forms.Panel();
+            this.lblJobPurposeItem4 = new System.Windows.Forms.Label();
+            this.lblJobPurposeItem3 = new System.Windows.Forms.Label();
+            this.lblTitlePurposeItem4 = new System.Windows.Forms.Label();
+            this.lblTitlePurposeItem3 = new System.Windows.Forms.Label();
+            this.lblTitleItem4 = new System.Windows.Forms.Label();
+            this.lblTitleItem3 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblCavityItem4 = new System.Windows.Forms.Label();
+            this.lblTitlePWShotItem4 = new System.Windows.Forms.Label();
+            this.lblTitleCavityItem4 = new System.Windows.Forms.Label();
+            this.lblPWPerShotItem4 = new System.Windows.Forms.Label();
+            this.lblTitleTargetItem4 = new System.Windows.Forms.Label();
+            this.lblMaxQtyItem4 = new System.Windows.Forms.Label();
+            this.lblTitleMaxQtyItem4 = new System.Windows.Forms.Label();
+            this.lblTargetQtyItem4 = new System.Windows.Forms.Label();
+            this.lblTitleDescriptionItem4 = new System.Windows.Forms.Label();
+            this.lblDescriptionItem4 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblCavityItem3 = new System.Windows.Forms.Label();
+            this.lblTitlePWShotItem3 = new System.Windows.Forms.Label();
+            this.lblTitleCavityItem3 = new System.Windows.Forms.Label();
+            this.lblPWPerShotItem3 = new System.Windows.Forms.Label();
+            this.lblTitleTargetItem3 = new System.Windows.Forms.Label();
+            this.lblMaxQtyItem3 = new System.Windows.Forms.Label();
+            this.lblTitleMaxQtyItem3 = new System.Windows.Forms.Label();
+            this.lblTargetQtyItem3 = new System.Windows.Forms.Label();
+            this.lblTitleDescriptionItem3 = new System.Windows.Forms.Label();
+            this.lblDescriptionItem3 = new System.Windows.Forms.Label();
+            this.panelDividerbtmItem2 = new System.Windows.Forms.Panel();
+            this.panelDividerMidItem2 = new System.Windows.Forms.Panel();
+            this.panelDividerUpItem2 = new System.Windows.Forms.Panel();
+            this.lblJobPurposeItem2 = new System.Windows.Forms.Label();
+            this.lblTitlePurposeItem2 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblCavityItem2 = new System.Windows.Forms.Label();
+            this.lblTitlePWShotItem2 = new System.Windows.Forms.Label();
+            this.lblTitleCavityItem2 = new System.Windows.Forms.Label();
+            this.lblPWPerShotItem2 = new System.Windows.Forms.Label();
+            this.lblTitleTargetItem2 = new System.Windows.Forms.Label();
+            this.lblMaxQtyItem2 = new System.Windows.Forms.Label();
+            this.lblTitleMaxQtyItem2 = new System.Windows.Forms.Label();
+            this.lblTargetQtyItem2 = new System.Windows.Forms.Label();
+            this.lblTitleDescriptionItem2 = new System.Windows.Forms.Label();
+            this.lblDescriptionItem2 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblJobPurposeItem1 = new System.Windows.Forms.Label();
@@ -77,6 +129,7 @@
             this.label58 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblTitleItem2 = new System.Windows.Forms.Label();
+            this.panelDividerUpItem4 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
@@ -125,59 +178,6 @@
             this.label16 = new System.Windows.Forms.Label();
             this.lblMaterialSetting2 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblCavityItem2 = new System.Windows.Forms.Label();
-            this.lblTitlePWShotItem2 = new System.Windows.Forms.Label();
-            this.lblTitleCavityItem2 = new System.Windows.Forms.Label();
-            this.lblPWPerShotItem2 = new System.Windows.Forms.Label();
-            this.lblTitleTargetItem2 = new System.Windows.Forms.Label();
-            this.lblMaxQtyItem2 = new System.Windows.Forms.Label();
-            this.lblTitleMaxQtyItem2 = new System.Windows.Forms.Label();
-            this.lblTargetQtyItem2 = new System.Windows.Forms.Label();
-            this.lblTitleDescriptionItem2 = new System.Windows.Forms.Label();
-            this.lblDescriptionItem2 = new System.Windows.Forms.Label();
-            this.lblTitlePurposeItem2 = new System.Windows.Forms.Label();
-            this.lblJobPurposeItem2 = new System.Windows.Forms.Label();
-            this.panelDividerUpItem2 = new System.Windows.Forms.Panel();
-            this.panelDividerMidItem2 = new System.Windows.Forms.Panel();
-            this.panelDividerbtmItem2 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblCavityItem3 = new System.Windows.Forms.Label();
-            this.lblTitlePWShotItem3 = new System.Windows.Forms.Label();
-            this.lblTitleCavityItem3 = new System.Windows.Forms.Label();
-            this.lblPWPerShotItem3 = new System.Windows.Forms.Label();
-            this.lblTitleTargetItem3 = new System.Windows.Forms.Label();
-            this.lblMaxQtyItem3 = new System.Windows.Forms.Label();
-            this.lblTitleMaxQtyItem3 = new System.Windows.Forms.Label();
-            this.lblTargetQtyItem3 = new System.Windows.Forms.Label();
-            this.lblTitleDescriptionItem3 = new System.Windows.Forms.Label();
-            this.lblDescriptionItem3 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblCavityItem4 = new System.Windows.Forms.Label();
-            this.lblTitlePWShotItem4 = new System.Windows.Forms.Label();
-            this.lblTitleCavityItem4 = new System.Windows.Forms.Label();
-            this.lblPWPerShotItem4 = new System.Windows.Forms.Label();
-            this.lblTitleTargetItem4 = new System.Windows.Forms.Label();
-            this.lblMaxQtyItem4 = new System.Windows.Forms.Label();
-            this.lblTitleMaxQtyItem4 = new System.Windows.Forms.Label();
-            this.lblTargetQtyItem4 = new System.Windows.Forms.Label();
-            this.lblTitleDescriptionItem4 = new System.Windows.Forms.Label();
-            this.lblDescriptionItem4 = new System.Windows.Forms.Label();
-            this.lblTitleItem3 = new System.Windows.Forms.Label();
-            this.lblTitleItem4 = new System.Windows.Forms.Label();
-            this.lblTitlePurposeItem3 = new System.Windows.Forms.Label();
-            this.lblTitlePurposeItem4 = new System.Windows.Forms.Label();
-            this.lblJobPurposeItem3 = new System.Windows.Forms.Label();
-            this.lblJobPurposeItem4 = new System.Windows.Forms.Label();
-            this.panelDividerUpItem3 = new System.Windows.Forms.Panel();
-            this.panelDividerMidItem3 = new System.Windows.Forms.Panel();
-            this.panelDividerbtmItem3 = new System.Windows.Forms.Panel();
-            this.panelDividerUpItem4 = new System.Windows.Forms.Panel();
-            this.panelDividerMidItem4 = new System.Windows.Forms.Panel();
-            this.panelDividerbtmItem4 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -188,6 +188,12 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tlpMouldAndItem.SuspendLayout();
+            this.tableLayoutPanel14.SuspendLayout();
+            this.tableLayoutPanel18.SuspendLayout();
+            this.tableLayoutPanel8.SuspendLayout();
+            this.tableLayoutPanel9.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
             this.tlpItem1.SuspendLayout();
             this.tlpItem1Info.SuspendLayout();
@@ -202,12 +208,6 @@
             this.tableLayoutPanel20.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
-            this.tableLayoutPanel7.SuspendLayout();
-            this.tableLayoutPanel8.SuspendLayout();
-            this.tableLayoutPanel9.SuspendLayout();
-            this.tableLayoutPanel14.SuspendLayout();
-            this.tableLayoutPanel18.SuspendLayout();
             this.SuspendLayout();
             // 
             // errorProvider1
@@ -394,6 +394,7 @@
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.AutoScroll = true;
             this.tableLayoutPanel1.BackColor = System.Drawing.Color.White;
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
@@ -638,6 +639,713 @@
             this.tlpMouldAndItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpMouldAndItem.Size = new System.Drawing.Size(716, 284);
             this.tlpMouldAndItem.TabIndex = 217;
+            // 
+            // panelDividerbtmItem4
+            // 
+            this.panelDividerbtmItem4.BackColor = System.Drawing.Color.Transparent;
+            this.panelDividerbtmItem4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDividerbtmItem4.ForeColor = System.Drawing.Color.DimGray;
+            this.panelDividerbtmItem4.Location = new System.Drawing.Point(962, 254);
+            this.panelDividerbtmItem4.Margin = new System.Windows.Forms.Padding(0);
+            this.panelDividerbtmItem4.Name = "panelDividerbtmItem4";
+            this.panelDividerbtmItem4.Size = new System.Drawing.Size(1, 30);
+            this.panelDividerbtmItem4.TabIndex = 114;
+            // 
+            // panelDividerMidItem4
+            // 
+            this.panelDividerMidItem4.BackColor = System.Drawing.Color.Transparent;
+            this.panelDividerMidItem4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDividerMidItem4.ForeColor = System.Drawing.Color.DimGray;
+            this.panelDividerMidItem4.Location = new System.Drawing.Point(962, 224);
+            this.panelDividerMidItem4.Margin = new System.Windows.Forms.Padding(0);
+            this.panelDividerMidItem4.Name = "panelDividerMidItem4";
+            this.panelDividerMidItem4.Size = new System.Drawing.Size(1, 30);
+            this.panelDividerMidItem4.TabIndex = 114;
+            // 
+            // panelDividerbtmItem3
+            // 
+            this.panelDividerbtmItem3.BackColor = System.Drawing.Color.Transparent;
+            this.panelDividerbtmItem3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDividerbtmItem3.ForeColor = System.Drawing.Color.DimGray;
+            this.panelDividerbtmItem3.Location = new System.Drawing.Point(688, 254);
+            this.panelDividerbtmItem3.Margin = new System.Windows.Forms.Padding(0);
+            this.panelDividerbtmItem3.Name = "panelDividerbtmItem3";
+            this.panelDividerbtmItem3.Size = new System.Drawing.Size(1, 30);
+            this.panelDividerbtmItem3.TabIndex = 114;
+            // 
+            // panelDividerMidItem3
+            // 
+            this.panelDividerMidItem3.BackColor = System.Drawing.Color.Transparent;
+            this.panelDividerMidItem3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDividerMidItem3.ForeColor = System.Drawing.Color.DimGray;
+            this.panelDividerMidItem3.Location = new System.Drawing.Point(688, 224);
+            this.panelDividerMidItem3.Margin = new System.Windows.Forms.Padding(0);
+            this.panelDividerMidItem3.Name = "panelDividerMidItem3";
+            this.panelDividerMidItem3.Size = new System.Drawing.Size(1, 30);
+            this.panelDividerMidItem3.TabIndex = 114;
+            // 
+            // panelDividerUpItem3
+            // 
+            this.panelDividerUpItem3.BackColor = System.Drawing.Color.Transparent;
+            this.panelDividerUpItem3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDividerUpItem3.ForeColor = System.Drawing.Color.DimGray;
+            this.panelDividerUpItem3.Location = new System.Drawing.Point(688, 45);
+            this.panelDividerUpItem3.Margin = new System.Windows.Forms.Padding(0);
+            this.panelDividerUpItem3.Name = "panelDividerUpItem3";
+            this.panelDividerUpItem3.Size = new System.Drawing.Size(1, 179);
+            this.panelDividerUpItem3.TabIndex = 113;
+            // 
+            // lblJobPurposeItem4
+            // 
+            this.lblJobPurposeItem4.AutoSize = true;
+            this.lblJobPurposeItem4.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblJobPurposeItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblJobPurposeItem4.Location = new System.Drawing.Point(986, 257);
+            this.lblJobPurposeItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblJobPurposeItem4.Name = "lblJobPurposeItem4";
+            this.lblJobPurposeItem4.Size = new System.Drawing.Size(85, 15);
+            this.lblJobPurposeItem4.TabIndex = 207;
+            this.lblJobPurposeItem4.Text = "JOB PURPOSE";
+            // 
+            // lblJobPurposeItem3
+            // 
+            this.lblJobPurposeItem3.AutoSize = true;
+            this.lblJobPurposeItem3.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblJobPurposeItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblJobPurposeItem3.Location = new System.Drawing.Point(712, 257);
+            this.lblJobPurposeItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblJobPurposeItem3.Name = "lblJobPurposeItem3";
+            this.lblJobPurposeItem3.Size = new System.Drawing.Size(85, 15);
+            this.lblJobPurposeItem3.TabIndex = 207;
+            this.lblJobPurposeItem3.Text = "JOB PURPOSE";
+            // 
+            // lblTitlePurposeItem4
+            // 
+            this.lblTitlePurposeItem4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitlePurposeItem4.AutoSize = true;
+            this.lblTitlePurposeItem4.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitlePurposeItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitlePurposeItem4.Location = new System.Drawing.Point(986, 239);
+            this.lblTitlePurposeItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitlePurposeItem4.Name = "lblTitlePurposeItem4";
+            this.lblTitlePurposeItem4.Size = new System.Drawing.Size(48, 12);
+            this.lblTitlePurposeItem4.TabIndex = 202;
+            this.lblTitlePurposeItem4.Text = "PURPOSE";
+            // 
+            // lblTitlePurposeItem3
+            // 
+            this.lblTitlePurposeItem3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitlePurposeItem3.AutoSize = true;
+            this.lblTitlePurposeItem3.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitlePurposeItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitlePurposeItem3.Location = new System.Drawing.Point(712, 239);
+            this.lblTitlePurposeItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitlePurposeItem3.Name = "lblTitlePurposeItem3";
+            this.lblTitlePurposeItem3.Size = new System.Drawing.Size(48, 12);
+            this.lblTitlePurposeItem3.TabIndex = 202;
+            this.lblTitlePurposeItem3.Text = "PURPOSE";
+            // 
+            // lblTitleItem4
+            // 
+            this.lblTitleItem4.AutoSize = true;
+            this.lblTitleItem4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitleItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleItem4.Location = new System.Drawing.Point(986, 13);
+            this.lblTitleItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleItem4.Name = "lblTitleItem4";
+            this.lblTitleItem4.Size = new System.Drawing.Size(63, 19);
+            this.lblTitleItem4.TabIndex = 190;
+            this.lblTitleItem4.Text = "Item(4)";
+            // 
+            // lblTitleItem3
+            // 
+            this.lblTitleItem3.AutoSize = true;
+            this.lblTitleItem3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitleItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleItem3.Location = new System.Drawing.Point(712, 13);
+            this.lblTitleItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleItem3.Name = "lblTitleItem3";
+            this.lblTitleItem3.Size = new System.Drawing.Size(63, 19);
+            this.lblTitleItem3.TabIndex = 190;
+            this.lblTitleItem3.Text = "Item(3)";
+            // 
+            // tableLayoutPanel14
+            // 
+            this.tableLayoutPanel14.AutoScroll = true;
+            this.tableLayoutPanel14.AutoSize = true;
+            this.tableLayoutPanel14.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel14.ColumnCount = 1;
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel14.Controls.Add(this.tableLayoutPanel18, 0, 2);
+            this.tableLayoutPanel14.Controls.Add(this.lblTitleDescriptionItem4, 0, 0);
+            this.tableLayoutPanel14.Controls.Add(this.lblDescriptionItem4, 0, 1);
+            this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel14.Location = new System.Drawing.Point(983, 45);
+            this.tableLayoutPanel14.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel14.Name = "tableLayoutPanel14";
+            this.tableLayoutPanel14.RowCount = 3;
+            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel14.Size = new System.Drawing.Size(233, 179);
+            this.tableLayoutPanel14.TabIndex = 219;
+            // 
+            // tableLayoutPanel18
+            // 
+            this.tableLayoutPanel18.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel18.ColumnCount = 2;
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel18.Controls.Add(this.lblCavityItem4, 1, 1);
+            this.tableLayoutPanel18.Controls.Add(this.lblTitlePWShotItem4, 0, 0);
+            this.tableLayoutPanel18.Controls.Add(this.lblTitleCavityItem4, 1, 0);
+            this.tableLayoutPanel18.Controls.Add(this.lblPWPerShotItem4, 0, 1);
+            this.tableLayoutPanel18.Controls.Add(this.lblTitleTargetItem4, 0, 3);
+            this.tableLayoutPanel18.Controls.Add(this.lblMaxQtyItem4, 1, 4);
+            this.tableLayoutPanel18.Controls.Add(this.lblTitleMaxQtyItem4, 1, 3);
+            this.tableLayoutPanel18.Controls.Add(this.lblTargetQtyItem4, 0, 4);
+            this.tableLayoutPanel18.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel18.Location = new System.Drawing.Point(0, 70);
+            this.tableLayoutPanel18.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel18.Name = "tableLayoutPanel18";
+            this.tableLayoutPanel18.RowCount = 5;
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(233, 109);
+            this.tableLayoutPanel18.TabIndex = 217;
+            // 
+            // lblCavityItem4
+            // 
+            this.lblCavityItem4.AutoSize = true;
+            this.lblCavityItem4.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblCavityItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblCavityItem4.Location = new System.Drawing.Point(123, 23);
+            this.lblCavityItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblCavityItem4.Name = "lblCavityItem4";
+            this.lblCavityItem4.Size = new System.Drawing.Size(47, 15);
+            this.lblCavityItem4.TabIndex = 203;
+            this.lblCavityItem4.Text = "CAVITY";
+            // 
+            // lblTitlePWShotItem4
+            // 
+            this.lblTitlePWShotItem4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitlePWShotItem4.AutoSize = true;
+            this.lblTitlePWShotItem4.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitlePWShotItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitlePWShotItem4.Location = new System.Drawing.Point(3, 5);
+            this.lblTitlePWShotItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitlePWShotItem4.Name = "lblTitlePWShotItem4";
+            this.lblTitlePWShotItem4.Size = new System.Drawing.Size(52, 12);
+            this.lblTitlePWShotItem4.TabIndex = 200;
+            this.lblTitlePWShotItem4.Text = "PW/ SHOT";
+            // 
+            // lblTitleCavityItem4
+            // 
+            this.lblTitleCavityItem4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitleCavityItem4.AutoSize = true;
+            this.lblTitleCavityItem4.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitleCavityItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleCavityItem4.Location = new System.Drawing.Point(123, 5);
+            this.lblTitleCavityItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleCavityItem4.Name = "lblTitleCavityItem4";
+            this.lblTitleCavityItem4.Size = new System.Drawing.Size(36, 12);
+            this.lblTitleCavityItem4.TabIndex = 202;
+            this.lblTitleCavityItem4.Text = "CAVITY";
+            // 
+            // lblPWPerShotItem4
+            // 
+            this.lblPWPerShotItem4.AutoSize = true;
+            this.lblPWPerShotItem4.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblPWPerShotItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblPWPerShotItem4.Location = new System.Drawing.Point(3, 23);
+            this.lblPWPerShotItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblPWPerShotItem4.Name = "lblPWPerShotItem4";
+            this.lblPWPerShotItem4.Size = new System.Drawing.Size(85, 15);
+            this.lblPWPerShotItem4.TabIndex = 201;
+            this.lblPWPerShotItem4.Text = "PW PER SHOT";
+            // 
+            // lblTitleTargetItem4
+            // 
+            this.lblTitleTargetItem4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitleTargetItem4.AutoSize = true;
+            this.lblTitleTargetItem4.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitleTargetItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleTargetItem4.Location = new System.Drawing.Point(3, 65);
+            this.lblTitleTargetItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleTargetItem4.Name = "lblTitleTargetItem4";
+            this.lblTitleTargetItem4.Size = new System.Drawing.Size(60, 12);
+            this.lblTitleTargetItem4.TabIndex = 204;
+            this.lblTitleTargetItem4.Text = "TARGET QTY";
+            // 
+            // lblMaxQtyItem4
+            // 
+            this.lblMaxQtyItem4.AutoSize = true;
+            this.lblMaxQtyItem4.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblMaxQtyItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblMaxQtyItem4.Location = new System.Drawing.Point(123, 83);
+            this.lblMaxQtyItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblMaxQtyItem4.Name = "lblMaxQtyItem4";
+            this.lblMaxQtyItem4.Size = new System.Drawing.Size(60, 15);
+            this.lblMaxQtyItem4.TabIndex = 209;
+            this.lblMaxQtyItem4.Text = "MAX QTY";
+            // 
+            // lblTitleMaxQtyItem4
+            // 
+            this.lblTitleMaxQtyItem4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitleMaxQtyItem4.AutoSize = true;
+            this.lblTitleMaxQtyItem4.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitleMaxQtyItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleMaxQtyItem4.Location = new System.Drawing.Point(123, 65);
+            this.lblTitleMaxQtyItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleMaxQtyItem4.Name = "lblTitleMaxQtyItem4";
+            this.lblTitleMaxQtyItem4.Size = new System.Drawing.Size(48, 12);
+            this.lblTitleMaxQtyItem4.TabIndex = 208;
+            this.lblTitleMaxQtyItem4.Text = "MAX QTY";
+            // 
+            // lblTargetQtyItem4
+            // 
+            this.lblTargetQtyItem4.AutoSize = true;
+            this.lblTargetQtyItem4.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblTargetQtyItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTargetQtyItem4.Location = new System.Drawing.Point(3, 83);
+            this.lblTargetQtyItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTargetQtyItem4.Name = "lblTargetQtyItem4";
+            this.lblTargetQtyItem4.Size = new System.Drawing.Size(77, 15);
+            this.lblTargetQtyItem4.TabIndex = 205;
+            this.lblTargetQtyItem4.Text = "TARGET QTY";
+            // 
+            // lblTitleDescriptionItem4
+            // 
+            this.lblTitleDescriptionItem4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitleDescriptionItem4.AutoSize = true;
+            this.lblTitleDescriptionItem4.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitleDescriptionItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleDescriptionItem4.Location = new System.Drawing.Point(3, 5);
+            this.lblTitleDescriptionItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleDescriptionItem4.Name = "lblTitleDescriptionItem4";
+            this.lblTitleDescriptionItem4.Size = new System.Drawing.Size(66, 12);
+            this.lblTitleDescriptionItem4.TabIndex = 198;
+            this.lblTitleDescriptionItem4.Text = "DESCRIPTION";
+            // 
+            // lblDescriptionItem4
+            // 
+            this.lblDescriptionItem4.AutoSize = true;
+            this.lblDescriptionItem4.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblDescriptionItem4.ForeColor = System.Drawing.Color.Transparent;
+            this.lblDescriptionItem4.Location = new System.Drawing.Point(3, 23);
+            this.lblDescriptionItem4.Margin = new System.Windows.Forms.Padding(3);
+            this.lblDescriptionItem4.Name = "lblDescriptionItem4";
+            this.lblDescriptionItem4.Size = new System.Drawing.Size(117, 15);
+            this.lblDescriptionItem4.TabIndex = 199;
+            this.lblDescriptionItem4.Text = "ITEM NAME + CODE";
+            // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.AutoScroll = true;
+            this.tableLayoutPanel8.AutoSize = true;
+            this.tableLayoutPanel8.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel8.ColumnCount = 1;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel9, 0, 2);
+            this.tableLayoutPanel8.Controls.Add(this.lblTitleDescriptionItem3, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.lblDescriptionItem3, 0, 1);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(709, 45);
+            this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 3;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(233, 179);
+            this.tableLayoutPanel8.TabIndex = 219;
+            // 
+            // tableLayoutPanel9
+            // 
+            this.tableLayoutPanel9.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel9.ColumnCount = 2;
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.Controls.Add(this.lblCavityItem3, 1, 1);
+            this.tableLayoutPanel9.Controls.Add(this.lblTitlePWShotItem3, 0, 0);
+            this.tableLayoutPanel9.Controls.Add(this.lblTitleCavityItem3, 1, 0);
+            this.tableLayoutPanel9.Controls.Add(this.lblPWPerShotItem3, 0, 1);
+            this.tableLayoutPanel9.Controls.Add(this.lblTitleTargetItem3, 0, 3);
+            this.tableLayoutPanel9.Controls.Add(this.lblMaxQtyItem3, 1, 4);
+            this.tableLayoutPanel9.Controls.Add(this.lblTitleMaxQtyItem3, 1, 3);
+            this.tableLayoutPanel9.Controls.Add(this.lblTargetQtyItem3, 0, 4);
+            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(0, 70);
+            this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
+            this.tableLayoutPanel9.RowCount = 5;
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(233, 109);
+            this.tableLayoutPanel9.TabIndex = 217;
+            // 
+            // lblCavityItem3
+            // 
+            this.lblCavityItem3.AutoSize = true;
+            this.lblCavityItem3.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblCavityItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblCavityItem3.Location = new System.Drawing.Point(123, 23);
+            this.lblCavityItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblCavityItem3.Name = "lblCavityItem3";
+            this.lblCavityItem3.Size = new System.Drawing.Size(47, 15);
+            this.lblCavityItem3.TabIndex = 203;
+            this.lblCavityItem3.Text = "CAVITY";
+            // 
+            // lblTitlePWShotItem3
+            // 
+            this.lblTitlePWShotItem3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitlePWShotItem3.AutoSize = true;
+            this.lblTitlePWShotItem3.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitlePWShotItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitlePWShotItem3.Location = new System.Drawing.Point(3, 5);
+            this.lblTitlePWShotItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitlePWShotItem3.Name = "lblTitlePWShotItem3";
+            this.lblTitlePWShotItem3.Size = new System.Drawing.Size(52, 12);
+            this.lblTitlePWShotItem3.TabIndex = 200;
+            this.lblTitlePWShotItem3.Text = "PW/ SHOT";
+            // 
+            // lblTitleCavityItem3
+            // 
+            this.lblTitleCavityItem3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitleCavityItem3.AutoSize = true;
+            this.lblTitleCavityItem3.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitleCavityItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleCavityItem3.Location = new System.Drawing.Point(123, 5);
+            this.lblTitleCavityItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleCavityItem3.Name = "lblTitleCavityItem3";
+            this.lblTitleCavityItem3.Size = new System.Drawing.Size(36, 12);
+            this.lblTitleCavityItem3.TabIndex = 202;
+            this.lblTitleCavityItem3.Text = "CAVITY";
+            // 
+            // lblPWPerShotItem3
+            // 
+            this.lblPWPerShotItem3.AutoSize = true;
+            this.lblPWPerShotItem3.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblPWPerShotItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblPWPerShotItem3.Location = new System.Drawing.Point(3, 23);
+            this.lblPWPerShotItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblPWPerShotItem3.Name = "lblPWPerShotItem3";
+            this.lblPWPerShotItem3.Size = new System.Drawing.Size(85, 15);
+            this.lblPWPerShotItem3.TabIndex = 201;
+            this.lblPWPerShotItem3.Text = "PW PER SHOT";
+            // 
+            // lblTitleTargetItem3
+            // 
+            this.lblTitleTargetItem3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitleTargetItem3.AutoSize = true;
+            this.lblTitleTargetItem3.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitleTargetItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleTargetItem3.Location = new System.Drawing.Point(3, 65);
+            this.lblTitleTargetItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleTargetItem3.Name = "lblTitleTargetItem3";
+            this.lblTitleTargetItem3.Size = new System.Drawing.Size(60, 12);
+            this.lblTitleTargetItem3.TabIndex = 204;
+            this.lblTitleTargetItem3.Text = "TARGET QTY";
+            // 
+            // lblMaxQtyItem3
+            // 
+            this.lblMaxQtyItem3.AutoSize = true;
+            this.lblMaxQtyItem3.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblMaxQtyItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblMaxQtyItem3.Location = new System.Drawing.Point(123, 83);
+            this.lblMaxQtyItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblMaxQtyItem3.Name = "lblMaxQtyItem3";
+            this.lblMaxQtyItem3.Size = new System.Drawing.Size(60, 15);
+            this.lblMaxQtyItem3.TabIndex = 209;
+            this.lblMaxQtyItem3.Text = "MAX QTY";
+            // 
+            // lblTitleMaxQtyItem3
+            // 
+            this.lblTitleMaxQtyItem3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitleMaxQtyItem3.AutoSize = true;
+            this.lblTitleMaxQtyItem3.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitleMaxQtyItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleMaxQtyItem3.Location = new System.Drawing.Point(123, 65);
+            this.lblTitleMaxQtyItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleMaxQtyItem3.Name = "lblTitleMaxQtyItem3";
+            this.lblTitleMaxQtyItem3.Size = new System.Drawing.Size(48, 12);
+            this.lblTitleMaxQtyItem3.TabIndex = 208;
+            this.lblTitleMaxQtyItem3.Text = "MAX QTY";
+            // 
+            // lblTargetQtyItem3
+            // 
+            this.lblTargetQtyItem3.AutoSize = true;
+            this.lblTargetQtyItem3.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblTargetQtyItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTargetQtyItem3.Location = new System.Drawing.Point(3, 83);
+            this.lblTargetQtyItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTargetQtyItem3.Name = "lblTargetQtyItem3";
+            this.lblTargetQtyItem3.Size = new System.Drawing.Size(77, 15);
+            this.lblTargetQtyItem3.TabIndex = 205;
+            this.lblTargetQtyItem3.Text = "TARGET QTY";
+            // 
+            // lblTitleDescriptionItem3
+            // 
+            this.lblTitleDescriptionItem3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitleDescriptionItem3.AutoSize = true;
+            this.lblTitleDescriptionItem3.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitleDescriptionItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleDescriptionItem3.Location = new System.Drawing.Point(3, 5);
+            this.lblTitleDescriptionItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleDescriptionItem3.Name = "lblTitleDescriptionItem3";
+            this.lblTitleDescriptionItem3.Size = new System.Drawing.Size(66, 12);
+            this.lblTitleDescriptionItem3.TabIndex = 198;
+            this.lblTitleDescriptionItem3.Text = "DESCRIPTION";
+            // 
+            // lblDescriptionItem3
+            // 
+            this.lblDescriptionItem3.AutoSize = true;
+            this.lblDescriptionItem3.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblDescriptionItem3.ForeColor = System.Drawing.Color.Transparent;
+            this.lblDescriptionItem3.Location = new System.Drawing.Point(3, 23);
+            this.lblDescriptionItem3.Margin = new System.Windows.Forms.Padding(3);
+            this.lblDescriptionItem3.Name = "lblDescriptionItem3";
+            this.lblDescriptionItem3.Size = new System.Drawing.Size(117, 15);
+            this.lblDescriptionItem3.TabIndex = 199;
+            this.lblDescriptionItem3.Text = "ITEM NAME + CODE";
+            // 
+            // panelDividerbtmItem2
+            // 
+            this.panelDividerbtmItem2.BackColor = System.Drawing.Color.Transparent;
+            this.panelDividerbtmItem2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDividerbtmItem2.ForeColor = System.Drawing.Color.DimGray;
+            this.panelDividerbtmItem2.Location = new System.Drawing.Point(414, 254);
+            this.panelDividerbtmItem2.Margin = new System.Windows.Forms.Padding(0);
+            this.panelDividerbtmItem2.Name = "panelDividerbtmItem2";
+            this.panelDividerbtmItem2.Size = new System.Drawing.Size(1, 30);
+            this.panelDividerbtmItem2.TabIndex = 114;
+            // 
+            // panelDividerMidItem2
+            // 
+            this.panelDividerMidItem2.BackColor = System.Drawing.Color.Transparent;
+            this.panelDividerMidItem2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDividerMidItem2.ForeColor = System.Drawing.Color.DimGray;
+            this.panelDividerMidItem2.Location = new System.Drawing.Point(414, 224);
+            this.panelDividerMidItem2.Margin = new System.Windows.Forms.Padding(0);
+            this.panelDividerMidItem2.Name = "panelDividerMidItem2";
+            this.panelDividerMidItem2.Size = new System.Drawing.Size(1, 30);
+            this.panelDividerMidItem2.TabIndex = 114;
+            // 
+            // panelDividerUpItem2
+            // 
+            this.panelDividerUpItem2.BackColor = System.Drawing.Color.Transparent;
+            this.panelDividerUpItem2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDividerUpItem2.ForeColor = System.Drawing.Color.DimGray;
+            this.panelDividerUpItem2.Location = new System.Drawing.Point(414, 45);
+            this.panelDividerUpItem2.Margin = new System.Windows.Forms.Padding(0);
+            this.panelDividerUpItem2.Name = "panelDividerUpItem2";
+            this.panelDividerUpItem2.Size = new System.Drawing.Size(1, 179);
+            this.panelDividerUpItem2.TabIndex = 113;
+            // 
+            // lblJobPurposeItem2
+            // 
+            this.lblJobPurposeItem2.AutoSize = true;
+            this.lblJobPurposeItem2.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblJobPurposeItem2.ForeColor = System.Drawing.Color.Transparent;
+            this.lblJobPurposeItem2.Location = new System.Drawing.Point(438, 257);
+            this.lblJobPurposeItem2.Margin = new System.Windows.Forms.Padding(3);
+            this.lblJobPurposeItem2.Name = "lblJobPurposeItem2";
+            this.lblJobPurposeItem2.Size = new System.Drawing.Size(85, 15);
+            this.lblJobPurposeItem2.TabIndex = 207;
+            this.lblJobPurposeItem2.Text = "JOB PURPOSE";
+            // 
+            // lblTitlePurposeItem2
+            // 
+            this.lblTitlePurposeItem2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitlePurposeItem2.AutoSize = true;
+            this.lblTitlePurposeItem2.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitlePurposeItem2.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitlePurposeItem2.Location = new System.Drawing.Point(438, 239);
+            this.lblTitlePurposeItem2.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitlePurposeItem2.Name = "lblTitlePurposeItem2";
+            this.lblTitlePurposeItem2.Size = new System.Drawing.Size(48, 12);
+            this.lblTitlePurposeItem2.TabIndex = 202;
+            this.lblTitlePurposeItem2.Text = "PURPOSE";
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.AutoScroll = true;
+            this.tableLayoutPanel4.AutoSize = true;
+            this.tableLayoutPanel4.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel4.ColumnCount = 1;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel7, 0, 2);
+            this.tableLayoutPanel4.Controls.Add(this.lblTitleDescriptionItem2, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lblDescriptionItem2, 0, 1);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.ForeColor = System.Drawing.Color.White;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(435, 45);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 3;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(233, 179);
+            this.tableLayoutPanel4.TabIndex = 219;
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel7.ColumnCount = 2;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.Controls.Add(this.lblCavityItem2, 1, 1);
+            this.tableLayoutPanel7.Controls.Add(this.lblTitlePWShotItem2, 0, 0);
+            this.tableLayoutPanel7.Controls.Add(this.lblTitleCavityItem2, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.lblPWPerShotItem2, 0, 1);
+            this.tableLayoutPanel7.Controls.Add(this.lblTitleTargetItem2, 0, 3);
+            this.tableLayoutPanel7.Controls.Add(this.lblMaxQtyItem2, 1, 4);
+            this.tableLayoutPanel7.Controls.Add(this.lblTitleMaxQtyItem2, 1, 3);
+            this.tableLayoutPanel7.Controls.Add(this.lblTargetQtyItem2, 0, 4);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 70);
+            this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 5;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(233, 109);
+            this.tableLayoutPanel7.TabIndex = 217;
+            // 
+            // lblCavityItem2
+            // 
+            this.lblCavityItem2.AutoSize = true;
+            this.lblCavityItem2.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblCavityItem2.ForeColor = System.Drawing.Color.Transparent;
+            this.lblCavityItem2.Location = new System.Drawing.Point(123, 23);
+            this.lblCavityItem2.Margin = new System.Windows.Forms.Padding(3);
+            this.lblCavityItem2.Name = "lblCavityItem2";
+            this.lblCavityItem2.Size = new System.Drawing.Size(47, 15);
+            this.lblCavityItem2.TabIndex = 203;
+            this.lblCavityItem2.Text = "CAVITY";
+            // 
+            // lblTitlePWShotItem2
+            // 
+            this.lblTitlePWShotItem2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitlePWShotItem2.AutoSize = true;
+            this.lblTitlePWShotItem2.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitlePWShotItem2.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitlePWShotItem2.Location = new System.Drawing.Point(3, 5);
+            this.lblTitlePWShotItem2.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitlePWShotItem2.Name = "lblTitlePWShotItem2";
+            this.lblTitlePWShotItem2.Size = new System.Drawing.Size(52, 12);
+            this.lblTitlePWShotItem2.TabIndex = 200;
+            this.lblTitlePWShotItem2.Text = "PW/ SHOT";
+            // 
+            // lblTitleCavityItem2
+            // 
+            this.lblTitleCavityItem2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitleCavityItem2.AutoSize = true;
+            this.lblTitleCavityItem2.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitleCavityItem2.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleCavityItem2.Location = new System.Drawing.Point(123, 5);
+            this.lblTitleCavityItem2.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleCavityItem2.Name = "lblTitleCavityItem2";
+            this.lblTitleCavityItem2.Size = new System.Drawing.Size(36, 12);
+            this.lblTitleCavityItem2.TabIndex = 202;
+            this.lblTitleCavityItem2.Text = "CAVITY";
+            // 
+            // lblPWPerShotItem2
+            // 
+            this.lblPWPerShotItem2.AutoSize = true;
+            this.lblPWPerShotItem2.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblPWPerShotItem2.ForeColor = System.Drawing.Color.Transparent;
+            this.lblPWPerShotItem2.Location = new System.Drawing.Point(3, 23);
+            this.lblPWPerShotItem2.Margin = new System.Windows.Forms.Padding(3);
+            this.lblPWPerShotItem2.Name = "lblPWPerShotItem2";
+            this.lblPWPerShotItem2.Size = new System.Drawing.Size(85, 15);
+            this.lblPWPerShotItem2.TabIndex = 201;
+            this.lblPWPerShotItem2.Text = "PW PER SHOT";
+            // 
+            // lblTitleTargetItem2
+            // 
+            this.lblTitleTargetItem2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitleTargetItem2.AutoSize = true;
+            this.lblTitleTargetItem2.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitleTargetItem2.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleTargetItem2.Location = new System.Drawing.Point(3, 65);
+            this.lblTitleTargetItem2.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleTargetItem2.Name = "lblTitleTargetItem2";
+            this.lblTitleTargetItem2.Size = new System.Drawing.Size(60, 12);
+            this.lblTitleTargetItem2.TabIndex = 204;
+            this.lblTitleTargetItem2.Text = "TARGET QTY";
+            // 
+            // lblMaxQtyItem2
+            // 
+            this.lblMaxQtyItem2.AutoSize = true;
+            this.lblMaxQtyItem2.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblMaxQtyItem2.ForeColor = System.Drawing.Color.Transparent;
+            this.lblMaxQtyItem2.Location = new System.Drawing.Point(123, 83);
+            this.lblMaxQtyItem2.Margin = new System.Windows.Forms.Padding(3);
+            this.lblMaxQtyItem2.Name = "lblMaxQtyItem2";
+            this.lblMaxQtyItem2.Size = new System.Drawing.Size(60, 15);
+            this.lblMaxQtyItem2.TabIndex = 209;
+            this.lblMaxQtyItem2.Text = "MAX QTY";
+            // 
+            // lblTitleMaxQtyItem2
+            // 
+            this.lblTitleMaxQtyItem2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitleMaxQtyItem2.AutoSize = true;
+            this.lblTitleMaxQtyItem2.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitleMaxQtyItem2.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleMaxQtyItem2.Location = new System.Drawing.Point(123, 65);
+            this.lblTitleMaxQtyItem2.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleMaxQtyItem2.Name = "lblTitleMaxQtyItem2";
+            this.lblTitleMaxQtyItem2.Size = new System.Drawing.Size(48, 12);
+            this.lblTitleMaxQtyItem2.TabIndex = 208;
+            this.lblTitleMaxQtyItem2.Text = "MAX QTY";
+            // 
+            // lblTargetQtyItem2
+            // 
+            this.lblTargetQtyItem2.AutoSize = true;
+            this.lblTargetQtyItem2.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblTargetQtyItem2.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTargetQtyItem2.Location = new System.Drawing.Point(3, 83);
+            this.lblTargetQtyItem2.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTargetQtyItem2.Name = "lblTargetQtyItem2";
+            this.lblTargetQtyItem2.Size = new System.Drawing.Size(77, 15);
+            this.lblTargetQtyItem2.TabIndex = 205;
+            this.lblTargetQtyItem2.Text = "TARGET QTY";
+            // 
+            // lblTitleDescriptionItem2
+            // 
+            this.lblTitleDescriptionItem2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTitleDescriptionItem2.AutoSize = true;
+            this.lblTitleDescriptionItem2.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.lblTitleDescriptionItem2.ForeColor = System.Drawing.Color.Transparent;
+            this.lblTitleDescriptionItem2.Location = new System.Drawing.Point(3, 5);
+            this.lblTitleDescriptionItem2.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitleDescriptionItem2.Name = "lblTitleDescriptionItem2";
+            this.lblTitleDescriptionItem2.Size = new System.Drawing.Size(66, 12);
+            this.lblTitleDescriptionItem2.TabIndex = 198;
+            this.lblTitleDescriptionItem2.Text = "DESCRIPTION";
+            // 
+            // lblDescriptionItem2
+            // 
+            this.lblDescriptionItem2.AutoSize = true;
+            this.lblDescriptionItem2.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblDescriptionItem2.ForeColor = System.Drawing.Color.Transparent;
+            this.lblDescriptionItem2.Location = new System.Drawing.Point(3, 23);
+            this.lblDescriptionItem2.Margin = new System.Windows.Forms.Padding(3);
+            this.lblDescriptionItem2.Name = "lblDescriptionItem2";
+            this.lblDescriptionItem2.Size = new System.Drawing.Size(117, 15);
+            this.lblDescriptionItem2.TabIndex = 199;
+            this.lblDescriptionItem2.Text = "ITEM NAME + CODE";
             // 
             // panel5
             // 
@@ -974,6 +1682,17 @@
             this.lblTitleItem2.Size = new System.Drawing.Size(63, 19);
             this.lblTitleItem2.TabIndex = 190;
             this.lblTitleItem2.Text = "Item(2)";
+            // 
+            // panelDividerUpItem4
+            // 
+            this.panelDividerUpItem4.BackColor = System.Drawing.Color.Transparent;
+            this.panelDividerUpItem4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDividerUpItem4.ForeColor = System.Drawing.Color.DimGray;
+            this.panelDividerUpItem4.Location = new System.Drawing.Point(962, 45);
+            this.panelDividerUpItem4.Margin = new System.Windows.Forms.Padding(0);
+            this.panelDividerUpItem4.Name = "panelDividerUpItem4";
+            this.panelDividerUpItem4.Size = new System.Drawing.Size(1, 179);
+            this.panelDividerUpItem4.TabIndex = 114;
             // 
             // panel2
             // 
@@ -1681,724 +2400,6 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.AutoScroll = true;
-            this.tableLayoutPanel4.AutoSize = true;
-            this.tableLayoutPanel4.BackColor = System.Drawing.Color.White;
-            this.tableLayoutPanel4.ColumnCount = 1;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel7, 0, 2);
-            this.tableLayoutPanel4.Controls.Add(this.lblTitleDescriptionItem2, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblDescriptionItem2, 0, 1);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.ForeColor = System.Drawing.Color.White;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(435, 45);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 3;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(233, 179);
-            this.tableLayoutPanel4.TabIndex = 219;
-            // 
-            // tableLayoutPanel7
-            // 
-            this.tableLayoutPanel7.BackColor = System.Drawing.Color.White;
-            this.tableLayoutPanel7.ColumnCount = 2;
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Controls.Add(this.lblCavityItem2, 1, 1);
-            this.tableLayoutPanel7.Controls.Add(this.lblTitlePWShotItem2, 0, 0);
-            this.tableLayoutPanel7.Controls.Add(this.lblTitleCavityItem2, 1, 0);
-            this.tableLayoutPanel7.Controls.Add(this.lblPWPerShotItem2, 0, 1);
-            this.tableLayoutPanel7.Controls.Add(this.lblTitleTargetItem2, 0, 3);
-            this.tableLayoutPanel7.Controls.Add(this.lblMaxQtyItem2, 1, 4);
-            this.tableLayoutPanel7.Controls.Add(this.lblTitleMaxQtyItem2, 1, 3);
-            this.tableLayoutPanel7.Controls.Add(this.lblTargetQtyItem2, 0, 4);
-            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 70);
-            this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-            this.tableLayoutPanel7.RowCount = 5;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(233, 109);
-            this.tableLayoutPanel7.TabIndex = 217;
-            // 
-            // lblCavityItem2
-            // 
-            this.lblCavityItem2.AutoSize = true;
-            this.lblCavityItem2.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblCavityItem2.ForeColor = System.Drawing.Color.Transparent;
-            this.lblCavityItem2.Location = new System.Drawing.Point(123, 23);
-            this.lblCavityItem2.Margin = new System.Windows.Forms.Padding(3);
-            this.lblCavityItem2.Name = "lblCavityItem2";
-            this.lblCavityItem2.Size = new System.Drawing.Size(47, 15);
-            this.lblCavityItem2.TabIndex = 203;
-            this.lblCavityItem2.Text = "CAVITY";
-            // 
-            // lblTitlePWShotItem2
-            // 
-            this.lblTitlePWShotItem2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitlePWShotItem2.AutoSize = true;
-            this.lblTitlePWShotItem2.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitlePWShotItem2.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitlePWShotItem2.Location = new System.Drawing.Point(3, 5);
-            this.lblTitlePWShotItem2.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitlePWShotItem2.Name = "lblTitlePWShotItem2";
-            this.lblTitlePWShotItem2.Size = new System.Drawing.Size(52, 12);
-            this.lblTitlePWShotItem2.TabIndex = 200;
-            this.lblTitlePWShotItem2.Text = "PW/ SHOT";
-            // 
-            // lblTitleCavityItem2
-            // 
-            this.lblTitleCavityItem2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitleCavityItem2.AutoSize = true;
-            this.lblTitleCavityItem2.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitleCavityItem2.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleCavityItem2.Location = new System.Drawing.Point(123, 5);
-            this.lblTitleCavityItem2.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleCavityItem2.Name = "lblTitleCavityItem2";
-            this.lblTitleCavityItem2.Size = new System.Drawing.Size(36, 12);
-            this.lblTitleCavityItem2.TabIndex = 202;
-            this.lblTitleCavityItem2.Text = "CAVITY";
-            // 
-            // lblPWPerShotItem2
-            // 
-            this.lblPWPerShotItem2.AutoSize = true;
-            this.lblPWPerShotItem2.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblPWPerShotItem2.ForeColor = System.Drawing.Color.Transparent;
-            this.lblPWPerShotItem2.Location = new System.Drawing.Point(3, 23);
-            this.lblPWPerShotItem2.Margin = new System.Windows.Forms.Padding(3);
-            this.lblPWPerShotItem2.Name = "lblPWPerShotItem2";
-            this.lblPWPerShotItem2.Size = new System.Drawing.Size(85, 15);
-            this.lblPWPerShotItem2.TabIndex = 201;
-            this.lblPWPerShotItem2.Text = "PW PER SHOT";
-            // 
-            // lblTitleTargetItem2
-            // 
-            this.lblTitleTargetItem2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitleTargetItem2.AutoSize = true;
-            this.lblTitleTargetItem2.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitleTargetItem2.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleTargetItem2.Location = new System.Drawing.Point(3, 65);
-            this.lblTitleTargetItem2.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleTargetItem2.Name = "lblTitleTargetItem2";
-            this.lblTitleTargetItem2.Size = new System.Drawing.Size(60, 12);
-            this.lblTitleTargetItem2.TabIndex = 204;
-            this.lblTitleTargetItem2.Text = "TARGET QTY";
-            // 
-            // lblMaxQtyItem2
-            // 
-            this.lblMaxQtyItem2.AutoSize = true;
-            this.lblMaxQtyItem2.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblMaxQtyItem2.ForeColor = System.Drawing.Color.Transparent;
-            this.lblMaxQtyItem2.Location = new System.Drawing.Point(123, 83);
-            this.lblMaxQtyItem2.Margin = new System.Windows.Forms.Padding(3);
-            this.lblMaxQtyItem2.Name = "lblMaxQtyItem2";
-            this.lblMaxQtyItem2.Size = new System.Drawing.Size(60, 15);
-            this.lblMaxQtyItem2.TabIndex = 209;
-            this.lblMaxQtyItem2.Text = "MAX QTY";
-            // 
-            // lblTitleMaxQtyItem2
-            // 
-            this.lblTitleMaxQtyItem2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitleMaxQtyItem2.AutoSize = true;
-            this.lblTitleMaxQtyItem2.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitleMaxQtyItem2.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleMaxQtyItem2.Location = new System.Drawing.Point(123, 65);
-            this.lblTitleMaxQtyItem2.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleMaxQtyItem2.Name = "lblTitleMaxQtyItem2";
-            this.lblTitleMaxQtyItem2.Size = new System.Drawing.Size(48, 12);
-            this.lblTitleMaxQtyItem2.TabIndex = 208;
-            this.lblTitleMaxQtyItem2.Text = "MAX QTY";
-            // 
-            // lblTargetQtyItem2
-            // 
-            this.lblTargetQtyItem2.AutoSize = true;
-            this.lblTargetQtyItem2.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblTargetQtyItem2.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTargetQtyItem2.Location = new System.Drawing.Point(3, 83);
-            this.lblTargetQtyItem2.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTargetQtyItem2.Name = "lblTargetQtyItem2";
-            this.lblTargetQtyItem2.Size = new System.Drawing.Size(77, 15);
-            this.lblTargetQtyItem2.TabIndex = 205;
-            this.lblTargetQtyItem2.Text = "TARGET QTY";
-            // 
-            // lblTitleDescriptionItem2
-            // 
-            this.lblTitleDescriptionItem2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitleDescriptionItem2.AutoSize = true;
-            this.lblTitleDescriptionItem2.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitleDescriptionItem2.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleDescriptionItem2.Location = new System.Drawing.Point(3, 5);
-            this.lblTitleDescriptionItem2.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleDescriptionItem2.Name = "lblTitleDescriptionItem2";
-            this.lblTitleDescriptionItem2.Size = new System.Drawing.Size(66, 12);
-            this.lblTitleDescriptionItem2.TabIndex = 198;
-            this.lblTitleDescriptionItem2.Text = "DESCRIPTION";
-            // 
-            // lblDescriptionItem2
-            // 
-            this.lblDescriptionItem2.AutoSize = true;
-            this.lblDescriptionItem2.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblDescriptionItem2.ForeColor = System.Drawing.Color.Transparent;
-            this.lblDescriptionItem2.Location = new System.Drawing.Point(3, 23);
-            this.lblDescriptionItem2.Margin = new System.Windows.Forms.Padding(3);
-            this.lblDescriptionItem2.Name = "lblDescriptionItem2";
-            this.lblDescriptionItem2.Size = new System.Drawing.Size(117, 15);
-            this.lblDescriptionItem2.TabIndex = 199;
-            this.lblDescriptionItem2.Text = "ITEM NAME + CODE";
-            // 
-            // lblTitlePurposeItem2
-            // 
-            this.lblTitlePurposeItem2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitlePurposeItem2.AutoSize = true;
-            this.lblTitlePurposeItem2.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitlePurposeItem2.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitlePurposeItem2.Location = new System.Drawing.Point(438, 239);
-            this.lblTitlePurposeItem2.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitlePurposeItem2.Name = "lblTitlePurposeItem2";
-            this.lblTitlePurposeItem2.Size = new System.Drawing.Size(48, 12);
-            this.lblTitlePurposeItem2.TabIndex = 202;
-            this.lblTitlePurposeItem2.Text = "PURPOSE";
-            // 
-            // lblJobPurposeItem2
-            // 
-            this.lblJobPurposeItem2.AutoSize = true;
-            this.lblJobPurposeItem2.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblJobPurposeItem2.ForeColor = System.Drawing.Color.Transparent;
-            this.lblJobPurposeItem2.Location = new System.Drawing.Point(438, 257);
-            this.lblJobPurposeItem2.Margin = new System.Windows.Forms.Padding(3);
-            this.lblJobPurposeItem2.Name = "lblJobPurposeItem2";
-            this.lblJobPurposeItem2.Size = new System.Drawing.Size(85, 15);
-            this.lblJobPurposeItem2.TabIndex = 207;
-            this.lblJobPurposeItem2.Text = "JOB PURPOSE";
-            // 
-            // panelDividerUpItem2
-            // 
-            this.panelDividerUpItem2.BackColor = System.Drawing.Color.Transparent;
-            this.panelDividerUpItem2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDividerUpItem2.ForeColor = System.Drawing.Color.DimGray;
-            this.panelDividerUpItem2.Location = new System.Drawing.Point(414, 45);
-            this.panelDividerUpItem2.Margin = new System.Windows.Forms.Padding(0);
-            this.panelDividerUpItem2.Name = "panelDividerUpItem2";
-            this.panelDividerUpItem2.Size = new System.Drawing.Size(1, 179);
-            this.panelDividerUpItem2.TabIndex = 113;
-            // 
-            // panelDividerMidItem2
-            // 
-            this.panelDividerMidItem2.BackColor = System.Drawing.Color.Transparent;
-            this.panelDividerMidItem2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDividerMidItem2.ForeColor = System.Drawing.Color.DimGray;
-            this.panelDividerMidItem2.Location = new System.Drawing.Point(414, 224);
-            this.panelDividerMidItem2.Margin = new System.Windows.Forms.Padding(0);
-            this.panelDividerMidItem2.Name = "panelDividerMidItem2";
-            this.panelDividerMidItem2.Size = new System.Drawing.Size(1, 30);
-            this.panelDividerMidItem2.TabIndex = 114;
-            // 
-            // panelDividerbtmItem2
-            // 
-            this.panelDividerbtmItem2.BackColor = System.Drawing.Color.Transparent;
-            this.panelDividerbtmItem2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDividerbtmItem2.ForeColor = System.Drawing.Color.DimGray;
-            this.panelDividerbtmItem2.Location = new System.Drawing.Point(414, 254);
-            this.panelDividerbtmItem2.Margin = new System.Windows.Forms.Padding(0);
-            this.panelDividerbtmItem2.Name = "panelDividerbtmItem2";
-            this.panelDividerbtmItem2.Size = new System.Drawing.Size(1, 30);
-            this.panelDividerbtmItem2.TabIndex = 114;
-            // 
-            // tableLayoutPanel8
-            // 
-            this.tableLayoutPanel8.AutoScroll = true;
-            this.tableLayoutPanel8.AutoSize = true;
-            this.tableLayoutPanel8.BackColor = System.Drawing.Color.White;
-            this.tableLayoutPanel8.ColumnCount = 1;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel9, 0, 2);
-            this.tableLayoutPanel8.Controls.Add(this.lblTitleDescriptionItem3, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.lblDescriptionItem3, 0, 1);
-            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(709, 45);
-            this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 3;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(233, 179);
-            this.tableLayoutPanel8.TabIndex = 219;
-            // 
-            // tableLayoutPanel9
-            // 
-            this.tableLayoutPanel9.BackColor = System.Drawing.Color.White;
-            this.tableLayoutPanel9.ColumnCount = 2;
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Controls.Add(this.lblCavityItem3, 1, 1);
-            this.tableLayoutPanel9.Controls.Add(this.lblTitlePWShotItem3, 0, 0);
-            this.tableLayoutPanel9.Controls.Add(this.lblTitleCavityItem3, 1, 0);
-            this.tableLayoutPanel9.Controls.Add(this.lblPWPerShotItem3, 0, 1);
-            this.tableLayoutPanel9.Controls.Add(this.lblTitleTargetItem3, 0, 3);
-            this.tableLayoutPanel9.Controls.Add(this.lblMaxQtyItem3, 1, 4);
-            this.tableLayoutPanel9.Controls.Add(this.lblTitleMaxQtyItem3, 1, 3);
-            this.tableLayoutPanel9.Controls.Add(this.lblTargetQtyItem3, 0, 4);
-            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(0, 70);
-            this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
-            this.tableLayoutPanel9.RowCount = 5;
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(233, 109);
-            this.tableLayoutPanel9.TabIndex = 217;
-            // 
-            // lblCavityItem3
-            // 
-            this.lblCavityItem3.AutoSize = true;
-            this.lblCavityItem3.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblCavityItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblCavityItem3.Location = new System.Drawing.Point(123, 23);
-            this.lblCavityItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblCavityItem3.Name = "lblCavityItem3";
-            this.lblCavityItem3.Size = new System.Drawing.Size(47, 15);
-            this.lblCavityItem3.TabIndex = 203;
-            this.lblCavityItem3.Text = "CAVITY";
-            // 
-            // lblTitlePWShotItem3
-            // 
-            this.lblTitlePWShotItem3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitlePWShotItem3.AutoSize = true;
-            this.lblTitlePWShotItem3.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitlePWShotItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitlePWShotItem3.Location = new System.Drawing.Point(3, 5);
-            this.lblTitlePWShotItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitlePWShotItem3.Name = "lblTitlePWShotItem3";
-            this.lblTitlePWShotItem3.Size = new System.Drawing.Size(52, 12);
-            this.lblTitlePWShotItem3.TabIndex = 200;
-            this.lblTitlePWShotItem3.Text = "PW/ SHOT";
-            // 
-            // lblTitleCavityItem3
-            // 
-            this.lblTitleCavityItem3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitleCavityItem3.AutoSize = true;
-            this.lblTitleCavityItem3.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitleCavityItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleCavityItem3.Location = new System.Drawing.Point(123, 5);
-            this.lblTitleCavityItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleCavityItem3.Name = "lblTitleCavityItem3";
-            this.lblTitleCavityItem3.Size = new System.Drawing.Size(36, 12);
-            this.lblTitleCavityItem3.TabIndex = 202;
-            this.lblTitleCavityItem3.Text = "CAVITY";
-            // 
-            // lblPWPerShotItem3
-            // 
-            this.lblPWPerShotItem3.AutoSize = true;
-            this.lblPWPerShotItem3.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblPWPerShotItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblPWPerShotItem3.Location = new System.Drawing.Point(3, 23);
-            this.lblPWPerShotItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblPWPerShotItem3.Name = "lblPWPerShotItem3";
-            this.lblPWPerShotItem3.Size = new System.Drawing.Size(85, 15);
-            this.lblPWPerShotItem3.TabIndex = 201;
-            this.lblPWPerShotItem3.Text = "PW PER SHOT";
-            // 
-            // lblTitleTargetItem3
-            // 
-            this.lblTitleTargetItem3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitleTargetItem3.AutoSize = true;
-            this.lblTitleTargetItem3.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitleTargetItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleTargetItem3.Location = new System.Drawing.Point(3, 65);
-            this.lblTitleTargetItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleTargetItem3.Name = "lblTitleTargetItem3";
-            this.lblTitleTargetItem3.Size = new System.Drawing.Size(60, 12);
-            this.lblTitleTargetItem3.TabIndex = 204;
-            this.lblTitleTargetItem3.Text = "TARGET QTY";
-            // 
-            // lblMaxQtyItem3
-            // 
-            this.lblMaxQtyItem3.AutoSize = true;
-            this.lblMaxQtyItem3.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblMaxQtyItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblMaxQtyItem3.Location = new System.Drawing.Point(123, 83);
-            this.lblMaxQtyItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblMaxQtyItem3.Name = "lblMaxQtyItem3";
-            this.lblMaxQtyItem3.Size = new System.Drawing.Size(60, 15);
-            this.lblMaxQtyItem3.TabIndex = 209;
-            this.lblMaxQtyItem3.Text = "MAX QTY";
-            // 
-            // lblTitleMaxQtyItem3
-            // 
-            this.lblTitleMaxQtyItem3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitleMaxQtyItem3.AutoSize = true;
-            this.lblTitleMaxQtyItem3.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitleMaxQtyItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleMaxQtyItem3.Location = new System.Drawing.Point(123, 65);
-            this.lblTitleMaxQtyItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleMaxQtyItem3.Name = "lblTitleMaxQtyItem3";
-            this.lblTitleMaxQtyItem3.Size = new System.Drawing.Size(48, 12);
-            this.lblTitleMaxQtyItem3.TabIndex = 208;
-            this.lblTitleMaxQtyItem3.Text = "MAX QTY";
-            // 
-            // lblTargetQtyItem3
-            // 
-            this.lblTargetQtyItem3.AutoSize = true;
-            this.lblTargetQtyItem3.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblTargetQtyItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTargetQtyItem3.Location = new System.Drawing.Point(3, 83);
-            this.lblTargetQtyItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTargetQtyItem3.Name = "lblTargetQtyItem3";
-            this.lblTargetQtyItem3.Size = new System.Drawing.Size(77, 15);
-            this.lblTargetQtyItem3.TabIndex = 205;
-            this.lblTargetQtyItem3.Text = "TARGET QTY";
-            // 
-            // lblTitleDescriptionItem3
-            // 
-            this.lblTitleDescriptionItem3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitleDescriptionItem3.AutoSize = true;
-            this.lblTitleDescriptionItem3.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitleDescriptionItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleDescriptionItem3.Location = new System.Drawing.Point(3, 5);
-            this.lblTitleDescriptionItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleDescriptionItem3.Name = "lblTitleDescriptionItem3";
-            this.lblTitleDescriptionItem3.Size = new System.Drawing.Size(66, 12);
-            this.lblTitleDescriptionItem3.TabIndex = 198;
-            this.lblTitleDescriptionItem3.Text = "DESCRIPTION";
-            // 
-            // lblDescriptionItem3
-            // 
-            this.lblDescriptionItem3.AutoSize = true;
-            this.lblDescriptionItem3.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblDescriptionItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblDescriptionItem3.Location = new System.Drawing.Point(3, 23);
-            this.lblDescriptionItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblDescriptionItem3.Name = "lblDescriptionItem3";
-            this.lblDescriptionItem3.Size = new System.Drawing.Size(117, 15);
-            this.lblDescriptionItem3.TabIndex = 199;
-            this.lblDescriptionItem3.Text = "ITEM NAME + CODE";
-            // 
-            // tableLayoutPanel14
-            // 
-            this.tableLayoutPanel14.AutoScroll = true;
-            this.tableLayoutPanel14.AutoSize = true;
-            this.tableLayoutPanel14.BackColor = System.Drawing.Color.White;
-            this.tableLayoutPanel14.ColumnCount = 1;
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel14.Controls.Add(this.tableLayoutPanel18, 0, 2);
-            this.tableLayoutPanel14.Controls.Add(this.lblTitleDescriptionItem4, 0, 0);
-            this.tableLayoutPanel14.Controls.Add(this.lblDescriptionItem4, 0, 1);
-            this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel14.Location = new System.Drawing.Point(983, 45);
-            this.tableLayoutPanel14.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel14.Name = "tableLayoutPanel14";
-            this.tableLayoutPanel14.RowCount = 3;
-            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel14.Size = new System.Drawing.Size(233, 179);
-            this.tableLayoutPanel14.TabIndex = 219;
-            // 
-            // tableLayoutPanel18
-            // 
-            this.tableLayoutPanel18.BackColor = System.Drawing.Color.White;
-            this.tableLayoutPanel18.ColumnCount = 2;
-            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel18.Controls.Add(this.lblCavityItem4, 1, 1);
-            this.tableLayoutPanel18.Controls.Add(this.lblTitlePWShotItem4, 0, 0);
-            this.tableLayoutPanel18.Controls.Add(this.lblTitleCavityItem4, 1, 0);
-            this.tableLayoutPanel18.Controls.Add(this.lblPWPerShotItem4, 0, 1);
-            this.tableLayoutPanel18.Controls.Add(this.lblTitleTargetItem4, 0, 3);
-            this.tableLayoutPanel18.Controls.Add(this.lblMaxQtyItem4, 1, 4);
-            this.tableLayoutPanel18.Controls.Add(this.lblTitleMaxQtyItem4, 1, 3);
-            this.tableLayoutPanel18.Controls.Add(this.lblTargetQtyItem4, 0, 4);
-            this.tableLayoutPanel18.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel18.Location = new System.Drawing.Point(0, 70);
-            this.tableLayoutPanel18.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel18.Name = "tableLayoutPanel18";
-            this.tableLayoutPanel18.RowCount = 5;
-            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
-            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel18.Size = new System.Drawing.Size(233, 109);
-            this.tableLayoutPanel18.TabIndex = 217;
-            // 
-            // lblCavityItem4
-            // 
-            this.lblCavityItem4.AutoSize = true;
-            this.lblCavityItem4.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblCavityItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblCavityItem4.Location = new System.Drawing.Point(123, 23);
-            this.lblCavityItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblCavityItem4.Name = "lblCavityItem4";
-            this.lblCavityItem4.Size = new System.Drawing.Size(47, 15);
-            this.lblCavityItem4.TabIndex = 203;
-            this.lblCavityItem4.Text = "CAVITY";
-            // 
-            // lblTitlePWShotItem4
-            // 
-            this.lblTitlePWShotItem4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitlePWShotItem4.AutoSize = true;
-            this.lblTitlePWShotItem4.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitlePWShotItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitlePWShotItem4.Location = new System.Drawing.Point(3, 5);
-            this.lblTitlePWShotItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitlePWShotItem4.Name = "lblTitlePWShotItem4";
-            this.lblTitlePWShotItem4.Size = new System.Drawing.Size(52, 12);
-            this.lblTitlePWShotItem4.TabIndex = 200;
-            this.lblTitlePWShotItem4.Text = "PW/ SHOT";
-            // 
-            // lblTitleCavityItem4
-            // 
-            this.lblTitleCavityItem4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitleCavityItem4.AutoSize = true;
-            this.lblTitleCavityItem4.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitleCavityItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleCavityItem4.Location = new System.Drawing.Point(123, 5);
-            this.lblTitleCavityItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleCavityItem4.Name = "lblTitleCavityItem4";
-            this.lblTitleCavityItem4.Size = new System.Drawing.Size(36, 12);
-            this.lblTitleCavityItem4.TabIndex = 202;
-            this.lblTitleCavityItem4.Text = "CAVITY";
-            // 
-            // lblPWPerShotItem4
-            // 
-            this.lblPWPerShotItem4.AutoSize = true;
-            this.lblPWPerShotItem4.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblPWPerShotItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblPWPerShotItem4.Location = new System.Drawing.Point(3, 23);
-            this.lblPWPerShotItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblPWPerShotItem4.Name = "lblPWPerShotItem4";
-            this.lblPWPerShotItem4.Size = new System.Drawing.Size(85, 15);
-            this.lblPWPerShotItem4.TabIndex = 201;
-            this.lblPWPerShotItem4.Text = "PW PER SHOT";
-            // 
-            // lblTitleTargetItem4
-            // 
-            this.lblTitleTargetItem4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitleTargetItem4.AutoSize = true;
-            this.lblTitleTargetItem4.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitleTargetItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleTargetItem4.Location = new System.Drawing.Point(3, 65);
-            this.lblTitleTargetItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleTargetItem4.Name = "lblTitleTargetItem4";
-            this.lblTitleTargetItem4.Size = new System.Drawing.Size(60, 12);
-            this.lblTitleTargetItem4.TabIndex = 204;
-            this.lblTitleTargetItem4.Text = "TARGET QTY";
-            // 
-            // lblMaxQtyItem4
-            // 
-            this.lblMaxQtyItem4.AutoSize = true;
-            this.lblMaxQtyItem4.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblMaxQtyItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblMaxQtyItem4.Location = new System.Drawing.Point(123, 83);
-            this.lblMaxQtyItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblMaxQtyItem4.Name = "lblMaxQtyItem4";
-            this.lblMaxQtyItem4.Size = new System.Drawing.Size(60, 15);
-            this.lblMaxQtyItem4.TabIndex = 209;
-            this.lblMaxQtyItem4.Text = "MAX QTY";
-            // 
-            // lblTitleMaxQtyItem4
-            // 
-            this.lblTitleMaxQtyItem4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitleMaxQtyItem4.AutoSize = true;
-            this.lblTitleMaxQtyItem4.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitleMaxQtyItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleMaxQtyItem4.Location = new System.Drawing.Point(123, 65);
-            this.lblTitleMaxQtyItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleMaxQtyItem4.Name = "lblTitleMaxQtyItem4";
-            this.lblTitleMaxQtyItem4.Size = new System.Drawing.Size(48, 12);
-            this.lblTitleMaxQtyItem4.TabIndex = 208;
-            this.lblTitleMaxQtyItem4.Text = "MAX QTY";
-            // 
-            // lblTargetQtyItem4
-            // 
-            this.lblTargetQtyItem4.AutoSize = true;
-            this.lblTargetQtyItem4.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblTargetQtyItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTargetQtyItem4.Location = new System.Drawing.Point(3, 83);
-            this.lblTargetQtyItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTargetQtyItem4.Name = "lblTargetQtyItem4";
-            this.lblTargetQtyItem4.Size = new System.Drawing.Size(77, 15);
-            this.lblTargetQtyItem4.TabIndex = 205;
-            this.lblTargetQtyItem4.Text = "TARGET QTY";
-            // 
-            // lblTitleDescriptionItem4
-            // 
-            this.lblTitleDescriptionItem4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitleDescriptionItem4.AutoSize = true;
-            this.lblTitleDescriptionItem4.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitleDescriptionItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleDescriptionItem4.Location = new System.Drawing.Point(3, 5);
-            this.lblTitleDescriptionItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleDescriptionItem4.Name = "lblTitleDescriptionItem4";
-            this.lblTitleDescriptionItem4.Size = new System.Drawing.Size(66, 12);
-            this.lblTitleDescriptionItem4.TabIndex = 198;
-            this.lblTitleDescriptionItem4.Text = "DESCRIPTION";
-            // 
-            // lblDescriptionItem4
-            // 
-            this.lblDescriptionItem4.AutoSize = true;
-            this.lblDescriptionItem4.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblDescriptionItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblDescriptionItem4.Location = new System.Drawing.Point(3, 23);
-            this.lblDescriptionItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblDescriptionItem4.Name = "lblDescriptionItem4";
-            this.lblDescriptionItem4.Size = new System.Drawing.Size(117, 15);
-            this.lblDescriptionItem4.TabIndex = 199;
-            this.lblDescriptionItem4.Text = "ITEM NAME + CODE";
-            // 
-            // lblTitleItem3
-            // 
-            this.lblTitleItem3.AutoSize = true;
-            this.lblTitleItem3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitleItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleItem3.Location = new System.Drawing.Point(712, 13);
-            this.lblTitleItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleItem3.Name = "lblTitleItem3";
-            this.lblTitleItem3.Size = new System.Drawing.Size(63, 19);
-            this.lblTitleItem3.TabIndex = 190;
-            this.lblTitleItem3.Text = "Item(3)";
-            // 
-            // lblTitleItem4
-            // 
-            this.lblTitleItem4.AutoSize = true;
-            this.lblTitleItem4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitleItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitleItem4.Location = new System.Drawing.Point(986, 13);
-            this.lblTitleItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitleItem4.Name = "lblTitleItem4";
-            this.lblTitleItem4.Size = new System.Drawing.Size(63, 19);
-            this.lblTitleItem4.TabIndex = 190;
-            this.lblTitleItem4.Text = "Item(4)";
-            // 
-            // lblTitlePurposeItem3
-            // 
-            this.lblTitlePurposeItem3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitlePurposeItem3.AutoSize = true;
-            this.lblTitlePurposeItem3.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitlePurposeItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitlePurposeItem3.Location = new System.Drawing.Point(712, 239);
-            this.lblTitlePurposeItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitlePurposeItem3.Name = "lblTitlePurposeItem3";
-            this.lblTitlePurposeItem3.Size = new System.Drawing.Size(48, 12);
-            this.lblTitlePurposeItem3.TabIndex = 202;
-            this.lblTitlePurposeItem3.Text = "PURPOSE";
-            // 
-            // lblTitlePurposeItem4
-            // 
-            this.lblTitlePurposeItem4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTitlePurposeItem4.AutoSize = true;
-            this.lblTitlePurposeItem4.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.lblTitlePurposeItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblTitlePurposeItem4.Location = new System.Drawing.Point(986, 239);
-            this.lblTitlePurposeItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblTitlePurposeItem4.Name = "lblTitlePurposeItem4";
-            this.lblTitlePurposeItem4.Size = new System.Drawing.Size(48, 12);
-            this.lblTitlePurposeItem4.TabIndex = 202;
-            this.lblTitlePurposeItem4.Text = "PURPOSE";
-            // 
-            // lblJobPurposeItem3
-            // 
-            this.lblJobPurposeItem3.AutoSize = true;
-            this.lblJobPurposeItem3.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblJobPurposeItem3.ForeColor = System.Drawing.Color.Transparent;
-            this.lblJobPurposeItem3.Location = new System.Drawing.Point(712, 257);
-            this.lblJobPurposeItem3.Margin = new System.Windows.Forms.Padding(3);
-            this.lblJobPurposeItem3.Name = "lblJobPurposeItem3";
-            this.lblJobPurposeItem3.Size = new System.Drawing.Size(85, 15);
-            this.lblJobPurposeItem3.TabIndex = 207;
-            this.lblJobPurposeItem3.Text = "JOB PURPOSE";
-            // 
-            // lblJobPurposeItem4
-            // 
-            this.lblJobPurposeItem4.AutoSize = true;
-            this.lblJobPurposeItem4.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblJobPurposeItem4.ForeColor = System.Drawing.Color.Transparent;
-            this.lblJobPurposeItem4.Location = new System.Drawing.Point(986, 257);
-            this.lblJobPurposeItem4.Margin = new System.Windows.Forms.Padding(3);
-            this.lblJobPurposeItem4.Name = "lblJobPurposeItem4";
-            this.lblJobPurposeItem4.Size = new System.Drawing.Size(85, 15);
-            this.lblJobPurposeItem4.TabIndex = 207;
-            this.lblJobPurposeItem4.Text = "JOB PURPOSE";
-            // 
-            // panelDividerUpItem3
-            // 
-            this.panelDividerUpItem3.BackColor = System.Drawing.Color.Transparent;
-            this.panelDividerUpItem3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDividerUpItem3.ForeColor = System.Drawing.Color.DimGray;
-            this.panelDividerUpItem3.Location = new System.Drawing.Point(688, 45);
-            this.panelDividerUpItem3.Margin = new System.Windows.Forms.Padding(0);
-            this.panelDividerUpItem3.Name = "panelDividerUpItem3";
-            this.panelDividerUpItem3.Size = new System.Drawing.Size(1, 179);
-            this.panelDividerUpItem3.TabIndex = 113;
-            // 
-            // panelDividerMidItem3
-            // 
-            this.panelDividerMidItem3.BackColor = System.Drawing.Color.Transparent;
-            this.panelDividerMidItem3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDividerMidItem3.ForeColor = System.Drawing.Color.DimGray;
-            this.panelDividerMidItem3.Location = new System.Drawing.Point(688, 224);
-            this.panelDividerMidItem3.Margin = new System.Windows.Forms.Padding(0);
-            this.panelDividerMidItem3.Name = "panelDividerMidItem3";
-            this.panelDividerMidItem3.Size = new System.Drawing.Size(1, 30);
-            this.panelDividerMidItem3.TabIndex = 114;
-            // 
-            // panelDividerbtmItem3
-            // 
-            this.panelDividerbtmItem3.BackColor = System.Drawing.Color.Transparent;
-            this.panelDividerbtmItem3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDividerbtmItem3.ForeColor = System.Drawing.Color.DimGray;
-            this.panelDividerbtmItem3.Location = new System.Drawing.Point(688, 254);
-            this.panelDividerbtmItem3.Margin = new System.Windows.Forms.Padding(0);
-            this.panelDividerbtmItem3.Name = "panelDividerbtmItem3";
-            this.panelDividerbtmItem3.Size = new System.Drawing.Size(1, 30);
-            this.panelDividerbtmItem3.TabIndex = 114;
-            // 
-            // panelDividerUpItem4
-            // 
-            this.panelDividerUpItem4.BackColor = System.Drawing.Color.Transparent;
-            this.panelDividerUpItem4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDividerUpItem4.ForeColor = System.Drawing.Color.DimGray;
-            this.panelDividerUpItem4.Location = new System.Drawing.Point(962, 45);
-            this.panelDividerUpItem4.Margin = new System.Windows.Forms.Padding(0);
-            this.panelDividerUpItem4.Name = "panelDividerUpItem4";
-            this.panelDividerUpItem4.Size = new System.Drawing.Size(1, 179);
-            this.panelDividerUpItem4.TabIndex = 114;
-            // 
-            // panelDividerMidItem4
-            // 
-            this.panelDividerMidItem4.BackColor = System.Drawing.Color.Transparent;
-            this.panelDividerMidItem4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDividerMidItem4.ForeColor = System.Drawing.Color.DimGray;
-            this.panelDividerMidItem4.Location = new System.Drawing.Point(962, 224);
-            this.panelDividerMidItem4.Margin = new System.Windows.Forms.Padding(0);
-            this.panelDividerMidItem4.Name = "panelDividerMidItem4";
-            this.panelDividerMidItem4.Size = new System.Drawing.Size(1, 30);
-            this.panelDividerMidItem4.TabIndex = 114;
-            // 
-            // panelDividerbtmItem4
-            // 
-            this.panelDividerbtmItem4.BackColor = System.Drawing.Color.Transparent;
-            this.panelDividerbtmItem4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDividerbtmItem4.ForeColor = System.Drawing.Color.DimGray;
-            this.panelDividerbtmItem4.Location = new System.Drawing.Point(962, 254);
-            this.panelDividerbtmItem4.Margin = new System.Windows.Forms.Padding(0);
-            this.panelDividerbtmItem4.Name = "panelDividerbtmItem4";
-            this.panelDividerbtmItem4.Size = new System.Drawing.Size(1, 30);
-            this.panelDividerbtmItem4.TabIndex = 114;
-            // 
             // frmJobSummary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -2425,6 +2426,18 @@
             this.tableLayoutPanel5.PerformLayout();
             this.tlpMouldAndItem.ResumeLayout(false);
             this.tlpMouldAndItem.PerformLayout();
+            this.tableLayoutPanel14.ResumeLayout(false);
+            this.tableLayoutPanel14.PerformLayout();
+            this.tableLayoutPanel18.ResumeLayout(false);
+            this.tableLayoutPanel18.PerformLayout();
+            this.tableLayoutPanel8.ResumeLayout(false);
+            this.tableLayoutPanel8.PerformLayout();
+            this.tableLayoutPanel9.ResumeLayout(false);
+            this.tableLayoutPanel9.PerformLayout();
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
+            this.tableLayoutPanel7.ResumeLayout(false);
+            this.tableLayoutPanel7.PerformLayout();
             this.tableLayoutPanel11.ResumeLayout(false);
             this.tableLayoutPanel11.PerformLayout();
             this.tlpItem1.ResumeLayout(false);
@@ -2449,18 +2462,6 @@
             this.tableLayoutPanel13.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel4.PerformLayout();
-            this.tableLayoutPanel7.ResumeLayout(false);
-            this.tableLayoutPanel7.PerformLayout();
-            this.tableLayoutPanel8.ResumeLayout(false);
-            this.tableLayoutPanel8.PerformLayout();
-            this.tableLayoutPanel9.ResumeLayout(false);
-            this.tableLayoutPanel9.PerformLayout();
-            this.tableLayoutPanel14.ResumeLayout(false);
-            this.tableLayoutPanel14.PerformLayout();
-            this.tableLayoutPanel18.ResumeLayout(false);
-            this.tableLayoutPanel18.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

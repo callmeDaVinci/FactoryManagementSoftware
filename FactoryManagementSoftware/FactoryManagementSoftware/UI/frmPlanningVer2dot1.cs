@@ -76,7 +76,12 @@ namespace FactoryManagementSoftware.UI
 
         private bool JOB_ADDING_MODE = true;
         private bool JOB_EDITING_MODE = false;
+
+        private int CURRENT_STEP = 1;
+
         #endregion
+
+
 
         public frmPlanningVer2dot1()
         {
@@ -226,11 +231,12 @@ namespace FactoryManagementSoftware.UI
 
             dt.Columns.Add(text.Header_Selection, typeof(bool));
             dt.Columns.Add(text.Header_Index, typeof(int));
-            dt.Columns.Add(text.Header_Ratio, typeof(double));
 
             dt.Columns.Add(text.Header_ItemDescription, typeof(string));
             dt.Columns.Add(text.Header_ItemCode, typeof(string));
             dt.Columns.Add(text.Header_ItemName, typeof(string));
+            dt.Columns.Add(text.Header_Ratio, typeof(double));
+
             dt.Columns.Add(text.Header_BAG, typeof(int));
 
             dt.Columns.Add(text.Header_KGPERBAG, typeof(decimal));
@@ -290,138 +296,39 @@ namespace FactoryManagementSoftware.UI
 
         private void InitialSetting()
         {
-            ShowBtnItemSave(false);
-            StepsUIUpdate(1);
-            MIN_SHOT = 0;
+            
 
-            //hide setting
-            ShowOrHideSetting(labelButton_HideSettings);
-            RightPanelInitialSetting(0);
+            CURRENT_STEP = 1;
+
+            StepsUIUpdate(CURRENT_STEP);
+
+            MIN_SHOT = 0;
 
             tool.DoubleBuffered(dgvMacSchedule, true);
 
             CALL_WITH_ITEM_CODE = null;
             CALL_WITH_TARGET_QTY = -1;
-    }
 
-        private void ShowOrHideSetting(string LabelButton)
-        {
-            if (LabelButton == labelButton_ShowSettings)
-            {
-                tlpLeftPanel.RowStyles[0] = new RowStyle(SizeType.Absolute, 150f);
-
-                tlpSettings.RowStyles[0] = new RowStyle(SizeType.Absolute, 30f);
-                tlpSettings.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
-
-
-                lblSettingsShowOrHide.Text = labelButton_HideSettings;
-            }
-            else
-            {
-                tlpLeftPanel.RowStyles[0] = new RowStyle(SizeType.Absolute, 50f);
-
-                tlpSettings.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
-                tlpSettings.RowStyles[1] = new RowStyle(SizeType.Percent, 0f);
-
-                lblSettingsShowOrHide.Text = labelButton_ShowSettings;
-
-            }
+            //Width = 1200;
+            //Height = 1200;
         }
 
-        private void RightPanelInitialSetting(int step)
-        {
-            if (step == 0) //panel initial 
-            {
-                btnStockCheck.Visible = true;
-                btnMachineSelection.Visible = true;
+     
 
-                lblStockCheckStatus.Text = "";
-
-                btnEditItemGroup.Visible = false;
-                btnMatStockCheck2.Visible = false;
-
-                tlpStockCheckTitle.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
-
-                tlpRightPanel.RowStyles[0] = new RowStyle(SizeType.Percent, 50f);
-                tlpRightPanel.RowStyles[2] = new RowStyle(SizeType.Percent, 50f);
-
-                tlpStockCheckPanel.RowStyles[0] = new RowStyle(SizeType.Absolute, 31f);
-                tlpStockCheckPanel.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
-                tlpStockCheckPanel.RowStyles[2] = new RowStyle(SizeType.Percent, 0f);
-
-                tlpMachineSelection.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
-                tlpMachineSelection.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
-                tlpMachineSelection.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
-                tlpMachineSelection.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
-
-                dgvStockCheck.DataSource = null;
-                dgvMacSchedule.DataSource = null;
-
-            }
-            else if (step == 1) //show stock check data
-            {
-                btnStockCheck.Visible = false;
-
-                btnMachineSelection.Visible = true;
-
-                btnEditItemGroup.Visible = true;
-                btnMatStockCheck2.Visible = false;
-                tlpStockCheckTitle.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
-
-                tlpRightPanel.RowStyles[0] = new RowStyle(SizeType.Percent, 50f);
-                tlpRightPanel.RowStyles[2] = new RowStyle(SizeType.Percent, 50f);
-
-                tlpStockCheckPanel.RowStyles[0] = new RowStyle(SizeType.Absolute, 31f);
-                tlpStockCheckPanel.RowStyles[1] = new RowStyle(SizeType.Percent, 0f);
-                tlpStockCheckPanel.RowStyles[2] = new RowStyle(SizeType.Percent, 100f);
-
-
-                tlpMachineSelection.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
-                tlpMachineSelection.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
-                tlpMachineSelection.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
-                tlpMachineSelection.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
-
-
-                dgvMacSchedule.DataSource = null;
-            }
-            else if (step == 2) //show machine selection
-            {
-                btnEditItemGroup.Visible = false;
-                btnMatStockCheck2.Visible = true;
-                tlpStockCheckTitle.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 150f);
-
-                btnStockCheck.Visible = false;
-                btnMachineSelection.Visible = false;
-
-                tlpRightPanel.RowStyles[0] = new RowStyle(SizeType.Absolute, 50f);
-                tlpRightPanel.RowStyles[2] = new RowStyle(SizeType.Percent, 100f);
-
-                tlpStockCheckPanel.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
-                tlpStockCheckPanel.RowStyles[1] = new RowStyle(SizeType.Percent, 0f);
-                tlpStockCheckPanel.RowStyles[2] = new RowStyle(SizeType.Percent, 0f);
-
-                tlpMachineSelection.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
-                tlpMachineSelection.RowStyles[1] = new RowStyle(SizeType.Absolute, 150f);
-                tlpMachineSelection.RowStyles[2] = new RowStyle(SizeType.Absolute, 30);
-                tlpMachineSelection.RowStyles[3] = new RowStyle(SizeType.Percent, 100f);
-
-
-            }
-        }
 
         private DataTable DT_SUMMARY_ITEM = null;
         private DataTable DT_SUMMARY_RAW = null;
-        private DataTable DT_SUMMARY_COLOR = null;
         private DataTable DT_SUMMARY_STOCKCHECK = null;
         private DataTable DT_SUMMARY_MAC_SCHEDULE = null;
         private PlanningBLL BLL_JOB_SUMMARY = new PlanningBLL();
         private facDAL dalFac = new facDAL();
+        private string COLOR_MAT_CODE = "";
+
         private bool Validation()
         {
             BLL_JOB_SUMMARY = new PlanningBLL();
             DT_SUMMARY_ITEM = null;
             DT_SUMMARY_RAW = null;
-            DT_SUMMARY_COLOR = null;
             DT_SUMMARY_STOCKCHECK = null;
             DT_SUMMARY_MAC_SCHEDULE = null;
 
@@ -484,11 +391,6 @@ namespace FactoryManagementSoftware.UI
                 return false;
             }
 
-            if (dgvColorMatList?.Rows.Count > 0)
-            {
-                DT_SUMMARY_COLOR = (DataTable)dgvColorMatList.DataSource;
-            }
-
             if (dgvStockCheck?.Rows.Count > 0)
             {
                 DT_SUMMARY_STOCKCHECK = (DataTable)dgvStockCheck.DataSource;
@@ -499,7 +401,7 @@ namespace FactoryManagementSoftware.UI
                 DT_SUMMARY_MAC_SCHEDULE = (DataTable)dgvMacSchedule.DataSource;
             }
 
-            int totalCavity = int.TryParse(txtCavity.Text, out totalCavity) ? totalCavity : 0;
+            int totalCavity = int.TryParse(lblCavity.Text, out totalCavity) ? totalCavity : 0;
 
             if(totalCavity == 0)
             {
@@ -517,7 +419,7 @@ namespace FactoryManagementSoftware.UI
                 return false;
             }
 
-            double totalPWPerShot = double.TryParse(txtPWPerShot.Text, out totalPWPerShot) ? totalPWPerShot : 0;
+            double totalPWPerShot = double.TryParse(lblPWPerShot.Text, out totalPWPerShot) ? totalPWPerShot : 0;
             double totalRWPerShot = double.TryParse(txtRWPerShot.Text, out totalRWPerShot) ? totalRWPerShot : 0;
 
             if (totalPWPerShot + totalRWPerShot == 0)
@@ -527,11 +429,11 @@ namespace FactoryManagementSoftware.UI
                 return false;
             }
 
-            int proDay = int.TryParse(txtDaysNeeded.Text, out proDay) ? proDay : 0;
-            double proBalHrs= double.TryParse(txtbalHours.Text, out proBalHrs) ? proBalHrs : 0;
+            int proDay = int.TryParse(lblDaysNeeded.Text, out proDay) ? proDay : 0;
+            double proBalHrs= double.TryParse(lblbalHours.Text, out proBalHrs) ? proBalHrs : 0;
             int hrsPerDay = int.TryParse(txtHrsPerDay.Text, out hrsPerDay) ? hrsPerDay : 0;
 
-            int maxShot = int.TryParse(txtMaxShot.Text, out maxShot) ? maxShot : 0;
+            int maxShot = int.TryParse(lblMaxShot.Text, out maxShot) ? maxShot : 0;
 
             if (maxShot == 0)
             {
@@ -541,9 +443,9 @@ namespace FactoryManagementSoftware.UI
             }
 
 
-            double totalRaw_kg = double.TryParse(txtRawMat.Text, out totalRaw_kg) ? totalRaw_kg : 0;
-            double totalColor_kg = double.TryParse(txtColorMat.Text, out totalColor_kg) ? totalColor_kg : 0;
-            double totalRecycle_kg = double.TryParse(txtRecycleMat.Text, out totalRecycle_kg) ? totalRecycle_kg : 0;
+            double totalRaw_kg = double.TryParse(lblRawMat.Text, out totalRaw_kg) ? totalRaw_kg : 0;
+            double totalColor_kg = double.TryParse(lblColorMat.Text, out totalColor_kg) ? totalColor_kg : 0;
+            double totalRecycle_kg = double.TryParse(lblRecycleMat.Text, out totalRecycle_kg) ? totalRecycle_kg : 0;
 
             if (totalRaw_kg + totalColor_kg + totalRecycle_kg == 0)
             {
@@ -601,9 +503,10 @@ namespace FactoryManagementSoftware.UI
             BLL_JOB_SUMMARY.machine_id = macID;
             BLL_JOB_SUMMARY.machine_location_string = facName;
             BLL_JOB_SUMMARY.machine_location = facID;
-
-            BLL_JOB_SUMMARY.raw_round_up_to_bag = cbRoundUpToBag.Checked;
-            BLL_JOB_SUMMARY.use_recycle = cbRunnerRecycle.Checked;
+            BLL_JOB_SUMMARY.color_material_code = COLOR_MAT_CODE;
+            BLL_JOB_SUMMARY.part_color = lblPartColor.Text;
+            BLL_JOB_SUMMARY.color_material_usage = txtColorMatUsage.Text;
+            BLL_JOB_SUMMARY.use_recycle = cbRecycleExtraMode.Checked || cbRecycleSaveMode.Checked;
 
 
             if (DATE_COLLISION_FOUND)
@@ -662,11 +565,11 @@ namespace FactoryManagementSoftware.UI
             if(Validation())
             {
                 //open purpose page
-                frmJobSummary frm = new frmJobSummary(DT_SUMMARY_ITEM, DT_SUMMARY_RAW, DT_SUMMARY_COLOR, DT_SUMMARY_STOCKCHECK, DT_SUMMARY_MAC_SCHEDULE, BLL_JOB_SUMMARY);
+                //frmJobSummary frm = new frmJobSummary(DT_SUMMARY_ITEM, DT_SUMMARY_RAW, DT_SUMMARY_STOCKCHECK, DT_SUMMARY_MAC_SCHEDULE, BLL_JOB_SUMMARY);
 
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Normal;
-                frm.ShowDialog();
+                //frm.StartPosition = FormStartPosition.CenterScreen;
+                //frm.WindowState = FormWindowState.Normal;
+                //frm.ShowDialog();
 
                 //try
                 //{
@@ -827,11 +730,13 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_TargetQty].HeaderCell.Style.BackColor = Color.FromArgb(255, 153, 153);
 
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
+
                 dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dgv.Columns[text.Header_Job_Purpose].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgv.Columns[text.Header_AutoQtyAdjustment].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
                 dgv.Columns[text.Header_Cavity].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
                 dgv.Columns[text.Header_ProTon].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
@@ -844,7 +749,7 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Columns[text.Header_MouldCode].Width = smallColumnWidth;
                 dgv.Columns[text.Header_Cavity].Width = smallColumnWidth;
-                dgv.Columns[text.Header_AutoQtyAdjustment].Width = smallColumnWidth;
+                //dgv.Columns[text.Header_AutoQtyAdjustment].Width = smallColumnWidth;
                 //dgv.Columns[text.Header_MouldSelection].Width = ProductionInfoColumnWidth;
                 //dgv.Columns[text.Header_ItemSelection].Width = ProductionInfoColumnWidth;
                 //dgv.Columns[text.Header_MouldCode].Width = ProductionInfoColumnWidth;
@@ -859,24 +764,24 @@ namespace FactoryManagementSoftware.UI
                 //dgv.Columns[text.Header_ProPwShot].Visible = false;
                 dgv.Columns[text.Header_ProRwShot].Visible = false;
 
-                int itemListRowHeight = dgv.ColumnHeadersHeight + dgv.Rows.Cast<DataGridViewRow>().Sum(r => r.Height);
+                //int itemListRowHeight = dgv.ColumnHeadersHeight + dgv.Rows.Cast<DataGridViewRow>().Sum(r => r.Height);
 
-                if (itemListRowHeight < 150)
-                {
-                    tlpItemSelection.RowStyles[1].SizeType = SizeType.Absolute;
-                    tlpItemSelection.RowStyles[1].Height = itemListRowHeight;
+                //if (itemListRowHeight < 150)
+                //{
+                //    tlpItemSelection.RowStyles[1].SizeType = SizeType.Absolute;
+                //    tlpItemSelection.RowStyles[1].Height = itemListRowHeight;
 
 
-                    tlpLeftPanel.RowStyles[2].SizeType = SizeType.Absolute;
-                    tlpLeftPanel.RowStyles[2].Height = itemListRowHeight + 157;
-                }
+                //    tlpLeftPanel.RowStyles[2].SizeType = SizeType.Absolute;
+                //    tlpLeftPanel.RowStyles[2].Height = itemListRowHeight + 157;
+                //}
             }
             else if (dgv == dgvRawMatList)
             {
                 //dgv.Columns[text.Header_MouldCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
 
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
                 dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -899,51 +804,13 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_ItemCode].Visible = false;
                 dgv.Columns[text.Header_ItemName].Visible = false;
 
-                int itemListRowHeight = dgv.ColumnHeadersHeight + dgv.Rows.Cast<DataGridViewRow>().Sum(r => r.Height);
+                //int itemListRowHeight = dgv.ColumnHeadersHeight + dgv.Rows.Cast<DataGridViewRow>().Sum(r => r.Height);
 
-                if (itemListRowHeight < 192)
-                {
-                    tlpMatSelection.RowStyles[1].SizeType = SizeType.Absolute;
-                    tlpMatSelection.RowStyles[1].Height = itemListRowHeight;
-                }
-
-            }
-            else if (dgv == dgvColorMatList)
-            {
-                //dgv.Columns[text.Header_MouldCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-
-                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
-                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
-                dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-                dgv.Columns[text.Header_Percentage].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-                dgv.Columns[text.Header_KG].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-                dgv.Columns[text.Header_Color].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-                dgv.Columns[text.Header_Remark].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-
-                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-
-                int columnWidth = 60;
-
-                dgv.Columns[text.Header_Selection].Width = columnWidth;
-                dgv.Columns[text.Header_Index].Width = columnWidth;
-                dgv.Columns[text.Header_KG].Width = columnWidth;
-                dgv.Columns[text.Header_Percentage].Width = columnWidth;
-                dgv.Columns[text.Header_Color].Width = columnWidth;
-
-                dgv.Columns[text.Header_ItemCode].Visible = false;
-                dgv.Columns[text.Header_ItemName].Visible = false;
-
-                int itemListRowHeight = dgv.ColumnHeadersHeight + dgv.Rows.Cast<DataGridViewRow>().Sum(r => r.Height);
-
-                if (itemListRowHeight < 192)
-                {
-                    tlpMatSelection.RowStyles[3].SizeType = SizeType.Absolute;
-                    tlpMatSelection.RowStyles[3].Height = itemListRowHeight;
-
-                }
+                //if (itemListRowHeight < 192)
+                //{
+                //    tlpMatSelection.RowStyles[1].SizeType = SizeType.Absolute;
+                //    tlpMatSelection.RowStyles[1].Height = itemListRowHeight;
+                //}
 
             }
             else if (dgv == dgvStockCheck)
@@ -1060,9 +927,9 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadSingleMaterialList()
         {
-            txtRawMat.Text = "0";
-            txtColorMat.Text = "0";
-            txtRecycleMat.Text = "0";
+            lblRawMat.Text = "0";
+            lblColorMat.Text = "0";
+            lblRecycleMat.Text = "0";
 
             if (dgvItemList?.Rows.Count > 0)
             {
@@ -1121,10 +988,10 @@ namespace FactoryManagementSoftware.UI
                         newColorRow[text.Header_Percentage] = colorRate;
 
                         dt_ColorMat.Rows.Add(newColorRow);
-                        dgvColorMatList.DataSource = dt_ColorMat;
-                        dgvUIEdit(dgvColorMatList);
-                        ColorMatListCellFormatting(dgvColorMatList);
-                        dgvColorMatList.ClearSelection();
+                        //dgvColorMatList.DataSource = dt_ColorMat;
+                        //dgvUIEdit(dgvColorMatList);
+                        //ColorMatListCellFormatting(dgvColorMatList);
+                        //dgvColorMatList.ClearSelection();
 
 
                         break;
@@ -1135,8 +1002,7 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 dgvRawMatList.DataSource = null;
-                dgvColorMatList.DataSource = null;
-                dgvMaterialSummary.DataSource = null;
+                //dgvColorMatList.DataSource = null;
 
             }
         }
@@ -1196,10 +1062,10 @@ namespace FactoryManagementSoftware.UI
                     newColorRow[text.Header_Percentage] = colorRate;
 
                     dt_ColorMat.Rows.Add(newColorRow);
-                    dgvColorMatList.DataSource = dt_ColorMat;
-                    dgvUIEdit(dgvColorMatList);
-                    ColorMatListCellFormatting(dgvColorMatList);
-                    dgvColorMatList.ClearSelection();
+                    //dgvColorMatList.DataSource = dt_ColorMat;
+                    //dgvUIEdit(dgvColorMatList);
+                    //ColorMatListCellFormatting(dgvColorMatList);
+                    //dgvColorMatList.ClearSelection();
 
 
                     break;
@@ -1208,32 +1074,28 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private readonly string TimePanelTitle = "2. TIME REQUIRED";
+        private readonly string TimePanelTitle = "TIME";
         private readonly string DayLabelTitle = "Day";
 
         private void ClearPannelSummaryInfo()
         {
-            gbTime.Text = TimePanelTitle;
+            lblTime.Text = TimePanelTitle;
             lblDays.Text = DayLabelTitle;
-            txtDaysNeeded.Text = "0";
-            txtbalHours.Text = "0";
+            lblDaysNeeded.Text = "0";
+            lblbalHours.Text = "0";
 
-            txtMaxQty.Text = "0";
-            txtMaxShot.Text = "0";
-
-            dgvMaterialSummary.DataSource = null;
-
+            lblMaxShot.Text = "0";
         }
 
         #region Calculation
         private void FromMaxShotToTimeNeededCalculation()
         {
             int cycleTime_PerShot_sec = int.TryParse(txtCycleTime.Text, out cycleTime_PerShot_sec) ? cycleTime_PerShot_sec : 0;
-            int MaxShots = int.TryParse(txtMaxShot.Text, out MaxShots) ? MaxShots : 0;
+            int MaxShots = int.TryParse(lblMaxShot.Text, out MaxShots) ? MaxShots : 0;
 
             int Max_CycleTime_sec = MaxShots * cycleTime_PerShot_sec;
 
-            gbTime.Text = TimePanelTitle + " (" + Max_CycleTime_sec + " s )";
+            lblTime.Text = TimePanelTitle + " (" + Max_CycleTime_sec + " s )";
 
             double workingHrsPerday = double.TryParse(txtHrsPerDay.Text, out workingHrsPerday) ? workingHrsPerday : 22;
 
@@ -1243,8 +1105,8 @@ namespace FactoryManagementSoftware.UI
 
             lblDays.Text = DayLabelTitle + (totalDays > 1 ? "s" : "") + " (" + workingHrsPerday + "hrs)";
 
-            txtDaysNeeded.Text = totalDays.ToString();
-            txtbalHours.Text = balHrs.ToString("0.##");
+            lblDaysNeeded.Text = totalDays.ToString();
+            lblbalHours.Text = balHrs.ToString("0.##");
 
         }
 
@@ -1450,7 +1312,7 @@ namespace FactoryManagementSoftware.UI
                 #region Step 2: get Min Material Needed
 
                 //part weight per shot in gram
-                double PW_Shot_g = double.TryParse(txtPWPerShot.Text, out PW_Shot_g) ? PW_Shot_g : 0;
+                double PW_Shot_g = double.TryParse(lblPWPerShot.Text, out PW_Shot_g) ? PW_Shot_g : 0;
 
                 //runner weight per shot in gram
                 double RW_Shot_g = double.TryParse(txtRWPerShot.Text, out RW_Shot_g) ? RW_Shot_g : 0;
@@ -1473,7 +1335,9 @@ namespace FactoryManagementSoftware.UI
         
                 int maxShots = minShots;
 
-                bool RawMat_RoundUpToBag = cbRoundUpToBag.Checked;
+                bool RawMat_RoundUpToBag = true;
+
+                //bool RawMat_RoundUpToBag = cbRoundUpToBag.Checked;
 
                 double maxMaterialNeeded_g = minMaterialNeeded_g;
                 double MaterialperBag_KG = 25;
@@ -1487,12 +1351,7 @@ namespace FactoryManagementSoftware.UI
 
                 double colorRatio_percentage = 0;
 
-                DataTable dt_ColorMat = (DataTable)dgvColorMatList.DataSource;
-
-                if (dt_ColorMat?.Rows.Count > 0 && dt_ColorMat.Columns.Contains(text.Header_Percentage))
-                {
-                    colorRatio_percentage = double.TryParse(dt_ColorMat.Rows[0][text.Header_Percentage].ToString(), out colorRatio_percentage) ? colorRatio_percentage : 0;
-                }
+                colorRatio_percentage = double.TryParse(txtColorMatUsage.Text, out colorRatio_percentage) ? colorRatio_percentage : 0;
 
                 colorRatio_percentage = colorRatio_percentage < 1 ? colorRatio_percentage : colorRatio_percentage / 100;
 
@@ -1526,7 +1385,7 @@ namespace FactoryManagementSoftware.UI
                     maxShots = minShots + extraShot_fromRoundUp;
                 }
 
-                bool RunnerRecycle = cbRunnerRecycle.Checked;
+                bool RunnerRecycle = cbRecycleExtraMode.Checked;
 
                 double recycleWastage = 0;
                 recycleWastage = recycleWastage < 1 ? recycleWastage : recycleWastage / 100;
@@ -1572,7 +1431,7 @@ namespace FactoryManagementSoftware.UI
                 #region Step 4: Production Time Calculation
 
                 int cycleTime_PerShot_sec = int.TryParse(txtCycleTime.Text, out cycleTime_PerShot_sec) ? cycleTime_PerShot_sec : 0;
-                int cavity_PerShot_pcs = int.TryParse(txtCavity.Text, out cavity_PerShot_pcs) ? cavity_PerShot_pcs : 0;
+                int cavity_PerShot_pcs = int.TryParse(lblCavity.Text, out cavity_PerShot_pcs) ? cavity_PerShot_pcs : 0;
 
                 int Max_CycleTime_sec = maxShots * cycleTime_PerShot_sec;
 
@@ -1589,31 +1448,25 @@ namespace FactoryManagementSoftware.UI
                 #region Step 5: Fill In Data
 
                 //Production Time
-                gbTime.Text = TimePanelTitle + " (" + Max_CycleTime_sec + " s )";
+                lblTime.Text = TimePanelTitle + " (" + Max_CycleTime_sec + " s )";
                 lblDays.Text = DayLabelTitle + (totalDays > 1 ? "s" : "") + " (" + workingHrsPerday + "hrs)";
-                txtDaysNeeded.Text = totalDays.ToString();
-                txtbalHours.Text = balHrs.ToString("0.##");
+                lblDaysNeeded.Text = totalDays.ToString();
+                lblbalHours.Text = balHrs.ToString("0.##");
 
                 //Max Capacity
                 int Max_Qty_pcs = maxShots * cavity_PerShot_pcs;
-                txtMaxQty.Text = Max_Qty_pcs.ToString();
-                txtMaxShot.Text = maxShots.ToString();
+                lblMaxShot.Text = maxShots.ToString();
 
                 //Material Summary
-                txtRawMat.Text = (new_RawMat_g / 1000).ToString();
-                txtColorMat.Text = (new_ColorMat_g / 1000).ToString();
-                txtRecycleMat.Text = (total_RecycleMat_g / 1000).ToString();
+                lblRawMat.Text = (new_RawMat_g / 1000).ToString();
+                lblColorMat.Text = (new_ColorMat_g / 1000).ToString();
+                lblRecycleMat.Text = (total_RecycleMat_g / 1000).ToString();
 
                 if (dt_RawMat?.Rows.Count > 0)
                 {
                     double kgPerBag = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out kgPerBag) ? kgPerBag : 0;
                     dt_RawMat.Rows[0][text.Header_KG] = new_RawMat_g / 1000;
                     dt_RawMat.Rows[0][text.Header_BAG] = (int)(new_RawMat_g / 1000 / kgPerBag);
-                }
-
-                if (dt_ColorMat?.Rows.Count > 0 && dt_ColorMat.Columns.Contains(text.Header_KG))
-                {
-                    dt_ColorMat.Rows[0][text.Header_KG] = new_ColorMat_g / 1000;
                 }
 
                 #endregion
@@ -1727,7 +1580,6 @@ namespace FactoryManagementSoftware.UI
             }
 
             lblItemListTitle.Text = ItemListTitle;
-            RightPanelInitialSetting(0);
             //dgvItemList.FirstDisplayedScrollingRowIndex = 0;
 
         }
@@ -1863,9 +1715,9 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-                txtCavity.Text = totalCavity.ToString();
+                lblCavity.Text = totalCavity.ToString();
                 txtCycleTime.Text = cycleTime.ToString("0");
-                txtPWPerShot.Text = partWeightPerShot.ToString("0.##");
+                lblPWPerShot.Text = partWeightPerShot.ToString("0.##");
                 txtRWPerShot.Text = runnerWeightPerShot.ToString("0.##");
                 MIN_SHOT = totalShot;
 
@@ -1876,9 +1728,9 @@ namespace FactoryManagementSoftware.UI
         }
         private void LoadProductionInfoToField(DataRow[] existingRows)
         {
-            txtCavity.Text = existingRows[0][dalItem.MouldCavity].ToString();
+            lblCavity.Text = existingRows[0][dalItem.MouldCavity].ToString();
             txtCycleTime.Text = existingRows[0][dalItem.MouldCT].ToString();
-            txtPWPerShot.Text = existingRows[0][dalItem.ItemPWShot].ToString();
+            lblPWPerShot.Text = existingRows[0][dalItem.ItemPWShot].ToString();
             txtRWPerShot.Text = existingRows[0][dalItem.ItemRWShot].ToString();
 
 
@@ -1886,9 +1738,9 @@ namespace FactoryManagementSoftware.UI
 
         private void ClearProductionInfo()
         {
-            txtCavity.Text = "";
+            lblCavity.Text = "";
             txtCycleTime.Text = "";
-            txtPWPerShot.Text = "";
+            lblPWPerShot.Text = "";
             txtRWPerShot.Text = "";
             MIN_SHOT = 0;
         }
@@ -1900,8 +1752,6 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadMatCheckList()
         {
-            lblStockCheckStatus.Text = "";
-
             frmLoading.ShowLoadingScreen();
 
             DataTable dt_MAT = NewStockCheckTable();
@@ -1958,47 +1808,44 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-                //add color material to list
-                if (dgvColorMatList?.Rows.Count > 0)
+                if(string.IsNullOrEmpty(COLOR_MAT_CODE))
                 {
-                    foreach (DataGridViewRow row in dgvColorMatList.Rows)
-                    {
-                        string matCode = row.Cells[text.Header_ItemCode].Value.ToString();
-                        string matDescription = row.Cells[text.Header_ItemDescription].Value.ToString();
+                    string matCode = COLOR_MAT_CODE;
+                    string matDescription = lblColorDescription.Text;
 
-                        var matSummary = tool.loadMaterialPlanningSummary(matCode);
-                        int planCounter = matSummary.Item1;
-                        planningUsed = matSummary.Item2;
-                        float TotalMatUsed = matSummary.Item3;
-                        float TotalMatToUse = matSummary.Item4;
-                        currentStock = matSummary.Item5;
-                        bool rawType = matSummary.Item6;
-                        bool colorType = matSummary.Item7;
+                    var matSummary = tool.loadMaterialPlanningSummary(matCode);
+                    int planCounter = matSummary.Item1;
+                    planningUsed = matSummary.Item2;
+                    float TotalMatUsed = matSummary.Item3;
+                    float TotalMatToUse = matSummary.Item4;
+                    currentStock = matSummary.Item5;
+                    bool rawType = matSummary.Item6;
+                    bool colorType = matSummary.Item7;
 
-                        availableQty = currentStock - TotalMatToUse;
+                    availableQty = currentStock - TotalMatToUse;
 
-                        totalMaterial = float.TryParse(row.Cells[text.Header_KG].Value.ToString(), out totalMaterial) ? totalMaterial : 0;
+                    totalMaterial = float.TryParse(lblTotalColorKG.Text, out totalMaterial) ? totalMaterial : 0;
 
-                        StockBal = availableQty - totalMaterial;
+                    StockBal = availableQty - totalMaterial;
 
-                        DataRow row_dtMat = dt_MAT.NewRow();
+                    DataRow row_dtMat = dt_MAT.NewRow();
 
-                        row_dtMat[text.Header_Index] = index;
+                    row_dtMat[text.Header_Index] = index;
 
-                        row_dtMat[text.Header_Type] = tool.getItemCatFromDataTable(DT_ITEM, matCode);
-                        row_dtMat[text.Header_ItemCode] = matCode;
-                        row_dtMat[text.Header_ItemDescription] = matDescription;
+                    row_dtMat[text.Header_Type] = tool.getItemCatFromDataTable(DT_ITEM, matCode);
+                    row_dtMat[text.Header_ItemCode] = matCode;
+                    row_dtMat[text.Header_ItemDescription] = matDescription;
 
-                        row_dtMat[text.Header_ReadyStock] = currentStock;
-                        row_dtMat[text.Header_ReservedForOtherJobs] = TotalMatToUse;
+                    row_dtMat[text.Header_ReadyStock] = currentStock;
+                    row_dtMat[text.Header_ReservedForOtherJobs] = TotalMatToUse;
 
-                        row_dtMat[text.Header_RequiredForCurrentJob] = totalMaterial;
-                        row_dtMat[text.Header_BalStock] = StockBal;
+                    row_dtMat[text.Header_RequiredForCurrentJob] = totalMaterial;
+                    row_dtMat[text.Header_BalStock] = StockBal;
 
-                        dt_MAT.Rows.Add(row_dtMat);
-                        index++;
-                    }
+                    dt_MAT.Rows.Add(row_dtMat);
+                    index++;
                 }
+                
 
                 foreach (DataGridViewRow row in dgvItemList.Rows)
                 {
@@ -2106,17 +1953,7 @@ namespace FactoryManagementSoftware.UI
                 StockCheckListCellFormatting(dgvStockCheck);
                 dgvStockCheck.ClearSelection();
 
-                if (MATERIAL_STOCK_ENOUGH)
-                {
-                    lblStockCheckStatus.Text = "✔";
-                    lblStockCheckStatus.ForeColor = Color.Green;
-
-                }
-                else
-                {
-                    lblStockCheckStatus.Text = "❌";
-                    lblStockCheckStatus.ForeColor = Color.Red;
-                }
+               
             }
             else
             {
@@ -2240,8 +2077,11 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[rowIndex].Cells[text.Header_Cavity].Style.BackColor = SystemColors.Info;
                     dgv.Rows[rowIndex].Cells[text.Header_ProPwShot].Style.BackColor = SystemColors.Info;
                     dgv.Rows[rowIndex].Cells[text.Header_TargetQty].Style.BackColor = SystemColors.Info;
+                    dgv.Rows[rowIndex].Cells[text.Header_AutoQtyAdjustment].Style.BackColor = Color.FromArgb(254, 241, 154);
+                    dgv.Rows[rowIndex].Cells[text.Header_AutoQtyAdjustment].Style.ForeColor = Color.FromArgb(64, 64, 64);
+                    dgv.Rows[rowIndex].Cells[text.Header_AutoQtyAdjustment].Style.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
 
-                    if(string.IsNullOrEmpty(jobPurpose))
+                    if (string.IsNullOrEmpty(jobPurpose))
                     {
                         dgv.Rows[rowIndex].Cells[text.Header_Job_Purpose].Style.BackColor = Color.Red;
                     }
@@ -2252,7 +2092,6 @@ namespace FactoryManagementSoftware.UI
             }
 
         }
-
 
         private void MacScheduleListCellFormatting(DataGridView dgv)
         {
@@ -2278,7 +2117,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (string.IsNullOrEmpty(macID))
                     {
-                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(245, 247, 255);
+                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(147, 168, 255);
                         dgv.Rows[rowIndex].Height = 20;
                     }
                     else
@@ -2377,30 +2216,6 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void ColorMatListCellFormatting(DataGridView dgv)
-        {
-            if (dgv?.Rows.Count > 0)
-            {
-                dgv.SuspendLayout();
-
-                DataTable dt = (DataTable)dgv.DataSource;
-                foreach (DataRow row in dt.Rows)
-                {
-                    int rowIndex = dt.Rows.IndexOf(row);
-
-                    //default back color
-                    dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.White;
-
-                    //able to let user edit the cell
-                    dgv.Rows[rowIndex].Cells[text.Header_Percentage].Style.BackColor = SystemColors.Info;
-                    dgv.Rows[rowIndex].Cells[text.Header_Color].Style.BackColor = SystemColors.Info;
-                    dgv.Rows[rowIndex].Cells[text.Header_Remark].Style.BackColor = SystemColors.Info;
-                }
-
-                dgv.ResumeLayout();
-            }
-
-        }
         private void dgvItemList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             //int rowIndex = e.RowIndex;
@@ -2550,7 +2365,7 @@ namespace FactoryManagementSoftware.UI
             {
                 DT_ITEM_LIST = (DataTable)dgvItemList.DataSource;
 
-                int maxShot = int.TryParse(txtMaxShot.Text, out maxShot) ? maxShot : 0;
+                int maxShot = int.TryParse(lblMaxShot.Text, out maxShot) ? maxShot : 0;
 
 
                 foreach (DataRow row in DT_ITEM_LIST.Rows)
@@ -2570,42 +2385,107 @@ namespace FactoryManagementSoftware.UI
         }
 
 
-        private void StepsUIUpdate(int step)
+        private void TableLayoutPanelStepUISetting()
         {
-            //// reset all fonts to normal
-            //ResetFonts();
 
-            //Font focusFont = new Font("Segoe UI", 8F, FontStyle.Bold);
-            //// update the font for the current step
-            //switch (step)
-            //{
-            //    case 1:
-            //        gbItem.Font = focusFont;
-            //        break;
-            //    case 2:
-            //        gbRawColorMat.Font = focusFont;
-            //        break;
-            //    case 3:
-            //        gbTime.Font = focusFont;
-            //        break;
-            //    case 4:
-            //        gbStockCheck.Font = focusFont;
-            //        break;
-            //    case 5:
-            //        gbMachineSchedule.Font = focusFont;
-            //        break;
-            //}
         }
 
-        private void ResetFonts()
+        private void StepsUIUpdate(int step)
         {
-            Font normalFont = new Font("Segoe UI", 6F, FontStyle.Bold);
+            if(step < 1)
+            {
+                step = 1;
+                CURRENT_STEP = 1;
+            }
 
-            gbItem.Font = normalFont;
-            gbRawColorMat.Font = normalFont;
-            gbTime.Font = normalFont;
-            gbStockCheck.Font = normalFont;
-            gbMachineSchedule.Font = normalFont;
+            btnCancel.Visible = false;
+            btnAddAsDraft.Visible = false;
+            btnJobPublish.Visible = false;
+
+            tlpJobPlanningStep.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0);
+            tlpJobPlanningStep.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0);
+            tlpJobPlanningStep.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0);
+            tlpJobPlanningStep.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0);
+            tlpJobPlanningStep.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0);
+            tlpJobPlanningStep.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 0);
+
+            tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0);//Previous
+            tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0);//Continue
+            tlpButton.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0);//Cancel
+            tlpButton.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 0);//Draft
+            tlpButton.ColumnStyles[6] = new ColumnStyle(SizeType.Absolute, 0);//Publish
+
+            // update the font for the current step
+            switch (step)
+            {
+                case 1:
+                    tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 200);//Continue
+
+                    tlpJobPlanningStep.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100);
+                    tlpJobPlanningStep.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 20);
+                    tlpJobPlanningStep.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 350);
+                    tlpJobPlanningStep.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 0);
+
+                    btnPreviousStep.Visible = false;
+                    btnContinue.Visible = true;
+
+                    break;
+
+                case 2:
+
+                    tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 200);//Previous
+                    tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 200);//Continue
+
+                    btnPreviousStep.Visible = true;
+                    btnContinue.Visible = true;
+
+                    tlpJobPlanningStep.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[3] = new ColumnStyle(SizeType.Percent, 100);
+                    tlpJobPlanningStep.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 0);
+
+                    break;
+
+                case 3:
+                    tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 200);//Previous
+                    tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 200);//Continue
+
+                    btnPreviousStep.Visible = true;
+                    btnContinue.Visible = true;
+
+                    tlpJobPlanningStep.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[4] = new ColumnStyle(SizeType.Percent, 100);
+                    tlpJobPlanningStep.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 0);
+                    break;
+
+                case 4:
+
+                    tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 200);//Previous
+                    //tlpButton.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 150);//Cancel
+                    tlpButton.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 200);//Draft
+                    tlpButton.ColumnStyles[6] = new ColumnStyle(SizeType.Absolute, 200);//Publish
+
+                    btnContinue.Visible = false;
+
+                    btnCancel.Visible = true;
+                    btnAddAsDraft.Visible = true;
+                    btnJobPublish.Visible = true;
+
+                    tlpJobPlanningStep.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0);
+                    tlpJobPlanningStep.ColumnStyles[5] = new ColumnStyle(SizeType.Percent, 100);
+                    break;
+            }
         }
 
         private void dgvItemList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -2613,7 +2493,7 @@ namespace FactoryManagementSoftware.UI
 
             if (!PRO_INFO_LOADING && (e.ColumnIndex == dgvItemList.Columns[text.Header_Cavity].Index || e.ColumnIndex == dgvItemList.Columns[text.Header_ProPwShot].Index))
             {
-                ShowBtnItemSave(true);
+
             }
 
             PRO_INFO_LOADING = true;
@@ -2780,81 +2660,11 @@ namespace FactoryManagementSoftware.UI
             dgvItemList.ClearSelection();
         }
 
-        private void tableLayoutPanel26_MouseClick(object sender, MouseEventArgs e)
-        {
-            dgvItemList.ClearSelection();
-        }
-
-        private void ShowBtnItemSave(bool show)
-        {
-        }
-        private void ProductionInfo_TextChanged(object sender, EventArgs e)
-        {
-            if (!PRO_INFO_LOADING)
-            {
-                ShowBtnItemSave(true);
-            }
-        }
-
-        private bool UpsertUniqueMouldItemData(itemBLL u)
-        {
-            bool isSuccess = false;
-
-            // Search for a matching row in DT_MOULD_LIST
-            DataRow[] existingRows = DT_MOULD_ITEM.Select($"mould_code = '{u.mould_code}' AND item_code = '{u.item_code}' AND combination_code = '{u.combination_code}'");
-
-            if (existingRows.Length > 0)
-            {
-                // If a match was found, call the update function
-                u.tbl_code = (int)existingRows[0]["tbl_code"];
-                isSuccess = updateMouldItem(u);
-            }
-            else
-            {
-                // If no match was found, call the insert function
-                u.combination_code = 0; // Set combination_code as 0 for unique item info
-                isSuccess = insertMouldItem(u);
-            }
-
-            return isSuccess;
-        }
-
-        private bool InsertNewCombinationGroup(itemBLL u, List<Tuple<string, string>> selectedItems)
-        {
-            foreach (var item in selectedItems)
-            {
-                // Item2 of the tuple is itemCode
-                u.item_code = item.Item2;
-
-                // Call the method to insert the item
-                if (!insertMouldItem(u))
-                {
-                    MessageBox.Show($"Failed to insert item with item code: {u.item_code}.", "Insertion Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-
-
         private bool updateMouldItem(itemBLL u)
         {
             // Your update logic here
             return dalItem.MouldItemUpdate(u);
         }
-
-        private bool insertMouldItem(itemBLL u)
-        {
-            // Your insert logic here
-            return dalItem.MouldItemInsert(u);
-
-        }
-
-    
-
-
 
         bool listReadOnlyModeChanging = false;
 
@@ -2897,9 +2707,9 @@ namespace FactoryManagementSoftware.UI
                         if (!string.IsNullOrEmpty(itemCode))
                         {
                             uItem.item_code = itemCode;
-                            uItem.item_cavity = int.TryParse(txtCavity.Text, out int i) ? i : 0;
+                            uItem.item_cavity = int.TryParse(lblCavity.Text, out int i) ? i : 0;
                             uItem.item_pro_ct_to = int.TryParse(txtCycleTime.Text, out i) ? i : 0;
-                            uItem.item_pro_pw_shot = int.TryParse(txtPWPerShot.Text, out i) ? i : 0;
+                            uItem.item_pro_pw_shot = int.TryParse(lblPWPerShot.Text, out i) ? i : 0;
                             uItem.item_pro_rw_shot = int.TryParse(txtRWPerShot.Text, out i) ? i : 0;
                             uItem.item_updtd_date = DateTime.Now;
                             uItem.item_updtd_by = MainDashboard.USER_ID;
@@ -2937,13 +2747,6 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private readonly string labelButton_ShowSettings = "Show Settings";
-        private readonly string labelButton_HideSettings = "Hide Settings";
-        private void label15_Click(object sender, EventArgs e)
-        {
-            ShowOrHideSetting(lblSettingsShowOrHide.Text);
-
-        }
 
         private void cbRunnerRecycle_CheckedChanged(object sender, EventArgs e)
         {
@@ -2977,12 +2780,11 @@ namespace FactoryManagementSoftware.UI
 
         private void MaterialStockCheckMode()
         {
-            int maxShot = int.TryParse(txtMaxShot.Text, out maxShot) ? maxShot : 0;
+            int maxShot = int.TryParse(lblMaxShot.Text, out maxShot) ? maxShot : 0;
 
             if (maxShot > 0)
             {
                 LoadMatCheckList();
-                RightPanelInitialSetting(1);
             }
             else
             {
@@ -2990,6 +2792,7 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        
         private void btnStockCheck_Click(object sender, EventArgs e)
         {
             MaterialStockCheckMode();
@@ -3045,7 +2848,6 @@ namespace FactoryManagementSoftware.UI
 
         private void txtMaxShot_TextChanged(object sender, EventArgs e)
         {
-            RightPanelInitialSetting(0);
             updateItemMaxQty();
         }
 
@@ -3555,7 +3357,7 @@ namespace FactoryManagementSoftware.UI
 
         private void machineSelectionMode()
         {
-            int maxShot = int.TryParse(txtMaxShot.Text, out maxShot) ? maxShot : 0;
+            int maxShot = int.TryParse(lblMaxShot.Text, out maxShot) ? maxShot : 0;
 
             if (maxShot > 0)
             {
@@ -3569,14 +3371,6 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-                if (string.IsNullOrEmpty(lblStockCheckStatus.Text))
-                {
-                    MessageBox.Show("Please perform a Material Stock Check action first before proceeding to Machine Selection");
-
-                    return;
-                }
-
-                RightPanelInitialSetting(2);
                 MachineSelectionSettingInitial();
                 LoadMachineSchedule();
             }
@@ -3593,12 +3387,11 @@ namespace FactoryManagementSoftware.UI
 
         private void btnMatStockCheck2_Click(object sender, EventArgs e)
         {
-            int maxShot = int.TryParse(txtMaxShot.Text, out maxShot) ? maxShot : 0;
+            int maxShot = int.TryParse(lblMaxShot.Text, out maxShot) ? maxShot : 0;
 
             if (maxShot > 0)
             {
                 LoadMatCheckList();
-                RightPanelInitialSetting(1);
             }
             else
             {
@@ -3735,21 +3528,10 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-                if (dgvColorMatList?.Rows.Count > 0)
+                if (!string.IsNullOrEmpty(COLOR_MAT_CODE))
                 {
-                    foreach (DataGridViewRow row in dgvColorMatList.Rows)
-                    {
-                        if (string.IsNullOrEmpty(colorMaterial))
-                        {
-                            colorMaterial = row.Cells[text.Header_ItemDescription].Value.ToString();
-                            itemColor = row.Cells[text.Header_Color].Value.ToString();
-                        }
-                        else
-                        {
-                            colorMaterial += " + " + row.Cells[text.Header_ItemDescription].Value.ToString();
-                            itemColor = row.Cells[text.Header_Color].Value.ToString();
-                        }
-                    }
+                    colorMaterial = COLOR_MAT_CODE;
+                    itemColor = lblPartColor.Text;
                 }
 
                 if (dgvItemList?.RowCount > 0)
@@ -4124,9 +3906,9 @@ namespace FactoryManagementSoftware.UI
 
         private DateTime CalculateNewDraftEndDate(DateTime Start)
         {
-            int day = int.TryParse(txtDaysNeeded.Text, out day) ? day : 0;
+            int day = int.TryParse(lblDaysNeeded.Text, out day) ? day : 0;
 
-            double balHours = double.TryParse(txtbalHours.Text, out balHours) ? balHours : 0;
+            double balHours = double.TryParse(lblbalHours.Text, out balHours) ? balHours : 0;
 
             if (balHours > 0)
             {
@@ -4304,6 +4086,66 @@ namespace FactoryManagementSoftware.UI
         private void label17_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void frmPlanningVer2dot1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void JobPlanningProcess(int Step)
+        {
+            if (Step == 1)
+            {
+
+            }
+            else if (Step == 2)
+            {
+                MaterialStockCheckMode();
+            }
+            else if (Step == 3)
+            {
+                //machine selection
+                CLEAR_SELECTION_AFTER_DROP = false;
+                machineSelectionMode();
+            }
+            else if (Step == 4)
+            {
+                //Job Summary Review
+
+            }
+        }
+
+        private void btnContinue_Click(object sender, EventArgs e)
+        {
+            CURRENT_STEP++;
+
+            if (CURRENT_STEP < 1)
+            {
+                CURRENT_STEP = 1;
+            }
+            else if (CURRENT_STEP > 4)
+            {
+                CURRENT_STEP = 4;
+            }
+
+            StepsUIUpdate(CURRENT_STEP);
+        }
+
+        private void btnPreviousStep_Click(object sender, EventArgs e)
+        {
+            CURRENT_STEP--;
+
+            if (CURRENT_STEP < 1)
+            {
+                CURRENT_STEP = 1;
+            }
+            else if (CURRENT_STEP > 4)
+            {
+                CURRENT_STEP = 4;
+            }
+
+            StepsUIUpdate(CURRENT_STEP);
         }
     }
 }
