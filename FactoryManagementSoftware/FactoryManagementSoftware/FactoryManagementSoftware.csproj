@@ -234,6 +234,9 @@
     <Compile Include="DAL\userDAL.cs" />
     <Compile Include="DAL\Utilities.cs" />
     <Compile Include="Module\DecisionTreePrediction.cs" />
+    <Compile Include="UI\CircleLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\ExcelUpload.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1061,6 +1064,9 @@
     </Compile>
     <Compile Include="UI\NewInOutReport.Designer.cs">
       <DependentUpon>NewInOutReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\RoundButton.cs">
+      <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="CustomTextBox.resx">
       <DependentUpon>CustomTextBox.cs</DependentUpon>

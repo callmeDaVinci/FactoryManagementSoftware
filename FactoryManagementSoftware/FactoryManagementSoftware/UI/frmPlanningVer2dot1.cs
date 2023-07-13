@@ -19,6 +19,7 @@ using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using iTextSharp.text.pdf;
 using Org.BouncyCastle.Bcpg.OpenPgp;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -840,7 +841,7 @@ namespace FactoryManagementSoftware.UI
             else if (dgv == dgvMacSchedule)
             {
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 6.5F, FontStyle.Italic);
+                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
                 dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -863,12 +864,14 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
+                dgv.Columns[text.Header_DateStart].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dgv.Columns[text.Header_EstDateEnd].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
                 dgv.Columns[text.Header_Fac].Width = smallColumnWidth - 10;
                 dgv.Columns[text.Header_MacName].Width = smallColumnWidth - 10;
                 dgv.Columns[text.Header_Status].Width = smallColumnWidth;
-                dgv.Columns[text.Header_DateStart].Width = smallColumnWidth + 5;
-                dgv.Columns[text.Header_EstDateEnd].Width = smallColumnWidth + 5;
+                //dgv.Columns[text.Header_DateStart].Width = smallColumnWidth + 5;
+                //dgv.Columns[text.Header_EstDateEnd].Width = smallColumnWidth + 5;
 
                 dgv.Columns[text.Header_ItemCode].Visible = false;
                 dgv.Columns[text.Header_ItemName].Visible = false;
@@ -2071,7 +2074,7 @@ namespace FactoryManagementSoftware.UI
 
 
                     //default back color
-                    dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.White;
+                    dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
 
                     //able to let user edit the cell
                     dgv.Rows[rowIndex].Cells[text.Header_Cavity].Style.BackColor = SystemColors.Info;
@@ -2091,6 +2094,77 @@ namespace FactoryManagementSoftware.UI
                 dgv.ResumeLayout();
             }
 
+        }
+
+        private void RawMatListCellFormatting(DataGridView dgv)
+        {
+            if (dgv?.Rows.Count > 0)
+            {
+                dgv.SuspendLayout();
+
+                DataTable dt = (DataTable)dgv.DataSource;
+                foreach (DataRow row in dt.Rows)
+                {
+                    int rowIndex = dt.Rows.IndexOf(row);
+
+                    //default back color
+                    dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
+
+                    //able to let user edit the cell
+                    dgv.Rows[rowIndex].Cells[text.Header_BAG].Style.BackColor = SystemColors.Info;
+                    dgv.Rows[rowIndex].Cells[text.Header_KGPERBAG].Style.BackColor = SystemColors.Info;
+                    dgv.Rows[rowIndex].Cells[text.Header_Remark].Style.BackColor = SystemColors.Info;
+                }
+
+                dgv.ResumeLayout();
+            }
+
+        }
+        private void StockCheckListCellFormatting(DataGridView dgv)
+        {
+            if (dgv?.Rows.Count > 0)
+            {
+                dgv.SuspendLayout();
+
+                DataTable dt = (DataTable)dgv.DataSource;
+                foreach (DataRow row in dt.Rows)
+                {
+                    int rowIndex = dt.Rows.IndexOf(row);
+
+                    dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
+
+
+                    foreach (DataColumn col in dt.Columns)
+                    {
+                        string colName = col.ColumnName;
+
+
+                        bool isNumColumn = colName == text.Header_ReadyStock;
+                        isNumColumn |= colName == text.Header_ReservedForOtherJobs;
+                        isNumColumn |= colName == text.Header_RequiredForCurrentJob;
+                        isNumColumn |= colName == text.Header_BalStock;
+
+                        if (isNumColumn)
+                        {
+                            int colIndex = dgv.Columns[colName].Index;
+                            decimal num = decimal.TryParse(dgv.Rows[rowIndex].Cells[colIndex].Value.ToString(), out num) ? num : 0;
+
+                            if (num < 0)
+                            {
+                                dgv.Rows[rowIndex].Cells[colIndex].Style.ForeColor = Color.Red;
+                            }
+                            else
+                            {
+                                dgv.Rows[rowIndex].Cells[colIndex].Style.ForeColor = Color.Black;
+                            }
+                        }
+                    }
+
+
+                }
+
+                dgv.ResumeLayout();
+            }
         }
 
         private void MacScheduleListCellFormatting(DataGridView dgv)
@@ -2191,30 +2265,8 @@ namespace FactoryManagementSoftware.UI
             }
 
         }
-        private void RawMatListCellFormatting(DataGridView dgv)
-        {
-            if (dgv?.Rows.Count > 0)
-            {
-                dgv.SuspendLayout();
 
-                DataTable dt = (DataTable)dgv.DataSource;
-                foreach (DataRow row in dt.Rows)
-                {
-                    int rowIndex = dt.Rows.IndexOf(row);
-
-                    //default back color
-                    dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.White;
-
-                    //able to let user edit the cell
-                    dgv.Rows[rowIndex].Cells[text.Header_BAG].Style.BackColor = SystemColors.Info;
-                    dgv.Rows[rowIndex].Cells[text.Header_KGPERBAG].Style.BackColor = SystemColors.Info;
-                    dgv.Rows[rowIndex].Cells[text.Header_Remark].Style.BackColor = SystemColors.Info;
-                }
-
-                dgv.ResumeLayout();
-            }
-
-        }
+       
 
         private void dgvItemList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
@@ -2415,10 +2467,49 @@ namespace FactoryManagementSoftware.UI
             tlpButton.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 0);//Draft
             tlpButton.ColumnStyles[6] = new ColumnStyle(SizeType.Absolute, 0);//Publish
 
+            Font CurrentStepFont = new Font("Segoe UI", 8F, FontStyle.Bold);
+            Font normalStepFont = new Font("Segoe UI", 7F, FontStyle.Regular);
+
+            lblStep1.Font = normalStepFont;
+            lblStep2.Font = normalStepFont;
+            lblStep3.Font = normalStepFont;
+            lblStep4.Font = normalStepFont;
+
+            Color FormBackColor = Color.FromArgb(147, 168, 255);
+            Color CircleLabelProcessingColor = Color.White;
+            Color lblStepTextForeColor = Color.FromArgb(64, 64, 64);
+            Color CurrentStepColor = Color.FromArgb(254, 241, 154);
+            Color circleLabelCompletedBackColor = Color.FromArgb(153, 255, 204);
+
+            string tickText = "✓";
+            panelStatusUp1.BackColor = FormBackColor;
+            panelStatusUp2.BackColor = FormBackColor;
+            panelStatusUp3.BackColor = FormBackColor;
+            panelStatusUp4.BackColor = FormBackColor;
+
+            circleLabelStep1.CircleBackColor = CircleLabelProcessingColor;
+            circleLabelStep2.CircleBackColor = CircleLabelProcessingColor;
+            circleLabelStep3.CircleBackColor = CircleLabelProcessingColor;
+            circleLabelStep4.CircleBackColor = CircleLabelProcessingColor;
+
+            circleLabelStep1.Text = "1";
+            circleLabelStep2.Text = "2";
+            circleLabelStep3.Text = "3";
+            circleLabelStep4.Text = "4";
+
+            lblStep1.ForeColor = lblStepTextForeColor;
+            lblStep2.ForeColor = lblStepTextForeColor;
+            lblStep3.ForeColor = lblStepTextForeColor;
+            lblStep4.ForeColor = lblStepTextForeColor;
+
             // update the font for the current step
             switch (step)
             {
                 case 1:
+
+                    panelStatusUp1.BackColor = CurrentStepColor;
+                    lblStep1.Font = CurrentStepFont;
+
                     tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 200);//Continue
 
                     tlpJobPlanningStep.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100);
@@ -2434,6 +2525,13 @@ namespace FactoryManagementSoftware.UI
                     break;
 
                 case 2:
+
+                    circleLabelStep1.Text = tickText;
+                    circleLabelStep1.CircleBackColor = circleLabelCompletedBackColor;
+
+                    panelStatusUp2.BackColor = CurrentStepColor;
+                    lblStep2.Font = CurrentStepFont;
+
 
                     tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 200);//Previous
                     tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 200);//Continue
@@ -2451,6 +2549,15 @@ namespace FactoryManagementSoftware.UI
                     break;
 
                 case 3:
+                    circleLabelStep1.Text = tickText;
+                    circleLabelStep2.Text = tickText;
+                    circleLabelStep1.CircleBackColor = circleLabelCompletedBackColor;
+                    circleLabelStep2.CircleBackColor = circleLabelCompletedBackColor;
+
+                    panelStatusUp3.BackColor = CurrentStepColor;
+                    lblStep3.Font = CurrentStepFont;
+
+
                     tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 200);//Previous
                     tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 200);//Continue
 
@@ -2466,6 +2573,18 @@ namespace FactoryManagementSoftware.UI
                     break;
 
                 case 4:
+
+                    circleLabelStep1.Text = tickText;
+                    circleLabelStep2.Text = tickText;
+                    circleLabelStep3.Text = tickText;
+                    circleLabelStep1.CircleBackColor = circleLabelCompletedBackColor;
+                    circleLabelStep2.CircleBackColor = circleLabelCompletedBackColor;
+                    circleLabelStep3.CircleBackColor = circleLabelCompletedBackColor;
+
+
+                    panelStatusUp4.BackColor = CurrentStepColor;
+                    lblStep4.Font = CurrentStepFont;
+
 
                     tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 200);//Previous
                     //tlpButton.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 150);//Cancel
@@ -2803,48 +2922,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void StockCheckListCellFormatting(DataGridView dgv)
-        {
-            if (dgv?.Rows.Count > 0)
-            {
-                dgv.SuspendLayout();
-
-                DataTable dt = (DataTable)dgv.DataSource;
-                foreach (DataRow row in dt.Rows)
-                {
-                    int rowIndex = dt.Rows.IndexOf(row);
-
-                    foreach (DataColumn col in dt.Columns)
-                    {
-                        string colName = col.ColumnName;
-
-                        bool isNumColumn = colName == text.Header_ReadyStock;
-                        isNumColumn |= colName == text.Header_ReservedForOtherJobs;
-                        isNumColumn |= colName == text.Header_RequiredForCurrentJob;
-                        isNumColumn |= colName == text.Header_BalStock;
-
-                        if (isNumColumn)
-                        {
-                            int colIndex = dgv.Columns[colName].Index;
-                            decimal num = decimal.TryParse(dgv.Rows[rowIndex].Cells[colIndex].Value.ToString(), out num) ? num : 0;
-
-                            if (num < 0)
-                            {
-                                dgv.Rows[rowIndex].Cells[colIndex].Style.ForeColor = Color.Red;
-                            }
-                            else
-                            {
-                                dgv.Rows[rowIndex].Cells[colIndex].Style.ForeColor = Color.Black;
-                            }
-                        }
-                    }
-
-
-                }
-
-                dgv.ResumeLayout();
-            }
-        }
+       
 
         private void txtMaxShot_TextChanged(object sender, EventArgs e)
         {
@@ -3140,9 +3218,24 @@ namespace FactoryManagementSoftware.UI
             DATE_COLLISION_FOUND = DateCollisionFound;
             btnAdjustCollisionDateBySystem.Visible = DateCollisionFound;
 
+            adjustMachineScheduleButtonLayout(DateCollisionFound);
+
             return DateCollisionFound;
         }
 
+        private void adjustMachineScheduleButtonLayout(bool Show)
+        {
+            if(Show)
+            {
+                tlpMachineScheduleList.RowStyles[5] = new RowStyle(SizeType.Absolute, 50);
+                tlpMachineScheduleList.RowStyles[6] = new RowStyle(SizeType.Absolute, 10);
+            }
+            else
+            {
+                tlpMachineScheduleList.RowStyles[5] = new RowStyle(SizeType.Absolute, 0);
+                tlpMachineScheduleList.RowStyles[6] = new RowStyle(SizeType.Absolute, 0);
+            }
+        }
         private void LoadMachineSchedule()
         {
             MachineSelectionDataLoading = true;
@@ -4058,6 +4151,7 @@ namespace FactoryManagementSoftware.UI
                 MacScheduleListCellFormatting(dgvMacSchedule);
                 DATE_COLLISION_FOUND = false;
                 btnAdjustCollisionDateBySystem.Visible = false;
+                adjustMachineScheduleButtonLayout(false);
             }
            else
             {
@@ -4093,28 +4187,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void JobPlanningProcess(int Step)
-        {
-            if (Step == 1)
-            {
-
-            }
-            else if (Step == 2)
-            {
-                MaterialStockCheckMode();
-            }
-            else if (Step == 3)
-            {
-                //machine selection
-                CLEAR_SELECTION_AFTER_DROP = false;
-                machineSelectionMode();
-            }
-            else if (Step == 4)
-            {
-                //Job Summary Review
-
-            }
-        }
+      
 
         private void btnContinue_Click(object sender, EventArgs e)
         {
@@ -4146,6 +4219,11 @@ namespace FactoryManagementSoftware.UI
             }
 
             StepsUIUpdate(CURRENT_STEP);
+        }
+
+        private void btnAdjustCollisionDateBySystem_Click_1(object sender, EventArgs e)
+        {
+            AutoAdjustCollisionDate();
         }
     }
 }

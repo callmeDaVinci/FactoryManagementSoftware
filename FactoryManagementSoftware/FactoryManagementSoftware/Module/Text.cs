@@ -338,7 +338,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_TotalStockIn { get; } = "STOCK IN QTY";
         public string Header_TargetQty { get; } = "Target Qty";
         public string Header_Qty { get; } = "QUANTITY";
-        public string Header_AutoQtyAdjustment { get; } = "Auto-Qty Adjustment";
+        public string Header_AutoQtyAdjustment { get; } = "MAX Qty";
         public string Header_Job_Purpose { get; } = "Job Purpose";
 
 
