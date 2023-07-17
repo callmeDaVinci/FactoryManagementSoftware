@@ -4415,6 +4415,11 @@ namespace FactoryManagementSoftware.UI
 
         private string GetTypeShortName(string type)
         {
+            if(type.Contains("POLY"))
+            {
+                var checkpoint = 1;
+            }
+
             string type_ShortName = "";
 
             if (type == text.Type_EqualElbow)
@@ -4476,6 +4481,14 @@ namespace FactoryManagementSoftware.UI
             else if (type == text.Type_ClampSaddle)
             {
                 type_ShortName = text.ClampSaddle_Short;
+            }
+            else if (type == text.Type_PolyNipple)
+            {
+                type_ShortName = text.PolyNipple_Short;
+            }
+            else if (type == text.Type_PolyReducingBush)
+            {
+                type_ShortName = text.PolyReducingBush_Short;
             }
 
             return type_ShortName;

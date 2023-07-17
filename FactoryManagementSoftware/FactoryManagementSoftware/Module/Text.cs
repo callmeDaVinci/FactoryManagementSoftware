@@ -548,6 +548,8 @@ namespace FactoryManagementSoftware.Module
         public string PolyORing_Short { get; } = "OR";
 
         public string ClampSaddle_Short { get; } = "CS";
+        public string PolyNipple_Short { get; } = "PN";
+        public string PolyReducingBush_Short { get; } = "PRB";
 
 
         #endregion
@@ -585,7 +587,7 @@ namespace FactoryManagementSoftware.Module
 
         public string Type_PolyNipple { get; } = "POLY NIPPLE";
 
-        public string Type_PolyReducingBush { get; } = "POLY R.Bush";
+        public string Type_PolyReducingBush { get; } = "POLY R.BUSH";
 
         public string Type_PolyORing { get; } = "POLY O RING";
         public string Type_ClampSaddle { get; } = "CLAMP SADDLE";

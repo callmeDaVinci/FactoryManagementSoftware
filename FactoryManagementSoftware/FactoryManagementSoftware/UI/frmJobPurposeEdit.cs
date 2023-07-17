@@ -411,7 +411,6 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
             }
-
         }
 
         private void dgvMonthlyBalanceEstimate_CellContentClick(object sender, DataGridViewCellEventArgs e)

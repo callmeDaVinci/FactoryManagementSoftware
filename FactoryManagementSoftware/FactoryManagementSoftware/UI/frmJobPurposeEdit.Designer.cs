@@ -270,6 +270,7 @@
             this.dgvMonthlyBalanceEstimate.TabIndex = 106;
             this.dgvMonthlyBalanceEstimate.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMonthlyBalanceEstimate_CellContentClick);
             this.dgvMonthlyBalanceEstimate.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgvMonthlyBalanceEstimate_CellPainting);
+            this.dgvMonthlyBalanceEstimate.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMonthlyBalanceEstimate_CellValueChanged);
             // 
             // contextMenuStrip1
             // 

@@ -2126,7 +2126,7 @@ namespace FactoryManagementSoftware.UI
 
                         int orderID = Convert.ToInt32(ord["ord_id"].ToString());
 
-                        if (orderID > 8)
+                        if (orderID >= 1)
                         {
                             dtOrder_row = dtOrder.NewRow();
 
@@ -2237,7 +2237,7 @@ namespace FactoryManagementSoftware.UI
 
                         int orderID = Convert.ToInt32(ord["ord_id"].ToString());
 
-                        if (orderID > 8)
+                        if (orderID >= 1)
                         {
                             dtOrder_row = dtOrder.NewRow();
 
