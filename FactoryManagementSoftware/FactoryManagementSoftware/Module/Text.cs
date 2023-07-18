@@ -35,7 +35,7 @@ namespace FactoryManagementSoftware.Module
 
         public string TransferHistory { get; } = "Transfer History";
         public string AddingItem { get; } = "Add Item";
-        public string RemoveItem { get; } = "Remove Item";
+        public string RemoveItem { get; } = "Remove";
         public string JobPurpose { get; } = "Job Purpose";
         public string AddingNewMould { get; } = "Add New Mould";
         public string AddingExistingMould { get; } = "Add Existing Mould";
@@ -417,6 +417,8 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_ItemWeight_KG { get; } = "ITEM WEIGHT(KG)";
         public string Header_KG { get; } = "kg";
+        public string Header_Qty_Required_KG { get; } = "Qty Required (KG)";
+        public string Header_Qty_Required_Bag { get; } = "Qty Required (Bag)";
         public string Header_BAG { get; } = "Bag";
         public string Header_KGPERBAG { get; } = "kg/Bag";
 
@@ -455,6 +457,7 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_ColorRate { get; } = "COLOR MATERIAL RATE (%)";
         public string Header_Ratio { get; } = "Ratio (%)";
+        public string Header_RoundUp_ToBag { get; } = "Round Up To Bag";
 
         public string Header_QuoCT { get; } = "QUOTATION CYCLE TIME";
         public string Header_ProCT { get; } = "Pro. Cycle Time";

@@ -747,6 +747,7 @@ namespace FactoryManagementSoftware.UI
 
         private float DeliveredToCustomerQty(string customer, string itemCode, DataTable dt_Join, DataTable dt_ToCustomer)
         {
+            DataTable DT_ITEM = dalItem.Select();
             float DeliveredQty = 0;
             string dbItemCode = null, dbItemName = null;
             DataRow row_Delivered;
@@ -774,7 +775,7 @@ namespace FactoryManagementSoftware.UI
                     //get single out
                     if (matched)
                     {
-                        dbItemName = trfHistRow[dalItem.ItemName].ToString();
+                        dbItemName = tool.getItemNameFromDataTable(DT_ITEM, trfHistRow[dalTrfHist.TrfItemCode].ToString());
                         int qty = trfHistRow[dalTrfHist.TrfQty] == DBNull.Value ? 0 : Convert.ToInt32(trfHistRow[dalTrfHist.TrfQty]);
                         DeliveredQty += qty;
 

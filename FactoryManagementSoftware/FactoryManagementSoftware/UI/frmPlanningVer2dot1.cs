@@ -1,25 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Accord.Math.Distances;
-using Accord.Statistics.Moving;
-using Accord.Statistics.Running;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
-using iTextSharp.text.pdf;
-using Org.BouncyCastle.Bcpg.OpenPgp;
-using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -231,35 +218,25 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = new DataTable();
 
             dt.Columns.Add(text.Header_Selection, typeof(bool));
+
             dt.Columns.Add(text.Header_Index, typeof(int));
 
             dt.Columns.Add(text.Header_ItemDescription, typeof(string));
+
             dt.Columns.Add(text.Header_ItemCode, typeof(string));
+
             dt.Columns.Add(text.Header_ItemName, typeof(string));
+
             dt.Columns.Add(text.Header_Ratio, typeof(double));
 
-            dt.Columns.Add(text.Header_BAG, typeof(int));
+            dt.Columns.Add(text.Header_RoundUp_ToBag, typeof(bool));
 
             dt.Columns.Add(text.Header_KGPERBAG, typeof(decimal));
-            dt.Columns.Add(text.Header_KG, typeof(decimal));
 
-            dt.Columns.Add(text.Header_Remark, typeof(string));
+            dt.Columns.Add(text.Header_Qty_Required_KG, typeof(decimal));
 
-            return dt;
-        }
+            dt.Columns.Add(text.Header_Qty_Required_Bag, typeof(decimal));
 
-        private DataTable NewColorMaterialList()
-        {
-            DataTable dt = new DataTable();
-
-            dt.Columns.Add(text.Header_Selection, typeof(bool));
-            dt.Columns.Add(text.Header_Index, typeof(int));
-            dt.Columns.Add(text.Header_ItemDescription, typeof(string));
-            dt.Columns.Add(text.Header_Color, typeof(string));
-            dt.Columns.Add(text.Header_ItemCode, typeof(string));
-            dt.Columns.Add(text.Header_ItemName, typeof(string));
-            dt.Columns.Add(text.Header_Percentage, typeof(decimal));
-            dt.Columns.Add(text.Header_KG, typeof(decimal));
             dt.Columns.Add(text.Header_Remark, typeof(string));
 
             return dt;
@@ -298,7 +275,7 @@ namespace FactoryManagementSoftware.UI
         private void InitialSetting()
         {
 
-            Size = new Size(1300, 950);
+            Size = new Size(1500, 950);
 
             CURRENT_STEP = 1;
 
@@ -944,6 +921,8 @@ namespace FactoryManagementSoftware.UI
 
             if (dgv == dgvItemList)
             {
+                dgv.Columns[text.Header_Index].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
                 //dgv.Columns[text.Header_MouldCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
                 dgv.Columns[text.Header_TargetQty].HeaderCell.Style.BackColor = Color.FromArgb(255, 153, 153);
 
@@ -965,7 +944,7 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
-                dgv.Columns[text.Header_MouldCode].Width = smallColumnWidth;
+                //dgv.Columns[text.Header_MouldCode].Width = smallColumnWidth;
                 dgv.Columns[text.Header_Cavity].Width = smallColumnWidth;
                 //dgv.Columns[text.Header_AutoQtyAdjustment].Width = smallColumnWidth;
                 //dgv.Columns[text.Header_MouldSelection].Width = ProductionInfoColumnWidth;
@@ -975,6 +954,7 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Columns[text.Header_ItemCode].Visible = false;
                 dgv.Columns[text.Header_ItemName].Visible = false;
+                dgv.Columns[text.Header_MouldCode].Visible = false;
 
                 //dgv.Columns[text.Header_Cavity].Visible = false;
                 dgv.Columns[text.Header_ProTon].Visible = false;
@@ -1004,20 +984,21 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
                 dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-                dgv.Columns[text.Header_BAG].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
-                dgv.Columns[text.Header_KG].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                dgv.Columns[text.Header_Qty_Required_Bag].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                dgv.Columns[text.Header_Qty_Required_KG].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
                 dgv.Columns[text.Header_KGPERBAG].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
                 dgv.Columns[text.Header_Remark].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
                 dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
-
+                dgv.Columns[text.Header_Index].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 dgv.Columns[text.Header_Selection].Width = smallColumnWidth;
+                dgv.Columns[text.Header_RoundUp_ToBag].Width = smallColumnWidth;
                 dgv.Columns[text.Header_Index].Width = smallColumnWidth;
-                dgv.Columns[text.Header_KG].Width = smallColumnWidth;
+                dgv.Columns[text.Header_Qty_Required_KG].Width = smallColumnWidth;
                 dgv.Columns[text.Header_KGPERBAG].Width = smallColumnWidth;
-                dgv.Columns[text.Header_BAG].Width = smallColumnWidth;
+                dgv.Columns[text.Header_Qty_Required_Bag].Width = smallColumnWidth;
 
                 dgv.Columns[text.Header_ItemCode].Visible = false;
                 dgv.Columns[text.Header_ItemName].Visible = false;
@@ -1033,6 +1014,8 @@ namespace FactoryManagementSoftware.UI
             }
             else if (dgv == dgvStockCheck)
             {
+                dgv.Columns[text.Header_Index].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
@@ -1129,8 +1112,6 @@ namespace FactoryManagementSoftware.UI
                     {
                         row[text.Header_Index] = index++;
                     }
-
-
                 }
                 else
                 {
@@ -1151,6 +1132,12 @@ namespace FactoryManagementSoftware.UI
             lblRawMat.Text = "0";
             lblColorMat.Text = "0";
             lblRecycleMat.Text = "0";
+            lblColorMatDescription.Text = "";
+            lblMouldTon.Text = "";
+            lblMouldCode.Text = "";
+            lblPartColor.Text = "";
+            txtColorMatUsage.Text = "0";
+            COLOR_MAT_CODE = "";
 
             if (dgvItemList?.Rows.Count > 0)
             {
@@ -1162,7 +1149,6 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 DataTable dt_RawMat = NewRawMaterialList();
-                DataTable dt_ColorMat = NewColorMaterialList();
 
                 int rawIndex = 1;
 
@@ -1185,7 +1171,9 @@ namespace FactoryManagementSoftware.UI
 
                         dt_RawMat.Rows.Add(newRawRow);
 
+                     
                         dgvRawMatList.DataSource = dt_RawMat;
+                        RawMatRatioAdjustment();
                         dgvUIEdit(dgvRawMatList);
                         RawMatListCellFormatting(dgvRawMatList);
                         dgvRawMatList.ClearSelection();
@@ -1212,6 +1200,11 @@ namespace FactoryManagementSoftware.UI
 
                     }
                 }
+
+                if(dgvRawMatList.Rows.Count == 1)
+                {
+                    dgvRawMatList.Rows[0].Cells[text.Header_RoundUp_ToBag].Value = true;
+                }
             }
             else
             {
@@ -1229,10 +1222,8 @@ namespace FactoryManagementSoftware.UI
             }
 
             DataTable dt_RawMat = NewRawMaterialList();
-            DataTable dt_ColorMat = NewColorMaterialList();
 
             int rawIndex = 1;
-            int colorIndex = 1;
 
             foreach (DataRow row in DT_ITEM.Rows)
             {
@@ -1251,7 +1242,10 @@ namespace FactoryManagementSoftware.UI
 
                     dt_RawMat.Rows.Add(newRawRow);
 
+
                     dgvRawMatList.DataSource = dt_RawMat;
+                    RawMatRatioAdjustment();
+
                     dgvUIEdit(dgvRawMatList);
                     RawMatListCellFormatting(dgvRawMatList);
                     dgvRawMatList.ClearSelection();
@@ -1278,9 +1272,13 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
+
+            if (dgvRawMatList.Rows.Count == 1)
+            {
+                dgvRawMatList.Rows[0].Cells[text.Header_RoundUp_ToBag].Value = true;
+            }
         }
 
-        private readonly string TimePanelTitle = "TIME";
         private readonly string DayLabelTitle = "Day";
 
         private void ClearPannelSummaryInfo()
@@ -1506,11 +1504,25 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
 
+        private bool MAX_SHOT_CALCULATING = false;
+
         private void CalculateMaxShot()
         {
+            if(MAX_SHOT_CALCULATING)
+            {
+                return;
+            }
+
+            MAX_SHOT_CALCULATING = true;
+
             #region Step 1: get Min Shots
 
             //min shots calculate from user's target qty (minShot = target qty/ mould cavity), done at other stage and save it into MIN_SHOT
+
+            if(MIN_SHOT <= 0)
+            {
+                refreshCavityMatchedQty();
+            }
 
             int minShots = MIN_SHOT;
 
@@ -1550,23 +1562,41 @@ namespace FactoryManagementSoftware.UI
 
             int maxShots = minShots;
 
-            // TO-DO
-            // GET Round up to bag condition from raw material round up to bag column
-            bool RawMat_RoundUpToBag = true;
+            bool RawMat_RoundUpToBag = false;
+            double MaterialperBag_KG = 25;
+            double MainRawRatio = 100;
 
+            if (dgvRawMatList?.Rows.Count > 0)
+            {
+                foreach(DataGridViewRow row in dgvRawMatList.Rows)
+                {
+                    bool selection = bool.TryParse(row.Cells[text.Header_Selection].Value.ToString(), out selection) ? selection : false;
+                    bool roundUpToBag = bool.TryParse(row.Cells[text.Header_RoundUp_ToBag].Value.ToString(), out roundUpToBag) ? roundUpToBag : false;
+                        
+
+                    if (selection && roundUpToBag)
+                    {
+                        RawMat_RoundUpToBag = true;
+
+                        MainRawRatio = double.TryParse(row.Cells[text.Header_Ratio].Value.ToString(), out MainRawRatio) ? MainRawRatio : 100;
+
+                        MaterialperBag_KG = double.TryParse(row.Cells[text.Header_KGPERBAG].Value.ToString(), out MaterialperBag_KG) ? MaterialperBag_KG : 25;
+
+                        break;
+                    }
+                }
+            }
+
+            MainRawRatio = MainRawRatio >= 1 ? MainRawRatio / 100 : MainRawRatio;
 
             double maxMaterialNeeded_g = minMaterialNeeded_g;
 
-            // TO-DO
-            // GET Round up to bag condition from raw material round up to bag column, get from the row where round up to bag checked
-            double MaterialperBag_KG = 25;
+            //DataTable dt_RawMat = (DataTable)dgvRawMatList.DataSource;
 
-            DataTable dt_RawMat = (DataTable)dgvRawMatList.DataSource;
-
-            if (dt_RawMat?.Rows.Count > 0 && dt_RawMat.Columns.Contains(text.Header_KGPERBAG))
-            {
-                MaterialperBag_KG = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out MaterialperBag_KG) ? MaterialperBag_KG : 25;
-            }
+            //if (dt_RawMat?.Rows.Count > 0 && dt_RawMat.Columns.Contains(text.Header_KGPERBAG))
+            //{
+            //    MaterialperBag_KG = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out MaterialperBag_KG) ? MaterialperBag_KG : 25;
+            //}
 
             double colorRatio_percentage = 0;
 
@@ -1590,8 +1620,12 @@ namespace FactoryManagementSoftware.UI
 
             if (RawMat_RoundUpToBag)
             {
+                double new_RawMat_g_With_Ratio = Math.Ceiling(new_RawMat_g * MainRawRatio / 1000 / MaterialperBag_KG) * MaterialperBag_KG * 1000; 
+
                 //Round Up Raw Mat to nearlest max bag qty
-                new_RawMat_g = Math.Ceiling(new_RawMat_g / 1000 / MaterialperBag_KG) * MaterialperBag_KG * 1000;
+                new_RawMat_g = new_RawMat_g_With_Ratio / MainRawRatio;
+
+                //new_RawMat_g = Math.Ceiling(new_RawMat_g / 1000 / MaterialperBag_KG) * MaterialperBag_KG * 1000;
 
                 new_ColorMat_g = new_RawMat_g * colorRatio_percentage;
 
@@ -1681,18 +1715,59 @@ namespace FactoryManagementSoftware.UI
             lblMaxShot.Text = maxShots.ToString();
             lblMaxQty.Text = Max_Qty_pcs.ToString();
 
-
-
             //Material Summary
-            lblRawMat.Text = (new_RawMat_g / 1000).ToString();
-            lblColorMat.Text = (new_ColorMat_g / 1000).ToString();
-            lblRecycleMat.Text = (total_RecycleMat_g / 1000).ToString();
+            lblRawMat.Text = (new_RawMat_g / 1000).ToString("0.##");
+            lblColorMat.Text = (new_ColorMat_g / 1000).ToString("0.##");
+            lblRecycleMat.Text = (total_RecycleMat_g / 1000).ToString("0.##");
 
-            if (dt_RawMat?.Rows.Count > 0)
+            if (dgvRawMatList?.Rows.Count > 0)
             {
-                double kgPerBag = double.TryParse(dt_RawMat.Rows[0][text.Header_KGPERBAG].ToString(), out kgPerBag) ? kgPerBag : 0;
-                dt_RawMat.Rows[0][text.Header_KG] = new_RawMat_g / 1000;
-                dt_RawMat.Rows[0][text.Header_BAG] = (int)(new_RawMat_g / 1000 / kgPerBag);
+                foreach(DataGridViewRow row in dgvRawMatList.Rows)
+                {
+                    bool selection = bool.TryParse(row.Cells[text.Header_Selection].Value.ToString(), out selection) ? selection : false;
+                    
+                    if (selection)
+                    {
+                        double ratio = double.TryParse(row.Cells[text.Header_Ratio].Value.ToString(), out ratio) ? ratio : 0;
+
+                        ratio = ratio < 1 ? ratio : ratio / 100;
+
+                        double kgPerBag = double.TryParse(row.Cells[text.Header_KGPERBAG].Value.ToString(), out kgPerBag) ? kgPerBag : 0;
+
+
+                        double result = new_RawMat_g * ratio / 1000;
+
+                        // Check if the result has decimal places
+                        if (result % 1 != 0)
+                        {
+                            // If it does, round to 2 decimal places
+                            row.Cells[text.Header_Qty_Required_KG].Value = Math.Round(result, 2);
+                        }
+                        else
+                        {
+                            // If not, keep the original value
+                            row.Cells[text.Header_Qty_Required_KG].Value = result;
+                        }
+
+                        result = result / kgPerBag;
+
+                        // Check if the result has decimal places
+                        if (result % 1 != 0)
+                        {
+                            // If it does, round to 2 decimal places
+                            row.Cells[text.Header_Qty_Required_Bag].Value = Math.Round(result, 2);
+                        }
+                        else
+                        {
+                            // If not, keep the original value
+                            row.Cells[text.Header_Qty_Required_Bag].Value = result;
+                        }
+
+                       // row.Cells[text.Header_Qty_Required_Bag].Value = (int)(new_RawMat_g * ratio / 1000 / kgPerBag);
+                    }
+                }
+               
+               
             }
 
             if (dgvItemList?.Rows.Count > 0)
@@ -1725,11 +1800,23 @@ namespace FactoryManagementSoftware.UI
             }
 
             #endregion
+
+            MAX_SHOT_CALCULATING = false;
+
         }
 
 
+        private bool PRO_TIME_CALCULATING = false;
+
         private void CalculateProductionTime()
         {
+            if (PRO_TIME_CALCULATING)
+            {
+                return;
+            }
+
+            PRO_TIME_CALCULATING = true;
+
             #region Step 1: Production Time Calculation
 
             int cycleTime_PerShot_sec = int.TryParse(txtMouldCycleTime.Text, out cycleTime_PerShot_sec) ? cycleTime_PerShot_sec : 0;
@@ -1758,6 +1845,9 @@ namespace FactoryManagementSoftware.UI
             lblDaysNeeded.Text = totalDays.ToString();
             lblbalHours.Text = balHrs.ToString("0.##");
             #endregion
+
+            PRO_TIME_CALCULATING = false;
+
         }
 
         private double CalculateMinMaterialNeeded_Gram(int minShot, double totalWeightPerShot, double wastage)
@@ -1961,7 +2051,238 @@ namespace FactoryManagementSoftware.UI
 
             dgvItemList.ClearSelection();
         }
+
+        private Tuple<int, int> CalculateRawMaterialRatios(int numberOfRawMaterials)
+        {
+            if (numberOfRawMaterials <= 0)
+            {
+                return new Tuple<int, int>(0, 0);
+            }
+
+            // Calculate the average ratio
+            int avgRatio = 100 / numberOfRawMaterials;
+
+            // The first raw material will receive the balance after subtracting the remaining ratio
+            int firstRatio = 100 - (avgRatio * (numberOfRawMaterials - 1));
+
+            return new Tuple<int, int>(firstRatio, avgRatio);
+        }
+
+
+        private void RawMatRatioAdjustment()
+        {
+            if(dgvRawMatList?.Rows?.Count > 0) 
+            {
+                int selectedRowCount = 0;
+
+                foreach (DataGridViewRow row in dgvRawMatList.Rows)
+                {
+                    bool selection = bool.TryParse(row.Cells[text.Header_Selection].Value.ToString(), out selection) ? selection : false;
+
+                    if (selection)
+                    {
+                        selectedRowCount++;
+                    }
+                }
+
+                if(selectedRowCount == 0)
+                {
+                    MessageBox.Show("Need to select at least one Raw Material.");
+                    dgvRawMatList.Rows[0].Cells[text.Header_Selection].Value = true;
+                    selectedRowCount = 1;
+                }
+                else if (selectedRowCount == 1)
+                {
+                    foreach (DataGridViewRow row in dgvRawMatList.Rows)
+                    {
+                        bool selection = bool.TryParse(row.Cells[text.Header_Selection].Value.ToString(), out selection) ? selection : false;
+
+                        if (selection)
+                        {
+                            row.Cells[text.Header_RoundUp_ToBag].Value = true;
+                        }
+                    }
+                }
+
+                int avgRatio = 0;
+                int firstRatio = 0;
+
+                if(selectedRowCount > 0)
+                {
+                     avgRatio = 100 / selectedRowCount;
+
+                     firstRatio = 100 - (avgRatio * (selectedRowCount - 1));
+                }
+              
+
+                bool firstselectedRowDataUpdated = false;
+
+                for (int i = 0; i < dgvRawMatList.Rows.Count; i++)
+                {
+                    bool selection = bool.TryParse(dgvRawMatList.Rows[i].Cells[text.Header_Selection].Value.ToString(), out selection) ? selection : false;
+
+                    if (selection)
+                    {
+                        if (!firstselectedRowDataUpdated)
+                        {
+                            dgvRawMatList.Rows[i].Cells[text.Header_Ratio].Value = firstRatio;
+
+                            firstselectedRowDataUpdated = true;
+                        }
+                        else
+                        {
+                            dgvRawMatList.Rows[i].Cells[text.Header_Ratio].Value = avgRatio;
+                        }
+                    }
+                    else
+                    {
+                        dgvRawMatList.Rows[i].Cells[text.Header_Ratio].Value = 0;
+                    }
+                }
+
+                CalculateMaxShot();
+            }
+          
+
        
+        }
+
+        private bool RAW_MAT_RATIO_UPDATING = false;
+
+        private void RawMatRatioAdjustment_Manual(int currentRowIndex)
+        {
+            if(RAW_MAT_RATIO_UPDATING)
+            {
+                return;
+            }
+
+            RAW_MAT_RATIO_UPDATING = true;
+
+            DataGridView dgv = dgvRawMatList;
+
+            if (dgv?.Rows?.Count > 0)
+            {
+                int totalRowCount = dgv.RowCount;
+
+                double currentRow_Ratio = double.TryParse(dgv.Rows[currentRowIndex].Cells[text.Header_Ratio].Value.ToString(), out currentRow_Ratio) ? currentRow_Ratio : 100;
+
+
+                if (totalRowCount == 1)
+                {
+                    if(currentRow_Ratio != 100)
+                    {
+                        MessageBox.Show("If there is only 1 type of raw material, the ratio is fixed at 100.");
+                        dgv.Rows[currentRowIndex].Cells[text.Header_Ratio].Value = 100;
+                    }
+                    RAW_MAT_RATIO_UPDATING = false;
+
+                    return;
+
+                }
+
+
+                foreach (DataGridViewRow row in dgvRawMatList.Rows)
+                {
+                    bool selection = bool.TryParse(row.Cells[text.Header_Selection].Value.ToString(), out selection) ? selection : false;
+
+                    if (selection && currentRowIndex != dgvRawMatList.Rows.IndexOf(row))
+                    {
+                        row.Cells[text.Header_Ratio].Value = 100 - currentRow_Ratio;
+
+                    }
+                }
+
+
+                CalculateMaxShot();
+            }
+
+            RAW_MAT_RATIO_UPDATING = false;
+
+
+        }
+        private void AddRawToList(string rawCode)
+        {
+            PRO_INFO_LOADING = true;
+
+            if (!string.IsNullOrEmpty(rawCode))
+            {
+                if (DT_ITEM == null)
+                {
+                    DT_ITEM = dalItem.Select();
+                }
+
+                int index = 1;
+
+                DataTable dt_RawList = NewRawMaterialList();
+
+                bool itemFound = false;
+
+                if (dgvRawMatList?.Rows.Count > 0)
+                {
+                    dt_RawList = (DataTable)dgvRawMatList.DataSource;
+
+                    //get last index
+                    index = int.TryParse(dgvRawMatList.Rows[dgvRawMatList.Rows.Count - 1].Cells[text.Header_Index].Value.ToString(), out index) ? index+1 : 1;
+                   
+                    foreach (DataRow row in dt_RawList.Rows)
+                    {
+                        if (rawCode == row[text.Header_ItemCode].ToString())
+                        {
+                            itemFound = true;
+                            int rowIndex = dt_RawList.Rows.IndexOf(row);
+
+                            MessageBox.Show("Same item code found in the list (row: " + rowIndex + ").");
+                            return;
+                        }
+                    }
+                }
+
+                if (!itemFound)
+                {
+                    var newRawRow = dt_RawList.NewRow();
+
+                    newRawRow[text.Header_Selection] = true;
+                    newRawRow[text.Header_Index] = index;
+                    newRawRow[text.Header_ItemDescription] = rawCode;
+                    newRawRow[text.Header_ItemCode] = rawCode;
+                    newRawRow[text.Header_ItemName] = tool.getItemNameFromDataTable(DT_ITEM,rawCode);
+                    newRawRow[text.Header_KGPERBAG] = 25;
+
+                    dt_RawList.Rows.Add(newRawRow);
+                    dgvRawMatList.DataSource = dt_RawList;
+                    RawMatRatioAdjustment();
+                    dgvUIEdit(dgvRawMatList);
+                    RawMatListCellFormatting(dgvRawMatList);
+                    dgvRawMatList.ClearSelection();
+                }
+            }
+
+            PRO_INFO_LOADING = false;
+            dgvRawMatList.ClearSelection();
+
+            CalculateMaxShot();
+        }
+        
+           
+        private void ChangeColorMat(string ColorCode)
+        {
+            PRO_INFO_LOADING = true;
+
+            if (!string.IsNullOrEmpty(ColorCode))
+            {
+                if (DT_ITEM == null)
+                {
+                    DT_ITEM = dalItem.Select();
+                }
+
+                COLOR_MAT_CODE = ColorCode;
+                lblColorMatDescription.Text = tool.getItemNameFromDataTable(DT_ITEM, ColorCode);
+            }
+
+            PRO_INFO_LOADING = false;
+
+            CalculateMaxShot();
+        }
         private void dgvClearSelection()
         {
             dgvItemList.ClearSelection();
@@ -1987,6 +2308,26 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void RemoveRawFromList(DataGridView dgv, int rowIndex)
+        {
+            if (rowIndex >= 0 && rowIndex < dgv.Rows.Count) // Ensure the index is within the valid range
+            {
+                dgv.Rows.RemoveAt(rowIndex);
+
+                IndexReset(dgvRawMatList);
+
+                DataTable dt_RawMat = (DataTable)dgvRawMatList.DataSource;
+
+                dgvRawMatList.DataSource = dt_RawMat;
+                RawMatRatioAdjustment();
+
+                CalculateMaxShot();
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("rowIndex", "The row index provided is out of range.");
+            }
+        }
         private string JOB_PURPOSE = "";
 
         private void EditJobPurpose(DataGridView dgv, int rowIndex)
@@ -2151,15 +2492,7 @@ namespace FactoryManagementSoftware.UI
             }
 
         }
-        private void LoadProductionInfoToField(DataRow[] existingRows)
-        {
-            lblMouldCavity.Text = existingRows[0][dalItem.MouldCavity].ToString();
-            txtMouldCycleTime.Text = existingRows[0][dalItem.MouldCT].ToString();
-            lblMouldPWPerShot.Text = existingRows[0][dalItem.ItemPWShot].ToString();
-            txtMouldRWPerShot.Text = existingRows[0][dalItem.ItemRWShot].ToString();
-
-
-        }
+       
 
         private void ClearProductionInfo()
         {
@@ -2168,6 +2501,8 @@ namespace FactoryManagementSoftware.UI
             lblMouldPWPerShot.Text = "";
             txtMouldRWPerShot.Text = "";
             MIN_SHOT = 0;
+            CalculateMaxShot();
+
         }
 
         private double TwoDecimalPlace(double value)
@@ -2209,7 +2544,7 @@ namespace FactoryManagementSoftware.UI
 
                         availableQty = currentStock - TotalMatToUse;
 
-                        totalMaterial = float.TryParse(row.Cells[text.Header_KG].Value.ToString(), out totalMaterial) ? totalMaterial : 0;
+                        totalMaterial = float.TryParse(row.Cells[text.Header_Qty_Required_KG].Value.ToString(), out totalMaterial) ? totalMaterial : 0;
 
                         StockBal = availableQty - totalMaterial;
 
@@ -2424,10 +2759,56 @@ namespace FactoryManagementSoftware.UI
             {
                 AddItemToList(frmItemSearch.ITEM_CODE_SELECTED, frmItemSearch.JOB_PURPOSE, frmItemSearch.JOB_TARGET_QTY);
             }
-
-            
         }
 
+        private void AddRawItem()
+        {
+            DataTable dt_RawList = null;
+
+            if (dgvRawMatList?.Rows.Count > 0)
+            {
+                dt_RawList = (DataTable)dgvRawMatList.DataSource;
+            }
+
+            frmItemSearch frm = new frmItemSearch(dt_RawList, text.Cat_RawMat, false);
+
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.WindowState = FormWindowState.Normal;
+            frm.ShowDialog();
+
+            frmLoading.CloseForm();
+
+            if (frmItemSearch.ITEM_CODE_SELECTED != "")
+            {
+                AddRawToList(frmItemSearch.ITEM_CODE_SELECTED);
+            }
+
+        }
+
+        private void ChangeColorItem()
+        {
+            DataTable dt = NewRawMaterialList();
+
+            DataRow newRow = dt.NewRow();
+
+            newRow[text.Header_ItemCode] = COLOR_MAT_CODE;
+
+            dt.Rows.Add(newRow);
+
+            frmItemSearch frm = new frmItemSearch(dt, text.Cat_MB, false);
+
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.WindowState = FormWindowState.Normal;
+            frm.ShowDialog();
+
+            frmLoading.CloseForm();
+
+            if (frmItemSearch.ITEM_CODE_SELECTED != "")
+            {
+                ChangeColorMat(frmItemSearch.ITEM_CODE_SELECTED);
+            }
+
+        }
         private void frmPlanningNEWV2_Shown(object sender, EventArgs e)
         {
             //load item search page
@@ -2465,7 +2846,7 @@ namespace FactoryManagementSoftware.UI
                     //able to let user edit the cell
                     dgv.Rows[rowIndex].Cells[text.Header_Cavity].Style.BackColor = SystemColors.Info;
                     dgv.Rows[rowIndex].Cells[text.Header_ProPwShot].Style.BackColor = SystemColors.Info;
-                    dgv.Rows[rowIndex].Cells[text.Header_TargetQty].Style.BackColor = SystemColors.Info;
+                    dgv.Rows[rowIndex].Cells[text.Header_TargetQty].Style.BackColor = Color.FromArgb(254, 241, 154); 
                     dgv.Rows[rowIndex].Cells[text.Header_AutoQtyAdjustment].Style.BackColor = Color.FromArgb(255, 153, 153);
                     dgv.Rows[rowIndex].Cells[text.Header_AutoQtyAdjustment].Style.ForeColor = Color.FromArgb(64, 64, 64);
                     dgv.Rows[rowIndex].Cells[text.Header_AutoQtyAdjustment].Style.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
@@ -2496,8 +2877,10 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
 
                     //able to let user edit the cell
-                    dgv.Rows[rowIndex].Cells[text.Header_BAG].Style.BackColor = SystemColors.Info;
+                    dgv.Rows[rowIndex].Cells[text.Header_Selection].Style.BackColor = SystemColors.Info;
                     dgv.Rows[rowIndex].Cells[text.Header_KGPERBAG].Style.BackColor = SystemColors.Info;
+                    dgv.Rows[rowIndex].Cells[text.Header_Ratio].Style.BackColor = SystemColors.Info;
+                    dgv.Rows[rowIndex].Cells[text.Header_RoundUp_ToBag].Style.BackColor = SystemColors.Info;
                     dgv.Rows[rowIndex].Cells[text.Header_Remark].Style.BackColor = SystemColors.Info;
                 }
 
@@ -2675,36 +3058,71 @@ namespace FactoryManagementSoftware.UI
         {
             listReadOnlyModeChanging = true;
 
-            if (rowIndex >= 0 && rowIndex < dgv.Rows.Count && colIndex >= 0 && colIndex < dgv.Columns.Count)
+            if(dgv == dgvItemList)
             {
-                string colName = dgv.Columns[colIndex].Name;
-
-                bool readOnlyMode = true;
-
-                if (colName.Equals(text.Header_TargetQty) || colName.Equals(text.Header_Cavity) || colName.Equals(text.Header_ProPwShot))
+                if (rowIndex >= 0 && rowIndex < dgv.Rows.Count && colIndex >= 0 && colIndex < dgv.Columns.Count)
                 {
-                    readOnlyMode = false;
-                }
+                    string colName = dgv.Columns[colIndex].Name;
 
-                if (readOnlyMode)
-                {
-                    dgv.ReadOnly = true; // Prevent user interaction with the rest of the DataGridView
-                    // Change back to full row selection mode for any other column.
-                    dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                    dgv.CurrentCell = dgv.Rows[rowIndex].Cells[colIndex];
-                    dgv.Rows[rowIndex].Cells[colIndex].Selected = true;
-                }
-                else
-                {
-                    // Change to cell selection mode.
-                    dgv.ReadOnly = false; // Temporarily allow user interaction
+                    bool readOnlyMode = true;
 
-                    dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
-                    dgv.CurrentCell = dgv.Rows[rowIndex].Cells[colIndex];
-                    dgv.Rows[rowIndex].Cells[colIndex].Selected = true;
+                    if (colName.Equals(text.Header_TargetQty) || colName.Equals(text.Header_Cavity) || colName.Equals(text.Header_ProPwShot))
+                    {
+                        readOnlyMode = false;
+                    }
+
+                    if (readOnlyMode)
+                    {
+                        dgv.ReadOnly = true; // Prevent user interaction with the rest of the DataGridView
+                                             // Change back to full row selection mode for any other column.
+                        dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                        dgv.CurrentCell = dgv.Rows[rowIndex].Cells[colIndex];
+                        dgv.Rows[rowIndex].Cells[colIndex].Selected = true;
+                    }
+                    else
+                    {
+                        // Change to cell selection mode.
+                        dgv.ReadOnly = false; // Temporarily allow user interaction
+
+                        dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
+                        dgv.CurrentCell = dgv.Rows[rowIndex].Cells[colIndex];
+                        dgv.Rows[rowIndex].Cells[colIndex].Selected = true;
+                    }
                 }
             }
 
+            else if (dgv == dgvRawMatList)
+            {
+                if (rowIndex >= 0 && rowIndex < dgv.Rows.Count && colIndex >= 0 && colIndex < dgv.Columns.Count)
+                {
+                    string colName = dgv.Columns[colIndex].Name;
+
+                    bool readOnlyMode = true;
+
+                    if (colName.Equals(text.Header_KGPERBAG) || colName.Equals(text.Header_Selection) || colName.Equals(text.Header_Ratio) || colName.Equals(text.Header_RoundUp_ToBag) || colName.Equals(text.Header_Remark))
+                    {
+                        readOnlyMode = false;
+                    }
+
+                    if (readOnlyMode)
+                    {
+                        dgv.ReadOnly = true; // Prevent user interaction with the rest of the DataGridView
+                                             // Change back to full row selection mode for any other column.
+                        dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                        dgv.CurrentCell = dgv.Rows[rowIndex].Cells[colIndex];
+                        dgv.Rows[rowIndex].Cells[colIndex].Selected = true;
+                    }
+                    else
+                    {
+                        // Change to cell selection mode.
+                        dgv.ReadOnly = false; // Temporarily allow user interaction
+
+                        dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
+                        dgv.CurrentCell = dgv.Rows[rowIndex].Cells[colIndex];
+                        dgv.Rows[rowIndex].Cells[colIndex].Selected = true;
+                    }
+                }
+            }
             listReadOnlyModeChanging = false;
 
         }
@@ -2827,7 +3245,7 @@ namespace FactoryManagementSoftware.UI
             Color FormBackColor = Color.FromArgb(147, 168, 255);
             Color CircleLabelProcessingColor = Color.White;
             Color lblStepTextForeColor = Color.Black;
-            Color CurrentStepColor = Color.FromArgb(254, 241, 154);
+            Color CurrentStepColor = Color.FromArgb(254, 241, 154); 
             Color circleLabelCompletedBackColor = Color.FromArgb(153, 255, 204);
 
             string tickText = "✓";
@@ -3134,6 +3552,27 @@ namespace FactoryManagementSoftware.UI
             dgv.ResumeLayout();
         }
 
+        private void my_menu_RawItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            DataGridView dgv = dgvRawMatList;
+
+            dgv.SuspendLayout();
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            string itemClicked = e.ClickedItem.Name.ToString();
+
+            int rowIndex = dgv.CurrentCell.RowIndex;
+
+            contextMenuStrip1.Hide();
+
+            if (itemClicked.Equals(text.RemoveItem))
+            {
+                RemoveRawFromList(dgv, rowIndex);
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+            dgv.ResumeLayout();
+        }
         private void tableLayoutPanel12_Paint(object sender, PaintEventArgs e)
         {
 
@@ -3282,9 +3721,9 @@ namespace FactoryManagementSoftware.UI
         }
 
 
-        private void btnAddColorMat_Click(object sender, EventArgs e)
+        private void btnChangeColorMat_Click(object sender, EventArgs e)
         {
-
+            ChangeColorItem();
         }
 
        
@@ -4628,7 +5067,8 @@ namespace FactoryManagementSoftware.UI
         }
         private void txtColorMatUsage_TextChanged(object sender, EventArgs e)
         {
-            ColorUsageChanged();
+            //ColorUsageChanged();
+            CalculateMaxShot();
         }
 
         private void txtCycleTime_TextChanged(object sender, EventArgs e)
@@ -4978,8 +5418,8 @@ namespace FactoryManagementSoftware.UI
 
                 BLL_JOB_SUMMARY.material_code = row[text.Header_ItemCode].ToString();
                 BLL_JOB_SUMMARY.material_bag_kg = row[text.Header_KGPERBAG].ToString();
-                BLL_JOB_SUMMARY.material_bag_qty = row[text.Header_BAG].ToString();
-                BLL_JOB_SUMMARY.raw_material_qty = row[text.Header_KG].ToString();
+                BLL_JOB_SUMMARY.material_bag_qty = row[text.Header_Qty_Required_Bag].ToString();
+                BLL_JOB_SUMMARY.raw_material_qty = row[text.Header_Qty_Required_KG].ToString();
 
                 rawRatio = row[text.Header_Ratio].ToString();
             }
@@ -5049,6 +5489,212 @@ namespace FactoryManagementSoftware.UI
         }
 
         private void tableLayoutPanel27_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnAddRawMat_Click(object sender, EventArgs e)
+        {
+            if(dgvRawMatList?.Rows.Count > 1)
+            {
+                MessageBox.Show("The mixing of raw materials is limited to only two types.\nYou can remove one type of raw material and then add it again.");
+            }
+            else
+            {
+                AddRawItem();
+
+            }
+        }
+
+        private void dgvRawMatList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            DataGridView dgv = dgvRawMatList;
+
+            //handle the row selection on right click
+            if (e.Button == MouseButtons.Right && e.RowIndex > -1)
+            {
+                ContextMenuStrip my_menu = new ContextMenuStrip();
+                dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                // Can leave these here - doesn't hurt
+                dgv.Rows[e.RowIndex].Selected = true;
+                dgv.Focus();
+
+
+                int rowIndex = dgv.CurrentCell.RowIndex;
+                int colIndex = dgv.CurrentCell.ColumnIndex;
+
+                string currentHeader = dgv.Columns[colIndex].Name;
+
+                try
+                {
+                    my_menu.Items.Add(text.RemoveItem).Name = text.RemoveItem;
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                    contextMenuStrip1 = my_menu;
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_RawItemClicked);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void txtMouldRWPerShot_TextChanged(object sender, EventArgs e)
+        {
+            CalculateMaxShot();
+        }
+
+        private void dgvRawMatList_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (!listReadOnlyModeChanging)
+                dgvReadOnlyModeUpdate(dgvRawMatList, e.RowIndex, e.ColumnIndex);
+        }
+
+        private void dgvRawMatList_SelectionChanged(object sender, EventArgs e)
+        {
+            if (!listReadOnlyModeChanging)
+            {
+                listReadOnlyModeChanging = true;
+
+                if (dgvRawMatList.SelectedCells.Count > 0)  // checking if any cell is selected
+                {
+                    int rowIndex = dgvRawMatList.SelectedCells[0].RowIndex; // Get the row index of first selected cell
+                    int columnIndex = dgvRawMatList.SelectedCells[0].ColumnIndex; // Get the column index of first selected cell
+
+                    dgvReadOnlyModeUpdate(dgvRawMatList, rowIndex, columnIndex);
+                }
+
+                listReadOnlyModeChanging = false;
+            }
+        }
+
+        private void dgvRawMatList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+           
+           
+            string colName = dgvRawMatList.Columns[e.ColumnIndex].Name;
+
+            if (colName == text.Header_RoundUp_ToBag)
+            {
+                dgvRawMatList.Enabled = false;
+                dgvRawMatList.CommitEdit(DataGridViewDataErrorContexts.Commit);
+                foreach (DataGridViewRow row in dgvRawMatList.Rows)
+                {
+                    if (e.RowIndex != row.Index)
+                    {
+                        row.Cells[text.Header_RoundUp_ToBag].Value = false;
+                    }
+                    
+                    CalculateMaxShot();
+                }
+                dgvRawMatList.Enabled = true;
+
+            }
+            else if (colName == text.Header_Selection)
+            {
+                dgvRawMatList.Enabled = false;
+                dgvRawMatList.CommitEdit(DataGridViewDataErrorContexts.Commit);
+                RawMatRatioAdjustment();
+                dgvRawMatList.Enabled = true;
+            }
+
+
+        }
+
+        private void dgvRawMatList_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+
+            string colName = dgvRawMatList.Columns[e.ColumnIndex].Name;
+
+            if(colName == text.Header_RoundUp_ToBag)
+            {
+                dgvRawMatList.Enabled = false;
+
+                CalculateMaxShot();
+                dgvRawMatList.Enabled = true;
+
+            }
+            else if(colName == text.Header_Selection)
+            {
+                dgvRawMatList.Enabled = false;
+
+                bool selection = bool.TryParse(dgvRawMatList.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(), out selection) ? selection : false;
+
+                if(!selection)
+                {
+                    dgvRawMatList.Rows[e.RowIndex].Cells[text.Header_RoundUp_ToBag].Value = false;
+                }
+
+                RawMatRatioAdjustment();
+                dgvRawMatList.Enabled = true;
+
+            }
+
+        }
+
+        private void dgvRawMatList_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            int colIndex = dgvRawMatList.CurrentCell.ColumnIndex;
+
+            if (dgvRawMatList.IsCurrentCellDirty && dgvRawMatList.Columns[colIndex].Name != text.Header_KGPERBAG && dgvRawMatList.Columns[colIndex].Name != text.Header_Ratio && dgvRawMatList.Columns[colIndex].Name != text.Header_Remark)
+            {
+                // Commit the checkbox change immediately
+                dgvRawMatList.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+
+        private void dgvRawMatList_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            string colName = dgvRawMatList.Columns[e.ColumnIndex].Name;
+
+            if (colName == text.Header_KGPERBAG)
+            {
+                CalculateMaxShot();
+            }
+            else if(colName == text.Header_Ratio)
+            {
+                RawMatRatioAdjustment_Manual(e.RowIndex);
+            }
+        }
+
+
+        private void ColumnMeter_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+
+
+        }
+        private void dgvRawMatList_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            e.Control.KeyPress -= new KeyPressEventHandler(ColumnMeter_KeyPress);
+
+            int col = dgvRawMatList.CurrentCell.ColumnIndex;
+            int row = dgvRawMatList.CurrentCell.RowIndex;
+            string colName = dgvRawMatList.Columns[col].Name;
+
+            if (colName.Contains(text.Header_Ratio))
+            {
+                TextBox tb = e.Control as TextBox;
+
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(ColumnMeter_KeyPress);
+                }
+            }
+        }
+
+        private void lblMouldPWPerShot_Click(object sender, EventArgs e)
         {
 
         }

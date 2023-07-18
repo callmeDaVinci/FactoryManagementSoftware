@@ -51,6 +51,9 @@ namespace FactoryManagementSoftware.UI
         private string ITEM_TYPE;
         static public string JOB_PURPOSE;
         static public int JOB_TARGET_QTY;
+        private string COLOR_CODE;
+
+        private bool COLOR_MAT_MODE = false;
 
         private readonly string OTHER_INITIAL_CONTENT = "Fill in other planning purposes here.";
         private readonly string OTHER_PURPOSE_INITIAL = "OTHER PURPOSE";
@@ -106,6 +109,7 @@ namespace FactoryManagementSoftware.UI
             InitialSetting();
         }
 
+      
         private DataTable NewMonthlyBalanceEsimateTable()
         {
             DataTable dt = new DataTable();
