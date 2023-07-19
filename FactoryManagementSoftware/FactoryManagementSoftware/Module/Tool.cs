@@ -2506,6 +2506,11 @@ namespace FactoryManagementSoftware.Module
             {
                 Location_OUG = true;
             }
+            else if (myconnstrng == text.DB_JunPC)
+            {
+                Location_OUG = true;
+                Location_Semenyih = true;
+            }
             else
             {
                 frmLocationSelect frm = new frmLocationSelect();

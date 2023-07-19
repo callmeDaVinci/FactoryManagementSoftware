@@ -262,7 +262,6 @@ namespace FactoryManagementSoftware.Module
         public string DB_JunPC { get; } = @"Data Source=.\SQLEXPRESS01;Initial Catalog=Factory;Integrated Security=True";
         //Data Source=.\SQLEXPRESS01;Initial Catalog=Factory;Integrated Security=True
 
-
         #endregion
 
         #region Shift

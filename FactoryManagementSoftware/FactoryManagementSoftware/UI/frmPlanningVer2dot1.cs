@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -255,6 +256,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_ReservedForOtherJobs, typeof(float));
             dt.Columns.Add(text.Header_RequiredForCurrentJob, typeof(float));
             dt.Columns.Add(text.Header_BalStock, typeof(float));
+            dt.Columns.Add(text.Header_Unit, typeof(string));
 
             return dt;
 
@@ -1022,10 +1024,13 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
                 dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
+                dgv.Columns[text.Header_Type].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
+
                 dgv.Columns[text.Header_Type].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[text.Header_Type].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
 
-                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                //dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
                 dgv.Columns[text.Header_Index].Width = smallColumnWidth;
                 //int columnWidth = 60;
@@ -1133,11 +1138,13 @@ namespace FactoryManagementSoftware.UI
             lblColorMat.Text = "0";
             lblRecycleMat.Text = "0";
             lblColorMatDescription.Text = "";
+            COLOR_MAT_CODE = "";
+
             lblMouldTon.Text = "";
             lblMouldCode.Text = "";
             lblPartColor.Text = "";
             txtColorMatUsage.Text = "0";
-            COLOR_MAT_CODE = "";
+            
 
             if (dgvItemList?.Rows.Count > 0)
             {
@@ -1193,6 +1200,7 @@ namespace FactoryManagementSoftware.UI
 
                         lblColorMatDescription.Text = tool.getItemNameFromDataTable(DT_ITEM, colorMaterial);
                         COLOR_MAT_CODE = colorMaterial;
+
                         lblPartColor.Text = colorName;
                         txtColorMatUsage.Text = colorRate.ToString();
 
@@ -2510,6 +2518,48 @@ namespace FactoryManagementSoftware.UI
             return Math.Round(value, 2, MidpointRounding.AwayFromZero);
         }
 
+        private DataTable ConsolidateStockCheckTable(DataTable originalTable)
+        {
+            var resultTable = NewStockCheckTable();
+
+            // Group original DataTable by ItemCode
+            var groupedData = originalTable.AsEnumerable()
+                .GroupBy(r => r.Field<string>(text.Header_ItemCode));
+
+            // Loop through grouped data
+            foreach (var group in groupedData)
+            {
+                // Calculate RequiredForCurrentJob and BalStock for each group
+                float totalRequiredForCurrentJob = group.Sum(r => r.Field<float>(text.Header_RequiredForCurrentJob));
+                float readyStock = group.First().Field<float>(text.Header_ReadyStock);
+                float reservedForOtherJobs = group.First().Field<float>(text.Header_ReservedForOtherJobs);
+                float balStock = readyStock - reservedForOtherJobs - totalRequiredForCurrentJob;
+
+                // Create new row for resultTable and add values
+                DataRow newRow = resultTable.NewRow();
+                newRow[text.Header_Index] = group.First().Field<int>(text.Header_Index);
+                newRow[text.Header_Type] = group.First().Field<string>(text.Header_Type);
+                newRow[text.Header_ItemDescription] = group.First().Field<string>(text.Header_ItemDescription);
+                newRow[text.Header_ItemCode] = group.Key;
+                newRow[text.Header_ItemName] = group.First().Field<string>(text.Header_ItemName);
+                newRow[text.Header_ReadyStock] = TwoDecimalPlace(readyStock);
+                newRow[text.Header_ReservedForOtherJobs] = TwoDecimalPlace(reservedForOtherJobs);
+                newRow[text.Header_RequiredForCurrentJob] = TwoDecimalPlace(totalRequiredForCurrentJob);
+                newRow[text.Header_BalStock] = TwoDecimalPlace(balStock);
+                newRow[text.Header_Unit] = group.First().Field<string>(text.Header_Unit);
+
+                if (balStock < 0)
+                {
+                    MATERIAL_STOCK_ENOUGH = false;
+                }
+
+
+                resultTable.Rows.Add(newRow);
+            }
+
+            return resultTable;
+        }
+
         private void LoadMatCheckList()
         {
             frmLoading.ShowLoadingScreen();
@@ -2531,47 +2581,54 @@ namespace FactoryManagementSoftware.UI
                     foreach (DataGridViewRow row in dgvRawMatList.Rows)
                     {
                         string matCode = row.Cells[text.Header_ItemCode].Value.ToString();
-                        string matDescription = row.Cells[text.Header_ItemDescription].Value.ToString();
 
-                        var matSummary = tool.loadMaterialPlanningSummary(matCode);
-                        int planCounter = matSummary.Item1;
-                        planningUsed = matSummary.Item2;
-                        float TotalMatUsed = matSummary.Item3;
-                        float TotalMatToUse = matSummary.Item4;
-                        currentStock = matSummary.Item5;
-                        bool rawType = matSummary.Item6;
-                        bool colorType = matSummary.Item7;
+                        if(!string.IsNullOrEmpty(tool.getItemNameFromDataTable(DT_ITEM, matCode)))
+                        {
+                            string matDescription = row.Cells[text.Header_ItemDescription].Value.ToString();
 
-                        availableQty = currentStock - TotalMatToUse;
+                            var matSummary = tool.loadMaterialPlanningSummary(matCode);
+                            int planCounter = matSummary.Item1;
+                            planningUsed = matSummary.Item2;
+                            float TotalMatUsed = matSummary.Item3;
+                            float TotalMatToUse = matSummary.Item4;
+                            currentStock = matSummary.Item5;
+                            bool rawType = matSummary.Item6;
+                            bool colorType = matSummary.Item7;
 
-                        totalMaterial = float.TryParse(row.Cells[text.Header_Qty_Required_KG].Value.ToString(), out totalMaterial) ? totalMaterial : 0;
+                            availableQty = currentStock - TotalMatToUse;
 
-                        StockBal = availableQty - totalMaterial;
+                            totalMaterial = float.TryParse(row.Cells[text.Header_Qty_Required_KG].Value.ToString(), out totalMaterial) ? totalMaterial : 0;
 
-                        DataRow row_dtMat = dt_MAT.NewRow();
+                            StockBal = availableQty - totalMaterial;
 
-                        row_dtMat[text.Header_Index] = index;
+                            DataRow row_dtMat = dt_MAT.NewRow();
+
+                            row_dtMat[text.Header_Index] = index;
 
 
-                        row_dtMat[text.Header_Type] = text.Cat_RawMat;
-                        row_dtMat[text.Header_ItemCode] = matCode;
-                        row_dtMat[text.Header_ItemDescription] = matDescription;
+                            row_dtMat[text.Header_Type] = text.Cat_RawMat;
+                            row_dtMat[text.Header_ItemCode] = matCode;
+                            row_dtMat[text.Header_ItemDescription] = matDescription;
 
-                        row_dtMat[text.Header_ReadyStock] = currentStock;
-                        row_dtMat[text.Header_ReservedForOtherJobs] = TotalMatToUse;
+                            row_dtMat[text.Header_ReadyStock] = TwoDecimalPlace(currentStock);
+                            row_dtMat[text.Header_ReservedForOtherJobs] = TwoDecimalPlace(TotalMatToUse);
 
-                        row_dtMat[text.Header_RequiredForCurrentJob] = totalMaterial;
-                        row_dtMat[text.Header_BalStock] = StockBal;
+                            row_dtMat[text.Header_RequiredForCurrentJob] = TwoDecimalPlace(totalMaterial);
+                            row_dtMat[text.Header_BalStock] = TwoDecimalPlace(StockBal);
+                            row_dtMat[text.Header_Unit] = text.Unit_KG;
 
-                        dt_MAT.Rows.Add(row_dtMat);
-                        index++;
+                            dt_MAT.Rows.Add(row_dtMat);
+                            index++;
+                        }
+                       
                     }
                 }
 
-                if(!string.IsNullOrEmpty(COLOR_MAT_CODE))
+                if(!string.IsNullOrEmpty(COLOR_MAT_CODE) && !string.IsNullOrEmpty(tool.getItemNameFromDataTable(DT_ITEM, COLOR_MAT_CODE)))
                 {
                     string matCode = COLOR_MAT_CODE;
-                    string matDescription = lblColorDescription.Text;
+
+                    string matDescription = lblColorMatDescription.Text;
 
                     var matSummary = tool.loadMaterialPlanningSummary(matCode);
                     int planCounter = matSummary.Item1;
@@ -2584,7 +2641,7 @@ namespace FactoryManagementSoftware.UI
 
                     availableQty = currentStock - TotalMatToUse;
 
-                    totalMaterial = float.TryParse(lblTotalColorKG.Text, out totalMaterial) ? totalMaterial : 0;
+                    totalMaterial = float.TryParse(lblColorMat.Text, out totalMaterial) ? totalMaterial : 0;
 
                     StockBal = availableQty - totalMaterial;
 
@@ -2596,11 +2653,12 @@ namespace FactoryManagementSoftware.UI
                     row_dtMat[text.Header_ItemCode] = matCode;
                     row_dtMat[text.Header_ItemDescription] = matDescription;
 
-                    row_dtMat[text.Header_ReadyStock] = currentStock;
-                    row_dtMat[text.Header_ReservedForOtherJobs] = TotalMatToUse;
+                    row_dtMat[text.Header_ReadyStock] = TwoDecimalPlace(currentStock);
+                    row_dtMat[text.Header_ReservedForOtherJobs] = TwoDecimalPlace(TotalMatToUse);
 
-                    row_dtMat[text.Header_RequiredForCurrentJob] = totalMaterial;
-                    row_dtMat[text.Header_BalStock] = StockBal;
+                    row_dtMat[text.Header_RequiredForCurrentJob] = TwoDecimalPlace(totalMaterial);
+                    row_dtMat[text.Header_BalStock] = TwoDecimalPlace(StockBal);
+                    row_dtMat[text.Header_Unit] = text.Unit_KG;
 
                     dt_MAT.Rows.Add(row_dtMat);
                     index++;
@@ -2693,7 +2751,7 @@ namespace FactoryManagementSoftware.UI
                                 row_dtMat[text.Header_RequiredForCurrentJob] = TwoDecimalPlace(totalMaterial);
 
                                 row_dtMat[text.Header_BalStock] = TwoDecimalPlace(StockBal);
-
+                                row_dtMat[text.Header_Unit] = text.Unit_Piece;
 
                                 dt_MAT.Rows.Add(row_dtMat);
                                 index++;
@@ -2708,6 +2766,7 @@ namespace FactoryManagementSoftware.UI
             //add datatable to datagridview if got data
             if (dt_MAT.Rows.Count > 0)
             {
+                dt_MAT = ConsolidateStockCheckTable(dt_MAT);
                 dgvStockCheck.DataSource = dt_MAT;
                 dgvUIEdit(dgvStockCheck);
                 StockCheckListCellFormatting(dgvStockCheck);
@@ -2959,14 +3018,14 @@ namespace FactoryManagementSoftware.UI
 
                     if (string.IsNullOrEmpty(macID))
                     {
-                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(147, 168, 255);
+                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(245, 247, 255);
                         dgv.Rows[rowIndex].Height = 20;
                     }
                     else
                     {
-                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
-                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.WhiteSmoke;
-                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.WhiteSmoke;
+                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.White;
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.White;
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.White;
 
                         // Check if macID is used before and bold the font
                         int macID_INT = int.TryParse(macID, out macID_INT) ? macID_INT : 0;
@@ -3216,6 +3275,14 @@ namespace FactoryManagementSoftware.UI
                 CURRENT_STEP = 1;
             }
 
+            Font CurrentStepFont = new Font("Segoe UI", 10F, FontStyle.Bold);
+            Font normalStepFont = new Font("Segoe UI", 8F, FontStyle.Regular);
+
+            lblStep1.Font = normalStepFont;
+            lblStep2.Font = normalStepFont;
+            lblStep3.Font = normalStepFont;
+            lblStep4.Font = normalStepFont;
+
             tlpJobPlanningStep.Visible = false;
             btnCancel.Visible = false;
             btnAddAsDraft.Visible = false;
@@ -3234,15 +3301,9 @@ namespace FactoryManagementSoftware.UI
             tlpButton.ColumnStyles[5] = new ColumnStyle(SizeType.Absolute, 0);//Draft
             tlpButton.ColumnStyles[6] = new ColumnStyle(SizeType.Absolute, 0);//Publish
 
-            Font CurrentStepFont = new Font("Segoe UI", 10F, FontStyle.Bold);
-            Font normalStepFont = new Font("Segoe UI", 8F, FontStyle.Regular);
+          
 
-            lblStep1.Font = normalStepFont;
-            lblStep2.Font = normalStepFont;
-            lblStep3.Font = normalStepFont;
-            lblStep4.Font = normalStepFont;
-
-            Color FormBackColor = Color.FromArgb(147, 168, 255);
+            Color FormBackColor = Color.FromArgb(245, 247, 255);//147, 168, 255
             Color CircleLabelProcessingColor = Color.White;
             Color lblStepTextForeColor = Color.Black;
             Color CurrentStepColor = Color.FromArgb(254, 241, 154); 
@@ -4355,8 +4416,6 @@ namespace FactoryManagementSoftware.UI
             DataTable dt_MacSchedule = (DataTable)dgvMacSchedule.DataSource;
             string facID = "";
 
-
-
             for (int i = dt_MacSchedule.Rows.Count - 1; i >= 0; i--)
             {
                 if (dt_MacSchedule.Rows[i][text.Header_Status].ToString() == text.planning_status_new_draft)
@@ -4440,10 +4499,15 @@ namespace FactoryManagementSoftware.UI
                         newRow[text.Header_FacID] = facID;
                         newRow[text.Header_MacID] = selectedMacId;
 
+                        if(dgvItemList.Rows.Count > 1)
+                            newRow[text.Header_FamilyWithJobNo] = 0;
+
                         if (rowToInsert > -1)
                         {
                             // insert new row at dgvMacShedule (datagridview) row index : rowToInsert
                             dt_MacSchedule.Rows.InsertAt(newRow, rowToInsert);
+
+                            rowToInsert++;
                         }
                         else
                         {
@@ -4542,7 +4606,29 @@ namespace FactoryManagementSoftware.UI
                 string fac = MAC_SCHEDULE_ROW_TO_DROP[text.Header_FacID].ToString();
                 string mac = MAC_SCHEDULE_ROW_TO_DROP[text.Header_MacID].ToString();
 
-                int machineId = Convert.ToInt32(mac); 
+                if(!string.IsNullOrEmpty(fac) && !string.IsNullOrEmpty(mac))
+                {
+                    int machineId = Convert.ToInt32(mac);
+                    var machine = MachineList.FirstOrDefault(t => t.Item3 == machineId);
+
+                    string machineName = machine?.Item4;
+
+                    cmbMacLocation.Text = fac;
+                    cmbMac.Text = machineName;
+
+                }
+
+                BLOCK_CMB_AUTO_UPDATING = false;
+            }
+        }
+
+        private void ChangeCMBLocationAndMachine(string fac, string mac)
+        {
+            if (!string.IsNullOrEmpty(fac) && !string.IsNullOrEmpty(mac))
+            {
+                BLOCK_CMB_AUTO_UPDATING = true;
+
+                int machineId = Convert.ToInt32(mac);
                 var machine = MachineList.FirstOrDefault(t => t.Item3 == machineId);
 
                 string machineName = machine?.Item4;
@@ -4552,8 +4638,8 @@ namespace FactoryManagementSoftware.UI
 
                 BLOCK_CMB_AUTO_UPDATING = false;
             }
-        }
 
+        }
         #region Drag & Drop
 
         private DataRow MAC_SCHEDULE_ROW_TO_DROP;
@@ -4587,7 +4673,7 @@ namespace FactoryManagementSoftware.UI
 
                     CLEAR_SELECTION_AFTER_DROP = true;
 
-                    ChangeCMBLocationAndMachine();
+                    //ChangeCMBLocationAndMachine();
                 }
             }
         }
@@ -4610,14 +4696,17 @@ namespace FactoryManagementSoftware.UI
             {
                 DataTable dt = (DataTable)dgvMacSchedule.DataSource;
 
+                DataRow draggedRow = dt.Rows[rowIndexFromMouseDown];
+                string Drop_familyWithID = draggedRow[text.Header_FamilyWithJobNo].ToString();
+
                 dt.Rows.RemoveAt(rowIndexFromMouseDown);
 
+                string newFacID = "";
+                string newMacID = "";
 
-               
                 int NEWrowIndexToDrop = 0;
-               
 
-                if(rowIndexFromMouseDown> rowIndexToDrop)
+                if (rowIndexFromMouseDown> rowIndexToDrop)
                 {
                     NEWrowIndexToDrop = 1;
                 }
@@ -4631,12 +4720,16 @@ namespace FactoryManagementSoftware.UI
                         MAC_SCHEDULE_ROW_TO_DROP[text.Header_FacID] = facID;
                         MAC_SCHEDULE_ROW_TO_DROP[text.Header_MacID] = Convert.ToInt32(macID);
 
+                        newFacID = facID;
+                        newMacID = macID;
+
                         NEWrowIndexToDrop = i;
                         break;
                     }
                    
                 }
 
+                
                 
                 rowIndexToDrop = NEWrowIndexToDrop + 1;
 
@@ -4674,6 +4767,53 @@ namespace FactoryManagementSoftware.UI
                 rowIndexToDrop += rowIndexOffSet;
 
                 dt.Rows.InsertAt(MAC_SCHEDULE_ROW_TO_DROP, rowIndexToDrop);
+
+
+                if (!string.IsNullOrEmpty(Drop_familyWithID) && Drop_familyWithID != "-1")
+                {
+                    List<DataRow> rowsToMove = new List<DataRow>();
+                    List<DataRow> rowsToDelect = new List<DataRow>();
+
+                    for (int i = dt.Rows.Count - 1; i >= 0; i--)
+                    {
+                        DataRow row = dt.Rows[i];
+                        string rowFamilyWithID = row[text.Header_FamilyWithJobNo].ToString();
+                        if (rowFamilyWithID == Drop_familyWithID && i != rowIndexToDrop)
+                        {
+                            DataRow cloneRow = dt.NewRow();
+                            cloneRow.ItemArray = row.ItemArray;
+                            rowsToMove.Add(cloneRow);
+
+                            rowsToDelect.Add(row);
+                        }
+                    }
+
+                    rowIndexToDrop++;
+
+                    foreach (DataRow row in rowsToDelect)
+                    {
+                        dt.Rows.Remove(row);
+
+                        rowIndexToDrop --;
+                    }
+
+                    // Insert rows at the new position.
+                    foreach (DataRow row in rowsToMove)
+                    {
+
+                        row[text.Header_FacID] = newFacID;
+                        row[text.Header_MacID] = Convert.ToInt32(newMacID);
+
+                        dt.Rows.InsertAt(row, rowIndexToDrop + 1);
+                        rowIndexToDrop++;
+                    }
+                }
+
+
+
+
+                ChangeCMBLocationAndMachine(newFacID, newMacID);
+
 
                 //if (rowIndexToDrop > dt.Rows.Count)
                 //{
@@ -4723,7 +4863,7 @@ namespace FactoryManagementSoftware.UI
             {
                 dgvMacSchedule.ClearSelection();
 
-                if (rowIndexOfItemUnderMouseToDrop > -1)
+                if (rowIndexOfItemUnderMouseToDrop > -1 && rowIndexOfItemUnderMouseToDrop < dgvMacSchedule.Rows.Count)
                     dgvMacSchedule.Rows[rowIndexOfItemUnderMouseToDrop].Selected = true;
 
                
@@ -4959,10 +5099,7 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void btnAdjustCollisionDateBySystem_Click(object sender, EventArgs e)
-        {
-            AutoAdjustCollisionDate();
-        }
+       
 
         #endregion
 
@@ -5019,7 +5156,7 @@ namespace FactoryManagementSoftware.UI
             StepsUIUpdate(CURRENT_STEP,false);
         }
 
-        private void btnAdjustCollisionDateBySystem_Click_1(object sender, EventArgs e)
+        private void btnAdjustCollisionDateBySystem_Click(object sender, EventArgs e)
         {
             AutoAdjustCollisionDate();
         }

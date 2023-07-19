@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
+using Guna.UI2.WinForms.Suite;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -55,8 +56,8 @@ namespace FactoryManagementSoftware.UI
 
         private bool COLOR_MAT_MODE = false;
 
-        private readonly string OTHER_INITIAL_CONTENT = "Fill in other planning purposes here.";
-        private readonly string OTHER_PURPOSE_INITIAL = "OTHER PURPOSE";
+        private readonly string JOB_PURPOSE_INITIAL_CONTENT = "Please fill in the job purposes here, or select the month above.";
+
         #endregion
 
         public frmItemSearch()
@@ -102,8 +103,6 @@ namespace FactoryManagementSoftware.UI
             ITEM_TYPE = itemType;
             ITEM_CODE_SELECTED = "";
 
-           
-
             ShowPurposeAndTargetQtyUI(ShowPurposeAndTargetQty);
 
             InitialSetting();
@@ -123,18 +122,71 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvUIEdit(DataGridView dgv)
         {
-            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+            if(dgv == dgvMonthlyBalanceEstimate)
+            {
+                dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 
-            int smallColumnWidth = 60;
+                dgv.Columns[text.Header_Description].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[text.Header_Description].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+                dgv.Columns[text.Header_BalStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+                //dgv.Columns[text.Header_Selection].Width = smallColumnWidth;
+                dgv.Columns[text.Header_Selection].Visible = false;
+            }
+        }
+
+        private void MonthCheckBoxNameIntitial()
+        {
+            int month = DateTime.Now.Month;
+            int year = DateTime.Now.Year;
+
+            string monthName;
+            monthName = new DateTime(year, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
+
+            int monthStart = DateTime.Now.Month;
+            int yearStart = DateTime.Now.Year;
+
+            int totalMonth = 2;
+
+            DateTime dateStart = new DateTime(yearStart, monthStart, 1);
+            DateTime dateEnd = dateStart.AddMonths(totalMonth);
+
+            int monthEnd = dateEnd.Month;
+            int yearEnd = dateEnd.Year;
+
+            dateEnd = new DateTime(yearEnd, monthEnd, DateTime.DaysInMonth(yearEnd, monthEnd));
 
 
-            dgv.Columns[text.Header_Description].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgv.Columns[text.Header_Description].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            DateTime DateTmp = dateStart;
 
-            dgv.Columns[text.Header_BalStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            int count = 1;
 
-            dgv.Columns[text.Header_Selection].Width = smallColumnWidth;
+            while (DateTmp < dateEnd && count < 4)
+            {
+                monthName = new DateTime(DateTmp.Year, DateTmp.Month, 1).ToString("MMM", CultureInfo.InvariantCulture);
 
+                if (count == 1)
+                {
+                    cbPurposeMonth1.Text = monthName + " " + DateTmp.Year.ToString().Substring(2);
+
+                    count++;
+                }
+                else if (count == 2)
+                {
+                    cbPurposeMonth2.Text = monthName + " " + DateTmp.Year.ToString().Substring(2);
+
+                    count++;
+                }
+                else if (count == 3)
+                {
+                    cbPurposeMonth3.Text = monthName + " " + DateTmp.Year.ToString().Substring(2);
+                    count++;
+
+                }
+
+                DateTmp = DateTmp.AddMonths(1);
+            }
         }
 
         private void LoadMonthlyBalanceEstimate()
@@ -274,6 +326,10 @@ namespace FactoryManagementSoftware.UI
 
                 if (dt_MonthlyBalance.Rows.Count > 0)
                 {
+                  
+
+                    
+
                     dgvMonthlyBalanceEstimate.DataSource = dt_MonthlyBalance;
 
                     dgvUIEdit(dgvMonthlyBalanceEstimate);
@@ -337,11 +393,13 @@ namespace FactoryManagementSoftware.UI
             if(show)
             {
                 //form side
-                Size = new Size(1000, 700);
+                Size = new Size(1100, 700);
 
                 //column
                 tlpMainPanel.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 400);
                 tlpMainPanel.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100);
+
+                MonthCheckBoxNameIntitial();
 
             }
             else
@@ -460,11 +518,83 @@ namespace FactoryManagementSoftware.UI
         #region UI/UX
 
 
+        private void ReferenceUIUpdate(int buttonNo)
+        {
+            if(buttonNo == 0)
+            {
+                tlpReferencesList.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100);
+                tlpReferencesList.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0);
+                tlpReferencesList.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0);
+                tlpReferencesList.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0);
+                tlpReferencesList.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0);
+
+
+                dgvMonthlyBalanceEstimate.Visible = false;
+                dgvProductionHistory.Visible = false;
+                dgvUsageRecord.Visible = false;
+
+                btnLoadMonthlyEstimateBalance.Visible = true;
+                btnLoadProductionHistory.Visible = true;
+                btnLoadUsageRecord.Visible = true;
+
+                tlpReferencesMonthlyBalEstimate.RowStyles[0] = new RowStyle(SizeType.Absolute, 50);
+                tlpReferencesMonthlyBalEstimate.RowStyles[1] = new RowStyle(SizeType.Absolute, 0);
+                tlpReferencesMonthlyBalEstimate.RowStyles[2] = new RowStyle(SizeType.Absolute, 0);
+                tlpReferencesMonthlyBalEstimate.RowStyles[3] = new RowStyle(SizeType.Percent, 100);
+
+                tlpReferencesProductionHistory.RowStyles[0] = new RowStyle(SizeType.Absolute, 50);
+                tlpReferencesProductionHistory.RowStyles[1] = new RowStyle(SizeType.Absolute, 0);
+                tlpReferencesProductionHistory.RowStyles[2] = new RowStyle(SizeType.Absolute, 0);
+                tlpReferencesProductionHistory.RowStyles[3] = new RowStyle(SizeType.Percent, 100);
+
+                tlpReferencesUsageRecord.RowStyles[0] = new RowStyle(SizeType.Absolute, 50);
+                tlpReferencesUsageRecord.RowStyles[1] = new RowStyle(SizeType.Absolute, 0);
+                tlpReferencesUsageRecord.RowStyles[2] = new RowStyle(SizeType.Absolute, 0);
+                tlpReferencesUsageRecord.RowStyles[3] = new RowStyle(SizeType.Percent, 100);
+
+            }
+            else if(buttonNo == 1)
+            {
+                dgvMonthlyBalanceEstimate.Visible = true;
+                btnLoadMonthlyEstimateBalance.Visible = false;
+
+
+                tlpReferencesMonthlyBalEstimate.RowStyles[0] = new RowStyle(SizeType.Absolute, 0);
+                tlpReferencesMonthlyBalEstimate.RowStyles[1] = new RowStyle(SizeType.Absolute, 30);
+                tlpReferencesMonthlyBalEstimate.RowStyles[2] = new RowStyle(SizeType.Percent, 100);
+                tlpReferencesMonthlyBalEstimate.RowStyles[3] = new RowStyle(SizeType.Absolute, 0);
+
+            }
+            else if (buttonNo == 2)
+            {
+                dgvProductionHistory.Visible = true;
+                btnLoadProductionHistory.Visible = false;
+
+                tlpReferencesProductionHistory.RowStyles[0] = new RowStyle(SizeType.Absolute, 0);
+                tlpReferencesProductionHistory.RowStyles[1] = new RowStyle(SizeType.Absolute, 30);
+                tlpReferencesProductionHistory.RowStyles[2] = new RowStyle(SizeType.Percent, 100);
+                tlpReferencesProductionHistory.RowStyles[3] = new RowStyle(SizeType.Absolute, 0);
+
+            }
+            else if (buttonNo == 3)
+            {
+                dgvUsageRecord.Visible = true;
+                btnLoadUsageRecord.Visible = false;
+
+                tlpReferencesUsageRecord.RowStyles[0] = new RowStyle(SizeType.Absolute, 0);
+                tlpReferencesUsageRecord.RowStyles[1] = new RowStyle(SizeType.Absolute, 30);
+                tlpReferencesUsageRecord.RowStyles[2] = new RowStyle(SizeType.Percent, 100);
+                tlpReferencesUsageRecord.RowStyles[3] = new RowStyle(SizeType.Absolute, 0);
+
+            }
+        }
+
         private void InitialSetting()
         {
             loadItemCategoryData(ITEM_TYPE);
 
             InitialNameTextBox();
+            ReferenceUIUpdate(0);
 
         }
 
@@ -589,8 +719,6 @@ namespace FactoryManagementSoftware.UI
             ITEM_CODE_SELECTED = cmbPartCode.Text;
             JOB_TARGET_QTY = int.TryParse(txtTargetQty.Text, out int i) ? i : 0;
 
-            getPurpose();
-
             Close();
         }
 
@@ -625,128 +753,174 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void txtOtherPurpose_Enter(object sender, EventArgs e)
+        private void txtJobPurpose_Enter(object sender, EventArgs e)
         {
-            if (txtOtherPurpose.Text == OTHER_INITIAL_CONTENT)
+            if (txtJobPurpose.Text == JOB_PURPOSE_INITIAL_CONTENT)
             {
-                txtOtherPurpose.Text = "";
-                txtOtherPurpose.ForeColor = SystemColors.WindowText;
+                txtJobPurpose.Text = "";
+               
+            }
+            txtJobPurpose.ForeColor = SystemColors.WindowText;
+        }
+
+        private void txtJobPurpose_Leave(object sender, EventArgs e)
+        {
+            if (txtJobPurpose.Text.Length == 0)
+            {
+                txtJobPurpose.Text = JOB_PURPOSE_INITIAL_CONTENT;
+                txtJobPurpose.ForeColor = SystemColors.GrayText;
             }
         }
 
-        private void txtOtherPurpose_Leave(object sender, EventArgs e)
+        private void txtJobPurpose_TextChanged(object sender, EventArgs e)
         {
-            if (txtOtherPurpose.Text.Length == 0)
-            {
-                txtOtherPurpose.Text = OTHER_INITIAL_CONTENT;
-                txtOtherPurpose.ForeColor = SystemColors.GrayText;
+           
+        }
 
-                if (cbOtherPurpose.Checked)
+        private string JOB_PURPOSE_MONTH = "";
+
+        private bool JOB_PURPOSE_UPDATING = false;
+
+        private void PurposeUpdate()
+        {
+
+            if(JOB_PURPOSE_UPDATING)
+            {
+                return;
+            }
+
+            JOB_PURPOSE_UPDATING = true;
+
+            JOB_PURPOSE = txtJobPurpose.Text;
+            JOB_PURPOSE_MONTH = "";
+
+            if (JOB_PURPOSE == JOB_PURPOSE_INITIAL_CONTENT)
+            {
+                JOB_PURPOSE = "";
+            }
+
+            JOB_PURPOSE = JOB_PURPOSE.Replace(" /" + cbPurposeMonth1.Text, "");
+            JOB_PURPOSE = JOB_PURPOSE.Replace(cbPurposeMonth1.Text, "");
+
+            JOB_PURPOSE = JOB_PURPOSE.Replace(" /" + cbPurposeMonth2.Text, "");
+            JOB_PURPOSE = JOB_PURPOSE.Replace(cbPurposeMonth2.Text, "");
+
+            JOB_PURPOSE = JOB_PURPOSE.Replace(" /" + cbPurposeMonth3.Text, "");
+            JOB_PURPOSE = JOB_PURPOSE.Replace(cbPurposeMonth3.Text, "");
+
+            if (cbPurposeMonth1.Checked)
+            {
+                if (JOB_PURPOSE_MONTH.Equals(""))
                 {
-                    JOB_PURPOSE = OTHER_PURPOSE_INITIAL;
-                }
-            }
-        }
-
-        private void txtOtherPurpose_TextChanged(object sender, EventArgs e)
-        {
-            string JobPurpose = txtOtherPurpose.Text;
-
-            if (!string.IsNullOrEmpty(JobPurpose) && !JobPurpose.Equals(OTHER_INITIAL_CONTENT))
-            {
-                cbOtherPurpose.Checked = true;
-            }
-        }
-
-        private bool getPurpose()
-        {
-            JOB_PURPOSE = "";
-
-            if (cbOtherPurpose.Checked)
-            {
-                string purpose = txtOtherPurpose.Text;
-
-                if (string.IsNullOrEmpty(purpose) || purpose == OTHER_INITIAL_CONTENT)
-                {
-                    JOB_PURPOSE = OTHER_PURPOSE_INITIAL;
+                    JOB_PURPOSE_MONTH = cbPurposeMonth1.Text;
                 }
                 else
                 {
-                    JOB_PURPOSE = purpose;
+                    JOB_PURPOSE_MONTH += " /" + cbPurposeMonth1.Text;
                 }
             }
 
-            else if (dgvMonthlyBalanceEstimate?.Rows.Count > 0)
+            if (cbPurposeMonth2.Checked)
             {
-                DataTable dt = (DataTable)dgvMonthlyBalanceEstimate.DataSource;
 
-                foreach (DataRow row in dt.Rows)
+                if (JOB_PURPOSE_MONTH.Equals(""))
                 {
-                    bool selection = bool.TryParse(row[text.Header_Selection].ToString(), out selection) ? selection : false;
-
-                    if (selection)
-                    {
-                        string purpose = row[text.Header_Description].ToString();
-
-                        if (!purpose.Equals(text.Header_ReadyStock))
-                        {
-                            if (JOB_PURPOSE.Equals(""))
-                            {
-                                JOB_PURPOSE = purpose.Replace("20", "");
-                            }
-                            else
-                            {
-                                JOB_PURPOSE += "/" + purpose.Replace("20", "");
-                            }
-                        }
-
-
-                    }
+                    JOB_PURPOSE_MONTH = cbPurposeMonth2.Text;
+                }
+                else
+                {
+                    JOB_PURPOSE_MONTH += " /" + cbPurposeMonth2.Text;
                 }
             }
 
-            if (string.IsNullOrEmpty(JOB_PURPOSE))
+            if (cbPurposeMonth3.Checked)
             {
-                MessageBox.Show("Please select at least one purpose.");
-                return false;
+                if (JOB_PURPOSE_MONTH.Equals(""))
+                {
+                    JOB_PURPOSE_MONTH = cbPurposeMonth3.Text.Replace("20", "");
+                }
+                else
+                {
+                    JOB_PURPOSE_MONTH += " /" + cbPurposeMonth3.Text.Replace("20", "");
+
+                }
+            }
+           
+
+            if (!JOB_PURPOSE_MONTH.Equals(""))
+            {
+                if (JOB_PURPOSE.Equals(""))
+                {
+                    JOB_PURPOSE = JOB_PURPOSE_MONTH;
+                }
+                else
+                {
+                    JOB_PURPOSE += " /" + JOB_PURPOSE_MONTH;
+                }
             }
 
-            return true;
+            if(string.IsNullOrEmpty(JOB_PURPOSE))
+            {
+                txtJobPurpose.Text = JOB_PURPOSE_INITIAL_CONTENT;
+                txtJobPurpose.ForeColor = SystemColors.GrayText;
+            }
+            else
+            {
+                txtJobPurpose.Text = JOB_PURPOSE;
+                txtJobPurpose.ForeColor = SystemColors.WindowText;
+
+            }
+
+            JOB_PURPOSE_UPDATING = false;
 
         }
 
         private bool FORM_LOADED = false;
+
+        private void JobPurposeSettingReset()
+        {
+            JOB_PURPOSE_UPDATING = true;
+            cbPurposeMonth1.Checked = false;
+            cbPurposeMonth2.Checked = false;
+            cbPurposeMonth3.Checked = false;
+            txtJobPurpose.Text = JOB_PURPOSE_INITIAL_CONTENT;
+
+            JOB_PURPOSE = "";
+
+            txtJobPurpose.ForeColor = SystemColors.GrayText;
+            JOB_PURPOSE_UPDATING = false;
+
+
+        }
+
         private void cmbPartCode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (FORM_LOADED)
-            {
-                timer1.Stop();
-                timer1.Start();
-            }
+            ReferenceUIUpdate(0);
 
-          
+
+            JobPurposeSettingReset();
         }
 
         private void dgvMonthlyBalanceEstimate_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            int row = e.RowIndex;
-            int col = e.ColumnIndex;
-            DataGridView dgv = dgvMonthlyBalanceEstimate;
+            //int row = e.RowIndex;
+            //int col = e.ColumnIndex;
+            //DataGridView dgv = dgvMonthlyBalanceEstimate;
 
-            if (row >= 0)
-            {
-                string colName = dgv.Columns[col].Name;
+            //if (row >= 0)
+            //{
+            //    string colName = dgv.Columns[col].Name;
 
-                if (colName == text.Header_Selection)
-                {
-                    bool selected = bool.TryParse(dgv.Rows[row].Cells[col].Value.ToString(), out selected) ? selected : false;
+            //    if (colName == text.Header_Selection)
+            //    {
+            //        bool selected = bool.TryParse(dgv.Rows[row].Cells[col].Value.ToString(), out selected) ? selected : false;
 
-                    if (selected)
-                    {
-                        cbOtherPurpose.Checked = false;
-                    }
-                }
-            }
+            //        if (selected)
+            //        {
+            //            cbPurposeMonth1.Checked = false;
+            //        }
+            //    }
+            //}
         }
 
         private void dgvMonthlyBalanceEstimate_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -759,27 +933,13 @@ namespace FactoryManagementSoftware.UI
                 e.RowIndex >= 0)
             {
                 // Uncheck the 'Other' checkbox
-                cbOtherPurpose.Checked = false;
+                cbPurposeMonth1.Checked = false;
             }
         }
 
         private void cbOtherPurpose_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbOtherPurpose.Checked && dgvMonthlyBalanceEstimate?.Rows.Count > 0)
-            {
-                DataTable dt = (DataTable)dgvMonthlyBalanceEstimate.DataSource;
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    row[text.Header_Selection] = false;
-                }
-
-                dgvMonthlyBalanceEstimate.ClearSelection();
-            }
-            else
-            {
-                JOB_PURPOSE = "";
-            }
+            PurposeUpdate();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -802,6 +962,138 @@ namespace FactoryManagementSoftware.UI
             FORM_LOADED = true;
 
             Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void btnLoadMonthlyEstimateBalance_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            FORM_LOADED = false;
+            string itemCode = cmbPartCode.Text;
+            string itemType = cmbCategory.Text;
+
+            dgvMonthlyBalanceEstimate.DataSource = null;
+
+            if (!string.IsNullOrEmpty(itemCode) && itemType == text.Cat_Part)
+            {
+                LoadMonthlyBalanceEstimate();
+
+                dgvMonthlyBalanceEstimate.ClearSelection();
+
+                ReferenceUIUpdate(1);
+            }
+            else
+            {
+                if(string.IsNullOrEmpty(itemCode))
+                {
+                    MessageBox.Show("Item Code not found!");
+
+                }
+                else if(itemType != text.Cat_Part)
+                {
+                    MessageBox.Show("This function is temporarily available for part items only.");
+                }
+            }
+           
+
+
+            FORM_LOADED = true;
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+
+        }
+
+        private void btnLoadProductionHistory_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            FORM_LOADED = false;
+            string itemCode = cmbPartCode.Text;
+            string itemType = cmbCategory.Text;
+
+            dgvMonthlyBalanceEstimate.DataSource = null;
+
+            if (!string.IsNullOrEmpty(itemCode) && itemType == text.Cat_Part)
+            {
+                //LoadMonthlyBalanceEstimate();
+                ReferenceUIUpdate(2);
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(itemCode))
+                {
+                    MessageBox.Show("Item Code not found!");
+
+                }
+                else if (itemType != text.Cat_Part)
+                {
+                    MessageBox.Show("This function is temporarily available for part items only.");
+                }
+            }
+            
+
+
+            FORM_LOADED = true;
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void dgvUsageRecord_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            FORM_LOADED = false;
+            string itemCode = cmbPartCode.Text;
+            string itemType = cmbCategory.Text;
+
+            dgvMonthlyBalanceEstimate.DataSource = null;
+
+            if (!string.IsNullOrEmpty(itemCode) && itemType == text.Cat_Part)
+            {
+                //LoadMonthlyBalanceEstimate();
+                ReferenceUIUpdate(3);
+
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(itemCode))
+                {
+                    MessageBox.Show("Item Code not found!");
+
+                }
+                else if (itemType != text.Cat_Part)
+                {
+                    MessageBox.Show("This function is temporarily available for part items only.");
+                }
+            }
+
+
+            FORM_LOADED = true;
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void dgvProductionHistory_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void cbPurposeMonth2_CheckedChanged(object sender, EventArgs e)
+        {
+            PurposeUpdate();
+        }
+
+        private void cbPurposeMonth3_CheckedChanged(object sender, EventArgs e)
+        {
+            PurposeUpdate();
+        }
+
+        private void txtTargetQty_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnMouldSelected_Click(sender, e);
+            }
         }
     }
 }

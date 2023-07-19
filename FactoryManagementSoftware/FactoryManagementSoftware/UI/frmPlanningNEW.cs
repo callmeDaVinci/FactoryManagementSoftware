@@ -4133,5 +4133,20 @@ namespace FactoryManagementSoftware.UI
 
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
+
+        private void gunaGradientButton11_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.Arrow; // change cursor to normal type
+            Visible = false;
+
+            frmPlanningVer2dot1 frm = new frmPlanningVer2dot1();
+
+            frm.StartPosition = FormStartPosition.CenterScreen;
+
+            frm.ShowDialog();
+
+
+            Close();
+        }
     }
 }
