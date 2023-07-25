@@ -583,7 +583,7 @@ namespace FactoryManagementSoftware.UI
                 DataTable dt = dalPlan.idSearch(planID);
                 foreach (DataRow row in dt.Rows)
                 {
-                    if (planID == row[dalPlan.planID].ToString())
+                    if (planID == row[dalPlan.jobNo].ToString())
                     {
                         bool Checked = bool.TryParse(row[dalPlan.Checked].ToString(), out Checked) ? Checked : false;
 
@@ -965,7 +965,7 @@ namespace FactoryManagementSoftware.UI
 
             foreach(DataRow row in dt_Plan.Rows)
             {
-                if(planID == row[dalPlan.planID].ToString())
+                if(planID == row[dalPlan.jobNo].ToString())
                 {
                     //UpdatedDate = Convert.ToDateTime();
                     UpdatedDate = DateTime.TryParse(row[dalPlan.planUpdatedDate].ToString(), out UpdatedDate) ? UpdatedDate : DateTime.MaxValue;

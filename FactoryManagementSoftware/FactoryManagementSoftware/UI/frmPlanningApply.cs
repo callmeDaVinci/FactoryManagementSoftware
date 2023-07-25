@@ -233,7 +233,7 @@ namespace FactoryManagementSoftware.UI
                 row_Mac[headerID] = row[dalMac.MacID];
                 row_Mac[headerName] = row[dalMac.MacName];
                 row_Mac[headerTon] = row[dalMac.MacTon];
-                row_Mac[headerLocation] = row[dalMac.MacLocation];
+                row_Mac[headerLocation] = row[dalMac.MacLocationName];
 
                 string runningItem = "", nextItem = "";
                 DateTime runningEnd = new DateTime(), nextStart = new DateTime(), nextEnd = new DateTime();

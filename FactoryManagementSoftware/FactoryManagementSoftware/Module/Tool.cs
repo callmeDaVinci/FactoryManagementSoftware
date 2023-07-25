@@ -1020,7 +1020,7 @@ namespace FactoryManagementSoftware.Module
 
                     if (Material.Equals(rawMat))
                     {
-                        float MatBag = float.TryParse(row[dalPlanning.materialBagQty].ToString(), out i) ? i : 0;
+                        float MatBag = float.TryParse(row[dalPlanning.materialBagQty_1].ToString(), out i) ? i : 0;
                         matQty = MatBag * 25;
 
 
@@ -2344,7 +2344,7 @@ namespace FactoryManagementSoftware.Module
 
             if (dt.Rows.Count > 0)
             {
-                factoryName = dt.Rows[0][dalMac.MacLocation].ToString();
+                factoryName = dt.Rows[0][dalMac.MacLocationName].ToString();
             }
 
             return factoryName;
@@ -2358,7 +2358,7 @@ namespace FactoryManagementSoftware.Module
             {
                 if(row[dalMac.MacID].ToString() == machineID)
                 {
-                    factoryName = row[dalMac.MacLocation].ToString();
+                    factoryName = row[dalMac.MacLocationName].ToString();
                 }
             }
             
@@ -4849,7 +4849,7 @@ namespace FactoryManagementSoftware.Module
             {
                 foreach (DataRow row in dt.Rows)
                 {
-                    if (row[dalPlanning.planID].ToString().Equals(PlanID))
+                    if (row[dalPlanning.jobNo].ToString().Equals(PlanID))
                     {
 
                         dt_row = row;

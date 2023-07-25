@@ -228,7 +228,7 @@ namespace FactoryManagementSoftware.UI
 
                     foreach (DataRow row in dt_ProRecord.Rows)
                     {
-                        string _planID = row[dalPlan.planID].ToString();
+                        string _planID = row[dalPlan.jobNo].ToString();
 
                         if (planID == _planID)
                         {
@@ -460,7 +460,7 @@ namespace FactoryManagementSoftware.UI
 
                 DateTime proDate = Convert.ToDateTime(row[dalProRecord.ProDate]).Date;
 
-                int planID = int.TryParse(row[dalPlan.planID].ToString(), out planID) ? planID : 0;
+                int planID = int.TryParse(row[dalPlan.jobNo].ToString(), out planID) ? planID : 0;
 
                 int sheetID = int.TryParse(row[dalProRecord.SheetID].ToString(), out sheetID) ? sheetID : 0;
 

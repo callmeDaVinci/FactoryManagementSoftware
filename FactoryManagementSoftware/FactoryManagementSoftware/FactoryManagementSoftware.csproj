@@ -261,6 +261,12 @@
     <Compile Include="UI\frmLocationSelect.Designer.cs">
       <DependentUpon>frmLocationSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmMachineScheduleVer2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMachineScheduleVer2.Designer.cs">
+      <DependentUpon>frmMachineScheduleVer2.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmMacScheduleExcelDownload.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1082,6 +1088,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmLocationSelect.resx">
       <DependentUpon>frmLocationSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmMachineScheduleVer2.resx">
+      <DependentUpon>frmMachineScheduleVer2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMacScheduleExcelDownload.resx">
       <DependentUpon>frmMacScheduleExcelDownload.cs</DependentUpon>

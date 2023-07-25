@@ -323,14 +323,14 @@ namespace FactoryManagementSoftware.UI
             {
                 if (row.RowState != DataRowState.Deleted)
                 {
-                    string newFac = row[dalMac.MacLocation].ToString();
+                    string newFac = row[dalMac.MacLocationName].ToString();
                     if (Fac != newFac)
                     {
                         foreach (DataRow row2 in dt.Rows)
                         {
                             if (row2.RowState != DataRowState.Deleted)
                             {
-                                string FacSearch = row2[dalMac.MacLocation].ToString();
+                                string FacSearch = row2[dalMac.MacLocationName].ToString();
 
                                 if (Fac == FacSearch)
                                 {
@@ -450,7 +450,7 @@ namespace FactoryManagementSoftware.UI
                 string factoryFilter = txtFactory.Text;
                 string machineFilter = cmbMachine.Text;
 
-                string factory = row[dalMac.MacLocation].ToString();
+                string factory = row[dalMac.MacLocationName].ToString();
                 string machine = row[dalMac.MacID].ToString();
 
                 if (!factoryFilter.Equals("All") && !string.IsNullOrEmpty(factoryFilter))
@@ -475,21 +475,21 @@ namespace FactoryManagementSoftware.UI
                 {
                     if(previousLocation == null)
                     {
-                        previousLocation = row[dalMac.MacLocation].ToString();
+                        previousLocation = row[dalMac.MacLocationName].ToString();
                     }
-                    else if(!previousLocation.Equals(row[dalMac.MacLocation].ToString()))
+                    else if(!previousLocation.Equals(row[dalMac.MacLocationName].ToString()))
                     {
                         row_Schedule = dt_Schedule.NewRow();
                         dt_Schedule.Rows.Add(row_Schedule);
-                        previousLocation = row[dalMac.MacLocation].ToString();
+                        previousLocation = row[dalMac.MacLocationName].ToString();
                     }
                     row_Schedule = dt_Schedule.NewRow();
 
-                    row_Schedule[headerID] = row[dalPlanning.planID];
+                    row_Schedule[headerID] = row[dalPlanning.jobNo];
                     row_Schedule[headerStartDate] = row[dalPlanning.productionStartDate];
                     row_Schedule[headerEndDate] = row[dalPlanning.productionEndDate];
 
-                    row_Schedule[headerFactory] = row[dalMac.MacLocation];
+                    row_Schedule[headerFactory] = row[dalMac.MacLocationName];
                     row_Schedule[headerMachine] = row[dalMac.MacID];
                     row_Schedule[headerMachineName] = row[dalMac.MacName];
                     row_Schedule[headerPartName] = row[dalItem.ItemName];
@@ -504,7 +504,7 @@ namespace FactoryManagementSoftware.UI
                     //row_Schedule[headerProducedQty] = 0;
 
                     row_Schedule[headerMaterial] = row[dalPlanning.materialCode];
-                    row_Schedule[headerMaterialBag] = row[dalPlanning.materialBagQty];
+                    row_Schedule[headerMaterialBag] = row[dalPlanning.materialBagQty_1];
                     row_Schedule[headerRecycle] = row[dalPlanning.materialRecycleUse];
 
                     //row_Schedule[headerColor] = row[dalItem.ItemColor];
@@ -539,7 +539,7 @@ namespace FactoryManagementSoftware.UI
 
             foreach(DataRow row in dt_Plan.Rows)
             {
-                string planID_DB = row[dalPlanning.planID].ToString();
+                string planID_DB = row[dalPlanning.jobNo].ToString();
 
                 if(planID_DB == planID.ToString())
                 {

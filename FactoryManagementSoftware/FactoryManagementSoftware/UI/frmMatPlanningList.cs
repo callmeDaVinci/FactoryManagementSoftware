@@ -307,14 +307,14 @@ namespace FactoryManagementSoftware.UI
             {
                 if (row.RowState != DataRowState.Deleted)
                 {
-                    string newFac = row[dalMac.MacLocation].ToString();
+                    string newFac = row[dalMac.MacLocationName].ToString();
                     if (Fac != newFac)
                     {
                         foreach (DataRow row2 in dt.Rows)
                         {
                             if (row2.RowState != DataRowState.Deleted)
                             {
-                                string FacSearch = row2[dalMac.MacLocation].ToString();
+                                string FacSearch = row2[dalMac.MacLocationName].ToString();
 
                                 if (Fac == FacSearch)
                                 {
@@ -409,7 +409,7 @@ namespace FactoryManagementSoftware.UI
                         //row_dtMat[headerAbleProduceQty] = row[dalPlan.ableQty];
                         //row_dtMat[headerTargetQty] = row[dalPlan.targetQty];
                     }
-                    row_dtMat[headerFac] = row[dalMac.MacLocation].ToString();
+                    row_dtMat[headerFac] = row[dalMac.MacLocationName].ToString();
                     row_dtMat[headerMac] = row[dalPlan.machineID];
 
                     row_dtMat[headerPartCode] = partCode;
@@ -420,7 +420,7 @@ namespace FactoryManagementSoftware.UI
                     row_dtMat[headerAbleProduceQty] = row[dalPlan.ableQty];
                     row_dtMat[headerTargetQty] = row[dalPlan.targetQty];
 
-                    row_dtMat[headerID] = row[dalPlan.planID].ToString();
+                    row_dtMat[headerID] = row[dalPlan.jobNo].ToString();
 
 
                     row_dtMat[headerMatCode] = row[dalMatPlan.MatCode];
@@ -525,7 +525,7 @@ namespace FactoryManagementSoftware.UI
             #endregion
 
             DataView dv = dt_MatPlan.DefaultView;
-            dv.Sort = dalItem.ItemCat + " asc, " + "mat_code asc, " + dalMac.MacLocation + " asc, " + dalPlan.productionStartDate + " asc";
+            dv.Sort = dalItem.ItemCat + " asc, " + "mat_code asc, " + dalMac.MacLocationName + " asc, " + dalPlan.productionStartDate + " asc";
             dt_MatPlan = dv.ToTable();
 
 
@@ -548,7 +548,7 @@ namespace FactoryManagementSoftware.UI
 
                 if(active && status != text.planning_status_cancelled && status != text.planning_status_completed)
                 {
-                    facName = row[dalMac.MacLocation].ToString();
+                    facName = row[dalMac.MacLocationName].ToString();
                     matCode = row[dalMatPlan.MatCode].ToString();
 
                     if(matCode.Equals("CTN 590 X 310 X 388 MM"))

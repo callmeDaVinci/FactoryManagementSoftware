@@ -200,7 +200,7 @@ namespace FactoryManagementSoftware.UI
                 foreach (DataRow row in dt.Rows)
                 {
                     match = true;
-                    int planID = Convert.ToInt32(row[dalPlanning.planID]);
+                    int planID = Convert.ToInt32(row[dalPlanning.jobNo]);
                     int familyWith = Convert.ToInt32(row[dalPlanning.familyWith]);
                     #region Status Filtering
 

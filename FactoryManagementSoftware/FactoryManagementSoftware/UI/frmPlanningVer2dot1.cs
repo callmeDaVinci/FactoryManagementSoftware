@@ -170,7 +170,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_ItemDescription, typeof(string));
             dt.Columns.Add(text.Header_DateStart, typeof(DateTime));
             dt.Columns.Add(text.Header_EstDateEnd, typeof(DateTime));
-            dt.Columns.Add(text.Header_RawMat, typeof(string));
+            dt.Columns.Add(text.Header_RawMat_1, typeof(string));
             dt.Columns.Add(text.Header_ColorMat, typeof(string));
             dt.Columns.Add(text.Header_Color, typeof(string));
             dt.Columns.Add(text.Header_Remark, typeof(string));
@@ -1051,10 +1051,10 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
                 dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-                dgv.Columns[text.Header_RawMat].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[text.Header_RawMat].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-                dgv.Columns[text.Header_RawMat].MinimumWidth = 100;
-                dgv.Columns[text.Header_RawMat].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                dgv.Columns[text.Header_RawMat_1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[text.Header_RawMat_1].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+                dgv.Columns[text.Header_RawMat_1].MinimumWidth = 100;
+                dgv.Columns[text.Header_RawMat_1].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
                 dgv.Columns[text.Header_ColorMat].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[text.Header_ColorMat].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
@@ -2789,7 +2789,7 @@ namespace FactoryManagementSoftware.UI
             DT_MACHINE_SCHEDULE = dalPlan.SelectCompletedOrRunningPlan();
             DT_ACTIVE_JOB = dalPlan.SelectActivePlanning();
 
-            DT_ACTIVE_JOB.DefaultView.Sort = dalMac.MacLocation + " ASC," + dalMac.MacID + " ASC," + dalPlan.productionStartDate + " ASC";
+            DT_ACTIVE_JOB.DefaultView.Sort = dalMac.MacLocationName + " ASC," + dalMac.MacID + " ASC," + dalPlan.productionStartDate + " ASC";
             DT_ACTIVE_JOB = DT_ACTIVE_JOB.DefaultView.ToTable();
 
         }
@@ -3260,10 +3260,6 @@ namespace FactoryManagementSoftware.UI
         }
 
 
-        private void TableLayoutPanelStepUISetting()
-        {
-
-        }
 
         private void StepsUIUpdate(int step,bool Continue)
         {
@@ -3303,7 +3299,7 @@ namespace FactoryManagementSoftware.UI
 
           
 
-            Color FormBackColor = Color.FromArgb(245, 247, 255);//147, 168, 255
+            Color FormBackColor = Color.FromArgb(147, 168, 255);//147, 168, 255 //245, 247, 255
             Color CircleLabelProcessingColor = Color.White;
             Color lblStepTextForeColor = Color.Black;
             Color CurrentStepColor = Color.FromArgb(254, 241, 154); 
@@ -3885,7 +3881,7 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow row in dt_Mac.Rows)
                 {
-                    string macLocation = row[dalMac.MacLocation].ToString();
+                    string macLocation = row[dalMac.MacLocationName].ToString();
 
                     foreach (DataRow facRow in dt_Fac.Rows)
                     {
@@ -3907,7 +3903,7 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataRow row in dt_Mac.Rows)
                 {
-                    string macLocation = row[dalMac.MacLocation].ToString();
+                    string macLocation = row[dalMac.MacLocationName].ToString();
 
                     if (macLocation == fac)
                     {
@@ -4143,8 +4139,8 @@ namespace FactoryManagementSoftware.UI
                 string status = row[dalPlanning.planStatus].ToString();
                 DateTime start = Convert.ToDateTime(row[dalPlanning.productionStartDate]);
                 DateTime end = Convert.ToDateTime(row[dalPlanning.productionEndDate]);
-                string factory = row[dalMac.MacLocation].ToString();
-                string factoryID = row[dalMac.MacLocation].ToString();
+                string factory = row[dalMac.MacLocationName].ToString();
+                string factoryID = row[dalMac.MacLocationName].ToString();
                 string machineID = row[dalMac.MacID].ToString();
                 string machineName = row[dalMac.MacName].ToString();
                 int familyWith = int.TryParse(row[dalPlan.familyWith].ToString(), out familyWith) ? familyWith : -1;
@@ -4193,7 +4189,7 @@ namespace FactoryManagementSoftware.UI
 
                     row_Schedule[text.Header_Status] = status;
                     row_Schedule[text.Header_Ori_Status] = status;
-                    row_Schedule[text.Header_JobNo] = row[dalPlanning.planID];
+                    row_Schedule[text.Header_JobNo] = row[dalPlanning.jobNo];
                     row_Schedule[text.Header_DateStart] = start;
                     row_Schedule[text.Header_EstDateEnd] = end;
                     row_Schedule[text.Header_Ori_DateStart] = start;
@@ -4217,7 +4213,7 @@ namespace FactoryManagementSoftware.UI
                     row_Schedule[text.Header_ItemName] = itemName;
                     row_Schedule[text.Header_ItemCode] = itemCode;
 
-                    row_Schedule[text.Header_RawMat] = row[dalPlanning.materialCode];
+                    row_Schedule[text.Header_RawMat_1] = row[dalPlanning.materialCode];
 
                     string colorMatCode = row[dalPlanning.colorMaterialCode].ToString();
                     string colorMatName = tool.getItemNameFromDataTable(DT_ITEM, colorMatCode);
@@ -4491,7 +4487,7 @@ namespace FactoryManagementSoftware.UI
                         DataRow newRow = dt_MacSchedule.NewRow();
                         newRow[text.Header_Status] = text.planning_status_new_draft;
                         newRow[text.Header_ItemDescription] = row.Cells[text.Header_ItemDescription].Value.ToString();
-                        newRow[text.Header_RawMat] = RawMaterial;
+                        newRow[text.Header_RawMat_1] = RawMaterial;
                         newRow[text.Header_ColorMat] = colorMaterial;
                         newRow[text.Header_Color] = itemColor;
                         newRow[text.Header_DateStart] = start;
@@ -5224,11 +5220,15 @@ namespace FactoryManagementSoftware.UI
         }
 
         static public bool JOB_ADDED = false;
+        static public bool JOB_UPDATED = false;
         static public int JOB_ADDED_COUNT = 0;
+        static public int JOB_UPDATED_COUNT = 0;
 
         private void JobAdd(bool NEWDraftJob)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            JOB_ADDED_COUNT = 0;
+            JOB_ADDED = false;
 
             try
             {
@@ -5337,7 +5337,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (JOB_ADDED)
                 {
-                    tool.historyRecord(text.System, "Planning Data Saved", date, MainDashboard.USER_ID);
+                    tool.historyRecord(text.System, "New Job Added (ID:" + jobID + ")", date, MainDashboard.USER_ID);
 
                     //save material plan to use qty
                     if (DT_SUMMARY_STOCKCHECK.Rows.Count > 0)
@@ -5381,8 +5381,8 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    MessageBox.Show("Failed to save planning data");
-                    tool.historyRecord(text.System, "Failed to save planning data", date, MainDashboard.USER_ID);
+                    MessageBox.Show("Failed to save Job data");
+                    tool.historyRecord(text.System, "Failed to save Job data", date, MainDashboard.USER_ID);
                 }
             }
 
@@ -5393,12 +5393,95 @@ namespace FactoryManagementSoftware.UI
             finally
             {
                 MessageBox.Show(JOB_ADDED_COUNT + " Job(s) Added.");
-                Close();
+
+                JobUpdate();
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
+        private void JobUpdate()
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            JOB_UPDATED = false;
+            JOB_UPDATED_COUNT = 0;
+
+            DateTime dateNow = DateTime.Now;
+
+            try
+            {
+                if (dgvMacSchedule?.Rows.Count > 0)
+                {
+                    DataTable dt = (DataTable)dgvMacSchedule.DataSource;
+
+                    PlanningBLL uPlanning = new PlanningBLL();
+                    uPlanning.plan_updated_date = dateNow;
+                    uPlanning.plan_updated_by = MainDashboard.USER_ID;
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        int jobNo = int.TryParse(row[text.Header_JobNo].ToString(), out jobNo) ? jobNo : -1;
+                        string status = row[text.Header_Status].ToString();
+
+                        if (jobNo > -1 && status == text.planning_status_to_update)
+                        {
+                            string OriStatus = row[text.Header_Ori_Status].ToString();
+                            string remark = row[text.Header_Remark].ToString();
+
+                            DateTime newStart = DateTime.TryParse(row[text.Header_DateStart].ToString(), out newStart) ? newStart : DateTime.MaxValue;
+                            DateTime newEnd = DateTime.TryParse(row[text.Header_EstDateEnd].ToString(), out newEnd) ? newEnd : DateTime.MaxValue;
+
+                            DateTime oriStart = DateTime.TryParse(row[text.Header_Ori_DateStart].ToString(), out oriStart) ? oriStart : DateTime.MaxValue;
+                            DateTime oriEnd = DateTime.TryParse(row[text.Header_Ori_EstDateEnd].ToString(), out oriEnd) ? oriEnd : DateTime.MaxValue;
+
+                            int familyWith = int.TryParse(row[text.Header_FamilyWithJobNo].ToString(), out familyWith) ? familyWith : -1;
+
+                            uPlanning.plan_id = jobNo;
+                            uPlanning.plan_status = OriStatus;
+                            uPlanning.production_start_date = newStart;
+                            uPlanning.production_end_date = newEnd;
+                            uPlanning.family_with = familyWith;
+                            uPlanning.plan_remark = remark;
+
+                            JOB_UPDATED = dalPlanningAction.planningStatusAndScheduleChange(uPlanning, OriStatus, oriStart, oriEnd, familyWith);
+
+                            if(JOB_UPDATED)
+                            {
+                                JOB_UPDATED_COUNT++;
+                            }
+                        }
+                    }
+                }
+
+
+                if (JOB_UPDATED)
+                {
+                    tool.historyRecord(text.System, "Job Updated", dateNow, MainDashboard.USER_ID);
+                }
+                else
+                {
+                    MessageBox.Show("Failed to update Job data");
+                    tool.historyRecord(text.System, "Failed to update job data", dateNow, MainDashboard.USER_ID);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                if(JOB_UPDATED_COUNT > 0)
+                {
+                    MessageBox.Show(JOB_UPDATED_COUNT + " Job(s) Updated.");
+                }
+
+                Close();
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
         private void LoadSummaryData()
         {
             #region Load Mould & Item Info

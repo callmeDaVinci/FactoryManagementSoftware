@@ -136,14 +136,14 @@ namespace FactoryManagementSoftware.UI
             {
                 if (row.RowState != DataRowState.Deleted)
                 {
-                    string newFac = row[dalMac.MacLocation].ToString();
+                    string newFac = row[dalMac.MacLocationName].ToString();
                     if (Fac != newFac)
                     {
                         foreach (DataRow row2 in dt.Rows)
                         {
                             if (row2.RowState != DataRowState.Deleted)
                             {
-                                string FacSearch = row2[dalMac.MacLocation].ToString();
+                                string FacSearch = row2[dalMac.MacLocationName].ToString();
 
                                 if (Fac == FacSearch)
                                 {
@@ -273,7 +273,7 @@ namespace FactoryManagementSoftware.UI
                         //row_dtMat[headerAbleProduceQty] = row[dalPlan.ableQty];
                         //row_dtMat[headerTargetQty] = row[dalPlan.targetQty];
                     }
-                    row_dtMat[headerFac] = row[dalMac.MacLocation].ToString();
+                    row_dtMat[headerFac] = row[dalMac.MacLocationName].ToString();
                     row_dtMat[headerMac] = row[dalPlan.machineID];
 
                     row_dtMat[headerPartCode] = partCode;
@@ -284,7 +284,7 @@ namespace FactoryManagementSoftware.UI
                     row_dtMat[headerAbleProduceQty] = row[dalPlan.ableQty];
                     row_dtMat[headerTargetQty] = row[dalPlan.targetQty];
 
-                    row_dtMat[headerID] = row[dalPlan.planID].ToString();
+                    row_dtMat[headerID] = row[dalPlan.jobNo].ToString();
 
 
                     row_dtMat[headerMatCode] = row[dalMatPlan.MatCode];

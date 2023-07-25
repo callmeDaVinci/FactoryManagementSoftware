@@ -203,7 +203,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = dalMatPlan.Select();
 
             DataView dv = dt.DefaultView;
-            dv.Sort = dalItem.ItemCat + " asc, " + "mat_code asc, " + dalMac.MacLocation + " asc, " + dalPlan.productionStartDate + " asc";
+            dv.Sort = dalItem.ItemCat + " asc, " + "mat_code asc, " + dalMac.MacLocationName + " asc, " + dalPlan.productionStartDate + " asc";
             dt = dv.ToTable();
 
             string preMatCode = null, matCode = null, preFrom = null, from, preTo = null, to, cat = null;
@@ -221,7 +221,7 @@ namespace FactoryManagementSoftware.UI
                 active = Convert.ToBoolean(row[dalMatPlan.Active]);
                 
                 from = row[dalMatPlan.MatFrom].ToString();
-                to = row[dalMac.MacLocation].ToString();
+                to = row[dalMac.MacLocationName].ToString();
                 prepareQty = float.TryParse(row[dalMatPlan.Prepare].ToString(), out float i) ? Convert.ToSingle(row[dalMatPlan.Prepare].ToString()) : 0;
 
                 if (active && !string.IsNullOrEmpty(from) && !string.IsNullOrEmpty(to) && prepareQty > 0)
@@ -455,7 +455,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt_MatPlan = dalMatPlan.Select();
             DataTable dt_ItemInfo = dalItem.Select();
             DataView dv = dt_MatPlan.DefaultView;
-            dv.Sort = dalMac.MacLocation + " asc, " + dalItem.ItemCat + " asc, " + "mat_code asc";
+            dv.Sort = dalMac.MacLocationName + " asc, " + dalItem.ItemCat + " asc, " + "mat_code asc";
             dt_MatPlan = dv.ToTable();
             #endregion
 
@@ -471,7 +471,7 @@ namespace FactoryManagementSoftware.UI
                 if (active && !string.IsNullOrEmpty(from) && preparingQty > 0)
                 {
                     string cat = row[dalItem.ItemCat].ToString();
-                    facName = row[dalMac.MacLocation].ToString();
+                    facName = row[dalMac.MacLocationName].ToString();
                     matCode = row[dalMatPlan.MatCode].ToString();
 
                     if(preFacName == null)
@@ -807,7 +807,7 @@ namespace FactoryManagementSoftware.UI
                                     match = false;
                                 }
 
-                                else if (to != mat[dalMac.MacLocation].ToString())
+                                else if (to != mat[dalMac.MacLocationName].ToString())
                                 {
                                     match = false;
                                 }

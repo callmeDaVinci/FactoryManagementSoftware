@@ -655,7 +655,7 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in dt_Plan.Rows)
             {
-                if(PlanID == row[dalPlan.planID].ToString())
+                if(PlanID == row[dalPlan.jobNo].ToString())
                 {
                     string itemCode = row[dalPlan.partCode].ToString();
                     string itemName = tool.getItemName(itemCode);

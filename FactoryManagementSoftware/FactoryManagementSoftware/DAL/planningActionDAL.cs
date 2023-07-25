@@ -223,7 +223,7 @@ namespace FactoryManagementSoftware.DAL
 
                 foreach (DataRow row in lastRecord.Rows)
                 {
-                    uPlanningAction.planning_id = Convert.ToInt32(row[dalPlanning.planID]);
+                    uPlanningAction.planning_id = Convert.ToInt32(row[dalPlanning.jobNo]);
                     uPlanningAction.added_date = Convert.ToDateTime(row[dalPlanning.planAddedDate]);
                     uPlanningAction.added_by = Convert.ToInt32(row[dalPlanning.planAddedBy]); ;
                     uPlanningAction.action = text.plan_Added;
@@ -266,9 +266,9 @@ namespace FactoryManagementSoftware.DAL
 
                 foreach (DataRow row in lastRecord.Rows)
                 {
-                    jobID = Convert.ToInt32(row[dalPlanning.planID]);
+                    jobID = Convert.ToInt32(row[dalPlanning.jobNo]);
 
-                    uPlanningAction.planning_id = Convert.ToInt32(row[dalPlanning.planID]);
+                    uPlanningAction.planning_id = Convert.ToInt32(row[dalPlanning.jobNo]);
                     uPlanningAction.added_date = Convert.ToDateTime(row[dalPlanning.planAddedDate]);
                     uPlanningAction.added_by = Convert.ToInt32(row[dalPlanning.planAddedBy]); ;
                     uPlanningAction.action = text.plan_Added;
@@ -645,7 +645,7 @@ namespace FactoryManagementSoftware.DAL
 
                 foreach (DataRow row in lastRecord.Rows)
                 {
-                    uPlanningAction.planning_id = Convert.ToInt32(row[dalPlanning.planID]);
+                    uPlanningAction.planning_id = Convert.ToInt32(row[dalPlanning.jobNo]);
                     uPlanningAction.added_date = Convert.ToDateTime(row[dalPlanning.planAddedDate]);
                     uPlanningAction.added_by = Convert.ToInt32(row[dalPlanning.planAddedBy]); 
                     uPlanningAction.action = text.plan_Target_Qty_Change;

@@ -509,7 +509,7 @@ namespace FactoryManagementSoftware.UI
                         {
                             planFound = true;
                             bool duplicate = false;
-                            string planID = rows[dalPlan.planID].ToString();
+                            string planID = rows[dalPlan.jobNo].ToString();
                             foreach (object item in cmbPlanID.Items)
                             {
                                 string text = (item as string);
@@ -783,10 +783,10 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in dt_matplan.Rows)
             {
-                if (planID.ToString() == row[dalPlan.planID].ToString())
+                if (planID.ToString() == row[dalPlan.jobNo].ToString())
                 {
                     //get data
-                    txtFac.Text = row[dalMac.MacLocation].ToString();
+                    txtFac.Text = row[dalMac.MacLocationName].ToString();
                     txtMac.Text = row[dalPlan.machineID].ToString();
 
                     txtAblePro.Text = row[dalPlan.ableQty].ToString();
@@ -805,10 +805,10 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in dt_matplan.Rows)
             {
-                if (planID.ToString() == row[dalPlan.planID].ToString())
+                if (planID.ToString() == row[dalPlan.jobNo].ToString())
                 {
                     //get data
-                    txtFac.Text = row[dalMac.MacLocation].ToString();
+                    txtFac.Text = row[dalMac.MacLocationName].ToString();
                     txtMac.Text = row[dalPlan.machineID].ToString();
 
                     txtAblePro.Text = row[dalPlan.ableQty].ToString();

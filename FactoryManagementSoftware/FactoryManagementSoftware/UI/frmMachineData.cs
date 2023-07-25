@@ -82,7 +82,7 @@ namespace FactoryManagementSoftware.UI
                 row_Mac[headerID] = row[dalMac.MacID];
                 row_Mac[headerName] = row[dalMac.MacName];
                 row_Mac[headerTon] = row[dalMac.MacTon];
-                row_Mac[headerLocation] = row[dalMac.MacLocation];
+                row_Mac[headerLocation] = row[dalMac.MacLocationName];
                 row_Mac[headerAddedDate] = row[dalMac.MacAddedDate];
                 row_Mac[headerAddedBy] = row[dalMac.MacAddedBy];
 

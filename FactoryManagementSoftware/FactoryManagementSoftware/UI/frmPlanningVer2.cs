@@ -3897,7 +3897,7 @@ namespace FactoryManagementSoftware.UI
                                         previousStart = oldStart;
                                         previousFamilyWith = currentFamilyWith;
                                         //change production day & hour data
-                                        uPlan.plan_id = Convert.ToInt32(row[dalPlan.planID]);
+                                        uPlan.plan_id = Convert.ToInt32(row[dalPlan.jobNo]);
                                         uPlan.production_hour = newProHour.ToString();
                                         uPlan.production_day = newProDay.ToString();
                                         uPlan.production_hour_per_day = newProHourPerDay.ToString();
@@ -3997,7 +3997,7 @@ namespace FactoryManagementSoftware.UI
                                         previousStart = newStart;
 
                                         //change production day & hour data
-                                        uPlan.plan_id = Convert.ToInt32(row[dalPlan.planID]);
+                                        uPlan.plan_id = Convert.ToInt32(row[dalPlan.jobNo]);
                                         uPlan.production_hour = newProHour.ToString();
                                         uPlan.production_day = newProDay.ToString();
                                         uPlan.production_hour_per_day = newProHourPerDay.ToString();

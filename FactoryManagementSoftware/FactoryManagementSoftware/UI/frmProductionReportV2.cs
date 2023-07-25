@@ -172,7 +172,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_PartName, typeof(string));
             dt.Columns.Add(text.Header_PartCode, typeof(string));
 
-            dt.Columns.Add(text.Header_RawMat, typeof(string));
+            dt.Columns.Add(text.Header_RawMat_1, typeof(string));
             dt.Columns.Add(text.Header_ColorMat, typeof(string));
 
             dt.Columns.Add(text.Header_MaxOutput, typeof(int));
@@ -226,7 +226,7 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow row in dt_Mac.Rows)
                 {
-                    string macLocation = row[dalMac.MacLocation].ToString();
+                    string macLocation = row[dalMac.MacLocationName].ToString();
 
                     foreach (DataRow facRow in dt_Fac.Rows)
                     {
@@ -246,7 +246,7 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataRow row in dt_Mac.Rows)
                 {
-                    string macLocation = row[dalMac.MacLocation].ToString();
+                    string macLocation = row[dalMac.MacLocationName].ToString();
 
                     if (macLocation == fac)
                     {
@@ -303,7 +303,7 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow row in dt_Mac.Rows)
                 {
-                    string macLocation = row[dalMac.MacLocation].ToString();
+                    string macLocation = row[dalMac.MacLocationName].ToString();
 
                     foreach (DataRow facRow in dt_Fac.Rows)
                     {
@@ -448,7 +448,7 @@ namespace FactoryManagementSoftware.UI
 
                     foreach (DataRow row in DT_JOBSHEETRECORD.Rows)
                     {
-                        string _planID = row[dalPlan.planID].ToString();
+                        string _planID = row[dalPlan.jobNo].ToString();
 
                         if (JobNo == _planID)
                         {
@@ -1054,13 +1054,13 @@ namespace FactoryManagementSoftware.UI
             {
                 bool jobFound = false;
 
-                int rowIndex = BinarySearch(DT_JOBSHEETRECORD, dalPlan.planID, jobNo);
+                int rowIndex = BinarySearch(DT_JOBSHEETRECORD, dalPlan.jobNo, jobNo);
 
                 if (rowIndex > -1)
                 {
                     for (int i = rowIndex; i < rowCount; i++)
                     {
-                        int jobNo_DB = int.TryParse(DT_JOBSHEETRECORD.Rows[i][dalPlan.planID].ToString(), out jobNo_DB) ? jobNo_DB : -1;
+                        int jobNo_DB = int.TryParse(DT_JOBSHEETRECORD.Rows[i][dalPlan.jobNo].ToString(), out jobNo_DB) ? jobNo_DB : -1;
 
                         if (jobNo_DB == jobNo)
                         {
@@ -1168,16 +1168,16 @@ namespace FactoryManagementSoftware.UI
 
                 }
 
-                if (dgv.Columns.Contains(text.Header_RawMat))
+                if (dgv.Columns.Contains(text.Header_RawMat_1))
                 {
                     if (cbShowRawMat.Checked)
                     {
-                        dgv.Columns[text.Header_RawMat].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                        dgv.Columns[text.Header_RawMat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                        dgv.Columns[text.Header_RawMat_1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                        dgv.Columns[text.Header_RawMat_1].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
                     }
                     else
                     {
-                        dgv.Columns[text.Header_RawMat].Visible = cbShowRawMat.Checked;
+                        dgv.Columns[text.Header_RawMat_1].Visible = cbShowRawMat.Checked;
                     }
 
                 }
@@ -1308,9 +1308,9 @@ namespace FactoryManagementSoftware.UI
                     dgv.Columns[text.Header_Fac].Visible = cbFactory.Checked;
                 }
 
-                if (dgv.Columns.Contains(text.Header_RawMat))
+                if (dgv.Columns.Contains(text.Header_RawMat_1))
                 {
-                    dgv.Columns[text.Header_RawMat].Visible = cbShowRawMat.Checked;
+                    dgv.Columns[text.Header_RawMat_1].Visible = cbShowRawMat.Checked;
                 }
 
                 if (dgv.Columns.Contains(text.Header_ColorMat))
@@ -1572,7 +1572,7 @@ namespace FactoryManagementSoftware.UI
             }
 
 
-            DT_JOBSHEETRECORD.DefaultView.Sort = dalPlan.planID + " ASC, " + dalProRecord.SheetID + " ASC";
+            DT_JOBSHEETRECORD.DefaultView.Sort = dalPlan.jobNo + " ASC, " + dalProRecord.SheetID + " ASC";
             DT_JOBSHEETRECORD = DT_JOBSHEETRECORD.DefaultView.ToTable();
 
             int index = 1;
@@ -1587,7 +1587,7 @@ namespace FactoryManagementSoftware.UI
 
                 DateTime proDate = Convert.ToDateTime(row[dalProRecord.ProDate]).Date;
 
-                int jobNo = int.TryParse(row[dalPlan.planID].ToString(), out jobNo) ? jobNo : 0;
+                int jobNo = int.TryParse(row[dalPlan.jobNo].ToString(), out jobNo) ? jobNo : 0;
 
                 int sheetID = int.TryParse(row[dalProRecord.SheetID].ToString(), out sheetID) ? sheetID : 0;
                 int meterStart = int.TryParse(row[dalProRecord.MeterStart].ToString(), out meterStart) ? meterStart : 0;
@@ -1776,7 +1776,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     dt_Row[text.Header_Note] = note;
 
-                    dt_Row[text.Header_RawMat] = rawMat;
+                    dt_Row[text.Header_RawMat_1] = rawMat;
 
                     dt_Row[text.Header_ColorMat] = colorMat;
 

@@ -10,7 +10,7 @@ namespace FactoryManagementSoftware.DAL
     class planningDAL
     {
         #region data string name getter
-        public string planID { get; } = "plan_id";
+        public string jobNo { get; } = "plan_id";
         public string planAddedDate { get; } = "plan_added_date";
         public string planAddedBy { get; } = "plan_added_by";
         public string planUpdatedDate { get; } = "plan_updated_date";
@@ -30,8 +30,13 @@ namespace FactoryManagementSoftware.DAL
         public string partCode { get; } = "part_code";
 
         public string materialCode { get; } = "material_code";
-        public string materialBagQty { get; } = "material_bag_qty";
-        public string rawMaterialQty { get; } = "raw_material_qty";
+        public string rawMatRatio_1 { get; } = "raw_mat_ratio_1";
+        public string rawMatRatio_2 { get; } = "raw_mat_ratio_2";
+        public string materialCode2 { get; } = "material_code_2";
+        public string materialBagQty_1 { get; } = "material_bag_qty";
+        public string materialBagQty_2 { get; } = "material_bag_qty_2";
+        public string rawMaterialQty_1 { get; } = "raw_material_qty";
+        public string rawMaterialQty_2 { get; } = "raw_material_qty_2";
         public string materialRecycleUse { get; } = "material_recycle_use";
 
         public string colorMaterialCode { get; } = "color_material_code";
@@ -304,7 +309,7 @@ namespace FactoryManagementSoftware.DAL
 
             foreach(DataRow row in lastInsertedData.Rows)
             {
-                PlanID = Convert.ToInt32(row[planID]);
+                PlanID = Convert.ToInt32(row[jobNo]);
             }
 
             return PlanID;
@@ -333,7 +338,7 @@ namespace FactoryManagementSoftware.DAL
                             + partCode + ","
                             + productionPurpose + ","
                             + materialCode + ","
-                            + materialBagQty + ","
+                            + materialBagQty_1 + ","
                             + materialRecycleUse + ","
                             + colorMaterialCode + ","
                             + colorMaterialUsage + ","
@@ -450,8 +455,8 @@ namespace FactoryManagementSoftware.DAL
                             + partCode + ","
                             + productionPurpose + ","
                             + materialCode + ","
-                            + materialBagQty + ","
-                            + rawMaterialQty + ","
+                            + materialBagQty_1 + ","
+                            + rawMaterialQty_1 + ","
                             + materialRecycleUse + ","
                             + colorMaterialCode + ","
                             + colorMaterialUsage + ","
@@ -570,7 +575,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"UPDATE tbl_plan
                             SET "
                            + planNote + "=@plan_note,"
-                           + materialBagQty + "=@material_bag_qty,"
+                           + materialBagQty_1 + "=@material_bag_qty,"
                            + materialRecycleUse + "=@material_recycle_use,"
                            + colorMaterialQty + "=@color_material_qty,"
                            + targetQty + "=@production_target_qty,"

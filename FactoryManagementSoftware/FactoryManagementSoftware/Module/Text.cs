@@ -328,7 +328,8 @@ namespace FactoryManagementSoftware.Module
         public string Header_TotalReject { get; } = "REJECTED QTY";
 
         public string Header_RejectRate { get; } = "REJECTED %";
-        public string Header_MaxOutput { get; } = "MAX OUTPUT";
+        public string Header_MaxOutput { get; } = "MAX Output";
+        public string Header_ProducedQty { get; } = "Produced Qty";
         public string Header_YieldRate { get; } = "YIELD %";
         public string Header_IdealHourlyShot { get; } = "IDEAL HOURLY SHOT";
         public string Header_AvgHourlyShot { get; } = "AVG HOURLY SHOT";
@@ -409,10 +410,25 @@ namespace FactoryManagementSoftware.Module
         public string Header_Type { get; } = "TYPE";
         public string Header_MatType { get; } = "MAT. TYPE";
         public string Header_Mat { get; } = "MATERIAL";
-        public string Header_RawMat { get; } = "RAW MATERIAL";
+        public string Header_RawMat_1 { get; } = "RAW MATERIAL";
+        public string Header_RawMat_1_Ratio { get; } = "RAW MATERIAL 1 Ratio";
+        public string Header_RawMat_2_Ratio { get; } = "RAW MATERIAL 2 Ratio";
+        public string Header_RawMat_2 { get; } = "RAW MATERIAL 2";
+        public string Header_RawMat_String { get; } = "Raw Mat.";
+        //public string Header_RawMat_KG { get; } = "Raw Mat. KG";
+        //public string Header_RawMat_Bag { get; } = "Raw Mat. Bag";
+
+        public string Header_RawMat_KG_1 { get; } = "Raw 1 Mat. KG";
+        public string Header_RawMat_KG_2 { get; } = "Raw Mat. KG";
+
+        public string Header_RawMat_Bag_1 { get; } = "Raw 1 Mat. Bag ";
+        public string Header_RawMat_Bag_2 { get; } = "Raw 2 Mat. Bag ";
+        public string Header_RawMat_Qty { get; } = "Raw Mat. Qty";
+        public string Header_Recycle_Qty { get; } = "Recycle Mat. Qty";
         public string Header_MatCode { get; } = "MAT. CODE";
         public string Header_MatName { get; } = "MAT. NAME";
         public string Header_Color { get; } = "Color";
+        public string Header_ColorMat_KG { get; } = "Color Mat. KG";
 
         public string Header_ItemWeight_KG { get; } = "ITEM WEIGHT(KG)";
         public string Header_KG { get; } = "kg";

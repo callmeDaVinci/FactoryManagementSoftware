@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using Guna.UI2.WinForms.Suite;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -326,14 +328,12 @@ namespace FactoryManagementSoftware.UI
 
                 if (dt_MonthlyBalance.Rows.Count > 0)
                 {
-                  
-
-                    
-
                     dgvMonthlyBalanceEstimate.DataSource = dt_MonthlyBalance;
 
                     dgvUIEdit(dgvMonthlyBalanceEstimate);
-                    MonthlyEstimateBalanceCellFormatting(dgvMonthlyBalanceEstimate);
+
+                    //MonthlyEstimateBalanceCellFormatting(dgvMonthlyBalanceEstimate);
+
                     dgvMonthlyBalanceEstimate.ClearSelection();
                 }
             }
@@ -349,36 +349,22 @@ namespace FactoryManagementSoftware.UI
                 dgv.SuspendLayout();
 
                 DataTable dt = (DataTable)dgv.DataSource;
+
                 foreach (DataRow row in dt.Rows)
                 {
                     int rowIndex = dt.Rows.IndexOf(row);
 
                     dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.White;
 
+                    decimal num = decimal.TryParse(dgv.Rows[rowIndex].Cells[text.Header_BalStock].Value.ToString(), out num) ? num : 0;
 
-                    foreach (DataColumn col in dt.Columns)
+                    if (num < 0)
                     {
-                        string colName = col.ColumnName;
-
-
-                        bool isNumColumn = colName == text.Header_BalStock;
-                     
-
-                        if (isNumColumn)
-                        {
-                            int colIndex = dgv.Columns[colName].Index;
-
-                            decimal num = decimal.TryParse(dgv.Rows[rowIndex].Cells[colIndex].Value.ToString(), out num) ? num : 0;
-
-                            if (num < 0)
-                            {
-                                dgv.Rows[rowIndex].Cells[colIndex].Style.ForeColor = Color.Red;
-                            }
-                            else
-                            {
-                                dgv.Rows[rowIndex].Cells[colIndex].Style.ForeColor = Color.Black;
-                            }
-                        }
+                        dgv.Rows[rowIndex].Cells[text.Header_BalStock].Style.ForeColor = Color.Red;
+                    }
+                    else
+                    {
+                        dgv.Rows[rowIndex].Cells[text.Header_BalStock].Style.ForeColor = Color.Black;
                     }
 
 
@@ -744,13 +730,13 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvMonthlyBalanceEstimate_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            if (e.ColumnIndex == dgvMonthlyBalanceEstimate.Columns[text.Header_Selection].Index &&
-      e.RowIndex >= 0 &&
-      dgvMonthlyBalanceEstimate.Rows[e.RowIndex].Cells[text.Header_Description].Value.ToString().Contains(text.Header_ReadyStock) == true)
-            {
-                e.PaintBackground(e.CellBounds, true);
-                e.Handled = true;
-            }
+      //      if (e.ColumnIndex == dgvMonthlyBalanceEstimate.Columns[text.Header_Selection].Index &&
+      //e.RowIndex >= 0 &&
+      //dgvMonthlyBalanceEstimate.Rows[e.RowIndex].Cells[text.Header_Description].Value.ToString().Contains(text.Header_ReadyStock) == true)
+      //      {
+      //          e.PaintBackground(e.CellBounds, true);
+      //          e.Handled = true;
+      //      }
         }
 
         private void txtJobPurpose_Enter(object sender, EventArgs e)
@@ -901,42 +887,6 @@ namespace FactoryManagementSoftware.UI
             JobPurposeSettingReset();
         }
 
-        private void dgvMonthlyBalanceEstimate_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            //int row = e.RowIndex;
-            //int col = e.ColumnIndex;
-            //DataGridView dgv = dgvMonthlyBalanceEstimate;
-
-            //if (row >= 0)
-            //{
-            //    string colName = dgv.Columns[col].Name;
-
-            //    if (colName == text.Header_Selection)
-            //    {
-            //        bool selected = bool.TryParse(dgv.Rows[row].Cells[col].Value.ToString(), out selected) ? selected : false;
-
-            //        if (selected)
-            //        {
-            //            cbPurposeMonth1.Checked = false;
-            //        }
-            //    }
-            //}
-        }
-
-        private void dgvMonthlyBalanceEstimate_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var senderGrid = (DataGridView)sender;
-
-            // If the clicked cell is in the 'Selection' column and it's a checkbox cell
-            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn &&
-                senderGrid.Columns[e.ColumnIndex].Name == text.Header_Selection &&
-                e.RowIndex >= 0)
-            {
-                // Uncheck the 'Other' checkbox
-                cbPurposeMonth1.Checked = false;
-            }
-        }
-
         private void cbOtherPurpose_CheckedChanged(object sender, EventArgs e)
         {
             PurposeUpdate();
@@ -977,8 +927,6 @@ namespace FactoryManagementSoftware.UI
             if (!string.IsNullOrEmpty(itemCode) && itemType == text.Cat_Part)
             {
                 LoadMonthlyBalanceEstimate();
-
-                dgvMonthlyBalanceEstimate.ClearSelection();
 
                 ReferenceUIUpdate(1);
             }
@@ -1094,6 +1042,28 @@ namespace FactoryManagementSoftware.UI
             {
                 btnMouldSelected_Click(sender, e);
             }
+        }
+
+        private void dgvMonthlyBalanceEstimate_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            DataGridView dgv = dgvMonthlyBalanceEstimate;
+
+            string colName = dgv.Columns[e.ColumnIndex].Name;
+
+            if(colName == text.Header_BalStock)
+            {
+                decimal num = decimal.TryParse(dgv.Rows[e.RowIndex].Cells[text.Header_BalStock].Value.ToString(), out num) ? num : 0;
+
+                if (num < 0)
+                {
+                    dgv.Rows[e.RowIndex].Cells[text.Header_BalStock].Style.ForeColor = Color.Red;
+                }
+                else
+                {
+                    dgv.Rows[e.RowIndex].Cells[text.Header_BalStock].Style.ForeColor = Color.Black;
+                }
+            }
+            
         }
     }
 }

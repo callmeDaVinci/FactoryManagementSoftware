@@ -14,7 +14,8 @@ namespace FactoryManagementSoftware.DAL
         public string MacID { get; } = "mac_id";
         public string MacName { get; } = "mac_name";
         public string MacTon { get; } = "mac_ton";
-        public string MacLocation { get; } = "mac_location";
+        public string MacLocationName { get; } = "mac_location";
+        public string MacLocationID { get; } = "mac_location_id";
 
         public string MacAddedBy { get; } = "mac_added_by";
         public string MacAddedDate { get; } = "mac_added_date";
@@ -149,7 +150,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"INSERT INTO tbl_mac
                             (" + MacName + ","
                             + MacTon + ","
-                            + MacLocation + ","
+                            + MacLocationName + ","
                             + MacLotNo + ","
                             + MacAddedBy + ","
                             + MacAddedDate + ") VALUES" +
@@ -213,7 +214,7 @@ namespace FactoryManagementSoftware.DAL
                             SET "
                             + MacName + "=@mac_name,"
                             + MacTon + "=@mac_ton,"
-                            + MacLocation + "=@mac_location,"
+                            + MacLocationName + "=@mac_location,"
                             + MacUpdatedBy + "=@mac_updated_by,"
                             + MacUpdatedDate + "=@mac_updated_date" +
                             " WHERE mac_id=@mac_id";
