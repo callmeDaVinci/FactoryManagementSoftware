@@ -339,6 +339,12 @@ namespace FactoryManagementSoftware.DAL
                             + productionPurpose + ","
                             + materialCode + ","
                             + materialBagQty_1 + ","
+                            + rawMaterialQty_1 + ","
+                            + rawMatRatio_1 + ","
+                            + materialCode2 + ","
+                            + materialBagQty_2 + ","
+                            + rawMaterialQty_2 + ","
+                            + rawMatRatio_2 + ","
                             + materialRecycleUse + ","
                             + colorMaterialCode + ","
                             + colorMaterialUsage + ","
@@ -364,6 +370,12 @@ namespace FactoryManagementSoftware.DAL
                             "@production_purpose," +
                             "@material_code," +
                             "@material_bag_qty," +
+                            "@raw_material_qty," +
+                            "@raw_mat_ratio_1," +
+                            "@material_code_2," +
+                            "@material_bag_qty_2," +
+                            "@raw_material_qty_2," +
+                            "@raw_mat_ratio_2," +
                             "@material_recycle_use," +
                             "@color_material_code," +
                             "@color_material_usage," +
@@ -383,15 +395,24 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@plan_added_date", u.plan_added_date);
                 cmd.Parameters.AddWithValue("@plan_added_by", u.plan_added_by);
                 cmd.Parameters.AddWithValue("@plan_status", u.plan_status);
-                cmd.Parameters.AddWithValue("@plan_note", u.plan_remark);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
                 cmd.Parameters.AddWithValue("@plan_ct", u.plan_ct);
                 cmd.Parameters.AddWithValue("@plan_pw", u.plan_pw);
                 cmd.Parameters.AddWithValue("@plan_rw", u.plan_rw);
                 cmd.Parameters.AddWithValue("@plan_cavity", u.plan_cavity);
                 cmd.Parameters.AddWithValue("@part_code", u.part_code);
                 cmd.Parameters.AddWithValue("@production_purpose", u.production_purpose);
+
                 cmd.Parameters.AddWithValue("@material_code", u.material_code);
                 cmd.Parameters.AddWithValue("@material_bag_qty", u.material_bag_qty);
+                cmd.Parameters.AddWithValue("@raw_material_qty", u.raw_material_qty);
+                cmd.Parameters.AddWithValue("@raw_mat_ratio_1", u.raw_mat_ratio_1);
+
+                cmd.Parameters.AddWithValue("@material_code_2", u.material_code_2);
+                cmd.Parameters.AddWithValue("@material_bag_qty_2", u.material_bag_qty_2);
+                cmd.Parameters.AddWithValue("@raw_material_qty_2", u.raw_material_qty_2);
+                cmd.Parameters.AddWithValue("@raw_mat_ratio_2", u.raw_mat_ratio_2);
+
                 cmd.Parameters.AddWithValue("@material_recycle_use", u.material_recycle_use);
                 cmd.Parameters.AddWithValue("@color_material_code", u.color_material_code);
                 cmd.Parameters.AddWithValue("@color_material_usage", u.color_material_usage);
@@ -506,7 +527,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@plan_added_date", u.plan_added_date);
                 cmd.Parameters.AddWithValue("@plan_added_by", u.plan_added_by);
                 cmd.Parameters.AddWithValue("@plan_status", u.plan_status);
-                cmd.Parameters.AddWithValue("@plan_note", u.plan_remark);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
                 cmd.Parameters.AddWithValue("@plan_ct", u.plan_ct);
                 cmd.Parameters.AddWithValue("@plan_pw", u.plan_pw);
                 cmd.Parameters.AddWithValue("@plan_item_pw", u.plan_item_pw);
@@ -831,7 +852,7 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
-                cmd.Parameters.AddWithValue("@plan_note", u.plan_remark);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
 
@@ -930,7 +951,7 @@ namespace FactoryManagementSoftware.DAL
 
                 cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
                 cmd.Parameters.AddWithValue("@family_with", u.family_with);
-                cmd.Parameters.AddWithValue("@plan_note", u.plan_remark);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
 
@@ -982,7 +1003,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@family_with", u.family_with);
                 cmd.Parameters.AddWithValue("@production_start_date", u.production_start_date);
                 cmd.Parameters.AddWithValue("@production_end_date", u.production_end_date);
-                cmd.Parameters.AddWithValue("@plan_note", u.plan_remark);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
 
@@ -1035,7 +1056,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@family_with", u.family_with);
                 cmd.Parameters.AddWithValue("@production_start_date", u.production_start_date);
                 cmd.Parameters.AddWithValue("@production_end_date", u.production_end_date);
-                cmd.Parameters.AddWithValue("@plan_note", u.plan_remark);
+                cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
                 cmd.Parameters.AddWithValue("@recording", u.recording);

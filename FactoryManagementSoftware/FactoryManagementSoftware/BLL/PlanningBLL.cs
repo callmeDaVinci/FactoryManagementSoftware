@@ -14,7 +14,7 @@ namespace FactoryManagementSoftware.BLL
         public DateTime plan_updated_date { get; set; }
         public int plan_updated_by { get; set; }
         public string plan_status { get; set; }
-        public string plan_remark { get; set; }
+        public string plan_note { get; set; }
 
         public string part_name { get; set; }
         public string part_code { get; set; }
@@ -29,15 +29,20 @@ namespace FactoryManagementSoftware.BLL
         public string plan_rw_shot { get; set; }
         public string plan_cavity { get; set; }
 
-        public string material_code { get; set; }
         public string material_bag_kg { get; set; }
+        public string material_code { get; set; }
+        public string material_code_2 { get; set; }
         public string material_bag_qty { get; set; }
+        public string material_bag_qty_2 { get; set; }
         public string material_recycle_use { get; set; }
         public string plan_mould_code { get; set; }
         public string plan_mould_ton { get; set; }
 
         public string recycle_material_qty_kg { get; set; }
         public string raw_material_qty { get; set; }
+        public string raw_material_qty_2 { get; set; }
+        public string raw_mat_ratio_1 { get; set; }
+        public string raw_mat_ratio_2 { get; set; }
         public string raw_material_qty_kg { get; set; }
 
         public string color_material_code { get; set; }

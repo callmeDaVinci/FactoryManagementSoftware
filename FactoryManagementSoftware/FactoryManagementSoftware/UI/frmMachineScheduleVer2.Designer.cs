@@ -77,6 +77,7 @@
             this.lblTotalPlannedToUse = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAdjustCollisionDateBySystem = new Guna.UI.WinForms.GunaGradientButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMacSchedule)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -103,13 +104,12 @@
             this.dgvMacSchedule.AllowUserToDeleteRows = false;
             this.dgvMacSchedule.AllowUserToOrderColumns = true;
             this.dgvMacSchedule.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.dgvMacSchedule.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.dgvMacSchedule.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
-            this.dgvMacSchedule.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.dgvMacSchedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMacSchedule.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.dgvMacSchedule.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvMacSchedule.ColumnHeadersHeight = 50;
             this.dgvMacSchedule.Cursor = System.Windows.Forms.Cursors.Hand;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.WhiteSmoke;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
@@ -117,15 +117,15 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvMacSchedule.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvMacSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvMacSchedule.GridColor = System.Drawing.Color.Black;
+            this.dgvMacSchedule.GridColor = System.Drawing.Color.Silver;
             this.dgvMacSchedule.Location = new System.Drawing.Point(2, 258);
             this.dgvMacSchedule.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.dgvMacSchedule.Name = "dgvMacSchedule";
             this.dgvMacSchedule.RowHeadersVisible = false;
             this.dgvMacSchedule.RowHeadersWidth = 51;
-            this.dgvMacSchedule.RowTemplate.Height = 55;
+            this.dgvMacSchedule.RowTemplate.Height = 60;
             this.dgvMacSchedule.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMacSchedule.Size = new System.Drawing.Size(1281, 441);
+            this.dgvMacSchedule.Size = new System.Drawing.Size(1281, 375);
             this.dgvMacSchedule.TabIndex = 109;
             this.dgvMacSchedule.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSchedule_CellClick);
             this.dgvMacSchedule.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSchedule_CellDoubleClick);
@@ -791,6 +791,7 @@
             // 
             this.tlpMainSchedule.ColumnCount = 1;
             this.tlpMainSchedule.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMainSchedule.Controls.Add(this.btnAdjustCollisionDateBySystem, 0, 6);
             this.tlpMainSchedule.Controls.Add(this.tlpButton, 0, 0);
             this.tlpMainSchedule.Controls.Add(this.dgvMacSchedule, 0, 4);
             this.tlpMainSchedule.Controls.Add(this.groupBox1, 0, 1);
@@ -800,12 +801,14 @@
             this.tlpMainSchedule.Location = new System.Drawing.Point(14, 17);
             this.tlpMainSchedule.Margin = new System.Windows.Forms.Padding(14, 17, 14, 17);
             this.tlpMainSchedule.Name = "tlpMainSchedule";
-            this.tlpMainSchedule.RowCount = 5;
+            this.tlpMainSchedule.RowCount = 7;
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56F));
             this.tlpMainSchedule.Size = new System.Drawing.Size(1285, 700);
             this.tlpMainSchedule.TabIndex = 117;
             // 
@@ -904,6 +907,36 @@
             this.tableLayoutPanel7.Size = new System.Drawing.Size(1313, 734);
             this.tableLayoutPanel7.TabIndex = 168;
             // 
+            // btnAdjustCollisionDateBySystem
+            // 
+            this.btnAdjustCollisionDateBySystem.AnimationHoverSpeed = 0.07F;
+            this.btnAdjustCollisionDateBySystem.AnimationSpeed = 0.03F;
+            this.btnAdjustCollisionDateBySystem.BackColor = System.Drawing.Color.Transparent;
+            this.btnAdjustCollisionDateBySystem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(204)))));
+            this.btnAdjustCollisionDateBySystem.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(241)))), ((int)(((byte)(154)))));
+            this.btnAdjustCollisionDateBySystem.BorderColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.BorderSize = 1;
+            this.btnAdjustCollisionDateBySystem.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnAdjustCollisionDateBySystem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAdjustCollisionDateBySystem.FocusedColor = System.Drawing.Color.Empty;
+            this.btnAdjustCollisionDateBySystem.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.btnAdjustCollisionDateBySystem.ForeColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.Image = null;
+            this.btnAdjustCollisionDateBySystem.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnAdjustCollisionDateBySystem.Location = new System.Drawing.Point(3, 647);
+            this.btnAdjustCollisionDateBySystem.Name = "btnAdjustCollisionDateBySystem";
+            this.btnAdjustCollisionDateBySystem.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnAdjustCollisionDateBySystem.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnAdjustCollisionDateBySystem.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnAdjustCollisionDateBySystem.OnHoverImage = null;
+            this.btnAdjustCollisionDateBySystem.OnPressedColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.Radius = 2;
+            this.btnAdjustCollisionDateBySystem.Size = new System.Drawing.Size(1279, 50);
+            this.btnAdjustCollisionDateBySystem.TabIndex = 225;
+            this.btnAdjustCollisionDateBySystem.Text = "Adjust Collision Date";
+            this.btnAdjustCollisionDateBySystem.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // frmMachineScheduleVer2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -914,6 +947,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "frmMachineScheduleVer2";
             this.Text = "Machine Schedule";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMachineSchedule_FormClosed);
             this.Load += new System.EventHandler(this.frmMachineSchedule_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMacSchedule)).EndInit();
@@ -995,5 +1029,6 @@
         private Guna.UI.WinForms.GunaGradientButton btnFilter;
         private Guna.UI.WinForms.GunaGradientButton btnFilterApply;
         private System.Windows.Forms.CheckBox cbDraft;
+        private Guna.UI.WinForms.GunaGradientButton btnAdjustCollisionDateBySystem;
     }
 }

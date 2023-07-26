@@ -2936,7 +2936,7 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
             uPlanning.plan_id = planID;
-            uPlanning.plan_remark = CELL_EDITING_NEW_VALUE;
+            uPlanning.plan_note = CELL_EDITING_NEW_VALUE;
             uPlanning.plan_updated_date = DateTime.Now;
             uPlanning.plan_updated_by = MainDashboard.USER_ID;
 

@@ -303,7 +303,7 @@ namespace FactoryManagementSoftware.DAL
             }         
             else
             {
-                tool.historyRecord(text.plan_remark_change, "PLAN's remark " + u.plan_id + ": " + oldNote + " --> "+u.plan_remark, DateTime.Now, MainDashboard.USER_ID);
+                tool.historyRecord(text.plan_remark_change, "PLAN's remark " + u.plan_id + ": " + oldNote + " --> "+u.plan_note, DateTime.Now, MainDashboard.USER_ID);
 
                 uPlanningAction.planning_id = u.plan_id;
                 uPlanningAction.added_date = u.plan_updated_date;
@@ -311,7 +311,7 @@ namespace FactoryManagementSoftware.DAL
                 uPlanningAction.action = text.plan_remark_change;
                 uPlanningAction.action_detail = "";
                 uPlanningAction.action_from = oldNote;
-                uPlanningAction.action_to = u.plan_remark;
+                uPlanningAction.action_to = u.plan_note;
                 uPlanningAction.note = "";
 
                 bool actionSaveSuccess = Insert(uPlanningAction);

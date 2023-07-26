@@ -274,7 +274,7 @@ namespace FactoryManagementSoftware.UI
                     row_Schedule[headerStatus] = ToAdd;
 
                     row_Schedule[headerFamilyWith] = uPlanning.family_with;
-                    row_Schedule[headerRemark] = uPlanning.plan_remark;
+                    row_Schedule[headerRemark] = uPlanning.plan_note;
                     dt_Schedule.Rows.Add(row_Schedule);
                 }
 
@@ -553,7 +553,7 @@ namespace FactoryManagementSoftware.UI
                     u.production_purpose = (string)dgv.Rows[row].Cells[headerProductionPurpose].Value;
                     u.production_target_qty = dgv.Rows[row].Cells[headerTargetQty].Value.ToString();
                     u.family_with = Convert.ToInt32(dgv.Rows[row].Cells[headerFamilyWith].Value);
-                    u.plan_remark = dgv.Rows[row].Cells[headerRemark].Value.ToString();
+                    u.plan_note = dgv.Rows[row].Cells[headerRemark].Value.ToString();
                     DataTable dt = (DataTable)dgv.DataSource;
 
                     dt.Rows.RemoveAt(row);
@@ -572,7 +572,7 @@ namespace FactoryManagementSoftware.UI
                     dr[headerTargetQty] = u.production_target_qty;
                     dr[headerStatus] = u.plan_status;
                     dr[headerFamilyWith] = u.family_with;
-                    dr[headerRemark] = u.plan_remark;
+                    dr[headerRemark] = u.plan_note;
 
                     dt.Rows.InsertAt(dr, position);
 
@@ -1105,7 +1105,7 @@ namespace FactoryManagementSoftware.UI
                     u.production_purpose = (string)dgv.Rows[row].Cells[headerProductionPurpose].Value;
                     u.production_target_qty = dgv.Rows[row].Cells[headerTargetQty].Value.ToString();
                     u.family_with = Convert.ToInt32(dgv.Rows[row].Cells[headerFamilyWith].Value);
-                    u.plan_remark = dgv.Rows[row].Cells[headerRemark].Value.ToString();
+                    u.plan_note = dgv.Rows[row].Cells[headerRemark].Value.ToString();
 
                     DataTable dt = (DataTable)dgv.DataSource;
 
@@ -1126,7 +1126,7 @@ namespace FactoryManagementSoftware.UI
                     dr[headerTargetQty] = u.production_target_qty;
                     dr[headerStatus] = u.plan_status;
                     dr[headerFamilyWith] = u.family_with;
-                    dr[headerRemark] = u.plan_remark;
+                    dr[headerRemark] = u.plan_note;
 
                     dt.Rows.InsertAt(dr, position);
 
@@ -1325,7 +1325,7 @@ namespace FactoryManagementSoftware.UI
                             uPlanning.production_start_date = Convert.ToDateTime(row[headerStartDate]).Date;
                             uPlanning.production_end_date = Convert.ToDateTime(row[headerEndDate]).Date;
                             uPlanning.family_with = Convert.ToInt32(row[headerFamilyWith]);
-                            uPlanning.plan_remark = row[headerRemark].ToString();
+                            uPlanning.plan_note = row[headerRemark].ToString();
                             uPlanning.plan_updated_date = DateTime.Now;
                             uPlanning.plan_updated_by = MainDashboard.USER_ID;
                             

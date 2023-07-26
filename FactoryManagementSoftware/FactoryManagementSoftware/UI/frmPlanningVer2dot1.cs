@@ -473,8 +473,10 @@ namespace FactoryManagementSoftware.UI
             BLL_JOB_SUMMARY.production_hour = proBalHrs.ToString();
             BLL_JOB_SUMMARY.production_hour_per_day = hrsPerDay.ToString();
             BLL_JOB_SUMMARY.production_max_shot = maxShot.ToString();
+            
             BLL_JOB_SUMMARY.raw_material_qty_kg = totalRaw_kg.ToString();
             BLL_JOB_SUMMARY.raw_material_qty = totalRaw_kg.ToString();
+            
             BLL_JOB_SUMMARY.color_material_qty_kg = totalColor_kg.ToString();
             BLL_JOB_SUMMARY.color_material_qty = totalColor_kg.ToString();
             BLL_JOB_SUMMARY.recycle_material_qty_kg = totalRecycle_kg.ToString();
@@ -4249,7 +4251,7 @@ namespace FactoryManagementSoftware.UI
 
                     // Populate the necessary fields for this row.
                     idleRow[text.Header_Status] = text.planning_status_idle;
-                    idleRow[text.Header_FacID] = machine.Item2;
+                    idleRow[text.Header_FacID] = machine.Item1;
                     idleRow[text.Header_Fac] = machine.Item2;
                     idleRow[text.Header_MacID] = machine.Item3;
                     idleRow[text.Header_MacName] = machine.Item4;
@@ -5232,9 +5234,48 @@ namespace FactoryManagementSoftware.UI
 
             try
             {
+                #region Data to be save
+
+                //row[dalPlanning.jobNo];
+                //row[dalPlanning.planMouldCode];
+                //row[dalPlanning.productionStartDate];
+                //row[dalPlanning.productionEndDate];
+                //row[dalPlanning.productionStartDate];
+                //row[dalPlanning.productionEndDate];
+                //dalPlanning.machineID;
+                //dalPlanning.partCode;
+                //row[dalPlanning.planCT];
+                //row[dalPlanning.productionPurpose];
+                //row[dalPlanning.targetQty];
+                //row[dalPlanning.ableQty];
+                //row[dalPlanning.materialCode].ToString();
+                //row[dalPlanning.materialCode2].ToString();
+                //row[dalPlanning.rawMatRatio_1];
+                //row[dalPlanning.rawMatRatio_2];
+                //row[dalPlanning.materialBagQty_1];
+                //dalPlanning.materialBagQty_2];
+                //row[dalPlanning.rawMaterialQty_1];
+                //row[dalPlanning.rawMaterialQty_2];
+                //row[dalPlanning.materialRecycleUse];
+                //row[dalPlanning.colorMaterialCode];
+                //row[dalPlanning.colorMaterialQty];
+                //row[dalPlanning.colorMaterialUsage];
+                //row[dalPlanning.planNote];
+                //row[dalPlanning.planStatus];
+                //row[dalPlanning.productionDay];
+                //row[dalPlanning.productionHourPerDay];
+                //row[dalPlanning.productionHour];
+                //row[dalPlanning.planCavity];
+                //row[dalPlanning.planPW];
+                //row[dalPlanning.planRW];
+                //row[dalPlanning.planAddedDate];
+                //row[dalPlanning.planAddedBy];
+
+                #endregion
+
                 //save planning data
                 DateTime date = DateTime.Now;
-                BLL_JOB_SUMMARY.plan_remark = txtRemark.Text;
+                BLL_JOB_SUMMARY.plan_note = txtRemark.Text;
 
                 if (NEWDraftJob)
                 {
@@ -5263,9 +5304,9 @@ namespace FactoryManagementSoftware.UI
 
                         if (!string.IsNullOrEmpty(itemCode))
                         {
-                            BLL_JOB_SUMMARY.plan_item_pw = row[text.Header_ProPwShot].ToString();
+                            BLL_JOB_SUMMARY.plan_pw = row[text.Header_ProPwShot].ToString();
 
-                            BLL_JOB_SUMMARY.plan_item_cavity = row[text.Header_Cavity].ToString();
+                            BLL_JOB_SUMMARY.plan_cavity = row[text.Header_Cavity].ToString();
 
                             BLL_JOB_SUMMARY.part_code = row[text.Header_ItemCode].ToString();
 
@@ -5296,7 +5337,7 @@ namespace FactoryManagementSoftware.UI
 
                                     PlanningBLL updateFamily = new PlanningBLL();
                                     updateFamily.plan_id = familyWith;
-                                    updateFamily.plan_remark = txtRemark.Text + text.planning_Family_mould_Remark;
+                                    updateFamily.plan_note = txtRemark.Text + text.planning_Family_mould_Remark;
                                     updateFamily.family_with = familyWith;
                                     updateFamily.plan_updated_date = date;
                                     updateFamily.plan_updated_by = MainDashboard.USER_ID;
@@ -5305,7 +5346,7 @@ namespace FactoryManagementSoftware.UI
                                 }
                                 else
                                 {
-                                    BLL_JOB_SUMMARY.plan_remark = txtRemark.Text + text.planning_Family_mould_Remark;
+                                    BLL_JOB_SUMMARY.plan_note = txtRemark.Text + text.planning_Family_mould_Remark;
 
                                     jobID = dalPlanningAction.NewplanningAdd(BLL_JOB_SUMMARY);
 
@@ -5442,28 +5483,27 @@ namespace FactoryManagementSoftware.UI
                             uPlanning.production_start_date = newStart;
                             uPlanning.production_end_date = newEnd;
                             uPlanning.family_with = familyWith;
-                            uPlanning.plan_remark = remark;
+                            uPlanning.plan_note = remark;
 
                             JOB_UPDATED = dalPlanningAction.planningStatusAndScheduleChange(uPlanning, OriStatus, oriStart, oriEnd, familyWith);
 
                             if(JOB_UPDATED)
                             {
                                 JOB_UPDATED_COUNT++;
+                                tool.historyRecord(text.System, "Job Updated", dateNow, MainDashboard.USER_ID);
                             }
+                            else
+                            {
+                                MessageBox.Show("Failed to update Job data");
+                                tool.historyRecord(text.System, "Failed to update job data", dateNow, MainDashboard.USER_ID);
+                            }
+
                         }
                     }
                 }
 
 
-                if (JOB_UPDATED)
-                {
-                    tool.historyRecord(text.System, "Job Updated", dateNow, MainDashboard.USER_ID);
-                }
-                else
-                {
-                    MessageBox.Show("Failed to update Job data");
-                    tool.historyRecord(text.System, "Failed to update job data", dateNow, MainDashboard.USER_ID);
-                }
+               
             }
 
             catch (Exception ex)
@@ -5620,6 +5660,13 @@ namespace FactoryManagementSoftware.UI
             string colorMaterialDescription = "";
             string rawRatio = "";
 
+            int rawMatCount = 1;
+
+            BLL_JOB_SUMMARY.material_code_2 = "";
+            BLL_JOB_SUMMARY.material_bag_qty_2 = "";
+            BLL_JOB_SUMMARY.raw_material_qty_2 = "";
+            BLL_JOB_SUMMARY.raw_mat_ratio_2 = "";
+
             foreach (DataRow row in DT_SUMMARY_RAW.Rows)
             {
                 if (rawMaterialDescription == "")
@@ -5634,12 +5681,26 @@ namespace FactoryManagementSoftware.UI
                     rawMaterialDescription += "(" + rawRatio + " %)";
                 }
 
+                if (rawMatCount == 1)
+                {
+                    BLL_JOB_SUMMARY.material_code = row[text.Header_ItemCode].ToString();
+                    BLL_JOB_SUMMARY.material_bag_kg = row[text.Header_KGPERBAG].ToString();
+                    BLL_JOB_SUMMARY.material_bag_qty = row[text.Header_Qty_Required_Bag].ToString();
+                    BLL_JOB_SUMMARY.raw_material_qty = row[text.Header_Qty_Required_KG].ToString();
+                    BLL_JOB_SUMMARY.raw_mat_ratio_1 = row[text.Header_Ratio].ToString();
 
+                    rawMatCount++;
+                }
+                else
+                {
+                    BLL_JOB_SUMMARY.material_code_2 = row[text.Header_ItemCode].ToString();
+                    BLL_JOB_SUMMARY.material_bag_kg = row[text.Header_KGPERBAG].ToString();
+                    BLL_JOB_SUMMARY.material_bag_qty_2 = row[text.Header_Qty_Required_Bag].ToString();
+                    BLL_JOB_SUMMARY.raw_material_qty_2 = row[text.Header_Qty_Required_KG].ToString();
+                    BLL_JOB_SUMMARY.raw_mat_ratio_2 = row[text.Header_Ratio].ToString();
+                }
 
-                BLL_JOB_SUMMARY.material_code = row[text.Header_ItemCode].ToString();
-                BLL_JOB_SUMMARY.material_bag_kg = row[text.Header_KGPERBAG].ToString();
-                BLL_JOB_SUMMARY.material_bag_qty = row[text.Header_Qty_Required_Bag].ToString();
-                BLL_JOB_SUMMARY.raw_material_qty = row[text.Header_Qty_Required_KG].ToString();
+                
 
                 rawRatio = row[text.Header_Ratio].ToString();
             }

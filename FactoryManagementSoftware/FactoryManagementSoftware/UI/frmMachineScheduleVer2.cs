@@ -25,6 +25,9 @@ using Range = Microsoft.Office.Interop.Excel.Range;
 using XlBorderWeight = Microsoft.Office.Interop.Excel.XlBorderWeight;
 using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Data.Entity.Core.Metadata.Edm;
+using System.Text.RegularExpressions;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -34,8 +37,6 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
             InitializeData();
-
-           
 
             tool.DoubleBuffered(dgvMacSchedule, true);
             HideFilter(filterHide);
@@ -215,15 +216,16 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_Cavity, typeof(int));
             dt.Columns.Add(text.Header_ProPwShot, typeof(double));
             dt.Columns.Add(text.Header_ProRwShot, typeof(double));
-            dt.Columns.Add(text.Header_RawMat_1, typeof(string));
-            dt.Columns.Add(text.Header_RawMat_2, typeof(string));
-            dt.Columns.Add(text.Header_RawMat_1_Ratio, typeof(double));
-            dt.Columns.Add(text.Header_RawMat_2_Ratio, typeof(double));
 
+            dt.Columns.Add(text.Header_RawMat_1, typeof(string));
             dt.Columns.Add(text.Header_RawMat_Bag_1, typeof(int));
-            dt.Columns.Add(text.Header_RawMat_Bag_2, typeof(int));
             dt.Columns.Add(text.Header_RawMat_KG_1, typeof(double));
+            dt.Columns.Add(text.Header_RawMat_1_Ratio, typeof(double));
+
+            dt.Columns.Add(text.Header_RawMat_2, typeof(string));
+            dt.Columns.Add(text.Header_RawMat_Bag_2, typeof(int));
             dt.Columns.Add(text.Header_RawMat_KG_2, typeof(double));
+            dt.Columns.Add(text.Header_RawMat_2_Ratio, typeof(double));
 
             dt.Columns.Add(text.Header_Recycle_Qty, typeof(int));
             dt.Columns.Add(text.Header_ColorMatCode, typeof(string));
@@ -252,8 +254,7 @@ namespace FactoryManagementSoftware.UI
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
          
             dgv.Columns[text.Header_ColorMatCode].Visible = false;
-            dgv.Columns[text.Header_RawMat_1].Visible = false;
-            dgv.Columns[text.Header_RawMat_2].Visible = false;
+           
             dgv.Columns[text.Header_ItemCode].Visible = false;
             dgv.Columns[text.Header_ItemName].Visible = false;
             dgv.Columns[text.Header_Recycle_Qty].Visible = false;
@@ -267,19 +268,24 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_ItemName].Visible = false;
             dgv.Columns[text.Header_ItemCode].Visible = false;
             dgv.Columns[text.Header_ProCT].Visible = false;
+         
+            dgv.Columns[text.Header_Recycle_Qty].Visible = false;
+            dgv.Columns[text.Header_ColorMatCode].Visible = false;
+
             dgv.Columns[text.Header_Cavity].Visible = false;
+
             dgv.Columns[text.Header_ProPwShot].Visible = false;
             dgv.Columns[text.Header_ProRwShot].Visible = false;
+
             dgv.Columns[text.Header_RawMat_1].Visible = false;
             dgv.Columns[text.Header_RawMat_2].Visible = false;
             dgv.Columns[text.Header_RawMat_Bag_1].Visible = false;
             dgv.Columns[text.Header_RawMat_Bag_2].Visible = false;
             dgv.Columns[text.Header_RawMat_KG_1].Visible = false;
             dgv.Columns[text.Header_RawMat_KG_2].Visible = false;
-            dgv.Columns[text.Header_Recycle_Qty].Visible = false;
-            dgv.Columns[text.Header_ColorMatCode].Visible = false;
             dgv.Columns[text.Header_RawMat_1_Ratio].Visible = false;
             dgv.Columns[text.Header_RawMat_2_Ratio].Visible = false;
+
             dgv.Columns[text.Header_ColorRate].Visible = false;
 
 
@@ -310,21 +316,22 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[text.Header_ColorMat_KG].DefaultCellStyle.ForeColor = importantColor;
 
-            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
             dgv.Columns[text.Header_Job_Purpose].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
             dgv.Columns[text.Header_Remark].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
 
-            dgv.Columns[text.Header_Mac].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            dgv.Columns[text.Header_Mac].DefaultCellStyle.Font = new Font("Segoe UI", 14F, FontStyle.Regular);
             dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-            dgv.Columns[text.Header_TargetQty].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            dgv.Columns[text.Header_TargetQty].DefaultCellStyle.Font = new Font("Segoe UI", 11F, FontStyle.Regular);
             dgv.Columns[text.Header_RawMat_Qty].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-            dgv.Columns[text.Header_ProducedQty].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            dgv.Columns[text.Header_ProducedQty].DefaultCellStyle.Font = new Font("Segoe UI", 11F, FontStyle.Regular);
             dgv.Columns[text.Header_ColorMat_KG].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
 
             dgv.Columns[text.Header_Remark].MinimumWidth = 100;
             dgv.Columns[text.Header_Job_Purpose].MinimumWidth = 120;
             dgv.Columns[text.Header_Fac].MinimumWidth = 70;
+            dgv.Columns[text.Header_Mac].MinimumWidth = 60;
 
 
             dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
@@ -334,13 +341,31 @@ namespace FactoryManagementSoftware.UI
 
         #region Load Data
 
+        private bool DATE_COLLISION_FOUND = false;
+
+        private void adjustAdjustCollisionDateButtonLayout()
+        {
+            if (DATE_COLLISION_FOUND)
+            {
+                tlpMainSchedule.RowStyles[5] = new RowStyle(SizeType.Absolute, 56);
+                tlpMainSchedule.RowStyles[6] = new RowStyle(SizeType.Absolute, 10);
+            }
+            else
+            {
+                tlpMainSchedule.RowStyles[5] = new RowStyle(SizeType.Absolute, 0);
+                tlpMainSchedule.RowStyles[6] = new RowStyle(SizeType.Absolute, 0);
+            }
+        }
+
         private void InitializeData()
         {
             tool.loadProductionFactory(cmbMacLocation);
             loadMachine(cmbMac);
             ResetData();
-
+            adjustAdjustCollisionDateButtonLayout();
             userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+
+            userPermission = 5;
 
             if (userPermission >= MainDashboard.ACTION_LVL_FOUR)
             {
@@ -357,10 +382,11 @@ namespace FactoryManagementSoftware.UI
         }
 
         private List<Tuple<int, string, int, string>> MachineList = new List<Tuple<int, string, int, string>>();
+
         private void loadMachine(ComboBox cmb)
         {
             string macSelected = "";
-
+            MachineList.Clear();
             if (cmbMac.SelectedItem != null)
             {
                 macSelected = cmbMac.Text;
@@ -377,13 +403,14 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = new DataTable();
             dt.Columns.Add(dalMac.MacID, typeof(int));
             dt.Columns.Add(dalMac.MacName, typeof(string));
+            DataTable dt_Fac = (DataTable)cmbMacLocation.DataSource;
+
 
             if (string.IsNullOrEmpty(fac) || fac.ToUpper().Equals(text.Cmb_All.ToUpper()))
             {
                 //load All active machine
                 facDAL dalFac = new facDAL();
 
-                DataTable dt_Fac = (DataTable)cmbMacLocation.DataSource;
 
                 foreach (DataRow row in dt_Mac.Rows)
                 {
@@ -411,11 +438,26 @@ namespace FactoryManagementSoftware.UI
                 {
                     string macLocation = row[dalMac.MacLocationName].ToString();
 
-                    if (macLocation == fac)
+                    foreach (DataRow facRow in dt_Fac.Rows)
                     {
-                        dt.Rows.Add(row[dalMac.MacID], row[dalMac.MacName]);
+                        string facName = facRow[dalFac.FacName].ToString();
+                        string facID = facRow[dalFac.FacID].ToString();
 
+                        if (macLocation == fac && fac == facName)
+                        {
+                            dt.Rows.Add(row[dalMac.MacID], row[dalMac.MacName]);
+
+                            Tuple<int, string, int, string> machine = new Tuple<int, string, int, string>(Convert.ToInt32(facID), facName, Convert.ToInt32(row[dalMac.MacID]), row[dalMac.MacName].ToString());
+                            MachineList.Add(machine);
+                        }
                     }
+
+                    
+                    //if (macLocation == fac)
+                    //{
+                    //    dt.Rows.Add(row[dalMac.MacID], row[dalMac.MacName]);
+                       
+                    //}
                 }
             }
 
@@ -489,6 +531,22 @@ namespace FactoryManagementSoftware.UI
         }
 
         DataTable DT_ITEM;
+
+        public string ConvertToTitleCase(string input)
+        {
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+
+            // Match words and bracketed text separately
+            var matches = Regex.Matches(input, @"\(([^)]*)\)|\b\w+\b");
+
+            string[] words = matches.Cast<Match>()
+                .Select(m => m.Value.StartsWith("(") ? m.Value :
+                    (m.Value.All(char.IsDigit) || m.Value.Any(char.IsDigit) ? m.Value.ToLower() : textInfo.ToTitleCase(m.Value.ToLower())))
+                .ToArray();
+
+            return string.Join(" ", words);
+        }
+
 
         private void New_LoadMacSchedule()
         {
@@ -564,6 +622,24 @@ namespace FactoryManagementSoftware.UI
             if (!cmbMacLocation.Text.Equals("All") && !string.IsNullOrEmpty(cmbMacLocation.Text) && string.IsNullOrEmpty(cmbMac.Text))
             {
                 OneFactorySeaching = true;
+            }
+
+            string machineIDFilter = "";
+            string machineNameFilter = cmbMac.Text;
+            string factoryNameFilter = cmbMacLocation.Text;
+            string factoryIDFilter = "";
+
+            if (cmbMacLocation.SelectedIndex > -1)
+            {
+                DataRowView drv_Fac = (DataRowView)cmbMacLocation.SelectedItem;
+
+                factoryIDFilter = drv_Fac[dalFac.FacID].ToString();
+            }
+
+            if (cmbMac.SelectedIndex > -1)
+            {
+                DataRowView drv = (DataRowView)cmbMac.SelectedItem;
+                machineIDFilter = drv[dalMac.MacID].ToString();
             }
 
             foreach (DataRow row in dt_JobPlan.Rows)
@@ -656,24 +732,6 @@ namespace FactoryManagementSoftware.UI
 
                 #region Location Filtering
 
-                string machineIDFilter = "";
-                string machineNameFilter = cmbMac.Text;
-                string factoryNameFilter = cmbMacLocation.Text;
-                string factoryIDFilter = "";
-
-                if (cmbMacLocation.SelectedIndex > -1)
-                {
-                    DataRowView drv_Fac = (DataRowView)cmbMacLocation.SelectedItem;
-
-                    factoryIDFilter = drv_Fac[dalFac.FacID].ToString();
-                }
-
-                if (cmbMac.SelectedIndex > -1)
-                {
-                    DataRowView drv = (DataRowView)cmbMac.SelectedItem;
-                    machineIDFilter = drv[dalMac.MacID].ToString();
-                }
-
                 string factoryName = row[dalMac.MacLocationName].ToString();
                 string factoryID = row[dalMac.MacLocationID].ToString();
 
@@ -763,6 +821,7 @@ namespace FactoryManagementSoftware.UI
                     #endregion
 
                     #region Load to table 
+
                     row_Schedule = dt_Schedule.NewRow();
 
                     row_Schedule[text.Header_MouldCode] = row[dalPlanning.planMouldCode];
@@ -786,10 +845,11 @@ namespace FactoryManagementSoftware.UI
                     }
 
 
-                    string itemNameAndCodeString = itemName + " (" + itemCodePresent + ")";
-                    if(itemName == itemCodePresent)
+                    string itemNameAndCodeString = ConvertToTitleCase(itemName) + " (" + itemCodePresent + ")";
+
+                    if(itemName.ToUpper().Replace(" ","") == itemCodePresent.ToUpper().Replace(" ", ""))
                     {
-                        itemNameAndCodeString = itemName;
+                        itemNameAndCodeString = ConvertToTitleCase(itemName);
                     }
 
                     row_Schedule[text.Header_ItemName] = itemName;
@@ -832,6 +892,8 @@ namespace FactoryManagementSoftware.UI
                     row_Schedule[text.Header_RawMat_1] = rawMat_1;
                     row_Schedule[text.Header_RawMat_2] = rawMat_2;
                     row_Schedule[text.Header_RawMat_String] = rawMix;
+                    row_Schedule[text.Header_RawMat_1_Ratio] = rawMat_1_ratio;
+                    row_Schedule[text.Header_RawMat_2_Ratio] = rawMat_2_ratio;
 
                     int rawBag_1 = int.TryParse(row[dalPlanning.materialBagQty_1].ToString(), out rawBag_1) ? rawBag_1 : 0;
                     int rawBag_2 = int.TryParse(row[dalPlanning.materialBagQty_2].ToString(), out rawBag_2) ? rawBag_2 : 0;
@@ -849,8 +911,13 @@ namespace FactoryManagementSoftware.UI
                         rawKG_2 = rawBag_2 * 25;
 
                     }
+
                     string rawMatQty = rawKG_1 + " KG (" + rawBag_1 + " bags)";
 
+                    if(rawBag_1 == 1)
+                    {
+                        rawMatQty = rawKG_1 + " KG (" + rawBag_1 + " bag)";
+                    }
                     
                     if(rawKG_2> 0)
                     {
@@ -896,6 +963,124 @@ namespace FactoryManagementSoftware.UI
                 }
 
             }
+
+
+            
+
+            //Idle machine adding
+            foreach (var machine in MachineList)
+            {
+                // Check if the machine id from MachineList is not found in dt_Schedule.
+                bool IdleMachineFound = !dt_Schedule.AsEnumerable().Any(row => !row.IsNull(text.Header_MacID) && row.Field<int>(text.Header_MacID) == machine.Item3);
+
+                if (IdleMachineFound)
+                {
+                    // Add a new row for this machine.
+                    DataRow idleRow = dt_Schedule.NewRow();
+
+                    // Populate the necessary fields for this row.
+                    idleRow[text.Header_Status] = text.planning_status_idle;
+                    idleRow[text.Header_FacID] = machine.Item1;
+                    idleRow[text.Header_Fac] = machine.Item2;
+                    idleRow[text.Header_MacID] = machine.Item3;
+                    idleRow[text.Header_Mac] = machine.Item4;
+
+
+                    //To-Do:
+                    //search the fac id in column "text.Header_FacID" in dt_Schedule
+                    //if found, then find the place to insert row base on machine name in column "text.Header_Mac"
+                    //example 1: if fac id = 2, mac name = 2, found the same fac id in the table, and found machine name 1, 3, then should be insert the row between machine 1 and 3
+                    //example 2: if fac id = 15, mac name = A2, found the same fac id in the table, and found machine name A1, A3, then should be insert the row between machine A1 and A3
+
+                    // Find the rows with the same fac id.
+                    var rows = dt_Schedule.AsEnumerable()
+                        .Where(row => !row.IsNull(text.Header_FacID) && row.Field<int>(text.Header_FacID) == machine.Item1)
+                        .ToList();
+
+                    // If no such rows exist, simply add the row at the end.
+                    if (!rows.Any())
+                    {
+                        row_Schedule = dt_Schedule.NewRow();
+                        row_Schedule[text.Header_ItemNameAndCode] = "factoryDivider";
+                        dt_Schedule.Rows.Add(row_Schedule);
+
+                        dt_Schedule.Rows.Add(idleRow);
+                    }
+                    else
+                    {
+                        int prevRowIndex = -1;
+                        int maxStringCompare = 0;
+
+                        foreach (DataRow row in dt_Schedule.Rows)
+                        {
+                            string facID = row[text.Header_FacID].ToString();
+                            string macName = row[text.Header_Mac].ToString();
+
+                            if(facID == machine.Item1.ToString())
+                            {
+                                int stringCompare = string.Compare(macName.ToUpper().Replace(" ", ""), machine.Item4,  StringComparison.Ordinal);
+
+                                if(stringCompare < 0)
+                                {
+                                    if(maxStringCompare == 0)
+                                    {
+                                        maxStringCompare = stringCompare;
+                                    }
+
+                                    if(maxStringCompare <= stringCompare)
+                                    {
+                                        prevRowIndex = dt_Schedule.Rows.IndexOf(row);
+                                        maxStringCompare = stringCompare;
+                                    }
+
+
+                                }
+                            }
+                        }
+                        
+                        if(prevRowIndex > -1)
+                        {
+
+                            // Insert the new row after it.
+                            row_Schedule = dt_Schedule.NewRow();
+                            row_Schedule[text.Header_ItemNameAndCode] = "machineDivider";
+
+                            dt_Schedule.Rows.InsertAt(row_Schedule, prevRowIndex + 1);
+
+                            dt_Schedule.Rows.InsertAt(idleRow, prevRowIndex + 2);
+                        }
+                        else
+                        {
+                            dt_Schedule.Rows.InsertAt(idleRow, 0);
+                        }
+
+                        //// Find the row that should come before the new row (i.e., its mac name is less than the new row's mac name).
+                        //var prevRow = rows.LastOrDefault(row => string.Compare(row.Field<string>(text.Header_Mac).ToUpper().Replace(" ",""), machine.Item4.ToUpper().Replace(" ", ""), StringComparison.Ordinal) < 0);
+
+                        //// If there's no such row, insert the new row at the beginning.
+                        //if (prevRow == null)
+                        //{
+                        //    dt_Schedule.Rows.InsertAt(idleRow, 0);
+                        //}
+                        //else
+                        //{
+                        //    // Otherwise, find the index of the row that should come before the new row.
+                        //    int prevRowIndex = dt_Schedule.Rows.IndexOf(prevRow);
+
+                        //    // Insert the new row after it.
+                        //    row_Schedule = dt_Schedule.NewRow();
+                        //    row_Schedule[text.Header_ItemNameAndCode] = "machineDivider";
+
+                        //    dt_Schedule.Rows.InsertAt(row_Schedule, prevRowIndex + 1);
+
+                        //    dt_Schedule.Rows.InsertAt(idleRow, prevRowIndex + 2);
+                        //}
+                    }
+                }
+            }
+
+            //dt_Schedule.DefaultView.Sort = text.Header_FacID + " ASC," + text.Header_MacID + " ASC," + text.Header_DateStart + " ASC";
+            //dt_Schedule = dt_Schedule.DefaultView.ToTable();
 
             dgvMacSchedule.DataSource = null;
 
@@ -977,15 +1162,15 @@ namespace FactoryManagementSoftware.UI
                 {
                     int rowIndex = dt.Rows.IndexOf(row);
 
-                    if (string.IsNullOrEmpty(row[text.Header_ItemCode].ToString()))
+                    if (string.IsNullOrEmpty(row[text.Header_ItemCode].ToString()) && row[text.Header_Status].ToString() != text.planning_status_idle)
                     {
                         dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.FromArgb(70,70,70);
                         dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.FromArgb(70,70,70);
                     }
                     else
                     {
-                        dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.Gainsboro;
-                        dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.Gainsboro;
+                        dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.WhiteSmoke;
+                        dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.WhiteSmoke;
                     }
                 }
             }
@@ -1025,25 +1210,25 @@ namespace FactoryManagementSoftware.UI
 
                         if (rawMode)
                         {
-                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.Gainsboro;
+                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.WhiteSmoke;
                         }
                         else if (colorMode)
                         {
-                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.Gainsboro;
+                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.WhiteSmoke;
 
                         }
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(row[text.Header_ItemCode].ToString()))
+                        if (string.IsNullOrEmpty(row[text.Header_ItemCode].ToString()) && row[text.Header_Status].ToString() != text.planning_status_idle)
                         {
                             dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.FromArgb(70,70,70);
                             dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.FromArgb(70,70,70);
                         }
                         else
                         {
-                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.Gainsboro;
-                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.Gainsboro;
+                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.WhiteSmoke;
+                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.WhiteSmoke;
                         }
                     }
                 }
@@ -2581,11 +2766,11 @@ namespace FactoryManagementSoftware.UI
 
             if (PlanStatus.Equals(text.planning_status_cancelled))
             {
-                ColorSet = Color.White;
+                ColorSet = Color.Gainsboro;
             }
             else if (PlanStatus.Equals(text.planning_status_completed))
             {
-                ColorSet = Color.Gainsboro;
+                ColorSet = Color.WhiteSmoke;
             }
             else if (PlanStatus.Equals(text.planning_status_delayed))
             {
@@ -2593,7 +2778,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (PlanStatus.Equals(text.planning_status_pending))
             {
-                ColorSet = Color.Gainsboro;
+                ColorSet = Color.WhiteSmoke;
             }
             else if (PlanStatus.Equals(text.planning_status_running))
             {
@@ -2602,6 +2787,10 @@ namespace FactoryManagementSoftware.UI
             else if (PlanStatus.Equals(text.planning_status_warning))
             {
                 ColorSet = Color.LightGreen;
+            }
+            else if (PlanStatus.Equals(text.planning_status_idle))
+            {
+                ColorSet = Color.Red;
             }
             else if (PlanStatus.Equals(text.planning_status_draft))
             {
@@ -2626,8 +2815,6 @@ namespace FactoryManagementSoftware.UI
             lblTotalToUse.Text = "";
             lblMatStock.Text = "";
 
-            
-
             foreach (DataRow row in dt.Rows)
             {
                 int rowIndex = dt.Rows.IndexOf(row);
@@ -2646,7 +2833,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (divider.Contains("factoryDivider"))
                     {
-                        dgv.Rows[rowIndex].Height = 60;
+                        dgv.Rows[rowIndex].Height = 120;
                     }
                     else
                     {
@@ -2666,19 +2853,18 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                   
+                    dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.WhiteSmoke;
+                    dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.WhiteSmoke;
 
-                    // dgv.Rows[rowIndex].Height = 50;
-                    dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.Gainsboro;
-                    dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.Gainsboro;
+                    // Color.Gainsboro;
                 }
 
 
-                if (!PlanStatus.Equals(text.planning_status_cancelled) && !PlanStatus.Equals(text.planning_status_completed) && PlanStatus != "")
+                if (!PlanStatus.Equals(text.planning_status_idle) && !PlanStatus.Equals(text.planning_status_cancelled) && !PlanStatus.Equals(text.planning_status_completed) && PlanStatus != "")
                 {
                     DateTime startDate = Convert.ToDateTime(row[text.Header_DateStart].ToString());
 
-                    int macID = Convert.ToInt32(row[text.Header_Mac].ToString());
+                    int macID = Convert.ToInt32(row[text.Header_MacID].ToString());
 
                     if (rowIndex + 1 <= dgv.Rows.Count - 1)
                     {
@@ -2686,10 +2872,10 @@ namespace FactoryManagementSoftware.UI
                         {
                             string otherStatus = dgv.Rows[i].Cells[text.Header_Status].Value.ToString();
 
-                            if (!otherStatus.Equals(text.planning_status_cancelled) && !otherStatus.Equals(text.planning_status_completed) && otherStatus != "")
+                            if (!otherStatus.Equals(text.planning_status_idle) && !otherStatus.Equals(text.planning_status_cancelled) && !otherStatus.Equals(text.planning_status_completed) && otherStatus != "")
                             {
                                 DateTime otherStart = Convert.ToDateTime(dgv.Rows[i].Cells[text.Header_DateStart].Value);
-                                int otherMacID = Convert.ToInt32(dgv.Rows[i].Cells[text.Header_Mac].Value);
+                                int otherMacID = Convert.ToInt32(dgv.Rows[i].Cells[text.Header_MacID].Value);
                                 if (startDate == otherStart && macID == otherMacID)
                                 {
                                     int planID = Convert.ToInt32(row[text.Header_JobNo].ToString());
@@ -2719,7 +2905,7 @@ namespace FactoryManagementSoftware.UI
             bool statusChanged = false;
 
             uPlanning.plan_id = (int)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_JobNo].Value;
-            uPlanning.machine_id = (int)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_Mac].Value;
+            uPlanning.machine_id = (int)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_MacID].Value;
             uPlanning.production_start_date = (DateTime)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_DateStart].Value;
             uPlanning.production_end_date = (DateTime)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_EstDateEnd].Value;
             uPlanning.recording = true;
@@ -2824,7 +3010,7 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
             uPlanning.plan_id = planID;
-            uPlanning.plan_remark = CELL_EDITING_NEW_VALUE;
+            uPlanning.plan_note = CELL_EDITING_NEW_VALUE;
             uPlanning.plan_updated_date = DateTime.Now;
             uPlanning.plan_updated_by = MainDashboard.USER_ID;
 
@@ -3016,7 +3202,7 @@ namespace FactoryManagementSoftware.UI
 
             int planID = Convert.ToInt32(dgv.Rows[rowIndex].Cells[text.Header_JobNo].Value);
 
-            int macID = Convert.ToInt32(dgv.Rows[rowIndex].Cells[text.Header_Mac].Value);
+            int macID = Convert.ToInt32(dgv.Rows[rowIndex].Cells[text.Header_MacID].Value);
 
             string presentStatus = dgv.Rows[rowIndex].Cells[text.Header_Status].Value.ToString();
 
@@ -3142,7 +3328,7 @@ namespace FactoryManagementSoftware.UI
         private void editSchedule(int rowIndex)
         {
             uPlanning.plan_id = (int)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_JobNo].Value;
-            uPlanning.machine_id = (int)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_Mac].Value;
+            uPlanning.machine_id = (int)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_MacID].Value;
             uPlanning.production_start_date = (DateTime)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_DateStart].Value;
             uPlanning.production_end_date = (DateTime)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_EstDateEnd].Value;
 
@@ -3161,6 +3347,8 @@ namespace FactoryManagementSoftware.UI
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+
+            userPermission = 5;
             //handle the row selection on right click
             if (e.Button == MouseButtons.Right && e.RowIndex > -1 && userPermission >= MainDashboard.ACTION_LVL_THREE)
             {
@@ -3235,7 +3423,8 @@ namespace FactoryManagementSoftware.UI
                 string planID = dgvMacSchedule.Rows[e.RowIndex].Cells[text.Header_JobNo].Value.ToString();
                 int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
                 //handle the row selection on right click
-               
+                userPermission = 5;
+
                     //MessageBox.Show("Plan ID: "+planID);
                     if (planID != null && userPermission >= MainDashboard.ACTION_LVL_THREE)
                 {

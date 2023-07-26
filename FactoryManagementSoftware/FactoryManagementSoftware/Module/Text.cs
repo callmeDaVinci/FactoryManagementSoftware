@@ -308,45 +308,45 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_Index { get; } = "#";
 
-        public string Header_Fac { get; } = "FAC.";
+        public string Header_Fac { get; } = "Fac.";
         public string Header_FacID { get; } = "FAC. ID";
-        public string Header_Mac{ get; } = "MAC.";
+        public string Header_Mac{ get; } = "Mac.";
         public string Header_MacID{ get; } = "MAC. ID";
         public string Header_MacName{ get; } = "MAC.";
         public string Header_Ori_DateStart { get; } = "ORI. START";
-        public string Header_DateStart { get; } = "START";
+        public string Header_DateStart { get; } = "Start";
         public string Header_Ori_EstDateEnd { get; } = "ORI. EST. END";
-        public string Header_EstDateEnd { get; } = "EST. END";
+        public string Header_EstDateEnd { get; } = "Est. End";
         public string Header_EstMacFreeDate { get; } = "EST. MACHINE FREE DATE";
 
         public string Header_DateFrom{ get; } = "FROM";
         public string Header_DateTo{ get; } = "TO";
-        public string Header_JobNo{ get; } = "JOB No.";
+        public string Header_JobNo{ get; } = "Job No.";
         public string Header_SheetID{ get; } = "SHEET ID";
         public string Header_Shift{ get; } = "SHIFT";
         public string Header_QCPassedQty { get; } = "QC PASSED QTY";
-        public string Header_TotalReject { get; } = "REJECTED QTY";
+        public string Header_TotalReject { get; } = "Rejected Qty";
 
-        public string Header_RejectRate { get; } = "REJECTED %";
+        public string Header_RejectRate { get; } = "Rejected %";
         public string Header_MaxOutput { get; } = "MAX Output";
         public string Header_ProducedQty { get; } = "Produced Qty";
-        public string Header_YieldRate { get; } = "YIELD %";
-        public string Header_IdealHourlyShot { get; } = "IDEAL HOURLY SHOT";
-        public string Header_AvgHourlyShot { get; } = "AVG HOURLY SHOT";
+        public string Header_YieldRate { get; } = "Yield %";
+        public string Header_IdealHourlyShot { get; } = "Ideal Hourly Shot";
+        public string Header_AvgHourlyShot { get; } = "Avg. Hourly Shot";
 
-        public string Header_EfficiencyRate { get; } = "EFFICIENCY %";
-        public string Header_TotalStockIn { get; } = "STOCK IN QTY";
+        public string Header_EfficiencyRate { get; } = "Efficiency %"; 
+        public string Header_TotalStockIn { get; } = "Stock In Qty";
         public string Header_TargetQty { get; } = "Target Qty";
-        public string Header_Qty { get; } = "QUANTITY";
+        public string Header_Qty { get; } = "Quantity";
         public string Header_AutoQtyAdjustment { get; } = "MAX Qty";
         public string Header_Job_Purpose { get; } = "Job Purpose";
 
 
-        public string Header_DefectRemark { get; } = "DEFECT REMARK";
-        public string Header_QtyReject { get; } = "QTY REJECT";
+        public string Header_DefectRemark { get; } = "Defect Remark";
+        public string Header_QtyReject { get; } = "Qty Rejected";
 
 
-        public string Header_ParentOrProduct { get; } = "PARENT/PRODUCT";
+        public string Header_ParentOrProduct { get; } = "Parent/Product";
 
         public string Header_DirectUseOn { get; } = "DIRECT USE ON (PARENT)";
         public string Header_GroupLevel { get; } = "LEVEL";
@@ -375,7 +375,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_JoinWastage { get; } = "JOIN WASTAGE";
         public string Header_PartNameWithParent { get; } = "PART NAME_(PARENT)";
         public string Header_PartName { get; } = "PART NAME";
-        public string Header_ItemNameAndCode { get; } = "ITEM NAME (CODE)";
+        public string Header_ItemNameAndCode { get; } = "Item Name (CODE)";
         public string Header_Parent { get; } = "PARENT";
         public string Header_Product { get; } = "OUTGOING PRODUCT";
         public string Header_OpeningStock { get; } = "OPENING STOCK";
@@ -405,7 +405,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_Remark { get; } = "Remark";
         public string Header_Note { get; } = "NOTE";
         public string Header_Category { get; } = "CATEGORY";
-        public string Header_Status { get; } = "STATUS";
+        public string Header_Status { get; } = "Status";
         public string Header_Ori_Status { get; } = "ORI. STATUS";
         public string Header_Type { get; } = "TYPE";
         public string Header_MatType { get; } = "MAT. TYPE";
@@ -428,7 +428,8 @@ namespace FactoryManagementSoftware.Module
         public string Header_MatCode { get; } = "MAT. CODE";
         public string Header_MatName { get; } = "MAT. NAME";
         public string Header_Color { get; } = "Color";
-        public string Header_ColorMat_KG { get; } = "Color Mat. KG";
+
+        public string Header_ColorMat_KG { get; } = "Color Mat. (KG)";
 
         public string Header_ItemWeight_KG { get; } = "ITEM WEIGHT(KG)";
         public string Header_KG { get; } = "kg";
@@ -464,13 +465,13 @@ namespace FactoryManagementSoftware.Module
         public string Header_QuoTon { get; } = "QUOTATION TON";
         public string Header_BestTon { get; } = "BEST TON";
         public string Header_ProTon { get; } = "Mac. Ton";
-        public string Header_ColorMat { get; } = "COLOR MATERIAL";
+        public string Header_ColorMat { get; } = "Color Mat.";
         public string Header_ColorMatCode { get; } = "COLOR MATERIAL CODE";
         public string Header_Month { get; } = "MONTH";
         public string Header_OldValue { get; } = "OLD VALUE";
         public string Header_NewValue { get; } = "NEW VALUE";
 
-        public string Header_ColorRate { get; } = "COLOR MATERIAL RATE (%)";
+        public string Header_ColorRate { get; } = "Color Mat. Rate (%)";
         public string Header_Ratio { get; } = "Ratio (%)";
         public string Header_RoundUp_ToBag { get; } = "Round Up To Bag";
 

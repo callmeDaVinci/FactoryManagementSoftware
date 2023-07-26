@@ -384,7 +384,7 @@ namespace FactoryManagementSoftware.UI
             {
                 //save planning data
                 DateTime date = DateTime.Now;
-                BLL_JOB_SUMMARY.plan_remark = txtRemark.Text;
+                BLL_JOB_SUMMARY.plan_note = txtRemark.Text;
 
                 if(NEWDraftJob)
                 {
@@ -446,7 +446,7 @@ namespace FactoryManagementSoftware.UI
 
                                     PlanningBLL updateFamily = new PlanningBLL();
                                     updateFamily.plan_id = familyWith;
-                                    updateFamily.plan_remark = txtRemark.Text + text.planning_Family_mould_Remark;
+                                    updateFamily.plan_note = txtRemark.Text + text.planning_Family_mould_Remark;
                                     updateFamily.family_with = familyWith;
                                     updateFamily.plan_updated_date = date;
                                     updateFamily.plan_updated_by = MainDashboard.USER_ID;
@@ -455,7 +455,7 @@ namespace FactoryManagementSoftware.UI
                                 }
                                 else
                                 {
-                                    BLL_JOB_SUMMARY.plan_remark = txtRemark.Text + text.planning_Family_mould_Remark;
+                                    BLL_JOB_SUMMARY.plan_note = txtRemark.Text + text.planning_Family_mould_Remark;
 
                                     jobID = dalPlanningAction.NewplanningAdd(BLL_JOB_SUMMARY);
 

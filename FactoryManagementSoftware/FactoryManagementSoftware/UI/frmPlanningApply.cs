@@ -410,7 +410,7 @@ namespace FactoryManagementSoftware.UI
                         uPlanning.plan_status = text.planning_status_pending;
 
                         //check material short
-                        uPlanning.plan_remark = note + MatShortRemark();
+                        uPlanning.plan_note = note + MatShortRemark();
                         uPlanning.machine_id = Convert.ToInt32(cmbID.Text);
                         uPlanning.production_start_date = dtpStartDate.Value;
                         uPlanning.production_end_date = dtpEstimateEndDate.Value;
@@ -436,7 +436,7 @@ namespace FactoryManagementSoftware.UI
 
                                 PlanningBLL updateFamily = new PlanningBLL();
                                 updateFamily.plan_id = familyWith;
-                                updateFamily.plan_remark = text.planning_Family_mould_Remark + oldNote;
+                                updateFamily.plan_note = text.planning_Family_mould_Remark + oldNote;
                                 updateFamily.family_with = familyWith;
                                 updateFamily.plan_updated_date = DateTime.Now;
                                 updateFamily.plan_updated_by = MainDashboard.USER_ID;
@@ -455,7 +455,7 @@ namespace FactoryManagementSoftware.UI
                                 uPlanning.family_with = familyWith;
                             }
                             
-                            uPlanning.plan_remark = text.planning_Family_mould_Remark;
+                            uPlanning.plan_note = text.planning_Family_mould_Remark;
                             
                         }
 

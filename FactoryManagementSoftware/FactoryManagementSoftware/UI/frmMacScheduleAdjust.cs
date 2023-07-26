@@ -1020,7 +1020,7 @@ namespace FactoryManagementSoftware.UI
                                 string oldNote = oldData[dalPlanning.planNote].ToString();
 
                                 uPlanning.family_with = oldFamilyWith;
-                                uPlanning.plan_remark = oldNote;
+                                uPlanning.plan_note = oldNote;
 
                                 string oldStatus = oldData[dalPlanning.planStatus].ToString();
                                 success = dalPlanningAction.planningStatusAndScheduleChange(uPlanning,oldStatus,oldStart,oldEnd, oldFamilyWith);
