@@ -522,7 +522,7 @@
             this.btnAdjustCollisionDateBySystem.AnimationHoverSpeed = 0.07F;
             this.btnAdjustCollisionDateBySystem.AnimationSpeed = 0.03F;
             this.btnAdjustCollisionDateBySystem.BackColor = System.Drawing.Color.Transparent;
-            this.btnAdjustCollisionDateBySystem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(204)))));
+            this.btnAdjustCollisionDateBySystem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(147)))), ((int)(((byte)(147)))));
             this.btnAdjustCollisionDateBySystem.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(241)))), ((int)(((byte)(154)))));
             this.btnAdjustCollisionDateBySystem.BorderColor = System.Drawing.Color.Black;
             this.btnAdjustCollisionDateBySystem.BorderSize = 1;

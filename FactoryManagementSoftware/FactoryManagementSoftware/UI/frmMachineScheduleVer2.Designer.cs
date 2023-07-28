@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvMacSchedule = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -100,6 +100,7 @@
             // 
             // dgvMacSchedule
             // 
+            this.dgvMacSchedule.AllowDrop = true;
             this.dgvMacSchedule.AllowUserToAddRows = false;
             this.dgvMacSchedule.AllowUserToDeleteRows = false;
             this.dgvMacSchedule.AllowUserToOrderColumns = true;
@@ -108,18 +109,19 @@
             this.dgvMacSchedule.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvMacSchedule.ColumnHeadersHeight = 50;
             this.dgvMacSchedule.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.WhiteSmoke;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMacSchedule.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.WhiteSmoke;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMacSchedule.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvMacSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMacSchedule.GridColor = System.Drawing.Color.Silver;
             this.dgvMacSchedule.Location = new System.Drawing.Point(2, 258);
             this.dgvMacSchedule.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.dgvMacSchedule.MultiSelect = false;
             this.dgvMacSchedule.Name = "dgvMacSchedule";
             this.dgvMacSchedule.RowHeadersVisible = false;
             this.dgvMacSchedule.RowHeadersWidth = 51;
@@ -130,9 +132,15 @@
             this.dgvMacSchedule.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSchedule_CellClick);
             this.dgvMacSchedule.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSchedule_CellDoubleClick);
             this.dgvMacSchedule.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSchedule_CellEndEdit);
+            this.dgvMacSchedule.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMacSchedule_CellFormatting);
             this.dgvMacSchedule.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvSchedule_CellMouseDown);
             this.dgvMacSchedule.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSchedule_CellValueChanged);
             this.dgvMacSchedule.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvSchedule_EditingControlShowing);
+            this.dgvMacSchedule.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragDrop);
+            this.dgvMacSchedule.DragOver += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragOver);
+            this.dgvMacSchedule.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvMacSchedule_MouseClick);
+            this.dgvMacSchedule.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseDown);
+            this.dgvMacSchedule.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseMove);
             // 
             // label1
             // 
@@ -817,7 +825,7 @@
             this.btnAdjustCollisionDateBySystem.AnimationHoverSpeed = 0.07F;
             this.btnAdjustCollisionDateBySystem.AnimationSpeed = 0.03F;
             this.btnAdjustCollisionDateBySystem.BackColor = System.Drawing.Color.Transparent;
-            this.btnAdjustCollisionDateBySystem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(204)))));
+            this.btnAdjustCollisionDateBySystem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(147)))), ((int)(((byte)(147)))));
             this.btnAdjustCollisionDateBySystem.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(241)))), ((int)(((byte)(154)))));
             this.btnAdjustCollisionDateBySystem.BorderColor = System.Drawing.Color.Black;
             this.btnAdjustCollisionDateBySystem.BorderSize = 1;
@@ -841,6 +849,7 @@
             this.btnAdjustCollisionDateBySystem.TabIndex = 225;
             this.btnAdjustCollisionDateBySystem.Text = "Adjust Collision Date";
             this.btnAdjustCollisionDateBySystem.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnAdjustCollisionDateBySystem.Click += new System.EventHandler(this.btnAdjustCollisionDateBySystem_Click);
             // 
             // tableLayoutPanel10
             // 

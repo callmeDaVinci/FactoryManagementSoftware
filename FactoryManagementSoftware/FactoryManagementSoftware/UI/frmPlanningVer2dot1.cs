@@ -4424,7 +4424,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        if(Date_Start < LastRow_EndDate && LastRow_EndDate != DateTime.MaxValue && (LastFamilyWith != FamilyWith || string.IsNullOrEmpty(FamilyWith)))
+                        if(Date_Start < LastRow_EndDate && LastRow_EndDate != DateTime.MaxValue && (LastFamilyWith != FamilyWith || FamilyWith == "-1" || string.IsNullOrEmpty(FamilyWith)))
                         {
                             row.Cells[text.Header_DateStart].Style.BackColor = Color.Red;
                             DateCollisionFound = true;
@@ -5244,7 +5244,6 @@ namespace FactoryManagementSoftware.UI
                 MacScheduleListCellFormatting(dgvMacSchedule);
                 rowIndexOfItemUnderMouseToDrop = rowIndexToDrop;
 
-
             }
         }
 
@@ -5418,7 +5417,7 @@ namespace FactoryManagementSoftware.UI
                         }
                         else
                         {
-                            if (Date_Start < LastRow_EndDate && LastRow_EndDate != DateTime.MaxValue && (LastFamilyWith != FamilyWith || string.IsNullOrEmpty(FamilyWith)))
+                            if (Date_Start < LastRow_EndDate && LastRow_EndDate != DateTime.MaxValue && (LastFamilyWith != FamilyWith || FamilyWith == "-1" ||string.IsNullOrEmpty(FamilyWith)))
                             {
                                 startError = true;
                             }
@@ -6854,5 +6853,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
         }
+
+        
     }
 }
