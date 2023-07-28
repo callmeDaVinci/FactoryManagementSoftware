@@ -455,90 +455,78 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public bool NewInsert(PlanningBLL u)
+      
+        #endregion
+
+        #region Update data in Database
+
+        public bool JobUpdate(PlanningBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             try
             {
-                String sql = @"INSERT INTO tbl_plan 
-                            (" + planAddedDate + ","
-                            + planAddedBy + ","
-                            + planStatus + ","
-                            + planNote + ","
-                            + planCT + ","
-                            + planPW + ","
-                            + planItemPW + ","
-                            + planRW + ","
-                            + planCavity + ","
-                            + planItemCavity + ","
-                            + partCode + ","
-                            + productionPurpose + ","
-                            + materialCode + ","
-                            + materialBagQty_1 + ","
-                            + rawMaterialQty_1 + ","
-                            + materialRecycleUse + ","
-                            + colorMaterialCode + ","
-                            + colorMaterialUsage + ","
-                            + colorMaterialQty + ","
-                            + targetQty + ","
-                            + ableQty + ","
-                            + productionDay + ","
-                            + productionHour + ","
-                            + productionHourPerDay + ","
-                            + productionStartDate + ","
-                            + productionEndDate + ","
-                            + machineID + ","
-                            + planMouldCode + ","
-                            + familyWith + ") VALUES" +
-                            "(@plan_added_date," +
-                            "@plan_added_by," +
-                            "@plan_status," +
-                            "@plan_note," +
-                            "@plan_ct," +
-                            "@plan_pw," +
-                            "@plan_item_pw," +
-                            "@plan_rw," +
-                            "@plan_cavity," +
-                            "@plan_item_cavity," +
-                            "@part_code," +
-                            "@production_purpose," +
-                            "@material_code," +
-                            "@material_bag_qty," +
-                            "@raw_material_qty," +
-                            "@material_recycle_use," +
-                            "@color_material_code," +
-                            "@color_material_usage," +
-                            "@color_material_qty," +
-                            "@production_target_qty," +
-                            "@production_able_produce_qty," +
-                            "@production_day," +
-                            "@production_hour," +
-                            "@production_hour_per_day," +
-                            "@production_start_date," +
-                            "@production_end_date," +
-                            "@machine_id," +
-                            "@plan_mould_code," +
-                            "@family_with)";
+             String sql = @"UPDATE tbl_plan
+                            SET "
+                           + targetQty + "=@production_target_qty,"
+                           + ableQty + "=@production_able_produce_qty,"
+                           + productionDay + "=@production_day,"
+                           + productionHour + "=@production_hour,"
+                           + productionHourPerDay + "=@production_hour_per_day,"
+                           + materialCode + "=@material_code,"
+                           + materialBagQty_1 + "=@material_bag_qty,"
+                           + rawMaterialQty_1 + "=@raw_material_qty,"
+                           + rawMatRatio_1 + "=@raw_mat_ratio_1,"
+                           + materialCode2 + "=@material_code_2,"
+                           + materialBagQty_2 + "=@material_bag_qty_2,"
+                           + rawMaterialQty_2 + "=@raw_material_qty_2,"
+                           + rawMatRatio_2 + "=@raw_mat_ratio_2,"
+                           + colorMaterialCode + "=@color_material_code,"
+                           + colorMaterialUsage + "=@color_material_usage,"
+                           + colorMaterialQty + "=@color_material_qty,"
+                           + materialRecycleUse + "=@material_recycle_use,"
+                           + planCavity + "=@plan_cavity,"
+                           + planPW + "=@plan_pw,"
+                           + planRW + "=@plan_rw,"
+                           + planCT + "=@plan_ct,"
+                           + planNote + "=@plan_note,"
+                           + productionPurpose + "=@production_purpose,"
+                           + productionStartDate + "=@production_start_date,"
+                           + productionEndDate + "=@production_end_date,"
+                           + machineID + "=@machine_id,"
+                           + familyWith + "=@family_with,"
+                           + planStatus + "=@plan_status,"
+                           + planUpdatedDate + "=@plan_updated_date,"
+                           + planUpdatedby + "=@plan_updated_by" +
+                           " WHERE plan_id=@plan_id";
+
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@plan_added_date", u.plan_added_date);
-                cmd.Parameters.AddWithValue("@plan_added_by", u.plan_added_by);
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
+                cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
+
                 cmd.Parameters.AddWithValue("@plan_status", u.plan_status);
                 cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
                 cmd.Parameters.AddWithValue("@plan_ct", u.plan_ct);
                 cmd.Parameters.AddWithValue("@plan_pw", u.plan_pw);
-                cmd.Parameters.AddWithValue("@plan_item_pw", u.plan_item_pw);
                 cmd.Parameters.AddWithValue("@plan_rw", u.plan_rw);
                 cmd.Parameters.AddWithValue("@plan_cavity", u.plan_cavity);
-                cmd.Parameters.AddWithValue("@plan_item_cavity", u.plan_item_cavity);
                 cmd.Parameters.AddWithValue("@part_code", u.part_code);
                 cmd.Parameters.AddWithValue("@production_purpose", u.production_purpose);
+
                 cmd.Parameters.AddWithValue("@material_code", u.material_code);
                 cmd.Parameters.AddWithValue("@material_bag_qty", u.material_bag_qty);
                 cmd.Parameters.AddWithValue("@raw_material_qty", u.raw_material_qty);
+                cmd.Parameters.AddWithValue("@raw_mat_ratio_1", u.raw_mat_ratio_1);
+
+                cmd.Parameters.AddWithValue("@material_code_2", u.material_code_2);
+                cmd.Parameters.AddWithValue("@material_bag_qty_2", u.material_bag_qty_2);
+                cmd.Parameters.AddWithValue("@raw_material_qty_2", u.raw_material_qty_2);
+                cmd.Parameters.AddWithValue("@raw_mat_ratio_2", u.raw_mat_ratio_2);
+
                 cmd.Parameters.AddWithValue("@material_recycle_use", u.material_recycle_use);
                 cmd.Parameters.AddWithValue("@color_material_code", u.color_material_code);
                 cmd.Parameters.AddWithValue("@color_material_usage", u.color_material_usage);
@@ -551,7 +539,6 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@production_start_date", u.production_start_date);
                 cmd.Parameters.AddWithValue("@production_end_date", u.production_end_date);
                 cmd.Parameters.AddWithValue("@machine_id", u.machine_id);
-                cmd.Parameters.AddWithValue("@plan_mould_code", u.plan_mould_code);
                 cmd.Parameters.AddWithValue("@family_with", u.family_with);
 
                 conn.Open();
@@ -569,22 +556,18 @@ namespace FactoryManagementSoftware.DAL
                     //Query falled
                     isSuccess = false;
                 }
-
             }
             catch (Exception ex)
             {
-                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
             }
             finally
             {
                 conn.Close();
             }
             return isSuccess;
+
         }
-        #endregion
-
-        #region Update data in Database
-
         public bool TargetQtyUpdate(PlanningBLL u)
         {
             bool isSuccess = false;

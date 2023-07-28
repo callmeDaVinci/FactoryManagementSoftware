@@ -174,6 +174,7 @@ namespace FactoryManagementSoftware.Module
         public string planning_status_warning { get; } = "WARNING";//red
         public string planning_status_draft { get; } = "DRAFT";
         public string planning_status_new_draft { get; } = "NEW DRAFT";
+        public string planning_status_edting { get; } = "EDITING";
         public string planning_status_to_update { get; } = "TO UPDATE";
         public string planning_status_running { get; } = "RUNNING";//green
         public string planning_status_delayed { get; } = "DELAYED";//yellow
@@ -183,6 +184,7 @@ namespace FactoryManagementSoftware.Module
 
         //PLANNING ACTION HISTORY////////////////////////////////////////////////////////////////////////////
         public string plan_Added { get; } = "PLAN ADD";
+        public string plan_Updated { get; } = "PLAN UPDATE";
         public string plan_Target_Qty_Change { get; } = "PLAN TARGET QTY CHANGE";
 
         public string plan_schedule_change { get; } = "PLAN SCHEDULE CHANGE";
@@ -355,6 +357,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
         public string Header_PartCode { get; } = "PART CODE";
         public string Header_ItemCode { get; } = "ITEM CODE";
+        public string Header_ItemCode_Present { get; } = "ITEM CODE PRESENT";
         public string Header_MouldCode { get; } = "Mould Code";
         public string Header_MouldSelection { get; } = "Mould Selection";
         public string Header_ItemSelection { get; } = "Item Selection";

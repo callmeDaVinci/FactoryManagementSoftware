@@ -70,6 +70,7 @@
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.btnFilterApply = new Guna.UI.WinForms.GunaGradientButton();
             this.tlpMainSchedule = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAdjustCollisionDateBySystem = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.lblMatStock = new System.Windows.Forms.Label();
             this.lblTotalUsed = new System.Windows.Forms.Label();
@@ -77,7 +78,6 @@
             this.lblTotalPlannedToUse = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnAdjustCollisionDateBySystem = new Guna.UI.WinForms.GunaGradientButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMacSchedule)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -496,9 +496,9 @@
             // 
             this.tableLayoutPanel2.BackColor = System.Drawing.Color.Transparent;
             this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 34F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
             this.tableLayoutPanel2.Controls.Add(this.cbDraft, 2, 1);
             this.tableLayoutPanel2.Controls.Add(this.cbCompleted, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.cbCancelled, 1, 1);
@@ -510,7 +510,7 @@
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(432, 64);
             this.tableLayoutPanel2.TabIndex = 115;
@@ -521,7 +521,7 @@
             this.cbDraft.AutoSize = true;
             this.cbDraft.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbDraft.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbDraft.Location = new System.Drawing.Point(290, 33);
+            this.cbDraft.Location = new System.Drawing.Point(290, 35);
             this.cbDraft.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cbDraft.Name = "cbDraft";
             this.cbDraft.Size = new System.Drawing.Size(62, 23);
@@ -535,7 +535,7 @@
             this.cbCompleted.AutoSize = true;
             this.cbCompleted.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbCompleted.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbCompleted.Location = new System.Drawing.Point(2, 33);
+            this.cbCompleted.Location = new System.Drawing.Point(2, 35);
             this.cbCompleted.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cbCompleted.Name = "cbCompleted";
             this.cbCompleted.Size = new System.Drawing.Size(98, 23);
@@ -550,7 +550,7 @@
             this.cbCancelled.AutoSize = true;
             this.cbCancelled.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbCancelled.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbCancelled.Location = new System.Drawing.Point(146, 33);
+            this.cbCancelled.Location = new System.Drawing.Point(148, 35);
             this.cbCancelled.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cbCancelled.Name = "cbCancelled";
             this.cbCancelled.Size = new System.Drawing.Size(89, 23);
@@ -566,10 +566,10 @@
             this.cbPending.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbPending.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbPending.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbPending.Location = new System.Drawing.Point(2, 3);
+            this.cbPending.Location = new System.Drawing.Point(2, 4);
             this.cbPending.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cbPending.Name = "cbPending";
-            this.cbPending.Size = new System.Drawing.Size(80, 20);
+            this.cbPending.Size = new System.Drawing.Size(80, 23);
             this.cbPending.TabIndex = 94;
             this.cbPending.Text = "Pending";
             this.cbPending.UseVisualStyleBackColor = true;
@@ -582,10 +582,10 @@
             this.cbRunning.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbRunning.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbRunning.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbRunning.Location = new System.Drawing.Point(146, 3);
+            this.cbRunning.Location = new System.Drawing.Point(148, 4);
             this.cbRunning.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cbRunning.Name = "cbRunning";
-            this.cbRunning.Size = new System.Drawing.Size(82, 20);
+            this.cbRunning.Size = new System.Drawing.Size(82, 23);
             this.cbRunning.TabIndex = 95;
             this.cbRunning.Text = "Running";
             this.cbRunning.UseVisualStyleBackColor = true;
@@ -599,10 +599,10 @@
             this.cbWarning.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbWarning.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbWarning.ForeColor = System.Drawing.Color.Black;
-            this.cbWarning.Location = new System.Drawing.Point(290, 3);
+            this.cbWarning.Location = new System.Drawing.Point(290, 4);
             this.cbWarning.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cbWarning.Name = "cbWarning";
-            this.cbWarning.Size = new System.Drawing.Size(82, 20);
+            this.cbWarning.Size = new System.Drawing.Size(82, 23);
             this.cbWarning.TabIndex = 96;
             this.cbWarning.Text = "Warning";
             this.cbWarning.UseVisualStyleBackColor = true;
@@ -812,6 +812,36 @@
             this.tlpMainSchedule.Size = new System.Drawing.Size(1285, 700);
             this.tlpMainSchedule.TabIndex = 117;
             // 
+            // btnAdjustCollisionDateBySystem
+            // 
+            this.btnAdjustCollisionDateBySystem.AnimationHoverSpeed = 0.07F;
+            this.btnAdjustCollisionDateBySystem.AnimationSpeed = 0.03F;
+            this.btnAdjustCollisionDateBySystem.BackColor = System.Drawing.Color.Transparent;
+            this.btnAdjustCollisionDateBySystem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(204)))));
+            this.btnAdjustCollisionDateBySystem.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(241)))), ((int)(((byte)(154)))));
+            this.btnAdjustCollisionDateBySystem.BorderColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.BorderSize = 1;
+            this.btnAdjustCollisionDateBySystem.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnAdjustCollisionDateBySystem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAdjustCollisionDateBySystem.FocusedColor = System.Drawing.Color.Empty;
+            this.btnAdjustCollisionDateBySystem.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.btnAdjustCollisionDateBySystem.ForeColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.Image = null;
+            this.btnAdjustCollisionDateBySystem.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnAdjustCollisionDateBySystem.Location = new System.Drawing.Point(3, 647);
+            this.btnAdjustCollisionDateBySystem.Name = "btnAdjustCollisionDateBySystem";
+            this.btnAdjustCollisionDateBySystem.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnAdjustCollisionDateBySystem.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnAdjustCollisionDateBySystem.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnAdjustCollisionDateBySystem.OnHoverImage = null;
+            this.btnAdjustCollisionDateBySystem.OnPressedColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.Radius = 2;
+            this.btnAdjustCollisionDateBySystem.Size = new System.Drawing.Size(1279, 50);
+            this.btnAdjustCollisionDateBySystem.TabIndex = 225;
+            this.btnAdjustCollisionDateBySystem.Text = "Adjust Collision Date";
+            this.btnAdjustCollisionDateBySystem.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // tableLayoutPanel10
             // 
             this.tableLayoutPanel10.ColumnCount = 5;
@@ -906,36 +936,6 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel7.Size = new System.Drawing.Size(1313, 734);
             this.tableLayoutPanel7.TabIndex = 168;
-            // 
-            // btnAdjustCollisionDateBySystem
-            // 
-            this.btnAdjustCollisionDateBySystem.AnimationHoverSpeed = 0.07F;
-            this.btnAdjustCollisionDateBySystem.AnimationSpeed = 0.03F;
-            this.btnAdjustCollisionDateBySystem.BackColor = System.Drawing.Color.Transparent;
-            this.btnAdjustCollisionDateBySystem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(204)))));
-            this.btnAdjustCollisionDateBySystem.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(241)))), ((int)(((byte)(154)))));
-            this.btnAdjustCollisionDateBySystem.BorderColor = System.Drawing.Color.Black;
-            this.btnAdjustCollisionDateBySystem.BorderSize = 1;
-            this.btnAdjustCollisionDateBySystem.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnAdjustCollisionDateBySystem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAdjustCollisionDateBySystem.FocusedColor = System.Drawing.Color.Empty;
-            this.btnAdjustCollisionDateBySystem.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.btnAdjustCollisionDateBySystem.ForeColor = System.Drawing.Color.Black;
-            this.btnAdjustCollisionDateBySystem.Image = null;
-            this.btnAdjustCollisionDateBySystem.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnAdjustCollisionDateBySystem.Location = new System.Drawing.Point(3, 647);
-            this.btnAdjustCollisionDateBySystem.Name = "btnAdjustCollisionDateBySystem";
-            this.btnAdjustCollisionDateBySystem.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnAdjustCollisionDateBySystem.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnAdjustCollisionDateBySystem.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnAdjustCollisionDateBySystem.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnAdjustCollisionDateBySystem.OnHoverImage = null;
-            this.btnAdjustCollisionDateBySystem.OnPressedColor = System.Drawing.Color.Black;
-            this.btnAdjustCollisionDateBySystem.Radius = 2;
-            this.btnAdjustCollisionDateBySystem.Size = new System.Drawing.Size(1279, 50);
-            this.btnAdjustCollisionDateBySystem.TabIndex = 225;
-            this.btnAdjustCollisionDateBySystem.Text = "Adjust Collision Date";
-            this.btnAdjustCollisionDateBySystem.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // frmMachineScheduleVer2
             // 

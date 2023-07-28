@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Text.RegularExpressions;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -212,6 +213,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_ProductionHour, typeof(double));
             dt.Columns.Add(text.Header_ItemName, typeof(string));
             dt.Columns.Add(text.Header_ItemCode, typeof(string));
+            dt.Columns.Add(text.Header_ItemCode_Present, typeof(string));
             dt.Columns.Add(text.Header_ProCT, typeof(int));
             dt.Columns.Add(text.Header_Cavity, typeof(int));
             dt.Columns.Add(text.Header_ProPwShot, typeof(double));
@@ -229,6 +231,8 @@ namespace FactoryManagementSoftware.UI
 
             dt.Columns.Add(text.Header_Recycle_Qty, typeof(int));
             dt.Columns.Add(text.Header_ColorMatCode, typeof(string));
+
+            dt.Columns.Add(text.Header_FamilyWithJobNo, typeof(string));
 
             return dt;
         }
@@ -256,6 +260,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_ColorMatCode].Visible = false;
            
             dgv.Columns[text.Header_ItemCode].Visible = false;
+            dgv.Columns[text.Header_ItemCode_Present].Visible = false;
             dgv.Columns[text.Header_ItemName].Visible = false;
             dgv.Columns[text.Header_Recycle_Qty].Visible = false;
             dgv.Columns[text.Header_FacID].Visible = false;
@@ -265,8 +270,6 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_ProductionDay].Visible = false;
             dgv.Columns[text.Header_ProductionHourPerDay].Visible = false;
             dgv.Columns[text.Header_ProductionHour].Visible = false;
-            dgv.Columns[text.Header_ItemName].Visible = false;
-            dgv.Columns[text.Header_ItemCode].Visible = false;
             dgv.Columns[text.Header_ProCT].Visible = false;
          
             dgv.Columns[text.Header_Recycle_Qty].Visible = false;
@@ -287,6 +290,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_RawMat_2_Ratio].Visible = false;
 
             dgv.Columns[text.Header_ColorRate].Visible = false;
+            dgv.Columns[text.Header_FamilyWithJobNo].Visible = false;
 
 
             Color normalColor = Color.Black;
@@ -302,6 +306,8 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_ItemNameAndCode].Frozen = true;
 
 
+            dgv.Columns[text.Header_Remark].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgv.Columns[text.Header_Job_Purpose].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
             //dgv.Columns[text.Header_RawMat_String].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             //dgv.Columns[text.Header_RawMat_String].MinimumWidth = 100;
@@ -548,8 +554,199 @@ namespace FactoryManagementSoftware.UI
         }
 
 
+        private DataTable AddIdleMachine(DataTable dt_Schedule)
+        {
+            if (cbRunning.Checked && cbPending.Checked)
+            {
+                //Idle machine adding
+                foreach (var machine in MachineList)
+                {
+                    // Check if the machine id from MachineList is not found in dt_Schedule.
+                    bool IdleMachineFound = !dt_Schedule.AsEnumerable().Any(row => !row.IsNull(text.Header_MacID) && row.Field<int>(text.Header_MacID) == machine.Item3);
+
+                    if (IdleMachineFound)
+                    {
+                        // Add a new row for this machine.
+                        DataRow idleRow = dt_Schedule.NewRow();
+                        DataRow row_Schedule;
+
+                        // Populate the necessary fields for this row.
+                        idleRow[text.Header_Status] = text.planning_status_idle;
+                        idleRow[text.Header_FacID] = machine.Item1;
+                        idleRow[text.Header_Fac] = machine.Item2;
+                        idleRow[text.Header_MacID] = machine.Item3;
+                        idleRow[text.Header_Mac] = machine.Item4;
+
+
+                        // Find the rows with the same fac id.
+                        var rows = dt_Schedule.AsEnumerable()
+                            .Where(row => !row.IsNull(text.Header_FacID) && row.Field<int>(text.Header_FacID) == machine.Item1)
+                            .ToList();
+
+                        // If no such rows exist, simply add the row at the end.
+                        if (!rows.Any())
+                        {
+                            row_Schedule = dt_Schedule.NewRow();
+                            row_Schedule[text.Header_ItemName] = "factoryDivider";
+                            dt_Schedule.Rows.Add(row_Schedule);
+
+                            dt_Schedule.Rows.Add(idleRow);
+                        }
+                        else
+                        {
+                            int prevRowIndex = -1;
+                            int maxStringCompare = 0;
+
+                            foreach (DataRow row in dt_Schedule.Rows)
+                            {
+                                string facID = row[text.Header_FacID].ToString();
+                                string macName = row[text.Header_Mac].ToString();
+
+                                if (facID == machine.Item1.ToString())
+                                {
+                                    int stringCompare = string.Compare(macName.ToUpper().Replace(" ", ""), machine.Item4, StringComparison.Ordinal);
+
+                                    if (stringCompare < 0)
+                                    {
+                                        if (maxStringCompare == 0)
+                                        {
+                                            maxStringCompare = stringCompare;
+                                        }
+
+                                        if (maxStringCompare <= stringCompare)
+                                        {
+                                            prevRowIndex = dt_Schedule.Rows.IndexOf(row);
+                                            maxStringCompare = stringCompare;
+                                        }
+
+
+                                    }
+                                }
+                            }
+
+                            if (prevRowIndex > -1)
+                            {
+
+                                // Insert the new row after it.
+                                row_Schedule = dt_Schedule.NewRow();
+                                row_Schedule[text.Header_ItemName] = "machineDivider";
+
+                                dt_Schedule.Rows.InsertAt(row_Schedule, prevRowIndex + 1);
+
+                                dt_Schedule.Rows.InsertAt(idleRow, prevRowIndex + 2);
+                            }
+                            else
+                            {
+                                dt_Schedule.Rows.InsertAt(idleRow, 0);
+                            }
+
+
+                        }
+                    }
+                }
+            }
+             
+
+            return dt_Schedule;
+        }
+
+        private void AddIdleMachine(DataGridView dgv)
+        {
+            if (dgv?.Rows.Count > 0 && cbRunning.Checked && cbPending.Checked)
+            {
+                DataTable dt_Schedule = (DataTable)dgv.DataSource;
+                //Idle machine adding
+                foreach (var machine in MachineList)
+                {
+                    // Check if the machine id from MachineList is not found in dt_Schedule.
+                    bool IdleMachineFound = !dt_Schedule.AsEnumerable().Any(row => !row.IsNull(text.Header_MacID) && row.Field<int>(text.Header_MacID) == machine.Item3);
+
+                    if (IdleMachineFound)
+                    {
+                        // Add a new row for this machine.
+                        DataRow idleRow = dt_Schedule.NewRow();
+                        DataRow row_Schedule;
+
+                        // Populate the necessary fields for this row.
+                        idleRow[text.Header_Status] = text.planning_status_idle;
+                        idleRow[text.Header_FacID] = machine.Item1;
+                        idleRow[text.Header_Fac] = machine.Item2;
+                        idleRow[text.Header_MacID] = machine.Item3;
+                        idleRow[text.Header_Mac] = machine.Item4;
+
+
+                        // Find the rows with the same fac id.
+                        var rows = dt_Schedule.AsEnumerable()
+                            .Where(row => !row.IsNull(text.Header_FacID) && row.Field<int>(text.Header_FacID) == machine.Item1)
+                            .ToList();
+
+                        // If no such rows exist, simply add the row at the end.
+                        if (!rows.Any())
+                        {
+                            row_Schedule = dt_Schedule.NewRow();
+                            row_Schedule[text.Header_ItemName] = "factoryDivider";
+                            dt_Schedule.Rows.Add(row_Schedule);
+
+                            dt_Schedule.Rows.Add(idleRow);
+                        }
+                        else
+                        {
+                            int prevRowIndex = -1;
+                            int maxStringCompare = 0;
+
+                            foreach (DataRow row in dt_Schedule.Rows)
+                            {
+                                string facID = row[text.Header_FacID].ToString();
+                                string macName = row[text.Header_Mac].ToString();
+
+                                if (facID == machine.Item1.ToString())
+                                {
+                                    int stringCompare = string.Compare(macName.ToUpper().Replace(" ", ""), machine.Item4, StringComparison.Ordinal);
+
+                                    if (stringCompare < 0)
+                                    {
+                                        if (maxStringCompare == 0)
+                                        {
+                                            maxStringCompare = stringCompare;
+                                        }
+
+                                        if (maxStringCompare <= stringCompare)
+                                        {
+                                            prevRowIndex = dt_Schedule.Rows.IndexOf(row);
+                                            maxStringCompare = stringCompare;
+                                        }
+
+
+                                    }
+                                }
+                            }
+
+                            if (prevRowIndex > -1)
+                            {
+
+                                // Insert the new row after it.
+                                row_Schedule = dt_Schedule.NewRow();
+                                row_Schedule[text.Header_ItemName] = "machineDivider";
+
+                                dt_Schedule.Rows.InsertAt(row_Schedule, prevRowIndex + 1);
+
+                                dt_Schedule.Rows.InsertAt(idleRow, prevRowIndex + 2);
+                            }
+                            else
+                            {
+                                dt_Schedule.Rows.InsertAt(idleRow, 0);
+                            }
+
+
+                        }
+                    }
+                }
+            }
+        }
+
         private void New_LoadMacSchedule()
         {
+            JOB_EDIT_MODE = false;
             lblTotalPlannedToUse.Text = "";
             lblTotalUsed.Text = "";
             lblTotalToUse.Text = "";
@@ -813,7 +1010,7 @@ namespace FactoryManagementSoftware.UI
                     if(!string.IsNullOrEmpty(machineDivider) || !string.IsNullOrEmpty(factoryDivider))
                     {
                         row_Schedule = dt_Schedule.NewRow();
-                        row_Schedule[text.Header_ItemNameAndCode] = factoryDivider + machineDivider;
+                        row_Schedule[text.Header_ItemName] = factoryDivider + machineDivider;
                         dt_Schedule.Rows.Add(row_Schedule);
                     }
                    
@@ -854,6 +1051,8 @@ namespace FactoryManagementSoftware.UI
 
                     row_Schedule[text.Header_ItemName] = itemName;
                     row_Schedule[text.Header_ItemCode] = itemCode;
+                    row_Schedule[text.Header_ItemCode_Present] = itemCodePresent;
+
                     row_Schedule[text.Header_ItemNameAndCode] = itemNameAndCodeString;
                     int cycleTime = int.TryParse(row[dalPlanning.planCT].ToString(), out x) ? x : 0;
                     if(cycleTime == 0)
@@ -956,6 +1155,7 @@ namespace FactoryManagementSoftware.UI
                     row_Schedule[text.Header_Cavity] = row[dalPlanning.planCavity];
                     row_Schedule[text.Header_ProPwShot] = row[dalPlanning.planPW];
                     row_Schedule[text.Header_ProRwShot] = row[dalPlanning.planRW];
+                    row_Schedule[text.Header_FamilyWithJobNo] = row[dalPlanning.familyWith];
 
                     dt_Schedule.Rows.Add(row_Schedule);
 
@@ -964,123 +1164,7 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-
-            
-
-            //Idle machine adding
-            foreach (var machine in MachineList)
-            {
-                // Check if the machine id from MachineList is not found in dt_Schedule.
-                bool IdleMachineFound = !dt_Schedule.AsEnumerable().Any(row => !row.IsNull(text.Header_MacID) && row.Field<int>(text.Header_MacID) == machine.Item3);
-
-                if (IdleMachineFound)
-                {
-                    // Add a new row for this machine.
-                    DataRow idleRow = dt_Schedule.NewRow();
-
-                    // Populate the necessary fields for this row.
-                    idleRow[text.Header_Status] = text.planning_status_idle;
-                    idleRow[text.Header_FacID] = machine.Item1;
-                    idleRow[text.Header_Fac] = machine.Item2;
-                    idleRow[text.Header_MacID] = machine.Item3;
-                    idleRow[text.Header_Mac] = machine.Item4;
-
-
-                    //To-Do:
-                    //search the fac id in column "text.Header_FacID" in dt_Schedule
-                    //if found, then find the place to insert row base on machine name in column "text.Header_Mac"
-                    //example 1: if fac id = 2, mac name = 2, found the same fac id in the table, and found machine name 1, 3, then should be insert the row between machine 1 and 3
-                    //example 2: if fac id = 15, mac name = A2, found the same fac id in the table, and found machine name A1, A3, then should be insert the row between machine A1 and A3
-
-                    // Find the rows with the same fac id.
-                    var rows = dt_Schedule.AsEnumerable()
-                        .Where(row => !row.IsNull(text.Header_FacID) && row.Field<int>(text.Header_FacID) == machine.Item1)
-                        .ToList();
-
-                    // If no such rows exist, simply add the row at the end.
-                    if (!rows.Any())
-                    {
-                        row_Schedule = dt_Schedule.NewRow();
-                        row_Schedule[text.Header_ItemNameAndCode] = "factoryDivider";
-                        dt_Schedule.Rows.Add(row_Schedule);
-
-                        dt_Schedule.Rows.Add(idleRow);
-                    }
-                    else
-                    {
-                        int prevRowIndex = -1;
-                        int maxStringCompare = 0;
-
-                        foreach (DataRow row in dt_Schedule.Rows)
-                        {
-                            string facID = row[text.Header_FacID].ToString();
-                            string macName = row[text.Header_Mac].ToString();
-
-                            if(facID == machine.Item1.ToString())
-                            {
-                                int stringCompare = string.Compare(macName.ToUpper().Replace(" ", ""), machine.Item4,  StringComparison.Ordinal);
-
-                                if(stringCompare < 0)
-                                {
-                                    if(maxStringCompare == 0)
-                                    {
-                                        maxStringCompare = stringCompare;
-                                    }
-
-                                    if(maxStringCompare <= stringCompare)
-                                    {
-                                        prevRowIndex = dt_Schedule.Rows.IndexOf(row);
-                                        maxStringCompare = stringCompare;
-                                    }
-
-
-                                }
-                            }
-                        }
-                        
-                        if(prevRowIndex > -1)
-                        {
-
-                            // Insert the new row after it.
-                            row_Schedule = dt_Schedule.NewRow();
-                            row_Schedule[text.Header_ItemNameAndCode] = "machineDivider";
-
-                            dt_Schedule.Rows.InsertAt(row_Schedule, prevRowIndex + 1);
-
-                            dt_Schedule.Rows.InsertAt(idleRow, prevRowIndex + 2);
-                        }
-                        else
-                        {
-                            dt_Schedule.Rows.InsertAt(idleRow, 0);
-                        }
-
-                        //// Find the row that should come before the new row (i.e., its mac name is less than the new row's mac name).
-                        //var prevRow = rows.LastOrDefault(row => string.Compare(row.Field<string>(text.Header_Mac).ToUpper().Replace(" ",""), machine.Item4.ToUpper().Replace(" ", ""), StringComparison.Ordinal) < 0);
-
-                        //// If there's no such row, insert the new row at the beginning.
-                        //if (prevRow == null)
-                        //{
-                        //    dt_Schedule.Rows.InsertAt(idleRow, 0);
-                        //}
-                        //else
-                        //{
-                        //    // Otherwise, find the index of the row that should come before the new row.
-                        //    int prevRowIndex = dt_Schedule.Rows.IndexOf(prevRow);
-
-                        //    // Insert the new row after it.
-                        //    row_Schedule = dt_Schedule.NewRow();
-                        //    row_Schedule[text.Header_ItemNameAndCode] = "machineDivider";
-
-                        //    dt_Schedule.Rows.InsertAt(row_Schedule, prevRowIndex + 1);
-
-                        //    dt_Schedule.Rows.InsertAt(idleRow, prevRowIndex + 2);
-                        //}
-                    }
-                }
-            }
-
-            //dt_Schedule.DefaultView.Sort = text.Header_FacID + " ASC," + text.Header_MacID + " ASC," + text.Header_DateStart + " ASC";
-            //dt_Schedule = dt_Schedule.DefaultView.ToTable();
+            dt_Schedule = AddIdleMachine(dt_Schedule);
 
             dgvMacSchedule.DataSource = null;
 
@@ -1239,7 +1323,7 @@ namespace FactoryManagementSoftware.UI
         }
 
 
-        private bool checkIfFamilyMould(int planID, int planIDtoCompare)
+        private bool checkIfFamilyMould(int jobNo, int jobNotoCompare)
         {
             string familyID_1 = "";
             string familyID_2 = "";
@@ -1249,14 +1333,14 @@ namespace FactoryManagementSoftware.UI
 
             foreach(DataRow row in dt_Plan.Rows)
             {
-                string planID_DB = row[dalPlanning.jobNo].ToString();
+                string jobNo_DB = row[dalPlanning.jobNo].ToString();
 
-                if(planID_DB == planID.ToString())
+                if(jobNo_DB == jobNo.ToString())
                 {
                     familyID_1 = row[dalPlanning.familyWith].ToString();
                 }
 
-                if (planID_DB == planIDtoCompare.ToString())
+                if (jobNo_DB == jobNotoCompare.ToString())
                 {
                     familyID_2 = row[dalPlanning.familyWith].ToString();
                 }
@@ -1353,12 +1437,12 @@ namespace FactoryManagementSoftware.UI
                 bool success = false;
                 foreach(DataGridViewRow row in dgvMacSchedule.SelectedRows)
                 {
-                    string planID = row.Cells[text.Header_JobNo].Value.ToString();
-                    int planID_INT = -1;
+                    string jobNo = row.Cells[text.Header_JobNo].Value.ToString();
+                    int jobNo_INT = -1;
 
-                    if(!string.IsNullOrEmpty(planID) && int.TryParse(planID, out planID_INT))
+                    if(!string.IsNullOrEmpty(jobNo) && int.TryParse(jobNo, out jobNo_INT))
                     {
-                        uPlanning.plan_id = planID_INT;
+                        uPlanning.plan_id = jobNo_INT;
                         uPlanning.recording = true;
 
                         success = dalPlanning.RecordingUpdate(uPlanning);
@@ -1376,19 +1460,19 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataGridViewRow row in dgvMacSchedule.SelectedRows)
                 {
-                    string planID = row.Cells[text.Header_JobNo].Value.ToString();
+                    string jobNo = row.Cells[text.Header_JobNo].Value.ToString();
                     string itemCode = row.Cells[text.Header_ItemCode].Value.ToString();
 
-                    int planID_INT = -1;
+                    int jobNo_INT = -1;
 
-                    if (!string.IsNullOrEmpty(planID) && int.TryParse(planID, out planID_INT))
+                    if (!string.IsNullOrEmpty(jobNo) && int.TryParse(jobNo, out jobNo_INT))
                     {
-                       if(planID_INT != -1 && itemCode == ITEM_CODE && planID_INT != PLAN_ID)
+                       if(jobNo_INT != -1 && itemCode == ITEM_CODE && jobNo_INT != PLAN_ID)
                         {
                             ProductionRecordDAL dalProRecord = new ProductionRecordDAL();
                             ProductionRecordBLL uProRecord = new ProductionRecordBLL();
 
-                            uProRecord.new_plan_id = planID_INT;
+                            uProRecord.new_plan_id = jobNo_INT;
                             uProRecord.old_plan_id = PLAN_ID;
                             uProRecord.updated_date = DateTime.Now;
                             uProRecord.updated_by = MainDashboard.USER_ID;
@@ -1396,7 +1480,7 @@ namespace FactoryManagementSoftware.UI
                             if(dalProRecord.ChangePlanID(uProRecord))
                             {
                                 //change transfer record plan id remark
-                                ChangeTransferRecordProductionPlanIDRemark(PLAN_ID.ToString(), planID_INT.ToString());
+                                ChangeTransferRecordProductionjobNoRemark(PLAN_ID.ToString(), jobNo_INT.ToString());
 
                                 MessageBox.Show("Plan ID Changed!");
 
@@ -1404,7 +1488,7 @@ namespace FactoryManagementSoftware.UI
                             }
 
                         }
-                       else if(planID_INT == PLAN_ID)
+                       else if(jobNo_INT == PLAN_ID)
                        {
                             MessageBox.Show("Cannot select plan with same ID !");
                         }
@@ -2495,7 +2579,7 @@ namespace FactoryManagementSoftware.UI
             #endregion
         }
 
-        private void ChangeTransferRecordProductionPlanIDRemark(string planID, string newPlanID)
+        private void ChangeTransferRecordProductionjobNoRemark(string jobNo, string newjobNo)
         {
             trfHistBLL uTrfHist = new trfHistBLL();
             uTrfHist.trf_hist_updated_by = MainDashboard.USER_ID;
@@ -2515,7 +2599,7 @@ namespace FactoryManagementSoftware.UI
 
                 string productionInfo = row[dalTrf.TrfNote].ToString();
 
-                string _planIDFound = "";
+                string _jobNoFound = "";
                 string balanceClearType = "";
                 bool startCopy = false;
                 bool IDCopied = false;
@@ -2544,7 +2628,7 @@ namespace FactoryManagementSoftware.UI
                         if (char.IsDigit(productionInfo[i]) && !StopIDCopy)
                         {
                             IDCopied = true;
-                            _planIDFound += productionInfo[i];
+                            _jobNoFound += productionInfo[i];
                         }
                         else if (IDCopied && i + 1 < productionInfo.Length)
                         {
@@ -2560,13 +2644,13 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-                if (planID == _planIDFound)
+                if (jobNo == _jobNoFound)
                 {
                     trfTableCode = int.TryParse(row[dalTrf.TrfID].ToString(), out trfTableCode) ? trfTableCode : -1;
 
                     if (trfTableCode != -1)
                     {
-                        uTrfHist.trf_hist_note = productionInfo.Replace(planID, newPlanID);
+                        uTrfHist.trf_hist_note = productionInfo.Replace(jobNo, newjobNo);
                         uTrfHist.trf_hist_id = trfTableCode;
 
                         if (!dalTrf.NoteUpdate(uTrfHist))
@@ -2818,6 +2902,8 @@ namespace FactoryManagementSoftware.UI
             foreach (DataRow row in dt.Rows)
             {
                 int rowIndex = dt.Rows.IndexOf(row);
+               
+                string currentFamilyJobNo = row[text.Header_FamilyWithJobNo].ToString();
 
                 string PlanStatus = row[text.Header_Status].ToString();
 
@@ -2828,8 +2914,8 @@ namespace FactoryManagementSoftware.UI
 
                 if (PlanStatus == "")
                 {
-                    string divider = row[text.Header_ItemNameAndCode].ToString();
-                    row[text.Header_ItemNameAndCode] = "";
+                    string divider = row[text.Header_ItemName].ToString();
+                   
 
                     if (divider.Contains("factoryDivider"))
                     {
@@ -2878,14 +2964,24 @@ namespace FactoryManagementSoftware.UI
                                 int otherMacID = Convert.ToInt32(dgv.Rows[i].Cells[text.Header_MacID].Value);
                                 if (startDate == otherStart && macID == otherMacID)
                                 {
-                                    int planID = Convert.ToInt32(row[text.Header_JobNo].ToString());
-                                    int otherPlanID = Convert.ToInt32(dgv.Rows[i].Cells[text.Header_JobNo].Value);
+                                    int jobNo = Convert.ToInt32(row[text.Header_JobNo].ToString());
+                                    int otherjobNo = Convert.ToInt32(dgv.Rows[i].Cells[text.Header_JobNo].Value);
+                                    string otherFamilyJobNo = dgv.Rows[i].Cells[text.Header_FamilyWithJobNo].Value.ToString();
 
-                                    if (checkIfFamilyMould(planID, otherPlanID))
+                                    if(currentFamilyJobNo == otherFamilyJobNo && currentFamilyJobNo != "-1")
                                     {
                                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.Yellow;
                                         dgv.Rows[i].Cells[text.Header_DateStart].Style.BackColor = Color.Yellow;
+
+                                        dgv.Rows[rowIndex].Cells[text.Header_MouldCode].Value = "FAMILY";
+                                        dgv.Rows[i].Cells[text.Header_MouldCode].Value = "FAMILY";
                                     }
+
+                                    //if (checkIfFamilyMould(jobNo, otherjobNo))
+                                    //{
+                                    //    dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.Yellow;
+                                    //    dgv.Rows[i].Cells[text.Header_DateStart].Style.BackColor = Color.Yellow;
+                                    //}
                                 }
                             }
 
@@ -3005,11 +3101,11 @@ namespace FactoryManagementSoftware.UI
             return statusChanged;
         }
 
-        private void planNoteUpdate(int planID)
+        private void planNoteUpdate(int jobNo)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-            uPlanning.plan_id = planID;
+            uPlanning.plan_id = jobNo;
             uPlanning.plan_note = CELL_EDITING_NEW_VALUE;
             uPlanning.plan_updated_date = DateTime.Now;
             uPlanning.plan_updated_by = MainDashboard.USER_ID;
@@ -3022,12 +3118,12 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
 
-        private bool planPending(int planID, string presentStatus)
+        private bool planPending(int jobNo, string presentStatus)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             bool statusChanged = false;
             DateTime date = DateTime.Now;
-            uPlanning.plan_id = planID;
+            uPlanning.plan_id = jobNo;
             uPlanning.plan_status = text.planning_status_pending;
             uPlanning.plan_updated_date = date;
             uPlanning.plan_updated_by = MainDashboard.USER_ID;
@@ -3044,7 +3140,7 @@ namespace FactoryManagementSoftware.UI
             {
                 //inactive mat plan
                 statusChanged = true;
-                uMatPlan.plan_id = planID;
+                uMatPlan.plan_id = jobNo;
                 uMatPlan.active = true;
                 uMatPlan.updated_date = date;
                 uMatPlan.updated_by = MainDashboard.USER_ID;
@@ -3065,7 +3161,7 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     //get this plan hour per day data
-                    DataTable dt_plan = dalPlanning.idSearch(planID.ToString());
+                    DataTable dt_plan = dalPlanning.idSearch(jobNo.ToString());
 
                     foreach (DataRow row in dt_plan.Rows)
                     {
@@ -3096,7 +3192,7 @@ namespace FactoryManagementSoftware.UI
                             //change this plan data
                             //update
                             //change production day & hour data
-                            uPlanning.plan_id = planID;
+                            uPlanning.plan_id = jobNo;
                             uPlanning.production_hour = newProHour.ToString();
                             uPlanning.production_day = newProDay.ToString();
                             uPlanning.production_hour_per_day = newHourPerDay.ToString();
@@ -3117,12 +3213,106 @@ namespace FactoryManagementSoftware.UI
             return statusChanged;
         }
 
-        private bool planComplete(int planID, string presentStatus)
+        private bool planDraft(int jobNo, string presentStatus)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            bool statusChanged = false;
+            DateTime date = DateTime.Now;
+            uPlanning.plan_id = jobNo;
+            uPlanning.plan_status = text.planning_status_draft;
+            uPlanning.plan_updated_date = date;
+            uPlanning.plan_updated_by = MainDashboard.USER_ID;
+            //uPlanning.recording = false;
+
+            //bool success = dalPlanning.statusUpdate(uPlanning);
+            bool success = dalPlanningAction.planningStatusChange(uPlanning, presentStatus);
+
+            if (!success)
+            {
+                MessageBox.Show("Status update not successful! ");
+            }
+            else
+            {
+                //inactive mat plan
+                statusChanged = true;
+                uMatPlan.plan_id = jobNo;
+                uMatPlan.active = true;
+                uMatPlan.updated_date = date;
+                uMatPlan.updated_by = MainDashboard.USER_ID;
+
+                dalMatPlan.ActiveUpdate(uMatPlan);
+
+                if (presentStatus == text.planning_status_cancelled || presentStatus == text.planning_status_completed)
+                {
+                    //get habit data
+                    float oldHourPerDay = 0;
+                    float newHourPerDay = 0;
+
+                    DataTable dt = dalHabit.HabitSearch(text.habit_belongTo_PlanningPage, text.habit_planning_HourPerDay);
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        newHourPerDay = Convert.ToSingle(row[dalHabit.HabitData]);
+                    }
+
+                    //get this plan hour per day data
+                    DataTable dt_plan = dalPlanning.idSearch(jobNo.ToString());
+
+                    foreach (DataRow row in dt_plan.Rows)
+                    {
+                        oldHourPerDay = Convert.ToSingle(row[dalPlanning.productionHourPerDay]);
+
+                        //compare
+                        if (oldHourPerDay != newHourPerDay)
+                        {
+                            int oldProDay = 0, newProDay = 0;
+                            float oldProHour = 0, newProHour = 0;
+
+                            oldProDay = Convert.ToInt32(row[dalPlanning.productionDay]);
+                            oldProHour = Convert.ToSingle(row[dalPlanning.productionHour]);
+
+                            float totalHour = oldProDay * oldHourPerDay + oldProHour;
+
+                            newProDay = Convert.ToInt32(totalHour / newHourPerDay);
+                            newProHour = totalHour - newProDay * newHourPerDay;
+
+                            if (newProHour < 0)
+                            {
+                                newProHour = 0;
+                            }
+
+                            DateTime start = Convert.ToDateTime(row[dalPlanning.productionStartDate]);
+                            DateTime end = Convert.ToDateTime(row[dalPlanning.productionEndDate]);
+
+                            //change this plan data
+                            //update
+                            //change production day & hour data
+                            uPlanning.plan_id = jobNo;
+                            uPlanning.production_hour = newProHour.ToString();
+                            uPlanning.production_day = newProDay.ToString();
+                            uPlanning.production_hour_per_day = newHourPerDay.ToString();
+                            uPlanning.production_start_date = start.Date;
+                            uPlanning.production_end_date = end.Date;
+                            uPlanning.plan_updated_date = DateTime.Now;
+                            uPlanning.plan_updated_by = MainDashboard.USER_ID;
+
+                            //update to db
+                            dalPlanningAction.planningScheduleAndProDayChange(uPlanning, oldProDay.ToString(), oldProHour.ToString(), oldHourPerDay.ToString(), start.Date.ToString(), end.Date.ToString());
+                        }
+                    }
+                }
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+
+            return statusChanged;
+        }
+        private bool planComplete(int jobNo, string presentStatus)
         {
             bool statusChanged = false;
             DateTime date = DateTime.Now;
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            uPlanning.plan_id = planID;
+            uPlanning.plan_id = jobNo;
             uPlanning.plan_status = text.planning_status_completed;
             uPlanning.plan_updated_date = date;
             uPlanning.plan_updated_by = MainDashboard.USER_ID;
@@ -3137,7 +3327,7 @@ namespace FactoryManagementSoftware.UI
             {
                 //inactive mat plan
                 statusChanged = true;
-                uMatPlan.plan_id = planID;
+                uMatPlan.plan_id = jobNo;
                 uMatPlan.active = false;
                 uMatPlan.updated_date = date;
                 uMatPlan.updated_by = MainDashboard.USER_ID;
@@ -3149,12 +3339,12 @@ namespace FactoryManagementSoftware.UI
             return statusChanged;
         }
 
-        private bool planCancel(int planID, string presentStatus)
+        private bool planCancel(int jobNo, string presentStatus)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             bool statusChanged = false;
             DateTime date = DateTime.Now;
-            uPlanning.plan_id = planID;
+            uPlanning.plan_id = jobNo;
             uPlanning.plan_status = text.planning_status_cancelled;
             uPlanning.plan_updated_date = date;
             uPlanning.plan_updated_by = MainDashboard.USER_ID;
@@ -3171,7 +3361,7 @@ namespace FactoryManagementSoftware.UI
             {
                 //inactive mat plan
                 statusChanged = true;
-                uMatPlan.plan_id = planID;
+                uMatPlan.plan_id = jobNo;
                 uMatPlan.active = false;
                 uMatPlan.updated_date = date;
                 uMatPlan.updated_by = MainDashboard.USER_ID;
@@ -3189,6 +3379,39 @@ namespace FactoryManagementSoftware.UI
             loadMaterialSummary(material);
         }
 
+        private void removeExtraSpace_MachineSchedule()
+        {
+            if(dgvMacSchedule?.Rows.Count > 0)
+            {
+                DataTable dt = (DataTable)dgvMacSchedule.DataSource;
+
+                bool continueEmptySpace = false;
+
+                dt.AcceptChanges();
+
+                foreach(DataRow row in dt.Rows)
+                {
+                    string status = row[text.Header_Status].ToString();
+
+                    if(string.IsNullOrEmpty(status))
+                    {
+                        if (continueEmptySpace)
+                        {
+                            row.Delete();
+                        }
+
+                        continueEmptySpace = true;
+                    }
+                    else
+                    {
+                        continueEmptySpace = false;
+                    }
+                }
+
+                dt.AcceptChanges();
+
+            }
+        }
         private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             dgvMacSchedule.SuspendLayout();
@@ -3200,7 +3423,7 @@ namespace FactoryManagementSoftware.UI
             int rowIndex = dgv.CurrentCell.RowIndex;
             int colIndex = dgv.CurrentCell.ColumnIndex;
 
-            int planID = Convert.ToInt32(dgv.Rows[rowIndex].Cells[text.Header_JobNo].Value);
+            int jobNo = Convert.ToInt32(dgv.Rows[rowIndex].Cells[text.Header_JobNo].Value);
 
             int macID = Convert.ToInt32(dgv.Rows[rowIndex].Cells[text.Header_MacID].Value);
 
@@ -3211,17 +3434,69 @@ namespace FactoryManagementSoftware.UI
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             contextMenuStrip1.Hide();
 
-            if (itemClicked.Equals(text.planning_status_pending))
+            
+            if (itemClicked.Equals(SCHEDULE_ACTION_JOB_EDIT))
             {
-                if (MessageBox.Show("Are you sure you want to switch this plan to PENDING status?", "Message",
-                                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                bool statusPass = presentStatus == text.planning_status_draft;
+                statusPass |= presentStatus == text.planning_status_pending;
+                statusPass |= presentStatus == text.planning_status_running;
+
+                if (statusPass)
+                    JobEditMode(rowIndex, colIndex);
+            }
+            else
+            {
+                if (itemClicked.Equals(text.planning_status_pending))
                 {
-                    if (planPending(planID, presentStatus))
+                    if (MessageBox.Show("Are you sure you want to switch this Job to PENDING status?", "Message",
+                                                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        if (planPending(jobNo, presentStatus))
+                        {
+                            DataTable dt = (DataTable)dgvMacSchedule.DataSource;
+                            if (cbPending.Checked)
+                            {
+                                dt.Rows[rowIndex][text.Header_Status] = text.planning_status_pending;
+                            }
+                            else
+                            {
+                                dt.Rows.RemoveAt(rowIndex);
+                                dt.AcceptChanges();
+                            }
+                        }
+                    }
+
+                }
+                else if (itemClicked.Equals(text.planning_status_draft))
+                {
+                    if (MessageBox.Show("Are you sure you want to switch this Job to Draft status?", "Message",
+                                                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        if (planDraft(jobNo, presentStatus))
+                        {
+                            DataTable dt = (DataTable)dgvMacSchedule.DataSource;
+
+                            if (cbDraft.Checked)
+                            {
+                                dt.Rows[rowIndex][text.Header_Status] = text.planning_status_draft;
+                            }
+                            else
+                            {
+                                dt.Rows.RemoveAt(rowIndex);
+                                dt.AcceptChanges();
+                            }
+                        }
+                    }
+
+                }
+                else if (itemClicked.Equals(text.planning_status_running))
+                {
+                    if (planRunning(rowIndex, presentStatus))
                     {
                         DataTable dt = (DataTable)dgvMacSchedule.DataSource;
-                        if (cbPending.Checked)
+                        if (cbRunning.Checked)
                         {
-                            dt.Rows[rowIndex][text.Header_Status] = text.planning_status_pending;
+                            dt.Rows[rowIndex][text.Header_Status] = text.planning_status_running;
                         }
                         else
                         {
@@ -3230,83 +3505,69 @@ namespace FactoryManagementSoftware.UI
                         }
                     }
                 }
-                    
-            }
-            else if (itemClicked.Equals(text.planning_status_running))
-            {              
-                if (planRunning(rowIndex, presentStatus))
+                else if (itemClicked.Equals(text.planning_status_completed))
                 {
-                    DataTable dt = (DataTable)dgvMacSchedule.DataSource;
-                    if (cbRunning.Checked)
+                    if (MessageBox.Show("Are you sure you want to switch this Job to COMPLETED status?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        dt.Rows[rowIndex][text.Header_Status] = text.planning_status_running;
-                    }
-                    else
-                    {
-                        dt.Rows.RemoveAt(rowIndex);
-                        dt.AcceptChanges();
+                        if (planComplete(jobNo, presentStatus))
+                        {
+                            DataTable dt = (DataTable)dgvMacSchedule.DataSource;
+                            if (cbCompleted.Checked)
+                            {
+                                dt.Rows[rowIndex][text.Header_Status] = text.planning_status_completed;
+                            }
+                            else
+                            {
+                                dt.Rows.RemoveAt(rowIndex);
+                                dt.AcceptChanges();
+                            }
+
+                            var w = new Form() { Size = new Size(0, 0) };
+                            Task.Delay(TimeSpan.FromSeconds(3))
+                                .ContinueWith((t) => w.Close(), TaskScheduler.FromCurrentSynchronizationContext());
+
+                            MessageBox.Show(w, "PLAN " + jobNo + " completed!", "SYSTEM");
+                        }
                     }
                 }
-            }
-            else if (itemClicked.Equals(text.planning_status_completed))
-            {
-                if (MessageBox.Show("Are you sure you want to switch this plan to COMPLETED status?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                else if (itemClicked.Equals(text.planning_status_cancelled))
                 {
-                    if (planComplete(planID, presentStatus))
+                    if (MessageBox.Show("Are you sure you want to CANCEL this plan?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        DataTable dt = (DataTable)dgvMacSchedule.DataSource;
-                        if (cbCompleted.Checked)
+                        if (planCancel(jobNo, presentStatus))
                         {
-                            dt.Rows[rowIndex][text.Header_Status] = text.planning_status_completed;
-                        }
-                        else
-                        {
-                            dt.Rows.RemoveAt(rowIndex);
-                            dt.AcceptChanges();
-                        }
+                            DataTable dt = (DataTable)dgvMacSchedule.DataSource;
+                            if (cbCancelled.Checked)
+                            {
+                                dt.Rows[rowIndex][text.Header_Status] = text.planning_status_cancelled;
+                            }
+                            else
+                            {
+                                dt.Rows.RemoveAt(rowIndex);
+                                dt.AcceptChanges();
+                            }
 
-                        var w = new Form() { Size = new Size(0, 0) };
-                        Task.Delay(TimeSpan.FromSeconds(3))
-                            .ContinueWith((t) => w.Close(), TaskScheduler.FromCurrentSynchronizationContext());
+                            var w = new Form() { Size = new Size(0, 0) };
+                            Task.Delay(TimeSpan.FromSeconds(3))
+                                .ContinueWith((t) => w.Close(), TaskScheduler.FromCurrentSynchronizationContext());
 
-                        MessageBox.Show(w,  "PLAN " + planID + " completed!", "SYSTEM");
+                            MessageBox.Show(w, "PLAN " + jobNo + " cancelled!", "SYSTEM");
+                        }
                     }
+
                 }
-            }
-            else if (itemClicked.Equals(text.planning_status_cancelled))
-            {
-                if (MessageBox.Show("Are you sure you want to CANCEL this plan?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                else if (itemClicked.Equals(SCHEDULE_ACTION_EDIT_SCHEUDLE))
                 {
-                    if(planCancel(planID, presentStatus))
-                    {
-                        DataTable dt = (DataTable)dgvMacSchedule.DataSource;
-                        if (cbCancelled.Checked)
-                        {
-                            dt.Rows[rowIndex][text.Header_Status] = text.planning_status_cancelled;
-                        }
-                        else
-                        {
-                            dt.Rows.RemoveAt(rowIndex);
-                            dt.AcceptChanges();
-                        }
-
-                        var w = new Form() { Size = new Size(0, 0) };
-                        Task.Delay(TimeSpan.FromSeconds(3))
-                            .ContinueWith((t) => w.Close(), TaskScheduler.FromCurrentSynchronizationContext());
-
-                        MessageBox.Show(w, "PLAN "+planID+" cancelled!", "SYSTEM");
-                    }
+                    //editSchedule(rowIndex);
                 }
-                
-            }
-            else if (itemClicked.Equals("Edit Schedule"))
-            {
-                editSchedule(rowIndex);
-            }
-            //loadScheduleData();
-            //dgvSchedule.ClearSelection();
 
-            MacScheduleListCellFormatting(dgvMacSchedule);
+                removeExtraSpace_MachineSchedule();
+
+                AddIdleMachine(dgvMacSchedule);
+
+                MacScheduleListCellFormatting(dgvMacSchedule);
+            }
+          
 
             if (itemClicked.Equals(text.planning_Material_Summary))
             {
@@ -3343,12 +3604,45 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private bool JOB_EDIT_MODE = false;
+        private void JobEditMode(int rowIndex, int colIndex)
+        {
+            JOB_EDIT_MODE = true;
+
+            //DataGridView dgv = dgvMacSchedule;
+
+            //uPlanning.plan_id = (int)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_JobNo].Value;
+            //uPlanning.machine_id = (int)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_MacID].Value;
+            //uPlanning.production_start_date = (DateTime)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_DateStart].Value;
+            //uPlanning.production_end_date = (DateTime)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_EstDateEnd].Value;
+
+            ////UI Change
+            //dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(254, 241, 154); 
+
+            frmPlanningVer2dot1 frm = new frmPlanningVer2dot1((DataTable) dgvMacSchedule.DataSource , rowIndex);
+
+            frm.StartPosition = FormStartPosition.CenterScreen;
+
+            frm.ShowDialog();
+
+        }
+
+        readonly private string SCHEDULE_ACTION_RUN = "Run";
+        readonly private string SCHEDULE_ACTION_PENDING= "Pending";
+        readonly private string SCHEDULE_ACTION_CANCEL = "Cancel";
+        readonly private string SCHEDULE_ACTION_COMPLETE = "Complete";
+        readonly private string SCHEDULE_ACTION_EDIT_SCHEUDLE = "Edit Schedule";
+        readonly private string SCHEDULE_ACTION_JOB_EDIT = "Job Edit";
+        readonly private string SCHEDULE_ACTION_PUBLISH = "Publish";
+        readonly private string SCHEDULE_ACTION_DRAFT = "Draft";
+
         private void dgvSchedule_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
 
             userPermission = 5;
+
             //handle the row selection on right click
             if (e.Button == MouseButtons.Right && e.RowIndex > -1 && userPermission >= MainDashboard.ACTION_LVL_THREE)
             {
@@ -3362,6 +3656,7 @@ namespace FactoryManagementSoftware.UI
 
                 string currentHeader = dgvMacSchedule.Columns[colIndex].Name;
 
+                
 
                 try
                 {
@@ -3369,33 +3664,54 @@ namespace FactoryManagementSoftware.UI
 
                     if (result.Equals(text.planning_status_pending))
                     {
-                        my_menu.Items.Add("Run").Name = text.planning_status_running;
-                        my_menu.Items.Add("Cancel").Name = text.planning_status_cancelled;
-                        my_menu.Items.Add("Complete").Name = text.planning_status_completed;                        
+                        my_menu.Items.Add(SCHEDULE_ACTION_RUN).Name = text.planning_status_running;
+                        my_menu.Items.Add(SCHEDULE_ACTION_DRAFT).Name = text.planning_status_draft;
+                        my_menu.Items.Add(SCHEDULE_ACTION_CANCEL).Name = text.planning_status_cancelled;
+                        my_menu.Items.Add(SCHEDULE_ACTION_COMPLETE).Name = text.planning_status_completed;
+
+                        my_menu.Items.Add(SCHEDULE_ACTION_JOB_EDIT).Name = SCHEDULE_ACTION_JOB_EDIT;
+
                     }
                     else if (result.Equals(text.planning_status_cancelled))
                     {
 
-                        my_menu.Items.Add("Run").Name = text.planning_status_running;
-                        my_menu.Items.Add("Pending").Name = text.planning_status_pending;
-
-                        
+                        my_menu.Items.Add(SCHEDULE_ACTION_RUN).Name = text.planning_status_running;
+                        my_menu.Items.Add(SCHEDULE_ACTION_DRAFT).Name = text.planning_status_draft;
+                        my_menu.Items.Add(SCHEDULE_ACTION_PENDING).Name = text.planning_status_pending;
                     }
                     else if (result.Equals(text.planning_status_running))
                     {
-                        my_menu.Items.Add("Pending").Name = text.planning_status_pending;
-                        my_menu.Items.Add("Cancel").Name = text.planning_status_cancelled;
-                        my_menu.Items.Add("Complete").Name = text.planning_status_completed;
+                        my_menu.Items.Add(SCHEDULE_ACTION_PENDING).Name = text.planning_status_pending;
+                        my_menu.Items.Add(SCHEDULE_ACTION_CANCEL).Name = text.planning_status_cancelled;
+                        my_menu.Items.Add(SCHEDULE_ACTION_COMPLETE).Name = text.planning_status_completed;
+
+                        my_menu.Items.Add(SCHEDULE_ACTION_JOB_EDIT).Name = SCHEDULE_ACTION_JOB_EDIT;
                     }
                     else if (result.Equals(text.planning_status_completed))
                     {
-                        my_menu.Items.Add("Run").Name = text.planning_status_running;
-                        my_menu.Items.Add("Pending").Name = text.planning_status_pending;
+                        my_menu.Items.Add(SCHEDULE_ACTION_RUN).Name = text.planning_status_running;
+                        my_menu.Items.Add(SCHEDULE_ACTION_PENDING).Name = text.planning_status_pending;
+                    }
+                    else if (result.Equals(text.planning_status_draft))
+                    {
+                        my_menu.Items.Add(SCHEDULE_ACTION_PUBLISH).Name = text.planning_status_pending;
+
+                        my_menu.Items.Add(SCHEDULE_ACTION_JOB_EDIT).Name = SCHEDULE_ACTION_JOB_EDIT;
+
                     }
 
-                    my_menu.Items.Add("Edit Schedule").Name = "Edit Schedule";
+                    //bool ableToEdit = currentHeader == text.Header_TargetQty;
+                    //ableToEdit |= currentHeader == text.Header_Mac;
+                    //ableToEdit |= currentHeader == text.Header_DateStart;
+                    //ableToEdit |= currentHeader == text.Header_EstDateEnd;
+                    //ableToEdit |= currentHeader == text.JobPurpose;
+                    //ableToEdit |= currentHeader == text.Header_Remark;
 
-                    if(currentHeader.Equals(text.Header_RawMat_String) || currentHeader.Equals(text.Header_ColorMat))
+                    //if(ableToEdit)
+                    //    my_menu.Items.Add(SCHEDULE_ACTION_JOB_EDIT).Name = SCHEDULE_ACTION_JOB_EDIT;
+
+
+                    if (currentHeader.Equals(text.Header_RawMat_String) || currentHeader.Equals(text.Header_ColorMat))
                     my_menu.Items.Add(text.planning_Material_Summary).Name = text.planning_Material_Summary;
                     
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
@@ -3420,15 +3736,15 @@ namespace FactoryManagementSoftware.UI
         {
             if(e.RowIndex != -1)
             {
-                string planID = dgvMacSchedule.Rows[e.RowIndex].Cells[text.Header_JobNo].Value.ToString();
+                string jobNo = dgvMacSchedule.Rows[e.RowIndex].Cells[text.Header_JobNo].Value.ToString();
                 int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
                 //handle the row selection on right click
                 userPermission = 5;
 
-                    //MessageBox.Show("Plan ID: "+planID);
-                    if (planID != null && userPermission >= MainDashboard.ACTION_LVL_THREE)
+                    //MessageBox.Show("Plan ID: "+jobNo);
+                    if (jobNo != null && userPermission >= MainDashboard.ACTION_LVL_THREE)
                 {
-                    frmPlanningActionHistory frm = new frmPlanningActionHistory(Convert.ToInt32(planID));
+                    frmPlanningActionHistory frm = new frmPlanningActionHistory(Convert.ToInt32(jobNo));
                     frm.StartPosition = FormStartPosition.CenterScreen;
 
                     if (!frmPlanningActionHistory.noData)
@@ -3562,9 +3878,9 @@ namespace FactoryManagementSoftware.UI
 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    int planID = int.TryParse(dgvMacSchedule.Rows[e.RowIndex].Cells[text.Header_JobNo].Value.ToString(), out planID) ? planID : 0;
+                    int jobNo = int.TryParse(dgvMacSchedule.Rows[e.RowIndex].Cells[text.Header_JobNo].Value.ToString(), out jobNo) ? jobNo : 0;
 
-                    planNoteUpdate(planID);
+                    planNoteUpdate(jobNo);
                 }
             }
         }

@@ -246,6 +246,47 @@ namespace FactoryManagementSoftware.DAL
             return success;
         }
 
+        public bool planningUpdate(PlanningBLL u)
+        {
+            bool success = dalPlanning.JobUpdate(u);
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to update edited Job!");
+                tool.historyRecord(text.System, "Failed to update edited Job!", DateTime.Now, MainDashboard.USER_ID);
+            }
+            else
+            {
+                tool.historyRecord(text.plan_Updated, text.getNewPlanningDetail(u), DateTime.Now, MainDashboard.USER_ID);
+
+                //get the last record from tbl_planning
+                DataTable lastRecord = dalPlanning.lastRecordSelect();
+
+                foreach (DataRow row in lastRecord.Rows)
+                {
+                    uPlanningAction.planning_id = Convert.ToInt32(row[dalPlanning.jobNo]);
+                    uPlanningAction.added_date = Convert.ToDateTime(row[dalPlanning.planUpdatedDate]);
+                    uPlanningAction.added_by = Convert.ToInt32(row[dalPlanning.planUpdatedby]); ;
+                    uPlanningAction.action = text.plan_Updated;
+                    uPlanningAction.action_detail = text.getNewPlanningDetail(u);
+                    uPlanningAction.action_from = "";
+                    uPlanningAction.action_to = "";
+                    uPlanningAction.note = row[dalPlanning.planNote].ToString() + " [Cavity: " + row[dalPlanning.planCavity].ToString() + "; PW(shot): " + row[dalPlanning.planPW].ToString() + " ;RW(shot): " + row[dalPlanning.planRW].ToString() + "]";
+
+                    bool actionSaveSuccess = Insert(uPlanningAction);
+
+                    if (!actionSaveSuccess)
+                    {
+                        MessageBox.Show("Failed to save planning action data (planningActionDAL_planningUpdate)");
+                        tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningUpdate)", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+
+            }
+
+            return success;
+        }
+
         public int NewplanningAdd(PlanningBLL u)
         {
             bool success = dalPlanning.Insert(u);
@@ -330,7 +371,7 @@ namespace FactoryManagementSoftware.DAL
         {
             bool success;
 
-            if (u.plan_status == text.planning_status_cancelled || u.plan_status == text.planning_status_running)
+            if (u.plan_status == text.planning_status_draft || u.plan_status == text.planning_status_cancelled || u.plan_status == text.planning_status_running)
             {
                 success = dalPlanning.statusAndRecordingUpdate(u);
             }

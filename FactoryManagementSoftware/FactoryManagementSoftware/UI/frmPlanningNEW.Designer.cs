@@ -49,6 +49,7 @@
             this.txtProTon = new System.Windows.Forms.TextBox();
             this.lblCavity = new System.Windows.Forms.Label();
             this.txtCavity = new System.Windows.Forms.TextBox();
+            this.ctbPartName = new FactoryManagementSoftware.CustomTextBox();
             this.lblPartCode = new System.Windows.Forms.Label();
             this.lblPartName = new System.Windows.Forms.Label();
             this.cmbPartCode = new System.Windows.Forms.ComboBox();
@@ -135,10 +136,9 @@
             this.errorProvider4 = new System.Windows.Forms.ErrorProvider(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.gunaGradientButton11 = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel20 = new System.Windows.Forms.TableLayoutPanel();
             this.button1 = new System.Windows.Forms.Button();
-            this.gunaGradientButton11 = new Guna.UI.WinForms.GunaGradientButton();
-            this.ctbPartName = new FactoryManagementSoftware.CustomTextBox();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel18.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -449,6 +449,17 @@
             this.txtCavity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtCavity.TextChanged += new System.EventHandler(this.txtCavity_TextChanged);
             this.txtCavity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCavity_KeyPress);
+            // 
+            // ctbPartName
+            // 
+            this.ctbPartName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ctbPartName.Location = new System.Drawing.Point(11, 29);
+            this.ctbPartName.Name = "ctbPartName";
+            this.ctbPartName.Size = new System.Drawing.Size(232, 25);
+            this.ctbPartName.TabIndex = 107;
+            this.ctbPartName.Values = null;
+            this.ctbPartName.TextChanged += new System.EventHandler(this.ctbPartName_TextChanged);
             // 
             // lblPartCode
             // 
@@ -1680,39 +1691,6 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1324, 689);
             this.tableLayoutPanel2.TabIndex = 106;
             // 
-            // tableLayoutPanel20
-            // 
-            this.tableLayoutPanel20.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel20.ColumnCount = 2;
-            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 91.36598F));
-            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.634021F));
-            this.tableLayoutPanel20.Controls.Add(this.button1, 0, 0);
-            this.tableLayoutPanel20.Controls.Add(this.btnNextStep, 1, 0);
-            this.tableLayoutPanel20.Location = new System.Drawing.Point(3, 638);
-            this.tableLayoutPanel20.Name = "tableLayoutPanel20";
-            this.tableLayoutPanel20.RowCount = 1;
-            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel20.Size = new System.Drawing.Size(1318, 48);
-            this.tableLayoutPanel20.TabIndex = 119;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.Color.White;
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(1082, 2);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(120, 44);
-            this.button1.TabIndex = 107;
-            this.button1.Text = "CANCEL";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
             // gunaGradientButton11
             // 
             this.gunaGradientButton11.AnimationHoverSpeed = 0.07F;
@@ -1745,16 +1723,38 @@
             this.gunaGradientButton11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.gunaGradientButton11.Click += new System.EventHandler(this.gunaGradientButton11_Click);
             // 
-            // ctbPartName
+            // tableLayoutPanel20
             // 
-            this.ctbPartName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tableLayoutPanel20.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ctbPartName.Location = new System.Drawing.Point(11, 29);
-            this.ctbPartName.Name = "ctbPartName";
-            this.ctbPartName.Size = new System.Drawing.Size(232, 25);
-            this.ctbPartName.TabIndex = 107;
-            this.ctbPartName.Values = null;
-            this.ctbPartName.TextChanged += new System.EventHandler(this.ctbPartName_TextChanged);
+            this.tableLayoutPanel20.ColumnCount = 2;
+            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 91.36598F));
+            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8.634021F));
+            this.tableLayoutPanel20.Controls.Add(this.button1, 0, 0);
+            this.tableLayoutPanel20.Controls.Add(this.btnNextStep, 1, 0);
+            this.tableLayoutPanel20.Location = new System.Drawing.Point(3, 638);
+            this.tableLayoutPanel20.Name = "tableLayoutPanel20";
+            this.tableLayoutPanel20.RowCount = 1;
+            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel20.Size = new System.Drawing.Size(1318, 48);
+            this.tableLayoutPanel20.TabIndex = 119;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.BackColor = System.Drawing.Color.White;
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Location = new System.Drawing.Point(1082, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(120, 44);
+            this.button1.TabIndex = 107;
+            this.button1.Text = "CANCEL";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // frmPlanningNEW
             // 
