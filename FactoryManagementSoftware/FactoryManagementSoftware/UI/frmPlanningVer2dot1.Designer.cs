@@ -470,10 +470,10 @@
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label9.Location = new System.Drawing.Point(13, 13);
+            this.label9.Location = new System.Drawing.Point(13, 19);
             this.label9.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(29, 27);
+            this.label9.Size = new System.Drawing.Size(23, 21);
             this.label9.TabIndex = 186;
             this.label9.Text = "3.";
             // 
@@ -483,10 +483,10 @@
             this.label77.AutoSize = true;
             this.label77.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.label77.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label77.Location = new System.Drawing.Point(53, 13);
+            this.label77.Location = new System.Drawing.Point(53, 19);
             this.label77.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(186, 27);
+            this.label77.Size = new System.Drawing.Size(151, 21);
             this.label77.TabIndex = 182;
             this.label77.Text = "Machine Selection";
             // 
@@ -589,14 +589,14 @@
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel58, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.txtMachineSelectionRemark, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 21);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(596, 70);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(596, 74);
             this.tableLayoutPanel2.TabIndex = 117;
             // 
             // tableLayoutPanel58
@@ -622,10 +622,10 @@
             this.lblLoadProductionHistory.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblLoadProductionHistory.Font = new System.Drawing.Font("Segoe UI", 7.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLoadProductionHistory.ForeColor = System.Drawing.Color.Blue;
-            this.lblLoadProductionHistory.Location = new System.Drawing.Point(490, 5);
+            this.lblLoadProductionHistory.Location = new System.Drawing.Point(507, 6);
             this.lblLoadProductionHistory.Margin = new System.Windows.Forms.Padding(3);
             this.lblLoadProductionHistory.Name = "lblLoadProductionHistory";
-            this.lblLoadProductionHistory.Size = new System.Drawing.Size(103, 15);
+            this.lblLoadProductionHistory.Size = new System.Drawing.Size(86, 12);
             this.lblLoadProductionHistory.TabIndex = 113;
             this.lblLoadProductionHistory.Text = "Production History";
             this.lblLoadProductionHistory.Click += new System.EventHandler(this.lblLoadProductionHistory_Click);
@@ -635,9 +635,9 @@
             this.lblMachineSelectionRemark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblMachineSelectionRemark.AutoSize = true;
             this.lblMachineSelectionRemark.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.lblMachineSelectionRemark.Location = new System.Drawing.Point(3, 10);
+            this.lblMachineSelectionRemark.Location = new System.Drawing.Point(3, 13);
             this.lblMachineSelectionRemark.Name = "lblMachineSelectionRemark";
-            this.lblMachineSelectionRemark.Size = new System.Drawing.Size(47, 15);
+            this.lblMachineSelectionRemark.Size = new System.Drawing.Size(38, 12);
             this.lblMachineSelectionRemark.TabIndex = 0;
             this.lblMachineSelectionRemark.Text = "Remark";
             // 
@@ -652,7 +652,7 @@
             this.txtMachineSelectionRemark.Multiline = true;
             this.txtMachineSelectionRemark.Name = "txtMachineSelectionRemark";
             this.txtMachineSelectionRemark.ReadOnly = true;
-            this.txtMachineSelectionRemark.Size = new System.Drawing.Size(590, 39);
+            this.txtMachineSelectionRemark.Size = new System.Drawing.Size(590, 43);
             this.txtMachineSelectionRemark.TabIndex = 115;
             // 
             // groupBox6
@@ -678,7 +678,7 @@
             this.tableLayoutPanel10.Controls.Add(this.tableLayoutPanel17, 2, 0);
             this.tableLayoutPanel10.Controls.Add(this.dtpEstimateEndDate, 2, 1);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 21);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 2;
@@ -686,7 +686,7 @@
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(488, 70);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(488, 74);
             this.tableLayoutPanel10.TabIndex = 117;
             // 
             // tableLayoutPanel4
@@ -713,10 +713,10 @@
             this.label15.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label15.Font = new System.Drawing.Font("Segoe UI", 8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))));
             this.label15.ForeColor = System.Drawing.Color.Blue;
-            this.label15.Location = new System.Drawing.Point(192, 3);
+            this.label15.Location = new System.Drawing.Point(203, 6);
             this.label15.Margin = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(47, 19);
+            this.label15.Size = new System.Drawing.Size(36, 13);
             this.label15.TabIndex = 185;
             this.label15.Text = "Today";
             this.label15.Click += new System.EventHandler(this.label15_Click_1);
@@ -727,9 +727,9 @@
             this.lblStartDate.AutoSize = true;
             this.lblStartDate.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblStartDate.ForeColor = System.Drawing.Color.Black;
-            this.lblStartDate.Location = new System.Drawing.Point(3, 10);
+            this.lblStartDate.Location = new System.Drawing.Point(3, 13);
             this.lblStartDate.Name = "lblStartDate";
-            this.lblStartDate.Size = new System.Drawing.Size(58, 15);
+            this.lblStartDate.Size = new System.Drawing.Size(47, 12);
             this.lblStartDate.TabIndex = 0;
             this.lblStartDate.Text = "Start Date";
             // 
@@ -744,7 +744,7 @@
             this.dtpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpStartDate.Location = new System.Drawing.Point(3, 28);
             this.dtpStartDate.Name = "dtpStartDate";
-            this.dtpStartDate.Size = new System.Drawing.Size(233, 23);
+            this.dtpStartDate.Size = new System.Drawing.Size(233, 20);
             this.dtpStartDate.TabIndex = 15;
             this.dtpStartDate.ValueChanged += new System.EventHandler(this.dtpStartDate_ValueChanged);
             // 
@@ -770,9 +770,9 @@
             this.lblEndDate.AutoSize = true;
             this.lblEndDate.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblEndDate.ForeColor = System.Drawing.Color.Black;
-            this.lblEndDate.Location = new System.Drawing.Point(3, 10);
+            this.lblEndDate.Location = new System.Drawing.Point(3, 13);
             this.lblEndDate.Name = "lblEndDate";
-            this.lblEndDate.Size = new System.Drawing.Size(75, 15);
+            this.lblEndDate.Size = new System.Drawing.Size(62, 12);
             this.lblEndDate.TabIndex = 1;
             this.lblEndDate.Text = "Est. End Date";
             // 
@@ -782,9 +782,9 @@
             this.cbIncludeSunday.AutoSize = true;
             this.cbIncludeSunday.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbIncludeSunday.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbIncludeSunday.Location = new System.Drawing.Point(126, 3);
+            this.cbIncludeSunday.Location = new System.Drawing.Point(144, 6);
             this.cbIncludeSunday.Name = "cbIncludeSunday";
-            this.cbIncludeSunday.Size = new System.Drawing.Size(110, 19);
+            this.cbIncludeSunday.Size = new System.Drawing.Size(92, 16);
             this.cbIncludeSunday.TabIndex = 114;
             this.cbIncludeSunday.Text = "include Sunday";
             this.cbIncludeSunday.UseVisualStyleBackColor = true;
@@ -800,7 +800,7 @@
             this.dtpEstimateEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpEstimateEndDate.Location = new System.Drawing.Point(252, 28);
             this.dtpEstimateEndDate.Name = "dtpEstimateEndDate";
-            this.dtpEstimateEndDate.Size = new System.Drawing.Size(233, 23);
+            this.dtpEstimateEndDate.Size = new System.Drawing.Size(233, 20);
             this.dtpEstimateEndDate.TabIndex = 16;
             this.dtpEstimateEndDate.ValueChanged += new System.EventHandler(this.dtpEstimateEndDate_ValueChanged);
             // 
@@ -828,7 +828,7 @@
             this.tableLayoutPanel25.Controls.Add(this.label7, 0, 0);
             this.tableLayoutPanel25.Controls.Add(this.cmbMac, 2, 1);
             this.tableLayoutPanel25.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel25.Location = new System.Drawing.Point(3, 21);
+            this.tableLayoutPanel25.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel25.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel25.Name = "tableLayoutPanel25";
             this.tableLayoutPanel25.RowCount = 2;
@@ -836,7 +836,7 @@
             this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel25.Size = new System.Drawing.Size(188, 70);
+            this.tableLayoutPanel25.Size = new System.Drawing.Size(188, 74);
             this.tableLayoutPanel25.TabIndex = 108;
             // 
             // lblMachineSelectionID
@@ -845,10 +845,10 @@
             this.lblMachineSelectionID.AutoSize = true;
             this.lblMachineSelectionID.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblMachineSelectionID.ForeColor = System.Drawing.Color.Black;
-            this.lblMachineSelectionID.Location = new System.Drawing.Point(102, 10);
+            this.lblMachineSelectionID.Location = new System.Drawing.Point(102, 13);
             this.lblMachineSelectionID.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.lblMachineSelectionID.Name = "lblMachineSelectionID";
-            this.lblMachineSelectionID.Size = new System.Drawing.Size(18, 15);
+            this.lblMachineSelectionID.Size = new System.Drawing.Size(15, 12);
             this.lblMachineSelectionID.TabIndex = 0;
             this.lblMachineSelectionID.Text = "ID";
             // 
@@ -862,7 +862,7 @@
             this.cmbMacLocation.FormattingEnabled = true;
             this.cmbMacLocation.Location = new System.Drawing.Point(3, 28);
             this.cmbMacLocation.Name = "cmbMacLocation";
-            this.cmbMacLocation.Size = new System.Drawing.Size(83, 25);
+            this.cmbMacLocation.Size = new System.Drawing.Size(83, 21);
             this.cmbMacLocation.TabIndex = 3;
             this.cmbMacLocation.SelectedIndexChanged += new System.EventHandler(this.cmbMacLocation_SelectedIndexChanged);
             // 
@@ -872,9 +872,9 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(3, 10);
+            this.label7.Location = new System.Drawing.Point(3, 13);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 15);
+            this.label7.Size = new System.Drawing.Size(43, 12);
             this.label7.TabIndex = 2;
             this.label7.Text = "Location";
             // 
@@ -888,7 +888,7 @@
             this.cmbMac.FormattingEnabled = true;
             this.cmbMac.Location = new System.Drawing.Point(102, 28);
             this.cmbMac.Name = "cmbMac";
-            this.cmbMac.Size = new System.Drawing.Size(83, 25);
+            this.cmbMac.Size = new System.Drawing.Size(83, 21);
             this.cmbMac.TabIndex = 1;
             this.cmbMac.SelectedIndexChanged += new System.EventHandler(this.cmbMacID_SelectedIndexChanged);
             // 
@@ -997,10 +997,10 @@
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.label18.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label18.Location = new System.Drawing.Point(13, 13);
+            this.label18.Location = new System.Drawing.Point(13, 19);
             this.label18.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(29, 27);
+            this.label18.Size = new System.Drawing.Size(23, 21);
             this.label18.TabIndex = 186;
             this.label18.Text = "2.";
             // 
@@ -1010,10 +1010,10 @@
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.label20.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label20.Location = new System.Drawing.Point(53, 13);
+            this.label20.Location = new System.Drawing.Point(53, 19);
             this.label20.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(1, 27);
+            this.label20.Size = new System.Drawing.Size(1, 21);
             this.label20.TabIndex = 182;
             this.label20.Text = "Inventory Checklist";
             // 
@@ -1160,10 +1160,10 @@
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label16.ForeColor = System.Drawing.Color.DimGray;
-            this.label16.Location = new System.Drawing.Point(203, 21);
+            this.label16.Location = new System.Drawing.Point(203, 27);
             this.label16.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(1, 19);
+            this.label16.Size = new System.Drawing.Size(1, 13);
             this.label16.TabIndex = 183;
             this.label16.Text = "Please review the job summary before publishing the job";
             // 
@@ -1173,10 +1173,10 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label2.Location = new System.Drawing.Point(13, 13);
+            this.label2.Location = new System.Drawing.Point(13, 19);
             this.label2.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 27);
+            this.label2.Size = new System.Drawing.Size(23, 21);
             this.label2.TabIndex = 186;
             this.label2.Text = "4.";
             // 
@@ -1186,10 +1186,10 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label4.Location = new System.Drawing.Point(53, 13);
+            this.label4.Location = new System.Drawing.Point(53, 19);
             this.label4.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(141, 27);
+            this.label4.Size = new System.Drawing.Size(115, 21);
             this.label4.TabIndex = 182;
             this.label4.Text = "Job Summary";
             // 
@@ -1262,7 +1262,7 @@
             this.lblSummaryMouldMaxShot.Location = new System.Drawing.Point(3, 23);
             this.lblSummaryMouldMaxShot.Margin = new System.Windows.Forms.Padding(3);
             this.lblSummaryMouldMaxShot.Name = "lblSummaryMouldMaxShot";
-            this.lblSummaryMouldMaxShot.Size = new System.Drawing.Size(1, 24);
+            this.lblSummaryMouldMaxShot.Size = new System.Drawing.Size(1, 20);
             this.lblSummaryMouldMaxShot.TabIndex = 207;
             this.lblSummaryMouldMaxShot.Text = "0";
             // 
@@ -1272,10 +1272,10 @@
             this.label59.AutoSize = true;
             this.label59.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label59.ForeColor = System.Drawing.Color.DimGray;
-            this.label59.Location = new System.Drawing.Point(3, 3);
+            this.label59.Location = new System.Drawing.Point(3, 5);
             this.label59.Margin = new System.Windows.Forms.Padding(3);
             this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(1, 14);
+            this.label59.Size = new System.Drawing.Size(1, 12);
             this.label59.TabIndex = 186;
             this.label59.Text = "CODE";
             // 
@@ -1285,10 +1285,10 @@
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label24.ForeColor = System.Drawing.Color.DimGray;
-            this.label24.Location = new System.Drawing.Point(3, 3);
+            this.label24.Location = new System.Drawing.Point(3, 5);
             this.label24.Margin = new System.Windows.Forms.Padding(3);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(1, 14);
+            this.label24.Size = new System.Drawing.Size(1, 12);
             this.label24.TabIndex = 206;
             this.label24.Text = "MAX SHOT";
             // 
@@ -1298,10 +1298,10 @@
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label22.ForeColor = System.Drawing.Color.DimGray;
-            this.label22.Location = new System.Drawing.Point(3, 3);
+            this.label22.Location = new System.Drawing.Point(3, 5);
             this.label22.Margin = new System.Windows.Forms.Padding(3);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(1, 14);
+            this.label22.Size = new System.Drawing.Size(1, 12);
             this.label22.TabIndex = 214;
             this.label22.Text = "TOTAL RW/ SHOT";
             // 
@@ -1313,7 +1313,7 @@
             this.lblSummaryMouldTotalRWPerShot.Location = new System.Drawing.Point(3, 23);
             this.lblSummaryMouldTotalRWPerShot.Margin = new System.Windows.Forms.Padding(3);
             this.lblSummaryMouldTotalRWPerShot.Name = "lblSummaryMouldTotalRWPerShot";
-            this.lblSummaryMouldTotalRWPerShot.Size = new System.Drawing.Size(1, 19);
+            this.lblSummaryMouldTotalRWPerShot.Size = new System.Drawing.Size(1, 13);
             this.lblSummaryMouldTotalRWPerShot.TabIndex = 215;
             this.lblSummaryMouldTotalRWPerShot.Text = "0";
             // 
@@ -1325,7 +1325,7 @@
             this.lblSummaryMouldTotalPWPerShot.Location = new System.Drawing.Point(3, 23);
             this.lblSummaryMouldTotalPWPerShot.Margin = new System.Windows.Forms.Padding(3);
             this.lblSummaryMouldTotalPWPerShot.Name = "lblSummaryMouldTotalPWPerShot";
-            this.lblSummaryMouldTotalPWPerShot.Size = new System.Drawing.Size(1, 19);
+            this.lblSummaryMouldTotalPWPerShot.Size = new System.Drawing.Size(1, 13);
             this.lblSummaryMouldTotalPWPerShot.TabIndex = 216;
             this.lblSummaryMouldTotalPWPerShot.Text = "0";
             // 
@@ -1337,7 +1337,7 @@
             this.lblSummaryMouldCode.Location = new System.Drawing.Point(3, 23);
             this.lblSummaryMouldCode.Margin = new System.Windows.Forms.Padding(3);
             this.lblSummaryMouldCode.Name = "lblSummaryMouldCode";
-            this.lblSummaryMouldCode.Size = new System.Drawing.Size(0, 19);
+            this.lblSummaryMouldCode.Size = new System.Drawing.Size(0, 13);
             this.lblSummaryMouldCode.TabIndex = 187;
             // 
             // label53
@@ -1346,10 +1346,10 @@
             this.label53.AutoSize = true;
             this.label53.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label53.ForeColor = System.Drawing.Color.DimGray;
-            this.label53.Location = new System.Drawing.Point(3, 3);
+            this.label53.Location = new System.Drawing.Point(3, 5);
             this.label53.Margin = new System.Windows.Forms.Padding(3);
             this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(1, 14);
+            this.label53.Size = new System.Drawing.Size(1, 12);
             this.label53.TabIndex = 188;
             this.label53.Text = "TON";
             // 
@@ -1361,7 +1361,7 @@
             this.lblSummaryMouldTon.Location = new System.Drawing.Point(3, 23);
             this.lblSummaryMouldTon.Margin = new System.Windows.Forms.Padding(3);
             this.lblSummaryMouldTon.Name = "lblSummaryMouldTon";
-            this.lblSummaryMouldTon.Size = new System.Drawing.Size(1, 19);
+            this.lblSummaryMouldTon.Size = new System.Drawing.Size(1, 13);
             this.lblSummaryMouldTon.TabIndex = 189;
             this.lblSummaryMouldTon.Text = "0";
             // 
@@ -1371,10 +1371,10 @@
             this.label28.AutoSize = true;
             this.label28.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label28.ForeColor = System.Drawing.Color.DimGray;
-            this.label28.Location = new System.Drawing.Point(3, 3);
+            this.label28.Location = new System.Drawing.Point(3, 5);
             this.label28.Margin = new System.Windows.Forms.Padding(3);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(1, 14);
+            this.label28.Size = new System.Drawing.Size(1, 12);
             this.label28.TabIndex = 210;
             this.label28.Text = "TOTAL CAVITY";
             // 
@@ -1384,10 +1384,10 @@
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label21.ForeColor = System.Drawing.Color.DimGray;
-            this.label21.Location = new System.Drawing.Point(3, 3);
+            this.label21.Location = new System.Drawing.Point(3, 5);
             this.label21.Margin = new System.Windows.Forms.Padding(3);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(1, 14);
+            this.label21.Size = new System.Drawing.Size(1, 12);
             this.label21.TabIndex = 215;
             this.label21.Text = "TOTAL PW/ SHOT";
             // 
@@ -1399,7 +1399,7 @@
             this.lblSummaryCycleTime.Location = new System.Drawing.Point(3, 23);
             this.lblSummaryCycleTime.Margin = new System.Windows.Forms.Padding(3);
             this.lblSummaryCycleTime.Name = "lblSummaryCycleTime";
-            this.lblSummaryCycleTime.Size = new System.Drawing.Size(1, 19);
+            this.lblSummaryCycleTime.Size = new System.Drawing.Size(1, 13);
             this.lblSummaryCycleTime.TabIndex = 213;
             this.lblSummaryCycleTime.Text = "0";
             // 
@@ -1411,7 +1411,7 @@
             this.lblSummaryMouldTotalCavity.Location = new System.Drawing.Point(3, 23);
             this.lblSummaryMouldTotalCavity.Margin = new System.Windows.Forms.Padding(3);
             this.lblSummaryMouldTotalCavity.Name = "lblSummaryMouldTotalCavity";
-            this.lblSummaryMouldTotalCavity.Size = new System.Drawing.Size(1, 19);
+            this.lblSummaryMouldTotalCavity.Size = new System.Drawing.Size(1, 13);
             this.lblSummaryMouldTotalCavity.TabIndex = 211;
             this.lblSummaryMouldTotalCavity.Text = "0";
             // 
@@ -1421,10 +1421,10 @@
             this.label56.AutoSize = true;
             this.label56.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label56.ForeColor = System.Drawing.Color.DimGray;
-            this.label56.Location = new System.Drawing.Point(3, 3);
+            this.label56.Location = new System.Drawing.Point(3, 5);
             this.label56.Margin = new System.Windows.Forms.Padding(3);
             this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(1, 14);
+            this.label56.Size = new System.Drawing.Size(1, 12);
             this.label56.TabIndex = 212;
             this.label56.Text = "CYCLE TIME";
             // 
@@ -1560,7 +1560,7 @@
             this.lblDescriptionItem3.Location = new System.Drawing.Point(23, 163);
             this.lblDescriptionItem3.Margin = new System.Windows.Forms.Padding(3);
             this.lblDescriptionItem3.Name = "lblDescriptionItem3";
-            this.lblDescriptionItem3.Size = new System.Drawing.Size(0, 20);
+            this.lblDescriptionItem3.Size = new System.Drawing.Size(0, 15);
             this.lblDescriptionItem3.TabIndex = 201;
             // 
             // lblPWPerShotItem3
@@ -1571,7 +1571,7 @@
             this.lblPWPerShotItem3.Location = new System.Drawing.Point(7, 163);
             this.lblPWPerShotItem3.Margin = new System.Windows.Forms.Padding(3);
             this.lblPWPerShotItem3.Name = "lblPWPerShotItem3";
-            this.lblPWPerShotItem3.Size = new System.Drawing.Size(1, 19);
+            this.lblPWPerShotItem3.Size = new System.Drawing.Size(1, 13);
             this.lblPWPerShotItem3.TabIndex = 203;
             this.lblPWPerShotItem3.Text = "0";
             // 
@@ -1583,7 +1583,7 @@
             this.lblCavityItem3.Location = new System.Drawing.Point(8, 163);
             this.lblCavityItem3.Margin = new System.Windows.Forms.Padding(3);
             this.lblCavityItem3.Name = "lblCavityItem3";
-            this.lblCavityItem3.Size = new System.Drawing.Size(1, 19);
+            this.lblCavityItem3.Size = new System.Drawing.Size(1, 13);
             this.lblCavityItem3.TabIndex = 205;
             this.lblCavityItem3.Text = "0";
             // 
@@ -1595,7 +1595,7 @@
             this.lblTargetQtyItem3.Location = new System.Drawing.Point(9, 163);
             this.lblTargetQtyItem3.Margin = new System.Windows.Forms.Padding(3);
             this.lblTargetQtyItem3.Name = "lblTargetQtyItem3";
-            this.lblTargetQtyItem3.Size = new System.Drawing.Size(1, 19);
+            this.lblTargetQtyItem3.Size = new System.Drawing.Size(1, 13);
             this.lblTargetQtyItem3.TabIndex = 207;
             this.lblTargetQtyItem3.Text = "0";
             // 
@@ -1607,7 +1607,7 @@
             this.lblMaxQtyItem3.Location = new System.Drawing.Point(10, 163);
             this.lblMaxQtyItem3.Margin = new System.Windows.Forms.Padding(3);
             this.lblMaxQtyItem3.Name = "lblMaxQtyItem3";
-            this.lblMaxQtyItem3.Size = new System.Drawing.Size(1, 25);
+            this.lblMaxQtyItem3.Size = new System.Drawing.Size(1, 20);
             this.lblMaxQtyItem3.TabIndex = 211;
             this.lblMaxQtyItem3.Text = "0";
             // 
@@ -1619,7 +1619,7 @@
             this.lblJobPurposeItem3.Location = new System.Drawing.Point(11, 163);
             this.lblJobPurposeItem3.Margin = new System.Windows.Forms.Padding(3);
             this.lblJobPurposeItem3.Name = "lblJobPurposeItem3";
-            this.lblJobPurposeItem3.Size = new System.Drawing.Size(0, 15);
+            this.lblJobPurposeItem3.Size = new System.Drawing.Size(0, 12);
             this.lblJobPurposeItem3.TabIndex = 208;
             // 
             // lblSummaryItemIndex3
@@ -1630,7 +1630,7 @@
             this.lblSummaryItemIndex3.Location = new System.Drawing.Point(3, 163);
             this.lblSummaryItemIndex3.Margin = new System.Windows.Forms.Padding(3);
             this.lblSummaryItemIndex3.Name = "lblSummaryItemIndex3";
-            this.lblSummaryItemIndex3.Size = new System.Drawing.Size(14, 15);
+            this.lblSummaryItemIndex3.Size = new System.Drawing.Size(11, 12);
             this.lblSummaryItemIndex3.TabIndex = 235;
             this.lblSummaryItemIndex3.Text = "3";
             // 
@@ -1642,7 +1642,7 @@
             this.lblJobPurposeItem1.Location = new System.Drawing.Point(11, 43);
             this.lblJobPurposeItem1.Margin = new System.Windows.Forms.Padding(3);
             this.lblJobPurposeItem1.Name = "lblJobPurposeItem1";
-            this.lblJobPurposeItem1.Size = new System.Drawing.Size(0, 15);
+            this.lblJobPurposeItem1.Size = new System.Drawing.Size(0, 12);
             this.lblJobPurposeItem1.TabIndex = 206;
             // 
             // label45
@@ -1653,7 +1653,7 @@
             this.label45.Location = new System.Drawing.Point(3, 43);
             this.label45.Margin = new System.Windows.Forms.Padding(3);
             this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(14, 15);
+            this.label45.Size = new System.Drawing.Size(11, 12);
             this.label45.TabIndex = 200;
             this.label45.Text = "1";
             // 
@@ -1663,10 +1663,10 @@
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label26.ForeColor = System.Drawing.Color.DimGray;
-            this.label26.Location = new System.Drawing.Point(11, 12);
+            this.label26.Location = new System.Drawing.Point(11, 15);
             this.label26.Margin = new System.Windows.Forms.Padding(3);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(1, 15);
+            this.label26.Size = new System.Drawing.Size(1, 12);
             this.label26.TabIndex = 201;
             this.label26.Text = "PURPOSE";
             // 
@@ -1676,10 +1676,10 @@
             this.label44.AutoSize = true;
             this.label44.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label44.ForeColor = System.Drawing.Color.DimGray;
-            this.label44.Location = new System.Drawing.Point(3, 12);
+            this.label44.Location = new System.Drawing.Point(3, 15);
             this.label44.Margin = new System.Windows.Forms.Padding(3);
             this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(14, 15);
+            this.label44.Size = new System.Drawing.Size(11, 12);
             this.label44.TabIndex = 199;
             this.label44.Text = "#";
             // 
@@ -1691,7 +1691,7 @@
             this.lblMaxQtyItem1.Location = new System.Drawing.Point(10, 43);
             this.lblMaxQtyItem1.Margin = new System.Windows.Forms.Padding(3);
             this.lblMaxQtyItem1.Name = "lblMaxQtyItem1";
-            this.lblMaxQtyItem1.Size = new System.Drawing.Size(1, 25);
+            this.lblMaxQtyItem1.Size = new System.Drawing.Size(1, 20);
             this.lblMaxQtyItem1.TabIndex = 209;
             this.lblMaxQtyItem1.Text = "0";
             // 
@@ -1701,10 +1701,10 @@
             this.label31.AutoSize = true;
             this.label31.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label31.ForeColor = System.Drawing.Color.DimGray;
-            this.label31.Location = new System.Drawing.Point(9, 12);
+            this.label31.Location = new System.Drawing.Point(9, 15);
             this.label31.Margin = new System.Windows.Forms.Padding(3);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(1, 15);
+            this.label31.Size = new System.Drawing.Size(1, 12);
             this.label31.TabIndex = 204;
             this.label31.Text = "TARGET QTY";
             // 
@@ -1716,7 +1716,7 @@
             this.lblTargetQtyItem1.Location = new System.Drawing.Point(9, 43);
             this.lblTargetQtyItem1.Margin = new System.Windows.Forms.Padding(3);
             this.lblTargetQtyItem1.Name = "lblTargetQtyItem1";
-            this.lblTargetQtyItem1.Size = new System.Drawing.Size(1, 19);
+            this.lblTargetQtyItem1.Size = new System.Drawing.Size(1, 13);
             this.lblTargetQtyItem1.TabIndex = 205;
             this.lblTargetQtyItem1.Text = "0";
             // 
@@ -1726,10 +1726,10 @@
             this.label33.AutoSize = true;
             this.label33.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label33.ForeColor = System.Drawing.Color.DimGray;
-            this.label33.Location = new System.Drawing.Point(10, 12);
+            this.label33.Location = new System.Drawing.Point(10, 15);
             this.label33.Margin = new System.Windows.Forms.Padding(3);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(1, 15);
+            this.label33.Size = new System.Drawing.Size(1, 12);
             this.label33.TabIndex = 208;
             this.label33.Text = "MAX QTY";
             // 
@@ -1741,7 +1741,7 @@
             this.lblCavityItem1.Location = new System.Drawing.Point(8, 43);
             this.lblCavityItem1.Margin = new System.Windows.Forms.Padding(3);
             this.lblCavityItem1.Name = "lblCavityItem1";
-            this.lblCavityItem1.Size = new System.Drawing.Size(1, 19);
+            this.lblCavityItem1.Size = new System.Drawing.Size(1, 13);
             this.lblCavityItem1.TabIndex = 203;
             this.lblCavityItem1.Text = "0";
             // 
@@ -1751,10 +1751,10 @@
             this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label25.ForeColor = System.Drawing.Color.DimGray;
-            this.label25.Location = new System.Drawing.Point(8, 12);
+            this.label25.Location = new System.Drawing.Point(8, 15);
             this.label25.Margin = new System.Windows.Forms.Padding(3);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(1, 15);
+            this.label25.Size = new System.Drawing.Size(1, 12);
             this.label25.TabIndex = 202;
             this.label25.Text = "CAVITY";
             // 
@@ -1764,10 +1764,10 @@
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label23.ForeColor = System.Drawing.Color.DimGray;
-            this.label23.Location = new System.Drawing.Point(7, 12);
+            this.label23.Location = new System.Drawing.Point(7, 15);
             this.label23.Margin = new System.Windows.Forms.Padding(3);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(1, 15);
+            this.label23.Size = new System.Drawing.Size(1, 12);
             this.label23.TabIndex = 200;
             this.label23.Text = "PW/ SHOT";
             // 
@@ -1779,7 +1779,7 @@
             this.lblPWPerShotItem1.Location = new System.Drawing.Point(7, 43);
             this.lblPWPerShotItem1.Margin = new System.Windows.Forms.Padding(3);
             this.lblPWPerShotItem1.Name = "lblPWPerShotItem1";
-            this.lblPWPerShotItem1.Size = new System.Drawing.Size(1, 19);
+            this.lblPWPerShotItem1.Size = new System.Drawing.Size(1, 13);
             this.lblPWPerShotItem1.TabIndex = 201;
             this.lblPWPerShotItem1.Text = "0";
             // 
@@ -1789,10 +1789,10 @@
             this.label43.AutoSize = true;
             this.label43.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label43.ForeColor = System.Drawing.Color.DimGray;
-            this.label43.Location = new System.Drawing.Point(23, 12);
+            this.label43.Location = new System.Drawing.Point(23, 15);
             this.label43.Margin = new System.Windows.Forms.Padding(3);
             this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(1, 15);
+            this.label43.Size = new System.Drawing.Size(1, 12);
             this.label43.TabIndex = 198;
             this.label43.Text = "DESCRIPTION";
             // 
@@ -1804,7 +1804,7 @@
             this.lblDescriptionItem1.Location = new System.Drawing.Point(23, 43);
             this.lblDescriptionItem1.Margin = new System.Windows.Forms.Padding(3);
             this.lblDescriptionItem1.Name = "lblDescriptionItem1";
-            this.lblDescriptionItem1.Size = new System.Drawing.Size(0, 20);
+            this.lblDescriptionItem1.Size = new System.Drawing.Size(0, 15);
             this.lblDescriptionItem1.TabIndex = 199;
             // 
             // lblDescriptionItem2
@@ -1815,7 +1815,7 @@
             this.lblDescriptionItem2.Location = new System.Drawing.Point(23, 103);
             this.lblDescriptionItem2.Margin = new System.Windows.Forms.Padding(3);
             this.lblDescriptionItem2.Name = "lblDescriptionItem2";
-            this.lblDescriptionItem2.Size = new System.Drawing.Size(0, 20);
+            this.lblDescriptionItem2.Size = new System.Drawing.Size(0, 15);
             this.lblDescriptionItem2.TabIndex = 200;
             // 
             // lblSummaryItemIndex2
@@ -1826,7 +1826,7 @@
             this.lblSummaryItemIndex2.Location = new System.Drawing.Point(3, 103);
             this.lblSummaryItemIndex2.Margin = new System.Windows.Forms.Padding(3);
             this.lblSummaryItemIndex2.Name = "lblSummaryItemIndex2";
-            this.lblSummaryItemIndex2.Size = new System.Drawing.Size(14, 15);
+            this.lblSummaryItemIndex2.Size = new System.Drawing.Size(11, 12);
             this.lblSummaryItemIndex2.TabIndex = 201;
             this.lblSummaryItemIndex2.Text = "2";
             // 
@@ -1838,7 +1838,7 @@
             this.lblPWPerShotItem2.Location = new System.Drawing.Point(7, 103);
             this.lblPWPerShotItem2.Margin = new System.Windows.Forms.Padding(3);
             this.lblPWPerShotItem2.Name = "lblPWPerShotItem2";
-            this.lblPWPerShotItem2.Size = new System.Drawing.Size(1, 19);
+            this.lblPWPerShotItem2.Size = new System.Drawing.Size(1, 13);
             this.lblPWPerShotItem2.TabIndex = 202;
             this.lblPWPerShotItem2.Text = "0";
             // 
@@ -1850,7 +1850,7 @@
             this.lblCavityItem2.Location = new System.Drawing.Point(8, 103);
             this.lblCavityItem2.Margin = new System.Windows.Forms.Padding(3);
             this.lblCavityItem2.Name = "lblCavityItem2";
-            this.lblCavityItem2.Size = new System.Drawing.Size(1, 19);
+            this.lblCavityItem2.Size = new System.Drawing.Size(1, 13);
             this.lblCavityItem2.TabIndex = 204;
             this.lblCavityItem2.Text = "0";
             // 
@@ -1862,7 +1862,7 @@
             this.lblTargetQtyItem2.Location = new System.Drawing.Point(9, 103);
             this.lblTargetQtyItem2.Margin = new System.Windows.Forms.Padding(3);
             this.lblTargetQtyItem2.Name = "lblTargetQtyItem2";
-            this.lblTargetQtyItem2.Size = new System.Drawing.Size(1, 19);
+            this.lblTargetQtyItem2.Size = new System.Drawing.Size(1, 13);
             this.lblTargetQtyItem2.TabIndex = 206;
             this.lblTargetQtyItem2.Text = "0";
             // 
@@ -1874,7 +1874,7 @@
             this.lblMaxQtyItem2.Location = new System.Drawing.Point(10, 103);
             this.lblMaxQtyItem2.Margin = new System.Windows.Forms.Padding(3);
             this.lblMaxQtyItem2.Name = "lblMaxQtyItem2";
-            this.lblMaxQtyItem2.Size = new System.Drawing.Size(1, 25);
+            this.lblMaxQtyItem2.Size = new System.Drawing.Size(1, 20);
             this.lblMaxQtyItem2.TabIndex = 210;
             this.lblMaxQtyItem2.Text = "0";
             // 
@@ -1886,7 +1886,7 @@
             this.lblJobPurposeItem2.Location = new System.Drawing.Point(11, 103);
             this.lblJobPurposeItem2.Margin = new System.Windows.Forms.Padding(3);
             this.lblJobPurposeItem2.Name = "lblJobPurposeItem2";
-            this.lblJobPurposeItem2.Size = new System.Drawing.Size(0, 15);
+            this.lblJobPurposeItem2.Size = new System.Drawing.Size(0, 12);
             this.lblJobPurposeItem2.TabIndex = 207;
             // 
             // tableLayoutPanel40
@@ -1933,7 +1933,7 @@
             this.label36.Location = new System.Drawing.Point(13, 13);
             this.label36.Margin = new System.Windows.Forms.Padding(3);
             this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(87, 19);
+            this.label36.Size = new System.Drawing.Size(74, 19);
             this.label36.TabIndex = 188;
             this.label36.Text = "Pro. Time";
             // 
@@ -1982,7 +1982,7 @@
             this.lblEstEnd.Location = new System.Drawing.Point(103, 83);
             this.lblEstEnd.Margin = new System.Windows.Forms.Padding(3);
             this.lblEstEnd.Name = "lblEstEnd";
-            this.lblEstEnd.Size = new System.Drawing.Size(17, 19);
+            this.lblEstEnd.Size = new System.Drawing.Size(13, 13);
             this.lblEstEnd.TabIndex = 233;
             this.lblEstEnd.Text = "0";
             // 
@@ -1994,7 +1994,7 @@
             this.lblStart.Location = new System.Drawing.Point(3, 83);
             this.lblStart.Margin = new System.Windows.Forms.Padding(3);
             this.lblStart.Name = "lblStart";
-            this.lblStart.Size = new System.Drawing.Size(17, 19);
+            this.lblStart.Size = new System.Drawing.Size(13, 13);
             this.lblStart.TabIndex = 233;
             this.lblStart.Text = "0";
             // 
@@ -2004,10 +2004,10 @@
             this.label32.AutoSize = true;
             this.label32.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label32.ForeColor = System.Drawing.Color.DimGray;
-            this.label32.Location = new System.Drawing.Point(103, 3);
+            this.label32.Location = new System.Drawing.Point(103, 5);
             this.label32.Margin = new System.Windows.Forms.Padding(3);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(56, 14);
+            this.label32.Size = new System.Drawing.Size(45, 12);
             this.label32.TabIndex = 218;
             this.label32.Text = "BAL. HRS";
             // 
@@ -2017,10 +2017,10 @@
             this.lblProDateTitle.AutoSize = true;
             this.lblProDateTitle.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblProDateTitle.ForeColor = System.Drawing.Color.DimGray;
-            this.lblProDateTitle.Location = new System.Drawing.Point(3, 3);
+            this.lblProDateTitle.Location = new System.Drawing.Point(3, 5);
             this.lblProDateTitle.Margin = new System.Windows.Forms.Padding(3);
             this.lblProDateTitle.Name = "lblProDateTitle";
-            this.lblProDateTitle.Size = new System.Drawing.Size(29, 14);
+            this.lblProDateTitle.Size = new System.Drawing.Size(23, 12);
             this.lblProDateTitle.TabIndex = 218;
             this.lblProDateTitle.Text = "DAY";
             // 
@@ -2032,7 +2032,7 @@
             this.lblProDay.Location = new System.Drawing.Point(3, 23);
             this.lblProDay.Margin = new System.Windows.Forms.Padding(3);
             this.lblProDay.Name = "lblProDay";
-            this.lblProDay.Size = new System.Drawing.Size(48, 28);
+            this.lblProDay.Size = new System.Drawing.Size(37, 21);
             this.lblProDay.TabIndex = 218;
             this.lblProDay.Text = "365";
             // 
@@ -2042,10 +2042,10 @@
             this.label34.AutoSize = true;
             this.label34.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label34.ForeColor = System.Drawing.Color.DimGray;
-            this.label34.Location = new System.Drawing.Point(103, 63);
+            this.label34.Location = new System.Drawing.Point(103, 65);
             this.label34.Margin = new System.Windows.Forms.Padding(3);
             this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(54, 14);
+            this.label34.Size = new System.Drawing.Size(44, 12);
             this.label34.TabIndex = 232;
             this.label34.Text = "EST. END";
             // 
@@ -2057,7 +2057,7 @@
             this.lblProBalHrs.Location = new System.Drawing.Point(103, 23);
             this.lblProBalHrs.Margin = new System.Windows.Forms.Padding(3);
             this.lblProBalHrs.Name = "lblProBalHrs";
-            this.lblProBalHrs.Size = new System.Drawing.Size(20, 23);
+            this.lblProBalHrs.Size = new System.Drawing.Size(17, 19);
             this.lblProBalHrs.TabIndex = 231;
             this.lblProBalHrs.Text = "0";
             // 
@@ -2067,10 +2067,10 @@
             this.label35.AutoSize = true;
             this.label35.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label35.ForeColor = System.Drawing.Color.DimGray;
-            this.label35.Location = new System.Drawing.Point(3, 63);
+            this.label35.Location = new System.Drawing.Point(3, 65);
             this.label35.Margin = new System.Windows.Forms.Padding(3);
             this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(38, 14);
+            this.label35.Size = new System.Drawing.Size(31, 12);
             this.label35.TabIndex = 232;
             this.label35.Text = "START";
             // 
@@ -2102,7 +2102,7 @@
             this.lblMachineID.Location = new System.Drawing.Point(3, 23);
             this.lblMachineID.Margin = new System.Windows.Forms.Padding(3);
             this.lblMachineID.Name = "lblMachineID";
-            this.lblMachineID.Size = new System.Drawing.Size(24, 28);
+            this.lblMachineID.Size = new System.Drawing.Size(19, 21);
             this.lblMachineID.TabIndex = 231;
             this.lblMachineID.Text = "0";
             // 
@@ -2112,10 +2112,10 @@
             this.label30.AutoSize = true;
             this.label30.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label30.ForeColor = System.Drawing.Color.DimGray;
-            this.label30.Location = new System.Drawing.Point(3, 3);
+            this.label30.Location = new System.Drawing.Point(3, 5);
             this.label30.Margin = new System.Windows.Forms.Padding(3);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(61, 14);
+            this.label30.Size = new System.Drawing.Size(48, 12);
             this.label30.TabIndex = 231;
             this.label30.Text = "MAC. NO.";
             // 
@@ -2125,10 +2125,10 @@
             this.label27.AutoSize = true;
             this.label27.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label27.ForeColor = System.Drawing.Color.DimGray;
-            this.label27.Location = new System.Drawing.Point(103, 3);
+            this.label27.Location = new System.Drawing.Point(103, 5);
             this.label27.Margin = new System.Windows.Forms.Padding(3);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(64, 14);
+            this.label27.Size = new System.Drawing.Size(52, 12);
             this.label27.TabIndex = 232;
             this.label27.Text = "LOCATION";
             // 
@@ -2140,7 +2140,7 @@
             this.lblMacLocation.Location = new System.Drawing.Point(103, 23);
             this.lblMacLocation.Margin = new System.Windows.Forms.Padding(3);
             this.lblMacLocation.Name = "lblMacLocation";
-            this.lblMacLocation.Size = new System.Drawing.Size(69, 20);
+            this.lblMacLocation.Size = new System.Drawing.Size(54, 15);
             this.lblMacLocation.TabIndex = 232;
             this.lblMacLocation.Text = "Location";
             // 
@@ -2163,7 +2163,7 @@
             this.label49.Location = new System.Drawing.Point(495, 13);
             this.label49.Margin = new System.Windows.Forms.Padding(3);
             this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(1, 19);
+            this.label49.Size = new System.Drawing.Size(1, 15);
             this.label49.TabIndex = 188;
             this.label49.Text = "Remark";
             // 
@@ -2186,7 +2186,7 @@
             this.label37.Location = new System.Drawing.Point(254, 13);
             this.label37.Margin = new System.Windows.Forms.Padding(3);
             this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(77, 19);
+            this.label37.Size = new System.Drawing.Size(65, 19);
             this.label37.TabIndex = 188;
             this.label37.Text = "Machine";
             // 
@@ -2321,7 +2321,7 @@
             this.lblTotalRecycleMatKG.Location = new System.Drawing.Point(3, 58);
             this.lblTotalRecycleMatKG.Margin = new System.Windows.Forms.Padding(3);
             this.lblTotalRecycleMatKG.Name = "lblTotalRecycleMatKG";
-            this.lblTotalRecycleMatKG.Size = new System.Drawing.Size(0, 19);
+            this.lblTotalRecycleMatKG.Size = new System.Drawing.Size(0, 13);
             this.lblTotalRecycleMatKG.TabIndex = 230;
             // 
             // label46
@@ -2330,10 +2330,10 @@
             this.label46.AutoSize = true;
             this.label46.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label46.ForeColor = System.Drawing.Color.DimGray;
-            this.label46.Location = new System.Drawing.Point(3, 38);
+            this.label46.Location = new System.Drawing.Point(3, 40);
             this.label46.Margin = new System.Windows.Forms.Padding(3);
             this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(1, 14);
+            this.label46.Size = new System.Drawing.Size(1, 12);
             this.label46.TabIndex = 229;
             this.label46.Text = "TOTAL RECYCLE";
             // 
@@ -2381,7 +2381,7 @@
             this.lblTotalColorKG.Location = new System.Drawing.Point(3, 108);
             this.lblTotalColorKG.Margin = new System.Windows.Forms.Padding(3);
             this.lblTotalColorKG.Name = "lblTotalColorKG";
-            this.lblTotalColorKG.Size = new System.Drawing.Size(0, 19);
+            this.lblTotalColorKG.Size = new System.Drawing.Size(0, 13);
             this.lblTotalColorKG.TabIndex = 228;
             // 
             // label39
@@ -2390,10 +2390,10 @@
             this.label39.AutoSize = true;
             this.label39.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label39.ForeColor = System.Drawing.Color.DimGray;
-            this.label39.Location = new System.Drawing.Point(3, 88);
+            this.label39.Location = new System.Drawing.Point(3, 90);
             this.label39.Margin = new System.Windows.Forms.Padding(3);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(1, 14);
+            this.label39.Size = new System.Drawing.Size(1, 12);
             this.label39.TabIndex = 227;
             this.label39.Text = "TOTAL COLOR";
             // 
@@ -2405,7 +2405,7 @@
             this.lblColorDescription.Location = new System.Drawing.Point(3, 58);
             this.lblColorDescription.Margin = new System.Windows.Forms.Padding(3);
             this.lblColorDescription.Name = "lblColorDescription";
-            this.lblColorDescription.Size = new System.Drawing.Size(0, 19);
+            this.lblColorDescription.Size = new System.Drawing.Size(0, 13);
             this.lblColorDescription.TabIndex = 226;
             // 
             // lblColorTitle
@@ -2414,10 +2414,10 @@
             this.lblColorTitle.AutoSize = true;
             this.lblColorTitle.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblColorTitle.ForeColor = System.Drawing.Color.DimGray;
-            this.lblColorTitle.Location = new System.Drawing.Point(3, 38);
+            this.lblColorTitle.Location = new System.Drawing.Point(3, 40);
             this.lblColorTitle.Margin = new System.Windows.Forms.Padding(3);
             this.lblColorTitle.Name = "lblColorTitle";
-            this.lblColorTitle.Size = new System.Drawing.Size(1, 14);
+            this.lblColorTitle.Size = new System.Drawing.Size(1, 12);
             this.lblColorTitle.TabIndex = 225;
             this.lblColorTitle.Text = "COLOR (BLACK)";
             // 
@@ -2463,10 +2463,10 @@
             this.label40.AutoSize = true;
             this.label40.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label40.ForeColor = System.Drawing.Color.DimGray;
-            this.label40.Location = new System.Drawing.Point(3, 38);
+            this.label40.Location = new System.Drawing.Point(3, 40);
             this.label40.Margin = new System.Windows.Forms.Padding(3);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(1, 14);
+            this.label40.Size = new System.Drawing.Size(1, 12);
             this.label40.TabIndex = 221;
             this.label40.Text = "RAW";
             // 
@@ -2478,7 +2478,7 @@
             this.lblRawDescription.Location = new System.Drawing.Point(3, 58);
             this.lblRawDescription.Margin = new System.Windows.Forms.Padding(3);
             this.lblRawDescription.Name = "lblRawDescription";
-            this.lblRawDescription.Size = new System.Drawing.Size(0, 20);
+            this.lblRawDescription.Size = new System.Drawing.Size(0, 15);
             this.lblRawDescription.TabIndex = 222;
             // 
             // label41
@@ -2487,10 +2487,10 @@
             this.label41.AutoSize = true;
             this.label41.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label41.ForeColor = System.Drawing.Color.DimGray;
-            this.label41.Location = new System.Drawing.Point(3, 88);
+            this.label41.Location = new System.Drawing.Point(3, 90);
             this.label41.Margin = new System.Windows.Forms.Padding(3);
             this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(1, 14);
+            this.label41.Size = new System.Drawing.Size(1, 12);
             this.label41.TabIndex = 223;
             this.label41.Text = "TOTAL RAW";
             // 
@@ -2502,7 +2502,7 @@
             this.lblTotalRawKG.Location = new System.Drawing.Point(3, 108);
             this.lblTotalRawKG.Margin = new System.Windows.Forms.Padding(3);
             this.lblTotalRawKG.Name = "lblTotalRawKG";
-            this.lblTotalRawKG.Size = new System.Drawing.Size(1, 19);
+            this.lblTotalRawKG.Size = new System.Drawing.Size(1, 13);
             this.lblTotalRawKG.TabIndex = 224;
             this.lblTotalRawKG.Text = "0";
             // 
@@ -2571,10 +2571,10 @@
             this.label51.AutoSize = true;
             this.label51.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.label51.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label51.Location = new System.Drawing.Point(13, 13);
+            this.label51.Location = new System.Drawing.Point(13, 19);
             this.label51.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(46, 27);
+            this.label51.Size = new System.Drawing.Size(36, 21);
             this.label51.TabIndex = 184;
             this.label51.Text = "1.2.";
             // 
@@ -2615,10 +2615,10 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label6.Location = new System.Drawing.Point(68, 13);
+            this.label6.Location = new System.Drawing.Point(68, 19);
             this.label6.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(1, 27);
+            this.label6.Size = new System.Drawing.Size(1, 21);
             this.label6.TabIndex = 182;
             this.label6.Text = "Raw && Color Material";
             // 
@@ -2771,10 +2771,10 @@
             this.lblColorMat.AutoSize = true;
             this.lblColorMat.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblColorMat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblColorMat.Location = new System.Drawing.Point(50, 47);
+            this.lblColorMat.Location = new System.Drawing.Point(53, 51);
             this.lblColorMat.Margin = new System.Windows.Forms.Padding(0);
             this.lblColorMat.Name = "lblColorMat";
-            this.lblColorMat.Size = new System.Drawing.Size(35, 41);
+            this.lblColorMat.Size = new System.Drawing.Size(28, 32);
             this.lblColorMat.TabIndex = 213;
             this.lblColorMat.Text = "0";
             // 
@@ -2785,10 +2785,10 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(3, 7);
+            this.label1.Location = new System.Drawing.Point(3, 10);
             this.label1.Margin = new System.Windows.Forms.Padding(3);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(116, 15);
+            this.label1.Size = new System.Drawing.Size(95, 12);
             this.label1.TabIndex = 116;
             this.label1.Text = "Total Color Mat. (KG)";
             // 
@@ -2818,10 +2818,10 @@
             this.label69.AutoSize = true;
             this.label69.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label69.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label69.Location = new System.Drawing.Point(3, 7);
+            this.label69.Location = new System.Drawing.Point(3, 10);
             this.label69.Margin = new System.Windows.Forms.Padding(3);
             this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(51, 15);
+            this.label69.Size = new System.Drawing.Size(41, 12);
             this.label69.TabIndex = 114;
             this.label69.Text = "Rate (%)";
             // 
@@ -2833,7 +2833,7 @@
             this.txtColorMatUsage.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtColorMatUsage.Location = new System.Drawing.Point(3, 28);
             this.txtColorMatUsage.Name = "txtColorMatUsage";
-            this.txtColorMatUsage.Size = new System.Drawing.Size(129, 30);
+            this.txtColorMatUsage.Size = new System.Drawing.Size(129, 25);
             this.txtColorMatUsage.TabIndex = 114;
             this.txtColorMatUsage.Text = "5";
             this.txtColorMatUsage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -2879,7 +2879,7 @@
             this.lblColorMatDescription.Location = new System.Drawing.Point(3, 28);
             this.lblColorMatDescription.Margin = new System.Windows.Forms.Padding(3);
             this.lblColorMatDescription.Name = "lblColorMatDescription";
-            this.lblColorMatDescription.Size = new System.Drawing.Size(0, 19);
+            this.lblColorMatDescription.Size = new System.Drawing.Size(0, 13);
             this.lblColorMatDescription.TabIndex = 213;
             // 
             // label67
@@ -2888,10 +2888,10 @@
             this.label67.AutoSize = true;
             this.label67.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label67.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label67.Location = new System.Drawing.Point(3, 7);
+            this.label67.Location = new System.Drawing.Point(3, 10);
             this.label67.Margin = new System.Windows.Forms.Padding(3);
             this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(67, 15);
+            this.label67.Size = new System.Drawing.Size(54, 12);
             this.label67.TabIndex = 187;
             this.label67.Text = "Description";
             // 
@@ -2903,7 +2903,7 @@
             this.lblPartColor.Location = new System.Drawing.Point(3, 88);
             this.lblPartColor.Margin = new System.Windows.Forms.Padding(3);
             this.lblPartColor.Name = "lblPartColor";
-            this.lblPartColor.Size = new System.Drawing.Size(0, 19);
+            this.lblPartColor.Size = new System.Drawing.Size(0, 13);
             this.lblPartColor.TabIndex = 212;
             // 
             // label68
@@ -2912,10 +2912,10 @@
             this.label68.AutoSize = true;
             this.label68.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label68.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label68.Location = new System.Drawing.Point(3, 67);
+            this.label68.Location = new System.Drawing.Point(3, 70);
             this.label68.Margin = new System.Windows.Forms.Padding(3);
             this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(36, 15);
+            this.label68.Size = new System.Drawing.Size(28, 12);
             this.label68.TabIndex = 114;
             this.label68.Text = "Color";
             // 
@@ -2947,10 +2947,10 @@
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Segoe UI", 6F);
             this.label14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label14.Location = new System.Drawing.Point(10, 15);
+            this.label14.Location = new System.Drawing.Point(10, 16);
             this.label14.Margin = new System.Windows.Forms.Padding(0, 0, 0, 8);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(10, 12);
+            this.label14.Size = new System.Drawing.Size(10, 11);
             this.label14.TabIndex = 183;
             this.label14.Text = "●";
             // 
@@ -2991,10 +2991,10 @@
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
             this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label12.Location = new System.Drawing.Point(23, 11);
+            this.label12.Location = new System.Drawing.Point(23, 17);
             this.label12.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(106, 19);
+            this.label12.Size = new System.Drawing.Size(81, 13);
             this.label12.TabIndex = 182;
             this.label12.Text = "Color Material";
             // 
@@ -3101,10 +3101,10 @@
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label8.ForeColor = System.Drawing.Color.Black;
-            this.label8.Location = new System.Drawing.Point(-356, 12);
+            this.label8.Location = new System.Drawing.Point(-356, 15);
             this.label8.Margin = new System.Windows.Forms.Padding(3);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(141, 15);
+            this.label8.Size = new System.Drawing.Size(116, 12);
             this.label8.TabIndex = 113;
             this.label8.Text = "Wastage % (Raw + Color)";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -3118,7 +3118,7 @@
             this.txtMatWastage.Location = new System.Drawing.Point(-356, 33);
             this.txtMatWastage.Margin = new System.Windows.Forms.Padding(3, 3, 5, 3);
             this.txtMatWastage.Name = "txtMatWastage";
-            this.txtMatWastage.Size = new System.Drawing.Size(142, 30);
+            this.txtMatWastage.Size = new System.Drawing.Size(142, 25);
             this.txtMatWastage.TabIndex = 115;
             this.txtMatWastage.Text = "0";
             this.txtMatWastage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -3146,10 +3146,10 @@
             this.lblRawMat.AutoSize = true;
             this.lblRawMat.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblRawMat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblRawMat.Location = new System.Drawing.Point(82, 24);
+            this.lblRawMat.Location = new System.Drawing.Point(86, 29);
             this.lblRawMat.Margin = new System.Windows.Forms.Padding(0);
             this.lblRawMat.Name = "lblRawMat";
-            this.lblRawMat.Size = new System.Drawing.Size(35, 41);
+            this.lblRawMat.Size = new System.Drawing.Size(28, 32);
             this.lblRawMat.TabIndex = 212;
             this.lblRawMat.Text = "0";
             // 
@@ -3175,10 +3175,10 @@
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label10.ForeColor = System.Drawing.Color.Black;
-            this.label10.Location = new System.Drawing.Point(3, 12);
+            this.label10.Location = new System.Drawing.Point(3, 15);
             this.label10.Margin = new System.Windows.Forms.Padding(3);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(111, 15);
+            this.label10.Size = new System.Drawing.Size(92, 12);
             this.label10.TabIndex = 115;
             this.label10.Text = "Total Raw Mat. （KG)";
             // 
@@ -3260,10 +3260,10 @@
             this.label71.AutoSize = true;
             this.label71.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.label71.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label71.Location = new System.Drawing.Point(13, 13);
+            this.label71.Location = new System.Drawing.Point(13, 19);
             this.label71.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(46, 27);
+            this.label71.Size = new System.Drawing.Size(36, 21);
             this.label71.TabIndex = 186;
             this.label71.Text = "1.1.";
             // 
@@ -3305,10 +3305,10 @@
             this.lblItemListTitle.AutoSize = true;
             this.lblItemListTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblItemListTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblItemListTitle.Location = new System.Drawing.Point(68, 13);
+            this.lblItemListTitle.Location = new System.Drawing.Point(68, 19);
             this.lblItemListTitle.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.lblItemListTitle.Name = "lblItemListTitle";
-            this.lblItemListTitle.Size = new System.Drawing.Size(1, 27);
+            this.lblItemListTitle.Size = new System.Drawing.Size(1, 21);
             this.lblItemListTitle.TabIndex = 182;
             this.lblItemListTitle.Text = "Item && Mould";
             // 
@@ -3421,10 +3421,10 @@
             this.label70.AutoSize = true;
             this.label70.Font = new System.Drawing.Font("Segoe UI", 6F);
             this.label70.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label70.Location = new System.Drawing.Point(10, 15);
+            this.label70.Location = new System.Drawing.Point(10, 16);
             this.label70.Margin = new System.Windows.Forms.Padding(0, 0, 0, 8);
             this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(10, 12);
+            this.label70.Size = new System.Drawing.Size(10, 11);
             this.label70.TabIndex = 185;
             this.label70.Text = "●";
             // 
@@ -3466,10 +3466,10 @@
             this.label55.AutoSize = true;
             this.label55.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
             this.label55.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label55.Location = new System.Drawing.Point(23, 11);
+            this.label55.Location = new System.Drawing.Point(23, 17);
             this.label55.Margin = new System.Windows.Forms.Padding(3, 3, 3, 5);
             this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(52, 19);
+            this.label55.Size = new System.Drawing.Size(42, 13);
             this.label55.TabIndex = 182;
             this.label55.Text = "Mould";
             // 
@@ -3538,7 +3538,7 @@
             this.lblMouldCode.Location = new System.Drawing.Point(3, 28);
             this.lblMouldCode.Margin = new System.Windows.Forms.Padding(3);
             this.lblMouldCode.Name = "lblMouldCode";
-            this.lblMouldCode.Size = new System.Drawing.Size(17, 23);
+            this.lblMouldCode.Size = new System.Drawing.Size(15, 19);
             this.lblMouldCode.TabIndex = 214;
             this.lblMouldCode.Text = "-";
             // 
@@ -3550,7 +3550,7 @@
             this.lblMouldTon.Location = new System.Drawing.Point(148, 28);
             this.lblMouldTon.Margin = new System.Windows.Forms.Padding(3);
             this.lblMouldTon.Name = "lblMouldTon";
-            this.lblMouldTon.Size = new System.Drawing.Size(17, 23);
+            this.lblMouldTon.Size = new System.Drawing.Size(15, 19);
             this.lblMouldTon.TabIndex = 213;
             this.lblMouldTon.Text = "-";
             // 
@@ -3560,10 +3560,10 @@
             this.label61.AutoSize = true;
             this.label61.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label61.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label61.Location = new System.Drawing.Point(148, 7);
+            this.label61.Location = new System.Drawing.Point(148, 10);
             this.label61.Margin = new System.Windows.Forms.Padding(3);
             this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(26, 15);
+            this.label61.Size = new System.Drawing.Size(21, 12);
             this.label61.TabIndex = 220;
             this.label61.Text = "Ton";
             // 
@@ -3573,10 +3573,10 @@
             this.label62.AutoSize = true;
             this.label62.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label62.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label62.Location = new System.Drawing.Point(3, 7);
+            this.label62.Location = new System.Drawing.Point(3, 10);
             this.label62.Margin = new System.Windows.Forms.Padding(3);
             this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(35, 15);
+            this.label62.Size = new System.Drawing.Size(28, 12);
             this.label62.TabIndex = 187;
             this.label62.Text = "Code";
             // 
@@ -3586,10 +3586,10 @@
             this.label63.AutoSize = true;
             this.label63.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label63.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label63.Location = new System.Drawing.Point(3, 62);
+            this.label63.Location = new System.Drawing.Point(3, 65);
             this.label63.Margin = new System.Windows.Forms.Padding(3);
             this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(68, 15);
+            this.label63.Size = new System.Drawing.Size(54, 12);
             this.label63.TabIndex = 114;
             this.label63.Text = "Total Cavity";
             // 
@@ -3601,7 +3601,7 @@
             this.lblMouldCavity.Location = new System.Drawing.Point(3, 83);
             this.lblMouldCavity.Margin = new System.Windows.Forms.Padding(3);
             this.lblMouldCavity.Name = "lblMouldCavity";
-            this.lblMouldCavity.Size = new System.Drawing.Size(20, 23);
+            this.lblMouldCavity.Size = new System.Drawing.Size(17, 19);
             this.lblMouldCavity.TabIndex = 212;
             this.lblMouldCavity.Text = "0";
             // 
@@ -3611,10 +3611,10 @@
             this.label64.AutoSize = true;
             this.label64.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label64.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label64.Location = new System.Drawing.Point(148, 62);
+            this.label64.Location = new System.Drawing.Point(148, 65);
             this.label64.Margin = new System.Windows.Forms.Padding(3);
             this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(93, 15);
+            this.label64.Size = new System.Drawing.Size(75, 12);
             this.label64.TabIndex = 114;
             this.label64.Text = "Cycle Time (sec)";
             // 
@@ -3625,7 +3625,7 @@
             this.txtMouldCycleTime.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtMouldCycleTime.Location = new System.Drawing.Point(148, 83);
             this.txtMouldCycleTime.Name = "txtMouldCycleTime";
-            this.txtMouldCycleTime.Size = new System.Drawing.Size(129, 30);
+            this.txtMouldCycleTime.Size = new System.Drawing.Size(129, 25);
             this.txtMouldCycleTime.TabIndex = 114;
             this.txtMouldCycleTime.Text = "0";
             this.txtMouldCycleTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -3637,10 +3637,10 @@
             this.label65.AutoSize = true;
             this.label65.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label65.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label65.Location = new System.Drawing.Point(3, 122);
+            this.label65.Location = new System.Drawing.Point(3, 125);
             this.label65.Margin = new System.Windows.Forms.Padding(3);
             this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(103, 15);
+            this.label65.Size = new System.Drawing.Size(85, 12);
             this.label65.TabIndex = 114;
             this.label65.Text = "Total PW/ Shot (g)";
             // 
@@ -3652,7 +3652,7 @@
             this.lblMouldPWPerShot.Location = new System.Drawing.Point(3, 143);
             this.lblMouldPWPerShot.Margin = new System.Windows.Forms.Padding(3);
             this.lblMouldPWPerShot.Name = "lblMouldPWPerShot";
-            this.lblMouldPWPerShot.Size = new System.Drawing.Size(20, 23);
+            this.lblMouldPWPerShot.Size = new System.Drawing.Size(17, 19);
             this.lblMouldPWPerShot.TabIndex = 213;
             this.lblMouldPWPerShot.Text = "0";
             this.lblMouldPWPerShot.Click += new System.EventHandler(this.lblMouldPWPerShot_Click);
@@ -3663,10 +3663,10 @@
             this.label66.AutoSize = true;
             this.label66.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label66.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label66.Location = new System.Drawing.Point(148, 122);
+            this.label66.Location = new System.Drawing.Point(148, 125);
             this.label66.Margin = new System.Windows.Forms.Padding(3);
             this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(103, 15);
+            this.label66.Size = new System.Drawing.Size(85, 12);
             this.label66.TabIndex = 114;
             this.label66.Text = "Total RW/ Shot (g)";
             // 
@@ -3678,7 +3678,7 @@
             this.txtMouldRWPerShot.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtMouldRWPerShot.Location = new System.Drawing.Point(148, 143);
             this.txtMouldRWPerShot.Name = "txtMouldRWPerShot";
-            this.txtMouldRWPerShot.Size = new System.Drawing.Size(129, 30);
+            this.txtMouldRWPerShot.Size = new System.Drawing.Size(129, 25);
             this.txtMouldRWPerShot.TabIndex = 114;
             this.txtMouldRWPerShot.Text = "0";
             this.txtMouldRWPerShot.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -3792,10 +3792,10 @@
             this.lblMaxQty.AutoSize = true;
             this.lblMaxQty.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold);
             this.lblMaxQty.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblMaxQty.Location = new System.Drawing.Point(73, 41);
+            this.lblMaxQty.Location = new System.Drawing.Point(79, 47);
             this.lblMaxQty.Margin = new System.Windows.Forms.Padding(3);
             this.lblMaxQty.Name = "lblMaxQty";
-            this.lblMaxQty.Size = new System.Drawing.Size(58, 67);
+            this.lblMaxQty.Size = new System.Drawing.Size(46, 54);
             this.lblMaxQty.TabIndex = 214;
             this.lblMaxQty.Text = "0";
             // 
@@ -3805,10 +3805,10 @@
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label11.Location = new System.Drawing.Point(217, 7);
+            this.label11.Location = new System.Drawing.Point(217, 10);
             this.label11.Margin = new System.Windows.Forms.Padding(3);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(65, 15);
+            this.label11.Size = new System.Drawing.Size(53, 12);
             this.label11.TabIndex = 111;
             this.label11.Text = "MAX Shots";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -3819,10 +3819,10 @@
             this.label47.AutoSize = true;
             this.label47.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label47.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label47.Location = new System.Drawing.Point(5, 7);
+            this.label47.Location = new System.Drawing.Point(5, 10);
             this.label47.Margin = new System.Windows.Forms.Padding(5, 3, 3, 3);
             this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(55, 15);
+            this.label47.Size = new System.Drawing.Size(45, 12);
             this.label47.TabIndex = 110;
             this.label47.Text = "MAX Qty";
             this.label47.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -3833,10 +3833,10 @@
             this.lblMaxShot.AutoSize = true;
             this.lblMaxShot.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
             this.lblMaxShot.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblMaxShot.Location = new System.Drawing.Point(254, 57);
+            this.lblMaxShot.Location = new System.Drawing.Point(257, 60);
             this.lblMaxShot.Margin = new System.Windows.Forms.Padding(3);
             this.lblMaxShot.Name = "lblMaxShot";
-            this.lblMaxShot.Size = new System.Drawing.Size(29, 35);
+            this.lblMaxShot.Size = new System.Drawing.Size(24, 28);
             this.lblMaxShot.TabIndex = 213;
             this.lblMaxShot.Text = "0";
             // 
@@ -3863,10 +3863,10 @@
             this.label73.AutoSize = true;
             this.label73.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.label73.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label73.Location = new System.Drawing.Point(23, 4);
+            this.label73.Location = new System.Drawing.Point(23, 11);
             this.label73.Margin = new System.Windows.Forms.Padding(3);
             this.label73.Name = "label73";
-            this.label73.Size = new System.Drawing.Size(145, 28);
+            this.label73.Size = new System.Drawing.Size(116, 21);
             this.label73.TabIndex = 183;
             this.label73.Text = "MAX Capacity";
             // 
@@ -3876,10 +3876,10 @@
             this.label72.AutoSize = true;
             this.label72.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.label72.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label72.Location = new System.Drawing.Point(0, 6);
+            this.label72.Location = new System.Drawing.Point(1, 10);
             this.label72.Margin = new System.Windows.Forms.Padding(0, 0, 0, 6);
             this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(20, 23);
+            this.label72.Size = new System.Drawing.Size(17, 19);
             this.label72.TabIndex = 183;
             this.label72.Text = "●";
             // 
@@ -3949,10 +3949,10 @@
             this.lblbalHours.AutoSize = true;
             this.lblbalHours.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblbalHours.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblbalHours.Location = new System.Drawing.Point(249, 54);
+            this.lblbalHours.Location = new System.Drawing.Point(252, 58);
             this.lblbalHours.Margin = new System.Windows.Forms.Padding(0);
             this.lblbalHours.Name = "lblbalHours";
-            this.lblbalHours.Size = new System.Drawing.Size(40, 46);
+            this.lblbalHours.Size = new System.Drawing.Size(33, 37);
             this.lblbalHours.TabIndex = 213;
             this.lblbalHours.Text = "0";
             // 
@@ -3962,10 +3962,10 @@
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label17.Location = new System.Drawing.Point(217, 12);
+            this.label17.Location = new System.Drawing.Point(217, 15);
             this.label17.Margin = new System.Windows.Forms.Padding(3);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(50, 15);
+            this.label17.Size = new System.Drawing.Size(39, 12);
             this.label17.TabIndex = 111;
             this.label17.Text = "Bal. Hrs.";
             this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -3976,10 +3976,10 @@
             this.label29.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label29.AutoSize = true;
             this.label29.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label29.Location = new System.Drawing.Point(190, 65);
+            this.label29.Location = new System.Drawing.Point(192, 67);
             this.label29.Margin = new System.Windows.Forms.Padding(0);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(22, 23);
+            this.label29.Size = new System.Drawing.Size(19, 19);
             this.label29.TabIndex = 111;
             this.label29.Text = "+";
             this.label29.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -3990,10 +3990,10 @@
             this.lblDaysNeeded.AutoSize = true;
             this.lblDaysNeeded.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold);
             this.lblDaysNeeded.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblDaysNeeded.Location = new System.Drawing.Point(65, 43);
+            this.lblDaysNeeded.Location = new System.Drawing.Point(71, 50);
             this.lblDaysNeeded.Margin = new System.Windows.Forms.Padding(0);
             this.lblDaysNeeded.Name = "lblDaysNeeded";
-            this.lblDaysNeeded.Size = new System.Drawing.Size(58, 67);
+            this.lblDaysNeeded.Size = new System.Drawing.Size(46, 54);
             this.lblDaysNeeded.TabIndex = 212;
             this.lblDaysNeeded.Text = "0";
             // 
@@ -4003,10 +4003,10 @@
             this.lblDays.AutoSize = true;
             this.lblDays.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblDays.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lblDays.Location = new System.Drawing.Point(5, 12);
+            this.lblDays.Location = new System.Drawing.Point(5, 15);
             this.lblDays.Margin = new System.Windows.Forms.Padding(5, 3, 3, 3);
             this.lblDays.Name = "lblDays";
-            this.lblDays.Size = new System.Drawing.Size(27, 15);
+            this.lblDays.Size = new System.Drawing.Size(22, 12);
             this.lblDays.TabIndex = 110;
             this.lblDays.Text = "Day";
             this.lblDays.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -4038,10 +4038,10 @@
             this.lblProSec.AutoSize = true;
             this.lblProSec.Font = new System.Drawing.Font("Segoe UI", 6.5F, System.Drawing.FontStyle.Bold);
             this.lblProSec.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblProSec.Location = new System.Drawing.Point(82, 17);
+            this.lblProSec.Location = new System.Drawing.Point(82, 18);
             this.lblProSec.Margin = new System.Windows.Forms.Padding(0, 3, 0, 5);
             this.lblProSec.Name = "lblProSec";
-            this.lblProSec.Size = new System.Drawing.Size(26, 13);
+            this.lblProSec.Size = new System.Drawing.Size(20, 12);
             this.lblProSec.TabIndex = 184;
             this.lblProSec.Text = "(0s)";
             // 
@@ -4068,10 +4068,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtHrsPerDay.BackColor = System.Drawing.SystemColors.Info;
             this.txtHrsPerDay.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.txtHrsPerDay.Location = new System.Drawing.Point(70, 9);
+            this.txtHrsPerDay.Location = new System.Drawing.Point(70, 12);
             this.txtHrsPerDay.Margin = new System.Windows.Forms.Padding(5, 3, 3, 3);
             this.txtHrsPerDay.Name = "txtHrsPerDay";
-            this.txtHrsPerDay.Size = new System.Drawing.Size(101, 23);
+            this.txtHrsPerDay.Size = new System.Drawing.Size(101, 20);
             this.txtHrsPerDay.TabIndex = 112;
             this.txtHrsPerDay.Text = "22";
             this.txtHrsPerDay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -4084,10 +4084,10 @@
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label19.ForeColor = System.Drawing.Color.Black;
-            this.label19.Location = new System.Drawing.Point(6, 17);
+            this.label19.Location = new System.Drawing.Point(17, 20);
             this.label19.Margin = new System.Windows.Forms.Padding(5, 3, 3, 3);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(56, 15);
+            this.label19.Size = new System.Drawing.Size(45, 12);
             this.label19.TabIndex = 110;
             this.label19.Text = "Hrs./ Day";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -4098,10 +4098,10 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label3.Location = new System.Drawing.Point(0, 6);
+            this.label3.Location = new System.Drawing.Point(1, 10);
             this.label3.Margin = new System.Windows.Forms.Padding(0, 0, 0, 6);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(20, 23);
+            this.label3.Size = new System.Drawing.Size(17, 19);
             this.label3.TabIndex = 183;
             this.label3.Text = "●";
             // 
@@ -4111,10 +4111,10 @@
             this.lblTime.AutoSize = true;
             this.lblTime.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblTime.Location = new System.Drawing.Point(23, 4);
+            this.lblTime.Location = new System.Drawing.Point(23, 11);
             this.lblTime.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(59, 28);
+            this.lblTime.Size = new System.Drawing.Size(48, 21);
             this.lblTime.TabIndex = 183;
             this.lblTime.Text = "Time";
             // 
@@ -4185,10 +4185,10 @@
             this.label75.AutoSize = true;
             this.label75.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label75.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label75.Location = new System.Drawing.Point(217, 12);
+            this.label75.Location = new System.Drawing.Point(217, 15);
             this.label75.Margin = new System.Windows.Forms.Padding(3);
             this.label75.Name = "label75";
-            this.label75.Size = new System.Drawing.Size(60, 15);
+            this.label75.Size = new System.Drawing.Size(49, 12);
             this.label75.TabIndex = 117;
             this.label75.Text = "Extra Shot";
             // 
@@ -4198,10 +4198,10 @@
             this.label76.AutoSize = true;
             this.label76.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label76.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label76.Location = new System.Drawing.Point(3, 12);
+            this.label76.Location = new System.Drawing.Point(3, 15);
             this.label76.Margin = new System.Windows.Forms.Padding(3);
             this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(127, 15);
+            this.label76.Size = new System.Drawing.Size(105, 12);
             this.label76.TabIndex = 117;
             this.label76.Text = "Total Recycle Mat. (KG)";
             // 
@@ -4211,10 +4211,10 @@
             this.label74.AutoSize = true;
             this.label74.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
             this.label74.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label74.Location = new System.Drawing.Point(254, 59);
+            this.label74.Location = new System.Drawing.Point(257, 63);
             this.label74.Margin = new System.Windows.Forms.Padding(0);
             this.label74.Name = "label74";
-            this.label74.Size = new System.Drawing.Size(29, 35);
+            this.label74.Size = new System.Drawing.Size(24, 28);
             this.label74.TabIndex = 213;
             this.label74.Text = "0";
             // 
@@ -4224,10 +4224,10 @@
             this.lblRecycleMat.AutoSize = true;
             this.lblRecycleMat.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold);
             this.lblRecycleMat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblRecycleMat.Location = new System.Drawing.Point(73, 43);
+            this.lblRecycleMat.Location = new System.Drawing.Point(79, 50);
             this.lblRecycleMat.Margin = new System.Windows.Forms.Padding(0);
             this.lblRecycleMat.Name = "lblRecycleMat";
-            this.lblRecycleMat.Size = new System.Drawing.Size(58, 67);
+            this.lblRecycleMat.Size = new System.Drawing.Size(46, 54);
             this.lblRecycleMat.TabIndex = 212;
             this.lblRecycleMat.Text = "0";
             // 
@@ -4259,9 +4259,9 @@
             this.cbRecycleSaveMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbRecycleSaveMode.AutoSize = true;
             this.cbRecycleSaveMode.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbRecycleSaveMode.Location = new System.Drawing.Point(234, 13);
+            this.cbRecycleSaveMode.Location = new System.Drawing.Point(248, 16);
             this.cbRecycleSaveMode.Name = "cbRecycleSaveMode";
-            this.cbRecycleSaveMode.Size = new System.Drawing.Size(87, 19);
+            this.cbRecycleSaveMode.Size = new System.Drawing.Size(73, 16);
             this.cbRecycleSaveMode.TabIndex = 114;
             this.cbRecycleSaveMode.Text = "Save Mode";
             this.cbRecycleSaveMode.UseVisualStyleBackColor = true;
@@ -4271,9 +4271,9 @@
             this.cbRecycleExtraMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbRecycleExtraMode.AutoSize = true;
             this.cbRecycleExtraMode.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbRecycleExtraMode.Location = new System.Drawing.Point(127, 13);
+            this.cbRecycleExtraMode.Location = new System.Drawing.Point(142, 16);
             this.cbRecycleExtraMode.Name = "cbRecycleExtraMode";
-            this.cbRecycleExtraMode.Size = new System.Drawing.Size(89, 19);
+            this.cbRecycleExtraMode.Size = new System.Drawing.Size(74, 16);
             this.cbRecycleExtraMode.TabIndex = 0;
             this.cbRecycleExtraMode.Text = "Extra Mode";
             this.cbRecycleExtraMode.UseVisualStyleBackColor = true;
@@ -4285,10 +4285,10 @@
             this.label80.AutoSize = true;
             this.label80.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.label80.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label80.Location = new System.Drawing.Point(23, 4);
+            this.label80.Location = new System.Drawing.Point(23, 11);
             this.label80.Margin = new System.Windows.Forms.Padding(3);
             this.label80.Name = "label80";
-            this.label80.Size = new System.Drawing.Size(84, 28);
+            this.label80.Size = new System.Drawing.Size(68, 21);
             this.label80.TabIndex = 183;
             this.label80.Text = "Recycle";
             // 
@@ -4298,10 +4298,10 @@
             this.label81.AutoSize = true;
             this.label81.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.label81.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label81.Location = new System.Drawing.Point(0, 6);
+            this.label81.Location = new System.Drawing.Point(1, 10);
             this.label81.Margin = new System.Windows.Forms.Padding(0, 0, 0, 6);
             this.label81.Name = "label81";
-            this.label81.Size = new System.Drawing.Size(20, 23);
+            this.label81.Size = new System.Drawing.Size(17, 19);
             this.label81.TabIndex = 183;
             this.label81.Text = "●";
             // 
@@ -4607,10 +4607,10 @@
             this.lblStep4.AutoSize = true;
             this.lblStep4.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblStep4.ForeColor = System.Drawing.Color.Black;
-            this.lblStep4.Location = new System.Drawing.Point(43, 4);
+            this.lblStep4.Location = new System.Drawing.Point(43, 7);
             this.lblStep4.Margin = new System.Windows.Forms.Padding(3);
             this.lblStep4.Name = "lblStep4";
-            this.lblStep4.Size = new System.Drawing.Size(76, 19);
+            this.lblStep4.Size = new System.Drawing.Size(64, 13);
             this.lblStep4.TabIndex = 183;
             this.lblStep4.Text = "Job Review";
             // 
@@ -4637,10 +4637,10 @@
             this.lblStep3.AutoSize = true;
             this.lblStep3.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblStep3.ForeColor = System.Drawing.Color.Black;
-            this.lblStep3.Location = new System.Drawing.Point(43, 4);
+            this.lblStep3.Location = new System.Drawing.Point(43, 7);
             this.lblStep3.Margin = new System.Windows.Forms.Padding(3);
             this.lblStep3.Name = "lblStep3";
-            this.lblStep3.Size = new System.Drawing.Size(119, 19);
+            this.lblStep3.Size = new System.Drawing.Size(101, 13);
             this.lblStep3.TabIndex = 183;
             this.lblStep3.Text = "Machine Schedule";
             // 
@@ -4667,10 +4667,10 @@
             this.lblStep2.AutoSize = true;
             this.lblStep2.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblStep2.ForeColor = System.Drawing.Color.Black;
-            this.lblStep2.Location = new System.Drawing.Point(43, 4);
+            this.lblStep2.Location = new System.Drawing.Point(43, 7);
             this.lblStep2.Margin = new System.Windows.Forms.Padding(3);
             this.lblStep2.Name = "lblStep2";
-            this.lblStep2.Size = new System.Drawing.Size(113, 19);
+            this.lblStep2.Size = new System.Drawing.Size(96, 13);
             this.lblStep2.TabIndex = 183;
             this.lblStep2.Text = "Stock Verification";
             // 
@@ -4697,10 +4697,10 @@
             this.lblStep1.AutoSize = true;
             this.lblStep1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblStep1.ForeColor = System.Drawing.Color.Black;
-            this.lblStep1.Location = new System.Drawing.Point(43, 3);
+            this.lblStep1.Location = new System.Drawing.Point(43, 4);
             this.lblStep1.Margin = new System.Windows.Forms.Padding(3);
             this.lblStep1.Name = "lblStep1";
-            this.lblStep1.Size = new System.Drawing.Size(182, 22);
+            this.lblStep1.Size = new System.Drawing.Size(151, 19);
             this.lblStep1.TabIndex = 183;
             this.lblStep1.Text = "Item && Requirements";
             // 
@@ -4772,7 +4772,7 @@
             // 
             // frmPlanningVer2dot1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(168)))), ((int)(((byte)(255)))));

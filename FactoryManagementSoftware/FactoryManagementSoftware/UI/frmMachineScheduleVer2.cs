@@ -210,6 +210,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_FacID, typeof(int));
             dt.Columns.Add(text.Header_MacID, typeof(int));
             dt.Columns.Add(text.Header_Ori_Status, typeof(string));
+            dt.Columns.Add(text.Header_Ori_Machine_Name, typeof(string));
             dt.Columns.Add(text.Header_Ori_DateStart, typeof(DateTime));
             dt.Columns.Add(text.Header_Ori_EstDateEnd, typeof(DateTime));
             dt.Columns.Add(text.Header_ProductionDay, typeof(int));
@@ -293,6 +294,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_RawMat_1_Ratio].Visible = false;
             dgv.Columns[text.Header_RawMat_2_Ratio].Visible = false;
             dgv.Columns[text.Header_Ori_Status].Visible = false;
+            dgv.Columns[text.Header_Ori_Machine_Name].Visible = false;
 
             dgv.Columns[text.Header_ColorRate].Visible = false;
             dgv.Columns[text.Header_FamilyWithJobNo].Visible = false;
@@ -369,9 +371,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if(DATE_TO_UPDATE)
+                if(DATA_TO_UPDATE)
                 {
-                    btnAdjustCollisionDateBySystem.Text = "Update Adjusted Date";
+                    btnAdjustCollisionDateBySystem.Text = "Job Update";
                     btnAdjustCollisionDateBySystem.BaseColor1 = Color.FromArgb(147, 255, 181);
                     btnAdjustCollisionDateBySystem.BaseColor2 = Color.FromArgb(254, 241, 154);
 
@@ -773,7 +775,6 @@ namespace FactoryManagementSoftware.UI
 
         private void New_LoadMacSchedule()
         {
-            JOB_EDIT_MODE = false;
             lblTotalPlannedToUse.Text = "";
             lblTotalUsed.Text = "";
             lblTotalToUse.Text = "";
@@ -1057,6 +1058,7 @@ namespace FactoryManagementSoftware.UI
                     row_Schedule[text.Header_Fac] = factoryName;
                     row_Schedule[text.Header_FacID] = int.TryParse(factoryID, out int x) ? x : 0;
                     row_Schedule[text.Header_Mac] = machineName;
+                    row_Schedule[text.Header_Ori_Machine_Name] = machineName;
                     row_Schedule[text.Header_MacID] = int.TryParse(machineID, out x) ? x : 0;
 
                     string itemName = row[dalItem.ItemName].ToString();
@@ -1105,6 +1107,27 @@ namespace FactoryManagementSoftware.UI
 
                     rawMat_1_ratio = rawMat_1_ratio < 1 ? rawMat_1_ratio * 100 : rawMat_1_ratio;
                     rawMat_2_ratio = rawMat_2_ratio < 1 ? rawMat_2_ratio * 100 : rawMat_2_ratio;
+
+                    if(rawMat_1_ratio == 0)
+                    {
+                        if (!string.IsNullOrEmpty(rawMat_1) && !string.IsNullOrEmpty(rawMat_2))
+                        {
+                            rawMat_1_ratio = 50;
+                        }
+                        else
+                        {
+                            rawMat_1_ratio = 100;
+
+                        }
+                    }
+
+                    if (rawMat_2_ratio == 0)
+                    {
+                        if (!string.IsNullOrEmpty(rawMat_1) && !string.IsNullOrEmpty(rawMat_2))
+                        {
+                            rawMat_2_ratio = 50;
+                        }
+                    }
 
                     if (!string.IsNullOrEmpty(rawMat_1) && !string.IsNullOrEmpty(rawMat_2))
                     {
@@ -1426,8 +1449,9 @@ namespace FactoryManagementSoftware.UI
 
         #region Button Click to Plan Page
 
-        private void btnPlan_Click(object sender, EventArgs e)
+        private void btnNewJob_Click(object sender, EventArgs e)
         {
+
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
             frmPlanningNEW frm = new frmPlanningNEW();
@@ -1435,9 +1459,23 @@ namespace FactoryManagementSoftware.UI
             // frmPlanning frm = new frmPlanning();
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();
+
+
+            //get Job Number
+            string NewJobNo = frmPlanningVer2dot1.NEW_JOB_NO;
+
+            
+            frmLoading.ShowLoadingScreen();
+
             New_LoadMacSchedule();
 
-            Cursor = Cursors.Arrow; // change cursor to normal type
+            if (!string.IsNullOrEmpty(NewJobNo))
+            {
+                dgvMacScheduleRowFirstDisplay(NewJobNo);
+            }
+
+            frmLoading.CloseForm();
+            Cursor = Cursors.Arrow; // change cursor to normal typefrmlo
         }
 
         #endregion
@@ -2939,6 +2977,13 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = ColorSet;
                 dgv.Rows[rowIndex].Cells[text.Header_Status].Style.ForeColor = Color.Black;
+                dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
+
+                if (PlanStatus == text.planning_status_to_update)
+                {
+                    dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+
+                }
 
                 if (PlanStatus == "")
                 {
@@ -2961,6 +3006,8 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.FromArgb(70, 70, 70);
                     dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.FromArgb(70, 70, 70);
 
+                    dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
+                    dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
                     //if (!cmbMacLocation.Text.Equals("All") && !string.IsNullOrEmpty(cmbMacLocation.Text) && string.IsNullOrEmpty(cmbMac.Text))
                     //{
                     //    dgv.Rows[rowIndex].Height = 10;
@@ -2974,6 +3021,13 @@ namespace FactoryManagementSoftware.UI
 
                     dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.WhiteSmoke;
                     dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.WhiteSmoke;
+
+                    dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.Black;
+                    dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.Black;
+
+                    dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
+                    dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
+
                     // Color.Gainsboro;
                 }
 
@@ -3470,12 +3524,30 @@ namespace FactoryManagementSoftware.UI
 
             if (itemClicked.Equals(SCHEDULE_ACTION_JOB_EDIT))
             {
+                if(DATE_COLLISION_FOUND || DATA_TO_UPDATE)
+                {
+                    string message = "You have unsaved changes!\n\nAre you sure you want to process to 'Job Edit' ?";
+
+                    if(MessageBox.Show(message, "Message",
+                                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes
+                                                            )
+                    {
+                        return;
+                    }
+                }
+
                 bool statusPass = presentStatus == text.planning_status_draft;
                 statusPass |= presentStatus == text.planning_status_pending;
                 statusPass |= presentStatus == text.planning_status_running;
 
                 if (statusPass)
+                {
+                   
+
                     JobEditMode(rowIndex, colIndex);
+
+
+                }
             }
             else
             {
@@ -3637,20 +3709,9 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private bool JOB_EDIT_MODE = false;
         private void JobEditMode(int rowIndex, int colIndex)
         {
-            JOB_EDIT_MODE = true;
-
-            //DataGridView dgv = dgvMacSchedule;
-
-            //uPlanning.plan_id = (int)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_JobNo].Value;
-            //uPlanning.machine_id = (int)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_MacID].Value;
-            //uPlanning.production_start_date = (DateTime)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_DateStart].Value;
-            //uPlanning.production_end_date = (DateTime)dgvMacSchedule.Rows[rowIndex].Cells[text.Header_EstDateEnd].Value;
-
-            ////UI Change
-            //dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(254, 241, 154); 
+            string EditingJobNo = dgvMacSchedule.Rows[rowIndex].Cells[text.Header_JobNo].Value.ToString();
 
             frmPlanningVer2dot1 frm = new frmPlanningVer2dot1((DataTable)dgvMacSchedule.DataSource, rowIndex);
 
@@ -3658,8 +3719,62 @@ namespace FactoryManagementSoftware.UI
 
             frm.ShowDialog();
 
+            frmLoading.ShowLoadingScreen();
+            New_LoadMacSchedule();
+            dgvMacScheduleRowFirstDisplay(EditingJobNo);
+            frmLoading.CloseForm();
+
         }
 
+        public void dgvMacScheduleRowFirstDisplay(string reference)
+        {
+            DataGridView dgv = dgvMacSchedule;
+
+            if (dgv.Rows.Count > 0 && dgv.Columns.Contains(text.Header_JobNo))
+            {
+                dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dgv.ClearSelection();
+
+                string mainFamilyJobNo = "-1";
+
+                for (int i = 0; i < dgv.Rows.Count; i++)
+                {
+                    string data = dgv.Rows[i].Cells[text.Header_JobNo].Value.ToString();
+                    string familyWith = dgv.Rows[i].Cells[text.Header_FamilyWithJobNo].Value.ToString();
+
+                    if (data == reference)
+                    {
+                        dgv.FirstDisplayedScrollingRowIndex = i;
+
+                        dgv.Rows[i].Selected = true;
+
+                        if(familyWith != "-1")
+                        {
+                            mainFamilyJobNo = familyWith;
+                        }
+
+                        break;
+                    }
+                }
+
+                if(mainFamilyJobNo != "-1")
+                {
+                    dgv.MultiSelect = true;
+                    for (int i = 0; i < dgv.Rows.Count; i++)
+                    {
+                        string data = dgv.Rows[i].Cells[text.Header_JobNo].Value.ToString();
+                        string familyWith = dgv.Rows[i].Cells[text.Header_FamilyWithJobNo].Value.ToString();
+
+                        if (data != reference && familyWith == mainFamilyJobNo)
+                        {
+                            dgv.Rows[i].Selected = true;
+                        }
+                    }
+                }
+
+            }
+         
+        }
 
 
         #endregion
@@ -3903,8 +4018,6 @@ namespace FactoryManagementSoftware.UI
 
                 string currentHeader = dgvMacSchedule.Columns[colIndex].Name;
 
-
-
                 try
                 {
                     string result = dgvMacSchedule.Rows[rowIndex].Cells[text.Header_Status].Value.ToString();
@@ -4020,13 +4133,13 @@ namespace FactoryManagementSoftware.UI
             CLEAR_SELECTION_AFTER_DROP = false;
 
             int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+            rowIndexFromMouseDown = dgvMacSchedule.HitTest(e.X, e.Y).RowIndex;
 
             userPermission = 5;
 
-            if(userPermission > MainDashboard.ACTION_LVL_THREE)
+            if(userPermission > MainDashboard.ACTION_LVL_THREE && rowIndexFromMouseDown > -1)
             { 
                 // Get the index of the item the mouse is below.
-                rowIndexFromMouseDown = dgvMacSchedule.HitTest(e.X, e.Y).RowIndex;
 
                 string status = dgvMacSchedule.Rows[rowIndexFromMouseDown].Cells[text.Header_Ori_Status].Value.ToString();
 
@@ -4210,6 +4323,7 @@ namespace FactoryManagementSoftware.UI
                         MAC_SCHEDULE_ROW_TO_DROP[text.Header_Fac] = facName;
                         MAC_SCHEDULE_ROW_TO_DROP[text.Header_MacID] = Convert.ToInt32(macID);
                         MAC_SCHEDULE_ROW_TO_DROP[text.Header_Mac] = macName;
+                        MAC_SCHEDULE_ROW_TO_DROP[text.Header_Status] = text.planning_status_to_update;
 
 
                         newFacID = facID;
@@ -4292,11 +4406,14 @@ namespace FactoryManagementSoftware.UI
 
                         row[text.Header_Fac] = newFacName;
                         row[text.Header_Mac] = newMacName;
+                        row[text.Header_Status] = text.planning_status_to_update;
 
                         dt.Rows.InsertAt(row, rowIndexToDrop + 1);
                         rowIndexToDrop++;
                     }
                 }
+
+                DATA_TO_UPDATE = true;
 
 
                 if (OLD_MACHINE_ID != null)
@@ -4306,6 +4423,7 @@ namespace FactoryManagementSoftware.UI
                 rowIndexOfItemUnderMouseToDrop = rowIndexToDrop;
 
                 CLEAR_SELECTION_AFTER_DROP = true;
+
             }
 
             //Point clientPoint = dgvMacSchedule.PointToClient(new Point(e.X, e.Y));
@@ -4365,12 +4483,18 @@ namespace FactoryManagementSoftware.UI
                         if (Date_Start < LastRow_EndDate && LastRow_EndDate != DateTime.MaxValue && (LastFamilyWith != FamilyWith || FamilyWith == "-1" || string.IsNullOrEmpty(FamilyWith)))
                         {
                             row.Cells[text.Header_DateStart].Style.BackColor = Color.Red;
+                            row.Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(254, 241, 154);
+                            row.Cells[text.Header_DateStart].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Bold);
+
                             DateCollisionFound = true;
 
 
                             if (Date_End < LastRow_EndDate)
                             {
                                 row.Cells[text.Header_EstDateEnd].Style.BackColor = Color.Red;
+                                row.Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(254, 241, 154);
+                                row.Cells[text.Header_EstDateEnd].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Bold);
+
                                 DATE_COLLISION_FOUND = true;
                                
                             }
@@ -4386,6 +4510,13 @@ namespace FactoryManagementSoftware.UI
                     {
                         row.Cells[text.Header_DateStart].Style.BackColor = Color.Red;
                         row.Cells[text.Header_EstDateEnd].Style.BackColor = Color.Red;
+
+                        row.Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(254, 241, 154);
+                        row.Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(254, 241, 154);
+
+                        row.Cells[text.Header_DateStart].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Bold);
+                        row.Cells[text.Header_EstDateEnd].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Bold);
+
                         DateCollisionFound = true;
 
 
@@ -4647,7 +4778,7 @@ namespace FactoryManagementSoftware.UI
 
                 if(dateAdjusted)
                 {
-                    DATE_TO_UPDATE = true;
+                    DATA_TO_UPDATE = true;
                     MessageBox.Show("Collision Date adjusted by System.\nPlease click the save button below to update data.");
                 }
 
@@ -4686,6 +4817,7 @@ namespace FactoryManagementSoftware.UI
                         if (jobNo > -1 && status == text.planning_status_to_update)
                         {
                             string OriStatus = row[text.Header_Ori_Status].ToString();
+                            string OriMachineName = row[text.Header_Ori_Machine_Name].ToString();
                             string remark = row[text.Header_Remark].ToString();
 
                             DateTime newStart = DateTime.TryParse(row[text.Header_DateStart].ToString(), out newStart) ? newStart : DateTime.MaxValue;
@@ -4695,6 +4827,7 @@ namespace FactoryManagementSoftware.UI
                             DateTime oriEnd = DateTime.TryParse(row[text.Header_Ori_EstDateEnd].ToString(), out oriEnd) ? oriEnd : DateTime.MaxValue;
 
                             int familyWith = int.TryParse(row[text.Header_FamilyWithJobNo].ToString(), out familyWith) ? familyWith : -1;
+                            int newMachineID = int.TryParse(row[text.Header_MacID].ToString(), out newMachineID) ? newMachineID : -1;
 
                             uPlanning.plan_id = jobNo;
                             uPlanning.plan_status = OriStatus;
@@ -4702,11 +4835,25 @@ namespace FactoryManagementSoftware.UI
                             uPlanning.production_end_date = newEnd;
                             uPlanning.family_with = familyWith;
                             uPlanning.plan_note = remark;
+                            uPlanning.machine_id = newMachineID;
+                            uPlanning.machine_location_string = row[text.Header_Mac].ToString();
+                            
 
-                            JOB_UPDATED = dalPlanningAction.planningStatusAndScheduleChange(uPlanning, OriStatus, oriStart, oriEnd, familyWith);
+                            JOB_UPDATED = dalPlanningAction.JobDateAndMachineUpdate(uPlanning, OriMachineName, oriStart, oriEnd, familyWith);
 
                             if (JOB_UPDATED)
                             {
+
+                                int rowIndex = dt.Rows.IndexOf(row);
+
+                                dgvMacSchedule.Rows[rowIndex].Cells[text.Header_DateStart].Value = newStart;
+                                dgvMacSchedule.Rows[rowIndex].Cells[text.Header_Ori_DateStart].Value = newStart;
+                                dgvMacSchedule.Rows[rowIndex].Cells[text.Header_EstDateEnd].Value = newEnd;
+                                dgvMacSchedule.Rows[rowIndex].Cells[text.Header_Ori_EstDateEnd].Value = newEnd;
+                                dgvMacSchedule.Rows[rowIndex].Cells[text.Header_Status].Value = OriStatus;
+                                dgvMacSchedule.Rows[rowIndex].Cells[text.Header_FamilyWithJobNo].Value = familyWith;
+                                dgvMacSchedule.Rows[rowIndex].Cells[text.Header_Ori_Machine_Name].Value = uPlanning.machine_location_string;
+
                                 JOB_UPDATED_COUNT++;
                                 tool.historyRecord(text.System, "Job Updated", dateNow, MainDashboard.USER_ID);
                             }
@@ -4734,23 +4881,22 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            DATE_TO_UPDATE = !JOB_UPDATED;
+            DATA_TO_UPDATE = !JOB_UPDATED;
 
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
-        private bool DATE_TO_UPDATE = false;
+        private bool DATA_TO_UPDATE = false;
         private void btnAdjustCollisionDateBySystem_Click(object sender, EventArgs e)
         {
             if(DATE_COLLISION_FOUND)
             AutoAdjustCollisionDate();
 
-            else if(DATE_TO_UPDATE)
+            else if(DATA_TO_UPDATE)
             {
                 JobUpdate();
+
+                MacScheduleListCellFormatting(dgvMacSchedule);
             }
-
-            adjustAdjustCollisionDateButtonLayout();
-
         }
     }
 }

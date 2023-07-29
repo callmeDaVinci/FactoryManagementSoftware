@@ -183,17 +183,17 @@ namespace FactoryManagementSoftware.Module
         public string planning_Material_Summary { get; } = "Material Summary";
 
         //PLANNING ACTION HISTORY////////////////////////////////////////////////////////////////////////////
-        public string plan_Added { get; } = "PLAN ADD";
-        public string plan_Updated { get; } = "PLAN UPDATE";
-        public string plan_Target_Qty_Change { get; } = "PLAN TARGET QTY CHANGE";
-
-        public string plan_schedule_change { get; } = "PLAN SCHEDULE CHANGE";
-        public string plan_status_change { get; } = "PLAN STATUS CHANGE";
-        public string plan_remark_change { get; } = "PLAN REMARK CHANGE";
-        public string plan_family_with_change { get; } = "PLAN FAMILY CHANGE";
-        public string plan_proday_change { get; } = "PLAN PRODUCTION DAY CHANGE";
-        public string plan_prohour_change { get; } = "PLAN PRODUCTION HOUR CHANGE";
-        public string plan_prohourperday_change { get; } = "PLAN PRODUCTION HOUR PER DAY CHANGE";
+        public string plan_Added { get; } = "JOB ADD";
+        public string plan_Updated { get; } = "JOB UPDATE";
+        public string plan_Target_Qty_Change { get; } = "JOB TARGET QTY CHANGE";
+        public string plan_schedule_change { get; } = "JOB SCHEDULE CHANGE";
+        public string plan_status_change { get; } = "JOB STATUS CHANGE";
+        public string plan_machine_change { get; } = "JOB MACHINE CHANGE";
+        public string plan_remark_change { get; } = "JOB REMARK CHANGE";
+        public string plan_family_with_change { get; } = "JOB FAMILY CHANGE";
+        public string plan_proday_change { get; } = "JOB PRODUCTION DAY CHANGE";
+        public string plan_prohour_change { get; } = "JOB PRODUCTION HOUR CHANGE";
+        public string plan_prohourperday_change { get; } = "JOB PRODUCTION HOUR PER DAY CHANGE";
         #endregion
 
         #region Habit
@@ -410,6 +410,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_Category { get; } = "CATEGORY";
         public string Header_Status { get; } = "Status";
         public string Header_Ori_Status { get; } = "ORI. STATUS";
+        public string Header_Ori_Machine_Name { get; } = "ORI. Mac. Name";
         public string Header_Type { get; } = "TYPE";
         public string Header_MatType { get; } = "MAT. TYPE";
         public string Header_Mat { get; } = "MATERIAL";

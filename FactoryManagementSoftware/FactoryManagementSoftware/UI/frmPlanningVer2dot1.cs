@@ -104,7 +104,6 @@ namespace FactoryManagementSoftware.UI
 
         public frmPlanningVer2dot1(DataTable dt_MacSchedule, int rowIndex)
         {
-            //Testing();
             InitializeComponent();
             InitialSetting();
 
@@ -329,203 +328,6 @@ namespace FactoryManagementSoftware.UI
         private PlanningBLL BLL_JOB_SUMMARY = new PlanningBLL();
         private facDAL dalFac = new facDAL();
         private string COLOR_MAT_CODE = "";
-
-        private bool Validation()
-        {
-            BLL_JOB_SUMMARY = new PlanningBLL();
-            DT_SUMMARY_ITEM = null;
-            DT_SUMMARY_RAW = null;
-            DT_SUMMARY_STOCKCHECK = null;
-            DT_SUMMARY_MAC_SCHEDULE = null;
-
-            if (dgvItemList?.Rows.Count > 0)
-            {
-                DT_SUMMARY_ITEM = (DataTable)dgvItemList.DataSource;
-
-
-                foreach (DataRow row in DT_SUMMARY_ITEM.Rows)
-                {
-                    string purpose = row[text.Header_Job_Purpose].ToString();
-
-                    BLL_JOB_SUMMARY.plan_mould_code = row[text.Header_MouldCode].ToString();
-                    BLL_JOB_SUMMARY.plan_mould_ton = row[text.Header_ProTon].ToString();
-
-                    if (string.IsNullOrEmpty(purpose))
-                    {
-                        MessageBox.Show("One of the items 'Job Purpose' was not found.\nPlease right-click on the Item List to set a job purpose for each item");
-
-                        return false;
-                    }
-                }
-
-            }
-            else
-            {
-                MessageBox.Show("Item not found.\nPlease add at least one(1) item before adding the job.");
-
-                return false;
-            }
-
-            if (dgvRawMatList?.Rows.Count > 0)
-            {
-                DT_SUMMARY_RAW = (DataTable)dgvRawMatList.DataSource;
-
-                bool selected = false;
-
-                foreach(DataRow row in DT_SUMMARY_RAW.Rows)
-                {
-                    bool selection = bool.TryParse(row[text.Header_Selection].ToString(), out selection) ? selection : false;
-
-                    if(selection)
-                    {
-                        selected = true;
-                        break;
-                    }
-                }
-
-                if(!selected)
-                {
-                    MessageBox.Show("Please select at least one(1) raw material before adding the job.");
-
-                    return false;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Raw material not found.\nPlease add and select at least one(1) raw material before adding the job.");
-
-                return false;
-            }
-
-            if (dgvStockCheck?.Rows.Count > 0)
-            {
-                DT_SUMMARY_STOCKCHECK = (DataTable)dgvStockCheck.DataSource;
-            }
-
-            if (dgvMacSchedule?.Rows.Count > 0)
-            {
-                DT_SUMMARY_MAC_SCHEDULE = (DataTable)dgvMacSchedule.DataSource;
-            }
-
-            int totalCavity = int.TryParse(lblMouldCavity.Text, out totalCavity) ? totalCavity : 0;
-
-            if(totalCavity == 0)
-            {
-                MessageBox.Show("Mould Cavity cannot be 0.");
-
-                return false;
-            }
-
-            int proCycleTime = int.TryParse(txtMouldCycleTime.Text, out proCycleTime) ? proCycleTime : 0;
-
-            if (proCycleTime == 0)
-            {
-                MessageBox.Show("Mould Cycle Time cannot be 0.");
-
-                return false;
-            }
-
-            double totalPWPerShot = double.TryParse(lblMouldPWPerShot.Text, out totalPWPerShot) ? totalPWPerShot : 0;
-            double totalRWPerShot = double.TryParse(txtMouldRWPerShot.Text, out totalRWPerShot) ? totalRWPerShot : 0;
-
-            if (totalPWPerShot + totalRWPerShot == 0)
-            {
-                MessageBox.Show("Total weight per shot cannot be 0.");
-
-                return false;
-            }
-
-            int proDay = int.TryParse(lblDaysNeeded.Text, out proDay) ? proDay : 0;
-            double proBalHrs= double.TryParse(lblbalHours.Text, out proBalHrs) ? proBalHrs : 0;
-            int hrsPerDay = int.TryParse(txtHrsPerDay.Text, out hrsPerDay) ? hrsPerDay : 0;
-
-            int maxShot = int.TryParse(lblMaxShot.Text, out maxShot) ? maxShot : 0;
-
-            if (maxShot == 0)
-            {
-                MessageBox.Show("Mould Max Shot cannot be 0.");
-
-                return false;
-            }
-
-
-            double totalRaw_kg = double.TryParse(lblRawMat.Text, out totalRaw_kg) ? totalRaw_kg : 0;
-            double totalColor_kg = double.TryParse(lblColorMat.Text, out totalColor_kg) ? totalColor_kg : 0;
-            double totalRecycle_kg = double.TryParse(lblRecycleMat.Text, out totalRecycle_kg) ? totalRecycle_kg : 0;
-
-            if (totalRaw_kg + totalColor_kg + totalRecycle_kg == 0)
-            {
-                MessageBox.Show("Material cannot be 0.");
-
-                return false;
-            }
-
-            DateTime proStart = dtpStartDate.Value;
-            DateTime proEnd = dtpEstimateEndDate.Value;
-
-            int macID = 0;
-
-            if(cmbMac.SelectedIndex > -1)
-            {
-                DataRowView drv = (DataRowView)cmbMac.SelectedItem;
-                macID = int.TryParse(drv[dalMac.MacID].ToString(), out macID) ? macID : 0;
-            }
-
-            if (macID == 0)
-            {
-                MessageBox.Show("Please select a machine for this job.");
-
-                return false;
-            }
-
-
-            int facID = 0;
-            string facName = cmbMacLocation.Text;
-
-            if (cmbMacLocation.SelectedIndex > -1)
-            {
-                DataRowView drv = (DataRowView)cmbMacLocation.SelectedItem;
-                facID = int.TryParse(drv[dalFac.FacID].ToString(), out facID) ? facID : 0;
-            }
-
-            BLL_JOB_SUMMARY.plan_cavity = totalCavity.ToString();
-            BLL_JOB_SUMMARY.plan_ct = proCycleTime.ToString();
-            BLL_JOB_SUMMARY.plan_pw_shot = totalPWPerShot.ToString();
-            BLL_JOB_SUMMARY.plan_pw = totalPWPerShot.ToString();
-            BLL_JOB_SUMMARY.plan_rw_shot = totalRWPerShot.ToString();
-            BLL_JOB_SUMMARY.plan_rw = totalRWPerShot.ToString();
-            BLL_JOB_SUMMARY.production_day = proDay.ToString();
-            BLL_JOB_SUMMARY.production_hour = proBalHrs.ToString();
-            BLL_JOB_SUMMARY.production_hour_per_day = hrsPerDay.ToString();
-            BLL_JOB_SUMMARY.production_max_shot = maxShot.ToString();
-            
-            BLL_JOB_SUMMARY.raw_material_qty_kg = totalRaw_kg.ToString();
-            BLL_JOB_SUMMARY.raw_material_qty = totalRaw_kg.ToString();
-            
-            BLL_JOB_SUMMARY.color_material_qty_kg = totalColor_kg.ToString();
-            BLL_JOB_SUMMARY.color_material_qty = totalColor_kg.ToString();
-            BLL_JOB_SUMMARY.recycle_material_qty_kg = totalRecycle_kg.ToString();
-            BLL_JOB_SUMMARY.material_recycle_use = totalRecycle_kg.ToString();
-            BLL_JOB_SUMMARY.production_start_date = proStart.Date;
-            BLL_JOB_SUMMARY.production_end_date = proEnd.Date;
-            BLL_JOB_SUMMARY.machine_id = macID;
-            BLL_JOB_SUMMARY.machine_location_string = facName;
-            BLL_JOB_SUMMARY.machine_location = facID;
-            BLL_JOB_SUMMARY.color_material_code = COLOR_MAT_CODE;
-            BLL_JOB_SUMMARY.part_color = lblPartColor.Text;
-            BLL_JOB_SUMMARY.color_material_usage = txtColorMatUsage.Text;
-            BLL_JOB_SUMMARY.use_recycle = cbRecycleExtraMode.Checked || cbRecycleSaveMode.Checked;
-
-
-            if (DATE_COLLISION_FOUND)
-            {
-                MessageBox.Show("New Draft Job date conflict detected.\nPlease adjust the dates to prevent overlap before adding the job.");
-
-                return false;
-            }
-
-            return true;
-        }
 
         private bool Validation(int currentStep)
         {
@@ -1141,10 +943,12 @@ namespace FactoryManagementSoftware.UI
                 newRawRow[text.Header_ItemDescription] = DT_JOBEDITING_ROW[text.Header_RawMat_1];
                 newRawRow[text.Header_ItemCode] = DT_JOBEDITING_ROW[text.Header_RawMat_1];
 
+                //double ratio = double.TryParse(DT_JOBEDITING_ROW[text.Header_RawMat_1_Ratio].ToString(), out double d) ? d : 100;
+
                 newRawRow[text.Header_Ratio] = DT_JOBEDITING_ROW[text.Header_RawMat_1_Ratio];
                 newRawRow[text.Header_RoundUp_ToBag] = false;
-                newRawRow[text.Header_Qty_Required_KG] = DT_JOBEDITING_ROW[text.Header_RawMat_KG_1];
-                newRawRow[text.Header_Qty_Required_Bag] = DT_JOBEDITING_ROW[text.Header_RawMat_Bag_1];
+                newRawRow[text.Header_Qty_Required_KG] = decimal.TryParse(DT_JOBEDITING_ROW[text.Header_RawMat_KG_1].ToString(), out decimal d)? d : 0;
+                newRawRow[text.Header_Qty_Required_Bag] = decimal.TryParse(DT_JOBEDITING_ROW[text.Header_RawMat_Bag_1].ToString(), out  d) ? d : 0;
 
                 int bag = int.TryParse(DT_JOBEDITING_ROW[text.Header_RawMat_Bag_1].ToString(), out bag) ? bag : 0;
                 double kg = double.TryParse(DT_JOBEDITING_ROW[text.Header_RawMat_KG_1].ToString(), out kg) ? kg : 0;
@@ -1174,8 +978,8 @@ namespace FactoryManagementSoftware.UI
 
                 newRawRow[text.Header_Ratio] = DT_JOBEDITING_ROW[text.Header_RawMat_2_Ratio];
                 newRawRow[text.Header_RoundUp_ToBag] = false;
-                newRawRow[text.Header_Qty_Required_KG] = DT_JOBEDITING_ROW[text.Header_RawMat_KG_2];
-                newRawRow[text.Header_Qty_Required_Bag] = DT_JOBEDITING_ROW[text.Header_RawMat_Bag_2];
+                newRawRow[text.Header_Qty_Required_KG] = decimal.TryParse(DT_JOBEDITING_ROW[text.Header_RawMat_KG_2].ToString(), out decimal d) ? d : 0;
+                newRawRow[text.Header_Qty_Required_Bag] = decimal.TryParse(DT_JOBEDITING_ROW[text.Header_RawMat_Bag_2].ToString(), out d) ? d : 0;
 
                 int bag = int.TryParse(DT_JOBEDITING_ROW[text.Header_RawMat_Bag_2].ToString(), out bag) ? bag : 0;
                 double kg = double.TryParse(DT_JOBEDITING_ROW[text.Header_RawMat_KG_2].ToString(), out kg) ? kg : 0;
@@ -1512,6 +1316,8 @@ namespace FactoryManagementSoftware.UI
             double MaterialperBag_KG = 25;
             double MainRawRatio = 100;
 
+            int selectedRawCount = 0;
+
             if (dgvRawMatList?.Rows.Count > 0)
             {
                 foreach(DataGridViewRow row in dgvRawMatList.Rows)
@@ -1522,6 +1328,8 @@ namespace FactoryManagementSoftware.UI
 
                     if (selection && roundUpToBag)
                     {
+                        selectedRawCount++;
+
                         RawMat_RoundUpToBag = true;
 
                         MainRawRatio = double.TryParse(row.Cells[text.Header_Ratio].Value.ToString(), out MainRawRatio) ? MainRawRatio : 100;
@@ -1534,6 +1342,18 @@ namespace FactoryManagementSoftware.UI
             }
 
             MainRawRatio = MainRawRatio >= 1 ? MainRawRatio / 100 : MainRawRatio;
+
+            if (MainRawRatio == 0)
+            {
+                if (selectedRawCount == 1)
+                {
+                    MainRawRatio = 100;
+                }
+                else
+                {
+                    MainRawRatio = 50;
+                }
+            }
 
             double maxMaterialNeeded_g = minMaterialNeeded_g;
 
@@ -1687,12 +1507,21 @@ namespace FactoryManagementSoftware.UI
                         if (result % 1 != 0)
                         {
                             // If it does, round to 2 decimal places
-                            row.Cells[text.Header_Qty_Required_KG].Value = Math.Round(result, 2);
+                            row.Cells[text.Header_Qty_Required_KG].Value = (decimal) Math.Round(result, 2);
+
+                            //try
+                            //{
+                            //    row.Cells[text.Header_Qty_Required_KG].Value = (decimal)Math.Round(result, 2);
+                            //}
+                            //catch (OverflowException ex)
+                            //{
+                            //    MessageBox.Show($"An overflow exception occurred: {ex.Message}" + $"\n\nResult value: {result}");
+                            //}
                         }
                         else
                         {
                             // If not, keep the original value
-                            row.Cells[text.Header_Qty_Required_KG].Value = result;
+                            row.Cells[text.Header_Qty_Required_KG].Value = (decimal) result;
                         }
 
                         result = result / kgPerBag;
@@ -1701,12 +1530,12 @@ namespace FactoryManagementSoftware.UI
                         if (result % 1 != 0)
                         {
                             // If it does, round to 2 decimal places
-                            row.Cells[text.Header_Qty_Required_Bag].Value = Math.Round(result, 2);
+                            row.Cells[text.Header_Qty_Required_Bag].Value = (decimal) Math.Round(result, 2);
                         }
                         else
                         {
                             // If not, keep the original value
-                            row.Cells[text.Header_Qty_Required_Bag].Value = result;
+                            row.Cells[text.Header_Qty_Required_Bag].Value = (decimal) result;
                         }
 
                        // row.Cells[text.Header_Qty_Required_Bag].Value = (int)(new_RawMat_g * ratio / 1000 / kgPerBag);
@@ -3362,6 +3191,9 @@ namespace FactoryManagementSoftware.UI
                     string status = row[text.Header_Status].ToString();
                     string remark = row[text.Header_Remark].ToString();
 
+                    dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
+                    dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
+
                     if (remark.Contains("Family Mould"))
                     {
                         dgv.Rows[rowIndex].Cells[text.Header_ItemDescription].Style.BackColor = Color.Yellow;
@@ -3378,6 +3210,11 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.White;
                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.White;
                         dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.White;
+
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(50, 50, 50);
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(50, 50, 50);
+
+                       
 
                         // Check if macID is used before and bold the font
                         int macID_INT = int.TryParse(macID, out macID_INT) ? macID_INT : 0;
@@ -3403,6 +3240,9 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = SystemColors.Info;
                         dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = SystemColors.Info;
 
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(50, 50, 50);
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(50, 50, 50);
+
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 
                     }
@@ -3411,6 +3251,10 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].DefaultCellStyle.BackColor = SystemColors.Info;
                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = SystemColors.Info;
                         dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = SystemColors.Info;
+
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(50, 50, 50);
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(50, 50, 50);
+
                         //dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = SystemColors.Info;
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
 
@@ -3421,6 +3265,10 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.FromArgb(254, 241, 154);
                         dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.FromArgb(254, 241, 154);
                         //dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = SystemColors.Info;
+
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(50, 50, 50);
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(50, 50, 50);
+
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
 
                     }
@@ -3429,6 +3277,10 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.White;
                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.White;
                         dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.White;
+
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(50, 50, 50);
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(50, 50, 50);
+
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.ForeColor = Color.Red;
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
 
@@ -4427,12 +4279,21 @@ namespace FactoryManagementSoftware.UI
                         if(Date_Start < LastRow_EndDate && LastRow_EndDate != DateTime.MaxValue && (LastFamilyWith != FamilyWith || FamilyWith == "-1" || string.IsNullOrEmpty(FamilyWith)))
                         {
                             row.Cells[text.Header_DateStart].Style.BackColor = Color.Red;
+
+                            row.Cells[text.Header_DateStart].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Bold);
+
+                            row.Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(254, 241, 154);
+
                             DateCollisionFound = true;
 
                             
                             if (Date_End < LastRow_EndDate)
                             {
+                                row.Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(254, 241, 154);
+
                                 row.Cells[text.Header_EstDateEnd].Style.BackColor = Color.Red;
+
+                                row.Cells[text.Header_EstDateEnd].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Bold);
 
                                 if (status == text.planning_status_new_draft || status == text.planning_status_edting)
                                 {
@@ -4449,8 +4310,15 @@ namespace FactoryManagementSoftware.UI
 
                     if (Date_End < Date_Start && Date_Start != DateTime.MaxValue)
                     {
+                        row.Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(254, 241, 154);
+                        row.Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(254, 241, 154);
+
                         row.Cells[text.Header_DateStart].Style.BackColor = Color.Red;
                         row.Cells[text.Header_EstDateEnd].Style.BackColor = Color.Red;
+
+                        row.Cells[text.Header_DateStart].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Bold);
+                        row.Cells[text.Header_EstDateEnd].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Bold);
+
                         DateCollisionFound = true;
 
                      
@@ -4703,6 +4571,30 @@ namespace FactoryManagementSoftware.UI
 
         private bool MachineSelectionDataLoading = false;
 
+        public void dgvMacScheduleRowFirstDisplay(string reference)
+        {
+            DataGridView dgv = dgvMacSchedule;
+
+            if (dgv.Rows.Count > 0 && dgv.Columns.Contains(text.Header_JobNo))
+            {
+                //dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                //dgv.ClearSelection();
+
+
+                for (int i = 0; i < dgv.Rows.Count; i++)
+                {
+                    string data = dgv.Rows[i].Cells[text.Header_JobNo].Value.ToString();
+
+                    if (data == reference)
+                    {
+                        dgv.FirstDisplayedScrollingRowIndex = i;
+
+                        break;
+                    }
+                }
+            }
+        }
+
         private void machineSelectionMode()
         {
             errorProvider1.Clear();
@@ -4723,6 +4615,8 @@ namespace FactoryManagementSoftware.UI
                     if(JOB_EDITING_MODE)
                     {
                         dtpStartDate.Value = DateTime.TryParse(DT_JOBEDITING_ROW[text.Header_DateStart].ToString(), out DateTime start) ? start : dtpStartDate.Value;
+
+                        dgvMacScheduleRowFirstDisplay(EDITING_JOB_NO);
                     }
                 }
                 else
@@ -5670,6 +5564,7 @@ namespace FactoryManagementSoftware.UI
         static public int JOB_ADDED_COUNT = 0;
         static public int JOB_EDITING_UPDATED_COUNT = 0;
         static public int JOB_UPDATED_COUNT = 0;
+        static public string NEW_JOB_NO = "";
 
         private void JobEditingUpdate(bool UpdateAsDraft)
         {
@@ -5798,6 +5693,7 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
             JOB_ADDED_COUNT = 0;
             JOB_ADDED = false;
+            NEW_JOB_NO = "";
 
             try
             {
@@ -5895,6 +5791,12 @@ namespace FactoryManagementSoftware.UI
                                 tool.historyRecord(text.System, "New Job Added (ID:" + jobID + ")", date, MainDashboard.USER_ID);
                                 JOB_ADDED = true;
                                 JOB_ADDED_COUNT++;
+
+                                if(string.IsNullOrEmpty(NEW_JOB_NO))
+                                {
+                                    NEW_JOB_NO = jobID.ToString();
+                                }
+
                             }
                             else
                             {

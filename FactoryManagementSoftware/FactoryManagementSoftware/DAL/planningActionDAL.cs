@@ -259,28 +259,28 @@ namespace FactoryManagementSoftware.DAL
             {
                 tool.historyRecord(text.plan_Updated, text.getNewPlanningDetail(u), DateTime.Now, MainDashboard.USER_ID);
 
-                //get the last record from tbl_planning
-                DataTable lastRecord = dalPlanning.lastRecordSelect();
+                ////get the last record from tbl_planning
+                //DataTable lastRecord = dalPlanning.lastRecordSelect();
 
-                foreach (DataRow row in lastRecord.Rows)
-                {
-                    uPlanningAction.planning_id = Convert.ToInt32(row[dalPlanning.jobNo]);
-                    uPlanningAction.added_date = Convert.ToDateTime(row[dalPlanning.planUpdatedDate]);
-                    uPlanningAction.added_by = Convert.ToInt32(row[dalPlanning.planUpdatedby]); ;
-                    uPlanningAction.action = text.plan_Updated;
-                    uPlanningAction.action_detail = text.getNewPlanningDetail(u);
-                    uPlanningAction.action_from = "";
-                    uPlanningAction.action_to = "";
-                    uPlanningAction.note = row[dalPlanning.planNote].ToString() + " [Cavity: " + row[dalPlanning.planCavity].ToString() + "; PW(shot): " + row[dalPlanning.planPW].ToString() + " ;RW(shot): " + row[dalPlanning.planRW].ToString() + "]";
+                //foreach (DataRow row in lastRecord.Rows)
+                //{
+                //    uPlanningAction.planning_id = Convert.ToInt32(row[dalPlanning.jobNo]);
+                //    uPlanningAction.added_date =DateTime.TryParse(row[dalPlanning.planUpdatedby)
+                //    uPlanningAction.added_by = Convert.ToInt32(row[dalPlanning.planUpdatedby]); ;
+                //    uPlanningAction.action = text.plan_Updated;
+                //    uPlanningAction.action_detail = text.getNewPlanningDetail(u);
+                //    uPlanningAction.action_from = "";
+                //    uPlanningAction.action_to = "";
+                //    uPlanningAction.note = row[dalPlanning.planNote].ToString() + " [Cavity: " + row[dalPlanning.planCavity].ToString() + "; PW(shot): " + row[dalPlanning.planPW].ToString() + " ;RW(shot): " + row[dalPlanning.planRW].ToString() + "]";
 
-                    bool actionSaveSuccess = Insert(uPlanningAction);
+                //    bool actionSaveSuccess = Insert(uPlanningAction);
 
-                    if (!actionSaveSuccess)
-                    {
-                        MessageBox.Show("Failed to save planning action data (planningActionDAL_planningUpdate)");
-                        tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningUpdate)", DateTime.Now, MainDashboard.USER_ID);
-                    }
-                }
+                //    if (!actionSaveSuccess)
+                //    {
+                //        MessageBox.Show("Failed to save planning action data (planningActionDAL_planningUpdate)");
+                //        tool.historyRecord(text.System, "Failed to save planning action data (planningActionDAL_planningUpdate)", DateTime.Now, MainDashboard.USER_ID);
+                //    }
+                //}
 
             }
 
@@ -666,6 +666,93 @@ namespace FactoryManagementSoftware.DAL
 
             return success;
         }
+
+        public bool JobDateAndMachineUpdate(PlanningBLL u, string oldMachineName, DateTime oldStart, DateTime oldEnd, int oldFamilyWith)
+        {
+            bool success;
+
+            success = dalPlanning.scheduleDateAndMachineUpdate(u);
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to update Job's Date & Machine!");
+                tool.historyRecord(text.System, "Failed to update Job's Date & Machine!", DateTime.Now, MainDashboard.USER_ID);
+            }
+            else
+            {
+                if (!oldMachineName.Equals(u.machine_location_string))
+                {
+                    tool.historyRecord(text.plan_machine_change, "Job No. " + u.plan_id + ": " + oldMachineName + " --> " + u.machine_location_string, DateTime.Now, MainDashboard.USER_ID);
+
+                    uPlanningAction.planning_id = u.plan_id;
+                    uPlanningAction.added_date = u.plan_updated_date;
+                    uPlanningAction.added_by = u.plan_updated_by;
+                    uPlanningAction.action = text.plan_machine_change;
+                    uPlanningAction.action_detail = "";
+                    uPlanningAction.action_from = oldMachineName;
+                    uPlanningAction.action_to = u.machine_location_string;
+                    uPlanningAction.note = "";
+
+                    bool actionSaveSuccess = Insert(uPlanningAction);
+
+                    if (!actionSaveSuccess)
+                    {
+                        MessageBox.Show("Failed to save Job Action Record (Machine Changed)");
+                        tool.historyRecord(text.System, "Failed to save Job Action Record (Machine Changed)", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+
+                if (oldStart != u.production_start_date || oldEnd != u.production_end_date)
+                {
+                    tool.historyRecord(text.plan_schedule_change, "Job No. " + u.plan_id + ": " + oldStart.ToShortDateString() + "-" + oldEnd.ToShortDateString() + " --> " + u.production_start_date.ToShortDateString() + "-" + u.production_end_date.ToShortDateString(), DateTime.Now, MainDashboard.USER_ID);
+
+                    uPlanningAction.planning_id = u.plan_id;
+                    uPlanningAction.added_date = u.plan_updated_date;
+                    uPlanningAction.added_by = u.plan_updated_by;
+                    uPlanningAction.action = text.plan_schedule_change;
+                    uPlanningAction.action_detail = "";
+                    string from = oldStart.ToShortDateString() + "-" + oldEnd.ToShortDateString();
+                    string to = u.production_start_date.ToShortDateString() + "-" + u.production_end_date.ToShortDateString();
+
+                    uPlanningAction.action_from = from;
+                    uPlanningAction.action_to = to;
+                    uPlanningAction.note = "";
+
+                    bool actionSaveSuccess = Insert(uPlanningAction);
+
+                    if (!actionSaveSuccess)
+                    {
+                        MessageBox.Show("Failed to save Job Action Record (planningActionDAL_planningScheduleChange)");
+                        tool.historyRecord(text.System, "Failed to save Job Action Record (planningActionDAL_planningscheduleChange)", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+
+                if (u.family_with != oldFamilyWith)
+                {
+                    tool.historyRecord(text.plan_family_with_change, "Job No. " + u.plan_id + ": " + oldFamilyWith + " --> " + u.family_with, DateTime.Now, MainDashboard.USER_ID);
+
+                    uPlanningAction.planning_id = u.plan_id;
+                    uPlanningAction.added_date = u.plan_updated_date;
+                    uPlanningAction.added_by = u.plan_updated_by;
+                    uPlanningAction.action = text.plan_family_with_change;
+                    uPlanningAction.action_detail = "";
+                    uPlanningAction.action_from = oldFamilyWith.ToString();
+                    uPlanningAction.action_to = u.family_with.ToString();
+                    uPlanningAction.note = "";
+
+                    bool actionSaveSuccess = Insert(uPlanningAction);
+
+                    if (!actionSaveSuccess)
+                    {
+                        MessageBox.Show("Failed to save Job Action Record (planningActionDAL_planningStatusChange)");
+                        tool.historyRecord(text.System, "Failed to save Job Action Record (planningActionDAL_planningFamilyWithChange(396))", DateTime.Now, MainDashboard.USER_ID);
+                    }
+                }
+            }
+
+            return success;
+        }
+
 
         //production plan Target Qty Change
         public bool planningTargetQtyChange(PlanningBLL u)
