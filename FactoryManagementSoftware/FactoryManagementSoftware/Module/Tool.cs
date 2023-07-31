@@ -14998,5 +14998,68 @@ namespace FactoryManagementSoftware.Module
         }
 
         #endregion
+
+        #region Calculation
+
+        public int TotalDaysBetween(DateTime startDate, DateTime endDate)
+        {
+            int totalDays = 0;
+
+            if (endDate < startDate)
+            {
+                DateTime tmp = startDate;
+                startDate = endDate;
+                endDate = tmp;
+            }
+
+            TimeSpan span = endDate - startDate;
+
+            return (int)span.TotalDays + 1;// adding 1 to make it inclusive
+        }
+
+        public int TotalSundaysBetween(DateTime startDate, DateTime endDate)
+        {
+            int totalSundays = 0;
+
+            if (endDate < startDate)
+            {
+                DateTime tmp = startDate;
+                startDate = endDate;
+                endDate = tmp;
+            }
+
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+            {
+                if (date.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    totalSundays++;
+                }
+            }
+
+            return totalSundays;
+        }
+
+        public DateTime CalculateEndDate(DateTime startDate, int totalDays, bool includeSunday)
+        {
+            DateTime endDate = startDate;
+            int dayCount = 0;
+
+            totalDays = totalDays < 0 ? 0 : totalDays;
+
+            while (dayCount < totalDays)
+            {
+                endDate = endDate.AddDays(1);
+
+                // If the day is a Sunday and Sundays should not be included, skip it.
+                if (endDate.DayOfWeek == DayOfWeek.Sunday && !includeSunday)
+                    continue;
+
+                dayCount++;
+            }
+
+            return endDate;
+        }
+
+        #endregion
     }
 }

@@ -4428,7 +4428,7 @@ namespace FactoryManagementSoftware.UI
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();
 
-            if (frmChangeDate.dateSaved)
+            if (frmChangeDate.dateChanged)
             {
                 frmLoading.ShowLoadingScreen();
                 InitialMonthlyDate();

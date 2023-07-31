@@ -892,7 +892,7 @@ namespace FactoryManagementSoftware.UI
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.ShowDialog();
 
-                if (frmChangeDate.dateSaved)
+                if (frmChangeDate.dateChanged)
                 {
                     dataChange = true;
                     dgv.Rows[rowIndex].Cells[headerStartDate].Value = frmChangeDate.start.Date;

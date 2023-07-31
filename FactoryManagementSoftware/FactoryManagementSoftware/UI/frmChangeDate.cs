@@ -17,15 +17,20 @@ namespace FactoryManagementSoftware.UI
     public partial class frmChangeDate : Form
     {
         Tool tool = new Tool();
+        Text text = new Text();
 
         static public DateTime start;
         static public DateTime end;
-        static public bool dateSaved = false;
+        static public bool dateChanged = false;
         private bool includeSunday = false;
+
+        private bool MAC_SCHEDULE_JOB_DATE_EDIT = false;
 
         private int proDayRequired = 0;
 
         private bool fromSBBDeliveredPage = false;
+        private bool FORM_LOADED = false;
+
 
         public frmChangeDate()
         {
@@ -43,11 +48,55 @@ namespace FactoryManagementSoftware.UI
             dtpEstimateEndDate.Value = end;
         }
 
+        private int PRO_DAY = 0;
+        private int PRO_HRS_PER_DAY = 0;
+        private double PRO_BAL_HRS = 0;
+
+        private int TOTAL_PRO_DAY = 0;
+
+        public frmChangeDate(DataRow row_Job_editing)
+        {
+            InitializeComponent();
+            dateChanged = false;
+
+          
+            MAC_SCHEDULE_JOB_DATE_EDIT = true;
+
+            start = DateTime.TryParse(row_Job_editing[text.Header_DateStart].ToString(), out start) ? start.Date : DateTime.Now.Date;
+            end = DateTime.TryParse(row_Job_editing[text.Header_EstDateEnd].ToString(), out end) ? end.Date : DateTime.Now.Date;
+
+            PRO_DAY = int.TryParse(row_Job_editing[text.Header_ProductionDay].ToString(), out PRO_DAY) ? PRO_DAY : 0;
+            PRO_HRS_PER_DAY = int.TryParse(row_Job_editing[text.Header_ProductionHourPerDay].ToString(), out PRO_HRS_PER_DAY) ? PRO_HRS_PER_DAY : 0;
+            PRO_BAL_HRS = double.TryParse(row_Job_editing[text.Header_ProductionHour].ToString(), out PRO_BAL_HRS) ? PRO_BAL_HRS : 0;
+
+            TOTAL_PRO_DAY = PRO_DAY + (PRO_BAL_HRS > 0 ? 1 : 0);
+
+            int daysBetween = tool.TotalDaysBetween(start, end);
+            int SundaysBetween = tool.TotalSundaysBetween(start, end);
+
+            if (SundaysBetween > 0)
+            {
+                if (daysBetween - SundaysBetween == TOTAL_PRO_DAY)
+                {
+                    cbSundayInclude.Checked = false;
+                }
+                else if (daysBetween == TOTAL_PRO_DAY)
+                {
+                    cbSundayInclude.Checked = true;
+                }
+            }
+           
+            dtpStartDate.Value = start;
+            dtpEstimateEndDate.Value = end;
+        }
+
         public frmChangeDate(DateTime from , DateTime to , int day, bool sunday)
         {
             InitializeComponent();
 
             includeSunday = sunday;
+            cbSundayInclude.Checked = sunday;
+
             start = from;
             end = to;
 
@@ -59,6 +108,8 @@ namespace FactoryManagementSoftware.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
+            dateChanged = false;
+
             Close();
         }
 
@@ -75,26 +126,75 @@ namespace FactoryManagementSoftware.UI
                     dtpEstimateEndDate.Value = new DateTime(dtpStartDate.Value.Year, dtpStartDate.Value.Month, DateTime.DaysInMonth(dtpStartDate.Value.Year, dtpStartDate.Value.Month));
 
             }
+            else if(MAC_SCHEDULE_JOB_DATE_EDIT)
+            {
+                ProductionEstimateEndDateCalculation();
+            }
             else
             {
                 dtpEstimateEndDate.Value = tool.EstimateEndDate(dtpStartDate.Value.Date, proDayRequired, includeSunday);
             }
         }
 
+
+
+        private void ProductionEstimateEndDateCalculation()
+        {
+            if(FORM_LOADED)
+            {
+                dtpEstimateEndDate.Value = tool.CalculateEndDate(dtpStartDate.Value.Date, TOTAL_PRO_DAY - 1, cbSundayInclude.Checked);
+            }
+        }
+
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            start = dtpStartDate.Value.Date;
-            end = dtpEstimateEndDate.Value.Date;
-
-            dateSaved = true;
-
-            if(fromSBBDeliveredPage)
+            if(MAC_SCHEDULE_JOB_DATE_EDIT)
             {
-                frmSBB.MonthlyDateStart = start;
-                frmSBB.MonthlyDateEnd = end;
+                DateTime Date_Start = dtpStartDate.Value.Date;
+                DateTime Date_End = dtpEstimateEndDate.Value.Date;
+
+                if(Date_Start != start.Date || Date_End != end.Date)
+                {
+                    dateChanged = true;
+
+                    start = dtpStartDate.Value.Date;
+                    end = dtpEstimateEndDate.Value.Date;
+
+                }
+            }
+            else
+            {
+                start = dtpStartDate.Value.Date;
+                end = dtpEstimateEndDate.Value.Date;
+
+                dateChanged = true;
+
+                if (fromSBBDeliveredPage)
+                {
+                    frmSBB.MonthlyDateStart = start;
+                    frmSBB.MonthlyDateEnd = end;
+                }
             }
 
             Close();
+        }
+
+        private void cbSundayInclude_CheckedChanged(object sender, EventArgs e)
+        {
+            if(MAC_SCHEDULE_JOB_DATE_EDIT)
+            {
+                ProductionEstimateEndDateCalculation();
+            }
+        }
+
+        private void frmChangeDate_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
+
+        private void frmChangeDate_Load(object sender, EventArgs e)
+        {
+            FORM_LOADED = true;
         }
     }
 }

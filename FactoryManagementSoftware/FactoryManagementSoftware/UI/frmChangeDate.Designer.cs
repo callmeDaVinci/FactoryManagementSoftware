@@ -32,99 +32,221 @@
             this.lblStartDate = new System.Windows.Forms.Label();
             this.dtpEstimateEndDate = new System.Windows.Forms.DateTimePicker();
             this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
-            this.button1 = new System.Windows.Forms.Button();
-            this.btnCheck = new System.Windows.Forms.Button();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbSundayInclude = new Guna.UI.WinForms.GunaCheckBox();
+            this.btnConfirm = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnCancel = new Guna.UI.WinForms.GunaGradientButton();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblEndDate
             // 
+            this.lblEndDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblEndDate.AutoSize = true;
-            this.lblEndDate.Location = new System.Drawing.Point(28, 97);
+            this.lblEndDate.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblEndDate.Location = new System.Drawing.Point(229, 18);
+            this.lblEndDate.Margin = new System.Windows.Forms.Padding(3);
             this.lblEndDate.Name = "lblEndDate";
-            this.lblEndDate.Size = new System.Drawing.Size(72, 19);
+            this.lblEndDate.Size = new System.Drawing.Size(65, 19);
             this.lblEndDate.TabIndex = 125;
-            this.lblEndDate.Text = "END DATE";
+            this.lblEndDate.Text = "End Date";
             // 
             // lblStartDate
             // 
+            this.lblStartDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblStartDate.AutoSize = true;
-            this.lblStartDate.Location = new System.Drawing.Point(19, 37);
+            this.lblStartDate.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblStartDate.Location = new System.Drawing.Point(13, 18);
+            this.lblStartDate.Margin = new System.Windows.Forms.Padding(3);
             this.lblStartDate.Name = "lblStartDate";
-            this.lblStartDate.Size = new System.Drawing.Size(81, 19);
+            this.lblStartDate.Size = new System.Drawing.Size(71, 19);
             this.lblStartDate.TabIndex = 124;
-            this.lblStartDate.Text = "START DATE";
+            this.lblStartDate.Text = "Start Date";
             // 
             // dtpEstimateEndDate
             // 
             this.dtpEstimateEndDate.CalendarFont = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtpEstimateEndDate.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpEstimateEndDate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dtpEstimateEndDate.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.dtpEstimateEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEstimateEndDate.Location = new System.Drawing.Point(106, 97);
+            this.dtpEstimateEndDate.Location = new System.Drawing.Point(229, 43);
             this.dtpEstimateEndDate.Name = "dtpEstimateEndDate";
-            this.dtpEstimateEndDate.Size = new System.Drawing.Size(216, 30);
+            this.dtpEstimateEndDate.Size = new System.Drawing.Size(190, 34);
             this.dtpEstimateEndDate.TabIndex = 123;
             // 
             // dtpStartDate
             // 
             this.dtpStartDate.CalendarFont = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStartDate.CalendarForeColor = System.Drawing.Color.Black;
-            this.dtpStartDate.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpStartDate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dtpStartDate.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.dtpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpStartDate.Location = new System.Drawing.Point(106, 37);
+            this.dtpStartDate.Location = new System.Drawing.Point(13, 43);
             this.dtpStartDate.Name = "dtpStartDate";
-            this.dtpStartDate.Size = new System.Drawing.Size(216, 30);
+            this.dtpStartDate.Size = new System.Drawing.Size(190, 34);
             this.dtpStartDate.TabIndex = 122;
             this.dtpStartDate.ValueChanged += new System.EventHandler(this.dtpStartDate_ValueChanged);
             // 
-            // button1
+            // tableLayoutPanel1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.Color.White;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(23, 239);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(299, 37);
-            this.button1.TabIndex = 127;
-            this.button1.Text = "CANCEL";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(255)))), ((int)(((byte)(181)))));
+            this.tableLayoutPanel1.ColumnCount = 5;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel1.Controls.Add(this.lblStartDate, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.dtpStartDate, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.lblEndDate, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.dtpEstimateEndDate, 3, 2);
+            this.tableLayoutPanel1.Controls.Add(this.cbSundayInclude, 3, 3);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(20, 20);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(20);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(432, 173);
+            this.tableLayoutPanel1.TabIndex = 128;
             // 
-            // btnCheck
+            // cbSundayInclude
             // 
-            this.btnCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.btnCheck.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnCheck.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCheck.ForeColor = System.Drawing.Color.White;
-            this.btnCheck.Location = new System.Drawing.Point(23, 198);
-            this.btnCheck.Margin = new System.Windows.Forms.Padding(2);
-            this.btnCheck.Name = "btnCheck";
-            this.btnCheck.Size = new System.Drawing.Size(299, 37);
-            this.btnCheck.TabIndex = 126;
-            this.btnCheck.Text = "APPLY";
-            this.btnCheck.UseVisualStyleBackColor = false;
-            this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
+            this.cbSundayInclude.BaseColor = System.Drawing.Color.White;
+            this.cbSundayInclude.CheckedOffColor = System.Drawing.Color.Gray;
+            this.cbSundayInclude.CheckedOnColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.cbSundayInclude.FillColor = System.Drawing.Color.White;
+            this.cbSundayInclude.Location = new System.Drawing.Point(229, 83);
+            this.cbSundayInclude.Name = "cbSundayInclude";
+            this.cbSundayInclude.Size = new System.Drawing.Size(108, 20);
+            this.cbSundayInclude.TabIndex = 126;
+            this.cbSundayInclude.Text = "Include Sunday";
+            this.cbSundayInclude.CheckedChanged += new System.EventHandler(this.cbSundayInclude_CheckedChanged);
+            // 
+            // btnConfirm
+            // 
+            this.btnConfirm.AnimationHoverSpeed = 0.07F;
+            this.btnConfirm.AnimationSpeed = 0.03F;
+            this.btnConfirm.BackColor = System.Drawing.Color.Transparent;
+            this.btnConfirm.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            this.btnConfirm.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(160)))), ((int)(((byte)(209)))));
+            this.btnConfirm.BorderColor = System.Drawing.Color.Black;
+            this.btnConfirm.BorderSize = 1;
+            this.btnConfirm.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnConfirm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnConfirm.FocusedColor = System.Drawing.Color.Empty;
+            this.btnConfirm.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnConfirm.ForeColor = System.Drawing.Color.White;
+            this.btnConfirm.Image = null;
+            this.btnConfirm.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnConfirm.Location = new System.Drawing.Point(305, 13);
+            this.btnConfirm.Name = "btnConfirm";
+            this.btnConfirm.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnConfirm.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnConfirm.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnConfirm.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnConfirm.OnHoverImage = null;
+            this.btnConfirm.OnPressedColor = System.Drawing.Color.Black;
+            this.btnConfirm.Radius = 2;
+            this.btnConfirm.Size = new System.Drawing.Size(144, 34);
+            this.btnConfirm.TabIndex = 224;
+            this.btnConfirm.Text = "Confirm";
+            this.btnConfirm.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnConfirm.Click += new System.EventHandler(this.btnCheck_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.AnimationHoverSpeed = 0.07F;
+            this.btnCancel.AnimationSpeed = 0.03F;
+            this.btnCancel.BackColor = System.Drawing.Color.Transparent;
+            this.btnCancel.BaseColor1 = System.Drawing.Color.White;
+            this.btnCancel.BaseColor2 = System.Drawing.Color.White;
+            this.btnCancel.BorderColor = System.Drawing.Color.Black;
+            this.btnCancel.BorderSize = 1;
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCancel.FocusedColor = System.Drawing.Color.Empty;
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnCancel.ForeColor = System.Drawing.Color.Black;
+            this.btnCancel.Image = null;
+            this.btnCancel.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnCancel.Location = new System.Drawing.Point(145, 13);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnCancel.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnCancel.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnCancel.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnCancel.OnHoverImage = null;
+            this.btnCancel.OnPressedColor = System.Drawing.Color.Black;
+            this.btnCancel.Radius = 2;
+            this.btnCancel.Size = new System.Drawing.Size(144, 34);
+            this.btnCancel.TabIndex = 225;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnCancel.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
+            this.tableLayoutPanel2.ColumnCount = 5;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Controls.Add(this.btnCancel, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.btnConfirm, 3, 1);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 213);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(472, 60);
+            this.tableLayoutPanel2.TabIndex = 226;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel2, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel1, 0, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(472, 273);
+            this.tableLayoutPanel3.TabIndex = 227;
             // 
             // frmChangeDate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(343, 294);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.btnCheck);
-            this.Controls.Add(this.lblEndDate);
-            this.Controls.Add(this.lblStartDate);
-            this.Controls.Add(this.dtpEstimateEndDate);
-            this.Controls.Add(this.dtpStartDate);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(168)))), ((int)(((byte)(255)))));
+            this.ClientSize = new System.Drawing.Size(472, 273);
+            this.Controls.Add(this.tableLayoutPanel3);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "frmChangeDate";
-            this.Text = "DATE SETTING";
+            this.Text = "Date Setting";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmChangeDate_FormClosing);
+            this.Load += new System.EventHandler(this.frmChangeDate_Load);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -134,7 +256,11 @@
         private System.Windows.Forms.Label lblStartDate;
         private System.Windows.Forms.DateTimePicker dtpEstimateEndDate;
         private System.Windows.Forms.DateTimePicker dtpStartDate;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button btnCheck;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private Guna.UI.WinForms.GunaGradientButton btnConfirm;
+        private Guna.UI.WinForms.GunaGradientButton btnCancel;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private Guna.UI.WinForms.GunaCheckBox cbSundayInclude;
     }
 }

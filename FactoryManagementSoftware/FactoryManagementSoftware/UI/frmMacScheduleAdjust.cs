@@ -1300,7 +1300,7 @@ namespace FactoryManagementSoftware.UI
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.ShowDialog();
 
-                if(frmChangeDate.dateSaved)
+                if(frmChangeDate.dateChanged)
                 {
                     dgv.Rows[rowIndex].Cells[headerStartDate].Value = frmChangeDate.start.Date;
                     dgv.Rows[rowIndex].Cells[headerEndDate].Value = frmChangeDate.end.Date;
