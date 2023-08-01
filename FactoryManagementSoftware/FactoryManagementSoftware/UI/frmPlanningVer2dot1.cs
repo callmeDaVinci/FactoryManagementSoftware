@@ -2869,8 +2869,8 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
 
                     //able to let user edit the cell
-                    dgv.Rows[rowIndex].Cells[text.Header_Cavity].Style.BackColor = SystemColors.Info;
-                    dgv.Rows[rowIndex].Cells[text.Header_ProPwShot].Style.BackColor = SystemColors.Info;
+                    dgv.Rows[rowIndex].Cells[text.Header_Cavity].Style.BackColor = Color.FromArgb(251, 255, 147);
+                    dgv.Rows[rowIndex].Cells[text.Header_ProPwShot].Style.BackColor = Color.FromArgb(251, 255, 147);
                     dgv.Rows[rowIndex].Cells[text.Header_TargetQty].Style.BackColor = Color.FromArgb(254, 241, 154); 
                     dgv.Rows[rowIndex].Cells[text.Header_AutoQtyAdjustment].Style.BackColor = Color.FromArgb(255, 153, 153);
                     dgv.Rows[rowIndex].Cells[text.Header_AutoQtyAdjustment].Style.ForeColor = Color.FromArgb(64, 64, 64);
@@ -2902,11 +2902,11 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
 
                     //able to let user edit the cell
-                    dgv.Rows[rowIndex].Cells[text.Header_Selection].Style.BackColor = SystemColors.Info;
-                    dgv.Rows[rowIndex].Cells[text.Header_KGPERBAG].Style.BackColor = SystemColors.Info;
-                    dgv.Rows[rowIndex].Cells[text.Header_Ratio].Style.BackColor = SystemColors.Info;
-                    dgv.Rows[rowIndex].Cells[text.Header_RoundUp_ToBag].Style.BackColor = SystemColors.Info;
-                    dgv.Rows[rowIndex].Cells[text.Header_Remark].Style.BackColor = SystemColors.Info;
+                    dgv.Rows[rowIndex].Cells[text.Header_Selection].Style.BackColor = Color.FromArgb(251, 255, 147);
+                    dgv.Rows[rowIndex].Cells[text.Header_KGPERBAG].Style.BackColor = Color.FromArgb(251, 255, 147);
+                    dgv.Rows[rowIndex].Cells[text.Header_Ratio].Style.BackColor = Color.FromArgb(251, 255, 147);
+                    dgv.Rows[rowIndex].Cells[text.Header_RoundUp_ToBag].Style.BackColor = Color.FromArgb(251, 255, 147);
+                    dgv.Rows[rowIndex].Cells[text.Header_Remark].Style.BackColor = Color.FromArgb(251, 255, 147);
                 }
 
                 dgv.ResumeLayout();
@@ -3021,9 +3021,9 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (status == text.planning_status_draft)
                     {
-                        dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = SystemColors.Info;
-                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = SystemColors.Info;
-                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = SystemColors.Info;
+                        dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = Color.FromArgb(251, 255, 147);
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.FromArgb(251, 255, 147);
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.FromArgb(251, 255, 147);
 
                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(50, 50, 50);
                         dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(50, 50, 50);
@@ -3033,14 +3033,14 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (status == text.planning_status_new_draft)
                     {
-                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = SystemColors.Info;
-                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = SystemColors.Info;
-                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = SystemColors.Info;
+                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(251, 255, 147);
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.FromArgb(251, 255, 147);
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.FromArgb(251, 255, 147);
 
                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(50, 50, 50);
                         dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(50, 50, 50);
 
-                        //dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = SystemColors.Info;
+                        //dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = Color.FromArgb(251, 255, 147);
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
 
                     }
@@ -3049,7 +3049,7 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(254, 241, 154);
                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.FromArgb(254, 241, 154);
                         dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.FromArgb(254, 241, 154);
-                        //dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = SystemColors.Info;
+                        //dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = Color.FromArgb(251, 255, 147);
 
                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(50, 50, 50);
                         dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(50, 50, 50);

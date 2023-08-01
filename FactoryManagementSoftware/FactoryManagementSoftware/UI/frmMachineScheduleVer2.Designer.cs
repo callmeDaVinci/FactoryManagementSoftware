@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvMacSchedule = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -109,14 +109,14 @@
             this.dgvMacSchedule.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvMacSchedule.ColumnHeadersHeight = 50;
             this.dgvMacSchedule.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.WhiteSmoke;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMacSchedule.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.WhiteSmoke;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMacSchedule.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvMacSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMacSchedule.GridColor = System.Drawing.Color.Silver;
             this.dgvMacSchedule.Location = new System.Drawing.Point(2, 258);
@@ -688,8 +688,8 @@
             this.btnNewJob.AnimationHoverSpeed = 0.07F;
             this.btnNewJob.AnimationSpeed = 0.03F;
             this.btnNewJob.BackColor = System.Drawing.Color.Transparent;
-            this.btnNewJob.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(241)))), ((int)(((byte)(154)))));
-            this.btnNewJob.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(241)))), ((int)(((byte)(154)))));
+            this.btnNewJob.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
+            this.btnNewJob.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
             this.btnNewJob.BorderColor = System.Drawing.Color.Black;
             this.btnNewJob.BorderSize = 1;
             this.btnNewJob.DialogResult = System.Windows.Forms.DialogResult.None;
@@ -768,8 +768,8 @@
             this.btnFilterApply.AnimationHoverSpeed = 0.07F;
             this.btnFilterApply.AnimationSpeed = 0.03F;
             this.btnFilterApply.BackColor = System.Drawing.Color.Transparent;
-            this.btnFilterApply.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.btnFilterApply.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(160)))), ((int)(((byte)(209)))));
+            this.btnFilterApply.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
+            this.btnFilterApply.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
             this.btnFilterApply.BorderColor = System.Drawing.Color.Black;
             this.btnFilterApply.BorderSize = 1;
             this.btnFilterApply.DialogResult = System.Windows.Forms.DialogResult.None;
