@@ -31,6 +31,7 @@ namespace FactoryManagementSoftware.UI
         private bool fromSBBDeliveredPage = false;
         private bool FORM_LOADED = false;
 
+        static public bool JOB_RUNNING_DATE_CONFIRMED = false;
 
         public frmChangeDate()
         {
@@ -61,6 +62,7 @@ namespace FactoryManagementSoftware.UI
 
           
             MAC_SCHEDULE_JOB_DATE_EDIT = true;
+            JOB_RUNNING_DATE_CONFIRMED = false;
 
             start = DateTime.TryParse(row_Job_editing[text.Header_DateStart].ToString(), out start) ? start.Date : DateTime.Now.Date;
             end = DateTime.TryParse(row_Job_editing[text.Header_EstDateEnd].ToString(), out end) ? end.Date : DateTime.Now.Date;
@@ -146,10 +148,13 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+
         private void btnCheck_Click(object sender, EventArgs e)
         {
             if(MAC_SCHEDULE_JOB_DATE_EDIT)
             {
+                JOB_RUNNING_DATE_CONFIRMED = true;
+
                 DateTime Date_Start = dtpStartDate.Value.Date;
                 DateTime Date_End = dtpEstimateEndDate.Value.Date;
 

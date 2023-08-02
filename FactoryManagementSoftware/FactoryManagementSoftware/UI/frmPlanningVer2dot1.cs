@@ -83,6 +83,9 @@ namespace FactoryManagementSoftware.UI
 
             JOB_ADDING_MODE = true;
             JOB_EDITING_MODE = false;
+
+            EDITING_JOB_RUNNING = false;
+
         }
 
         public frmPlanningVer2dot1(string itemCode)
@@ -96,6 +99,9 @@ namespace FactoryManagementSoftware.UI
 
             JOB_ADDING_MODE = true;
             JOB_EDITING_MODE = false;
+
+            EDITING_JOB_RUNNING = false;
+
         }
 
         private DataTable DT_JOBEDITING_MAC_SCHEDULE;
@@ -118,6 +124,8 @@ namespace FactoryManagementSoftware.UI
 
             JOB_ADDING_MODE = false;
             JOB_EDITING_MODE = true;
+            EDITING_JOB_RUNNING = false;
+
         }
 
 
@@ -136,6 +144,8 @@ namespace FactoryManagementSoftware.UI
 
                 JOB_ADDING_MODE = false;
                 JOB_EDITING_MODE = true;
+                EDITING_JOB_RUNNING = false;
+
             }
             else
             {
@@ -144,6 +154,8 @@ namespace FactoryManagementSoftware.UI
 
                 JOB_ADDING_MODE = true;
                 JOB_EDITING_MODE = false;
+                EDITING_JOB_RUNNING = false;
+
             }
         }
 
@@ -160,6 +172,8 @@ namespace FactoryManagementSoftware.UI
 
             JOB_ADDING_MODE = true;
             JOB_EDITING_MODE = false;
+            EDITING_JOB_RUNNING = false;
+
         }
 
         private void AutoLoadPageWithItemCode()
@@ -292,7 +306,7 @@ namespace FactoryManagementSoftware.UI
         private void InitialSetting()
         {
 
-            Size = new Size(1500, 950);
+            Size = new Size(1500, 930);
 
             CURRENT_STEP = 1;
 
@@ -521,7 +535,7 @@ namespace FactoryManagementSoftware.UI
                 BLL_JOB_SUMMARY.production_start_date = proStart.Date;
                 BLL_JOB_SUMMARY.production_end_date = proEnd.Date;
                 BLL_JOB_SUMMARY.machine_id = macID;
-                BLL_JOB_SUMMARY.machine_location_string = facName;
+                BLL_JOB_SUMMARY.machine_name = facName;
                 BLL_JOB_SUMMARY.machine_location = facID;
 
                 //check if date collision
@@ -2987,14 +3001,16 @@ namespace FactoryManagementSoftware.UI
 
                     if (string.IsNullOrEmpty(macID))
                     {
-                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(245, 247, 255);
+                        //dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(70,70,70);
+                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.White;
+                        //dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(245, 247, 255);
                         dgv.Rows[rowIndex].Height = 20;
                     }
                     else
                     {
-                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.White;
-                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.White;
-                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.White;
+                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.WhiteSmoke;
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.WhiteSmoke;
 
                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(50, 50, 50);
                         dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(50, 50, 50);
@@ -3059,14 +3075,15 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (status == text.planning_status_idle)
                     {
-                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.White;
-                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.White;
-                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.White;
+                        dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
+                        dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.WhiteSmoke;
+                        dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.WhiteSmoke;
 
                         dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.FromArgb(50, 50, 50);
                         dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.FromArgb(50, 50, 50);
 
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.ForeColor = Color.Red;
+                        dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = Color.LightGray;
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
 
                     }
@@ -4147,6 +4164,8 @@ namespace FactoryManagementSoftware.UI
                 tlpMachineScheduleList.RowStyles[6] = new RowStyle(SizeType.Absolute, 0);
             }
         }
+        bool EDITING_JOB_RUNNING = false;
+
         private void LoadMachineSchedule()
         {
             MachineSelectionDataLoading = true;
@@ -4221,6 +4240,10 @@ namespace FactoryManagementSoftware.UI
 
                     if(JOB_EDITING_MODE && LIST_EDITING_JOB_NO.Contains(jobNo))
                     {
+                        if(status == text.planning_status_running)
+                        {
+                            EDITING_JOB_RUNNING = true;
+                        }
                         status = text.planning_status_edting;
                     }
 
@@ -4426,7 +4449,7 @@ namespace FactoryManagementSoftware.UI
 
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Normal;
-                frm.Size = new Size(1700, 800);
+                frm.Size = new Size(1600, 930);
                 frm.Show();
 
                 frmLoading.CloseForm();
@@ -4736,7 +4759,7 @@ namespace FactoryManagementSoftware.UI
 
                 string status = dgvMacSchedule.Rows[hitTestInfo.RowIndex].Cells[text.Header_Status].Value.ToString();
 
-                if (status == text.planning_status_new_draft || status == text.planning_status_edting)
+                if ((status == text.planning_status_new_draft || status == text.planning_status_edting) && !EDITING_JOB_RUNNING)
                 {
                     OLD_MACHINE_ID = dgvMacSchedule.Rows[hitTestInfo.RowIndex].Cells[text.Header_MacID].Value.ToString();
 
@@ -5955,7 +5978,7 @@ namespace FactoryManagementSoftware.UI
 
             #region Load Machine ID and Location
 
-            lblMacLocation.Text = BLL_JOB_SUMMARY.machine_location_string.ToString();
+            lblMacLocation.Text = BLL_JOB_SUMMARY.machine_name.ToString();
             lblMachineID.Text = BLL_JOB_SUMMARY.machine_id.ToString();
 
             #endregion

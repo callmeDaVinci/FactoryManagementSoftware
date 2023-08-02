@@ -211,7 +211,7 @@ namespace FactoryManagementSoftware.UI
 
             #region Load Machine ID and Location
 
-            lblMacLocation.Text = BLL_JOB_SUMMARY.machine_location_string.ToString();
+            lblMacLocation.Text = BLL_JOB_SUMMARY.machine_name.ToString();
             lblMachineID.Text = BLL_JOB_SUMMARY.machine_id.ToString();
 
             #endregion

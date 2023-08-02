@@ -65,7 +65,7 @@ namespace FactoryManagementSoftware.BLL
 
         public int machine_id { get; set; }
         public int machine_location { get; set; }
-        public string machine_location_string { get; set; }
+        public string machine_name { get; set; }
         public int family_with { get; set; } = -1;
         public bool recording { get; set; }
 

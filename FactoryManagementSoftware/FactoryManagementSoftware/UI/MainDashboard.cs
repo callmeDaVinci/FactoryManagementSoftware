@@ -31,6 +31,8 @@ namespace FactoryManagementSoftware.UI
         static public bool InOutReportFormOpen = false;
         static public bool PMMAFormOpen = false;
         static public bool ProductionFormOpen = false;
+        static public bool NEWProductionFormOpen = false;
+        static public bool MacScheduleFormOpen = false;
         static public bool DailyJobSheetFormOpen = false;
         static public bool NewDailyJobSheetFormOpen = false;
         static public bool ProductionReportFormOpen = false;
@@ -63,7 +65,6 @@ namespace FactoryManagementSoftware.UI
             string userName = dalUser.getUsername(USER_ID);
 
             usernameToolStripMenuItem.Text = userName;
-
 
             pOToolStripMenuItem.Visible = false;
 
@@ -672,26 +673,26 @@ namespace FactoryManagementSoftware.UI
 
         private void productionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!ProductionFormOpen)
-            {
-                frmLoading.ShowLoadingScreen();
-                frmMachineSchedule frm = new frmMachineSchedule
-                {
-                    MdiParent = this,
-                    StartPosition = FormStartPosition.CenterScreen,
-                    WindowState = FormWindowState.Maximized
-                };
-                frm.Show();
-                ProductionFormOpen = true;
-                frmLoading.CloseForm();
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmMachineSchedule>().Count() >= 1)
-                {
-                    Application.OpenForms.OfType<frmMachineSchedule>().First().BringToFront();
-                }
-            }
+            //if (!ProductionFormOpen)
+            //{
+            //    frmLoading.ShowLoadingScreen();
+            //    frmMachineSchedule frm = new frmMachineSchedule
+            //    {
+            //        MdiParent = this,
+            //        StartPosition = FormStartPosition.CenterScreen,
+            //        WindowState = FormWindowState.Maximized
+            //    };
+            //    frm.Show();
+            //    ProductionFormOpen = true;
+            //    frmLoading.CloseForm();
+            //}
+            //else
+            //{
+            //    if (Application.OpenForms.OfType<frmMachineSchedule>().Count() >= 1)
+            //    {
+            //        Application.OpenForms.OfType<frmMachineSchedule>().First().BringToFront();
+            //    }
+            //}
         }
 
         private void dAILYToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1081,6 +1082,59 @@ namespace FactoryManagementSoftware.UI
                 if (Application.OpenForms.OfType<frmOrderAlert_NEW>().Count() == 1)
                 {
                     Application.OpenForms.OfType<frmOrderAlert_NEW>().First().BringToFront();
+                }
+            }
+        }
+
+        private void macScheduleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void newVersionToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            if (!NEWProductionFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmMachineScheduleVer2 frm = new frmMachineScheduleVer2
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                frm.Show();
+                NEWProductionFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmMachineScheduleVer2>().Count() >= 1)
+                {
+                    Application.OpenForms.OfType<frmMachineScheduleVer2>().First().BringToFront();
+                }
+            }
+        }
+
+        private void oldVersionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!ProductionFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmMachineSchedule frm = new frmMachineSchedule
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                frm.Show();
+                ProductionFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmMachineSchedule>().Count() >= 1)
+                {
+                    Application.OpenForms.OfType<frmMachineSchedule>().First().BringToFront();
                 }
             }
         }

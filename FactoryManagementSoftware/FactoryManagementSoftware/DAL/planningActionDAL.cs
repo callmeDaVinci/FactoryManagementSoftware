@@ -680,9 +680,9 @@ namespace FactoryManagementSoftware.DAL
             }
             else
             {
-                if (!oldMachineName.Equals(u.machine_location_string))
+                if (!oldMachineName.Equals(u.machine_name))
                 {
-                    tool.historyRecord(text.plan_machine_change, "Job No. " + u.plan_id + ": " + oldMachineName + " --> " + u.machine_location_string, DateTime.Now, MainDashboard.USER_ID);
+                    tool.historyRecord(text.plan_machine_change, "Job No. " + u.plan_id + ": " + oldMachineName + " --> " + u.machine_name, DateTime.Now, MainDashboard.USER_ID);
 
                     uPlanningAction.planning_id = u.plan_id;
                     uPlanningAction.added_date = u.plan_updated_date;
@@ -690,7 +690,7 @@ namespace FactoryManagementSoftware.DAL
                     uPlanningAction.action = text.plan_machine_change;
                     uPlanningAction.action_detail = "";
                     uPlanningAction.action_from = oldMachineName;
-                    uPlanningAction.action_to = u.machine_location_string;
+                    uPlanningAction.action_to = u.machine_name;
                     uPlanningAction.note = "";
 
                     bool actionSaveSuccess = Insert(uPlanningAction);

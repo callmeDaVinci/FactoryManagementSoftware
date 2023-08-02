@@ -7,7 +7,7 @@
     <ProjectGuid>{9E7F30F9-4A96-4D46-ADE4-4E0822E7A066}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>FactoryManagementSoftware</RootNamespace>
-    <AssemblyName>OUG ERP System</AssemblyName>
+    <AssemblyName>Safety ERP System</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -29,7 +29,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>522</ApplicationRevision>
+    <ApplicationRevision>527</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>

@@ -1027,6 +1027,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"UPDATE tbl_plan SET
                                 plan_status=@plan_status,family_with=@family_with, production_start_date=@production_start_date, production_end_date=@production_end_date, machine_id=@machine_id,
                                 plan_note=@plan_note,
+                                recording=@recording,
                                 plan_updated_date=@plan_updated_date,
                                 plan_updated_by=@plan_updated_by
                                 WHERE plan_id=@plan_id";
@@ -1042,6 +1043,8 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
                 cmd.Parameters.AddWithValue("@machine_id", u.machine_id);
+                cmd.Parameters.AddWithValue("@recording", u.recording);
+
 
                 conn.Open();
 

@@ -48,7 +48,7 @@
             this.lblEndDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblEndDate.AutoSize = true;
             this.lblEndDate.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblEndDate.Location = new System.Drawing.Point(229, 18);
+            this.lblEndDate.Location = new System.Drawing.Point(228, 18);
             this.lblEndDate.Margin = new System.Windows.Forms.Padding(3);
             this.lblEndDate.Name = "lblEndDate";
             this.lblEndDate.Size = new System.Drawing.Size(65, 19);
@@ -73,9 +73,9 @@
             this.dtpEstimateEndDate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtpEstimateEndDate.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.dtpEstimateEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEstimateEndDate.Location = new System.Drawing.Point(229, 43);
+            this.dtpEstimateEndDate.Location = new System.Drawing.Point(228, 43);
             this.dtpEstimateEndDate.Name = "dtpEstimateEndDate";
-            this.dtpEstimateEndDate.Size = new System.Drawing.Size(190, 34);
+            this.dtpEstimateEndDate.Size = new System.Drawing.Size(189, 34);
             this.dtpEstimateEndDate.TabIndex = 123;
             // 
             // dtpStartDate
@@ -87,7 +87,7 @@
             this.dtpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpStartDate.Location = new System.Drawing.Point(13, 43);
             this.dtpStartDate.Name = "dtpStartDate";
-            this.dtpStartDate.Size = new System.Drawing.Size(190, 34);
+            this.dtpStartDate.Size = new System.Drawing.Size(189, 34);
             this.dtpStartDate.TabIndex = 122;
             this.dtpStartDate.ValueChanged += new System.EventHandler(this.dtpStartDate_ValueChanged);
             // 
@@ -99,7 +99,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 11F));
             this.tableLayoutPanel1.Controls.Add(this.lblStartDate, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.dtpStartDate, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.lblEndDate, 3, 1);
@@ -124,9 +124,9 @@
             this.cbSundayInclude.CheckedOffColor = System.Drawing.Color.Gray;
             this.cbSundayInclude.CheckedOnColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.cbSundayInclude.FillColor = System.Drawing.Color.White;
-            this.cbSundayInclude.Location = new System.Drawing.Point(229, 83);
+            this.cbSundayInclude.Location = new System.Drawing.Point(228, 83);
             this.cbSundayInclude.Name = "cbSundayInclude";
-            this.cbSundayInclude.Size = new System.Drawing.Size(108, 20);
+            this.cbSundayInclude.Size = new System.Drawing.Size(123, 20);
             this.cbSundayInclude.TabIndex = 126;
             this.cbSundayInclude.Text = "Include Sunday";
             this.cbSundayInclude.CheckedChanged += new System.EventHandler(this.cbSundayInclude_CheckedChanged);
@@ -136,8 +136,8 @@
             this.btnConfirm.AnimationHoverSpeed = 0.07F;
             this.btnConfirm.AnimationSpeed = 0.03F;
             this.btnConfirm.BackColor = System.Drawing.Color.Transparent;
-            this.btnConfirm.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.btnConfirm.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(160)))), ((int)(((byte)(209)))));
+            this.btnConfirm.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
+            this.btnConfirm.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
             this.btnConfirm.BorderColor = System.Drawing.Color.Black;
             this.btnConfirm.BorderSize = 1;
             this.btnConfirm.DialogResult = System.Windows.Forms.DialogResult.None;
