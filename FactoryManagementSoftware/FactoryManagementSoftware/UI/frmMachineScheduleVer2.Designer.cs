@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvMacSchedule = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -64,6 +65,7 @@
             this.cbWarning = new System.Windows.Forms.CheckBox();
             this.lblResetAll = new System.Windows.Forms.Label();
             this.tlpButton = new System.Windows.Forms.TableLayoutPanel();
+            this.gunaGradientButton1 = new Guna.UI.WinForms.GunaGradientButton();
             this.btnExcel = new Guna.UI.WinForms.GunaGradientButton();
             this.btnNewJob = new Guna.UI.WinForms.GunaGradientButton();
             this.btnFilter = new Guna.UI.WinForms.GunaGradientButton();
@@ -105,18 +107,26 @@
             this.dgvMacSchedule.AllowUserToDeleteRows = false;
             this.dgvMacSchedule.AllowUserToOrderColumns = true;
             this.dgvMacSchedule.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.dgvMacSchedule.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.dgvMacSchedule.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.dgvMacSchedule.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dgvMacSchedule.ColumnHeadersHeight = 50;
-            this.dgvMacSchedule.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.WhiteSmoke;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMacSchedule.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMacSchedule.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvMacSchedule.ColumnHeadersHeight = 50;
+            this.dgvMacSchedule.Cursor = System.Windows.Forms.Cursors.Hand;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMacSchedule.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvMacSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMacSchedule.GridColor = System.Drawing.Color.Silver;
             this.dgvMacSchedule.Location = new System.Drawing.Point(2, 258);
@@ -621,26 +631,28 @@
             this.lblResetAll.BackColor = System.Drawing.Color.Transparent;
             this.lblResetAll.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblResetAll.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Underline);
-            this.lblResetAll.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.lblResetAll.ForeColor = System.Drawing.Color.Blue;
             this.lblResetAll.Location = new System.Drawing.Point(2, 3);
             this.lblResetAll.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.lblResetAll.Name = "lblResetAll";
-            this.lblResetAll.Size = new System.Drawing.Size(72, 19);
+            this.lblResetAll.Size = new System.Drawing.Size(61, 19);
             this.lblResetAll.TabIndex = 90;
-            this.lblResetAll.Text = "RESET ALL";
+            this.lblResetAll.Text = "Reset All";
             this.lblResetAll.Click += new System.EventHandler(this.ResetAll_Click);
             // 
             // tlpButton
             // 
-            this.tlpButton.ColumnCount = 5;
+            this.tlpButton.ColumnCount = 7;
+            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 145F));
+            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 145F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 7F));
+            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
-            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 14F));
-            this.tlpButton.Controls.Add(this.btnExcel, 4, 0);
-            this.tlpButton.Controls.Add(this.btnNewJob, 2, 0);
+            this.tlpButton.Controls.Add(this.gunaGradientButton1, 2, 0);
+            this.tlpButton.Controls.Add(this.btnExcel, 6, 0);
+            this.tlpButton.Controls.Add(this.btnNewJob, 4, 0);
             this.tlpButton.Controls.Add(this.btnFilter, 0, 0);
             this.tlpButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpButton.Location = new System.Drawing.Point(0, 0);
@@ -651,20 +663,52 @@
             this.tlpButton.Size = new System.Drawing.Size(1273, 46);
             this.tlpButton.TabIndex = 115;
             // 
+            // gunaGradientButton1
+            // 
+            this.gunaGradientButton1.AnimationHoverSpeed = 0.07F;
+            this.gunaGradientButton1.AnimationSpeed = 0.03F;
+            this.gunaGradientButton1.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton1.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(127)))), ((int)(((byte)(236)))));
+            this.gunaGradientButton1.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(127)))), ((int)(((byte)(236)))));
+            this.gunaGradientButton1.BorderColor = System.Drawing.Color.Black;
+            this.gunaGradientButton1.BorderSize = 1;
+            this.gunaGradientButton1.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.gunaGradientButton1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGradientButton1.FocusedColor = System.Drawing.Color.Empty;
+            this.gunaGradientButton1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.gunaGradientButton1.ForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton1.Image = null;
+            this.gunaGradientButton1.ImageSize = new System.Drawing.Size(20, 20);
+            this.gunaGradientButton1.Location = new System.Drawing.Point(157, 3);
+            this.gunaGradientButton1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.gunaGradientButton1.Name = "gunaGradientButton1";
+            this.gunaGradientButton1.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.gunaGradientButton1.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton1.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.gunaGradientButton1.OnHoverForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton1.OnHoverImage = null;
+            this.gunaGradientButton1.OnPressedColor = System.Drawing.Color.Black;
+            this.gunaGradientButton1.Radius = 2;
+            this.gunaGradientButton1.Size = new System.Drawing.Size(141, 40);
+            this.gunaGradientButton1.TabIndex = 225;
+            this.gunaGradientButton1.Text = "Reload";
+            this.gunaGradientButton1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.gunaGradientButton1.Click += new System.EventHandler(this.gunaGradientButton1_Click);
+            // 
             // btnExcel
             // 
             this.btnExcel.AnimationHoverSpeed = 0.07F;
             this.btnExcel.AnimationSpeed = 0.03F;
             this.btnExcel.BackColor = System.Drawing.Color.Transparent;
-            this.btnExcel.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
-            this.btnExcel.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(184)))), ((int)(((byte)(148)))));
+            this.btnExcel.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(241)))), ((int)(((byte)(218)))));
+            this.btnExcel.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(241)))), ((int)(((byte)(218)))));
             this.btnExcel.BorderColor = System.Drawing.Color.Black;
             this.btnExcel.BorderSize = 1;
             this.btnExcel.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnExcel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnExcel.FocusedColor = System.Drawing.Color.Empty;
             this.btnExcel.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnExcel.ForeColor = System.Drawing.Color.White;
+            this.btnExcel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnExcel.Image = null;
             this.btnExcel.ImageSize = new System.Drawing.Size(20, 20);
             this.btnExcel.Location = new System.Drawing.Point(1170, 3);
@@ -688,18 +732,18 @@
             this.btnNewJob.AnimationHoverSpeed = 0.07F;
             this.btnNewJob.AnimationSpeed = 0.03F;
             this.btnNewJob.BackColor = System.Drawing.Color.Transparent;
-            this.btnNewJob.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
-            this.btnNewJob.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
+            this.btnNewJob.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(251)))), ((int)(((byte)(160)))));
+            this.btnNewJob.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(251)))), ((int)(((byte)(160)))));
             this.btnNewJob.BorderColor = System.Drawing.Color.Black;
             this.btnNewJob.BorderSize = 1;
             this.btnNewJob.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnNewJob.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnNewJob.FocusedColor = System.Drawing.Color.Empty;
             this.btnNewJob.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnNewJob.ForeColor = System.Drawing.Color.Black;
+            this.btnNewJob.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnNewJob.Image = null;
             this.btnNewJob.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnNewJob.Location = new System.Drawing.Point(1023, 3);
+            this.btnNewJob.Location = new System.Drawing.Point(1020, 3);
             this.btnNewJob.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnNewJob.Name = "btnNewJob";
             this.btnNewJob.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -728,7 +772,7 @@
             this.btnFilter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnFilter.FocusedColor = System.Drawing.Color.Empty;
             this.btnFilter.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnFilter.ForeColor = System.Drawing.Color.Black;
+            this.btnFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnFilter.Image = null;
             this.btnFilter.ImageSize = new System.Drawing.Size(20, 20);
             this.btnFilter.Location = new System.Drawing.Point(2, 3);
@@ -751,7 +795,7 @@
             // 
             this.tableLayoutPanel8.ColumnCount = 2;
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 179F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 255F));
             this.tableLayoutPanel8.Controls.Add(this.btnFilterApply, 1, 0);
             this.tableLayoutPanel8.Controls.Add(this.lblResetAll, 0, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -768,18 +812,18 @@
             this.btnFilterApply.AnimationHoverSpeed = 0.07F;
             this.btnFilterApply.AnimationSpeed = 0.03F;
             this.btnFilterApply.BackColor = System.Drawing.Color.Transparent;
-            this.btnFilterApply.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
-            this.btnFilterApply.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
+            this.btnFilterApply.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(127)))), ((int)(((byte)(236)))));
+            this.btnFilterApply.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(127)))), ((int)(((byte)(236)))));
             this.btnFilterApply.BorderColor = System.Drawing.Color.Black;
             this.btnFilterApply.BorderSize = 1;
             this.btnFilterApply.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnFilterApply.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnFilterApply.FocusedColor = System.Drawing.Color.Empty;
             this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnFilterApply.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnFilterApply.ForeColor = System.Drawing.Color.White;
             this.btnFilterApply.Image = null;
             this.btnFilterApply.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnFilterApply.Location = new System.Drawing.Point(1096, 3);
+            this.btnFilterApply.Location = new System.Drawing.Point(1020, 3);
             this.btnFilterApply.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -789,7 +833,7 @@
             this.btnFilterApply.OnHoverImage = null;
             this.btnFilterApply.OnPressedColor = System.Drawing.Color.Black;
             this.btnFilterApply.Radius = 2;
-            this.btnFilterApply.Size = new System.Drawing.Size(175, 40);
+            this.btnFilterApply.Size = new System.Drawing.Size(251, 40);
             this.btnFilterApply.TabIndex = 224;
             this.btnFilterApply.Text = "Filter Apply";
             this.btnFilterApply.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -825,15 +869,15 @@
             this.btnAdjustCollisionDateBySystem.AnimationHoverSpeed = 0.07F;
             this.btnAdjustCollisionDateBySystem.AnimationSpeed = 0.03F;
             this.btnAdjustCollisionDateBySystem.BackColor = System.Drawing.Color.Transparent;
-            this.btnAdjustCollisionDateBySystem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(147)))), ((int)(((byte)(147)))));
-            this.btnAdjustCollisionDateBySystem.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(241)))), ((int)(((byte)(154)))));
+            this.btnAdjustCollisionDateBySystem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(159)))));
+            this.btnAdjustCollisionDateBySystem.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(159)))));
             this.btnAdjustCollisionDateBySystem.BorderColor = System.Drawing.Color.Black;
             this.btnAdjustCollisionDateBySystem.BorderSize = 1;
             this.btnAdjustCollisionDateBySystem.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnAdjustCollisionDateBySystem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnAdjustCollisionDateBySystem.FocusedColor = System.Drawing.Color.Empty;
             this.btnAdjustCollisionDateBySystem.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.btnAdjustCollisionDateBySystem.ForeColor = System.Drawing.Color.Black;
+            this.btnAdjustCollisionDateBySystem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnAdjustCollisionDateBySystem.Image = null;
             this.btnAdjustCollisionDateBySystem.ImageSize = new System.Drawing.Size(20, 20);
             this.btnAdjustCollisionDateBySystem.Location = new System.Drawing.Point(3, 641);
@@ -934,6 +978,7 @@
             // 
             // tableLayoutPanel7
             // 
+            this.tableLayoutPanel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(253)))), ((int)(((byte)(255)))));
             this.tableLayoutPanel7.ColumnCount = 1;
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel7.Controls.Add(this.tlpMainSchedule, 0, 0);
@@ -950,7 +995,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(250)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1313, 734);
             this.Controls.Add(this.tableLayoutPanel7);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1039,5 +1084,6 @@
         private Guna.UI.WinForms.GunaGradientButton btnFilterApply;
         private System.Windows.Forms.CheckBox cbDraft;
         private Guna.UI.WinForms.GunaGradientButton btnAdjustCollisionDateBySystem;
+        private Guna.UI.WinForms.GunaGradientButton gunaGradientButton1;
     }
 }

@@ -2312,10 +2312,10 @@ namespace FactoryManagementSoftware.UI
 
                 if (!gotNotPackagingChild)
                 {
+
                     uData.part_code = row[dalItem.ItemCode].ToString();
                     uData.customer_name = row[dalItemCust.CustName].ToString();
                     uData.cust_id = row[dalItemCust.CustID].ToString();
-
 
                     var forecastData = GetCustomerThreeMonthsForecastQty(dt_ItemForecast, uData.cust_id, uData.part_code, 1, 2, 3);
                     uData.forecast1 = forecastData.Item1;
@@ -7572,13 +7572,16 @@ namespace FactoryManagementSoftware.UI
             else if (itemClicked.Equals(text.JobPlanning))
             {
 
+                int targetQty = int.TryParse(dgv.Rows[dgv.CurrentCell.RowIndex].Cells[headerBal3].Value.ToString(), out targetQty)? targetQty : 1;
 
-                frmPlanningNEW frm = new frmPlanningNEW(tool.getItemNameFromDataTable(DT_ITEM,itemCode), itemCode);
+                targetQty = targetQty < 0 ? targetQty * -1 : targetQty;
+                
+                frmPlanningVer2dot1 frm = new frmPlanningVer2dot1(itemCode, targetQty);
 
                 frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
+                //frm.WindowState = FormWindowState.Maximized;
                 //frm.Size = new Size(1700, 450);
-                frm.Show();
+                frm.ShowDialog();
 
             }
             else if (itemClicked.Equals(text.StockLocation))
@@ -8282,8 +8285,9 @@ namespace FactoryManagementSoftware.UI
 
         private void OtherCustomerOutPeriodSave()
         {
-            if(loaded)
+            if(loaded && OK_TO_CHECK_DATE_HABIT)
             {
+
                 string habitData_1 = dtpOutFrom.Value.ToString();
                 string habitData_2 = dtpOutTo.Value.ToString();
 
@@ -8316,36 +8320,50 @@ namespace FactoryManagementSoftware.UI
                 }
                 bool success = true;
 
-                if (oldOutPeriod_From != habitData_1)
+                if (oldOutPeriod_From != habitData_1 || oldOutPeriod_To != habitData_2)
                 {
-                    //save habit
-                    uHabit.belong_to = text.habit_belongTo_ForecastReport;
-                    uHabit.habit_name = habitName_1;
-                    uHabit.habit_data = habitData_1;
-                    uHabit.added_date = DateTime.Now;
-                    uHabit.added_by = MainDashboard.USER_ID;
 
-                    success = dalHabit.HabitInsertAndHistoryRecord(uHabit);
+                    string DateFrom = dtpOutFrom.Value.ToString("dd MMM yyyy");
+                    string DateTo = dtpOutTo.Value.ToString("dd MMM yyyy");
+
+                    string message = $"Do you want to set the out period from {DateFrom} to {DateTo} as the default?";
+
+                    DialogResult dialogResult = MessageBox.Show(message, "Message",
+                                                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        if (oldOutPeriod_From != habitData_1)
+                        {
+                            //save habit
+                            uHabit.belong_to = text.habit_belongTo_ForecastReport;
+                            uHabit.habit_name = habitName_1;
+                            uHabit.habit_data = habitData_1;
+                            uHabit.added_date = DateTime.Now;
+                            uHabit.added_by = MainDashboard.USER_ID;
+
+                            success = dalHabit.HabitInsertAndHistoryRecord(uHabit);
+                        }
+
+                        if (oldOutPeriod_To != habitData_2)
+                        {
+                            //save habit
+                            uHabit.belong_to = text.habit_belongTo_ForecastReport;
+                            uHabit.habit_name = habitName_2;
+                            uHabit.habit_data = habitData_2;
+                            uHabit.added_date = DateTime.Now;
+                            uHabit.added_by = MainDashboard.USER_ID;
+
+                            success = dalHabit.HabitInsertAndHistoryRecord(uHabit);
+                        }
+                    }
                 }
+                   
+                    
 
-                if (oldOutPeriod_To != habitData_2)
-                {
-                    //save habit
-                    uHabit.belong_to = text.habit_belongTo_ForecastReport;
-                    uHabit.habit_name = habitName_2;
-                    uHabit.habit_data = habitData_2;
-                    uHabit.added_date = DateTime.Now;
-                    uHabit.added_by = MainDashboard.USER_ID;
+               
 
-                    success = dalHabit.HabitInsertAndHistoryRecord(uHabit);
-                }
-
-                //MessageBox.Show("Out period for other customer changed!");
                
             }
-           
-
-            
         }
 
         private void dtpOutFrom_ValueChanged_1(object sender, EventArgs e)
@@ -8360,6 +8378,13 @@ namespace FactoryManagementSoftware.UI
             dgvForecastReport.DataSource = null;
             OtherCustomerOutPeriodSave();
 
+        }
+
+        bool OK_TO_CHECK_DATE_HABIT = false;
+
+        private void frmForecastReport_NEW_Shown(object sender, EventArgs e)
+        {
+            OK_TO_CHECK_DATE_HABIT = true;
         }
     }
 

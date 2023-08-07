@@ -3,6 +3,7 @@ using FactoryManagementSoftware.BLL;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using FactoryManagementSoftware.Module;
 
 namespace FactoryManagementSoftware.DAL
 {
@@ -140,6 +141,46 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable SelectActiveAndRunningJob()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_production_record 
+                                INNER JOIN tbl_plan 
+                                ON tbl_plan.plan_id = tbl_production_record.plan_id 
+                                WHERE tbl_plan.recording = 1
+                                ORDER BY tbl_production_record.plan_id ASC, tbl_production_record.production_date ASC, tbl_production_record.sheet_id ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@running",new Text().planning_status_running);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
         public DataTable SelectWithItemInfo()
         {
             //static methodd to connect database

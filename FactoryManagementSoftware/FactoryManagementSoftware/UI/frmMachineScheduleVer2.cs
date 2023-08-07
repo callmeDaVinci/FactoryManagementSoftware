@@ -261,6 +261,7 @@ namespace FactoryManagementSoftware.UI
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
             dgv.Columns[text.Header_ColorMatCode].Visible = false;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(93, 127, 236);
 
             dgv.Columns[text.Header_ItemCode].Visible = false;
             dgv.Columns[text.Header_ItemCode_Present].Visible = false;
@@ -304,6 +305,7 @@ namespace FactoryManagementSoftware.UI
             //Color importantColor = Color.FromArgb(96, 127, 255);
 
             dgv.Columns[text.Header_Mac].DefaultCellStyle.ForeColor = importantColor;
+            dgv.Columns[text.Header_JobNo].DefaultCellStyle.ForeColor = importantColor;
 
             dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.ForeColor = importantColor;
             dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -337,6 +339,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
             dgv.Columns[text.Header_TargetQty].DefaultCellStyle.Font = new Font("Segoe UI", 11F, FontStyle.Regular);
             dgv.Columns[text.Header_RawMat_Qty].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            dgv.Columns[text.Header_JobNo].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
             dgv.Columns[text.Header_ProducedQty].DefaultCellStyle.Font = new Font("Segoe UI", 11F, FontStyle.Regular);
             dgv.Columns[text.Header_ColorMat_KG].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
 
@@ -361,8 +364,8 @@ namespace FactoryManagementSoftware.UI
             if (DATE_COLLISION_FOUND)
             {
                 btnAdjustCollisionDateBySystem.Text = "Adjust Collision Date";
-                btnAdjustCollisionDateBySystem.BaseColor1 = Color.FromArgb(255, 147, 147);
-                btnAdjustCollisionDateBySystem.BaseColor2 = Color.FromArgb(254, 241, 154);
+                btnAdjustCollisionDateBySystem.BaseColor1 = Color.FromArgb(255, 192, 159);
+                btnAdjustCollisionDateBySystem.BaseColor2 = Color.FromArgb(255, 192, 159);
                 btnAdjustCollisionDateBySystem.Visible = true;
 
                 tlpMainSchedule.RowStyles[5] = new RowStyle(SizeType.Absolute, 10);
@@ -373,8 +376,8 @@ namespace FactoryManagementSoftware.UI
                 if(DATA_TO_UPDATE)
                 {
                     btnAdjustCollisionDateBySystem.Text = "Job Update";
-                    btnAdjustCollisionDateBySystem.BaseColor1 = Color.FromArgb(147, 255, 181);
-                    btnAdjustCollisionDateBySystem.BaseColor2 = Color.FromArgb(254, 241, 154);
+                    btnAdjustCollisionDateBySystem.BaseColor1 = Color.FromArgb(216, 236, 201);
+                    btnAdjustCollisionDateBySystem.BaseColor2 = Color.FromArgb(216, 236, 201);
 
                     btnAdjustCollisionDateBySystem.Visible = true;
                     tlpMainSchedule.RowStyles[5] = new RowStyle(SizeType.Absolute, 10);
@@ -398,8 +401,6 @@ namespace FactoryManagementSoftware.UI
             ResetData();
             adjustAdjustCollisionDateButtonLayout();
             userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
-
-            userPermission = 5;
 
             if (userPermission >= MainDashboard.ACTION_LVL_FOUR)
             {
@@ -751,7 +752,7 @@ namespace FactoryManagementSoftware.UI
                                     dt_Schedule.Rows.InsertAt(row_Schedule, rowToInsert);
                                     rowToInsert++;
                                     //dgvMacSchedule.Rows[prevRowIndex].Height = 6;
-                                    //dgvMacSchedule.Rows[prevRowIndex].DefaultCellStyle.BackColor = Color.FromArgb(70, 70, 70);
+                                    //dgvMacSchedule.Rows[prevRowIndex].DefaultCellStyle.BackColor = Color.FromArgb(1, 33, 71);
 
                                 }
                                 else if (machine.Item1.ToString() != facID)
@@ -763,7 +764,7 @@ namespace FactoryManagementSoftware.UI
                                     rowToInsert++;
 
                                     //dgvMacSchedule.Rows[prevRowIndex].Height = 120;
-                                    //dgvMacSchedule.Rows[prevRowIndex].DefaultCellStyle.BackColor = Color.FromArgb(70, 70, 70);
+                                    //dgvMacSchedule.Rows[prevRowIndex].DefaultCellStyle.BackColor = Color.FromArgb(1, 33, 71);
                                 }
                             }
 
@@ -784,7 +785,7 @@ namespace FactoryManagementSoftware.UI
                                     row_Schedule[text.Header_ItemName] = "machineDivider";
                                     dt_Schedule.Rows.InsertAt(row_Schedule, rowToInsert + 1);
                                     //dgvMacSchedule.Rows[prevRowIndex + 1].Height = 6;
-                                    //dgvMacSchedule.Rows[prevRowIndex + 1].DefaultCellStyle.BackColor = Color.FromArgb(70, 70, 70);
+                                    //dgvMacSchedule.Rows[prevRowIndex + 1].DefaultCellStyle.BackColor = Color.FromArgb(1, 33, 71);
 
                                 }
                                 else if (machine.Item1.ToString() != facID)
@@ -794,7 +795,7 @@ namespace FactoryManagementSoftware.UI
                                     row_Schedule[text.Header_ItemName] = "factoryDivider";
                                     dt_Schedule.Rows.InsertAt(row_Schedule, rowToInsert + 1);
                                     //dgvMacSchedule.Rows[prevRowIndex + 1].Height = 120;
-                                    //dgvMacSchedule.Rows[prevRowIndex + 1].DefaultCellStyle.BackColor = Color.FromArgb(70, 70, 70);
+                                    //dgvMacSchedule.Rows[prevRowIndex + 1].DefaultCellStyle.BackColor = Color.FromArgb(1, 33, 71);
                                 }
                             }
 
@@ -911,7 +912,7 @@ namespace FactoryManagementSoftware.UI
                                     //row_Schedule[text.Header_ItemName] = "machineDivider";
                                     dt_Schedule.Rows.InsertAt(row_Schedule, rowToInsert);
                                     dgvMacSchedule.Rows[rowToInsert].Height = 6;
-                                    dgvMacSchedule.Rows[rowToInsert].DefaultCellStyle.BackColor = Color.FromArgb(70, 70, 70);
+                                    dgvMacSchedule.Rows[rowToInsert].DefaultCellStyle.BackColor = Color.FromArgb(1, 33, 71);
                                     rowToInsert++;
                                 }
                                 else if (machine.Item1.ToString() != facID)
@@ -921,7 +922,7 @@ namespace FactoryManagementSoftware.UI
                                     //row_Schedule[text.Header_ItemName] = "factoryDivider";
                                     dt_Schedule.Rows.InsertAt(row_Schedule, rowToInsert);
                                     dgvMacSchedule.Rows[rowToInsert].Height = 120;
-                                    dgvMacSchedule.Rows[rowToInsert].DefaultCellStyle.BackColor = Color.FromArgb(70, 70, 70);
+                                    dgvMacSchedule.Rows[rowToInsert].DefaultCellStyle.BackColor = Color.FromArgb(1, 33, 71);
                                     rowToInsert++;
 
                                 }
@@ -944,7 +945,7 @@ namespace FactoryManagementSoftware.UI
                                     //row_Schedule[text.Header_ItemName] = "machineDivider";
                                     dt_Schedule.Rows.InsertAt(row_Schedule, rowToInsert + 1);
                                     dgvMacSchedule.Rows[rowToInsert + 1].Height = 6;
-                                    dgvMacSchedule.Rows[rowToInsert + 1].DefaultCellStyle.BackColor = Color.FromArgb(70, 70, 70);
+                                    dgvMacSchedule.Rows[rowToInsert + 1].DefaultCellStyle.BackColor = Color.FromArgb(1, 33, 71);
 
                                 }
                                 else if (machine.Item1.ToString() != facID)
@@ -954,7 +955,7 @@ namespace FactoryManagementSoftware.UI
                                     //row_Schedule[text.Header_ItemName] = "factoryDivider";
                                     dt_Schedule.Rows.InsertAt(row_Schedule, rowToInsert + 1);
                                     dgvMacSchedule.Rows[rowToInsert + 1].Height = 120;
-                                    dgvMacSchedule.Rows[rowToInsert + 1].DefaultCellStyle.BackColor = Color.FromArgb(70, 70, 70);
+                                    dgvMacSchedule.Rows[rowToInsert + 1].DefaultCellStyle.BackColor = Color.FromArgb(1, 33, 71);
                                 }
                             }
                             else
@@ -969,13 +970,13 @@ namespace FactoryManagementSoftware.UI
                                         if (machine.Item1.ToString() == facID && machine.Item3.ToString() != macID)
                                         {
                                             dgvMacSchedule.Rows[rowToInsert + 1].Height = 6;
-                                            dgvMacSchedule.Rows[rowToInsert + 1].DefaultCellStyle.BackColor = Color.FromArgb(70, 70, 70);
+                                            dgvMacSchedule.Rows[rowToInsert + 1].DefaultCellStyle.BackColor = Color.FromArgb(1, 33, 71);
 
                                         }
                                         else if (machine.Item1.ToString() != facID)
                                         {
                                             dgvMacSchedule.Rows[rowToInsert + 1].Height = 120;
-                                            dgvMacSchedule.Rows[rowToInsert + 1].DefaultCellStyle.BackColor = Color.FromArgb(70, 70, 70);
+                                            dgvMacSchedule.Rows[rowToInsert + 1].DefaultCellStyle.BackColor = Color.FromArgb(1, 33, 71);
                                         }
                                     }
 
@@ -1110,6 +1111,12 @@ namespace FactoryManagementSoftware.UI
                 #region Status Filtering
 
                 string status = row[dalPlanning.planStatus].ToString();
+
+                if(status == text.planning_status_draft &&  userPermission < MainDashboard.ACTION_LVL_FOUR)
+                {
+                    match = false;
+                    continue;
+                }
 
                 if (!(cbSearchByJobNo.Checked && !string.IsNullOrEmpty(Keywords)))
                 {
@@ -1546,13 +1553,13 @@ namespace FactoryManagementSoftware.UI
 
                     if (string.IsNullOrEmpty(row[text.Header_ItemCode].ToString()) && row[text.Header_Status].ToString() != text.planning_status_idle)
                     {
-                        dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.FromArgb(70, 70, 70);
-                        dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.FromArgb(70, 70, 70);
+                        dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.FromArgb(1, 33, 71);
+                        dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.FromArgb(1, 33, 71);
                     }
                     else
                     {
-                        dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.WhiteSmoke;
-                        dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.WhiteSmoke;
+                        dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.White;
+                        dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.White;
                     }
                 }
             }
@@ -1592,11 +1599,11 @@ namespace FactoryManagementSoftware.UI
 
                         if (rawMode)
                         {
-                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.WhiteSmoke;
+                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.White;
                         }
                         else if (colorMode)
                         {
-                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.WhiteSmoke;
+                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.White;
 
                         }
                     }
@@ -1604,13 +1611,13 @@ namespace FactoryManagementSoftware.UI
                     {
                         if (string.IsNullOrEmpty(row[text.Header_ItemCode].ToString()) && row[text.Header_Status].ToString() != text.planning_status_idle)
                         {
-                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.FromArgb(70, 70, 70);
-                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.FromArgb(70, 70, 70);
+                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.FromArgb(1, 33, 71);
+                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.FromArgb(1, 33, 71);
                         }
                         else
                         {
-                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.WhiteSmoke;
-                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.WhiteSmoke;
+                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.White;
+                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.White;
                         }
                     }
                 }
@@ -1955,7 +1962,7 @@ namespace FactoryManagementSoftware.UI
                                                 range.Interior.Color = Color.White;
                                                 range.Rows.RowHeight = 40;
                                             }
-                                            else if (dgvMacSchedule.Rows[i].Cells[j].InheritedStyle.BackColor == Color.FromArgb(70, 70, 70))
+                                            else if (dgvMacSchedule.Rows[i].Cells[j].InheritedStyle.BackColor == Color.FromArgb(1, 33, 71))
                                             {
                                                 range.Rows.RowHeight = 4;
                                                 range.Interior.Color = Color.Black;
@@ -3164,7 +3171,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (PlanStatus.Equals(text.planning_status_completed))
             {
-                ColorSet = Color.WhiteSmoke;
+                ColorSet = Color.White;
             }
             else if (PlanStatus.Equals(text.planning_status_delayed))
             {
@@ -3172,7 +3179,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (PlanStatus.Equals(text.planning_status_pending))
             {
-                ColorSet = Color.WhiteSmoke;
+                ColorSet = Color.White;
             }
             else if (PlanStatus.Equals(text.planning_status_running))
             {
@@ -3192,7 +3199,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (PlanStatus.Equals(""))
             {
-                ColorSet = Color.FromArgb(70, 70, 70);
+                ColorSet = Color.FromArgb(1, 33, 71);
             }
 
             return ColorSet;
@@ -3212,10 +3219,10 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_Status].DefaultCellStyle.ForeColor = Color.Black; 
             dgv.Columns[text.Header_Status].DefaultCellStyle.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
 
-            dgv.Columns[text.Header_RawMat_String].DefaultCellStyle.BackColor = Color.WhiteSmoke;
-            dgv.Columns[text.Header_ColorMat].DefaultCellStyle.BackColor = Color.WhiteSmoke;
-            dgv.Columns[text.Header_DateStart].DefaultCellStyle.BackColor = Color.WhiteSmoke;
-            dgv.Columns[text.Header_EstDateEnd].DefaultCellStyle.BackColor = Color.WhiteSmoke;
+            dgv.Columns[text.Header_RawMat_String].DefaultCellStyle.BackColor = Color.White;
+            dgv.Columns[text.Header_ColorMat].DefaultCellStyle.BackColor = Color.White;
+            dgv.Columns[text.Header_DateStart].DefaultCellStyle.BackColor = Color.White;
+            dgv.Columns[text.Header_EstDateEnd].DefaultCellStyle.BackColor = Color.White;
 
             dgv.Columns[text.Header_DateStart].DefaultCellStyle.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
             dgv.Columns[text.Header_EstDateEnd].DefaultCellStyle.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
@@ -3257,12 +3264,12 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].Height = 6;
                     }
 
-                    dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(70, 70, 70);
-                    dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.FromArgb(70, 70, 70);
-                    dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.FromArgb(70, 70, 70);
+                    dgv.Rows[rowIndex].DefaultCellStyle.BackColor = Color.FromArgb(1, 33, 71);
+                    dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.FromArgb(1, 33, 71);
+                    dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.FromArgb(1, 33, 71);
 
-                    dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.FromArgb(70, 70, 70);
-                    dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.FromArgb(70, 70, 70);
+                    dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.FromArgb(1, 33, 71);
+                    dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.FromArgb(1, 33, 71);
 
                     dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
                     dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
@@ -3274,14 +3281,14 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    //dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.WhiteSmoke;
-                    //dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.WhiteSmoke;
+                    //dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.White;
+                    //dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.White;
 
-                    //dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.WhiteSmoke;
-                    //dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.WhiteSmoke;
+                    dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.BackColor = Color.White;
+                    dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.BackColor = Color.White;
 
-                    //dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.Black;
-                    //dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.Black;
+                    dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.ForeColor = Color.Black;
+                    dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.ForeColor = Color.Black;
 
                     //dgv.Rows[rowIndex].Cells[text.Header_DateStart].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
                     //dgv.Rows[rowIndex].Cells[text.Header_EstDateEnd].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
@@ -4006,7 +4013,7 @@ namespace FactoryManagementSoftware.UI
                                 dgvRow.Cells[text.Header_Status].Value = text.planning_status_to_update;
 
                                 dgvRow.Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-                                dgvRow.Cells[text.Header_Status].Style.BackColor = Color.WhiteSmoke;
+                                dgvRow.Cells[text.Header_Status].Style.BackColor = Color.White;
 
                             }
                         }
@@ -4018,7 +4025,7 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Value = text.planning_status_to_update;
 
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-                        dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = Color.WhiteSmoke;
+                        dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = Color.White;
                     }
                     //date collision check
                     CheckMachineProductionDateCollision();
@@ -4282,7 +4289,6 @@ namespace FactoryManagementSoftware.UI
                 string jobNo = dgvMacSchedule.Rows[e.RowIndex].Cells[text.Header_JobNo].Value.ToString();
                 int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
                 //handle the row selection on right click
-                userPermission = 5;
 
                 //MessageBox.Show("Plan ID: "+jobNo);
                 if (jobNo != null && userPermission >= MainDashboard.ACTION_LVL_THREE)
@@ -4501,8 +4507,6 @@ namespace FactoryManagementSoftware.UI
         {
             int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
 
-            userPermission = 5;
-
             //handle the row selection on right click
             if (e.Button == MouseButtons.Right && e.RowIndex > -1 && userPermission >= MainDashboard.ACTION_LVL_THREE)
             {
@@ -4640,7 +4644,6 @@ namespace FactoryManagementSoftware.UI
             int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
             rowIndexFromMouseDown = dgvMacSchedule.HitTest(e.X, e.Y).RowIndex;
 
-            userPermission = 5;
 
             if(userPermission > MainDashboard.ACTION_LVL_THREE && rowIndexFromMouseDown > -1)
             { 
@@ -4686,9 +4689,6 @@ namespace FactoryManagementSoftware.UI
         {
             CLEAR_SELECTION_AFTER_DROP = false;
             e.Effect = DragDropEffects.Move;
-
-           
-            
         }
 
         bool CLEAR_SELECTION_AFTER_DROP = false;
@@ -4868,6 +4868,13 @@ namespace FactoryManagementSoftware.UI
 
                     if (rowIndex == rowIndexToDrop && familyWith > 0)
                     {
+                        if(rowIndex - 1 >= 0)
+                        {
+                            if (dt.Rows[rowIndex - 1][text.Header_FamilyWithJobNo].ToString() != familyWith.ToString())
+                            {
+                                break;
+                            }
+                        }
                         familyWithID = familyWith.ToString();
 
                         rowIndexOffSet++;
@@ -4944,6 +4951,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (OLD_MACHINE_ID != null)
                     ResetOldMachineJobDate(OLD_MACHINE_ID);
+
 
                 MacScheduleListCellFormatting(dgvMacSchedule);
                 rowIndexOfItemUnderMouseToDrop = rowIndexToDrop;
@@ -5443,6 +5451,29 @@ private void dgvMacSchedule_MouseClick(object sender, MouseEventArgs e)
                 JobUpdate();
 
                 MacScheduleListCellFormatting(dgvMacSchedule);
+            }
+        }
+
+        private void gunaGradientButton1_Click(object sender, EventArgs e)
+        {
+            
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                filterHide = true;
+                HideFilter(filterHide);
+
+                ResetData();
+                New_LoadMacSchedule();
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                Cursor = Cursors.Arrow; // change cursor to normal type
             }
         }
     }

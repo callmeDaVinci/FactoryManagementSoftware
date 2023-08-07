@@ -2843,8 +2843,8 @@ namespace FactoryManagementSoftware.UI
             if (CALL_WITH_ITEM_CODE != null && JOB_ADDING_MODE)
             {
                 AutoLoadPageWithItemCode();
-                MaterialStockCheckMode();
-                machineSelectionMode();
+                //MaterialStockCheckMode();
+                //machineSelectionMode();
             }
             else if(JOB_EDITING_MODE)
             {
@@ -6564,6 +6564,9 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        
+        private void frmPlanningVer2dot1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

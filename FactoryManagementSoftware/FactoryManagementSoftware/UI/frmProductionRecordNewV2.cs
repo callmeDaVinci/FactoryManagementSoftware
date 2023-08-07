@@ -5475,5 +5475,22 @@ namespace FactoryManagementSoftware.UI
             dgv.ResumeLayout();
         }
 
+        private void cbEndProduction_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbEndProduction.Checked)
+            {
+                txtNote.Text = txtNote.Text + "[END PRODUCTION]";
+
+                //check if balance havent key in
+                int balance = int.TryParse(txtBalanceOfThisShift.Text, out balance) ? balance : 0;
+
+                if (balance > 0)
+                    MessageBox.Show("Please update the 'In Balance' quantity when production ends.");
+            }
+            else
+            {
+                txtNote.Text = txtNote.Text.Replace("[END PRODUCTION]", "");
+            }
+        }
     }
 }
