@@ -16,6 +16,7 @@ using Accord.MachineLearning;
 using Accord.Math;
 using Accord.Statistics;
 using System.Configuration;
+using System.Text.RegularExpressions;
 
 namespace FactoryManagementSoftware.Module
 {
@@ -4690,6 +4691,114 @@ namespace FactoryManagementSoftware.Module
             return ItemName;
         }
 
+        private static TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+        private static HashSet<string> specialWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "BAR", "BOX", "ROD", "LID", "FAN", "PAN",
+            "LUG", "AIR", "CAP", "TOP", "INS", "PLCKF"
+        };
+
+        public string ConvertToTitleCase(string input)
+        {
+            var matches = Regex.Matches(input, @"\(([^)]*)\)|\b\w+\b");
+
+            string[] words = matches.Cast<Match>()
+                                    .Select(TransformWord)
+                                    .ToArray();
+
+            return string.Join(" ", words);
+        }
+
+        private static string TransformWord(Match m)
+        {
+            string word = m.Value;
+
+            if (word.StartsWith("("))
+                return word;
+
+            if (word.All(char.IsDigit) || IsAlphaNumeric(word))
+                return word;
+
+            if (IsSpecialWord(word))
+                return word;
+
+            return textInfo.ToTitleCase(word.ToLower());
+        }
+
+        private static bool IsSpecialWord(string word)
+        {
+            return (word.Length >= 1 && word.Length <= 3 && word.All(char.IsLetter) && !specialWords.Contains(word))
+                    || word.Equals("PLCKF", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsAlphaNumeric(string word)
+        {
+            return word.Any(char.IsDigit) && word.Any(char.IsLetter);
+        }
+
+
+
+        public string getItemNameAndCodeString(string itemCode, string itemName)
+        {
+            string itemNameAndCodeString = ConvertToTitleCase(itemName) + " (" + itemCode + ")";
+
+            if (itemName.ToUpper().Replace(" ", "") == itemCode.ToUpper().Replace(" ", ""))
+            {
+                itemNameAndCodeString = ConvertToTitleCase(itemName);
+            }
+
+            return itemNameAndCodeString;
+
+        }
+
+        public Color GetColorSetFromPlanStatus(string PlanStatus, DataGridView dgv)
+        {
+            Text text = new Text();
+
+            Color ColorSet = dgv.DefaultCellStyle.BackColor;
+
+            PlanStatus = PlanStatus.ToUpper();
+
+            if (PlanStatus.Equals(text.planning_status_cancelled))
+            {
+                ColorSet = Color.Gainsboro;
+            }
+            else if (PlanStatus.Equals(text.planning_status_completed))
+            {
+                ColorSet = Color.White;
+            }
+            else if (PlanStatus.Equals(text.planning_status_delayed))
+            {
+                ColorSet = Color.FromArgb(255, 147, 168);
+            }
+            else if (PlanStatus.Equals(text.planning_status_pending))
+            {
+                ColorSet = Color.White;
+            }
+            else if (PlanStatus.Equals(text.planning_status_running))
+            {
+                ColorSet = Color.FromArgb(147, 255, 180);
+            }
+            else if (PlanStatus.Equals(text.planning_status_warning))
+            {
+                ColorSet = Color.FromArgb(255, 147, 168);
+            }
+            else if (PlanStatus.Equals(text.planning_status_idle))
+            {
+                ColorSet = Color.LightGray;
+            }
+            else if (PlanStatus.Equals(text.planning_status_draft))
+            {
+                ColorSet = Color.FromArgb(251, 255, 147);
+            }
+            else if (PlanStatus.Equals(""))
+            {
+                ColorSet = Color.FromArgb(1, 33, 71);
+            }
+
+            return ColorSet;
+        }
+
         public string getItemCatFromDataTable(DataTable dt, string ItemCode)
         {
             string catName = "";
@@ -4707,6 +4816,24 @@ namespace FactoryManagementSoftware.Module
                 }
             }
             return catName;
+        }
+
+        
+        public int getItemCavityFromDataTable(DataTable dt, string ItemCode)
+        {
+            if (dt == null ||dt.Rows.Count <= 0)
+            {
+                dt = dalItem.Select();
+            }
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row[dalItem.ItemCode].ToString().Equals(ItemCode))
+                {
+                    return int.TryParse(row[dalItem.ItemCavity].ToString(), out int cavity) ? cavity : 0;
+                }
+            }
+            return 0;
         }
 
         public DateTime GetTransferDate(string trfID)

@@ -315,6 +315,12 @@ namespace FactoryManagementSoftware.Module
         public string Header_Mac{ get; } = "Mac.";
         public string Header_MacID{ get; } = "MAC. ID";
         public string Header_MacName{ get; } = "MAC.";
+        public string Header_MeterStart{ get; } = "Meter Start";
+        public string Header_MeterEnd{ get; } = "Meter End";
+        public string Header_StockIn_Remark{ get; } = "Stock In Remark";
+        public string Header_StockIn_Container{ get; } = "Stock In Qty (Container)";
+        public string Header_StockIn_Balance_Qty{ get; } = "Stock In Balance Qty";
+        public string Header_Production_Max_Qty{ get; } = "Production Max Qty";
         public string Header_Ori_DateStart { get; } = "ORI. START";
         public string Header_DateStart { get; } = "Start";
         public string Header_Ori_EstDateEnd { get; } = "ORI. EST. END";
@@ -418,6 +424,9 @@ namespace FactoryManagementSoftware.Module
         public string Header_RawMat_1_Ratio { get; } = "RAW MATERIAL 1 Ratio";
         public string Header_RawMat_2_Ratio { get; } = "RAW MATERIAL 2 Ratio";
         public string Header_RawMat_2 { get; } = "RAW MATERIAL 2";
+        public string Header_RawMat_Lot_No { get; } = "Raw Mat. Lot No.";
+        public string Header_ColorMat_Lot_No { get; } = "Color Mat. Lot No.";
+
         public string Header_RawMat_String { get; } = "Raw Mat.";
         //public string Header_RawMat_KG { get; } = "Raw Mat. KG";
         //public string Header_RawMat_Bag { get; } = "Raw Mat. Bag";

@@ -101,7 +101,7 @@ namespace FactoryManagementSoftware.UI
             myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
 
-            if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
+            if (myconnstrng == text.DB_Semenyih && userPermission < ACTION_LVL_FIVE)//|| myconnstrng == text.DB_JunPC
             {
                 //Semenyih
                 pMMAToolStripMenuItem.Visible = false;

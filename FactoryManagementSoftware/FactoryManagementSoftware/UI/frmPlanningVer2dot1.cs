@@ -1970,14 +1970,17 @@ namespace FactoryManagementSoftware.UI
 
             string itemDescription = itemName + "\n(" + itemCodePresent + ")";
 
+            double pwPerShot = double.TryParse(row[dalItem.ItemProPWShot].ToString(), out pwPerShot) ? pwPerShot : 0;
+            double rwPerShot = double.TryParse(row[dalItem.ItemProRWShot].ToString(), out rwPerShot) ? rwPerShot : 0;
+
             newRow[text.Header_Index] = index;
             newRow[text.Header_ItemDescription] = itemDescription;
             newRow[text.Header_ItemCode] = itemCode;
             newRow[text.Header_ItemName] = itemName;
             newRow[text.Header_Cavity] = row[dalItem.ItemCavity].ToString();
             newRow[text.Header_ProCT] = row[dalItem.ItemProCTTo].ToString();
-            newRow[text.Header_ProPwShot] = row[dalItem.ItemProPWShot].ToString();
-            newRow[text.Header_ProRwShot] = row[dalItem.ItemProRWShot].ToString();
+            newRow[text.Header_ProPwShot] = pwPerShot.ToString("#.##");
+            newRow[text.Header_ProRwShot] = rwPerShot.ToString("#.##");
 
             if(DT_ITEM_LIST.Rows.Count > 0 )
             {
@@ -5989,6 +5992,10 @@ namespace FactoryManagementSoftware.UI
 
             string remark_StockCheckResult = "";
 
+            if(DT_SUMMARY_STOCKCHECK == null)
+            {
+                DT_SUMMARY_STOCKCHECK = NewStockCheckTable();
+            }
             foreach (DataRow row in DT_SUMMARY_STOCKCHECK.Rows)
             {
                 double balStock = double.TryParse(row[text.Header_BalStock].ToString(), out balStock) ? balStock : 0;

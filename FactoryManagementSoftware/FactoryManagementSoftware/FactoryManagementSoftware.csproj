@@ -29,7 +29,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>528</ApplicationRevision>
+    <ApplicationRevision>529</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -233,6 +233,7 @@
     <Compile Include="DAL\trfHistDAL.cs" />
     <Compile Include="DAL\userDAL.cs" />
     <Compile Include="DAL\Utilities.cs" />
+    <Compile Include="Module\AlphanumericComparer.cs" />
     <Compile Include="Module\DecisionTreePrediction.cs" />
     <Compile Include="UI\CircleLabel.cs">
       <SubType>Component</SubType>

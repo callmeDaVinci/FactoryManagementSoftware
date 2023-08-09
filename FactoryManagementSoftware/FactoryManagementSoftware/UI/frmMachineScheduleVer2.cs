@@ -29,7 +29,6 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
-using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -496,9 +495,26 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+
             DataTable distinctTable = dt.DefaultView.ToTable(true, dalMac.MacID, dalMac.MacName);
-            distinctTable.DefaultView.Sort = dalMac.MacID + " ASC";
-            cmb.DataSource = distinctTable;
+            distinctTable.DefaultView.Sort = dalMac.MacName; // Assuming MacName is the column name
+            distinctTable.DefaultView.ApplyDefaultSort = false;
+
+            List<DataRow> sortedRows = new List<DataRow>(distinctTable.Select());
+            sortedRows.Sort((row1, row2) => new AlphanumericComparer().Compare(row1[dalMac.MacName].ToString(), row2[dalMac.MacName].ToString()));
+
+            // Create a new DataTable with the sorted rows
+            DataTable sortedTable = distinctTable.Clone();
+
+            foreach (DataRow row in sortedRows)
+            {
+                sortedTable.ImportRow(row);
+            }
+
+            // If you want to replace the original table with the sorted one
+            distinctTable = sortedTable;
+
+            cmb.DataSource = sortedTable;
             cmb.DisplayMember = dalMac.MacName;
 
             if (macSelected == "" || fac.ToUpper().Equals(text.Cmb_All.ToUpper()))
@@ -567,21 +583,7 @@ namespace FactoryManagementSoftware.UI
 
         DataTable DT_ITEM;
 
-        public string ConvertToTitleCase(string input)
-        {
-            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-
-            // Match words and bracketed text separately
-            var matches = Regex.Matches(input, @"\(([^)]*)\)|\b\w+\b");
-
-            string[] words = matches.Cast<Match>()
-                .Select(m => m.Value.StartsWith("(") ? m.Value :
-                    (m.Value.All(char.IsDigit) || m.Value.Any(char.IsDigit) ? m.Value.ToLower() : textInfo.ToTitleCase(m.Value.ToLower())))
-                .ToArray();
-
-            return string.Join(" ", words);
-        }
-
+       
         public static int CompareMachines(string mac1, string mac2)
         {
             // Handle numeric machines
@@ -1321,14 +1323,8 @@ namespace FactoryManagementSoftware.UI
                         itemCodePresent = itemCode;
                     }
 
-
-                    string itemNameAndCodeString = ConvertToTitleCase(itemName) + " (" + itemCodePresent + ")";
-
-                    if (itemName.ToUpper().Replace(" ", "") == itemCodePresent.ToUpper().Replace(" ", ""))
-                    {
-                        itemNameAndCodeString = ConvertToTitleCase(itemName);
-                    }
-
+                    string itemNameAndCodeString = tool.getItemNameAndCodeString( itemCodePresent,  itemName);
+                   
                     row_Schedule[text.Header_ItemName] = itemName;
                     row_Schedule[text.Header_ItemCode] = itemCode;
                     row_Schedule[text.Header_ItemCode_Present] = itemCodePresent;
@@ -3064,7 +3060,7 @@ namespace FactoryManagementSoftware.UI
 
                 //loadMachine();
                 loadMachine(cmbMac);
-
+                
                 ableLoadData = true;
             }
         }
@@ -3161,50 +3157,6 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
 
-        private Color GetColorSetFromPlanStatus(string PlanStatus, DataGridView dgv)
-        {
-            Color ColorSet = dgv.DefaultCellStyle.BackColor;
-
-            if (PlanStatus.Equals(text.planning_status_cancelled))
-            {
-                ColorSet = Color.Gainsboro;
-            }
-            else if (PlanStatus.Equals(text.planning_status_completed))
-            {
-                ColorSet = Color.White;
-            }
-            else if (PlanStatus.Equals(text.planning_status_delayed))
-            {
-                ColorSet = Color.FromArgb(255, 147, 168);
-            }
-            else if (PlanStatus.Equals(text.planning_status_pending))
-            {
-                ColorSet = Color.White;
-            }
-            else if (PlanStatus.Equals(text.planning_status_running))
-            {
-                ColorSet = Color.FromArgb(147, 255, 180);
-            }
-            else if (PlanStatus.Equals(text.planning_status_warning))
-            {
-                ColorSet = Color.FromArgb(255, 147, 168);
-            }
-            else if (PlanStatus.Equals(text.planning_status_idle))
-            {
-                ColorSet = Color.LightGray;
-            }
-            else if (PlanStatus.Equals(text.planning_status_draft))
-            {
-                ColorSet = Color.FromArgb(251, 255, 147);
-            }
-            else if (PlanStatus.Equals(""))
-            {
-                ColorSet = Color.FromArgb(1, 33, 71);
-            }
-
-            return ColorSet;
-        }
-
         private void MacScheduleListCellFormatting(DataGridView dgv)
         {
             dgv.SuspendLayout();
@@ -3239,7 +3191,7 @@ namespace FactoryManagementSoftware.UI
 
                 string PlanStatus = row[text.Header_Status].ToString();
 
-                Color ColorSet = GetColorSetFromPlanStatus(PlanStatus, dgv);
+                Color ColorSet = tool.GetColorSetFromPlanStatus(PlanStatus, dgv);
 
                 dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = ColorSet;
                 //dgv.Rows[rowIndex].Cells[text.Header_Status].Style.ForeColor = Color.Black;
@@ -3504,7 +3456,7 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].Cells[text.Header_Ori_EstDateEnd].Value = uPlanning.production_end_date;
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Value = text.planning_status_running;
                         dgv.Rows[rowIndex].Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
-                        dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = GetColorSetFromPlanStatus(text.planning_status_running, dgv);
+                        dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = tool.GetColorSetFromPlanStatus(text.planning_status_running, dgv);
 
                         JOB_UPDATED_COUNT++;
                         tool.historyRecord(text.System, "Job Updated", dateNow, MainDashboard.USER_ID);
@@ -3542,7 +3494,7 @@ namespace FactoryManagementSoftware.UI
                                     dgvRow.Cells[text.Header_Ori_EstDateEnd].Value = uPlanning.production_end_date;
                                     dgvRow.Cells[text.Header_Status].Value = text.planning_status_running;
                                     dgvRow.Cells[text.Header_Status].Style.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
-                                    dgvRow.Cells[text.Header_Status].Style.BackColor = GetColorSetFromPlanStatus(text.planning_status_running, dgv);
+                                    dgvRow.Cells[text.Header_Status].Style.BackColor = tool.GetColorSetFromPlanStatus(text.planning_status_running, dgv);
 
                                     JOB_UPDATED_COUNT++;
                                     tool.historyRecord(text.System, "Job Updated", dateNow, MainDashboard.USER_ID);
@@ -4164,7 +4116,7 @@ namespace FactoryManagementSoftware.UI
                 else
                 {
                     dgv.Rows[rowIndex].Cells[text.Header_Status].Value = newJobStatus;
-                    dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = GetColorSetFromPlanStatus(newJobStatus, dgv);
+                    dgv.Rows[rowIndex].Cells[text.Header_Status].Style.BackColor = tool.GetColorSetFromPlanStatus(newJobStatus, dgv);
                 }
 
                 //removeExtraSpace_MachineSchedule();

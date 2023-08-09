@@ -43,6 +43,8 @@ namespace FactoryManagementSoftware.DAL
 
         public string ProTime { get; } = "time";
         public string ProOperator { get; } = "operator";
+        public string ProCavity { get; } = "cavity";
+        public string TotalStockIn { get; } = "total_stock_in";
         public string ProMeterReading { get; } = "meter_reading";
         public string ParentCode { get; } = "parent_code";
         public string Note { get; } = "note";

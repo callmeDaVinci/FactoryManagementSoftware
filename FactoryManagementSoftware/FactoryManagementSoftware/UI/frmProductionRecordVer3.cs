@@ -3,6 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web.Configuration;
 using System.Windows.Forms;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
@@ -21,7 +22,7 @@ namespace FactoryManagementSoftware.UI
             tool.DoubleBuffered(dgvActiveJobList, true);
             tool.DoubleBuffered(dgvRecordHistory, true);
 
-            dt_ItemInfo = dalItem.Select();
+            DT_ITEM_INFO = dalItem.Select();
             dt_JoinInfo = dalJoin.SelectAll();
             dt_Mac = dalMac.Select();
         }
@@ -42,8 +43,8 @@ namespace FactoryManagementSoftware.UI
         trfHistDAL dalTrf = new trfHistDAL();
 
         DataTable dt_Plan;
-        DataTable dt_ProductionRecord;
-        DataTable dt_ItemInfo;
+        DataTable DT_JOB_DAILY_RECORD;
+        DataTable DT_ITEM_INFO;
         DataTable dt_JoinInfo;
         DataTable dt_MultiPackaging;
         DataTable DT_CARTON;
@@ -75,7 +76,7 @@ namespace FactoryManagementSoftware.UI
         readonly private string header_ProductionDate = "PRO. DATE";
         readonly private string header_Shift = "SHIFT";
         readonly private string header_ProducedQty = "PRODUCED QTY";
-        readonly private string header_StockIn = "STOCK IN";
+        readonly private string header_StockIn_Pcs_Total = "STOCK IN";
         readonly private string header_UpdatedDate = "UPDATED DATE";
         readonly private string header_UpdatedBy = "UPDATED BY";
         readonly private string header_TotalProduced = "TOTAL PRODUCED";
@@ -105,51 +106,30 @@ namespace FactoryManagementSoftware.UI
         private bool loaded = false;
         private bool addingNewSheet = false;
         private bool sheetLoaded = false;
-        private bool dailyRecordLoaded = false;
+        //private bool dailyRecordLoaded = false;
         private bool stopCheckedChange = false;
-        private bool dataSaved = true;
+        private bool DATA_SAVED = true;
         private bool balanceOutEdited = false;
         private bool balanceInEdited = false;
-
-        private DataTable NewPackagingTable()
-        {
-            DataTable dt = new DataTable();
-
-            dt.Columns.Add(header_PackagingCode, typeof(string));
-            dt.Columns.Add(header_PackagingName, typeof(string));
-            dt.Columns.Add(header_PackagingMax, typeof(int));
-            dt.Columns.Add(header_PackagingQty, typeof(int));
-
-            return dt;
-        }
-
-        private DataTable NewCartonTable()
-        {
-            DataTable dt = new DataTable();
-
-            dt.Columns.Add(header_PackagingMax, typeof(int));
-            dt.Columns.Add(header_PackagingCode, typeof(string));
-            dt.Columns.Add(header_PackagingName, typeof(string));
-            dt.Columns.Add(header_PackagingQty, typeof(int));
-            dt.Columns.Add(header_PackagingStockOut, typeof(bool));
-
-            return dt;
-        }
-
+      
 
         private DataTable NewItemListTable()
         {
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(header_JobNo, typeof(int));
-            dt.Columns.Add(header_Machine, typeof(int));
             dt.Columns.Add(header_Factory, typeof(string));
+            dt.Columns.Add(header_Machine, typeof(int));
+            dt.Columns.Add(header_JobNo, typeof(int));
+            dt.Columns.Add(header_Status, typeof(string));
+            dt.Columns.Add(text.Header_ItemNameAndCode, typeof(string));
+
+            dt.Columns.Add(text.Header_TargetQty, typeof(int));
+            dt.Columns.Add(text.Header_Production_Max_Qty, typeof(int));
+            dt.Columns.Add(text.Header_TotalStockIn, typeof(int));
+
+            dt.Columns.Add(text.Header_QCPassedQty, typeof(int));
             dt.Columns.Add(header_PartName, typeof(string));
             dt.Columns.Add(header_PartCode, typeof(string));
-            dt.Columns.Add(header_Status, typeof(string));
-            dt.Columns.Add(text.Header_TargetQty, typeof(int));
-            dt.Columns.Add(text.Header_QCPassedQty, typeof(int));
-
             return dt;
         }
 
@@ -178,7 +158,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_JobNo, typeof(string));
             dt.Columns.Add(header_Shift, typeof(string));
             dt.Columns.Add(header_ProducedQty, typeof(double));
-            dt.Columns.Add(header_StockIn, typeof(double));
+            dt.Columns.Add(header_StockIn_Pcs_Total, typeof(double));
             dt.Columns.Add(header_UpdatedDate, typeof(DateTime));
             dt.Columns.Add(header_UpdatedBy, typeof(string));
             dt.Columns.Add(header_TotalProduced, typeof(double));
@@ -187,61 +167,35 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
-        private DataTable NewMeterReadingTable()
+        private DataTable NewJobDailyRecordTable()
         {
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(header_Time, typeof(string));
+            dt.Columns.Add(header_SheetID, typeof(int));
+            dt.Columns.Add(header_ProductionDate, typeof(DateTime));
+            dt.Columns.Add(header_Shift, typeof(string));
             dt.Columns.Add(header_Operator, typeof(string));
-            dt.Columns.Add(header_MeterReading, typeof(double));
-            dt.Columns.Add(header_Hourly, typeof(double));
+            dt.Columns.Add(text.Header_MeterStart, typeof(int));
+            dt.Columns.Add(text.Header_MeterEnd, typeof(int));
+            dt.Columns.Add(text.Header_Cavity, typeof(int));
+            dt.Columns.Add(text.Header_Production_Max_Qty, typeof(int));
+            dt.Columns.Add(text.Header_StockIn_Remark, typeof(string));
+            dt.Columns.Add(text.Header_RawMat_Lot_No, typeof(string));
+            dt.Columns.Add(text.Header_ColorMat_Lot_No, typeof(string));
 
-            dt.Columns.Add(text.Header_DefectRemark, typeof(string));
-            dt.Columns.Add(text.Header_QtyReject, typeof(int));
+            dt.Columns.Add(text.Header_Remark, typeof(string));
+            dt.Columns.Add(header_UpdatedDate, typeof(DateTime));
+            dt.Columns.Add(header_UpdatedBy, typeof(string));
 
-
+            dt.Columns.Add(header_StockIn_Pcs_Total, typeof(double));
+            dt.Columns.Add(text.Header_StockIn_Balance_Qty, typeof(int));
+            dt.Columns.Add(text.Header_StockIn_Container, typeof(int));
+            dt.Columns.Add(header_JobNo, typeof(string));
+            dt.Columns.Add(header_ProducedQty, typeof(double));
+            dt.Columns.Add(header_TotalProduced, typeof(double));
+            dt.Columns.Add(header_TotalStockIn, typeof(double));
 
             return dt;
-        }
-
-        private void dgvMeterStyleEdit(DataGridView dgv)
-        {
-            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-
-            dgv.Columns[header_Time].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[header_Operator].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_MeterReading].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_Hourly].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            dgv.Columns[header_Operator].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-            dgv.Columns[header_Operator].DefaultCellStyle.BackColor = SystemColors.Info;
-            dgv.Columns[header_MeterReading].DefaultCellStyle.BackColor = SystemColors.Info;
-            dgv.Columns[header_MeterReading].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-            dgv.Columns[header_Hourly].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
-
-            for (int i = 0; i < dgv.ColumnCount; i++)
-            {
-                string colName = dgv.Columns[i].Name;
-
-                if(colName.Contains(text.Header_DefectRemark))
-                {
-                    dgv.Columns[colName].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
-                    dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                    dgv.Columns[colName].ReadOnly = true;
-                }
-                else if (colName.Contains(text.Header_QtyReject))
-                {
-                    dgv.Columns[colName].DefaultCellStyle.BackColor = SystemColors.Info;
-                    dgv.Columns[colName].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-
-                    dgv.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-                }
-            }
-
-            dgv.Columns[header_Time].Frozen = true;
-
         }
 
         private void dgvActiveJobListStyleEdit(DataGridView dgv)
@@ -249,21 +203,29 @@ namespace FactoryManagementSoftware.UI
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
-            dgv.Columns[header_PartName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dgv.Columns[text.Header_ItemNameAndCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            dgv.Columns[header_Machine].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_Factory].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_JobNo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_Status].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_PartName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgv.Columns[header_PartCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            //dgv.Columns[header_Machine].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgv.Columns[header_Factory].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgv.Columns[header_JobNo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgv.Columns[header_Status].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
+            dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dgv.Columns[text.Header_ItemNameAndCode].MinimumWidth = 150;
+
+            //dgv.Columns[header_Status].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            dgv.Columns[text.Header_QCPassedQty].Visible = false;
+            dgv.Columns[header_PartName].Visible = false;
+            dgv.Columns[header_PartCode].Visible = false;
+         
         }
 
         private void dgvSheetRecordStyleEdit(DataGridView dgv)
         {
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-            dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+            //dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
             dgv.Columns[header_SheetID].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_ProductionDate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_Shift].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -271,12 +233,88 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[header_UpdatedDate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_UpdatedBy].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_TotalProduced].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[header_StockIn].DefaultCellStyle.BackColor = SystemColors.Info;
 
+            dgv.Columns[text.Header_Cavity].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[text.Header_RawMat_Lot_No].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[text.Header_ColorMat_Lot_No].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dgv.Columns[header_UpdatedDate].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgv.Columns[header_Shift].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+            dgv.Columns[header_SheetID].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgv.Columns[text.Header_RawMat_Lot_No].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+            dgv.Columns[text.Header_ColorMat_Lot_No].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+            //dgv.Columns[text.Header_MeterStart].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            //dgv.Columns[text.Header_MeterEnd].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            //dgv.Columns[text.Header_Cavity].DefaultCellStyle.Font = new Font("Segoe UI", 14F, FontStyle.Regular);
+            //dgv.Columns[text.Header_Production_Max_Qty].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            //dgv.Columns[text.Header_StockIn_Remark].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+
+            dgv.Columns[header_StockIn_Pcs_Total].DefaultCellStyle.BackColor = SystemColors.Info;
+
+            dgv.Columns[header_StockIn_Pcs_Total].Visible = false;
+            dgv.Columns[text.Header_StockIn_Balance_Qty].Visible = false;
+            dgv.Columns[text.Header_StockIn_Container].Visible = false;
             dgv.Columns[header_JobNo].Visible = false;
+            dgv.Columns[header_ProducedQty].Visible = false;
             dgv.Columns[header_TotalProduced].Visible = false;
             dgv.Columns[header_TotalStockIn].Visible = false;
 
+         
+        }
+
+        private void dgvActiveJobListCellFormatting(DataGridView dgv)
+        {
+            dgv.SuspendLayout();
+
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                dgv.Rows[dt.Rows.IndexOf(row)].Cells[text.Header_Status].Style.BackColor = tool.GetColorSetFromPlanStatus(row[text.Header_Status].ToString(), dgv);
+            }
+           
+            dgv.ResumeLayout();
+        }
+
+        private void dgvSheetRecordListCellFormatting(DataGridView dgv)
+        {
+            dgv.SuspendLayout();
+
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string shift = row[header_Shift].ToString();
+
+                if (shift.ToUpper() == "NIGHT")
+                {
+                    //dgv.Rows[dt.Rows.IndexOf(row)].Cells[header_Shift].Style.BackColor = Color.LightGray;
+                    dgv.Rows[dt.Rows.IndexOf(row)].DefaultCellStyle.BackColor = Color.WhiteSmoke;
+                }
+                else
+                {
+                    //dgv.Rows[dt.Rows.IndexOf(row)].Cells[header_Shift].Style.BackColor = Color.White;
+                    dgv.Rows[dt.Rows.IndexOf(row)].DefaultCellStyle.BackColor = Color.White;
+
+                }
+            }
+
+            //foreach(DataGridViewRow row in dgvRecordHistory.Rows)
+            //{
+            //    string shift = row.Cells[header_Shift].Value.ToString();
+
+            //    if (shift.ToUpper() == "NIGHT")
+            //    {
+            //        row.Cells[header_SheetID].Style.BackColor = Color.Black;
+            //    }
+            //    else
+            //    {
+            //       //row.Cells[header_Shift].Style.BackColor = Color.White;
+
+            //    }
+            //}
+
+            dgv.ResumeLayout();
         }
 
         private void ClearAllError()
@@ -357,7 +395,7 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadItemListData()
         {
-            dt_ProductionRecord = dalProRecord.SelectActiveDailyJobRecordOnly();
+            DT_JOB_DAILY_RECORD = dalProRecord.SelectActiveDailyJobRecordOnly();
             
             DataGridView dgv = dgvActiveJobList;
             DataTable dt = NewItemListTable();
@@ -394,9 +432,24 @@ namespace FactoryManagementSoftware.UI
                     dt_Row[header_Machine] = row[dalPlan.machineID];
                     dt_Row[header_Factory] = row[dalMac.MacLocationName];
                     dt_Row[header_JobNo] = row[dalPlan.jobNo];
-                    dt_Row[header_PartName] = row[dalItem.ItemName];
-                    dt_Row[header_PartCode] = row[dalItem.ItemCode];
-                    dt_Row[header_Status] = row[dalPlan.planStatus];
+
+                    string itemName = row[dalItem.ItemName].ToString();
+                    string itemCode = row[dalItem.ItemCode].ToString();
+                    string itemCodePresent = row[dalItem.ItemCodePresent].ToString();
+
+                    if (string.IsNullOrEmpty(itemCodePresent))
+                    {
+                        itemCodePresent = itemCode;
+                    }
+
+                    string itemNameAndCodeString = tool.getItemNameAndCodeString(itemCodePresent, itemName);
+
+                    dt_Row[header_PartName] = itemName;
+                    dt_Row[header_PartCode] = itemCodePresent;
+                    dt_Row[text.Header_ItemNameAndCode] = itemNameAndCodeString;
+
+                    dt_Row[header_Status] = tool.ConvertToTitleCase(row[dalPlan.planStatus].ToString());
+
                     dt_Row[text.Header_TargetQty] = row[dalPlan.targetQty];
                     dt_Row[text.Header_QCPassedQty] = row[dalPlan.planProduced];
 
@@ -417,6 +470,7 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.DataSource = dt;
                 dgvActiveJobListStyleEdit(dgv);
+                dgvActiveJobListCellFormatting(dgv);
                 dgv.ClearSelection();
             }
             //else
@@ -473,19 +527,23 @@ namespace FactoryManagementSoftware.UI
                                
                                 if (trfQty == -1)
                                 {
-                                    dgvRow.Cells[header_SheetID].Style.BackColor = Color.Pink;
+                                    //dgvRow.Cells[header_SheetID].Style.BackColor = Color.Pink;
                                 }
                                 else if (totalProducedQty == trfQty)
                                 {
                                     totalStockIn += trfQty;
-                                    dgvRow.Cells[header_SheetID].Style.BackColor = Color.LightGreen;
-                                    dgvRow.Cells[header_StockIn].Value = trfQty;
+                                    //dgvRow.Cells[header_SheetID].Style.BackColor = Color.LightGreen;
+                                    dgvRow.Cells[header_StockIn_Pcs_Total].Value = trfQty;
+                                    dgvRow.Cells[text.Header_StockIn_Remark].Value = trfQty;
+
                                 }
                                 else if (totalProducedQty != trfQty)
                                 {
                                     totalStockIn += trfQty;
-                                    dgvRow.Cells[header_SheetID].Style.BackColor = Color.LightBlue;
-                                    dgvRow.Cells[header_StockIn].Value = trfQty;
+                                    //dgvRow.Cells[header_SheetID].Style.BackColor = Color.LightBlue;
+                                    dgvRow.Cells[header_StockIn_Pcs_Total].Value = trfQty;
+                                    dgvRow.Cells[text.Header_StockIn_Remark].Value = trfQty;
+
                                 }
                             }
                         }
@@ -512,21 +570,27 @@ namespace FactoryManagementSoftware.UI
 
                         if (trfQty_ == -1)
                         {
-                            dgvRow.Cells[header_SheetID].Style.BackColor = Color.Pink;
+                            //dgvRow.Cells[header_SheetID].Style.BackColor = Color.Pink;
                         }
                         else if (totalProducedQty == trfQty_)
                         {
                             totalStockIn += trfQty_;
-                            dgvRow.Cells[header_SheetID].Style.BackColor = Color.LightGreen;
-                            dgvRow.Cells[header_StockIn].Value = trfQty_;
+                            //dgvRow.Cells[header_SheetID].Style.BackColor = Color.LightGreen;
+                            dgvRow.Cells[header_StockIn_Pcs_Total].Value = trfQty_;
                             dgvRow.Cells[header_TotalStockIn].Value = totalStockIn;
+                            dgvRow.Cells[header_StockIn_Pcs_Total].Value = totalStockIn;
+                            dgvRow.Cells[text.Header_StockIn_Remark].Value = trfQty_;
+
                         }
                         else if (totalProducedQty != trfQty_)
                         {
                             totalStockIn += trfQty_;
-                            dgvRow.Cells[header_SheetID].Style.BackColor = Color.LightBlue;
-                            dgvRow.Cells[header_StockIn].Value = trfQty_;
+                            //dgvRow.Cells[header_SheetID].Style.BackColor = Color.LightBlue;
+                            dgvRow.Cells[header_StockIn_Pcs_Total].Value = trfQty_;
                             dgvRow.Cells[header_TotalStockIn].Value = totalStockIn;
+                            dgvRow.Cells[header_StockIn_Pcs_Total].Value = totalStockIn;
+                            dgvRow.Cells[text.Header_StockIn_Remark].Value = trfQty_;
+
                         }
                     }
                 }
@@ -756,28 +820,38 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void LoadDailyRecord()
+        private void LoadJobDailyRecord()
         {
-            dailyRecordLoaded = false;
+            LOADING_JOB_RECORD = true;
+
+            DataGridView dgv = dgvActiveJobList;
 
             int itemRow = -1;
+
             if (dgvActiveJobList.CurrentCell != null)
             {
                 itemRow = dgvActiveJobList.CurrentCell.RowIndex;
             }
             
+
             if(itemRow >= 0)
             {
                 //btnShowDailyRecord.Visible = true;
-                string JobNo = dgvActiveJobList.Rows[itemRow].Cells[header_JobNo].Value.ToString();
-                string planStatus = dgvActiveJobList.Rows[itemRow].Cells[header_Status].Value.ToString();
-                macID = int.TryParse(dgvActiveJobList.Rows[itemRow].Cells[header_Machine].Value.ToString(), out macID) ? macID : 0;
+                string itemCode = dgv.Rows[itemRow].Cells[header_PartCode].Value.ToString();
+                string JobNo = dgv.Rows[itemRow].Cells[header_JobNo].Value.ToString();
+                string planStatus = dgv.Rows[itemRow].Cells[header_Status].Value.ToString();
+                macID = int.TryParse(dgv.Rows[itemRow].Cells[header_Machine].Value.ToString(), out macID) ? macID : 0;
 
-                DataTable dt = NewSheetRecordTable();
+                DataTable dt = NewJobDailyRecordTable();
                 DataRow dt_Row;
                 
+                if(DT_JOB_DAILY_RECORD?.Rows.Count <= 0)
+                {
+                    DT_JOB_DAILY_RECORD = dalProRecord.SelectActiveDailyJobRecordOnly();
+                }
+
                 int totalProducedQty = 0;
-                foreach(DataRow row in dt_ProductionRecord.Rows)
+                foreach(DataRow row in DT_JOB_DAILY_RECORD.Rows)
                 {
                     bool active = Convert.ToBoolean(row[dalProRecord.Active].ToString());
                     if(JobNo == row[dalProRecord.JobNo].ToString() && active)
@@ -788,17 +862,36 @@ namespace FactoryManagementSoftware.UI
                         int proLotNo = int.TryParse(row[dalProRecord.ProLotNo].ToString(), out proLotNo) ? proLotNo : -1;
                         totalProducedQty += produced;
 
-                       
-
                         if(proLotNo != -1)
                         {
                            // dt_Row[header_JobNo] = SetAlphabetToProLotNo(macID, proLotNo);
                             dt_Row[header_JobNo] = JobNo;
                         }
 
+                        //get item cavity
+                        int cavity = int.TryParse(row[dalProRecord.ProCavity].ToString(), out cavity) ? cavity : tool.getItemCavityFromDataTable(DT_ITEM_INFO, itemCode);
+
+                        int meterStart = int.TryParse(row[dalProRecord.MeterStart].ToString(), out meterStart) ? meterStart : 0;
+                        int meterEnd = int.TryParse(row[dalProRecord.MeterEnd].ToString(), out meterEnd) ? meterEnd : 0;
+
+                        int totalShot = meterEnd - meterStart;
+
+                        int maxQty = totalShot * cavity;
+
                         dt_Row[header_SheetID] = row[dalProRecord.SheetID].ToString();
-                        dt_Row[header_ProductionDate] = row[dalProRecord.ProDate].ToString();
                         dt_Row[header_Shift] = row[dalProRecord.Shift].ToString();
+                        dt_Row[header_ProductionDate] = row[dalProRecord.ProDate].ToString();
+                        dt_Row[text.Header_MeterStart] = row[dalProRecord.MeterStart];
+                        dt_Row[text.Header_MeterEnd] = row[dalProRecord.MeterEnd];
+                        dt_Row[text.Header_Cavity] = cavity;
+                        dt_Row[text.Header_Production_Max_Qty] = maxQty;
+
+                        dt_Row[header_Operator] = row[dalProRecord.ProOperator].ToString();
+                        dt_Row[header_StockIn_Pcs_Total] = row[dalProRecord.TotalStockIn];
+
+                        dt_Row[text.Header_RawMat_Lot_No] = row[dalProRecord.RawMatLotNo].ToString();
+                        dt_Row[text.Header_ColorMat_Lot_No] = row[dalProRecord.ColorMatLotNo].ToString();
+
                         dt_Row[header_ProducedQty] = produced;
                         dt_Row[header_UpdatedDate] = row[dalProRecord.UpdatedDate].ToString();
                         dt_Row[header_UpdatedBy] = dalUser.getUsername(Convert.ToInt32(row[dalProRecord.UpdatedBy].ToString()));
@@ -827,22 +920,22 @@ namespace FactoryManagementSoftware.UI
                     MessageBox.Show("Failed to update total produced qty!");
                 }
 
-                dgvRecordHistory.DataSource = null;
-
                 dgvRecordHistory.DataSource = dt;
-                dgvSheetRecordStyleEdit(dgvRecordHistory);
-                dgvRecordHistory.ClearSelection();
+                
 
                 //load checked status
                 LoadCheckedStatus(JobNo, planStatus);
 
                 CheckIfStockIn();
+                dgvSheetRecordStyleEdit(dgvRecordHistory);
+
+                dgvSheetRecordListCellFormatting(dgvRecordHistory);
+
+                dgvRecordHistory.ClearSelection();
+
             }
-            else
-            {
-                //btnShowDailyRecord.Visible = false;
-            }
-           
+
+            LOADING_JOB_RECORD = false;
         }
         private void LoadCheckedStatus(string jobNo, string planStatus)
         {
@@ -1142,28 +1235,26 @@ namespace FactoryManagementSoftware.UI
     
         private void dgvRecordHistory_Click(object sender, EventArgs e)
         {
-            if(dgvRecordHistory.CurrentCell != null)
-            {
-                int row = dgvRecordHistory.CurrentCell.RowIndex;
+            //if(dgvRecordHistory.CurrentCell != null)
+            //{
+            //    int row = dgvRecordHistory.CurrentCell.RowIndex;
 
-                if (row >= 0 && dgvRecordHistory.SelectedRows.Count > 0)
-                {
-                    if (dailyRecordLoaded)
-                    {
-                        errorProvider3.Clear();
-                        errorProvider4.Clear();
+            //    if (row >= 0 && dgvRecordHistory.SelectedRows.Count > 0)
+            //    {
+            //        if (dailyRecordLoaded)
+            //        {
+                       
+            //            int rowIndex = dgvRecordHistory.CurrentCell.RowIndex;
 
-                        int rowIndex = dgvRecordHistory.CurrentCell.RowIndex;
-
-                        if (rowIndex >= 0)
-                        {
-                            addingNewSheet = false;
-                            //AddNewSheetUI(true);
-                            //LoadExistingSheetData();
-                        }
-                    }
-                }
-            }
+            //            if (rowIndex >= 0)
+            //            {
+            //                addingNewSheet = false;
+            //                //AddNewSheetUI(true);
+            //                //LoadExistingSheetData();
+            //            }
+            //        }
+            //    }
+            //}
           
         }
 
@@ -1264,7 +1355,7 @@ namespace FactoryManagementSoftware.UI
                     tool.historyRecord(text.UncheckedJobSheet, "Job No.: " + JobNo + "(" + itemCode + ")", date, checkBy);
                 }
 
-                dt_ProductionRecord = dalProRecord.Select();
+                DT_JOB_DAILY_RECORD = dalProRecord.Select();
             }
 
         }
@@ -1347,5 +1438,40 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+
+        bool LOADING_JOB_RECORD = false;
+        
+        private void JobSelected()
+        {
+            if (loaded && !LOADING_JOB_RECORD)
+            {
+                if (!DATA_SAVED)
+                {
+                    DialogResult dialogResult = MessageBox.Show(text.Message_DataNotSaved, "Message",
+                                                         MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                    if (dialogResult == DialogResult.OK)
+                    {
+                        DATA_SAVED = true;
+
+                        //load record history
+                        LoadJobDailyRecord();
+                        dgvRecordHistory.ClearSelection();
+                    }
+                }
+                else
+                {
+
+                    //load record history
+                    LoadJobDailyRecord();//989ms >392ms(21/3)
+                    dgvRecordHistory.ClearSelection();
+
+                }
+            }
+        }
+
+        private void dgvActiveJobList_SelectionChanged(object sender, EventArgs e)
+        {
+            JobSelected();
+        }
     }
 }

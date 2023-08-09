@@ -43,10 +43,10 @@
             this.cbSearchByJobNo = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.cmbMac = new System.Windows.Forms.ComboBox();
             this.cmbMacLocation = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.cmbMac = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
@@ -310,10 +310,10 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 7F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Controls.Add(this.cmbMac, 2, 1);
             this.tableLayoutPanel4.Controls.Add(this.cmbMacLocation, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.label4, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label5, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.cmbMac, 2, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(2, 17);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -323,22 +323,6 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(230, 64);
             this.tableLayoutPanel4.TabIndex = 115;
-            // 
-            // cmbMac
-            // 
-            this.cmbMac.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbMac.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmbMac.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbMac.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cmbMac.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.cmbMac.FormattingEnabled = true;
-            this.cmbMac.Location = new System.Drawing.Point(120, 29);
-            this.cmbMac.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.cmbMac.Name = "cmbMac";
-            this.cmbMac.Size = new System.Drawing.Size(108, 25);
-            this.cmbMac.TabIndex = 57;
-            this.cmbMac.SelectedIndexChanged += new System.EventHandler(this.cmbMachine_SelectedIndexChanged);
             // 
             // cmbMacLocation
             // 
@@ -379,6 +363,22 @@
             this.label5.Size = new System.Drawing.Size(61, 19);
             this.label5.TabIndex = 116;
             this.label5.Text = "Machine";
+            // 
+            // cmbMac
+            // 
+            this.cmbMac.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbMac.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmbMac.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbMac.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cmbMac.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.cmbMac.FormattingEnabled = true;
+            this.cmbMac.Location = new System.Drawing.Point(120, 29);
+            this.cmbMac.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.cmbMac.Name = "cmbMac";
+            this.cmbMac.Size = new System.Drawing.Size(108, 25);
+            this.cmbMac.TabIndex = 57;
+            this.cmbMac.SelectedIndexChanged += new System.EventHandler(this.cmbMachine_SelectedIndexChanged);
             // 
             // groupBox4
             // 
