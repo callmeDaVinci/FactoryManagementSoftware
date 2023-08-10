@@ -374,6 +374,12 @@
     <Compile Include="UI\frmJobSheetViewMode.Designer.cs">
       <DependentUpon>frmJobSheetViewMode.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmJobSheetRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmJobSheetRecord.Designer.cs">
+      <DependentUpon>frmJobSheetRecord.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmProductionRecordVer3.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1150,6 +1156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmJobSheetViewMode.resx">
       <DependentUpon>frmJobSheetViewMode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmJobSheetRecord.resx">
+      <DependentUpon>frmJobSheetRecord.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmProductionRecordVer3.resx">
       <DependentUpon>frmProductionRecordVer3.cs</DependentUpon>

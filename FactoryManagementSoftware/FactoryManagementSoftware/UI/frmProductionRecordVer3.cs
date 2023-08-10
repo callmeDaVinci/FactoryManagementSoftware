@@ -16,8 +16,6 @@ namespace FactoryManagementSoftware.UI
         public frmProductionRecordVer3()
         {
             InitializeComponent();
-            AutoScroll = true;
-            userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
            
             tool.DoubleBuffered(dgvActiveJobList, true);
             tool.DoubleBuffered(dgvRecordHistory, true);
@@ -53,52 +51,52 @@ namespace FactoryManagementSoftware.UI
         // DataTable dt_Trf;
 
 
-        private DateTime OLD_PRO_DATE = DateTime.MaxValue;
+        //private DateTime OLD_PRO_DATE = DateTime.MaxValue;
 
-        int userPermission = -1;
-        readonly private string string_NewSheet = "NEW";
-        readonly private string string_Multi = "MULTI";
-        readonly private string string_MultiPackaging = "MULTI PACKAGING";
+        //int userPermission = -1;
+        //readonly private string string_NewSheet = "NEW";
+        //readonly private string string_Multi = "MULTI";
+        //readonly private string string_MultiPackaging = "MULTI PACKAGING";
 
-        readonly private string header_Time = "TIME";
-        readonly private string header_Operator = "OPERATOR";
-        readonly private string header_MeterReading = "METER READING";
-        readonly private string header_Hourly = "HOURLY";
+        //readonly private string header_Time = "TIME";
+        //readonly private string text.Header_Operator = "OPERATOR";
+        //readonly private string header_MeterReading = "METER READING";
+        //readonly private string header_Hourly = "HOURLY";
 
-        //readonly private string header_ProLotNo = "PRO LOT NO";
-        readonly private string header_Machine = "MAC.";
-        readonly private string header_Factory = "FAC.";
-        readonly private string header_JobNo = "JOB NO.";
-        readonly private string header_PartName = "NAME";
-        readonly private string header_PartCode = "CODE";
-        readonly private string header_Status = "STATUS";
-        readonly private string header_SheetID = "SHEET ID";
-        readonly private string header_ProductionDate = "PRO. DATE";
-        readonly private string header_Shift = "SHIFT";
-        readonly private string header_ProducedQty = "PRODUCED QTY";
-        readonly private string header_StockIn_Pcs_Total = "STOCK IN";
-        readonly private string header_UpdatedDate = "UPDATED DATE";
-        readonly private string header_UpdatedBy = "UPDATED BY";
-        readonly private string header_TotalProduced = "TOTAL PRODUCED";
-        readonly private string header_TotalStockIn = "TOTAL STOCK IN";
+        ////readonly private string header_ProLotNo = "PRO LOT NO";
+        //readonly private string text.Header_MacID = "MAC.";
+        //readonly private string text.Header_Fac = "FAC.";
+        //readonly private string text.Header_JobNo = "JOB NO.";
+        //readonly private string text.Header_ItemName = "NAME";
+        //readonly private string text.Header_ItemCode = "CODE";
+        //readonly private string text.Header_Status = "STATUS";
+        //readonly private string text.Header_SheetID = "SHEET ID";
+        //readonly private string text.Header_ProductionDate = "PRO. DATE";
+        //readonly private string text.Header_Shift = "SHIFT";
+        //readonly private string header_ProducedQty = "PRODUCED QTY";
+        //readonly private string text.Header_TotalStockIn = "STOCK IN";
+        //readonly private string text.Header_UpdatedDate = "UPDATED DATE";
+        //readonly private string text.Header_UpdatedBy = "UPDATED BY";
+        //readonly private string header_TotalProduced = "TOTAL PRODUCED";
+        //readonly private string text.Header_TotalStockIn = "TOTAL STOCK IN";
 
-        readonly static public string header_PackagingCode = "CODE";
-        readonly static public string header_PackagingName = "NAME";
-        readonly static public string header_PackagingQty = "CARTON QTY";
-        readonly static public string header_PackagingMax = "PART QTY PER BOX";
-        readonly static public string header_PackagingStockOut = "STOCK OUT";
+        //readonly static public string header_PackagingCode = "CODE";
+        //readonly static public string header_PackagingName = "NAME";
+        //readonly static public string header_PackagingQty = "CARTON QTY";
+        //readonly static public string header_PackagingMax = "PART QTY PER BOX";
+        //readonly static public string header_PackagingStockOut = "STOCK OUT";
 
         readonly private string text_RemoveRecord = "Remove from this list.";
         readonly private string text_ChangeJobNo = "Change Job To";
         readonly private string string_CheckBy= "CHECK BY: ";
         readonly private string string_CheckDate = "DATE: ";
 
-        readonly string header_Cat = "Cat";
-        readonly string header_ProDate = "DATE";
-        readonly string header_ItemCode = "ITEM CODE";
-        readonly string header_From = "FROM";
-        readonly string header_To = "TO";
-        readonly string header_Qty = "QTY";
+        //readonly string header_Cat = "Cat";
+        //readonly string text.Header_ProductionDate = "DATE";
+        //readonly string header_ItemCode = "ITEM CODE";
+        //readonly string header_From = "FROM";
+        //readonly string header_To = "TO";
+        //readonly string header_Qty = "QTY";
 
         private int macID = 0;
         private int JOB_NO = 0;
@@ -117,64 +115,35 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(header_Factory, typeof(string));
-            dt.Columns.Add(header_Machine, typeof(int));
-            dt.Columns.Add(header_JobNo, typeof(int));
-            dt.Columns.Add(header_Status, typeof(string));
+            dt.Columns.Add(text.Header_Fac, typeof(string));
+            dt.Columns.Add(text.Header_MacID, typeof(int));
+            dt.Columns.Add(text.Header_JobNo, typeof(int));
+            dt.Columns.Add(text.Header_Status, typeof(string));
             dt.Columns.Add(text.Header_ItemNameAndCode, typeof(string));
 
             dt.Columns.Add(text.Header_TargetQty, typeof(int));
             dt.Columns.Add(text.Header_Production_Max_Qty, typeof(int));
             dt.Columns.Add(text.Header_TotalStockIn, typeof(int));
 
+            dt.Columns.Add(text.Header_DateStart, typeof(DateTime));
+            dt.Columns.Add(text.Header_EstDateEnd, typeof(DateTime));
+            dt.Columns.Add(text.Header_Cavity, typeof(int));
+            dt.Columns.Add(text.Header_ProCT, typeof(int));
             dt.Columns.Add(text.Header_QCPassedQty, typeof(int));
-            dt.Columns.Add(header_PartName, typeof(string));
-            dt.Columns.Add(header_PartCode, typeof(string));
+            dt.Columns.Add(text.Header_ItemName, typeof(string));
+            dt.Columns.Add(text.Header_ItemCode, typeof(string));
             return dt;
         }
 
-        private DataTable NewStockInTable()
-        {
-            DataTable dt = new DataTable();
-
-            dt.Columns.Add(header_Cat, typeof(string));
-            dt.Columns.Add(header_ProDate, typeof(string));
-            dt.Columns.Add(header_ItemCode, typeof(string));
-            dt.Columns.Add(header_From, typeof(string));
-            dt.Columns.Add(header_To, typeof(string));
-            dt.Columns.Add(header_Qty, typeof(string));
-            dt.Columns.Add(header_JobNo, typeof(string));
-            dt.Columns.Add(header_Shift, typeof(string));
-
-            return dt;
-        }
-
-        private DataTable NewSheetRecordTable()
-        {
-            DataTable dt = new DataTable();
-
-            dt.Columns.Add(header_SheetID, typeof(int));
-            dt.Columns.Add(header_ProductionDate, typeof(DateTime));
-            dt.Columns.Add(header_JobNo, typeof(string));
-            dt.Columns.Add(header_Shift, typeof(string));
-            dt.Columns.Add(header_ProducedQty, typeof(double));
-            dt.Columns.Add(header_StockIn_Pcs_Total, typeof(double));
-            dt.Columns.Add(header_UpdatedDate, typeof(DateTime));
-            dt.Columns.Add(header_UpdatedBy, typeof(string));
-            dt.Columns.Add(header_TotalProduced, typeof(double));
-            dt.Columns.Add(header_TotalStockIn, typeof(double));
-
-            return dt;
-        }
 
         private DataTable NewJobDailyRecordTable()
         {
             DataTable dt = new DataTable();
 
-            dt.Columns.Add(header_SheetID, typeof(int));
-            dt.Columns.Add(header_ProductionDate, typeof(DateTime));
-            dt.Columns.Add(header_Shift, typeof(string));
-            dt.Columns.Add(header_Operator, typeof(string));
+            dt.Columns.Add(text.Header_SheetID, typeof(int));
+            dt.Columns.Add(text.Header_ProductionDate, typeof(DateTime));
+            dt.Columns.Add(text.Header_Shift, typeof(string));
+            dt.Columns.Add(text.Header_Operator, typeof(string));
             dt.Columns.Add(text.Header_MeterStart, typeof(int));
             dt.Columns.Add(text.Header_MeterEnd, typeof(int));
             dt.Columns.Add(text.Header_Cavity, typeof(int));
@@ -184,16 +153,16 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_ColorMat_Lot_No, typeof(string));
 
             dt.Columns.Add(text.Header_Remark, typeof(string));
-            dt.Columns.Add(header_UpdatedDate, typeof(DateTime));
-            dt.Columns.Add(header_UpdatedBy, typeof(string));
+            dt.Columns.Add(text.Header_UpdatedDate, typeof(DateTime));
+            dt.Columns.Add(text.Header_UpdatedBy, typeof(string));
 
-            dt.Columns.Add(header_StockIn_Pcs_Total, typeof(double));
+            dt.Columns.Add(text.Header_TotalStockIn, typeof(int));
             dt.Columns.Add(text.Header_StockIn_Balance_Qty, typeof(int));
             dt.Columns.Add(text.Header_StockIn_Container, typeof(int));
-            dt.Columns.Add(header_JobNo, typeof(string));
-            dt.Columns.Add(header_ProducedQty, typeof(double));
-            dt.Columns.Add(header_TotalProduced, typeof(double));
-            dt.Columns.Add(header_TotalStockIn, typeof(double));
+            dt.Columns.Add(text.Header_JobNo, typeof(string));
+            //dt.Columns.Add(header_ProducedQty, typeof(double));
+            //dt.Columns.Add(header_TotalProduced, typeof(double));
+            //dt.Columns.Add(text.Header_TotalStockIn, typeof(double));
 
             return dt;
         }
@@ -205,42 +174,47 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[text.Header_ItemNameAndCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            //dgv.Columns[header_Machine].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgv.Columns[header_Factory].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgv.Columns[header_JobNo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgv.Columns[header_Status].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgv.Columns[text.Header_MacID].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgv.Columns[text.Header_Fac].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgv.Columns[text.Header_JobNo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgv.Columns[text.Header_Status].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dgv.Columns[text.Header_ItemNameAndCode].MinimumWidth = 150;
 
-            //dgv.Columns[header_Status].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            //dgv.Columns[text.Header_Status].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
             dgv.Columns[text.Header_QCPassedQty].Visible = false;
-            dgv.Columns[header_PartName].Visible = false;
-            dgv.Columns[header_PartCode].Visible = false;
-         
+            dgv.Columns[text.Header_ItemName].Visible = false;
+            dgv.Columns[text.Header_ItemCode].Visible = false;
+
+            dgv.Columns[text.Header_DateStart].Visible = false;
+            dgv.Columns[text.Header_EstDateEnd].Visible = false;
+            dgv.Columns[text.Header_Cavity].Visible = false;
+            dgv.Columns[text.Header_ProCT].Visible = false;
+           
         }
 
         private void dgvSheetRecordStyleEdit(DataGridView dgv)
         {
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
             //dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-            dgv.Columns[header_SheetID].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_ProductionDate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_Shift].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_ProducedQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[header_UpdatedDate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_UpdatedBy].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_TotalProduced].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns[text.Header_SheetID].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[text.Header_ProductionDate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[text.Header_Shift].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgv.Columns[header_ProducedQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgv.Columns[text.Header_UpdatedDate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[text.Header_UpdatedBy].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgv.Columns[header_TotalProduced].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
             dgv.Columns[text.Header_Cavity].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[text.Header_RawMat_Lot_No].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[text.Header_ColorMat_Lot_No].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            dgv.Columns[header_UpdatedDate].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
-            dgv.Columns[header_Shift].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-            dgv.Columns[header_SheetID].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgv.Columns[text.Header_UpdatedDate].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgv.Columns[text.Header_Shift].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+            dgv.Columns[text.Header_SheetID].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
             dgv.Columns[text.Header_RawMat_Lot_No].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
             dgv.Columns[text.Header_ColorMat_Lot_No].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
             //dgv.Columns[text.Header_MeterStart].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
@@ -249,16 +223,12 @@ namespace FactoryManagementSoftware.UI
             //dgv.Columns[text.Header_Production_Max_Qty].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
             //dgv.Columns[text.Header_StockIn_Remark].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
 
-            dgv.Columns[header_StockIn_Pcs_Total].DefaultCellStyle.BackColor = SystemColors.Info;
+            dgv.Columns[text.Header_TotalStockIn].DefaultCellStyle.BackColor = SystemColors.Info;
 
-            dgv.Columns[header_StockIn_Pcs_Total].Visible = false;
+            dgv.Columns[text.Header_TotalStockIn].Visible = false;
             dgv.Columns[text.Header_StockIn_Balance_Qty].Visible = false;
             dgv.Columns[text.Header_StockIn_Container].Visible = false;
-            dgv.Columns[header_JobNo].Visible = false;
-            dgv.Columns[header_ProducedQty].Visible = false;
-            dgv.Columns[header_TotalProduced].Visible = false;
-            dgv.Columns[header_TotalStockIn].Visible = false;
-
+            dgv.Columns[text.Header_JobNo].Visible = false;
          
         }
 
@@ -284,16 +254,16 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in dt.Rows)
             {
-                string shift = row[header_Shift].ToString();
+                string shift = row[text.Header_Shift].ToString();
 
                 if (shift.ToUpper() == "NIGHT")
                 {
-                    //dgv.Rows[dt.Rows.IndexOf(row)].Cells[header_Shift].Style.BackColor = Color.LightGray;
+                    //dgv.Rows[dt.Rows.IndexOf(row)].Cells[text.Header_Shift].Style.BackColor = Color.LightGray;
                     dgv.Rows[dt.Rows.IndexOf(row)].DefaultCellStyle.BackColor = Color.WhiteSmoke;
                 }
                 else
                 {
-                    //dgv.Rows[dt.Rows.IndexOf(row)].Cells[header_Shift].Style.BackColor = Color.White;
+                    //dgv.Rows[dt.Rows.IndexOf(row)].Cells[text.Header_Shift].Style.BackColor = Color.White;
                     dgv.Rows[dt.Rows.IndexOf(row)].DefaultCellStyle.BackColor = Color.White;
 
                 }
@@ -301,15 +271,15 @@ namespace FactoryManagementSoftware.UI
 
             //foreach(DataGridViewRow row in dgvRecordHistory.Rows)
             //{
-            //    string shift = row.Cells[header_Shift].Value.ToString();
+            //    string shift = row.Cells[text.Header_Shift].Value.ToString();
 
             //    if (shift.ToUpper() == "NIGHT")
             //    {
-            //        row.Cells[header_SheetID].Style.BackColor = Color.Black;
+            //        row.Cells[text.Header_SheetID].Style.BackColor = Color.Black;
             //    }
             //    else
             //    {
-            //       //row.Cells[header_Shift].Style.BackColor = Color.White;
+            //       //row.Cells[text.Header_Shift].Style.BackColor = Color.White;
 
             //    }
             //}
@@ -429,9 +399,9 @@ namespace FactoryManagementSoftware.UI
                 {
                     DataRow dt_Row = dt.NewRow();
 
-                    dt_Row[header_Machine] = row[dalPlan.machineID];
-                    dt_Row[header_Factory] = row[dalMac.MacLocationName];
-                    dt_Row[header_JobNo] = row[dalPlan.jobNo];
+                    dt_Row[text.Header_MacID] = row[dalPlan.machineID];
+                    dt_Row[text.Header_Fac] = row[dalMac.MacLocationName];
+                    dt_Row[text.Header_JobNo] = row[dalPlan.jobNo];
 
                     string itemName = row[dalItem.ItemName].ToString();
                     string itemCode = row[dalItem.ItemCode].ToString();
@@ -444,14 +414,20 @@ namespace FactoryManagementSoftware.UI
 
                     string itemNameAndCodeString = tool.getItemNameAndCodeString(itemCodePresent, itemName);
 
-                    dt_Row[header_PartName] = itemName;
-                    dt_Row[header_PartCode] = itemCodePresent;
+                    dt_Row[text.Header_ItemName] = itemName;
+                    dt_Row[text.Header_ItemCode] = itemCodePresent;
                     dt_Row[text.Header_ItemNameAndCode] = itemNameAndCodeString;
 
-                    dt_Row[header_Status] = tool.ConvertToTitleCase(row[dalPlan.planStatus].ToString());
+                    dt_Row[text.Header_Status] = tool.ConvertToTitleCase(row[dalPlan.planStatus].ToString());
 
                     dt_Row[text.Header_TargetQty] = row[dalPlan.targetQty];
                     dt_Row[text.Header_QCPassedQty] = row[dalPlan.planProduced];
+
+                    dt_Row[text.Header_DateStart] = row[dalPlan.productionStartDate];
+                    dt_Row[text.Header_EstDateEnd] = row[dalPlan.productionEndDate];
+                    dt_Row[text.Header_Cavity] = row[dalPlan.planCavity];
+                    dt_Row[text.Header_ProCT] = row[dalPlan.planCT];
+
 
                     dt.Rows.Add(dt_Row);
                 }
@@ -487,61 +463,61 @@ namespace FactoryManagementSoftware.UI
             {
                 DataTable dt = (DataTable)dgvRecordHistory.DataSource;
                 
-                dt.DefaultView.Sort = header_ProductionDate + " ASC";
+                dt.DefaultView.Sort = text.Header_ProductionDate + " ASC";
                 dt = dt.DefaultView.ToTable();
 
                 DateTime previousDate = DateTime.MaxValue;
                 int totalProducedQty = 0;
                 int totalStockIn = 0;
-                string itemCode = dgvActiveJobList.Rows[dgvActiveJobList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
-                string planID = dgvActiveJobList.Rows[dgvActiveJobList.CurrentCell.RowIndex].Cells[header_JobNo].Value.ToString();
+                string itemCode = dgvActiveJobList.Rows[dgvActiveJobList.CurrentCell.RowIndex].Cells[text.Header_ItemCode].Value.ToString();
+                string planID = dgvActiveJobList.Rows[dgvActiveJobList.CurrentCell.RowIndex].Cells[text.Header_JobNo].Value.ToString();
                 DataTable transferData = dalTrf.codeLikeSearch(itemCode);//88ms
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    DateTime proDate = Convert.ToDateTime(row[header_ProductionDate].ToString());
-                    int producedQty = int.TryParse(row[header_ProducedQty].ToString(), out producedQty) ? producedQty : 0;
+                    DateTime proDate = Convert.ToDateTime(row[text.Header_ProductionDate].ToString());
+                    //int producedQty = int.TryParse(row[header_ProducedQty].ToString(), out producedQty) ? producedQty : 0;
 
                     if(previousDate == DateTime.MaxValue)
                     {
                         previousDate = proDate;
-                        totalProducedQty += producedQty;
+                        //totalProducedQty += producedQty;
                     }
                     else if(previousDate == proDate)
                     {
-                        totalProducedQty += producedQty;
+                        //totalProducedQty += producedQty;
                     }
                     else
                     {
                         foreach(DataGridViewRow dgvRow in dgvRecordHistory.Rows)
                         {
-                            if(previousDate == Convert.ToDateTime(dgvRow.Cells[header_ProductionDate].Value.ToString()))
+                            if(previousDate == Convert.ToDateTime(dgvRow.Cells[text.Header_ProductionDate].Value.ToString()))
                             {
                                 //check if parent
-                                string sheetID = dgvRow.Cells[header_SheetID].Value.ToString();
+                                string sheetID = dgvRow.Cells[text.Header_SheetID].Value.ToString();
 
-                                itemCode = dgvActiveJobList.Rows[dgvActiveJobList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
+                                itemCode = dgvActiveJobList.Rows[dgvActiveJobList.CurrentCell.RowIndex].Cells[text.Header_ItemCode].Value.ToString();
                                // transferData = dalTrf.codeLikeSearch(itemCode);
 
-                                int trfQty = tool.TotalProductionStockInInOneDay(transferData, itemCode, previousDate, planID, dgvRow.Cells[header_Shift].Value.ToString());
+                                int trfQty = tool.TotalProductionStockInInOneDay(transferData, itemCode, previousDate, planID, dgvRow.Cells[text.Header_Shift].Value.ToString());
                                
                                 if (trfQty == -1)
                                 {
-                                    //dgvRow.Cells[header_SheetID].Style.BackColor = Color.Pink;
+                                    //dgvRow.Cells[text.Header_SheetID].Style.BackColor = Color.Pink;
                                 }
                                 else if (totalProducedQty == trfQty)
                                 {
                                     totalStockIn += trfQty;
-                                    //dgvRow.Cells[header_SheetID].Style.BackColor = Color.LightGreen;
-                                    dgvRow.Cells[header_StockIn_Pcs_Total].Value = trfQty;
+                                    //dgvRow.Cells[text.Header_SheetID].Style.BackColor = Color.LightGreen;
+                                    dgvRow.Cells[text.Header_TotalStockIn].Value = trfQty;
                                     dgvRow.Cells[text.Header_StockIn_Remark].Value = trfQty;
 
                                 }
                                 else if (totalProducedQty != trfQty)
                                 {
                                     totalStockIn += trfQty;
-                                    //dgvRow.Cells[header_SheetID].Style.BackColor = Color.LightBlue;
-                                    dgvRow.Cells[header_StockIn_Pcs_Total].Value = trfQty;
+                                    //dgvRow.Cells[text.Header_SheetID].Style.BackColor = Color.LightBlue;
+                                    dgvRow.Cells[text.Header_TotalStockIn].Value = trfQty;
                                     dgvRow.Cells[text.Header_StockIn_Remark].Value = trfQty;
 
                                 }
@@ -549,7 +525,7 @@ namespace FactoryManagementSoftware.UI
                         }
 
                         previousDate = proDate;
-                        totalProducedQty = producedQty;
+                        //totalProducedQty = producedQty;
                     }
 
                 }
@@ -558,37 +534,33 @@ namespace FactoryManagementSoftware.UI
                 //change last row color
                 foreach (DataGridViewRow dgvRow in dgvRecordHistory.Rows)
                 {
-                    if (previousDate == Convert.ToDateTime(dgvRow.Cells[header_ProductionDate].Value.ToString()))
+                    if (previousDate == Convert.ToDateTime(dgvRow.Cells[text.Header_ProductionDate].Value.ToString()))
                     {
                         //check if parent
-                        string sheetID = dgvRow.Cells[header_SheetID].Value.ToString();
+                        string sheetID = dgvRow.Cells[text.Header_SheetID].Value.ToString();
 
-                        itemCode = dgvActiveJobList.Rows[dgvActiveJobList.CurrentCell.RowIndex].Cells[header_PartCode].Value.ToString();
+                        itemCode = dgvActiveJobList.Rows[dgvActiveJobList.CurrentCell.RowIndex].Cells[text.Header_ItemCode].Value.ToString();
                         //transferData = dalTrf.codeLikeSearch(itemCode);
 
-                        int trfQty_ = tool.TotalProductionStockInInOneDay(transferData, itemCode, previousDate, planID, dgvRow.Cells[header_Shift].Value.ToString());
+                        int trfQty_ = tool.TotalProductionStockInInOneDay(transferData, itemCode, previousDate, planID, dgvRow.Cells[text.Header_Shift].Value.ToString());
 
                         if (trfQty_ == -1)
                         {
-                            //dgvRow.Cells[header_SheetID].Style.BackColor = Color.Pink;
+                            //dgvRow.Cells[text.Header_SheetID].Style.BackColor = Color.Pink;
                         }
                         else if (totalProducedQty == trfQty_)
                         {
                             totalStockIn += trfQty_;
-                            //dgvRow.Cells[header_SheetID].Style.BackColor = Color.LightGreen;
-                            dgvRow.Cells[header_StockIn_Pcs_Total].Value = trfQty_;
-                            dgvRow.Cells[header_TotalStockIn].Value = totalStockIn;
-                            dgvRow.Cells[header_StockIn_Pcs_Total].Value = totalStockIn;
+                            //dgvRow.Cells[text.Header_SheetID].Style.BackColor = Color.LightGreen;
+                            dgvRow.Cells[text.Header_TotalStockIn].Value = totalStockIn;
                             dgvRow.Cells[text.Header_StockIn_Remark].Value = trfQty_;
 
                         }
                         else if (totalProducedQty != trfQty_)
                         {
                             totalStockIn += trfQty_;
-                            //dgvRow.Cells[header_SheetID].Style.BackColor = Color.LightBlue;
-                            dgvRow.Cells[header_StockIn_Pcs_Total].Value = trfQty_;
-                            dgvRow.Cells[header_TotalStockIn].Value = totalStockIn;
-                            dgvRow.Cells[header_StockIn_Pcs_Total].Value = totalStockIn;
+                            //dgvRow.Cells[text.Header_SheetID].Style.BackColor = Color.LightBlue;
+                            dgvRow.Cells[text.Header_TotalStockIn].Value = totalStockIn;
                             dgvRow.Cells[text.Header_StockIn_Remark].Value = trfQty_;
 
                         }
@@ -601,224 +573,6 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-
-        private void UndoPreviousRecordIfExist()
-        {
-            DataGridView dgv = dgvActiveJobList;
-
-            string planID = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[header_JobNo].Value.ToString();
-
-            DateTime proDate = DateTime.TryParse(dgv.Rows[dgv.CurrentCell.RowIndex].Cells[header_ProDate].Value.ToString(), out proDate) ? proDate : DateTime.MaxValue;
-
-            DataTable dt_Trf;
-
-            if (OLD_PRO_DATE == DateTime.MaxValue)
-            {
-                dt_Trf = dalTrf.rangeTrfSearch(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
-
-            }
-            else
-            {
-                dt_Trf = dalTrf.rangeTrfSearch(OLD_PRO_DATE.ToString("yyyy/MM/dd"), OLD_PRO_DATE.ToString("yyyy/MM/dd"));
-
-            }
-
-           
-
-            string shift = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[header_Shift].Value.ToString();
-
-
-            dt_Trf.DefaultView.Sort = dalTrf.TrfDate + " DESC";
-            dt_Trf = dt_Trf.DefaultView.ToTable();
-
-            int trfTableCode = -1;
-
-            foreach (DataRow row in dt_Trf.Rows)
-            {
-                string status = row[dalTrf.TrfResult].ToString();
-
-                if (status == "Passed")
-                {
-                    DateTime trfDate = Convert.ToDateTime(row[dalTrf.TrfDate].ToString());
-
-                    string productionInfo = row[dalTrf.TrfNote].ToString();
-                    string _shift = "";
-                    string _planID = "";
-                    string balanceClearType = "";
-                    bool startCopy = false;
-                    bool IDCopied = false;
-                    bool ShiftCopied = false;
-                    bool StopIDCopy = false;
-
-                    for (int i = 0; i < productionInfo.Length; i++)
-                    {
-                        if (productionInfo[i].ToString() == "P")
-                        {
-                            startCopy = true;
-                        }
-                        else if (ShiftCopied && (productionInfo[i].ToString() == "O" || productionInfo[i].ToString() == "B"))
-                        {
-                            startCopy = true;
-                        }
-                        else if (ShiftCopied && productionInfo[i].ToString() == "]")
-                        {
-                            startCopy = false;
-                            StopIDCopy = true;
-                        }
-
-                        if (startCopy)
-                        {
-
-                            if (char.IsDigit(productionInfo[i]) && !StopIDCopy)
-                            {
-                                IDCopied = true;
-                                _planID += productionInfo[i];
-                            }
-                            else if (IDCopied && i + 1 < productionInfo.Length)
-                            {
-                                _shift += productionInfo[i + 1];
-                                IDCopied = false;
-                                ShiftCopied = true;
-                                startCopy = false;
-                            }
-                            else if (ShiftCopied)
-                            {
-                                balanceClearType += productionInfo[i];
-                            }
-
-                        }
-                    }
-
-                    if (_shift.ToUpper() == "M")
-                    {
-                        _shift = text.Shift_Morning;
-                    }
-                    else if (_shift.ToUpper() == "N")
-                    {
-                        _shift = text.Shift_Night;
-                    }
-
-                    bool dataMatch = shift == _shift && planID == _planID;
-
-                    if (dataMatch)
-                    {
-                        trfTableCode = int.TryParse(row[dalTrf.TrfID].ToString(), out trfTableCode) ? trfTableCode : -1;
-
-                        if (trfTableCode != -1)
-                            tool.UndoTransferRecord(trfTableCode);
-
-                    }
-                }
-
-            }
-
-        }
-
-        private bool CheckIfPreviousRecordExist()
-        {
-            DataGridView dgv = dgvActiveJobList;
-
-            DateTime proDate = DateTime.TryParse(dgv.Rows[dgv.CurrentCell.RowIndex].Cells[header_ProDate].Value.ToString(), out proDate) ? proDate : DateTime.MaxValue;
-
-            string planID = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[header_JobNo].Value.ToString();
-
-            DataTable dt_Trf;
-
-            if (OLD_PRO_DATE == DateTime.MaxValue)
-            {
-                dt_Trf = dalTrf.rangeTrfSearch(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
-
-            }
-            else
-            {
-                dt_Trf = dalTrf.rangeTrfSearch(OLD_PRO_DATE.ToString("yyyy/MM/dd"), OLD_PRO_DATE.ToString("yyyy/MM/dd"));
-
-            }
-
-            string shift = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[header_Shift].Value.ToString();
-
-            dt_Trf.DefaultView.Sort = dalTrf.TrfDate + " DESC";
-            dt_Trf = dt_Trf.DefaultView.ToTable();
-
-            foreach (DataRow row in dt_Trf.Rows)
-            {
-                string status = row[dalTrf.TrfResult].ToString();
-
-                if (status == "Passed")
-                {
-                    DateTime trfDate = Convert.ToDateTime(row[dalTrf.TrfDate].ToString());
-
-                    string productionInfo = row[dalTrf.TrfNote].ToString();
-                    string _shift = "";
-                    string _planID = "";
-                    string balanceClearType = "";
-                    bool startCopy = false;
-                    bool IDCopied = false;
-                    bool ShiftCopied = false;
-                    bool StopIDCopy = false;
-
-                    for (int i = 0; i < productionInfo.Length; i++)
-                    {
-                        if (productionInfo[i].ToString() == "P")
-                        {
-                            startCopy = true;
-                        }
-                        else if (ShiftCopied && (productionInfo[i].ToString() == "O" || productionInfo[i].ToString() == "B"))
-                        {
-                            startCopy = true;
-                        }
-                        else if (ShiftCopied && productionInfo[i].ToString() == "]")
-                        {
-                            startCopy = false;
-                            StopIDCopy = true;
-                        }
-
-                        if (startCopy)
-                        {
-
-                            if (char.IsDigit(productionInfo[i]) && !StopIDCopy)
-                            {
-                                IDCopied = true;
-                                _planID += productionInfo[i];
-                            }
-                            else if (IDCopied && i + 1 < productionInfo.Length)
-                            {
-                                _shift += productionInfo[i + 1];
-                                IDCopied = false;
-                                ShiftCopied = true;
-                                startCopy = false;
-                            }
-                            else if (ShiftCopied)
-                            {
-                                balanceClearType += productionInfo[i];
-                            }
-
-                        }
-                    }
-
-                    if (_shift.ToUpper() == "M")
-                    {
-                        _shift = text.Shift_Morning;
-                    }
-                    else if (_shift.ToUpper() == "N")
-                    {
-                        _shift = text.Shift_Night;
-                    }
-
-                    bool dataMatch = shift == _shift && planID == _planID;
-
-                    if (dataMatch)
-                    {
-                        return true;
-
-                    }
-                }
-
-            }
-
-            return false;
-
-        }
 
         private void LoadJobDailyRecord()
         {
@@ -837,10 +591,10 @@ namespace FactoryManagementSoftware.UI
             if(itemRow >= 0)
             {
                 //btnShowDailyRecord.Visible = true;
-                string itemCode = dgv.Rows[itemRow].Cells[header_PartCode].Value.ToString();
-                string JobNo = dgv.Rows[itemRow].Cells[header_JobNo].Value.ToString();
-                string planStatus = dgv.Rows[itemRow].Cells[header_Status].Value.ToString();
-                macID = int.TryParse(dgv.Rows[itemRow].Cells[header_Machine].Value.ToString(), out macID) ? macID : 0;
+                string itemCode = dgv.Rows[itemRow].Cells[text.Header_ItemCode].Value.ToString();
+                string JobNo = dgv.Rows[itemRow].Cells[text.Header_JobNo].Value.ToString();
+                string planStatus = dgv.Rows[itemRow].Cells[text.Header_Status].Value.ToString();
+                macID = int.TryParse(dgv.Rows[itemRow].Cells[text.Header_MacID].Value.ToString(), out macID) ? macID : 0;
 
                 DataTable dt = NewJobDailyRecordTable();
                 DataRow dt_Row;
@@ -864,8 +618,8 @@ namespace FactoryManagementSoftware.UI
 
                         if(proLotNo != -1)
                         {
-                           // dt_Row[header_JobNo] = SetAlphabetToProLotNo(macID, proLotNo);
-                            dt_Row[header_JobNo] = JobNo;
+                           // dt_Row[text.Header_JobNo] = SetAlphabetToProLotNo(macID, proLotNo);
+                            dt_Row[text.Header_JobNo] = JobNo;
                         }
 
                         //get item cavity
@@ -878,28 +632,28 @@ namespace FactoryManagementSoftware.UI
 
                         int maxQty = totalShot * cavity;
 
-                        dt_Row[header_SheetID] = row[dalProRecord.SheetID].ToString();
-                        dt_Row[header_Shift] = row[dalProRecord.Shift].ToString();
-                        dt_Row[header_ProductionDate] = row[dalProRecord.ProDate].ToString();
+                        dt_Row[text.Header_SheetID] = row[dalProRecord.SheetID].ToString();
+                        dt_Row[text.Header_Shift] = row[dalProRecord.Shift].ToString();
+                        dt_Row[text.Header_ProductionDate] = row[dalProRecord.ProDate].ToString();
                         dt_Row[text.Header_MeterStart] = row[dalProRecord.MeterStart];
                         dt_Row[text.Header_MeterEnd] = row[dalProRecord.MeterEnd];
                         dt_Row[text.Header_Cavity] = cavity;
                         dt_Row[text.Header_Production_Max_Qty] = maxQty;
 
-                        dt_Row[header_Operator] = row[dalProRecord.ProOperator].ToString();
-                        dt_Row[header_StockIn_Pcs_Total] = row[dalProRecord.TotalStockIn];
+                        dt_Row[text.Header_Operator] = row[dalProRecord.ProOperator].ToString();
+                        dt_Row[text.Header_TotalStockIn] = row[dalProRecord.TotalStockIn];
 
                         dt_Row[text.Header_RawMat_Lot_No] = row[dalProRecord.RawMatLotNo].ToString();
                         dt_Row[text.Header_ColorMat_Lot_No] = row[dalProRecord.ColorMatLotNo].ToString();
 
-                        dt_Row[header_ProducedQty] = produced;
-                        dt_Row[header_UpdatedDate] = row[dalProRecord.UpdatedDate].ToString();
-                        dt_Row[header_UpdatedBy] = dalUser.getUsername(Convert.ToInt32(row[dalProRecord.UpdatedBy].ToString()));
+                        //dt_Row[header_ProducedQty] = produced;
+                        dt_Row[text.Header_UpdatedDate] = row[dalProRecord.UpdatedDate].ToString();
+                        dt_Row[text.Header_UpdatedBy] = dalUser.getUsername(Convert.ToInt32(row[dalProRecord.UpdatedBy].ToString()));
 
-                        dt_Row[header_TotalProduced] = totalProducedQty;
+                        //dt_Row[header_TotalProduced] = totalProducedQty;
 
-                        if(dt.Rows.Count > 0)
-                        dt.Rows[dt.Rows.Count - 1][header_TotalProduced] = DBNull.Value;
+                        //if(dt.Rows.Count > 0)
+                        //dt.Rows[dt.Rows.Count - 1][header_TotalProduced] = DBNull.Value;
 
                         dt.Rows.Add(dt_Row);
                         
@@ -1028,9 +782,9 @@ namespace FactoryManagementSoftware.UI
             //}
             //else
             //{
-            //    string partName = dgvActiveJobList.Rows[selectedItem].Cells[header_PartName].Value.ToString();
-            //    string partCode = dgvActiveJobList.Rows[selectedItem].Cells[header_PartCode].Value.ToString();
-            //    string jobNo = dgvActiveJobList.Rows[selectedItem].Cells[header_JobNo].Value.ToString();
+            //    string partName = dgvActiveJobList.Rows[selectedItem].Cells[text.Header_ItemName].Value.ToString();
+            //    string partCode = dgvActiveJobList.Rows[selectedItem].Cells[text.Header_ItemCode].Value.ToString();
+            //    string jobNo = dgvActiveJobList.Rows[selectedItem].Cells[text.Header_JobNo].Value.ToString();
             //    string targetQty = dgvActiveJobList.Rows[selectedItem].Cells[text.Header_TargetQty].Value.ToString();
 
             //    lblCustomer.Text = "";
@@ -1280,7 +1034,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvRecordHistory_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            dgvRecordHistory.Columns[header_TotalStockIn].InheritedStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            dgvRecordHistory.Columns[text.Header_TotalStockIn].InheritedStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
         }
 
         private void updateDiff()
@@ -1320,9 +1074,9 @@ namespace FactoryManagementSoftware.UI
             
             DataGridView dgv = dgvActiveJobList;
             int rowIndex = dgv.CurrentCell.RowIndex;
-            int JobNo = Convert.ToInt32(dgv.Rows[rowIndex].Cells[header_JobNo].Value);
-            string planStatus = dgv.Rows[rowIndex].Cells[header_Status].Value.ToString() ;
-            string itemCode = dgv.Rows[rowIndex].Cells[header_PartCode].Value.ToString();
+            int JobNo = Convert.ToInt32(dgv.Rows[rowIndex].Cells[text.Header_JobNo].Value);
+            string planStatus = dgv.Rows[rowIndex].Cells[text.Header_Status].Value.ToString() ;
+            string itemCode = dgv.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
 
             uPlan.plan_id = JobNo;
             uPlan.CheckedDate = date;
@@ -1472,6 +1226,62 @@ namespace FactoryManagementSoftware.UI
         private void dgvActiveJobList_SelectionChanged(object sender, EventArgs e)
         {
             JobSelected();
+        }
+
+        private int GetSelectedRowIndex(DataGridView dataGridView)
+        {
+            if (dataGridView.SelectedRows.Count > 0)
+            {
+                return dataGridView.SelectedRows[0].Index;
+            }
+            else
+            {
+                return -1;  // Indicates no row is selected
+            }
+        }
+
+        private void btnAddJobSheet_Click(object sender, EventArgs e)
+        {
+            int JobListSelectedIndex = GetSelectedRowIndex(dgvActiveJobList);
+
+            if (JobListSelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a job from the Active Job List.");
+            }
+            else
+            {
+                DataTable dt_JobList = (DataTable)dgvActiveJobList.DataSource;
+                DataTable dt_JobHistoryRecord = (DataTable)dgvRecordHistory.DataSource;
+
+                frmJobSheetRecord frm = new frmJobSheetRecord(dt_JobList, JobListSelectedIndex, dt_JobHistoryRecord);
+
+                frm.StartPosition = FormStartPosition.CenterScreen;
+
+                frm.ShowDialog();
+            }
+          
+        }
+
+        private void btnEditJobSheet_Click(object sender, EventArgs e)
+        {
+            int JobListSelectedIndex = GetSelectedRowIndex(dgvActiveJobList);
+            int JobRecordSelectedIndex = GetSelectedRowIndex(dgvRecordHistory);
+
+            if (JobRecordSelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a job record to edit.");
+            }
+            else
+            {
+                DataTable dt_JobList = (DataTable)dgvActiveJobList.DataSource;
+                DataTable dt_JobHistoryRecord = (DataTable)dgvRecordHistory.DataSource;
+
+                frmJobSheetRecord frm = new frmJobSheetRecord(dt_JobList, JobListSelectedIndex, dt_JobHistoryRecord, JobRecordSelectedIndex);
+
+                frm.StartPosition = FormStartPosition.CenterScreen;
+
+                frm.ShowDialog();
+            }
         }
     }
 }

@@ -47,9 +47,9 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button2 = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpItemSelectionTitle = new System.Windows.Forms.TableLayoutPanel();
+            this.button2 = new System.Windows.Forms.Button();
             this.btnAddJob = new Guna.UI.WinForms.GunaGradientButton();
             this.lblItemListTitle = new System.Windows.Forms.Label();
             this.dgvActiveJobList = new System.Windows.Forms.DataGridView();
@@ -139,7 +139,7 @@
             this.dgvRecordHistory.RowHeadersWidth = 51;
             this.dgvRecordHistory.RowTemplate.Height = 60;
             this.dgvRecordHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvRecordHistory.Size = new System.Drawing.Size(758, 479);
+            this.dgvRecordHistory.Size = new System.Drawing.Size(749, 455);
             this.dgvRecordHistory.TabIndex = 154;
             this.dgvRecordHistory.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvRecordHistory_CellMouseDown);
             this.dgvRecordHistory.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvRecordHistory_DataBindingComplete);
@@ -195,6 +195,43 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.BackColor = System.Drawing.Color.White;
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.tlpItemSelectionTitle, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.dgvActiveJobList, 0, 2);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(510, 608);
+            this.tableLayoutPanel2.TabIndex = 259;
+            // 
+            // tlpItemSelectionTitle
+            // 
+            this.tlpItemSelectionTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(234)))), ((int)(((byte)(147)))));
+            this.tlpItemSelectionTitle.ColumnCount = 3;
+            this.tlpItemSelectionTitle.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tlpItemSelectionTitle.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpItemSelectionTitle.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
+            this.tlpItemSelectionTitle.Controls.Add(this.button2, 0, 0);
+            this.tlpItemSelectionTitle.Controls.Add(this.btnAddJob, 2, 0);
+            this.tlpItemSelectionTitle.Controls.Add(this.lblItemListTitle, 1, 0);
+            this.tlpItemSelectionTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpItemSelectionTitle.Location = new System.Drawing.Point(0, 0);
+            this.tlpItemSelectionTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpItemSelectionTitle.Name = "tlpItemSelectionTitle";
+            this.tlpItemSelectionTitle.RowCount = 1;
+            this.tlpItemSelectionTitle.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpItemSelectionTitle.Size = new System.Drawing.Size(510, 46);
+            this.tlpItemSelectionTitle.TabIndex = 262;
+            // 
             // button2
             // 
             this.button2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -214,43 +251,6 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.BackColor = System.Drawing.Color.White;
-            this.tableLayoutPanel2.ColumnCount = 1;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.tlpItemSelectionTitle, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.dgvActiveJobList, 0, 2);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 3;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(515, 624);
-            this.tableLayoutPanel2.TabIndex = 259;
-            // 
-            // tlpItemSelectionTitle
-            // 
-            this.tlpItemSelectionTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(234)))), ((int)(((byte)(147)))));
-            this.tlpItemSelectionTitle.ColumnCount = 3;
-            this.tlpItemSelectionTitle.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 36F));
-            this.tlpItemSelectionTitle.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpItemSelectionTitle.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
-            this.tlpItemSelectionTitle.Controls.Add(this.button2, 0, 0);
-            this.tlpItemSelectionTitle.Controls.Add(this.btnAddJob, 2, 0);
-            this.tlpItemSelectionTitle.Controls.Add(this.lblItemListTitle, 1, 0);
-            this.tlpItemSelectionTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpItemSelectionTitle.Location = new System.Drawing.Point(0, 0);
-            this.tlpItemSelectionTitle.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpItemSelectionTitle.Name = "tlpItemSelectionTitle";
-            this.tlpItemSelectionTitle.RowCount = 1;
-            this.tlpItemSelectionTitle.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpItemSelectionTitle.Size = new System.Drawing.Size(515, 46);
-            this.tlpItemSelectionTitle.TabIndex = 262;
-            // 
             // btnAddJob
             // 
             this.btnAddJob.AnimationHoverSpeed = 0.07F;
@@ -267,7 +267,7 @@
             this.btnAddJob.ForeColor = System.Drawing.Color.Black;
             this.btnAddJob.Image = null;
             this.btnAddJob.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnAddJob.Location = new System.Drawing.Point(406, 7);
+            this.btnAddJob.Location = new System.Drawing.Point(401, 7);
             this.btnAddJob.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.btnAddJob.Name = "btnAddJob";
             this.btnAddJob.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -334,7 +334,7 @@
             this.dgvActiveJobList.RowHeadersWidth = 51;
             this.dgvActiveJobList.RowTemplate.Height = 60;
             this.dgvActiveJobList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvActiveJobList.Size = new System.Drawing.Size(499, 561);
+            this.dgvActiveJobList.Size = new System.Drawing.Size(494, 545);
             this.dgvActiveJobList.TabIndex = 262;
             this.dgvActiveJobList.SelectionChanged += new System.EventHandler(this.dgvActiveJobList_SelectionChanged);
             // 
@@ -348,12 +348,12 @@
             this.tlpMainPanel.Controls.Add(this.tableLayoutPanel27, 2, 0);
             this.tlpMainPanel.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tlpMainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpMainPanel.Location = new System.Drawing.Point(23, 22);
-            this.tlpMainPanel.Margin = new System.Windows.Forms.Padding(23, 22, 23, 22);
+            this.tlpMainPanel.Location = new System.Drawing.Point(30, 30);
+            this.tlpMainPanel.Margin = new System.Windows.Forms.Padding(30);
             this.tlpMainPanel.Name = "tlpMainPanel";
             this.tlpMainPanel.RowCount = 1;
             this.tlpMainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMainPanel.Size = new System.Drawing.Size(1305, 624);
+            this.tlpMainPanel.Size = new System.Drawing.Size(1291, 608);
             this.tlpMainPanel.TabIndex = 260;
             // 
             // tableLayoutPanel27
@@ -365,7 +365,7 @@
             this.tableLayoutPanel27.Controls.Add(this.tlpTotalProducedTotalStockIn, 0, 2);
             this.tableLayoutPanel27.Controls.Add(this.tableLayoutPanel28, 0, 0);
             this.tableLayoutPanel27.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel27.Location = new System.Drawing.Point(531, 0);
+            this.tableLayoutPanel27.Location = new System.Drawing.Point(526, 0);
             this.tableLayoutPanel27.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel27.Name = "tableLayoutPanel27";
             this.tableLayoutPanel27.RowCount = 5;
@@ -373,8 +373,8 @@
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0F));
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
-            this.tableLayoutPanel27.Size = new System.Drawing.Size(774, 624);
+            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel27.Size = new System.Drawing.Size(765, 608);
             this.tableLayoutPanel27.TabIndex = 262;
             // 
             // tlpButton
@@ -383,20 +383,20 @@
             this.tlpButton.ColumnCount = 5;
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpButton.Controls.Add(this.btnEditJobSheet, 1, 1);
             this.tlpButton.Controls.Add(this.btnAddJobSheet, 3, 1);
             this.tlpButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpButton.Location = new System.Drawing.Point(0, 562);
+            this.tlpButton.Location = new System.Drawing.Point(0, 538);
             this.tlpButton.Margin = new System.Windows.Forms.Padding(0);
             this.tlpButton.Name = "tlpButton";
             this.tlpButton.RowCount = 3;
             this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tlpButton.Size = new System.Drawing.Size(774, 62);
+            this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpButton.Size = new System.Drawing.Size(765, 70);
             this.tlpButton.TabIndex = 262;
             // 
             // btnEditJobSheet
@@ -415,7 +415,7 @@
             this.btnEditJobSheet.ForeColor = System.Drawing.Color.Black;
             this.btnEditJobSheet.Image = null;
             this.btnEditJobSheet.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnEditJobSheet.Location = new System.Drawing.Point(454, 10);
+            this.btnEditJobSheet.Location = new System.Drawing.Point(430, 10);
             this.btnEditJobSheet.Margin = new System.Windows.Forms.Padding(0);
             this.btnEditJobSheet.Name = "btnEditJobSheet";
             this.btnEditJobSheet.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -425,10 +425,11 @@
             this.btnEditJobSheet.OnHoverImage = null;
             this.btnEditJobSheet.OnPressedColor = System.Drawing.Color.Black;
             this.btnEditJobSheet.Radius = 2;
-            this.btnEditJobSheet.Size = new System.Drawing.Size(150, 42);
+            this.btnEditJobSheet.Size = new System.Drawing.Size(150, 40);
             this.btnEditJobSheet.TabIndex = 224;
             this.btnEditJobSheet.Text = "Edit Job Sheet";
             this.btnEditJobSheet.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnEditJobSheet.Click += new System.EventHandler(this.btnEditJobSheet_Click);
             // 
             // btnAddJobSheet
             // 
@@ -446,7 +447,7 @@
             this.btnAddJobSheet.ForeColor = System.Drawing.Color.White;
             this.btnAddJobSheet.Image = null;
             this.btnAddJobSheet.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnAddJobSheet.Location = new System.Drawing.Point(614, 10);
+            this.btnAddJobSheet.Location = new System.Drawing.Point(595, 10);
             this.btnAddJobSheet.Margin = new System.Windows.Forms.Padding(0);
             this.btnAddJobSheet.Name = "btnAddJobSheet";
             this.btnAddJobSheet.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -456,10 +457,11 @@
             this.btnAddJobSheet.OnHoverImage = null;
             this.btnAddJobSheet.OnPressedColor = System.Drawing.Color.Black;
             this.btnAddJobSheet.Radius = 2;
-            this.btnAddJobSheet.Size = new System.Drawing.Size(150, 42);
+            this.btnAddJobSheet.Size = new System.Drawing.Size(150, 40);
             this.btnAddJobSheet.TabIndex = 222;
             this.btnAddJobSheet.Text = "Add Job Sheet";
             this.btnAddJobSheet.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnAddJobSheet.Click += new System.EventHandler(this.btnAddJobSheet_Click);
             // 
             // tlpTotalProducedTotalStockIn
             // 
@@ -479,7 +481,7 @@
             this.tlpTotalProducedTotalStockIn.Controls.Add(this.label23, 2, 0);
             this.tlpTotalProducedTotalStockIn.Controls.Add(this.txtTotalProducedRecord, 2, 1);
             this.tlpTotalProducedTotalStockIn.Controls.Add(this.cbChecked, 1, 1);
-            this.tlpTotalProducedTotalStockIn.Location = new System.Drawing.Point(0, 552);
+            this.tlpTotalProducedTotalStockIn.Location = new System.Drawing.Point(0, 528);
             this.tlpTotalProducedTotalStockIn.Margin = new System.Windows.Forms.Padding(0);
             this.tlpTotalProducedTotalStockIn.Name = "tlpTotalProducedTotalStockIn";
             this.tlpTotalProducedTotalStockIn.RowCount = 3;
@@ -667,7 +669,7 @@
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel28.Size = new System.Drawing.Size(774, 542);
+            this.tableLayoutPanel28.Size = new System.Drawing.Size(765, 518);
             this.tableLayoutPanel28.TabIndex = 263;
             // 
             // tableLayoutPanel1
@@ -685,7 +687,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(774, 46);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(765, 46);
             this.tableLayoutPanel1.TabIndex = 263;
             // 
             // label81

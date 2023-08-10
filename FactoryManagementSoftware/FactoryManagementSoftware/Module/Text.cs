@@ -332,6 +332,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_JobNo{ get; } = "Job No.";
         public string Header_SheetID{ get; } = "SHEET ID";
         public string Header_Shift{ get; } = "SHIFT";
+        public string Header_Operator{ get; } = "Operator";
         public string Header_QCPassedQty { get; } = "QC PASSED QTY";
         public string Header_TotalReject { get; } = "Rejected Qty";
 
@@ -501,6 +502,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_ProRwShot { get; } = "Ruuner Weight Per Shot (g)";
 
         public string Header_FamilyWithJobNo { get; } = "FAMILY WITH";
+        public string Header_ProductionDate { get; } = "PRO. Date";
         public string Header_ProductionDay { get; } = "PRO DAY";
         public string Header_ProductionHour { get; } = "PRO HOUR";
         public string Header_ProductionHourPerDay { get; } = "PRO HOUR PER DAY";
@@ -516,6 +518,11 @@ namespace FactoryManagementSoftware.Module
         public string Jump { get; } = "Jump";
 
         public string Header_GotNotPackagingChild { get; } = "GotNotPackagingChild";
+
+        public string Header_Packing_Max_Qty { get; } = "Packing Max Qty";
+        public string Header_Packaging_Qty { get; } = "Packaging Qty";
+        public string Header_Packaging_Stock_Out { get; } = "Stock Out";
+
         public string Header_Forecast_1 { get; } = "Forecast 1";
         public string Header_Forecast_2 { get; } = "Forecast 2";
         public string Header_Forecast_3 { get; } = "Forecast 3";
