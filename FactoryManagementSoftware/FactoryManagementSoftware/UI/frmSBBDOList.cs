@@ -2352,7 +2352,7 @@ namespace FactoryManagementSoftware.UI
 
             //xlWorkSheet.PageSetup.PrintTitleRows = "$1:$1";
 
-            xlWorkSheet.PageSetup.PrintArea = "a1:w45";
+            xlWorkSheet.PageSetup.PrintArea = "a1:w46";
 
 
         }
@@ -3417,7 +3417,7 @@ namespace FactoryManagementSoftware.UI
 
         #region Excel marking
 
-        int itemRowOffset = 16;
+        int itemRowOffset = 17;
         int maxRow = 20;
 
         string indexColStart = "a";
@@ -3441,35 +3441,36 @@ namespace FactoryManagementSoftware.UI
         string poColStart = "t";
         string poColEnd = ":w";
 
-        string areaDONoData = "t7:w7";
-        string areaDateData = "t8:w8";
-        string areaPONoData = "t9:w9";
-        string areaPageData = "t10:w10";
+        string areaDONoData = "t8:w8";
+        string areaDateData = "t9:w9";
+        string areaPONoData = "t10:w10";
+        string areaPageData = "t11:w11";
 
 
 
-        string areaBillName = "a7:g8";
-        string areaBillLine1 = "a9:g9";
-        string areaBillLine2 = "a10:g10";
-        string areaBillLine3 = "a11:g11";
-        string areaBillLine4 = "a12:g12";
-        string areaBillLine5 = "a13:g13";
-        string areaBillTel = "a15:g15";
+        string areaBillName = "a8:g9";
+        string areaBillLine1 = "a10:g10";
+        string areaBillLine2 = "a11:g11";
+        string areaBillLine3 = "a12:g12";
+        string areaBillLine4 = "a13:g13";
+        string areaBillLine5 = "a14:g14";
+        string areaBillTel = "a16:g16";
 
-        string areaDeliveryName = "i7:o8";
-        string areaDeliveryLine1 = "i9:o9";
-        string areaDeliveryLine2 = "i10:o10";
-        string areaDeliveryLine3 = "i11:o11";
-        string areaDeliveryLine4 = "i12:o12";
-        string areaDeliveryLine5 = "i13:o13";
-        string areaDeliveryTel = "i15:o15";
-        string areaRemarkInDO = "a37:r37";
+        string areaDeliveryName = "i8:o9";
+        string areaDeliveryLine1 = "i10:o10";
+        string areaDeliveryLine2 = "i11:o11";
+        string areaDeliveryLine3 = "i12:o12";
+        string areaDeliveryLine4 = "i13:o13";
+        string areaDeliveryLine5 = "i14:o14";
+        string areaDeliveryTel = "i16:o16";
 
-        string areaTransporterName = "q14:w15";
-        string areaTransporterTitle = "q13:w13";
+        string areaRemarkInDO = "a38:r38";
 
-        string areaTotalData = "s37:w37";
-        string areaOwnDORemark = "b37:o37";
+        string areaTransporterName = "q15:w16";
+        string areaTransporterTitle = "q14:w14";
+
+        string areaTotalData = "s38:w38";
+        string areaOwnDORemark = "b38:o38";
 
 
         #endregion
@@ -3511,7 +3512,7 @@ namespace FactoryManagementSoftware.UI
             #region sheet size adjustment
 
             string sheetWidth = "a1:w1";
-            string wholeSheetArea = "a1:w45";
+            string wholeSheetArea = "a1:w46";
 
             //Company Info
             string rowCompanyNameCN = "a1:w1";
@@ -3523,18 +3524,19 @@ namespace FactoryManagementSoftware.UI
             string SemenyihBranch = "a5:e5";
             string HeadOfficeAddress = "f4:w4";
             string SemenyihAddress = "f5:w5";
+            string documentVersionControl = "a6:w6";
 
             //DO Info
-            string areaBillTo = "a6:g6";
-            string areaDeliveryTo = "i6:o6";
-            string rowDeliveryOrder = "a6:w6";
-            string areaDeliveryOrder = "q6:w6";
+            string areaBillTo = "a7:g7";
+            string areaDeliveryTo = "i7:o7";
+            string rowDeliveryOrder = "a7:w7";
+            string areaDeliveryOrder = "q7:w7";
             string areaDOInfo = "a7:w14";
 
-            string areaDONo = "q7:s7";
-            string areaDate = "q8:s8";
-            string areaPONo = "q9:s9";
-            string areaPage = "q10:s10";
+            string areaDONo = "q8:s8";
+            string areaDate = "q9:s9";
+            string areaPONo = "q10:s10";
+            string areaPage = "q11:s11";
 
             
             
@@ -3548,6 +3550,7 @@ namespace FactoryManagementSoftware.UI
             ExcelMergeandAlign(xlWorkSheet, areaBillLine4, alignLeft, alignVCenter);
             ExcelMergeandAlign(xlWorkSheet, areaBillLine5, alignLeft, alignVCenter);
             ExcelMergeandAlign(xlWorkSheet, areaBillTel, alignLeft, alignVCenter);
+            ExcelMergeandAlign(xlWorkSheet, documentVersionControl, alignRight, alignVCenter);
 
             ExcelMergeandAlign(xlWorkSheet, areaDeliveryLine1, alignLeft, alignVCenter);
             ExcelMergeandAlign(xlWorkSheet, areaDeliveryLine2, alignLeft, alignVCenter);
@@ -3556,17 +3559,17 @@ namespace FactoryManagementSoftware.UI
             ExcelMergeandAlign(xlWorkSheet, areaDeliveryLine5, alignLeft, alignVCenter);
             ExcelMergeandAlign(xlWorkSheet, areaDeliveryTel, alignLeft, alignVCenter);
 
-            string rowDOInfoLastRow = "a15:w15";
+            string rowDOInfoLastRow = "a16:w16";
 
             ExcelMergeandAlign(xlWorkSheet, areaTransporterTitle, alignLeft, alignVCenter);
 
-            string rowListTitle = "a16:w16";
-            string areaIndex = "a16:a16";
-            string areaItem = "b16:d16";
-            string areaDescription = "e16:o16";
-            string areaQuantity = "p16:r16";
-            string areaRemark = "t16:w16";
-            string areaPO = "t16:w16";
+            string rowListTitle = "a17:w17";
+            string areaIndex = "a17:a17";
+            string areaItem = "b17:d17";
+            string areaDescription = "e17:o17";
+            string areaQuantity = "p17:r17";
+            string areaRemark = "t17:w17";
+            string areaPO = "t17:w17";
 
             ExcelColumnWidth(xlWorkSheet, sheetWidth, 3);
 
@@ -3659,8 +3662,16 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Size = 8;
             DOFormat.Font.Name = text.Font_Type_TimesNewRoman;
 
+            DOFormat = xlWorkSheet.get_Range(documentVersionControl).Cells;
+            DOFormat.Merge();
+            DOFormat.Value = text.SBB_DO_Version_Control;
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignBottom;
+            DOFormat.Font.Size = 8;
+            DOFormat.Font.Name = text.Font_Type_TimesNewRoman;
+
             Color color = Color.Black;
-            DOFormat = xlWorkSheet.get_Range(rowAddress2).Cells;
+            DOFormat = xlWorkSheet.get_Range(documentVersionControl).Cells;
             DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = color;
 
             #endregion
@@ -3670,6 +3681,8 @@ namespace FactoryManagementSoftware.UI
             ExcelRowHeight(xlWorkSheet, rowDeliveryOrder, 37.8);
             ExcelRowHeight(xlWorkSheet, areaDOInfo, 13.2);
             ExcelRowHeight(xlWorkSheet, rowDOInfoLastRow, 27);
+            ExcelRowHeight(xlWorkSheet, rowDOInfoLastRow, 27);
+            ExcelRowHeight(xlWorkSheet, "a42:w42", 0);
 
             DOFormat = xlWorkSheet.get_Range(areaBillTo).Cells;
             DOFormat.Merge();
@@ -3825,9 +3838,9 @@ namespace FactoryManagementSoftware.UI
                 DOFormat.Value = "YOUR P/O NO.";
 
 
-                areaDescription = "e16:k16";
-                areaQuantity = "l16:n16";
-                areaRemark = "p16:s16";
+                areaDescription = "e17:k17";
+                areaQuantity = "l17:n17";
+                areaRemark = "p17:s17";
    
 
             }
@@ -3844,7 +3857,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.VerticalAlignment = alignVCenter;
 
             //item list content
-            DOFormat = xlWorkSheet.get_Range("a17:w36").Cells;
+            DOFormat = xlWorkSheet.get_Range("a18:w37").Cells;
             DOFormat.RowHeight = 18;
             DOFormat.Font.Size = itemListFontSize;
             DOFormat.Font.Name = "Cambria";
@@ -3935,7 +3948,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.ShrinkToFit = true;
 
             //Total 
-            DOFormat = xlWorkSheet.get_Range("a37:w37").Cells;
+            DOFormat = xlWorkSheet.get_Range("a38:w38").Cells;
             DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = color;
             //DOFormat.Borders[XlBordersIndex.xlEdgeBottom].LineStyle = XlLineStyle.xlDot;
 
@@ -3951,7 +3964,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
 
-            string ownDORemark = "b37:o37";
+            string ownDORemark = "b38:o38";
             DOFormat = xlWorkSheet.get_Range(ownDORemark).Cells;
             DOFormat.Merge();
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
@@ -3973,13 +3986,13 @@ namespace FactoryManagementSoftware.UI
 
             #region Sign And Chop
 
-            DOFormat = xlWorkSheet.get_Range("a39:j45").Cells;
+            DOFormat = xlWorkSheet.get_Range("a40:j46").Cells;
             DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = color;
             DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = color;
             DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = color;
             DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = color;
 
-            DOFormat = xlWorkSheet.get_Range("a39:j39").Cells;
+            DOFormat = xlWorkSheet.get_Range("a40:j40").Cells;
             DOFormat.Merge();
             DOFormat.Value = "SAFETY PLASTICS SDN. BHD.";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
@@ -3988,7 +4001,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
             DOFormat.Font.Bold = true;
 
-            DOFormat = xlWorkSheet.get_Range("p39:w39").Cells;
+            DOFormat = xlWorkSheet.get_Range("p40:w40").Cells;
             DOFormat.Merge();
             DOFormat.Value = "Goods checked and received by";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
@@ -3997,7 +4010,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
 
 
-            DOFormat = xlWorkSheet.get_Range("b45:d45").Cells;
+            DOFormat = xlWorkSheet.get_Range("b46:d46").Cells;
             DOFormat.Merge();
             DOFormat.Value = "Issued By";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
@@ -4006,7 +4019,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
             DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = color;
 
-            DOFormat = xlWorkSheet.get_Range("g45:i45").Cells;
+            DOFormat = xlWorkSheet.get_Range("g46:i46").Cells;
             DOFormat.Merge();
             DOFormat.Value = "Lorry";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
@@ -4015,7 +4028,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
             DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = color;
 
-            DOFormat = xlWorkSheet.get_Range("p45:w45").Cells;
+            DOFormat = xlWorkSheet.get_Range("p46:w46").Cells;
             DOFormat.Merge();
             DOFormat.Value = "Customer's Chop & Signature";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
@@ -4025,6 +4038,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = color;
 
             #endregion
+            ExcelRowHeight(xlWorkSheet, rowDeliveryOrder, 37.8);
 
         }
 
@@ -4524,10 +4538,10 @@ namespace FactoryManagementSoftware.UI
 
                 if (myconnstrng == text.DB_Semenyih)
                 {
-
                     string folderName = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00");
 
-                    path = @"\\DESKTOP-MFUKGH2\Server\(1. OFFICE)\(1.DO)\" + folderName;
+                    path = @"\\SemenyihAdminPC\Admin Server\(1.OFFICE)\(1.DO)\" + folderName;
+
                 }
 
                 Directory.CreateDirectory(path);

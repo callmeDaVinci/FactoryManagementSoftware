@@ -467,7 +467,7 @@ namespace FactoryManagementSoftware.UI
                 BLL_JOB_SUMMARY.recycle_material_qty_kg = totalRecycle_kg.ToString();
                 BLL_JOB_SUMMARY.material_recycle_use = totalRecycle_kg.ToString();
                 BLL_JOB_SUMMARY.color_material_code = COLOR_MAT_CODE;
-                BLL_JOB_SUMMARY.part_color = lblPartColor.Text;
+                BLL_JOB_SUMMARY.part_color = txtItemColor.Text;
                 BLL_JOB_SUMMARY.color_material_usage = txtColorMatUsage.Text;
                 BLL_JOB_SUMMARY.use_recycle = cbRecycleExtraMode.Checked || cbRecycleSaveMode.Checked;
 
@@ -779,7 +779,7 @@ namespace FactoryManagementSoftware.UI
 
             lblMouldTon.Text = "";
             lblMouldCode.Text = "";
-            lblPartColor.Text = "";
+            txtItemColor.Text = "";
             txtColorMatUsage.Text = "0";
             
 
@@ -838,7 +838,7 @@ namespace FactoryManagementSoftware.UI
                         lblColorMatDescription.Text = tool.getItemNameFromDataTable(DT_ITEM, colorMaterial);
                         COLOR_MAT_CODE = colorMaterial;
 
-                        lblPartColor.Text = colorName;
+                        txtItemColor.Text = colorName;
                         txtColorMatUsage.Text = colorRate.ToString();
 
                         break;
@@ -909,7 +909,7 @@ namespace FactoryManagementSoftware.UI
 
                     lblColorMatDescription.Text = tool.getItemNameFromDataTable(DT_ITEM, colorMaterial);
                     COLOR_MAT_CODE = colorMaterial;
-                    lblPartColor.Text = colorName;
+                    txtItemColor.Text = colorName;
                     txtColorMatUsage.Text = colorRate.ToString();
 
 
@@ -1016,7 +1016,7 @@ namespace FactoryManagementSoftware.UI
 
             lblColorMatDescription.Text = tool.getItemNameFromDataTable(DT_ITEM, colorMaterial);
             COLOR_MAT_CODE = colorMaterial;
-            lblPartColor.Text = colorName;
+            txtItemColor.Text = colorName;
             txtColorMatUsage.Text = colorRate.ToString();
 
             if (dgvRawMatList.Rows.Count == 1)
@@ -4578,7 +4578,7 @@ namespace FactoryManagementSoftware.UI
                 if (!string.IsNullOrEmpty(COLOR_MAT_CODE))
                 {
                     colorMaterial = COLOR_MAT_CODE;
-                    itemColor = lblPartColor.Text;
+                    itemColor = txtItemColor.Text;
                 }
 
                 if (dgvItemList?.RowCount > 0)
@@ -6574,6 +6574,211 @@ namespace FactoryManagementSoftware.UI
         private void frmPlanningVer2dot1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnItemInfoSave_Click_1(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to update the item info?", "Message",
+                                                              MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+           
+            if (dialogResult == DialogResult.Yes)
+            {
+                itemBLL uItem = new itemBLL();
+
+                if(dgvItemList?.Rows.Count > 0)
+                {
+                    DataGridView dgv = dgvItemList;
+
+                    uItem.item_updtd_date = DateTime.Now;
+                    uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                    foreach (DataGridViewRow row in dgv.Rows)
+                    {
+                        string itemCode = row.Cells[text.Header_ItemCode].Value.ToString();
+
+                        if(!string.IsNullOrEmpty(itemCode))
+                        {
+                            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                            uItem.item_code = itemCode;
+                            int ton = int.TryParse(lblMouldTon.Text, out ton) ? ton : 0;
+                            int cavity = int.TryParse(row.Cells[text.Header_Cavity].Value.ToString(), out cavity) ? cavity : 0;
+                            int cycleTime = int.TryParse(txtMouldCycleTime.Text, out cycleTime) ? cycleTime : 0;
+                            float pwPerShot = float.TryParse(row.Cells[text.Header_ProPwShot].Value.ToString(), out pwPerShot) ? pwPerShot : 0;
+                            float rwPerShot = float.TryParse(txtMouldRWPerShot.Text, out rwPerShot) ? rwPerShot : 0;
+
+                            //uItem.item_quo_ton = string.IsNullOrEmpty(txtQuoTon.Text) ? 0 : Convert.ToInt32(txtQuoTon.Text);
+                            
+                            uItem.item_pro_ton = ton;
+                            uItem.item_cavity = cavity;
+                            //uItem.item_quo_ct = string.IsNullOrEmpty(txtQuoCT.Text) ? 0 : Convert.ToInt32(txtQuoCT.Text);
+                            uItem.item_pro_ct_to = cycleTime;
+                           
+                            uItem.item_pro_pw_shot = pwPerShot;
+                            uItem.item_pro_rw_shot = rwPerShot;
+                           
+                            if (dalItem.updateAndHistoryRecord(uItem))
+                            {
+                                MessageBox.Show(itemCode + "'s info updated!");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid Item Code found!");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Item not found!");
+
+                }
+
+
+                DT_ITEM = dalItem.Select();
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+        }
+
+        private void btnRawMatSave_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to update raw material info for this item?", "Message",
+                                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+            {
+                itemBLL uItem = new itemBLL();
+
+                if(dgvRawMatList == null || dgvRawMatList.Rows.Count <= 0)
+                {
+                    MessageBox.Show("Raw material data not found!");
+                    Cursor = Cursors.Arrow; // change cursor to normal type
+
+                    return;
+                }
+
+                if (dgvItemList?.Rows.Count > 0)
+                {
+                    DataGridView dgv = dgvItemList;
+
+                    uItem.item_updtd_date = DateTime.Now;
+                    uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                    foreach (DataGridViewRow row in dgv.Rows)
+                    {
+                        string itemCode = row.Cells[text.Header_ItemCode].Value.ToString();
+
+                        if (!string.IsNullOrEmpty(itemCode))
+                        {
+                            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                            uItem.item_code = itemCode;
+
+                            string rawMat = dgvRawMatList.Rows[0].Cells[text.Header_ItemCode].Value.ToString();
+
+                            if (!string.IsNullOrEmpty(rawMat))
+                            {
+                                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                                uItem.item_code = itemCode;
+                                uItem.item_material = rawMat;
+
+                                if (dalItem.rawMatUpdateAndHistoryRecord(uItem))
+                                {
+                                    MessageBox.Show(itemCode + "'s raw material info updated!");
+                                }
+                             
+                            }
+                            else
+                            {
+                                MessageBox.Show("Raw material data not found!");
+                                Cursor = Cursors.Arrow; // change cursor to normal type
+
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid Item Code found!");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Item not found!");
+
+                }
+
+                DT_ITEM = dalItem.Select();
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+        }
+
+        private void btnColorMatSave_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to update color material info for this item?", "Message",
+                                                              MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+            {
+
+                itemBLL uItem = new itemBLL();
+
+                if (dgvItemList?.Rows.Count > 0)
+                {
+                    DataGridView dgv = dgvItemList;
+
+                    uItem.item_updtd_date = DateTime.Now;
+                    uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                    foreach (DataGridViewRow row in dgv.Rows)
+                    {
+                        string itemCode = row.Cells[text.Header_ItemCode].Value.ToString();
+
+                        if (!string.IsNullOrEmpty(itemCode))
+                        {
+                            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                            string colorMat = COLOR_MAT_CODE;
+
+                            if(!string.IsNullOrEmpty(COLOR_MAT_CODE))
+                            {
+                                string color = txtItemColor.Text;
+                                float colorUsage = float.TryParse(txtColorMatUsage.Text, out colorUsage) ? colorUsage : 0;
+
+                                colorUsage = colorUsage >= 1 ? colorUsage / 100 : colorUsage;
+
+                                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                                uItem.item_code = itemCode;
+                                uItem.item_mb = colorMat;
+                                uItem.item_mb_rate = colorUsage;
+                                uItem.item_color = color;
+
+                                if (dalItem.colorMatUpdateAndHistoryRecord(uItem))
+                                {
+                                    MessageBox.Show(itemCode + "'s color material info updated!");
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Color Material Code not found!");
+                            }
+                          
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid Item Code found!");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Item not found!");
+
+                }
+
+                DT_ITEM = dalItem.Select();
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
         }
     }
 }

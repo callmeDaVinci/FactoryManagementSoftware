@@ -86,6 +86,8 @@ namespace FactoryManagementSoftware.Module
  @"No.17, PT 2507, Jalan Hi-Tech 2, Kawasan Perindustrian Hi-Tech, Jalan Sungai Lalang, 43500 Semenyih, Selangor.
 (Tel) 016 - 282 8195 (Email) safetyplastics.my@gmail.com";
 
+        public string SBB_DO_Version_Control { get; } = "F 8.5.4-01 (A) (23/08/02)";
+
         #endregion
 
         #region Font Type
@@ -317,6 +319,10 @@ namespace FactoryManagementSoftware.Module
         public string Header_MacName{ get; } = "MAC.";
         public string Header_MeterStart{ get; } = "Meter Start";
         public string Header_MeterEnd{ get; } = "Meter End";
+
+        public string Header_TimeStart { get; } = "Time Start";
+        public string Header_TimeEnd { get; } = "Time End";
+
         public string Header_StockIn_Remark{ get; } = "Stock In Remark";
         public string Header_StockIn_Container{ get; } = "Stock In Qty (Container)";
         public string Header_StockIn_Balance_Qty{ get; } = "Stock In Balance Qty";
@@ -519,9 +525,9 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_GotNotPackagingChild { get; } = "GotNotPackagingChild";
 
-        public string Header_Packing_Max_Qty { get; } = "Packing Max Qty";
-        public string Header_Packaging_Qty { get; } = "Packaging Qty";
-        public string Header_Packaging_Stock_Out { get; } = "Stock Out";
+        public string Header_Qty_Per_Container { get; } = "Qty / Container";
+        public string Header_Container_Qty { get; } = "Container Qty";
+        public string Header_Container_Stock_Out { get; } = "Container Stock Out";
 
         public string Header_Forecast_1 { get; } = "Forecast 1";
         public string Header_Forecast_2 { get; } = "Forecast 2";

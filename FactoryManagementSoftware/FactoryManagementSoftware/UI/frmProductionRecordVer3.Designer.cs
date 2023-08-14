@@ -336,6 +336,7 @@
             this.dgvActiveJobList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvActiveJobList.Size = new System.Drawing.Size(494, 545);
             this.dgvActiveJobList.TabIndex = 262;
+            this.dgvActiveJobList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvActiveJobList_CellMouseDown);
             this.dgvActiveJobList.SelectionChanged += new System.EventHandler(this.dgvActiveJobList_SelectionChanged);
             // 
             // tlpMainPanel

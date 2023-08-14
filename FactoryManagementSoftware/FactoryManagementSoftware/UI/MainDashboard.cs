@@ -35,6 +35,7 @@ namespace FactoryManagementSoftware.UI
         static public bool MacScheduleFormOpen = false;
         static public bool DailyJobSheetFormOpen = false;
         static public bool NewDailyJobSheetFormOpen = false;
+        static public bool NewDailyJobSheetFormOpenVer3 = false;
         static public bool ProductionReportFormOpen = false;
         static public bool SBBFormOpen = false;
         static public bool SBBDeliveredFormOpen = false;
@@ -78,7 +79,7 @@ namespace FactoryManagementSoftware.UI
                 sBBToolStripMenuItem.Visible = true;
                 adminToolStripMenuItem.Visible = true;
                 orderToolStripMenuItem1.Visible = true;
-                productionToolStripMenuItem.Visible = true;
+                macScheduleToolStripMenuItem.Visible = true;
 
             }
             else if(userPermission >= ACTION_LVL_TWO)
@@ -86,7 +87,7 @@ namespace FactoryManagementSoftware.UI
                 forecastToolStripMenuItem.Visible = true;
                 adminToolStripMenuItem.Visible = false;
                 orderToolStripMenuItem1.Visible = true;
-                productionToolStripMenuItem.Visible = true;
+                macScheduleToolStripMenuItem.Visible = true;
             }
             else
             {
@@ -94,7 +95,7 @@ namespace FactoryManagementSoftware.UI
                 forecastToolStripMenuItem.Visible = false;
                 adminToolStripMenuItem.Visible = false;
                 orderToolStripMenuItem1.Visible = true;
-                productionToolStripMenuItem.Visible = true;
+                macScheduleToolStripMenuItem.Visible = true;
             }
 
 
@@ -106,7 +107,7 @@ namespace FactoryManagementSoftware.UI
                 //Semenyih
                 pMMAToolStripMenuItem.Visible = false;
                 forecastToolStripMenuItem.Visible = false;
-                productionToolStripMenuItem.Visible = false;
+                macScheduleToolStripMenuItem.Visible = false;
                 dAILYToolStripMenuItem.Visible = false;
                 //orderToolStripMenuItem1.Visible = false;
             }
@@ -673,6 +674,27 @@ namespace FactoryManagementSoftware.UI
 
         private void productionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!NEWProductionFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmMachineScheduleVer2 frm = new frmMachineScheduleVer2
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                frm.Show();
+                NEWProductionFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmMachineScheduleVer2>().Count() >= 1)
+                {
+                    Application.OpenForms.OfType<frmMachineScheduleVer2>().First().BringToFront();
+                }
+            }
+
             //if (!ProductionFormOpen)
             //{
             //    frmLoading.ShowLoadingScreen();
@@ -697,29 +719,62 @@ namespace FactoryManagementSoftware.UI
 
         private void dAILYToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
-            if (!NewDailyJobSheetFormOpen)
-            {
-                frmLoading.ShowLoadingScreen();
 
-                frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
-                frm.MdiParent = this;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
-                frm.Show();
-                NewDailyJobSheetFormOpen = true;
+            //if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
+            //{
+            //    if (!NewDailyJobSheetFormOpenVer3)
+            //    {
+            //        frmLoading.ShowLoadingScreen();
 
-                frmLoading.CloseForm();
+            //        frmProductionRecordVer3 frm = new frmProductionRecordVer3();
+            //        frm.MdiParent = this;
+            //        frm.StartPosition = FormStartPosition.CenterScreen;
+            //        frm.WindowState = FormWindowState.Maximized;
+            //        frm.Show();
 
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
-                {
-                    Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
-                }
+            //        NewDailyJobSheetFormOpenVer3 = true;
 
-            }
+            //        frmLoading.CloseForm();
+
+            //    }
+            //    else
+            //    {
+            //        if (Application.OpenForms.OfType<frmProductionRecordVer3>().Count() == 1)
+            //        {
+            //            Application.OpenForms.OfType<frmProductionRecordVer3>().First().BringToFront();
+            //        }
+
+            //    }
+            //}
+            //else
+            //{
+            //    if (!NewDailyJobSheetFormOpen)
+            //    {
+            //        frmLoading.ShowLoadingScreen();
+
+            //        frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
+            //        frm.MdiParent = this;
+            //        frm.StartPosition = FormStartPosition.CenterScreen;
+            //        frm.WindowState = FormWindowState.Maximized;
+            //        frm.Show();
+            //        NewDailyJobSheetFormOpen = true;
+
+            //        frmLoading.CloseForm();
+
+            //    }
+            //    else
+            //    {
+            //        if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
+            //        {
+            //            Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
+            //        }
+
+            //    }
+            //}
+
+
 
         }
 
@@ -1136,6 +1191,59 @@ namespace FactoryManagementSoftware.UI
                 {
                     Application.OpenForms.OfType<frmMachineSchedule>().First().BringToFront();
                 }
+            }
+        }
+
+        private void oUGToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!NewDailyJobSheetFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+
+                frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                NewDailyJobSheetFormOpen = true;
+
+                frmLoading.CloseForm();
+
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
+                }
+
+            }
+        }
+
+        private void semenyihToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!NewDailyJobSheetFormOpenVer3)
+            {
+                frmLoading.ShowLoadingScreen();
+
+                frmProductionRecordVer3 frm = new frmProductionRecordVer3();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+
+                NewDailyJobSheetFormOpenVer3 = true;
+
+                frmLoading.CloseForm();
+
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmProductionRecordVer3>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmProductionRecordVer3>().First().BringToFront();
+                }
+
             }
         }
     }

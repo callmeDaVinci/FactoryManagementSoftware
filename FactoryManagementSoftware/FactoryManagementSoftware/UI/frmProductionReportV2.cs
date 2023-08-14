@@ -1612,6 +1612,10 @@ namespace FactoryManagementSoftware.UI
 
                 int MaxOutput = (meterEnd - meterStart) * cavity;
 
+                if(MaxOutput == 0)
+                {
+                    MaxOutput = 1;
+                }
                 string shift = row[dalProRecord.Shift].ToString();
 
                 string itemCode = row[dalItem.ItemCode].ToString();

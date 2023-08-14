@@ -20,6 +20,8 @@ namespace FactoryManagementSoftware.DAL
         public string ColorMatLotNo { get; } = "color_mat_lot_no";
         public string MeterStart { get; } = "meter_start";
         public string MeterEnd { get; } = "meter_end";
+        public string TimeStart { get; } = "time_start";
+        public string TimeEnd { get; } = "time_end";
         public string LastShiftBalance { get; } = "last_shift_balance";
         public string CurrentShiftBalance { get; } = "current_shift_balance";
         public string FullBox { get; } = "full_box";
@@ -700,7 +702,124 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+        public bool Semenyih_InsertProductionRecord(ProductionRecordBLL u)
+        {
+            bool isSuccess = false;
+            u.active = true;
+            SqlConnection conn = new SqlConnection(myconnstrng);
 
+            try
+            {
+                String sql = @"INSERT INTO tbl_production_record 
+                            (" + JobNo + ","
+                            + ProDate + ","
+                            + TimeStart + ","
+                            + TimeEnd + ","
+                            + Shift + ","
+                            + ProLotNo + ","
+                            + MacNo + ","
+                            + RawMatLotNo + ","
+                            + ColorMatLotNo + ","
+                            + MeterStart + ","
+                            + MeterEnd + ","
+                            + LastShiftBalance + ","
+                            + CurrentShiftBalance + ","
+                            + FullBox + ","
+                            + TotalProduced + ","
+                            + TotalReject + ","
+                            + TotalActualReject + ","
+                            + UpdatedDate + ","
+                            + UpdatedBy + ","
+                            + Active + ","
+                            + PackagingQty + ","
+                            + PackagingCode + ","
+                            + directIn + ","
+                             + directOut + ","
+                            + ParentCode + ","
+                            + Note + ") VALUES" +
+                            "(@plan_id," +
+                            "@production_date," +
+                            "@production_time_start," +
+                            "@production_time_end," +
+                            "@shift," +
+                            "@production_lot_no," +
+                            "@mac_no," +
+                            "@raw_mat_lot_no," +
+                            "@color_mat_lot_no," +
+                            "@meter_start," +
+                            "@meter_end," +
+                            "@last_shift_balance," +
+                            "@current_shift_balance," +
+                            "@full_box," +
+                            "@total_produced," +
+                            "@total_reject," +
+                            "@total_actual_reject," +
+                            "@updated_date," +
+                             "@updated_by," +
+                            "@active," +
+                            "@packaging_qty," +
+                             "@packaging_code," +
+                              "@directIn," +
+                               "@directOut," +
+                                "@parent_code," +
+                            "@note)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@production_date", u.production_date);
+                cmd.Parameters.AddWithValue("@production_time_start", u.production_time_start);
+                cmd.Parameters.AddWithValue("@production_time_end", u.production_time_end);
+                cmd.Parameters.AddWithValue("@shift", u.shift);
+                cmd.Parameters.AddWithValue("@production_lot_no", u.production_lot_no);
+                cmd.Parameters.AddWithValue("@mac_no", u.mac_no);
+                cmd.Parameters.AddWithValue("@raw_mat_lot_no", u.raw_mat_lot_no);
+                cmd.Parameters.AddWithValue("@color_mat_lot_no", u.color_mat_lot_no);
+                cmd.Parameters.AddWithValue("@meter_start", u.meter_start);
+                cmd.Parameters.AddWithValue("@meter_end", u.meter_end);
+                cmd.Parameters.AddWithValue("@last_shift_balance", u.last_shift_balance);
+                cmd.Parameters.AddWithValue("@current_shift_balance", u.current_shift_balance);
+                cmd.Parameters.AddWithValue("@full_box", u.full_box);
+                cmd.Parameters.AddWithValue("@total_produced", u.total_produced);
+                cmd.Parameters.AddWithValue("@total_reject", u.total_reject);
+                cmd.Parameters.AddWithValue("@total_actual_reject", u.total_actual_reject);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+                cmd.Parameters.AddWithValue("@active", u.active);
+                cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
+                cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
+                cmd.Parameters.AddWithValue("@parent_code", u.parent_code);
+                cmd.Parameters.AddWithValue("@note", u.note);
+                cmd.Parameters.AddWithValue("@directIn", u.directIn);
+                cmd.Parameters.AddWithValue("@directOut", u.directOut);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         public bool InsertSheetMeter(ProductionRecordBLL u)
         {
             bool isSuccess = false;
@@ -1057,6 +1176,100 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool Semenyih_ProductionRecordUpdate(ProductionRecordBLL u)
+        {
+            bool isSuccess = false;
+            u.active = true;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_production_record 
+                            SET "
+                            + JobNo + "=@plan_id,"
+                            + ProDate + "=@production_date,"
+                            + TimeStart + "=@production_time_start,"
+                            + TimeEnd + "=@production_time_end,"
+                            + Shift + "=@shift,"
+                            + ProLotNo + "=@production_lot_no,"
+                            + MacNo + "=@mac_no,"
+                            + RawMatLotNo + "=@raw_mat_lot_no,"
+                            + ColorMatLotNo + "=@color_mat_lot_no,"
+                            + MeterStart + "=@meter_start,"
+                            + MeterEnd + "=@meter_end,"
+                            + LastShiftBalance + "=@last_shift_balance,"
+                            + CurrentShiftBalance + "=@current_shift_balance,"
+                            + FullBox + "=@full_box,"
+                            + TotalProduced + "=@total_produced,"
+                            + TotalReject + "=@total_reject,"
+                            + TotalActualReject + "=@total_actual_reject,"
+                            + Active + "=@active,"
+                            + PackagingCode + "=@packaging_code,"
+                            + PackagingQty + "=@packaging_qty,"
+                            + ParentCode + "=@parent_code,"
+                            + Note + "=@note,"
+                            + directIn + "=@directIn,"
+                             + directOut + "=@directOut,"
+                            + UpdatedDate + "=@updated_date,"
+                            + UpdatedBy + "=@updated_by" +
+                            " WHERE sheet_id=@sheet_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@sheet_id", u.sheet_id);
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@production_date", u.production_date);
+                cmd.Parameters.AddWithValue("@production_time_start", u.production_time_start);
+                cmd.Parameters.AddWithValue("@production_time_end", u.production_time_end);
+                cmd.Parameters.AddWithValue("@shift", u.shift);
+                cmd.Parameters.AddWithValue("@production_lot_no", u.production_lot_no);
+                cmd.Parameters.AddWithValue("@mac_no", u.mac_no);
+                cmd.Parameters.AddWithValue("@raw_mat_lot_no", u.raw_mat_lot_no);
+                cmd.Parameters.AddWithValue("@color_mat_lot_no", u.color_mat_lot_no);
+                cmd.Parameters.AddWithValue("@meter_start", u.meter_start);
+                cmd.Parameters.AddWithValue("@meter_end", u.meter_end);
+                cmd.Parameters.AddWithValue("@last_shift_balance", u.last_shift_balance);
+                cmd.Parameters.AddWithValue("@current_shift_balance", u.current_shift_balance);
+                cmd.Parameters.AddWithValue("@full_box", u.full_box);
+                cmd.Parameters.AddWithValue("@total_produced", u.total_produced);
+                cmd.Parameters.AddWithValue("@total_reject", u.total_reject);
+                cmd.Parameters.AddWithValue("@total_actual_reject", u.total_actual_reject);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+                cmd.Parameters.AddWithValue("@active", u.active);
+                cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
+                cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
+                cmd.Parameters.AddWithValue("@parent_code", u.parent_code);
+                cmd.Parameters.AddWithValue("@note", u.note);
+                cmd.Parameters.AddWithValue("@directIn", u.directIn);
+                cmd.Parameters.AddWithValue("@directOut", u.directOut);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         public bool ReactiveSheetData(ProductionRecordBLL u)
         {
             u.active = true;

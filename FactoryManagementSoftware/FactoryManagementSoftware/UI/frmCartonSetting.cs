@@ -102,54 +102,27 @@ namespace FactoryManagementSoftware
         //readonly private string header_MainCarton = "MAIN CARTON";
         //readonly private string header_StockOut = "STOCK OUT";
 
-        //readonly private string text_EditItem = "EDIT";
+        readonly private string text_EditItem = "EDIT";
         readonly private string text_RemoveItem = "REMOVE";
-        //readonly private string text_ItemGroupTitle = "ITEM GROUP: ";
+        readonly private string text_ItemGroupTitle = "ITEM GROUP: ";
 
-        private string header_PackagingCode = "CODE";
-        private string header_PackagingName = "NAME";
-        private string header_PackagingQty = "CARTON QTY";
-        private string header_PackagingMax = "PART QTY PER BOX";
-        private string header_PackagingStockOut = "STOCK OUT";
-
-        private DataTable NewCartonTable()
-        {
-            DataTable dt = new DataTable();
-
-            dt.Columns.Add(header_PackagingCode, typeof(string));
-            dt.Columns.Add(header_PackagingName, typeof(string));
-            dt.Columns.Add(header_PackagingMax, typeof(int));
-            dt.Columns.Add(header_PackagingQty, typeof(int));
-            dt.Columns.Add(header_PackagingStockOut, typeof(bool));
-
-            return dt;
-        }
+        //private string text.Header_ItemCode = "CODE";
+        //private string text.Header_ItemName = "NAME";
+        //private string text.Header_Packaging_Qty = "CARTON QTY";
+        //private string text.Header_Packing_Max_Qty = "PART QTY PER BOX";
+        //private string header_PackagingStockOut = "STOCK OUT";
 
         private void dgvCartonEdit(DataGridView dgv)
         {
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
             dgv.RowsDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
 
-            dgv.Columns[header_PackagingMax].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_PackagingQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_PackagingCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgv.Columns[header_PackagingName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            //dgv.Columns[header_MeterReading].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgv.Columns[header_Hourly].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            //dgv.Columns[header_Operator].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-            //dgv.Columns[header_PartQty_Min].Visible = false;
-            //dgv.Columns[header_PartQty_Max].Visible = false;
-            //dgv.Columns[header_ChildItemCode].Visible = false;
-            //dgv.Columns[header_ChildItemName].Visible = false;
-
-            //dgv.Columns[header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgv.Columns[header_PartQtyString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgv.Columns[header_ChildItemQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgv.Columns[header_ChildItemString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-
-            dgv.Columns[header_PackagingCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[text.Header_Qty_Per_Container].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[text.Header_Container_Qty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[text.Header_ItemCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgv.Columns[text.Header_ItemName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+          
+            dgv.Columns[text.Header_ItemCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
 
             // dgv.Columns[header_MeterReading].DefaultCellStyle.BackColor = SystemColors.Info;
@@ -226,7 +199,7 @@ namespace FactoryManagementSoftware
                 {
                     foreach(DataRow row in dt.Rows)
                     {
-                        if(row[header_PackagingCode].ToString().Equals(itemCode))
+                        if(row[text.Header_ItemCode].ToString().Equals(itemCode))
                         {
                             MessageBox.Show("Item added!");
                             return;
@@ -237,9 +210,9 @@ namespace FactoryManagementSoftware
 
                 DataRow newRow = dt.NewRow();
 
-                newRow[header_PackagingName] = itemName;
-                newRow[header_PackagingCode] = itemCode;
-                newRow[header_PackagingStockOut] = true;
+                newRow[text.Header_ItemName] = itemName;
+                newRow[text.Header_ItemCode] = itemCode;
+                newRow[text.Header_Container_Stock_Out] = true;
 
                 dt.Rows.Add(newRow);
 
@@ -311,27 +284,27 @@ namespace FactoryManagementSoftware
 
             for (int i = 0; i < dgvCarton.Rows.Count; i++)
             {
-                string max = dgvCarton.Rows[i].Cells[header_PackagingMax].Value.ToString();
-                string qty = dgvCarton.Rows[i].Cells[header_PackagingQty].Value.ToString();
+                string max = dgvCarton.Rows[i].Cells[text.Header_Qty_Per_Container].Value.ToString();
+                string qty = dgvCarton.Rows[i].Cells[text.Header_Container_Qty].Value.ToString();
 
                 if (string.IsNullOrEmpty(max))
                 {
-                    dgvCarton.Rows[i].Cells[header_PackagingMax].Style.BackColor = Color.LightYellow;
+                    dgvCarton.Rows[i].Cells[text.Header_Qty_Per_Container].Style.BackColor = Color.LightYellow;
                     emplyCellFound = true;
                 }
                 else
                 {
-                    dgvCarton.Rows[i].Cells[header_PackagingMax].Style.BackColor = Color.White;
+                    dgvCarton.Rows[i].Cells[text.Header_Qty_Per_Container].Style.BackColor = Color.White;
                 }
 
                 if (string.IsNullOrEmpty(qty))
                 {
-                    dgvCarton.Rows[i].Cells[header_PackagingQty].Style.BackColor = Color.LightYellow;
+                    dgvCarton.Rows[i].Cells[text.Header_Container_Qty].Style.BackColor = Color.LightYellow;
                     emplyCellFound = true;
                 }
                 else
                 {
-                    dgvCarton.Rows[i].Cells[header_PackagingQty].Style.BackColor = Color.White;
+                    dgvCarton.Rows[i].Cells[text.Header_Container_Qty].Style.BackColor = Color.White;
                 }
             }
 
@@ -361,7 +334,7 @@ namespace FactoryManagementSoftware
 
                 string colName = dgv.Columns[col].Name;
 
-                if(colName.Equals(header_PackagingMax) || colName.Equals(header_PackagingQty) || colName.Equals(header_PackagingStockOut))
+                if(colName.Equals(text.Header_Qty_Per_Container) || colName.Equals(text.Header_Container_Qty) || colName.Equals(text.Header_Container_Stock_Out))
                 {
                     dgv.ReadOnly = false;
                     dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
@@ -404,7 +377,7 @@ namespace FactoryManagementSoftware
 
                 string colName = dgv.Columns[dgv.CurrentCell.ColumnIndex].Name;
 
-                if (colName.Equals(header_PackagingMax) || colName.Equals(header_PackagingQty))
+                if (colName.Equals(text.Header_Qty_Per_Container) || colName.Equals(text.Header_Container_Qty))
                 {
                     TextBox tb = e.Control as TextBox;
 
@@ -448,27 +421,27 @@ namespace FactoryManagementSoftware
 
             for(int i =0; i < dgvCarton.Rows.Count; i++)
             {
-                string max = dgvCarton.Rows[i].Cells[header_PackagingMax].Value.ToString();
-                string qty = dgvCarton.Rows[i].Cells[header_PackagingQty].Value.ToString();
+                string max = dgvCarton.Rows[i].Cells[text.Header_Qty_Per_Container].Value.ToString();
+                string qty = dgvCarton.Rows[i].Cells[text.Header_Container_Qty].Value.ToString();
 
                 if (string.IsNullOrEmpty(max))
                 {
-                    dgvCarton.Rows[i].Cells[header_PackagingMax].Style.BackColor = Color.LightYellow;
+                    dgvCarton.Rows[i].Cells[text.Header_Qty_Per_Container].Style.BackColor = Color.LightYellow;
                     emplyCellFound = true;
                 }
                 else
                 {
-                    dgvCarton.Rows[i].Cells[header_PackagingMax].Style.BackColor = Color.White;
+                    dgvCarton.Rows[i].Cells[text.Header_Qty_Per_Container].Style.BackColor = Color.White;
                 }
 
                 if (string.IsNullOrEmpty(qty))
                 {
-                    dgvCarton.Rows[i].Cells[header_PackagingQty].Style.BackColor = Color.LightYellow;
+                    dgvCarton.Rows[i].Cells[text.Header_Container_Qty].Style.BackColor = Color.LightYellow;
                     emplyCellFound = true;
                 }
                 else
                 {
-                    dgvCarton.Rows[i].Cells[header_PackagingQty].Style.BackColor = Color.White;
+                    dgvCarton.Rows[i].Cells[text.Header_Container_Qty].Style.BackColor = Color.White;
                 }
             }
 

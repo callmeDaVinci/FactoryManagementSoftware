@@ -91,12 +91,14 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             this.txtNote = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.label12 = new System.Windows.Forms.Label();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.txtStockInContainerQty = new System.Windows.Forms.TextBox();
+            this.txtFullBoxQty = new System.Windows.Forms.TextBox();
             this.tlpButton = new System.Windows.Forms.TableLayoutPanel();
             this.btnSave = new Guna.UI.WinForms.GunaGradientButton();
             this.btnCancel = new Guna.UI.WinForms.GunaGradientButton();
@@ -155,7 +157,7 @@
             this.cbMorning.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.cbMorning.AutoSize = true;
             this.cbMorning.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbMorning.Location = new System.Drawing.Point(5, 3);
+            this.cbMorning.Location = new System.Drawing.Point(4, 3);
             this.cbMorning.Name = "cbMorning";
             this.cbMorning.Size = new System.Drawing.Size(84, 23);
             this.cbMorning.TabIndex = 5;
@@ -168,7 +170,7 @@
             this.cbNight.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.cbNight.AutoSize = true;
             this.cbNight.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbNight.Location = new System.Drawing.Point(99, 3);
+            this.cbNight.Location = new System.Drawing.Point(96, 3);
             this.cbNight.Name = "cbNight";
             this.cbNight.Size = new System.Drawing.Size(65, 23);
             this.cbNight.TabIndex = 6;
@@ -195,7 +197,7 @@
             this.cbEndProduction.AutoSize = true;
             this.cbEndProduction.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbEndProduction.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.cbEndProduction.Location = new System.Drawing.Point(378, 3);
+            this.cbEndProduction.Location = new System.Drawing.Point(383, 3);
             this.cbEndProduction.Name = "cbEndProduction";
             this.cbEndProduction.Size = new System.Drawing.Size(125, 23);
             this.cbEndProduction.TabIndex = 15;
@@ -248,10 +250,10 @@
             this.txtStockInPcsQty.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtStockInPcsQty.BackColor = System.Drawing.Color.White;
-            this.txtStockInPcsQty.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStockInPcsQty.Location = new System.Drawing.Point(208, 43);
+            this.txtStockInPcsQty.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.txtStockInPcsQty.Location = new System.Drawing.Point(217, 43);
             this.txtStockInPcsQty.Name = "txtStockInPcsQty";
-            this.txtStockInPcsQty.Size = new System.Drawing.Size(139, 30);
+            this.txtStockInPcsQty.Size = new System.Drawing.Size(118, 34);
             this.txtStockInPcsQty.TabIndex = 13;
             this.txtStockInPcsQty.Text = "0";
             this.txtStockInPcsQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -267,21 +269,23 @@
             this.lblFullCarton.Location = new System.Drawing.Point(18, 20);
             this.lblFullCarton.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.lblFullCarton.Name = "lblFullCarton";
-            this.lblFullCarton.Size = new System.Drawing.Size(157, 19);
+            this.lblFullCarton.Size = new System.Drawing.Size(154, 19);
             this.lblFullCarton.TabIndex = 303;
-            this.lblFullCarton.Text = "Stock In Qty (Container)";
+            this.lblFullCarton.Text = "Stock In Qty (container)";
             // 
             // txtColorMatLotNo
             // 
             this.txtColorMatLotNo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtColorMatLotNo.BackColor = System.Drawing.Color.White;
-            this.txtColorMatLotNo.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtColorMatLotNo.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.txtColorMatLotNo.Location = new System.Drawing.Point(559, 38);
             this.txtColorMatLotNo.Name = "txtColorMatLotNo";
-            this.txtColorMatLotNo.Size = new System.Drawing.Size(365, 30);
+            this.txtColorMatLotNo.Size = new System.Drawing.Size(365, 34);
             this.txtColorMatLotNo.TabIndex = 2;
+            this.txtColorMatLotNo.Text = "Lot No";
             this.txtColorMatLotNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtColorMatLotNo.TextChanged += new System.EventHandler(this.txtColorMatLotNo_TextChanged);
             // 
             // label18
             // 
@@ -292,9 +296,9 @@
             this.label18.Location = new System.Drawing.Point(559, 15);
             this.label18.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(123, 19);
+            this.label18.Size = new System.Drawing.Size(199, 19);
             this.label18.TabIndex = 267;
-            this.label18.Text = "Color Mat. Lot No.";
+            this.label18.Text = "Master Batch/ Pigment Lot No.";
             // 
             // label5
             // 
@@ -314,12 +318,14 @@
             this.txtRawMatLotNo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtRawMatLotNo.BackColor = System.Drawing.Color.White;
-            this.txtRawMatLotNo.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRawMatLotNo.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.txtRawMatLotNo.Location = new System.Drawing.Point(178, 38);
             this.txtRawMatLotNo.Name = "txtRawMatLotNo";
-            this.txtRawMatLotNo.Size = new System.Drawing.Size(365, 30);
+            this.txtRawMatLotNo.Size = new System.Drawing.Size(365, 34);
             this.txtRawMatLotNo.TabIndex = 1;
+            this.txtRawMatLotNo.Text = "Lot No";
             this.txtRawMatLotNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtRawMatLotNo.TextChanged += new System.EventHandler(this.txtRawMatLotNo_TextChanged);
             // 
             // label17
             // 
@@ -450,13 +456,14 @@
             this.txtOperator.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtOperator.BackColor = System.Drawing.Color.White;
-            this.txtOperator.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOperator.Location = new System.Drawing.Point(711, 38);
+            this.txtOperator.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.txtOperator.Location = new System.Drawing.Point(700, 38);
             this.txtOperator.Name = "txtOperator";
-            this.txtOperator.Size = new System.Drawing.Size(323, 30);
+            this.txtOperator.Size = new System.Drawing.Size(334, 34);
             this.txtOperator.TabIndex = 9;
-            this.txtOperator.Text = "Auto";
+            this.txtOperator.Text = "Operator";
             this.txtOperator.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtOperator.TextChanged += new System.EventHandler(this.txtOperator_TextChanged);
             // 
             // label2
             // 
@@ -464,7 +471,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label2.Location = new System.Drawing.Point(711, 15);
+            this.label2.Location = new System.Drawing.Point(700, 15);
             this.label2.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 19);
@@ -479,7 +486,7 @@
             this.dtpProDate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtpProDate.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
             this.dtpProDate.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.dtpProDate.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.dtpProDate.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.dtpProDate.ForeColor = System.Drawing.Color.Black;
             this.dtpProDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpProDate.Location = new System.Drawing.Point(18, 38);
@@ -502,7 +509,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label3.Location = new System.Drawing.Point(363, 15);
+            this.label3.Location = new System.Drawing.Point(359, 15);
             this.label3.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 19);
@@ -515,7 +522,7 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label6.Location = new System.Drawing.Point(537, 15);
+            this.label6.Location = new System.Drawing.Point(530, 15);
             this.label6.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(65, 19);
@@ -527,13 +534,14 @@
             this.txtCavity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCavity.BackColor = System.Drawing.Color.White;
-            this.txtCavity.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCavity.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.txtCavity.Location = new System.Drawing.Point(940, 38);
             this.txtCavity.Name = "txtCavity";
-            this.txtCavity.Size = new System.Drawing.Size(94, 30);
+            this.txtCavity.Size = new System.Drawing.Size(94, 34);
             this.txtCavity.TabIndex = 3;
             this.txtCavity.Text = "0";
             this.txtCavity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtCavity.TextChanged += new System.EventHandler(this.txtCavity_TextChanged);
             this.txtCavity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
             // 
             // label7
@@ -569,23 +577,23 @@
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label9.Location = new System.Drawing.Point(208, 20);
+            this.label9.Location = new System.Drawing.Point(217, 20);
             this.label9.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(116, 19);
+            this.label9.Size = new System.Drawing.Size(117, 19);
             this.label9.TabIndex = 322;
-            this.label9.Text = "Stock In Qty (Pcs)";
+            this.label9.Text = "Stock In Qty (pcs)";
             // 
             // txtTotalStockInQty
             // 
             this.txtTotalStockInQty.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTotalStockInQty.BackColor = System.Drawing.Color.Gainsboro;
-            this.txtTotalStockInQty.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotalStockInQty.Location = new System.Drawing.Point(363, 43);
+            this.txtTotalStockInQty.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.txtTotalStockInQty.Location = new System.Drawing.Point(358, 43);
             this.txtTotalStockInQty.Name = "txtTotalStockInQty";
             this.txtTotalStockInQty.ReadOnly = true;
-            this.txtTotalStockInQty.Size = new System.Drawing.Size(149, 30);
+            this.txtTotalStockInQty.Size = new System.Drawing.Size(149, 34);
             this.txtTotalStockInQty.TabIndex = 324;
             this.txtTotalStockInQty.Text = "0";
             this.txtTotalStockInQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -595,15 +603,15 @@
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.Color.White;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label10.Location = new System.Drawing.Point(363, 20);
+            this.label10.Location = new System.Drawing.Point(358, 20);
             this.label10.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(122, 19);
+            this.label10.Size = new System.Drawing.Size(123, 19);
             this.label10.TabIndex = 323;
-            this.label10.Text = "Total Stock In (Pcs)";
+            this.label10.Text = "Total Stock In (pcs)";
             // 
             // tlpItemSelectionTitle
             // 
@@ -660,11 +668,11 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 175F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 171F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 164F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 161F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 164F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 15F));
@@ -694,11 +702,12 @@
             // 
             this.dtpTimeEnd.CustomFormat = "HH:mm tt";
             this.dtpTimeEnd.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dtpTimeEnd.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.dtpTimeEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpTimeEnd.Location = new System.Drawing.Point(537, 38);
+            this.dtpTimeEnd.Location = new System.Drawing.Point(530, 38);
             this.dtpTimeEnd.Name = "dtpTimeEnd";
             this.dtpTimeEnd.ShowUpDown = true;
-            this.dtpTimeEnd.Size = new System.Drawing.Size(158, 30);
+            this.dtpTimeEnd.Size = new System.Drawing.Size(154, 34);
             this.dtpTimeEnd.TabIndex = 8;
             this.dtpTimeEnd.Value = new System.DateTime(2023, 8, 10, 20, 0, 0, 0);
             this.dtpTimeEnd.ValueChanged += new System.EventHandler(this.dtpTimeEnd_ValueChanged);
@@ -706,11 +715,12 @@
             // dtpTimeStart
             // 
             this.dtpTimeStart.CustomFormat = "HH:mm tt";
+            this.dtpTimeStart.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.dtpTimeStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpTimeStart.Location = new System.Drawing.Point(363, 38);
+            this.dtpTimeStart.Location = new System.Drawing.Point(359, 38);
             this.dtpTimeStart.Name = "dtpTimeStart";
             this.dtpTimeStart.ShowUpDown = true;
-            this.dtpTimeStart.Size = new System.Drawing.Size(157, 30);
+            this.dtpTimeStart.Size = new System.Drawing.Size(155, 34);
             this.dtpTimeStart.TabIndex = 7;
             this.dtpTimeStart.Value = new System.DateTime(2023, 8, 10, 8, 0, 0, 0);
             this.dtpTimeStart.ValueChanged += new System.EventHandler(this.dtpTimeStart_ValueChanged);
@@ -740,7 +750,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(169, 34);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(165, 34);
             this.tableLayoutPanel2.TabIndex = 327;
             // 
             // tableLayoutPanel3
@@ -920,22 +930,24 @@
             this.tableLayoutPanel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
             this.tableLayoutPanel6.ColumnCount = 9;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 15F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 145F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 174F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 124F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 17F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 155F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.tableLayoutPanel6.Controls.Add(this.label15, 4, 2);
+            this.tableLayoutPanel6.Controls.Add(this.label14, 2, 2);
             this.tableLayoutPanel6.Controls.Add(this.txtNote, 7, 2);
             this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel10, 7, 1);
             this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel7, 1, 2);
             this.tableLayoutPanel6.Controls.Add(this.lblFullCarton, 1, 1);
-            this.tableLayoutPanel6.Controls.Add(this.label9, 3, 1);
             this.tableLayoutPanel6.Controls.Add(this.txtStockInPcsQty, 3, 2);
             this.tableLayoutPanel6.Controls.Add(this.label10, 5, 1);
             this.tableLayoutPanel6.Controls.Add(this.txtTotalStockInQty, 5, 2);
+            this.tableLayoutPanel6.Controls.Add(this.label9, 3, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(70, 365);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
@@ -948,16 +960,44 @@
             this.tableLayoutPanel6.Size = new System.Drawing.Size(1052, 213);
             this.tableLayoutPanel6.TabIndex = 329;
             // 
+            // label15
+            // 
+            this.label15.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.label15.Location = new System.Drawing.Point(338, 48);
+            this.label15.Margin = new System.Windows.Forms.Padding(0, 8, 0, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(17, 19);
+            this.label15.TabIndex = 336;
+            this.label15.Text = "=";
+            // 
+            // label14
+            // 
+            this.label14.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.label14.Location = new System.Drawing.Point(192, 48);
+            this.label14.Margin = new System.Windows.Forms.Padding(0, 8, 0, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(19, 19);
+            this.label14.TabIndex = 335;
+            this.label14.Text = "+";
+            // 
             // txtNote
             // 
             this.txtNote.BackColor = System.Drawing.Color.White;
             this.txtNote.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtNote.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNote.Location = new System.Drawing.Point(528, 43);
+            this.txtNote.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.txtNote.Location = new System.Drawing.Point(523, 43);
             this.txtNote.Multiline = true;
             this.txtNote.Name = "txtNote";
-            this.txtNote.Size = new System.Drawing.Size(506, 157);
+            this.txtNote.Size = new System.Drawing.Size(511, 157);
             this.txtNote.TabIndex = 14;
+            this.txtNote.Text = "dsds";
+            this.txtNote.TextChanged += new System.EventHandler(this.txtNote_TextChanged);
             // 
             // tableLayoutPanel10
             // 
@@ -967,11 +1007,11 @@
             this.tableLayoutPanel10.Controls.Add(this.label12, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.cbEndProduction, 1, 0);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(528, 8);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(523, 8);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(506, 29);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(511, 29);
             this.tableLayoutPanel10.TabIndex = 331;
             // 
             // label12
@@ -1002,7 +1042,7 @@
             this.tableLayoutPanel7.RowCount = 2;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(180, 163);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(174, 163);
             this.tableLayoutPanel7.TabIndex = 329;
             // 
             // tableLayoutPanel8
@@ -1010,29 +1050,30 @@
             this.tableLayoutPanel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
             this.tableLayoutPanel8.ColumnCount = 1;
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Controls.Add(this.txtStockInContainerQty, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.txtFullBoxQty, 0, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 1;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 94F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(174, 94);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(168, 94);
             this.tableLayoutPanel8.TabIndex = 335;
             // 
-            // txtStockInContainerQty
+            // txtFullBoxQty
             // 
-            this.txtStockInContainerQty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtStockInContainerQty.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
-            this.txtStockInContainerQty.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtStockInContainerQty.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold);
-            this.txtStockInContainerQty.Location = new System.Drawing.Point(3, 13);
-            this.txtStockInContainerQty.Name = "txtStockInContainerQty";
-            this.txtStockInContainerQty.Size = new System.Drawing.Size(168, 67);
-            this.txtStockInContainerQty.TabIndex = 12;
-            this.txtStockInContainerQty.Text = "0";
-            this.txtStockInContainerQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtStockInContainerQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
+            this.txtFullBoxQty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtFullBoxQty.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
+            this.txtFullBoxQty.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtFullBoxQty.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold);
+            this.txtFullBoxQty.Location = new System.Drawing.Point(3, 13);
+            this.txtFullBoxQty.Name = "txtFullBoxQty";
+            this.txtFullBoxQty.Size = new System.Drawing.Size(162, 67);
+            this.txtFullBoxQty.TabIndex = 12;
+            this.txtFullBoxQty.Text = "0";
+            this.txtFullBoxQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtFullBoxQty.TextChanged += new System.EventHandler(this.txtFullBoxQty_TextChanged);
+            this.txtFullBoxQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
             // 
             // tlpButton
             // 
@@ -1191,7 +1232,7 @@
             // 
             // tableLayoutPanel18
             // 
-            this.tableLayoutPanel18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(234)))), ((int)(((byte)(147)))));
+            this.tableLayoutPanel18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
             this.tableLayoutPanel18.ColumnCount = 1;
             this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel18.Controls.Add(this.label11, 0, 0);
@@ -1220,7 +1261,7 @@
             // 
             // tableLayoutPanel17
             // 
-            this.tableLayoutPanel17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(234)))), ((int)(((byte)(147)))));
+            this.tableLayoutPanel17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
             this.tableLayoutPanel17.ColumnCount = 1;
             this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel17.Controls.Add(this.label8, 0, 0);
@@ -1249,7 +1290,7 @@
             // 
             // tableLayoutPanel16
             // 
-            this.tableLayoutPanel16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(234)))), ((int)(((byte)(147)))));
+            this.tableLayoutPanel16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
             this.tableLayoutPanel16.ColumnCount = 1;
             this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel16.Controls.Add(this.label1, 0, 0);
@@ -1278,7 +1319,7 @@
             // 
             // tableLayoutPanel15
             // 
-            this.tableLayoutPanel15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(234)))), ((int)(((byte)(147)))));
+            this.tableLayoutPanel15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
             this.tableLayoutPanel15.ColumnCount = 1;
             this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel15.Controls.Add(this.label13, 0, 0);
@@ -1351,7 +1392,9 @@
             this.Name = "frmJobSheetRecord";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Job Sheet Record Form";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmJobSheetRecord_FormClosing);
             this.Load += new System.EventHandler(this.frmJobSheetRecord_Load);
+            this.Shown += new System.EventHandler(this.frmJobSheetRecord_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).EndInit();
@@ -1473,7 +1516,7 @@
         private System.Windows.Forms.Label lblMaxQty;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
-        private System.Windows.Forms.TextBox txtStockInContainerQty;
+        private System.Windows.Forms.TextBox txtFullBoxQty;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
         private System.Windows.Forms.TextBox txtMeterEnd;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
@@ -1489,5 +1532,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label14;
     }
 }

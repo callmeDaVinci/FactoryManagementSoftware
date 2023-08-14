@@ -10,6 +10,8 @@ namespace FactoryManagementSoftware.BLL
         public int old_plan_id { get; set; }
 
         public DateTime production_date { get; set; }
+        public DateTime production_time_start { get; set; }
+        public DateTime production_time_end { get; set; }
         public string shift { get; set; }
         public int mac_no { get; set; }
         public string production_lot_no { get; set; }

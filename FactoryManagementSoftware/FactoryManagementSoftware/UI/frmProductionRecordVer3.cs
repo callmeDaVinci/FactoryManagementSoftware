@@ -146,6 +146,8 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_Operator, typeof(string));
             dt.Columns.Add(text.Header_MeterStart, typeof(int));
             dt.Columns.Add(text.Header_MeterEnd, typeof(int));
+            dt.Columns.Add(text.Header_TimeStart, typeof(string));
+            dt.Columns.Add(text.Header_TimeEnd, typeof(string));
             dt.Columns.Add(text.Header_Cavity, typeof(int));
             dt.Columns.Add(text.Header_Production_Max_Qty, typeof(int));
             dt.Columns.Add(text.Header_StockIn_Remark, typeof(string));
@@ -159,6 +161,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_TotalStockIn, typeof(int));
             dt.Columns.Add(text.Header_StockIn_Balance_Qty, typeof(int));
             dt.Columns.Add(text.Header_StockIn_Container, typeof(int));
+            dt.Columns.Add(text.Header_Qty_Per_Container, typeof(int));
             dt.Columns.Add(text.Header_JobNo, typeof(string));
             //dt.Columns.Add(header_ProducedQty, typeof(double));
             //dt.Columns.Add(header_TotalProduced, typeof(double));
@@ -217,6 +220,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_SheetID].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
             dgv.Columns[text.Header_RawMat_Lot_No].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
             dgv.Columns[text.Header_ColorMat_Lot_No].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+            dgv.Columns[text.Header_Remark].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
             //dgv.Columns[text.Header_MeterStart].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             //dgv.Columns[text.Header_MeterEnd].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             //dgv.Columns[text.Header_Cavity].DefaultCellStyle.Font = new Font("Segoe UI", 14F, FontStyle.Regular);
@@ -646,6 +650,21 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[text.Header_RawMat_Lot_No] = row[dalProRecord.RawMatLotNo].ToString();
                         dt_Row[text.Header_ColorMat_Lot_No] = row[dalProRecord.ColorMatLotNo].ToString();
 
+                        dt_Row[text.Header_StockIn_Container] = row[dalProRecord.FullBox].ToString();
+                        dt_Row[text.Header_StockIn_Balance_Qty] = row[dalProRecord.directIn].ToString();
+                        dt_Row[text.Header_Qty_Per_Container] = row[dalProRecord.PackagingQty];
+                        dt_Row[text.Header_Remark] = row[dalProRecord.Note];
+
+                        if (row[dalProRecord.TimeStart] is DateTime TimeStart)
+                        {
+                            dt_Row[text.Header_TimeStart] = TimeStart.ToString("HH:mm tt");
+                        }
+
+                        if (row[dalProRecord.TimeEnd] is DateTime TimeEnd)
+                        {
+                            dt_Row[text.Header_TimeEnd] = TimeEnd.ToString("HH:mm tt");
+                        }
+                       
                         //dt_Row[header_ProducedQty] = produced;
                         dt_Row[text.Header_UpdatedDate] = row[dalProRecord.UpdatedDate].ToString();
                         dt_Row[text.Header_UpdatedBy] = dalUser.getUsername(Convert.ToInt32(row[dalProRecord.UpdatedBy].ToString()));
@@ -862,7 +881,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmProductionRecord_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MainDashboard.NewDailyJobSheetFormOpen = false;
+            MainDashboard.NewDailyJobSheetFormOpenVer3 = false;
         }
 
         private void ShowDailyRecordUI()
@@ -1258,8 +1277,11 @@ namespace FactoryManagementSoftware.UI
                 frm.StartPosition = FormStartPosition.CenterScreen;
 
                 frm.ShowDialog();
+
+                DT_JOB_DAILY_RECORD = dalProRecord.SelectActiveDailyJobRecordOnly();
+                LoadJobDailyRecord();
             }
-          
+
         }
 
         private void btnEditJobSheet_Click(object sender, EventArgs e)
@@ -1281,7 +1303,103 @@ namespace FactoryManagementSoftware.UI
                 frm.StartPosition = FormStartPosition.CenterScreen;
 
                 frm.ShowDialog();
+
+                DT_JOB_DAILY_RECORD = dalProRecord.SelectActiveDailyJobRecordOnly();
+                LoadJobDailyRecord();
             }
+        }
+
+        private void dgvActiveJobList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+            loaded = false;
+
+            int userID = MainDashboard.USER_ID;
+            int userPermission = dalUser.getPermissionLevel(userID);
+
+            //handle the row selection on right click
+
+            if (e.Button == MouseButtons.Right && e.RowIndex > -1 && (userPermission >= MainDashboard.ACTION_LVL_FIVE || userID == 6))// && userPermission >= MainDashboard.ACTION_LVL_THREE
+            {
+                ContextMenuStrip my_menu = new ContextMenuStrip();
+                dgvActiveJobList.CurrentCell = dgvActiveJobList.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                // Can leave these here - doesn't hurt
+                dgvActiveJobList.Rows[e.RowIndex].Selected = true;
+                dgvActiveJobList.Focus();
+                int rowIndex = dgvActiveJobList.CurrentCell.RowIndex;
+
+                try
+                {
+                    my_menu.Items.Add(text_RemoveRecord).Name = text_RemoveRecord;
+                    //my_menu.Items.Add(text_ChangeJobNo).Name = text_ChangeJobNo;
+
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+                    contextMenuStrip1 = my_menu;
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(dgvItemList_ItemClicked);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            loaded = true;
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void dgvItemList_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            DataGridView dgv = dgvActiveJobList;
+            dgv.SuspendLayout();
+
+            string itemClicked = e.ClickedItem.Name.ToString();
+            int rowIndex = dgv.CurrentCell.RowIndex;
+            int JobNo = Convert.ToInt32(dgv.Rows[rowIndex].Cells[text.Header_JobNo].Value);
+            string itemCode = dgv.Rows[rowIndex].Cells[text.Header_ItemCode].Value.ToString();
+            string itemName = dgv.Rows[rowIndex].Cells[text.Header_ItemName].Value.ToString();
+            contextMenuStrip1.Hide();
+
+            if (itemClicked.Equals(text_RemoveRecord))
+            {
+                if (MessageBox.Show("Are you sure you want to remove (Job No.: " + JobNo + ") " + itemName + " from this list?", "Message",
+                                                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    uPlan.plan_id = JobNo;
+                    uPlan.recording = false;
+
+                    if (dalPlan.RecordingUpdate(uPlan))
+                    {
+                        loaded = false;
+                        MessageBox.Show("Item removed!");
+
+                        DataTable dt = (DataTable)dgv.DataSource;
+
+                        dt.Rows.RemoveAt(rowIndex);
+                        dt.AcceptChanges();
+
+                        dgvActiveJobList.ClearSelection();
+
+                        //if (dt == null || dt.Rows.Count <= 0)
+                        //{
+                        //    lblClearList.Hide();
+                        //    lblRemoveCompleted.Hide();
+                        //}
+
+                        loaded = true;
+                        //LoadItemListData();
+                    }
+                }
+
+            }
+
+           
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+            dgv.ResumeLayout();
         }
     }
 }

@@ -4112,5 +4112,10 @@ namespace FactoryManagementSoftware.UI
         {
             hideResults();
         }
+
+        private void tlpPartInfo_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
